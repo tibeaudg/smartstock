@@ -12,16 +12,21 @@ import {
   LogOut
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useAuth, UserProfile } from '@/hooks/useAuth';
+import { toast } from 'sonner';
 
 interface SidebarProps {
   currentTab: string;
   onTabChange: (tab: string) => void;
   userRole: 'admin' | 'staff';
+  userProfile?: UserProfile;
   isOpen: boolean;
   onToggle: () => void;
 }
 
-export const Sidebar = ({ currentTab, onTabChange, userRole, isOpen, onToggle }: SidebarProps) => {
+export const Sidebar = ({ currentTab, onTabChange, userRole, userProfile, isOpen, onToggle }: SidebarProps) => {
+  const { signOut } = useAuth();
+  
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: BarChart3, adminOnly: false },
     { id: 'orders', label: 'Orders', icon: ShoppingCart, adminOnly: false },
@@ -32,6 +37,19 @@ export const Sidebar = ({ currentTab, onTabChange, userRole, isOpen, onToggle }:
   ];
 
   const filteredItems = menuItems.filter(item => !item.adminOnly || userRole === 'admin');
+
+  const handleSignOut = async () => {
+    const { error } = await signOut();
+    if (error) {
+      toast.error('Error signing out');
+    } else {
+      toast.success('Signed out successfully');
+    }
+  };
+
+  const displayName = userProfile ? 
+    `${userProfile.first_name} ${userProfile.last_name}`.trim() || userProfile.email :
+    'User';
 
   return (
     <div className={`fixed left-0 top-0 h-full bg-white border-r border-gray-200 shadow-sm transition-all duration-300 z-30 ${isOpen ? 'w-64' : 'w-16'}`}>
@@ -82,14 +100,15 @@ export const Sidebar = ({ currentTab, onTabChange, userRole, isOpen, onToggle }:
                 <User className="h-4 w-4 text-blue-600" />
               </div>
               <div className="ml-3">
-                <p className="text-sm font-medium text-gray-900">John Doe</p>
-                <p className="text-xs text-gray-500">john@example.com</p>
+                <p className="text-sm font-medium text-gray-900">{displayName}</p>
+                <p className="text-xs text-gray-500">{userProfile?.email}</p>
               </div>
             </div>
           )}
           <Button
             variant="ghost"
             size="sm"
+            onClick={handleSignOut}
             className="text-gray-500 hover:text-red-600"
           >
             <LogOut className="h-4 w-4" />

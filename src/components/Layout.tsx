@@ -3,15 +3,17 @@ import React, { useState } from 'react';
 import { Sidebar } from './Sidebar';
 import { MobileBottomNav } from './MobileBottomNav';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { UserProfile } from '@/hooks/useAuth';
 
 interface LayoutProps {
   children: React.ReactNode;
   currentTab: string;
   onTabChange: (tab: string) => void;
   userRole: 'admin' | 'staff';
+  userProfile?: UserProfile;
 }
 
-export const Layout = ({ children, currentTab, onTabChange, userRole }: LayoutProps) => {
+export const Layout = ({ children, currentTab, onTabChange, userRole, userProfile }: LayoutProps) => {
   const isMobile = useIsMobile();
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
@@ -22,6 +24,7 @@ export const Layout = ({ children, currentTab, onTabChange, userRole }: LayoutPr
           currentTab={currentTab}
           onTabChange={onTabChange}
           userRole={userRole}
+          userProfile={userProfile}
           isOpen={sidebarOpen}
           onToggle={() => setSidebarOpen(!sidebarOpen)}
         />

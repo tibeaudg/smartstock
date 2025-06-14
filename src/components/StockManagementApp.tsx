@@ -1,33 +1,34 @@
 
-import React, { useState } from 'react';
-import { AuthForm } from './AuthForm';
+import React from 'react';
+import { AuthPage } from './AuthPage';
 import { Layout } from './Layout';
 import { Dashboard } from './Dashboard';
+import { useAuth } from '@/hooks/useAuth';
+import { useState } from 'react';
 
 export const StockManagementApp = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [currentUser, setCurrentUser] = useState<{
-    email: string;
-    role: 'admin' | 'staff';
-  } | null>(null);
+  const { user, profile, loading } = useAuth();
   const [currentTab, setCurrentTab] = useState('dashboard');
 
-  const handleLogin = (email: string, password: string, role: 'admin' | 'staff') => {
-    // In a real app, this would validate credentials
-    setCurrentUser({ email, role });
-    setIsAuthenticated(true);
-  };
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-    setCurrentUser(null);
-    setCurrentTab('dashboard');
-  };
+  if (!user || !profile) {
+    return <AuthPage />;
+  }
 
   const renderTabContent = () => {
     switch (currentTab) {
       case 'dashboard':
-        return <Dashboard userRole={currentUser?.role || 'staff'} />;
+        return <Dashboard userRole={profile.role} />;
       case 'orders':
         return (
           <div className="text-center py-20">
@@ -64,19 +65,16 @@ export const StockManagementApp = () => {
           </div>
         );
       default:
-        return <Dashboard userRole={currentUser?.role || 'staff'} />;
+        return <Dashboard userRole={profile.role} />;
     }
   };
-
-  if (!isAuthenticated) {
-    return <AuthForm onLogin={handleLogin} />;
-  }
 
   return (
     <Layout
       currentTab={currentTab}
       onTabChange={setCurrentTab}
-      userRole={currentUser?.role || 'staff'}
+      userRole={profile.role}
+      userProfile={profile}
     >
       {renderTabContent()}
     </Layout>
