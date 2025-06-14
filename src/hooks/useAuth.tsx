@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
@@ -52,7 +51,7 @@ export const useAuth = () => {
                     // Make sure we have the role property or provide a default
                     setProfile({
                       ...retryData,
-                      role: retryData.role || 'staff'
+                      role: (retryData as any).role || 'staff'
                     } as UserProfile);
                   }
                 }, 1000);
@@ -60,7 +59,7 @@ export const useAuth = () => {
                 // Make sure we have the role property or provide a default
                 setProfile({
                   ...profileData,
-                  role: profileData.role || 'staff'
+                  role: (profileData as any).role || 'staff'
                 } as UserProfile);
               }
             } catch (error) {
