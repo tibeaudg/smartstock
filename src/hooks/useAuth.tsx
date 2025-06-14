@@ -28,21 +28,39 @@ export const useAuth = () => {
         setUser(session?.user ?? null);
         
         if (session?.user) {
-          // Fetch user profile
+          // Fetch user profile with a small delay to ensure the trigger has completed
           setTimeout(async () => {
-            const { data: profileData, error } = await supabase
-              .from('profiles')
-              .select('*')
-              .eq('id', session.user.id)
-              .single();
-            
-            if (error) {
-              console.error('Error fetching profile:', error);
-            } else {
-              setProfile(profileData);
+            try {
+              const { data: profileData, error } = await supabase
+                .from('profiles')
+                .select('*')
+                .eq('id', session.user.id)
+                .single();
+              
+              if (error) {
+                console.error('Error fetching profile:', error);
+                // If profile doesn't exist, it might still be being created by the trigger
+                // Let's wait a bit and try again
+                setTimeout(async () => {
+                  const { data: retryData, error: retryError } = await supabase
+                    .from('profiles')
+                    .select('*')
+                    .eq('id', session.user.id)
+                    .single();
+                  
+                  if (!retryError && retryData) {
+                    setProfile(retryData);
+                  }
+                }, 1000);
+              } else {
+                setProfile(profileData);
+              }
+            } catch (error) {
+              console.error('Error in profile fetch:', error);
+            } finally {
+              setLoading(false);
             }
-            setLoading(false);
-          }, 0);
+          }, 100);
         } else {
           setProfile(null);
           setLoading(false);
