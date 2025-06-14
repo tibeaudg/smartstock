@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
@@ -18,6 +19,43 @@ export const useAuth = () => {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const fetchUserProfile = async (userId: string) => {
+    try {
+      const { data: profileData, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', userId)
+        .single();
+      
+      if (error) {
+        console.error('Error fetching profile:', error);
+        // If profile doesn't exist, it might still be being created by the trigger
+        // Let's wait a bit and try again
+        setTimeout(async () => {
+          const { data: retryData, error: retryError } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('id', userId)
+            .single();
+          
+          if (!retryError && retryData) {
+            setProfile({
+              ...retryData,
+              role: (retryData as any).role || 'staff'
+            } as UserProfile);
+          }
+        }, 1000);
+      } else {
+        setProfile({
+          ...profileData,
+          role: (profileData as any).role || 'staff'
+        } as UserProfile);
+      }
+    } catch (error) {
+      console.error('Error in profile fetch:', error);
+    }
+  };
+
   useEffect(() => {
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
@@ -28,58 +66,25 @@ export const useAuth = () => {
         
         if (session?.user) {
           // Fetch user profile with a small delay to ensure the trigger has completed
-          setTimeout(async () => {
-            try {
-              const { data: profileData, error } = await supabase
-                .from('profiles')
-                .select('*')
-                .eq('id', session.user.id)
-                .single();
-              
-              if (error) {
-                console.error('Error fetching profile:', error);
-                // If profile doesn't exist, it might still be being created by the trigger
-                // Let's wait a bit and try again
-                setTimeout(async () => {
-                  const { data: retryData, error: retryError } = await supabase
-                    .from('profiles')
-                    .select('*')
-                    .eq('id', session.user.id)
-                    .single();
-                  
-                  if (!retryError && retryData) {
-                    // Make sure we have the role property or provide a default
-                    setProfile({
-                      ...retryData,
-                      role: (retryData as any).role || 'staff'
-                    } as UserProfile);
-                  }
-                }, 1000);
-              } else {
-                // Make sure we have the role property or provide a default
-                setProfile({
-                  ...profileData,
-                  role: (profileData as any).role || 'staff'
-                } as UserProfile);
-              }
-            } catch (error) {
-              console.error('Error in profile fetch:', error);
-            } finally {
-              setLoading(false);
-            }
+          setTimeout(() => {
+            fetchUserProfile(session.user.id);
           }, 100);
         } else {
           setProfile(null);
-          setLoading(false);
         }
+        
+        // Set loading to false after handling the auth state change
+        setLoading(false);
       }
     );
 
     // Check for existing session
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      if (!session) {
+      if (session) {
+        setSession(session);
+        setUser(session.user);
+        fetchUserProfile(session.user.id);
+      } else {
         setLoading(false);
       }
     });

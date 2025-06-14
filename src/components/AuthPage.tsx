@@ -1,6 +1,5 @@
 
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -20,7 +19,6 @@ export const AuthPage = () => {
   const [loading, setLoading] = useState(false);
   
   const { signIn, signUp, resetPassword } = useAuth();
-  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,7 +37,7 @@ export const AuthPage = () => {
           }
         } else {
           toast.success('Welcome back!');
-          navigate('/');
+          // Don't navigate here - let the auth state change handle the redirect
         }
       } else if (mode === 'register') {
         if (password !== confirmPassword) {
