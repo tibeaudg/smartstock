@@ -21,6 +21,7 @@ export const useAuth = () => {
 
   const fetchUserProfile = async (userId: string) => {
     try {
+      console.log('Fetching profile for user:', userId);
       const { data: profileData, error } = await supabase
         .from('profiles')
         .select('*')
@@ -29,30 +30,20 @@ export const useAuth = () => {
       
       if (error) {
         console.error('Error fetching profile:', error);
-        // If profile doesn't exist, it might still be being created by the trigger
-        // Let's wait a bit and try again
-        setTimeout(async () => {
-          const { data: retryData, error: retryError } = await supabase
-            .from('profiles')
-            .select('*')
-            .eq('id', userId)
-            .single();
-          
-          if (!retryError && retryData) {
-            setProfile({
-              ...retryData,
-              role: (retryData as any).role || 'staff'
-            } as UserProfile);
-          }
-        }, 1000);
-      } else {
-        setProfile({
-          ...profileData,
-          role: (profileData as any).role || 'staff'
-        } as UserProfile);
+        return null;
       }
+
+      console.log('Profile data received:', profileData);
+      const profile = {
+        ...profileData,
+        role: profileData.role || 'staff'
+      } as UserProfile;
+      
+      setProfile(profile);
+      return profile;
     } catch (error) {
       console.error('Error in profile fetch:', error);
+      return null;
     }
   };
 
@@ -65,29 +56,31 @@ export const useAuth = () => {
         setUser(session?.user ?? null);
         
         if (session?.user) {
-          // Fetch user profile with a small delay to ensure the trigger has completed
-          setTimeout(() => {
-            fetchUserProfile(session.user.id);
-          }, 100);
+          // Fetch user profile
+          await fetchUserProfile(session.user.id);
         } else {
           setProfile(null);
         }
         
-        // Set loading to false after handling the auth state change
         setLoading(false);
       }
     );
 
     // Check for existing session
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    const initializeAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      console.log('Initial session check:', session?.user?.email);
+      
       if (session) {
         setSession(session);
         setUser(session.user);
-        fetchUserProfile(session.user.id);
-      } else {
-        setLoading(false);
+        await fetchUserProfile(session.user.id);
       }
-    });
+      
+      setLoading(false);
+    };
+
+    initializeAuth();
 
     return () => subscription.unsubscribe();
   }, []);

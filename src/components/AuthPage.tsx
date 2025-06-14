@@ -37,7 +37,7 @@ export const AuthPage = () => {
           }
         } else {
           toast.success('Welcome back!');
-          // Don't navigate here - let the auth state change handle the redirect
+          // Redirection will be handled automatically by the auth state change
         }
       } else if (mode === 'register') {
         if (password !== confirmPassword) {
@@ -70,6 +70,7 @@ export const AuthPage = () => {
         }
       }
     } catch (error) {
+      console.error('Auth error:', error);
       toast.error('An unexpected error occurred. Please try again.');
     } finally {
       setLoading(false);
