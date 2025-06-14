@@ -37,7 +37,7 @@ export const AuthPage = () => {
           }
         } else {
           toast.success('Welcome back!');
-          // Redirection will be handled automatically by the auth state change
+          // The useAuth hook will handle the state change and the StockManagementApp will automatically show the dashboard
         }
       } else if (mode === 'register') {
         if (password !== confirmPassword) {
