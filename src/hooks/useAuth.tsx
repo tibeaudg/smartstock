@@ -49,11 +49,19 @@ export const useAuth = () => {
                     .single();
                   
                   if (!retryError && retryData) {
-                    setProfile(retryData);
+                    // Make sure we have the role property or provide a default
+                    setProfile({
+                      ...retryData,
+                      role: retryData.role || 'staff'
+                    } as UserProfile);
                   }
                 }, 1000);
               } else {
-                setProfile(profileData);
+                // Make sure we have the role property or provide a default
+                setProfile({
+                  ...profileData,
+                  role: profileData.role || 'staff'
+                } as UserProfile);
               }
             } catch (error) {
               console.error('Error in profile fetch:', error);
