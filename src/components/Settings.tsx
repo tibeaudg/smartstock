@@ -6,8 +6,9 @@ import { BranchManagement } from './settings/BranchManagement';
 import { ProfileSettings } from './settings/ProfileSettings';
 import { BillingSettings } from './settings/BillingSettings';
 import { UserManagement } from './settings/UserManagement';
+import { LicenseOverview } from './settings/LicenseOverview';
 import { useAuth } from '@/hooks/useAuth';
-import { Building2, User, CreditCard, Users } from 'lucide-react';
+import { Building2, User, CreditCard, Users, FileText } from 'lucide-react';
 
 export const Settings = () => {
   const { userProfile } = useAuth();
@@ -24,11 +25,17 @@ export const Settings = () => {
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4">
+        <TabsList className="grid w-full grid-cols-2 lg:grid-cols-5">
           <TabsTrigger value="profile" className="flex items-center space-x-2">
             <User className="w-4 h-4" />
             <span>Profiel</span>
           </TabsTrigger>
+          {isAdmin && (
+            <TabsTrigger value="license" className="flex items-center space-x-2">
+              <FileText className="w-4 h-4" />
+              <span>Licentie</span>
+            </TabsTrigger>
+          )}
           {isAdmin && (
             <TabsTrigger value="branches" className="flex items-center space-x-2">
               <Building2 className="w-4 h-4" />
@@ -62,6 +69,12 @@ export const Settings = () => {
             </CardContent>
           </Card>
         </TabsContent>
+
+        {isAdmin && (
+          <TabsContent value="license" className="space-y-6">
+            <LicenseOverview />
+          </TabsContent>
+        )}
 
         {isAdmin && (
           <TabsContent value="branches" className="space-y-6">
@@ -99,9 +112,9 @@ export const Settings = () => {
           <TabsContent value="billing" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>Facturering & Licentie</CardTitle>
+                <CardTitle>Facturering & Details</CardTitle>
                 <CardDescription>
-                  Bekijk uw huidige licentie, gebruik en facturering
+                  Bekijk uw gedetailleerde facturering en gebruik
                 </CardDescription>
               </CardHeader>
               <CardContent>
