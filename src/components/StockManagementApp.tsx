@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 
 export const StockManagementApp = () => {
-  const { user, profile, loading } = useAuth();
+  const { user, userProfile, loading } = useAuth();
   const [currentTab, setCurrentTab] = useState('dashboard');
   const navigate = useNavigate();
 
@@ -41,7 +41,7 @@ export const StockManagementApp = () => {
   }
 
   // Use a default profile if none exists yet
-  const userProfile = profile || {
+  const currentUserProfile = userProfile || {
     id: user.id,
     email: user.email || '',
     first_name: user.user_metadata?.first_name || null,
@@ -54,7 +54,7 @@ export const StockManagementApp = () => {
   const renderTabContent = () => {
     switch (currentTab) {
       case 'dashboard':
-        return <Dashboard userRole={userProfile.role} />;
+        return <Dashboard userRole={currentUserProfile.role} />;
       case 'orders':
         return <StockMovements />;
       case 'stock':
@@ -81,7 +81,7 @@ export const StockManagementApp = () => {
           </div>
         );
       default:
-        return <Dashboard userRole={userProfile.role} />;
+        return <Dashboard userRole={currentUserProfile.role} />;
     }
   };
 
@@ -89,8 +89,8 @@ export const StockManagementApp = () => {
     <Layout
       currentTab={currentTab}
       onTabChange={setCurrentTab}
-      userRole={userProfile.role}
-      userProfile={userProfile}
+      userRole={currentUserProfile.role}
+      userProfile={currentUserProfile}
     >
       {renderTabContent()}
     </Layout>

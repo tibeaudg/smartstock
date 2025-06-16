@@ -95,6 +95,55 @@ export const useAuth = () => {
     };
   }, []);
 
+  const signIn = async (email: string, password: string) => {
+    try {
+      console.log('Signing in user:', email);
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      return { error };
+    } catch (error) {
+      console.error('Exception during sign in:', error);
+      return { error };
+    }
+  };
+
+  const signUp = async (email: string, password: string, firstName: string, lastName: string, role: 'admin' | 'staff') => {
+    try {
+      console.log('Signing up user:', email);
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            first_name: firstName,
+            last_name: lastName,
+            role: role,
+          },
+          emailRedirectTo: `${window.location.origin}/`,
+        },
+      });
+      return { error };
+    } catch (error) {
+      console.error('Exception during sign up:', error);
+      return { error };
+    }
+  };
+
+  const resetPassword = async (email: string) => {
+    try {
+      console.log('Resetting password for:', email);
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/`,
+      });
+      return { error };
+    } catch (error) {
+      console.error('Exception during password reset:', error);
+      return { error };
+    }
+  };
+
   const signOut = async () => {
     try {
       console.log('Signing out user');
@@ -113,7 +162,11 @@ export const useAuth = () => {
     user,
     session,
     userProfile,
+    profile: userProfile, // Add alias for backward compatibility
     loading,
+    signIn,
+    signUp,
+    resetPassword,
     signOut,
   };
 };
