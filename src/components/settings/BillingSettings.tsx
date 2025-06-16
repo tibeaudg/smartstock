@@ -1,27 +1,37 @@
-
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { toast } from '@/hooks/use-toast';
-import { Loader2, CreditCard, Users, Building2, TrendingUp, AlertCircle } from 'lucide-react';
+import { toast } from 'sonner';
+import { Button } from '@/components/ui/button';
+import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+import { PLAN_DETAILS, PLAN_PRICES, PlanDetails } from '@/integrations/stripe/client';
+import { Loader2, CreditCard, Users, Building2, TrendingUp, AlertCircle, CheckCircle2 } from 'lucide-react';
 
 interface LicenseInfo {
   id: string;
-  license_type: string;
-  max_users: number;
-  max_branches: number;
-  monthly_price: number;
+  license_type: 'free' | 'starter' | 'business' | 'enterprise';
+  max_products: number;
+  base_price: number;
   is_active: boolean;
+  stripe_customer_id: string | null;
+  stripe_subscription_id: string | null;
+  extra_branches: number;
+  extra_users: number;
 }
 
 interface BillingCalculation {
   user_count: number;
   branch_count: number;
   base_price: number;
+  extra_users_cost: number;
+  extra_branches_cost: number;
   total_price: number;
+  product_count: number;
+  max_products: number;
 }
 
 export const BillingSettings = () => {
@@ -29,6 +39,10 @@ export const BillingSettings = () => {
   const [license, setLicense] = useState<LicenseInfo | null>(null);
   const [billing, setBilling] = useState<BillingCalculation | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
+  const [showPaymentForm, setShowPaymentForm] = useState(false);
+  const stripe = useStripe();
+  const elements = useElements();
 
   const fetchLicenseAndBilling = async () => {
     if (!user) return;
@@ -69,6 +83,65 @@ export const BillingSettings = () => {
     fetchLicenseAndBilling();
   }, [user]);
 
+  const handleUpgrade = async (planType: string) => {
+    if (!user) return;
+
+    try {
+      setIsLoading(true);
+      
+      // First, check if user has a Stripe customer ID
+      const { data: stripeData, error: stripeError } = await supabase
+        .functions.invoke('create-checkout-session', {
+          body: {
+            planType,
+            currentLicense: license,
+            returnUrl: window.location.origin + '/settings/billing'
+          }
+        });
+
+      if (stripeError) {
+        toast.error('Er is een fout opgetreden bij het upgraden van uw licentie.');
+        console.error('Error creating checkout session:', stripeError);
+        return;
+      }
+
+      // Redirect to Stripe Checkout
+      window.location.href = stripeData.url;
+    } catch (error) {
+      console.error('Error upgrading plan:', error);
+      toast.error('Er is een fout opgetreden bij het upgraden van uw licentie.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleAddPaymentMethod = async () => {
+    if (!stripe || !elements) {
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+
+      const { error } = await stripe.confirmSetup({
+        elements,
+        confirmParams: {
+          return_url: window.location.origin + '/settings/billing'
+        }
+      });
+
+      if (error) {
+        toast.error('Er is een fout opgetreden bij het toevoegen van uw betaalmethode.');
+        console.error('Error confirming setup:', error);
+      }
+    } catch (error) {
+      console.error('Error adding payment method:', error);
+      toast.error('Er is een fout opgetreden bij het toevoegen van uw betaalmethode.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-8">
@@ -97,7 +170,7 @@ export const BillingSettings = () => {
 
   return (
     <div className="space-y-6">
-      {/* Current License */}
+      {/* Current License Card */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
@@ -115,7 +188,7 @@ export const BillingSettings = () => {
               <p className="text-sm text-gray-600">Maandelijks abonnement</p>
             </div>
             <div className="text-right">
-              <p className="text-2xl font-bold">€{license.monthly_price}</p>
+              <p className="text-2xl font-bold">€{license.base_price}</p>
               <p className="text-sm text-gray-600">per maand</p>
             </div>
           </div>
@@ -166,7 +239,58 @@ export const BillingSettings = () => {
         </CardContent>
       </Card>
 
-      {/* Current Billing */}
+      {/* Available Plans */}
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        {Object.entries(PLAN_DETAILS).map(([planType, plan]) => (
+          <Card key={planType} className={cn(
+            "relative overflow-hidden",
+            license?.license_type === planType && "ring-2 ring-blue-500"
+          )}>
+            {license?.license_type === planType && (
+              <div className="absolute top-0 right-0 p-2">
+                <Badge variant="default">Huidig Plan</Badge>
+              </div>
+            )}
+            
+            <CardHeader>
+              <CardTitle>{plan.name}</CardTitle>
+              <CardDescription>
+                <span className="text-2xl font-bold">€{plan.price}</span>
+                /maand
+              </CardDescription>
+            </CardHeader>
+            
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                {plan.features.map((feature, i) => (
+                  <div key={i} className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-green-500" />
+                    <span className="text-sm">{feature}</span>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+            
+            <CardFooter>
+              {license?.license_type !== planType ? (
+                <Button 
+                  className="w-full"
+                  onClick={() => handleUpgrade(planType)}
+                  disabled={isLoading}
+                >
+                  {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Upgraden'}
+                </Button>
+              ) : (
+                <Button variant="outline" className="w-full" disabled>
+                  Huidig Plan
+                </Button>
+              )}
+            </CardFooter>
+          </Card>
+        ))}
+      </div>
+
+      {/* Current Billing Card */}
       {billing && (
         <Card>
           <CardHeader>
@@ -221,10 +345,56 @@ export const BillingSettings = () => {
               </div>
             )}
           </CardContent>
+          
+          {/* Add warning about payment method if needed */}
+          {!license?.stripe_customer_id && billing.total_price > 0 && (
+            <CardFooter>
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 w-full">
+                <div className="flex items-start">
+                  <AlertCircle className="w-4 h-4 text-yellow-600 mt-0.5 mr-2" />
+                  <div>
+                    <p className="text-sm font-medium text-yellow-800">Betaalmethode vereist</p>
+                    <p className="text-sm text-yellow-700">
+                      U moet een betaalmethode toevoegen om extra gebruikers of filialen te kunnen gebruiken.
+                    </p>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="mt-2"
+                      onClick={() => setShowPaymentForm(true)}
+                    >
+                      Betaalmethode toevoegen
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </CardFooter>
+          )}
         </Card>
       )}
 
-      {/* License Features */}
+      {/* Payment Form Modal */}
+      {showPaymentForm && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Betaalmethode Toevoegen</CardTitle>
+            <CardDescription>
+              Voeg een creditcard toe om extra gebruikers en filialen te kunnen gebruiken
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <PaymentElement />
+          </CardContent>
+          <CardFooter>
+            <Button onClick={handleAddPaymentMethod} disabled={!stripe || !elements || isLoading}>
+              {isLoading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
+              Betaalmethode opslaan
+            </Button>
+          </CardFooter>
+        </Card>
+      )}
+
+      {/* License Features Card */}
       <Card>
         <CardHeader>
           <CardTitle>Plan Voordelen</CardTitle>

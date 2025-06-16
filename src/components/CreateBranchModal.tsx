@@ -1,6 +1,5 @@
-
-import React, { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import React, { useState, useEffect } from 'react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -9,7 +8,8 @@ import { useForm } from 'react-hook-form';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, CreditCard } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface CreateBranchModalProps {
   open: boolean;
@@ -23,6 +23,12 @@ interface FormData {
   address?: string;
   phone?: string;
   email?: string;
+  confirmPayment?: boolean;
+}
+
+interface LicenseInfo {
+  license_type: string;
+  stripe_customer_id: string | null;
 }
 
 export const CreateBranchModal = ({ 
@@ -32,7 +38,10 @@ export const CreateBranchModal = ({
   isAdditionalBranch = false 
 }: CreateBranchModalProps) => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [licenseInfo, setLicenseInfo] = useState<LicenseInfo | null>(null);
+  const [showPaymentWarning, setShowPaymentWarning] = useState(false);
   
   const form = useForm<FormData>({
     defaultValues: {
@@ -40,8 +49,38 @@ export const CreateBranchModal = ({
       address: '',
       phone: '',
       email: '',
+      confirmPayment: false
     },
   });
+
+  useEffect(() => {
+    const fetchLicenseInfo = async () => {
+      if (!user) return;
+
+      const { data, error } = await supabase
+        .from('licenses')
+        .select('license_type, stripe_customer_id')
+        .eq('admin_user_id', user.id)
+        .eq('is_active', true)
+        .single();
+
+      if (error) {
+        console.error('Error fetching license info:', error);
+        return;
+      }
+
+      setLicenseInfo(data);
+      
+      // Show payment warning if this is an additional branch and no payment method
+      if (isAdditionalBranch && !data.stripe_customer_id) {
+        setShowPaymentWarning(true);
+      }
+    };
+
+    if (open) {
+      fetchLicenseInfo();
+    }
+  }, [user, open, isAdditionalBranch]);
 
   const handleSubmit = async (data: FormData) => {
     if (!user) {
@@ -49,10 +88,22 @@ export const CreateBranchModal = ({
       return;
     }
 
+    // Check if payment is required but not confirmed
+    if (isAdditionalBranch && !licenseInfo?.stripe_customer_id) {
+      navigate('/settings/billing');
+      toast.error('U moet eerst een betaalmethode toevoegen');
+      if (onOpenChange) onOpenChange(false);
+      return;
+    }
+
+    // If additional branch, make sure user confirms the extra cost
+    if (isAdditionalBranch && !data.confirmPayment) {
+      toast.error('Bevestig alstublieft de extra kosten');
+      return;
+    }
+
     setLoading(true);
     try {
-      console.log('Creating branch:', data);
-      
       // Create the branch
       const { data: branchData, error: branchError } = await supabase
         .from('branches')
@@ -73,7 +124,22 @@ export const CreateBranchModal = ({
         return;
       }
 
-      console.log('Branch created:', branchData);
+      // Update license with extra branch count if this is an additional branch
+      if (isAdditionalBranch) {
+        const { error: licenseError } = await supabase
+          .from('licenses')
+          .update({ 
+            extra_branches: supabase.sql`extra_branches + 1`
+          })
+          .eq('admin_user_id', user.id)
+          .eq('is_active', true);
+
+        if (licenseError) {
+          console.error('Error updating license:', licenseError);
+          toast.error('Fout bij het bijwerken van licentie');
+          return;
+        }
+      }
 
       // Assign the user to the branch
       const { error: assignError } = await supabase
@@ -91,49 +157,32 @@ export const CreateBranchModal = ({
         return;
       }
 
-      console.log('User assigned to branch successfully');
-      toast.success('Filiaal succesvol aangemaakt!');
+      toast.success(isAdditionalBranch 
+        ? 'Filiaal succesvol aangemaakt! Extra kosten worden verrekend in de volgende factuur.' 
+        : 'Filiaal succesvol aangemaakt!');
+      
       form.reset();
       onBranchCreated();
-      
       if (onOpenChange) {
         onOpenChange(false);
       }
     } catch (error) {
-      console.error('Exception creating branch:', error);
-      toast.error('Er is een onverwachte fout opgetreden');
+      console.error('Error:', error);
+      toast.error('Er is een fout opgetreden');
     } finally {
       setLoading(false);
     }
   };
 
-  const handleClose = () => {
-    if (onOpenChange) {
-      onOpenChange(false);
-    }
-  };
-
   return (
-    <Dialog open={open} onOpenChange={isAdditionalBranch ? onOpenChange : undefined}>
-      <DialogContent className="sm:max-w-md" hideCloseButton={!isAdditionalBranch}>
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent>
         <DialogHeader>
-          <DialogTitle>
-            {isAdditionalBranch ? 'Nieuw filiaal toevoegen' : 'Welkom! Maak je eerste filiaal aan'}
-          </DialogTitle>
+          <DialogTitle>{isAdditionalBranch ? 'Nieuw Filiaal' : 'Hoofdvestiging'}</DialogTitle>
           <DialogDescription>
-            {isAdditionalBranch ? (
-              <div className="space-y-2">
-                <p>Voeg een nieuw filiaal toe aan je account.</p>
-                <div className="flex items-center space-x-2 p-3 bg-blue-50 rounded-lg border border-blue-200">
-                  <AlertCircle className="h-4 w-4 text-blue-600 flex-shrink-0" />
-                  <p className="text-sm text-blue-800">
-                    Een extra filiaal kost €5/maand
-                  </p>
-                </div>
-              </div>
-            ) : (
-              'Om te beginnen met je voorraadbeheersysteem, moet je eerst een filiaal aanmaken.'
-            )}
+            {isAdditionalBranch 
+              ? 'Voeg een nieuw filiaal toe aan uw account.' 
+              : 'Configureer uw hoofdvestiging.'}
           </DialogDescription>
         </DialogHeader>
 
@@ -142,16 +191,12 @@ export const CreateBranchModal = ({
             <FormField
               control={form.control}
               name="branchName"
-              rules={{ required: 'Filiaalnaam is verplicht' }}
+              rules={{ required: 'Filiaal naam is verplicht' }}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Filiaalnaam *</FormLabel>
+                  <FormLabel>Naam</FormLabel>
                   <FormControl>
-                    <Input
-                      {...field}
-                      placeholder={isAdditionalBranch ? "Bijvoorbeeld: Filiaal West" : "Bijvoorbeeld: Hoofdvestiging"}
-                      disabled={loading}
-                    />
+                    <Input placeholder="Filiaal naam" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -215,21 +260,68 @@ export const CreateBranchModal = ({
               />
             </div>
 
-            <div className="flex justify-end space-x-2 pt-4">
-              {isAdditionalBranch && (
-                <Button 
-                  type="button" 
-                  variant="outline" 
-                  onClick={handleClose}
-                  disabled={loading}
-                >
-                  Annuleren
-                </Button>
-              )}
-              <Button type="submit" disabled={loading} className={isAdditionalBranch ? '' : 'w-full'}>
-                {loading ? 'Bezig met aanmaken...' : 'Filiaal aanmaken'}
+            {isAdditionalBranch && (
+              <>
+                {showPaymentWarning ? (
+                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+                    <div className="flex items-start">
+                      <CreditCard className="w-4 h-4 text-yellow-600 mt-0.5 mr-2" />
+                      <div>
+                        <p className="text-sm font-medium text-yellow-800">
+                          Betaalmethode vereist
+                        </p>
+                        <p className="text-sm text-yellow-700 mt-1">
+                          U moet eerst een betaalmethode toevoegen voordat u extra filialen kunt aanmaken.
+                        </p>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          className="mt-2"
+                          onClick={() => {
+                            navigate('/settings/billing');
+                            if (onOpenChange) onOpenChange(false);
+                          }}
+                        >
+                          Ga naar betaalinstellingen
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <FormField
+                    control={form.control}
+                    name="confirmPayment"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                        <FormControl>
+                          <input
+                            type="checkbox"
+                            checked={field.value}
+                            onChange={field.onChange}
+                            className="mt-1"
+                          />
+                        </FormControl>
+                        <div className="space-y-1 leading-none">
+                          <FormLabel>
+                            Ik bevestig dat er €5/maand extra kosten in rekening worden gebracht
+                          </FormLabel>
+                        </div>
+                      </FormItem>
+                    )}
+                  />
+                )}
+              </>
+            )}
+
+            <DialogFooter>
+              <Button
+                type="submit"
+                disabled={loading || (isAdditionalBranch && showPaymentWarning)}
+              >
+                {loading ? 'Bezig...' : 'Opslaan'}
               </Button>
-            </div>
+            </DialogFooter>
           </form>
         </Form>
       </DialogContent>
