@@ -16,6 +16,7 @@ interface BranchContextType {
   setActiveBranch: (branch: Branch) => void;
   loading: boolean;
   refreshBranches: () => Promise<void>;
+  hasNoBranches: boolean;
 }
 
 const BranchContext = createContext<BranchContextType | undefined>(undefined);
@@ -25,11 +26,13 @@ export const BranchProvider = ({ children }: { children: ReactNode }) => {
   const [branches, setBranches] = useState<Branch[]>([]);
   const [activeBranch, setActiveBranchState] = useState<Branch | null>(null);
   const [loading, setLoading] = useState(true);
+  const [hasNoBranches, setHasNoBranches] = useState(false);
 
   const fetchBranches = async () => {
     if (!user) {
       setBranches([]);
       setActiveBranchState(null);
+      setHasNoBranches(false);
       setLoading(false);
       return;
     }
@@ -48,8 +51,15 @@ export const BranchProvider = ({ children }: { children: ReactNode }) => {
       console.log('Branches fetched:', data);
       setBranches(data || []);
       
-      // Set the main branch as active by default, or the first branch if no main branch
-      if (data && data.length > 0) {
+      // Check if user has no branches
+      if (!data || data.length === 0) {
+        console.log('User has no branches');
+        setHasNoBranches(true);
+        setActiveBranchState(null);
+      } else {
+        setHasNoBranches(false);
+        
+        // Set the main branch as active by default, or the first branch if no main branch
         const mainBranch = data.find(b => b.is_main);
         const defaultBranch = mainBranch || data[0];
         
@@ -87,7 +97,8 @@ export const BranchProvider = ({ children }: { children: ReactNode }) => {
       activeBranch,
       setActiveBranch,
       loading,
-      refreshBranches
+      refreshBranches,
+      hasNoBranches
     }}>
       {children}
     </BranchContext.Provider>

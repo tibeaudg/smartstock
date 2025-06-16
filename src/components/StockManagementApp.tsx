@@ -5,14 +5,16 @@ import { Layout } from './Layout';
 import { Dashboard } from './Dashboard';
 import { StockMovements } from './StockMovements';
 import { StockList } from './StockList';
+import { CreateBranchModal } from './CreateBranchModal';
 import { useAuth } from '@/hooks/useAuth';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
-import { BranchProvider } from '@/hooks/useBranches';
+import { BranchProvider, useBranches } from '@/hooks/useBranches';
 
-export const StockManagementApp = () => {
+const AppContent = () => {
   const { user, userProfile, loading } = useAuth();
+  const { branches, loading: branchesLoading, hasNoBranches, refreshBranches } = useBranches();
   const [currentTab, setCurrentTab] = useState('dashboard');
   const navigate = useNavigate();
 
@@ -24,8 +26,8 @@ export const StockManagementApp = () => {
     }
   }, [user, loading, navigate]);
 
-  // Show loading while authentication is being checked
-  if (loading) {
+  // Show loading while authentication or branches are being checked
+  if (loading || branchesLoading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
@@ -55,6 +57,11 @@ export const StockManagementApp = () => {
   const handleTabChange = (tab: string) => {
     console.log('Switching to tab:', tab);
     setCurrentTab(tab);
+  };
+
+  const handleBranchCreated = async () => {
+    console.log('Branch created, refreshing branches...');
+    await refreshBranches();
   };
 
   const renderTabContent = () => {
@@ -95,7 +102,7 @@ export const StockManagementApp = () => {
   };
 
   return (
-    <BranchProvider>
+    <>
       <Layout
         currentTab={currentTab}
         onTabChange={handleTabChange}
@@ -104,6 +111,19 @@ export const StockManagementApp = () => {
       >
         {renderTabContent()}
       </Layout>
+      
+      <CreateBranchModal 
+        open={hasNoBranches} 
+        onBranchCreated={handleBranchCreated} 
+      />
+    </>
+  );
+};
+
+export const StockManagementApp = () => {
+  return (
+    <BranchProvider>
+      <AppContent />
     </BranchProvider>
   );
 };
