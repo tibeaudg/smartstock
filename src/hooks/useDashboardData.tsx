@@ -48,8 +48,8 @@ export const useDashboardData = () => {
     try {
       setLoading(true);
 
-      // Fetch products with categories
-      const { data: products, error: productsError } = await supabase
+      // Fetch products with categories using type assertion
+      const { data: products, error: productsError } = await (supabase as any)
         .from('products')
         .select(`
           *,
@@ -63,7 +63,7 @@ export const useDashboardData = () => {
 
       // Fetch today's transactions
       const today = new Date().toISOString().split('T')[0];
-      const { data: todayTransactions, error: transactionsError } = await supabase
+      const { data: todayTransactions, error: transactionsError } = await (supabase as any)
         .from('stock_transactions')
         .select('*')
         .gte('created_at', `${today}T00:00:00`)
@@ -77,7 +77,7 @@ export const useDashboardData = () => {
       // Fetch last 7 days transactions for trends
       const weekAgo = new Date();
       weekAgo.setDate(weekAgo.getDate() - 7);
-      const { data: weekTransactions, error: weekError } = await supabase
+      const { data: weekTransactions, error: weekError } = await (supabase as any)
         .from('stock_transactions')
         .select('*')
         .gte('created_at', weekAgo.toISOString());
@@ -87,18 +87,18 @@ export const useDashboardData = () => {
       }
 
       // Calculate metrics
-      const totalStockValue = products?.reduce((sum, product) => 
+      const totalStockValue = products?.reduce((sum: number, product: any) => 
         sum + (product.quantity_in_stock * product.unit_price), 0) || 0;
       
       const totalProducts = products?.length || 0;
       
-      const incomingToday = todayTransactions?.filter(t => t.transaction_type === 'incoming')
-        .reduce((sum, t) => sum + t.quantity, 0) || 0;
+      const incomingToday = todayTransactions?.filter((t: any) => t.transaction_type === 'incoming')
+        .reduce((sum: number, t: any) => sum + t.quantity, 0) || 0;
       
-      const outgoingToday = todayTransactions?.filter(t => t.transaction_type === 'outgoing')
-        .reduce((sum, t) => sum + t.quantity, 0) || 0;
+      const outgoingToday = todayTransactions?.filter((t: any) => t.transaction_type === 'outgoing')
+        .reduce((sum: number, t: any) => sum + t.quantity, 0) || 0;
       
-      const lowStockAlerts = products?.filter(p => p.status === 'low_stock' || p.status === 'out_of_stock').length || 0;
+      const lowStockAlerts = products?.filter((p: any) => p.status === 'low_stock' || p.status === 'out_of_stock').length || 0;
 
       setMetrics({
         totalStockValue,
@@ -115,11 +115,11 @@ export const useDashboardData = () => {
         date.setDate(date.getDate() - i);
         const dateStr = date.toISOString().split('T')[0];
         
-        const dayTransactions = weekTransactions?.filter(t => 
+        const dayTransactions = weekTransactions?.filter((t: any) => 
           t.created_at.startsWith(dateStr)
         ) || [];
         
-        const dayValue = dayTransactions.reduce((sum, t) => sum + (t.total_value || 0), 0);
+        const dayValue = dayTransactions.reduce((sum: number, t: any) => sum + (t.total_value || 0), 0);
         trends.push({
           date: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
           value: dayValue,
@@ -129,7 +129,7 @@ export const useDashboardData = () => {
 
       // Generate category data
       const categoryMap = new Map<string, { value: number; products: number }>();
-      products?.forEach(product => {
+      products?.forEach((product: any) => {
         const categoryName = product.categories?.name || 'Uncategorized';
         const existing = categoryMap.get(categoryName) || { value: 0, products: 0 };
         categoryMap.set(categoryName, {
@@ -152,14 +152,14 @@ export const useDashboardData = () => {
         date.setDate(date.getDate() - i);
         const dateStr = date.toISOString().split('T')[0];
         
-        const dayTransactions = weekTransactions?.filter(t => 
+        const dayTransactions = weekTransactions?.filter((t: any) => 
           t.created_at.startsWith(dateStr)
         ) || [];
         
-        const incoming = dayTransactions.filter(t => t.transaction_type === 'incoming')
-          .reduce((sum, t) => sum + t.quantity, 0);
-        const outgoing = dayTransactions.filter(t => t.transaction_type === 'outgoing')
-          .reduce((sum, t) => sum + t.quantity, 0);
+        const incoming = dayTransactions.filter((t: any) => t.transaction_type === 'incoming')
+          .reduce((sum: number, t: any) => sum + t.quantity, 0);
+        const outgoing = dayTransactions.filter((t: any) => t.transaction_type === 'outgoing')
+          .reduce((sum: number, t: any) => sum + t.quantity, 0);
           
         activity.push({
           date: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),

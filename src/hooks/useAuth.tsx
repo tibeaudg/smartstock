@@ -23,8 +23,8 @@ export const useAuth = () => {
     try {
       console.log('Fetching profile for user:', userId);
       
-      // Use maybeSingle() instead of single() to handle cases where no profile exists
-      const { data: profileData, error } = await supabase
+      // Use type assertion to work around empty types
+      const { data: profileData, error } = await (supabase as any)
         .from('profiles')
         .select('*')
         .eq('id', userId)
@@ -38,7 +38,7 @@ export const useAuth = () => {
       if (!profileData) {
         console.log('No profile found for user, creating one...');
         // If no profile exists, create one
-        const { data: newProfile, error: createError } = await supabase
+        const { data: newProfile, error: createError } = await (supabase as any)
           .from('profiles')
           .insert({
             id: userId,
@@ -56,20 +56,22 @@ export const useAuth = () => {
         }
 
         console.log('Created new profile:', newProfile);
-        const profile = {
-          ...newProfile,
-          role: newProfile.role || 'staff'
-        } as UserProfile;
-        
-        setProfile(profile);
-        return profile;
+        if (newProfile) {
+          const profile: UserProfile = {
+            ...newProfile,
+            role: newProfile.role || 'staff'
+          };
+          
+          setProfile(profile);
+          return profile;
+        }
       }
 
       console.log('Profile data received:', profileData);
-      const profile = {
+      const profile: UserProfile = {
         ...profileData,
         role: profileData.role || 'staff'
-      } as UserProfile;
+      };
       
       setProfile(profile);
       return profile;
