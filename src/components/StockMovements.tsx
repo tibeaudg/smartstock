@@ -1,7 +1,7 @@
-
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { useBranches } from '@/hooks/useBranches';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -21,6 +21,7 @@ interface StockTransaction {
   reference_number: string | null;
   notes: string | null;
   product_name: string | null;
+  branch_id: string | null;
   products: {
     name: string;
   } | null;
@@ -28,6 +29,7 @@ interface StockTransaction {
 
 export const StockMovements = () => {
   const { user } = useAuth();
+  const { activeBranch } = useBranches();
   const isMobile = useIsMobile();
   const [transactions, setTransactions] = useState<StockTransaction[]>([]);
   const [filteredTransactions, setFilteredTransactions] = useState<StockTransaction[]>([]);
@@ -35,16 +37,22 @@ export const StockMovements = () => {
   const [filterType, setFilterType] = useState<'all' | 'incoming' | 'outgoing'>('all');
 
   const fetchTransactions = async () => {
-    if (!user) return;
+    if (!user || !activeBranch) {
+      setTransactions([]);
+      setFilteredTransactions([]);
+      setLoading(false);
+      return;
+    }
 
     try {
-      console.log('Fetching all stock transactions...');
+      console.log('Fetching stock transactions for branch:', activeBranch.branch_id);
       const { data, error } = await supabase
         .from('stock_transactions')
         .select(`
           *,
           products(name)
         `)
+        .eq('branch_id', activeBranch.branch_id)
         .order('created_at', { ascending: false });
 
       if (error) {
@@ -52,7 +60,7 @@ export const StockMovements = () => {
         return;
       }
 
-      console.log('All transactions fetched:', data);
+      console.log('Transactions fetched for branch:', data);
       setTransactions(data || []);
       setFilteredTransactions(data || []);
     } catch (error) {
@@ -64,7 +72,7 @@ export const StockMovements = () => {
 
   useEffect(() => {
     fetchTransactions();
-  }, [user]);
+  }, [user, activeBranch]);
 
   useEffect(() => {
     if (filterType === 'all') {
@@ -114,6 +122,17 @@ export const StockMovements = () => {
     );
   }
 
+  if (!activeBranch) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <div className="text-center">
+          <h2 className="text-xl font-semibold text-gray-900 mb-2">Geen filiaal geselecteerd</h2>
+          <p className="text-gray-600">Selecteer een filiaal om transacties te bekijken.</p>
+        </div>
+      </div>
+    );
+  }
+
   const stats = getTransactionStats();
 
   // Mobile card view
@@ -121,7 +140,10 @@ export const StockMovements = () => {
     return (
       <div className="space-y-4">
         <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-gray-900">Stock Transactions</h1>
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900">Stock Transactions</h1>
+            <p className="text-sm text-gray-600">{activeBranch.branch_name}</p>
+          </div>
         </div>
 
         {/* Stats Cards */}
@@ -170,7 +192,7 @@ export const StockMovements = () => {
             <Card>
               <CardContent className="p-6 text-center">
                 <p className="text-gray-500">
-                  {filterType === 'all' ? 'No stock transactions found.' : `No ${filterType} transactions found.`}
+                  {filterType === 'all' ? 'No stock transactions found for this branch.' : `No ${filterType} transactions found for this branch.`}
                 </p>
               </CardContent>
             </Card>
@@ -250,7 +272,10 @@ export const StockMovements = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-gray-900">Stock Transaction History</h1>
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">Stock Transaction History</h1>
+          <p className="text-gray-600">{activeBranch.branch_name}</p>
+        </div>
       </div>
 
       {/* Stats Overview */}
@@ -340,7 +365,7 @@ export const StockMovements = () => {
               {filteredTransactions.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={8} className="text-center py-8 text-gray-500">
-                    {filterType === 'all' ? 'No stock transactions found.' : `No ${filterType} transactions found.`}
+                    {filterType === 'all' ? 'No stock transactions found for this branch.' : `No ${filterType} transactions found for this branch.`}
                   </TableCell>
                 </TableRow>
               ) : (

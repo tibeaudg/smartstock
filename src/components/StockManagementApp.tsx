@@ -9,6 +9,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
+import { BranchProvider } from '@/hooks/useBranches';
 
 export const StockManagementApp = () => {
   const { user, userProfile, loading } = useAuth();
@@ -94,13 +95,15 @@ export const StockManagementApp = () => {
   };
 
   return (
-    <Layout
-      currentTab={currentTab}
-      onTabChange={handleTabChange}
-      userRole={currentUserProfile.role}
-      userProfile={currentUserProfile}
-    >
-      {renderTabContent()}
-    </Layout>
+    <BranchProvider>
+      <Layout
+        currentTab={currentTab}
+        onTabChange={handleTabChange}
+        userRole={currentUserProfile.role}
+        userProfile={currentUserProfile}
+      >
+        {renderTabContent()}
+      </Layout>
+    </BranchProvider>
   );
 };

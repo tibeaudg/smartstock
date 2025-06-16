@@ -14,6 +14,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { useAuth, UserProfile } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
+import { BranchSelector } from './BranchSelector';
 
 interface SidebarProps {
   currentTab: string;
@@ -84,6 +85,13 @@ export const Sidebar = ({ currentTab, onTabChange, userRole, userProfile, isOpen
             {isOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
           </Button>
         </div>
+
+        {/* Branch Selector */}
+        {isOpen && (
+          <div className="p-4 border-b border-gray-200 flex-shrink-0">
+            <BranchSelector />
+          </div>
+        )}
 
         {/* Navigation */}
         <nav className="flex-1 p-4 overflow-y-auto">

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { useBranches } from '@/hooks/useBranches';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -29,6 +30,7 @@ interface Product {
   } | null;
   category_id: string | null;
   supplier_id: string | null;
+  branch_id: string | null;
 }
 
 const getStockStatus = (quantity: number, minLevel: number) => {
@@ -56,6 +58,7 @@ const getStockStatusVariant = (status: string) => {
 
 export const StockList = () => {
   const { user } = useAuth();
+  const { activeBranch } = useBranches();
   const isMobile = useIsMobile();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
@@ -141,20 +144,21 @@ export const StockList = () => {
   };
 
   const handleDelete = async (productId: string) => {
-    if (!user) return;
+    if (!user || !activeBranch) return;
     
     if (!confirm('Are you sure you want to delete this product? This will also delete all associated transactions.')) {
       return;
     }
 
     try {
-      console.log('Deleting product:', productId);
+      console.log('Deleting product:', productId, 'from branch:', activeBranch.branch_id);
       
       // First delete associated stock transactions
       const { error: transactionError } = await supabase
         .from('stock_transactions')
         .delete()
-        .eq('product_id', productId);
+        .eq('product_id', productId)
+        .eq('branch_id', activeBranch.branch_id);
 
       if (transactionError) {
         console.error('Error deleting transactions:', transactionError);
@@ -166,7 +170,8 @@ export const StockList = () => {
       const { error: productError } = await supabase
         .from('products')
         .delete()
-        .eq('id', productId);
+        .eq('id', productId)
+        .eq('branch_id', activeBranch.branch_id);
 
       if (productError) {
         console.error('Error deleting product:', productError);
@@ -184,10 +189,14 @@ export const StockList = () => {
   };
 
   const fetchProducts = async () => {
-    if (!user) return;
+    if (!user || !activeBranch) {
+      setProducts([]);
+      setLoading(false);
+      return;
+    }
 
     try {
-      console.log('Fetching products...');
+      console.log('Fetching products for branch:', activeBranch.branch_id);
       const { data, error } = await supabase
         .from('products')
         .select(`
@@ -195,6 +204,7 @@ export const StockList = () => {
           categories(name),
           suppliers(name)
         `)
+        .eq('branch_id', activeBranch.branch_id)
         .order('created_at', { ascending: false });
 
       if (error) {
@@ -202,7 +212,7 @@ export const StockList = () => {
         return;
       }
 
-      console.log('Products fetched:', data);
+      console.log('Products fetched for branch:', data);
       setProducts(data || []);
     } catch (error) {
       console.error('Error fetching products:', error);
@@ -213,7 +223,7 @@ export const StockList = () => {
 
   useEffect(() => {
     fetchProducts();
-  }, [user]);
+  }, [user, activeBranch]);
 
   if (loading) {
     return (
@@ -223,12 +233,26 @@ export const StockList = () => {
     );
   }
 
+  if (!activeBranch) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <div className="text-center">
+          <h2 className="text-xl font-semibold text-gray-900 mb-2">Geen filiaal geselecteerd</h2>
+          <p className="text-gray-600">Selecteer een filiaal om producten te bekijken.</p>
+        </div>
+      </div>
+    );
+  }
+
   // Mobile card view
   if (isMobile) {
     return (
       <div className="space-y-4">
         <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-gray-900">Products</h1>
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900">Products</h1>
+            <p className="text-sm text-gray-600">{activeBranch.branch_name}</p>
+          </div>
           <Button onClick={() => setIsAddModalOpen(true)} size="sm">
             <Plus className="h-4 w-4 mr-2" />
             Add New
@@ -261,7 +285,7 @@ export const StockList = () => {
             <Card className="bg-white">
               <CardContent className="p-6 text-center">
                 <p className="text-gray-500">
-                  {products.length === 0 ? 'No products found.' : 'No products match your filters.'}
+                  {products.length === 0 ? 'No products found for this branch.' : 'No products match your filters.'}
                 </p>
               </CardContent>
             </Card>
@@ -387,7 +411,10 @@ export const StockList = () => {
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-gray-900">Products</h1>
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">Products</h1>
+          <p className="text-gray-600">{activeBranch.branch_name}</p>
+        </div>
         <Button onClick={() => setIsAddModalOpen(true)}>
           <Plus className="h-4 w-4 mr-2" />
           Add New Product
@@ -450,7 +477,7 @@ export const StockList = () => {
               {filteredProducts.length === 0 ? (
                 <tr>
                   <td colSpan={8} className="px-6 py-4 text-center text-gray-500">
-                    {products.length === 0 ? 'No products found.' : 'No products match your filters.'}
+                    {products.length === 0 ? 'No products found for this branch.' : 'No products match your filters.'}
                   </td>
                 </tr>
               ) : (
