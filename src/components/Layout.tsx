@@ -17,12 +17,17 @@ export const Layout = ({ children, currentTab, onTabChange, userRole, userProfil
   const isMobile = useIsMobile();
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
+  const handleTabChange = (tab: string) => {
+    console.log('Layout: Tab change requested:', tab);
+    onTabChange(tab);
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 flex">
       {!isMobile && (
         <Sidebar
           currentTab={currentTab}
-          onTabChange={onTabChange}
+          onTabChange={handleTabChange}
           userRole={userRole}
           userProfile={userProfile}
           isOpen={sidebarOpen}
@@ -39,7 +44,7 @@ export const Layout = ({ children, currentTab, onTabChange, userRole, userProfil
       {isMobile && (
         <MobileBottomNav
           currentTab={currentTab}
-          onTabChange={onTabChange}
+          onTabChange={handleTabChange}
           userRole={userRole}
         />
       )}

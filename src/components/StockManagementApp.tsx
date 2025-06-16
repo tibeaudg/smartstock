@@ -51,7 +51,14 @@ export const StockManagementApp = () => {
     updated_at: new Date().toISOString()
   };
 
+  const handleTabChange = (tab: string) => {
+    console.log('Switching to tab:', tab);
+    setCurrentTab(tab);
+  };
+
   const renderTabContent = () => {
+    console.log('Rendering content for tab:', currentTab);
+    
     switch (currentTab) {
       case 'dashboard':
         return <Dashboard userRole={currentUserProfile.role} />;
@@ -81,6 +88,7 @@ export const StockManagementApp = () => {
           </div>
         );
       default:
+        console.log('Unknown tab, defaulting to dashboard');
         return <Dashboard userRole={currentUserProfile.role} />;
     }
   };
@@ -88,7 +96,7 @@ export const StockManagementApp = () => {
   return (
     <Layout
       currentTab={currentTab}
-      onTabChange={setCurrentTab}
+      onTabChange={handleTabChange}
       userRole={currentUserProfile.role}
       userProfile={currentUserProfile}
     >

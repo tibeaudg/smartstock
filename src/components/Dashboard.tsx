@@ -22,6 +22,8 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
   
   const { metrics, stockTrends, categoryData, dailyActivity, loading } = useDashboardData();
 
+  console.log('Dashboard rendering with userRole:', userRole, 'loading:', loading);
+
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8'];
 
   if (loading) {
@@ -32,7 +34,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
         </div>
         <div className={`grid grid-cols-1 ${isMobile ? 'gap-4' : 'md:grid-cols-2 lg:grid-cols-5 gap-6'}`}>
           {[...Array(5)].map((_, i) => (
-            <Card key={i} className="animate-pulse">
+            <Card key={i} className="animate-pulse bg-white">
               <CardContent className="p-6">
                 <div className="h-4 bg-gray-200 rounded mb-2"></div>
                 <div className="h-8 bg-gray-200 rounded"></div>
@@ -102,7 +104,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
 
       {/* Metrics Cards */}
       <div className={`grid grid-cols-1 ${isMobile ? 'gap-4' : 'md:grid-cols-2 lg:grid-cols-5 gap-6'}`}>
-        <Card>
+        <Card className="bg-white">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Stock Value</CardTitle>
             <DollarSign className="h-4 w-4 text-muted-foreground" />
@@ -115,7 +117,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-white">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Products</CardTitle>
             <Package className="h-4 w-4 text-muted-foreground" />
@@ -126,7 +128,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-white">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Incoming Today</CardTitle>
             <TrendingUp className="h-4 w-4 text-green-600" />
@@ -139,7 +141,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-white">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Outgoing Today</CardTitle>
             <TrendingDown className="h-4 w-4 text-red-600" />
@@ -152,7 +154,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-white">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Low Stock Alerts</CardTitle>
             <AlertTriangle className="h-4 w-4 text-yellow-600" />
@@ -169,7 +171,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
       {/* Charts */}
       <div className={`grid grid-cols-1 ${isMobile ? 'gap-6' : 'lg:grid-cols-2 gap-6'}`}>
         {/* Stock Value Trend */}
-        <Card>
+        <Card className="bg-white">
           <CardHeader>
             <CardTitle>Stock Value Trends</CardTitle>
             <CardDescription>Daily stock transaction values over the last 7 days</CardDescription>
@@ -196,7 +198,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
         </Card>
 
         {/* Category Distribution */}
-        <Card>
+        <Card className="bg-white">
           <CardHeader>
             <CardTitle>Stock by Category</CardTitle>
             <CardDescription>Distribution of inventory value by category</CardDescription>
@@ -228,11 +230,11 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
       </div>
 
       {/* Daily Activity */}
-      <Card>
+      <Card className="bg-white">
         <CardHeader>
           <CardTitle>Daily Activity</CardTitle>
           <CardDescription>Incoming vs outgoing transactions over the last 7 days</CardDescription>
-        </CardHeader>
+        </Card>
         <CardContent>
           <ResponsiveContainer width="100%" height={isMobile ? 250 : 300}>
             <BarChart data={dailyActivity}>
