@@ -28,11 +28,11 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
 
   if (loading) {
     return (
-      <div className="space-y-8 max-w-[1600px] mx-auto">
+      <div className="space-y-6">
         <div className="flex justify-between items-center">
-          <h1 className="text-4xl font-bold text-gray-900">Dashboard</h1>
+          <h1 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-gray-900`}>Dashboard</h1>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+        <div className={`grid ${isMobile ? 'grid-cols-1 gap-4' : 'grid-cols-5 gap-6'}`}>
           {[...Array(5)].map((_, i) => (
             <Card key={i} className="animate-pulse bg-white">
               <CardContent className="p-6">
@@ -47,28 +47,27 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
   }
 
   return (
-    <div className="space-y-8 max-w-[1600px] mx-auto">
+    <div className={`space-y-${isMobile ? '4' : '8'}`}>
       {/* Header */}
-      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
-        <div className="flex-1">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">Dashboard</h1>
-          <p className="text-lg text-gray-600">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <h1 className={`${isMobile ? 'text-2xl' : 'text-4xl'} font-bold text-gray-900`}>Dashboard</h1>
+          <p className={`text-gray-600 mt-1 ${isMobile ? 'text-sm' : 'text-base'}`}>
             Welcome back! Here's what's happening with your inventory.
           </p>
         </div>
         
-        <div className="flex flex-col sm:flex-row gap-3">
+        <div className="flex flex-col sm:flex-row gap-2">
           <Popover>
             <PopoverTrigger asChild>
               <Button
                 variant="outline"
-                size="lg"
                 className={cn(
-                  "w-full sm:w-auto justify-start text-left font-normal min-w-[280px]",
+                  "w-full sm:w-auto justify-start text-left font-normal",
                   !dateFrom && "text-muted-foreground"
                 )}
               >
-                <CalendarIcon className="mr-2 h-5 w-5" />
+                <CalendarIcon className="mr-2 h-4 w-4" />
                 {dateFrom ? (
                   dateTo ? (
                     <>
@@ -96,7 +95,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
                   setDateFrom(range?.from);
                   setDateTo(range?.to);
                 }}
-                numberOfMonths={2}
+                numberOfMonths={isMobile ? 1 : 2}
               />
             </PopoverContent>
           </Popover>
@@ -104,108 +103,94 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
       </div>
 
       {/* Metrics Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
-        <Card className="bg-white hover:shadow-lg transition-shadow">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-            <CardTitle className="text-base font-semibold text-gray-700">Total Stock Value</CardTitle>
-            <DollarSign className="h-6 w-6 text-blue-600" />
+      <div className={`grid ${isMobile ? 'grid-cols-1 gap-4' : 'grid-cols-5 gap-6'}`}>
+        <Card className="bg-white">
+          <CardHeader className={`flex flex-row items-center justify-between space-y-0 ${isMobile ? 'pb-2' : 'pb-3'}`}>
+            <CardTitle className={`${isMobile ? 'text-sm' : 'text-base'} font-medium`}>Total Stock Value</CardTitle>
+            <DollarSign className={`${isMobile ? 'h-4 w-4' : 'h-5 w-5'} text-muted-foreground`} />
           </CardHeader>
-          <CardContent className="pt-0">
-            <div className="text-3xl font-bold text-gray-900">
+          <CardContent className={isMobile ? 'pt-0' : 'pt-0'}>
+            <div className={`${isMobile ? 'text-xl' : 'text-3xl'} font-bold`}>
               ${metrics.totalStockValue.toLocaleString()}
             </div>
-            <p className="text-sm text-gray-500 mt-2">Current inventory value</p>
+            <p className={`${isMobile ? 'text-xs' : 'text-sm'} text-muted-foreground mt-1`}>Current inventory value</p>
           </CardContent>
         </Card>
 
-        <Card className="bg-white hover:shadow-lg transition-shadow">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-            <CardTitle className="text-base font-semibold text-gray-700">Total Products</CardTitle>
-            <Package className="h-6 w-6 text-purple-600" />
+        <Card className="bg-white">
+          <CardHeader className={`flex flex-row items-center justify-between space-y-0 ${isMobile ? 'pb-2' : 'pb-3'}`}>
+            <CardTitle className={`${isMobile ? 'text-sm' : 'text-base'} font-medium`}>Total Products</CardTitle>
+            <Package className={`${isMobile ? 'h-4 w-4' : 'h-5 w-5'} text-muted-foreground`} />
           </CardHeader>
-          <CardContent className="pt-0">
-            <div className="text-3xl font-bold text-gray-900">{metrics.totalProducts}</div>
-            <p className="text-sm text-gray-500 mt-2">Active products</p>
+          <CardContent className={isMobile ? 'pt-0' : 'pt-0'}>
+            <div className={`${isMobile ? 'text-xl' : 'text-3xl'} font-bold`}>{metrics.totalProducts}</div>
+            <p className={`${isMobile ? 'text-xs' : 'text-sm'} text-muted-foreground mt-1`}>Active products</p>
           </CardContent>
         </Card>
 
-        <Card className="bg-white hover:shadow-lg transition-shadow">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-            <CardTitle className="text-base font-semibold text-gray-700">Incoming Today</CardTitle>
-            <TrendingUp className="h-6 w-6 text-green-600" />
+        <Card className="bg-white">
+          <CardHeader className={`flex flex-row items-center justify-between space-y-0 ${isMobile ? 'pb-2' : 'pb-3'}`}>
+            <CardTitle className={`${isMobile ? 'text-sm' : 'text-base'} font-medium`}>Incoming Today</CardTitle>
+            <TrendingUp className={`${isMobile ? 'h-4 w-4' : 'h-5 w-5'} text-green-600`} />
           </CardHeader>
-          <CardContent className="pt-0">
-            <div className="text-3xl font-bold text-green-600">
+          <CardContent className={isMobile ? 'pt-0' : 'pt-0'}>
+            <div className={`${isMobile ? 'text-xl' : 'text-3xl'} font-bold text-green-600`}>
               {metrics.incomingToday}
             </div>
-            <p className="text-sm text-gray-500 mt-2">Items received</p>
+            <p className={`${isMobile ? 'text-xs' : 'text-sm'} text-muted-foreground mt-1`}>Items received</p>
           </CardContent>
         </Card>
 
-        <Card className="bg-white hover:shadow-lg transition-shadow">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-            <CardTitle className="text-base font-semibold text-gray-700">Outgoing Today</CardTitle>
-            <TrendingDown className="h-6 w-6 text-red-600" />
+        <Card className="bg-white">
+          <CardHeader className={`flex flex-row items-center justify-between space-y-0 ${isMobile ? 'pb-2' : 'pb-3'}`}>
+            <CardTitle className={`${isMobile ? 'text-sm' : 'text-base'} font-medium`}>Outgoing Today</CardTitle>
+            <TrendingDown className={`${isMobile ? 'h-4 w-4' : 'h-5 w-5'} text-red-600`} />
           </CardHeader>
-          <CardContent className="pt-0">
-            <div className="text-3xl font-bold text-red-600">
+          <CardContent className={isMobile ? 'pt-0' : 'pt-0'}>
+            <div className={`${isMobile ? 'text-xl' : 'text-3xl'} font-bold text-red-600`}>
               {metrics.outgoingToday}
             </div>
-            <p className="text-sm text-gray-500 mt-2">Items shipped</p>
+            <p className={`${isMobile ? 'text-xs' : 'text-sm'} text-muted-foreground mt-1`}>Items shipped</p>
           </CardContent>
         </Card>
 
-        <Card className="bg-white hover:shadow-lg transition-shadow">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-            <CardTitle className="text-base font-semibold text-gray-700">Low Stock Alerts</CardTitle>
-            <AlertTriangle className="h-6 w-6 text-yellow-600" />
+        <Card className="bg-white">
+          <CardHeader className={`flex flex-row items-center justify-between space-y-0 ${isMobile ? 'pb-2' : 'pb-3'}`}>
+            <CardTitle className={`${isMobile ? 'text-sm' : 'text-base'} font-medium`}>Low Stock Alerts</CardTitle>
+            <AlertTriangle className={`${isMobile ? 'h-4 w-4' : 'h-5 w-5'} text-yellow-600`} />
           </CardHeader>
-          <CardContent className="pt-0">
-            <div className="text-3xl font-bold text-yellow-600">
+          <CardContent className={isMobile ? 'pt-0' : 'pt-0'}>
+            <div className={`${isMobile ? 'text-xl' : 'text-3xl'} font-bold text-yellow-600`}>
               {metrics.lowStockAlerts}
             </div>
-            <p className="text-sm text-gray-500 mt-2">Requires attention</p>
+            <p className={`${isMobile ? 'text-xs' : 'text-sm'} text-muted-foreground mt-1`}>Requires attention</p>
           </CardContent>
         </Card>
       </div>
 
-      {/* Charts Row */}
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+      {/* Charts */}
+      <div className={`grid ${isMobile ? 'grid-cols-1 gap-6' : 'grid-cols-2 gap-8'}`}>
         {/* Stock Value Trend */}
         <Card className="bg-white">
-          <CardHeader className="pb-4">
-            <CardTitle className="text-xl font-semibold">Stock Value Trends</CardTitle>
-            <CardDescription className="text-base">Daily stock transaction values over the last 7 days</CardDescription>
+          <CardHeader>
+            <CardTitle className={isMobile ? 'text-lg' : 'text-xl'}>Stock Value Trends</CardTitle>
+            <CardDescription className={isMobile ? 'text-sm' : 'text-base'}>Daily stock transaction values over the last 7 days</CardDescription>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={400}>
-              <LineChart data={stockTrends} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                <XAxis 
-                  dataKey="date" 
-                  tick={{ fontSize: 12 }}
-                  axisLine={{ stroke: '#e0e0e0' }}
-                />
-                <YAxis 
-                  tick={{ fontSize: 12 }}
-                  axisLine={{ stroke: '#e0e0e0' }}
-                />
+            <ResponsiveContainer width="100%" height={isMobile ? 250 : 350}>
+              <LineChart data={stockTrends}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="date" />
+                <YAxis />
                 <Tooltip 
                   formatter={(value) => [`$${Number(value).toLocaleString()}`, 'Value']}
-                  contentStyle={{ 
-                    backgroundColor: 'white', 
-                    border: '1px solid #e0e0e0',
-                    borderRadius: '8px',
-                    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
-                  }}
                 />
                 <Line 
                   type="monotone" 
                   dataKey="value" 
                   stroke="#2563eb" 
-                  strokeWidth={3}
-                  dot={{ fill: '#2563eb', strokeWidth: 2, r: 5 }}
-                  activeDot={{ r: 7, stroke: '#2563eb', strokeWidth: 2 }}
+                  strokeWidth={2}
+                  dot={{ fill: '#2563eb' }}
                 />
               </LineChart>
             </ResponsiveContainer>
@@ -214,12 +199,12 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
 
         {/* Category Distribution */}
         <Card className="bg-white">
-          <CardHeader className="pb-4">
-            <CardTitle className="text-xl font-semibold">Stock by Category</CardTitle>
-            <CardDescription className="text-base">Distribution of inventory value by category</CardDescription>
+          <CardHeader>
+            <CardTitle className={isMobile ? 'text-lg' : 'text-xl'}>Stock by Category</CardTitle>
+            <CardDescription className={isMobile ? 'text-sm' : 'text-base'}>Distribution of inventory value by category</CardDescription>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={400}>
+            <ResponsiveContainer width="100%" height={isMobile ? 250 : 350}>
               <PieChart>
                 <Pie
                   data={categoryData}
@@ -227,10 +212,9 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
                   cy="50%"
                   labelLine={false}
                   label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                  outerRadius={120}
+                  outerRadius={isMobile ? 60 : 100}
                   fill="#8884d8"
                   dataKey="value"
-                  strokeWidth={2}
                 >
                   {categoryData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
@@ -238,12 +222,6 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
                 </Pie>
                 <Tooltip 
                   formatter={(value) => [`$${Number(value).toLocaleString()}`, 'Value']}
-                  contentStyle={{ 
-                    backgroundColor: 'white', 
-                    border: '1px solid #e0e0e0',
-                    borderRadius: '8px',
-                    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
-                  }}
                 />
               </PieChart>
             </ResponsiveContainer>
@@ -251,35 +229,21 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
         </Card>
       </div>
 
-      {/* Daily Activity - Full Width */}
+      {/* Daily Activity */}
       <Card className="bg-white">
-        <CardHeader className="pb-4">
-          <CardTitle className="text-xl font-semibold">Daily Activity</CardTitle>
-          <CardDescription className="text-base">Incoming vs outgoing transactions over the last 7 days</CardDescription>
+        <CardHeader>
+          <CardTitle className={isMobile ? 'text-lg' : 'text-xl'}>Daily Activity</CardTitle>
+          <CardDescription className={isMobile ? 'text-sm' : 'text-base'}>Incoming vs outgoing transactions over the last 7 days</CardDescription>
         </CardHeader>
         <CardContent>
-          <ResponsiveContainer width="100%" height={400}>
-            <BarChart data={dailyActivity} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-              <XAxis 
-                dataKey="date" 
-                tick={{ fontSize: 12 }}
-                axisLine={{ stroke: '#e0e0e0' }}
-              />
-              <YAxis 
-                tick={{ fontSize: 12 }}
-                axisLine={{ stroke: '#e0e0e0' }}
-              />
-              <Tooltip 
-                contentStyle={{ 
-                  backgroundColor: 'white', 
-                  border: '1px solid #e0e0e0',
-                  borderRadius: '8px',
-                  boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
-                }}
-              />
-              <Bar dataKey="incoming" fill="#10b981" name="Incoming" radius={[4, 4, 0, 0]} />
-              <Bar dataKey="outgoing" fill="#ef4444" name="Outgoing" radius={[4, 4, 0, 0]} />
+          <ResponsiveContainer width="100%" height={isMobile ? 250 : 400}>
+            <BarChart data={dailyActivity}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="date" />
+              <YAxis />
+              <Tooltip />
+              <Bar dataKey="incoming" fill="#10b981" name="Incoming" />
+              <Bar dataKey="outgoing" fill="#ef4444" name="Outgoing" />
             </BarChart>
           </ResponsiveContainer>
         </CardContent>
