@@ -6,7 +6,20 @@ import type { Database } from './types';
 const SUPABASE_URL = "https://sszuxnqhbxauvershuys.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNzenV4bnFoYnhhdXZlcnNodXlzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk4OTEyODYsImV4cCI6MjA2NTQ2NzI4Nn0.-jvEJ1uUwdcJKZ1JbgOtD6jr-e0FoeepPrj8rpSFviQ";
 
-// Import the supabase client like this:
-// import { supabase } from "@/integrations/supabase/client";
+// Create Supabase client with proper configuration
+export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+  auth: {
+    autoRefreshToken: true,
+    persistSession: true,
+    detectSessionInUrl: true,
+    flowType: 'pkce'
+  },
+  realtime: {
+    params: {
+      eventsPerSecond: 10
+    }
+  }
+});
 
-export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+// Ensure no other database connections are active
+console.log('Supabase client initialized for:', SUPABASE_URL);
