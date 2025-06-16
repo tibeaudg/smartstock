@@ -9,12 +9,14 @@ import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, BarChart, Bar } from 'recharts';
 import { useDashboardData } from '@/hooks/useDashboardData';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface DashboardProps {
   userRole: 'admin' | 'staff';
 }
 
 export const Dashboard = ({ userRole }: DashboardProps) => {
+  const isMobile = useIsMobile();
   const [dateFrom, setDateFrom] = useState<Date>();
   const [dateTo, setDateTo] = useState<Date>();
   
@@ -26,9 +28,9 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
     return (
       <div className="space-y-6">
         <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
+          <h1 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-gray-900`}>Dashboard</h1>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+        <div className={`grid grid-cols-1 ${isMobile ? 'gap-4' : 'md:grid-cols-2 lg:grid-cols-5 gap-6'}`}>
           {[...Array(5)].map((_, i) => (
             <Card key={i} className="animate-pulse">
               <CardContent className="p-6">
@@ -47,7 +49,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
+          <h1 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-gray-900`}>Dashboard</h1>
           <p className="text-gray-600 mt-1">
             Welcome back! Here's what's happening with your inventory.
           </p>
@@ -91,7 +93,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
                   setDateFrom(range?.from);
                   setDateTo(range?.to);
                 }}
-                numberOfMonths={2}
+                numberOfMonths={isMobile ? 1 : 2}
               />
             </PopoverContent>
           </Popover>
@@ -99,14 +101,16 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
       </div>
 
       {/* Metrics Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+      <div className={`grid grid-cols-1 ${isMobile ? 'gap-4' : 'md:grid-cols-2 lg:grid-cols-5 gap-6'}`}>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Stock Value</CardTitle>
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">${metrics.totalStockValue.toLocaleString()}</div>
+            <div className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold`}>
+              ${metrics.totalStockValue.toLocaleString()}
+            </div>
             <p className="text-xs text-muted-foreground">Current inventory value</p>
           </CardContent>
         </Card>
@@ -117,7 +121,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
             <Package className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{metrics.totalProducts}</div>
+            <div className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold`}>{metrics.totalProducts}</div>
             <p className="text-xs text-muted-foreground">Active products</p>
           </CardContent>
         </Card>
@@ -128,7 +132,9 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
             <TrendingUp className="h-4 w-4 text-green-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">{metrics.incomingToday}</div>
+            <div className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold text-green-600`}>
+              {metrics.incomingToday}
+            </div>
             <p className="text-xs text-muted-foreground">Items received</p>
           </CardContent>
         </Card>
@@ -139,7 +145,9 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
             <TrendingDown className="h-4 w-4 text-red-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-red-600">{metrics.outgoingToday}</div>
+            <div className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold text-red-600`}>
+              {metrics.outgoingToday}
+            </div>
             <p className="text-xs text-muted-foreground">Items shipped</p>
           </CardContent>
         </Card>
@@ -150,14 +158,16 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
             <AlertTriangle className="h-4 w-4 text-yellow-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-yellow-600">{metrics.lowStockAlerts}</div>
+            <div className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold text-yellow-600`}>
+              {metrics.lowStockAlerts}
+            </div>
             <p className="text-xs text-muted-foreground">Requires attention</p>
           </CardContent>
         </Card>
       </div>
 
       {/* Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className={`grid grid-cols-1 ${isMobile ? 'gap-6' : 'lg:grid-cols-2 gap-6'}`}>
         {/* Stock Value Trend */}
         <Card>
           <CardHeader>
@@ -165,7 +175,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
             <CardDescription>Daily stock transaction values over the last 7 days</CardDescription>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer width="100%" height={isMobile ? 250 : 300}>
               <LineChart data={stockTrends}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="date" />
@@ -192,7 +202,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
             <CardDescription>Distribution of inventory value by category</CardDescription>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer width="100%" height={isMobile ? 250 : 300}>
               <PieChart>
                 <Pie
                   data={categoryData}
@@ -200,7 +210,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
                   cy="50%"
                   labelLine={false}
                   label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                  outerRadius={80}
+                  outerRadius={isMobile ? 60 : 80}
                   fill="#8884d8"
                   dataKey="value"
                 >
@@ -224,7 +234,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
           <CardDescription>Incoming vs outgoing transactions over the last 7 days</CardDescription>
         </CardHeader>
         <CardContent>
-          <ResponsiveContainer width="100%" height={300}>
+          <ResponsiveContainer width="100%" height={isMobile ? 250 : 300}>
             <BarChart data={dailyActivity}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="date" />
