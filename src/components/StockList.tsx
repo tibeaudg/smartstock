@@ -46,9 +46,9 @@ const getStockStatus = (quantity: number, minLevel: number) => {
 const getStockStatusVariant = (status: string) => {
   switch (status) {
     case 'In Stock':
-      return 'default';
+      return 'success';
     case 'Low Stock':
-      return 'secondary';
+      return 'warning';
     case 'Out of Stock':
       return 'destructive';
     default:
@@ -191,8 +191,8 @@ export const StockList = () => {
         .eq('id', productId)
         .eq('branch_id', activeBranch.branch_id);
 
-      if (transactionError) {
-        console.error('Error deleting transactions:', transactionError);
+      if (deleteError) {
+        console.error('Error deleting transactions:', deleteError);
         toast.error('Failed to delete product transactions');
         return;
       }
@@ -444,7 +444,6 @@ export const StockList = () => {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Products</h1>
-          <p className="text-gray-600">{activeBranch.branch_name}</p>
         </div>
         <Button onClick={() => setIsAddModalOpen(true)}>
           <Plus className="h-4 w-4 mr-2" />
