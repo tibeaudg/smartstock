@@ -25,80 +25,80 @@ export const HomePage = () => {
   const features = [
     {
       icon: Package,
-      title: 'Stock Management',
-      description: 'Track inventory levels, manage products, and automate stock alerts with ease.',
+      title: 'Voorraadbeheer',
+      description: 'Volg voorraadniveaus, beheer producten en automatiseer voorraadwaarschuwingen met gemak.',
     },
     {
       icon: BarChart3,
       title: 'Analytics Dashboard',
-      description: 'Get real-time insights into your inventory performance and trends.',
+      description: 'Krijg real-time inzichten in uw voorraadprestaties en trends.',
     },
     {
       icon: Users,
-      title: 'Team Collaboration',
-      description: 'Multiple user roles and permissions for seamless team management.',
+      title: 'Teamsamenwerking',
+      description: 'Meerdere gebruikersrollen en machtigingen voor naadloos teambeheer.',
     },
     {
       icon: Shield,
-      title: 'Secure & Reliable',
-      description: 'Enterprise-grade security with cloud-based backup and recovery.',
+      title: 'Veilig & Betrouwbaar',
+      description: 'Beveiliging op bedrijfsniveau met cloud-gebaseerde back-up en herstel.',
     },
   ];
 
   const benefits = [
-    'Reduce inventory costs by up to 30%',
-    'Eliminate stockouts and overstock situations',
-    'Real-time inventory tracking across locations',
-    'Automated reorder notifications',
-    'Comprehensive reporting and analytics',
-    'Mobile-friendly interface for on-the-go access',
+    'Verlaag voorraadkosten tot 30%',
+    'Elimineer voorraadtekorten en overvoorraden',
+    'Real-time voorraadvolging over meerdere locaties',
+    'Geautomatiseerde herbestellingsmeldingen',
+    'Uitgebreide rapportage en analyses',
+    'Mobiel-vriendelijke interface voor onderweg',
   ];
 
   const pricingPlans = [
     {
       name: 'Starter',
-      price: '$29',
-      period: '/month',
-      description: 'Perfect for small businesses just getting started',
+      price: '€29',
+      period: '/maand',
+      description: 'Perfect voor kleine bedrijven die net beginnen',
       features: [
-        'Up to 1,000 products',
-        'Basic inventory tracking',
-        'Email support',
-        '2 user accounts',
-        'Mobile app access',
+        'Tot 1.000 producten',
+        'Basis voorraadvolging',
+        'E-mailondersteuning',
+        '2 gebruikersaccounts',
+        'Mobiele app toegang',
       ],
       popular: false,
     },
     {
-      name: 'Professional',
-      price: '$79',
-      period: '/month',
-      description: 'Ideal for growing businesses with advanced needs',
+      name: 'Professioneel',
+      price: '€79',
+      period: '/maand',
+      description: 'Ideaal voor groeiende bedrijven met geavanceerde behoeften',
       features: [
-        'Up to 10,000 products',
-        'Advanced analytics',
-        'Priority support',
-        '10 user accounts',
-        'API access',
-        'Custom integrations',
-        'Automated reorder points',
+        'Tot 10.000 producten',
+        'Geavanceerde analyses',
+        'Prioritaire ondersteuning',
+        '10 gebruikersaccounts',
+        'API toegang',
+        'Aangepaste integraties',
+        'Geautomatiseerde herbestelpunten',
       ],
       popular: true,
     },
     {
       name: 'Enterprise',
-      price: '$199',
-      period: '/month',
-      description: 'For large organizations with complex requirements',
+      price: '€199',
+      period: '/maand',
+      description: 'Voor grote organisaties met complexe vereisten',
       features: [
-        'Unlimited products',
-        'White-label solution',
-        'Dedicated support',
-        'Unlimited users',
-        'Advanced reporting',
-        'Custom workflows',
-        'On-premise deployment',
-        'SLA guarantee',
+        'Onbeperkte producten',
+        'White-label oplossing',
+        'Toegewijde ondersteuning',
+        'Onbeperkte gebruikers',
+        'Geavanceerde rapportage',
+        'Aangepaste workflows',
+        'On-premise implementatie',
+        'SLA garantie',
       ],
       popular: false,
     },
@@ -116,20 +116,20 @@ export const HomePage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
-              Smart Inventory
-              <span className="text-blue-600"> Management</span>
+              Slim Voorraad
+              <span className="text-blue-600"> Beheer</span>
             </h1>
             <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-              Streamline your inventory operations with our powerful, intuitive platform. 
-              Manage stock, track orders, and gain valuable insights all in one place.
+              Stroomlijn uw voorraadactiviteiten met ons krachtige, intuïtieve platform. 
+              Beheer voorraad, volg bestellingen en krijg waardevolle inzichten op één plek.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" className="text-lg px-8 py-4" onClick={handleLoginClick}>
-                Get Started Free
+                Start Gratis
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
               <Button variant="outline" size="lg" className="text-lg px-8 py-4">
-                Watch Demo
+                Bekijk Demo
               </Button>
             </div>
           </div>
@@ -141,10 +141,10 @@ export const HomePage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Everything You Need to Manage Inventory
+              Alles Wat U Nodig Heeft Voor Voorraadbeheer
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Our comprehensive platform provides all the tools you need to optimize your inventory management.
+              Ons uitgebreide platform biedt alle tools die u nodig heeft om uw voorraadbeheer te optimaliseren.
             </p>
           </div>
           
@@ -173,10 +173,10 @@ export const HomePage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Simple, Transparent Pricing
+              Eenvoudige, Transparante Prijzen
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Choose the perfect plan for your business. All plans include a 14-day free trial.
+              Kies het perfecte plan voor uw bedrijf. Alle plannen bevatten een gratis proefperiode van 14 dagen.
             </p>
           </div>
           
@@ -186,7 +186,7 @@ export const HomePage = () => {
                 {plan.popular && (
                   <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                     <span className="bg-blue-500 text-white px-4 py-1 rounded-full text-sm font-medium">
-                      Most Popular
+                      Meest Populair
                     </span>
                   </div>
                 )}
@@ -212,7 +212,7 @@ export const HomePage = () => {
                     variant={plan.popular ? 'default' : 'outline'}
                     onClick={handleLoginClick}
                   >
-                    Get Started
+                    Beginnen
                   </Button>
                 </CardContent>
               </Card>
@@ -227,11 +227,11 @@ export const HomePage = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-                Why Choose StockManager?
+                Waarom Kiezen Voor VoorraadBeheer?
               </h2>
               <p className="text-lg text-gray-600 mb-8">
-                Join thousands of businesses that have transformed their inventory management 
-                with our powerful platform.
+                Sluit u aan bij duizenden bedrijven die hun voorraadbeheer hebben getransformeerd 
+                met ons krachtige platform.
               </p>
               <div className="space-y-4">
                 {benefits.map((benefit, index) => (
@@ -244,15 +244,15 @@ export const HomePage = () => {
             </div>
             <div className="bg-white p-8 rounded-2xl shadow-xl">
               <div className="bg-gradient-to-br from-blue-600 to-indigo-600 p-6 rounded-xl text-white mb-6">
-                <h3 className="text-2xl font-bold mb-2">Start Your Free Trial</h3>
-                <p className="text-blue-100">No credit card required • 14-day free trial</p>
+                <h3 className="text-2xl font-bold mb-2">Start Uw Gratis Proefperiode</h3>
+                <p className="text-blue-100">Geen creditcard vereist • 14 dagen gratis proefperiode</p>
               </div>
               <Button className="w-full text-lg py-6" onClick={handleLoginClick}>
-                Create Free Account
+                Maak Gratis Account
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
               <p className="text-sm text-gray-500 text-center mt-4">
-                Set up in under 5 minutes
+                Instellen in minder dan 5 minuten
               </p>
             </div>
           </div>
@@ -264,10 +264,10 @@ export const HomePage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Get in Touch
+              Neem Contact Op
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
+              Heeft u vragen? We horen graag van u. Stuur ons een bericht en we reageren zo snel mogelijk.
             </p>
           </div>
           
@@ -278,45 +278,45 @@ export const HomePage = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-2">
-                      First Name
+                      Voornaam
                     </label>
-                    <Input id="firstName" placeholder="John" />
+                    <Input id="firstName" placeholder="Jan" />
                   </div>
                   <div>
                     <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-2">
-                      Last Name
+                      Achternaam
                     </label>
-                    <Input id="lastName" placeholder="Doe" />
+                    <Input id="lastName" placeholder="Janssen" />
                   </div>
                 </div>
                 
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                    Email
+                    E-mail
                   </label>
-                  <Input id="email" type="email" placeholder="john@company.com" />
+                  <Input id="email" type="email" placeholder="jan@bedrijf.be" />
                 </div>
                 
                 <div>
                   <label htmlFor="company" className="block text-sm font-medium text-gray-700 mb-2">
-                    Company
+                    Bedrijf
                   </label>
-                  <Input id="company" placeholder="Your Company" />
+                  <Input id="company" placeholder="Uw Bedrijf" />
                 </div>
                 
                 <div>
                   <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
-                    Message
+                    Bericht
                   </label>
                   <Textarea 
                     id="message" 
-                    placeholder="Tell us about your inventory management needs..."
+                    placeholder="Vertel ons over uw voorraadbeheerbehoeften..."
                     className="min-h-[120px]"
                   />
                 </div>
                 
                 <Button className="w-full">
-                  Send Message
+                  Verstuur Bericht
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </form>
@@ -325,27 +325,27 @@ export const HomePage = () => {
             {/* Contact Information */}
             <div className="space-y-8">
               <div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-6">Contact Information</h3>
+                <h3 className="text-2xl font-bold text-gray-900 mb-6">Contactinformatie</h3>
                 <div className="space-y-4">
                   <div className="flex items-center">
                     <Mail className="h-5 w-5 text-blue-600 mr-3" />
-                    <span className="text-gray-700">support@stockmanager.com</span>
+                    <span className="text-gray-700">support@voorraadbeheer.be</span>
                   </div>
                   <div className="flex items-center">
                     <Phone className="h-5 w-5 text-blue-600 mr-3" />
-                    <span className="text-gray-700">+1 (555) 123-4567</span>
+                    <span className="text-gray-700">+32 (0)2 123 45 67</span>
                   </div>
                   <div className="flex items-center">
                     <MapPin className="h-5 w-5 text-blue-600 mr-3" />
-                    <span className="text-gray-700">123 Business Ave, Suite 100, San Francisco, CA 94107</span>
+                    <span className="text-gray-700">Zakenlaan 123, 1000 Brussel, België</span>
                   </div>
                 </div>
               </div>
               
               <div className="bg-blue-50 p-6 rounded-lg">
-                <h4 className="text-lg font-semibold text-gray-900 mb-2">Need immediate help?</h4>
+                <h4 className="text-lg font-semibold text-gray-900 mb-2">Onmiddellijke hulp nodig?</h4>
                 <p className="text-gray-600 mb-4">
-                  Our support team is available 24/7 to assist you with any questions or issues.
+                  Ons supportteam is 24/7 beschikbaar om u te helpen met vragen of problemen.
                 </p>
                 <Button variant="outline">
                   Start Live Chat
@@ -360,17 +360,17 @@ export const HomePage = () => {
       <footer className="bg-gray-900 text-white py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h3 className="text-2xl font-bold mb-4">StockManager</h3>
+            <h3 className="text-2xl font-bold mb-4">VoorraadBeheer</h3>
             <p className="text-gray-400 mb-8">
-              Professional inventory management for modern businesses
+              Professioneel voorraadbeheer voor moderne bedrijven
             </p>
             <div className="flex justify-center space-x-8 text-sm">
-              <a href="#" className="hover:text-blue-400 transition-colors">Privacy Policy</a>
-              <a href="#" className="hover:text-blue-400 transition-colors">Terms of Service</a>
-              <a href="#" className="hover:text-blue-400 transition-colors">Contact Support</a>
+              <a href="#" className="hover:text-blue-400 transition-colors">Privacybeleid</a>
+              <a href="#" className="hover:text-blue-400 transition-colors">Gebruiksvoorwaarden</a>
+              <a href="#" className="hover:text-blue-400 transition-colors">Contact Ondersteuning</a>
             </div>
             <p className="text-gray-500 text-sm mt-8">
-              © 2024 StockManager. All rights reserved.
+              © 2024 VoorraadBeheer. Alle rechten voorbehouden.
             </p>
           </div>
         </div>

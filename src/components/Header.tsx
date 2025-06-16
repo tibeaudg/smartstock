@@ -27,7 +27,7 @@ export const Header = ({ onLoginClick, onNavigate }: HeaderProps) => {
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
             <Package className="h-8 w-8 text-blue-600 mr-3" />
-            <span className="text-2xl font-bold text-gray-900">StockManager</span>
+            <span className="text-2xl font-bold text-gray-900">VoorraadBeheer</span>
           </div>
           
           <nav className="hidden md:flex space-x-8">
@@ -35,19 +35,19 @@ export const Header = ({ onLoginClick, onNavigate }: HeaderProps) => {
               onClick={() => handleNavClick('features')}
               className="text-gray-600 hover:text-gray-900 transition-colors"
             >
-              Features
+              Functies
             </button>
             <button 
               onClick={() => handleNavClick('pricing')}
               className="text-gray-600 hover:text-gray-900 transition-colors"
             >
-              Pricing
+              Prijzen
             </button>
             <button 
               onClick={() => handleNavClick('about')}
               className="text-gray-600 hover:text-gray-900 transition-colors"
             >
-              About
+              Over Ons
             </button>
             <button 
               onClick={() => handleNavClick('contact')}
@@ -59,10 +59,10 @@ export const Header = ({ onLoginClick, onNavigate }: HeaderProps) => {
 
           <div className="flex items-center space-x-4">
             <Button variant="ghost" onClick={handleLoginClick}>
-              Login
+              Inloggen
             </Button>
             <Button onClick={handleLoginClick}>
-              Sign Up
+              Registreren
             </Button>
           </div>
         </div>
