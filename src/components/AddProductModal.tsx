@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -94,7 +93,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
 
       console.log('Product created successfully:', data);
 
-      // Create initial stock transaction if there's stock
+      // Create initial stock transaction if there's stock (without total_value as it's generated)
       if (quantityInStock > 0) {
         const { error: transactionError } = await supabase
           .from('stock_transactions')
@@ -104,7 +103,6 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
             transaction_type: 'incoming',
             quantity: quantityInStock,
             unit_price: unitPrice,
-            total_value: quantityInStock * unitPrice,
             notes: 'Initial stock - product created',
             created_by: user.id
           });

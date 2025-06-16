@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -76,7 +75,7 @@ export const EditProductModal = ({ isOpen, onClose, onProductUpdated, product }:
         ? product.quantity_in_stock + quantityNum
         : product.quantity_in_stock - quantityNum;
 
-      // Create stock transaction
+      // Create stock transaction without total_value (it's a generated column)
       const { error: transactionError } = await supabase
         .from('stock_transactions')
         .insert({
@@ -85,7 +84,6 @@ export const EditProductModal = ({ isOpen, onClose, onProductUpdated, product }:
           transaction_type: transactionType,
           quantity: quantityNum,
           unit_price: unitPriceNum,
-          total_value: quantityNum * unitPriceNum,
           notes: notes || null,
           reference_number: referenceNumber || null,
           created_by: user.id
