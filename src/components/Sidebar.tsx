@@ -56,14 +56,17 @@ export const Sidebar = ({ currentTab, onTabChange, userRole, userProfile, isOpen
       )}
       
       {/* Sidebar */}
-      <div className={`
-        fixed left-0 top-0 h-full bg-white border-r border-gray-200 transition-all duration-300 z-50
-        ${isOpen ? 'w-64' : 'w-16'}
-        ${isOpen ? 'md:relative md:translate-x-0' : 'md:relative'}
-        ${!isOpen ? 'md:translate-x-0' : ''}
-      `}>
+      <div 
+        className={`
+          fixed left-0 top-0 h-screen bg-white border-r border-gray-200 transition-all duration-300 z-50 flex flex-col
+          ${isOpen ? 'w-64' : 'w-16'}
+          ${isOpen ? 'md:relative md:translate-x-0' : 'md:relative'}
+          ${!isOpen ? 'md:translate-x-0' : ''}
+        `}
+        data-sidebar
+      >
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-200">
+        <div className="flex items-center justify-between p-4 border-b border-gray-200 flex-shrink-0">
           {isOpen && (
             <div className="flex items-center space-x-3">
               <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
@@ -83,7 +86,7 @@ export const Sidebar = ({ currentTab, onTabChange, userRole, userProfile, isOpen
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 p-4">
+        <nav className="flex-1 p-4 overflow-y-auto">
           <ul className="space-y-2">
             {menuItems.map((item) => {
               const Icon = item.icon;
@@ -111,7 +114,7 @@ export const Sidebar = ({ currentTab, onTabChange, userRole, userProfile, isOpen
         </nav>
 
         {/* User Profile & Sign Out */}
-        <div className="border-t border-gray-200 p-4">
+        <div className="border-t border-gray-200 p-4 flex-shrink-0">
           {isOpen && userProfile && (
             <div className="mb-3">
               <p className="text-sm font-medium text-gray-900">

@@ -38,19 +38,12 @@
     --radius: 0.5rem;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
@@ -101,4 +94,34 @@
   body {
     @apply bg-background text-foreground;
   }
+  
+  /* Fix for yellow backgrounds appearing in components */
+  .bg-yellow-50,
+  .bg-yellow-100,
+  [style*="background-color: rgb(254, 252, 232)"],
+  [style*="background-color: rgb(255, 251, 235)"] {
+    background-color: white !important;
+  }
+  
+  /* Remove any unwanted yellow borders */
+  .border-yellow-200,
+  .border-yellow-300 {
+    border-color: rgb(229 231 235) !important; /* gray-200 */
+  }
+}
+
+/* Layout improvements */
+.min-h-screen {
+  min-height: 100vh;
+}
+
+/* Fix sidebar height issue */
+[data-sidebar] {
+  min-height: 100vh !important;
+  height: 100vh !important;
+}
+
+/* Prevent overflow on main content */
+.overflow-hidden {
+  overflow: hidden;
 }
