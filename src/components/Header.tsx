@@ -5,12 +5,19 @@ import { Package } from 'lucide-react';
 
 interface HeaderProps {
   onLoginClick?: () => void;
+  onNavigate?: (sectionId: string) => void;
 }
 
-export const Header = ({ onLoginClick }: HeaderProps) => {
+export const Header = ({ onLoginClick, onNavigate }: HeaderProps) => {
   const handleLoginClick = () => {
     if (onLoginClick) {
       onLoginClick();
+    }
+  };
+
+  const handleNavClick = (sectionId: string) => {
+    if (onNavigate) {
+      onNavigate(sectionId);
     }
   };
 
@@ -24,18 +31,30 @@ export const Header = ({ onLoginClick }: HeaderProps) => {
           </div>
           
           <nav className="hidden md:flex space-x-8">
-            <a href="#features" className="text-gray-600 hover:text-gray-900 transition-colors">
+            <button 
+              onClick={() => handleNavClick('features')}
+              className="text-gray-600 hover:text-gray-900 transition-colors"
+            >
               Features
-            </a>
-            <a href="#pricing" className="text-gray-600 hover:text-gray-900 transition-colors">
+            </button>
+            <button 
+              onClick={() => handleNavClick('pricing')}
+              className="text-gray-600 hover:text-gray-900 transition-colors"
+            >
               Pricing
-            </a>
-            <a href="#about" className="text-gray-600 hover:text-gray-900 transition-colors">
+            </button>
+            <button 
+              onClick={() => handleNavClick('about')}
+              className="text-gray-600 hover:text-gray-900 transition-colors"
+            >
               About
-            </a>
-            <a href="#contact" className="text-gray-600 hover:text-gray-900 transition-colors">
+            </button>
+            <button 
+              onClick={() => handleNavClick('contact')}
+              className="text-gray-600 hover:text-gray-900 transition-colors"
+            >
               Contact
-            </a>
+            </button>
           </nav>
 
           <div className="flex items-center space-x-4">
