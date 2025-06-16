@@ -191,6 +191,34 @@ export const useDashboardData = () => {
     fetchDashboardData();
   }, [user, activeBranch]);
 
+  // Set up real-time subscription for stock transactions to refresh dashboard data
+  useEffect(() => {
+    if (!activeBranch) return;
+
+    console.log('Setting up dashboard real-time subscription for stock transactions');
+    const channel = supabase
+      .channel('dashboard-stock-transactions-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'stock_transactions',
+          filter: `branch_id=eq.${activeBranch.branch_id}`
+        },
+        (payload) => {
+          console.log('Dashboard: Real-time stock transaction change detected:', payload);
+          fetchDashboardData(); // Refresh dashboard data when transactions change
+        }
+      )
+      .subscribe();
+
+    return () => {
+      console.log('Cleaning up dashboard real-time subscription');
+      supabase.removeChannel(channel);
+    };
+  }, [activeBranch]);
+
   return {
     metrics,
     stockTrends,

@@ -31,6 +31,7 @@ export const StockMovements = () => {
 
   const fetchTransactions = async () => {
     if (!user || !activeBranch) {
+      console.log('No user or active branch, clearing transactions');
       setTransactions([]);
       setLoading(false);
       return;
@@ -49,7 +50,7 @@ export const StockMovements = () => {
         return;
       }
 
-      console.log('Transactions fetched for branch:', data);
+      console.log('Transactions fetched for branch:', activeBranch.branch_id, data);
       setTransactions(data || []);
     } catch (error) {
       console.error('Error fetching transactions:', error);
@@ -66,9 +67,9 @@ export const StockMovements = () => {
   useEffect(() => {
     if (!activeBranch) return;
 
-    console.log('Setting up real-time subscription for stock transactions');
+    console.log('Setting up real-time subscription for stock transactions for branch:', activeBranch.branch_id);
     const channel = supabase
-      .channel('stock-transactions-changes')
+      .channel(`stock-transactions-changes-${activeBranch.branch_id}`)
       .on(
         'postgres_changes',
         {
@@ -78,14 +79,14 @@ export const StockMovements = () => {
           filter: `branch_id=eq.${activeBranch.branch_id}`
         },
         (payload) => {
-          console.log('Real-time stock transaction change:', payload);
+          console.log('Real-time stock transaction change for branch:', activeBranch.branch_id, payload);
           fetchTransactions(); // Refresh the data when changes occur
         }
       )
       .subscribe();
 
     return () => {
-      console.log('Cleaning up real-time subscription');
+      console.log('Cleaning up real-time subscription for branch:', activeBranch.branch_id);
       supabase.removeChannel(channel);
     };
   }, [activeBranch]);
