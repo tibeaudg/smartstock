@@ -132,7 +132,6 @@ export type Database = {
           minimum_stock_level: number
           name: string
           quantity_in_stock: number
-          sku: string
           status: Database["public"]["Enums"]["stock_status"] | null
           supplier_id: string | null
           unit_price: number
@@ -146,7 +145,6 @@ export type Database = {
           minimum_stock_level?: number
           name: string
           quantity_in_stock?: number
-          sku: string
           status?: Database["public"]["Enums"]["stock_status"] | null
           supplier_id?: string | null
           unit_price?: number
@@ -160,7 +158,6 @@ export type Database = {
           minimum_stock_level?: number
           name?: string
           quantity_in_stock?: number
-          sku?: string
           status?: Database["public"]["Enums"]["stock_status"] | null
           supplier_id?: string | null
           unit_price?: number

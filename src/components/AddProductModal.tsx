@@ -32,7 +32,6 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
 
   const [formData, setFormData] = useState({
     name: '',
-    sku: '',
     description: '',
     unit_price: '',
     quantity_in_stock: '',
@@ -73,7 +72,6 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
         .from('products')
         .insert({
           name: formData.name,
-          sku: formData.sku,
           description: formData.description || null,
           unit_price: parseFloat(formData.unit_price),
           quantity_in_stock: parseInt(formData.quantity_in_stock),
@@ -96,7 +94,6 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
       // Reset form
       setFormData({
         name: '',
-        sku: '',
         description: '',
         unit_price: '',
         quantity_in_stock: '',
@@ -134,19 +131,6 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               required
               placeholder="Enter product name"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              SKU *
-            </label>
-            <Input
-              type="text"
-              value={formData.sku}
-              onChange={(e) => setFormData({ ...formData, sku: e.target.value })}
-              required
-              placeholder="Enter SKU"
             />
           </div>
 

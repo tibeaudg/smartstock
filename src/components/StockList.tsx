@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -10,7 +11,6 @@ import { AddProductModal } from './AddProductModal';
 interface Product {
   id: string;
   name: string;
-  sku: string;
   description: string | null;
   quantity_in_stock: number;
   minimum_stock_level: number;
@@ -103,7 +103,6 @@ export const StockList = () => {
           <TableHeader>
             <TableRow>
               <TableHead>Product</TableHead>
-              <TableHead>SKU</TableHead>
               <TableHead>Category</TableHead>
               <TableHead>Supplier</TableHead>
               <TableHead>Current Stock</TableHead>
@@ -116,7 +115,7 @@ export const StockList = () => {
           <TableBody>
             {products.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={9} className="text-center py-8 text-gray-500">
+                <TableCell colSpan={8} className="text-center py-8 text-gray-500">
                   No products found. Add products to see them here.
                 </TableCell>
               </TableRow>
@@ -131,7 +130,6 @@ export const StockList = () => {
                       )}
                     </div>
                   </TableCell>
-                  <TableCell>{product.sku}</TableCell>
                   <TableCell>{product.categories?.name || '-'}</TableCell>
                   <TableCell>{product.suppliers?.name || '-'}</TableCell>
                   <TableCell className="font-medium">{product.quantity_in_stock}</TableCell>
