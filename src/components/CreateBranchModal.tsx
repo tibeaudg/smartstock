@@ -9,10 +9,13 @@ import { useForm } from 'react-hook-form';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
+import { AlertCircle } from 'lucide-react';
 
 interface CreateBranchModalProps {
   open: boolean;
+  onOpenChange?: (open: boolean) => void;
   onBranchCreated: () => void;
+  isAdditionalBranch?: boolean;
 }
 
 interface FormData {
@@ -22,13 +25,18 @@ interface FormData {
   email?: string;
 }
 
-export const CreateBranchModal = ({ open, onBranchCreated }: CreateBranchModalProps) => {
+export const CreateBranchModal = ({ 
+  open, 
+  onOpenChange, 
+  onBranchCreated, 
+  isAdditionalBranch = false 
+}: CreateBranchModalProps) => {
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
   
   const form = useForm<FormData>({
     defaultValues: {
-      branchName: 'Hoofdvestiging',
+      branchName: isAdditionalBranch ? '' : 'Hoofdvestiging',
       address: '',
       phone: '',
       email: '',
@@ -53,7 +61,7 @@ export const CreateBranchModal = ({ open, onBranchCreated }: CreateBranchModalPr
           address: data.address || null,
           phone: data.phone || null,
           email: data.email || null,
-          is_main: true,
+          is_main: !isAdditionalBranch,
           is_active: true,
         })
         .select()
@@ -87,6 +95,10 @@ export const CreateBranchModal = ({ open, onBranchCreated }: CreateBranchModalPr
       toast.success('Filiaal succesvol aangemaakt!');
       form.reset();
       onBranchCreated();
+      
+      if (onOpenChange) {
+        onOpenChange(false);
+      }
     } catch (error) {
       console.error('Exception creating branch:', error);
       toast.error('Er is een onverwachte fout opgetreden');
@@ -95,13 +107,33 @@ export const CreateBranchModal = ({ open, onBranchCreated }: CreateBranchModalPr
     }
   };
 
+  const handleClose = () => {
+    if (onOpenChange) {
+      onOpenChange(false);
+    }
+  };
+
   return (
-    <Dialog open={open} onOpenChange={() => {}}>
-      <DialogContent className="sm:max-w-md" hideCloseButton>
+    <Dialog open={open} onOpenChange={isAdditionalBranch ? onOpenChange : undefined}>
+      <DialogContent className="sm:max-w-md" hideCloseButton={!isAdditionalBranch}>
         <DialogHeader>
-          <DialogTitle>Welkom! Maak je eerste filiaal aan</DialogTitle>
+          <DialogTitle>
+            {isAdditionalBranch ? 'Nieuw filiaal toevoegen' : 'Welkom! Maak je eerste filiaal aan'}
+          </DialogTitle>
           <DialogDescription>
-            Om te beginnen met je voorraadbeheersysteem, moet je eerst een filiaal aanmaken.
+            {isAdditionalBranch ? (
+              <div className="space-y-2">
+                <p>Voeg een nieuw filiaal toe aan je account.</p>
+                <div className="flex items-center space-x-2 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                  <AlertCircle className="h-4 w-4 text-blue-600 flex-shrink-0" />
+                  <p className="text-sm text-blue-800">
+                    Een extra filiaal kost €5/maand
+                  </p>
+                </div>
+              </div>
+            ) : (
+              'Om te beginnen met je voorraadbeheersysteem, moet je eerst een filiaal aanmaken.'
+            )}
           </DialogDescription>
         </DialogHeader>
 
@@ -117,7 +149,7 @@ export const CreateBranchModal = ({ open, onBranchCreated }: CreateBranchModalPr
                   <FormControl>
                     <Input
                       {...field}
-                      placeholder="Bijvoorbeeld: Hoofdvestiging"
+                      placeholder={isAdditionalBranch ? "Bijvoorbeeld: Filiaal West" : "Bijvoorbeeld: Hoofdvestiging"}
                       disabled={loading}
                     />
                   </FormControl>
@@ -184,7 +216,17 @@ export const CreateBranchModal = ({ open, onBranchCreated }: CreateBranchModalPr
             </div>
 
             <div className="flex justify-end space-x-2 pt-4">
-              <Button type="submit" disabled={loading} className="w-full">
+              {isAdditionalBranch && (
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  onClick={handleClose}
+                  disabled={loading}
+                >
+                  Annuleren
+                </Button>
+              )}
+              <Button type="submit" disabled={loading} className={isAdditionalBranch ? '' : 'w-full'}>
                 {loading ? 'Bezig met aanmaken...' : 'Filiaal aanmaken'}
               </Button>
             </div>
