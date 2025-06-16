@@ -10,6 +10,7 @@ interface SuggestionInputProps {
   placeholder: string;
   label: string;
   required?: boolean;
+  disabled?: boolean;
 }
 
 export const SuggestionInput: React.FC<SuggestionInputProps> = ({
@@ -18,7 +19,8 @@ export const SuggestionInput: React.FC<SuggestionInputProps> = ({
   suggestions,
   placeholder,
   label,
-  required = false
+  required = false,
+  disabled = false
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
@@ -32,14 +34,14 @@ export const SuggestionInput: React.FC<SuggestionInputProps> = ({
         suggestion.toLowerCase() !== value.toLowerCase()
       );
       setFilteredSuggestions(filtered);
-      setIsOpen(filtered.length > 0);
+      setIsOpen(filtered.length > 0 && !disabled);
     } else if (!value && suggestions.length > 0) {
       setFilteredSuggestions(suggestions);
       setIsOpen(false);
     } else {
       setIsOpen(false);
     }
-  }, [value, suggestions]);
+  }, [value, suggestions, disabled]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -67,7 +69,7 @@ export const SuggestionInput: React.FC<SuggestionInputProps> = ({
   };
 
   const handleInputFocus = () => {
-    if (filteredSuggestions.length > 0 || (!value && suggestions.length > 0)) {
+    if (!disabled && (filteredSuggestions.length > 0 || (!value && suggestions.length > 0))) {
       setIsOpen(true);
     }
   };
@@ -85,9 +87,10 @@ export const SuggestionInput: React.FC<SuggestionInputProps> = ({
         onFocus={handleInputFocus}
         placeholder={placeholder}
         required={required}
+        disabled={disabled}
       />
       
-      {isOpen && filteredSuggestions.length > 0 && (
+      {isOpen && filteredSuggestions.length > 0 && !disabled && (
         <Card
           ref={dropdownRef}
           className="absolute z-50 w-full mt-1 max-h-60 overflow-y-auto bg-white border shadow-lg"
