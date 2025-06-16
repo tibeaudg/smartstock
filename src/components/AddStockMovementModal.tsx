@@ -263,17 +263,17 @@ export const AddStockMovementModal = ({ isOpen, onClose, onTransactionAdded }: A
               value={productSearch}
               onChange={(e) => setProductSearch(e.target.value)}
             />
-            <Select value={selectedProduct} onValueChange={setSelectedProduct}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select a product" />
-              </SelectTrigger>
-              <SelectContent>
-                {filteredProducts.length === 0 ? (
-                  <SelectItem value="" disabled>
-                    No products found
-                  </SelectItem>
-                ) : (
-                  filteredProducts.map((product) => (
+            {filteredProducts.length === 0 ? (
+              <div className="text-sm text-gray-500 p-2 border rounded">
+                No products found
+              </div>
+            ) : (
+              <Select value={selectedProduct} onValueChange={setSelectedProduct}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select a product" />
+                </SelectTrigger>
+                <SelectContent>
+                  {filteredProducts.map((product) => (
                     <SelectItem key={product.id} value={product.id}>
                       <div>
                         <div className="font-medium">{product.name}</div>
@@ -282,10 +282,10 @@ export const AddStockMovementModal = ({ isOpen, onClose, onTransactionAdded }: A
                         </div>
                       </div>
                     </SelectItem>
-                  ))
-                )}
-              </SelectContent>
-            </Select>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
           </div>
 
           <div className="space-y-2">
