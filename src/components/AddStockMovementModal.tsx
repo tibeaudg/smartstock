@@ -6,16 +6,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
-
-interface Product {
-  id: string;
-  name: string;
-  sku: string;
-  quantity_in_stock: number;
-  unit_price: number;
-}
 
 interface AddStockMovementModalProps {
   isOpen: boolean;
@@ -27,56 +18,19 @@ export const AddStockMovementModal = ({ isOpen, onClose, onTransactionAdded }: A
   const { user } = useAuth();
   const { toast } = useToast();
   const [transactionType, setTransactionType] = useState<'incoming' | 'outgoing'>('incoming');
-  const [selectedProduct, setSelectedProduct] = useState<string>('');
+  const [productName, setProductName] = useState<string>('');
   const [quantity, setQuantity] = useState<string>('');
   const [unitPrice, setUnitPrice] = useState<string>('');
   const [referenceNumber, setReferenceNumber] = useState<string>('');
   const [notes, setNotes] = useState<string>('');
-  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    if (isOpen) {
-      fetchProducts();
-    }
-  }, [isOpen]);
-
-  const fetchProducts = async () => {
-    try {
-      console.log('Fetching products...');
-      const { data, error } = await supabase
-        .from('products')
-        .select('id, name, sku, quantity_in_stock, unit_price')
-        .order('name');
-
-      if (error) {
-        console.error('Error fetching products:', error);
-        toast({
-          title: 'Error',
-          description: 'Failed to fetch products',
-          variant: 'destructive',
-        });
-        return;
-      }
-
-      console.log('Products fetched:', data);
-      setProducts(data || []);
-    } catch (error) {
-      console.error('Error fetching products:', error);
-      toast({
-        title: 'Error',
-        description: 'Failed to fetch products',
-        variant: 'destructive',
-      });
-    }
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     console.log('Form submission started');
     console.log('User:', user?.id);
-    console.log('Selected product:', selectedProduct);
+    console.log('Product name:', productName);
     console.log('Quantity:', quantity);
     console.log('Transaction type:', transactionType);
 
@@ -90,11 +44,11 @@ export const AddStockMovementModal = ({ isOpen, onClose, onTransactionAdded }: A
       return;
     }
 
-    if (!selectedProduct) {
-      console.error('No product selected');
+    if (!productName.trim()) {
+      console.error('No product name entered');
       toast({
         title: 'Error',
-        description: 'Please select a product',
+        description: 'Please enter a product name',
         variant: 'destructive',
       });
       return;
@@ -118,7 +72,7 @@ export const AddStockMovementModal = ({ isOpen, onClose, onTransactionAdded }: A
       const totalValue = unitPriceNum ? quantityNum * unitPriceNum : null;
 
       console.log('Creating transaction with data:', {
-        product_id: selectedProduct,
+        product_name: productName.trim(),
         transaction_type: transactionType,
         quantity: quantityNum,
         unit_price: unitPriceNum,
@@ -132,7 +86,7 @@ export const AddStockMovementModal = ({ isOpen, onClose, onTransactionAdded }: A
       const { data: transactionData, error: transactionError } = await supabase
         .from('stock_transactions')
         .insert({
-          product_id: selectedProduct,
+          product_name: productName.trim(),
           transaction_type: transactionType,
           quantity: quantityNum,
           unit_price: unitPriceNum,
@@ -155,35 +109,6 @@ export const AddStockMovementModal = ({ isOpen, onClose, onTransactionAdded }: A
 
       console.log('Transaction created successfully:', transactionData);
 
-      // Update product stock quantity
-      const selectedProductData = products.find(p => p.id === selectedProduct);
-      if (selectedProductData) {
-        const newQuantity = transactionType === 'incoming' 
-          ? selectedProductData.quantity_in_stock + quantityNum
-          : Math.max(0, selectedProductData.quantity_in_stock - quantityNum);
-
-        console.log('Updating product stock from', selectedProductData.quantity_in_stock, 'to', newQuantity);
-
-        const { error: updateError } = await supabase
-          .from('products')
-          .update({ 
-            quantity_in_stock: newQuantity,
-            updated_at: new Date().toISOString()
-          })
-          .eq('id', selectedProduct);
-
-        if (updateError) {
-          console.error('Error updating product quantity:', updateError);
-          toast({
-            title: 'Warning',
-            description: 'Stock movement created but failed to update product quantity',
-            variant: 'destructive',
-          });
-        } else {
-          console.log('Product quantity updated successfully');
-        }
-      }
-
       toast({
         title: 'Success',
         description: 'Stock movement added successfully',
@@ -191,7 +116,7 @@ export const AddStockMovementModal = ({ isOpen, onClose, onTransactionAdded }: A
 
       // Reset form
       setTransactionType('incoming');
-      setSelectedProduct('');
+      setProductName('');
       setQuantity('');
       setUnitPrice('');
       setReferenceNumber('');
@@ -210,7 +135,7 @@ export const AddStockMovementModal = ({ isOpen, onClose, onTransactionAdded }: A
     }
   };
 
-  const isFormValid = selectedProduct && quantity && parseInt(quantity) > 0;
+  const isFormValid = productName.trim() && quantity && parseInt(quantity) > 0;
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -240,30 +165,14 @@ export const AddStockMovementModal = ({ isOpen, onClose, onTransactionAdded }: A
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="product">Product</Label>
-            <Select value={selectedProduct} onValueChange={setSelectedProduct}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select a product" />
-              </SelectTrigger>
-              <SelectContent>
-                {products.length === 0 ? (
-                  <div className="p-2 text-sm text-gray-500">
-                    No products found
-                  </div>
-                ) : (
-                  products.map((product) => (
-                    <SelectItem key={product.id} value={product.id}>
-                      <div>
-                        <div className="font-medium">{product.name}</div>
-                        <div className="text-sm text-gray-500">
-                          {product.sku} - Stock: {product.quantity_in_stock}
-                        </div>
-                      </div>
-                    </SelectItem>
-                  ))
-                )}
-              </SelectContent>
-            </Select>
+            <Label htmlFor="product">Product Name</Label>
+            <Input
+              id="product"
+              value={productName}
+              onChange={(e) => setProductName(e.target.value)}
+              placeholder="Enter product name"
+              required
+            />
           </div>
 
           <div className="space-y-2">
