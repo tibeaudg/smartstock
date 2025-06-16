@@ -238,6 +238,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                     <FormControl>
                       <SuggestionInput
                         {...field}
+                        label="Category"
                         suggestions={categories}
                         placeholder="Enter or select category"
                         disabled={loading}
@@ -257,6 +258,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                     <FormControl>
                       <SuggestionInput
                         {...field}
+                        label="Supplier"
                         suggestions={suppliers}
                         placeholder="Enter or select supplier"
                         disabled={loading}
