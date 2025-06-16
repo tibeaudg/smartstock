@@ -56,49 +56,64 @@ export const HomePage = () => {
 
   const pricingPlans = [
     {
-      name: 'Starter',
-      price: '€29',
+      name: 'Free',
+      price: '€0',
       period: '/maand',
-      description: 'Perfect voor kleine bedrijven die net beginnen',
+      description: 'Perfect om te beginnen met voorraadbeheer',
       features: [
-        'Tot 1.000 producten',
+        'Tot 30 producten',
         'Basis voorraadvolging',
         'E-mailondersteuning',
-        '2 gebruikersaccounts',
+        '1 gebruikersaccount',
         'Mobiele app toegang',
       ],
       popular: false,
     },
     {
-      name: 'Professioneel',
-      price: '€79',
+      name: 'Starter',
+      price: '€9',
       period: '/maand',
-      description: 'Ideaal voor groeiende bedrijven met geavanceerde behoeften',
+      description: 'Voor kleine bedrijven die hun voorraad willen uitbreiden',
       features: [
-        'Tot 10.000 producten',
+        'Tot 150 producten',
         'Geavanceerde analyses',
         'Prioritaire ondersteuning',
-        '10 gebruikersaccounts',
+        '3 gebruikersaccounts',
         'API toegang',
-        'Aangepaste integraties',
         'Geautomatiseerde herbestelpunten',
       ],
       popular: true,
     },
     {
-      name: 'Enterprise',
-      price: '€199',
+      name: 'Business',
+      price: '€49',
       period: '/maand',
-      description: 'Voor grote organisaties met complexe vereisten',
+      description: 'Ideaal voor groeiende bedrijven met meer complexe behoeften',
       features: [
-        'Onbeperkte producten',
-        'White-label oplossing',
+        'Tot 1.500 producten',
+        'Uitgebreide rapportage',
         'Toegewijde ondersteuning',
+        '10 gebruikersaccounts',
+        'Aangepaste integraties',
+        'Geavanceerde workflows',
+        'Multi-locatie beheer',
+      ],
+      popular: false,
+    },
+    {
+      name: 'Enterprise',
+      price: '€79',
+      period: '/maand',
+      description: 'Voor grote organisaties met onbeperkte mogelijkheden',
+      features: [
+        'Onbeperkt producten',
+        'White-label oplossing',
+        'Toegewijde accountmanager',
         'Onbeperkte gebruikers',
-        'Geavanceerde rapportage',
-        'Aangepaste workflows',
+        'Custom ontwikkeling',
         'On-premise implementatie',
         'SLA garantie',
+        '24/7 telefonische support',
       ],
       popular: false,
     },
@@ -180,7 +195,7 @@ export const HomePage = () => {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {pricingPlans.map((plan, index) => (
               <Card key={index} className={`relative ${plan.popular ? 'border-blue-500 border-2 shadow-xl' : 'border-gray-200'}`}>
                 {plan.popular && (
