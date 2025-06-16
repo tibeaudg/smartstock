@@ -8,16 +8,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Search, Filter, X } from 'lucide-react';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 
-interface Category {
-  id: string;
-  name: string;
-}
-
-interface Supplier {
-  id: string;
-  name: string;
-}
-
 interface ProductFiltersProps {
   searchTerm: string;
   onSearchChange: (value: string) => void;
@@ -35,8 +25,6 @@ interface ProductFiltersProps {
   onMinStockFilterChange: (value: string) => void;
   maxStockFilter: string;
   onMaxStockFilterChange: (value: string) => void;
-  categories: Category[];
-  suppliers: Supplier[];
   onClearFilters: () => void;
   activeFiltersCount: number;
 }
@@ -58,8 +46,6 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
   onMinStockFilterChange,
   maxStockFilter,
   onMaxStockFilterChange,
-  categories,
-  suppliers,
   onClearFilters,
   activeFiltersCount,
 }) => {
@@ -112,37 +98,21 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
                 {/* Category Filter */}
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-700">Category</label>
-                  <Select value={categoryFilter} onValueChange={onCategoryFilterChange}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="All Categories" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">All Categories</SelectItem>
-                      {categories.map((category) => (
-                        <SelectItem key={category.id} value={category.id}>
-                          {category.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <Input
+                    placeholder="Enter category name..."
+                    value={categoryFilter}
+                    onChange={(e) => onCategoryFilterChange(e.target.value)}
+                  />
                 </div>
 
                 {/* Supplier Filter */}
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-700">Supplier</label>
-                  <Select value={supplierFilter} onValueChange={onSupplierFilterChange}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="All Suppliers" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">All Suppliers</SelectItem>
-                      {suppliers.map((supplier) => (
-                        <SelectItem key={supplier.id} value={supplier.id}>
-                          {supplier.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <Input
+                    placeholder="Enter supplier name..."
+                    value={supplierFilter}
+                    onChange={(e) => onSupplierFilterChange(e.target.value)}
+                  />
                 </div>
 
                 {/* Stock Status Filter */}

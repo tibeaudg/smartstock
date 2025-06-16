@@ -126,6 +126,7 @@ export type Database = {
       products: {
         Row: {
           category_id: string | null
+          category_name: string | null
           created_at: string | null
           description: string | null
           id: string
@@ -134,11 +135,13 @@ export type Database = {
           quantity_in_stock: number
           status: Database["public"]["Enums"]["stock_status"] | null
           supplier_id: string | null
+          supplier_name: string | null
           unit_price: number
           updated_at: string | null
         }
         Insert: {
           category_id?: string | null
+          category_name?: string | null
           created_at?: string | null
           description?: string | null
           id?: string
@@ -147,11 +150,13 @@ export type Database = {
           quantity_in_stock?: number
           status?: Database["public"]["Enums"]["stock_status"] | null
           supplier_id?: string | null
+          supplier_name?: string | null
           unit_price?: number
           updated_at?: string | null
         }
         Update: {
           category_id?: string | null
+          category_name?: string | null
           created_at?: string | null
           description?: string | null
           id?: string
@@ -160,6 +165,7 @@ export type Database = {
           quantity_in_stock?: number
           status?: Database["public"]["Enums"]["stock_status"] | null
           supplier_id?: string | null
+          supplier_name?: string | null
           unit_price?: number
           updated_at?: string | null
         }

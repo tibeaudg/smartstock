@@ -1,21 +1,12 @@
+
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { SuggestionInput } from './SuggestionInput';
 import { toast } from 'sonner';
-
-interface Category {
-  id: string;
-  name: string;
-}
-
-interface Supplier {
-  id: string;
-  name: string;
-}
 
 interface AddProductModalProps {
   isOpen: boolean;
@@ -26,8 +17,8 @@ interface AddProductModalProps {
 export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductModalProps) => {
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [suppliers, setSuppliers] = useState<Supplier[]>([]);
+  const [categorySuggestions, setCategorySuggestions] = useState<string[]>([]);
+  const [supplierSuggestions, setSupplierSuggestions] = useState<string[]>([]);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -35,29 +26,68 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
     unit_price: '',
     quantity_in_stock: '',
     minimum_stock_level: '',
-    category_id: '',
-    supplier_id: '',
+    category_name: '',
+    supplier_name: '',
   });
 
-  const fetchCategoriesAndSuppliers = async () => {
+  const fetchSuggestions = async () => {
     try {
       const [categoriesResult, suppliersResult] = await Promise.all([
-        supabase.from('categories').select('id, name').order('name'),
-        supabase.from('suppliers').select('id, name').order('name')
+        supabase.from('categories').select('name').order('name'),
+        supabase.from('suppliers').select('name').order('name')
       ]);
 
-      if (categoriesResult.data) setCategories(categoriesResult.data);
-      if (suppliersResult.data) setSuppliers(suppliersResult.data);
+      if (categoriesResult.data) {
+        setCategorySuggestions(categoriesResult.data.map(cat => cat.name));
+      }
+      if (suppliersResult.data) {
+        setSupplierSuggestions(suppliersResult.data.map(sup => sup.name));
+      }
     } catch (error) {
-      console.error('Error fetching categories and suppliers:', error);
+      console.error('Error fetching suggestions:', error);
     }
   };
 
   useEffect(() => {
     if (isOpen) {
-      fetchCategoriesAndSuppliers();
+      fetchSuggestions();
     }
   }, [isOpen]);
+
+  const saveToLookupTables = async (categoryName: string, supplierName: string) => {
+    const promises = [];
+
+    // Save category if it doesn't exist
+    if (categoryName && !categorySuggestions.includes(categoryName)) {
+      promises.push(
+        supabase
+          .from('categories')
+          .insert({ name: categoryName })
+          .select()
+          .single()
+      );
+    }
+
+    // Save supplier if it doesn't exist
+    if (supplierName && !supplierSuggestions.includes(supplierName)) {
+      promises.push(
+        supabase
+          .from('suppliers')
+          .insert({ name: supplierName })
+          .select()
+          .single()
+      );
+    }
+
+    if (promises.length > 0) {
+      try {
+        await Promise.all(promises);
+      } catch (error) {
+        console.error('Error saving to lookup tables:', error);
+        // Don't fail the product creation if lookup table updates fail
+      }
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -71,6 +101,9 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
       const quantityInStock = formData.quantity_in_stock ? parseInt(formData.quantity_in_stock) : 0;
       const minimumStockLevel = formData.minimum_stock_level ? parseInt(formData.minimum_stock_level) : 0;
 
+      // Save to lookup tables first
+      await saveToLookupTables(formData.category_name, formData.supplier_name);
+
       const { data, error } = await supabase
         .from('products')
         .insert({
@@ -79,8 +112,8 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
           unit_price: unitPrice,
           quantity_in_stock: quantityInStock,
           minimum_stock_level: minimumStockLevel,
-          category_id: formData.category_id || null,
-          supplier_id: formData.supplier_id || null,
+          category_name: formData.category_name || null,
+          supplier_name: formData.supplier_name || null,
         })
         .select()
         .single();
@@ -93,7 +126,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
 
       console.log('Product created successfully:', data);
 
-      // Create initial stock transaction if there's stock (without total_value as it's generated)
+      // Create initial stock transaction if there's stock
       if (quantityInStock > 0) {
         const { error: transactionError } = await supabase
           .from('stock_transactions')
@@ -122,8 +155,8 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
         unit_price: '',
         quantity_in_stock: '',
         minimum_stock_level: '',
-        category_id: '',
-        supplier_id: '',
+        category_name: '',
+        supplier_name: '',
       });
 
       onProductAdded();
@@ -209,41 +242,21 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Category
-            </label>
-            <Select value={formData.category_id} onValueChange={(value) => setFormData({ ...formData, category_id: value })}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select category (optional)" />
-              </SelectTrigger>
-              <SelectContent>
-                {categories.map((category) => (
-                  <SelectItem key={category.id} value={category.id}>
-                    {category.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+          <SuggestionInput
+            value={formData.category_name}
+            onChange={(value) => setFormData({ ...formData, category_name: value })}
+            suggestions={categorySuggestions}
+            placeholder="Enter category (optional)"
+            label="Category"
+          />
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Supplier
-            </label>
-            <Select value={formData.supplier_id} onValueChange={(value) => setFormData({ ...formData, supplier_id: value })}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select supplier (optional)" />
-              </SelectTrigger>
-              <SelectContent>
-                {suppliers.map((supplier) => (
-                  <SelectItem key={supplier.id} value={supplier.id}>
-                    {supplier.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+          <SuggestionInput
+            value={formData.supplier_name}
+            onChange={(value) => setFormData({ ...formData, supplier_name: value })}
+            suggestions={supplierSuggestions}
+            placeholder="Enter supplier (optional)"
+            label="Supplier"
+          />
 
           <div className="flex justify-end space-x-2 pt-4">
             <Button type="button" variant="outline" onClick={onClose}>
