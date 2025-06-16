@@ -69,20 +69,18 @@ export const AddStockMovementModal = ({ isOpen, onClose, onTransactionAdded }: A
     try {
       const quantityNum = parseInt(quantity);
       const unitPriceNum = unitPrice ? parseFloat(unitPrice) : null;
-      const totalValue = unitPriceNum ? quantityNum * unitPriceNum : null;
 
       console.log('Creating transaction with data:', {
         product_name: productName.trim(),
         transaction_type: transactionType,
         quantity: quantityNum,
         unit_price: unitPriceNum,
-        total_value: totalValue,
         created_by: user.id,
         reference_number: referenceNumber || null,
         notes: notes || null,
       });
 
-      // Insert the stock transaction
+      // Insert the stock transaction (total_value will be calculated automatically)
       const { data: transactionData, error: transactionError } = await supabase
         .from('stock_transactions')
         .insert({
@@ -90,7 +88,6 @@ export const AddStockMovementModal = ({ isOpen, onClose, onTransactionAdded }: A
           transaction_type: transactionType,
           quantity: quantityNum,
           unit_price: unitPriceNum,
-          total_value: totalValue,
           created_by: user.id,
           reference_number: referenceNumber || null,
           notes: notes || null,
