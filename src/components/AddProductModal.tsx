@@ -1,12 +1,17 @@
 
 import React, { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/hooks/useAuth';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { SuggestionInput } from './SuggestionInput';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { useForm } from 'react-hook-form';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/hooks/useAuth';
+import { useBranches } from '@/hooks/useBranches';
 import { toast } from 'sonner';
+import { SuggestionInput } from './SuggestionInput';
 
 interface AddProductModalProps {
   isOpen: boolean;
@@ -14,34 +19,55 @@ interface AddProductModalProps {
   onProductAdded: () => void;
 }
 
+interface FormData {
+  name: string;
+  description: string;
+  categoryName: string;
+  supplierName: string;
+  quantityInStock: number;
+  minimumStockLevel: number;
+  unitPrice: number;
+}
+
 export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductModalProps) => {
   const { user } = useAuth();
+  const { activeBranch } = useBranches();
   const [loading, setLoading] = useState(false);
-  const [categorySuggestions, setCategorySuggestions] = useState<string[]>([]);
-  const [supplierSuggestions, setSupplierSuggestions] = useState<string[]>([]);
+  const [categories, setCategories] = useState<string[]>([]);
+  const [suppliers, setSuppliers] = useState<string[]>([]);
 
-  const [formData, setFormData] = useState({
-    name: '',
-    description: '',
-    unit_price: '',
-    quantity_in_stock: '',
-    minimum_stock_level: '',
-    category_name: '',
-    supplier_name: '',
+  const form = useForm<FormData>({
+    defaultValues: {
+      name: '',
+      description: '',
+      categoryName: '',
+      supplierName: '',
+      quantityInStock: 0,
+      minimumStockLevel: 10,
+      unitPrice: 0,
+    },
   });
 
   const fetchSuggestions = async () => {
     try {
-      const [categoriesResult, suppliersResult] = await Promise.all([
-        supabase.from('categories').select('name').order('name'),
-        supabase.from('suppliers').select('name').order('name')
-      ]);
-
-      if (categoriesResult.data) {
-        setCategorySuggestions(categoriesResult.data.map(cat => cat.name));
+      // Fetch existing categories
+      const { data: categoriesData } = await supabase
+        .from('categories')
+        .select('name')
+        .order('name');
+      
+      if (categoriesData) {
+        setCategories(categoriesData.map(c => c.name));
       }
-      if (suppliersResult.data) {
-        setSupplierSuggestions(suppliersResult.data.map(sup => sup.name));
+
+      // Fetch existing suppliers
+      const { data: suppliersData } = await supabase
+        .from('suppliers')
+        .select('name')
+        .order('name');
+      
+      if (suppliersData) {
+        setSuppliers(suppliersData.map(s => s.name));
       }
     } catch (error) {
       console.error('Error fetching suggestions:', error);
@@ -54,219 +80,282 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
     }
   }, [isOpen]);
 
-  const saveToLookupTables = async (categoryName: string, supplierName: string) => {
-    const promises = [];
-
-    // Save category if it doesn't exist
-    if (categoryName && !categorySuggestions.includes(categoryName)) {
-      promises.push(
-        supabase
-          .from('categories')
-          .insert({ name: categoryName })
-          .select()
-          .single()
-      );
+  const handleSubmit = async (data: FormData) => {
+    if (!user || !activeBranch) {
+      toast.error('Geen gebruiker of filiaal gevonden');
+      return;
     }
-
-    // Save supplier if it doesn't exist
-    if (supplierName && !supplierSuggestions.includes(supplierName)) {
-      promises.push(
-        supabase
-          .from('suppliers')
-          .insert({ name: supplierName })
-          .select()
-          .single()
-      );
-    }
-
-    if (promises.length > 0) {
-      try {
-        await Promise.all(promises);
-      } catch (error) {
-        console.error('Error saving to lookup tables:', error);
-        // Don't fail the product creation if lookup table updates fail
-      }
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!user) return;
 
     setLoading(true);
     try {
-      console.log('Creating product with data:', formData);
+      console.log('Adding product for branch:', activeBranch.branch_id);
+      
+      let categoryId = null;
+      let supplierId = null;
 
-      const unitPrice = formData.unit_price ? parseFloat(formData.unit_price) : 0;
-      const quantityInStock = formData.quantity_in_stock ? parseInt(formData.quantity_in_stock) : 0;
-      const minimumStockLevel = formData.minimum_stock_level ? parseInt(formData.minimum_stock_level) : 0;
+      // Handle category
+      if (data.categoryName.trim()) {
+        const { data: existingCategory } = await supabase
+          .from('categories')
+          .select('id')
+          .eq('name', data.categoryName.trim())
+          .single();
 
-      // Save to lookup tables first
-      await saveToLookupTables(formData.category_name, formData.supplier_name);
+        if (existingCategory) {
+          categoryId = existingCategory.id;
+        } else {
+          const { data: newCategory, error: categoryError } = await supabase
+            .from('categories')
+            .insert({ name: data.categoryName.trim() })
+            .select('id')
+            .single();
 
-      const { data, error } = await supabase
-        .from('products')
-        .insert({
-          name: formData.name,
-          description: formData.description || null,
-          unit_price: unitPrice,
-          quantity_in_stock: quantityInStock,
-          minimum_stock_level: minimumStockLevel,
-          category_name: formData.category_name || null,
-          supplier_name: formData.supplier_name || null,
-        })
-        .select()
-        .single();
-
-      if (error) {
-        console.error('Error creating product:', error);
-        toast.error('Failed to create product');
-        return;
-      }
-
-      console.log('Product created successfully:', data);
-
-      // Create initial stock transaction if there's stock
-      if (quantityInStock > 0) {
-        const { error: transactionError } = await supabase
-          .from('stock_transactions')
-          .insert({
-            product_id: data.id,
-            product_name: formData.name,
-            transaction_type: 'incoming',
-            quantity: quantityInStock,
-            unit_price: unitPrice,
-            notes: 'Initial stock - product created',
-            created_by: user.id
-          });
-
-        if (transactionError) {
-          console.error('Error creating initial stock transaction:', transactionError);
-          // Don't fail the product creation for this
+          if (categoryError) {
+            console.error('Error creating category:', categoryError);
+            toast.error('Failed to create category');
+            return;
+          }
+          categoryId = newCategory.id;
         }
       }
 
-      toast.success('Product created successfully');
-      
-      // Reset form
-      setFormData({
-        name: '',
-        description: '',
-        unit_price: '',
-        quantity_in_stock: '',
-        minimum_stock_level: '',
-        category_name: '',
-        supplier_name: '',
-      });
+      // Handle supplier
+      if (data.supplierName.trim()) {
+        const { data: existingSupplier } = await supabase
+          .from('suppliers')
+          .select('id')
+          .eq('name', data.supplierName.trim())
+          .single();
 
+        if (existingSupplier) {
+          supplierId = existingSupplier.id;
+        } else {
+          const { data: newSupplier, error: supplierError } = await supabase
+            .from('suppliers')
+            .insert({ name: data.supplierName.trim() })
+            .select('id')
+            .single();
+
+          if (supplierError) {
+            console.error('Error creating supplier:', supplierError);
+            toast.error('Failed to create supplier');
+            return;
+          }
+          supplierId = newSupplier.id;
+        }
+      }
+
+      // Create product with branch_id
+      const { error } = await supabase
+        .from('products')
+        .insert({
+          name: data.name,
+          description: data.description || null,
+          category_id: categoryId,
+          category_name: data.categoryName.trim() || null,
+          supplier_id: supplierId,
+          supplier_name: data.supplierName.trim() || null,
+          quantity_in_stock: data.quantityInStock,
+          minimum_stock_level: data.minimumStockLevel,
+          unit_price: data.unitPrice,
+          branch_id: activeBranch.branch_id, // CRUCIAL: Set the branch_id
+        });
+
+      if (error) {
+        console.error('Error adding product:', error);
+        toast.error('Failed to add product');
+        return;
+      }
+
+      console.log('Product added successfully for branch:', activeBranch.branch_id);
+      toast.success('Product added successfully!');
+      form.reset();
       onProductAdded();
+      onClose();
     } catch (error) {
-      console.error('Error creating product:', error);
-      toast.error('Failed to create product');
+      console.error('Error adding product:', error);
+      toast.error('Failed to add product');
     } finally {
       setLoading(false);
     }
   };
 
-  if (!isOpen) return null;
+  if (!activeBranch) {
+    return null;
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-md">
+      <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Add New Product</DialogTitle>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Product Name *
-            </label>
-            <Input
-              type="text"
-              value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              required
-              placeholder="Enter product name"
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+            <FormField
+              control={form.control}
+              name="name"
+              rules={{ required: 'Product name is required' }}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Product Name *</FormLabel>
+                  <FormControl>
+                    <Input {...field} placeholder="Enter product name" disabled={loading} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Description
-            </label>
-            <Input
-              type="text"
-              value={formData.description}
-              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              placeholder="Enter description (optional)"
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description</FormLabel>
+                  <FormControl>
+                    <Textarea 
+                      {...field} 
+                      placeholder="Enter product description" 
+                      disabled={loading}
+                      className="resize-none"
+                      rows={3}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Unit Price
-              </label>
-              <Input
-                type="number"
-                step="0.01"
-                value={formData.unit_price}
-                onChange={(e) => setFormData({ ...formData, unit_price: e.target.value })}
-                placeholder="0.00"
+            <div className="grid grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="categoryName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Category</FormLabel>
+                    <FormControl>
+                      <SuggestionInput
+                        {...field}
+                        suggestions={categories}
+                        placeholder="Enter or select category"
+                        disabled={loading}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="supplierName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Supplier</FormLabel>
+                    <FormControl>
+                      <SuggestionInput
+                        {...field}
+                        suggestions={suppliers}
+                        placeholder="Enter or select supplier"
+                        disabled={loading}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Initial Stock
-              </label>
-              <Input
-                type="number"
-                value={formData.quantity_in_stock}
-                onChange={(e) => setFormData({ ...formData, quantity_in_stock: e.target.value })}
-                placeholder="0"
+            <div className="grid grid-cols-3 gap-4">
+              <FormField
+                control={form.control}
+                name="quantityInStock"
+                rules={{ 
+                  required: 'Quantity is required',
+                  min: { value: 0, message: 'Quantity must be 0 or more' }
+                }}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Stock Quantity *</FormLabel>
+                    <FormControl>
+                      <Input 
+                        {...field} 
+                        type="number" 
+                        min="0"
+                        placeholder="0"
+                        disabled={loading}
+                        onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="minimumStockLevel"
+                rules={{ 
+                  required: 'Minimum stock level is required',
+                  min: { value: 0, message: 'Minimum stock level must be 0 or more' }
+                }}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Min. Level *</FormLabel>
+                    <FormControl>
+                      <Input 
+                        {...field} 
+                        type="number" 
+                        min="0"
+                        placeholder="10"
+                        disabled={loading}
+                        onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="unitPrice"
+                rules={{ 
+                  required: 'Unit price is required',
+                  min: { value: 0, message: 'Unit price must be 0 or more' }
+                }}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Unit Price *</FormLabel>
+                    <FormControl>
+                      <Input 
+                        {...field} 
+                        type="number" 
+                        step="0.01"
+                        min="0"
+                        placeholder="0.00"
+                        disabled={loading}
+                        onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
             </div>
-          </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Minimum Stock Level
-            </label>
-            <Input
-              type="number"
-              value={formData.minimum_stock_level}
-              onChange={(e) => setFormData({ ...formData, minimum_stock_level: e.target.value })}
-              placeholder="0"
-            />
-          </div>
-
-          <SuggestionInput
-            value={formData.category_name}
-            onChange={(value) => setFormData({ ...formData, category_name: value })}
-            suggestions={categorySuggestions}
-            placeholder="Enter category (optional)"
-            label="Category"
-          />
-
-          <SuggestionInput
-            value={formData.supplier_name}
-            onChange={(value) => setFormData({ ...formData, supplier_name: value })}
-            suggestions={supplierSuggestions}
-            placeholder="Enter supplier (optional)"
-            label="Supplier"
-          />
-
-          <div className="flex justify-end space-x-2 pt-4">
-            <Button type="button" variant="outline" onClick={onClose}>
-              Cancel
-            </Button>
-            <Button type="submit" disabled={loading}>
-              {loading ? 'Creating...' : 'Create Product'}
-            </Button>
-          </div>
-        </form>
+            <div className="flex justify-end space-x-2 pt-4">
+              <Button type="button" variant="outline" onClick={onClose} disabled={loading}>
+                Cancel
+              </Button>
+              <Button type="submit" disabled={loading}>
+                {loading ? 'Adding...' : 'Add Product'}
+              </Button>
+            </div>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );

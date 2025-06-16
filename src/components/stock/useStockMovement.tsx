@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { useBranches } from '@/hooks/useBranches';
 import { toast } from 'sonner';
 
 interface Product {
@@ -22,6 +23,7 @@ interface Product {
 
 export const useStockMovement = (product: Product, onProductUpdated: () => void, onClose: () => void) => {
   const { user } = useAuth();
+  const { activeBranch } = useBranches();
   const [loading, setLoading] = useState(false);
   const [transactionType, setTransactionType] = useState<'incoming' | 'outgoing'>('outgoing');
   const [quantity, setQuantity] = useState('');
@@ -39,7 +41,7 @@ export const useStockMovement = (product: Product, onProductUpdated: () => void,
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user || !quantity) return;
+    if (!user || !quantity || !activeBranch) return;
 
     const quantityNum = parseInt(quantity);
     const unitPriceNum = parseFloat(unitPrice);
@@ -56,14 +58,14 @@ export const useStockMovement = (product: Product, onProductUpdated: () => void,
 
     setLoading(true);
     try {
-      console.log('Creating stock movement:', { transactionType, quantity: quantityNum, unitPrice: unitPriceNum });
+      console.log('Creating stock movement for branch:', activeBranch.branch_id, { transactionType, quantity: quantityNum, unitPrice: unitPriceNum });
 
       // Calculate new stock level
       const newQuantity = transactionType === 'incoming' 
         ? product.quantity_in_stock + quantityNum
         : product.quantity_in_stock - quantityNum;
 
-      // Create stock transaction
+      // Create stock transaction with branch_id
       const { error: transactionError } = await supabase
         .from('stock_transactions')
         .insert({
@@ -72,9 +74,11 @@ export const useStockMovement = (product: Product, onProductUpdated: () => void,
           transaction_type: transactionType,
           quantity: quantityNum,
           unit_price: unitPriceNum,
+          total_value: quantityNum * unitPriceNum,
           notes: notes || null,
           reference_number: referenceNumber || null,
-          created_by: user.id
+          created_by: user.id,
+          branch_id: activeBranch.branch_id // CRUCIAL: Set the branch_id
         });
 
       if (transactionError) {
@@ -98,7 +102,7 @@ export const useStockMovement = (product: Product, onProductUpdated: () => void,
         return;
       }
 
-      console.log('Stock movement created successfully');
+      console.log('Stock movement created successfully for branch:', activeBranch.branch_id);
       toast.success(`Stock ${transactionType === 'incoming' ? 'added' : 'removed'} successfully`);
       
       onProductUpdated();

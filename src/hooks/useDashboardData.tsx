@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './useAuth';
+import { useBranches } from './useBranches';
 
 export interface DashboardMetrics {
   totalStockValue: number;
@@ -30,6 +31,7 @@ export interface DailyActivityData {
 
 export const useDashboardData = () => {
   const { user } = useAuth();
+  const { activeBranch } = useBranches();
   const [metrics, setMetrics] = useState<DashboardMetrics>({
     totalStockValue: 0,
     totalProducts: 0,
@@ -43,29 +45,35 @@ export const useDashboardData = () => {
   const [loading, setLoading] = useState(true);
 
   const fetchDashboardData = async () => {
-    if (!user) return;
+    if (!user || !activeBranch) {
+      setLoading(false);
+      return;
+    }
 
     try {
       setLoading(true);
+      console.log('Fetching dashboard data for branch:', activeBranch.branch_id);
 
-      // Fetch products with categories using type assertion
-      const { data: products, error: productsError } = await (supabase as any)
+      // Fetch products with categories for the specific branch
+      const { data: products, error: productsError } = await supabase
         .from('products')
         .select(`
           *,
           categories(name)
-        `);
+        `)
+        .eq('branch_id', activeBranch.branch_id);
 
       if (productsError) {
         console.error('Error fetching products:', productsError);
         return;
       }
 
-      // Fetch today's transactions
+      // Fetch today's transactions for the specific branch
       const today = new Date().toISOString().split('T')[0];
-      const { data: todayTransactions, error: transactionsError } = await (supabase as any)
+      const { data: todayTransactions, error: transactionsError } = await supabase
         .from('stock_transactions')
         .select('*')
+        .eq('branch_id', activeBranch.branch_id)
         .gte('created_at', `${today}T00:00:00`)
         .lt('created_at', `${today}T23:59:59`);
 
@@ -74,12 +82,13 @@ export const useDashboardData = () => {
         return;
       }
 
-      // Fetch last 7 days transactions for trends
+      // Fetch last 7 days transactions for trends for the specific branch
       const weekAgo = new Date();
       weekAgo.setDate(weekAgo.getDate() - 7);
-      const { data: weekTransactions, error: weekError } = await (supabase as any)
+      const { data: weekTransactions, error: weekError } = await supabase
         .from('stock_transactions')
         .select('*')
+        .eq('branch_id', activeBranch.branch_id)
         .gte('created_at', weekAgo.toISOString());
 
       if (weekError) {
@@ -98,7 +107,7 @@ export const useDashboardData = () => {
       const outgoingToday = todayTransactions?.filter((t: any) => t.transaction_type === 'outgoing')
         .reduce((sum: number, t: any) => sum + t.quantity, 0) || 0;
       
-      const lowStockAlerts = products?.filter((p: any) => p.status === 'low_stock' || p.status === 'out_of_stock').length || 0;
+      const lowStockAlerts = products?.filter((p: any) => p.quantity_in_stock <= p.minimum_stock_level).length || 0;
 
       setMetrics({
         totalStockValue,
@@ -169,6 +178,8 @@ export const useDashboardData = () => {
       }
       setDailyActivity(activity);
 
+      console.log('Dashboard data fetched successfully for branch:', activeBranch.branch_id);
+
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
     } finally {
@@ -178,7 +189,7 @@ export const useDashboardData = () => {
 
   useEffect(() => {
     fetchDashboardData();
-  }, [user]);
+  }, [user, activeBranch]);
 
   return {
     metrics,
