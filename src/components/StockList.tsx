@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+
+import React, { useState, useEffect, useMemo } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
@@ -7,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Edit, Trash2, Plus } from 'lucide-react';
 import { EditProductModal } from './EditProductModal';
 import { AddProductModal } from './AddProductModal';
+import { ProductFilters } from './ProductFilters';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { toast } from 'sonner';
 
@@ -34,6 +36,8 @@ interface Product {
   suppliers: {
     name: string;
   } | null;
+  category_id: string | null;
+  supplier_id: string | null;
 }
 
 const getStockStatus = (quantity: number, minLevel: number) => {
@@ -63,10 +67,80 @@ export const StockList = () => {
   const { user } = useAuth();
   const isMobile = useIsMobile();
   const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [suppliers, setSuppliers] = useState<Supplier[]>([]);
   const [loading, setLoading] = useState(true);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+
+  // Filter states
+  const [searchTerm, setSearchTerm] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('all');
+  const [supplierFilter, setSupplierFilter] = useState('all');
+  const [stockStatusFilter, setStockStatusFilter] = useState('all');
+  const [minPriceFilter, setMinPriceFilter] = useState('');
+  const [maxPriceFilter, setMaxPriceFilter] = useState('');
+  const [minStockFilter, setMinStockFilter] = useState('');
+  const [maxStockFilter, setMaxStockFilter] = useState('');
+
+  // Calculate active filters count
+  const activeFiltersCount = useMemo(() => {
+    let count = 0;
+    if (categoryFilter !== 'all') count++;
+    if (supplierFilter !== 'all') count++;
+    if (stockStatusFilter !== 'all') count++;
+    if (minPriceFilter !== '') count++;
+    if (maxPriceFilter !== '') count++;
+    if (minStockFilter !== '') count++;
+    if (maxStockFilter !== '') count++;
+    return count;
+  }, [categoryFilter, supplierFilter, stockStatusFilter, minPriceFilter, maxPriceFilter, minStockFilter, maxStockFilter]);
+
+  // Filter products based on all filter criteria
+  const filteredProducts = useMemo(() => {
+    return products.filter((product) => {
+      const stockStatus = getStockStatus(product.quantity_in_stock, product.minimum_stock_level);
+      
+      // Search term filter
+      const matchesSearch = searchTerm === '' || 
+        product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (product.description && product.description.toLowerCase().includes(searchTerm.toLowerCase()));
+
+      // Category filter
+      const matchesCategory = categoryFilter === 'all' || product.category_id === categoryFilter;
+
+      // Supplier filter
+      const matchesSupplier = supplierFilter === 'all' || product.supplier_id === supplierFilter;
+
+      // Stock status filter
+      const matchesStockStatus = stockStatusFilter === 'all' || 
+        (stockStatusFilter === 'in-stock' && stockStatus === 'In Stock') ||
+        (stockStatusFilter === 'low-stock' && stockStatus === 'Low Stock') ||
+        (stockStatusFilter === 'out-of-stock' && stockStatus === 'Out of Stock');
+
+      // Price range filter
+      const matchesMinPrice = minPriceFilter === '' || product.unit_price >= parseFloat(minPriceFilter);
+      const matchesMaxPrice = maxPriceFilter === '' || product.unit_price <= parseFloat(maxPriceFilter);
+
+      // Stock quantity range filter
+      const matchesMinStock = minStockFilter === '' || product.quantity_in_stock >= parseInt(minStockFilter);
+      const matchesMaxStock = maxStockFilter === '' || product.quantity_in_stock <= parseInt(maxStockFilter);
+
+      return matchesSearch && matchesCategory && matchesSupplier && matchesStockStatus && 
+             matchesMinPrice && matchesMaxPrice && matchesMinStock && matchesMaxStock;
+    });
+  }, [products, searchTerm, categoryFilter, supplierFilter, stockStatusFilter, minPriceFilter, maxPriceFilter, minStockFilter, maxStockFilter]);
+
+  const handleClearFilters = () => {
+    setCategoryFilter('all');
+    setSupplierFilter('all');
+    setStockStatusFilter('all');
+    setMinPriceFilter('');
+    setMaxPriceFilter('');
+    setMinStockFilter('');
+    setMaxStockFilter('');
+  };
 
   const handleEdit = (product: Product) => {
     setSelectedProduct(product);
@@ -144,8 +218,46 @@ export const StockList = () => {
     }
   };
 
+  const fetchCategories = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('categories')
+        .select('id, name')
+        .order('name');
+
+      if (error) {
+        console.error('Error fetching categories:', error);
+        return;
+      }
+
+      setCategories(data || []);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+  };
+
+  const fetchSuppliers = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('suppliers')
+        .select('id, name')
+        .order('name');
+
+      if (error) {
+        console.error('Error fetching suppliers:', error);
+        return;
+      }
+
+      setSuppliers(data || []);
+    } catch (error) {
+      console.error('Error fetching suppliers:', error);
+    }
+  };
+
   useEffect(() => {
     fetchProducts();
+    fetchCategories();
+    fetchSuppliers();
   }, [user]);
 
   if (loading) {
@@ -168,15 +280,40 @@ export const StockList = () => {
           </Button>
         </div>
 
+        <ProductFilters
+          searchTerm={searchTerm}
+          onSearchChange={setSearchTerm}
+          categoryFilter={categoryFilter}
+          onCategoryFilterChange={setCategoryFilter}
+          supplierFilter={supplierFilter}
+          onSupplierFilterChange={setSupplierFilter}
+          stockStatusFilter={stockStatusFilter}
+          onStockStatusFilterChange={setStockStatusFilter}
+          minPriceFilter={minPriceFilter}
+          onMinPriceFilterChange={setMinPriceFilter}
+          maxPriceFilter={maxPriceFilter}
+          onMaxPriceFilterChange={setMaxPriceFilter}
+          minStockFilter={minStockFilter}
+          onMinStockFilterChange={setMinStockFilter}
+          maxStockFilter={maxStockFilter}
+          onMaxStockFilterChange={setMaxStockFilter}
+          categories={categories}
+          suppliers={suppliers}
+          onClearFilters={handleClearFilters}
+          activeFiltersCount={activeFiltersCount}
+        />
+
         <div className="space-y-3">
-          {products.length === 0 ? (
+          {filteredProducts.length === 0 ? (
             <Card className="bg-white">
               <CardContent className="p-6 text-center">
-                <p className="text-gray-500">No products found.</p>
+                <p className="text-gray-500">
+                  {products.length === 0 ? 'No products found.' : 'No products match your filters.'}
+                </p>
               </CardContent>
             </Card>
           ) : (
-            products.map((product) => {
+            filteredProducts.map((product) => {
               const stockStatus = getStockStatus(product.quantity_in_stock, product.minimum_stock_level);
               return (
                 <Card key={product.id} className="relative bg-white">
@@ -301,6 +438,29 @@ export const StockList = () => {
         </Button>
       </div>
 
+      <ProductFilters
+        searchTerm={searchTerm}
+        onSearchChange={setSearchTerm}
+        categoryFilter={categoryFilter}
+        onCategoryFilterChange={setCategoryFilter}
+        supplierFilter={supplierFilter}
+        onSupplierFilterChange={setSupplierFilter}
+        stockStatusFilter={stockStatusFilter}
+        onStockStatusFilterChange={setStockStatusFilter}
+        minPriceFilter={minPriceFilter}
+        onMinPriceFilterChange={setMinPriceFilter}
+        maxPriceFilter={maxPriceFilter}
+        onMaxPriceFilterChange={setMaxPriceFilter}
+        minStockFilter={minStockFilter}
+        onMinStockFilterChange={setMinStockFilter}
+        maxStockFilter={maxStockFilter}
+        onMaxStockFilterChange={setMaxStockFilter}
+        categories={categories}
+        suppliers={suppliers}
+        onClearFilters={handleClearFilters}
+        activeFiltersCount={activeFiltersCount}
+      />
+
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
@@ -333,14 +493,14 @@ export const StockList = () => {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {products.length === 0 ? (
+              {filteredProducts.length === 0 ? (
                 <tr>
                   <td colSpan={8} className="px-6 py-4 text-center text-gray-500">
-                    No products found.
+                    {products.length === 0 ? 'No products found.' : 'No products match your filters.'}
                   </td>
                 </tr>
               ) : (
-                products.map((product) => {
+                filteredProducts.map((product) => {
                   const stockStatus = getStockStatus(product.quantity_in_stock, product.minimum_stock_level);
                   return (
                     <tr key={product.id} className="hover:bg-gray-50">
