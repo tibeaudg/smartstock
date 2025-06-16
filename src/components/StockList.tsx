@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -44,6 +43,19 @@ const getStockStatus = (quantity: number, minLevel: number) => {
     return 'Low Stock';
   } else {
     return 'Out of Stock';
+  }
+};
+
+const getStockStatusVariant = (status: string) => {
+  switch (status) {
+    case 'In Stock':
+      return 'default'; // This will be green
+    case 'Low Stock':
+      return 'secondary'; // This will be orange  
+    case 'Out of Stock':
+      return 'destructive'; // This will be red
+    default:
+      return 'default';
   }
 };
 
@@ -207,7 +219,7 @@ export const StockList = () => {
                         <div className="flex items-center space-x-2">
                           <span className="font-semibold">{product.quantity_in_stock}</span>
                           <Badge
-                            variant={stockStatus === 'In Stock' ? 'default' : stockStatus === 'Low Stock' ? 'secondary' : 'destructive'}
+                            variant={getStockStatusVariant(stockStatus)}
                             className="text-xs"
                           >
                             {stockStatus}
@@ -362,9 +374,7 @@ export const StockList = () => {
                         ${product.unit_price.toFixed(2)}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <Badge
-                          variant={stockStatus === 'In Stock' ? 'default' : stockStatus === 'Low Stock' ? 'secondary' : 'destructive'}
-                        >
+                        <Badge variant={getStockStatusVariant(stockStatus)}>
                           {stockStatus}
                         </Badge>
                       </td>
