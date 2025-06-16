@@ -15,7 +15,7 @@ interface AddStockMovementModalProps {
 }
 
 export const AddStockMovementModal = ({ isOpen, onClose, onTransactionAdded }: AddStockMovementModalProps) => {
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
   const { toast } = useToast();
   const [transactionType, setTransactionType] = useState<'incoming' | 'outgoing'>('incoming');
   const [productName, setProductName] = useState<string>('');
@@ -24,6 +24,40 @@ export const AddStockMovementModal = ({ isOpen, onClose, onTransactionAdded }: A
   const [referenceNumber, setReferenceNumber] = useState<string>('');
   const [notes, setNotes] = useState<string>('');
   const [loading, setLoading] = useState(false);
+
+  const ensureUserProfile = async () => {
+    if (!user) return false;
+    
+    // Check if profile already exists
+    if (profile) return true;
+    
+    console.log('Creating user profile...');
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .insert({
+          id: user.id,
+          email: user.email || '',
+          first_name: user.user_metadata?.first_name || null,
+          last_name: user.user_metadata?.last_name || null,
+          role: 'staff'
+        });
+      
+      if (error) {
+        console.error('Error creating profile:', error);
+        // If the profile already exists (conflict), that's fine
+        if (error.code !== '23505') {
+          throw error;
+        }
+      }
+      
+      console.log('User profile ensured');
+      return true;
+    } catch (error) {
+      console.error('Failed to ensure user profile:', error);
+      return false;
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -67,6 +101,17 @@ export const AddStockMovementModal = ({ isOpen, onClose, onTransactionAdded }: A
     setLoading(true);
 
     try {
+      // Ensure the user profile exists before creating the transaction
+      const profileExists = await ensureUserProfile();
+      if (!profileExists) {
+        toast({
+          title: 'Error',
+          description: 'Failed to create user profile. Please try again.',
+          variant: 'destructive',
+        });
+        return;
+      }
+
       const quantityNum = parseInt(quantity);
       const unitPriceNum = unitPrice ? parseFloat(unitPrice) : null;
 
