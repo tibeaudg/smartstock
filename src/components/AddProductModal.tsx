@@ -199,7 +199,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
         const stockTransactionData = {
           product_id: insertedProduct.id,
           product_name: data.name,
-          transaction_type: 'incoming',
+          transaction_type: 'incoming' as const,
           quantity: data.quantityInStock,
           unit_price: data.unitPrice,
           total_value: data.quantityInStock * data.unitPrice,
