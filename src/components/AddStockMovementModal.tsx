@@ -153,7 +153,7 @@ export const AddStockMovementModal = ({ isOpen, onClose, onTransactionAdded }: A
       const { error: updateError } = await supabase
         .from('products')
         .update({ 
-          quantity_in_stock: Math.max(0, newStock), // Ensure stock doesn't go negative
+          quantity_in_stock: Math.max(0, newStock),
           updated_at: new Date().toISOString()
         })
         .eq('id', formData.product_id);
@@ -177,6 +177,7 @@ export const AddStockMovementModal = ({ isOpen, onClose, onTransactionAdded }: A
       });
 
       onTransactionAdded();
+      onClose();
     } catch (error) {
       console.error('Error creating stock movement:', error);
       toast.error('Failed to create stock movement');
@@ -206,7 +207,7 @@ export const AddStockMovementModal = ({ isOpen, onClose, onTransactionAdded }: A
               <SelectContent>
                 {products.map((product) => (
                   <SelectItem key={product.id} value={product.id}>
-                    {product.name} ({product.sku}) - Current: {product.quantity_in_stock}
+                    {product.name} ({product.sku}) - Stock: {product.quantity_in_stock}
                   </SelectItem>
                 ))}
               </SelectContent>
