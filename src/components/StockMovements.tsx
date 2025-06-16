@@ -5,7 +5,6 @@ import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Plus } from 'lucide-react';
-import { AddStockMovementModal } from './AddStockMovementModal';
 
 interface StockTransaction {
   id: string;
@@ -19,7 +18,6 @@ interface StockTransaction {
   notes: string | null;
   products: {
     name: string;
-    sku: string;
   } | null;
 }
 
@@ -27,7 +25,6 @@ export const StockMovements = () => {
   const { user } = useAuth();
   const [transactions, setTransactions] = useState<StockTransaction[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fetchTransactions = async () => {
     if (!user) return;
@@ -38,7 +35,7 @@ export const StockMovements = () => {
         .from('stock_transactions')
         .select(`
           *,
-          products(name, sku)
+          products(name)
         `)
         .order('created_at', { ascending: false });
 
@@ -60,12 +57,6 @@ export const StockMovements = () => {
     fetchTransactions();
   }, [user]);
 
-  const handleTransactionAdded = () => {
-    console.log('Transaction added, refreshing list...');
-    fetchTransactions();
-    setIsModalOpen(false);
-  };
-
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
@@ -78,10 +69,6 @@ export const StockMovements = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold text-gray-900">Stock Movements</h1>
-        <Button onClick={() => setIsModalOpen(true)}>
-          <Plus className="w-4 h-4 mr-2" />
-          Add Movement
-        </Button>
       </div>
 
       <div className="bg-white rounded-lg shadow">
@@ -102,7 +89,7 @@ export const StockMovements = () => {
             {transactions.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={8} className="text-center py-8 text-gray-500">
-                  No stock movements found. Add your first movement using the button above.
+                  No stock movements found.
                 </TableCell>
               </TableRow>
             ) : (
@@ -114,7 +101,6 @@ export const StockMovements = () => {
                   <TableCell>
                     <div>
                       <div className="font-medium">{transaction.products?.name || 'Unknown Product'}</div>
-                      <div className="text-sm text-gray-500">{transaction.products?.sku}</div>
                     </div>
                   </TableCell>
                   <TableCell>
@@ -143,12 +129,6 @@ export const StockMovements = () => {
           </TableBody>
         </Table>
       </div>
-
-      <AddStockMovementModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onTransactionAdded={handleTransactionAdded}
-      />
     </div>
   );
 };
