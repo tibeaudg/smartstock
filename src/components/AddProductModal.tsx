@@ -68,14 +68,18 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
     try {
       console.log('Creating product with data:', formData);
 
+      const unitPrice = formData.unit_price ? parseFloat(formData.unit_price) : 0;
+      const quantityInStock = formData.quantity_in_stock ? parseInt(formData.quantity_in_stock) : 0;
+      const minimumStockLevel = formData.minimum_stock_level ? parseInt(formData.minimum_stock_level) : 0;
+
       const { data, error } = await supabase
         .from('products')
         .insert({
           name: formData.name,
           description: formData.description || null,
-          unit_price: formData.unit_price ? parseFloat(formData.unit_price) : 0,
-          quantity_in_stock: formData.quantity_in_stock ? parseInt(formData.quantity_in_stock) : 0,
-          minimum_stock_level: formData.minimum_stock_level ? parseInt(formData.minimum_stock_level) : 0,
+          unit_price: unitPrice,
+          quantity_in_stock: quantityInStock,
+          minimum_stock_level: minimumStockLevel,
           category_id: formData.category_id || null,
           supplier_id: formData.supplier_id || null,
         })
@@ -89,6 +93,28 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
       }
 
       console.log('Product created successfully:', data);
+
+      // Create initial stock transaction if there's stock
+      if (quantityInStock > 0) {
+        const { error: transactionError } = await supabase
+          .from('stock_transactions')
+          .insert({
+            product_id: data.id,
+            product_name: formData.name,
+            transaction_type: 'incoming',
+            quantity: quantityInStock,
+            unit_price: unitPrice,
+            total_value: quantityInStock * unitPrice,
+            notes: 'Initial stock - product created',
+            created_by: user.id
+          });
+
+        if (transactionError) {
+          console.error('Error creating initial stock transaction:', transactionError);
+          // Don't fail the product creation for this
+        }
+      }
+
       toast.success('Product created successfully');
       
       // Reset form

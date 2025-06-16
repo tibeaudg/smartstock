@@ -5,8 +5,10 @@ import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { Plus } from 'lucide-react';
+import { Plus, Edit, Trash2 } from 'lucide-react';
 import { AddProductModal } from './AddProductModal';
+import { EditProductModal } from './EditProductModal';
+import { toast } from 'sonner';
 
 interface Product {
   id: string;
@@ -28,7 +30,9 @@ export const StockList = () => {
   const { user } = useAuth();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   const fetchProducts = async () => {
     if (!user) return;
@@ -65,7 +69,61 @@ export const StockList = () => {
   const handleProductAdded = () => {
     console.log('Product added, refreshing list...');
     fetchProducts();
-    setIsModalOpen(false);
+    setIsAddModalOpen(false);
+  };
+
+  const handleProductUpdated = () => {
+    console.log('Product updated, refreshing list...');
+    fetchProducts();
+    setIsEditModalOpen(false);
+    setSelectedProduct(null);
+  };
+
+  const handleEditProduct = (product: Product) => {
+    setSelectedProduct(product);
+    setIsEditModalOpen(true);
+  };
+
+  const handleDeleteProduct = async (product: Product) => {
+    if (!confirm(`Are you sure you want to delete "${product.name}"?`)) {
+      return;
+    }
+
+    try {
+      // Create a stock transaction for deletion
+      if (product.quantity_in_stock > 0) {
+        await supabase
+          .from('stock_transactions')
+          .insert({
+            product_id: product.id,
+            product_name: product.name,
+            transaction_type: 'outgoing',
+            quantity: product.quantity_in_stock,
+            unit_price: product.unit_price,
+            total_value: product.quantity_in_stock * product.unit_price,
+            notes: 'Product deleted - stock removed',
+            created_by: user?.id
+          });
+      }
+
+      // Delete the product
+      const { error } = await supabase
+        .from('products')
+        .delete()
+        .eq('id', product.id);
+
+      if (error) {
+        console.error('Error deleting product:', error);
+        toast.error('Failed to delete product');
+        return;
+      }
+
+      toast.success('Product deleted successfully');
+      fetchProducts();
+    } catch (error) {
+      console.error('Error deleting product:', error);
+      toast.error('Failed to delete product');
+    }
   };
 
   const getStatusColor = (status: string | null, quantity: number, minLevel: number) => {
@@ -92,7 +150,7 @@ export const StockList = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold text-gray-900">Stock Overview</h1>
-        <Button onClick={() => setIsModalOpen(true)}>
+        <Button onClick={() => setIsAddModalOpen(true)}>
           <Plus className="w-4 h-4 mr-2" />
           Add Product
         </Button>
@@ -110,12 +168,13 @@ export const StockList = () => {
               <TableHead>Unit Price</TableHead>
               <TableHead>Total Value</TableHead>
               <TableHead>Status</TableHead>
+              <TableHead>Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {products.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={8} className="text-center py-8 text-gray-500">
+                <TableCell colSpan={9} className="text-center py-8 text-gray-500">
                   No products found. Add products to see them here.
                 </TableCell>
               </TableRow>
@@ -153,6 +212,24 @@ export const StockList = () => {
                       )}
                     </Badge>
                   </TableCell>
+                  <TableCell>
+                    <div className="flex space-x-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleEditProduct(product)}
+                      >
+                        <Edit className="w-4 h-4" />
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleDeleteProduct(product)}
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </TableCell>
                 </TableRow>
               ))
             )}
@@ -161,10 +238,22 @@ export const StockList = () => {
       </div>
 
       <AddProductModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
         onProductAdded={handleProductAdded}
       />
+
+      {selectedProduct && (
+        <EditProductModal
+          isOpen={isEditModalOpen}
+          onClose={() => {
+            setIsEditModalOpen(false);
+            setSelectedProduct(null);
+          }}
+          onProductUpdated={handleProductUpdated}
+          product={selectedProduct}
+        />
+      )}
     </div>
   );
 };

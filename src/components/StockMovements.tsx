@@ -2,9 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
-import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Plus } from 'lucide-react';
 
 interface StockTransaction {
   id: string;
@@ -16,6 +14,7 @@ interface StockTransaction {
   created_at: string;
   reference_number: string | null;
   notes: string | null;
+  product_name: string | null;
   products: {
     name: string;
   } | null;
@@ -57,6 +56,17 @@ export const StockMovements = () => {
     fetchTransactions();
   }, [user]);
 
+  const formatTransactionType = (type: string) => {
+    switch (type) {
+      case 'incoming':
+        return 'Stock Added';
+      case 'outgoing':
+        return 'Stock Removed';
+      default:
+        return type;
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
@@ -68,7 +78,7 @@ export const StockMovements = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-gray-900">Stock Movements</h1>
+        <h1 className="text-3xl font-bold text-gray-900">Stock Transaction History</h1>
       </div>
 
       <div className="bg-white rounded-lg shadow">
@@ -77,7 +87,7 @@ export const StockMovements = () => {
             <TableRow>
               <TableHead>Date</TableHead>
               <TableHead>Product</TableHead>
-              <TableHead>Type</TableHead>
+              <TableHead>Transaction</TableHead>
               <TableHead>Quantity</TableHead>
               <TableHead>Unit Price</TableHead>
               <TableHead>Total Value</TableHead>
@@ -89,7 +99,7 @@ export const StockMovements = () => {
             {transactions.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={8} className="text-center py-8 text-gray-500">
-                  No stock movements found.
+                  No stock transactions found.
                 </TableCell>
               </TableRow>
             ) : (
@@ -97,10 +107,13 @@ export const StockMovements = () => {
                 <TableRow key={transaction.id}>
                   <TableCell>
                     {new Date(transaction.created_at).toLocaleDateString()}
+                    <div className="text-xs text-gray-500">
+                      {new Date(transaction.created_at).toLocaleTimeString()}
+                    </div>
                   </TableCell>
                   <TableCell>
-                    <div>
-                      <div className="font-medium">{transaction.products?.name || 'Unknown Product'}</div>
+                    <div className="font-medium">
+                      {transaction.products?.name || transaction.product_name || 'Unknown Product'}
                     </div>
                   </TableCell>
                   <TableCell>
@@ -111,10 +124,12 @@ export const StockMovements = () => {
                           : 'bg-red-100 text-red-800'
                       }`}
                     >
-                      {transaction.transaction_type === 'incoming' ? 'In' : 'Out'}
+                      {formatTransactionType(transaction.transaction_type)}
                     </span>
                   </TableCell>
-                  <TableCell>{transaction.quantity}</TableCell>
+                  <TableCell className="font-medium">
+                    {transaction.transaction_type === 'incoming' ? '+' : '-'}{transaction.quantity}
+                  </TableCell>
                   <TableCell>
                     {transaction.unit_price ? `$${transaction.unit_price.toFixed(2)}` : '-'}
                   </TableCell>
@@ -122,7 +137,11 @@ export const StockMovements = () => {
                     {transaction.total_value ? `$${transaction.total_value.toFixed(2)}` : '-'}
                   </TableCell>
                   <TableCell>{transaction.reference_number || '-'}</TableCell>
-                  <TableCell>{transaction.notes || '-'}</TableCell>
+                  <TableCell>
+                    <div className="max-w-xs truncate" title={transaction.notes || ''}>
+                      {transaction.notes || '-'}
+                    </div>
+                  </TableCell>
                 </TableRow>
               ))
             )}
