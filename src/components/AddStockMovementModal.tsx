@@ -2,11 +2,18 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { useToast } from '@/hooks/use-toast';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { toast } from 'sonner';
+
+interface Product {
+  id: string;
+  name: string;
+  sku: string;
+  quantity_in_stock: number;
+}
 
 interface AddStockMovementModalProps {
   isOpen: boolean;
@@ -15,169 +22,179 @@ interface AddStockMovementModalProps {
 }
 
 export const AddStockMovementModal = ({ isOpen, onClose, onTransactionAdded }: AddStockMovementModalProps) => {
-  const { user, profile } = useAuth();
-  const { toast } = useToast();
-  const [transactionType, setTransactionType] = useState<'incoming' | 'outgoing'>('incoming');
-  const [productName, setProductName] = useState<string>('');
-  const [quantity, setQuantity] = useState<string>('');
-  const [unitPrice, setUnitPrice] = useState<string>('');
-  const [referenceNumber, setReferenceNumber] = useState<string>('');
-  const [notes, setNotes] = useState<string>('');
+  const { user } = useAuth();
   const [loading, setLoading] = useState(false);
+  const [products, setProducts] = useState<Product[]>([]);
+
+  const [formData, setFormData] = useState({
+    product_id: '',
+    transaction_type: 'incoming' as 'incoming' | 'outgoing',
+    quantity: '',
+    unit_price: '',
+    reference_number: '',
+    notes: '',
+  });
+
+  const fetchProducts = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('products')
+        .select('id, name, sku, quantity_in_stock')
+        .order('name');
+
+      if (error) {
+        console.error('Error fetching products:', error);
+        return;
+      }
+
+      setProducts(data || []);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    }
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      fetchProducts();
+    }
+  }, [isOpen]);
 
   const ensureUserProfile = async () => {
     if (!user) return false;
-    
-    // Check if profile already exists
-    if (profile) return true;
-    
-    console.log('Creating user profile...');
+
     try {
-      const { error } = await supabase
+      // Check if profile exists
+      const { data: existingProfile, error: fetchError } = await supabase
         .from('profiles')
-        .insert({
-          id: user.id,
-          email: user.email || '',
-          first_name: user.user_metadata?.first_name || null,
-          last_name: user.user_metadata?.last_name || null,
-          role: 'staff'
-        });
-      
-      if (error) {
-        console.error('Error creating profile:', error);
-        // If the profile already exists (conflict), that's fine
-        if (error.code !== '23505') {
-          throw error;
-        }
+        .select('id')
+        .eq('id', user.id)
+        .single();
+
+      if (fetchError && fetchError.code !== 'PGRST116') {
+        console.error('Error checking profile:', fetchError);
+        return false;
       }
-      
-      console.log('User profile ensured');
+
+      if (!existingProfile) {
+        console.log('No profile found for user, creating default profile...');
+        const { error: insertError } = await supabase
+          .from('profiles')
+          .insert({
+            id: user.id,
+            email: user.email || '',
+            first_name: user.user_metadata?.first_name || null,
+            last_name: user.user_metadata?.last_name || null,
+            role: 'staff'
+          });
+
+        if (insertError) {
+          console.error('Error creating profile:', insertError);
+          return false;
+        }
+        console.log('Profile created successfully');
+      }
+
       return true;
     } catch (error) {
-      console.error('Failed to ensure user profile:', error);
+      console.error('Error ensuring user profile:', error);
       return false;
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    console.log('Form submission started');
-    console.log('User:', user?.id);
-    console.log('Product name:', productName);
-    console.log('Quantity:', quantity);
-    console.log('Transaction type:', transactionType);
-
-    if (!user) {
-      console.error('No user found');
-      toast({
-        title: 'Error',
-        description: 'You must be logged in to add stock movements',
-        variant: 'destructive',
-      });
-      return;
-    }
-
-    if (!productName.trim()) {
-      console.error('No product name entered');
-      toast({
-        title: 'Error',
-        description: 'Please enter a product name',
-        variant: 'destructive',
-      });
-      return;
-    }
-
-    if (!quantity || parseInt(quantity) <= 0) {
-      console.error('Invalid quantity');
-      toast({
-        title: 'Error',
-        description: 'Please enter a valid quantity',
-        variant: 'destructive',
-      });
-      return;
-    }
+    if (!user) return;
 
     setLoading(true);
-
     try {
-      // Ensure the user profile exists before creating the transaction
+      // Ensure user profile exists
       const profileExists = await ensureUserProfile();
       if (!profileExists) {
-        toast({
-          title: 'Error',
-          description: 'Failed to create user profile. Please try again.',
-          variant: 'destructive',
-        });
+        toast.error('Failed to create user profile');
         return;
       }
 
-      const quantityNum = parseInt(quantity);
-      const unitPriceNum = unitPrice ? parseFloat(unitPrice) : null;
+      console.log('Creating stock movement with data:', formData);
 
-      console.log('Creating transaction with data:', {
-        product_name: productName.trim(),
-        transaction_type: transactionType,
-        quantity: quantityNum,
-        unit_price: unitPriceNum,
-        created_by: user.id,
-        reference_number: referenceNumber || null,
-        notes: notes || null,
-      });
+      const selectedProduct = products.find(p => p.id === formData.product_id);
+      const quantity = parseInt(formData.quantity);
+      const unitPrice = formData.unit_price ? parseFloat(formData.unit_price) : null;
+      const totalValue = unitPrice ? quantity * unitPrice : null;
 
-      // Insert the stock transaction (total_value will be calculated automatically)
-      const { data: transactionData, error: transactionError } = await supabase
+      // Start a database transaction
+      const { data: transactionData, error: transactionError } = await supabase.rpc('begin_transaction');
+      
+      if (transactionError) {
+        console.error('Error starting transaction:', transactionError);
+        toast.error('Failed to create stock movement');
+        return;
+      }
+
+      // Create the stock transaction
+      const { data: stockTransaction, error: stockError } = await supabase
         .from('stock_transactions')
         .insert({
-          product_name: productName.trim(),
-          transaction_type: transactionType,
-          quantity: quantityNum,
-          unit_price: unitPriceNum,
+          product_id: formData.product_id,
+          product_name: selectedProduct?.name || '',
+          transaction_type: formData.transaction_type,
+          quantity: quantity,
+          unit_price: unitPrice,
+          total_value: totalValue,
+          reference_number: formData.reference_number || null,
+          notes: formData.notes || null,
           created_by: user.id,
-          reference_number: referenceNumber || null,
-          notes: notes || null,
         })
-        .select();
+        .select()
+        .single();
 
-      if (transactionError) {
-        console.error('Error creating transaction:', transactionError);
-        toast({
-          title: 'Error',
-          description: `Failed to create stock movement: ${transactionError.message}`,
-          variant: 'destructive',
-        });
+      if (stockError) {
+        console.error('Error creating stock transaction:', stockError);
+        toast.error('Failed to create stock movement');
         return;
       }
 
-      console.log('Transaction created successfully:', transactionData);
+      // Update the product quantity
+      const currentStock = selectedProduct?.quantity_in_stock || 0;
+      const newStock = formData.transaction_type === 'incoming' 
+        ? currentStock + quantity 
+        : currentStock - quantity;
 
-      toast({
-        title: 'Success',
-        description: 'Stock movement added successfully',
-      });
+      const { error: updateError } = await supabase
+        .from('products')
+        .update({ 
+          quantity_in_stock: Math.max(0, newStock), // Ensure stock doesn't go negative
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', formData.product_id);
+
+      if (updateError) {
+        console.error('Error updating product stock:', updateError);
+        toast.error('Stock movement created but failed to update product quantity');
+      } else {
+        console.log('Stock movement created and product quantity updated successfully');
+        toast.success('Stock movement created successfully');
+      }
 
       // Reset form
-      setTransactionType('incoming');
-      setProductName('');
-      setQuantity('');
-      setUnitPrice('');
-      setReferenceNumber('');
-      setNotes('');
+      setFormData({
+        product_id: '',
+        transaction_type: 'incoming',
+        quantity: '',
+        unit_price: '',
+        reference_number: '',
+        notes: '',
+      });
 
       onTransactionAdded();
     } catch (error) {
       console.error('Error creating stock movement:', error);
-      toast({
-        title: 'Error',
-        description: 'An unexpected error occurred',
-        variant: 'destructive',
-      });
+      toast.error('Failed to create stock movement');
     } finally {
       setLoading(false);
     }
   };
 
-  const isFormValid = productName.trim() && quantity && parseInt(quantity) > 0;
+  if (!isOpen) return null;
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -187,84 +204,98 @@ export const AddStockMovementModal = ({ isOpen, onClose, onTransactionAdded }: A
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="flex space-x-2">
-            <Button
-              type="button"
-              variant={transactionType === 'incoming' ? 'default' : 'outline'}
-              onClick={() => setTransactionType('incoming')}
-              className="flex-1"
-            >
-              In
-            </Button>
-            <Button
-              type="button"
-              variant={transactionType === 'outgoing' ? 'default' : 'outline'}
-              onClick={() => setTransactionType('outgoing')}
-              className="flex-1"
-            >
-              Out
-            </Button>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Product *
+            </label>
+            <Select value={formData.product_id} onValueChange={(value) => setFormData({ ...formData, product_id: value })}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select product" />
+              </SelectTrigger>
+              <SelectContent>
+                {products.map((product) => (
+                  <SelectItem key={product.id} value={product.id}>
+                    {product.name} ({product.sku}) - Current: {product.quantity_in_stock}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="product">Product Name</Label>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Movement Type *
+            </label>
+            <Select value={formData.transaction_type} onValueChange={(value: 'incoming' | 'outgoing') => setFormData({ ...formData, transaction_type: value })}>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="incoming">Incoming (Stock In)</SelectItem>
+                <SelectItem value="outgoing">Outgoing (Stock Out)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Quantity *
+              </label>
+              <Input
+                type="number"
+                value={formData.quantity}
+                onChange={(e) => setFormData({ ...formData, quantity: e.target.value })}
+                required
+                min="1"
+                placeholder="0"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Unit Price
+              </label>
+              <Input
+                type="number"
+                step="0.01"
+                value={formData.unit_price}
+                onChange={(e) => setFormData({ ...formData, unit_price: e.target.value })}
+                placeholder="0.00"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Reference Number
+            </label>
             <Input
-              id="product"
-              value={productName}
-              onChange={(e) => setProductName(e.target.value)}
-              placeholder="Enter product name"
-              required
+              type="text"
+              value={formData.reference_number}
+              onChange={(e) => setFormData({ ...formData, reference_number: e.target.value })}
+              placeholder="Invoice #, PO #, etc."
             />
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="quantity">Quantity</Label>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Notes
+            </label>
             <Input
-              id="quantity"
-              type="number"
-              min="1"
-              value={quantity}
-              onChange={(e) => setQuantity(e.target.value)}
-              required
+              type="text"
+              value={formData.notes}
+              onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+              placeholder="Additional notes"
             />
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="unitPrice">Unit Price (optional)</Label>
-            <Input
-              id="unitPrice"
-              type="number"
-              step="0.01"
-              min="0"
-              value={unitPrice}
-              onChange={(e) => setUnitPrice(e.target.value)}
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="reference">Reference Number (optional)</Label>
-            <Input
-              id="reference"
-              value={referenceNumber}
-              onChange={(e) => setReferenceNumber(e.target.value)}
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="notes">Notes (optional)</Label>
-            <Input
-              id="notes"
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-            />
-          </div>
-
-          <div className="flex justify-end space-x-2">
+          <div className="flex justify-end space-x-2 pt-4">
             <Button type="button" variant="outline" onClick={onClose}>
               Cancel
             </Button>
-            <Button type="submit" disabled={loading || !isFormValid}>
-              {loading ? 'Adding...' : 'Add Movement'}
+            <Button type="submit" disabled={loading || !formData.product_id || !formData.quantity}>
+              {loading ? 'Creating...' : 'Create Movement'}
             </Button>
           </div>
         </form>

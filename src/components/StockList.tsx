@@ -1,9 +1,11 @@
-
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
+import { Plus } from 'lucide-react';
+import { AddProductModal } from './AddProductModal';
 
 interface Product {
   id: string;
@@ -26,6 +28,7 @@ export const StockList = () => {
   const { user } = useAuth();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fetchProducts = async () => {
     if (!user) return;
@@ -59,6 +62,12 @@ export const StockList = () => {
     fetchProducts();
   }, [user]);
 
+  const handleProductAdded = () => {
+    console.log('Product added, refreshing list...');
+    fetchProducts();
+    setIsModalOpen(false);
+  };
+
   const getStatusColor = (status: string | null, quantity: number, minLevel: number) => {
     if (quantity === 0) return 'destructive';
     if (quantity <= minLevel) return 'secondary';
@@ -83,6 +92,10 @@ export const StockList = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold text-gray-900">Stock Overview</h1>
+        <Button onClick={() => setIsModalOpen(true)}>
+          <Plus className="w-4 h-4 mr-2" />
+          Add Product
+        </Button>
       </div>
 
       <div className="bg-white rounded-lg shadow">
@@ -148,6 +161,12 @@ export const StockList = () => {
           </TableBody>
         </Table>
       </div>
+
+      <AddProductModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onProductAdded={handleProductAdded}
+      />
     </div>
   );
 };
