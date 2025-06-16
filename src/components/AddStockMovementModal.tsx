@@ -33,8 +33,6 @@ export const AddStockMovementModal = ({ isOpen, onClose, onTransactionAdded }: A
   const [referenceNumber, setReferenceNumber] = useState<string>('');
   const [notes, setNotes] = useState<string>('');
   const [products, setProducts] = useState<Product[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
-  const [productSearch, setProductSearch] = useState<string>('');
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -42,18 +40,6 @@ export const AddStockMovementModal = ({ isOpen, onClose, onTransactionAdded }: A
       fetchProducts();
     }
   }, [isOpen]);
-
-  useEffect(() => {
-    if (productSearch) {
-      const filtered = products.filter(product =>
-        product.name.toLowerCase().includes(productSearch.toLowerCase()) ||
-        product.sku.toLowerCase().includes(productSearch.toLowerCase())
-      );
-      setFilteredProducts(filtered);
-    } else {
-      setFilteredProducts(products);
-    }
-  }, [productSearch, products]);
 
   const fetchProducts = async () => {
     try {
@@ -75,7 +61,6 @@ export const AddStockMovementModal = ({ isOpen, onClose, onTransactionAdded }: A
 
       console.log('Products fetched:', data);
       setProducts(data || []);
-      setFilteredProducts(data || []);
     } catch (error) {
       console.error('Error fetching products:', error);
       toast({
@@ -211,7 +196,6 @@ export const AddStockMovementModal = ({ isOpen, onClose, onTransactionAdded }: A
       setUnitPrice('');
       setReferenceNumber('');
       setNotes('');
-      setProductSearch('');
 
       onTransactionAdded();
     } catch (error) {
@@ -257,23 +241,17 @@ export const AddStockMovementModal = ({ isOpen, onClose, onTransactionAdded }: A
 
           <div className="space-y-2">
             <Label htmlFor="product">Product</Label>
-            <Input
-              id="product-search"
-              placeholder="Search products..."
-              value={productSearch}
-              onChange={(e) => setProductSearch(e.target.value)}
-            />
             <Select value={selectedProduct} onValueChange={setSelectedProduct}>
               <SelectTrigger>
                 <SelectValue placeholder="Select a product" />
               </SelectTrigger>
               <SelectContent>
-                {filteredProducts.length === 0 ? (
+                {products.length === 0 ? (
                   <div className="p-2 text-sm text-gray-500">
                     No products found
                   </div>
                 ) : (
-                  filteredProducts.map((product) => (
+                  products.map((product) => (
                     <SelectItem key={product.id} value={product.id}>
                       <div>
                         <div className="font-medium">{product.name}</div>
