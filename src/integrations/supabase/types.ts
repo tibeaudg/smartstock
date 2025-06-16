@@ -60,6 +60,50 @@ export type Database = {
           },
         ]
       }
+      billing_periods: {
+        Row: {
+          branch_count: number
+          created_at: string
+          id: string
+          license_id: string | null
+          period_end: string
+          period_start: string
+          status: string
+          total_amount: number
+          user_count: number
+        }
+        Insert: {
+          branch_count: number
+          created_at?: string
+          id?: string
+          license_id?: string | null
+          period_end: string
+          period_start: string
+          status?: string
+          total_amount: number
+          user_count: number
+        }
+        Update: {
+          branch_count?: number
+          created_at?: string
+          id?: string
+          license_id?: string | null
+          period_end?: string
+          period_start?: string
+          status?: string
+          total_amount?: number
+          user_count?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "billing_periods_license_id_fkey"
+            columns: ["license_id"]
+            isOneToOne: false
+            referencedRelation: "licenses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       branch_users: {
         Row: {
           branch_id: string | null
@@ -165,6 +209,50 @@ export type Database = {
           name?: string
         }
         Relationships: []
+      }
+      licenses: {
+        Row: {
+          admin_user_id: string | null
+          created_at: string
+          id: string
+          is_active: boolean
+          license_type: string
+          max_branches: number
+          max_users: number
+          monthly_price: number
+          updated_at: string
+        }
+        Insert: {
+          admin_user_id?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          license_type?: string
+          max_branches?: number
+          max_users?: number
+          monthly_price?: number
+          updated_at?: string
+        }
+        Update: {
+          admin_user_id?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          license_type?: string
+          max_branches?: number
+          max_users?: number
+          monthly_price?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "licenses_admin_user_id_fkey"
+            columns: ["admin_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       order_items: {
         Row: {
@@ -481,6 +569,25 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      calculate_billing: {
+        Args: { admin_id: string }
+        Returns: {
+          user_count: number
+          branch_count: number
+          base_price: number
+          total_price: number
+        }[]
+      }
+      get_admin_branches: {
+        Args: { admin_id: string }
+        Returns: {
+          branch_id: string
+          branch_name: string
+          is_main: boolean
+          user_count: number
+          created_at: string
+        }[]
+      }
       get_user_branches: {
         Args: { user_id: string }
         Returns: {

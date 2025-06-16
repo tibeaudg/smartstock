@@ -36,8 +36,8 @@ export const Sidebar = ({ currentTab, onTabChange, userRole, userProfile, isOpen
     ...(userRole === 'admin' ? [
       { id: 'licenses', label: 'Licenses', icon: CreditCard },
       { id: 'subscriptions', label: 'Subscriptions', icon: Users },
-      { id: 'settings', label: 'Settings', icon: Settings },
     ] : []),
+    { id: 'settings', label: 'Settings', icon: Settings },
   ];
 
   const handleSignOut = async () => {

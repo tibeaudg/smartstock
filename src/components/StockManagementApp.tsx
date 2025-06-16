@@ -5,6 +5,7 @@ import { Layout } from './Layout';
 import { Dashboard } from './Dashboard';
 import { StockMovements } from './StockMovements';
 import { StockList } from './StockList';
+import { Settings } from './Settings';
 import { CreateBranchModal } from './CreateBranchModal';
 import { useAuth } from '@/hooks/useAuth';
 import { useState } from 'react';
@@ -89,12 +90,7 @@ const AppContent = () => {
           </div>
         );
       case 'settings':
-        return (
-          <div className="text-center py-20">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Settings</h2>
-            <p className="text-gray-600">Settings functionality will be implemented here.</p>
-          </div>
-        );
+        return <Settings />;
       default:
         console.log('Unknown tab, defaulting to dashboard');
         return <Dashboard userRole={currentUserProfile.role} />;
