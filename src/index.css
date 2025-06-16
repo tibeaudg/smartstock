@@ -95,18 +95,56 @@
     @apply bg-background text-foreground;
   }
   
-  /* Fix for yellow backgrounds appearing in components */
+  /* Remove ALL yellow backgrounds from inputs and components */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  input[type="search"],
+  textarea,
+  select,
   .bg-yellow-50,
   .bg-yellow-100,
+  .bg-yellow-200,
   [style*="background-color: rgb(254, 252, 232)"],
-  [style*="background-color: rgb(255, 251, 235)"] {
+  [style*="background-color: rgb(255, 251, 235)"],
+  [style*="background-color: rgb(254, 240, 138)"],
+  [style*="background: rgb(254, 252, 232)"],
+  [style*="background: rgb(255, 251, 235)"],
+  [style*="background: rgb(254, 240, 138)"] {
+    background-color: white !important;
+    background: white !important;
+  }
+  
+  /* Ensure all input fields have white backgrounds */
+  .bg-background {
     background-color: white !important;
   }
   
   /* Remove any unwanted yellow borders */
   .border-yellow-200,
-  .border-yellow-300 {
+  .border-yellow-300,
+  .border-yellow-400 {
     border-color: rgb(229 231 235) !important; /* gray-200 */
+  }
+  
+  /* Force white background on focus states */
+  input:focus,
+  textarea:focus,
+  select:focus {
+    background-color: white !important;
+    background: white !important;
+  }
+  
+  /* Ensure autocomplete fields are white */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+    box-shadow: 0 0 0 30px white inset !important;
+    background-color: white !important;
+    background: white !important;
   }
 }
 
