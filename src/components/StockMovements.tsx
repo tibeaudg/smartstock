@@ -1,10 +1,14 @@
+
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { ArrowUp, ArrowDown, Filter } from 'lucide-react';
 
 interface StockTransaction {
   id: string;
@@ -26,13 +30,15 @@ export const StockMovements = () => {
   const { user } = useAuth();
   const isMobile = useIsMobile();
   const [transactions, setTransactions] = useState<StockTransaction[]>([]);
+  const [filteredTransactions, setFilteredTransactions] = useState<StockTransaction[]>([]);
   const [loading, setLoading] = useState(true);
+  const [filterType, setFilterType] = useState<'all' | 'incoming' | 'outgoing'>('all');
 
   const fetchTransactions = async () => {
     if (!user) return;
 
     try {
-      console.log('Fetching stock transactions...');
+      console.log('Fetching all stock transactions...');
       const { data, error } = await supabase
         .from('stock_transactions')
         .select(`
@@ -46,8 +52,9 @@ export const StockMovements = () => {
         return;
       }
 
-      console.log('Transactions fetched:', data);
+      console.log('All transactions fetched:', data);
       setTransactions(data || []);
+      setFilteredTransactions(data || []);
     } catch (error) {
       console.error('Error fetching transactions:', error);
     } finally {
@@ -59,15 +66,44 @@ export const StockMovements = () => {
     fetchTransactions();
   }, [user]);
 
+  useEffect(() => {
+    if (filterType === 'all') {
+      setFilteredTransactions(transactions);
+    } else {
+      setFilteredTransactions(transactions.filter(t => t.transaction_type === filterType));
+    }
+  }, [filterType, transactions]);
+
   const formatTransactionType = (type: string) => {
     switch (type) {
       case 'incoming':
-        return 'Stock Added';
+        return 'Stock In';
       case 'outgoing':
-        return 'Stock Removed';
+        return 'Stock Out';
       default:
         return type;
     }
+  };
+
+  const getTransactionIcon = (type: string) => {
+    return type === 'incoming' ? (
+      <ArrowUp className="h-4 w-4 text-green-600" />
+    ) : (
+      <ArrowDown className="h-4 w-4 text-red-600" />
+    );
+  };
+
+  const getTransactionStats = () => {
+    const incoming = transactions.filter(t => t.transaction_type === 'incoming');
+    const outgoing = transactions.filter(t => t.transaction_type === 'outgoing');
+    
+    return {
+      total: transactions.length,
+      incoming: incoming.length,
+      outgoing: outgoing.length,
+      incomingValue: incoming.reduce((sum, t) => sum + (t.total_value || 0), 0),
+      outgoingValue: outgoing.reduce((sum, t) => sum + (t.total_value || 0), 0)
+    };
   };
 
   if (loading) {
@@ -78,21 +114,68 @@ export const StockMovements = () => {
     );
   }
 
+  const stats = getTransactionStats();
+
   // Mobile card view
   if (isMobile) {
     return (
       <div className="space-y-4">
-        <h1 className="text-2xl font-bold text-gray-900">Transaction History</h1>
+        <div className="flex justify-between items-center">
+          <h1 className="text-2xl font-bold text-gray-900">Stock Transactions</h1>
+        </div>
+
+        {/* Stats Cards */}
+        <div className="grid grid-cols-2 gap-3">
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-gray-600">Stock In</p>
+                  <p className="text-lg font-semibold text-green-600">{stats.incoming}</p>
+                </div>
+                <ArrowUp className="h-6 w-6 text-green-600" />
+              </div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-gray-600">Stock Out</p>
+                  <p className="text-lg font-semibold text-red-600">{stats.outgoing}</p>
+                </div>
+                <ArrowDown className="h-6 w-6 text-red-600" />
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Filter */}
+        <div className="flex items-center space-x-2">
+          <Filter className="h-4 w-4 text-gray-500" />
+          <Select value={filterType} onValueChange={(value: 'all' | 'incoming' | 'outgoing') => setFilterType(value)}>
+            <SelectTrigger className="w-40">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Transactions</SelectItem>
+              <SelectItem value="incoming">Stock In Only</SelectItem>
+              <SelectItem value="outgoing">Stock Out Only</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
 
         <div className="space-y-3">
-          {transactions.length === 0 ? (
+          {filteredTransactions.length === 0 ? (
             <Card>
               <CardContent className="p-6 text-center">
-                <p className="text-gray-500">No stock transactions found.</p>
+                <p className="text-gray-500">
+                  {filterType === 'all' ? 'No stock transactions found.' : `No ${filterType} transactions found.`}
+                </p>
               </CardContent>
             </Card>
           ) : (
-            transactions.map((transaction) => (
+            filteredTransactions.map((transaction) => (
               <Card key={transaction.id}>
                 <CardHeader className="pb-3">
                   <div className="flex justify-between items-start">
@@ -105,19 +188,21 @@ export const StockMovements = () => {
                         {new Date(transaction.created_at).toLocaleTimeString()}
                       </p>
                     </div>
-                    <Badge
-                      variant={transaction.transaction_type === 'incoming' ? 'default' : 'destructive'}
-                      className="ml-2"
-                    >
-                      {formatTransactionType(transaction.transaction_type)}
-                    </Badge>
+                    <div className="flex items-center space-x-2 ml-2">
+                      {getTransactionIcon(transaction.transaction_type)}
+                      <Badge
+                        variant={transaction.transaction_type === 'incoming' ? 'default' : 'destructive'}
+                      >
+                        {formatTransactionType(transaction.transaction_type)}
+                      </Badge>
+                    </div>
                   </div>
                 </CardHeader>
                 <CardContent className="pt-0">
                   <div className="space-y-2">
                     <div className="flex justify-between items-center">
                       <span className="text-sm font-medium text-gray-700">Quantity:</span>
-                      <span className="font-semibold">
+                      <span className={`font-semibold ${transaction.transaction_type === 'incoming' ? 'text-green-600' : 'text-red-600'}`}>
                         {transaction.transaction_type === 'incoming' ? '+' : '-'}{transaction.quantity}
                       </span>
                     </div>
@@ -132,7 +217,7 @@ export const StockMovements = () => {
                     {transaction.total_value && (
                       <div className="flex justify-between items-center">
                         <span className="text-sm font-medium text-gray-700">Total Value:</span>
-                        <span className="font-semibold text-green-600">
+                        <span className="font-semibold text-blue-600">
                           ${transaction.total_value.toFixed(2)}
                         </span>
                       </div>
@@ -168,14 +253,82 @@ export const StockMovements = () => {
         <h1 className="text-3xl font-bold text-gray-900">Stock Transaction History</h1>
       </div>
 
+      {/* Stats Overview */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-600">Total Transactions</p>
+                <p className="text-2xl font-bold">{stats.total}</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-600">Stock In</p>
+                <p className="text-2xl font-bold text-green-600">{stats.incoming}</p>
+              </div>
+              <ArrowUp className="h-6 w-6 text-green-600" />
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-600">Stock Out</p>
+                <p className="text-2xl font-bold text-red-600">{stats.outgoing}</p>
+              </div>
+              <ArrowDown className="h-6 w-6 text-red-600" />
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4">
+            <div>
+              <p className="text-sm text-gray-600">Net Value</p>
+              <p className={`text-2xl font-bold ${(stats.incomingValue - stats.outgoingValue) >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                ${(stats.incomingValue - stats.outgoingValue).toFixed(2)}
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Filter Controls */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2">
+            <Filter className="h-4 w-4 text-gray-500" />
+            <Select value={filterType} onValueChange={(value: 'all' | 'incoming' | 'outgoing') => setFilterType(value)}>
+              <SelectTrigger className="w-48">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Transactions</SelectItem>
+                <SelectItem value="incoming">Stock In Only</SelectItem>
+                <SelectItem value="outgoing">Stock Out Only</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+        <p className="text-sm text-gray-500">
+          Showing {filteredTransactions.length} of {stats.total} transactions
+        </p>
+      </div>
+
       <div className="bg-white rounded-lg shadow overflow-hidden">
         <div className="overflow-x-auto">
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Date</TableHead>
+                <TableHead>Date & Time</TableHead>
                 <TableHead>Product</TableHead>
-                <TableHead>Transaction</TableHead>
+                <TableHead>Type</TableHead>
                 <TableHead>Quantity</TableHead>
                 <TableHead>Unit Price</TableHead>
                 <TableHead>Total Value</TableHead>
@@ -184,14 +337,14 @@ export const StockMovements = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {transactions.length === 0 ? (
+              {filteredTransactions.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={8} className="text-center py-8 text-gray-500">
-                    No stock transactions found.
+                    {filterType === 'all' ? 'No stock transactions found.' : `No ${filterType} transactions found.`}
                   </TableCell>
                 </TableRow>
               ) : (
-                transactions.map((transaction) => (
+                filteredTransactions.map((transaction) => (
                   <TableRow key={transaction.id}>
                     <TableCell>
                       {new Date(transaction.created_at).toLocaleDateString()}
@@ -205,24 +358,27 @@ export const StockMovements = () => {
                       </div>
                     </TableCell>
                     <TableCell>
-                      <span
-                        className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                          transaction.transaction_type === 'incoming'
-                            ? 'bg-green-100 text-green-800'
-                            : 'bg-red-100 text-red-800'
-                        }`}
-                      >
-                        {formatTransactionType(transaction.transaction_type)}
-                      </span>
+                      <div className="flex items-center space-x-2">
+                        {getTransactionIcon(transaction.transaction_type)}
+                        <Badge
+                          variant={transaction.transaction_type === 'incoming' ? 'default' : 'destructive'}
+                        >
+                          {formatTransactionType(transaction.transaction_type)}
+                        </Badge>
+                      </div>
                     </TableCell>
-                    <TableCell className="font-medium">
+                    <TableCell className={`font-medium ${transaction.transaction_type === 'incoming' ? 'text-green-600' : 'text-red-600'}`}>
                       {transaction.transaction_type === 'incoming' ? '+' : '-'}{transaction.quantity}
                     </TableCell>
                     <TableCell>
                       {transaction.unit_price ? `$${transaction.unit_price.toFixed(2)}` : '-'}
                     </TableCell>
                     <TableCell>
-                      {transaction.total_value ? `$${transaction.total_value.toFixed(2)}` : '-'}
+                      {transaction.total_value ? (
+                        <span className="font-medium text-blue-600">
+                          ${transaction.total_value.toFixed(2)}
+                        </span>
+                      ) : '-'}
                     </TableCell>
                     <TableCell>{transaction.reference_number || '-'}</TableCell>
                     <TableCell>
