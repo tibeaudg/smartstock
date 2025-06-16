@@ -142,22 +142,53 @@ export const StockList = () => {
     setSelectedProduct(product);
     setIsEditModalOpen(true);
   };
-
   const handleDelete = async (productId: string) => {
     if (!user || !activeBranch) return;
     
-    if (!confirm('Are you sure you want to delete this product? This will also delete all associated transactions.')) {
+    if (!confirm('Are you sure you want to delete this product? This action cannot be undone.')) {
       return;
     }
 
     try {
-      console.log('Deleting product:', productId, 'from branch:', activeBranch.branch_id);
+      console.log('Processing product deletion:', productId, 'from branch:', activeBranch.branch_id);
       
-      // First delete associated stock transactions
-      const { error: transactionError } = await supabase
-        .from('stock_transactions')
+      // First, get the product details before deleting
+      const { data: product, error: fetchError } = await supabase
+        .from('products')
+        .select('*')
+        .eq('id', productId)
+        .single();
+
+      if (fetchError || !product) {
+        console.error('Error fetching product details:', fetchError);
+        toast.error('Error fetching product details');
+        return;
+      }      // Create a final "removal" transaction if there was stock
+      if (product.quantity_in_stock > 0) {
+        const stockTransactionData = {
+          product_id: product.id,
+          product_name: product.name,
+          transaction_type: 'outgoing' as const,
+          quantity: product.quantity_in_stock,
+          unit_price: product.unit_price,
+          created_by: user.id,
+          branch_id: activeBranch.branch_id,
+          reference_number: 'PRODUCT_DELETED',
+          notes: 'Product verwijderd uit voorraad'
+        };
+
+        const { error: finalTransactionError } = await supabase
+          .from('stock_transactions')
+          .insert(stockTransactionData);        if (finalTransactionError) {
+          console.error('Error creating removal transaction:', finalTransactionError);
+        }
+      }
+
+      // Then proceed with the deletion
+      const { error: deleteError } = await supabase
+        .from('products')
         .delete()
-        .eq('product_id', productId)
+        .eq('id', productId)
         .eq('branch_id', activeBranch.branch_id);
 
       if (transactionError) {

@@ -190,38 +190,32 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
         console.error('Error adding product:', productError);
         toast.error(`Fout bij het toevoegen van product: ${productError.message}`);
         return;
-      }
+      }      console.log('Product added successfully:', insertedProduct);
 
-      console.log('Product added successfully:', insertedProduct);
+      // Always create a transaction for new products
+      const stockTransactionData = {
+        product_id: insertedProduct.id,
+        product_name: data.name,
+        transaction_type: 'incoming' as const,
+        quantity: data.quantityInStock || 0,
+        unit_price: data.unitPrice,
+        created_by: user.id,
+        branch_id: activeBranch.branch_id,
+        reference_number: 'INITIAL_STOCK',
+        notes: 'Nieuw product toegevoegd'
+      };
 
-      // Create initial stock transaction if quantity > 0
-      if (data.quantityInStock > 0) {
-        const stockTransactionData = {
-          product_id: insertedProduct.id,
-          product_name: data.name,
-          transaction_type: 'incoming' as const,
-          quantity: data.quantityInStock,
-          unit_price: data.unitPrice,
-          total_value: data.quantityInStock * data.unitPrice,
-          created_by: user.id,
-          branch_id: activeBranch.branch_id,
-          reference_number: 'INITIAL_STOCK',
-          notes: 'Initiële voorraad bij aanmaken product'
-        };
+      console.log('Creating initial stock transaction:', stockTransactionData);
+      
+      const { error: transactionError } = await supabase
+        .from('stock_transactions')
+        .insert(stockTransactionData);
 
-        console.log('Creating initial stock transaction:', stockTransactionData);
-
-        const { error: transactionError } = await supabase
-          .from('stock_transactions')
-          .insert(stockTransactionData);
-
-        if (transactionError) {
-          console.error('Error creating initial stock transaction:', transactionError);
-          // Don't fail the product creation, just log the error
-          console.log('Product created but initial stock transaction failed');
-        } else {
-          console.log('Initial stock transaction created successfully');
-        }
+      if (transactionError) {
+        console.error('Error creating initial stock transaction:', transactionError);
+        toast.error('Product created but failed to record initial stock');
+      } else {
+        console.log('Initial stock transaction created successfully');
       }
 
       console.log('Product added successfully for branch:', activeBranch.branch_id);

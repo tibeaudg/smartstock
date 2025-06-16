@@ -129,7 +129,6 @@ export const Sidebar = ({ currentTab, onTabChange, userRole, userProfile, isOpen
                 {userProfile.first_name} {userProfile.last_name}
               </p>
               <p className="text-xs text-gray-500">{userProfile.email}</p>
-              <p className="text-xs text-blue-600 capitalize">{userProfile.role}</p>
             </div>
           )}
           

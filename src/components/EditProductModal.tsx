@@ -1,9 +1,9 @@
-
 import React, { useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { ProductInfo } from './stock/ProductInfo';
 import { StockMovementForm } from './stock/StockMovementForm';
 import { useStockMovement } from './stock/useStockMovement';
+import { Badge } from '@/components/ui/badge';
 
 interface Product {
   id: string;
@@ -33,14 +33,8 @@ export const EditProductModal = ({ isOpen, onClose, onProductUpdated, product }:
     loading,
     transactionType,
     quantity,
-    unitPrice,
-    notes,
-    referenceNumber,
     setTransactionType,
     setQuantity,
-    setUnitPrice,
-    setNotes,
-    setReferenceNumber,
     resetForm,
     handleSubmit
   } = useStockMovement(product, onProductUpdated, onClose);
@@ -57,27 +51,29 @@ export const EditProductModal = ({ isOpen, onClose, onProductUpdated, product }:
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>Stock Movement - {product.name}</DialogTitle>
+          <DialogTitle className="flex items-center gap-2">
+            Stock Movement - {product.name}
+            <Badge variant="outline" className="ml-2">
+              €{product.unit_price.toFixed(2)}
+            </Badge>
+          </DialogTitle>
           <DialogDescription>
-            Add or remove stock for this product. Current stock: {product.quantity_in_stock}
+            Current stock: {product.quantity_in_stock} units
+            {product.quantity_in_stock <= product.minimum_stock_level && (
+              <span className="text-red-500 ml-2">
+                (Below minimum stock level of {product.minimum_stock_level})
+              </span>
+            )}
           </DialogDescription>
         </DialogHeader>
-
-        <ProductInfo product={product} />
 
         <StockMovementForm
           transactionType={transactionType}
           quantity={quantity}
-          unitPrice={unitPrice}
-          notes={notes}
-          referenceNumber={referenceNumber}
           currentStock={product.quantity_in_stock}
           loading={loading}
           onTransactionTypeChange={setTransactionType}
           onQuantityChange={setQuantity}
-          onUnitPriceChange={setUnitPrice}
-          onNotesChange={setNotes}
-          onReferenceNumberChange={setReferenceNumber}
           onSubmit={handleSubmit}
           onCancel={onClose}
         />

@@ -1,5 +1,4 @@
-
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
@@ -21,33 +20,40 @@ interface Product {
   } | null;
 }
 
-export const useStockMovement = (product: Product, onProductUpdated: () => void, onClose: () => void) => {
+export const useStockMovement = (
+  product: Product,
+  onProductUpdated: () => void,
+  onClose: () => void
+) => {
   const { user } = useAuth();
   const { activeBranch } = useBranches();
   const [loading, setLoading] = useState(false);
-  const [transactionType, setTransactionType] = useState<'incoming' | 'outgoing'>('outgoing');
+  const [transactionType, setTransactionType] = useState<'incoming' | 'outgoing'>('incoming');
   const [quantity, setQuantity] = useState('');
-  const [unitPrice, setUnitPrice] = useState(product.unit_price.toString());
-  const [notes, setNotes] = useState('');
-  const [referenceNumber, setReferenceNumber] = useState('');
 
-  const resetForm = () => {
+  const resetForm = useCallback(() => {
     setQuantity('');
-    setUnitPrice(product.unit_price.toString());
-    setNotes('');
-    setReferenceNumber('');
-    setTransactionType('outgoing');
-  };
+    setTransactionType('incoming');
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user || !quantity || !activeBranch) return;
+    
+    if (!user || !activeBranch) {
+      toast.error('User or branch information missing');
+      return;
+    }
 
-    const quantityNum = parseInt(quantity);
-    const unitPriceNum = parseFloat(unitPrice);
+    if (!quantity.trim()) {
+      toast.error('Please enter a quantity');
+      return;
+    }
 
-    if (quantityNum <= 0) {
-      toast.error('Quantity must be greater than 0');
+    const quantityNum = parseInt(quantity, 10);
+
+    // Validation
+    if (isNaN(quantityNum) || quantityNum <= 0) {
+      toast.error('Please enter a valid quantity');
       return;
     }
 
@@ -58,36 +64,31 @@ export const useStockMovement = (product: Product, onProductUpdated: () => void,
 
     setLoading(true);
     try {
-      console.log('Creating stock movement for branch:', activeBranch.branch_id, { transactionType, quantity: quantityNum, unitPrice: unitPriceNum });
-
       // Calculate new stock level
-      const newQuantity = transactionType === 'incoming' 
+      const newQuantity = transactionType === 'incoming'
         ? product.quantity_in_stock + quantityNum
         : product.quantity_in_stock - quantityNum;
 
-      // Create stock transaction with branch_id
+      const transactionData = {
+        product_id: product.id,
+        product_name: product.name,
+        transaction_type: transactionType,
+        quantity: quantityNum,
+        unit_price: product.unit_price, // Use the product's existing unit price
+        created_by: user.id,
+        branch_id: activeBranch.branch_id
+      };
+
+      // Create the transaction
       const { error: transactionError } = await supabase
         .from('stock_transactions')
-        .insert({
-          product_id: product.id,
-          product_name: product.name,
-          transaction_type: transactionType,
-          quantity: quantityNum,
-          unit_price: unitPriceNum,
-          total_value: quantityNum * unitPriceNum,
-          notes: notes || null,
-          reference_number: referenceNumber || null,
-          created_by: user.id,
-          branch_id: activeBranch.branch_id // CRUCIAL: Set the branch_id
-        });
+        .insert(transactionData);
 
       if (transactionError) {
-        console.error('Error creating transaction:', transactionError);
-        toast.error('Failed to create stock movement');
-        return;
+        throw new Error(`Failed to create transaction: ${transactionError.message}`);
       }
 
-      // Update product stock
+      // Update product stock (without changing unit price)
       const { error: updateError } = await supabase
         .from('products')
         .update({
@@ -97,19 +98,20 @@ export const useStockMovement = (product: Product, onProductUpdated: () => void,
         .eq('id', product.id);
 
       if (updateError) {
-        console.error('Error updating product:', updateError);
-        toast.error('Failed to update product stock');
-        return;
+        throw new Error(`Failed to update product: ${updateError.message}`);
       }
 
-      console.log('Stock movement created successfully for branch:', activeBranch.branch_id);
-      toast.success(`Stock ${transactionType === 'incoming' ? 'added' : 'removed'} successfully`);
-      
+      toast.success(
+        transactionType === 'incoming'
+          ? `Added ${quantityNum} items to stock`
+          : `Removed ${quantityNum} items from stock`
+      );
+
       onProductUpdated();
       onClose();
     } catch (error) {
-      console.error('Error creating stock movement:', error);
-      toast.error('Failed to create stock movement');
+      console.error('Error in stock movement:', error);
+      toast.error(error instanceof Error ? error.message : 'Failed to process stock movement');
     } finally {
       setLoading(false);
     }
@@ -119,14 +121,8 @@ export const useStockMovement = (product: Product, onProductUpdated: () => void,
     loading,
     transactionType,
     quantity,
-    unitPrice,
-    notes,
-    referenceNumber,
     setTransactionType,
     setQuantity,
-    setUnitPrice,
-    setNotes,
-    setReferenceNumber,
     resetForm,
     handleSubmit
   };

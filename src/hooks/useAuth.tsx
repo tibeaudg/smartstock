@@ -40,12 +40,13 @@ export const useAuth = () => {
       return null;
     }
   };
-
   useEffect(() => {
+    let mounted = true;
     console.log('useAuth: Setting up auth state listener');
     
     // Get initial session
     const getInitialSession = async () => {
+      if (!mounted) return;
       try {
         const { data: { session }, error } = await supabase.auth.getSession();
         

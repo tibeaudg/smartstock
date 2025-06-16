@@ -1,5 +1,4 @@
-
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './useAuth';
 import { useBranches } from './useBranches';
@@ -43,78 +42,59 @@ export const useDashboardData = () => {
   const [categoryData, setCategoryData] = useState<CategoryData[]>([]);
   const [dailyActivity, setDailyActivity] = useState<DailyActivityData[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const fetchDashboardData = async () => {
+  const fetchDashboardData = useCallback(async () => {
     if (!user || !activeBranch) {
       setLoading(false);
       return;
     }
 
     try {
-      setLoading(true);
       console.log('Fetching dashboard data for branch:', activeBranch.branch_id);
+      setError(null);
 
-      // Fetch products with categories for the specific branch
-      const { data: products, error: productsError } = await supabase
+      // Fetch total stock value and product count
+      const { data: productsData, error: productsError } = await supabase
         .from('products')
-        .select(`
-          *,
-          categories(name)
-        `)
+        .select('quantity_in_stock, unit_price, minimum_stock_level')
         .eq('branch_id', activeBranch.branch_id);
 
-      if (productsError) {
-        console.error('Error fetching products:', productsError);
-        return;
-      }
-
-      // Fetch today's transactions for the specific branch
-      const today = new Date().toISOString().split('T')[0];
-      const { data: todayTransactions, error: transactionsError } = await supabase
-        .from('stock_transactions')
-        .select('*')
-        .eq('branch_id', activeBranch.branch_id)
-        .gte('created_at', `${today}T00:00:00`)
-        .lt('created_at', `${today}T23:59:59`);
-
-      if (transactionsError) {
-        console.error('Error fetching transactions:', transactionsError);
-        return;
-      }
-
-      // Fetch last 7 days transactions for trends for the specific branch
-      const weekAgo = new Date();
-      weekAgo.setDate(weekAgo.getDate() - 7);
-      const { data: weekTransactions, error: weekError } = await supabase
-        .from('stock_transactions')
-        .select('*')
-        .eq('branch_id', activeBranch.branch_id)
-        .gte('created_at', weekAgo.toISOString());
-
-      if (weekError) {
-        console.error('Error fetching week transactions:', weekError);
-      }
+      if (productsError) throw new Error('Failed to fetch products data');
 
       // Calculate metrics
-      const totalStockValue = products?.reduce((sum: number, product: any) => 
+      const totalValue = productsData?.reduce((sum, product) => 
         sum + (product.quantity_in_stock * product.unit_price), 0) || 0;
       
-      const totalProducts = products?.length || 0;
-      
-      const incomingToday = todayTransactions?.filter((t: any) => t.transaction_type === 'incoming')
-        .reduce((sum: number, t: any) => sum + t.quantity, 0) || 0;
-      
-      const outgoingToday = todayTransactions?.filter((t: any) => t.transaction_type === 'outgoing')
-        .reduce((sum: number, t: any) => sum + t.quantity, 0) || 0;
-      
-      const lowStockAlerts = products?.filter((p: any) => p.quantity_in_stock <= p.minimum_stock_level).length || 0;
+      const lowStockCount = productsData?.filter(product => 
+        product.quantity_in_stock <= product.minimum_stock_level).length || 0;
+
+      // Get today's transactions
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      const { data: todayTransactions, error: transactionError } = await supabase
+        .from('stock_transactions')
+        .select('transaction_type, quantity')
+        .eq('branch_id', activeBranch.branch_id)
+        .gte('created_at', today.toISOString());
+
+      if (transactionError) throw new Error('Failed to fetch transactions data');
+
+      const incomingToday = todayTransactions
+        ?.filter(t => t.transaction_type === 'incoming')
+        .reduce((sum, t) => sum + t.quantity, 0) || 0;
+
+      const outgoingToday = todayTransactions
+        ?.filter(t => t.transaction_type === 'outgoing')
+        .reduce((sum, t) => sum + t.quantity, 0) || 0;
 
       setMetrics({
-        totalStockValue,
-        totalProducts,
+        totalStockValue: totalValue,
+        totalProducts: productsData?.length || 0,
         incomingToday,
         outgoingToday,
-        lowStockAlerts,
+        lowStockAlerts: lowStockCount,
       });
 
       // Generate stock trends (last 7 days)
@@ -124,7 +104,7 @@ export const useDashboardData = () => {
         date.setDate(date.getDate() - i);
         const dateStr = date.toISOString().split('T')[0];
         
-        const dayTransactions = weekTransactions?.filter((t: any) => 
+        const dayTransactions = todayTransactions?.filter((t: any) => 
           t.created_at.startsWith(dateStr)
         ) || [];
         
@@ -138,7 +118,7 @@ export const useDashboardData = () => {
 
       // Generate category data
       const categoryMap = new Map<string, { value: number; products: number }>();
-      products?.forEach((product: any) => {
+      productsData?.forEach((product: any) => {
         const categoryName = product.categories?.name || 'Uncategorized';
         const existing = categoryMap.get(categoryName) || { value: 0, products: 0 };
         categoryMap.set(categoryName, {
@@ -161,7 +141,7 @@ export const useDashboardData = () => {
         date.setDate(date.getDate() - i);
         const dateStr = date.toISOString().split('T')[0];
         
-        const dayTransactions = weekTransactions?.filter((t: any) => 
+        const dayTransactions = todayTransactions?.filter((t: any) => 
           t.created_at.startsWith(dateStr)
         ) || [];
         
@@ -180,44 +160,55 @@ export const useDashboardData = () => {
 
       console.log('Dashboard data fetched successfully for branch:', activeBranch.branch_id);
 
-    } catch (error) {
-      console.error('Error fetching dashboard data:', error);
+    } catch (err) {
+      console.error('Error fetching dashboard data:', err);
+      setError(err instanceof Error ? err.message : 'An error occurred while fetching dashboard data');
     } finally {
       setLoading(false);
     }
-  };
-
-  useEffect(() => {
-    fetchDashboardData();
   }, [user, activeBranch]);
 
-  // Set up real-time subscription for stock transactions to refresh dashboard data
   useEffect(() => {
-    if (!activeBranch) return;
+    let mounted = true;
+    
+    const initializeDashboard = async () => {
+      if (mounted) {
+        await fetchDashboardData();
+      }
+    };
 
-    console.log('Setting up dashboard real-time subscription for stock transactions');
-    const channel = supabase
-      .channel('dashboard-stock-transactions-changes')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'stock_transactions',
-          filter: `branch_id=eq.${activeBranch.branch_id}`
-        },
-        (payload) => {
-          console.log('Dashboard: Real-time stock transaction change detected:', payload);
-          fetchDashboardData(); // Refresh dashboard data when transactions change
-        }
-      )
-      .subscribe();
+    initializeDashboard();
+
+    // Set up real-time subscription for updates
+    if (activeBranch) {
+      const channel = supabase
+        .channel(`dashboard-${activeBranch.branch_id}`)
+        .on(
+          'postgres_changes',
+          {
+            event: '*',
+            schema: 'public',
+            table: 'products',
+            filter: `branch_id=eq.${activeBranch.branch_id}`
+          },
+          () => {
+            if (mounted) {
+              fetchDashboardData();
+            }
+          }
+        )
+        .subscribe();
+
+      return () => {
+        mounted = false;
+        supabase.removeChannel(channel);
+      };
+    }
 
     return () => {
-      console.log('Cleaning up dashboard real-time subscription');
-      supabase.removeChannel(channel);
+      mounted = false;
     };
-  }, [activeBranch]);
+  }, [fetchDashboardData, activeBranch]);
 
   return {
     metrics,
@@ -225,6 +216,7 @@ export const useDashboardData = () => {
     categoryData,
     dailyActivity,
     loading,
-    refetch: fetchDashboardData,
+    error,
+    refresh: fetchDashboardData
   };
 };

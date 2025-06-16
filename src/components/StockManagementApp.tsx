@@ -14,18 +14,36 @@ import { useEffect } from 'react';
 import { BranchProvider, useBranches } from '@/hooks/useBranches';
 
 const AppContent = () => {
-  const { user, userProfile, loading } = useAuth();
+  const { user, userProfile, loading: authLoading } = useAuth();
   const { branches, loading: branchesLoading, hasNoBranches, refreshBranches } = useBranches();
   const [currentTab, setCurrentTab] = useState('dashboard');
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Only redirect if authentication check is complete and there's no user
-    if (!loading && !user) {
-      console.log('No authenticated user found, redirecting to auth...');
-      navigate('/auth');
-    }
-  }, [user, loading, navigate]);
+    let mounted = true;
+
+    const initializeApp = async () => {
+      // Wait for auth and branches to load
+      if (authLoading || branchesLoading) return;
+
+      if (!user) {
+        console.log('No authenticated user found, redirecting to auth...');
+        navigate('/auth');
+        return;
+      }
+
+      if (mounted) {
+        setLoading(false);
+      }
+    };
+
+    initializeApp();
+
+    return () => {
+      mounted = false;
+    };
+  }, [user, authLoading, branchesLoading, navigate]);
 
   // Show loading while authentication or branches are being checked
   if (loading || branchesLoading) {

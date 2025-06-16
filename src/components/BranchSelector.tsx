@@ -88,12 +88,7 @@ export const BranchSelector = () => {
             </SelectItem>
           </SelectContent>
         </Select>
-        
-        {activeBranch && (
-          <div className="text-xs text-gray-500">
-            Rol: <span className="font-medium">{activeBranch.user_role}</span>
-          </div>
-        )}
+
       </div>
 
       <CreateBranchModal 
