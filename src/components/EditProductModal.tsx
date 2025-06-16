@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -114,6 +115,7 @@ export const EditProductModal = ({ isOpen, onClose, onProductUpdated, product }:
       toast.success(`Stock ${transactionType === 'incoming' ? 'added' : 'removed'} successfully`);
       
       onProductUpdated();
+      onClose();
     } catch (error) {
       console.error('Error creating stock movement:', error);
       toast.error('Failed to create stock movement');
