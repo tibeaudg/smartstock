@@ -73,9 +73,9 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
         .insert({
           name: formData.name,
           description: formData.description || null,
-          unit_price: parseFloat(formData.unit_price),
-          quantity_in_stock: parseInt(formData.quantity_in_stock),
-          minimum_stock_level: parseInt(formData.minimum_stock_level),
+          unit_price: formData.unit_price ? parseFloat(formData.unit_price) : 0,
+          quantity_in_stock: formData.quantity_in_stock ? parseInt(formData.quantity_in_stock) : 0,
+          minimum_stock_level: formData.minimum_stock_level ? parseInt(formData.minimum_stock_level) : 0,
           category_id: formData.category_id || null,
           supplier_id: formData.supplier_id || null,
         })
@@ -142,34 +142,32 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
               type="text"
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              placeholder="Enter description"
+              placeholder="Enter description (optional)"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Unit Price *
+                Unit Price
               </label>
               <Input
                 type="number"
                 step="0.01"
                 value={formData.unit_price}
                 onChange={(e) => setFormData({ ...formData, unit_price: e.target.value })}
-                required
                 placeholder="0.00"
               />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Initial Stock *
+                Initial Stock
               </label>
               <Input
                 type="number"
                 value={formData.quantity_in_stock}
                 onChange={(e) => setFormData({ ...formData, quantity_in_stock: e.target.value })}
-                required
                 placeholder="0"
               />
             </div>
@@ -177,14 +175,13 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Minimum Stock Level *
+              Minimum Stock Level
             </label>
             <Input
               type="number"
               value={formData.minimum_stock_level}
               onChange={(e) => setFormData({ ...formData, minimum_stock_level: e.target.value })}
-              required
-              placeholder="10"
+              placeholder="0"
             />
           </div>
 
@@ -194,7 +191,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
             </label>
             <Select value={formData.category_id} onValueChange={(value) => setFormData({ ...formData, category_id: value })}>
               <SelectTrigger>
-                <SelectValue placeholder="Select category" />
+                <SelectValue placeholder="Select category (optional)" />
               </SelectTrigger>
               <SelectContent>
                 {categories.map((category) => (
@@ -212,7 +209,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
             </label>
             <Select value={formData.supplier_id} onValueChange={(value) => setFormData({ ...formData, supplier_id: value })}>
               <SelectTrigger>
-                <SelectValue placeholder="Select supplier" />
+                <SelectValue placeholder="Select supplier (optional)" />
               </SelectTrigger>
               <SelectContent>
                 {suppliers.map((supplier) => (
