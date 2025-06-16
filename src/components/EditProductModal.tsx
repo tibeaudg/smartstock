@@ -1,6 +1,6 @@
 
 import React, { useEffect } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { ProductInfo } from './stock/ProductInfo';
 import { StockMovementForm } from './stock/StockMovementForm';
 import { useStockMovement } from './stock/useStockMovement';
@@ -58,6 +58,9 @@ export const EditProductModal = ({ isOpen, onClose, onProductUpdated, product }:
       <DialogContent className="max-w-md">
         <DialogHeader>
           <DialogTitle>Stock Movement - {product.name}</DialogTitle>
+          <DialogDescription>
+            Add or remove stock for this product. Current stock: {product.quantity_in_stock}
+          </DialogDescription>
         </DialogHeader>
 
         <ProductInfo product={product} />

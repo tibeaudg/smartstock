@@ -37,6 +37,22 @@ export const StockMovementForm = ({
   onSubmit,
   onCancel
 }: StockMovementFormProps) => {
+  const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    // Allow only numbers and ensure it's not negative
+    if (value === '' || /^\d+$/.test(value)) {
+      onQuantityChange(value);
+    }
+  };
+
+  const handleUnitPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    // Allow numbers with decimals
+    if (value === '' || /^\d*\.?\d*$/.test(value)) {
+      onUnitPriceChange(value);
+    }
+  };
+
   return (
     <form onSubmit={onSubmit} className="space-y-4">
       <div>
@@ -61,11 +77,13 @@ export const StockMovementForm = ({
         <Input
           type="number"
           value={quantity}
-          onChange={(e) => onQuantityChange(e.target.value)}
+          onChange={handleQuantityChange}
           required
           placeholder="Enter quantity"
           min="1"
           max={transactionType === 'outgoing' ? currentStock : undefined}
+          inputMode="numeric"
+          pattern="[0-9]*"
         />
       </div>
 
@@ -77,8 +95,10 @@ export const StockMovementForm = ({
           type="number"
           step="0.01"
           value={unitPrice}
-          onChange={(e) => onUnitPriceChange(e.target.value)}
+          onChange={handleUnitPriceChange}
           placeholder="0.00"
+          min="0"
+          inputMode="decimal"
         />
       </div>
 
@@ -110,7 +130,7 @@ export const StockMovementForm = ({
         <Button type="button" variant="outline" onClick={onCancel}>
           Cancel
         </Button>
-        <Button type="submit" disabled={loading}>
+        <Button type="submit" disabled={loading || !quantity}>
           {loading ? 'Processing...' : `${transactionType === 'incoming' ? 'Add' : 'Remove'} Stock`}
         </Button>
       </div>
