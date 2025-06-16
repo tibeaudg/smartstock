@@ -121,15 +121,6 @@ export const AddStockMovementModal = ({ isOpen, onClose, onTransactionAdded }: A
       const unitPrice = formData.unit_price ? parseFloat(formData.unit_price) : null;
       const totalValue = unitPrice ? quantity * unitPrice : null;
 
-      // Start a database transaction
-      const { data: transactionData, error: transactionError } = await supabase.rpc('begin_transaction');
-      
-      if (transactionError) {
-        console.error('Error starting transaction:', transactionError);
-        toast.error('Failed to create stock movement');
-        return;
-      }
-
       // Create the stock transaction
       const { data: stockTransaction, error: stockError } = await supabase
         .from('stock_transactions')
