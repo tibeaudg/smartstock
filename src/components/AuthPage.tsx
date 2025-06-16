@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -47,6 +46,7 @@ export const AuthPage = () => {
           }
         } else {
           toast.success('Welcome back!');
+          // Redirect to dashboard after successful login
           navigate('/dashboard');
         }
       } else if (mode === 'register') {

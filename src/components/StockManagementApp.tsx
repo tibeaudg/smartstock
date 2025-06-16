@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { AuthPage } from './AuthPage';
 import { Layout } from './Layout';
@@ -14,11 +13,11 @@ export const StockManagementApp = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Redirect to home page if not authenticated
-    if (!loading && (!user || !profile)) {
-      navigate('/');
+    // Only redirect if we're done loading and there's no authenticated user
+    if (!loading && !user) {
+      navigate('/auth');
     }
-  }, [user, profile, loading, navigate]);
+  }, [user, loading, navigate]);
 
   if (loading) {
     return (
