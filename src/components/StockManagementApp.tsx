@@ -1,8 +1,9 @@
-
 import React from 'react';
 import { AuthPage } from './AuthPage';
 import { Layout } from './Layout';
 import { Dashboard } from './Dashboard';
+import { StockMovements } from './StockMovements';
+import { StockList } from './StockList';
 import { useAuth } from '@/hooks/useAuth';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -52,19 +53,9 @@ export const StockManagementApp = () => {
       case 'dashboard':
         return <Dashboard userRole={userProfile.role} />;
       case 'orders':
-        return (
-          <div className="text-center py-20">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Orders Management</h2>
-            <p className="text-gray-600">Orders functionality will be implemented here.</p>
-          </div>
-        );
+        return <StockMovements />;
       case 'stock':
-        return (
-          <div className="text-center py-20">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Stock Management</h2>
-            <p className="text-gray-600">Stock management functionality will be implemented here.</p>
-          </div>
-        );
+        return <StockList />;
       case 'licenses':
         return (
           <div className="text-center py-20">
