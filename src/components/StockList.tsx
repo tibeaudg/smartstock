@@ -31,7 +31,8 @@ export const StockList = () => {
     if (!user) return;
 
     try {
-      const { data, error } = await (supabase as any)
+      console.log('Fetching products for stock list...');
+      const { data, error } = await supabase
         .from('products')
         .select(`
           *,
@@ -45,6 +46,7 @@ export const StockList = () => {
         return;
       }
 
+      console.log('Products fetched for stock list:', data);
       setProducts(data || []);
     } catch (error) {
       console.error('Error fetching products:', error);

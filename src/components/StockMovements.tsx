@@ -33,7 +33,8 @@ export const StockMovements = () => {
     if (!user) return;
 
     try {
-      const { data, error } = await (supabase as any)
+      console.log('Fetching stock transactions...');
+      const { data, error } = await supabase
         .from('stock_transactions')
         .select(`
           *,
@@ -46,6 +47,7 @@ export const StockMovements = () => {
         return;
       }
 
+      console.log('Transactions fetched:', data);
       setTransactions(data || []);
     } catch (error) {
       console.error('Error fetching transactions:', error);
@@ -59,6 +61,7 @@ export const StockMovements = () => {
   }, [user]);
 
   const handleTransactionAdded = () => {
+    console.log('Transaction added, refreshing list...');
     fetchTransactions();
     setIsModalOpen(false);
   };

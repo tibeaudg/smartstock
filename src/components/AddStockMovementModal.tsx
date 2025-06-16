@@ -57,26 +57,73 @@ export const AddStockMovementModal = ({ isOpen, onClose, onTransactionAdded }: A
 
   const fetchProducts = async () => {
     try {
-      const { data, error } = await (supabase as any)
+      console.log('Fetching products...');
+      const { data, error } = await supabase
         .from('products')
         .select('id, name, sku, quantity_in_stock, unit_price')
         .order('name');
 
       if (error) {
         console.error('Error fetching products:', error);
+        toast({
+          title: 'Error',
+          description: 'Failed to fetch products',
+          variant: 'destructive',
+        });
         return;
       }
 
+      console.log('Products fetched:', data);
       setProducts(data || []);
       setFilteredProducts(data || []);
     } catch (error) {
       console.error('Error fetching products:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to fetch products',
+        variant: 'destructive',
+      });
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user || !selectedProduct || !quantity) return;
+    
+    console.log('Form submission started');
+    console.log('User:', user?.id);
+    console.log('Selected product:', selectedProduct);
+    console.log('Quantity:', quantity);
+    console.log('Transaction type:', transactionType);
+
+    if (!user) {
+      console.error('No user found');
+      toast({
+        title: 'Error',
+        description: 'You must be logged in to add stock movements',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    if (!selectedProduct) {
+      console.error('No product selected');
+      toast({
+        title: 'Error',
+        description: 'Please select a product',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    if (!quantity || parseInt(quantity) <= 0) {
+      console.error('Invalid quantity');
+      toast({
+        title: 'Error',
+        description: 'Please enter a valid quantity',
+        variant: 'destructive',
+      });
+      return;
+    }
 
     setLoading(true);
 
@@ -85,8 +132,19 @@ export const AddStockMovementModal = ({ isOpen, onClose, onTransactionAdded }: A
       const unitPriceNum = unitPrice ? parseFloat(unitPrice) : null;
       const totalValue = unitPriceNum ? quantityNum * unitPriceNum : null;
 
+      console.log('Creating transaction with data:', {
+        product_id: selectedProduct,
+        transaction_type: transactionType,
+        quantity: quantityNum,
+        unit_price: unitPriceNum,
+        total_value: totalValue,
+        created_by: user.id,
+        reference_number: referenceNumber || null,
+        notes: notes || null,
+      });
+
       // Insert the stock transaction
-      const { error: transactionError } = await (supabase as any)
+      const { data: transactionData, error: transactionError } = await supabase
         .from('stock_transactions')
         .insert({
           product_id: selectedProduct,
@@ -97,35 +155,47 @@ export const AddStockMovementModal = ({ isOpen, onClose, onTransactionAdded }: A
           created_by: user.id,
           reference_number: referenceNumber || null,
           notes: notes || null,
-        });
+        })
+        .select();
 
       if (transactionError) {
         console.error('Error creating transaction:', transactionError);
         toast({
           title: 'Error',
-          description: 'Failed to create stock movement',
+          description: `Failed to create stock movement: ${transactionError.message}`,
           variant: 'destructive',
         });
         return;
       }
+
+      console.log('Transaction created successfully:', transactionData);
 
       // Update product stock quantity
       const selectedProductData = products.find(p => p.id === selectedProduct);
       if (selectedProductData) {
         const newQuantity = transactionType === 'incoming' 
           ? selectedProductData.quantity_in_stock + quantityNum
-          : selectedProductData.quantity_in_stock - quantityNum;
+          : Math.max(0, selectedProductData.quantity_in_stock - quantityNum);
 
-        const { error: updateError } = await (supabase as any)
+        console.log('Updating product stock from', selectedProductData.quantity_in_stock, 'to', newQuantity);
+
+        const { error: updateError } = await supabase
           .from('products')
           .update({ 
-            quantity_in_stock: Math.max(0, newQuantity),
+            quantity_in_stock: newQuantity,
             updated_at: new Date().toISOString()
           })
           .eq('id', selectedProduct);
 
         if (updateError) {
           console.error('Error updating product quantity:', updateError);
+          toast({
+            title: 'Warning',
+            description: 'Stock movement created but failed to update product quantity',
+            variant: 'destructive',
+          });
+        } else {
+          console.log('Product quantity updated successfully');
         }
       }
 
@@ -148,13 +218,15 @@ export const AddStockMovementModal = ({ isOpen, onClose, onTransactionAdded }: A
       console.error('Error creating stock movement:', error);
       toast({
         title: 'Error',
-        description: 'Failed to create stock movement',
+        description: 'An unexpected error occurred',
         variant: 'destructive',
       });
     } finally {
       setLoading(false);
     }
   };
+
+  const isFormValid = selectedProduct && quantity && parseInt(quantity) > 0;
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -196,16 +268,22 @@ export const AddStockMovementModal = ({ isOpen, onClose, onTransactionAdded }: A
                 <SelectValue placeholder="Select a product" />
               </SelectTrigger>
               <SelectContent>
-                {filteredProducts.map((product) => (
-                  <SelectItem key={product.id} value={product.id}>
-                    <div>
-                      <div className="font-medium">{product.name}</div>
-                      <div className="text-sm text-gray-500">
-                        {product.sku} - Stock: {product.quantity_in_stock}
-                      </div>
-                    </div>
+                {filteredProducts.length === 0 ? (
+                  <SelectItem value="" disabled>
+                    No products found
                   </SelectItem>
-                ))}
+                ) : (
+                  filteredProducts.map((product) => (
+                    <SelectItem key={product.id} value={product.id}>
+                      <div>
+                        <div className="font-medium">{product.name}</div>
+                        <div className="text-sm text-gray-500">
+                          {product.sku} - Stock: {product.quantity_in_stock}
+                        </div>
+                      </div>
+                    </SelectItem>
+                  ))
+                )}
               </SelectContent>
             </Select>
           </div>
@@ -256,7 +334,7 @@ export const AddStockMovementModal = ({ isOpen, onClose, onTransactionAdded }: A
             <Button type="button" variant="outline" onClick={onClose}>
               Cancel
             </Button>
-            <Button type="submit" disabled={loading || !selectedProduct || !quantity}>
+            <Button type="submit" disabled={loading || !isFormValid}>
               {loading ? 'Adding...' : 'Add Movement'}
             </Button>
           </div>
