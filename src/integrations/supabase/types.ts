@@ -220,6 +220,7 @@ export type Database = {
           id: string
           notes: string | null
           product_id: string | null
+          product_name: string | null
           quantity: number
           reference_number: string | null
           total_value: number | null
@@ -232,6 +233,7 @@ export type Database = {
           id?: string
           notes?: string | null
           product_id?: string | null
+          product_name?: string | null
           quantity: number
           reference_number?: string | null
           total_value?: number | null
@@ -244,6 +246,7 @@ export type Database = {
           id?: string
           notes?: string | null
           product_id?: string | null
+          product_name?: string | null
           quantity?: number
           reference_number?: string | null
           total_value?: number | null
