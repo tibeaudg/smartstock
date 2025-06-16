@@ -5,10 +5,20 @@ import { Layout } from './Layout';
 import { Dashboard } from './Dashboard';
 import { useAuth } from '@/hooks/useAuth';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 export const StockManagementApp = () => {
   const { user, profile, loading } = useAuth();
   const [currentTab, setCurrentTab] = useState('dashboard');
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Redirect to home page if not authenticated
+    if (!loading && (!user || !profile)) {
+      navigate('/');
+    }
+  }, [user, profile, loading, navigate]);
 
   if (loading) {
     return (
@@ -22,7 +32,7 @@ export const StockManagementApp = () => {
   }
 
   if (!user || !profile) {
-    return <AuthPage />;
+    return null; // Will redirect via useEffect
   }
 
   const renderTabContent = () => {

@@ -7,6 +7,8 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 export const AuthPage = () => {
   const [mode, setMode] = useState<'login' | 'register' | 'reset'>('login');
@@ -18,7 +20,15 @@ export const AuthPage = () => {
   const [role, setRole] = useState<'admin' | 'staff'>('staff');
   const [loading, setLoading] = useState(false);
   
-  const { signIn, signUp, resetPassword } = useAuth();
+  const { signIn, signUp, resetPassword, user, profile } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Redirect to dashboard if already authenticated
+    if (user && profile) {
+      navigate('/dashboard');
+    }
+  }, [user, profile, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,7 +47,7 @@ export const AuthPage = () => {
           }
         } else {
           toast.success('Welcome back!');
-          // The useAuth hook will handle the state change and the StockManagementApp will automatically show the dashboard
+          navigate('/dashboard');
         }
       } else if (mode === 'register') {
         if (password !== confirmPassword) {
