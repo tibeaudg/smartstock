@@ -31,7 +31,7 @@ interface FormData {
 
 export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductModalProps) => {
   const { user } = useAuth();
-  const { activeBranch } = useBranches();
+  const { activeBranch, loading: branchLoading } = useBranches();
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState<string[]>([]);
   const [suppliers, setSuppliers] = useState<string[]>([]);
@@ -81,8 +81,27 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
   }, [isOpen]);
 
   const handleSubmit = async (data: FormData) => {
-    if (!user || !activeBranch) {
-      toast.error('Geen gebruiker of filiaal gevonden');
+    console.log('Starting product submission...');
+    console.log('User:', user?.id);
+    console.log('Active branch:', activeBranch);
+    console.log('Branch loading:', branchLoading);
+
+    // Enhanced validation with better error messages
+    if (!user) {
+      console.error('No authenticated user found');
+      toast.error('U bent niet ingelogd. Log opnieuw in en probeer het opnieuw.');
+      return;
+    }
+
+    if (branchLoading) {
+      console.log('Branches are still loading, please wait...');
+      toast.error('Filialen worden nog geladen, probeer het opnieuw.');
+      return;
+    }
+
+    if (!activeBranch) {
+      console.error('No active branch selected');
+      toast.error('Geen actief filiaal geselecteerd. Selecteer een filiaal en probeer het opnieuw.');
       return;
     }
 
@@ -112,7 +131,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
 
           if (categoryError) {
             console.error('Error creating category:', categoryError);
-            toast.error('Failed to create category');
+            toast.error('Fout bij het aanmaken van categorie');
             return;
           }
           categoryId = newCategory.id;
@@ -138,7 +157,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
 
           if (supplierError) {
             console.error('Error creating supplier:', supplierError);
-            toast.error('Failed to create supplier');
+            toast.error('Fout bij het aanmaken van leverancier');
             return;
           }
           supplierId = newSupplier.id;
@@ -146,49 +165,73 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
       }
 
       // Create product with branch_id
+      const productData = {
+        name: data.name,
+        description: data.description || null,
+        category_id: categoryId,
+        category_name: data.categoryName.trim() || null,
+        supplier_id: supplierId,
+        supplier_name: data.supplierName.trim() || null,
+        quantity_in_stock: data.quantityInStock,
+        minimum_stock_level: data.minimumStockLevel,
+        unit_price: data.unitPrice,
+        branch_id: activeBranch.branch_id,
+      };
+
+      console.log('Inserting product with data:', productData);
+
       const { error } = await supabase
         .from('products')
-        .insert({
-          name: data.name,
-          description: data.description || null,
-          category_id: categoryId,
-          category_name: data.categoryName.trim() || null,
-          supplier_id: supplierId,
-          supplier_name: data.supplierName.trim() || null,
-          quantity_in_stock: data.quantityInStock,
-          minimum_stock_level: data.minimumStockLevel,
-          unit_price: data.unitPrice,
-          branch_id: activeBranch.branch_id, // CRUCIAL: Set the branch_id
-        });
+        .insert(productData);
 
       if (error) {
         console.error('Error adding product:', error);
-        toast.error('Failed to add product');
+        toast.error(`Fout bij het toevoegen van product: ${error.message}`);
         return;
       }
 
       console.log('Product added successfully for branch:', activeBranch.branch_id);
-      toast.success('Product added successfully!');
+      toast.success('Product succesvol toegevoegd!');
       form.reset();
       onProductAdded();
       onClose();
     } catch (error) {
       console.error('Error adding product:', error);
-      toast.error('Failed to add product');
+      toast.error('Onverwachte fout bij het toevoegen van product');
     } finally {
       setLoading(false);
     }
   };
 
-  if (!activeBranch) {
+  // Don't render if no user or if branches are loading
+  if (!user || branchLoading) {
     return null;
+  }
+
+  // Show message if no active branch
+  if (!activeBranch) {
+    return (
+      <Dialog open={isOpen} onOpenChange={onClose}>
+        <DialogContent className="sm:max-w-lg">
+          <DialogHeader>
+            <DialogTitle>Geen filiaal geselecteerd</DialogTitle>
+          </DialogHeader>
+          <div className="p-4 text-center">
+            <p className="text-gray-600 mb-4">
+              Selecteer eerst een filiaal om een product toe te voegen.
+            </p>
+            <Button onClick={onClose}>Sluiten</Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
   }
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Add New Product</DialogTitle>
+          <DialogTitle>Nieuw Product Toevoegen</DialogTitle>
         </DialogHeader>
 
         <Form {...form}>
@@ -196,12 +239,12 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
             <FormField
               control={form.control}
               name="name"
-              rules={{ required: 'Product name is required' }}
+              rules={{ required: 'Product naam is verplicht' }}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Product Name *</FormLabel>
+                  <FormLabel>Product Naam *</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="Enter product name" disabled={loading} />
+                    <Input {...field} placeholder="Voer product naam in" disabled={loading} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -213,11 +256,11 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Description</FormLabel>
+                  <FormLabel>Beschrijving</FormLabel>
                   <FormControl>
                     <Textarea 
                       {...field} 
-                      placeholder="Enter product description" 
+                      placeholder="Voer product beschrijving in" 
                       disabled={loading}
                       className="resize-none"
                       rows={3}
@@ -234,13 +277,13 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                 name="categoryName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Category</FormLabel>
+                    <FormLabel>Categorie</FormLabel>
                     <FormControl>
                       <SuggestionInput
                         {...field}
-                        label="Category"
+                        label="Categorie"
                         suggestions={categories}
-                        placeholder="Enter or select category"
+                        placeholder="Voer categorie in"
                         disabled={loading}
                       />
                     </FormControl>
@@ -254,13 +297,13 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                 name="supplierName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Supplier</FormLabel>
+                    <FormLabel>Leverancier</FormLabel>
                     <FormControl>
                       <SuggestionInput
                         {...field}
-                        label="Supplier"
+                        label="Leverancier"
                         suggestions={suppliers}
-                        placeholder="Enter or select supplier"
+                        placeholder="Voer leverancier in"
                         disabled={loading}
                       />
                     </FormControl>
@@ -275,12 +318,12 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                 control={form.control}
                 name="quantityInStock"
                 rules={{ 
-                  required: 'Quantity is required',
-                  min: { value: 0, message: 'Quantity must be 0 or more' }
+                  required: 'Voorraad is verplicht',
+                  min: { value: 0, message: 'Voorraad moet 0 of meer zijn' }
                 }}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Stock Quantity *</FormLabel>
+                    <FormLabel>Voorraad *</FormLabel>
                     <FormControl>
                       <Input 
                         {...field} 
@@ -300,12 +343,12 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                 control={form.control}
                 name="minimumStockLevel"
                 rules={{ 
-                  required: 'Minimum stock level is required',
-                  min: { value: 0, message: 'Minimum stock level must be 0 or more' }
+                  required: 'Minimum niveau is verplicht',
+                  min: { value: 0, message: 'Minimum niveau moet 0 of meer zijn' }
                 }}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Min. Level *</FormLabel>
+                    <FormLabel>Min. Niveau *</FormLabel>
                     <FormControl>
                       <Input 
                         {...field} 
@@ -325,12 +368,12 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                 control={form.control}
                 name="unitPrice"
                 rules={{ 
-                  required: 'Unit price is required',
-                  min: { value: 0, message: 'Unit price must be 0 or more' }
+                  required: 'Prijs is verplicht',
+                  min: { value: 0, message: 'Prijs moet 0 of meer zijn' }
                 }}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Unit Price *</FormLabel>
+                    <FormLabel>Prijs *</FormLabel>
                     <FormControl>
                       <Input 
                         {...field} 
@@ -350,10 +393,10 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
 
             <div className="flex justify-end space-x-2 pt-4">
               <Button type="button" variant="outline" onClick={onClose} disabled={loading}>
-                Cancel
+                Annuleren
               </Button>
               <Button type="submit" disabled={loading}>
-                {loading ? 'Adding...' : 'Add Product'}
+                {loading ? 'Toevoegen...' : 'Product Toevoegen'}
               </Button>
             </div>
           </form>
