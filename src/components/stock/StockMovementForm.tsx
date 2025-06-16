@@ -37,22 +37,6 @@ export const StockMovementForm = ({
   onSubmit,
   onCancel
 }: StockMovementFormProps) => {
-  const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    // Allow only numbers and ensure it's not negative
-    if (value === '' || /^\d+$/.test(value)) {
-      onQuantityChange(value);
-    }
-  };
-
-  const handleUnitPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    // Allow numbers with decimals
-    if (value === '' || /^\d*\.?\d*$/.test(value)) {
-      onUnitPriceChange(value);
-    }
-  };
-
   return (
     <form onSubmit={onSubmit} className="space-y-4">
       <div>
@@ -75,15 +59,17 @@ export const StockMovementForm = ({
           Quantity *
         </label>
         <Input
-          type="number"
           value={quantity}
-          onChange={handleQuantityChange}
+          onChange={(e) => {
+            const value = e.target.value;
+            // Allow only positive integers
+            if (value === '' || (/^\d+$/.test(value) && parseInt(value) > 0)) {
+              onQuantityChange(value);
+            }
+          }}
           required
           placeholder="Enter quantity"
-          min="1"
-          max={transactionType === 'outgoing' ? currentStock : undefined}
           inputMode="numeric"
-          pattern="[0-9]*"
         />
       </div>
 
@@ -92,12 +78,15 @@ export const StockMovementForm = ({
           Unit Price
         </label>
         <Input
-          type="number"
-          step="0.01"
           value={unitPrice}
-          onChange={handleUnitPriceChange}
+          onChange={(e) => {
+            const value = e.target.value;
+            // Allow numbers with decimals
+            if (value === '' || /^\d*\.?\d*$/.test(value)) {
+              onUnitPriceChange(value);
+            }
+          }}
           placeholder="0.00"
-          min="0"
           inputMode="decimal"
         />
       </div>
