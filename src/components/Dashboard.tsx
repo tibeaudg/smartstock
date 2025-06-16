@@ -234,7 +234,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
         <CardHeader>
           <CardTitle>Daily Activity</CardTitle>
           <CardDescription>Incoming vs outgoing transactions over the last 7 days</CardDescription>
-        </Card>
+        </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={isMobile ? 250 : 300}>
             <BarChart data={dailyActivity}>
