@@ -17,6 +17,9 @@ export const Settings = () => {
   // Only admin users can access billing and branch management
   const isAdmin = userProfile?.role === 'admin';
 
+  console.log('Settings component - userProfile:', userProfile);
+  console.log('Settings component - isAdmin:', isAdmin);
+
   return (
     <div className="space-y-6">
       <div>
@@ -25,17 +28,15 @@ export const Settings = () => {
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList className="grid w-full grid-cols-2 lg:grid-cols-5">
+        <TabsList className="grid w-full grid-cols-2 lg:grid-cols-5 gap-1">
           <TabsTrigger value="profile" className="flex items-center space-x-2">
             <User className="w-4 h-4" />
             <span>Profiel</span>
           </TabsTrigger>
-          {isAdmin && (
-            <TabsTrigger value="license" className="flex items-center space-x-2">
-              <FileText className="w-4 h-4" />
-              <span>Licentie</span>
-            </TabsTrigger>
-          )}
+          <TabsTrigger value="license" className="flex items-center space-x-2">
+            <FileText className="w-4 h-4" />
+            <span>Licentie</span>
+          </TabsTrigger>
           {isAdmin && (
             <TabsTrigger value="branches" className="flex items-center space-x-2">
               <Building2 className="w-4 h-4" />
@@ -70,11 +71,9 @@ export const Settings = () => {
           </Card>
         </TabsContent>
 
-        {isAdmin && (
-          <TabsContent value="license" className="space-y-6">
-            <LicenseOverview />
-          </TabsContent>
-        )}
+        <TabsContent value="license" className="space-y-6">
+          <LicenseOverview />
+        </TabsContent>
 
         {isAdmin && (
           <TabsContent value="branches" className="space-y-6">
