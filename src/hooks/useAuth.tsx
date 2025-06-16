@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
@@ -23,7 +22,6 @@ export const useAuth = () => {
     try {
       console.log('Fetching profile for user:', userId);
       
-      // Use type assertion to work around empty types
       const { data: profileData, error } = await (supabase as any)
         .from('profiles')
         .select('*')
@@ -32,7 +30,6 @@ export const useAuth = () => {
       
       if (error) {
         console.error('Error fetching profile:', error);
-        // For now, create a default profile if fetch fails
         const defaultProfile: UserProfile = {
           id: userId,
           email: user?.email || '',
@@ -48,7 +45,6 @@ export const useAuth = () => {
 
       if (!profileData) {
         console.log('No profile found for user, creating default profile...');
-        // Create a default profile in state if none exists
         const defaultProfile: UserProfile = {
           id: userId,
           email: user?.email || '',
@@ -72,7 +68,6 @@ export const useAuth = () => {
       return profile;
     } catch (error) {
       console.error('Error in profile fetch:', error);
-      // Create a fallback profile
       const fallbackProfile: UserProfile = {
         id: userId,
         email: user?.email || '',
@@ -89,6 +84,7 @@ export const useAuth = () => {
 
   useEffect(() => {
     let mounted = true;
+    let initialized = false;
 
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
@@ -97,28 +93,34 @@ export const useAuth = () => {
         
         if (!mounted) return;
         
+        // Prevent duplicate processing
+        if (initialized && event === 'INITIAL_SESSION') return;
+        
         setSession(session);
         setUser(session?.user ?? null);
         
-        if (session?.user) {
-          // Fetch user profile
+        if (session?.user && mounted) {
           await fetchUserProfile(session.user.id);
         } else {
           setProfile(null);
+        }
+        
+        if (!initialized) {
+          initialized = true;
         }
         
         setLoading(false);
       }
     );
 
-    // Check for existing session
+    // Check for existing session only once
     const initializeAuth = async () => {
       try {
         const { data: { session }, error } = await supabase.auth.getSession();
         
         if (error) {
           console.error('Error getting session:', error);
-          setLoading(false);
+          if (mounted) setLoading(false);
           return;
         }
         
@@ -126,13 +128,15 @@ export const useAuth = () => {
         
         if (!mounted) return;
         
-        if (session) {
+        // Only process if we haven't been initialized by the listener
+        if (!initialized && session) {
           setSession(session);
           setUser(session.user);
           await fetchUserProfile(session.user.id);
+          initialized = true;
         }
         
-        setLoading(false);
+        if (mounted) setLoading(false);
       } catch (error) {
         console.error('Error initializing auth:', error);
         if (mounted) {

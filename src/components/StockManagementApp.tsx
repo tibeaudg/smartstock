@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { AuthPage } from './AuthPage';
 import { Layout } from './Layout';
@@ -15,12 +16,14 @@ export const StockManagementApp = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Only redirect if we're done loading and there's no authenticated user
+    // Only redirect if authentication check is complete and there's no user
     if (!loading && !user) {
+      console.log('No authenticated user found, redirecting to auth...');
       navigate('/auth');
     }
   }, [user, loading, navigate]);
 
+  // Show loading while authentication is being checked
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -32,9 +35,9 @@ export const StockManagementApp = () => {
     );
   }
 
-  // Show dashboard even if profile is still loading, but ensure user exists
+  // Don't render anything if no user (will redirect via useEffect)
   if (!user) {
-    return null; // Will redirect via useEffect
+    return null;
   }
 
   // Use a default profile if none exists yet
