@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { AuthPage } from './AuthPage';
 import { Layout } from './Layout';
@@ -30,14 +31,26 @@ export const StockManagementApp = () => {
     );
   }
 
-  if (!user || !profile) {
+  // Show dashboard even if profile is still loading, but ensure user exists
+  if (!user) {
     return null; // Will redirect via useEffect
   }
+
+  // Use a default profile if none exists yet
+  const userProfile = profile || {
+    id: user.id,
+    email: user.email || '',
+    first_name: user.user_metadata?.first_name || null,
+    last_name: user.user_metadata?.last_name || null,
+    role: 'staff' as const,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
+  };
 
   const renderTabContent = () => {
     switch (currentTab) {
       case 'dashboard':
-        return <Dashboard userRole={profile.role} />;
+        return <Dashboard userRole={userProfile.role} />;
       case 'orders':
         return (
           <div className="text-center py-20">
@@ -74,7 +87,7 @@ export const StockManagementApp = () => {
           </div>
         );
       default:
-        return <Dashboard userRole={profile.role} />;
+        return <Dashboard userRole={userProfile.role} />;
     }
   };
 
@@ -82,8 +95,8 @@ export const StockManagementApp = () => {
     <Layout
       currentTab={currentTab}
       onTabChange={setCurrentTab}
-      userRole={profile.role}
-      userProfile={profile}
+      userRole={userProfile.role}
+      userProfile={userProfile}
     >
       {renderTabContent()}
     </Layout>
