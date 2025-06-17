@@ -125,16 +125,19 @@ export const HomePage = () => {
         onLoginClick={handleLoginClick}
         onNavigate={scrollToSection}
       />
-      
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-50 to-indigo-100 py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Hero Section */}
+      <section 
+        className="py-60 bg-cover bg-center bg-no-repeat relative"
+        style={{ backgroundImage: 'url("/Inventory-Management.png")' }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-200 to-indigo-35"></div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center">
-            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
+            <h1 className="text-4xl md:text-6xl font-bold text-black mb-6">
               Slim Voorraad
-              <span className="text-blue-600"> Beheer</span>
+              <span className="text-black"> Beheer</span>
             </h1>
-            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+            <p className="text-xl text-black mb-8 max-w-3xl mx-auto">
               Stroomlijn uw voorraadactiviteiten met ons krachtige, intuïtieve platform. 
               Beheer voorraad, volg bestellingen en krijg waardevolle inzichten op één plek.
             </p>
@@ -152,7 +155,7 @@ export const HomePage = () => {
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-20 bg-white">
+      <section id="features" className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
@@ -237,7 +240,7 @@ export const HomePage = () => {
       </section>
 
       {/* Benefits Section */}
-      <section id="about" className="py-20 bg-white">
+      <section id="about" className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
