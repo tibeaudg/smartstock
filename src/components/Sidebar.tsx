@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { 
   BarChart3, 
@@ -13,7 +12,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth, UserProfile } from '@/hooks/useAuth';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, NavLink } from 'react-router-dom';
 import { BranchSelector } from './BranchSelector';
 
 interface SidebarProps {
@@ -25,19 +24,19 @@ interface SidebarProps {
   onToggle: () => void;
 }
 
-export const Sidebar = ({ currentTab, onTabChange, userRole, userProfile, isOpen, onToggle }: SidebarProps) => {
+export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProps) => {
   const { signOut } = useAuth();
   const navigate = useNavigate();
 
   const menuItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: BarChart3 },
-    { id: 'stock', label: 'Products', icon: Package },
-    { id: 'orders', label: 'Transactions', icon: ShoppingCart },
+    { id: 'dashboard', label: 'Dashboard', icon: BarChart3, path: '/dashboard' },
+    { id: 'stock', label: 'Products', icon: Package, path: '/dashboard/stock' },
+    { id: 'transactions', label: 'Transactions', icon: ShoppingCart, path: '/dashboard/transactions' },
     ...(userRole === 'admin' ? [
-      { id: 'licenses', label: 'Licenses', icon: CreditCard },
-      { id: 'subscriptions', label: 'Subscriptions', icon: Users },
+      { id: 'licenses', label: 'Licenses', icon: CreditCard, path: '/dashboard/licenses' },
+      { id: 'subscriptions', label: 'Subscriptions', icon: Users, path: '/dashboard/subscriptions' },
     ] : []),
-    { id: 'settings', label: 'Settings', icon: Settings },
+    { id: 'settings', label: 'Settings', icon: Settings, path: '/dashboard/settings' },
   ];
 
   const handleSignOut = async () => {
@@ -57,15 +56,12 @@ export const Sidebar = ({ currentTab, onTabChange, userRole, userProfile, isOpen
       )}
       
       {/* Sidebar */}
-      <div 
-        className={`
-          fixed left-0 top-0 h-screen bg-white border-r border-gray-200 transition-all duration-300 z-50 flex flex-col
-          ${isOpen ? 'w-64' : 'w-16'}
-          ${isOpen ? 'md:relative md:translate-x-0' : 'md:relative'}
-          ${!isOpen ? 'md:translate-x-0' : ''}
-        `}
-        data-sidebar
-      >
+      <div className={`
+        fixed left-0 top-0 h-screen bg-white border-r border-gray-200 transition-all duration-300 z-50 flex flex-col
+        ${isOpen ? 'w-64' : 'w-16'}
+        ${isOpen ? 'md:relative md:translate-x-0' : 'md:relative'}
+        ${!isOpen ? 'md:translate-x-0' : ''}
+      `}>
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-gray-200 flex-shrink-0">
           {isOpen && (
@@ -98,13 +94,12 @@ export const Sidebar = ({ currentTab, onTabChange, userRole, userProfile, isOpen
           <ul className="space-y-2">
             {menuItems.map((item) => {
               const Icon = item.icon;
-              const isActive = currentTab === item.id;
               
               return (
                 <li key={item.id}>
-                  <button
-                    onClick={() => onTabChange(item.id)}
-                    className={`
+                  <NavLink
+                    to={item.path}
+                    className={({ isActive }) => `
                       w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-left transition-colors
                       ${isActive 
                         ? 'bg-blue-50 text-blue-700 border border-blue-200' 
@@ -113,8 +108,8 @@ export const Sidebar = ({ currentTab, onTabChange, userRole, userProfile, isOpen
                     `}
                   >
                     <Icon className="w-5 h-5 flex-shrink-0" />
-                    {isOpen && <span className="font-medium">{item.label}</span>}
-                  </button>
+                    {isOpen && <span className="font-medium ml-3">{item.label}</span>}
+                  </NavLink>
                 </li>
               );
             })}

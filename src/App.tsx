@@ -12,8 +12,9 @@ import { StockList } from "./components/StockList";
 import { StockMovements } from "./components/StockMovements";
 import { Settings } from "./components/Settings";
 import { useAuth, AuthProvider } from "./hooks/useAuth";
+import { Suspense, lazy } from 'react';
 
-// Configure QueryClient to prevent unnecessary refetches
+// Configure QueryClient
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -33,7 +34,6 @@ const LoadingScreen = () => (
   </div>
 );
 
-// Protected Route Component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading, userProfile } = useAuth();
   const location = useLocation();
@@ -43,11 +43,14 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   }
   
   if (!user || !userProfile) {
-    console.log('User not authenticated, redirecting to auth');
     return <Navigate to="/auth" state={{ from: location }} replace />;
   }
   
-  return <>{children}</>;
+  return (
+    <Suspense fallback={<LoadingScreen />}>
+      {children}
+    </Suspense>
+  );
 };
 
 // Auth Route Component
@@ -61,8 +64,6 @@ const AuthRoute = () => {
   }
   
   if (user && userProfile) {
-    console.log('User authenticated, redirecting to:', from);
-    // Redirect to the page they tried to visit or dashboard
     return <Navigate to={from} replace />;
   }
   
@@ -78,18 +79,26 @@ const App = () => {
           <Sonner />
           <BrowserRouter>
             <Routes>
+              {/* Public routes */}
               <Route path="/" element={<HomePage />} />
               <Route path="/auth" element={<AuthRoute />} />
-              <Route path="/dashboard/*" element={
-                <ProtectedRoute>
-                  <StockManagementApp />
-                </ProtectedRoute>
-              }>
+
+              {/* Protected dashboard routes */}
+              <Route 
+                path="/dashboard" 
+                element={
+                  <ProtectedRoute>
+                    <StockManagementApp />
+                  </ProtectedRoute>
+                }
+              >
                 <Route index element={<Dashboard userRole="staff" />} />
                 <Route path="stock" element={<StockList />} />
                 <Route path="transactions" element={<StockMovements />} />
                 <Route path="settings" element={<Settings />} />
               </Route>
+
+              {/* Fallback route */}
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>

@@ -9,38 +9,34 @@ const AppContent = () => {
   const { userProfile } = useAuth();
   const { hasNoBranches } = useBranches();
   const location = useLocation();
-  
-  // Get current tab from URL
-  const getCurrentTab = () => {
-    const path = location.pathname.split('/')[2] || 'dashboard';
-    return path;
+
+  const getCurrentTab = (): string => {
+    return location.pathname.split('/')[2] || 'dashboard';
   };
 
-  // Don't render anything if no userProfile
-  if (!userProfile) {
-    return null;
-  }
+  if (!userProfile) return null;
 
   return (
-    <>
-      <Layout
-        currentTab={getCurrentTab()}
-        onTabChange={(tab: string) => {
-          // Navigation is now handled by the Layout component directly
-          // The tab change just updates the UI state
-        }}
-        userRole={userProfile.role}
-        userProfile={userProfile}
-      >
-        <Outlet />
-      </Layout>
-      
-      <CreateBranchModal 
-        open={hasNoBranches} 
-        onOpenChange={() => {}} 
-        onBranchCreated={() => {}}
-      />
-    </>
+    <div className="w-full h-full"> {/* Added wrapper div with full dimensions */}
+      <div className="relative flex flex-col min-h-screen"> {/* Added flex container */}
+        <main className="flex-1">
+          <Layout
+            currentTab={getCurrentTab()}
+            onTabChange={(tab: string) => {}}
+            userRole={userProfile.role}
+            userProfile={userProfile}
+          >
+            <Outlet />
+          </Layout>
+        </main>
+
+        <CreateBranchModal
+          open={hasNoBranches}
+          onOpenChange={() => {}}
+          onBranchCreated={() => {}}
+        />
+      </div>
+    </div>
   );
 };
 
