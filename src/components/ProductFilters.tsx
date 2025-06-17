@@ -10,10 +10,6 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 
 interface ProductFiltersProps {
   searchTerm: string;
-  onSearchChange: (value: string) => void;
-  categoryFilter: string;
-  onCategoryFilterChange: (value: string) => void;
-  supplierFilter: string;
   onSupplierFilterChange: (value: string) => void;
   stockStatusFilter: string;
   onStockStatusFilterChange: (value: string) => void;
@@ -32,10 +28,6 @@ interface ProductFiltersProps {
 export const ProductFilters: React.FC<ProductFiltersProps> = ({
   searchTerm,
   onSearchChange,
-  categoryFilter,
-  onCategoryFilterChange,
-  supplierFilter,
-  onSupplierFilterChange,
   stockStatusFilter,
   onStockStatusFilterChange,
   minPriceFilter,
@@ -95,25 +87,7 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
           <Card className="mt-4">
             <CardContent className="p-4">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                {/* Category Filter */}
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700">Category</label>
-                  <Input
-                    placeholder="Enter category name..."
-                    value={categoryFilter}
-                    onChange={(e) => onCategoryFilterChange(e.target.value)}
-                  />
-                </div>
 
-                {/* Supplier Filter */}
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700">Supplier</label>
-                  <Input
-                    placeholder="Enter supplier name..."
-                    value={supplierFilter}
-                    onChange={(e) => onSupplierFilterChange(e.target.value)}
-                  />
-                </div>
 
                 {/* Stock Status Filter */}
                 <div className="space-y-2">
@@ -156,28 +130,6 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
                   />
                 </div>
 
-                {/* Stock Quantity Range Filters */}
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700">Min Stock Qty</label>
-                  <Input
-                    type="number"
-                    placeholder="0"
-                    value={minStockFilter}
-                    onChange={(e) => onMinStockFilterChange(e.target.value)}
-                    min="0"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700">Max Stock Qty</label>
-                  <Input
-                    type="number"
-                    placeholder="999999"
-                    value={maxStockFilter}
-                    onChange={(e) => onMaxStockFilterChange(e.target.value)}
-                    min="0"
-                  />
-                </div>
               </div>
             </CardContent>
           </Card>

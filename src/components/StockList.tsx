@@ -386,22 +386,8 @@ export const StockList = () => {
                         <span className="text-sm font-medium text-gray-700">Min. Level:</span>
                         <span>{product.minimum_stock_level}</span>
                       </div>
-                      
-                      {displayCategory && (
-                        <div className="flex justify-between items-center">
-                          <span className="text-sm font-medium text-gray-700">Category:</span>
-                          <Badge variant="outline" className="text-xs">
-                            {displayCategory}
-                          </Badge>
-                        </div>
-                      )}
-                      
-                      {displaySupplier && (
-                        <div className="flex justify-between items-center">
-                          <span className="text-sm font-medium text-gray-700">Supplier:</span>
-                          <span className="text-sm">{displaySupplier}</span>
-                        </div>
-                      )}
+                    
+
                     </div>
                   </CardContent>
                 </Card>
@@ -481,12 +467,6 @@ export const StockList = () => {
                   Product
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Category
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Supplier
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Stock Level
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -528,16 +508,7 @@ export const StockList = () => {
                           )}
                         </div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        {displayCategory ? (
-                          <Badge variant="outline">{displayCategory}</Badge>
-                        ) : (
-                          <span className="text-gray-400">-</span>
-                        )}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {displaySupplier || '-'}
-                      </td>
+
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         {product.quantity_in_stock}
                       </td>

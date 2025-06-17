@@ -212,11 +212,8 @@ export const StockMovements = () => {
                         <th className="p-2 text-right">Total Value</th>
                       </>
                     )}
-                    <th className="p-2 text-left">Reference</th>
                     {!isMobile && (
                       <>
-                        <th className="p-2 text-left">Supplier</th>
-                        <th className="p-2 text-left">Notes</th>
                       </>
                     )}
                   </tr>
@@ -248,17 +245,8 @@ export const StockMovements = () => {
                           </td>
                         </>
                       )}
-                      <td className="p-2">
-                        {transaction.reference_number || '-'}
-                      </td>
                       {!isMobile && (
                         <>
-                          <td className="p-2">
-                            {transaction.supplier_name || '-'}
-                          </td>
-                          <td className="p-2">
-                            {transaction.notes || '-'}
-                          </td>
                         </>
                       )}
                     </tr>
