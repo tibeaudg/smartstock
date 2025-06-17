@@ -7,7 +7,6 @@ import { StockManagementApp } from "./components/StockManagementApp";
 import { HomePage } from "./components/HomePage";
 import { AuthPage } from "./components/AuthPage";
 import NotFound from "./pages/NotFound";
-import { StripeProvider } from "./providers/StripeProvider";
 
 // Configure QueryClient to prevent unnecessary refetches
 const queryClient = new QueryClient({
@@ -26,7 +25,6 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <StripeProvider>
           <Toaster />
           <Sonner />
           <BrowserRouter>
@@ -37,7 +35,6 @@ const App = () => {
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
-        </StripeProvider>
       </TooltipProvider>
     </QueryClientProvider>
   );

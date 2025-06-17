@@ -1,24 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
-import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js';
-import { loadStripe } from '@stripe/stripe-js';
-import { PLAN_DETAILS, PLAN_PRICES, PlanDetails } from '@/integrations/stripe/client';
 import { Loader2, CreditCard, Users, Building2, TrendingUp, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface LicenseInfo {
   id: string;
   license_type: 'free' | 'starter' | 'business' | 'enterprise';
   max_products: number;
+  max_users: number;
+  max_branches: number;
   base_price: number;
   is_active: boolean;
-  stripe_customer_id: string | null;
-  stripe_subscription_id: string | null;
   extra_branches: number;
   extra_users: number;
 }
@@ -34,15 +32,74 @@ interface BillingCalculation {
   max_products: number;
 }
 
+const PLAN_DETAILS = {
+  free: {
+    name: 'Free',
+    price: 0,
+    maxProducts: 30,
+    maxUsers: 1,
+    maxBranches: 1,
+    features: [
+      'Tot 30 producten',
+      '1 gebruiker',
+      '1 filiaal',
+      'Basis voorraad beheer',
+      'Email ondersteuning'
+    ]
+  },
+  starter: {
+    name: 'Starter',
+    price: 9,
+    maxProducts: 150,
+    maxUsers: 3,
+    maxBranches: 2,
+    features: [
+      'Tot 150 producten',
+      'Tot 3 gebruikers',
+      'Tot 2 filialen',
+      'Voorraad beheer',
+      'Email ondersteuning',
+      'Data backup'
+    ]
+  },
+  business: {
+    name: 'Business',
+    price: 49,
+    maxProducts: 1500,
+    maxUsers: 10,
+    maxBranches: 5,
+    features: [
+      'Tot 1500 producten',
+      'Tot 10 gebruikers',
+      'Tot 5 filialen',
+      'Prioriteit ondersteuning',
+      'Data backup',
+      'API toegang'
+    ]
+  },
+  enterprise: {
+    name: 'Enterprise',
+    price: 79,
+    maxProducts: Number.MAX_SAFE_INTEGER,
+    maxUsers: 25,
+    maxBranches: 15,
+    features: [
+      'Onbeperkt producten',
+      'Tot 25 gebruikers',
+      'Tot 15 filialen',
+      'Prioriteit ondersteuning',
+      '24/7 telefoon support',
+      'Custom integraties',
+      'SLA garantie'
+    ]
+  }
+};
+
 export const BillingSettings = () => {
   const { user } = useAuth();
   const [license, setLicense] = useState<LicenseInfo | null>(null);
   const [billing, setBilling] = useState<BillingCalculation | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
-  const [showPaymentForm, setShowPaymentForm] = useState(false);
-  const stripe = useStripe();
-  const elements = useElements();
 
   const fetchLicenseAndBilling = async () => {
     if (!user) return;
@@ -83,60 +140,36 @@ export const BillingSettings = () => {
     fetchLicenseAndBilling();
   }, [user]);
 
-  const handleUpgrade = async (planType: string) => {
+  const handleUpgrade = async (planType: keyof typeof PLAN_DETAILS) => {
     if (!user) return;
 
     try {
       setIsLoading(true);
       
-      // First, check if user has a Stripe customer ID
-      const { data: stripeData, error: stripeError } = await supabase
-        .functions.invoke('create-checkout-session', {
-          body: {
-            planType,
-            currentLicense: license,
-            returnUrl: window.location.origin + '/settings/billing'
-          }
-        });
+      const planDetails = PLAN_DETAILS[planType];
+      
+      const { error } = await supabase
+        .from('licenses')
+        .update({
+          license_type: planType,
+          max_products: planDetails.maxProducts,
+          max_users: planDetails.maxUsers,
+          max_branches: planDetails.maxBranches,
+          base_price: planDetails.price,
+          updated_at: new Date().toISOString()
+        })
+        .eq('admin_user_id', user.id)
+        .eq('is_active', true);
 
-      if (stripeError) {
-        toast.error('Er is een fout opgetreden bij het upgraden van uw licentie.');
-        console.error('Error creating checkout session:', stripeError);
-        return;
+      if (error) {
+        throw error;
       }
 
-      // Redirect to Stripe Checkout
-      window.location.href = stripeData.url;
+      toast.success('Plan succesvol bijgewerkt');
+      await fetchLicenseAndBilling();
     } catch (error) {
       console.error('Error upgrading plan:', error);
       toast.error('Er is een fout opgetreden bij het upgraden van uw licentie.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleAddPaymentMethod = async () => {
-    if (!stripe || !elements) {
-      return;
-    }
-
-    try {
-      setIsLoading(true);
-
-      const { error } = await stripe.confirmSetup({
-        elements,
-        confirmParams: {
-          return_url: window.location.origin + '/settings/billing'
-        }
-      });
-
-      if (error) {
-        toast.error('Er is een fout opgetreden bij het toevoegen van uw betaalmethode.');
-        console.error('Error confirming setup:', error);
-      }
-    } catch (error) {
-      console.error('Error adding payment method:', error);
-      toast.error('Er is een fout opgetreden bij het toevoegen van uw betaalmethode.');
     } finally {
       setIsLoading(false);
     }
@@ -157,7 +190,8 @@ export const BillingSettings = () => {
         <CardContent className="text-center py-8">
           <AlertCircle className="w-12 h-12 mx-auto text-red-400 mb-4" />
           <h3 className="text-lg font-semibold text-gray-900 mb-2">Geen actieve licentie</h3>
-          <p className="text-gray-600">Er is geen actieve licentie gevonden voor uw account.</p>
+          <p className="text-gray-600 mb-4">Er is geen actieve licentie gevonden voor uw account.</p>
+          <Button onClick={() => handleUpgrade('free')}>Gratis plan activeren</Button>
         </CardContent>
       </Card>
     );
@@ -184,7 +218,7 @@ export const BillingSettings = () => {
         <CardContent className="space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="font-medium capitalize">{license.license_type} Plan</p>
+              <p className="font-medium capitalize">{PLAN_DETAILS[license.license_type as keyof typeof PLAN_DETAILS].name} Plan</p>
               <p className="text-sm text-gray-600">Maandelijks abonnement</p>
             </div>
             <div className="text-right">
@@ -271,26 +305,22 @@ export const BillingSettings = () => {
               </div>
             </CardContent>
             
-            <CardFooter>
-              {license?.license_type !== planType ? (
+            {license?.license_type !== planType && (
+              <div className="p-4 pt-0">
                 <Button 
                   className="w-full"
-                  onClick={() => handleUpgrade(planType)}
+                  onClick={() => handleUpgrade(planType as keyof typeof PLAN_DETAILS)}
                   disabled={isLoading}
                 >
                   {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Upgraden'}
                 </Button>
-              ) : (
-                <Button variant="outline" className="w-full" disabled>
-                  Huidig Plan
-                </Button>
-              )}
-            </CardFooter>
+              </div>
+            )}
           </Card>
         ))}
       </div>
 
-      {/* Current Billing Card */}
+      {/* Current Usage and Billing */}
       {billing && (
         <Card>
           <CardHeader>
@@ -339,98 +369,15 @@ export const BillingSettings = () => {
                     <p className="text-sm font-medium text-yellow-800">Limiet overschreden</p>
                     <p className="text-sm text-yellow-700">
                       U heeft uw licentie limieten overschreden. Extra kosten zijn van toepassing.
+                      Overweeg een upgrade naar een hoger plan voor betere prijzen.
                     </p>
                   </div>
                 </div>
               </div>
             )}
           </CardContent>
-          
-          {/* Add warning about payment method if needed */}
-          {!license?.stripe_customer_id && billing.total_price > 0 && (
-            <CardFooter>
-              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 w-full">
-                <div className="flex items-start">
-                  <AlertCircle className="w-4 h-4 text-yellow-600 mt-0.5 mr-2" />
-                  <div>
-                    <p className="text-sm font-medium text-yellow-800">Betaalmethode vereist</p>
-                    <p className="text-sm text-yellow-700">
-                      U moet een betaalmethode toevoegen om extra gebruikers of filialen te kunnen gebruiken.
-                    </p>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="mt-2"
-                      onClick={() => setShowPaymentForm(true)}
-                    >
-                      Betaalmethode toevoegen
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </CardFooter>
-          )}
         </Card>
       )}
-
-      {/* Payment Form Modal */}
-      {showPaymentForm && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Betaalmethode Toevoegen</CardTitle>
-            <CardDescription>
-              Voeg een creditcard toe om extra gebruikers en filialen te kunnen gebruiken
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <PaymentElement />
-          </CardContent>
-          <CardFooter>
-            <Button onClick={handleAddPaymentMethod} disabled={!stripe || !elements || isLoading}>
-              {isLoading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
-              Betaalmethode opslaan
-            </Button>
-          </CardFooter>
-        </Card>
-      )}
-
-      {/* License Features Card */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Plan Voordelen</CardTitle>
-          <CardDescription>
-            Wat is inbegrepen in uw huidige plan
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid gap-3 md:grid-cols-2">
-            <div className="flex items-center space-x-2">
-              <Badge variant="secondary">✓</Badge>
-              <span className="text-sm">Voorraad beheer</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Badge variant="secondary">✓</Badge>
-              <span className="text-sm">Multi-filiaal ondersteuning</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Badge variant="secondary">✓</Badge>
-              <span className="text-sm">Gebruikers beheer</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Badge variant="secondary">✓</Badge>
-              <span className="text-sm">Rapportages</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Badge variant="secondary">✓</Badge>
-              <span className="text-sm">Email ondersteuning</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Badge variant="secondary">✓</Badge>
-              <span className="text-sm">Data backup</span>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
     </div>
   );
 };
