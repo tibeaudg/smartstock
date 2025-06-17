@@ -9,30 +9,37 @@ import { Button } from '@/components/ui/button';
 import { Loader2, CreditCard, Users, Building2, TrendingUp, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
+type PlanType = 'free' | 'starter' | 'business' | 'enterprise';
+
+interface PlanFeatures {
+  name: string;
+  price: number;
+  maxProducts: number;
+  maxUsers: number;
+  maxBranches: number;
+  features: string[];
+}
+
 interface LicenseInfo {
   id: string;
-  license_type: 'free' | 'starter' | 'business' | 'enterprise';
+  license_type: PlanType;
   max_products: number;
   max_users: number;
   max_branches: number;
   base_price: number;
   is_active: boolean;
-  extra_branches: number;
-  extra_users: number;
 }
 
-interface BillingCalculation {
+interface UsageInfo {
   user_count: number;
   branch_count: number;
   base_price: number;
-  extra_users_cost: number;
-  extra_branches_cost: number;
   total_price: number;
   product_count: number;
   max_products: number;
 }
 
-const PLAN_DETAILS = {
+const PLAN_DETAILS: Record<PlanType, PlanFeatures> = {
   free: {
     name: 'Free',
     price: 0,
@@ -95,57 +102,58 @@ const PLAN_DETAILS = {
   }
 };
 
+// Extra cost constants
+const EXTRA_USER_COST = 5; // €5 per extra user
+const EXTRA_BRANCH_COST = 10; // €10 per extra branch
+
 export const BillingSettings = () => {
   const { user } = useAuth();
   const [license, setLicense] = useState<LicenseInfo | null>(null);
-  const [billing, setBilling] = useState<BillingCalculation | null>(null);
+  const [usage, setUsage] = useState<UsageInfo | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const fetchLicenseAndBilling = async () => {
+  const fetchLicenseAndUsage = async () => {
     if (!user) return;
 
     try {
-      // Fetch license information
-      const { data: licenseData, error: licenseError } = await supabase
-        .from('licenses')
-        .select('*')
-        .eq('admin_user_id', user.id)
-        .eq('is_active', true)
-        .single();
+      const [licenseResponse, usageResponse] = await Promise.all([
+        supabase
+          .from('licenses')
+          .select('*')
+          .eq('admin_user_id', user.id)
+          .eq('is_active', true)
+          .single(),
+        supabase
+          .rpc('calculate_billing', { admin_id: user.id })
+      ]);
 
-      if (licenseError && licenseError.code !== 'PGRST116') {
-        console.error('Error fetching license:', licenseError);
-      } else {
-        setLicense(licenseData);
+      if (licenseResponse.error && licenseResponse.error.code !== 'PGRST116') {
+        throw new Error(licenseResponse.error.message);
       }
 
-      // Fetch billing calculation
-      const { data: billingData, error: billingError } = await supabase.rpc('calculate_billing', {
-        admin_id: user.id
-      });
-
-      if (billingError) {
-        console.error('Error calculating billing:', billingError);
-      } else if (billingData && billingData.length > 0) {
-        setBilling(billingData[0]);
+      if (usageResponse.error) {
+        throw new Error(usageResponse.error.message);
       }
+
+      setLicense(licenseResponse.data);
+      setUsage(usageResponse.data?.[0] || null);
     } catch (error) {
-      console.error('Exception fetching license and billing:', error);
+      console.error('Error fetching license data:', error);
+      toast.error('Er is een fout opgetreden bij het ophalen van de licentie gegevens.');
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchLicenseAndBilling();
+    fetchLicenseAndUsage();
   }, [user]);
 
-  const handleUpgrade = async (planType: keyof typeof PLAN_DETAILS) => {
+  const handleUpgrade = async (planType: PlanType) => {
     if (!user) return;
 
     try {
       setIsLoading(true);
-      
       const planDetails = PLAN_DETAILS[planType];
       
       const { error } = await supabase
@@ -161,12 +169,10 @@ export const BillingSettings = () => {
         .eq('admin_user_id', user.id)
         .eq('is_active', true);
 
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
 
       toast.success('Plan succesvol bijgewerkt');
-      await fetchLicenseAndBilling();
+      await fetchLicenseAndUsage();
     } catch (error) {
       console.error('Error upgrading plan:', error);
       toast.error('Er is een fout opgetreden bij het upgraden van uw licentie.');
@@ -197,10 +203,16 @@ export const BillingSettings = () => {
     );
   }
 
-  const userUsagePercentage = billing ? (billing.user_count / license.max_users) * 100 : 0;
-  const branchUsagePercentage = billing ? (billing.branch_count / license.max_branches) * 100 : 0;
+  const currentPlan = PLAN_DETAILS[license.license_type];
+  const userUsagePercentage = usage ? (usage.user_count / license.max_users) * 100 : 0;
+  const branchUsagePercentage = usage ? (usage.branch_count / license.max_branches) * 100 : 0;
   const isOverUserLimit = userUsagePercentage > 100;
   const isOverBranchLimit = branchUsagePercentage > 100;
+
+  const extraUsers = usage && isOverUserLimit ? usage.user_count - license.max_users : 0;
+  const extraBranches = usage && isOverBranchLimit ? usage.branch_count - license.max_branches : 0;
+  const extraUsersCost = extraUsers * EXTRA_USER_COST;
+  const extraBranchesCost = extraBranches * EXTRA_BRANCH_COST;
 
   return (
     <div className="space-y-6">
@@ -218,7 +230,7 @@ export const BillingSettings = () => {
         <CardContent className="space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="font-medium capitalize">{PLAN_DETAILS[license.license_type as keyof typeof PLAN_DETAILS].name} Plan</p>
+              <p className="font-medium capitalize">{currentPlan.name} Plan</p>
               <p className="text-sm text-gray-600">Maandelijks abonnement</p>
             </div>
             <div className="text-right">
@@ -228,100 +240,45 @@ export const BillingSettings = () => {
           </div>
           
           <div className="grid gap-4 md:grid-cols-2">
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium flex items-center">
-                  <Users className="w-4 h-4 mr-1" />
-                  Gebruikers
-                </span>
-                <span className="text-sm">
-                  {billing?.user_count || 0} / {license.max_users}
-                </span>
-              </div>
-              <Progress 
-                value={Math.min(userUsagePercentage, 100)} 
-                className={isOverUserLimit ? "bg-red-100" : ""}
-              />
-              {isOverUserLimit && (
-                <p className="text-xs text-red-600">
-                  Limiet overschreden (+{billing!.user_count - license.max_users} gebruikers)
-                </p>
-              )}
-            </div>
+            <UsageIndicator
+              icon={<Users className="w-4 h-4 mr-1" />}
+              label="Gebruikers"
+              current={usage?.user_count || 0}
+              max={license.max_users}
+              percentage={userUsagePercentage}
+              isOverLimit={isOverUserLimit}
+              overLimitCount={extraUsers}
+            />
             
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium flex items-center">
-                  <Building2 className="w-4 h-4 mr-1" />
-                  Filialen
-                </span>
-                <span className="text-sm">
-                  {billing?.branch_count || 0} / {license.max_branches}
-                </span>
-              </div>
-              <Progress 
-                value={Math.min(branchUsagePercentage, 100)} 
-                className={isOverBranchLimit ? "bg-red-100" : ""}
-              />
-              {isOverBranchLimit && (
-                <p className="text-xs text-red-600">
-                  Limiet overschreden (+{billing!.branch_count - license.max_branches} filialen)
-                </p>
-              )}
-            </div>
+            <UsageIndicator
+              icon={<Building2 className="w-4 h-4 mr-1" />}
+              label="Filialen"
+              current={usage?.branch_count || 0}
+              max={license.max_branches}
+              percentage={branchUsagePercentage}
+              isOverLimit={isOverBranchLimit}
+              overLimitCount={extraBranches}
+            />
           </div>
         </CardContent>
       </Card>
 
       {/* Available Plans */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-        {Object.entries(PLAN_DETAILS).map(([planType, plan]) => (
-          <Card key={planType} className={cn(
-            "relative overflow-hidden",
-            license?.license_type === planType && "ring-2 ring-blue-500"
-          )}>
-            {license?.license_type === planType && (
-              <div className="absolute top-0 right-0 p-2">
-                <Badge variant="default">Huidig Plan</Badge>
-              </div>
-            )}
-            
-            <CardHeader>
-              <CardTitle>{plan.name}</CardTitle>
-              <CardDescription>
-                <span className="text-2xl font-bold">€{plan.price}</span>
-                /maand
-              </CardDescription>
-            </CardHeader>
-            
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                {plan.features.map((feature, i) => (
-                  <div key={i} className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-green-500" />
-                    <span className="text-sm">{feature}</span>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-            
-            {license?.license_type !== planType && (
-              <div className="p-4 pt-0">
-                <Button 
-                  className="w-full"
-                  onClick={() => handleUpgrade(planType as keyof typeof PLAN_DETAILS)}
-                  disabled={isLoading}
-                >
-                  {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Upgraden'}
-                </Button>
-              </div>
-            )}
-          </Card>
+        {(Object.entries(PLAN_DETAILS) as [PlanType, PlanFeatures][]).map(([planType, plan]) => (
+          <PlanCard
+            key={planType}
+            planType={planType}
+            plan={plan}
+            isCurrentPlan={license.license_type === planType}
+            onUpgrade={() => handleUpgrade(planType)}
+            isLoading={isLoading}
+          />
         ))}
       </div>
 
-      {/* Current Usage and Billing */}
-      {billing && (
+      {/* Usage and Billing Summary */}
+      {usage && (
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
@@ -333,51 +290,179 @@ export const BillingSettings = () => {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <span>Basis plan ({license.license_type})</span>
-                <span>€{billing.base_price}</span>
-              </div>
-              
-              {billing.user_count > license.max_users && (
-                <div className="flex items-center justify-between text-orange-600">
-                  <span>Extra gebruikers ({billing.user_count - license.max_users} × €5)</span>
-                  <span>€{(billing.user_count - license.max_users) * 5}</span>
-                </div>
-              )}
-              
-              {billing.branch_count > license.max_branches && (
-                <div className="flex items-center justify-between text-orange-600">
-                  <span>Extra filialen ({billing.branch_count - license.max_branches} × €10)</span>
-                  <span>€{(billing.branch_count - license.max_branches) * 10}</span>
-                </div>
-              )}
-              
-              <hr className="my-2" />
-              
-              <div className="flex items-center justify-between font-semibold text-lg">
-                <span>Totaal per maand</span>
-                <span>€{billing.total_price}</span>
-              </div>
-            </div>
-            
-            {(isOverUserLimit || isOverBranchLimit) && (
-              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
-                <div className="flex items-start">
-                  <AlertCircle className="w-4 h-4 text-yellow-600 mt-0.5 mr-2" />
-                  <div>
-                    <p className="text-sm font-medium text-yellow-800">Limiet overschreden</p>
-                    <p className="text-sm text-yellow-700">
-                      U heeft uw licentie limieten overschreden. Extra kosten zijn van toepassing.
-                      Overweeg een upgrade naar een hoger plan voor betere prijzen.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            )}
+            <BillingBreakdown
+              basePlan={license.license_type}
+              basePrice={usage.base_price}
+              extraUsers={extraUsers}
+              extraUsersCost={extraUsersCost}
+              extraBranches={extraBranches}
+              extraBranchesCost={extraBranchesCost}
+              totalPrice={usage.total_price}
+              isOverLimit={isOverUserLimit || isOverBranchLimit}
+            />
           </CardContent>
         </Card>
       )}
     </div>
   );
 };
+
+interface UsageIndicatorProps {
+  icon: React.ReactNode;
+  label: string;
+  current: number;
+  max: number;
+  percentage: number;
+  isOverLimit: boolean;
+  overLimitCount: number;
+}
+
+const UsageIndicator = ({
+  icon,
+  label,
+  current,
+  max,
+  percentage,
+  isOverLimit,
+  overLimitCount
+}: UsageIndicatorProps) => (
+  <div className="space-y-2">
+    <div className="flex items-center justify-between">
+      <span className="text-sm font-medium flex items-center">
+        {icon}
+        {label}
+      </span>
+      <span className="text-sm">
+        {current} / {max}
+      </span>
+    </div>
+    <Progress 
+      value={Math.min(percentage, 100)} 
+      className={isOverLimit ? "bg-red-100" : ""}
+    />
+    {isOverLimit && (
+      <p className="text-xs text-red-600">
+        Limiet overschreden (+{overLimitCount} {label.toLowerCase()})
+      </p>
+    )}
+  </div>
+);
+
+interface PlanCardProps {
+  planType: PlanType;
+  plan: PlanFeatures;
+  isCurrentPlan: boolean;
+  onUpgrade: () => void;
+  isLoading: boolean;
+}
+
+const PlanCard = ({ planType, plan, isCurrentPlan, onUpgrade, isLoading }: PlanCardProps) => (
+  <Card className={cn(
+    "relative overflow-hidden",
+    isCurrentPlan && "ring-2 ring-blue-500"
+  )}>
+    {isCurrentPlan && (
+      <div className="absolute top-0 right-0 p-2">
+        <Badge variant="default">Huidig Plan</Badge>
+      </div>
+    )}
+    
+    <CardHeader>
+      <CardTitle>{plan.name}</CardTitle>
+      <CardDescription>
+        <span className="text-2xl font-bold">€{plan.price}</span>
+        /maand
+      </CardDescription>
+    </CardHeader>
+    
+    <CardContent className="space-y-4">
+      <div className="space-y-2">
+        {plan.features.map((feature, i) => (
+          <div key={i} className="flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4 text-green-500" />
+            <span className="text-sm">{feature}</span>
+          </div>
+        ))}
+      </div>
+    </CardContent>
+    
+    {!isCurrentPlan && (
+      <div className="p-4 pt-0">
+        <Button 
+          className="w-full"
+          onClick={onUpgrade}
+          disabled={isLoading}
+        >
+          {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Upgraden'}
+        </Button>
+      </div>
+    )}
+  </Card>
+);
+
+interface BillingBreakdownProps {
+  basePlan: string;
+  basePrice: number;
+  extraUsers: number;
+  extraUsersCost: number;
+  extraBranches: number;
+  extraBranchesCost: number;
+  totalPrice: number;
+  isOverLimit: boolean;
+}
+
+const BillingBreakdown = ({
+  basePlan,
+  basePrice,
+  extraUsers,
+  extraUsersCost,
+  extraBranches,
+  extraBranchesCost,
+  totalPrice,
+  isOverLimit
+}: BillingBreakdownProps) => (
+  <>
+    <div className="space-y-3">
+      <div className="flex items-center justify-between">
+        <span>Basis plan ({basePlan})</span>
+        <span>€{basePrice}</span>
+      </div>
+      
+      {extraUsers > 0 && (
+        <div className="flex items-center justify-between text-orange-600">
+          <span>Extra gebruikers ({extraUsers} × €{EXTRA_USER_COST})</span>
+          <span>€{extraUsersCost}</span>
+        </div>
+      )}
+      
+      {extraBranches > 0 && (
+        <div className="flex items-center justify-between text-orange-600">
+          <span>Extra filialen ({extraBranches} × €{EXTRA_BRANCH_COST})</span>
+          <span>€{extraBranchesCost}</span>
+        </div>
+      )}
+      
+      <hr className="my-2" />
+      
+      <div className="flex items-center justify-between font-semibold text-lg">
+        <span>Totaal per maand</span>
+        <span>€{totalPrice}</span>
+      </div>
+    </div>
+    
+    {isOverLimit && (
+      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+        <div className="flex items-start">
+          <AlertCircle className="w-4 h-4 text-yellow-600 mt-0.5 mr-2" />
+          <div>
+            <p className="text-sm font-medium text-yellow-800">Limiet overschreden</p>
+            <p className="text-sm text-yellow-700">
+              U heeft uw licentie limieten overschreden. Extra kosten zijn van toepassing.
+              Overweeg een upgrade naar een hoger plan voor betere prijzen.
+            </p>
+          </div>
+        </div>
+      </div>
+    )}
+  </>
+);
