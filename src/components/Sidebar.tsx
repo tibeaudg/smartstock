@@ -29,7 +29,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
   const navigate = useNavigate();
 
   const menuItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: BarChart3, path: '/dashboard' },
+    { id: 'dashboard', label: 'Dashboard', icon: BarChart3, path: '/dashboard', end: true },
     { id: 'stock', label: 'Products', icon: Package, path: '/dashboard/stock' },
     { id: 'transactions', label: 'Transactions', icon: ShoppingCart, path: '/dashboard/transactions' },
     ...(userRole === 'admin' ? [
@@ -99,6 +99,8 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
                 <li key={item.id}>
                   <NavLink
                     to={item.path}
+                    end={item.end} 
+
                     className={({ isActive }) => `
                       w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-left transition-colors
                       ${isActive 
