@@ -37,9 +37,9 @@ const getStockStatus = (quantity: number, minLevel: number) => {
   if (quantity > minLevel) {
     return 'In Stock';
   } else if (quantity > 0) {
-    return 'Low Stock';
+    return 'Lage Stock';
   } else {
-    return 'Out of Stock';
+    return 'Leeg';
   }
 };
 
@@ -47,9 +47,9 @@ const getStockStatusVariant = (status: string) => {
   switch (status) {
     case 'In Stock':
       return 'success';
-    case 'Low Stock':
+    case 'Lage Stock':
       return 'warning';
-    case 'Out of Stock':
+    case 'Leeg':
       return 'destructive';
     default:
       return 'default';
@@ -112,8 +112,8 @@ export const StockList = () => {
       // Stock status filter
       const matchesStockStatus = stockStatusFilter === 'all' || 
         (stockStatusFilter === 'in-stock' && stockStatus === 'In Stock') ||
-        (stockStatusFilter === 'low-stock' && stockStatus === 'Low Stock') ||
-        (stockStatusFilter === 'out-of-stock' && stockStatus === 'Out of Stock');
+        (stockStatusFilter === 'low-stock' && stockStatus === 'Lage Stock') ||
+        (stockStatusFilter === 'out-of-stock' && stockStatus === 'Leeg');
 
       // Price range filter
       const matchesMinPrice = minPriceFilter === '' || product.unit_price >= parseFloat(minPriceFilter);
@@ -281,12 +281,12 @@ export const StockList = () => {
       <div className="space-y-4">
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Products</h1>
+            <h1 className="text-2xl font-bold text-gray-900">Producten</h1>
             <p className="text-sm text-gray-600">{activeBranch.branch_name}</p>
           </div>
           <Button onClick={() => setIsAddModalOpen(true)} size="sm">
             <Plus className="h-4 w-4 mr-2" />
-            Add New
+            Toevoegen
           </Button>
         </div>
 
@@ -363,7 +363,7 @@ export const StockList = () => {
                   <CardContent className="pt-0">
                     <div className="space-y-3">
                       <div className="flex justify-between items-center">
-                        <span className="text-sm font-medium text-gray-700">Stock Level:</span>
+                        <span className="text-sm font-medium text-gray-700">Stock Niveau:</span>
                         <div className="flex items-center space-x-2">
                           <span className="font-semibold">{product.quantity_in_stock}</span>
                           <Badge
@@ -376,14 +376,14 @@ export const StockList = () => {
                       </div>
                       
                       <div className="flex justify-between items-center">
-                        <span className="text-sm font-medium text-gray-700">Unit Price:</span>
+                        <span className="text-sm font-medium text-gray-700">Eenheidsprijs:</span>
                         <span className="font-semibold text-green-600">
                           ${product.unit_price.toFixed(2)}
                         </span>
                       </div>
                       
                       <div className="flex justify-between items-center">
-                        <span className="text-sm font-medium text-gray-700">Min. Level:</span>
+                        <span className="text-sm font-medium text-gray-700">Min. Niveau:</span>
                         <span>{product.minimum_stock_level}</span>
                       </div>
                     
@@ -429,7 +429,7 @@ export const StockList = () => {
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Products</h1>
+          <h1 className="text-3xl font-bold text-gray-900">Producten</h1>
         </div>
         <Button onClick={() => setIsAddModalOpen(true)}>
           <Plus className="h-4 w-4 mr-2" />
@@ -467,19 +467,19 @@ export const StockList = () => {
                   Product
                 </th>
                 <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Stock Level
+                  Stock Niveau
                 </th>
                 <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Min. Level
+                  Min. Niveau
                 </th>
                 <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Unit Price
+                  Eenheidsprijs
                 </th>
                 <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Status
                 </th>
                 <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions
+                  Acties
                 </th>
               </tr>
             </thead>

@@ -43,7 +43,7 @@ export const StockMovements = () => {
 
       const ws = XLSX.utils.json_to_sheet(exportData);
       const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, 'Stock Movements');
+      XLSX.utils.book_append_sheet(wb, ws, 'Bewegingslijst');
       XLSX.writeFile(wb, `stock-movements-${format(new Date(), 'yyyy-MM-dd')}.xlsx`);
       
       toast.success('Export completed successfully');
@@ -73,10 +73,10 @@ export const StockMovements = () => {
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Stock Movements</h1>
+          <h1 className="text-3xl font-bold text-gray-900">Bewegingslijst</h1>
           {!loading && (
             <p className="text-sm text-muted-foreground mt-1">
-              {stats.transactionCount} transactions • Total value: €{stats.totalValue.toFixed(2)}
+              {stats.transactionCount} bewegingen • Totale waarde: €{stats.totalValue.toFixed(2)}
             </p>
           )}
         </div>
@@ -98,7 +98,7 @@ export const StockMovements = () => {
           <div className="flex-1 relative">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder="Search products or references..."
+              placeholder="Zoek producten"
               className="pl-8"
               value={filters.searchQuery}
               onChange={(e) => setFilters(prev => ({ ...prev, searchQuery: e.target.value }))}
@@ -112,9 +112,9 @@ export const StockMovements = () => {
               <SelectValue placeholder="Transaction Type" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Types</SelectItem>
-              <SelectItem value="incoming">Incoming</SelectItem>
-              <SelectItem value="outgoing">Outgoing</SelectItem>
+              <SelectItem value="all">Alle Types</SelectItem>
+              <SelectItem value="incoming">In</SelectItem>
+              <SelectItem value="outgoing">Out</SelectItem>
             </SelectContent>
           </Select>
           <Select
@@ -125,11 +125,11 @@ export const StockMovements = () => {
               <SelectValue placeholder="Date Range" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Time</SelectItem>
-              <SelectItem value="today">Today</SelectItem>
-              <SelectItem value="week">Last 7 Days</SelectItem>
-              <SelectItem value="month">Last 30 Days</SelectItem>
-              <SelectItem value="custom">Custom Range</SelectItem>
+              <SelectItem value="all">Datum</SelectItem>
+              <SelectItem value="today">Vandaag</SelectItem>
+              <SelectItem value="week">Laatste 7 Dagen</SelectItem>
+              <SelectItem value="month">Laatste 30 Dagen</SelectItem>
+              <SelectItem value="custom">Aangepast</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -186,25 +186,25 @@ export const StockMovements = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <Card>
             <CardContent className="p-4">
-              <p className="text-sm font-medium text-muted-foreground">Total Incoming</p>
+              <p className="text-sm font-medium text-muted-foreground">Totaal In</p>
               <p className="text-2xl font-bold text-green-600">{stats.totalIncoming}</p>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-4">
-              <p className="text-sm font-medium text-muted-foreground">Total Outgoing</p>
+              <p className="text-sm font-medium text-muted-foreground">Totaal Out</p>
               <p className="text-2xl font-bold text-red-600">{stats.totalOutgoing}</p>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-4">
-              <p className="text-sm font-medium text-muted-foreground">Transactions</p>
+              <p className="text-sm font-medium text-muted-foreground">Bewegingen</p>
               <p className="text-2xl font-bold">{stats.transactionCount}</p>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-4">
-              <p className="text-sm font-medium text-muted-foreground">Total Value</p>
+              <p className="text-sm font-medium text-muted-foreground">Huidige Waarde</p>
               <p className="text-2xl font-bold">€{stats.totalValue.toFixed(2)}</p>
             </CardContent>
           </Card>
@@ -219,14 +219,14 @@ export const StockMovements = () => {
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-4 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                <th className="px-4 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Datum</th>
                 <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
                 <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-                <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
+                <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Aantal</th>
                 {!isMobile && (
                   <>
-                    <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Unit Price</th>
-                    <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Total Value</th>
+                    <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Eenheidsprijs</th>
+                    <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Totaal</th>
                   </>
                 )}
               </tr>
@@ -248,7 +248,7 @@ export const StockMovements = () => {
                       variant={transaction.transaction_type === 'incoming' ? 'default' : 'destructive'}
                       className={transaction.transaction_type === 'incoming' ? 'bg-green-500 hover:bg-green-600' : ''}
                     >
-                      {transaction.transaction_type}
+                      {transaction.transaction_type === 'incoming' ? 'In' : 'Uit'}
                     </Badge>
                   </td>
                   <td className="px-4 py-2 text-right text-sm font-medium">

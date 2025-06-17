@@ -61,7 +61,7 @@ export const EditProductModal = ({ isOpen, onClose, onProductUpdated, product }:
             Current stock: {product.quantity_in_stock} units
             {product.quantity_in_stock <= product.minimum_stock_level && (
               <span className="text-red-500 ml-2">
-                (Below minimum stock level of {product.minimum_stock_level})
+                (Onder minimum stock niveau {product.minimum_stock_level})
               </span>
             )}
           </DialogDescription>

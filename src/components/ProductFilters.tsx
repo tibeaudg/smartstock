@@ -49,7 +49,7 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
       <div className="relative">
         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
         <Input
-          placeholder="Search products by name or description..."
+          placeholder="Zoek producten"
           value={searchTerm}
           onChange={(e) => onSearchChange(e.target.value)}
           className="pl-10 h-12 text-base"
@@ -62,7 +62,7 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
           <CollapsibleTrigger asChild>
             <Button variant="outline" className="flex items-center gap-2">
               <Filter className="h-4 w-4" />
-              Advanced Filters
+              Geavanceerde Filters
               {activeFiltersCount > 0 && (
                 <Badge variant="secondary" className="ml-1">
                   {activeFiltersCount}
@@ -97,17 +97,17 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
                       <SelectValue placeholder="All Statuses" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">All Statuses</SelectItem>
+                      <SelectItem value="all">Alle Statussen</SelectItem>
                       <SelectItem value="in-stock">In Stock</SelectItem>
-                      <SelectItem value="low-stock">Low Stock</SelectItem>
-                      <SelectItem value="out-of-stock">Out of Stock</SelectItem>
+                      <SelectItem value="low-stock">Lage Stock</SelectItem>
+                      <SelectItem value="out-of-stock">Leeg</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
                 {/* Price Range Filters */}
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700">Min Price ($)</label>
+                  <label className="text-sm font-medium text-gray-700">Min Prijs ($)</label>
                   <Input
                     type="number"
                     placeholder="0.00"
@@ -119,7 +119,7 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700">Max Price ($)</label>
+                  <label className="text-sm font-medium text-gray-700">Max Prijs ($)</label>
                   <Input
                     type="number"
                     placeholder="999999.99"

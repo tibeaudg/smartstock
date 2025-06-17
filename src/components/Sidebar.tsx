@@ -30,13 +30,11 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
 
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: BarChart3, path: '/dashboard', end: true },
-    { id: 'stock', label: 'Products', icon: Package, path: '/dashboard/stock' },
-    { id: 'transactions', label: 'Transactions', icon: ShoppingCart, path: '/dashboard/transactions' },
+    { id: 'stock', label: 'Producten', icon: Package, path: '/dashboard/stock' },
+    { id: 'transactions', label: 'Bewegingslijst', icon: ShoppingCart, path: '/dashboard/transactions' },
     ...(userRole === 'admin' ? [
-      { id: 'licenses', label: 'Licenses', icon: CreditCard, path: '/dashboard/licenses' },
-      { id: 'subscriptions', label: 'Subscriptions', icon: Users, path: '/dashboard/subscriptions' },
     ] : []),
-    { id: 'settings', label: 'Settings', icon: Settings, path: '/dashboard/settings' },
+    { id: 'settings', label: 'Instellingen', icon: Settings, path: '/dashboard/settings' },
   ];
 
   const handleSignOut = async () => {
@@ -139,7 +137,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
             `}
           >
             <LogOut className="w-4 h-4 flex-shrink-0" />
-            {isOpen && <span className="ml-3">Sign Out</span>}
+            {isOpen && <span className="ml-3">Afmelden</span>}
           </Button>
         </div>
       </div>

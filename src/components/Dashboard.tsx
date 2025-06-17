@@ -52,9 +52,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
       <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
         <div className="flex-1">
           <h1 className="text-4xl font-bold text-gray-900 mb-2">Dashboard</h1>
-          <p className="text-lg text-gray-600">
-            Welcome back! Here's what's happening with your inventory.
-          </p>
+
         </div>
         
         <div className="flex flex-col sm:flex-row gap-3">
@@ -79,7 +77,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
                     format(dateFrom, "LLL dd, y")
                   )
                 ) : (
-                  <span>Pick a date range</span>
+                  <span>Kies een datum</span>
                 )}
               </Button>
             </PopoverTrigger>
@@ -107,64 +105,59 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
         <Card className="bg-white hover:shadow-lg transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-            <CardTitle className="text-base font-semibold text-gray-700">Total Stock Value</CardTitle>
+            <CardTitle className="text-base font-semibold text-gray-700">Totale Waarde</CardTitle>
             <DollarSign className="h-6 w-6 text-blue-600" />
           </CardHeader>
           <CardContent className="pt-0">
             <div className="text-3xl font-bold text-gray-900">
               ${metrics.totalStockValue.toLocaleString()}
             </div>
-            <p className="text-sm text-gray-500 mt-2">Current inventory value</p>
           </CardContent>
         </Card>
 
         <Card className="bg-white hover:shadow-lg transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-            <CardTitle className="text-base font-semibold text-gray-700">Total Products</CardTitle>
+            <CardTitle className="text-base font-semibold text-gray-700">Aantal Producten</CardTitle>
             <Package className="h-6 w-6 text-purple-600" />
           </CardHeader>
           <CardContent className="pt-0">
             <div className="text-3xl font-bold text-gray-900">{metrics.totalProducts}</div>
-            <p className="text-sm text-gray-500 mt-2">Active products</p>
           </CardContent>
         </Card>
 
         <Card className="bg-white hover:shadow-lg transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-            <CardTitle className="text-base font-semibold text-gray-700">Incoming Today</CardTitle>
+            <CardTitle className="text-base font-semibold text-gray-700">Vandaag Toegevoegd</CardTitle>
             <TrendingUp className="h-6 w-6 text-green-600" />
           </CardHeader>
           <CardContent className="pt-0">
             <div className="text-3xl font-bold text-green-600">
               {metrics.incomingToday}
             </div>
-            <p className="text-sm text-gray-500 mt-2">Items received</p>
           </CardContent>
         </Card>
 
         <Card className="bg-white hover:shadow-lg transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-            <CardTitle className="text-base font-semibold text-gray-700">Outgoing Today</CardTitle>
+            <CardTitle className="text-base font-semibold text-gray-700">Vandaag Verzonden</CardTitle>
             <TrendingDown className="h-6 w-6 text-red-600" />
           </CardHeader>
           <CardContent className="pt-0">
             <div className="text-3xl font-bold text-red-600">
               {metrics.outgoingToday}
             </div>
-            <p className="text-sm text-gray-500 mt-2">Items shipped</p>
           </CardContent>
         </Card>
 
         <Card className="bg-white hover:shadow-lg transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-            <CardTitle className="text-base font-semibold text-gray-700">Low Stock Alerts</CardTitle>
+            <CardTitle className="text-base font-semibold text-gray-700">Lage Stock Meldingen</CardTitle>
             <AlertTriangle className="h-6 w-6 text-yellow-600" />
           </CardHeader>
           <CardContent className="pt-0">
             <div className="text-3xl font-bold text-yellow-600">
               {metrics.lowStockAlerts}
             </div>
-            <p className="text-sm text-gray-500 mt-2">Requires attention</p>
           </CardContent>
         </Card>
       </div>
