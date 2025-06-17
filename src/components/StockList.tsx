@@ -463,22 +463,22 @@ export const StockList = () => {
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Product
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Stock Level
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Min. Level
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Unit Price
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Status
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
@@ -486,44 +486,47 @@ export const StockList = () => {
             <tbody className="bg-white divide-y divide-gray-200">
               {filteredProducts.length === 0 ? (
                 <tr>
-                  <td colSpan={8} className="px-6 py-4 text-center text-gray-500">
+                  <td colSpan={8} className="px-4 py-2 text-center text-gray-500">
                     {products.length === 0 ? 'No products found for this branch.' : 'No products match your filters.'}
                   </td>
                 </tr>
               ) : (
-                filteredProducts.map((product) => {
+                filteredProducts.map((product, index) => {
                   const stockStatus = getStockStatus(product.quantity_in_stock, product.minimum_stock_level);
-                  const displayCategory = product.category_name || product.categories?.name;
-                  const displaySupplier = product.supplier_name || product.suppliers?.name;
                   
                   return (
-                    <tr key={product.id} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 whitespace-nowrap">
+                    <tr 
+                      key={product.id} 
+                      className={`${
+                        index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
+                      } hover:bg-gray-100 transition-colors`}
+                    >
+                      <td className="px-4 py-2 whitespace-nowrap">
                         <div>
                           <div className="text-sm font-medium text-gray-900">{product.name}</div>
                           {product.description && (
-                            <div className="text-sm text-gray-500 max-w-xs truncate">
+                            <div className="text-xs text-gray-500 max-w-xs truncate">
                               {product.description}
                             </div>
                           )}
                         </div>
                       </td>
 
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                      <td className="px-4 py-2 whitespace-nowrap text-sm font-medium">
                         {product.quantity_in_stock}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900">
                         {product.minimum_stock_level}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-green-600">
+                      <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-green-600">
                         ${product.unit_price.toFixed(2)}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
+                      <td className="px-4 py-2 whitespace-nowrap">
                         <Badge variant={getStockStatusVariant(stockStatus)}>
                           {stockStatus}
                         </Badge>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                      <td className="px-4 py-1 whitespace-nowrap text-sm font-medium">
                         <div className="flex space-x-2">
                           <Button
                             variant="ghost"
