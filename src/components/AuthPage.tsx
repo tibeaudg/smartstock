@@ -6,8 +6,8 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
-import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { Loader2 } from 'lucide-react';
 
 export const AuthPage = () => {
   const [mode, setMode] = useState<'login' | 'register' | 'reset'>('login');
@@ -17,21 +17,15 @@ export const AuthPage = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [role, setRole] = useState<'admin' | 'staff'>('staff');
-  const [loading, setLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
-  const { signIn, signUp, resetPassword, user, profile } = useAuth();
+  const { signIn, signUp, resetPassword } = useAuth();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    // Redirect to dashboard if already authenticated
-    if (user && profile) {
-      navigate('/dashboard');
-    }
-  }, [user, profile, navigate]);
+  const location = useLocation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    setIsSubmitting(true);
 
     try {
       if (mode === 'login') {
@@ -44,11 +38,12 @@ export const AuthPage = () => {
           } else {
             toast.error(error.message);
           }
-        } else {
-          toast.success('Welcome back!');
-          // Redirect to dashboard after successful login
-          navigate('/dashboard');
+          return;
         }
+
+        const from = (location.state as any)?.from?.pathname || '/dashboard';
+        navigate(from, { replace: true });
+        toast.success('Welcome back!');
       } else if (mode === 'register') {
         if (password !== confirmPassword) {
           toast.error('Passwords do not match');
@@ -66,24 +61,26 @@ export const AuthPage = () => {
           } else {
             toast.error(error.message);
           }
-        } else {
-          toast.success('Account created successfully! Please check your email to confirm your account.');
-          setMode('login');
+          return;
         }
+
+        toast.success('Account created successfully! Please check your email to confirm your account.');
+        setMode('login');
       } else if (mode === 'reset') {
         const { error } = await resetPassword(email);
         if (error) {
           toast.error(error.message);
-        } else {
-          toast.success('Password reset email sent! Please check your inbox.');
-          setMode('login');
+          return;
         }
+        
+        toast.success('Password reset email sent! Please check your inbox.');
+        setMode('login');
       }
     } catch (error) {
       console.error('Auth error:', error);
       toast.error('An unexpected error occurred. Please try again.');
     } finally {
-      setLoading(false);
+      setIsSubmitting(false);
     }
   };
 
@@ -158,6 +155,7 @@ export const AuthPage = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
+                  disabled={isSubmitting}
                 />
               </div>
 
@@ -170,6 +168,7 @@ export const AuthPage = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
+                    disabled={isSubmitting}
                   />
                 </div>
               )}
@@ -183,12 +182,22 @@ export const AuthPage = () => {
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     required
+                    disabled={isSubmitting}
                   />
                 </div>
               )}
 
-              <Button type="submit" className="w-full" disabled={loading}>
-                {loading ? 'Loading...' : (
+              <Button 
+                type="submit" 
+                className="w-full" 
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Please wait...
+                  </>
+                ) : (
                   <>
                     {mode === 'login' && 'Sign In'}
                     {mode === 'register' && 'Create Account'}
@@ -206,6 +215,7 @@ export const AuthPage = () => {
                   type="button"
                   onClick={() => setMode('reset')}
                   className="text-sm text-blue-600 hover:underline"
+                  disabled={isSubmitting}
                 >
                   Forgot your password?
                 </button>
@@ -215,6 +225,7 @@ export const AuthPage = () => {
                     type="button"
                     onClick={() => setMode('register')}
                     className="text-blue-600 hover:underline"
+                    disabled={isSubmitting}
                   >
                     Sign up
                   </button>
@@ -229,6 +240,7 @@ export const AuthPage = () => {
                   type="button"
                   onClick={() => setMode('login')}
                   className="text-blue-600 hover:underline"
+                  disabled={isSubmitting}
                 >
                   Sign in
                 </button>
@@ -242,6 +254,7 @@ export const AuthPage = () => {
                   type="button"
                   onClick={() => setMode('login')}
                   className="text-blue-600 hover:underline"
+                  disabled={isSubmitting}
                 >
                   Sign in
                 </button>

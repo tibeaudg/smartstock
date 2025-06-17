@@ -1,4 +1,3 @@
-
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './useAuth';
@@ -22,7 +21,7 @@ interface BranchContextType {
 const BranchContext = createContext<BranchContextType | undefined>(undefined);
 
 export const BranchProvider = ({ children }: { children: ReactNode }) => {
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const [branches, setBranches] = useState<Branch[]>([]);
   const [activeBranch, setActiveBranchState] = useState<Branch | null>(null);
   const [loading, setLoading] = useState(true);
@@ -45,61 +44,72 @@ export const BranchProvider = ({ children }: { children: ReactNode }) => {
 
       if (error) {
         console.error('Error fetching branches:', error);
+        setLoading(false);
         return;
       }
 
-      console.log('Branches fetched:', data);
-      setBranches(data || []);
-      
-      // Check if user has no branches
-      if (!data || data.length === 0) {
-        console.log('User has no branches');
-        setHasNoBranches(true);
-        setActiveBranchState(null);
-      } else {
-        setHasNoBranches(false);
+      if (data) {
+        console.log('Branches fetched:', data);
+        setBranches(data);
+        setHasNoBranches(data.length === 0);
         
-        // Set the main branch as active by default, or the first branch if no main branch
-        const mainBranch = data.find(b => b.is_main);
-        const defaultBranch = mainBranch || data[0];
-        
-        // Check if we have a saved active branch in localStorage
-        const savedBranchId = localStorage.getItem('activeBranchId');
-        const savedBranch = savedBranchId ? data.find(b => b.branch_id === savedBranchId) : null;
-        
-        setActiveBranchState(savedBranch || defaultBranch);
+        // Set active branch to main branch or first branch if no active branch
+        if (!activeBranch) {
+          const mainBranch = data.find(b => b.is_main) || data[0];
+          if (mainBranch) {
+            setActiveBranchState(mainBranch);
+          }
+        }
       }
     } catch (error) {
-      console.error('Error fetching branches:', error);
+      console.error('Exception fetching branches:', error);
     } finally {
       setLoading(false);
     }
   };
 
+  useEffect(() => {
+    let mounted = true;
+
+    const initBranches = async () => {
+      if (authLoading) return;
+      
+      if (mounted && user) {
+        await fetchBranches();
+      } else if (mounted && !user) {
+        setBranches([]);
+        setActiveBranchState(null);
+        setHasNoBranches(false);
+        setLoading(false);
+      }
+    };
+
+    initBranches();
+
+    return () => {
+      mounted = false;
+    };
+  }, [user, authLoading]);
+
   const setActiveBranch = (branch: Branch) => {
-    console.log('Setting active branch:', branch);
     setActiveBranchState(branch);
-    localStorage.setItem('activeBranchId', branch.branch_id);
   };
 
   const refreshBranches = async () => {
-    setLoading(true);
     await fetchBranches();
   };
 
-  useEffect(() => {
-    fetchBranches();
-  }, [user]);
-
   return (
-    <BranchContext.Provider value={{
-      branches,
-      activeBranch,
-      setActiveBranch,
-      loading,
-      refreshBranches,
-      hasNoBranches
-    }}>
+    <BranchContext.Provider
+      value={{
+        branches,
+        activeBranch,
+        setActiveBranch,
+        loading,
+        refreshBranches,
+        hasNoBranches,
+      }}
+    >
       {children}
     </BranchContext.Provider>
   );
