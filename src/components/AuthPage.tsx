@@ -3,7 +3,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -16,7 +15,6 @@ export const AuthPage = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [role, setRole] = useState<'admin' | 'staff'>('staff');
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   const { signIn, signUp, resetPassword } = useAuth();
@@ -54,7 +52,8 @@ export const AuthPage = () => {
           return;
         }
         
-        const { error } = await signUp(email, password, firstName, lastName, role);
+        // Force admin role for self-registration
+        const { error } = await signUp(email, password, firstName, lastName, 'admin');
         if (error) {
           if (error.message.includes('User already registered')) {
             toast.error('An account with this email already exists. Please sign in instead.');
@@ -129,20 +128,9 @@ export const AuthPage = () => {
                         value={lastName}
                         onChange={(e) => setLastName(e.target.value)}
                         required
+                        disabled={isSubmitting}
                       />
                     </div>
-                  </div>
-                  <div>
-                    <Label htmlFor="role">Role</Label>
-                    <Select value={role} onValueChange={(value: 'admin' | 'staff') => setRole(value)}>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="staff">Staff</SelectItem>
-                        <SelectItem value="admin">Administrator</SelectItem>
-                      </SelectContent>
-                    </Select>
                   </div>
                 </>
               )}

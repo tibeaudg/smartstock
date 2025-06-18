@@ -129,7 +129,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const signUp = async (email: string, password: string, firstName: string, lastName: string, role: 'admin' | 'staff') => {
+  const signUp = async (email: string, password: string, firstName: string, lastName: string, role: 'admin' | 'staff' = 'admin') => {
     try {
       setLoading(true);
       const { error } = await supabase.auth.signUp({
@@ -139,7 +139,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           data: {
             first_name: firstName,
             last_name: lastName,
-            role: role,
+            role: 'admin', // Always set as admin for self-registration
           },
           emailRedirectTo: `${window.location.origin}/dashboard`,
         },

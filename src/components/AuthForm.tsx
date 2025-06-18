@@ -1,13 +1,11 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 interface AuthFormProps {
-  onLogin: (email: string, password: string, role: 'admin' | 'staff') => void;
+  onLogin: (email: string, password: string) => void;
 }
 
 export const AuthForm = ({ onLogin }: AuthFormProps) => {
@@ -15,17 +13,15 @@ export const AuthForm = ({ onLogin }: AuthFormProps) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [role, setRole] = useState<'admin' | 'staff'>('staff');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (mode === 'login') {
-      onLogin(email, password, role);
+      onLogin(email, password);
     } else if (mode === 'register') {
-      // In a real app, this would create a new account
-      onLogin(email, password, role);
+      onLogin(email, password);
     } else {
       // Password reset logic would go here
       setMode('login');
@@ -115,21 +111,6 @@ export const AuthForm = ({ onLogin }: AuthFormProps) => {
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     required
                   />
-                </div>
-              )}
-
-              {(mode === 'login' || mode === 'register') && (
-                <div>
-                  <Label htmlFor="role">Role</Label>
-                  <Select value={role} onValueChange={(value: 'admin' | 'staff') => setRole(value)}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="staff">Staff</SelectItem>
-                      <SelectItem value="admin">Administrator</SelectItem>
-                    </SelectContent>
-                  </Select>
                 </div>
               )}
 

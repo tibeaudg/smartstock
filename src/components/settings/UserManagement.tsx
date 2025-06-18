@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
@@ -100,43 +99,42 @@ export const UserManagement = () => {
         throw userError;
       }
 
-      if (existingUser) {
-        // User exists, add them to the branch
-        const { error: branchUserError } = await supabase
-          .from('branch_users')
-          .insert({
-            branch_id: activeBranch.branch_id,
-            user_id: existingUser.id,
-            role: inviteRole,
-            granted_by: user?.id
-          });
-
-        if (branchUserError) {
-          if (branchUserError.code === '23505') {
-            toast({
-              title: "Gebruiker al toegevoegd",
-              description: "Deze gebruiker heeft al toegang tot dit filiaal",
-              variant: "destructive",
-            });
-          } else {
-            throw branchUserError;
-          }
-        } else {
-          toast({
-            title: "Gebruiker toegevoegd",
-            description: "De gebruiker is succesvol toegevoegd aan het filiaal",
-          });
-          setInviteEmail('');
-          await fetchBranchUsers();
-        }
-      } else {
-        // User doesn't exist, create invitation (in a real app, you'd send an invitation email)
-        toast({
-          title: "Uitnodiging verstuurd",
-          description: "Een uitnodiging is verstuurd naar " + inviteEmail,
+      if (!existingUser) {
+        // User doesn't exist, create a new user with staff role
+        const { error: inviteError } = await supabase.auth.signInWithOtp({
+          email: inviteEmail,
+          options: {
+            data: {
+              invited_by: user?.id, // Add this to mark as an invited user
+              role: 'staff', // Force staff role for invited users
+            },
+          },
         });
-        setInviteEmail('');
+
+        if (inviteError) throw inviteError;
       }
+
+      // Add the user to the branch with specified role
+      const { error: branchUserError } = await supabase
+        .from('branch_users')
+        .insert({
+          branch_id: activeBranch.branch_id,
+          user_id: existingUser?.id,
+          role: 'staff', // Default to staff role for new branch members
+          granted_by: user?.id,
+        });
+
+      if (branchUserError) throw branchUserError;
+
+      toast({
+        title: "Uitnodiging verstuurd",
+        description: existingUser
+          ? "Gebruiker is toegevoegd aan het filiaal"
+          : "Uitnodiging is verstuurd naar de gebruiker",
+      });
+
+      setInviteEmail('');
+      await fetchBranchUsers();
     } catch (error) {
       console.error('Error inviting user:', error);
       toast({
