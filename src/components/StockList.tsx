@@ -37,9 +37,9 @@ const getStockStatus = (quantity: number, minLevel: number) => {
   if (quantity > minLevel) {
     return 'In Stock';
   } else if (quantity > 0) {
-    return 'Lage Stock';
+    return 'Laag';
   } else {
-    return 'Leeg';
+    return 'Op';
   }
 };
 
@@ -49,9 +49,9 @@ const getStockStatusVariant = (status: string) => {
   switch (status) {
     case 'In Stock':
       return 'success';
-    case 'Lage Stock':
+    case 'Laag':
       return 'warning';
-    case 'Leeg':
+    case 'Op':
       return 'destructive';
     default:
       return 'default';
@@ -117,8 +117,8 @@ export const StockList = () => {
       // Stock status filter
       const matchesStockStatus = stockStatusFilter === 'all' || 
         (stockStatusFilter === 'in-stock' && stockStatus === 'In Stock') ||
-        (stockStatusFilter === 'low-stock' && stockStatus === 'Lage Stock') ||
-        (stockStatusFilter === 'out-of-stock' && stockStatus === 'Leeg');
+        (stockStatusFilter === 'low-stock' && stockStatus === 'Laag') ||
+        (stockStatusFilter === 'out-of-stock' && stockStatus === 'Op');
 
       // Price range filter
       const matchesMinPrice = minPriceFilter === '' || product.unit_price >= parseFloat(minPriceFilter);
@@ -320,7 +320,7 @@ export const StockList = () => {
                           variant="outline"
                           size="sm"
                           onClick={() => handleStockAction(product, 'out')}
-                          className="text-gray-600 hover:text-white hover:bg-green-600 hover:border-green-600"
+                          className="text-gray-600 hover:text-white hover:bg-red-600 hover:border-red-600"
                         >
                           <Minus className="h-4 w-4" />
                           Out
@@ -523,16 +523,14 @@ export const StockList = () => {
                             className="text-gray-600 hover:text-white hover:bg-green-600 hover:border-green-600"
                           >
                             <Plus className="h-4 w-4" />
-                            In
                           </Button>
                           <Button
                             variant="outline"
                             size="sm"
                             onClick={() => handleStockAction(product, 'out')}
-                            className="text-gray-600 hover:text-white hover:bg-green-600 hover:border-green-600"
+                            className="text-gray-600 hover:text-white hover:bg-red-600 hover:border-green-600"
                           >
                             <Minus className="h-4 w-4" />
-                            Out
                           </Button>
                             {isAdmin && (
                               <Button variant="destructive" size="sm">
