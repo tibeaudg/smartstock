@@ -143,79 +143,39 @@ export const StockList = () => {
     setIsEditModalOpen(true);
   };
   const handleDelete = async (productId: string) => {
-    if (!user || !activeBranch) return;
+    if (!user || !activeBranch) {
+      toast.error('Je moet ingelogd zijn en een filiaal geselecteerd hebben');
+      return;
+    }
     
-    if (!confirm('Are you sure you want to delete this product? This action cannot be undone.')) {
+    const confirmMessage = 'Weet je zeker dat je dit product wilt verwijderen?\n\n' +
+      'LET OP: Dit zal ook alle gerelateerde transacties verwijderen!';
+    
+    if (!confirm(confirmMessage)) {
       return;
     }
 
     try {
-      console.log('Processing product deletion:', productId, 'from branch:', activeBranch.branch_id);
-      
-      // First, get the product details before deleting
-      const { data: product, error: fetchError } = await supabase
-        .from('products')
-        .select('*')
-        .eq('id', productId)
-        .single();
-
-      if (fetchError || !product) {
-        console.error('Error fetching product details:', fetchError);
-        toast.error('Error fetching product details');
-        return;
-      }      // Create a final "removal" transaction if there was stock
-      if (product.quantity_in_stock > 0) {
-        const stockTransactionData = {
-          product_id: product.id,
-          product_name: product.name,
-          transaction_type: 'outgoing' as const,
-          quantity: product.quantity_in_stock,
-          unit_price: product.unit_price,
-          created_by: user.id,
-          branch_id: activeBranch.branch_id,
-          reference_number: 'PRODUCT_DELETED',
-          notes: 'Product verwijderd uit voorraad'
-        };
-
-        const { error: finalTransactionError } = await supabase
-          .from('stock_transactions')
-          .insert(stockTransactionData);        if (finalTransactionError) {
-          console.error('Error creating removal transaction:', finalTransactionError);
-        }
-      }
-
-      // Then proceed with the deletion
       const { error: deleteError } = await supabase
         .from('products')
         .delete()
-        .eq('id', productId)
-        .eq('branch_id', activeBranch.branch_id);
+        .match({ 
+          id: productId, 
+          branch_id: activeBranch.branch_id 
+        });
 
       if (deleteError) {
-        console.error('Error deleting transactions:', deleteError);
-        toast.error('Failed to delete product transactions');
+        console.error('Delete error:', deleteError);
+        toast.error(`Verwijderen mislukt: ${deleteError.message}`);
         return;
       }
 
-      // Then delete the product
-      const { error: productError } = await supabase
-        .from('products')
-        .delete()
-        .eq('id', productId)
-        .eq('branch_id', activeBranch.branch_id);
-
-      if (productError) {
-        console.error('Error deleting product:', productError);
-        toast.error('Failed to delete product');
-        return;
-      }
-
-      console.log('Product deleted successfully');
-      toast.success('Product deleted successfully');
-      fetchProducts();
+      toast.success('Product en gerelateerde transacties succesvol verwijderd');
+      await fetchProducts();
+      
     } catch (error) {
-      console.error('Error deleting product:', error);
-      toast.error('Failed to delete product');
+      console.error('Error:', error);
+      toast.error('Er is een onverwachte fout opgetreden');
     }
   };
 

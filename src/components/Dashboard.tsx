@@ -20,7 +20,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
   const [dateFrom, setDateFrom] = useState<Date>();
   const [dateTo, setDateTo] = useState<Date>();
   
-  const { metrics, stockTrends, categoryData, dailyActivity, loading } = useDashboardData();
+  const { metrics, loading } = useDashboardData();
 
   console.log('Dashboard rendering with userRole:', userRole, 'loading:', loading);
 

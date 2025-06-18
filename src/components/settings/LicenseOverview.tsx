@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
-import { useBranches } from '@/hooks/useBranches';
+import { useDashboardData } from '@/hooks/useDashboardData';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -36,40 +36,21 @@ const calculateLicenseType = (totalProducts: number) => {
 
 export const LicenseOverview = () => {
   const { user } = useAuth();
-  const { branches } = useBranches();
+  const { metrics, loading: metricsLoading } = useDashboardData();
   const [license, setLicense] = useState<LicenseData | null>(null);
   const [usage, setUsage] = useState<UsageData | null>(null);
-  const [loading, setLoading] = useState(true);
 
-  const fetchLicenseData = async () => {
-    if (!user) return;
+  useEffect(() => {
+    if (!user || metricsLoading || !metrics) return;
 
     try {
-      // Fetch total products across all branches
-      const { data: productsData, error: productsError } = await supabase
-        .from('products')
-        .select('count', { count: 'exact' })
-        .eq('organization_id', user.organization_id);
-
-      const totalProducts = productsData || 0;
-      const licenseInfo = calculateLicenseType(totalProducts);
-
-      // Fetch users count
-      const { data: usersCount, error: usersError } = await supabase
-        .from('users')
-        .select('count', { count: 'exact' })
-        .eq('organization_id', user.organization_id);
-
-      // Fetch branches count
-      const { data: branchesCount, error: branchesError } = await supabase
-        .from('branches')
-        .select('count', { count: 'exact' })
-        .eq('organization_id', user.organization_id);
+      // Use metrics from dashboard data to calculate license
+      const licenseInfo = calculateLicenseType(metrics.totalProducts || 0);
 
       setUsage({
-        user_count: usersCount || 0,
-        branch_count: branchesCount || 0,
-        total_products: totalProducts,
+        user_count: 1, // Default to 1 for now
+        branch_count: metrics.branchCount || 0,
+        total_products: metrics.totalProducts || 0,
         base_price: licenseInfo.price,
         total_price: licenseInfo.price
       });
@@ -77,32 +58,36 @@ export const LicenseOverview = () => {
       setLicense({
         id: user.id,
         license_type: licenseInfo.type,
-        max_users: licenseInfo.type === 'free' ? 1 : licenseInfo.type === 'starter' ? 5 : 
-                  licenseInfo.type === 'business' ? 20 : unlimited,
-        max_branches: licenseInfo.type === 'free' ? 1 : licenseInfo.type === 'starter' ? 2 : 
-                     licenseInfo.type === 'business' ? 5 : unlimited,
+        max_users: licenseInfo.type === 'free' ? 1 
+                  : licenseInfo.type === 'starter' ? 5 
+                  : licenseInfo.type === 'business' ? 20 
+                  : 999999,
+        max_branches: licenseInfo.type === 'free' ? 1 
+                    : licenseInfo.type === 'starter' ? 2 
+                    : licenseInfo.type === 'business' ? 5 
+                    : 999999,
         monthly_price: licenseInfo.price,
         is_active: true,
-        total_products: totalProducts
+        total_products: metrics.totalProducts || 0
       });
-
     } catch (error) {
-      console.error('Error fetching license data:', error);
+      console.error('Error setting license data:', error);
       toast({
         title: "Error",
-        description: "Failed to fetch license data",
+        description: "Failed to load license information",
         variant: "destructive"
       });
-    } finally {
-      setLoading(false);
     }
-  };
+  }, [user, metrics, metricsLoading]);
 
-  useEffect(() => {
-    fetchLicenseData();
-  }, [user]);
+  // Add null checks for license and usage before calculating percentages
+  const userUsagePercentage = (usage && license) ? 
+    (usage.user_count / (license.max_users || 1)) * 100 : 0;
+    
+  const branchUsagePercentage = (usage && license) ? 
+    (usage.branch_count / (license.max_branches || 1)) * 100 : 0;
 
-  if (loading) {
+  if (metricsLoading || !metrics) {
     return (
       <div className="flex items-center justify-center py-8">
         <Loader2 className="w-6 h-6 animate-spin" />
@@ -111,8 +96,16 @@ export const LicenseOverview = () => {
     );
   }
 
-  const userUsagePercentage = usage ? (usage.user_count / license.max_users) * 100 : 0;
-  const branchUsagePercentage = usage ? (usage.branch_count / license.max_branches) * 100 : 0;
+  // Add null check before rendering table
+  if (!license || !usage) {
+    return (
+      <div className="flex items-center justify-center py-8">
+        <AlertCircle className="w-6 h-6 text-red-500" />
+        <span className="ml-2">Geen licentie informatie beschikbaar</span>
+      </div>
+    );
+  }
+
   const isOverUserLimit = userUsagePercentage > 100;
   const isOverBranchLimit = branchUsagePercentage > 100;
 
@@ -126,6 +119,8 @@ export const LicenseOverview = () => {
     { name: 'API toegang', included: license.license_type !== 'basic' },
     { name: 'Prioriteit ondersteuning', included: license.license_type === 'enterprise' }
   ];
+
+
 
   return (
     <div className="space-y-6">
@@ -201,7 +196,6 @@ export const LicenseOverview = () => {
             </Button>
             <Button 
               variant="secondary" 
-              onClick={fetchLicenseData}
             >
               Gegevens verversen
             </Button>
