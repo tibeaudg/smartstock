@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
@@ -17,14 +16,23 @@ interface LicenseData {
   max_branches: number;
   monthly_price: number;
   is_active: boolean;
+  total_products: number;
 }
 
 interface UsageData {
   user_count: number;
   branch_count: number;
+  total_products: number;
   base_price: number;
   total_price: number;
 }
+
+const calculateLicenseType = (totalProducts: number) => {
+  if (totalProducts <= 30) return { type: 'free', price: 0 };
+  if (totalProducts <= 150) return { type: 'starter', price: 9 };
+  if (totalProducts <= 1500) return { type: 'business', price: 49 };
+  return { type: 'enterprise', price: 79 };
+};
 
 export const LicenseOverview = () => {
   const { user } = useAuth();
@@ -37,32 +45,54 @@ export const LicenseOverview = () => {
     if (!user) return;
 
     try {
-      // Fetch license information
-      const { data: licenseData, error: licenseError } = await supabase
-        .from('licenses')
-        .select('*')
-        .eq('admin_user_id', user.id)
-        .eq('is_active', true)
-        .single();
+      // Fetch total products across all branches
+      const { data: productsData, error: productsError } = await supabase
+        .from('products')
+        .select('count', { count: 'exact' })
+        .eq('organization_id', user.organization_id);
 
-      if (licenseError && licenseError.code !== 'PGRST116') {
-        console.error('Error fetching license:', licenseError);
-      } else {
-        setLicense(licenseData);
-      }
+      const totalProducts = productsData || 0;
+      const licenseInfo = calculateLicenseType(totalProducts);
 
-      // Fetch usage data
-      const { data: usageData, error: usageError } = await supabase.rpc('calculate_billing', {
-        admin_id: user.id
+      // Fetch users count
+      const { data: usersCount, error: usersError } = await supabase
+        .from('users')
+        .select('count', { count: 'exact' })
+        .eq('organization_id', user.organization_id);
+
+      // Fetch branches count
+      const { data: branchesCount, error: branchesError } = await supabase
+        .from('branches')
+        .select('count', { count: 'exact' })
+        .eq('organization_id', user.organization_id);
+
+      setUsage({
+        user_count: usersCount || 0,
+        branch_count: branchesCount || 0,
+        total_products: totalProducts,
+        base_price: licenseInfo.price,
+        total_price: licenseInfo.price
       });
 
-      if (usageError) {
-        console.error('Error calculating usage:', usageError);
-      } else if (usageData && usageData.length > 0) {
-        setUsage(usageData[0]);
-      }
+      setLicense({
+        id: user.id,
+        license_type: licenseInfo.type,
+        max_users: licenseInfo.type === 'free' ? 1 : licenseInfo.type === 'starter' ? 5 : 
+                  licenseInfo.type === 'business' ? 20 : unlimited,
+        max_branches: licenseInfo.type === 'free' ? 1 : licenseInfo.type === 'starter' ? 2 : 
+                     licenseInfo.type === 'business' ? 5 : unlimited,
+        monthly_price: licenseInfo.price,
+        is_active: true,
+        total_products: totalProducts
+      });
+
     } catch (error) {
-      console.error('Exception fetching license data:', error);
+      console.error('Error fetching license data:', error);
+      toast({
+        title: "Error",
+        description: "Failed to fetch license data",
+        variant: "destructive"
+      });
     } finally {
       setLoading(false);
     }
@@ -78,19 +108,6 @@ export const LicenseOverview = () => {
         <Loader2 className="w-6 h-6 animate-spin" />
         <span className="ml-2">Laden...</span>
       </div>
-    );
-  }
-
-  if (!license) {
-    return (
-      <Card>
-        <CardContent className="text-center py-8">
-          <AlertCircle className="w-12 h-12 mx-auto text-red-400 mb-4" />
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">Geen actieve licentie</h3>
-          <p className="text-gray-600 mb-4">Er is geen actieve licentie gevonden voor uw account.</p>
-          <Button>Licentie activeren</Button>
-        </CardContent>
-      </Card>
     );
   }
 
@@ -112,6 +129,55 @@ export const LicenseOverview = () => {
 
   return (
     <div className="space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle>License Overview</CardTitle>
+          <CardDescription>Current license status and usage</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="relative overflow-x-auto">
+            <table className="w-full text-sm text-left text-gray-500">
+              <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+                <tr>
+                  <th scope="col" className="px-6 py-3">License Type</th>
+                  <th scope="col" className="px-6 py-3">Products</th>
+                  <th scope="col" className="px-6 py-3">Branches</th>
+                  <th scope="col" className="px-6 py-3">Users</th>
+                  <th scope="col" className="px-6 py-3">€/Month</th>
+                  <th scope="col" className="px-6 py-3">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {license && usage && (
+                  <tr className="bg-white border-b">
+                    <td className="px-6 py-4 font-medium text-gray-900 capitalize">
+                      {license.license_type}
+                    </td>
+                    <td className="px-6 py-4">
+                      {usage.total_products}
+                    </td>
+                    <td className="px-6 py-4">
+                      {usage.branch_count} / {license.max_branches}
+                    </td>
+                    <td className="px-6 py-4">
+                      {usage.user_count} / {license.max_users}
+                    </td>
+                    <td className="px-6 py-4">
+                      €{license.monthly_price}
+                    </td>
+                    <td className="px-6 py-4">
+                      <Badge variant="success" className="bg-green-100 text-green-800">
+                        Active
+                      </Badge>
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </CardContent>
+      </Card>
+      
       {/* License Summary */}
       <div className="grid gap-6 md:grid-cols-2">
         <Card>

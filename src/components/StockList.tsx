@@ -323,8 +323,6 @@ export const StockList = () => {
           ) : (
             filteredProducts.map((product) => {
               const stockStatus = getStockStatus(product.quantity_in_stock, product.minimum_stock_level);
-              const displayCategory = product.category_name || product.categories?.name;
-              const displaySupplier = product.supplier_name || product.suppliers?.name;
               
               return (
                 <Card key={product.id} className="relative bg-white">
