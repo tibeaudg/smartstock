@@ -44,7 +44,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
   const handleSignOut = async () => {
     try {
       await signOut();
-      navigate('/');
+      navigate('/auth');
     } catch (error) {
       console.error('Error during sign out:', error);
     }
