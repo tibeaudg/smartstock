@@ -74,14 +74,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
               <h1 className="text-lg font-semibold text-gray-900">StockManager</h1>
             </div>
           )}
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onToggle}
-            className="p-1.5 hover:bg-gray-100"
-          >
-            {isOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
-          </Button>
+
         </div>
 
         {/* Branch Selector */}
