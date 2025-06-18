@@ -1,8 +1,13 @@
-import { useState, useEffect, createContext, useContext, ReactNode } from 'react';
-import { supabase } from '@/integrations/supabase/client'; // let op: client is getypeerd met Database
+import {
+  useState,
+  useEffect,
+  createContext,
+  useContext,
+  ReactNode,
+} from 'react';
+import { supabase } from '@/integrations/supabase/client'; // getypeerd met Database
 import type { User, AuthError, Session } from '@supabase/supabase-js';
 import type { Database } from '@/integrations/supabase/types';
-
 
 interface AuthContextType {
   user: User | null;
@@ -44,17 +49,22 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const fetchUserProfile = async (
     userId: string
   ): Promise<Database['public']['Tables']['profiles']['Row'] | null> => {
-    const { data, error } = await supabase
-      .from('profiles')
-      .select('*')
-      .eq('id', userId)
-      .single();
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', userId)
+        .single();
 
-    if (error) {
-      console.error('Error fetching user profile:', error.message);
+      if (error) {
+        console.error('Error fetching user profile:', error.message);
+        return null;
+      }
+      return data;
+    } catch (err) {
+      console.error('Unexpected error fetching user profile:', err);
       return null;
     }
-    return data;
   };
 
   useEffect(() => {
@@ -89,19 +99,21 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
     initializeAuth();
 
-    const { data: listener } = supabase.auth.onAuthStateChange(async (_event, newSession) => {
-      if (!isMounted) return;
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      async (_event, newSession) => {
+        if (!isMounted) return;
 
-      setSession(newSession);
-      setUser(newSession?.user ?? null);
+        setSession(newSession);
+        setUser(newSession?.user ?? null);
 
-      if (newSession?.user) {
-        const profile = await fetchUserProfile(newSession.user.id);
-        setUserProfile(profile);
-      } else {
-        setUserProfile(null);
+        if (newSession?.user) {
+          const profile = await fetchUserProfile(newSession.user.id);
+          setUserProfile(profile);
+        } else {
+          setUserProfile(null);
+        }
       }
-    });
+    );
 
     return () => {
       isMounted = false;
@@ -122,56 +134,54 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
 
-const signUp = async (
-  email: string,
-  password: string,
-  firstName: string,
-  lastName: string,
-  role: 'admin' | 'staff' = 'admin'
-) => {
-  setLoading(true);
-  try {
-    const { data, error: signUpError } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: `${window.location.origin}/dashboard`,
-      },
-    });
+  const signUp = async (
+    email: string,
+    password: string,
+    firstName: string,
+    lastName: string,
+    role: 'admin' | 'staff' = 'admin'
+  ) => {
+    setLoading(true);
+    try {
+      const { data, error: signUpError } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/dashboard`,
+        },
+      });
 
-    if (signUpError) return { error: signUpError };
+      if (signUpError) return { error: signUpError };
 
-    // Nieuw aangemaakte gebruiker id ophalen
-    const userId = data?.user?.id;
-    if (!userId) {
-      return { error: new Error('Geen user ID gevonden na signUp') };
+      const userId = data?.user?.id;
+      if (!userId) {
+        return { error: new Error('Geen user ID gevonden na registratie') };
+      }
+
+      // Profiel aanmaken in de 'profiles' tabel
+      const { error: profileError } = await supabase.from('profiles').upsert({
+        id: userId,
+        email,
+        first_name: firstName,
+        last_name: lastName,
+        role,
+        updated_at: new Date().toISOString(),
+      }, { onConflict: 'id' }); // Zorgt dat upsert op basis van primary key 'id' werkt
+      
+
+      if (profileError) {
+        console.error('Fout bij aanmaken profiel:', profileError.message);
+        return { error: profileError };
+      }
+
+      return { error: null };
+    } catch (error: any) {
+      console.error('Exception tijdens registratie:', error);
+      return { error };
+    } finally {
+      setLoading(false);
     }
-
-    // Profiel aanmaken in 'profiles' tabel
-    const { error: profileError } = await supabase.from('profiles').insert({
-      id: userId,
-      email,
-      first_name: firstName,
-      last_name: lastName,
-      role,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-    });
-
-    if (profileError) {
-      console.error('Fout bij aanmaken profiel:', profileError.message);
-      return { error: profileError };
-    }
-
-    return { error: null };
-  } catch (error: any) {
-    console.error('Exception tijdens signUp:', error);
-    return { error };
-  } finally {
-    setLoading(false);
-  }
-};
-
+  };
 
   const resetPassword = async (email: string) => {
     setLoading(true);
