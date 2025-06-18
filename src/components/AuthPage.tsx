@@ -16,7 +16,7 @@ export const AuthPage = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
+
   const { signIn, signUp, resetPassword } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -27,57 +27,72 @@ export const AuthPage = () => {
 
     try {
       if (mode === 'login') {
-        const { error } = await signIn(email, password);
+        const response: any = await signIn(email, password);
+        const { error, user } = response;
+
         if (error) {
           if (error.message.includes('Invalid login credentials')) {
-            toast.error('Invalid email or password. Please check your credentials.');
-          } else if (error.message.includes('Email not confirmed')) {
-            toast.error('Please check your email and click the confirmation link before signing in.');
+            toast.error('Ongeldig e-mailadres of wachtwoord.');
           } else {
             toast.error(error.message);
           }
           return;
         }
 
+        if (user && !user.confirmed_at) {
+          toast.error('Bevestig eerst je e-mailadres via de bevestigingsmail.');
+          return;
+        }
+
+        toast.success('Welkom terug!');
         const from = (location.state as any)?.from?.pathname || '/dashboard';
         navigate(from, { replace: true });
-        toast.success('Welcome back!');
+
+        // Tijdelijke fix voor auth context die nog niet is bijgewerkt
+        window.location.reload();
+
       } else if (mode === 'register') {
         if (password !== confirmPassword) {
-          toast.error('Passwords do not match');
+          toast.error('Wachtwoorden komen niet overeen.');
           return;
         }
         if (password.length < 6) {
-          toast.error('Password must be at least 6 characters long');
+          toast.error('Wachtwoord moet minimaal 6 tekens zijn.');
           return;
         }
-        
-        // Force admin role for self-registration
+
         const { error } = await signUp(email, password, firstName, lastName, 'admin');
+
         if (error) {
           if (error.message.includes('User already registered')) {
-            toast.error('An account with this email already exists. Please sign in instead.');
+            toast.error('Er bestaat al een account met dit e-mailadres.');
           } else {
             toast.error(error.message);
           }
           return;
         }
 
-        toast.success('Account created successfully! Please check your email to confirm your account.');
+        toast.success('Account aangemaakt! Bevestig je e-mailadres via de mail.');
         setMode('login');
+        setEmail('');
+        setPassword('');
+        setConfirmPassword('');
+        setFirstName('');
+        setLastName('');
+
       } else if (mode === 'reset') {
         const { error } = await resetPassword(email);
         if (error) {
           toast.error(error.message);
           return;
         }
-        
-        toast.success('Password reset email sent! Please check your inbox.');
+
+        toast.success('Reset e-mail verzonden! Controleer je inbox.');
         setMode('login');
       }
-    } catch (error) {
-      console.error('Auth error:', error);
-      toast.error('An unexpected error occurred. Please try again.');
+    } catch (err) {
+      console.error('Auth fout:', err);
+      toast.error('Er is een fout opgetreden. Probeer het opnieuw.');
     } finally {
       setIsSubmitting(false);
     }
@@ -88,55 +103,54 @@ export const AuthPage = () => {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">StockManager</h1>
-          <p className="text-gray-600">Professional inventory management</p>
+          <p className="text-gray-600">Professioneel voorraadbeheer</p>
         </div>
 
         <Card className="shadow-lg">
           <CardHeader>
             <CardTitle>
-              {mode === 'login' && 'Sign In'}
-              {mode === 'register' && 'Create Account'}
-              {mode === 'reset' && 'Reset Password'}
+              {mode === 'login' && 'Inloggen'}
+              {mode === 'register' && 'Account aanmaken'}
+              {mode === 'reset' && 'Wachtwoord herstellen'}
             </CardTitle>
             <CardDescription>
-              {mode === 'login' && 'Enter your credentials to access your account'}
-              {mode === 'register' && 'Create a new account to get started'}
-              {mode === 'reset' && 'Enter your email to receive reset instructions'}
+              {mode === 'login' && 'Voer je gegevens in om in te loggen'}
+              {mode === 'register' && 'Vul je gegevens in om een account aan te maken'}
+              {mode === 'reset' && 'Voer je e-mailadres in om een resetlink te ontvangen'}
             </CardDescription>
           </CardHeader>
 
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               {mode === 'register' && (
-                <>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="firstName">First Name</Label>
-                      <Input
-                        id="firstName"
-                        type="text"
-                        value={firstName}
-                        onChange={(e) => setFirstName(e.target.value)}
-                        required
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="lastName">Last Name</Label>
-                      <Input
-                        id="lastName"
-                        type="text"
-                        value={lastName}
-                        onChange={(e) => setLastName(e.target.value)}
-                        required
-                        disabled={isSubmitting}
-                      />
-                    </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="firstName">Voornaam</Label>
+                    <Input
+                      id="firstName"
+                      type="text"
+                      value={firstName}
+                      onChange={(e) => setFirstName(e.target.value)}
+                      required
+                      disabled={isSubmitting}
+                    />
                   </div>
-                </>
+                  <div>
+                    <Label htmlFor="lastName">Achternaam</Label>
+                    <Input
+                      id="lastName"
+                      type="text"
+                      value={lastName}
+                      onChange={(e) => setLastName(e.target.value)}
+                      required
+                      disabled={isSubmitting}
+                    />
+                  </div>
+                </div>
               )}
 
               <div>
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">E-mailadres</Label>
                 <Input
                   id="email"
                   type="email"
@@ -149,7 +163,7 @@ export const AuthPage = () => {
 
               {mode !== 'reset' && (
                 <div>
-                  <Label htmlFor="password">Password</Label>
+                  <Label htmlFor="password">Wachtwoord</Label>
                   <Input
                     id="password"
                     type="password"
@@ -163,7 +177,7 @@ export const AuthPage = () => {
 
               {mode === 'register' && (
                 <div>
-                  <Label htmlFor="confirmPassword">Confirm Password</Label>
+                  <Label htmlFor="confirmPassword">Bevestig wachtwoord</Label>
                   <Input
                     id="confirmPassword"
                     type="password"
@@ -175,21 +189,17 @@ export const AuthPage = () => {
                 </div>
               )}
 
-              <Button 
-                type="submit" 
-                className="w-full" 
-                disabled={isSubmitting}
-              >
+              <Button type="submit" className="w-full" disabled={isSubmitting}>
                 {isSubmitting ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Please wait...
+                    Even geduld...
                   </>
                 ) : (
                   <>
-                    {mode === 'login' && 'Sign In'}
-                    {mode === 'register' && 'Create Account'}
-                    {mode === 'reset' && 'Send Reset Email'}
+                    {mode === 'login' && 'Inloggen'}
+                    {mode === 'register' && 'Account aanmaken'}
+                    {mode === 'reset' && 'Verzend reset e-mail'}
                   </>
                 )}
               </Button>
@@ -205,17 +215,17 @@ export const AuthPage = () => {
                   className="text-sm text-blue-600 hover:underline"
                   disabled={isSubmitting}
                 >
-                  Forgot your password?
+                  Wachtwoord vergeten?
                 </button>
                 <div className="text-sm text-gray-600">
-                  Don't have an account?{' '}
+                  Nog geen account?{' '}
                   <button
                     type="button"
                     onClick={() => setMode('register')}
                     className="text-blue-600 hover:underline"
                     disabled={isSubmitting}
                   >
-                    Sign up
+                    Registreer
                   </button>
                 </div>
               </>
@@ -223,28 +233,28 @@ export const AuthPage = () => {
 
             {mode === 'register' && (
               <div className="text-sm text-gray-600">
-                Already have an account?{' '}
+                Heb je al een account?{' '}
                 <button
                   type="button"
                   onClick={() => setMode('login')}
                   className="text-blue-600 hover:underline"
                   disabled={isSubmitting}
                 >
-                  Sign in
+                  Inloggen
                 </button>
               </div>
             )}
 
             {mode === 'reset' && (
               <div className="text-sm text-gray-600">
-                Remember your password?{' '}
+                Toch nog toegang?{' '}
                 <button
                   type="button"
                   onClick={() => setMode('login')}
                   className="text-blue-600 hover:underline"
                   disabled={isSubmitting}
                 >
-                  Sign in
+                  Inloggen
                 </button>
               </div>
             )}

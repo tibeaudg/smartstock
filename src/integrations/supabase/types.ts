@@ -610,6 +610,33 @@ export type Database = {
     CompositeTypes: {
       [_ in never]: never
     }
+            Row: {
+          id: string;
+          email: string;
+          first_name: string | null;
+          last_name: string | null;
+          role: 'admin' | 'staff';
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          email: string;
+          first_name?: string | null;
+          last_name?: string | null;
+          role?: 'admin' | 'staff';
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          email?: string;
+          first_name?: string | null;
+          last_name?: string | null;
+          role?: 'admin' | 'staff';
+          created_at?: string;
+          updated_at?: string;
+        };
   }
 }
 
@@ -727,3 +754,6 @@ export const Constants = {
     },
   },
 } as const
+
+
+

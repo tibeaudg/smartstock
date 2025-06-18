@@ -1,11 +1,27 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 
 interface AuthFormProps {
-  onLogin: (email: string, password: string) => void;
+  onLogin: (
+    email: string,
+    password: string,
+    mode: 'login' | 'register' | 'reset',
+    userData?: {
+      firstName?: string;
+      lastName?: string;
+      role?: string;
+    }
+  ) => void;
 }
 
 export const AuthForm = ({ onLogin }: AuthFormProps) => {
@@ -18,12 +34,22 @@ export const AuthForm = ({ onLogin }: AuthFormProps) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (mode === 'login') {
-      onLogin(email, password);
-    } else if (mode === 'register') {
-      onLogin(email, password);
+
+    if (mode === 'register') {
+      if (password !== confirmPassword) {
+        alert('Passwords do not match');
+        return;
+      }
+
+      onLogin(email, password, mode, {
+        firstName,
+        lastName,
+        role: 'admin',
+      });
+    } else if (mode === 'login') {
+      onLogin(email, password, mode);
     } else {
-      // Password reset logic would go here
+      // Password reset logic placeholder
       setMode('login');
     }
   };
