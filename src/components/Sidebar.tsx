@@ -1,19 +1,22 @@
-import React from 'react';
 import { 
   BarChart3, 
   Package, 
   ShoppingCart, 
   Settings, 
-  Users, 
-  CreditCard,
   Menu,
   X,
-  LogOut
-} from 'lucide-react';
+  LogOut,
+  HelpCircle,
+  CircleUserRound 
+} 
+from 'lucide-react';
+
+
 import { Button } from '@/components/ui/button';
 import { useAuth, UserProfile } from '@/hooks/useAuth';
 import { useNavigate, NavLink } from 'react-router-dom';
 import { BranchSelector } from './BranchSelector';
+
 
 interface SidebarProps {
   currentTab: string;
@@ -35,6 +38,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
     ...(userRole === 'admin' ? [
     ] : []),
     { id: 'settings', label: 'Instellingen', icon: Settings, path: '/dashboard/settings' },
+
   ];
 
   const handleSignOut = async () => {
@@ -84,8 +88,12 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
         {isOpen && (
           <div className="p-4 border-b border-gray-200 flex-shrink-0">
             <BranchSelector />
+            <p className="text-xs text-gray-500 pt-3">{userProfile.email}</p>
+
           </div>
+          
         )}
+        
 
         {/* Navigation */}
         <nav className="flex-1 p-4 overflow-y-auto">
@@ -116,30 +124,36 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
           </ul>
         </nav>
 
-        {/* User Profile & Sign Out */}
+        {/* Help Section */}
         <div className="border-t border-gray-200 p-4 flex-shrink-0">
-          {isOpen && userProfile && (
-            <div className="mb-3">
-              <p className="text-sm font-medium text-gray-900">
-                {userProfile.first_name} {userProfile.last_name}
-              </p>
-              <p className="text-xs text-gray-500">{userProfile.email}</p>
+            <div className="flex items-center space-x-3 px-3 py-2 text-gray-600">
+              <HelpCircle className="w-5 h-5 flex-shrink-0" />
+              <div>
+                <p className="font-medium">Hulp nodig?</p>
+                <p className="text-xs text-gray-500">support@stockbeheer.be</p>
+              </div>
             </div>
-          )}
-          
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={handleSignOut}
-            className={`
-              w-full justify-start text-gray-600 hover:text-red-600 hover:bg-red-50
-              ${!isOpen ? 'px-2' : 'px-3'}
-            `}
-          >
-            <LogOut className="w-4 h-4 flex-shrink-0" />
-            {isOpen && <span className="ml-3">Afmelden</span>}
-          </Button>
         </div>
+
+
+        <div className="border-t border-gray-200 p-4 flex-shrink-0">
+              <div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleSignOut}
+                  className={`
+                    w-full justify-start text-gray-600 hover:text-red-600 hover:bg-red-50
+                    ${!isOpen ? 'px-2' : 'px-3'}
+                  `}
+                >
+                  <LogOut className="w-4 h-4 flex-shrink-0" />
+                  {isOpen && <span className="ml-3">Afmelden</span>}
+                </Button>              
+          </div>
+        </div>
+          
+          
       </div>
     </>
   );
