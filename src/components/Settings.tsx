@@ -37,24 +37,15 @@ export const Settings = () => {
             <FileText className="w-4 h-4" />
             <span>Licentie</span>
           </TabsTrigger>
-          {isAdmin && (
+         
             <TabsTrigger value="branches" className="flex items-center space-x-2">
               <Building2 className="w-4 h-4" />
               <span>Filialen</span>
             </TabsTrigger>
-          )}
-          {isAdmin && (
             <TabsTrigger value="users" className="flex items-center space-x-2">
               <Users className="w-4 h-4" />
               <span>Gebruikers</span>
             </TabsTrigger>
-          )}
-          {isAdmin && (
-            <TabsTrigger value="billing" className="flex items-center space-x-2">
-              <CreditCard className="w-4 h-4" />
-              <span>Facturering</span>
-            </TabsTrigger>
-          )}
         </TabsList>
 
         <TabsContent value="profile" className="space-y-6">
@@ -75,7 +66,6 @@ export const Settings = () => {
           <LicenseOverview />
         </TabsContent>
 
-        {isAdmin && (
           <TabsContent value="branches" className="space-y-6">
             <Card>
               <CardHeader>
@@ -89,9 +79,7 @@ export const Settings = () => {
               </CardContent>
             </Card>
           </TabsContent>
-        )}
 
-        {isAdmin && (
           <TabsContent value="users" className="space-y-6">
             <Card>
               <CardHeader>
@@ -105,23 +93,8 @@ export const Settings = () => {
               </CardContent>
             </Card>
           </TabsContent>
-        )}
 
-        {isAdmin && (
-          <TabsContent value="billing" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Facturering & Details</CardTitle>
-                <CardDescription>
-                  Bekijk uw gedetailleerde facturering en gebruik
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <BillingSettings />
-              </CardContent>
-            </Card>
-          </TabsContent>
-        )}
+
       </Tabs>
     </div>
   );

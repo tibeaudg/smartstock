@@ -5,7 +5,7 @@ import { useBranches } from '@/hooks/useBranches';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Edit, Trash2, Plus } from 'lucide-react';
+import { Edit, Minus, Plus, Trash2 } from 'lucide-react';
 import { EditProductModal } from './EditProductModal';
 import { AddProductModal } from './AddProductModal';
 import { ProductFilters } from './ProductFilters';
@@ -56,6 +56,8 @@ const getStockStatusVariant = (status: string) => {
   }
 };
 
+type StockAction = 'in' | 'out';
+
 export const StockList = () => {
   const { user } = useAuth();
   const { activeBranch } = useBranches();
@@ -65,6 +67,7 @@ export const StockList = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [selectedAction, setSelectedAction] = useState<StockAction | null>(null);
 
   // Filter states
   const [searchTerm, setSearchTerm] = useState('');
@@ -138,10 +141,13 @@ export const StockList = () => {
     setMaxStockFilter('');
   };
 
-  const handleEdit = (product: Product) => {
+  const handleStockAction = (product: Product, action: StockAction) => {
+    console.log('Stock action triggered:', action, 'for product:', product.name);
     setSelectedProduct(product);
+    setSelectedAction(action);
     setIsEditModalOpen(true);
   };
+
   const handleDelete = async (productId: string) => {
     if (!user || !activeBranch) {
       toast.error('Je moet ingelogd zijn en een filiaal geselecteerd hebben');
@@ -300,18 +306,28 @@ export const StockList = () => {
                       </div>
                       <div className="flex space-x-2 ml-2">
                         <Button
-                          variant="ghost"
+                          variant="outline"
                           size="sm"
-                          onClick={() => handleEdit(product)}
-                          className="p-2"
+                          onClick={() => handleStockAction(product, 'in')}
+                          className="text-gray-600 hover:text-white hover:bg-green-600 hover:border-green-600"
                         >
-                          <Edit className="h-4 w-4" />
+                          <Plus className="h-4 w-4" />
+                          In
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleStockAction(product, 'out')}
+                          className="text-gray-600 hover:text-white hover:bg-green-600 hover:border-green-600"
+                        >
+                          <Minus className="h-4 w-4" />
+                          Out
                         </Button>
                         <Button
                           variant="ghost"
                           size="sm"
                           onClick={() => handleDelete(product.id)}
-                          className="p-2 text-red-600 hover:text-red-700"
+                          className="text-red-600 hover:text-red-700"
                         >
                           <Trash2 className="h-4 w-4" />
                         </Button>
@@ -360,13 +376,16 @@ export const StockList = () => {
             onClose={() => {
               setIsEditModalOpen(false);
               setSelectedProduct(null);
+              setSelectedAction(null);
             }}
             onProductUpdated={() => {
               fetchProducts();
               setIsEditModalOpen(false);
               setSelectedProduct(null);
+              setSelectedAction(null);
             }}
             product={selectedProduct}
+            actionType={selectedAction}
           />
         )}
 
@@ -487,12 +506,22 @@ export const StockList = () => {
                       <td className="px-4 py-1 whitespace-nowrap text-sm font-medium">
                         <div className="flex space-x-2">
                           <Button
-                            variant="ghost"
+                            variant="outline"
                             size="sm"
-                            onClick={() => handleEdit(product)}
-                            className="text-blue-600 hover:text-blue-900"
+                            onClick={() => handleStockAction(product, 'in')}
+                            className="text-gray-600 hover:text-white hover:bg-green-600 hover:border-green-600"
                           >
-                            <Edit className="h-4 w-4" />
+                            <Plus className="h-4 w-4" />
+                            In
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleStockAction(product, 'out')}
+                            className="text-gray-600 hover:text-white hover:bg-green-600 hover:border-green-600"
+                          >
+                            <Minus className="h-4 w-4" />
+                            Out
                           </Button>
                           <Button
                             variant="ghost"
@@ -519,13 +548,16 @@ export const StockList = () => {
           onClose={() => {
             setIsEditModalOpen(false);
             setSelectedProduct(null);
+            setSelectedAction(null);
           }}
           onProductUpdated={() => {
             fetchProducts();
             setIsEditModalOpen(false);
             setSelectedProduct(null);
+            setSelectedAction(null);
           }}
           product={selectedProduct}
+          actionType={selectedAction}
         />
       )}
 

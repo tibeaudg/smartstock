@@ -107,12 +107,6 @@ export const BranchSelector = () => {
                 </div>
               </SelectItem>
             ))}
-            <SelectItem value="add-new">
-              <div className="flex items-center space-x-2 text-blue-600">
-                <Plus className="h-4 w-4" />
-                <span>Nieuw filiaal toevoegen</span>
-              </div>
-            </SelectItem>
           </SelectContent>
         </Select>
 
