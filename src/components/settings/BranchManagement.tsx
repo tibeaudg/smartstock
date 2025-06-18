@@ -214,10 +214,7 @@ export const BranchManagement = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <div>
-          <h3 className="text-lg font-semibold">Uw Filialen</h3>
-          <p className="text-sm text-gray-600">Beheer en overzicht van alle filialen</p>
-        </div>
+
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
             <Button onClick={handleCreateNew}>
