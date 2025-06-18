@@ -43,6 +43,8 @@ const getStockStatus = (quantity: number, minLevel: number) => {
   }
 };
 
+
+
 const getStockStatusVariant = (status: string) => {
   switch (status) {
     case 'In Stock':
@@ -401,6 +403,15 @@ export const StockList = () => {
     );
   }
 
+
+
+  const { userProfile } = useAuth();
+
+  const isAdmin = userProfile?.role === 'admin';
+
+
+
+
   // Desktop table view
   return (
     <div className="space-y-4">
@@ -523,14 +534,13 @@ export const StockList = () => {
                             <Minus className="h-4 w-4" />
                             Out
                           </Button>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleDelete(product.id)}
-                            className="text-red-600 hover:text-red-900"
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
+                            {isAdmin && (
+                              <Button variant="destructive" size="sm">
+                                <Trash2 className="h-4 w-4 mr-2" />
+                                Verwijderen
+                              </Button>
+                            )}
+
                         </div>
                       </td>
                     </tr>
