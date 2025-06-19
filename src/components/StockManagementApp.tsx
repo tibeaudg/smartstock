@@ -18,7 +18,7 @@ const AppContent: React.FC = () => {
   if (!userProfile) return null;
 
   return (
-  <div className="w-full h-screen flex overflow-hidden overflow-x-hidden">
+  <div className="w-screen h-screen overflow-hidden overflow-x-hidden m-0 p-0">
       {/* Sidebar and Layout are assumed to be part of Layout component */}
       <Layout
         currentTab={getCurrentTab()}

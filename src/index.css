@@ -1,13 +1,11 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. */
-
+/* Design Tokens */
 @layer base {
   :root {
-    --background: 249 250 251;
+    --background: 248 244 244;
     --foreground: 222.2 84% 4.9%;
 
     --card: 0 0% 100%;
@@ -75,6 +73,7 @@
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
+
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -86,80 +85,81 @@
   }
 }
 
+/* General Reset */
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border box-border;
   }
 
-  body {
-    @apply bg-background text-foreground;
+  html, body {
+    @apply 
+    bg-background text-foreground min-h-screen m-0 p-0 overflow-x-hidden;
+    width: 100%;
   }
-  
-  /* Remove ALL yellow backgrounds from inputs and components */
-  input[type="text"],
-  input[type="email"],
-  input[type="password"],
-  input[type="number"],
-  input[type="search"],
+
+  /* Autofill & unwanted yellow cleanup */
+  input,
   textarea,
-  select,
-  .bg-yellow-50,
-  .bg-yellow-100,
-  .bg-yellow-200,
-  [style*="background-color: rgb(254, 252, 232)"],
-  [style*="background-color: rgb(255, 251, 235)"],
-  [style*="background-color: rgb(254, 240, 138)"],
-  [style*="background: rgb(254, 252, 232)"],
-  [style*="background: rgb(255, 251, 235)"],
-  [style*="background: rgb(254, 240, 138)"] {
+  select {
     background-color: white !important;
-    background: white !important;
+    color: inherit;
   }
-  
-  /* Ensure all input fields have white backgrounds */
-  .bg-background {
-    background-color: white !important;
-  }
-  
-  /* Remove any unwanted yellow borders */
-  .border-yellow-200,
-  .border-yellow-300,
-  .border-yellow-400 {
-    border-color: rgb(229 231 235) !important; /* gray-200 */
-  }
-  
-  /* Force white background on focus states */
-  input:focus,
-  textarea:focus,
-  select:focus {
-    background-color: white !important;
-    background: white !important;
-  }
-  
-  /* Ensure autocomplete fields are white */
+
   input:-webkit-autofill,
   input:-webkit-autofill:hover,
   input:-webkit-autofill:focus,
   input:-webkit-autofill:active {
     -webkit-box-shadow: 0 0 0 30px white inset !important;
     box-shadow: 0 0 0 30px white inset !important;
+  }
+
+  /* Remove yellow utility classes */
+  .bg-yellow-50,
+  .bg-yellow-100,
+  .bg-yellow-200,
+  .border-yellow-200,
+  .border-yellow-300,
+  .border-yellow-400 {
     background-color: white !important;
-    background: white !important;
+    border-color: rgb(229 231 235) !important;
+  }
+
+  input:focus,
+  textarea:focus,
+  select:focus {
+    background-color: white !important;
+  }
+
+  .bg-background {
+    background-color: rgb(var(--background)) !important;
   }
 }
 
-/* Layout improvements */
+/* Layout Fixes */
 .min-h-screen {
   min-height: 100vh;
 }
 
-/* Fix sidebar height issue */
 [data-sidebar] {
   min-height: 100vh !important;
   height: 100vh !important;
 }
 
-/* Prevent overflow on main content */
-.overflow-hidden {
-  overflow: hidden;
+/* Global Overflow Fix */
+body > * {
+  max-width: 100vw;
+  overflow-x: hidden;
 }
+
+body, html {
+  overflow-x: hidden !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+body > * {
+  max-width: 100vw !important;
+  overflow-x: hidden !important;
+}
+

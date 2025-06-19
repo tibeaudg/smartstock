@@ -13,6 +13,7 @@ import { StockMovements } from "./components/StockMovements";
 import { Settings } from "./components/Settings";
 import { useAuth, AuthProvider } from "./hooks/useAuth";
 import { Suspense, lazy } from 'react';
+import { ContentWrapper } from "./ContentWrapper";
 
 // Configure QueryClient
 const queryClient = new QueryClient({
@@ -72,6 +73,10 @@ const AuthRoute = () => {
 
 const App = () => {
   return (
+              <ContentWrapper>
+
+    <div className="w-screen h-screen bg-white">
+
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <TooltipProvider>
@@ -105,6 +110,10 @@ const App = () => {
         </TooltipProvider>
       </AuthProvider>
     </QueryClientProvider>
+    </div>
+              </ContentWrapper>
+
+
   );
 };
 
