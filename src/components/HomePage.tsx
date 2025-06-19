@@ -64,8 +64,6 @@ export const HomePage = () => {
         'Tot 30 producten',
         'Basis voorraadvolging',
         'E-mailondersteuning',
-        '1 gebruikersaccount',
-        'Mobiele app toegang',
       ],
       popular: false,
     },
@@ -78,9 +76,6 @@ export const HomePage = () => {
         'Tot 150 producten',
         'Geavanceerde analyses',
         'Prioritaire ondersteuning',
-        '3 gebruikersaccounts',
-        'API toegang',
-        'Geautomatiseerde herbestelpunten',
       ],
       popular: true,
     },
@@ -93,10 +88,6 @@ export const HomePage = () => {
         'Tot 1.500 producten',
         'Uitgebreide rapportage',
         'Toegewijde ondersteuning',
-        '10 gebruikersaccounts',
-        'Aangepaste integraties',
-        'Geavanceerde workflows',
-        'Multi-locatie beheer',
       ],
       popular: false,
     },
@@ -106,13 +97,8 @@ export const HomePage = () => {
       period: '/maand',
       description: 'Voor grote organisaties met onbeperkte mogelijkheden',
       features: [
-        'Onbeperkt producten',
-        'White-label oplossing',
-        'Toegewijde accountmanager',
-        'Onbeperkte gebruikers',
-        'Custom ontwikkeling',
+        'Tot 5.000 producten',
         'On-premise implementatie',
-        'SLA garantie',
         '24/7 telefonische support',
       ],
       popular: false,
@@ -247,10 +233,6 @@ export const HomePage = () => {
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
                 Waarom Kiezen Voor VoorraadBeheer?
               </h2>
-              <p className="text-lg text-gray-600 mb-8">
-                Sluit u aan bij duizenden bedrijven die hun voorraadbeheer hebben getransformeerd 
-                met ons krachtige platform.
-              </p>
               <div className="space-y-4">
                 {benefits.map((benefit, index) => (
                   <div key={index} className="flex items-center">
@@ -359,16 +341,7 @@ export const HomePage = () => {
                   </div>
                 </div>
               </div>
-              
-              <div className="bg-blue-50 p-6 rounded-lg">
-                <h4 className="text-lg font-semibold text-gray-900 mb-2">Onmiddellijke hulp nodig?</h4>
-                <p className="text-gray-600 mb-4">
-                  Ons supportteam is 24/7 beschikbaar om u te helpen met vragen of problemen.
-                </p>
-                <Button variant="outline">
-                  Start Live Chat
-                </Button>
-              </div>
+            
             </div>
           </div>
         </div>

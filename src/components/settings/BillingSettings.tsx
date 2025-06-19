@@ -48,8 +48,6 @@ const PLAN_DETAILS: Record<PlanType, PlanFeatures> = {
     maxBranches: 1,
     features: [
       'Tot 30 producten',
-      '1 gebruiker',
-      '1 filiaal',
       'Basis voorraad beheer',
       'Email ondersteuning'
     ]
@@ -62,11 +60,8 @@ const PLAN_DETAILS: Record<PlanType, PlanFeatures> = {
     maxBranches: 2,
     features: [
       'Tot 150 producten',
-      'Tot 3 gebruikers',
-      'Tot 2 filialen',
       'Voorraad beheer',
       'Email ondersteuning',
-      'Data backup'
     ]
   },
   business: {
@@ -77,11 +72,8 @@ const PLAN_DETAILS: Record<PlanType, PlanFeatures> = {
     maxBranches: 5,
     features: [
       'Tot 1500 producten',
-      'Tot 10 gebruikers',
-      'Tot 5 filialen',
       'Prioriteit ondersteuning',
       'Data backup',
-      'API toegang'
     ]
   },
   enterprise: {
@@ -92,12 +84,8 @@ const PLAN_DETAILS: Record<PlanType, PlanFeatures> = {
     maxBranches: 15,
     features: [
       'Onbeperkt producten',
-      'Tot 25 gebruikers',
-      'Tot 15 filialen',
       'Prioriteit ondersteuning',
       '24/7 telefoon support',
-      'Custom integraties',
-      'SLA garantie'
     ]
   }
 };
