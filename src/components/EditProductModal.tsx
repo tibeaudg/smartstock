@@ -132,7 +132,7 @@ export const EditProductModal = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="max-w-xs mx-auto px-14">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             {actionType === 'in' ? <Plus className="h-5 w-5" /> : <Minus className="h-5 w-5" />}
@@ -140,7 +140,7 @@ export const EditProductModal = ({
           </DialogTitle>
         </DialogHeader>
 
-        <div className="grid gap-4 py-4">
+        <div className="py-4">
           <div className="grid gap-2">
             <Label htmlFor="quantity">Aantal</Label>
             <Input
