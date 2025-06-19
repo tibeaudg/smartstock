@@ -46,7 +46,7 @@ export const Settings = () => {
       <Tabs
         value={activeTab}
         onValueChange={setActiveTab}
-        className="space-y-6"
+        className="space-y "
       >
         {isAdmin && (
           <TabsList className="grid w-full grid-cols-2 lg:grid-cols-5 gap-1">
