@@ -531,13 +531,21 @@ export const StockList = () => {
                             className="text-gray-600 hover:text-white hover:bg-red-600 hover:border-green-600"
                           >
                             <Minus className="h-4 w-4" />
-                          </Button>
+                          </Button >
+
+
+
                             {isAdmin && (
-                              <Button variant="destructive" size="sm">
+                              <Button variant="destructive" size="sm"
+                              onClick={() => handleDelete(product.id)}
+                              >
                                 <Trash2 className="h-4 w-4 mr-2" />
                                 Verwijderen
                               </Button>
                             )}
+
+
+
 
                         </div>
                       </td>
