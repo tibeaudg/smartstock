@@ -12,14 +12,15 @@ import { StockList } from "./components/StockList";
 import { StockMovements } from "./components/StockMovements";
 import { Settings } from "./components/Settings";
 import { useAuth, AuthProvider } from "./hooks/useAuth";
-import { Suspense, lazy } from 'react';
+import { Suspense } from "react";
 import { ContentWrapper } from "./ContentWrapper";
+import ResetPassword from '@/pages/ResetPassword'; // jouw reset password component
 
 // Configure QueryClient
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 1000 * 60 * 5, // 5 minutes
+      staleTime: 1000 * 60 * 5, // 5 minuten
       refetchOnWindowFocus: false,
       retry: 1,
     },
@@ -38,6 +39,11 @@ const LoadingScreen = () => (
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading, userProfile } = useAuth();
   const location = useLocation();
+
+  // Allow reset-password route without auth redirect
+  if (location.pathname === '/reset-password') {
+    return <>{children}</>;
+  }
   
   if (loading) {
     return <LoadingScreen />;
@@ -54,66 +60,64 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
+
 // Auth Route Component
 const AuthRoute = () => {
   const { user, loading, userProfile } = useAuth();
   const location = useLocation();
-  const from = (location.state as any)?.from?.pathname || '/dashboard';
-  
+  const from = (location.state as any)?.from?.pathname || "/dashboard";
+
   if (loading) {
     return <LoadingScreen />;
   }
-  
+
   if (user && userProfile) {
     return <Navigate to={from} replace />;
   }
-  
+
   return <AuthPage />;
 };
 
 const App = () => {
   return (
-              <ContentWrapper>
+    <ContentWrapper>
+      <div className="w-screen h-screen bg-white">
+        <QueryClientProvider client={queryClient}>
+          <AuthProvider>
+            <TooltipProvider>
+              <Toaster />
+              <Sonner />
+              <BrowserRouter>
+                <Routes>
+                  {/* Openbare routes */}
+                  <Route path="/" element={<HomePage />} />
+                  <Route path="/auth" element={<AuthRoute />} />
+                  <Route path="/reset-password" element={<ResetPassword />} />
 
-    <div className="w-screen h-screen bg-white">
+                  {/* Beschermde dashboard routes */}
+                  <Route
+                    path="/dashboard"
+                    element={
+                      <ProtectedRoute>
+                        <StockManagementApp />
+                      </ProtectedRoute>
+                    }
+                  >
+                    <Route index element={<Dashboard userRole="staff" />} />
+                    <Route path="stock" element={<StockList />} />
+                    <Route path="transactions" element={<StockMovements />} />
+                    <Route path="settings" element={<Settings />} />
+                  </Route>
 
-    <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <Routes>
-              {/* Public routes */}
-              <Route path="/" element={<HomePage />} />
-              <Route path="/auth" element={<AuthRoute />} />
-
-              {/* Protected dashboard routes */}
-              <Route 
-                path="/dashboard" 
-                element={
-                  <ProtectedRoute>
-                    <StockManagementApp />
-                  </ProtectedRoute>
-                }
-              >
-                <Route index element={<Dashboard userRole="staff" />} />
-                <Route path="stock" element={<StockList />} />
-                <Route path="transactions" element={<StockMovements />} />
-                <Route path="settings" element={<Settings />} />
-              </Route>
-
-              {/* Fallback route */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </TooltipProvider>
-      </AuthProvider>
-    </QueryClientProvider>
-    </div>
-              </ContentWrapper>
-
-
+                  {/* Fallback route */}
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </BrowserRouter>
+            </TooltipProvider>
+          </AuthProvider>
+        </QueryClientProvider>
+      </div>
+    </ContentWrapper>
   );
 };
 

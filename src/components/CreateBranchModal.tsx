@@ -1,8 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -27,7 +41,6 @@ interface FormData {
 
 interface LicenseInfo {
   license_type: string;
-  stripe_customer_id: string | null;
 }
 
 export const CreateBranchModal = ({
@@ -53,50 +66,34 @@ export const CreateBranchModal = ({
   });
 
   useEffect(() => {
-    const fetchLicenseInfo = async () => {
+    const fetchLicense = async () => {
       if (!user) return;
 
       const { data, error } = await supabase
         .from('licenses')
-        .select('license_type, stripe_customer_id')
+        .select('license_type')
         .eq('admin_user_id', user.id)
         .eq('is_active', true)
         .single();
 
       if (error) {
-        console.error('Error fetching license info:', error);
-        return;
-      }
-
-      setLicenseInfo(data);
-
-      if (isAdditionalBranch && !data.stripe_customer_id) {
-        setShowPaymentWarning(true);
+        console.error('Error fetching license:', error);
+      } else {
+        setLicenseInfo(data);
+        if (isAdditionalBranch) {
+          setShowPaymentWarning(true);
+        }
       }
     };
 
     if (open) {
-      fetchLicenseInfo();
+      fetchLicense();
     }
-  }, [user, open, isAdditionalBranch]);
+  }, [open, isAdditionalBranch, user]);
 
   const handleSubmit = async (data: FormData) => {
-    if (!user) {
-      toast.error('Geen gebruiker gevonden');
-      return;
-    }
+    if (!user) return toast.error('Geen gebruiker gevonden');
 
-    if (isAdditionalBranch && !licenseInfo?.stripe_customer_id) {
-      navigate('/settings/billing');
-      toast.error('U moet eerst een betaalmethode toevoegen');
-      if (onOpenChange) onOpenChange(false);
-      return;
-    }
-
-    if (isAdditionalBranch && !data.confirmPayment) {
-      toast.error('Bevestig alstublieft de extra kosten');
-      return;
-    }
 
     setLoading(true);
     try {
@@ -113,42 +110,17 @@ export const CreateBranchModal = ({
         .select()
         .single();
 
-      if (branchError) {
-        console.error('Error creating branch:', branchError);
-        toast.error('Fout bij het aanmaken van filiaal: ' + branchError.message);
-        return;
-      }
+      if (branchError) throw branchError;
 
-      if (isAdditionalBranch) {
-        const { error: licenseError } = await supabase
-          .from('licenses')
-          .update({
-            extra_branches: supabase.sqlextra_branches + 1,
-          })
-          .eq('admin_user_id', user.id)
-          .eq('is_active', true);
 
-        if (licenseError) {
-          console.error('Error updating license:', licenseError);
-          toast.error('Fout bij het bijwerken van licentie');
-          return;
-        }
-      }
+      const { error: assignError } = await supabase.from('branch_users').insert({
+        branch_id: branchData.id,
+        user_id: user.id,
+        role: 'admin',
+        granted_by: user.id,
+      });
 
-      const { error: assignError } = await supabase
-        .from('branch_users')
-        .insert({
-          branch_id: branchData.id,
-          user_id: user.id,
-          role: 'admin',
-          granted_by: user.id,
-        });
-
-      if (assignError) {
-        console.error('Error assigning user to branch:', assignError);
-        toast.error('Fout bij het toewijzen aan filiaal: ' + assignError.message);
-        return;
-      }
+      if (assignError) throw assignError;
 
       toast.success(
         isAdditionalBranch
@@ -156,17 +128,13 @@ export const CreateBranchModal = ({
           : 'Filiaal succesvol aangemaakt!'
       );
 
-      // ** Hier wordt de pagina ververst **
-      window.location.reload();
-
       form.reset();
       onBranchCreated();
-      if (onOpenChange) {
-        onOpenChange(false);
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      toast.error('Er is een fout opgetreden');
+      onOpenChange?.(false);
+      window.location.reload(); // Optional: kan verplaatst worden als reload niet wenselijk is
+    } catch (err: any) {
+      console.error('Fout bij het aanmaken:', err);
+      toast.error('Er is een fout opgetreden: ' + err.message);
     } finally {
       setLoading(false);
     }
@@ -176,9 +144,13 @@ export const CreateBranchModal = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{isAdditionalBranch ? 'Nieuw Filiaal' : 'Hoofdvestiging'}</DialogTitle>
+          <DialogTitle>
+            {isAdditionalBranch ? 'Nieuw Filiaal' : 'Hoofdvestiging'}
+          </DialogTitle>
           <DialogDescription>
-            {isAdditionalBranch ? 'Voeg een nieuw filiaal toe aan uw account.' : 'Configureer uw hoofdvestiging.'}
+            {isAdditionalBranch
+              ? 'Voeg een nieuw filiaal toe aan uw account.'
+              : 'Configureer uw hoofdvestiging.'}
           </DialogDescription>
         </DialogHeader>
 
@@ -199,50 +171,6 @@ export const CreateBranchModal = ({
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="address"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Adres (optioneel)</FormLabel>
-                  <FormControl>
-                    <Input {...field} placeholder="Straat en huisnummer, postcode, plaats" disabled={loading} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <div className="grid grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="phone"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Telefoon (optioneel)</FormLabel>
-                    <FormControl>
-                      <Input {...field} placeholder="06-12345678" disabled={loading} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>E-mail (optioneel)</FormLabel>
-                    <FormControl>
-                      <Input {...field} type="email" placeholder="info@bedrijf.nl" disabled={loading} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
             {isAdditionalBranch && (
               <>
                 {showPaymentWarning ? (
@@ -261,7 +189,7 @@ export const CreateBranchModal = ({
                           className="mt-2"
                           onClick={() => {
                             navigate('/settings/billing');
-                            if (onOpenChange) onOpenChange(false);
+                            onOpenChange?.(false);
                           }}
                         >
                           Ga naar betaalinstellingen
@@ -274,9 +202,14 @@ export const CreateBranchModal = ({
                     control={form.control}
                     name="confirmPayment"
                     render={({ field }) => (
-                      <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                      <FormItem className="flex flex-row items-start space-x-3">
                         <FormControl>
-                          <input type="checkbox" checked={field.value} onChange={field.onChange} className="mt-1" />
+                          <input
+                            type="checkbox"
+                            checked={field.value}
+                            onChange={field.onChange}
+                            className="mt-1"
+                          />
                         </FormControl>
                         <div className="space-y-1 leading-none">
                           <FormLabel>
