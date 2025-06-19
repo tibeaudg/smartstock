@@ -1,13 +1,18 @@
-
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
+import { toast } from '@/hooks/use-toast'
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { toast } from '@/hooks/use-toast';
+import { Card } from '@/components/ui/card';
+import { CardContent } from '@/components/ui/card';
+import { CardDescription } from '@/components/ui/card';
+import { CardHeader } from '@/components/ui/card';
+import { CardTitle } from '@/components/ui/card';
+
+
 import { Loader2, User, Mail, Key } from 'lucide-react';
 
 interface ProfileFormData {
@@ -18,21 +23,27 @@ interface ProfileFormData {
 
 export const ProfileSettings = () => {
   const { userProfile, user } = useAuth();
+
   const [isLoading, setIsLoading] = useState(false);
   const [isChangingPassword, setIsChangingPassword] = useState(false);
+  const [isDeletingAccount, setIsDeletingAccount] = useState(false);
 
-  const { register, handleSubmit, formState: { errors } } = useForm<ProfileFormData>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ProfileFormData>({
     defaultValues: {
       firstName: userProfile?.first_name || '',
       lastName: userProfile?.last_name || '',
       email: userProfile?.email || '',
-    }
+    },
   });
 
   const onSubmit = async (data: ProfileFormData) => {
     if (!user) return;
-
     setIsLoading(true);
+
     try {
       const { error } = await supabase
         .from('profiles')
@@ -44,25 +55,17 @@ export const ProfileSettings = () => {
         })
         .eq('id', user.id);
 
-      if (error) {
-        console.error('Error updating profile:', error);
-        toast({
-          title: 'Fout',
-          description: 'Er is een fout opgetreden bij het bijwerken van uw profiel.',
-          variant: 'destructive',
-        });
-        return;
-      }
+      if (error) throw error;
 
       toast({
         title: 'Succesvol bijgewerkt',
         description: 'Uw profiel is succesvol bijgewerkt.',
       });
     } catch (error) {
-      console.error('Exception updating profile:', error);
+      console.error('Profiel bijwerken fout:', error);
       toast({
         title: 'Fout',
-        description: 'Er is een onverwachte fout opgetreden.',
+        description: 'Er is een fout opgetreden bij het bijwerken van uw profiel.',
         variant: 'destructive',
       });
     } finally {
@@ -79,25 +82,17 @@ export const ProfileSettings = () => {
         redirectTo: `${window.location.origin}/dashboard`,
       });
 
-      if (error) {
-        console.error('Error sending password reset:', error);
-        toast({
-          title: 'Fout',
-          description: 'Er is een fout opgetreden bij het verzenden van de wachtwoord reset email.',
-          variant: 'destructive',
-        });
-        return;
-      }
+      if (error) throw error;
 
       toast({
         title: 'Email verzonden',
-        description: 'Een wachtwoord reset email is verzonden naar uw email adres.',
+        description: 'Een wachtwoord reset email is verzonden.',
       });
     } catch (error) {
-      console.error('Exception sending password reset:', error);
+      console.error('Wachtwoord reset fout:', error);
       toast({
         title: 'Fout',
-        description: 'Er is een onverwachte fout opgetreden.',
+        description: 'Er is een fout opgetreden bij het verzenden van de reset email.',
         variant: 'destructive',
       });
     } finally {
@@ -105,9 +100,36 @@ export const ProfileSettings = () => {
     }
   };
 
+  const handleDeleteAccount = async () => {
+    const confirmed = confirm(
+      'Weet je zeker dat je je account wil verwijderen? Dit kan niet ongedaan gemaakt worden.'
+    );
+    if (!confirmed || !userProfile?.id) return;
+
+    setIsDeletingAccount(true);
+
+    try {
+      const { error } = await supabase.auth.admin.deleteUser(userProfile.id);
+      if (error) throw error;
+
+      alert('Account succesvol verwijderd.');
+      window.location.href = '/';
+    } catch (error) {
+      console.error('Account verwijderen fout:', error);
+      toast({
+        title: 'Fout',
+        description: 'Er is een fout opgetreden bij het verwijderen van uw account.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsDeletingAccount(false);
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="grid gap-6 md:grid-cols-2">
+        {/* Persoonlijke Informatie */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
@@ -149,12 +171,12 @@ export const ProfileSettings = () => {
                 <Input
                   id="email"
                   type="email"
-                  {...register('email', { 
+                  {...register('email', {
                     required: 'Email is verplicht',
                     pattern: {
-                      value: /^\S+@\S+$/i,
-                      message: 'Ongeldig email adres'
-                    }
+                      value: /^\S+@\S+$/,
+                      message: 'Ongeldig emailadres',
+                    },
                   })}
                   placeholder="uw@email.com"
                 />
@@ -170,6 +192,7 @@ export const ProfileSettings = () => {
           </CardContent>
         </Card>
 
+        {/* Beveiliging */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
@@ -192,17 +215,22 @@ export const ProfileSettings = () => {
               <Label>Account Type</Label>
               <div className="flex items-center space-x-2">
                 <User className="w-4 h-4 text-gray-500" />
-                <span className="text-sm text-gray-600 capitalize">{userProfile?.role}</span>
+                <span className="text-sm text-gray-600 capitalize">
+                  {userProfile?.role}
+                </span>
               </div>
             </div>
-            <Button 
-              variant="outline" 
+
+            <Button
+              variant="outline"
               onClick={handlePasswordReset}
               disabled={isChangingPassword}
             >
               {isChangingPassword && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
               Wachtwoord Wijzigen
             </Button>
+
+
           </CardContent>
         </Card>
       </div>

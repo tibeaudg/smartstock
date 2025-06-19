@@ -222,7 +222,7 @@ export const BranchManagement = () => {
               </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-              {['name', 'address', 'phone', 'email'].map((field) => (
+              {['name'].map((field) => (
                 <div className="space-y-2" key={field}>
                   <Label htmlFor={field}>
                     {field === 'name' ? 'Filiaal Naam *' : field.charAt(0).toUpperCase() + field.slice(1)}
@@ -232,9 +232,8 @@ export const BranchManagement = () => {
                     type={field === 'email' ? 'email' : 'text'}
                     placeholder={
                       field === 'name'
-                        ? 'Hoofdvestiging'
-                        : field === 'address'
-                        ? 'Straat 123, 1234 AB Stad'
+                        ? ''
+
                         : field === 'phone'
                         ? '+31 6 12345678'
                         : 'filiaal@bedrijf.nl'
