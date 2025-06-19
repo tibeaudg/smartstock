@@ -83,69 +83,49 @@ export const UserManagement = () => {
     }
   };
 
-  const handleInviteUser = async () => {
-    if (!inviteEmail || !activeBranch) return;
+const handleInviteUser = async () => {
+  if (!inviteEmail || !activeBranch) return;
 
-    setInviting(true);
-    try {
-      // First check if user already exists in the system
-      const { data: existingUser, error: userError } = await supabase
-        .from('profiles')
-        .select('id')
-        .eq('email', inviteEmail)
-        .single();
+  setInviting(true);
+  try {
+    // 1. Check of gebruiker bestaat
+    const { data: { users }, error: fetchError } = await supabase.auth.admin.listUsers({
+      email: inviteEmail,
+    });
 
-      if (userError && userError.code !== 'PGRST116') {
-        throw userError;
-      }
+    const userExists = users?.length > 0;
+    let userId = userExists ? users[0].id : undefined;
 
-      if (!existingUser) {
-        // User doesn't exist, create a new user with staff role
-        const { error: inviteError } = await supabase.auth.signInWithOtp({
-          email: inviteEmail,
-          options: {
-            data: {
-              invited_by: user?.id, // Add this to mark as an invited user
-              role: 'staff', // Force staff role for invited users
-            },
-          },
-        });
-
-        if (inviteError) throw inviteError;
-      }
-
-      // Add the user to the branch with specified role
-      const { error: branchUserError } = await supabase
-        .from('branch_users')
-        .insert({
-          branch_id: activeBranch.branch_id,
-          user_id: existingUser?.id,
-          role: 'staff', // Default to staff role for new branch members
-          granted_by: user?.id,
-        });
-
-      if (branchUserError) throw branchUserError;
-
-      toast({
-        title: "Uitnodiging verstuurd",
-        description: existingUser
-          ? "Gebruiker is toegevoegd aan het filiaal"
-          : "Uitnodiging is verstuurd naar de gebruiker",
+    if (!userExists) {
+      // 2. Verstuur een wachtwoord-reset e-mail als uitnodiging
+      const { error: inviteError } = await supabase.auth.resetPasswordForEmail(inviteEmail, {
+        redirectTo: `${window.location.origin}/reset-password`, // of je eigen login/redirect pagina
       });
 
-      setInviteEmail('');
-      await fetchBranchUsers();
-    } catch (error) {
-      console.error('Error inviting user:', error);
+      if (inviteError) throw inviteError;
+
       toast({
-        title: "Fout",
-        description: "Kon gebruiker niet uitnodigen",
-        variant: "destructive",
+        title: "Uitnodiging verzonden",
+        description: "De gebruiker heeft een e-mail ontvangen om zijn wachtwoord in te stellen.",
       });
-    } finally {
-      setInviting(false);
     }
-  };
+
+    // 3. Voeg gebruiker toe aan 'branch_users' zodra hij is aangemaakt
+    // Dit deel moet je doen via webhook of een cron job zodra gebruiker geverifieerd is
+    // OF je doet dit pas als gebruiker voor het eerst inlogt
+
+  } catch (error) {
+    console.error('Fout bij uitnodigen:', error);
+    toast({
+      title: "Fout",
+      description: "Er ging iets mis bij het versturen van de uitnodiging.",
+      variant: "destructive",
+    });
+  } finally {
+    setInviting(false);
+  }
+};
+
 
   const handleRemoveUser = async (userId: string) => {
     if (!activeBranch) return;

@@ -7,7 +7,20 @@ export default function ResetPassword() {
   const [message, setMessage] = useState<string | null>(null);
 
   useEffect(() => {
-  }, []);
+    const hash = window.location.hash; // #access_token=...&refresh_token=... etc
+    if (hash) {
+        const params = new URLSearchParams(hash.substring(1)); // zonder #
+        const access_token = params.get('access_token');
+        const refresh_token = params.get('refresh_token');
+        if (access_token && refresh_token) {
+        supabase.auth.setSession({
+            access_token,
+            refresh_token,
+        }).catch(console.error);
+        }
+    }
+    }, []);
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,6 +35,14 @@ export default function ResetPassword() {
       setMessage('Password updated successfully! You can now log in.');
     }
   };
+
+
+  
+  if (!error) {
+  setMessage('Password updated successfully! You can now log in.');
+  // redirect na korte timeout om bericht te tonen, of direct:
+  window.location.href = '/dashboard';
+}
 
   return (
     <form onSubmit={handleSubmit} className="max-w-sm mx-auto p-4">
