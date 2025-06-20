@@ -46,8 +46,9 @@ export const Settings = () => {
       <Tabs
         value={activeTab}
         onValueChange={setActiveTab}
-        className="space-y "
+        className="space-y"
       >
+        {/* Tab buttons */}
         {isAdmin && (
           <TabsList className="grid w-full grid-cols-2 lg:grid-cols-5 gap-1">
             <TabsTrigger value="profile" className="flex items-center space-x-2">
@@ -77,6 +78,8 @@ export const Settings = () => {
             </TabsTrigger>
           </TabsList>
         )}
+        {/* Add extra margin below tab buttons for all views */}
+        <div className="mb-10" />
 
         {/* Profiel tab - zichtbaar voor iedereen */}
         <TabsContent value="profile" className="space-y-6">
