@@ -1,39 +1,39 @@
-
 import React from 'react';
 import { 
   BarChart3, 
   Package, 
   ShoppingCart, 
-  Shield, 
-  CreditCard, 
   Settings
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface MobileBottomNavProps {
   currentTab: string;
-  onTabChange: (tab: string) => void;
+  onTabChange?: (tab: string) => void;
   userRole: 'admin' | 'staff';
 }
 
 export const MobileBottomNav = ({ currentTab, onTabChange, userRole }: MobileBottomNavProps) => {
+  const navigate = useNavigate();
   const menuItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: BarChart3, adminOnly: false },
-    { id: 'orders', label: 'Orders', icon: ShoppingCart, adminOnly: false },
-    { id: 'stock', label: 'Stock', icon: Package, adminOnly: false },
-    { id: 'licenses', label: 'Licenses', icon: Shield, adminOnly: true },
-    { id: 'subscriptions', label: 'Subscriptions', icon: CreditCard, adminOnly: true },
-    { id: 'settings', label: 'Settings', icon: Settings, adminOnly: false },
+    { id: 'dashboard', label: 'Dashboard', icon: BarChart3, path: '/dashboard' },
+    { id: 'stock', label: 'Producten', icon: Package, path: '/dashboard/stock' },
+    { id: 'transactions', label: 'Bewegingslijst', icon: ShoppingCart, path: '/dashboard/transactions' },
+    { id: 'settings', label: 'Instellingen', icon: Settings, path: '/dashboard/settings' },
   ];
 
-  const filteredItems = menuItems.filter(item => !item.adminOnly || userRole === 'admin');
+  const handleNav = (item: typeof menuItems[0]) => {
+    if (onTabChange) onTabChange(item.id);
+    if (item.path) navigate(item.path);
+  };
 
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-2 z-50">
       <nav className="flex justify-around">
-        {filteredItems.map((item) => (
+        {menuItems.map((item) => (
           <button
             key={item.id}
-            onClick={() => onTabChange(item.id)}
+            onClick={() => handleNav(item)}
             className={`flex flex-col items-center py-2 px-3 rounded-lg transition-colors ${
               currentTab === item.id
                 ? 'text-blue-700 bg-blue-50'
