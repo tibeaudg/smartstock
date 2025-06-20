@@ -44,9 +44,9 @@ export const useDashboardData = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchDashboardData = useCallback(async () => {
+  const fetchDashboardData = useCallback(async (cancelled?: { current: boolean }) => {
     if (!user || !activeBranch) {
-      setLoading(false);
+      if (!cancelled?.current) setLoading(false);
       return;
     }
 
@@ -89,13 +89,15 @@ export const useDashboardData = () => {
         ?.filter(t => t.transaction_type === 'outgoing')
         .reduce((sum, t) => sum + t.quantity, 0) || 0;
 
-      setMetrics({
-        totalStockValue: totalValue,
-        totalProducts: productsData?.length || 0,
-        incomingToday,
-        outgoingToday,
-        lowStockAlerts: lowStockCount,
-      });
+      if (!cancelled?.current) {
+        setMetrics({
+          totalStockValue: totalValue,
+          totalProducts: productsData?.length || 0,
+          incomingToday,
+          outgoingToday,
+          lowStockAlerts: lowStockCount,
+        });
+      }
 
       // Generate stock trends (last 7 days)
       const trends: StockTrendData[] = [];
@@ -114,7 +116,7 @@ export const useDashboardData = () => {
           value: dayValue,
         });
       }
-      setStockTrends(trends);
+      if (!cancelled?.current) setStockTrends(trends);
 
       // Generate category data
       const categoryMap = new Map<string, { value: number; products: number }>();
@@ -132,7 +134,7 @@ export const useDashboardData = () => {
         value: data.value,
         products: data.products,
       }));
-      setCategoryData(categoryDataArray);
+      if (!cancelled?.current) setCategoryData(categoryDataArray);
 
       // Generate daily activity (last 7 days)
       const activity: DailyActivityData[] = [];
@@ -156,27 +158,24 @@ export const useDashboardData = () => {
           outgoing,
         });
       }
-      setDailyActivity(activity);
+      if (!cancelled?.current) setDailyActivity(activity);
 
       console.log('Dashboard data fetched successfully for branch:', activeBranch.branch_id);
 
     } catch (err) {
-      console.error('Error fetching dashboard data:', err);
-      setError(err instanceof Error ? err.message : 'An error occurred while fetching dashboard data');
+      if (!cancelled?.current) {
+        setError(err instanceof Error ? err.message : 'An error occurred while fetching dashboard data');
+      }
     } finally {
-      setLoading(false);
+      if (!cancelled?.current) setLoading(false);
     }
   }, [user, activeBranch]);
 
   useEffect(() => {
-    let mounted = true;
-    
+    const cancelled = { current: false };
     const initializeDashboard = async () => {
-      if (mounted) {
-        await fetchDashboardData();
-      }
+      await fetchDashboardData(cancelled);
     };
-
     initializeDashboard();
 
     // Set up real-time subscription for updates
@@ -192,21 +191,19 @@ export const useDashboardData = () => {
             filter: `branch_id=eq.${activeBranch.branch_id}`
           },
           () => {
-            if (mounted) {
-              fetchDashboardData();
-            }
+            if (!cancelled.current) fetchDashboardData(cancelled);
           }
         )
         .subscribe();
 
       return () => {
-        mounted = false;
+        cancelled.current = true;
         supabase.removeChannel(channel);
       };
     }
 
     return () => {
-      mounted = false;
+      cancelled.current = true;
     };
   }, [fetchDashboardData, activeBranch]);
 

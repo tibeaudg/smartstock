@@ -68,8 +68,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   useEffect(() => {
-    let isMounted = true;
-
+    const cancelled = { current: false };
     const initializeAuth = async () => {
       try {
         const {
@@ -79,21 +78,21 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
         if (error) {
           console.error('Error getting session:', error.message);
-          if (isMounted) setLoading(false);
+          if (!cancelled.current) setLoading(false);
           return;
         }
 
-        if (currentSession && isMounted) {
+        if (currentSession && !cancelled.current) {
           setSession(currentSession);
           setUser(currentSession.user);
 
           const profile = await fetchUserProfile(currentSession.user.id);
-          if (isMounted) setUserProfile(profile);
+          if (!cancelled.current) setUserProfile(profile);
         }
       } catch (error) {
         console.error('Error during auth initialization:', error);
       } finally {
-        if (isMounted) setLoading(false);
+        if (!cancelled.current) setLoading(false);
       }
     };
 
@@ -101,14 +100,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
     const { data: listener } = supabase.auth.onAuthStateChange(
       async (_event, newSession) => {
-        if (!isMounted) return;
+        if (cancelled.current) return;
 
         setSession(newSession);
         setUser(newSession?.user ?? null);
 
         if (newSession?.user) {
           const profile = await fetchUserProfile(newSession.user.id);
-          setUserProfile(profile);
+          if (!cancelled.current) setUserProfile(profile);
         } else {
           setUserProfile(null);
         }
@@ -116,7 +115,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     );
 
     return () => {
-      isMounted = false;
+      cancelled.current = true;
       listener?.subscription.unsubscribe();
     };
   }, []);

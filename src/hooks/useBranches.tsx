@@ -27,12 +27,14 @@ export const BranchProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
   const [hasNoBranches, setHasNoBranches] = useState(false);
 
-  const fetchBranches = async () => {
+  const fetchBranches = async (cancelled?: { current: boolean }) => {
     if (!user) {
-      setBranches([]);
-      setActiveBranchState(null);
-      setHasNoBranches(false);
-      setLoading(false);
+      if (!cancelled?.current) {
+        setBranches([]);
+        setActiveBranchState(null);
+        setHasNoBranches(false);
+        setLoading(false);
+      }
       return;
     }
 
@@ -43,17 +45,13 @@ export const BranchProvider = ({ children }: { children: ReactNode }) => {
       });
 
       if (error) {
-        console.error('Error fetching branches:', error);
-        setLoading(false);
+        if (!cancelled?.current) setLoading(false);
         return;
       }
 
-      if (data) {
-        console.log('Branches fetched:', data);
+      if (data && !cancelled?.current) {
         setBranches(data);
         setHasNoBranches(data.length === 0);
-        
-        // Set active branch to main branch or first branch if no active branch
         if (!activeBranch) {
           const mainBranch = data.find(b => b.is_main) || data[0];
           if (mainBranch) {
@@ -62,32 +60,32 @@ export const BranchProvider = ({ children }: { children: ReactNode }) => {
         }
       }
     } catch (error) {
-      console.error('Exception fetching branches:', error);
+      if (!cancelled?.current) {
+        console.error('Exception fetching branches:', error);
+      }
     } finally {
-      setLoading(false);
+      if (!cancelled?.current) setLoading(false);
     }
   };
 
   useEffect(() => {
-    let mounted = true;
-
+    const cancelled = { current: false };
     const initBranches = async () => {
       if (authLoading) return;
-      
-      if (mounted && user) {
-        await fetchBranches();
-      } else if (mounted && !user) {
-        setBranches([]);
-        setActiveBranchState(null);
-        setHasNoBranches(false);
-        setLoading(false);
+      if (user) {
+        await fetchBranches(cancelled);
+      } else {
+        if (!cancelled.current) {
+          setBranches([]);
+          setActiveBranchState(null);
+          setHasNoBranches(false);
+          setLoading(false);
+        }
       }
     };
-
     initBranches();
-
     return () => {
-      mounted = false;
+      cancelled.current = true;
     };
   }, [user, authLoading]);
 

@@ -69,7 +69,7 @@ export const HomePage = () => {
     },
     {
       name: 'Starter',
-      price: '€9',
+      price: '€7',
       period: '/maand',
       description: 'Voor kleine bedrijven die hun voorraad willen uitbreiden',
       features: [
@@ -81,11 +81,11 @@ export const HomePage = () => {
     },
     {
       name: 'Business',
-      price: '€49',
+      price: '€24',
       period: '/maand',
       description: 'Ideaal voor groeiende bedrijven met meer complexe behoeften',
       features: [
-        'Tot 1.500 producten',
+        'Tot 500 producten',
         'Uitgebreide rapportage',
         'Toegewijde ondersteuning',
       ],
@@ -97,7 +97,7 @@ export const HomePage = () => {
       period: '/maand',
       description: 'Voor grote organisaties met onbeperkte mogelijkheden',
       features: [
-        'Tot 5.000 producten',
+        'Tot 1.000 producten',
         'On-premise implementatie',
         '24/7 telefonische support',
       ],

@@ -49,15 +49,17 @@ export const useStockMovements = () => {
     }
   }, [filters]);
 
-  const fetchTransactions = useCallback(async () => {
+  const fetchTransactions = useCallback(async (cancelled?: { current: boolean }) => {
     if (!user || !activeBranch) {
-      setTransactions([]);
-      setLoading(false);
+      if (!cancelled?.current) {
+        setTransactions([]);
+        setLoading(false);
+      }
       return;
     }
 
     try {
-      setLoading(true);
+      if (!cancelled?.current) setLoading(true);
       setError(null);
       console.log('Fetching transactions for branch:', activeBranch.branch_id);
       
@@ -103,15 +105,14 @@ export const useStockMovements = () => {
 
       console.log('Executing query with filters:', filters);
       const { data, error: fetchError } = await query;
-
       if (fetchError) {
-        console.error('Error fetching transactions:', fetchError);
+        if (!cancelled?.current) {
+          setError(fetchError.message);
+          toast.error('Error loading transactions');
+        }
         throw new Error(fetchError.message);
       }
-
-      console.log('Retrieved transactions:', data?.length || 0, 'records');
-
-      if (data) {
+      if (data && !cancelled?.current) {
         setTransactions(data);
 
         // Calculate stats
@@ -132,26 +133,26 @@ export const useStockMovements = () => {
         setStats(stats);
       }
     } catch (err) {
-      console.error('Error in fetchTransactions:', err);
-      setError(err instanceof Error ? err.message : 'Failed to fetch transactions');
-      toast.error('Error loading transactions');
+      if (!cancelled?.current) {
+        setError(err instanceof Error ? err.message : 'Failed to fetch transactions');
+        toast.error('Error loading transactions');
+      }
     } finally {
-      setLoading(false);
+      if (!cancelled?.current) setLoading(false);
     }
   }, [user, activeBranch, filters, getDateRange]);
 
   // Initial fetch and filter changes
   useEffect(() => {
-    console.log('Effect triggered - fetching transactions');
-    fetchTransactions();
+    const cancelled = { current: false };
+    fetchTransactions(cancelled);
+    return () => { cancelled.current = true; };
   }, [fetchTransactions]);
 
   // Set up real-time subscription
   useEffect(() => {
+    const cancelled = { current: false };
     if (!activeBranch) return;
-
-    console.log('Setting up real-time subscription for branch:', activeBranch.branch_id);
-
     const channel = supabase
       .channel(`stock-transactions-${activeBranch.branch_id}`)
       .on(
@@ -163,16 +164,14 @@ export const useStockMovements = () => {
           filter: `branch_id=eq.${activeBranch.branch_id}`,
         },
         (payload) => {
-          console.log('Real-time update received:', payload);
-          fetchTransactions();
+          if (!cancelled.current) fetchTransactions(cancelled);
         }
       )
       .subscribe((status) => {
         console.log('Subscription status:', status);
       });
-
     return () => {
-      console.log('Cleaning up subscription for branch:', activeBranch.branch_id);
+      cancelled.current = true;
       supabase.removeChannel(channel);
     };
   }, [activeBranch, fetchTransactions]);
