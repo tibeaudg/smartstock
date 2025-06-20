@@ -10,6 +10,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { toast } from '@/hooks/use-toast';
 import { Loader2, UserPlus, Edit, Trash2, Crown, User } from 'lucide-react';
+import type { User as SupabaseUser } from '@supabase/supabase-js';
 
 interface BranchUser {
   id: string;
@@ -23,20 +24,29 @@ interface BranchUser {
     last_name: string | null;
     role: string;
   };
+  branch?: {
+    branch_name: string;
+  };
 }
 
 export const UserManagement = () => {
-  const { user } = useAuth();
+  const { user, session } = useAuth();
   const { branches, activeBranch } = useBranches();
   const [users, setUsers] = useState<BranchUser[]>([]);
   const [loading, setLoading] = useState(true);
   const [inviteEmail, setInviteEmail] = useState('');
   const [inviteRole, setInviteRole] = useState('staff');
   const [inviting, setInviting] = useState(false);
+  const [selectedBranchId, setSelectedBranchId] = useState<string>(activeBranch?.branch_id || '');
+
+  // Update selectedBranchId when activeBranch changes
+  useEffect(() => {
+    if (activeBranch) setSelectedBranchId(activeBranch.branch_id);
+  }, [activeBranch]);
 
   const fetchBranchUsers = async () => {
-    if (!activeBranch) return;
-
+    if (!selectedBranchId) return;
+    setLoading(true);
     try {
       const { data, error } = await supabase
         .from('branch_users')
@@ -46,15 +56,17 @@ export const UserManagement = () => {
           branch_id,
           role,
           granted_at,
-          profiles!branch_users_user_id_fkey (
+          profiles:profiles!branch_users_user_id_fkey (
             email,
             first_name,
             last_name,
             role
+          ),
+          branches:branch_id (
+            branch_name
           )
         `)
-        .eq('branch_id', activeBranch.branch_id);
-
+        .eq('branch_id', selectedBranchId);
       if (error) {
         console.error('Error fetching branch users:', error);
         toast({
@@ -64,17 +76,15 @@ export const UserManagement = () => {
         });
         return;
       }
-
-      // Transform the data to match our interface
       const transformedUsers = data?.map(item => ({
         id: item.id,
         user_id: item.user_id,
         branch_id: item.branch_id,
         role: item.role,
         granted_at: item.granted_at,
-        profile: Array.isArray(item.profiles) ? item.profiles[0] : item.profiles
+        profile: item.profiles,
+        branch: item.branches
       })) || [];
-
       setUsers(transformedUsers);
     } catch (error) {
       console.error('Error fetching branch users:', error);
@@ -83,49 +93,43 @@ export const UserManagement = () => {
     }
   };
 
-const handleInviteUser = async () => {
-  if (!inviteEmail || !activeBranch) return;
-
-  setInviting(true);
-  try {
-    // 1. Check of gebruiker bestaat
-    const { data: { users }, error: fetchError } = await supabase.auth.admin.listUsers({
-      email: inviteEmail,
-    });
-
-    const userExists = users?.length > 0;
-    let userId = userExists ? users[0].id : undefined;
-
-    if (!userExists) {
-      // 2. Verstuur een wachtwoord-reset e-mail als uitnodiging
-      const { error: inviteError } = await supabase.auth.resetPasswordForEmail(inviteEmail, {
-        redirectTo: `${window.location.origin}/reset-password`, // of je eigen login/redirect pagina
+  const handleInviteUser = async () => {
+    if (!inviteEmail || !selectedBranchId) return;
+    setInviting(true);
+    try {
+      // Call the Edge Function
+      const response = await fetch('https://sszuxnqhbxauvershuys.supabase.co/functions/v1/invite-user', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session?.access_token}` // Add this line
+        },
+        body: JSON.stringify({
+          email: inviteEmail,
+          branch_id: selectedBranchId,
+          role: inviteRole
+        })
       });
-
-      if (inviteError) throw inviteError;
-
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error?.message || 'Onbekende fout bij uitnodigen');
       toast({
-        title: "Uitnodiging verzonden",
-        description: "De gebruiker heeft een e-mail ontvangen om zijn wachtwoord in te stellen.",
+        title: 'Uitnodiging verzonden',
+        description: 'De gebruiker is uitgenodigd en gekoppeld aan het filiaal.',
       });
+      setInviteEmail('');
+      setInviteRole('staff');
+      await fetchBranchUsers();
+    } catch (error: any) {
+      console.error('Fout bij uitnodigen:', error);
+      toast({
+        title: 'Fout',
+        description: error.message || 'Er ging iets mis bij het versturen van de uitnodiging.',
+        variant: 'destructive',
+      });
+    } finally {
+      setInviting(false);
     }
-
-    // 3. Voeg gebruiker toe aan 'branch_users' zodra hij is aangemaakt
-    // Dit deel moet je doen via webhook of een cron job zodra gebruiker geverifieerd is
-    // OF je doet dit pas als gebruiker voor het eerst inlogt
-
-  } catch (error) {
-    console.error('Fout bij uitnodigen:', error);
-    toast({
-      title: "Fout",
-      description: "Er ging iets mis bij het versturen van de uitnodiging.",
-      variant: "destructive",
-    });
-  } finally {
-    setInviting(false);
-  }
-};
-
+  };
 
   const handleRemoveUser = async (userId: string) => {
     if (!activeBranch) return;
@@ -184,10 +188,10 @@ const handleInviteUser = async () => {
   };
 
   useEffect(() => {
-    if (activeBranch) {
+    if (selectedBranchId) {
       fetchBranchUsers();
     }
-  }, [activeBranch]);
+  }, [selectedBranchId]);
 
   if (loading) {
     return (
@@ -216,11 +220,11 @@ const handleInviteUser = async () => {
             <span>Gebruiker Uitnodigen</span>
           </CardTitle>
           <CardDescription>
-            Nodig een nieuwe gebruiker uit voor {activeBranch.branch_name}
+            Nodig een nieuwe gebruiker uit voor een filiaal
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="grid gap-4 md:grid-cols-3">
             <div>
               <Label htmlFor="email">Email</Label>
               <Input
@@ -243,10 +247,25 @@ const handleInviteUser = async () => {
                 </SelectContent>
               </Select>
             </div>
+            <div>
+              <Label htmlFor="branch">Filiaal</Label>
+              <Select value={selectedBranchId} onValueChange={setSelectedBranchId}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {branches.map((branch) => (
+                    <SelectItem key={branch.branch_id} value={branch.branch_id}>
+                      {branch.branch_name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
           <Button 
             onClick={handleInviteUser} 
-            disabled={!inviteEmail || inviting}
+            disabled={!inviteEmail || !selectedBranchId || inviting}
             className="w-full md:w-auto"
           >
             {inviting ? (
@@ -263,13 +282,12 @@ const handleInviteUser = async () => {
           </Button>
         </CardContent>
       </Card>
-
       {/* Users List */}
       <Card>
         <CardHeader>
           <CardTitle>Huidige Gebruikers</CardTitle>
           <CardDescription>
-            Beheer gebruikers voor {activeBranch.branch_name}
+            Beheer gebruikers voor het geselecteerde filiaal
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -299,10 +317,12 @@ const handleInviteUser = async () => {
                       <Badge variant="outline">
                         {branchUser.profile?.role === 'admin' ? 'Systeem Admin' : 'Gebruiker'}
                       </Badge>
+                      {branchUser.branch?.branch_name && (
+                        <Badge variant="outline">{branchUser.branch?.branch_name}</Badge>
+                      )}
                     </div>
                   </div>
                 </div>
-                
                 <div className="flex items-center space-x-2">
                   <Select
                     value={branchUser.role}
@@ -316,7 +336,6 @@ const handleInviteUser = async () => {
                       <SelectItem value="admin">Beheerder</SelectItem>
                     </SelectContent>
                   </Select>
-                  
                   {branchUser.user_id !== user?.id && (
                     <Button
                       variant="outline"
@@ -329,7 +348,6 @@ const handleInviteUser = async () => {
                 </div>
               </div>
             ))}
-            
             {users.length === 0 && (
               <div className="text-center py-8">
                 <p className="text-gray-600">Geen gebruikers gevonden voor dit filiaal</p>
