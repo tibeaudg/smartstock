@@ -70,6 +70,8 @@ export const StockList = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [selectedAction, setSelectedAction] = useState<StockAction | null>(null);
+  const [selectedProductIds, setSelectedProductIds] = useState<string[]>([]);
+  const [selectAll, setSelectAll] = useState(false);
 
   // Filter states
   const [searchTerm, setSearchTerm] = useState('');
@@ -217,6 +219,46 @@ export const StockList = () => {
       console.error('Error fetching products:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Handle select all
+  useEffect(() => {
+    if (selectAll) {
+      setSelectedProductIds(filteredProducts.map((p) => p.id));
+    } else {
+      setSelectedProductIds([]);
+    }
+    // eslint-disable-next-line
+  }, [selectAll, filteredProducts]);
+
+  // Handle single select
+  const handleSelectProduct = (id: string) => {
+    setSelectedProductIds((prev) =>
+      prev.includes(id) ? prev.filter((pid) => pid !== id) : [...prev, id]
+    );
+  };
+
+  // Bulk delete
+  const handleBulkDelete = async () => {
+    if (!user || !activeBranch || selectedProductIds.length === 0) return;
+    if (!window.confirm('Weet je zeker dat je de geselecteerde producten wilt verwijderen?')) return;
+    try {
+      const { error } = await supabase
+        .from('products')
+        .delete()
+        .in('id', selectedProductIds)
+        .eq('branch_id', activeBranch.branch_id);
+      if (error) {
+        toast.error('Bulk verwijderen mislukt: ' + error.message);
+        return;
+      }
+      toast.success('Geselecteerde producten verwijderd');
+      setSelectedProductIds([]);
+      setSelectAll(false);
+      await fetchProducts();
+    } catch (err) {
+      toast.error('Onverwachte fout bij bulk verwijderen');
     }
   };
 
@@ -419,10 +461,17 @@ export const StockList = () => {
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Producten</h1>
         </div>
-        <Button onClick={() => setIsAddModalOpen(true)}>
-          <Plus className="h-4 w-4 mr-2" />
-          Nieuw product toevoegen
-        </Button>
+        <div className="flex gap-2">
+          {selectedProductIds.length > 0 && (
+            <Button variant="destructive" onClick={handleBulkDelete}>
+              Verwijder geselecteerde ({selectedProductIds.length})
+            </Button>
+          )}
+          <Button onClick={() => setIsAddModalOpen(true)}>
+            <Plus className="h-4 w-4 mr-2" />
+            Nieuw product toevoegen
+          </Button>
+        </div>
       </div>
 
       <ProductFilters
@@ -451,6 +500,13 @@ export const StockList = () => {
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
+                <th className="px-2 py-4 text-center">
+                  <input
+                    type="checkbox"
+                    checked={selectAll && filteredProducts.length > 0}
+                    onChange={() => setSelectAll((prev) => !prev)}
+                  />
+                </th>
                 <th className="px-4 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Product
                 </th>
@@ -474,21 +530,26 @@ export const StockList = () => {
             <tbody className="bg-white divide-y divide-gray-200">
               {filteredProducts.length === 0 ? (
                 <tr>
-                  <td colSpan={8} className="px-4 py-2 text-center text-gray-500">
+                  <td colSpan={9} className="px-4 py-2 text-center text-gray-500">
                     {products.length === 0 ? 'No products found for this branch.' : 'No products match your filters.'}
                   </td>
                 </tr>
               ) : (
                 filteredProducts.map((product, index) => {
                   const stockStatus = getStockStatus(product.quantity_in_stock, product.minimum_stock_level);
-                  
+                  const checked = selectedProductIds.includes(product.id);
                   return (
-                    <tr 
-                      key={product.id} 
-                      className={`${
-                        index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
-                      } hover:bg-gray-100 transition-colors`}
+                    <tr
+                      key={product.id}
+                      className={`${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'} hover:bg-gray-100 transition-colors`}
                     >
+                      <td className="px-2 py-2 text-center">
+                        <input
+                          type="checkbox"
+                          checked={checked}
+                          onChange={() => handleSelectProduct(product.id)}
+                        />
+                      </td>
                       <td className="px-4 py-2 whitespace-nowrap">
                         <div>
                           <div className="text-sm font-medium text-gray-900">{product.name}</div>
@@ -499,7 +560,6 @@ export const StockList = () => {
                           )}
                         </div>
                       </td>
-
                       <td className="px-4 py-2 whitespace-nowrap text-sm font-medium">
                         {product.quantity_in_stock}
                       </td>
@@ -531,21 +591,12 @@ export const StockList = () => {
                             className="text-gray-600 hover:text-white hover:bg-red-600 hover:border-green-600"
                           >
                             <Minus className="h-4 w-4" />
-                          </Button >
-
-
-
-                            {isAdmin && (
-                              <Button variant="destructive" size="sm"
-                              onClick={() => handleDelete(product.id)}
-                              >
-                                <Trash2 className="h-4 w-4" />
-                              </Button>
-                            )}
-
-
-
-
+                          </Button>
+                          {isAdmin && (
+                            <Button variant="destructive" size="sm" onClick={() => handleDelete(product.id)}>
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          )}
                         </div>
                       </td>
                     </tr>

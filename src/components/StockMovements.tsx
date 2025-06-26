@@ -192,7 +192,7 @@ export const StockMovements = () => {
           </Card>
           <Card>
             <CardContent className="p-4">
-              <p className="text-sm font-medium text-muted-foreground">Totaal Out</p>
+              <p className="text-sm font-medium text-muted-foreground">Totaal Uit</p>
               <p className="text-2xl font-bold text-red-600">{stats.totalOutgoing}</p>
             </CardContent>
           </Card>
@@ -204,7 +204,7 @@ export const StockMovements = () => {
           </Card>
           <Card>
             <CardContent className="p-4">
-              <p className="text-sm font-medium text-muted-foreground">Huidige Waarde</p>
+              <p className="text-sm font-medium text-muted-foreground">Huidige Waarde Stock</p>
               <p className="text-2xl font-bold">€{stats.totalValue.toFixed(2)}</p>
             </CardContent>
           </Card>

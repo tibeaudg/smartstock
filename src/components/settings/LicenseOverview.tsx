@@ -143,17 +143,15 @@ export const LicenseOverview = () => {
               <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                 <tr>
                   <th className="px-6 py-3">Licentie</th>
-                  <th className="px-6 py-3 text-center">Producten</th>
                   <th className="px-6 py-3 text-center">Filialen</th>
                   <th className="px-6 py-3 text-center">Gebruikers</th>
-                  <th className="px-6 py-3 text-center">Geschatte Kosten/Maand</th>
+                  <th className="px-6 py-3 text-center">€/Maand</th>
                   <th className="px-6 py-3 text-center">Status</th>
                 </tr>
               </thead>
               <tbody>
                 <tr className="bg-white border-b">
                   <td className="px-6 py-4 font-medium capitalize text-gray-900">{data.license.license_type}</td>
-                  <td className="px-6 py-4 text-center">{data.usage.total_products}</td>
                   <td className="px-6 py-4 text-center">{data.usage.branch_count}</td>
                   <td className="px-6 py-4 text-center">{data.usage.user_count}</td>
                   <td className="px-6 py-4 text-center font-semibold text-gray-800">€{data.license.monthly_price.toFixed(2)}</td>
@@ -163,7 +161,7 @@ export const LicenseOverview = () => {
                 </tr>
               </tbody>
             </table>
-             <div className="text-xs text-gray-400 text-center mt-2">
+             <div className="text-xs text-gray-400 text-left mt-2">
                 +€5 per extra filiaal | +€2.5 per extra gebruiker
              </div>
           </div>
