@@ -14,7 +14,6 @@ import { Settings } from "./components/Settings";
 import { useAuth, AuthProvider } from "./hooks/useAuth";
 import { Suspense } from "react";
 import { ContentWrapper } from "./ContentWrapper";
-import ResetPassword from '@/pages/ResetPassword'; // jouw reset password component
 
 // Configure QueryClient
 const queryClient = new QueryClient({
@@ -92,7 +91,6 @@ const App = () => {
                   {/* Openbare routes */}
                   <Route path="/" element={<HomePage />} />
                   <Route path="/auth" element={<AuthRoute />} />
-                  <Route path="/reset-password" element={<ResetPassword />} />
 
                   {/* Beschermde dashboard routes */}
                   <Route

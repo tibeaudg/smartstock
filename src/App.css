@@ -33,6 +33,19 @@
   }
 }
 
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s infinite;
+}
+
 .card {
   padding: 2em;
 }
