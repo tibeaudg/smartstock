@@ -462,7 +462,7 @@ export const StockList = () => {
           <h1 className="text-3xl font-bold text-gray-900">Producten</h1>
         </div>
         <div className="flex gap-2">
-          {selectedProductIds.length > 0 && (
+          {isAdmin && selectedProductIds.length > 0 && (
             <Button variant="destructive" onClick={handleBulkDelete}>
               Verwijder geselecteerde ({selectedProductIds.length})
             </Button>
@@ -500,13 +500,15 @@ export const StockList = () => {
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-2 py-4 text-center">
-                  <input
-                    type="checkbox"
-                    checked={selectAll && filteredProducts.length > 0}
-                    onChange={() => setSelectAll((prev) => !prev)}
-                  />
-                </th>
+                {isAdmin && (
+                  <th className="px-2 py-4 text-center">
+                    <input
+                      type="checkbox"
+                      checked={selectAll && filteredProducts.length > 0}
+                      onChange={() => setSelectAll((prev) => !prev)}
+                    />
+                  </th>
+                )}
                 <th className="px-4 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Product
                 </th>
@@ -530,7 +532,7 @@ export const StockList = () => {
             <tbody className="bg-white divide-y divide-gray-200">
               {filteredProducts.length === 0 ? (
                 <tr>
-                  <td colSpan={9} className="px-4 py-2 text-center text-gray-500">
+                  <td colSpan={isAdmin ? 9 : 8} className="px-4 py-2 text-center text-gray-500">
                     {products.length === 0 ? 'No products found for this branch.' : 'No products match your filters.'}
                   </td>
                 </tr>
@@ -543,13 +545,15 @@ export const StockList = () => {
                       key={product.id}
                       className={`${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'} hover:bg-gray-100 transition-colors`}
                     >
-                      <td className="px-2 py-2 text-center">
-                        <input
-                          type="checkbox"
-                          checked={checked}
-                          onChange={() => handleSelectProduct(product.id)}
-                        />
-                      </td>
+                      {isAdmin && (
+                        <td className="px-2 py-2 text-center">
+                          <input
+                            type="checkbox"
+                            checked={checked}
+                            onChange={() => handleSelectProduct(product.id)}
+                          />
+                        </td>
+                      )}
                       <td className="px-4 py-2 whitespace-nowrap">
                         <div>
                           <div className="text-sm font-medium text-gray-900">{product.name}</div>
