@@ -3,454 +3,208 @@ import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
-import { Loader2, CreditCard, Users, Building2, TrendingUp, AlertCircle, CheckCircle2 } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { Loader2, AlertCircle } from 'lucide-react';
+import { toast } from 'sonner';
 
-type PlanType = 'free' | 'starter' | 'business' | 'enterprise';
-
-interface PlanFeatures {
+// Types matching LicenseOverview
+interface Plan {
+  id: string;
   name: string;
   price: number;
-  maxProducts: number;
-  maxUsers: number;
-  maxBranches: number;
-  features: string[];
+  limit: number;
+  extraCost: number;
+  simulatedTotalPrice: number;
 }
 
-interface LicenseInfo {
-  id: string;
-  license_type: PlanType;
-  max_products: number;
-  max_users: number;
-  max_branches: number;
-  base_price: number;
-  is_active: boolean;
+interface LicenseData {
+  license: {
+    license_type: string;
+    monthly_price: number;
+    is_active: boolean;
+  };
+  usage: {
+    user_count: number;
+    branch_count: number;
+    total_products: number;
+  };
+  availablePlans: Plan[];
+  activePlanId: string;
+  recommendedPlanId: string;
 }
-
-interface UsageInfo {
-  user_count: number;
-  branch_count: number;
-  base_price: number;
-  total_price: number;
-  product_count: number;
-  max_products: number;
-}
-
-const PLAN_DETAILS: Record<PlanType, PlanFeatures> = {
-  free: {
-    name: 'Free',
-    price: 0,
-    maxProducts: 30,
-    maxUsers: 1,
-    maxBranches: 1,
-    features: [
-      'Tot 30 producten',
-      'Basis voorraad beheer',
-      'Email ondersteuning'
-    ]
-  },
-  starter: {
-    name: 'Starter',
-    price: 4,
-    maxProducts: 150,
-    maxUsers: 3,
-    maxBranches: 2,
-    features: [
-      'Tot 150 producten',
-      'Voorraad beheer',
-      'Email ondersteuning',
-    ]
-  },
-  business: {
-    name: 'Business',
-    price: 12,
-    maxProducts: 1500,
-    maxUsers: 10,
-    maxBranches: 5,
-    features: [
-      'Tot 1500 producten',
-      'Prioriteit ondersteuning',
-      'Data backup',
-    ]
-  },
-  enterprise: {
-    name: 'Enterprise',
-    price: 39,
-    maxProducts: Number.MAX_SAFE_INTEGER,
-    maxUsers: 25,
-    maxBranches: 15,
-    features: [
-      'Onbeperkt producten',
-      'Prioriteit ondersteuning',
-      '24/7 telefoon support',
-    ]
-  }
-};
-
-// Extra cost constants
-const EXTRA_USER_COST = 2; // €5 per extra user
-const EXTRA_BRANCH_COST = 5; // €10 per extra branch
 
 export const BillingSettings = () => {
   const { user } = useAuth();
-  const [license, setLicense] = useState<LicenseInfo | null>(null);
-  const [usage, setUsage] = useState<UsageInfo | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [data, setData] = useState<LicenseData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<any>(null);
+  const [isUpdatingPlanId, setIsUpdatingPlanId] = useState<string | null>(null);
 
-  const fetchLicenseAndUsage = async () => {
+  const fetchData = async () => {
     if (!user) return;
-
     try {
-      const [licenseResponse, usageResponse] = await Promise.all([
-        supabase
-          .from('licenses')
-          .select('*')
-          .eq('admin_user_id', user.id)
-          .eq('is_active', true)
-          .single(),
-        supabase
-          .rpc('calculate_billing', { admin_id: user.id })
-      ]);
-
-      if (licenseResponse.error && licenseResponse.error.code !== 'PGRST116') {
-        throw new Error(licenseResponse.error.message);
+      const { data, error } = await supabase.functions.invoke<LicenseData>('get-license-and-usage');
+      if (error || (data as any)?.error) {
+        throw error || new Error((data as any)?.error?.message || 'Onbekende fout opgetreden');
       }
-
-      if (usageResponse.error) {
-        throw new Error(usageResponse.error.message);
-      }
-
-      setLicense(licenseResponse.data);
-      setUsage(usageResponse.data?.[0] || null);
-    } catch (error) {
-      console.error('Error fetching license data:', error);
-      toast.error('Er is een fout opgetreden bij het ophalen van de licentie gegevens.');
-    } finally {
-      setIsLoading(false);
+      setData(data);
+    } catch (err) {
+      setError(err);
+      setData(null);
+      console.error('[BillingSettings] Exception during fetch:', err);
     }
   };
 
   useEffect(() => {
-    fetchLicenseAndUsage();
+    const initialLoad = async () => {
+      setLoading(true);
+      await fetchData();
+      setLoading(false);
+    };
+    initialLoad();
   }, [user]);
 
-  const handleUpgrade = async (planType: PlanType) => {
-    if (!user) return;
-
+  const handleSelectPlan = async (planId: string) => {
+    if (!user || isUpdatingPlanId) return;
+    setIsUpdatingPlanId(planId);
+    setError(null);
     try {
-      setIsLoading(true);
-      const planDetails = PLAN_DETAILS[planType];
-      
-      const { error } = await supabase
-        .from('licenses')
-        .update({
-          license_type: planType,
-          max_products: planDetails.maxProducts,
-          max_users: planDetails.maxUsers,
-          max_branches: planDetails.maxBranches,
-          base_price: planDetails.price,
-          updated_at: new Date().toISOString()
-        })
-        .eq('admin_user_id', user.id)
-        .eq('is_active', true);
-
-      if (error) throw error;
-
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update({ selected_plan: planId })
+        .eq('id', user.id);
+      if (updateError) {
+        throw updateError;
+      }
       toast.success('Plan succesvol bijgewerkt');
-      await fetchLicenseAndUsage();
-    } catch (error) {
-      console.error('Error upgrading plan:', error);
+      await fetchData();
+    } catch (err) {
+      setError(err);
       toast.error('Er is een fout opgetreden bij het upgraden van uw licentie.');
+      console.error('[BillingSettings] Exception during plan update:', err);
     } finally {
-      setIsLoading(false);
+      setIsUpdatingPlanId(null);
     }
   };
 
-  if (isLoading) {
+  if (loading) {
     return (
-      <div className="flex items-center justify-center py-8">
-        <Loader2 className="w-6 h-6 animate-spin" />
-        <span className="ml-2">Laden...</span>
+      <div className="flex flex-col items-center justify-center py-8">
+        <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
+        <span className="mt-2 text-gray-600">Licentiegegevens laden...</span>
       </div>
     );
   }
 
-  if (!license) {
+  if (error || !data) {
     return (
-      <Card>
-        <CardContent className="text-center py-8">
-          <AlertCircle className="w-12 h-12 mx-auto text-red-400 mb-4" />
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">Geen actieve licentie</h3>
-          <p className="text-gray-600 mb-4">Er is geen actieve licentie gevonden voor uw account.</p>
-          <Button onClick={() => handleUpgrade('free')}>Gratis plan activeren</Button>
-        </CardContent>
-      </Card>
+      <div className="flex flex-col items-center justify-center py-8 text-center">
+        <AlertCircle className="w-8 h-8 text-red-500" />
+        <span className="mt-2 font-semibold text-red-600">Geen licentie-informatie beschikbaar</span>
+        <p className="text-sm text-gray-500">Er is een fout opgetreden bij het ophalen van de data.</p>
+        {error && <pre className="mt-4 text-xs text-red-400 bg-gray-800 p-2 rounded max-w-xl overflow-x-auto">{JSON.stringify(error, null, 2)}</pre>}
+      </div>
     );
   }
-
-  const currentPlan = PLAN_DETAILS[license.license_type];
-  const userUsagePercentage = usage ? (usage.user_count / license.max_users) * 100 : 0;
-  const branchUsagePercentage = usage ? (usage.branch_count / license.max_branches) * 100 : 0;
-  const isOverUserLimit = userUsagePercentage > 100;
-  const isOverBranchLimit = branchUsagePercentage > 100;
-
-  const extraUsers = usage && isOverUserLimit ? usage.user_count - license.max_users : 0;
-  const extraBranches = usage && isOverBranchLimit ? usage.branch_count - license.max_branches : 0;
-  const extraUsersCost = extraUsers * EXTRA_USER_COST;
-  const extraBranchesCost = extraBranches * EXTRA_BRANCH_COST;
 
   return (
-    <div className="space-y-6">
-      {/* Current License Card */}
+    <div className="space-y-8">
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
-            <CreditCard className="w-4 h-4" />
-            <span>Huidige Licentie</span>
-          </CardTitle>
-          <CardDescription>
-            Uw huidige licentie details en beperkingen
-          </CardDescription>
+          <CardTitle>Huidig Overzicht</CardTitle>
+          <CardDescription>Uw huidige licentiestatus en verbruik.</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="font-medium capitalize">{currentPlan.name} Plan</p>
-              <p className="text-sm text-gray-600">Maandelijks abonnement</p>
-            </div>
-            <div className="text-right">
-              <p className="text-2xl font-bold">€{license.base_price}</p>
-              <p className="text-sm text-gray-600">per maand</p>
-            </div>
-          </div>
-          
-          <div className="grid gap-4 md:grid-cols-2">
-            <UsageIndicator
-              icon={<Users className="w-4 h-4 mr-1" />}
-              label="Gebruikers"
-              current={usage?.user_count || 0}
-              max={license.max_users}
-              percentage={userUsagePercentage}
-              isOverLimit={isOverUserLimit}
-              overLimitCount={extraUsers}
-            />
-            
-            <UsageIndicator
-              icon={<Building2 className="w-4 h-4 mr-1" />}
-              label="Filialen"
-              current={usage?.branch_count || 0}
-              max={license.max_branches}
-              percentage={branchUsagePercentage}
-              isOverLimit={isOverBranchLimit}
-              overLimitCount={extraBranches}
-            />
+        <CardContent>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm text-left text-gray-500">
+              <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+                <tr>
+                  <th className="px-6 py-3">Licentie</th>
+                  <th className="px-6 py-3 text-center">Producten</th>
+                  <th className="px-6 py-3 text-center">Filialen</th>
+                  <th className="px-6 py-3 text-center">Gebruikers</th>
+                  <th className="px-6 py-3 text-center">Geschatte Kosten/Maand</th>
+                  <th className="px-6 py-3 text-center">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="bg-white border-b">
+                  <td className="px-6 py-4 font-medium capitalize text-gray-900">{data.license.license_type}</td>
+                  <td className="px-6 py-4 text-center">{data.usage.total_products}</td>
+                  <td className="px-6 py-4 text-center">{data.usage.branch_count}</td>
+                  <td className="px-6 py-4 text-center">{data.usage.user_count}</td>
+                  <td className="px-6 py-4 text-center font-semibold text-gray-800">€{data.license.monthly_price.toFixed(2)}</td>
+                  <td className="px-6 py-4 text-center">
+                    <Badge variant="success" className="bg-green-100 text-green-800">Actief</Badge>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+             <div className="text-xs text-gray-400 text-center mt-2">
+                +€5 per extra filiaal | +€2.5 per extra gebruiker
+             </div>
           </div>
         </CardContent>
       </Card>
 
-      {/* Available Plans */}
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-        {(Object.entries(PLAN_DETAILS) as [PlanType, PlanFeatures][]).map(([planType, plan]) => (
-          <PlanCard
-            key={planType}
-            planType={planType}
-            plan={plan}
-            isCurrentPlan={license.license_type === planType}
-            onUpgrade={() => handleUpgrade(planType)}
-            isLoading={isLoading}
-          />
-        ))}
-      </div>
-
-      {/* Usage and Billing Summary */}
-      {usage && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
-              <TrendingUp className="w-4 h-4" />
-              <span>Huidige Facturering</span>
-            </CardTitle>
-            <CardDescription>
-              Berekening van uw maandelijkse kosten
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <BillingBreakdown
-              basePlan={license.license_type}
-              basePrice={usage.base_price}
-              extraUsers={extraUsers}
-              extraUsersCost={extraUsersCost}
-              extraBranches={extraBranches}
-              extraBranchesCost={extraBranchesCost}
-              totalPrice={usage.total_price}
-              isOverLimit={isOverUserLimit || isOverBranchLimit}
-            />
-          </CardContent>
-        </Card>
-      )}
+      <Card>
+        <CardHeader>
+          <CardTitle>Abonnementen</CardTitle>
+          <CardDescription>Kies of wijzig uw abonnement. De prijzen worden berekend op basis van uw huidig verbruik.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex flex-col gap-4">
+            {data.availablePlans.map((plan) => {
+              const isActive = data.activePlanId === plan.id;
+              const isRecommended = data.recommendedPlanId === plan.id;
+              const isUpdating = isUpdatingPlanId === plan.id;
+              return (
+                <div
+                  key={plan.id}
+                  className={`relative flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border rounded-lg px-6 py-4 transition-all ${isActive ? 'border-blue-500 bg-blue-50 ring-2 ring-blue-200' : isRecommended ? 'border-yellow-400 bg-yellow-50' : 'bg-white'}`}
+                >
+                  {isRecommended && (
+                     <Badge variant="warning" className="absolute -top-2 -right-2 bg-yellow-400 text-yellow-900 font-bold border-2 border-white">
+                        Aanbevolen
+                     </Badge>
+                  )}
+                  <div className="flex-grow">
+                    <h3 className="text-lg font-semibold text-gray-900">{plan.name}</h3>
+                    <p className="text-sm text-gray-600">
+                      Inclusief {plan.limit} producten per maand.
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      Buiten bundel: €{plan.extraCost.toFixed(2)} per product
+                    </p>
+                  </div>
+                  <div className="flex flex-col items-start sm:items-end gap-2 w-full sm:w-auto">
+                    <div className="text-left sm:text-right">
+                      <p className="text-xl font-bold text-gray-900">
+                        €{plan.simulatedTotalPrice.toFixed(2)}
+                        <span className="text-sm font-normal text-gray-600"> /maand</span>
+                      </p>
+                      <p className="text-xs text-gray-500">Geschatte totaalkost</p>
+                    </div>
+                    {isActive ? (
+                      <Button variant="secondary" size="sm" disabled>Huidig Plan</Button>
+                    ) : (
+                      <Button 
+                        className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto" 
+                        size="sm" 
+                        onClick={() => handleSelectPlan(plan.id)}
+                        disabled={isUpdating}
+                      >
+                        {isUpdating ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
+                        {isUpdating ? 'Wijzigen...' : 'Selecteer Plan'}
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };
-
-interface UsageIndicatorProps {
-  icon: React.ReactNode;
-  label: string;
-  current: number;
-  max: number;
-  percentage: number;
-  isOverLimit: boolean;
-  overLimitCount: number;
-}
-
-const UsageIndicator = ({
-  icon,
-  label,
-  current,
-  max,
-  percentage,
-  isOverLimit,
-  overLimitCount
-}: UsageIndicatorProps) => (
-  <div className="space-y-2">
-    <div className="flex items-center justify-between">
-      <span className="text-sm font-medium flex items-center">
-        {icon}
-        {label}
-      </span>
-      <span className="text-sm">
-        {current} / {max}
-      </span>
-    </div>
-    <Progress 
-      value={Math.min(percentage, 100)} 
-      className={isOverLimit ? "bg-red-100" : ""}
-    />
-    {isOverLimit && (
-      <p className="text-xs text-red-600">
-        Limiet overschreden (+{overLimitCount} {label.toLowerCase()})
-      </p>
-    )}
-  </div>
-);
-
-interface PlanCardProps {
-  planType: PlanType;
-  plan: PlanFeatures;
-  isCurrentPlan: boolean;
-  onUpgrade: () => void;
-  isLoading: boolean;
-}
-
-const PlanCard = ({ planType, plan, isCurrentPlan, onUpgrade, isLoading }: PlanCardProps) => (
-  <Card className={cn(
-    "relative overflow-hidden",
-    isCurrentPlan && "ring-2 ring-blue-500"
-  )}>
-    {isCurrentPlan && (
-      <div className="absolute top-0 right-0 p-2">
-        <Badge variant="default">Huidig Plan</Badge>
-      </div>
-    )}
-    
-    <CardHeader>
-      <CardTitle>{plan.name}</CardTitle>
-      <CardDescription>
-        <span className="text-2xl font-bold">€{plan.price}</span>
-        /maand
-      </CardDescription>
-    </CardHeader>
-    
-    <CardContent className="space-y-4">
-      <div className="space-y-2">
-        {plan.features.map((feature, i) => (
-          <div key={i} className="flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4 text-green-500" />
-            <span className="text-sm">{feature}</span>
-          </div>
-        ))}
-      </div>
-    </CardContent>
-    
-    {!isCurrentPlan && (
-      <div className="p-4 pt-0">
-        <Button 
-          className="w-full"
-          onClick={onUpgrade}
-          disabled={isLoading}
-        >
-          {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Upgraden'}
-        </Button>
-      </div>
-    )}
-  </Card>
-);
-
-interface BillingBreakdownProps {
-  basePlan: string;
-  basePrice: number;
-  extraUsers: number;
-  extraUsersCost: number;
-  extraBranches: number;
-  extraBranchesCost: number;
-  totalPrice: number;
-  isOverLimit: boolean;
-}
-
-const BillingBreakdown = ({
-  basePlan,
-  basePrice,
-  extraUsers,
-  extraUsersCost,
-  extraBranches,
-  extraBranchesCost,
-  totalPrice,
-  isOverLimit
-}: BillingBreakdownProps) => (
-  <>
-    <div className="space-y-3">
-      <div className="flex items-center justify-between">
-        <span>Basis plan ({basePlan})</span>
-        <span>€{basePrice}</span>
-      </div>
-      
-      {extraUsers > 0 && (
-        <div className="flex items-center justify-between text-orange-600">
-          <span>Extra gebruikers ({extraUsers} × €{EXTRA_USER_COST})</span>
-          <span>€{extraUsersCost}</span>
-        </div>
-      )}
-      
-      {extraBranches > 0 && (
-        <div className="flex items-center justify-between text-orange-600">
-          <span>Extra filialen ({extraBranches} × €{EXTRA_BRANCH_COST})</span>
-          <span>€{extraBranchesCost}</span>
-        </div>
-      )}
-      
-      <hr className="my-2" />
-      
-      <div className="flex items-center justify-between font-semibold text-lg">
-        <span>Totaal per maand</span>
-        <span>€{totalPrice}</span>
-      </div>
-    </div>
-    
-    {isOverLimit && (
-      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
-        <div className="flex items-start">
-          <AlertCircle className="w-4 h-4 text-yellow-600 mt-0.5 mr-2" />
-          <div>
-            <p className="text-sm font-medium text-yellow-800">Limiet overschreden</p>
-            <p className="text-sm text-yellow-700">
-              U heeft uw licentie limieten overschreden. Extra kosten zijn van toepassing.
-              Overweeg een upgrade naar een hoger plan voor betere prijzen.
-            </p>
-          </div>
-        </div>
-      </div>
-    )}
-  </>
-);
