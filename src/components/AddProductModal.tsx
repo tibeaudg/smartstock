@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -12,6 +11,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
 import { toast } from 'sonner';
 import { SuggestionInput } from './SuggestionInput';
+import { AlertCircle } from 'lucide-react'; // Optional: for a warning icon
 
 interface AddProductModalProps {
   isOpen: boolean;
@@ -35,6 +35,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState<string[]>([]);
   const [suppliers, setSuppliers] = useState<string[]>([]);
+  const [duplicateName, setDuplicateName] = useState(false);
 
   const form = useForm<FormData>({
     defaultValues: {
@@ -79,6 +80,37 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
       fetchSuggestions();
     }
   }, [isOpen]);
+
+  // Check for duplicate product name
+  useEffect(() => {
+    const checkDuplicate = async () => {
+      const name = form.getValues('name').trim();
+      if (!name) {
+        setDuplicateName(false);
+        return;
+      }
+      const { data, error } = await supabase
+        .from('products')
+        .select('id')
+        .eq('name', name)
+        .eq('branch_id', activeBranch?.branch_id);
+
+      if (!error && data && data.length > 0) {
+        setDuplicateName(true);
+      } else {
+        setDuplicateName(false);
+      }
+    };
+
+    const subscription = form.watch((value, { name }) => {
+      if (name === 'name') {
+        checkDuplicate();
+      }
+    });
+
+    return () => subscription.unsubscribe?.();
+    // eslint-disable-next-line
+  }, [form, activeBranch]);
 
   const handleSubmit = async (data: FormData) => {
     console.log('Starting product submission...');
@@ -274,6 +306,12 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                   <FormControl>
                     <Input {...field} placeholder="Voer product naam in" disabled={loading} />
                   </FormControl>
+                  {duplicateName && (
+                    <div className="flex items-center text-sm text-red-600 mt-1">
+                      <AlertCircle className="w-4 h-4 mr-1" />
+                      Deze productnaam bestaat al in dit filiaal.
+                    </div>
+                  )}
                   <FormMessage />
                 </FormItem>
               )}

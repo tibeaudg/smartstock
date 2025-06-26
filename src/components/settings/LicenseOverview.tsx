@@ -43,18 +43,10 @@ interface Plan {
 
 const plans: Plan[] = [
   { id: 'free', name: 'Free', price: 0, limit: 30, extraCost: 0.5 },
-  { id: 'starter', name: 'Starter', price: 7, limit: 150, extraCost: 0.25 },
-  { id: 'business', name: 'Business', price: 24, limit: 500, extraCost: 0.10 },
-  { id: 'enterprise', name: 'Enterprise', price: 79, limit: 1000, extraCost: 0.05 },
+  { id: 'starter', name: 'Starter', price: 4, limit: 150, extraCost: 0.25 },
+  { id: 'business', name: 'Business', price: 12, limit: 500, extraCost: 0.10 },
+  { id: 'enterprise', name: 'Enterprise', price: 39, limit: 1000, extraCost: 0.05 },
 ];
-
-
-const calculateLicenseType = (totalProducts: number) => {
-  if (totalProducts <= 30) return { type: 'free', price: 0 };
-  if (totalProducts <= 150) return { type: 'starter', price: 9 };
-  if (totalProducts <= 1500) return { type: 'business', price: 49 };
-  return { type: 'enterprise', price: 79 };
-};
 
 export const LicenseOverview = () => {
   const { user } = useAuth();
@@ -235,7 +227,7 @@ const handleSelectPlan = async (planId: Plan['id']) => {
             <table className="w-full ">
               <tbody>
                 <tr className="text-xs text-gray-400 text-center">
-                  <td className="py-2 pl-28">+€5 per extra filiaal  |   +€2,5 per extra gebruiker</td>
+                  <td className="py-2 pl-28">+€5 per extra filiaal  |   +€2 per extra gebruiker</td>
                 </tr>
               </tbody>
             </table>

@@ -54,7 +54,7 @@ const PLAN_DETAILS: Record<PlanType, PlanFeatures> = {
   },
   starter: {
     name: 'Starter',
-    price: 9,
+    price: 4,
     maxProducts: 150,
     maxUsers: 3,
     maxBranches: 2,
@@ -66,7 +66,7 @@ const PLAN_DETAILS: Record<PlanType, PlanFeatures> = {
   },
   business: {
     name: 'Business',
-    price: 49,
+    price: 12,
     maxProducts: 1500,
     maxUsers: 10,
     maxBranches: 5,
@@ -78,7 +78,7 @@ const PLAN_DETAILS: Record<PlanType, PlanFeatures> = {
   },
   enterprise: {
     name: 'Enterprise',
-    price: 79,
+    price: 39,
     maxProducts: Number.MAX_SAFE_INTEGER,
     maxUsers: 25,
     maxBranches: 15,
@@ -91,8 +91,8 @@ const PLAN_DETAILS: Record<PlanType, PlanFeatures> = {
 };
 
 // Extra cost constants
-const EXTRA_USER_COST = 5; // €5 per extra user
-const EXTRA_BRANCH_COST = 10; // €10 per extra branch
+const EXTRA_USER_COST = 2; // €5 per extra user
+const EXTRA_BRANCH_COST = 5; // €10 per extra branch
 
 export const BillingSettings = () => {
   const { user } = useAuth();

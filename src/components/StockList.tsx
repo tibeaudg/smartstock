@@ -539,8 +539,7 @@ export const StockList = () => {
                               <Button variant="destructive" size="sm"
                               onClick={() => handleDelete(product.id)}
                               >
-                                <Trash2 className="h-4 w-4 mr-2" />
-                                Verwijderen
+                                <Trash2 className="h-4 w-4" />
                               </Button>
                             )}
 
