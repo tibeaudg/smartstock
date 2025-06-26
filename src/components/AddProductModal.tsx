@@ -385,7 +385,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                 name="quantityInStock"
                 rules={{ 
                   required: 'Voorraad is verplicht',
-                  min: { value: 0, message: 'Voorraad moet 0 of meer zijn' }
+                  min: { value: 1, message: 'Aantal in voorraad kan niet 0 zijn!' }
                 }}
                 render={({ field }) => (
                   <FormItem>

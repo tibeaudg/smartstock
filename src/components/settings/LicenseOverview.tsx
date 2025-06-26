@@ -105,25 +105,29 @@ export const LicenseOverview = () => {
 
   useEffect(() => {
     const initialize = async () => {
-      if (!user || !metrics) return; // Removed metricsLoading here
+      if (!user || !metrics) return;
 
       const branchCount = await fetchBranchCount();
       const userCount = 1; // hardcoded for now
 
       const basePlan = plans.find((p) => p.id === activePlan) || plans[0];
+      const productLimit = basePlan.limit;
+      const extraProductCost = basePlan.extraCost;
+      const totalProducts = metrics.totalProducts || 0;
+      const extraProducts = Math.max(0, totalProducts - productLimit);
+      const extraProductsCost = extraProducts * extraProductCost;
 
       const extraUsers = Math.max(0, userCount - 1);
       const extraBranches = Math.max(0, branchCount - 1);
-
       const extraUserCost = extraUsers * 2.5;
       const extraBranchCost = extraBranches * 5;
 
-      const totalPrice = basePlan.price + extraUserCost + extraBranchCost;
+      const totalPrice = basePlan.price + extraUserCost + extraBranchCost + extraProductsCost;
 
       setUsage({
         user_count: userCount,
         branch_count: branchCount,
-        total_products: metrics.totalProducts || 0,
+        total_products: totalProducts,
         base_price: basePlan.price,
         total_price: totalPrice
       });
@@ -137,7 +141,7 @@ export const LicenseOverview = () => {
                       basePlan.id === 'business' ? 10 : 999999,
         monthly_price: totalPrice,
         is_active: true,
-        total_products: metrics.totalProducts || 0
+        total_products: totalProducts
       });
     };
 
