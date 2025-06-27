@@ -14,6 +14,7 @@ import { Settings } from "./components/Settings";
 import { useAuth, AuthProvider } from "./hooks/useAuth";
 import { Suspense } from "react";
 import { ContentWrapper } from "./ContentWrapper";
+import AdminInvoicingPage from "./components/AdminInvoicingPage";
 
 // Configure QueryClient
 const queryClient = new QueryClient({
@@ -106,6 +107,8 @@ const App = () => {
                     <Route path="transactions" element={<StockMovements />} />
                     <Route path="settings" element={<Settings />} />
                   </Route>
+
+                  <Route path="/admin" element={<AdminInvoicingPage />} />
 
                   {/* Fallback route */}
                   <Route path="*" element={<NotFound />} />

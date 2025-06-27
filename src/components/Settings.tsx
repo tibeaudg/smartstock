@@ -14,14 +14,14 @@ import {
 } from '@/components/ui/card';
 import { BranchManagement } from './settings/BranchManagement';
 import { ProfileSettings } from './settings/ProfileSettings';
-import { BillingSettings } from './settings/BillingSettings';
 import { UserManagement } from './settings/UserManagement';
 import { LicenseOverview } from './settings/LicenseOverview';
+import { InvoicingOverview } from '@/components/settings/InvoicingOverview';
 import { useAuth } from '@/hooks/useAuth';
 import {
   Building2,
   User,
-  CreditCard,
+  Banknote,
   Users,
   FileText,
 } from 'lucide-react';
@@ -58,6 +58,10 @@ export const Settings = () => {
             <TabsTrigger value="license" className="flex items-center space-x-2">
               <FileText className="w-4 h-4" />
               <span>Licentie</span>
+            </TabsTrigger>
+              <TabsTrigger value="invoicing" className="flex items-center space-x-2">
+              <Banknote className="w-4 h-4" />
+              <span>Facturatie</span>
             </TabsTrigger>
             <TabsTrigger value="branches" className="flex items-center space-x-2">
               <Building2 className="w-4 h-4" />
@@ -102,6 +106,11 @@ export const Settings = () => {
             <TabsContent value="license" className="space-y-6">
               <LicenseOverview />
             </TabsContent>
+
+            <TabsContent value="invoicing" className="space-y-6">
+              <InvoicingOverview />
+            </TabsContent>
+
 
             <TabsContent value="branches" className="space-y-6">
               <Card>

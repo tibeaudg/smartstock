@@ -35,10 +35,12 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
     { id: 'dashboard', label: 'Dashboard', icon: BarChart3, path: '/dashboard', end: true },
     { id: 'stock', label: 'Producten', icon: Package, path: '/dashboard/stock' },
     { id: 'transactions', label: 'Bewegingslijst', icon: ShoppingCart, path: '/dashboard/transactions' },
-    ...(userRole === 'admin' ? [
-    ] : []),
+    ...(userRole === 'admin'
+      ? [
+          { id: 'admin', label: 'Admin', icon: Settings, path: '/admin' },
+        ]
+      : []),
     { id: 'settings', label: 'Instellingen', icon: Settings, path: '/dashboard/settings' },
-
   ];
 
   const handleSignOut = async () => {
