@@ -62,7 +62,7 @@ export const Header = ({ onLoginClick, onNavigate }: HeaderProps) => {
               Inloggen
             </Button>
             <Button onClick={handleLoginClick}>
-              Registreren
+              Probeer Gratis
             </Button>
           </div>
         </div>
