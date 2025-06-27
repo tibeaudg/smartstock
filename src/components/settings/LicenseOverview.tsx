@@ -25,6 +25,9 @@ interface Plan {
 }
 
 interface LicenseData {
+    creation: {
+    created_at: string;
+  };
   license: {
     license_type: string;
     monthly_price: number;
@@ -142,6 +145,7 @@ export const LicenseOverview = () => {
             <table className="w-full text-sm text-left text-gray-500">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                 <tr>
+                  <th className="px-6 py-3">Sinds</th>
                   <th className="px-6 py-3">Licentie</th>
                   <th className="px-6 py-3 text-center">Filialen</th>
                   <th className="px-6 py-3 text-center">Gebruikers</th>
@@ -151,6 +155,7 @@ export const LicenseOverview = () => {
               </thead>
               <tbody>
                 <tr className="bg-white border-b">
+                  <td className="px-6 py-4 font-medium capitalize text-gray-900">{data.creation.created_at ? new Date(data.creation.created_at).toLocaleDateString('nl-BE') : 'N/A' }</td>
                   <td className="px-6 py-4 font-medium capitalize text-gray-900">{data.license.license_type}</td>
                   <td className="px-6 py-4 text-center">{data.usage.branch_count}</td>
                   <td className="px-6 py-4 text-center">{data.usage.user_count}</td>
@@ -201,7 +206,7 @@ export const LicenseOverview = () => {
                   <div className="flex-grow">
                     <h3 className="text-lg font-semibold text-gray-900">{plan.name}</h3>
                     <p className="text-sm text-gray-600">
-                      Inclusief {plan.limit} producten per maand.
+                      Inclusief {plan.limit} producten.
                     </p>
                     <p className="text-xs text-gray-500">
                       Buiten bundel: €{plan.extraCost.toFixed(2)} per product
