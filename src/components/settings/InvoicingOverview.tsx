@@ -12,7 +12,7 @@ interface Invoice {
   invoice_date: string;
   period: string;
   amount: number;
-  status: 'Betaald' | 'Nog niet betaald';
+  status: 'Betaald' | 'Open';
 }
 
 export const InvoicingOverview = () => {
@@ -31,13 +31,13 @@ export const InvoicingOverview = () => {
       try {
         // RLS zorgt ervoor dat de gebruiker alleen zijn eigen facturen ziet.
         const { data, error } = await supabase
-          .from('invoices')
+          .from('invoices' as any)
           .select('*')
           .order('invoice_date', { ascending: false }); // Nieuwste eerst
         
         if (error) throw error;
 
-        setInvoices(data);
+        setInvoices(data as unknown as Invoice[]);
       } catch (err) {
         setError(err);
         console.error('[InvoicingOverview] Exception during fetch:', err);

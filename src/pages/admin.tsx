@@ -41,14 +41,14 @@ export default function AdminInvoicingPage() {
           .from('profiles')
           .select('is_admin')
           .eq('id', user.id)
-          .single();
+          .maybeSingle();
 
         if (profileError) {
           throw new Error(`Fout bij het controleren van uw profiel: ${profileError.message}`);
         }
 
         // STAP 3: Controleer of de gebruiker een admin is.
-        if (profile?.is_admin !== true) {
+        if (!profile || (profile as { is_admin?: boolean }).is_admin !== true) {
           // Dit is een 'zachte' fout. De gebruiker is ingelogd, maar heeft geen rechten.
           throw new Error("U bent ingelogd, maar u beschikt niet over de vereiste admin-rechten.");
         }
