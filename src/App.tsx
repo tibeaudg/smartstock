@@ -21,7 +21,11 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 1000 * 60 * 5, // 5 minuten
-      refetchOnWindowFocus: false,
+      // --- DEFINITIEVE OPLOSSING ---
+      // Zet deze optie op `true`. Dit is de ingebouwde, robuuste oplossing
+      // van React Query voor het herstellen van de verbinding en het verversen
+      // van data wanneer de gebruiker terugkeert naar de app.
+      refetchOnWindowFocus: true, 
       retry: 1,
     },
   },
@@ -40,7 +44,6 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading, userProfile } = useAuth();
   const location = useLocation();
 
-  // Allow reset-password route without auth redirect
   if (location.pathname === '/reset-password') {
     return <>{children}</>;
   }

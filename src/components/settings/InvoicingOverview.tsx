@@ -12,8 +12,10 @@ interface Invoice {
   invoice_date: string;
   period: string;
   amount: number;
-  status: 'Betaald' | 'Open';
+  status: 'paid' | 'open';
 }
+
+
 
 export const InvoicingOverview = () => {
   const { user } = useAuth();
@@ -35,6 +37,9 @@ export const InvoicingOverview = () => {
           .select('*')
           .order('invoice_date', { ascending: false }); // Nieuwste eerst
         
+        // Debug logging
+        console.log('[InvoicingOverview] user:', user);
+        console.log('[InvoicingOverview] fetched invoices:', data);
         if (error) throw error;
 
         setInvoices(data as unknown as Invoice[]);
@@ -48,6 +53,8 @@ export const InvoicingOverview = () => {
 
     fetchInvoicesFromDB();
   }, [user]);
+
+
 
   if (loading) {
     return (
@@ -111,7 +118,7 @@ export const InvoicingOverview = () => {
             </thead>
             <tbody>
               {invoices.map((invoice) => {
-                const isPaid = invoice.status === 'Betaald';
+                const isPaid = invoice.status === 'paid';
                 return (
                   <tr key={invoice.id} className="bg-white border-b hover:bg-gray-50">
                     <td className="px-6 py-4 font-medium text-gray-900 capitalize">

@@ -46,7 +46,7 @@ export const Settings = () => {
       <Tabs
         value={activeTab}
         onValueChange={setActiveTab}
-        className="space-y"
+        className="space-y-24 md:space-y-0"
       >
         {/* Tab buttons */}
         {isAdmin && (
