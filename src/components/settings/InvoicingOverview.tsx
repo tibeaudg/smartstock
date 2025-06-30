@@ -63,7 +63,7 @@ export const InvoicingOverview = () => {
   const currentPeriod = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
   const invoiceDate = new Date(now.getFullYear(), now.getMonth(), 1);
   const dueDate = new Date(invoiceDate);
-  dueDate.setDate(dueDate.getDate() + 7);
+  dueDate.setDate(dueDate.getDate() + 7); // 
 
   const currentInvoice: Invoice = {
     id: 0,

@@ -228,13 +228,10 @@ export default function AdminInvoicingPage() {
 
   return (
     <div className="p-8 space-y-6">
-      {/* --- Actiepaneel --- */}
-
-      {/* --- Huidige openstaande facturen --- */}
       <Card>
         <CardHeader>
-          <CardTitle>Openstaande Facturen</CardTitle>
-          <CardDescription>Alle openstaande facturen van alle gebruikers (live).</CardDescription>
+          <CardTitle>Facturenoverzicht</CardTitle>
+          <CardDescription>Alle facturen van alle gebruikers (openstaand en historiek).</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="overflow-x-auto">
@@ -246,12 +243,12 @@ export default function AdminInvoicingPage() {
                   <th className="px-6 py-3 text-right">Bedrag</th>
                   <th className="px-6 py-3 text-center">Status</th>
                   <th className="px-6 py-3 text-center">Tijd tot betaling</th>
+                  <th className="px-6 py-3 text-center">Betaald</th>
                   <th className="px-6 py-3 text-center">Acties</th>
-                  <th className="px-6 py-3 text-center">Actief</th>
                 </tr>
               </thead>
               <tbody>
-                {currentInvoices.map((inv) => {
+                {allInvoices.map((inv) => {
                   let deadline = new Date();
                   if (inv.period && inv.period.includes('-')) {
                     const [year, month] = inv.period.split('-');
@@ -262,99 +259,38 @@ export default function AdminInvoicingPage() {
                   const now = new Date();
                   const msLeft = deadline.getTime() - now.getTime();
                   const daysLeft = Math.max(0, Math.ceil(msLeft / (1000 * 60 * 60 * 24)));
-                  return (
-                    <tr key={inv.user_id} className="bg-white border-b hover:bg-gray-50">
-                      <td className="px-6 py-4 font-medium text-gray-900">{inv.userEmail}</td>
-                      <td className="px-6 py-4">{inv.period}</td>
-                      <td className="px-6 py-4 text-right font-mono">€{inv.amount?.toFixed(2)}</td>
-                      <td className="px-6 py-4 text-center">
-                        <Badge className="bg-yellow-100 text-yellow-800">Open</Badge>
-                      </td>
-                      <td className="px-6 py-4 text-center">{daysLeft} dagen</td>
-                      <td className="px-6 py-4 text-center">
-                        <button
-                          className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-xs mr-2"
-                          onClick={() => handleMarkAsPaid(inv)}
-                        >
-                          Betaald
-                        </button>
-                        <button
-                          className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs disabled:opacity-50 mr-2"
-                          onClick={() => handleBlockUser(inv.userEmail)}
-                          disabled={inv.active === false}
-                        >
-                          Blokkeer
-                        </button>
-                        <button
-                          className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-xs disabled:opacity-50"
-                          onClick={() => handleUnblockUser(inv.userEmail)}
-                          disabled={inv.active !== false}
-                        >
-                          Deblokkeer
-                        </button>
-                      </td>
-                      <td className="px-6 py-4 text-center">
-                        <input
-                          type="checkbox"
-                          checked={inv.active !== false}
-                          onChange={e => handleToggleActive(inv.user_id, e.target.checked)}
-                        />
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* --- Historiek --- */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Historiek</CardTitle>
-          <CardDescription>Een overzicht van alle facturen van alle gebruikers.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm text-left">
-              <thead className="text-xs text-gray-700 uppercase bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3">Gebruiker (Email)</th>
-                  <th className="px-6 py-3">Periode</th>
-                  <th className="px-6 py-3 text-right">Bedrag</th>
-                  <th className="px-6 py-3 text-center">Status</th>
-                  <th className="px-6 py-3 text-center">Tijd tot betaling</th>
-                  <th className="px-6 py-3 text-center">Acties</th>
-                </tr>
-              </thead>
-              <tbody>
-                {allInvoices.map((inv) => {
-                  let deadline = new Date(); // Fallback
-                  if (inv.period && inv.period.includes('-')) {
-                    const [year, month] = inv.period.split('-');
-                    deadline = new Date(Number(year), Number(month) - 1, 1);
-                    deadline.setMonth(deadline.getMonth() + 1);
-                    deadline.setDate(deadline.getDate() + 13);
-                  }
-                  const now = new Date();
-                  const msLeft = deadline.getTime() - now.getTime();
-                  const daysLeft = Math.max(0, Math.ceil(msLeft / (1000 * 60 * 60 * 24)));
-                  // Find user by email to get blocked status
                   const user = allUsers.find(u => u.email === inv.userEmail);
                   const isBlocked = user ? user.active === false : false;
+                  const isPaid = inv.status === 'paid' || inv.status === 'Betaald';
                   return (
                     <tr key={inv.id} className="bg-white border-b hover:bg-gray-50">
                       <td className="px-6 py-4 font-medium text-gray-900">{inv.userEmail}</td>
                       <td className="px-6 py-4">{inv.period}</td>
                       <td className="px-6 py-4 text-right font-mono">€{inv.amount?.toFixed(2)}</td>
                       <td className="px-6 py-4 text-center">
-                        <Badge className={clsx({'bg-green-100 text-green-800': inv.status === 'Betaald', 'bg-yellow-100 text-yellow-800': inv.status !== 'Betaald'})}>
-                          {inv.status}
+                        <Badge className={clsx({'bg-green-100 text-green-800': isPaid, 'bg-yellow-100 text-yellow-800': !isPaid})}>
+                          {isPaid ? 'Betaald' : 'Open'}
                         </Badge>
                       </td>
                       <td className="px-6 py-4 text-center">
-                        {inv.status === 'Betaald' ? 'Voldaan' : `${daysLeft} dagen`}
+                        {isPaid ? 'Voldaan' : `${daysLeft} dagen`}
+                      </td>
+                      <td className="px-6 py-4 text-center">
+                        {isPaid ? (
+                          <button
+                            className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded text-xs mr-2"
+                            onClick={() => handleMarkAsOpen(inv)}
+                          >
+                            Markeer als open
+                          </button>
+                        ) : (
+                          <button
+                            className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-xs mr-2"
+                            onClick={() => handleMarkAsPaid(inv)}
+                          >
+                            Markeer als betaald
+                          </button>
+                        )}
                       </td>
                       <td className="px-6 py-4 text-center">
                         <button
@@ -426,17 +362,16 @@ export default function AdminInvoicingPage() {
     // Schrijf de factuur naar de database met status 'betaald'
     await (supabase as any)
       .from('invoices')
-      .insert([
-        {
-          user_id: inv.user_id,
-          period: inv.period,
-          amount: inv.amount,
-          status: 'paid',
-          user_email: inv.userEmail,
-          invoice_date: new Date().toISOString(),
-        },
-      ]);
-    fetchCurrentInvoices();
+      .update({ status: 'paid' })
+      .eq('id', inv.id.toString());
+    fetchInvoiceData(false);
+  }
+
+  async function handleMarkAsOpen(inv: Invoice) {
+    await (supabase as any)
+      .from('invoices')
+      .update({ status: 'open' })
+      .eq('id', inv.id.toString());
     fetchInvoiceData(false);
   }
 
