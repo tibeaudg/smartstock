@@ -21,18 +21,15 @@ export const InvoicingOverview = () => {
   const [error, setError] = useState<any>(null);
   const [licensePrice, setLicensePrice] = useState<number | null>(null);
 
-  // Helper: fetch license price for the user
-  async function fetchLicenseAmount(userId: string): Promise<number | null> {
-    const { data, error } = await supabase
-      .from('licenses')
-      .select('monthly_price')
-      .eq('admin_user_id', userId)
-      .maybeSingle();
-    if (error) {
-      console.error('[InvoicingOverview] Error fetching license:', error);
+  // Helper: fetch license price for the user (from Edge Function, same as LicenseOverview)
+  async function fetchLicenseData(userId: string): Promise<{ monthly_price: number } | null> {
+    try {
+      const { data, error } = await supabase.functions.invoke<any>('get-license-and-usage');
+      if (error || !data || !data.license) return null;
+      return { monthly_price: data.license.monthly_price };
+    } catch (e) {
       return null;
     }
-    return data?.monthly_price ?? null;
   }
 
   useEffect(() => {
@@ -56,8 +53,8 @@ export const InvoicingOverview = () => {
         setLoading(false);
       }
     };
-    // Fetch license price
-    fetchLicenseAmount(user.id).then(setLicensePrice);
+    // Fetch license price from Edge Function (same as LicenseOverview)
+    fetchLicenseData(user.id).then((res) => setLicensePrice(res?.monthly_price ?? null));
     fetchPaid();
   }, [user]);
 
@@ -66,7 +63,7 @@ export const InvoicingOverview = () => {
   const currentPeriod = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
   const invoiceDate = new Date(now.getFullYear(), now.getMonth(), 1);
   const dueDate = new Date(invoiceDate);
-  dueDate.setDate(dueDate.getDate() + 14); // 14 dagen betalingstermijn
+  dueDate.setDate(dueDate.getDate() + 7);
 
   const currentInvoice: Invoice = {
     id: 0,

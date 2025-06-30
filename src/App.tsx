@@ -45,15 +45,23 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading, userProfile } = useAuth();
   const location = useLocation();
 
+  // Debug: log auth state and location
+  console.debug('[ProtectedRoute] user:', user);
+  console.debug('[ProtectedRoute] userProfile:', userProfile);
+  console.debug('[ProtectedRoute] loading:', loading);
+  console.debug('[ProtectedRoute] location:', location.pathname);
+
   if (location.pathname === '/reset-password') {
     return <>{children}</>;
   }
   
   if (loading) {
+    console.debug('[ProtectedRoute] Loading...');
     return <LoadingScreen />;
   }
   
   if (!user || !userProfile) {
+    console.debug('[ProtectedRoute] Not authenticated, redirecting to /auth');
     return <Navigate to="/auth" state={{ from: location }} replace />;
   }
 
@@ -69,13 +77,17 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
       '/dashboard/settings/facturatie/'
     ];
     const isAllowed = allowedPaths.some((p) => location.pathname.startsWith(p));
+    console.debug('[ProtectedRoute] Blocked user, isAllowed:', isAllowed);
     if (!isAllowed) {
+      // Debug: show blocked message and redirect
       return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-red-50">
           <div className="bg-white p-8 rounded shadow max-w-md w-full text-center border border-red-200">
             <AlertCircle size={32} className="mx-auto text-red-500 mb-4" />
             <h2 className="text-xl font-bold text-red-700 mb-2">Uw account is geblokkeerd</h2>
             <p className="text-gray-700 mb-4">U heeft geen toegang tot andere onderdelen van het platform. U kunt alleen uw facturen bekijken en betalen.</p>
+            <pre className="text-xs text-gray-400 bg-gray-100 rounded p-2 mb-2">{JSON.stringify(userProfile, null, 2)}</pre>
+            <pre className="text-xs text-gray-400 bg-gray-100 rounded p-2 mb-2">{location.pathname}</pre>
             <Navigate to="/dashboard/settings/invoicing" replace />
           </div>
         </div>

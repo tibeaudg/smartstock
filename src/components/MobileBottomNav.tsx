@@ -6,6 +6,7 @@ import {
   Settings
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/hooks/useAuth'; // FIX: use import, not require
 
 interface MobileBottomNavProps {
   currentTab: string;
@@ -14,7 +15,8 @@ interface MobileBottomNavProps {
 }
 
 export const MobileBottomNav = ({ currentTab, onTabChange, userRole }: MobileBottomNavProps) => {
-  const { userProfile } = require('@/hooks/useAuth').useAuth();
+  // FIX: use hook directly
+  const { userProfile } = useAuth();
   const navigate = useNavigate();
   const isBlocked = userProfile?.blocked;
   const menuItems = isBlocked
