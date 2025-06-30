@@ -56,7 +56,7 @@ export default function AdminInvoicingPage() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [generationStatus, setGenerationStatus] = useState<{ message: string; type: 'info' | 'success' | 'error' } | null>(null);
   const [currentInvoices, setCurrentInvoices] = useState<Invoice[]>([]);
-  const [allUsers, setAllUsers] = useState<{ id: string; email: string }[]>([]);
+  const [allUsers, setAllUsers] = useState<{ id: string; email: string; active: boolean }[]>([]);
 
   // Functie om de factuurdata op te halen
   const fetchInvoiceData = async (initialLoad = false) => {
@@ -233,7 +233,7 @@ export default function AdminInvoicingPage() {
       {/* --- Huidige openstaande facturen --- */}
       <Card>
         <CardHeader>
-          <CardTitle>Openstaande Facturen (Huidige maand)</CardTitle>
+          <CardTitle>Openstaande Facturen</CardTitle>
           <CardDescription>Alle openstaande facturen van alle gebruikers (live).</CardDescription>
         </CardHeader>
         <CardContent>
@@ -273,10 +273,24 @@ export default function AdminInvoicingPage() {
                       <td className="px-6 py-4 text-center">{daysLeft} dagen</td>
                       <td className="px-6 py-4 text-center">
                         <button
-                          className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-xs"
+                          className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-xs mr-2"
                           onClick={() => handleMarkAsPaid(inv)}
                         >
                           Betaald
+                        </button>
+                        <button
+                          className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs disabled:opacity-50 mr-2"
+                          onClick={() => handleBlockUser(inv.userEmail)}
+                          disabled={inv.active === false}
+                        >
+                          Blokkeer
+                        </button>
+                        <button
+                          className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-xs disabled:opacity-50"
+                          onClick={() => handleUnblockUser(inv.userEmail)}
+                          disabled={inv.active !== false}
+                        >
+                          Deblokkeer
                         </button>
                       </td>
                       <td className="px-6 py-4 text-center">
@@ -298,7 +312,7 @@ export default function AdminInvoicingPage() {
       {/* --- Historiek --- */}
       <Card>
         <CardHeader>
-          <CardTitle>Admin Factuuroverzicht</CardTitle>
+          <CardTitle>Historiek</CardTitle>
           <CardDescription>Een overzicht van alle facturen van alle gebruikers.</CardDescription>
         </CardHeader>
         <CardContent>
@@ -326,6 +340,9 @@ export default function AdminInvoicingPage() {
                   const now = new Date();
                   const msLeft = deadline.getTime() - now.getTime();
                   const daysLeft = Math.max(0, Math.ceil(msLeft / (1000 * 60 * 60 * 24)));
+                  // Find user by email to get blocked status
+                  const user = allUsers.find(u => u.email === inv.userEmail);
+                  const isBlocked = user ? user.active === false : false;
                   return (
                     <tr key={inv.id} className="bg-white border-b hover:bg-gray-50">
                       <td className="px-6 py-4 font-medium text-gray-900">{inv.userEmail}</td>
@@ -341,11 +358,18 @@ export default function AdminInvoicingPage() {
                       </td>
                       <td className="px-6 py-4 text-center">
                         <button
-                          className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs disabled:opacity-50"
-                          onClick={() => handleBlockUser(inv.user_id, inv.userEmail)}
-                          disabled={inv.status === 'Betaald'} // Voorbeeld: niet blokkeren als er betaald is
+                          className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs disabled:opacity-50 mr-2"
+                          onClick={() => handleBlockUser(inv.userEmail)}
+                          disabled={isBlocked}
                         >
                           Blokkeer
+                        </button>
+                        <button
+                          className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-xs disabled:opacity-50"
+                          onClick={() => handleUnblockUser(inv.userEmail)}
+                          disabled={!isBlocked}
+                        >
+                          Deblokkeer
                         </button>
                       </td>
                     </tr>
@@ -359,7 +383,7 @@ export default function AdminInvoicingPage() {
     </div>
   );
 
-  function handleBlockUser(userId: string, userEmail: string) {
+  function handleBlockUser(userEmail: string) {
     if (!window.confirm(`Weet je zeker dat je ${userEmail} wilt blokkeren?`)) return;
     supabase
       .from('profiles')
@@ -373,6 +397,21 @@ export default function AdminInvoicingPage() {
         }
       });
   }
+
+  function handleUnblockUser(userEmail: string) {
+    if (!window.confirm(`Weet je zeker dat je ${userEmail} wilt deblokkeren?`)) return;
+    supabase
+      .from('profiles')
+      .update({ blocked: false } as any)
+      .eq('email', userEmail)
+    .then(({ error }) => {
+      if (error) {
+        alert('Fout bij deblokkeren: ' + error.message);
+      } else {
+        alert('Gebruiker gedeblokkeerd!');
+      }
+    });
+}
 
   // Voeg deze functies toe onderaan de component
   async function handleToggleActive(userId: string, isActive: boolean) {
@@ -399,5 +438,20 @@ export default function AdminInvoicingPage() {
       ]);
     fetchCurrentInvoices();
     fetchInvoiceData(false);
+  }
+
+  function handleStatusChange(userEmail: string, status: string) {
+    const blocked = status === "blocked";
+    supabase
+      .from('profiles')
+      .update({ blocked } as any)
+      .eq('email', userEmail)
+      .then(({ error }) => {
+        if (error) {
+          alert('Fout bij bijwerken: ' + error.message);
+        }
+        fetchCurrentInvoices();
+        fetchInvoiceData(false);
+      });
   }
 }
