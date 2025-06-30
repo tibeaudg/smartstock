@@ -6,7 +6,6 @@ import { Badge } from '@/components/ui/badge';
 import { Loader2, AlertCircle, FileText } from 'lucide-react';
 import clsx from 'clsx';
 
-// AANGEPAST: De interface matcht nu de database tabel
 interface Invoice {
   id: number;
   invoice_date: string;
@@ -15,46 +14,70 @@ interface Invoice {
   status: 'paid' | 'open';
 }
 
-
-
 export const InvoicingOverview = () => {
   const { user } = useAuth();
-  const [invoices, setInvoices] = useState<Invoice[] | null>(null);
+  const [paidInvoices, setPaidInvoices] = useState<Invoice[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<any>(null);
+  const [licensePrice, setLicensePrice] = useState<number | null>(null);
+
+  // Helper: fetch license price for the user
+  async function fetchLicenseAmount(userId: string): Promise<number | null> {
+    const { data, error } = await supabase
+      .from('licenses')
+      .select('monthly_price')
+      .eq('admin_user_id', userId)
+      .maybeSingle();
+    if (error) {
+      console.error('[InvoicingOverview] Error fetching license:', error);
+      return null;
+    }
+    return data?.monthly_price ?? null;
+  }
 
   useEffect(() => {
     if (!user) return;
-
-    // AANGEPAST: We halen nu direct de opgeslagen facturen op uit de tabel.
-    const fetchInvoicesFromDB = async () => {
-      setLoading(true);
-      setError(null);
+    setLoading(true);
+    setError(null);
+    // Fetch paid invoices (historiek)
+    const fetchPaid = async () => {
       try {
-        // RLS zorgt ervoor dat de gebruiker alleen zijn eigen facturen ziet.
-        const { data, error } = await supabase
+        const { data, error } = await (supabase
           .from('invoices' as any)
           .select('*')
-          .order('invoice_date', { ascending: false }); // Nieuwste eerst
-        
-        // Debug logging
-        console.log('[InvoicingOverview] user:', user);
-        console.log('[InvoicingOverview] fetched invoices:', data);
+          .eq('user_id', user.id)
+          .eq('status', 'paid')
+          .order('invoice_date', { ascending: false }) as any);
         if (error) throw error;
-
-        setInvoices(data as unknown as Invoice[]);
+        setPaidInvoices((data as Invoice[]) || []);
       } catch (err) {
         setError(err);
-        console.error('[InvoicingOverview] Exception during fetch:', err);
       } finally {
         setLoading(false);
       }
     };
-
-    fetchInvoicesFromDB();
+    // Fetch license price
+    fetchLicenseAmount(user.id).then(setLicensePrice);
+    fetchPaid();
   }, [user]);
 
+  // Genereer huidige maandfactuur live
+  const now = new Date();
+  const currentPeriod = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+  const invoiceDate = new Date(now.getFullYear(), now.getMonth(), 1);
+  const dueDate = new Date(invoiceDate);
+  dueDate.setDate(dueDate.getDate() + 14); // 14 dagen betalingstermijn
 
+  const currentInvoice: Invoice = {
+    id: 0,
+    invoice_date: invoiceDate.toISOString(),
+    period: currentPeriod,
+    amount: licensePrice || 0,
+    status: 'open',
+  };
+
+  // Check if current period is already paid (in historiek)
+  const isCurrentPaid = paidInvoices.some(inv => inv.period === currentPeriod);
 
   if (loading) {
     return (
@@ -86,63 +109,77 @@ export const InvoicingOverview = () => {
     );
   }
 
-  if (!invoices || invoices.length === 0) {
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Factuuroverzicht</CardTitle>
-          <CardDescription>Een overzicht van uw maandelijkse licentiekosten.</CardDescription>
-        </CardHeader>
-        <CardContent className="flex flex-col items-center justify-center py-12 text-center">
-          <FileText className="w-8 h-8 text-gray-400 mb-2"/>
-          <p className="font-semibold text-gray-700">Geen facturen gevonden</p>
-          <p className="text-sm text-gray-500">Uw eerste factuur zal volgende maand worden aangemaakt.</p>
-        </CardContent>
-      </Card>
-    );
-  }
-
   return (
     <Card>
-      <CardHeader>{/* ... */}</CardHeader>
+      <CardHeader>
+        <CardTitle>Factuuroverzicht</CardTitle>
+        <CardDescription>Uw huidige en betaalde licentiefacturen.</CardDescription>
+      </CardHeader>
       <CardContent>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm text-left">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50">
-              <tr>
-                <th className="px-6 py-3">Periode</th>
-                <th className="px-6 py-3 text-right">Bedrag</th>
-                <th className="px-6 py-3 text-center">Status</th>
-                <th className="px-6 py-3 text-center">Factuurdatum</th>
-              </tr>
-            </thead>
-            <tbody>
-              {invoices.map((invoice) => {
-                const isPaid = invoice.status === 'paid';
-                return (
-                  <tr key={invoice.id} className="bg-white border-b hover:bg-gray-50">
-                    <td className="px-6 py-4 font-medium text-gray-900 capitalize">
-                      {invoice.period}
-                    </td>
-                    <td className="px-6 py-4 text-right font-mono text-gray-800">
-                      €{invoice.amount.toFixed(2)}
-                    </td>
-                    <td className="px-6 py-4 text-center">
-                      <Badge className={clsx({
-                        'bg-green-100 text-green-800': isPaid,
-                        'bg-yellow-100 text-yellow-800': !isPaid,
-                      })}>
-                        {invoice.status}
-                      </Badge>
-                    </td>
-                    <td className="px-6 py-4 text-center">
-                      {new Date(invoice.invoice_date).toLocaleDateString('nl-BE')}
-                    </td>
+        {/* Huidige openstaande factuur */}
+        {!isCurrentPaid && (
+          <div className="mb-8">
+            <h3 className="text-lg font-bold text-blue-700 mb-2">Huidige maandfactuur</h3>
+            <table className="w-full text-sm mb-4">
+              <thead className="text-xs text-gray-700 uppercase bg-blue-50">
+                <tr>
+                  <th className="px-6 py-3">Periode</th>
+                  <th className="px-6 py-3 text-right">Bedrag</th>
+                  <th className="px-6 py-3 text-center">Status</th>
+                  <th className="px-6 py-3 text-center">Factuurdatum</th>
+                  <th className="px-6 py-3 text-center">Vervaldatum</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="bg-white border-b">
+                  <td className="px-6 py-4 font-medium text-gray-900 capitalize">{currentInvoice.period}</td>
+                  <td className="px-6 py-4 text-right font-mono text-gray-800">€{currentInvoice.amount.toFixed(2)}</td>
+                  <td className="px-6 py-4 text-center">
+                    <Badge className="bg-yellow-100 text-yellow-800">Open</Badge>
+                  </td>
+                  <td className="px-6 py-4 text-center">{invoiceDate.toLocaleDateString('nl-BE')}</td>
+                  <td className="px-6 py-4 text-center">{dueDate.toLocaleDateString('nl-BE')}</td>
+                </tr>
+              </tbody>
+            </table>
+            <div className="text-xs text-gray-500">Gelieve te betalen voor: <span className="font-semibold text-blue-700">{dueDate.toLocaleDateString('nl-BE')}</span></div>
+          </div>
+        )}
+        {/* Historiek van betaalde facturen */}
+        <div>
+          <h3 className="text-lg font-bold text-gray-900 mb-2">Historiek</h3>
+          {paidInvoices.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-8 text-center">
+              <FileText className="w-8 h-8 text-gray-400 mb-2"/>
+              <p className="font-semibold text-gray-700">Nog geen betaalde facturen</p>
+              <p className="text-sm text-gray-500">Uw eerste factuur zal verschijnen zodra deze is betaald.</p>
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm text-left">
+                <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-3">Periode</th>
+                    <th className="px-6 py-3 text-right">Bedrag</th>
+                    <th className="px-6 py-3 text-center">Status</th>
+                    <th className="px-6 py-3 text-center">Factuurdatum</th>
                   </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                </thead>
+                <tbody>
+                  {paidInvoices.map((invoice) => (
+                    <tr key={invoice.id} className="bg-white border-b hover:bg-gray-50">
+                      <td className="px-6 py-4 font-medium text-gray-900 capitalize">{invoice.period}</td>
+                      <td className="px-6 py-4 text-right font-mono text-gray-800">€{invoice.amount.toFixed(2)}</td>
+                      <td className="px-6 py-4 text-center">
+                        <Badge className="bg-green-100 text-green-800">Betaald</Badge>
+                      </td>
+                      <td className="px-6 py-4 text-center">{new Date(invoice.invoice_date).toLocaleDateString('nl-BE')}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>
