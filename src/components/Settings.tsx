@@ -31,6 +31,31 @@ export const Settings = () => {
   const [activeTab, setActiveTab] = useState('profile');
 
   const isAdmin = userProfile?.role === 'admin';
+  const isBlocked = userProfile?.blocked;
+
+  // If blocked, only show invoicing tab
+  if (isBlocked) {
+    return (
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">Instellingen</h1>
+          <p className="text-gray-600 mt-2">Uw account is geblokkeerd. U kunt alleen uw facturen bekijken en betalen.</p>
+        </div>
+        <Tabs value={"invoicing"} onValueChange={() => {}} className="space-y-24 md:space-y-0">
+          <TabsList className="grid w-full grid-cols-1">
+            <TabsTrigger value="invoicing" className="flex items-center space-x-2">
+              <Banknote className="w-4 h-4" />
+              <span>Facturatie</span>
+            </TabsTrigger>
+          </TabsList>
+          <div className="mb-10" />
+          <TabsContent value="invoicing" className="space-y-6">
+            <InvoicingOverview />
+          </TabsContent>
+        </Tabs>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">

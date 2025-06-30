@@ -14,13 +14,19 @@ interface MobileBottomNavProps {
 }
 
 export const MobileBottomNav = ({ currentTab, onTabChange, userRole }: MobileBottomNavProps) => {
+  const { userProfile } = require('@/hooks/useAuth').useAuth();
   const navigate = useNavigate();
-  const menuItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: BarChart3, path: '/dashboard' },
-    { id: 'stock', label: 'Producten', icon: Package, path: '/dashboard/stock' },
-    { id: 'transactions', label: 'Bewegingslijst', icon: ShoppingCart, path: '/dashboard/transactions' },
-    { id: 'settings', label: 'Instellingen', icon: Settings, path: '/dashboard/settings' },
-  ];
+  const isBlocked = userProfile?.blocked;
+  const menuItems = isBlocked
+    ? [
+        { id: 'settings', label: 'Instellingen', icon: Settings, path: '/dashboard/settings' },
+      ]
+    : [
+        { id: 'dashboard', label: 'Dashboard', icon: BarChart3, path: '/dashboard' },
+        { id: 'stock', label: 'Producten', icon: Package, path: '/dashboard/stock' },
+        { id: 'transactions', label: 'Bewegingslijst', icon: ShoppingCart, path: '/dashboard/transactions' },
+        { id: 'settings', label: 'Instellingen', icon: Settings, path: '/dashboard/settings' },
+      ];
 
   const handleNav = (item: typeof menuItems[0]) => {
     if (onTabChange) onTabChange(item.id);

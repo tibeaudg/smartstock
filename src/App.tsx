@@ -15,6 +15,7 @@ import { useAuth, AuthProvider } from "./hooks/useAuth";
 import { Suspense } from "react";
 import { ContentWrapper } from "./ContentWrapper";
 import AdminInvoicingPage from "./components/AdminInvoicingPage";
+import { AlertCircle } from "lucide-react";
 
 // Configure QueryClient
 const queryClient = new QueryClient({
@@ -55,7 +56,33 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   if (!user || !userProfile) {
     return <Navigate to="/auth" state={{ from: location }} replace />;
   }
-  
+
+  // BLOCKED USER HANDLING
+  if (userProfile.blocked) {
+    // Only allow dashboard/settings (facturatie submenu)
+    const allowedPaths = [
+      '/dashboard',
+      '/dashboard/settings',
+      '/dashboard/settings/invoicing',
+      '/dashboard/settings/facturatie',
+      '/dashboard/settings/invoicing/',
+      '/dashboard/settings/facturatie/'
+    ];
+    const isAllowed = allowedPaths.some((p) => location.pathname.startsWith(p));
+    if (!isAllowed) {
+      return (
+        <div className="min-h-screen flex flex-col items-center justify-center bg-red-50">
+          <div className="bg-white p-8 rounded shadow max-w-md w-full text-center border border-red-200">
+            <AlertCircle size={32} className="mx-auto text-red-500 mb-4" />
+            <h2 className="text-xl font-bold text-red-700 mb-2">Uw account is geblokkeerd</h2>
+            <p className="text-gray-700 mb-4">U heeft geen toegang tot andere onderdelen van het platform. U kunt alleen uw facturen bekijken en betalen.</p>
+            <Navigate to="/dashboard/settings/invoicing" replace />
+          </div>
+        </div>
+      );
+    }
+  }
+
   return (
     <Suspense fallback={<LoadingScreen />}>
       {children}
