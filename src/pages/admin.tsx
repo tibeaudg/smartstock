@@ -10,6 +10,7 @@ import { useQuery } from '@tanstack/react-query';
 
 // Interface voor de gecombineerde gebruikersdata
 interface UserDetails {
+  userCount: number;
   id: string;
   email: string;
   active: boolean;
@@ -41,6 +42,7 @@ async function fetchAllUsersWithDetails(currentUserId: string): Promise<UserDeta
         // Als de functie faalt voor één gebruiker, log de fout maar ga door
         console.error(`Could not fetch details for ${user.email}:`, error.message);
         return {
+          userCount: 0,
           id: user.id,
           email: user.email,
           active: !user.blocked,
@@ -54,14 +56,15 @@ async function fetchAllUsersWithDetails(currentUserId: string): Promise<UserDeta
       
       // Combineer de basis-info met de data uit de Edge Functie
       return {
+        userCount: data.usage?.userCount ?? 0,
         id: user.id,
         email: user.email,
         active: !user.blocked,
         isSelf: user.id === currentUserId,
-        branchCount: data.usage.branchCount,
-        productCount: data.usage.totalProducts,
-        licenseName: data.license.licenseType,
-        licensePrice: data.license.monthlyPrice,
+        branchCount: data.usage?.branchCount ?? 0,
+        productCount: data.usage?.totalProducts ?? 0,
+        licenseName: data.license?.licenseType ?? null,
+        licensePrice: data.license?.monthlyPrice ?? null,
       };
 
     } catch (e) {
@@ -135,6 +138,8 @@ export default function AdminInvoicingPage() {
                   <th className="px-6 py-3 text-center">Geschatte Prijs</th>
                   <th className="px-6 py-3 text-center">Filialen</th>
                   <th className="px-6 py-3 text-center">Producten</th>
+                  <th className="px-6 py-3 text-center">Gebruikers</th>
+
                 </tr>
               </thead>
               <tbody>
@@ -156,7 +161,7 @@ export default function AdminInvoicingPage() {
                             if (!window.confirm(`Weet je zeker dat je ${user.email} wilt blokkeren?`)) return;
                             const { error } = await supabase
                               .from('profiles')
-                              .update({ is_blocked: true })
+                              .update({ blocked: true })
                               .eq('id', user.id);
                             if (error) {
                               alert(`Fout bij blokkeren: ${error.message}`);
@@ -188,6 +193,8 @@ export default function AdminInvoicingPage() {
                     <td className="px-6 py-4 text-center font-mono">{typeof user.licensePrice === 'number' ? `€${user.licensePrice.toFixed(2)}` : '–'}</td>
                     <td className="px-6 py-4 text-center">{user.branchCount}</td>
                     <td className="px-6 py-4 text-center">{user.productCount}</td>
+                    <td className="px-6 py-4 text-center">{user.userCount ?? 'N/A'}</td>
+
                   </tr>
                 ))}
               </tbody>
