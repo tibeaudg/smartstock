@@ -36,6 +36,8 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
   const [categories, setCategories] = useState<string[]>([]);
   const [suppliers, setSuppliers] = useState<string[]>([]);
   const [duplicateName, setDuplicateName] = useState(false);
+  const [productImage, setProductImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const form = useForm<FormData>({
     defaultValues: {
@@ -112,6 +114,19 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
     // eslint-disable-next-line
   }, [form, activeBranch]);
 
+  // Afhandeling voor image preview
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null;
+    setProductImage(file);
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => setImagePreview(reader.result as string);
+      reader.readAsDataURL(file);
+    } else {
+      setImagePreview(null);
+    }
+  };
+
   const handleSubmit = async (data: FormData) => {
     console.log('Starting product submission...');
     console.log('User:', user?.id);
@@ -143,6 +158,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
       
       let categoryId = null;
       let supplierId = null;
+      let imageUrl = null;
 
       // Handle category
       if (data.categoryName.trim()) {
@@ -196,6 +212,21 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
         }
       }
 
+      // Upload image if exists
+      if (productImage) {
+        const fileExt = productImage.name.split('.').pop();
+        const fileName = `${Date.now()}_${Math.random().toString(36).substring(2, 8)}.${fileExt}`;
+        const { data: uploadData, error: uploadError } = await supabase.storage
+          .from('product-images')
+          .upload(fileName, productImage, { upsert: false });
+        if (uploadError) {
+          toast.error('Fout bij uploaden van afbeelding');
+          setLoading(false);
+          return;
+        }
+        imageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/product-images/${fileName}`;
+      }
+
       // Create product with branch_id
       const productData = {
         name: data.name,
@@ -208,6 +239,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
         minimum_stock_level: data.minimumStockLevel,
         unit_price: data.unitPrice,
         branch_id: activeBranch.branch_id,
+        image_url: imageUrl,
       };
 
       console.log('Inserting product with data:', productData);
@@ -455,6 +487,15 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                   </FormItem>
                 )}
               />
+
+              {/* Afbeelding upload veld */}
+              <div>
+                <Label>Productfoto</Label>
+                <Input type="file" accept="image/*" onChange={handleImageChange} disabled={loading} />
+                {imagePreview && (
+                  <img src={imagePreview} alt="Preview" className="mt-2 w-24 h-24 object-cover rounded border" />
+                )}
+              </div>
             </div>
 
             <div className="flex justify-end space-x-2 pt-4">

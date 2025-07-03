@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 interface Product {
@@ -15,6 +14,7 @@ interface Product {
   suppliers: {
     name: string;
   } | null;
+  image_url?: string | null; // <-- toegevoegd
 }
 
 interface ProductInfoProps {

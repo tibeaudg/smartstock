@@ -18,6 +18,7 @@ interface Product {
   suppliers: {
     name: string;
   } | null;
+  image_url?: string | null; // <-- toegevoegd
 }
 
 export const useStockMovement = (

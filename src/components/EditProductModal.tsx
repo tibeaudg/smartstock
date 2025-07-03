@@ -7,6 +7,7 @@ import { Plus, Minus } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { useQueryClient } from '@tanstack/react-query';
+import { useForm } from 'react-hook-form';
 
 interface Product {
   id: string;
@@ -23,6 +24,7 @@ interface Product {
     name: string;
   } | null;
   branch_id?: string; // Added branch_id as optional
+  image_url?: string | null; // <-- toegevoegd
 }
 
 interface EditProductModalProps {
@@ -42,7 +44,19 @@ export const EditProductModal = ({
 }: EditProductModalProps) => {
   const [quantity, setQuantity] = useState<string>('');
   const [loading, setLoading] = useState(false);
+  const [productImage, setProductImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(product.image_url || null);
   const queryClient = useQueryClient();
+
+  const form = useForm({
+    defaultValues: {
+      name: product.name,
+      description: product.description || '',
+      quantity_in_stock: product.quantity_in_stock,
+      minimum_stock_level: product.minimum_stock_level,
+      unit_price: product.unit_price,
+    },
+  });
 
   const handleSubmit = async () => {
     if (!quantity || parseInt(quantity) <= 0) {
@@ -124,6 +138,61 @@ export const EditProductModal = ({
     }
   };
 
+  // Afhandeling voor image preview
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null;
+    setProductImage(file);
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => setImagePreview(reader.result as string);
+      reader.readAsDataURL(file);
+    } else {
+      setImagePreview(product.image_url || null);
+    }
+  };
+
+  // Product info update handler
+  const handleProductInfoUpdate = async (data: any) => {
+    setLoading(true);
+    let imageUrl = product.image_url;
+    if (productImage) {
+      const fileExt = productImage.name.split('.').pop();
+      const fileName = `${Date.now()}_${Math.random().toString(36).substring(2, 8)}.${fileExt}`;
+      const { error: uploadError } = await supabase.storage
+        .from('product-images')
+        .upload(fileName, productImage, { upsert: false });
+      if (uploadError) {
+        toast.error('Fout bij uploaden van afbeelding');
+        setLoading(false);
+        return;
+      }
+      // Gebruik het SUPABASE_URL direct uit de client config
+      const SUPABASE_URL = "https://sszuxnqhbxauvershuys.supabase.co";
+      imageUrl = `${SUPABASE_URL}/storage/v1/object/public/product-images/${fileName}`;
+    }
+    const { error: updateError } = await supabase
+      .from('products')
+      .update({
+        name: data.name,
+        description: data.description,
+        quantity_in_stock: data.quantity_in_stock,
+        minimum_stock_level: data.minimum_stock_level,
+        unit_price: data.unit_price,
+        image_url: imageUrl,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', product.id);
+    if (updateError) {
+      toast.error('Fout bij het bijwerken van product info');
+      setLoading(false);
+      return;
+    }
+    toast.success('Productinformatie bijgewerkt!');
+    onProductUpdated();
+    onClose();
+    setLoading(false);
+  };
+
   useEffect(() => {
     if (isOpen) {
       setQuantity('');
@@ -138,7 +207,7 @@ export const EditProductModal = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-xs mx-auto px-14">
+      <DialogContent className="max-w-lg w-full max-h-[90vh] overflow-y-auto mx-auto px-4 sm:px-8">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             {actionType === 'in' ? <Plus className="h-5 w-5" /> : <Minus className="h-5 w-5" />}
@@ -172,6 +241,30 @@ export const EditProductModal = ({
             {loading ? 'Bezig...' : actionType === 'in' ? 'Toevoegen' : 'Verwijderen'}
           </Button>
         </DialogFooter>
+
+        {/* Formulier voor het bewerken van productinfo */}
+        <form onSubmit={form.handleSubmit(handleProductInfoUpdate)} className="space-y-4 mt-6">
+          <Label>Productnaam</Label>
+          <Input {...form.register('name', { required: true })} disabled={loading} />
+          <Label>Beschrijving</Label>
+          <Input {...form.register('description')} disabled={loading} />
+          <Label>Voorraad</Label>
+          <Input type="number" {...form.register('quantity_in_stock', { required: true, min: 0 })} disabled={loading} />
+          <Label>Min. Niveau</Label>
+          <Input type="number" {...form.register('minimum_stock_level', { required: true, min: 0 })} disabled={loading} />
+          <Label>Prijs</Label>
+          <Input type="number" step="0.01" {...form.register('unit_price', { required: true, min: 0 })} disabled={loading} />
+          <Label>Productfoto</Label>
+          <Input type="file" accept="image/*" onChange={handleImageChange} disabled={loading} />
+          {imagePreview && (
+            <img src={imagePreview} alt="Preview" className="mt-2 w-24 h-24 object-cover rounded border" />
+          )}
+          <div className="flex justify-end gap-2">
+            <Button type="submit" disabled={loading}>
+              {loading ? 'Bijwerken...' : 'Productinformatie bijwerken'}
+            </Button>
+          </div>
+        </form>
       </DialogContent>
     </Dialog>
   );

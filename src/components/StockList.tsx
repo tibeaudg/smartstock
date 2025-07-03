@@ -29,9 +29,10 @@ interface Product {
   suppliers: {
     name: string;
   } | null;
-  category_id: string | null;
-  supplier_id: string | null;
-  branch_id: string | null;
+  category_id?: string | null;
+  supplier_id?: string | null;
+  branch_id?: string | null;
+  image_url?: string | null; // <-- toegevoegd
 }
 
 const getStockStatus = (quantity: number, minLevel: number) => {
@@ -312,20 +313,31 @@ export const StockList = () => {
               const stockStatus = getStockStatus(product.quantity_in_stock, product.minimum_stock_level);
               
               return (
-                <Card key={product.id} className="relative bg-white">
+                <Card key={product.id} className="relative bg-white cursor-pointer hover:shadow-lg transition-shadow" onClick={() => { setSelectedProduct(product); setIsEditModalOpen(true); setSelectedAction(null); }}>
                   <CardHeader className="pb-3">
                     <div className="flex justify-between items-start">
-                      <div className="flex-1 min-w-0">
-                        <CardTitle className="text-lg font-semibold text-gray-900 truncate">
-                          {product.name}
-                        </CardTitle>
-                        {product.description && (
-                          <p className="text-sm text-gray-600 mt-1 line-clamp-2">
-                            {product.description}
-                          </p>
+                      <div className="flex-1 min-w-0 flex items-center gap-3">
+                        {product.image_url ? (
+                          <img
+                            src={product.image_url}
+                            alt={product.name}
+                            className="w-16 h-16 object-cover rounded border"
+                          />
+                        ) : (
+                          <div className="w-16 h-16 bg-gray-200 rounded border flex items-center justify-center text-xs text-gray-400">Geen</div>
                         )}
+                        <div>
+                          <CardTitle className="text-lg font-semibold text-gray-900 truncate">
+                            {product.name}
+                          </CardTitle>
+                          {product.description && (
+                            <p className="text-sm text-gray-600 mt-1 line-clamp-2">
+                              {product.description}
+                            </p>
+                          )}
+                        </div>
                       </div>
-                      <div className="flex space-x-2 ml-2">
+                      <div className="flex space-x-2 ml-2" onClick={e => e.stopPropagation()}>
                         <Button
                           variant="outline"
                           size="sm"
@@ -381,8 +393,6 @@ export const StockList = () => {
                         <span className="text-sm font-medium text-gray-700">Min. Niveau:</span>
                         <span>{product.minimum_stock_level}</span>
                       </div>
-                    
-
                     </div>
                   </CardContent>
                 </Card>
@@ -504,6 +514,9 @@ export const StockList = () => {
                 <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Acties
                 </th>
+                <th className="px-4 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Foto
+                </th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
@@ -521,6 +534,7 @@ export const StockList = () => {
                     <tr
                       key={product.id}
                       className={`${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'} hover:bg-gray-100 transition-colors`}
+                      style={{ height: '80px' }}
                     >
                       {isAdmin && (
                         <td className="px-2 py-2 text-center">
@@ -531,14 +545,25 @@ export const StockList = () => {
                           />
                         </td>
                       )}
-                      <td className="px-4 py-2 whitespace-nowrap">
-                        <div>
-                          <div className="text-sm font-medium text-gray-900">{product.name}</div>
-                          {product.description && (
-                            <div className="text-xs text-gray-500 max-w-xs truncate">
-                              {product.description}
-                            </div>
+                      <td className="px-4 py-2 whitespace-nowrap cursor-pointer hover:underline" onClick={() => { setSelectedProduct(product); setIsEditModalOpen(true); setSelectedAction(null); }}>
+                        <div className="flex items-center gap-3">
+                          {product.image_url ? (
+                            <img
+                              src={product.image_url}
+                              alt={product.name}
+                              className="w-12 h-12 object-cover rounded border"
+                            />
+                          ) : (
+                            <div className="w-12 h-12 bg-gray-200 rounded border flex items-center justify-center text-xs text-gray-400">Geen</div>
                           )}
+                          <div>
+                            <div className="text-sm font-medium text-gray-900">{product.name}</div>
+                            {product.description && (
+                              <div className="text-xs text-gray-500 max-w-xs truncate">
+                                {product.description}
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </td>
                       <td className="px-4 py-2 whitespace-nowrap text-sm font-medium">
@@ -579,6 +604,9 @@ export const StockList = () => {
                             </Button>
                           )}
                         </div>
+                      </td>
+                      <td className="px-4 py-2 whitespace-nowrap">
+                        {/* Foto kolom kan eventueel extra info tonen */}
                       </td>
                     </tr>
                   );

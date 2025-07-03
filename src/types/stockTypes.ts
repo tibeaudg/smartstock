@@ -14,6 +14,7 @@ export type StockTransaction = {
   branch_id: string;
   created_by: string;
   supplier_name?: string | null;
+  image_url?: string | null; // <-- toegevoegd
 };
 
 export type TransactionFilters = {
