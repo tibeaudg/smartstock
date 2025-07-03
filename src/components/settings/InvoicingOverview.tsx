@@ -42,6 +42,16 @@ export const InvoicingOverview = () => {
     staleTime: 1000 * 60 * 2,
   });
 
+  // Bepaal de huidige openstaande factuur (indien aanwezig)
+  const currentInvoice = invoices.find(inv => inv.status === 'open') || invoices[0];
+  const isCurrentPaid = !currentInvoice || currentInvoice.status === 'paid';
+  const invoiceDate = currentInvoice ? new Date(currentInvoice.invoice_date) : new Date();
+  // Stel vervaldatum op 14 dagen na factuurdatum
+  const dueDate = currentInvoice ? new Date(new Date(currentInvoice.invoice_date).getTime() + 14 * 24 * 60 * 60 * 1000) : new Date();
+
+  // Bepaal de betaalde facturen voor de historiek
+  const paidInvoices = invoices.filter(inv => inv.status === 'paid');
+
   if (error) {
     return (
       <Card className="border-red-200 bg-red-50">
