@@ -14,6 +14,7 @@ import { toast } from 'sonner';
 import { useQuery } from '@tanstack/react-query';
 import { EditProductInfoModal } from './EditProductInfoModal';
 import { EditProductStockModal } from './EditProductStockModal';
+import { ImagePreviewModal } from './ImagePreviewModal';
 
 interface Product {
   id: string;
@@ -84,6 +85,8 @@ export const StockList = () => {
   const [selectedAction, setSelectedAction] = useState<StockAction | null>(null);
   const [selectedProductIds, setSelectedProductIds] = useState<string[]>([]);
   const [selectAll, setSelectAll] = useState(false);
+  const [isImagePreviewOpen, setIsImagePreviewOpen] = useState(false);
+  const [previewImageUrl, setPreviewImageUrl] = useState<string | null>(null);
 
   // Filter states
   const [searchTerm, setSearchTerm] = useState('');
@@ -324,7 +327,8 @@ export const StockList = () => {
                           <img
                             src={product.image_url}
                             alt={product.name}
-                            className="w-16 h-16 object-cover rounded border"
+                            className="w-16 h-16 object-cover rounded border cursor-zoom-in"
+                            onClick={e => { e.stopPropagation(); setPreviewImageUrl(product.image_url!); setIsImagePreviewOpen(true); }}
                           />
                         ) : (
                           <div className="w-16 h-16 bg-gray-200 rounded border flex items-center justify-center text-xs text-gray-400">Geen</div>
@@ -446,6 +450,13 @@ export const StockList = () => {
             product={selectedProduct}
           />
         )}
+
+        <ImagePreviewModal
+          isOpen={isImagePreviewOpen}
+          onClose={() => setIsImagePreviewOpen(false)}
+          imageUrl={previewImageUrl}
+          alt="Productfoto preview"
+        />
       </div>
     );
   }
@@ -566,7 +577,8 @@ export const StockList = () => {
                             <img
                               src={product.image_url}
                               alt={product.name}
-                              className="w-16 h-16 object-cover rounded border"
+                              className="w-16 h-16 object-cover rounded border cursor-zoom-in"
+                              onClick={e => { e.stopPropagation(); setPreviewImageUrl(product.image_url!); setIsImagePreviewOpen(true); }}
                             />
                           ) : (
                             <div className="w-16 h-16 bg-gray-200 rounded border flex items-center justify-center text-xs text-gray-400">Geen</div>
@@ -636,7 +648,12 @@ export const StockList = () => {
           </table>
         </div>
       </div>
-
+      <ImagePreviewModal
+        isOpen={isImagePreviewOpen}
+        onClose={() => setIsImagePreviewOpen(false)}
+        imageUrl={previewImageUrl}
+        alt="Productfoto preview"
+      />
       {selectedProduct && (
         <EditProductModal
           isOpen={isEditModalOpen}
