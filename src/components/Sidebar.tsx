@@ -73,7 +73,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
               <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
                 <Package className="w-5 h-5 text-white" />
               </div>
-              <h1 className="text-lg font-semibold text-gray-900">StockManager</h1>
+              <h1 className="text-lg font-semibold text-gray-900">SmartStock</h1>
             </div>
           )}
 

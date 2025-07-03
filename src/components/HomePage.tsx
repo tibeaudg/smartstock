@@ -25,7 +25,7 @@ export const HomePage = () => {
   const features = [
     {
       icon: Package,
-      title: 'Voorraadbeheer',
+      title: 'SmartStock',
       description: 'Volg voorraadniveaus, beheer producten en automatiseer voorraadwaarschuwingen met gemak.',
     },
     {
@@ -59,7 +59,7 @@ export const HomePage = () => {
       name: 'Free',
       price: '€0',
       period: '/maand',
-      description: 'Perfect om te beginnen met voorraadbeheer',
+      description: 'Perfect om te beginnen met SmartStock',
       features: [
         'Tot 30 producten',
         'Basis voorraadvolging',
@@ -145,10 +145,10 @@ export const HomePage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Alles Wat U Nodig Heeft Voor Voorraadbeheer
+              Alles Wat U Nodig Heeft Voor SmartStock
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Ons uitgebreide platform biedt alle tools die u nodig heeft om uw voorraadbeheer te optimaliseren.
+              Ons uitgebreide platform biedt alle tools die u nodig heeft om uw SmartStock te optimaliseren.
             </p>
           </div>
           
@@ -231,7 +231,7 @@ export const HomePage = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-                Waarom Kiezen Voor VoorraadBeheer?
+                Waarom Kiezen Voor SmartStock?
               </h2>
               <div className="space-y-4">
                 {benefits.map((benefit, index) => (
@@ -329,7 +329,7 @@ export const HomePage = () => {
                 <div className="space-y-4">
                   <div className="flex items-center">
                     <Mail className="h-5 w-5 text-blue-600 mr-3" />
-                    <span className="text-gray-700">support@voorraadbeheer.be</span>
+                    <span className="text-gray-700">support@SmartStock.be</span>
                   </div>
                   <div className="flex items-center">
                     <Phone className="h-5 w-5 text-blue-600 mr-3" />
@@ -351,9 +351,9 @@ export const HomePage = () => {
       <footer className="bg-gray-900 text-white py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h3 className="text-2xl font-bold mb-4">VoorraadBeheer</h3>
+            <h3 className="text-2xl font-bold mb-4">SmartStock</h3>
             <p className="text-gray-400 mb-8">
-              Professioneel voorraadbeheer voor moderne bedrijven
+              Professioneel SmartStock voor moderne bedrijven
             </p>
             <div className="flex justify-center space-x-8 text-sm">
               <a href="#" className="hover:text-blue-400 transition-colors">Privacybeleid</a>
@@ -361,7 +361,7 @@ export const HomePage = () => {
               <a href="#" className="hover:text-blue-400 transition-colors">Contact Ondersteuning</a>
             </div>
             <p className="text-gray-500 text-sm mt-8">
-              © 2024 VoorraadBeheer. Alle rechten voorbehouden.
+              © 2024 SmartStock. Alle rechten voorbehouden.
             </p>
           </div>
         </div>
