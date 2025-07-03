@@ -79,19 +79,22 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     const isAllowed = allowedPaths.some((p) => location.pathname.startsWith(p));
     console.debug('[ProtectedRoute] Blocked user, isAllowed:', isAllowed);
     if (!isAllowed) {
-      // Debug: show blocked message and redirect
-      return (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-red-50">
-          <div className="bg-white p-8 rounded shadow max-w-md w-full text-center border border-red-200">
-            <AlertCircle size={32} className="mx-auto text-red-500 mb-4" />
-            <h2 className="text-xl font-bold text-red-700 mb-2">Uw account is geblokkeerd</h2>
-            <p className="text-gray-700 mb-4">U heeft geen toegang tot andere onderdelen van het platform. U kunt alleen uw facturen bekijken en betalen.</p>
-            <pre className="text-xs text-gray-400 bg-gray-100 rounded p-2 mb-2">{JSON.stringify(userProfile, null, 2)}</pre>
-            <pre className="text-xs text-gray-400 bg-gray-100 rounded p-2 mb-2">{location.pathname}</pre>
-            <Navigate to="/dashboard/settings/invoicing" replace />
-          </div>
-        </div>
-      );
+      // Forceer een redirect zodat de gebruiker altijd op de juiste pagina komt
+      window.location.replace('/dashboard/settings/invoicing');
+      return null;
+    }
+  } else {
+    // Als user niet meer geblokkeerd is, maar nog op een facturatiepagina staat, redirect naar dashboard
+    const invoicingPaths = [
+      '/dashboard/settings/invoicing',
+      '/dashboard/settings/facturatie',
+      '/dashboard/settings/invoicing/',
+      '/dashboard/settings/facturatie/'
+    ];
+    const isOnInvoicing = invoicingPaths.some((p) => location.pathname.startsWith(p));
+    if (isOnInvoicing) {
+      window.location.replace('/dashboard');
+      return null;
     }
   }
 

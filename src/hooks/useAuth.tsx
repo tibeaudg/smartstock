@@ -124,6 +124,42 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     };
   }, []);
 
+  useEffect(() => {
+    if (!user) return;
+    // Realtime subscription op eigen profiel
+    const channel = supabase.channel('profile-blocked-check')
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'profiles',
+          filter: `id=eq.${user.id}`,
+        },
+        (payload) => {
+          console.log('[Realtime] profile update payload:', payload);
+          setUserProfile((prev) => {
+            const prevBlocked = prev?.blocked;
+            const newBlocked = payload.new?.blocked;
+            if (typeof prevBlocked !== 'undefined') {
+              if (prevBlocked && !newBlocked) {
+                // Deblokkeren: direct naar dashboard
+                window.location.replace('/dashboard');
+              } else if (prevBlocked !== newBlocked) {
+                // Blokkeren: forceer reload
+                window.location.reload();
+              }
+            }
+            return { ...prev, ...payload.new };
+          });
+        }
+      )
+      .subscribe();
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [user]);
+
   const signIn = async (email: string, password: string) => {
     setLoading(true);
     try {
@@ -150,7 +186,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         email,
         password,
         options: {
-          emailRedirectTo: `${window.location.origin}/dashboard`,
+          emailRedirectTo: `${window.location.origin}/dashboard/settings`,
         },
       });
 
