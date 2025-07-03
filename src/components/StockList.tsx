@@ -396,7 +396,7 @@ export const StockList = () => {
                       <div className="flex justify-between items-center">
                         <span className="text-sm font-medium text-gray-700">Eenheidsprijs:</span>
                         <span className="font-semibold text-green-600">
-                          ${product.unit_price.toFixed(2)}
+                          €{product.unit_price.toFixed(2)}
                         </span>
                       </div>
                       
@@ -532,9 +532,6 @@ export const StockList = () => {
                 <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Acties
                 </th>
-                <th className="px-4 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Foto
-                </th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
@@ -564,15 +561,15 @@ export const StockList = () => {
                         </td>
                       )}
                       <td className="px-4 py-2 whitespace-nowrap">
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-4">
                           {product.image_url ? (
                             <img
                               src={product.image_url}
                               alt={product.name}
-                              className="w-12 h-12 object-cover rounded border"
+                              className="w-16 h-16 object-cover rounded border"
                             />
                           ) : (
-                            <div className="w-12 h-12 bg-gray-200 rounded border flex items-center justify-center text-xs text-gray-400">Geen</div>
+                            <div className="w-16 h-16 bg-gray-200 rounded border flex items-center justify-center text-xs text-gray-400">Geen</div>
                           )}
                           <div>
                             <div className="text-sm font-medium text-gray-900">{product.name}</div>
@@ -591,7 +588,7 @@ export const StockList = () => {
                         {product.minimum_stock_level}
                       </td>
                       <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-green-600">
-                        ${product.unit_price.toFixed(2)}
+                        €{product.unit_price.toFixed(2)}
                       </td>
                       <td className="px-4 py-2 whitespace-nowrap">
                         <Badge variant={getStockStatusVariant(stockStatus)}>
@@ -630,9 +627,6 @@ export const StockList = () => {
                             </Button>
                           )}
                         </div>
-                      </td>
-                      <td className="px-4 py-2 whitespace-nowrap">
-                        {/* Foto kolom kan eventueel extra info tonen */}
                       </td>
                     </tr>
                   );
