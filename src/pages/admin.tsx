@@ -147,6 +147,42 @@ export default function AdminInvoicingPage() {
                       <Badge className={clsx({'bg-green-100 text-green-800': user.active, 'bg-red-100 text-red-800': !user.active})}>
                         {user.active ? 'Actief' : 'Geblokkeerd'}
                       </Badge>
+                      <div className="mt-2 flex gap-2 justify-center">
+                        <button
+                          className="px-3 py-1 rounded text-xs font-semibold text-white bg-red-500 hover:bg-red-600 disabled:opacity-50"
+                          disabled={!user.active || user.isSelf}
+                          onClick={async (e) => {
+                            e.stopPropagation();
+                            if (!window.confirm(`Weet je zeker dat je ${user.email} wilt blokkeren?`)) return;
+                            const { error } = await supabase
+                              .from('profiles')
+                              .update({ blocked: true })
+                              .eq('id', user.id);
+                            if (error) {
+                              alert(`Fout bij blokkeren: ${error.message}`);
+                            } else {
+                              window.location.reload(); // Of: trigger een refetch
+                            }
+                          }}
+                        >Blokkeer</button>
+                        <button
+                          className="px-3 py-1 rounded text-xs font-semibold text-white bg-green-600 hover:bg-green-700 disabled:opacity-50"
+                          disabled={user.active || user.isSelf}
+                          onClick={async (e) => {
+                            e.stopPropagation();
+                            if (!window.confirm(`Weet je zeker dat je ${user.email} wilt deblokkeren?`)) return;
+                            const { error } = await supabase
+                              .from('profiles')
+                              .update({ blocked: false })
+                              .eq('id', user.id);
+                            if (error) {
+                              alert(`Fout bij deblokkeren: ${error.message}`);
+                            } else {
+                              window.location.reload(); // Of: trigger een refetch
+                            }
+                          }}
+                        >Deblokkeer</button>
+                      </div>
                     </td>
                     <td className="px-6 py-4 text-center capitalize">{user.licenseName || '–'}</td>
                     <td className="px-6 py-4 text-center font-mono">{typeof user.licensePrice === 'number' ? `€${user.licensePrice.toFixed(2)}` : '–'}</td>
