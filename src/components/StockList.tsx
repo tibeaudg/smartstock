@@ -12,6 +12,8 @@ import { ProductFilters } from './ProductFilters';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { toast } from 'sonner';
 import { useQuery } from '@tanstack/react-query';
+import { EditProductInfoModal } from './EditProductInfoModal';
+import { EditProductStockModal } from './EditProductStockModal';
 
 interface Product {
   id: string;
@@ -77,6 +79,7 @@ export const StockList = () => {
   const isMobile = useIsMobile();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isEditInfoModalOpen, setIsEditInfoModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [selectedAction, setSelectedAction] = useState<StockAction | null>(null);
   const [selectedProductIds, setSelectedProductIds] = useState<string[]>([]);
@@ -313,10 +316,10 @@ export const StockList = () => {
               const stockStatus = getStockStatus(product.quantity_in_stock, product.minimum_stock_level);
               
               return (
-                <Card key={product.id} className="relative bg-white cursor-pointer hover:shadow-lg transition-shadow" onClick={() => { setSelectedProduct(product); setIsEditModalOpen(true); setSelectedAction(null); }}>
+                <Card key={product.id} className="relative bg-white cursor-pointer hover:shadow-lg transition-shadow">
                   <CardHeader className="pb-3">
                     <div className="flex justify-between items-start">
-                      <div className="flex-1 min-w-0 flex items-center gap-3">
+                      <div className="flex-1 min-w-0 flex items-center gap-3" onClick={() => { setSelectedProduct(product); setIsEditInfoModalOpen(true); }}>
                         {product.image_url ? (
                           <img
                             src={product.image_url}
@@ -337,11 +340,11 @@ export const StockList = () => {
                           )}
                         </div>
                       </div>
-                      <div className="flex space-x-2 ml-2" onClick={e => e.stopPropagation()}>
+                      <div className="flex space-x-2 ml-2">
                         <Button
                           variant="outline"
                           size="sm"
-                          onClick={() => handleStockAction(product, 'in')}
+                          onClick={e => { e.stopPropagation(); handleStockAction(product, 'in'); }}
                           className="text-gray-600 hover:text-white hover:bg-green-600 hover:border-green-600"
                         >
                           <Plus className="h-4 w-4" />
@@ -350,7 +353,7 @@ export const StockList = () => {
                         <Button
                           variant="outline"
                           size="sm"
-                          onClick={() => handleStockAction(product, 'out')}
+                          onClick={e => { e.stopPropagation(); handleStockAction(product, 'out'); }}
                           className="text-gray-600 hover:text-white hover:bg-red-600 hover:border-red-600"
                         >
                           <Minus className="h-4 w-4" />
@@ -359,7 +362,15 @@ export const StockList = () => {
                         <Button
                           variant="ghost"
                           size="sm"
-                          onClick={() => handleDelete(product.id)}
+                          onClick={e => { e.stopPropagation(); setSelectedProduct(product); setIsEditInfoModalOpen(true); }}
+                          className="text-gray-600 hover:text-blue-700"
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={e => { e.stopPropagation(); handleDelete(product.id); }}
                           className="text-red-600 hover:text-red-700"
                         >
                           <Trash2 className="h-4 w-4" />
@@ -402,7 +413,7 @@ export const StockList = () => {
         </div>
 
         {selectedProduct && (
-          <EditProductModal
+          <EditProductStockModal
             isOpen={isEditModalOpen}
             onClose={() => {
               setIsEditModalOpen(false);
@@ -416,18 +427,25 @@ export const StockList = () => {
               setSelectedAction(null);
             }}
             product={selectedProduct}
-            actionType={selectedAction}
+            actionType={selectedAction!}
           />
         )}
 
-        <AddProductModal
-          isOpen={isAddModalOpen}
-          onClose={() => setIsAddModalOpen(false)}
-          onProductAdded={() => {
-            refetch();
-            setIsAddModalOpen(false);
-          }}
-        />
+        {selectedProduct && (
+          <EditProductInfoModal
+            isOpen={isEditInfoModalOpen}
+            onClose={() => {
+              setIsEditInfoModalOpen(false);
+              setSelectedProduct(null);
+            }}
+            onProductUpdated={() => {
+              refetch();
+              setIsEditInfoModalOpen(false);
+              setSelectedProduct(null);
+            }}
+            product={selectedProduct}
+          />
+        )}
       </div>
     );
   }
@@ -545,7 +563,7 @@ export const StockList = () => {
                           />
                         </td>
                       )}
-                      <td className="px-4 py-2 whitespace-nowrap cursor-pointer hover:underline" onClick={() => { setSelectedProduct(product); setIsEditModalOpen(true); setSelectedAction(null); }}>
+                      <td className="px-4 py-2 whitespace-nowrap">
                         <div className="flex items-center gap-3">
                           {product.image_url ? (
                             <img
@@ -598,6 +616,14 @@ export const StockList = () => {
                           >
                             <Minus className="h-4 w-4" />
                           </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => { setSelectedProduct(product); setIsEditInfoModalOpen(true); }}
+                            className="text-gray-600 hover:text-blue-700"
+                          >
+                            <Edit className="h-4 w-4" />
+                          </Button>
                           {isAdmin && (
                             <Button variant="destructive" size="sm" onClick={() => handleDelete(product.id)}>
                               <Trash2 className="h-4 w-4" />
@@ -636,14 +662,21 @@ export const StockList = () => {
         />
       )}
 
-      <AddProductModal
-        isOpen={isAddModalOpen}
-        onClose={() => setIsAddModalOpen(false)}
-        onProductAdded={() => {
-          refetch();
-          setIsAddModalOpen(false);
-        }}
-      />
+      {selectedProduct && (
+        <EditProductInfoModal
+          isOpen={isEditInfoModalOpen}
+          onClose={() => {
+            setIsEditInfoModalOpen(false);
+            setSelectedProduct(null);
+          }}
+          onProductUpdated={() => {
+            refetch();
+            setIsEditInfoModalOpen(false);
+            setSelectedProduct(null);
+          }}
+          product={selectedProduct}
+        />
+      )}
     </div>
   );
 };

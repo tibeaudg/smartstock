@@ -224,7 +224,9 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
           setLoading(false);
           return;
         }
-        imageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/product-images/${fileName}`;
+        // Gebruik het SUPABASE_URL direct uit de client config
+        const SUPABASE_URL = "https://sszuxnqhbxauvershuys.supabase.co";
+        imageUrl = `${SUPABASE_URL}/storage/v1/object/public/product-images/${fileName}`;
       }
 
       // Create product with branch_id
