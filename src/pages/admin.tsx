@@ -58,10 +58,10 @@ async function fetchAllUsersWithDetails(currentUserId: string): Promise<UserDeta
         email: user.email,
         active: !user.blocked,
         isSelf: user.id === currentUserId,
-        branchCount: data.usage.branch_count,
-        productCount: data.usage.total_products,
-        licenseName: data.license.license_type,
-        licensePrice: data.license.monthly_price,
+        branchCount: data.usage.branchCount,
+        productCount: data.usage.totalProducts,
+        licenseName: data.license.licenseType,
+        licensePrice: data.license.monthlyPrice,
       };
 
     } catch (e) {
@@ -156,7 +156,7 @@ export default function AdminInvoicingPage() {
                             if (!window.confirm(`Weet je zeker dat je ${user.email} wilt blokkeren?`)) return;
                             const { error } = await supabase
                               .from('profiles')
-                              .update({ blocked: true })
+                              .update({ is_blocked: true })
                               .eq('id', user.id);
                             if (error) {
                               alert(`Fout bij blokkeren: ${error.message}`);

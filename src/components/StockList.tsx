@@ -209,6 +209,7 @@ export const StockList = () => {
 
   // Handle select all
   useEffect(() => {
+    
     if (selectAll) {
       const ids = filteredProducts.map((p) => p.id);
       if (ids.length !== selectedProductIds.length || !ids.every((id, i) => id === selectedProductIds[i])) {
