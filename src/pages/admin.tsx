@@ -1,11 +1,12 @@
 // src/pages/admin/invoices.tsx
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Loader2, AlertCircle } from 'lucide-react';
 import clsx from 'clsx';
+import { useQuery } from '@tanstack/react-query';
 
 // Interface blijft hetzelfde
 interface Invoice {
@@ -17,66 +18,38 @@ interface Invoice {
   user_email: string;
 }
 
+const fetchInvoices = async () => {
+  // STAP 1: Haal de huidige gebruiker op.
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error('U bent niet ingelogd.');
+
+  // STAP 2: Haal het profiel van DEZE gebruiker op om de admin-status te controleren.
+  const { data: profile, error: profileError } = await supabase
+    .from('profiles')
+    .select('is_admin')
+    .eq('id', user.id)
+    .single();
+  if (profileError) throw new Error(`Fout bij het controleren van uw profiel: ${profileError.message}`);
+  if (profile?.is_admin !== true) throw new Error('U bent ingelogd, maar u beschikt niet over de vereiste admin-rechten.');
+
+  // STAP 4: Alleen als de check slaagt, roepen we de Edge Functie aan.
+  const { data: invoicesData, error: functionError } = await supabase.functions.invoke<Invoice[]>('get-all-invoice-history');
+  if (functionError) throw new Error(functionError.message);
+  return invoicesData || [];
+};
+
 export default function AdminInvoicingPage() {
-  const [loading, setLoading] = useState(true);
-  const [loadingMessage, setLoadingMessage] = useState('Rechten controleren...'); // Gedetailleerde laadstatus
-  const [error, setError] = useState('');
-  const [allInvoices, setAllInvoices] = useState<Invoice[]>([]);
-
-  useEffect(() => {
-    const checkPermissionsAndFetchData = async () => {
-      setLoading(true);
-      setError('');
-
-      try {
-        // STAP 1: Haal de huidige gebruiker op.
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) {
-          throw new Error("U bent niet ingelogd.");
-        }
-
-        // STAP 2: Haal het profiel van DEZE gebruiker op om de admin-status te controleren.
-        setLoadingMessage('Rechten controleren...');
-        const { data: profile, error: profileError } = await supabase
-          .from('profiles')
-          .select('is_admin')
-          .eq('id', user.id)
-          .single();
-
-        if (profileError) {
-          throw new Error(`Fout bij het controleren van uw profiel: ${profileError.message}`);
-        }
-
-        // STAP 3: Controleer of de gebruiker een admin is.
-        if (profile?.is_admin !== true) {
-          // Dit is een 'zachte' fout. De gebruiker is ingelogd, maar heeft geen rechten.
-          throw new Error("U bent ingelogd, maar u beschikt niet over de vereiste admin-rechten.");
-        }
-
-        // STAP 4: Alleen als de check slaagt, roepen we de Edge Functie aan.
-        setLoadingMessage('Admin-rechten bevestigd. Facturen ophalen...');
-        const { data: invoicesData, error: functionError } = await supabase.functions.invoke<Invoice[]>('get-all-invoice-history');
-        
-        if (functionError) {
-            // Als DIT blok wordt bereikt, weten we dat de fout bij de Edge Functie zelf ligt.
-            throw new Error(`Fout bij het aanroepen van de serverfunctie: ${functionError.message}`);
-        }
-        if ((invoicesData as any)?.error) {
-            throw new Error((invoicesData as any)?.error.message);
-        }
-
-        setAllInvoices(invoicesData);
-
-      } catch (err: any) {
-        setError(err.message || 'Er is een onbekende fout opgetreden.');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    checkPermissionsAndFetchData();
-  }, []);
-
+  const {
+    data: allInvoices = [],
+    isLoading: loading,
+    error,
+    refetch,
+  } = useQuery({
+    queryKey: ['invoices'],
+    queryFn: fetchInvoices,
+    refetchOnWindowFocus: true,
+    staleTime: 1000 * 60 * 2,
+  });
 
   // --- Weergave Logica ---
 
@@ -89,7 +62,7 @@ export default function AdminInvoicingPage() {
           </CardHeader>
           <CardContent className="flex flex-col items-center justify-center py-12">
             <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
-            <p className="mt-4 text-gray-600">{loadingMessage}</p>
+            <p className="mt-4 text-gray-600">Rechten controleren...</p>
           </CardContent>
         </Card>
       </div>
@@ -105,7 +78,7 @@ export default function AdminInvoicingPage() {
               <AlertCircle size={24} /> Toegangsprobleem
             </CardTitle>
             <CardDescription className="text-red-600">
-              {error}
+              {error.message}
             </CardDescription>
           </CardHeader>
         </Card>

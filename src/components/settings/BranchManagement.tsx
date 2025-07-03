@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
 import { supabase } from '@/integrations/supabase/client';
+import { useQuery } from '@tanstack/react-query';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -33,8 +34,6 @@ interface AdminBranch {
 export const BranchManagement = () => {
   const { user } = useAuth();
   const { refreshBranches } = useBranches();
-  const [adminBranches, setAdminBranches] = useState<AdminBranch[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [editingBranch, setEditingBranch] = useState<AdminBranch | null>(null);
@@ -46,30 +45,26 @@ export const BranchManagement = () => {
     formState: { errors },
   } = useForm<BranchFormData>();
 
-  // Load branches
-  useEffect(() => {
-    const fetchAdminBranches = async () => {
-      if (!user) return;
+  // React Query: fetch admin branches
+  const fetchAdminBranches = async () => {
+    if (!user) return [];
+    const { data, error } = await supabase.rpc('get_admin_branches', { admin_id: user.id });
+    if (error) throw error;
+    return data as AdminBranch[];
+  };
 
-      try {
-        const { data, error } = await supabase.rpc('get_admin_branches', {
-          admin_id: user.id,
-        });
-
-        if (error) {
-          console.error('Error fetching admin branches:', error);
-        } else {
-          setAdminBranches(data || []);
-        }
-      } catch (error) {
-        console.error('Exception fetching admin branches:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchAdminBranches();
-  }, [user]);
+  const {
+    data: adminBranches = [],
+    isLoading,
+    error,
+    refetch,
+  } = useQuery({
+    queryKey: ['adminBranches', user?.id],
+    queryFn: fetchAdminBranches,
+    enabled: !!user,
+    refetchOnWindowFocus: true,
+    staleTime: 1000 * 60 * 2,
+  });
 
   // Delete branch
   const deleteBranch = async (branchId: string) => {
@@ -84,8 +79,8 @@ export const BranchManagement = () => {
     if (error) {
       console.error('Fout bij verwijderen:', error);
     } else {
-      setAdminBranches(prev => prev.filter(branch => branch.branch_id !== branchId));
       toast({ title: 'Verwijderd', description: 'Filiaal succesvol verwijderd.' });
+      refetch();
     }
   };
 
@@ -198,6 +193,18 @@ export const BranchManagement = () => {
       <div className="flex items-center justify-center py-8">
         <Loader2 className="w-6 h-6 animate-spin" />
         <span className="ml-2">Filialen laden...</span>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-8">
+        <h3 className="text-lg font-semibold text-gray-900 mb-2">Er is een fout opgetreden</h3>
+        <p className="text-gray-600 mb-4">Kon de filialen niet laden. Probeer het later opnieuw.</p>
+        <Button onClick={() => refetch()}>
+          Opnieuw Proberen
+        </Button>
       </div>
     );
   }

@@ -1,4 +1,5 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './useAuth';
 import { useBranches } from './useBranches';
@@ -31,28 +32,12 @@ export interface DailyActivityData {
 export const useDashboardData = () => {
   const { user } = useAuth();
   const { activeBranch } = useBranches();
-  const [metrics, setMetrics] = useState<DashboardMetrics>({
-    totalStockValue: 0,
-    totalProducts: 0,
-    incomingToday: 0,
-    outgoingToday: 0,
-    lowStockAlerts: 0,
-  });
-  const [stockTrends, setStockTrends] = useState<StockTrendData[]>([]);
-  const [categoryData, setCategoryData] = useState<CategoryData[]>([]);
-  const [dailyActivity, setDailyActivity] = useState<DailyActivityData[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
-  const fetchDashboardData = useCallback(async (cancelled?: { current: boolean }) => {
-    if (!user || !activeBranch) {
-      if (!cancelled?.current) setLoading(false);
-      return;
-    }
+  const fetchDashboardData = async () => {
+    if (!user || !activeBranch) throw new Error('Geen gebruiker of filiaal');
 
     try {
       console.log('Fetching dashboard data for branch:', activeBranch.branch_id);
-      setError(null);
 
       // Fetch total stock value and product count
       const { data: productsData, error: productsError } = await supabase
@@ -89,16 +74,6 @@ export const useDashboardData = () => {
         ?.filter(t => t.transaction_type === 'outgoing')
         .reduce((sum, t) => sum + t.quantity, 0) || 0;
 
-      if (!cancelled?.current) {
-        setMetrics({
-          totalStockValue: totalValue,
-          totalProducts: productsData?.length || 0,
-          incomingToday,
-          outgoingToday,
-          lowStockAlerts: lowStockCount,
-        });
-      }
-
       // Generate stock trends (last 7 days)
       const trends: StockTrendData[] = [];
       for (let i = 6; i >= 0; i--) {
@@ -116,7 +91,6 @@ export const useDashboardData = () => {
           value: dayValue,
         });
       }
-      if (!cancelled?.current) setStockTrends(trends);
 
       // Generate category data
       const categoryMap = new Map<string, { value: number; products: number }>();
@@ -134,7 +108,6 @@ export const useDashboardData = () => {
         value: data.value,
         products: data.products,
       }));
-      if (!cancelled?.current) setCategoryData(categoryDataArray);
 
       // Generate daily activity (last 7 days)
       const activity: DailyActivityData[] = [];
@@ -158,62 +131,53 @@ export const useDashboardData = () => {
           outgoing,
         });
       }
-      if (!cancelled?.current) setDailyActivity(activity);
 
       console.log('Dashboard data fetched successfully for branch:', activeBranch.branch_id);
 
-    } catch (err) {
-      if (!cancelled?.current) {
-        setError(err instanceof Error ? err.message : 'An error occurred while fetching dashboard data');
-      }
-    } finally {
-      if (!cancelled?.current) setLoading(false);
-    }
-  }, [user, activeBranch]);
-
-  useEffect(() => {
-    const cancelled = { current: false };
-    const initializeDashboard = async () => {
-      await fetchDashboardData(cancelled);
-    };
-    initializeDashboard();
-
-    // Set up real-time subscription for updates
-    if (activeBranch) {
-      const channel = supabase
-        .channel(`dashboard-${activeBranch.branch_id}`)
-        .on(
-          'postgres_changes',
-          {
-            event: '*',
-            schema: 'public',
-            table: 'products',
-            filter: `branch_id=eq.${activeBranch.branch_id}`
-          },
-          () => {
-            if (!cancelled.current) fetchDashboardData(cancelled);
-          }
-        )
-        .subscribe();
-
-      return () => {
-        cancelled.current = true;
-        supabase.removeChannel(channel);
+      return {
+        metrics: {
+          totalStockValue: totalValue,
+          totalProducts: productsData?.length || 0,
+          incomingToday,
+          outgoingToday,
+          lowStockAlerts: lowStockCount,
+        },
+        stockTrends: trends,
+        categoryData: categoryDataArray,
+        dailyActivity: activity,
       };
-    }
 
-    return () => {
-      cancelled.current = true;
-    };
-  }, [fetchDashboardData, activeBranch]);
+    } catch (err) {
+      throw new Error(err instanceof Error ? err.message : 'An error occurred while fetching dashboard data');
+    }
+  };
+
+  const {
+    data,
+    isLoading: loading,
+    error,
+    refetch,
+  } = useQuery({
+    queryKey: ['dashboardData', activeBranch?.branch_id],
+    queryFn: fetchDashboardData,
+    enabled: !!user && !!activeBranch,
+    refetchOnWindowFocus: true,
+    staleTime: 1000 * 60 * 2,
+  });
 
   return {
-    metrics,
-    stockTrends,
-    categoryData,
-    dailyActivity,
+    metrics: data?.metrics ?? {
+      totalStockValue: 0,
+      totalProducts: 0,
+      incomingToday: 0,
+      outgoingToday: 0,
+      lowStockAlerts: 0,
+    },
+    stockTrends: data?.stockTrends ?? [],
+    categoryData: data?.categoryData ?? [],
+    dailyActivity: data?.dailyActivity ?? [],
     loading,
     error,
-    refresh: fetchDashboardData
+    refresh: refetch,
   };
 };

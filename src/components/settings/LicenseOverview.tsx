@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import clsx from 'clsx';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
@@ -13,6 +13,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Loader2, AlertCircle, Star } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
+import { useQuery } from '@tanstack/react-query';
 
 // Interface om de datastructuur van onze Edge Function te definiëren voor type-safety
 interface Plan {
@@ -45,37 +46,28 @@ interface LicenseData {
 
 export const LicenseOverview = () => {
   const { user } = useAuth();
-  const [data, setData] = useState<LicenseData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<any>(null);
   const [isUpdatingPlanId, setIsUpdatingPlanId] = useState<string | null>(null);
 
-  // Functie om de data op te halen, kan hergebruikt worden
+  // React Query: fetch license data
   const fetchData = async () => {
-    if (!user) return;
-    try {
-      const { data, error } = await supabase.functions.invoke<LicenseData>('get-license-and-usage');
-      console.debug('[LicenseOverview] Edge function response:', { data, error });
-      
-      if (error || (data as any)?.error) {
-        throw error || new Error((data as any)?.error?.message || 'Onbekende fout opgetreden');
-      }
-      setData(data);
-    } catch (err) {
-      setError(err);
-      setData(null);
-      console.error('[LicenseOverview] Exception during fetch:', err);
-    }
+    if (!user) throw new Error('Geen gebruiker');
+    const { data, error } = await supabase.functions.invoke<LicenseData>('get-license-and-usage');
+    if (error || (data as any)?.error) throw new Error(error?.message || (data as any)?.error || 'Onbekende fout');
+    return data as LicenseData;
   };
 
-  useEffect(() => {
-    const initialLoad = async () => {
-      setLoading(true);
-      await fetchData();
-      setLoading(false);
-    };
-    initialLoad();
-  }, [user]);
+  const {
+    data,
+    isLoading: loading,
+    error,
+    refetch,
+  } = useQuery({
+    queryKey: ['licenseOverview', user?.id],
+    queryFn: fetchData,
+    enabled: !!user,
+    refetchOnWindowFocus: true,
+    staleTime: 1000 * 60 * 2,
+  });
 
   const handleSelectPlan = async (planId: string) => {
     if (!user || isUpdatingPlanId) return;
@@ -88,7 +80,7 @@ export const LicenseOverview = () => {
     // -----------------------------------------
 
     setIsUpdatingPlanId(planId);
-    setError(null);
+    toast.dismiss(); // Verberg eventuele oude toastmeldingen
 
     try {
       const { error: updateError } = await supabase
@@ -102,11 +94,10 @@ export const LicenseOverview = () => {
 
       toast({ title: 'Plan gewijzigd', description: `U heeft het ${planId}-plan geselecteerd.` });
       // Haal de data opnieuw op om de bijgewerkte berekeningen te tonen
-      await fetchData();
+      await refetch();
 
     } catch (err) {
-      setError(err);
-      toast({ title: 'Fout bij opslaan', description: 'Kon het geselecteerde plan niet opslaan.' });
+      toast({ title: 'Fout bij opslaan', description: 'Kon het geselecteerde plan niet opslaan.', variant: 'destructive' });
       console.error('[LicenseOverview] Exception during plan update:', err);
     } finally {
       setIsUpdatingPlanId(null);

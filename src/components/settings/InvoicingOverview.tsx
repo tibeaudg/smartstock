@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Loader2, AlertCircle, FileText } from 'lucide-react';
 import clsx from 'clsx';
+import { useQuery } from '@tanstack/react-query';
 
 // AANGEPAST: De interface matcht nu de database tabel
 interface Invoice {
@@ -17,37 +18,29 @@ interface Invoice {
 
 export const InvoicingOverview = () => {
   const { user } = useAuth();
-  const [invoices, setInvoices] = useState<Invoice[] | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<any>(null);
+  // React Query: fetch invoices
+  const fetchInvoicesFromDB = async () => {
+    if (!user) throw new Error('Geen gebruiker');
+    const { data, error } = await supabase
+      .from('invoices')
+      .select('*')
+      .order('invoice_date', { ascending: false });
+    if (error) throw error;
+    return data as Invoice[];
+  };
 
-  useEffect(() => {
-    if (!user) return;
-
-    // AANGEPAST: We halen nu direct de opgeslagen facturen op uit de tabel.
-    const fetchInvoicesFromDB = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        // RLS zorgt ervoor dat de gebruiker alleen zijn eigen facturen ziet.
-        const { data, error } = await supabase
-          .from('invoices')
-          .select('*')
-          .order('invoice_date', { ascending: false }); // Nieuwste eerst
-        
-        if (error) throw error;
-
-        setInvoices(data);
-      } catch (err) {
-        setError(err);
-        console.error('[InvoicingOverview] Exception during fetch:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchInvoicesFromDB();
-  }, [user]);
+  const {
+    data: invoices = [],
+    isLoading: loading,
+    error,
+    refetch,
+  } = useQuery({
+    queryKey: ['invoicesOverview', user?.id],
+    queryFn: fetchInvoicesFromDB,
+    enabled: !!user,
+    refetchOnWindowFocus: true,
+    staleTime: 1000 * 60 * 2,
+  });
 
   if (loading) {
     return (
@@ -79,7 +72,7 @@ export const InvoicingOverview = () => {
     );
   }
 
-  if (!invoices || invoices.length === 0) {
+  if (invoices.length === 0) {
     return (
       <Card>
         <CardHeader>

@@ -11,6 +11,7 @@ import { AddProductModal } from './AddProductModal';
 import { ProductFilters } from './ProductFilters';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { toast } from 'sonner';
+import { useQuery } from '@tanstack/react-query';
 
 interface Product {
   id: string;
@@ -43,8 +44,6 @@ const getStockStatus = (quantity: number, minLevel: number) => {
   }
 };
 
-
-
 const getStockStatusVariant = (status: string) => {
   switch (status) {
     case 'In Stock':
@@ -60,12 +59,21 @@ const getStockStatusVariant = (status: string) => {
 
 type StockAction = 'in' | 'out';
 
+// Haal producten op via React Query
+const fetchProducts = async (branchId: string) => {
+  const { data, error } = await supabase
+    .from('products')
+    .select(`*, categories(name), suppliers(name)`)
+    .eq('branch_id', branchId)
+    .order('created_at', { ascending: false });
+  if (error) throw new Error(error.message);
+  return data || [];
+};
+
 export const StockList = () => {
   const { user } = useAuth();
   const { activeBranch } = useBranches();
   const isMobile = useIsMobile();
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
@@ -97,11 +105,22 @@ export const StockList = () => {
   }, [categoryFilter, supplierFilter, stockStatusFilter, minPriceFilter, maxPriceFilter, minStockFilter, maxStockFilter]);
 
   // Filter products based on all filter criteria
+  const {
+    data: products = [],
+    isLoading: loading,
+    refetch
+  } = useQuery({
+    queryKey: ['products', activeBranch?.branch_id],
+    queryFn: () => activeBranch && user ? fetchProducts(activeBranch.branch_id) : [],
+    enabled: !!user && !!activeBranch,
+    refetchOnWindowFocus: true,
+    staleTime: 1000 * 60 * 2, // 2 minuten cache
+  });
+
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
       const stockStatus = getStockStatus(product.quantity_in_stock, product.minimum_stock_level);
       const displayCategory = product.category_name || product.categories?.name || '';
-      const displaySupplier = product.supplier_name || product.suppliers?.name || '';
       
       // Search term filter
       const matchesSearch = searchTerm === '' || 
@@ -114,7 +133,7 @@ export const StockList = () => {
 
       // Supplier filter (text-based partial match)
       const matchesSupplier = supplierFilter === '' || 
-        displaySupplier.toLowerCase().includes(supplierFilter.toLowerCase());
+        product.supplier_name?.toLowerCase().includes(supplierFilter.toLowerCase());
 
       // Stock status filter
       const matchesStockStatus = stockStatusFilter === 'all' || 
@@ -157,76 +176,33 @@ export const StockList = () => {
       toast.error('Je moet ingelogd zijn en een filiaal geselecteerd hebben');
       return;
     }
-    
     const confirmMessage = 'Weet je zeker dat je dit product wilt verwijderen?\n\n' +
       'LET OP: Dit zal ook alle gerelateerde transacties verwijderen!';
-    
-    if (!confirm(confirmMessage)) {
-      return;
-    }
-
+    if (!confirm(confirmMessage)) return;
     try {
       const { error: deleteError } = await supabase
         .from('products')
         .delete()
-        .match({ 
-          id: productId, 
-          branch_id: activeBranch.branch_id 
-        });
-
+        .match({ id: productId, branch_id: activeBranch.branch_id });
       if (deleteError) {
-        console.error('Delete error:', deleteError);
         toast.error(`Verwijderen mislukt: ${deleteError.message}`);
         return;
       }
-
       toast.success('Product en gerelateerde transacties succesvol verwijderd');
-      await fetchProducts();
-      
+      refetch();
     } catch (error) {
-      console.error('Error:', error);
       toast.error('Er is een onverwachte fout opgetreden');
-    }
-  };
-
-  const fetchProducts = async () => {
-    if (!user || !activeBranch) {
-      setProducts([]);
-      setLoading(false);
-      return;
-    }
-
-    try {
-      console.log('Fetching products for branch:', activeBranch.branch_id);
-      const { data, error } = await supabase
-        .from('products')
-        .select(`
-          *,
-          categories(name),
-          suppliers(name)
-        `)
-        .eq('branch_id', activeBranch.branch_id)
-        .order('created_at', { ascending: false });
-
-      if (error) {
-        console.error('Error fetching products:', error);
-        return;
-      }
-
-      console.log('Products fetched for branch:', data);
-      setProducts(data || []);
-    } catch (error) {
-      console.error('Error fetching products:', error);
-    } finally {
-      setLoading(false);
     }
   };
 
   // Handle select all
   useEffect(() => {
     if (selectAll) {
-      setSelectedProductIds(filteredProducts.map((p) => p.id));
-    } else {
+      const ids = filteredProducts.map((p) => p.id);
+      if (ids.length !== selectedProductIds.length || !ids.every((id, i) => id === selectedProductIds[i])) {
+        setSelectedProductIds(ids);
+      }
+    } else if (selectedProductIds.length > 0) {
       setSelectedProductIds([]);
     }
     // eslint-disable-next-line
@@ -256,15 +232,11 @@ export const StockList = () => {
       toast.success('Geselecteerde producten verwijderd');
       setSelectedProductIds([]);
       setSelectAll(false);
-      await fetchProducts();
+      refetch();
     } catch (err) {
       toast.error('Onverwachte fout bij bulk verwijderen');
     }
   };
-
-  useEffect(() => {
-    fetchProducts();
-  }, [user, activeBranch]);
 
   if (loading) {
     return (
@@ -423,7 +395,7 @@ export const StockList = () => {
               setSelectedAction(null);
             }}
             onProductUpdated={() => {
-              fetchProducts();
+              refetch();
               setIsEditModalOpen(false);
               setSelectedProduct(null);
               setSelectedAction(null);
@@ -437,7 +409,7 @@ export const StockList = () => {
           isOpen={isAddModalOpen}
           onClose={() => setIsAddModalOpen(false)}
           onProductAdded={() => {
-            fetchProducts();
+            refetch();
             setIsAddModalOpen(false);
           }}
         />
@@ -621,7 +593,7 @@ export const StockList = () => {
             setSelectedAction(null);
           }}
           onProductUpdated={() => {
-            fetchProducts();
+            refetch();
             setIsEditModalOpen(false);
             setSelectedProduct(null);
             setSelectedAction(null);
@@ -635,7 +607,7 @@ export const StockList = () => {
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
         onProductAdded={() => {
-          fetchProducts();
+          refetch();
           setIsAddModalOpen(false);
         }}
       />

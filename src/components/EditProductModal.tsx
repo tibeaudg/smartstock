@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Plus, Minus } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface Product {
   id: string;
@@ -41,6 +42,7 @@ export const EditProductModal = ({
 }: EditProductModalProps) => {
   const [quantity, setQuantity] = useState<string>('');
   const [loading, setLoading] = useState(false);
+  const queryClient = useQueryClient();
 
   const handleSubmit = async () => {
     if (!quantity || parseInt(quantity) <= 0) {
@@ -108,6 +110,10 @@ export const EditProductModal = ({
 
       toast.success(`Voorraad succesvol ${actionType === 'in' ? 'toegevoegd' : 'verwijderd'}`);
       onProductUpdated();
+      // Invalideer relevante queries zodat data automatisch wordt gerefetched
+      queryClient.invalidateQueries({ queryKey: ['products'] });
+      queryClient.invalidateQueries({ queryKey: ['stockTransactions'] });
+      queryClient.invalidateQueries({ queryKey: ['dashboardData'] });
       onClose();
     } catch (error) {
       console.error('Error in stock update:', error);

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -10,7 +9,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 
 interface ProductFiltersProps {
   searchTerm: string;
-  onSupplierFilterChange: (value: string) => void;
+  onSearchChange: (value: string) => void;
   stockStatusFilter: string;
   onStockStatusFilterChange: (value: string) => void;
   minPriceFilter: string;
@@ -23,6 +22,10 @@ interface ProductFiltersProps {
   onMaxStockFilterChange: (value: string) => void;
   onClearFilters: () => void;
   activeFiltersCount: number;
+  supplierFilter: string;
+  onSupplierFilterChange: (value: string) => void;
+  categoryFilter: string;
+  onCategoryFilterChange: (value: string) => void;
 }
 
 export const ProductFilters: React.FC<ProductFiltersProps> = ({
@@ -40,6 +43,10 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
   onMaxStockFilterChange,
   onClearFilters,
   activeFiltersCount,
+  supplierFilter,
+  onSupplierFilterChange,
+  categoryFilter,
+  onCategoryFilterChange,
 }) => {
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
 
@@ -127,6 +134,17 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
                     onChange={(e) => onMaxPriceFilterChange(e.target.value)}
                     min="0"
                     step="0.01"
+                  />
+                </div>
+
+                {/* Supplier Filter */}
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-700">Leverancier</label>
+                  <Input
+                    type="text"
+                    placeholder="Zoek leverancier"
+                    value={supplierFilter}
+                    onChange={(e) => onSupplierFilterChange(e.target.value)}
                   />
                 </div>
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
 import { supabase } from '@/integrations/supabase/client';
@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
 
 // TYPE-SAFETY: Interfaces voor duidelijkere datastructuren
 interface Profile {
@@ -34,11 +35,7 @@ interface DisplayUser {
 export const UserManagement = () => {
   const { user } = useAuth();
   const { branches, activeBranch } = useBranches();
-  
-  const [users, setUsers] = useState<DisplayUser[]>([]);
-  const [loading, setLoading] = useState(true); // Start loading op true voor de eerste laadbeurt
   const [inviting, setInviting] = useState(false);
-
   const [inviteEmail, setInviteEmail] = useState('');
   const [inviteRole, setInviteRole] = useState('staff');
   const [selectedBranchId, setSelectedBranchId] = useState<string>('');
@@ -49,49 +46,34 @@ export const UserManagement = () => {
     }
   }, [activeBranch, selectedBranchId]);
 
-  const fetchBranchUsers = useCallback(async () => {
-    if (!selectedBranchId) {
-      setUsers([]);
-      setLoading(false);
-      return;
-    };
+  // React Query: fetch users for branch
+  const fetchBranchUsers = async () => {
+    if (!selectedBranchId) return [];
+    const { data, error } = await supabase
+      .from('branch_users')
+      .select('id, user_id, role, profiles:profiles!branch_users_user_id_fkey(email)')
+      .eq('branch_id', selectedBranchId);
+    if (error) throw new Error(error.message);
+    return (data || []).map((u: any) => ({
+      id: u.id,
+      userId: u.user_id,
+      email: u.profiles?.email || '',
+      role: u.role,
+    }));
+  };
 
-    setLoading(true);
-    try {
-      // --- CORRECTIE HIERONDER ---
-      // We specificeren de exacte foreign key relatie om de dubbelzinnigheid op te lossen.
-      const { data, error } = await supabase
-        .from('branch_users')
-        .select(`
-          id,
-          user_id,
-          role,
-          profiles!branch_users_user_id_fkey (email)
-        `)
-        .eq('branch_id', selectedBranchId)
-        .returns<BranchUser[]>();
-
-      if (error) throw error;
-
-      const displayUsers = (data || []).map(u => ({
-        id: u.id,
-        userId: u.user_id,
-        email: u.profiles?.email || 'Uitnodiging in afwachting',
-        role: u.role,
-      }));
-      setUsers(displayUsers);
-
-    } catch (error) {
-      console.error("Error fetching branch users:", error);
-      toast({ title: 'Fout', description: 'Kon gebruikers niet laden', variant: 'destructive' });
-    } finally {
-      setLoading(false);
-    }
-  }, [selectedBranchId]);
-
-  useEffect(() => {
-    fetchBranchUsers();
-  }, [fetchBranchUsers]);
+  const {
+    data: users = [],
+    isLoading: loading,
+    error,
+    refetch,
+  } = useQuery({
+    queryKey: ['branchUsers', selectedBranchId],
+    queryFn: fetchBranchUsers,
+    enabled: !!selectedBranchId,
+    refetchOnWindowFocus: true,
+    staleTime: 1000 * 60 * 2,
+  });
 
   const handleInviteUser = async () => {
     if (!inviteEmail || !selectedBranchId || !user) return;
@@ -117,7 +99,7 @@ export const UserManagement = () => {
     toast({ title: "Uitnodiging verzonden", description: `${inviteEmail} is uitgenodigd.` });
     setInviteEmail('');
     setInviteRole("staff");
-    fetchBranchUsers();
+    refetch();
   };
 
   const handleRemoveUser = async (userIdToRemove: string) => {
@@ -137,7 +119,7 @@ export const UserManagement = () => {
       toast({ title: "Fout", description: "Kon de gebruiker niet verwijderen.", variant: "destructive" });
     } else {
       toast({ title: "Gebruiker verwijderd", description: "De gebruiker is verwijderd uit dit filiaal." });
-      fetchBranchUsers();
+      refetch();
     }
   };
 
