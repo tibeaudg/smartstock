@@ -33,6 +33,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
 
   // If blocked, only show settings/invoicing
   const isBlocked = userProfile?.blocked;
+  const isAdmin = userProfile && userProfile.is_admin === true && !userProfile.blocked;
   const menuItems = isBlocked
     ? [
         { id: 'settings', label: 'Instellingen', icon: Settings, path: '/dashboard/settings' },
@@ -41,7 +42,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
         { id: 'dashboard', label: 'Dashboard', icon: BarChart3, path: '/dashboard', end: true },
         { id: 'stock', label: 'Producten', icon: Package, path: '/dashboard/stock' },
         { id: 'transactions', label: 'Bewegingslijst', icon: ShoppingCart, path: '/dashboard/transactions' },
-        ...(userRole === 'admin'
+        ...(isAdmin
           ? [
               { id: 'admin', label: 'Admin', icon: Settings, path: '/admin' },
             ]

@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, BarChart, Bar } from 'recharts';
 import { useDashboardData } from '@/hooks/useDashboardData';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useBranches } from '@/hooks/useBranches';
 
 interface DashboardProps {
   userRole: 'admin' | 'staff';
@@ -18,8 +19,8 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
   const isMobile = useIsMobile();
   const [dateFrom, setDateFrom] = useState<Date>();
   const [dateTo, setDateTo] = useState<Date>();
-  
-  const { metrics, loading } = useDashboardData();
+  const { activeBranch } = useBranches();
+  const { metrics, dailyActivity, loading } = useDashboardData();
 
   console.log('Dashboard rendering with userRole:', userRole, 'loading:', loading);
 
@@ -41,6 +42,15 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
             </Card>
           ))}
         </div>
+      </div>
+    );
+  }
+
+  if (!activeBranch) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[300px]">
+        <h2 className="text-xl font-semibold mb-2">Geen filiaal geselecteerd</h2>
+        <p className="text-gray-600 mb-4">Selecteer of maak een filiaal aan om dashboarddata te zien.</p>
       </div>
     );
   }
@@ -165,7 +175,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
       <div className="bg-white rounded-lg shadow p-6 mt-6">
         <h2 className="text-xl font-semibold mb-4 text-gray-800">Stockbewegingen per dag</h2>
         <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={metrics.stockMovements || []} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+          <BarChart data={dailyActivity || []} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="date" />
             <YAxis />

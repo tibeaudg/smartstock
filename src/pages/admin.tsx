@@ -3,101 +3,108 @@
 import React from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, AlertCircle, RefreshCw, Server, CheckCircle } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import clsx from 'clsx';
 import { useQuery } from '@tanstack/react-query';
 
-// Interface blijft hetzelfde
-interface Invoice {
-  id: number;
-  user_id: string;
-  period: string;
-  amount: number;
-  status: string;
-  userEmail: string; // Hernoemd van user_email voor consistentie
-  active?: boolean;
+// Interface voor de gecombineerde gebruikersdata
+interface UserDetails {
+  id: string;
+  email: string;
+  active: boolean;
+  isSelf: boolean;
+  branchCount: number;
+  productCount: number;
+  licenseName: string | null;
+  licensePrice: number | null;
 }
 
-// Helper: fetch license price for a user (from Edge Function)
-async function fetchLicenseDataForUser(userId: string): Promise<number | null> {
-  try {
-    const { data, error } = await supabase.functions.invoke<any>('get-license-and-usage', { body: { userId } });
-    if (error || !data || !data.license) return null;
-    return data.license.monthly_price;
-  } catch (e) {
-    return null;
-  }
-}
-
-// Helper: get all users (alleen admins, met blocked status)
-async function fetchAllUsers(): Promise<{ id: string; email: string; active: boolean }[]> {
-  const { data, error } = await supabase.from('profiles').select('id, email, blocked').eq('role', 'admin');
-  if (error) return [];
-  return (data || []).map((u: any) => ({ id: u.id, email: u.email, active: !u.blocked }));
-}
-
-// Helper: get all paid invoices
-async function fetchAllPaidInvoices(): Promise<Invoice[]> {
-  const { data, error } = await (supabase
-    .from('invoices' as any)
-    .select('*') as any);
-  if (error) return [];
-  return (data as Invoice[]) || [];
-}
-
-const fetchInvoices = async () => {
-  // STAP 1: Haal de huidige gebruiker op.
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) throw new Error('U bent niet ingelogd.');
-
-  // STAP 2: Haal het profiel van DEZE gebruiker op om de admin-status te controleren.
-  const { data: profile, error: profileError } = await supabase
+// Helper: Haalt ALLE gebruikers op en verrijkt ze met hun licentie- en verbruiksdata
+async function fetchAllUsersWithDetails(currentUserId: string): Promise<UserDetails[]> {
+  // Haal eerst de basis-info van alle admin users op
+  const { data: users, error: usersError } = await supabase
     .from('profiles')
-    .select('is_admin')
-    .eq('id', user.id)
-    .single();
-  if (profileError) throw new Error(`Fout bij het controleren van uw profiel: ${profileError.message}`);
-  if (profile?.is_admin !== true) throw new Error('U bent ingelogd, maar u beschikt niet over de vereiste admin-rechten.');
+    .select('id, email, blocked')
+    .eq('role', 'admin');
+    
+  if (usersError) throw usersError;
 
-  // STAP 4: Alleen als de check slaagt, roepen we de Edge Functie aan.
-  const { data: invoicesData, error: functionError } = await supabase.functions.invoke<Invoice[]>('get-all-invoice-history');
-  if (functionError) throw new Error(functionError.message);
-  return invoicesData || [];
-};
+  // Voor elke gebruiker, roep de nieuwe admin Edge Functie aan
+  const detailedUsersPromises = users.map(async (user) => {
+    try {
+      const { data, error } = await supabase.functions.invoke<any>('get-usage-for-user-admin', {
+        body: { userId: user.id },
+      });
 
-export default function AdminInvoicingPage() {
-  // State for selected user and all users
-  const [selectedUser, setSelectedUser] = React.useState<{ id: string; email: string; active: boolean } | null>(null);
-  const [allUsers, setAllUsers] = React.useState<{ id: string; email: string; active: boolean }[]>([]);
+      if (error) {
+        // Als de functie faalt voor één gebruiker, log de fout maar ga door
+        console.error(`Could not fetch details for ${user.email}:`, error.message);
+        return {
+          id: user.id,
+          email: user.email,
+          active: !user.blocked,
+          isSelf: user.id === currentUserId,
+          branchCount: 0,
+          productCount: 0,
+          licenseName: 'Error',
+          licensePrice: null,
+        };
+      }
+      
+      // Combineer de basis-info met de data uit de Edge Functie
+      return {
+        id: user.id,
+        email: user.email,
+        active: !user.blocked,
+        isSelf: user.id === currentUserId,
+        branchCount: data.usage.branch_count,
+        productCount: data.usage.total_products,
+        licenseName: data.license.license_type,
+        licensePrice: data.license.monthly_price,
+      };
 
-  // Fetch all users on mount
-  React.useEffect(() => {
-    fetchAllUsers().then(setAllUsers);
-  }, []);
-
-  const {
-    data: allInvoices = [],
-    isLoading: loading,
-    error,
-    refetch,
-  } = useQuery<Invoice[]>({
-    queryKey: ['invoices'],
-    queryFn: fetchInvoices,
-    refetchOnWindowFocus: true,
-    staleTime: 1000 * 60 * 2,
+    } catch (e) {
+      console.error(`Exception while fetching details for ${user.email}:`, e);
+      return null; // Of retourneer een fout-object
+    }
   });
 
-  // --- Weergave Logica ---
-  if (loading) {
+  const results = await Promise.all(detailedUsersPromises);
+  return results.filter(Boolean) as UserDetails[]; // Verwijder eventuele nulls
+}
+
+
+export default function AdminInvoicingPage() {
+  const [currentUserId, setCurrentUserId] = React.useState<string | null>(null);
+
+  // Haal de ID van de huidige ingelogde admin op
+  React.useEffect(() => {
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (user) setCurrentUserId(user.id);
+    });
+  }, []);
+
+  // Gebruik React Query om alle gebruikersdata op te halen en te cachen
+  const {
+    data: allUsers = [],
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ['allUsersWithDetails', currentUserId],
+    queryFn: () => fetchAllUsersWithDetails(currentUserId!),
+    enabled: !!currentUserId, // Voer de query pas uit als we de currentUserId hebben
+  });
+
+
+  if (isLoading || !currentUserId) {
     return (
       <div className="p-8">
         <Card>
-          <CardHeader><CardTitle>Admin Factuuroverzicht</CardTitle></CardHeader>
+          <CardHeader><CardTitle>Gebruikersoverzicht Laden...</CardTitle></CardHeader>
           <CardContent className="flex flex-col items-center justify-center py-12">
             <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
-            <p className="mt-4 text-gray-600">Rechten controleren...</p>
+            <p className="mt-4 text-gray-600">Gebruikersdata ophalen...</p>
           </CardContent>
         </Card>
       </div>
@@ -105,149 +112,48 @@ export default function AdminInvoicingPage() {
   }
 
   if (error) {
-    return (
-      <div className="p-8">
-        <Card className="border-red-200 bg-red-50">
-          <CardHeader>
-            <CardTitle className="text-red-700 flex items-center gap-2">
-              <AlertCircle size={24} /> Toegangsprobleem
-            </CardTitle>
-            <CardDescription className="text-red-600">
-              {error.message}
-            </CardDescription>
-          </CardHeader>
-        </Card>
-      </div>
-    );
+    return <div>Error: {error.message}</div>;
   }
-
-  // Nieuwe master-detail view: eerst gebruikerslijst, dan facturen per gebruiker
-  if (!selectedUser) {
-    return (
-      <div className="p-8 space-y-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Gebruikersoverzicht</CardTitle>
-            <CardDescription>Klik op een gebruiker om diens facturen te bekijken.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm text-left">
-                <thead className="text-xs text-gray-700 uppercase bg-gray-50">
-                  <tr>
-                    <th className="px-6 py-3">Gebruiker (Email)</th>
-                    <th className="px-6 py-3 text-center">Status</th>
-                    <th className="px-6 py-3 text-center">Acties</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {allUsers.map((user) => (
-                    <tr key={user.id} className="bg-white border-b hover:bg-gray-50 cursor-pointer" onClick={() => setSelectedUser(user)}>
-                      <td className="px-6 py-4 font-medium text-gray-900">{user.email}</td>
-                      <td className="px-6 py-4 text-center">
-                        <Badge className={clsx({'bg-green-100 text-green-800': user.active, 'bg-red-100 text-red-800': !user.active})}>
-                          {user.active ? 'Actief' : 'Geblokkeerd'}
-                        </Badge>
-                      </td>
-                      <td className="px-6 py-4 text-center">
-                        <button
-                          className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs disabled:opacity-50 mr-2"
-                          onClick={e => { e.stopPropagation(); handleBlockUser(user.email); }}
-                          disabled={!user.active}
-                        >
-                          Blokkeer
-                        </button>
-                        <button
-                          className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-xs disabled:opacity-50"
-                          onClick={e => { e.stopPropagation(); handleUnblockUser(user.email); }}
-                          disabled={user.active}
-                        >
-                          Deblokkeer
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  // Detailview: facturen van geselecteerde gebruiker
-  const userInvoices = allInvoices.filter(inv => inv.userEmail === selectedUser.email);
-
+  
   return (
     <div className="p-8 space-y-6">
-      <Button variant="outline" className="mb-4" onClick={() => setSelectedUser(null)}>
-        ← Terug naar gebruikerslijst
-      </Button>
       <Card>
         <CardHeader>
-          <CardTitle>Facturen van {selectedUser.email}</CardTitle>
-          <CardDescription>Openstaande en historische facturen van deze gebruiker.</CardDescription>
+          <CardTitle>Gebruikersoverzicht</CardTitle>
+          <CardDescription>
+            Totaal aantal gebruikers: <b>{allUsers.filter(u => !u.isSelf).length}</b> (excl. jezelf)
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="overflow-x-auto">
             <table className="w-full text-sm text-left">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                 <tr>
-                  <th className="px-6 py-3">Periode</th>
-                  <th className="px-6 py-3 text-right">Bedrag</th>
+                  <th className="px-6 py-3">Gebruiker (Email)</th>
                   <th className="px-6 py-3 text-center">Status</th>
-                  <th className="px-6 py-3 text-center">Tijd tot betaling</th>
-                  <th className="px-6 py-3 text-center">Betaald</th>
+                  <th className="px-6 py-3 text-center">Licentie</th>
+                  <th className="px-6 py-3 text-center">Geschatte Prijs</th>
+                  <th className="px-6 py-3 text-center">Filialen</th>
+                  <th className="px-6 py-3 text-center">Producten</th>
                 </tr>
               </thead>
               <tbody>
-                {userInvoices.length === 0 ? (
-                  <tr><td colSpan={5} className="text-center py-6 text-gray-500">Geen facturen gevonden voor deze gebruiker.</td></tr>
-                ) : userInvoices.map((inv) => {
-                  let deadline = new Date();
-                  if (inv.period && inv.period.includes('-')) {
-                    const [year, month] = inv.period.split('-');
-                    deadline = new Date(Number(year), Number(month) - 1, 1);
-                    deadline.setMonth(deadline.getMonth() + 1);
-                    deadline.setDate(deadline.getDate() + 13);
-                  }
-                  const now = new Date();
-                  const msLeft = deadline.getTime() - now.getTime();
-                  const daysLeft = Math.max(0, Math.ceil(msLeft / (1000 * 60 * 60 * 24)));
-                  const isPaid = inv.status === 'paid' || inv.status === 'Betaald';
-                  return (
-                    <tr key={inv.id} className="bg-white border-b hover:bg-gray-50">
-                      <td className="px-6 py-4">{inv.period}</td>
-                      <td className="px-6 py-4 text-right font-mono">€{inv.amount?.toFixed(2)}</td>
-                      <td className="px-6 py-4 text-center">
-                        <Badge className={clsx({'bg-green-100 text-green-800': isPaid, 'bg-yellow-100 text-yellow-800': !isPaid})}>
-                          {isPaid ? 'Betaald' : 'Open'}
-                        </Badge>
-                      </td>
-                      <td className="px-6 py-4 text-center">
-                        {isPaid ? 'Voldaan' : `${daysLeft} dagen`}
-                      </td>
-                      <td className="px-6 py-4 text-center">
-                        {isPaid ? (
-                          <button
-                            className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded text-xs mr-2"
-                            onClick={() => handleMarkAsOpen(inv)}
-                          >
-                            Markeer als open
-                          </button>
-                        ) : (
-                          <button
-                            className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-xs mr-2"
-                            onClick={() => handleMarkAsPaid(inv)}
-                          >
-                            Markeer als betaald
-                          </button>
-                        )}
-                      </td>
-                    </tr>
-                  );
-                })}
+                {allUsers.map((user) => (
+                  <tr key={user.id} className={clsx("bg-white border-b hover:bg-gray-50", { 'opacity-60': user.isSelf })}>
+                    <td className="px-6 py-4 font-medium text-gray-900">
+                      {user.email} {user.isSelf && <span className="text-xs text-gray-400">(jijzelf)</span>}
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <Badge className={clsx({'bg-green-100 text-green-800': user.active, 'bg-red-100 text-red-800': !user.active})}>
+                        {user.active ? 'Actief' : 'Geblokkeerd'}
+                      </Badge>
+                    </td>
+                    <td className="px-6 py-4 text-center capitalize">{user.licenseName || '–'}</td>
+                    <td className="px-6 py-4 text-center font-mono">{typeof user.licensePrice === 'number' ? `€${user.licensePrice.toFixed(2)}` : '–'}</td>
+                    <td className="px-6 py-4 text-center">{user.branchCount}</td>
+                    <td className="px-6 py-4 text-center">{user.productCount}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
@@ -255,77 +161,4 @@ export default function AdminInvoicingPage() {
       </Card>
     </div>
   );
-
-  function handleBlockUser(userEmail: string) {
-    if (!window.confirm(`Weet je zeker dat je ${userEmail} wilt blokkeren?`)) return;
-    supabase
-      .from('profiles')
-      .update({ blocked: true } as any)
-      .eq('email', userEmail)
-      .then(({ error }) => {
-        if (error) {
-          alert('Fout bij blokkeren: ' + error.message);
-        } else {
-          alert('Gebruiker geblokkeerd!');
-          fetchAllUsers().then(setAllUsers);
-        }
-      });
-  }
-
-  function handleUnblockUser(userEmail: string) {
-    if (!window.confirm(`Weet je zeker dat je ${userEmail} wilt deblokkeren?`)) return;
-    supabase
-      .from('profiles')
-      .update({ blocked: false } as any)
-      .eq('email', userEmail)
-      .then(({ error }) => {
-        if (error) {
-          alert('Fout bij deblokkeren: ' + error.message);
-        } else {
-          alert('Gebruiker gedeblokkeerd!');
-          fetchAllUsers().then(setAllUsers);
-        }
-      });
-  }
-
-  // Voeg deze functies toe onderaan de component
-  async function handleToggleActive(userId: string, isActive: boolean) {
-    await supabase
-      .from('profiles')
-      .update({ blocked: !isActive } as any)
-      .eq('id', userId);
-    fetchAllUsers().then(setAllUsers);
-  }
-
-  async function handleMarkAsPaid(inv: Invoice) {
-    // Schrijf de factuur naar de database met status 'betaald'
-    await (supabase as any)
-      .from('invoices')
-      .update({ status: 'paid' })
-      .eq('id', inv.id.toString());
-    refetch();
-  }
-
-  async function handleMarkAsOpen(inv: Invoice) {
-    await (supabase as any)
-      .from('invoices')
-      .update({ status: 'open' })
-      .eq('id', inv.id.toString());
-    refetch();
-  }
-
-  function handleStatusChange(userEmail: string, status: string) {
-    const blocked = status === "blocked";
-    supabase
-      .from('profiles')
-      .update({ blocked } as any)
-      .eq('email', userEmail)
-      .then(({ error }) => {
-        if (error) {
-          alert('Fout bij bijwerken: ' + error.message);
-        }
-        fetchAllUsers().then(setAllUsers);
-        refetch();
-      });
-  }
 }

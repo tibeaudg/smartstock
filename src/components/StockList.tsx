@@ -75,7 +75,7 @@ const fetchProducts = async (branchId: string) => {
 };
 
 export const StockList = () => {
-  const { user } = useAuth();
+  const { user, userProfile } = useAuth();
   const { activeBranch } = useBranches();
   const isMobile = useIsMobile();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -462,8 +462,6 @@ export const StockList = () => {
   }
 
 
-
-  const { userProfile } = useAuth();
 
   const isAdmin = userProfile?.role === 'admin';
 

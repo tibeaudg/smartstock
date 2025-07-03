@@ -23,6 +23,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import { CreditCard } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useBranches } from '@/hooks/useBranches';
 
 interface CreateBranchModalProps {
   open: boolean;
@@ -50,6 +51,7 @@ export const CreateBranchModal = ({
   isAdditionalBranch = false,
 }: CreateBranchModalProps) => {
   const { user } = useAuth();
+  const { setActiveBranch } = useBranches();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [licenseInfo, setLicenseInfo] = useState<LicenseInfo | null>(null);
@@ -94,7 +96,6 @@ export const CreateBranchModal = ({
   const handleSubmit = async (data: FormData) => {
     if (!user) return toast.error('Geen gebruiker gevonden');
 
-
     setLoading(true);
     try {
       const { data: branchData, error: branchError } = await supabase
@@ -106,12 +107,12 @@ export const CreateBranchModal = ({
           email: data.email || null,
           is_main: !isAdditionalBranch,
           is_active: true,
+          user_id: user.id, // <-- automatisch koppelen aan gebruiker
         })
         .select()
         .single();
 
       if (branchError) throw branchError;
-
 
       const { error: assignError } = await supabase.from('branch_users').insert({
         branch_id: branchData.id,
@@ -121,6 +122,16 @@ export const CreateBranchModal = ({
       });
 
       if (assignError) throw assignError;
+
+      // Zet de nieuwe branch direct als actief na aanmaken
+      if (branchData && branchData.id) {
+        setActiveBranch({
+          branch_id: branchData.id,
+          branch_name: branchData.name,
+          is_main: branchData.is_main,
+          user_role: 'admin', // of haal uit branchData als beschikbaar
+        });
+      }
 
       toast.success(
         isAdditionalBranch

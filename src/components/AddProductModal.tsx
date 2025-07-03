@@ -242,6 +242,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
         unit_price: data.unitPrice,
         branch_id: activeBranch.branch_id,
         image_url: imageUrl,
+        user_id: user.id, // <-- automatisch koppelen aan gebruiker
       };
 
       console.log('Inserting product with data:', productData);
