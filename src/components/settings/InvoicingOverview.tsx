@@ -32,30 +32,16 @@ export const InvoicingOverview = () => {
   const {
     data: invoices = [],
     isLoading: loading,
+    isFetching,
     error,
     refetch,
-  } = useQuery({
+  } = useQuery<Invoice[]>({
     queryKey: ['invoicesOverview', user?.id],
     queryFn: fetchInvoicesFromDB,
     enabled: !!user,
     refetchOnWindowFocus: true,
     staleTime: 1000 * 60 * 2,
   });
-
-  if (loading) {
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Factuuroverzicht</CardTitle>
-          <CardDescription>Een overzicht van uw maandelijkse licentiekosten.</CardDescription>
-        </CardHeader>
-        <CardContent className="flex flex-col items-center justify-center py-12">
-          <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
-          <span className="mt-2 text-gray-600">Facturen worden geladen...</span>
-        </CardContent>
-      </Card>
-    );
-  }
 
   if (error) {
     return (
@@ -67,6 +53,20 @@ export const InvoicingOverview = () => {
         <CardContent className="flex flex-col items-center text-center text-red-600">
           <AlertCircle className="w-8 h-8 mb-2" />
           <p className="text-sm">Probeer het later opnieuw.</p>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (invoices.length === 0 && (loading || isFetching)) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>Facturen laden...</CardTitle>
+        </CardHeader>
+        <CardContent className="flex flex-col items-center justify-center py-12">
+          <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
+          <span className="mt-2 text-gray-600">Facturen worden geladen...</span>
         </CardContent>
       </Card>
     );

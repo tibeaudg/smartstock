@@ -56,6 +56,7 @@ export const BranchManagement = () => {
   const {
     data: adminBranches = [],
     isLoading,
+    isFetching,
     error,
     refetch,
   } = useQuery({
@@ -188,15 +189,6 @@ export const BranchManagement = () => {
     setIsDialogOpen(true);
   };
 
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center py-8">
-        <Loader2 className="w-6 h-6 animate-spin" />
-        <span className="ml-2">Filialen laden...</span>
-      </div>
-    );
-  }
-
   if (error) {
     return (
       <div className="text-center py-8">
@@ -316,18 +308,25 @@ export const BranchManagement = () => {
         ))}
       </div>
 
-      {adminBranches.length === 0 && (
-        <Card>
-          <CardContent className="text-center py-8">
-            <Building2 className="w-12 h-12 mx-auto text-gray-400 mb-4" />
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Geen filialen gevonden</h3>
-            <p className="text-gray-600 mb-4">Begin met het aanmaken van uw eerste filiaal.</p>
-            <Button onClick={handleCreateNew}>
-              <Plus className="w-4 h-4 mr-2" />
-              Eerste Filiaal Aanmaken
-            </Button>
-          </CardContent>
-        </Card>
+      {adminBranches.length === 0 && (isLoading || isFetching) ? (
+        <div className="flex flex-col items-center justify-center py-8">
+          <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
+          <span className="mt-2 text-gray-600">Filialen laden...</span>
+        </div>
+      ) : (
+        adminBranches.length === 0 && (
+          <Card>
+            <CardContent className="text-center py-8">
+              <Building2 className="w-12 h-12 mx-auto text-gray-400 mb-4" />
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Geen filialen gevonden</h3>
+              <p className="text-gray-600 mb-4">Begin met het aanmaken van uw eerste filiaal.</p>
+              <Button onClick={handleCreateNew}>
+                <Plus className="w-4 h-4 mr-2" />
+                Eerste Filiaal Aanmaken
+              </Button>
+            </CardContent>
+          </Card>
+        )
       )}
     </div>
   );

@@ -4,6 +4,7 @@ import App from './App';
 import './index.css';
 import { checkSupabaseConnection } from './integrations/supabase/client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { setupPersistedQueryClient } from './persistQueryClient';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
@@ -75,7 +76,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
                 Pagina vernieuwen
               </button>
               <a
-                href="/"
+                href="/dashboard"
                 className="bg-gray-200 text-gray-800 px-5 py-2 rounded-lg font-semibold hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 transition-colors"
               >
                 Naar startpagina
@@ -178,6 +179,9 @@ async function init() {
 
 // Initialiseer QueryClient voor React Query
 const queryClient = new QueryClient();
+if (typeof window !== 'undefined') {
+  setupPersistedQueryClient(queryClient);
+}
 
 // Start de applicatie
 init();

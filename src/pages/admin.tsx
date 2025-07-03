@@ -44,7 +44,7 @@ export default function AdminInvoicingPage() {
     isLoading: loading,
     error,
     refetch,
-  } = useQuery({
+  } = useQuery<Invoice[]>({
     queryKey: ['invoices'],
     queryFn: fetchInvoices,
     refetchOnWindowFocus: true,

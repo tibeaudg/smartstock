@@ -109,16 +109,21 @@ export const StockList = () => {
     data: products = [],
     isLoading: loading,
     refetch
-  } = useQuery({
+  } = useQuery<Product[]>({
     queryKey: ['products', activeBranch?.branch_id],
     queryFn: () => activeBranch && user ? fetchProducts(activeBranch.branch_id) : [],
     enabled: !!user && !!activeBranch,
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
     staleTime: 1000 * 60 * 2, // 2 minuten cache
+    gcTime: 1000 * 60 * 60 * 24, // 24 uur garbage collect
+    // @ts-expect-error: keepPreviousData is supported in v5, type mismatch workaround
+    keepPreviousData: true,
   });
 
+  const productsTyped: Product[] = Array.isArray(products) ? products : [];
+
   const filteredProducts = useMemo(() => {
-    return products.filter((product) => {
+    return productsTyped.filter((product) => {
       const stockStatus = getStockStatus(product.quantity_in_stock, product.minimum_stock_level);
       const displayCategory = product.category_name || product.categories?.name || '';
       
@@ -152,7 +157,7 @@ export const StockList = () => {
       return matchesSearch && matchesCategory && matchesSupplier && matchesStockStatus && 
              matchesMinPrice && matchesMaxPrice && matchesMinStock && matchesMaxStock;
     });
-  }, [products, searchTerm, categoryFilter, supplierFilter, stockStatusFilter, minPriceFilter, maxPriceFilter, minStockFilter, maxStockFilter]);
+  }, [productsTyped, searchTerm, categoryFilter, supplierFilter, stockStatusFilter, minPriceFilter, maxPriceFilter, minStockFilter, maxStockFilter]);
 
   const handleClearFilters = () => {
     setCategoryFilter('');
@@ -298,7 +303,7 @@ export const StockList = () => {
             <Card className="bg-white">
               <CardContent className="p-6 text-center">
                 <p className="text-gray-500">
-                  {products.length === 0 ? 'No products found for this branch.' : 'No products match your filters.'}
+                  {productsTyped.length === 0 ? 'No products found for this branch.' : 'No products match your filters.'}
                 </p>
               </CardContent>
             </Card>
@@ -505,7 +510,7 @@ export const StockList = () => {
               {filteredProducts.length === 0 ? (
                 <tr>
                   <td colSpan={isAdmin ? 9 : 8} className="px-4 py-2 text-center text-gray-500">
-                    {products.length === 0 ? 'No products found for this branch.' : 'No products match your filters.'}
+                    {productsTyped.length === 0 ? 'No products found for this branch.' : 'No products match your filters.'}
                   </td>
                 </tr>
               ) : (

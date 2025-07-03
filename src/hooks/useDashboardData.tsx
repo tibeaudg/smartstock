@@ -29,6 +29,13 @@ export interface DailyActivityData {
   outgoing: number;
 }
 
+export interface DashboardData {
+  metrics: DashboardMetrics;
+  stockTrends: StockTrendData[];
+  categoryData: CategoryData[];
+  dailyActivity: DailyActivityData[];
+}
+
 export const useDashboardData = () => {
   const { user } = useAuth();
   const { activeBranch } = useBranches();
@@ -153,12 +160,12 @@ export const useDashboardData = () => {
   };
 
   const {
-    data,
+    data: dashboardData,
     isLoading: loading,
     error,
     refetch,
-  } = useQuery({
-    queryKey: ['dashboardData', activeBranch?.branch_id],
+  } = useQuery<DashboardData>({
+    queryKey: ['dashboardData', activeBranch?.branch_id, user?.id],
     queryFn: fetchDashboardData,
     enabled: !!user && !!activeBranch,
     refetchOnWindowFocus: true,
@@ -166,16 +173,16 @@ export const useDashboardData = () => {
   });
 
   return {
-    metrics: data?.metrics ?? {
+    metrics: dashboardData?.metrics ?? {
       totalStockValue: 0,
       totalProducts: 0,
       incomingToday: 0,
       outgoingToday: 0,
       lowStockAlerts: 0,
     },
-    stockTrends: data?.stockTrends ?? [],
-    categoryData: data?.categoryData ?? [],
-    dailyActivity: data?.dailyActivity ?? [],
+    stockTrends: dashboardData?.stockTrends ?? [],
+    categoryData: dashboardData?.categoryData ?? [],
+    dailyActivity: dashboardData?.dailyActivity ?? [],
     loading,
     error,
     refresh: refetch,

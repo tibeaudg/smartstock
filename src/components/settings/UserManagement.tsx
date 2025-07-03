@@ -65,9 +65,10 @@ export const UserManagement = () => {
   const {
     data: users = [],
     isLoading: loading,
+    isFetching,
     error,
     refetch,
-  } = useQuery({
+  } = useQuery<DisplayUser[]>({
     queryKey: ['branchUsers', selectedBranchId],
     queryFn: fetchBranchUsers,
     enabled: !!selectedBranchId,
@@ -171,8 +172,16 @@ export const UserManagement = () => {
           <CardDescription>Overzicht van gebruikers in het geselecteerde filiaal.</CardDescription>
         </CardHeader>
         <CardContent>
-          {loading ? (
-            <div className="flex items-center text-gray-500"><Loader2 className="w-4 h-4 mr-2 animate-spin" />Laden...</div>
+          {users.length === 0 && (loading || isFetching) ? (
+            <Card>
+              <CardHeader>
+                <CardTitle>Gebruikers laden...</CardTitle>
+              </CardHeader>
+              <CardContent className="flex flex-col items-center justify-center py-12">
+                <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
+                <span className="mt-2 text-gray-600">Gebruikers worden geladen...</span>
+              </CardContent>
+            </Card>
           ) : (
             <ul className="space-y-2">
               {users.length > 0 ? users.map(u => (

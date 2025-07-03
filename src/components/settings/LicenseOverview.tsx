@@ -59,9 +59,10 @@ export const LicenseOverview = () => {
   const {
     data,
     isLoading: loading,
+    isFetching,
     error,
     refetch,
-  } = useQuery({
+  } = useQuery<LicenseData>({
     queryKey: ['licenseOverview', user?.id],
     queryFn: fetchData,
     enabled: !!user,
@@ -104,26 +105,6 @@ export const LicenseOverview = () => {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="flex flex-col items-center justify-center py-8">
-        <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
-        <span className="mt-2 text-gray-600">Licentiegegevens laden...</span>
-      </div>
-    );
-  }
-
-  if (error || !data) {
-    return (
-      <div className="flex flex-col items-center justify-center py-8 text-center">
-        <AlertCircle className="w-8 h-8 text-red-500" />
-        <span className="mt-2 font-semibold text-red-600">Geen licentie-informatie beschikbaar</span>
-        <p className="text-sm text-gray-500">Er is een fout opgetreden bij het ophalen van de data.</p>
-        {error && <pre className="mt-4 text-xs text-red-400 bg-gray-800 p-2 rounded max-w-xl overflow-x-auto">{JSON.stringify(error, null, 2)}</pre>}
-      </div>
-    );
-  }
-
   return (
     <div className="space-y-8">
       <Card>
@@ -146,18 +127,22 @@ export const LicenseOverview = () => {
               </thead>
               <tbody>
                 <tr className="bg-white border-b">
-                  <td className="px-6 py-4 font-medium capitalize text-gray-900">{data.creation.created_at ? new Date(data.creation.created_at).toLocaleDateString('nl-BE') : 'N/A' }</td>
-                  <td className="px-6 py-4 font-medium capitalize text-gray-900">{data.license.license_type}</td>
-                  <td className="px-6 py-4 text-center">{data.usage.branch_count}</td>
-                  <td className="px-6 py-4 text-center">{data.usage.user_count}</td>
-                  <td className="px-6 py-4 text-center font-semibold text-gray-800">€{data.license.monthly_price.toFixed(2)}</td>
+                  <td className="px-6 py-4 font-medium capitalize text-gray-900">{data?.creation?.created_at ? new Date(data.creation.created_at).toLocaleDateString('nl-BE') : 'N/A' }</td>
+                  <td className="px-6 py-4 font-medium capitalize text-gray-900">{data?.license?.license_type ?? 'N/A'}</td>
+                  <td className="px-6 py-4 text-center">{data?.usage?.branch_count ?? 'N/A'}</td>
+                  <td className="px-6 py-4 text-center">{data?.usage?.user_count ?? 'N/A'}</td>
+                  <td className="px-6 py-4 text-center font-semibold text-gray-800">€{data?.license?.monthly_price?.toFixed(2) ?? 'N/A'}</td>
                   <td className="px-6 py-4 text-center">
-                    <Badge variant="success" className="bg-green-100 text-green-800">Actief</Badge>
+                    {data?.license?.is_active ? (
+                      <Badge variant="success" className="bg-green-100 text-green-800">Actief</Badge>
+                    ) : (
+                      <Badge variant="destructive" className="bg-red-100 text-red-800">Inactief</Badge>
+                    )}
                   </td>
                 </tr>
               </tbody>
             </table>
-             <div className="text-xs text-gray-400 text-left mt-2">
+            <div className="text-xs text-gray-400 text-left mt-2">
                 +€5 per extra filiaal | +€2.5 per extra gebruiker
              </div>
           </div>
@@ -171,7 +156,7 @@ export const LicenseOverview = () => {
         </CardHeader>
         <CardContent>
           <div className="flex flex-col gap-4">
-            {data.availablePlans.map((plan) => {
+            {Array.isArray(data?.availablePlans) ? data.availablePlans.map((plan) => {
               const isActive = data.activePlanId === plan.id;
               const isRecommended = data.recommendedPlanId === plan.id;
               const isUpdating = isUpdatingPlanId === plan.id;
@@ -228,7 +213,9 @@ export const LicenseOverview = () => {
                   </div>
                 </div>
               );
-            })}
+            }) : (
+              <div className="text-gray-500 text-sm">Geen abonnementen beschikbaar.</div>
+            )}
           </div>
         </CardContent>
       </Card>

@@ -66,7 +66,7 @@ export const useStockMovements = () => {
     isLoading: loading,
     error,
     refetch,
-  } = useQuery({
+  } = useQuery<StockTransaction[]>({
     queryKey: ['stockTransactions', activeBranch?.branch_id, filtersKey],
     queryFn: fetchTransactions,
     enabled: !!user && !!activeBranch,
