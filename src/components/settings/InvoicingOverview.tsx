@@ -7,13 +7,12 @@ import { Loader2, AlertCircle, FileText } from 'lucide-react';
 import clsx from 'clsx';
 import { useQuery } from '@tanstack/react-query';
 
-// AANGEPAST: De interface matcht nu de database tabel
 interface Invoice {
   id: number;
   invoice_date: string;
   period: string;
   amount: number;
-  status: 'Betaald' | 'Nog niet betaald';
+  status: 'paid' | 'open';
 }
 
 export const InvoicingOverview = () => {
@@ -92,43 +91,70 @@ export const InvoicingOverview = () => {
     <Card>
       <CardHeader>{/* ... */}</CardHeader>
       <CardContent>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm text-left">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50">
-              <tr>
-                <th className="px-6 py-3">Periode</th>
-                <th className="px-6 py-3 text-right">Bedrag</th>
-                <th className="px-6 py-3 text-center">Status</th>
-                <th className="px-6 py-3 text-center">Factuurdatum</th>
-              </tr>
-            </thead>
-            <tbody>
-              {invoices.map((invoice) => {
-                const isPaid = invoice.status === 'Betaald';
-                return (
-                  <tr key={invoice.id} className="bg-white border-b hover:bg-gray-50">
-                    <td className="px-6 py-4 font-medium text-gray-900 capitalize">
-                      {invoice.period}
-                    </td>
-                    <td className="px-6 py-4 text-right font-mono text-gray-800">
-                      €{invoice.amount.toFixed(2)}
-                    </td>
-                    <td className="px-6 py-4 text-center">
-                      <Badge className={clsx({
-                        'bg-green-100 text-green-800': isPaid,
-                        'bg-yellow-100 text-yellow-800': !isPaid,
-                      })}>
-                        {invoice.status}
-                      </Badge>
-                    </td>
-                    <td className="px-6 py-4 text-center">
-                      {new Date(invoice.invoice_date).toLocaleDateString('nl-BE')}
-                    </td>
+        {/* Huidige openstaande factuur */}
+        {!isCurrentPaid && (
+          <div className="mb-8">
+            <h3 className="text-lg font-bold text-blue-700 mb-2">Huidige maandfactuur</h3>
+            <table className="w-full text-sm mb-4">
+              <thead className="text-xs text-gray-700 uppercase bg-blue-50">
+                <tr>
+                  <th className="px-6 py-3">Periode</th>
+                  <th className="px-6 py-3 text-right">Bedrag</th>
+                  <th className="px-6 py-3 text-center">Status</th>
+                  <th className="px-6 py-3 text-center">Factuurdatum</th>
+                  <th className="px-6 py-3 text-center">Vervaldatum</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="bg-white border-b">
+                  <td className="px-6 py-4 font-medium text-gray-900 capitalize">{currentInvoice.period}</td>
+                  <td className="px-6 py-4 text-right font-mono text-gray-800">€{currentInvoice.amount.toFixed(2)}</td>
+                  <td className="px-6 py-4 text-center">
+                    <Badge className="bg-yellow-100 text-yellow-800">Open</Badge>
+                  </td>
+                  <td className="px-6 py-4 text-center">{invoiceDate.toLocaleDateString('nl-BE')}</td>
+                  <td className="px-6 py-4 text-center">{dueDate.toLocaleDateString('nl-BE')}</td>
+                </tr>
+              </tbody>
+            </table>
+            <div className="text-xs text-gray-500">Gelieve te betalen voor: <span className="font-semibold text-blue-700">{dueDate.toLocaleDateString('nl-BE')}</span></div>
+          </div>
+        )}
+        {/* Historiek van betaalde facturen */}
+        <div>
+          <h3 className="text-lg font-bold text-gray-900 mb-2">Historiek</h3>
+          {paidInvoices.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-8 text-center">
+              <FileText className="w-8 h-8 text-gray-400 mb-2"/>
+              <p className="font-semibold text-gray-700">Nog geen betaalde facturen</p>
+              <p className="text-sm text-gray-500">Uw eerste factuur zal verschijnen zodra deze is betaald.</p>
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm text-left">
+                <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-3">Periode</th>
+                    <th className="px-6 py-3 text-right">Bedrag</th>
+                    <th className="px-6 py-3 text-center">Status</th>
+                    <th className="px-6 py-3 text-center">Factuurdatum</th>
                   </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                </thead>
+                <tbody>
+                  {paidInvoices.map((invoice) => (
+                    <tr key={invoice.id} className="bg-white border-b hover:bg-gray-50">
+                      <td className="px-6 py-4 font-medium text-gray-900 capitalize">{invoice.period}</td>
+                      <td className="px-6 py-4 text-right font-mono text-gray-800">€{invoice.amount.toFixed(2)}</td>
+                      <td className="px-6 py-4 text-center">
+                        <Badge className="bg-green-100 text-green-800">Betaald</Badge>
+                      </td>
+                      <td className="px-6 py-4 text-center">{new Date(invoice.invoice_date).toLocaleDateString('nl-BE')}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>

@@ -6,6 +6,7 @@ import {
   Settings
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/hooks/useAuth'; // FIX: use import, not require
 
 interface MobileBottomNavProps {
   currentTab: string;
@@ -14,13 +15,20 @@ interface MobileBottomNavProps {
 }
 
 export const MobileBottomNav = ({ currentTab, onTabChange, userRole }: MobileBottomNavProps) => {
+  // FIX: use hook directly
+  const { userProfile } = useAuth();
   const navigate = useNavigate();
-  const menuItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: BarChart3, path: '/dashboard' },
-    { id: 'stock', label: 'Producten', icon: Package, path: '/dashboard/stock' },
-    { id: 'transactions', label: 'Bewegingslijst', icon: ShoppingCart, path: '/dashboard/transactions' },
-    { id: 'settings', label: 'Instellingen', icon: Settings, path: '/dashboard/settings' },
-  ];
+  const isBlocked = userProfile?.blocked;
+  const menuItems = isBlocked
+    ? [
+        { id: 'settings', label: 'Instellingen', icon: Settings, path: '/dashboard/settings' },
+      ]
+    : [
+        { id: 'dashboard', label: 'Dashboard', icon: BarChart3, path: '/dashboard' },
+        { id: 'stock', label: 'Producten', icon: Package, path: '/dashboard/stock' },
+        { id: 'transactions', label: 'Bewegingslijst', icon: ShoppingCart, path: '/dashboard/transactions' },
+        { id: 'settings', label: 'Instellingen', icon: Settings, path: '/dashboard/settings' },
+      ];
 
   const handleNav = (item: typeof menuItems[0]) => {
     if (onTabChange) onTabChange(item.id);

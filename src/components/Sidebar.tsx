@@ -31,17 +31,23 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
   const { signOut } = useAuth();
   const navigate = useNavigate();
 
-  const menuItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: BarChart3, path: '/dashboard', end: true },
-    { id: 'stock', label: 'Producten', icon: Package, path: '/dashboard/stock' },
-    { id: 'transactions', label: 'Bewegingslijst', icon: ShoppingCart, path: '/dashboard/transactions' },
-    ...(userRole === 'admin'
-      ? [
-          { id: 'admin', label: 'Admin', icon: Settings, path: '/admin' },
-        ]
-      : []),
-    { id: 'settings', label: 'Instellingen', icon: Settings, path: '/dashboard/settings' },
-  ];
+  // If blocked, only show settings/invoicing
+  const isBlocked = userProfile?.blocked;
+  const menuItems = isBlocked
+    ? [
+        { id: 'settings', label: 'Instellingen', icon: Settings, path: '/dashboard/settings' },
+      ]
+    : [
+        { id: 'dashboard', label: 'Dashboard', icon: BarChart3, path: '/dashboard', end: true },
+        { id: 'stock', label: 'Producten', icon: Package, path: '/dashboard/stock' },
+        { id: 'transactions', label: 'Bewegingslijst', icon: ShoppingCart, path: '/dashboard/transactions' },
+        ...(userRole === 'admin'
+          ? [
+              { id: 'admin', label: 'Admin', icon: Settings, path: '/admin' },
+            ]
+          : []),
+        { id: 'settings', label: 'Instellingen', icon: Settings, path: '/dashboard/settings' },
+      ];
 
   const handleSignOut = async () => {
     try {

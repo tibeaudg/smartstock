@@ -9,10 +9,13 @@ import { supabase } from '@/integrations/supabase/client'; // getypeerd met Data
 import type { User, AuthError, Session } from '@supabase/supabase-js';
 import type { Database } from '@/integrations/supabase/types';
 
+// 1. Add 'blocked' to the UserProfile type
+export type UserProfile = Database['public']['Tables']['profiles']['Row'] & { blocked?: boolean };
+
 interface AuthContextType {
   user: User | null;
   session: Session | null;
-  userProfile: Database['public']['Tables']['profiles']['Row'] | null;
+  userProfile: UserProfile | null;
   loading: boolean;
   signIn: (email: string, password: string) => Promise<{ error: AuthError | null }>;
   signUp: (
@@ -42,13 +45,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [userProfile, setUserProfile] = useState<
-    Database['public']['Tables']['profiles']['Row'] | null
+    UserProfile | null
   >(null);
   const [loading, setLoading] = useState(true);
 
+  // 2. When fetching the user profile, make sure 'blocked' is included
   const fetchUserProfile = async (
     userId: string
-  ): Promise<Database['public']['Tables']['profiles']['Row'] | null> => {
+  ): Promise<UserProfile | null> => {
     try {
       const { data, error } = await supabase
         .from('profiles')
@@ -60,7 +64,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         console.error('Error fetching user profile:', error.message);
         return null;
       }
-      return data;
+      return data as UserProfile;
     } catch (err) {
       console.error('Unexpected error fetching user profile:', err);
       return null;
