@@ -1,4 +1,3 @@
-// src/pages/admin/invoices.tsx
 
 import React from 'react';
 import { supabase } from '@/integrations/supabase/client';
@@ -23,7 +22,7 @@ interface UserDetails {
 
 // Helper: Haalt ALLE gebruikers op en verrijkt ze met hun licentie- en verbruiksdata
 async function fetchAllUsersWithDetails(currentUserId: string): Promise<UserDetails[]> {
-  // Haal eerst de basis-info van alle admin users op
+
   const { data: users, error: usersError } = await supabase
     .from('profiles')
     .select('id, email, blocked')
@@ -161,7 +160,7 @@ export default function AdminInvoicingPage() {
                             if (!window.confirm(`Weet je zeker dat je ${user.email} wilt blokkeren?`)) return;
                             const { error } = await supabase
                               .from('profiles')
-                              .update({ blocked: true })
+                              .update({ is_blocked: true })
                               .eq('id', user.id);
                             if (error) {
                               alert(`Fout bij blokkeren: ${error.message}`);
@@ -178,7 +177,7 @@ export default function AdminInvoicingPage() {
                             if (!window.confirm(`Weet je zeker dat je ${user.email} wilt deblokkeren?`)) return;
                             const { error } = await supabase
                               .from('profiles')
-                              .update({ blocked: false })
+                              .update({ is_blocked: false })
                               .eq('id', user.id);
                             if (error) {
                               alert(`Fout bij deblokkeren: ${error.message}`);

@@ -119,7 +119,7 @@ export const LicenseOverview = () => {
                   <th className="px-6 py-3">Sinds</th>
                   <th className="px-6 py-3">Licentie</th>
                   <th className="px-6 py-3 text-center">Filialen</th>
-                  <th className="px-6 py-3 text-center">Gebruikers (extra)</th>
+                  <th className="px-6 py-3 text-center">Gebruikers</th>
                   <th className="px-6 py-3 text-center">€/Maand</th>
                   <th className="px-6 py-3 text-center">Status</th>
                 </tr>
