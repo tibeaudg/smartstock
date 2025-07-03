@@ -113,7 +113,7 @@ export const StockList = () => {
     queryKey: ['products', activeBranch?.branch_id],
     queryFn: () => activeBranch && user ? fetchProducts(activeBranch.branch_id) : [],
     enabled: !!user && !!activeBranch,
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
     staleTime: 1000 * 60 * 2, // 2 minuten cache
     gcTime: 1000 * 60 * 60 * 24, // 24 uur garbage collect
     // @ts-expect-error: keepPreviousData is supported in v5, type mismatch workaround

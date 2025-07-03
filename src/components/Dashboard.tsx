@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -160,6 +159,21 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
             </div>
           </CardContent>
         </Card>
+      </div>
+
+      {/* Stock Movement Chart */}
+      <div className="bg-white rounded-lg shadow p-6 mt-6">
+        <h2 className="text-xl font-semibold mb-4 text-gray-800">Stockbewegingen per dag</h2>
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart data={metrics.stockMovements || []} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="date" />
+            <YAxis />
+            <Tooltip />
+            <Bar dataKey="incoming" fill="#4ade80" name="Inkomend" />
+            <Bar dataKey="outgoing" fill="#f87171" name="Uitgaand" />
+          </BarChart>
+        </ResponsiveContainer>
       </div>
     </div>
   );
