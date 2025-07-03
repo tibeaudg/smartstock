@@ -68,6 +68,15 @@ const fetchInvoices = async () => {
 };
 
 export default function AdminInvoicingPage() {
+  // State for selected user and all users
+  const [selectedUser, setSelectedUser] = React.useState<{ id: string; email: string; active: boolean } | null>(null);
+  const [allUsers, setAllUsers] = React.useState<{ id: string; email: string; active: boolean }[]>([]);
+
+  // Fetch all users on mount
+  React.useEffect(() => {
+    fetchAllUsers().then(setAllUsers);
+  }, []);
+
   const {
     data: allInvoices = [],
     isLoading: loading,
@@ -258,6 +267,7 @@ export default function AdminInvoicingPage() {
           alert('Fout bij blokkeren: ' + error.message);
         } else {
           alert('Gebruiker geblokkeerd!');
+          fetchAllUsers().then(setAllUsers);
         }
       });
   }
@@ -268,14 +278,15 @@ export default function AdminInvoicingPage() {
       .from('profiles')
       .update({ blocked: false } as any)
       .eq('email', userEmail)
-    .then(({ error }) => {
-      if (error) {
-        alert('Fout bij deblokkeren: ' + error.message);
-      } else {
-        alert('Gebruiker gedeblokkeerd!');
-      }
-    });
-}
+      .then(({ error }) => {
+        if (error) {
+          alert('Fout bij deblokkeren: ' + error.message);
+        } else {
+          alert('Gebruiker gedeblokkeerd!');
+          fetchAllUsers().then(setAllUsers);
+        }
+      });
+  }
 
   // Voeg deze functies toe onderaan de component
   async function handleToggleActive(userId: string, isActive: boolean) {
@@ -283,7 +294,7 @@ export default function AdminInvoicingPage() {
       .from('profiles')
       .update({ blocked: !isActive } as any)
       .eq('id', userId);
-    fetchCurrentInvoices();
+    fetchAllUsers().then(setAllUsers);
   }
 
   async function handleMarkAsPaid(inv: Invoice) {
@@ -292,7 +303,7 @@ export default function AdminInvoicingPage() {
       .from('invoices')
       .update({ status: 'paid' })
       .eq('id', inv.id.toString());
-    fetchInvoiceData(false);
+    refetch();
   }
 
   async function handleMarkAsOpen(inv: Invoice) {
@@ -300,7 +311,7 @@ export default function AdminInvoicingPage() {
       .from('invoices')
       .update({ status: 'open' })
       .eq('id', inv.id.toString());
-    fetchInvoiceData(false);
+    refetch();
   }
 
   function handleStatusChange(userEmail: string, status: string) {
@@ -313,8 +324,8 @@ export default function AdminInvoicingPage() {
         if (error) {
           alert('Fout bij bijwerken: ' + error.message);
         }
-        fetchCurrentInvoices();
-        fetchInvoiceData(false);
+        fetchAllUsers().then(setAllUsers);
+        refetch();
       });
   }
 }
