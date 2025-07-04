@@ -10,6 +10,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { toast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 
 // TYPE-SAFETY: Interfaces voor duidelijkere datastructuren
 interface Profile {
@@ -39,6 +40,10 @@ export const UserManagement = () => {
   const [inviteEmail, setInviteEmail] = useState('');
   const [inviteRole, setInviteRole] = useState('staff');
   const [selectedBranchId, setSelectedBranchId] = useState<string>('');
+  const [manageBranchesUser, setManageBranchesUser] = useState<DisplayUser | null>(null);
+  const [userBranches, setUserBranches] = useState<string[]>([]);
+  const [savingBranches, setSavingBranches] = useState(false);
+  const [deletingUserId, setDeletingUserId] = useState<string | null>(null);
 
   useEffect(() => {
     if (activeBranch?.branch_id && !selectedBranchId) {
@@ -124,6 +129,59 @@ export const UserManagement = () => {
     }
   };
 
+  // Haal filialen op voor een specifieke gebruiker
+  const fetchUserBranches = async (userId: string) => {
+    const { data, error } = await supabase
+      .from('branch_users')
+      .select('branch_id')
+      .eq('user_id', userId);
+    if (error) return [];
+    return (data || []).map((b: any) => b.branch_id);
+  };
+
+  // Open modal en laad huidige filialen
+  const handleOpenManageBranches = async (user: DisplayUser) => {
+    setManageBranchesUser(user);
+    const branches = await fetchUserBranches(user.userId);
+    setUserBranches(branches);
+  };
+
+  // Sla toegewezen filialen op
+  const handleSaveBranches = async () => {
+    if (!manageBranchesUser) return;
+    setSavingBranches(true);
+    // Verwijder alle bestaande branch_users voor deze gebruiker
+    await supabase.from('branch_users').delete().eq('user_id', manageBranchesUser.userId);
+    // Voeg nieuwe branch_users toe
+    const inserts = userBranches.map(branch_id => ({
+      user_id: manageBranchesUser.userId,
+      branch_id,
+      role: manageBranchesUser.role,
+    }));
+    if (inserts.length > 0) {
+      await supabase.from('branch_users').insert(inserts);
+    }
+    setSavingBranches(false);
+    setManageBranchesUser(null);
+    refetch();
+  };
+
+  // Volledig verwijderen van gebruiker (branch_users, profiles, auth)
+  const handleDeleteUserCompletely = async (userIdToRemove: string) => {
+    setDeletingUserId(userIdToRemove);
+    // 1. Verwijder uit branch_users
+    await supabase.from('branch_users').delete().eq('user_id', userIdToRemove);
+    // 2. Verwijder uit profiles
+    await supabase.from('profiles').delete().eq('id', userIdToRemove);
+    // 3. Verwijder uit auth (alleen mogelijk als je service role key gebruikt, anders via edge function)
+    // await supabase.auth.admin.deleteUser(userIdToRemove); // Vereist elevated privileges
+    // Alternatief: roep een edge function aan die dit doet
+    await supabase.functions.invoke('delete-user', { body: { user_id: userIdToRemove } });
+    setDeletingUserId(null);
+    toast({ title: 'Gebruiker verwijderd', description: 'Het account is volledig verwijderd.' });
+    refetch();
+  };
+
   return (
     <div className="space-y-6">
       <Card>
@@ -190,11 +248,16 @@ export const UserManagement = () => {
                     <p className="font-medium">{u.email}</p>
                     <p className="text-sm text-gray-500 capitalize">{u.role}</p>
                   </div>
-                  {u.userId !== user?.id && (
-                    <Button variant="outline" size="sm" onClick={() => handleRemoveUser(u.userId)}>
-                      Verwijder
+                  <div className="flex gap-2">
+                    <Button variant="outline" size="sm" onClick={() => handleOpenManageBranches(u)}>
+                      Filialen beheren
                     </Button>
-                  )}
+                    {u.userId !== user?.id && (
+                      <Button variant="destructive" size="sm" onClick={() => handleDeleteUserCompletely(u.userId)} disabled={deletingUserId === u.userId}>
+                        {deletingUserId === u.userId ? 'Verwijderen...' : 'Verwijder'}
+                      </Button>
+                    )}
+                  </div>
                 </li>
               )) : (
                 <div className="text-center text-gray-500 py-4">Geen gebruikers gevonden in dit filiaal.</div>
@@ -203,6 +266,38 @@ export const UserManagement = () => {
           )}
         </CardContent>
       </Card>
+
+      {/* Modal voor filialen beheren */}
+      <Dialog open={!!manageBranchesUser} onOpenChange={open => !open && setManageBranchesUser(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Filialen beheren voor {manageBranchesUser?.email}</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-2">
+            {branches.map(branch => (
+              <label key={branch.branch_id} className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  checked={userBranches.includes(branch.branch_id)}
+                  onChange={e => {
+                    if (e.target.checked) {
+                      setUserBranches([...userBranches, branch.branch_id]);
+                    } else {
+                      setUserBranches(userBranches.filter(id => id !== branch.branch_id));
+                    }
+                  }}
+                />
+                {branch.branch_name}
+              </label>
+            ))}
+          </div>
+          <DialogFooter>
+            <Button onClick={handleSaveBranches} disabled={savingBranches}>
+              {savingBranches ? 'Opslaan...' : 'Opslaan'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

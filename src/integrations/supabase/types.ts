@@ -450,6 +450,7 @@ export type Database = {
           role: Database["public"]["Enums"]["user_role"]
           updated_at: string | null
           selected_plan: string | null
+          blocked: boolean | null
         }
         Insert: {
           created_at?: string | null
@@ -460,7 +461,7 @@ export type Database = {
           role?: Database["public"]["Enums"]["user_role"]
           updated_at?: string | null
           selected_plan?: string | null
-
+          blocked?: boolean | null
         }
         Update: {
           created_at?: string | null
@@ -471,7 +472,7 @@ export type Database = {
           role?: Database["public"]["Enums"]["user_role"]
           updated_at?: string | null
           selected_plan?: string | null
-
+          blocked?: boolean | null
         }
         Relationships: []
       }

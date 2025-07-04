@@ -15,6 +15,7 @@ import { useAuth, AuthProvider } from "./hooks/useAuth";
 import { Suspense } from "react";
 import { ContentWrapper } from "./ContentWrapper";
 import AdminInvoicingPage from "./components/AdminInvoicingPage";
+import AdminUserDetailPage from './pages/AdminUserDetailPage';
 import { AlertCircle } from "lucide-react";
 
 // Configure QueryClient
@@ -154,6 +155,7 @@ const App = () => {
                   </Route>
 
                   <Route path="/admin" element={<AdminInvoicingPage />} />
+                  <Route path="/admin/user/:id" element={<AdminUserDetailPage />} />
 
                   {/* Fallback route */}
                   <Route path="*" element={<NotFound />} />
