@@ -36,7 +36,12 @@ export interface DashboardData {
   dailyActivity: DailyActivityData[];
 }
 
-export const useDashboardData = () => {
+export interface UseDashboardDataParams {
+  dateFrom?: Date;
+  dateTo?: Date;
+}
+
+export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = {}) => {
   const { user } = useAuth();
   const { activeBranch } = useBranches();
 
@@ -58,21 +63,19 @@ export const useDashboardData = () => {
       const lowStockCount = productsData?.filter(product => 
         product.quantity_in_stock <= product.minimum_stock_level).length || 0;
 
-      // Get transactions for the last 7 days
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      const sevenDaysAgo = new Date(today);
-      sevenDaysAgo.setDate(today.getDate() - 6);
-
-      const { data: transactions, error: transactionError } = await supabase
+      // Get transactions for the selected range
+      let query = supabase
         .from('stock_transactions')
         .select('transaction_type, quantity, created_at')
-        .eq('branch_id', activeBranch.branch_id)
-        .gte('created_at', sevenDaysAgo.toISOString());
-
+        .eq('branch_id', activeBranch.branch_id);
+      if (dateFrom) query = query.gte('created_at', dateFrom.toISOString());
+      if (dateTo) query = query.lte('created_at', dateTo.toISOString());
+      const { data: transactions, error: transactionError } = await query;
       if (transactionError) throw new Error('Failed to fetch transactions data');
 
       // Calculate incoming/outgoing today
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
       const incomingToday = transactions
         ?.filter(t => t.transaction_type === 'incoming' && new Date(t.created_at) >= today)
         .reduce((sum, t) => sum + t.quantity, 0) || 0;
@@ -80,24 +83,26 @@ export const useDashboardData = () => {
         ?.filter(t => t.transaction_type === 'outgoing' && new Date(t.created_at) >= today)
         .reduce((sum, t) => sum + t.quantity, 0) || 0;
 
-      // Generate daily activity (last 7 days)
+      // Generate daily activity (voor gekozen bereik)
       const activity = [];
-      for (let i = 6; i >= 0; i--) {
-        const date = new Date();
-        date.setDate(date.getDate() - i);
-        date.setHours(0, 0, 0, 0);
-        const nextDay = new Date(date);
-        nextDay.setDate(date.getDate() + 1);
+      let start = dateFrom ? new Date(dateFrom) : new Date();
+      let end = dateTo ? new Date(dateTo) : new Date();
+      start.setHours(0, 0, 0, 0);
+      end.setHours(0, 0, 0, 0);
+      // Loop van start t/m end (inclusief)
+      for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+        const nextDay = new Date(d);
+        nextDay.setDate(d.getDate() + 1);
         const dayTransactions = transactions?.filter((t) => {
           const tDate = new Date(t.created_at);
-          return tDate >= date && tDate < nextDay;
+          return tDate >= d && tDate < nextDay;
         }) || [];
         const incoming = dayTransactions.filter((t) => t.transaction_type === 'incoming')
           .reduce((sum, t) => sum + t.quantity, 0);
         const outgoing = dayTransactions.filter((t) => t.transaction_type === 'outgoing')
           .reduce((sum, t) => sum + t.quantity, 0);
         activity.push({
-          date: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+          date: d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
           incoming,
           outgoing,
         });
@@ -146,7 +151,7 @@ export const useDashboardData = () => {
     error,
     refetch,
   } = useQuery({
-    queryKey: ['dashboardData', activeBranch?.branch_id, user?.id],
+    queryKey: ['dashboardData', activeBranch?.branch_id, user?.id, dateFrom?.toISOString(), dateTo?.toISOString()],
     queryFn: fetchDashboardData,
     enabled: !!user && !!activeBranch,
     refetchOnWindowFocus: true,

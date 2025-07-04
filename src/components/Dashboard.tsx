@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { CalendarIcon, DollarSign, Package, TrendingUp, TrendingDown, AlertTriangle } from 'lucide-react';
-import { format } from 'date-fns';
+import { format, addDays, startOfWeek, startOfMonth, startOfQuarter, startOfYear, endOfToday } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, BarChart, Bar } from 'recharts';
 import { useDashboardData } from '@/hooks/useDashboardData';
@@ -17,10 +17,33 @@ interface DashboardProps {
 
 export const Dashboard = ({ userRole }: DashboardProps) => {
   const isMobile = useIsMobile();
-  const [dateFrom, setDateFrom] = useState<Date>();
-  const [dateTo, setDateTo] = useState<Date>();
-  const { activeBranch } = useBranches();
-  const { metrics, dailyActivity, loading } = useDashboardData();
+  const [rangeType, setRangeType] = useState<'week' | 'month' | 'quarter' | 'year' | 'all'>('month');
+
+  // Bepaal start- en einddatum op basis van selectie
+  const today = new Date();
+  let dateFrom: Date | undefined;
+  let dateTo: Date | undefined = endOfToday();
+  if (rangeType === 'week') dateFrom = startOfWeek(today, { weekStartsOn: 1 });
+  else if (rangeType === 'month') dateFrom = startOfMonth(today);
+  else if (rangeType === 'quarter') dateFrom = startOfQuarter(today);
+  else if (rangeType === 'year') dateFrom = startOfYear(today);
+  else dateFrom = undefined;
+
+  // Haal alle dashboarddata op (voor de statistieken)
+  const { metrics, loading } = useDashboardData();
+
+  // State voor grafiek-periode
+  const [chartRangeType, setChartRangeType] = useState<'week' | 'month' | 'quarter' | 'year' | 'all'>('month');
+  let chartDateFrom: Date | undefined;
+  let chartDateTo: Date | undefined = endOfToday();
+  if (chartRangeType === 'week') chartDateFrom = startOfWeek(today, { weekStartsOn: 1 });
+  else if (chartRangeType === 'month') chartDateFrom = startOfMonth(today);
+  else if (chartRangeType === 'quarter') chartDateFrom = startOfQuarter(today);
+  else if (chartRangeType === 'year') chartDateFrom = startOfYear(today);
+  else chartDateFrom = undefined;
+
+  // Haal alleen de grafiekdata op voor het gekozen bereik
+  const { dailyActivity } = useDashboardData({ dateFrom: chartDateFrom, dateTo: chartDateTo });
 
   console.log('Dashboard rendering with userRole:', userRole, 'loading:', loading);
 
@@ -46,15 +69,6 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
     );
   }
 
-  if (!activeBranch) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[300px]">
-        <h2 className="text-xl font-semibold mb-2">Geen filiaal geselecteerd</h2>
-        <p className="text-gray-600 mb-4">Selecteer of maak een filiaal aan om dashboarddata te zien.</p>
-      </div>
-    );
-  }
-
   return (
     <div className="space-y-8 max-w-[1600px] mx-auto">
       {/* Header */}
@@ -64,50 +78,6 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
 
         </div>
         
-        <div className="flex flex-col sm:flex-row gap-3">
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button
-                variant="outline"
-                size="lg"
-                className={cn(
-                  "w-full sm:w-auto justify-start text-left font-normal min-w-[280px]",
-                  !dateFrom && "text-muted-foreground"
-                )}
-              >
-                <CalendarIcon className="mr-2 h-5 w-5" />
-                {dateFrom ? (
-                  dateTo ? (
-                    <>
-                      {format(dateFrom, "LLL dd, y")} -{" "}
-                      {format(dateTo, "LLL dd, y")}
-                    </>
-                  ) : (
-                    format(dateFrom, "LLL dd, y")
-                  )
-                ) : (
-                  <span>Kies een datum</span>
-                )}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="start">
-              <Calendar
-                initialFocus
-                mode="range"
-                defaultMonth={dateFrom}
-                selected={{
-                  from: dateFrom,
-                  to: dateTo,
-                }}
-                onSelect={(range) => {
-                  setDateFrom(range?.from);
-                  setDateTo(range?.to);
-                }}
-                numberOfMonths={2}
-              />
-            </PopoverContent>
-          </Popover>
-        </div>
       </div>
 
       {/* Metrics Cards */}
@@ -119,7 +89,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
           </CardHeader>
           <CardContent className="pt-0">
             <div className="text-3xl font-bold text-gray-900">
-              ${metrics.totalStockValue.toLocaleString()}
+              €{metrics.totalStockValue.toLocaleString()}
             </div>
           </CardContent>
         </Card>
@@ -173,7 +143,20 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
 
       {/* Stock Movement Chart */}
       <div className="bg-white rounded-lg shadow p-6 mt-6">
-        <h2 className="text-xl font-semibold mb-4 text-gray-800">Stockbewegingen per dag</h2>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-2">
+          <h2 className="text-xl font-semibold text-gray-800">Stockbewegingen</h2>
+          <select
+            className="border rounded px-3 py-2 text-sm w-fit"
+            value={chartRangeType}
+            onChange={e => setChartRangeType(e.target.value as any)}
+          >
+            <option value="week">Deze week</option>
+            <option value="month">Deze maand</option>
+            <option value="quarter">Dit kwartaal</option>
+            <option value="year">Dit jaar</option>
+            <option value="all">Alles</option>
+          </select>
+        </div>
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={dailyActivity || []} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
             <CartesianGrid strokeDasharray="3 3" />
