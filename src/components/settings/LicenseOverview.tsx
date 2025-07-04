@@ -44,6 +44,27 @@ interface LicenseData {
   recommendedPlanId: string;
 }
 
+// Simuleer de prijsberekening voor een plan, rekening houdend met eerste filiaal gratis
+function simulatePlanPrice(plan: Plan, usage: LicenseData['usage']): number {
+  const userCount = usage.user_count ?? 1;
+  const branchCount = usage.branch_count ?? 0;
+  const totalProducts = usage.total_products ?? 0;
+  let price = plan.price;
+  // Extra gebruikers boven 1
+  if (userCount > 1) {
+    price += (userCount - 1) * 1; // €1 per extra gebruiker
+  }
+  // Extra filialen boven 1 (eerste gratis)
+  if (branchCount > 1) {
+    price += (branchCount - 1) * 2; // €2 per extra filiaal
+  }
+  // Producten buiten bundel
+  if (totalProducts > plan.limit) {
+    price += (totalProducts - plan.limit) * plan.extraCost;
+  }
+  return price;
+}
+
 export const LicenseOverview = () => {
   const { user } = useAuth();
   const [isUpdatingPlanId, setIsUpdatingPlanId] = useState<string | null>(null);
@@ -163,6 +184,7 @@ export const LicenseOverview = () => {
                 const isActive = data.activePlanId === plan.id;
                 const isRecommended = data.recommendedPlanId === plan.id;
                 const isUpdating = isUpdatingPlanId === plan.id;
+                const simulatedTotalPrice = simulatePlanPrice(plan, data.usage);
 
                 return (
                   <div
@@ -195,7 +217,7 @@ export const LicenseOverview = () => {
                     <div className="flex flex-col items-start sm:items-end gap-2 w-full sm:w-auto">
                       <div className="text-left sm:text-right">
                         <p className="text-xl font-bold text-gray-900">
-                          €{plan.simulatedTotalPrice.toFixed(2)}
+                          €{simulatedTotalPrice.toFixed(2)}
                           <span className="text-sm font-normal text-gray-600"> /maand</span>
                         </p>
                         <p className="text-xs text-gray-500">Geschatte totaalkost</p>

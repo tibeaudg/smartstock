@@ -22,11 +22,6 @@ interface Plan {
   extra_cost: number;
 }
 
-interface Setting {
-  key: string;
-  value: string;
-}
-
 async function fetchAdminProfiles(): Promise<Profile[]> {
   const { data, error } = await supabase
     .from('profiles')
@@ -44,31 +39,34 @@ async function fetchPlans(): Promise<Plan[]> {
   return data || [];
 }
 
-async function fetchSettings(): Promise<Setting[]> {
-  const { data, error } = await supabase
-    .from('settings')
-    .select('key, value');
-  if (error) throw new Error(error.message);
-  return data || [];
-}
-
+// Aangepaste functie met hardgecodeerde prijzen
 function calculatePrice(
   profile: Profile,
-  plans: Plan[],
-  settings: Record<string, number>
+  plans: Plan[]
 ): number {
   const plan = plans.find((p) => p.id === profile.selected_plan) || plans.find((p) => p.id === 'free');
   if (!plan) return 0;
-  const userCount = profile.user_count ?? 0;
+
+  const userCount = profile.user_count ?? 1;
   const branchCount = profile.branch_count ?? 0;
+  const totalProducts = profile.total_products ?? 0;
+  
+  const extraUserCost = 1; // €1 per extra gebruiker
+  const extraBranchCost = 2; // €2 per extra filiaal
+
   let price = plan.price;
-  // Extra users
-  if (userCount > plan.limit) {
-    price += (userCount - plan.limit) * (settings.extra_user_cost || 0);
+
+  // Voor elke extra gebruiker boven 1
+  if (userCount > 1) {
+    price += (userCount - 1) * extraUserCost;
   }
-  // Extra branches
-  if (branchCount > plan.limit) {
-    price += (branchCount - plan.limit) * (settings.extra_branch_cost || 0);
+  // Voor elke extra filiaal boven 1 (eerste filiaal gratis)
+  if (branchCount > 1) {
+    price += (branchCount - 1) * extraBranchCost;
+  }
+  // Voor elk product boven limiet van het plan
+  if (totalProducts > plan.limit) {
+    price += (totalProducts - plan.limit) * plan.extra_cost;
   }
   return price;
 }
@@ -101,21 +99,15 @@ export default function AdminProfilesPage() {
     queryKey: ['plans'],
     queryFn: fetchPlans,
   });
-  const { data: settingsArr = [] } = useQuery({
-    queryKey: ['settings'],
-    queryFn: fetchSettings,
-  });
-  const settings: Record<string, number> = Object.fromEntries(
-    settingsArr.map((s) => [s.key, Number(s.value)])
-  );
+
   const queryClient = useQueryClient();
   const blockMutation = useMutation({
     mutationFn: ({ id, blocked }: { id: string; blocked: boolean }) => blockUser(id, blocked),
-    onSuccess: () => queryClient.invalidateQueries(['adminProfiles']),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['adminProfiles'] }),
   });
   const deleteMutation = useMutation({
     mutationFn: (id: string) => deleteUser(id),
-    onSuccess: () => queryClient.invalidateQueries(['adminProfiles']),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['adminProfiles'] }),
   });
 
   if (isLoading) {
@@ -170,12 +162,13 @@ export default function AdminProfilesPage() {
                     <td className="px-4 py-2">{profile.user_count ?? '-'}</td>
                     <td className="px-4 py-2">{profile.branch_count ?? '-'}</td>
                     <td className="px-4 py-2">{profile.total_products ?? '-'}</td>
-                    <td className="px-4 py-2 font-semibold">€{calculatePrice(profile, plans, settings).toFixed(2)}</td>
+                    {/* De aanroep is nu eenvoudiger zonder settings */}
+                    <td className="px-4 py-2 font-semibold">€{calculatePrice(profile, plans).toFixed(2)}</td>
                     <td className="px-4 py-2 flex gap-2">
                       <button
                         className={`px-2 py-1 rounded text-xs ${profile.blocked ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}
                         onClick={() => blockMutation.mutate({ id: profile.id, blocked: !!profile.blocked })}
-                        disabled={blockMutation.isLoading}
+                        disabled={blockMutation.isPending}
                       >
                         {profile.blocked ? 'Deblokkeren' : 'Blokkeren'}
                       </button>
@@ -186,7 +179,7 @@ export default function AdminProfilesPage() {
                             deleteMutation.mutate(profile.id);
                           }
                         }}
-                        disabled={deleteMutation.isLoading}
+                        disabled={deleteMutation.isPending}
                       >
                         Verwijderen
                       </button>
