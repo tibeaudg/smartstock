@@ -44,12 +44,10 @@ export const useDashboardData = () => {
     if (!user || !activeBranch) throw new Error('Geen gebruiker of filiaal');
 
     try {
-      console.log('Fetching dashboard data for branch:', activeBranch.branch_id);
-
       // Fetch total stock value and product count
       const { data: productsData, error: productsError } = await supabase
         .from('products')
-        .select('quantity_in_stock, unit_price, minimum_stock_level')
+        .select('quantity_in_stock, unit_price, minimum_stock_level, categories(name)')
         .eq('branch_id', activeBranch.branch_id);
 
       if (productsError) throw new Error('Failed to fetch products data');
@@ -57,81 +55,47 @@ export const useDashboardData = () => {
       // Calculate metrics
       const totalValue = productsData?.reduce((sum, product) => 
         sum + (product.quantity_in_stock * product.unit_price), 0) || 0;
-      
       const lowStockCount = productsData?.filter(product => 
         product.quantity_in_stock <= product.minimum_stock_level).length || 0;
 
-      // Get today's transactions
+      // Get transactions for the last 7 days
       const today = new Date();
       today.setHours(0, 0, 0, 0);
+      const sevenDaysAgo = new Date(today);
+      sevenDaysAgo.setDate(today.getDate() - 6);
 
-      const { data: todayTransactions, error: transactionError } = await supabase
+      const { data: transactions, error: transactionError } = await supabase
         .from('stock_transactions')
-        .select('transaction_type, quantity')
+        .select('transaction_type, quantity, created_at')
         .eq('branch_id', activeBranch.branch_id)
-        .gte('created_at', today.toISOString());
+        .gte('created_at', sevenDaysAgo.toISOString());
 
       if (transactionError) throw new Error('Failed to fetch transactions data');
 
-      const incomingToday = todayTransactions
-        ?.filter(t => t.transaction_type === 'incoming')
+      // Calculate incoming/outgoing today
+      const incomingToday = transactions
+        ?.filter(t => t.transaction_type === 'incoming' && new Date(t.created_at) >= today)
         .reduce((sum, t) => sum + t.quantity, 0) || 0;
-
-      const outgoingToday = todayTransactions
-        ?.filter(t => t.transaction_type === 'outgoing')
+      const outgoingToday = transactions
+        ?.filter(t => t.transaction_type === 'outgoing' && new Date(t.created_at) >= today)
         .reduce((sum, t) => sum + t.quantity, 0) || 0;
-
-      // Generate stock trends (last 7 days)
-      const trends: StockTrendData[] = [];
-      for (let i = 6; i >= 0; i--) {
-        const date = new Date();
-        date.setDate(date.getDate() - i);
-        const dateStr = date.toISOString().split('T')[0];
-        
-        const dayTransactions = todayTransactions?.filter((t: any) => 
-          t.created_at.startsWith(dateStr)
-        ) || [];
-        
-        const dayValue = dayTransactions.reduce((sum: number, t: any) => sum + (t.total_value || 0), 0);
-        trends.push({
-          date: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-          value: dayValue,
-        });
-      }
-
-      // Generate category data
-      const categoryMap = new Map<string, { value: number; products: number }>();
-      productsData?.forEach((product: any) => {
-        const categoryName = product.categories?.name || 'Uncategorized';
-        const existing = categoryMap.get(categoryName) || { value: 0, products: 0 };
-        categoryMap.set(categoryName, {
-          value: existing.value + (product.quantity_in_stock * product.unit_price),
-          products: existing.products + 1,
-        });
-      });
-
-      const categoryDataArray: CategoryData[] = Array.from(categoryMap.entries()).map(([name, data]) => ({
-        name,
-        value: data.value,
-        products: data.products,
-      }));
 
       // Generate daily activity (last 7 days)
-      const activity: DailyActivityData[] = [];
+      const activity = [];
       for (let i = 6; i >= 0; i--) {
         const date = new Date();
         date.setDate(date.getDate() - i);
-        const dateStr = date.toISOString().split('T')[0];
-        
-        const dayTransactions = todayTransactions?.filter((t: any) => 
-          t.created_at.startsWith(dateStr)
-        ) || [];
-        
-        const incoming = dayTransactions.filter((t: any) => t.transaction_type === 'incoming')
-          .reduce((sum: number, t: any) => sum + t.quantity, 0);
-        const outgoing = dayTransactions.filter((t: any) => t.transaction_type === 'outgoing')
-          .reduce((sum: number, t: any) => sum + t.quantity, 0);
-          
+        date.setHours(0, 0, 0, 0);
+        const nextDay = new Date(date);
+        nextDay.setDate(date.getDate() + 1);
+        const dayTransactions = transactions?.filter((t) => {
+          const tDate = new Date(t.created_at);
+          return tDate >= date && tDate < nextDay;
+        }) || [];
+        const incoming = dayTransactions.filter((t) => t.transaction_type === 'incoming')
+          .reduce((sum, t) => sum + t.quantity, 0);
+        const outgoing = dayTransactions.filter((t) => t.transaction_type === 'outgoing')
+          .reduce((sum, t) => sum + t.quantity, 0);
         activity.push({
           date: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
           incoming,
@@ -139,7 +103,25 @@ export const useDashboardData = () => {
         });
       }
 
-      console.log('Dashboard data fetched successfully for branch:', activeBranch.branch_id);
+      // Generate category data
+      const categoryMap = new Map();
+      productsData?.forEach((product) => {
+        const categoryName = product.categories?.name || 'Uncategorized';
+        const existing = categoryMap.get(categoryName) || { value: 0, products: 0 };
+        categoryMap.set(categoryName, {
+          value: existing.value + (product.quantity_in_stock * product.unit_price),
+          products: existing.products + 1,
+        });
+      });
+      const categoryDataArray = Array.from(categoryMap.entries()).map(([name, data]) => ({
+        name,
+        value: data.value,
+        products: data.products,
+      }));
+
+      // Generate stock trends (last 7 days, optional)
+      const trends = [];
+      // ...optioneel: trends vullen...
 
       return {
         metrics: {
@@ -153,7 +135,6 @@ export const useDashboardData = () => {
         categoryData: categoryDataArray,
         dailyActivity: activity,
       };
-
     } catch (err) {
       throw new Error(err instanceof Error ? err.message : 'An error occurred while fetching dashboard data');
     }
@@ -164,7 +145,7 @@ export const useDashboardData = () => {
     isLoading: loading,
     error,
     refetch,
-  } = useQuery<DashboardData>({
+  } = useQuery({
     queryKey: ['dashboardData', activeBranch?.branch_id, user?.id],
     queryFn: fetchDashboardData,
     enabled: !!user && !!activeBranch,
