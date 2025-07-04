@@ -561,7 +561,7 @@ export const StockList = () => {
                               onClick={e => { e.stopPropagation(); setPreviewImageUrl(product.image_url!); setIsImagePreviewOpen(true); }}
                             />
                           ) : (
-                            <div className="w-16 h-16 bg-gray-200 rounded border flex items-center justify-center text-xs text-gray-400">Geen</div>
+                            <div className="w-16 h-16 bg-gray-200 rounded border flex items-center justify-center text-xs text-gray-400">Geen Foto</div>
                           )}
                           <div>
                             <div className="text-sm font-medium text-gray-900">{product.name}</div>

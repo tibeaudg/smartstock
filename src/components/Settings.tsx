@@ -61,11 +61,6 @@ export const Settings = () => {
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold text-gray-900">Instellingen</h1>
-        <p className="text-gray-600 mt-2">
-          {isAdmin
-            ? 'Beheer uw account, filialen en facturering'
-            : 'Beheer uw persoonlijke accountinstellingen'}
-        </p>
       </div>
 
       <Tabs

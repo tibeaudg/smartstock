@@ -74,11 +74,7 @@ export const StockMovements = () => {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Bewegingslijst</h1>
-          {!loading && (
-            <p className="text-sm text-muted-foreground mt-1">
-              {stats.transactionCount} bewegingen • Totale waarde: €{stats.totalValue.toFixed(2)}
-            </p>
-          )}
+
         </div>
         <Button
           variant="outline"
