@@ -687,6 +687,14 @@ export const StockList = () => {
           product={selectedProduct}
         />
       )}
+      <AddProductModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        onProductAdded={() => {
+          refetch();
+          setIsAddModalOpen(false);
+        }}
+      />
     </div>
   );
 };
