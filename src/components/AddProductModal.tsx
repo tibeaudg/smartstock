@@ -173,10 +173,6 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
       const productData = {
         name: data.name,
         description: data.description || null,
-        category_id: categoryId,
-        category_name: data.categoryName.trim() || null,
-        supplier_id: supplierId,
-        supplier_name: data.supplierName.trim() || null,
         quantity_in_stock: data.quantityInStock,
         minimum_stock_level: data.minimumStockLevel,
         unit_price: data.unitPrice,
