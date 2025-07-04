@@ -24,16 +24,6 @@ interface Product {
   minimum_stock_level: number;
   unit_price: number;
   status: string | null;
-  category_name: string | null;
-  supplier_name: string | null;
-  categories: {
-    name: string;
-  } | null;
-  suppliers: {
-    name: string;
-  } | null;
-  category_id?: string | null;
-  supplier_id?: string | null;
   branch_id?: string | null;
   image_url?: string | null; // <-- toegevoegd
 }
@@ -67,7 +57,7 @@ type StockAction = 'in' | 'out';
 const fetchProducts = async (branchId: string) => {
   const { data, error } = await supabase
     .from('products')
-    .select(`*, categories(name), suppliers(name)`)
+    .select(`*`)
     .eq('branch_id', branchId)
     .order('created_at', { ascending: false });
   if (error) throw new Error(error.message);
@@ -132,20 +122,11 @@ export const StockList = () => {
   const filteredProducts = useMemo(() => {
     return productsTyped.filter((product) => {
       const stockStatus = getStockStatus(product.quantity_in_stock, product.minimum_stock_level);
-      const displayCategory = product.category_name || product.categories?.name || '';
       
       // Search term filter
       const matchesSearch = searchTerm === '' || 
         product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         (product.description && product.description.toLowerCase().includes(searchTerm.toLowerCase()));
-
-      // Category filter (text-based partial match)
-      const matchesCategory = categoryFilter === '' || 
-        displayCategory.toLowerCase().includes(categoryFilter.toLowerCase());
-
-      // Supplier filter (text-based partial match)
-      const matchesSupplier = supplierFilter === '' || 
-        product.supplier_name?.toLowerCase().includes(supplierFilter.toLowerCase());
 
       // Stock status filter
       const matchesStockStatus = stockStatusFilter === 'all' || 
@@ -161,7 +142,7 @@ export const StockList = () => {
       const matchesMinStock = minStockFilter === '' || product.quantity_in_stock >= parseInt(minStockFilter);
       const matchesMaxStock = maxStockFilter === '' || product.quantity_in_stock <= parseInt(maxStockFilter);
 
-      return matchesSearch && matchesCategory && matchesSupplier && matchesStockStatus && 
+      return matchesSearch &&  matchesStockStatus && 
              matchesMinPrice && matchesMaxPrice && matchesMinStock && matchesMaxStock;
     });
   }, [productsTyped, searchTerm, categoryFilter, supplierFilter, stockStatusFilter, minPriceFilter, maxPriceFilter, minStockFilter, maxStockFilter]);

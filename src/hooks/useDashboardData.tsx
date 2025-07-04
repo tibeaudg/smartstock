@@ -52,7 +52,7 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
       // Fetch total stock value and product count
       const { data: productsData, error: productsError } = await supabase
         .from('products')
-        .select('quantity_in_stock, unit_price, minimum_stock_level, categories(name)')
+        .select('quantity_in_stock, unit_price, minimum_stock_level')
         .eq('branch_id', activeBranch.branch_id);
 
       if (productsError) throw new Error('Failed to fetch products data');
@@ -108,21 +108,6 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
         });
       }
 
-      // Generate category data
-      const categoryMap = new Map();
-      productsData?.forEach((product) => {
-        const categoryName = product.categories?.name || 'Uncategorized';
-        const existing = categoryMap.get(categoryName) || { value: 0, products: 0 };
-        categoryMap.set(categoryName, {
-          value: existing.value + (product.quantity_in_stock * product.unit_price),
-          products: existing.products + 1,
-        });
-      });
-      const categoryDataArray = Array.from(categoryMap.entries()).map(([name, data]) => ({
-        name,
-        value: data.value,
-        products: data.products,
-      }));
 
       // Generate stock trends (last 7 days, optional)
       const trends = [];
@@ -137,7 +122,6 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
           lowStockAlerts: lowStockCount,
         },
         stockTrends: trends,
-        categoryData: categoryDataArray,
         dailyActivity: activity,
       };
     } catch (err) {

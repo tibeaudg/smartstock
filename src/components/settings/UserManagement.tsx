@@ -249,9 +249,12 @@ export const UserManagement = () => {
                     <p className="text-sm text-gray-500 capitalize">{u.role}</p>
                   </div>
                   <div className="flex gap-2">
-                    <Button variant="outline" size="sm" onClick={() => handleOpenManageBranches(u)}>
-                      Filialen beheren
-                    </Button>
+                    {/* Verberg 'Filialen beheren' knop voor admin zelf */}
+                    {!(u.userId === user?.id && u.role === 'admin') && (
+                      <Button variant="outline" size="sm" onClick={() => handleOpenManageBranches(u)}>
+                        Filialen beheren
+                      </Button>
+                    )}
                     {u.userId !== user?.id && (
                       <Button variant="destructive" size="sm" onClick={() => handleDeleteUserCompletely(u.userId)} disabled={deletingUserId === u.userId}>
                         {deletingUserId === u.userId ? 'Verwijderen...' : 'Verwijder'}

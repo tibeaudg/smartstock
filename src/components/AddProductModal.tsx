@@ -33,8 +33,6 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
   const { user } = useAuth();
   const { activeBranch, loading: branchLoading } = useBranches();
   const [loading, setLoading] = useState(false);
-  const [categories, setCategories] = useState<string[]>([]);
-  const [suppliers, setSuppliers] = useState<string[]>([]);
   const [duplicateName, setDuplicateName] = useState(false);
   const [productImage, setProductImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -51,37 +49,6 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
     },
   });
 
-  const fetchSuggestions = async () => {
-    try {
-      // Fetch existing categories
-      const { data: categoriesData } = await supabase
-        .from('categories')
-        .select('name')
-        .order('name');
-      
-      if (categoriesData) {
-        setCategories(categoriesData.map(c => c.name));
-      }
-
-      // Fetch existing suppliers
-      const { data: suppliersData } = await supabase
-        .from('suppliers')
-        .select('name')
-        .order('name');
-      
-      if (suppliersData) {
-        setSuppliers(suppliersData.map(s => s.name));
-      }
-    } catch (error) {
-      console.error('Error fetching suggestions:', error);
-    }
-  };
-
-  useEffect(() => {
-    if (isOpen) {
-      fetchSuggestions();
-    }
-  }, [isOpen]);
 
   // Check for duplicate product name
   useEffect(() => {
@@ -156,35 +123,8 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
     try {
       console.log('Adding product for branch:', activeBranch.branch_id);
       
-      let categoryId = null;
-      let supplierId = null;
       let imageUrl = null;
 
-      // Handle category
-      if (data.categoryName.trim()) {
-        const { data: existingCategory } = await supabase
-          .from('categories')
-          .select('id')
-          .eq('name', data.categoryName.trim())
-          .single();
-
-        if (existingCategory) {
-          categoryId = existingCategory.id;
-        } else {
-          const { data: newCategory, error: categoryError } = await supabase
-            .from('categories')
-            .insert({ name: data.categoryName.trim() })
-            .select('id')
-            .single();
-
-          if (categoryError) {
-            console.error('Error creating category:', categoryError);
-            toast.error('Fout bij het aanmaken van categorie');
-            return;
-          }
-          categoryId = newCategory.id;
-        }
-      }
 
       // Handle supplier
       if (data.supplierName.trim()) {
@@ -372,47 +312,6 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
               )}
             />
 
-            <div className="hidden grid grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="categoryName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Categorie</FormLabel>
-                    <FormControl>
-                      <SuggestionInput
-                        {...field}
-                        label="Categorie"
-                        suggestions={categories}
-                        placeholder="Voer categorie in"
-                        disabled={loading}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="supplierName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Leverancier</FormLabel>
-                    <FormControl>
-                      <SuggestionInput
-                        {...field}
-                        label="Leverancier"
-                        suggestions={suppliers}
-                        placeholder="Voer leverancier in"
-                        disabled={loading}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
 
             <div className="grid grid-cols-3 gap-4">
               <FormField

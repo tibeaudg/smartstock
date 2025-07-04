@@ -17,12 +17,6 @@ interface Product {
   minimum_stock_level: number;
   unit_price: number;
   status: string | null;
-  categories: {
-    name: string;
-  } | null;
-  suppliers: {
-    name: string;
-  } | null;
   branch_id?: string; // Added branch_id as optional
   image_url?: string | null; // <-- toegevoegd
 }

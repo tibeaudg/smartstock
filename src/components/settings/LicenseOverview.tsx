@@ -77,10 +77,7 @@ export const LicenseOverview = () => {
   const handleSelectPlan = async (planId: string) => {
     if (!user || isUpdatingPlanId) return;
 
-    // De rest van de functie is correct en blijft ongewijzigd...
-
     setIsUpdatingPlanId(planId);
-    toast.dismiss();
 
     try {
       const { error: updateError } = await supabase
@@ -121,6 +118,7 @@ export const LicenseOverview = () => {
                   <th className="px-6 py-3 text-center">Filialen</th>
                   <th className="px-6 py-3 text-center">Gebruikers</th>
                   <th className="px-6 py-3 text-center">€/Maand</th>
+                  <th className="px-6 py-3 text-center">Producten</th>
                   <th className="px-6 py-3 text-center">Status</th>
                 </tr>
               </thead>
@@ -131,6 +129,7 @@ export const LicenseOverview = () => {
                   <td className="px-6 py-4 text-center">{data?.usage?.branch_count ?? 'N/A'}</td>
                   <td className="px-6 py-4 text-center">{data?.usage?.user_count ?? 'N/A'}</td>
                   <td className="px-6 py-4 text-center font-semibold text-gray-800">€{data?.license?.monthly_price?.toFixed(2) ?? 'N/A'}</td>
+                  <td className="px-6 py-4 text-center">{data?.usage?.user_count && data?.usage?.user_count > 0 ? Math.round((data?.usage?.total_products ?? 0) / data.usage.user_count) : 'N/A'}</td>
                   <td className="px-6 py-4 text-center">
                     {data?.license?.is_active ? (
                       <Badge variant="success" className="bg-green-100 text-green-800">Actief</Badge>
@@ -142,7 +141,7 @@ export const LicenseOverview = () => {
               </tbody>
             </table>
             <div className="text-xs text-gray-400 text-left mt-2">
-              +€5 per extra filiaal | +€2.5 per extra gebruiker
+              +€2 per extra filiaal | +€1 per extra gebruiker
             </div>
           </div>
         </CardContent>
@@ -155,66 +154,71 @@ export const LicenseOverview = () => {
         </CardHeader>
         <CardContent>
           <div className="flex flex-col gap-4">
-            {Array.isArray(data?.availablePlans) ? data.availablePlans.map((plan) => {
-              const isActive = data.activePlanId === plan.id;
-              const isRecommended = data.recommendedPlanId === plan.id;
-              const isUpdating = isUpdatingPlanId === plan.id;
+            {Array.isArray(data?.availablePlans) ?
+              // Sorteer de plannen op gewenste volgorde
+              [...data.availablePlans].sort((a, b) => {
+                const order = ['free', 'starter', 'business', 'enterprise'];
+                return order.indexOf(a.id) - order.indexOf(b.id);
+              }).map((plan) => {
+                const isActive = data.activePlanId === plan.id;
+                const isRecommended = data.recommendedPlanId === plan.id;
+                const isUpdating = isUpdatingPlanId === plan.id;
 
-              return (
-                <div
-                  key={plan.id}
-                  className={clsx(
-                    'relative flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border rounded-lg px-6 py-4 transition-all',
-                    {
-                      'border-blue-500 bg-blue-50 ring-2 ring-blue-200': isActive,
-                      'border-yellow-400 bg-yellow-50': isRecommended && !isActive,
-                      'bg-white': !isActive && !isRecommended,
-                    }
-                  )}
-                >
-                  {isRecommended && (
-                      <Badge variant="warning" className="absolute -top-2 -right-2 bg-yellow-400 text-yellow-900 font-bold border-2 border-white">
-                        <Star className="w-3 h-3 mr-1" /> Aanbevolen
-                      </Badge>
-                  )}
-                  
-                  <div className="flex-grow">
-                    <h3 className="text-lg font-semibold text-gray-900">{plan.name}</h3>
-                    <p className="text-sm text-gray-600">
-                      Inclusief {plan.limit} producten.
-                    </p>
-                    <p className="text-xs text-gray-500">
-                      Buiten bundel: €{plan.extraCost.toFixed(2)} per product
-                    </p>
-                  </div>
-
-                  <div className="flex flex-col items-start sm:items-end gap-2 w-full sm:w-auto">
-                    <div className="text-left sm:text-right">
-                      <p className="text-xl font-bold text-gray-900">
-                        €{plan.simulatedTotalPrice.toFixed(2)}
-                        <span className="text-sm font-normal text-gray-600"> /maand</span>
-                      </p>
-                      <p className="text-xs text-gray-500">Geschatte totaalkost</p>
-                    </div>
-                    {isActive ? (
-                      <Button variant="secondary" size="sm" disabled>Huidig Plan</Button>
-                    ) : (
-                      <Button 
-                        className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto" 
-                        size="sm" 
-                        onClick={() => handleSelectPlan(plan.id)}
-                        disabled={isUpdating}
-                      >
-                        {isUpdating ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
-                        {isUpdating ? 'Wijzigen...' : 'Selecteer Plan'}
-                      </Button>
+                return (
+                  <div
+                    key={plan.id}
+                    className={clsx(
+                      'relative flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border rounded-lg px-6 py-4 transition-all',
+                      {
+                        'border-blue-500 bg-blue-50 ring-2 ring-blue-200': isActive,
+                        'border-yellow-400 bg-yellow-50': isRecommended && !isActive,
+                        'bg-white': !isActive && !isRecommended,
+                      }
                     )}
+                  >
+                    {isRecommended && (
+                        <Badge variant="warning" className="absolute -top-2 -right-2 bg-yellow-400 text-yellow-900 font-bold border-2 border-white">
+                          <Star className="w-3 h-3 mr-1" /> Aanbevolen
+                        </Badge>
+                    )}
+                    
+                    <div className="flex-grow">
+                      <h3 className="text-lg font-semibold text-gray-900">{plan.name}</h3>
+                      <p className="text-sm text-gray-600">
+                        Inclusief {plan.limit} producten.
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        Buiten bundel: €{plan.extraCost.toFixed(2)} per product
+                      </p>
+                    </div>
+
+                    <div className="flex flex-col items-start sm:items-end gap-2 w-full sm:w-auto">
+                      <div className="text-left sm:text-right">
+                        <p className="text-xl font-bold text-gray-900">
+                          €{plan.simulatedTotalPrice.toFixed(2)}
+                          <span className="text-sm font-normal text-gray-600"> /maand</span>
+                        </p>
+                        <p className="text-xs text-gray-500">Geschatte totaalkost</p>
+                      </div>
+                      {isActive ? (
+                        <Button variant="secondary" size="sm" disabled>Huidig Plan</Button>
+                      ) : (
+                        <Button 
+                          className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto" 
+                          size="sm" 
+                          onClick={() => handleSelectPlan(plan.id)}
+                          disabled={isUpdating}
+                        >
+                          {isUpdating ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
+                          {isUpdating ? 'Wijzigen...' : 'Selecteer Plan'}
+                        </Button>
+                      )}
+                    </div>
                   </div>
-                </div>
-              );
-            }) : (
-              <div className="text-gray-500 text-sm">Geen abonnementen beschikbaar.</div>
-            )}
+                );
+              }) : (
+                <div className="text-gray-500 text-sm">Geen abonnementen beschikbaar.</div>
+              )}
           </div>
         </CardContent>
       </Card>
