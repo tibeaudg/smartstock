@@ -18,6 +18,7 @@ import { UserManagement } from './settings/UserManagement';
 import { LicenseOverview } from './settings/LicenseOverview';
 import { InvoicingOverview } from '@/components/settings/InvoicingOverview';
 import { useAuth } from '@/hooks/useAuth';
+import { useLocation } from 'react-router-dom';
 import {
   Building2,
   User,
@@ -28,7 +29,10 @@ import {
 
 export const Settings = () => {
   const { userProfile } = useAuth();
-  const [activeTab, setActiveTab] = useState('profile');
+  const location = useLocation();
+  // Lees gewenste tab uit router state
+  const initialTab = (location.state && location.state.tab) || 'profile';
+  const [activeTab, setActiveTab] = useState(initialTab);
 
   const isAdmin = userProfile?.role === 'admin';
   const isBlocked = userProfile?.blocked;

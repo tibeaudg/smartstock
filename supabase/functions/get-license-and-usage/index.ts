@@ -99,6 +99,10 @@ serve(async (req) => {
     });
     // activePlanId is altijd het automatisch gekozen plan
     const activePlanId = autoPlan.id;
+    // Sla het automatisch gekozen plan op als het verschilt van de huidige waarde
+    if (profileRes.data?.selected_plan !== activePlanId) {
+      await supabaseClient.from('profiles').update({ selected_plan: activePlanId }).eq('id', user.id);
+    }
     const activePlanData = calculatedPlans.find((p) => p.id === activePlanId);
     // recommendedPlanId is hetzelfde als activePlanId
     const recommendedPlanId = activePlanId;

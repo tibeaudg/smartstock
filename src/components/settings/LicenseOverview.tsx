@@ -220,11 +220,6 @@ export const LicenseOverview = () => {
                 return order.indexOf(a.id) - order.indexOf(b.id);
               }).map((plan) => {
                 const isActive = data.activePlanId === plan.id;
-                const isRecommended = data.recommendedPlanId === plan.id;
-                const isUpdating = isUpdatingPlanId === plan.id;
-                const simulatedTotalPrice = simulatePlanPrice(plan, data.usage);
-                // Kan gebruiker dit plan kiezen? Alleen als aantal producten <= limiet
-                const canSelect = data.usage.total_products <= plan.limit || plan.id === 'enterprise';
                 return (
                   <div
                     key={plan.id}
@@ -232,15 +227,14 @@ export const LicenseOverview = () => {
                       'relative flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border rounded-lg px-6 py-4 transition-all',
                       {
                         'border-blue-500 bg-blue-50 ring-2 ring-blue-200': isActive,
-                        'border-yellow-400 bg-yellow-50': isRecommended && !isActive,
-                        'bg-white': !isActive && !isRecommended,
-                        'opacity-60': !canSelect && !isActive,
+                        'bg-white': !isActive,
+                        'opacity-60': false,
                       }
                     )}
                   >
-                    {isRecommended && (
-                        <Badge variant="warning" className="absolute -top-2 -right-2 bg-yellow-400 text-yellow-900 font-bold border-2 border-white">
-                          <Star className="w-3 h-3 mr-1" /> Huidig Abonnement
+                    {isActive && (
+                        <Badge variant="warning" className="absolute -top-2 -right-2 bg-blue-500 text-white font-bold border-2 border-white">
+                          <Star className="w-3 h-3 mr-1" /> Huidig abonnement
                         </Badge>
                     )}
                     <div className="flex-grow">
@@ -257,13 +251,11 @@ export const LicenseOverview = () => {
                     <div className="flex flex-col items-start sm:items-end gap-2 w-full sm:w-auto">
                       <div className="text-left sm:text-right">
                         <p className="text-xl font-bold text-gray-900">
-                          €{simulatedTotalPrice.toFixed(2)}
+                          €{simulatePlanPrice(plan, data.usage).toFixed(2)}
                           <span className="text-sm font-normal text-gray-600"> /maand</span>
                         </p>
                         <p className="text-xs text-gray-500">Geschatte totaalkost</p>
                       </div>
-                      
-                      
                     </div>
                   </div>
                 );

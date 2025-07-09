@@ -9,8 +9,6 @@ if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
   throw new Error('Missing Supabase credentials');
 }
 
-console.log('Initializing Supabase client...');
-
 // Create Supabase client with proper configuration
 export const supabase = createClient<Database>(
   SUPABASE_URL,
@@ -45,7 +43,6 @@ export const checkSupabaseConnection = async () => {
       console.error('Supabase connection test failed:', error);
       return false;
     }
-    console.log('Supabase connection test successful');
     return true;
   } catch (error) {
     console.error('Supabase connection test exception:', error);

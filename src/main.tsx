@@ -182,5 +182,8 @@ if (typeof window !== 'undefined') {
   setupPersistedQueryClient(queryClient);
 }
 
+// Onderdruk debug logs altijd
+console.debug = () => {};
+
 // Start de applicatie
 init();
