@@ -231,6 +231,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
         const plans = licenseData.availablePlans || [];
         const activePlan = plans.find((p) => p.id === plan);
         if (activePlan && licenseData.usage.total_products > activePlan.limit && plan !== 'enterprise') {
+          onClose();
           setShowUpgradeNotice(true);
           return; // Stop hier, zodat modal open blijft tot acceptatie
         }

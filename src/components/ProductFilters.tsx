@@ -137,16 +137,7 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
                   />
                 </div>
 
-                {/* Supplier Filter */}
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700">Leverancier</label>
-                  <Input
-                    type="text"
-                    placeholder="Zoek leverancier"
-                    value={supplierFilter}
-                    onChange={(e) => onSupplierFilterChange(e.target.value)}
-                  />
-                </div>
+
 
               </div>
             </CardContent>

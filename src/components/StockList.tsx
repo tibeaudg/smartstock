@@ -11,7 +11,7 @@ import { AddProductModal } from './AddProductModal';
 import { ProductFilters } from './ProductFilters';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { toast } from 'sonner';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { EditProductInfoModal } from './EditProductInfoModal';
 import { EditProductStockModal } from './EditProductStockModal';
 import { ImagePreviewModal } from './ImagePreviewModal';
@@ -163,6 +163,8 @@ export const StockList = () => {
     setIsEditModalOpen(true);
   };
 
+  const queryClient = useQueryClient();
+
   const handleDelete = async (productId: string) => {
     if (!user || !activeBranch) {
       toast.error('Je moet ingelogd zijn en een filiaal geselecteerd hebben');
@@ -182,6 +184,8 @@ export const StockList = () => {
       }
       toast.success('Product en gerelateerde transacties succesvol verwijderd');
       refetch();
+      // Forceer update van productCount in Sidebar
+      queryClient.invalidateQueries({ queryKey: ['productCount', activeBranch.branch_id, user.id] });
     } catch (error) {
       toast.error('Er is een onverwachte fout opgetreden');
     }
