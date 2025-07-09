@@ -353,7 +353,7 @@ export const HomePage = () => {
           <div className="text-center">
             <h3 className="text-2xl font-bold mb-4">SmartStock</h3>
             <p className="text-gray-400 mb-8">
-              Professioneel SmartStock voor moderne bedrijven
+              Professioneel voorraadbeheer voor KMO's
             </p>
             <div className="flex justify-center space-x-8 text-sm">
               <a href="#" className="hover:text-blue-400 transition-colors">Privacybeleid</a>

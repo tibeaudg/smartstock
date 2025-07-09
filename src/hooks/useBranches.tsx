@@ -20,12 +20,47 @@ interface BranchContextType {
 
 const BranchContext = createContext<BranchContextType | undefined>(undefined);
 
+const BRANCH_STORAGE_KEY = 'active-branch-id';
+
 export const BranchProvider = ({ children }: { children: ReactNode }) => {
   const { user, loading: authLoading } = useAuth();
   const [branches, setBranches] = useState<Branch[]>([]);
   const [activeBranch, setActiveBranchState] = useState<Branch | null>(null);
   const [loading, setLoading] = useState(true);
   const [hasNoBranches, setHasNoBranches] = useState(false);
+
+  // Helper: haal branch uit localStorage
+  const getBranchIdFromStorage = () => {
+    try {
+      return localStorage.getItem(BRANCH_STORAGE_KEY);
+    } catch {
+      return null;
+    }
+  };
+
+  // Helper: schrijf branch naar localStorage
+  const setBranchIdToStorage = (branchId: string | null) => {
+    try {
+      if (branchId) {
+        localStorage.setItem(BRANCH_STORAGE_KEY, branchId);
+      } else {
+        localStorage.removeItem(BRANCH_STORAGE_KEY);
+      }
+    } catch {}
+  };
+
+  // Synchroniseer branch tussen tabbladen
+  useEffect(() => {
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === BRANCH_STORAGE_KEY && e.newValue !== activeBranch?.branch_id) {
+        // Zoek branch object bij id
+        const found = branches.find(b => b.branch_id === e.newValue);
+        if (found) setActiveBranchState(found);
+      }
+    };
+    window.addEventListener('storage', onStorage);
+    return () => window.removeEventListener('storage', onStorage);
+  }, [branches, activeBranch]);
 
   const fetchBranches = async (cancelled?: { current: boolean }) => {
     if (!user) {
@@ -34,6 +69,7 @@ export const BranchProvider = ({ children }: { children: ReactNode }) => {
         setActiveBranchState(null);
         setHasNoBranches(false);
         setLoading(false);
+        setBranchIdToStorage(null);
       }
       return;
     }
@@ -52,10 +88,17 @@ export const BranchProvider = ({ children }: { children: ReactNode }) => {
       if (data && !cancelled?.current) {
         setBranches(data);
         setHasNoBranches(data.length === 0);
-        if (!activeBranch) {
+        // Probeer branch uit localStorage te herstellen
+        const storedId = getBranchIdFromStorage();
+        const found = storedId ? data.find(b => b.branch_id === storedId) : null;
+        if (found) {
+          setActiveBranchState(found);
+        } else if (!activeBranch) {
+          // Fallback: main branch of eerste branch
           const mainBranch = data.find(b => b.is_main) || data[0];
           if (mainBranch) {
             setActiveBranchState(mainBranch);
+            setBranchIdToStorage(mainBranch.branch_id);
           }
         }
       }
@@ -80,6 +123,7 @@ export const BranchProvider = ({ children }: { children: ReactNode }) => {
           setActiveBranchState(null);
           setHasNoBranches(false);
           setLoading(false);
+          setBranchIdToStorage(null);
         }
       }
     };
@@ -91,6 +135,7 @@ export const BranchProvider = ({ children }: { children: ReactNode }) => {
 
   const setActiveBranch = (branch: Branch) => {
     setActiveBranchState(branch);
+    setBranchIdToStorage(branch.branch_id);
   };
 
   const refreshBranches = async () => {
