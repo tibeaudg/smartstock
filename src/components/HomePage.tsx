@@ -112,6 +112,18 @@ export const HomePage = () => {
         <title>Smartstock: Eenvoudig & Gratis Stockbeheer voor KMO's | Slim Voorraadbeheer</title>
         <meta name="description" content="Eenvoudig, gratis en slim stockbeheer voor KMO's en zelfstandigen. Probeer SmartStock en ontdek de beste stockbeheer app voor Vlaanderen!" />
         <meta name="keywords" content="stockbeheer, gratis stockbeheer, stockbeheer app, voorraadbeheer, KMO, eenvoudig voorraadbeheer, voorraad app, voorraadbeheer Vlaanderen, voorraadbeheer Gent, voorraadbeheer Brugge, voorraadbeheer Antwerpen" />
+        <link rel="canonical" href="https://www.smartstock.be/" />
+        {/* Open Graph tags */}
+        <meta property="og:title" content="Smartstock: Eenvoudig & Gratis Stockbeheer voor KMO's" />
+        <meta property="og:description" content="Eenvoudig, gratis en slim stockbeheer voor KMO's en zelfstandigen. Probeer SmartStock en ontdek de beste stockbeheer app voor Vlaanderen!" />
+        <meta property="og:image" content="https://www.smartstock.be/Inventory-Management.png" />
+        <meta property="og:url" content="https://www.smartstock.be/" />
+        <meta property="og:type" content="website" />
+        {/* Twitter Card tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Smartstock: Eenvoudig & Gratis Stockbeheer voor KMO's" />
+        <meta name="twitter:description" content="Eenvoudig, gratis en slim stockbeheer voor KMO's en zelfstandigen. Probeer SmartStock en ontdek de beste stockbeheer app voor Vlaanderen!" />
+        <meta name="twitter:image" content="https://www.smartstock.be/Inventory-Management.png" />
         <script type="application/ld+json">{`
           {
             "@context": "https://schema.org",
