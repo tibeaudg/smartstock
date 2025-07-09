@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './useAuth';
 import { useBranches } from './useBranches';
@@ -157,4 +157,52 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
     error,
     refresh: refetch,
   };
+};
+
+// Extra hook voor alleen het aantal producten
+export const useProductCount = () => {
+  const { user } = useAuth();
+  const { activeBranch } = useBranches();
+  const queryClient = useQueryClient();
+
+  const fetchProductCount = async () => {
+    if (!user || !activeBranch) return 0;
+    const { count, error } = await supabase
+      .from('products')
+      .select('id', { count: 'exact', head: true })
+      .eq('branch_id', activeBranch.branch_id);
+    if (error) return 0;
+    return count || 0;
+  };
+
+  useEffect(() => {
+    if (!activeBranch) return;
+    const channel = supabase.channel('products-count-' + activeBranch.branch_id)
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'products',
+          filter: `branch_id=eq.${activeBranch.branch_id}`,
+        },
+        () => {
+          queryClient.invalidateQueries({ queryKey: ['productCount', activeBranch.branch_id, user?.id] });
+        }
+      )
+      .subscribe();
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [activeBranch, user, queryClient]);
+
+  const { data: productCount, isLoading } = useQuery({
+    queryKey: ['productCount', activeBranch?.branch_id, user?.id],
+    queryFn: fetchProductCount,
+    enabled: !!user && !!activeBranch,
+    refetchOnWindowFocus: true,
+    staleTime: 1000 * 60 * 2,
+  });
+
+  return { productCount: productCount ?? 0, isLoading };
 };

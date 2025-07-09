@@ -14,6 +14,15 @@ import { Button } from '@/components/ui/button';
 import { Loader2, Star } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { useQuery } from '@tanstack/react-query';
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogAction,
+  AlertDialogFooter,
+} from '@/components/ui/alert-dialog';
 
 // Interfaces blijven hetzelfde
 interface Plan {
@@ -58,9 +67,9 @@ function simulatePlanPrice(plan: Plan, usage: LicenseData['usage']): number {
   if (branchCount > 1) {
     price += (branchCount - 1) * 2; // €2 per extra filiaal
   }
-  // Producten buiten bundel
-  if (totalProducts > plan.limit) {
-    price += (totalProducts - plan.limit) * plan.extraCost;
+  // Alleen bij enterprise extra producten aanrekenen
+  if (plan.id === 'enterprise' && totalProducts > plan.limit) {
+    price += (totalProducts - plan.limit) * 0.01;
   }
   return price;
 }
@@ -68,6 +77,8 @@ function simulatePlanPrice(plan: Plan, usage: LicenseData['usage']): number {
 export const LicenseOverview = () => {
   const { user } = useAuth();
   const [isUpdatingPlanId, setIsUpdatingPlanId] = useState<string | null>(null);
+  const [showUpgradeDialog, setShowUpgradeDialog] = useState(false);
+  const [acceptedUpgrade, setAcceptedUpgrade] = useState(false);
 
   // React Query: fetch license data
   const fetchData = async () => {
@@ -121,9 +132,36 @@ export const LicenseOverview = () => {
     }
   };
 
+  // Bepaal of er een automatische upgrade is gebeurd
+  const selectedPlanId = data?.activePlanId; // Dit is nu altijd het automatisch gekozen plan
+  const userSelectedPlan = data?.availablePlans.find(p => p.id === data?.license?.license_type?.toLowerCase());
+  const isAutoUpgrade = userSelectedPlan && selectedPlanId && userSelectedPlan.id !== selectedPlanId;
+
+  React.useEffect(() => {
+    if (isAutoUpgrade && !acceptedUpgrade) {
+      setShowUpgradeDialog(true);
+    }
+  }, [isAutoUpgrade, acceptedUpgrade]);
+
   // De JSX-weergave blijft ongewijzigd.
   return (
     <div className="space-y-8">
+      {/* Upgrade Dialog */}
+      <AlertDialog open={showUpgradeDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Automatische upgrade naar hoger abonnement</AlertDialogTitle>
+            <AlertDialogDescription>
+              Uw aantal producten overschrijdt de limiet van uw huidige abonnement. U wordt automatisch overgezet naar het eerstvolgende abonnement met voldoende capaciteit. U kunt niet weigeren, maar dient wel te bevestigen dat u dit heeft gezien.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogAction onClick={() => { setShowUpgradeDialog(false); setAcceptedUpgrade(true); }} autoFocus>
+              Accepteren
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
       <Card>
         <CardHeader>
           <CardTitle>Huidig Overzicht</CardTitle>
@@ -185,7 +223,8 @@ export const LicenseOverview = () => {
                 const isRecommended = data.recommendedPlanId === plan.id;
                 const isUpdating = isUpdatingPlanId === plan.id;
                 const simulatedTotalPrice = simulatePlanPrice(plan, data.usage);
-
+                // Kan gebruiker dit plan kiezen? Alleen als aantal producten <= limiet
+                const canSelect = data.usage.total_products <= plan.limit || plan.id === 'enterprise';
                 return (
                   <div
                     key={plan.id}
@@ -195,25 +234,26 @@ export const LicenseOverview = () => {
                         'border-blue-500 bg-blue-50 ring-2 ring-blue-200': isActive,
                         'border-yellow-400 bg-yellow-50': isRecommended && !isActive,
                         'bg-white': !isActive && !isRecommended,
+                        'opacity-60': !canSelect && !isActive,
                       }
                     )}
                   >
                     {isRecommended && (
                         <Badge variant="warning" className="absolute -top-2 -right-2 bg-yellow-400 text-yellow-900 font-bold border-2 border-white">
-                          <Star className="w-3 h-3 mr-1" /> Aanbevolen
+                          <Star className="w-3 h-3 mr-1" /> Huidig Abonnement
                         </Badge>
                     )}
-                    
                     <div className="flex-grow">
                       <h3 className="text-lg font-semibold text-gray-900">{plan.name}</h3>
                       <p className="text-sm text-gray-600">
                         Inclusief {plan.limit} producten.
                       </p>
-                      <p className="text-xs text-gray-500">
-                        Buiten bundel: €{plan.extraCost.toFixed(2)} per product
-                      </p>
+                      {plan.id === 'enterprise' && (
+                        <p className="text-xs text-gray-500">
+                          Buiten bundel: €0,01 per extra product
+                        </p>
+                      )}
                     </div>
-
                     <div className="flex flex-col items-start sm:items-end gap-2 w-full sm:w-auto">
                       <div className="text-left sm:text-right">
                         <p className="text-xl font-bold text-gray-900">
@@ -222,19 +262,8 @@ export const LicenseOverview = () => {
                         </p>
                         <p className="text-xs text-gray-500">Geschatte totaalkost</p>
                       </div>
-                      {isActive ? (
-                        <Button variant="secondary" size="sm" disabled>Huidig Plan</Button>
-                      ) : (
-                        <Button 
-                          className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto" 
-                          size="sm" 
-                          onClick={() => handleSelectPlan(plan.id)}
-                          disabled={isUpdating}
-                        >
-                          {isUpdating ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
-                          {isUpdating ? 'Wijzigen...' : 'Selecteer Plan'}
-                        </Button>
-                      )}
+                      
+                      
                     </div>
                   </div>
                 );

@@ -58,30 +58,50 @@ serve(async (req) => {
     const totalProducts = productMetricsRes.count || 0;
     const branchCount = Array.isArray(branchCountRes.data) ? branchCountRes.data.length : 0;
     const userCount = 1;
+    // Bepaal het juiste plan op basis van het aantal producten
+    // Sorteer plannen op limiet oplopend
+    const sortedPlans = plans.sort((a, b) => a.limit - b.limit);
+    let autoPlan = sortedPlans[0];
+    for (const plan of sortedPlans) {
+      if (totalProducts > plan.limit) {
+        autoPlan = plan;
+      } else {
+        break;
+      }
+    }
+    // Als het aantal producten boven de hoogste limiet (enterprise) zit, reken extra aan
+    let extraProducts = 0;
+    let extraProductsCost = 0;
+    if (autoPlan.id === 'enterprise' && totalProducts > autoPlan.limit) {
+      extraProducts = totalProducts - autoPlan.limit;
+      extraProductsCost = extraProducts * 0.01; // €0,01 per extra product
+    }
+    // Prijsberekening
     const extraUserCost = Math.max(0, userCount - 1) * (settings.extra_user_cost || 0);
-    // Eerste filiaal gratis!
     const extraBranchCost = Math.max(0, branchCount - 1) * (settings.extra_branch_cost || 0);
-    let lowestPrice = Infinity;
-    let recommendedPlanId = profileRes.data?.selected_plan || 'free';
-    const calculatedPlans = plans.map((plan) => {
-      const extraProducts = Math.max(0, totalProducts - plan.limit);
-      const extraProductsCost = extraProducts * plan.extra_cost;
-      const simulatedTotalPrice = plan.price + extraUserCost + extraBranchCost + extraProductsCost;
-      if (simulatedTotalPrice < lowestPrice) {
-        lowestPrice = simulatedTotalPrice;
-        recommendedPlanId = plan.id;
+    // Bouw calculatedPlans met correcte prijs per plan
+    const calculatedPlans = sortedPlans.map((plan) => {
+      let simulatedTotalPrice = plan.price + extraUserCost + extraBranchCost;
+      let overLimit = totalProducts > plan.limit;
+      // Alleen bij enterprise extra producten aanrekenen
+      if (plan.id === 'enterprise' && totalProducts > plan.limit) {
+        simulatedTotalPrice += (totalProducts - plan.limit) * 0.01;
       }
       return {
         id: plan.id,
         name: plan.name,
         price: plan.price,
         limit: plan.limit,
-        extraCost: plan.extra_cost,
-        simulatedTotalPrice
+        extraCost: plan.id === 'enterprise' ? 0.01 : 0,
+        simulatedTotalPrice,
+        overLimit,
       };
     });
-    const activePlanId = profileRes.data?.selected_plan || 'free';
+    // activePlanId is altijd het automatisch gekozen plan
+    const activePlanId = autoPlan.id;
     const activePlanData = calculatedPlans.find((p) => p.id === activePlanId);
+    // recommendedPlanId is hetzelfde als activePlanId
+    const recommendedPlanId = activePlanId;
     const responseData = {
       creation: {
         created_at: profileRes.data?.created_at || null

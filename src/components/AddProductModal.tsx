@@ -12,6 +12,9 @@ import { useBranches } from '@/hooks/useBranches';
 import { toast } from 'sonner';
 import { SuggestionInput } from './SuggestionInput';
 import { AlertCircle } from 'lucide-react'; // Optional: for a warning icon
+import { useNavigate } from 'react-router-dom';
+import { Info } from 'lucide-react';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface AddProductModalProps {
   isOpen: boolean;
@@ -32,10 +35,13 @@ interface FormData {
 export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductModalProps) => {
   const { user } = useAuth();
   const { activeBranch, loading: branchLoading } = useBranches();
+  const queryClient = useQueryClient();
   const [loading, setLoading] = useState(false);
   const [duplicateName, setDuplicateName] = useState(false);
   const [productImage, setProductImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [showUpgradeNotice, setShowUpgradeNotice] = useState(false);
+  const navigate = useNavigate();
 
   const form = useForm<FormData>({
     defaultValues: {
@@ -127,6 +133,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
 
 
       // Handle supplier
+      let supplierId = null;
       if (data.supplierName.trim()) {
         const { data: existingSupplier } = await supabase
           .from('suppliers')
@@ -179,6 +186,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
         branch_id: activeBranch.branch_id,
         image_url: imageUrl,
         user_id: user.id, // <-- automatisch koppelen aan gebruiker
+        supplier_id: supplierId,
       };
 
       console.log('Inserting product with data:', productData);
@@ -193,7 +201,10 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
         console.error('Error adding product:', productError);
         toast.error(`Fout bij het toevoegen van product: ${productError.message}`);
         return;
-      }      console.log('Product added successfully:', insertedProduct);
+      }
+      // Direct na toevoegen: forceer refresh van productCount
+      queryClient.invalidateQueries({ queryKey: ['productCount', activeBranch.branch_id, user.id] });
+      console.log('Product added successfully:', insertedProduct);
 
       // Always create a transaction for new products
       const stockTransactionData = {
@@ -224,6 +235,17 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
       console.log('Product added successfully for branch:', activeBranch.branch_id);
       toast.success('Product succesvol toegevoegd!');
       form.reset();
+      // Na succesvol toevoegen, check licentie
+      const { data: licenseData, error: licenseError } = await supabase.functions.invoke('get-license-and-usage');
+      if (!licenseError && licenseData) {
+        const plan = licenseData.activePlanId;
+        const plans = licenseData.availablePlans || [];
+        const activePlan = plans.find((p) => p.id === plan);
+        if (activePlan && licenseData.usage.total_products > activePlan.limit && plan !== 'enterprise') {
+          setShowUpgradeNotice(true);
+          return; // Stop hier, zodat modal open blijft tot acceptatie
+        }
+      }
       onProductAdded();
       onClose();
     } catch (error) {

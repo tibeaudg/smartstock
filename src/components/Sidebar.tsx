@@ -16,6 +16,7 @@ import { Button } from '@/components/ui/button';
 import { useAuth, UserProfile } from '@/hooks/useAuth';
 import { useNavigate, NavLink } from 'react-router-dom';
 import { BranchSelector } from './BranchSelector';
+import { useProductCount } from '@/hooks/useDashboardData';
 
 
 interface SidebarProps {
@@ -30,10 +31,11 @@ interface SidebarProps {
 export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProps) => {
   const { signOut } = useAuth();
   const navigate = useNavigate();
+  const { productCount, isLoading } = useProductCount();
 
   // If blocked, only show settings/invoicing
   const isBlocked = userProfile?.blocked;
-  const isOwner = userProfile && userProfile.is_owner === true && !userProfile.blocked;
+  const isOwner = userProfile && userProfile.role === 'admin' && !userProfile.blocked;
   const menuItems = isBlocked
     ? [
         { id: 'settings', label: 'Instellingen', icon: Settings, path: '/dashboard/settings' },
@@ -98,10 +100,20 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
         
 
         {/* Navigation */}
-        <nav className="flex-1 p-4 overflow-y-auto">
+        <nav className="flex-1 p-4 overflow-y-auto text-sm">
           <ul className="space-y-2">
             {menuItems.map((item) => {
               const Icon = item.icon;
+              // Producten label aanpassen
+              let label = item.label;
+              if (item.id === 'stock') {
+                label += ` `;
+                if (isLoading) {
+                  label += '(...)';
+                } else {
+                  label += `(${productCount})`;
+                }
+              }
               
               return (
                 <li key={item.id}>
@@ -118,7 +130,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
                     `}
                   >
                     <Icon className="w-5 h-5 flex-shrink-0" />
-                    {isOpen && <span className="font-medium ml-3">{item.label}</span>}
+                    {isOpen && <span className="font-medium ml-3">{label}</span>}
                   </NavLink>
                 </li>
               );
