@@ -77,12 +77,12 @@ export const StockMovements = () => {
 
         </div>
         <Button
-          variant="outline"
+          variant="default"
           size="sm"
           onClick={handleExport}
           disabled={loading || transactions.length === 0}
         >
-          <Download className="h-4 w-4 mr-2" />
+          <Download className="h-4 w-4 mr-2 " />
           Export
         </Button>
       </div>

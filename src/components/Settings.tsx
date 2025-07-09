@@ -99,8 +99,8 @@ export const Settings = () => {
         )}
 
         {!isAdmin && (
-          <TabsList className="grid w-full grid-cols-1">
-            <TabsTrigger value="profile" className="flex items-center space-x-2">
+          <TabsList className="grid w-full grid-cols-1 ">
+            <TabsTrigger value="profile" className="flex items-center space-x-2 ">
               <User className="w-4 h-4" />
               <span>Profiel</span>
             </TabsTrigger>
@@ -110,7 +110,7 @@ export const Settings = () => {
         <div className="mb-10" />
 
         {/* Profiel tab - zichtbaar voor iedereen */}
-        <TabsContent value="profile" className="space-y-6">
+        <TabsContent value="profile" className="space-y-6 ">
           <Card>
             <CardHeader>
               <CardTitle>Profiel Instellingen</CardTitle>

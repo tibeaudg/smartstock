@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
@@ -105,6 +105,28 @@ export const LicenseOverview = () => {
     refetchOnWindowFocus: true,
     staleTime: 1000 * 60 * 2,
   });
+
+  // Realtime update: luister op products-tabel en trigger refetch bij wijziging
+  useEffect(() => {
+    if (!user) return;
+    const channel = supabase.channel('license-overview-products-' + user.id)
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'products',
+          filter: `user_id=eq.${user.id}`,
+        },
+        () => {
+          refetch();
+        }
+      )
+      .subscribe();
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [user, refetch]);
 
   const handleSelectPlan = async (planId: string) => {
     if (!user || isUpdatingPlanId) return;
