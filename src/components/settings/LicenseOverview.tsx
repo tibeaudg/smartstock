@@ -106,6 +106,11 @@ export const LicenseOverview = () => {
     refetchOnMount: true,
     staleTime: 1000 * 60 * 2,
   });
+  React.useEffect(() => {
+    if (data && user) {
+      console.log('[LicenseOverview] user.id:', user.id, 'total_products:', data.usage?.total_products, 'data:', data);
+    }
+  }, [data, user]);
 
   // Realtime update: luister op products-tabel en trigger refetch bij wijziging
   useEffect(() => {

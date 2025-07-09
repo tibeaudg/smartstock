@@ -58,14 +58,13 @@ serve(async (req) => {
     const totalProducts = productMetricsRes.count || 0;
     const branchCount = Array.isArray(branchCountRes.data) ? branchCountRes.data.length : 0;
     const userCount = 1;
-    // Bepaal het juiste plan op basis van het aantal producten
     // Sorteer plannen op limiet oplopend
     const sortedPlans = plans.sort((a, b) => a.limit - b.limit);
-    let autoPlan = sortedPlans[0];
+    // Fix: kies het EERSTE plan waar totalProducts <= plan.limit
+    let autoPlan = sortedPlans[sortedPlans.length - 1]; // default naar hoogste plan
     for (const plan of sortedPlans) {
-      if (totalProducts > plan.limit) {
+      if (totalProducts <= plan.limit) {
         autoPlan = plan;
-      } else {
         break;
       }
     }
@@ -100,12 +99,51 @@ serve(async (req) => {
     // activePlanId is altijd het automatisch gekozen plan
     const activePlanId = autoPlan.id;
     // Sla het automatisch gekozen plan op als het verschilt van de huidige waarde
+    let isUpgrade = false;
     if (profileRes.data?.selected_plan !== activePlanId) {
       await supabaseClient.from('profiles').update({ selected_plan: activePlanId }).eq('id', user.id);
+      // Detecteer upgrade van gratis naar betalend
+      const wasFree = profileRes.data?.selected_plan === 'free';
+      const isPaid = activePlanId !== 'free';
+      if (wasFree && isPaid) {
+        isUpgrade = true;
+      }
     }
     const activePlanData = calculatedPlans.find((p) => p.id === activePlanId);
     // recommendedPlanId is hetzelfde als activePlanId
     const recommendedPlanId = activePlanId;
+
+    // Factuur aanmaken bij upgrade naar betalend plan
+    if (isUpgrade && activePlanData) {
+      // Bepaal periode (YYYY-MM)
+      const now = new Date();
+      const period = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+      // Controleer of er al een factuur bestaat voor deze maand
+      const { data: existingInvoices, error: invoiceError } = await supabaseClient
+        .from('invoices')
+        .select('id')
+        .eq('user_id', user.id)
+        .eq('period', period);
+      if (!invoiceError && (!existingInvoices || existingInvoices.length === 0)) {
+        // Genereer payment_reference: email.naam
+        const profile = await supabaseClient.from('profiles').select('email, first_name, last_name').eq('id', user.id).single();
+        let payment_reference = user.email;
+        if (profile.data) {
+          payment_reference = `${profile.data.email}.${(profile.data.first_name || '').replace(/\s/g, '')}${(profile.data.last_name || '').replace(/\s/g, '')}`;
+        }
+        // Factuur aanmaken
+        await supabaseClient.from('invoices').insert({
+          user_id: user.id,
+          period,
+          amount: activePlanData.simulatedTotalPrice,
+          status: 'open',
+          invoice_date: now.toISOString().slice(0, 10),
+          due_date: new Date(now.getTime() + 14 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10),
+          payment_reference,
+          reminder_count: 0
+        });
+      }
+    }
     const responseData = {
       creation: {
         created_at: profileRes.data?.created_at || null

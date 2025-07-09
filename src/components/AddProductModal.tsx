@@ -125,6 +125,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
       // Haal huidig actief plan op vóór toevoegen
       const { data: beforeLicenseData } = await supabase.functions.invoke('get-license-and-usage');
       const beforePlan = beforeLicenseData?.activePlanId;
+      console.log('[AddProductModal] user.id:', user.id, 'beforePlan:', beforePlan, 'beforeLicenseData:', beforeLicenseData);
 
       let imageUrl = null;
 
@@ -182,7 +183,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
         unit_price: data.unitPrice,
         branch_id: activeBranch.branch_id,
         image_url: imageUrl,
-        user_id: user.id, // <-- automatisch koppelen aan gebruiker
+        user_id: user.id || (user?.id ?? ''), // fallback voor zekerheid
         supplier_id: supplierId,
       };
 
@@ -230,6 +231,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
       form.reset();
       // Na succesvol toevoegen, check licentie
       const { data: licenseData, error: licenseError } = await supabase.functions.invoke('get-license-and-usage');
+      console.log('[AddProductModal] user.id:', user.id, 'afterPlan:', licenseData?.activePlanId, 'licenseData:', licenseData);
       if (!licenseError && licenseData) {
         const afterPlan = licenseData.activePlanId;
         if (beforePlan && afterPlan && beforePlan !== afterPlan) {

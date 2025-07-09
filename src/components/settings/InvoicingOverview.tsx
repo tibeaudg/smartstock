@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Loader2, AlertCircle, FileText } from 'lucide-react';
 import clsx from 'clsx';
 import { useQuery } from '@tanstack/react-query';
+import { InvoiceQRCode } from './InvoiceQRCode';
 
 interface Invoice {
   id: number;
@@ -23,6 +24,7 @@ export const InvoicingOverview = () => {
     const { data, error } = await supabase
       .from('invoices')
       .select('*')
+      .eq('user_id', user.id)
       .order('invoice_date', { ascending: false });
     if (error) throw error;
     return data as Invoice[];
@@ -127,7 +129,27 @@ export const InvoicingOverview = () => {
                 </tr>
               </tbody>
             </table>
-            <div className="text-xs text-gray-500">Gelieve te betalen voor: <span className="font-semibold text-blue-700">{dueDate.toLocaleDateString('nl-BE')}</span></div>
+            <div className="text-xs text-gray-500 mb-4">Gelieve te betalen voor: <span className="font-semibold text-blue-700">{dueDate.toLocaleDateString('nl-BE')}</span></div>
+            <div className="flex flex-col md:flex-row items-center gap-6 bg-blue-50 rounded-lg p-4 border border-blue-200">
+              <div className="flex-1">
+                <div className="font-semibold text-blue-900 mb-1">Betaal eenvoudig via QR-code</div>
+                <div className="text-xs text-gray-700 mb-2">Scan de QR-code met je bank-app of gebruik onderstaande gegevens:</div>
+                <div className="text-xs text-gray-700">
+                  <b>IBAN:</b> BE86731056413050<br />
+                  <b>Naam:</b> Smartstock<br />
+                  <b>Bedrag:</b> €{currentInvoice.amount.toFixed(2)}<br />
+                  <b>Mededeling:</b> {currentInvoice.payment_reference}
+                </div>
+              </div>
+              <div className="flex-shrink-0">
+                <InvoiceQRCode
+                  iban="BE86731056413050"
+                  amount={currentInvoice.amount}
+                  name="Smartstock"
+                  paymentReference={currentInvoice.payment_reference || ''}
+                />
+              </div>
+            </div>
           </div>
         )}
         {/* Historiek van betaalde facturen */}

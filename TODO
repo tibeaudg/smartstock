@@ -1,0 +1,171 @@
+De edge functie voor automatische e-mail reminders is aangemaakt (`invoice-reminder.ts`):
+
+- **Selecteert alle openstaande facturen** waarvan de vervaldatum binnen 7 dagen is of verstreken.
+- **Stuurt een e-mail** (via Resend, gratis/goedkoop) naar de gebruiker met factuurdetails, QR-instructie en betaalgegevens.
+- **Maximaal 3 reminders** per factuur (reminder_count).
+- **Update reminder_sent_at en reminder_count** na elke verzonden e-mail.
+
+**Wat moet je nog doen om dit te activeren?**
+1. Maak een gratis account aan bij [Resend](https://resend.com/) en verkrijg een API key.
+2. Zet de API key als environment variable `RESEND_API_KEY` in je Supabase project.
+3. Deploy deze edge functie en plan deze als cronjob (bv. dagelijks) via Supabase Edge Functions scheduling.
+
+
+
+edge functie:
+import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-application-name'
+};
+
+const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
+const FROM_EMAIL = 'noreply@smartstock.app';
+const FROM_NAME = 'Smartstock';
+
+async function sendReminderEmail(to: string, subject: string, html: string) {
+  const res = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${RESEND_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      from: `${FROM_NAME} <${FROM_EMAIL}>`,
+      to,
+      subject,
+      html,
+    })
+  });
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(`Resend error: ${err}`);
+  }
+}
+
+serve(async (req) => {
+  if (req.method === 'OPTIONS') {
+    return new Response('ok', { headers: corsHeaders });
+  }
+  try {
+    const supabaseClient = createClient(Deno.env.get('SUPABASE_URL'), Deno.env.get('SUPABASE_SERVICE_ROLE_KEY'), {
+      db: { schema: 'public' }
+    });
+    // Haal alle openstaande facturen op waarvan de vervaldatum binnen 7 dagen is of verstreken, en reminder_count < 3
+    const now = new Date();
+    const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+    const { data: invoices, error } = await supabaseClient
+      .from('invoices')
+      .select('id, user_id, amount, due_date, payment_reference, reminder_sent_at, reminder_count, status')
+      .eq('status', 'open');
+    if (error) throw error;
+    let remindersSent = 0;
+    for (const inv of invoices) {
+      if (!inv.due_date) continue;
+      const due = new Date(inv.due_date);
+      if (due > now && (due.getTime() - now.getTime()) > 7 * 24 * 60 * 60 * 1000) continue; // Alleen als binnen 7 dagen of verlopen
+      if (inv.reminder_count && inv.reminder_count >= 3) continue;
+      // Haal e-mail van gebruiker op
+      const { data: user, error: userError } = await supabaseClient
+        .from('profiles')
+        .select('email, first_name, last_name')
+        .eq('id', inv.user_id)
+        .single();
+      if (userError || !user?.email) continue;
+      // Stuur e-mail
+      const subject = `Herinnering: openstaande factuur Smartstock`;
+      const html = `
+        <h2>Herinnering: openstaande factuur</h2>
+        <p>Beste ${user.first_name || ''} ${user.last_name || ''},</p>
+        <p>Uw factuur van €${inv.amount.toFixed(2)} met vervaldatum ${inv.due_date} is nog niet betaald.</p>
+        <p>Gelieve te betalen op IBAN <b>BE86731056413050</b> t.n.v. <b>Smartstock</b> met mededeling <b>${inv.payment_reference}</b>.</p>
+        <p>U kunt ook eenvoudig betalen door de QR-code te scannen in uw Smartstock portaal.</p>
+        <p>Al betaald? Dan mag u deze herinnering negeren.</p>
+        <p>Met vriendelijke groet,<br/>Smartstock</p>
+      `;
+      try {
+        await sendReminderEmail(user.email, subject, html);
+        await supabaseClient.from('invoices').update({
+          reminder_sent_at: now.toISOString(),
+          reminder_count: (inv.reminder_count || 0) + 1
+        }).eq('id', inv.id);
+        remindersSent++;
+      } catch (err) {
+        console.error('Reminder e-mail error:', err);
+      }
+    }
+    return new Response(JSON.stringify({ success: true, remindersSent }), {
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      status: 200
+    });
+  } catch (err) {
+    return new Response(JSON.stringify({ error: err.message }), {
+      status: 500,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+    });
+  }
+});
+
+
+
+----
+
+
+Cron job:
+
+
+
+
+Uitstekend! Hier is een voorbeeld van hoe je een Supabase Edge Function als cronjob (scheduled function) instelt, zodat de e-mail reminders automatisch dagelijks worden verstuurd.
+
+---
+
+## **1. Supabase Scheduled Functions (cron) instellen**
+
+Supabase ondersteunt het plannen van edge functions via een [cron syntax](https://crontab.guru/).
+
+### **Stap 1: Zet een `schedule` blok in je function config**
+
+Maak (of update) het bestand `supabase/functions/get-license-and-usage/invoice-reminder.toml` met deze inhoud:
+
+```toml
+[function]
+runtime = "deno"
+# De naam moet overeenkomen met je functiebestand (zonder .ts)
+
+[schedule]
+cron = "0 8 * * *" # Elke dag om 08:00 uur UTC
+```
+
+- `"0 8 * * *"` betekent: elke dag om 08:00 UTC (pas aan naar jouw voorkeur).
+- Je kunt de tijdzone niet direct instellen, maar je kunt de tijd in UTC kiezen die overeenkomt met jouw gewenste lokale tijd.
+
+### **Stap 2: Deploy je functie naar Supabase**
+
+Gebruik de Supabase CLI:
+
+```sh
+supabase functions deploy get-license-and-usage/invoice-reminder
+```
+
+### **Stap 3: Zet je Resend API key als environment variable**
+
+```sh
+supabase secrets set RESEND_API_KEY=your_resend_api_key
+```
+
+---
+
+## **Meer info**
+
+- [Supabase Docs: Scheduled Functions](https://supabase.com/docs/guides/functions/schedule)
+- [Crontab Guru](https://crontab.guru/) (voor cron syntax uitleg)
+
+---
+
+**Samengevat:**  
+Met deze setup wordt jouw reminderfunctie elke dag automatisch uitgevoerd, zonder dat je ernaar om hoeft te kijken!
+
+Laat gerust weten als je hulp wilt bij het deployen of testen!

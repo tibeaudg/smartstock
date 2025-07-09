@@ -569,7 +569,7 @@ export const StockList = () => {
                           <div>
                             <div className="text-sm font-medium text-gray-900">{product.name}</div>
                             {product.description && (
-                              <div className="text-xs text-gray-500 max-w-xs truncate">
+                              <div className="text-xs text-gray-500 max-w-xs truncate pr-20">
                                 {product.description}
                               </div>
                             )}

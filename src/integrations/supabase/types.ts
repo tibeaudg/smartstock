@@ -71,6 +71,12 @@ export type Database = {
           status: string
           total_amount: number
           user_count: number
+          // Toegevoegd voor facturatie/QR/reminders
+          payment_reference: string | null // email.naam
+          due_date: string | null
+          paid_at: string | null
+          reminder_sent_at: string | null
+          reminder_count: number | null
         }
         Insert: {
           branch_count: number
@@ -82,6 +88,12 @@ export type Database = {
           status?: string
           total_amount: number
           user_count: number
+          // Toegevoegd voor facturatie/QR/reminders
+          payment_reference?: string | null
+          due_date?: string | null
+          paid_at?: string | null
+          reminder_sent_at?: string | null
+          reminder_count?: number | null
         }
         Update: {
           branch_count?: number
@@ -93,6 +105,12 @@ export type Database = {
           status?: string
           total_amount?: number
           user_count?: number
+          // Toegevoegd voor facturatie/QR/reminders
+          payment_reference?: string | null
+          due_date?: string | null
+          paid_at?: string | null
+          reminder_sent_at?: string | null
+          reminder_count?: number | null
         }
         Relationships: [
           {
