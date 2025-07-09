@@ -201,7 +201,7 @@ export const EditProductModal = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-lg w-full max-h-[90vh] overflow-y-auto mx-auto px-4 sm:px-8">
+      <DialogContent className="max-w-sm w-sm max-h-[90vh] overflow-y-auto mx-auto px-4 sm:px-8">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             {actionType === 'in' ? <Plus className="h-5 w-5" /> : <Minus className="h-5 w-5" />}

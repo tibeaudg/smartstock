@@ -140,6 +140,23 @@ export const HomePage = () => {
         </div>
       </section>
 
+      {/* How It Works Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8">Hoe Het Werkt</h2>
+          <div className="flex justify-center">
+            <video
+              src="/intro_vid.mp4"
+              controls
+              className="rounded-xl shadow-lg w-full max-w-3xl"
+              poster="/Inventory-Management.png"
+            >
+              Uw browser ondersteunt de video tag niet.
+            </video>
+          </div>
+        </div>
+      </section>
+
       {/* Features Section */}
       <section id="features" className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -329,15 +346,7 @@ export const HomePage = () => {
                 <div className="space-y-4">
                   <div className="flex items-center">
                     <Mail className="h-5 w-5 text-blue-600 mr-3" />
-                    <span className="text-gray-700">support@SmartStock.be</span>
-                  </div>
-                  <div className="flex items-center">
-                    <Phone className="h-5 w-5 text-blue-600 mr-3" />
-                    <span className="text-gray-700">+32 (0)2 123 45 67</span>
-                  </div>
-                  <div className="flex items-center">
-                    <MapPin className="h-5 w-5 text-blue-600 mr-3" />
-                    <span className="text-gray-700">Zakenlaan 123, 1000 Brussel, België</span>
+                    <span className="text-gray-700">info@smartstock.be</span>
                   </div>
                 </div>
               </div>

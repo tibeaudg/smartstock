@@ -146,7 +146,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
               <HelpCircle className="w-5 h-5 flex-shrink-0" />
               <div>
                 <p className="font-medium">Hulp nodig?</p>
-                <p className="text-xs text-gray-500">support@smartstock.be</p>
+                <p className="text-xs text-gray-500">info@smartstock.be</p>
               </div>
             </div>
         </div>
