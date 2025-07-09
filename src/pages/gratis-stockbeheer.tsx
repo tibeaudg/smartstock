@@ -1,0 +1,42 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+
+export default function GratisStockbeheer() {
+  return (
+    <main className="max-w-3xl mx-auto px-4 py-12">
+      <h1 className="text-4xl font-bold mb-6">Gratis Stockbeheer App voor KMO's</h1>
+      <p className="text-lg mb-4">
+        Wil je <strong>gratis stockbeheer</strong> proberen? Met SmartStock beheer je tot 30 producten volledig gratis. Ideaal voor starters, kleine bedrijven en zelfstandigen die hun voorraad willen digitaliseren zonder kosten.
+      </p>
+      <h2 className="text-2xl font-semibold mb-3">Voordelen van gratis stockbeheer</h2>
+      <ul className="list-disc ml-6 mb-4">
+        <li>Geen verborgen kosten of verplichtingen</li>
+        <li>Direct starten, geen installatie nodig</li>
+        <li>Gebruiksvriendelijke mobiele app</li>
+        <li>Upgrade mogelijk naarmate je groeit</li>
+      </ul>
+      <h2 className="text-2xl font-semibold mb-3">Probeer het nu</h2>
+      <p className="mb-4">
+        Maak vandaag nog een gratis account aan en ontdek hoe eenvoudig voorraadbeheer kan zijn. <Link to="/simpelstockbeheer" className="text-blue-700 underline">Lees meer over simpel stockbeheer</Link> of bezoek onze <Link to="/blog" className="text-blue-700 underline">blog</Link> voor tips.
+      </p>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "name": "SmartStock",
+        "image": "https://www.smartstock.be/logo.png",
+        "@id": "https://www.smartstock.be/",
+        "url": "https://www.smartstock.be/gratis-stockbeheer",
+        "telephone": "+32-123-456-789",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Voorbeeldstraat 1",
+          "addressLocality": "Brugge",
+          "postalCode": "8000",
+          "addressCountry": "BE"
+        },
+        "description": "Gratis stockbeheer app voor KMO's. Beheer tot 30 producten gratis met SmartStock.",
+        "areaServed": ["Brugge", "Gent", "Antwerpen", "Vlaanderen"]
+      }`}} />
+    </main>
+  );
+} 

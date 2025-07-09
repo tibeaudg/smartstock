@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Package, BarChart3, Users, Shield, CheckCircle, ArrowRight, Check, Mail, Phone, MapPin } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
 export const HomePage = () => {
   const navigate = useNavigate();
@@ -107,6 +108,31 @@ export const HomePage = () => {
 
   return (
     <div className="min-h-screen bg-white">
+      <Helmet>
+        <title>Smartstock: Eenvoudig & Gratis Stockbeheer voor KMO's | Slim Voorraadbeheer</title>
+        <meta name="description" content="Eenvoudig, gratis en slim stockbeheer voor KMO's en zelfstandigen. Probeer SmartStock en ontdek de beste stockbeheer app voor Vlaanderen!" />
+        <meta name="keywords" content="stockbeheer, gratis stockbeheer, stockbeheer app, voorraadbeheer, KMO, eenvoudig voorraadbeheer, voorraad app, voorraadbeheer Vlaanderen, voorraadbeheer Gent, voorraadbeheer Brugge, voorraadbeheer Antwerpen" />
+        <script type="application/ld+json">{`
+          {
+            "@context": "https://schema.org",
+            "@type": "LocalBusiness",
+            "name": "SmartStock",
+            "image": "https://www.smartstock.be/logo.png",
+            "@id": "https://www.smartstock.be/",
+            "url": "https://www.smartstock.be/",
+            "telephone": "+32-123-456-789",
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "Voorbeeldstraat 1",
+              "addressLocality": "Gent",
+              "postalCode": "9000",
+              "addressCountry": "BE"
+            },
+            "description": "Eenvoudig en gratis stockbeheer voor KMO's en zelfstandigen in Vlaanderen.",
+            "areaServed": ["Gent", "Brugge", "Antwerpen", "Vlaanderen"]
+          }
+        `}</script>
+      </Helmet>
       <Header 
         onLoginClick={handleLoginClick}
         onNavigate={scrollToSection}
@@ -116,16 +142,16 @@ export const HomePage = () => {
       <section 
         className="py-60 bg-cover bg-center bg-no-repeat relative"
         style={{ backgroundImage: 'url("/Inventory-Management.png")' }}
+        aria-label="Hero sectie over eenvoudig en gratis stockbeheer voor KMO's"
       >
         <div className="absolute inset-0 bg-gradient-to-br from-blue-200 to-indigo-35"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center">
             <h1 className="text-4xl md:text-6xl font-bold text-black mb-6">
-              Eenvoudig Voorraadbeheer
+              Eenvoudig & Gratis Stockbeheer voor KMO's en Zelfstandigen
             </h1>
             <p className="text-xl text-black mb-8 max-w-3xl mx-auto">
-              Stroomlijn uw voorraadactiviteiten met ons krachtige, intuïtieve platform. 
-              Beheer voorraad, volg bestellingen en krijg waardevolle inzichten op één plek.
+              SmartStock is dé <strong>gratis stockbeheer app</strong> voor KMO's, zelfstandigen en kleine bedrijven in Vlaanderen. Beheer je voorraad eenvoudig, snel en veilig. Start vandaag nog met <a href="/gratis-stockbeheer" className="text-blue-700 underline">gratis stockbeheer</a> en ontdek waarom steeds meer ondernemers kiezen voor <a href="/simpelstockbeheer" className="text-blue-700 underline">simpel stockbeheer</a> met SmartStock.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8 mb-8">
               <Button size="lg" className="text-lg px-10 py-5 bg-blue-700 hover:bg-white hover:text-blue-700 text-white font-bold shadow-lg border border-blue-700 focus:ring-4 focus:ring-yellow-300 transition-all duration-200" onClick={handleLoginClick} style={{boxShadow: '0 8px 32px rgba(255,193,7,0.25)'}}>
@@ -140,13 +166,15 @@ export const HomePage = () => {
       {/* How It Works Section */}
       <section className="py-20 bg-gray-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center ">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8">Hoe Het Werkt</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8">Hoe Werkt Gratis Stockbeheer met SmartStock?</h2>
           <div className="flex justify-center">
             <video
               src="/intro_vid.mp4"
               controls
+              // loading="lazy" // Niet standaard ondersteund voor <video>, optimalisatie kan via JS of plugin
               className="rounded-xl shadow-lg w-full max-w-3xl"
               poster="/videobanner.jpg"
+              aria-label="Introductievideo: eenvoudig en gratis stockbeheer voor KMO's"
             >
               Uw browser ondersteunt de video tag niet.
             </video>
