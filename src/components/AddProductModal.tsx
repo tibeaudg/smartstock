@@ -420,27 +420,34 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
         </Form>
       </DialogContent>
       {showUpgradeNotice && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/30">
-          <div className="bg-blue-100 border border-blue-300 rounded-lg shadow-lg p-6 w-full max-w-md relative flex flex-col">
-            <div className="flex items-start">
-              <Info className="w-6 h-6 text-blue-700 mr-3 mt-1" />
-              <div>
-                <div className="font-bold text-blue-900 text-lg mb-1">Abonnement automatisch geüpgraded</div>
-                <div className="text-blue-900 text-sm mb-2">
-                  Uw aantal producten overschrijdt de limiet van uw huidige abonnement. U wordt automatisch overgezet naar een hoger abonnement. Klik op 'Accepteren' om uw nieuwe licentie te bekijken.
-                </div>
-              </div>
-            </div>
-            <button
-              className="mt-4 bg-blue-700 text-white font-semibold px-4 py-2 rounded hover:bg-blue-800 transition"
-              onClick={() => { setShowUpgradeNotice(false); navigate('/dashboard/settings', { state: { tab: 'license' } }); }}
-              autoFocus
-            >
-              Accepteren
-            </button>
-          </div>
+  <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/30">
+    {/* 1. 'items-center' toegevoegd om alles horizontaal te centreren.
+      2. 'justify-center' en overbodige klassen verwijderd voor duidelijkheid.
+    */}
+    <div className="bg-white border border-blue-300 rounded-lg shadow-lg p-6 max-w-md relative flex flex-col items-center">
+      
+      {/* 3. Ruimte toegevoegd onder het icoon */}
+      <Info className="w-8 h-8 text-blue-700 mb-4" />
+
+      {/* 2. 'text-center' toegevoegd om de tekst te centreren */}
+      <div className="text-center">
+        <div className="font-bold text-blue-700 text-lg mb-2">Abonnement automatisch geüpgraded</div>
+        <div className="text-blue-900 text-sm">
+          Uw aantal producten overschrijdt de limiet van uw huidige abonnement. U wordt automatisch overgezet naar een hoger abonnement. Klik op 'Accepteren' om uw nieuwe licentie te bekijken.
         </div>
-      )}
+      </div>
+
+      <button
+        className="mt-6 bg-blue-700 text-white font-semibold px-4 py-2 rounded hover:bg-blue-800 transition w-full" // w-full toegevoegd voor betere look
+        onClick={() => { setShowUpgradeNotice(false); navigate('/dashboard/settings', { state: { tab: 'license' } }); }}
+        autoFocus
+      >
+        Accepteren
+      </button>
+
+    </div>
+  </div>
+)}
     </Dialog>
   );
 };
