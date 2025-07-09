@@ -122,6 +122,10 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
 
     setLoading(true);
     try {      
+      // Haal huidig actief plan op vóór toevoegen
+      const { data: beforeLicenseData } = await supabase.functions.invoke('get-license-and-usage');
+      const beforePlan = beforeLicenseData?.activePlanId;
+
       let imageUrl = null;
 
 
@@ -227,13 +231,11 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
       // Na succesvol toevoegen, check licentie
       const { data: licenseData, error: licenseError } = await supabase.functions.invoke('get-license-and-usage');
       if (!licenseError && licenseData) {
-        const plan = licenseData.activePlanId;
-        const plans = licenseData.availablePlans || [];
-        const activePlan = plans.find((p) => p.id === plan);
-        if (activePlan && licenseData.usage.total_products > activePlan.limit && plan !== 'enterprise') {
+        const afterPlan = licenseData.activePlanId;
+        if (beforePlan && afterPlan && beforePlan !== afterPlan) {
           onClose();
           setShowUpgradeNotice(true);
-          return; // Stop hier, zodat modal open blijft tot acceptatie
+          return;
         }
       }
       onProductAdded();
@@ -438,8 +440,13 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
       </div>
 
       <button
-        className="mt-6 bg-blue-700 text-white font-semibold px-4 py-2 rounded hover:bg-blue-800 transition w-full" // w-full toegevoegd voor betere look
-        onClick={() => { setShowUpgradeNotice(false); navigate('/dashboard/settings', { state: { tab: 'license' } }); }}
+        className="mt-4 bg-blue-700 text-white font-semibold px-4 py-2 rounded hover:bg-blue-800 transition"
+        onClick={() => {
+          setShowUpgradeNotice(false);
+          // Dispatch custom event om LicenseOverview te laten refetchen
+          window.dispatchEvent(new Event('license-refetch'));
+          navigate('/dashboard/settings', { state: { tab: 'license' } });
+        }}
         autoFocus
       >
         Accepteren

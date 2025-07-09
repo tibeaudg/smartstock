@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Tabs,
   TabsContent,
@@ -33,6 +33,13 @@ export const Settings = () => {
   // Lees gewenste tab uit router state
   const initialTab = (location.state && location.state.tab) || 'profile';
   const [activeTab, setActiveTab] = useState(initialTab);
+
+  // Dispatch event bij mount of route-verandering naar settings
+  useEffect(() => {
+    // Alleen dispatchen als de licentie-tab zichtbaar is (admin)
+    // of altijd als je wilt dat het altijd refetcht bij settings bezoek
+    window.dispatchEvent(new Event('license-refetch'));
+  }, [location.key]);
 
   const isAdmin = userProfile?.role === 'admin';
   const isBlocked = userProfile?.blocked;

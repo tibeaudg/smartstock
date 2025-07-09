@@ -103,6 +103,7 @@ export const LicenseOverview = () => {
     queryFn: fetchData,
     enabled: !!user,
     refetchOnWindowFocus: true,
+    refetchOnMount: true,
     staleTime: 1000 * 60 * 2,
   });
 
@@ -123,8 +124,12 @@ export const LicenseOverview = () => {
         }
       )
       .subscribe();
+    // Luister op custom event voor geforceerde refresh
+    const handler = () => refetch();
+    window.addEventListener('license-refetch', handler);
     return () => {
       supabase.removeChannel(channel);
+      window.removeEventListener('license-refetch', handler);
     };
   }, [user, refetch]);
 
@@ -164,6 +169,15 @@ export const LicenseOverview = () => {
       setShowUpgradeDialog(true);
     }
   }, [isAutoUpgrade, acceptedUpgrade]);
+
+  if (loading || isFetching) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[300px]">
+        <Loader2 className="w-10 h-10 animate-spin text-blue-600 mb-4" />
+        <span className="text-blue-700 font-medium">Laden van licentiegegevens...</span>
+      </div>
+    );
+  }
 
   // De JSX-weergave blijft ongewijzigd.
   return (
