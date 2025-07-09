@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Package, BarChart3, Users, Shield, CheckCircle, ArrowRight, Check, Mail, Phone, MapPin } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 export const HomePage = () => {
   const navigate = useNavigate();
@@ -110,6 +110,7 @@ export const HomePage = () => {
       <Header 
         onLoginClick={handleLoginClick}
         onNavigate={scrollToSection}
+        simplifiedNav={true} // nav: Home, Diensten, Over Ons, Blog, Contact
       />
         {/* Hero Section */}
       <section 
@@ -120,20 +121,16 @@ export const HomePage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center">
             <h1 className="text-4xl md:text-6xl font-bold text-black mb-6">
-              Slim Voorraad
-              <span className="text-black"> Beheer</span>
+              Eenvoudig Voorraadbeheer
             </h1>
             <p className="text-xl text-black mb-8 max-w-3xl mx-auto">
               Stroomlijn uw voorraadactiviteiten met ons krachtige, intuïtieve platform. 
               Beheer voorraad, volg bestellingen en krijg waardevolle inzichten op één plek.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="text-lg px-8 py-4" onClick={handleLoginClick}>
-                Probeer Gratis
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8 mb-8">
+              <Button size="lg" className="text-lg px-10 py-5 bg-blue-700 hover:bg-white hover:text-blue-700 text-white font-bold shadow-lg border border-blue-700 focus:ring-4 focus:ring-yellow-300 transition-all duration-200" onClick={handleLoginClick} style={{boxShadow: '0 8px 32px rgba(255,193,7,0.25)'}}>
+                Start Hier
                 <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-              <Button variant="outline" size="lg" className="text-lg px-8 py-4">
-                Bekijk Demo
               </Button>
             </div>
           </div>
@@ -149,7 +146,7 @@ export const HomePage = () => {
               src="/intro_vid.mp4"
               controls
               className="rounded-xl shadow-lg w-full max-w-3xl"
-              poster="/Inventory-Management.png"
+              poster="/videobanner.jpg"
             >
               Uw browser ondersteunt de video tag niet.
             </video>
@@ -174,7 +171,7 @@ export const HomePage = () => {
               <Card key={index} className="text-center hover:shadow-lg transition-shadow">
                 <CardHeader>
                   <div className="mx-auto w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
-                    <feature.icon className="h-6 w-6 text-blue-600" />
+                    <feature.icon className="h-6 w-6 text-blue-600" aria-label={feature.title} />
                   </div>
                   <CardTitle className="text-xl mb-2">{feature.title}</CardTitle>
                 </CardHeader>
@@ -196,9 +193,6 @@ export const HomePage = () => {
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Eenvoudige, Transparante Prijzen
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Kies het perfecte plan voor uw bedrijf. Alle plannen bevatten een gratis proefperiode van 14 dagen.
-            </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -233,7 +227,7 @@ export const HomePage = () => {
                     variant={plan.popular ? 'default' : 'outline'}
                     onClick={handleLoginClick}
                   >
-                    Beginnen
+                    Start Hier
                   </Button>
                 </CardContent>
               </Card>
@@ -261,15 +255,15 @@ export const HomePage = () => {
             </div>
             <div className="bg-white p-8 rounded-2xl shadow-xl">
               <div className="bg-gradient-to-br from-blue-600 to-indigo-600 p-6 rounded-xl text-white mb-6">
-                <h3 className="text-2xl font-bold mb-2">Start Uw Gratis Proefperiode</h3>
-                <p className="text-blue-100">Geen creditcard vereist • 14 dagen gratis proefperiode</p>
+                <h3 className="text-2xl font-bold mb-2">Start Gratis</h3>
+                <p className="text-blue-100">Geen creditcard vereist!</p>
               </div>
-              <Button className="w-full text-lg py-6" onClick={handleLoginClick}>
-                Maak Gratis Account
+              <Button className="w-full text-lg py-6 bg-yellow-400 hover:bg-yellow-500 text-black font-bold shadow-lg border-4 border-white focus:ring-4 focus:ring-yellow-300 transition-all duration-200" onClick={handleLoginClick} style={{boxShadow: '0 8px 32px rgba(255,193,7,0.25)'}}>
+                Start Hier
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
               <p className="text-sm text-gray-500 text-center mt-4">
-                Instellen in minder dan 5 minuten
+                Instellen in minder dan 1 minuut
               </p>
             </div>
           </div>
@@ -345,7 +339,7 @@ export const HomePage = () => {
                 <h3 className="text-2xl font-bold text-gray-900 mb-6">Contactinformatie</h3>
                 <div className="space-y-4">
                   <div className="flex items-center">
-                    <Mail className="h-5 w-5 text-blue-600 mr-3" />
+                    <Mail className="h-5 w-5 text-blue-600 mr-3" aria-label="E-mail" />
                     <span className="text-gray-700">info@smartstock.be</span>
                   </div>
                 </div>
@@ -365,9 +359,9 @@ export const HomePage = () => {
               Professioneel voorraadbeheer voor KMO's
             </p>
             <div className="flex justify-center space-x-8 text-sm">
-              <a href="#" className="hover:text-blue-400 transition-colors">Privacybeleid</a>
-              <a href="#" className="hover:text-blue-400 transition-colors">Gebruiksvoorwaarden</a>
-              <a href="#" className="hover:text-blue-400 transition-colors">Contact Ondersteuning</a>
+              <Link to="/privacybeleid" className="hover:text-blue-400 transition-colors">Privacybeleid</Link>
+              <Link to="/gebruiksvoorwaarden" className="hover:text-blue-400 transition-colors">Gebruiksvoorwaarden</Link>
+              <Link to="/contact" className="hover:text-blue-400 transition-colors">Contact Ondersteuning</Link>
             </div>
             <p className="text-gray-500 text-sm mt-8">
               © 2024 SmartStock. Alle rechten voorbehouden.

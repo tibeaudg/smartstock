@@ -6,9 +6,10 @@ import { Package } from 'lucide-react';
 interface HeaderProps {
   onLoginClick?: () => void;
   onNavigate?: (sectionId: string) => void;
+  simplifiedNav?: boolean;
 }
 
-export const Header = ({ onLoginClick, onNavigate }: HeaderProps) => {
+export const Header = ({ onLoginClick, onNavigate, simplifiedNav }: HeaderProps) => {
   const handleLoginClick = () => {
     if (onLoginClick) {
       onLoginClick();
@@ -30,32 +31,42 @@ export const Header = ({ onLoginClick, onNavigate }: HeaderProps) => {
             <span className="text-2xl font-bold text-gray-900">SmartStock</span>
           </div>
           
-          <nav className="hidden md:flex space-x-8">
-            <button 
-              onClick={() => handleNavClick('features')}
-              className="text-gray-600 hover:text-gray-900 transition-colors"
-            >
-              Functies
-            </button>
-            <button 
-              onClick={() => handleNavClick('pricing')}
-              className="text-gray-600 hover:text-gray-900 transition-colors"
-            >
-              Prijzen
-            </button>
-            <button 
-              onClick={() => handleNavClick('about')}
-              className="text-gray-600 hover:text-gray-900 transition-colors"
-            >
-              Over Ons
-            </button>
-            <button 
-              onClick={() => handleNavClick('contact')}
-              className="text-gray-600 hover:text-gray-900 transition-colors"
-            >
-              Contact
-            </button>
-          </nav>
+          {simplifiedNav ? (
+            <nav className="hidden md:flex space-x-8">
+              <a href="/" className="text-gray-600 hover:text-gray-900 transition-colors">Home</a>
+              <a href="/diensten" className="text-gray-600 hover:text-gray-900 transition-colors">Diensten</a>
+              <a href="/over-ons" className="text-gray-600 hover:text-gray-900 transition-colors">Over Ons</a>
+              <a href="/blog" className="text-gray-600 hover:text-gray-900 transition-colors">Blog</a>
+              <a href="/contact" className="text-gray-600 hover:text-gray-900 transition-colors">Contact</a>
+            </nav>
+          ) : (
+            <nav className="hidden md:flex space-x-8">
+              <button 
+                onClick={() => handleNavClick('features')}
+                className="text-gray-600 hover:text-gray-900 transition-colors"
+              >
+                Functies
+              </button>
+              <button 
+                onClick={() => handleNavClick('pricing')}
+                className="text-gray-600 hover:text-gray-900 transition-colors"
+              >
+                Prijzen
+              </button>
+              <button 
+                onClick={() => handleNavClick('about')}
+                className="text-gray-600 hover:text-gray-900 transition-colors"
+              >
+                Over Ons
+              </button>
+              <button 
+                onClick={() => handleNavClick('contact')}
+                className="text-gray-600 hover:text-gray-900 transition-colors"
+              >
+                Contact
+              </button>
+            </nav>
+          )}
 
           <div className="flex items-center space-x-4">
             <Button variant="ghost" onClick={handleLoginClick}>

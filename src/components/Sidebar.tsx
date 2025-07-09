@@ -44,11 +44,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
         { id: 'dashboard', label: 'Dashboard', icon: BarChart3, path: '/dashboard', end: true },
         { id: 'stock', label: 'Producten', icon: Package, path: '/dashboard/stock' },
         { id: 'transactions', label: 'Bewegingslijst', icon: ShoppingCart, path: '/dashboard/transactions' },
-        ...(isOwner
-          ? [
-              { id: 'admin', label: 'Admin', icon: Settings, path: '/admin' },
-            ]
-          : []),
+
         { id: 'settings', label: 'Instellingen', icon: Settings, path: '/dashboard/settings' },
       ];
 
@@ -92,7 +88,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
         {isOpen && (
           <div className="p-4 border-b border-gray-200 flex-shrink-0">
             <BranchSelector />
-            <p className="text-xs text-gray-500 pt-3">
+            <p className=" hidden text-xs text-gray-500 pt-3">
               {userProfile?.email ?? 'Laden...'}
             </p>
 
