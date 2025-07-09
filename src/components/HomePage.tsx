@@ -138,8 +138,8 @@ export const HomePage = () => {
       </section>
 
       {/* How It Works Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center ">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8">Hoe Het Werkt</h2>
           <div className="flex justify-center">
             <video
@@ -222,13 +222,7 @@ export const HomePage = () => {
                       </li>
                     ))}
                   </ul>
-                  <Button 
-                    className={`w-full ${plan.popular ? 'bg-blue-600 hover:bg-blue-700' : ''}`}
-                    variant={plan.popular ? 'default' : 'outline'}
-                    onClick={handleLoginClick}
-                  >
-                    Start Hier
-                  </Button>
+
                 </CardContent>
               </Card>
             ))}
