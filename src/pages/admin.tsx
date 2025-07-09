@@ -95,6 +95,8 @@ export default function AdminPage() {
   const { data: invoices = [], isLoading: loadingInvoices } = useQuery({
     queryKey: ['allInvoices'],
     queryFn: fetchAllInvoices,
+    refetchOnWindowFocus: true,
+    refetchInterval: 5000,
   });
   // Gebruikersbeheer
   const { data: users = [], isLoading: loadingUsers } = useQuery({

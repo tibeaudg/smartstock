@@ -44,12 +44,12 @@ export const InvoicingOverview = () => {
     staleTime: 1000 * 60 * 2,
   });
 
-  // Bepaal de huidige openstaande factuur (indien aanwezig)
-  const currentInvoice = invoices.find(inv => inv.status === 'open') || invoices[0];
+  // Bepaal de huidige openstaande of te late factuur (indien aanwezig)
+  const currentInvoice = invoices.find(inv => inv.status === 'open' || inv.status === 'late') || invoices[0];
   const isCurrentPaid = !currentInvoice || currentInvoice.status === 'paid';
+  // Gebruik altijd de due_date uit de database
   const invoiceDate = currentInvoice ? new Date(currentInvoice.invoice_date) : new Date();
-  // Stel vervaldatum op 14 dagen na factuurdatum
-  const dueDate = currentInvoice ? new Date(new Date(currentInvoice.invoice_date).getTime() + 14 * 24 * 60 * 60 * 1000) : new Date();
+  const dueDate = currentInvoice && currentInvoice.due_date ? new Date(currentInvoice.due_date) : null;
 
   // Bepaal de betaalde facturen voor de historiek
   const paidInvoices = invoices.filter(inv => inv.status === 'paid');
@@ -122,14 +122,31 @@ export const InvoicingOverview = () => {
                   <td className="px-6 py-4 font-medium text-gray-900 capitalize">{currentInvoice.period}</td>
                   <td className="px-6 py-4 text-right font-mono text-gray-800">€{currentInvoice.amount.toFixed(2)}</td>
                   <td className="px-6 py-4 text-center">
-                    <Badge className="bg-yellow-100 text-yellow-800">Open</Badge>
+                    <Badge className={
+                      currentInvoice.status === 'paid'
+                        ? 'bg-green-100 text-green-800'
+                        : currentInvoice.status === 'late'
+                        ? 'bg-red-100 text-red-800'
+                        : 'bg-yellow-100 text-yellow-800'
+                    }>
+                      {currentInvoice.status === 'paid'
+                        ? 'Betaald'
+                        : currentInvoice.status === 'late'
+                        ? 'Te laat'
+                        : 'Open'}
+                    </Badge>
                   </td>
-                  <td className="px-6 py-4 text-center">{invoiceDate.toLocaleDateString('nl-BE')}</td>
-                  <td className="px-6 py-4 text-center">{dueDate.toLocaleDateString('nl-BE')}</td>
+                  <td className="px-6 py-4 text-center">{currentInvoice.invoice_date ? new Date(currentInvoice.invoice_date).toLocaleDateString('nl-BE') : '-'}</td>
+                  <td className="px-6 py-4 text-center">{dueDate ? dueDate.toLocaleDateString('nl-BE') : '-'}</td>
+                </tr>
+                <tr>
+                  <td colSpan={5} className="text-xs text-gray-400">
+                    Factuur-ID: <b>{currentInvoice.id}</b>
+                  </td>
                 </tr>
               </tbody>
             </table>
-            <div className="text-xs text-gray-500 mb-4">Gelieve te betalen voor: <span className="font-semibold text-blue-700">{dueDate.toLocaleDateString('nl-BE')}</span></div>
+            <div className="text-xs text-gray-500 mb-4">Gelieve te betalen voor: <span className="font-semibold text-blue-700">{dueDate ? dueDate.toLocaleDateString('nl-BE') : '-'}</span></div>
             <div className="flex flex-col md:flex-row items-center gap-6 bg-blue-50 rounded-lg p-4 border border-blue-200">
               <div className="flex-1">
                 <div className="font-semibold text-blue-900 mb-1">Betaal eenvoudig via QR-code</div>
