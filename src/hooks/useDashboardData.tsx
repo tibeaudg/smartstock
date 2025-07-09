@@ -177,7 +177,8 @@ export const useProductCount = () => {
 
   useEffect(() => {
     if (!activeBranch) return;
-    const channel = supabase.channel('products-count-' + activeBranch.branch_id)
+    // Maak altijd een nieuwe channel instance aan
+    const channel = supabase.channel('products-count-' + activeBranch.branch_id + '-' + Math.random().toString(36).substr(2, 9))
       .on(
         'postgres_changes',
         {
@@ -189,8 +190,12 @@ export const useProductCount = () => {
         () => {
           queryClient.invalidateQueries({ queryKey: ['productCount', activeBranch.branch_id, user?.id] });
         }
-      )
-      .subscribe();
+      );
+    try {
+      channel.subscribe();
+    } catch (e) {
+      console.error('Supabase subscribe error:', e);
+    }
     return () => {
       supabase.removeChannel(channel);
     };

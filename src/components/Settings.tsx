@@ -50,7 +50,7 @@ export const Settings = () => {
       <div className="space-y-6">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Instellingen</h1>
-          <p className="font-bold p-2text-red-900 mt-2 bg-red-400/75 border border-red-900 border">Uw account is geblokkeerd. U kunt alleen uw facturen bekijken en betalen.</p>
+          <p className="font-bold p-2 items-center justify-center text-blue-700 mt-2 bg-blue-50 border border-blue-200">Uw account is geblokkeerd. U kunt alleen uw facturen bekijken en betalen.</p>
         </div>
         <Tabs value={"invoicing"} onValueChange={() => {}} className="space-y-24 md:space-y-0">
           <TabsList className="grid w-full grid-cols-1">
