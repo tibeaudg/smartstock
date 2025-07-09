@@ -150,7 +150,6 @@ const ConnectionErrorUI = () => (
 async function init() {
   let root: Root;
   try {
-    console.log('Applicatie-initialisatie starten...');
     const isConnected = await checkSupabaseConnection();
 
     if (!isConnected) {

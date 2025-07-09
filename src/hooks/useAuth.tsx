@@ -137,7 +137,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           filter: `id=eq.${user.id}`,
         },
         (payload) => {
-          console.log('[Realtime] profile update payload:', payload);
           setUserProfile((prev) => {
             const prevBlocked = prev?.blocked;
             const newBlocked = payload.new?.blocked;

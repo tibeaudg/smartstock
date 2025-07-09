@@ -158,7 +158,6 @@ export const StockList = () => {
   };
 
   const handleStockAction = (product: Product, action: StockAction) => {
-    console.log('Stock action triggered:', action, 'for product:', product.name);
     setSelectedProduct(product);
     setSelectedAction(action);
     setIsEditModalOpen(true);

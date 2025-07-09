@@ -101,10 +101,6 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
   };
 
   const handleSubmit = async (data: FormData) => {
-    console.log('Starting product submission...');
-    console.log('User:', user?.id);
-    console.log('Active branch:', activeBranch);
-    console.log('Branch loading:', branchLoading);
 
     // Enhanced validation with better error messages
     if (!user) {
@@ -114,7 +110,6 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
     }
 
     if (branchLoading) {
-      console.log('Branches are still loading, please wait...');
       toast.error('Filialen worden nog geladen, probeer het opnieuw.');
       return;
     }
@@ -126,9 +121,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
     }
 
     setLoading(true);
-    try {
-      console.log('Adding product for branch:', activeBranch.branch_id);
-      
+    try {      
       let imageUrl = null;
 
 
@@ -189,7 +182,6 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
         supplier_id: supplierId,
       };
 
-      console.log('Inserting product with data:', productData);
 
       const { data: insertedProduct, error: productError } = await supabase
         .from('products')
@@ -204,7 +196,6 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
       }
       // Direct na toevoegen: forceer refresh van productCount
       queryClient.invalidateQueries({ queryKey: ['productCount', activeBranch.branch_id, user.id] });
-      console.log('Product added successfully:', insertedProduct);
 
       // Always create a transaction for new products
       const stockTransactionData = {
@@ -219,7 +210,6 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
         notes: 'Nieuw product toegevoegd'
       };
 
-      console.log('Creating initial stock transaction:', stockTransactionData);
       
       const { error: transactionError } = await supabase
         .from('stock_transactions')
@@ -232,7 +222,6 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
         console.log('Initial stock transaction created successfully');
       }
 
-      console.log('Product added successfully for branch:', activeBranch.branch_id);
       toast.success('Product succesvol toegevoegd!');
       form.reset();
       // Na succesvol toevoegen, check licentie
@@ -429,6 +418,28 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
           </form>
         </Form>
       </DialogContent>
+      {showUpgradeNotice && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/30">
+          <div className="bg-blue-100 border border-blue-300 rounded-lg shadow-lg p-6 w-full max-w-md relative flex flex-col">
+            <div className="flex items-start">
+              <Info className="w-6 h-6 text-blue-700 mr-3 mt-1" />
+              <div>
+                <div className="font-bold text-blue-900 text-lg mb-1">Abonnement automatisch geüpgraded</div>
+                <div className="text-blue-900 text-sm mb-2">
+                  Uw aantal producten overschrijdt de limiet van uw huidige abonnement. U wordt automatisch overgezet naar een hoger abonnement. Klik op 'Accepteren' om uw nieuwe licentie te bekijken.
+                </div>
+              </div>
+            </div>
+            <button
+              className="mt-4 bg-blue-700 text-white font-semibold px-4 py-2 rounded hover:bg-blue-800 transition"
+              onClick={() => { setShowUpgradeNotice(false); navigate('/dashboard/settings', { state: { tab: 'license' } }); }}
+              autoFocus
+            >
+              Accepteren
+            </button>
+          </div>
+        </div>
+      )}
     </Dialog>
   );
 };

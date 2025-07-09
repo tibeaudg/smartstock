@@ -45,8 +45,6 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
   // Haal alleen de grafiekdata op voor het gekozen bereik
   const { dailyActivity } = useDashboardData({ dateFrom: chartDateFrom, dateTo: chartDateTo });
 
-  console.log('Dashboard rendering with userRole:', userRole, 'loading:', loading);
-
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8'];
 
   if (loading) {

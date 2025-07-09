@@ -17,7 +17,6 @@ export const Layout = ({ children, currentTab, onTabChange, userRole, userProfil
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   const handleTabChange = (tab: string) => {
-    console.log('Layout: Tab change requested:', tab);
     onTabChange(tab);
   };
 

@@ -23,7 +23,6 @@ const AppContent: React.FC = () => {
       <Layout
         currentTab={getCurrentTab()}
         onTabChange={(tab: string) => {
-          console.log(`Tab changed to: ${tab}`);
         }}
         userRole={userProfile.role}
         userProfile={userProfile}
@@ -37,7 +36,6 @@ const AppContent: React.FC = () => {
       <CreateBranchModal
         open={hasNoBranches}
         onOpenChange={() => {
-          console.log('Branch modal state changed');
         }}
         onBranchCreated={() => {
           console.log('New branch created');
