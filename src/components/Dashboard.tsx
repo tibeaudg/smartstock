@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { CalendarIcon, DollarSign, Package, TrendingUp, TrendingDown, AlertTriangle } from 'lucide-react';
+import { CalendarIcon, DollarSign, Package, TrendingUp, TrendingDown, AlertTriangle, Euro } from 'lucide-react';
 import { format, addDays, startOfWeek, startOfMonth, startOfQuarter, startOfYear, endOfToday } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, BarChart, Bar } from 'recharts';
@@ -83,7 +83,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
         <Card className="bg-white hover:shadow-lg transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
             <CardTitle className="text-base font-semibold text-gray-700">Totale Waarde</CardTitle>
-            <DollarSign className="h-6 w-6 text-blue-600" />
+            <Euro className="h-6 w-6 text-blue-600" />
           </CardHeader>
           <CardContent className="pt-0">
             <div className="text-3xl font-bold text-gray-900">
