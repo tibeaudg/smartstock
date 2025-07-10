@@ -130,44 +130,43 @@ function App() {
     <>
       <SEO />
       <ContentWrapper>
-        <div className="w-screen h-screen bg-white">
-          <QueryClientProvider client={queryClient}>
-            <AuthProvider>
-              <TooltipProvider>
-                <Toaster />
-                <Sonner />
-                <BrowserRouter>
-                  <Routes>
-                    {/* Openbare routes */}
-                    <Route path="/" element={<HomePage />} />
-                    <Route path="/auth" element={<AuthRoute />} />
+        {/* Verwijderde dubbele wrapper */}
+        <QueryClientProvider client={queryClient}>
+          <AuthProvider>
+            <TooltipProvider>
+              <Toaster />
+              <Sonner />
+              <BrowserRouter>
+                <Routes>
+                  {/* Openbare routes */}
+                  <Route path="/" element={<HomePage />} />
+                  <Route path="/auth" element={<AuthRoute />} />
 
-                    {/* Beschermde dashboard routes */}
-                    <Route
-                      path="/dashboard"
-                      element={
-                        <ProtectedRoute>
-                          <StockManagementApp />
-                        </ProtectedRoute>
-                      }
-                    >
-                      <Route index element={<Dashboard userRole="staff" />} />
-                      <Route path="stock" element={<StockList />} />
-                      <Route path="transactions" element={<StockMovements />} />
-                      <Route path="settings" element={<Settings />} />
-                    </Route>
+                  {/* Beschermde dashboard routes */}
+                  <Route
+                    path="/dashboard"
+                    element={
+                      <ProtectedRoute>
+                        <StockManagementApp />
+                      </ProtectedRoute>
+                    }
+                  >
+                    <Route index element={<Dashboard userRole="staff" />} />
+                    <Route path="stock" element={<StockList />} />
+                    <Route path="transactions" element={<StockMovements />} />
+                    <Route path="settings" element={<Settings />} />
+                  </Route>
 
-                    <Route path="/admin" element={<AdminInvoicingPage />} />
-                    <Route path="/admin/user/:id" element={<AdminUserDetailPage />} />
+                  <Route path="/admin" element={<AdminInvoicingPage />} />
+                  <Route path="/admin/user/:id" element={<AdminUserDetailPage />} />
 
-                    {/* Fallback route */}
-                    <Route path="*" element={<NotFound />} />
-                  </Routes>
-                </BrowserRouter>
-              </TooltipProvider>
-            </AuthProvider>
-          </QueryClientProvider>
-        </div>
+                  {/* Fallback route */}
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </BrowserRouter>
+            </TooltipProvider>
+          </AuthProvider>
+        </QueryClientProvider>
       </ContentWrapper>
     </>
   );

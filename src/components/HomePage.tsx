@@ -150,31 +150,32 @@ export const HomePage = () => {
         simplifiedNav={true} // nav: Home, Diensten, Over Ons, Blog, Contact
       />
         {/* Hero Section */}
-      <section 
-        className="py-60 bg-cover bg-center bg-no-repeat relative"
-      >
-        <picture>
-          <source srcSet="/optimized/Inventory-Management.webp" type="image/webp" />
-          <source srcSet="/optimized/Inventory-Management.png" type="image/png" />
-          <img 
-            src="/optimized/Inventory-Management.png" 
-            alt="Voorraadbeheer dashboard voorbeeld" 
-            className="absolute inset-0 w-full h-full object-cover object-center -z-10" 
-            loading="eager"
-            aria-label="Hero sectie over eenvoudig stockbeheer"
-          />
-        </picture>
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-200 to-indigo-35"></div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+      <section className="py-60 relative w-full overflow-hidden min-h-[60vh]">
+        {/* Achtergrondafbeelding + overlay */}
+        <div className="absolute inset-0 w-full h-full">
+          <picture>
+            <source srcSet="/Inventory-Management.png" type="image/png" />
+            <img 
+              src="/Inventory-Management.png" 
+              alt="Voorraadbeheer dashboard voorbeeld" 
+              className="w-full h-full object-cover object-center"
+              loading="eager"
+              aria-label="Hero sectie over eenvoudig stockbeheer"
+            />
+          </picture>
+          <div className="absolute inset-0 bg-blue-100/40 pointer-events-none"></div>
+        </div>
+        {/* Tekst bovenop */}
+        <div className="relative px-4 sm:px-6 lg:px-8 z-20">
           <div className="text-center">
-            <h1 className="text-4xl md:text-6xl font-bold text-black mb-6">
+            <h1 className="text-4xl md:text-6xl font-bold text-black mb-6 drop-shadow-[0_2px_8px_rgba(0,0,0,0.25)]">
               Eenvoudig stockbeheer 
             </h1>
-            <p className="text-xl text-black mb-8 max-w-3xl mx-auto">
+            <p className="text-xl text-black mb-8 drop-shadow-[0_2px_8px_rgba(0,0,0,0.18)]">
               SmartStock is dé <strong>gratis stockbeheer app</strong> voor KMO's, zelfstandigen en kleine bedrijven in Vlaanderen. Beheer je voorraad eenvoudig, snel en veilig. Start vandaag nog met <a href="/gratis-stockbeheer" className="text-blue-700 underline">gratis stockbeheer</a> en ontdek waarom steeds meer ondernemers kiezen voor <a href="/simpelstockbeheer" className="text-blue-700 underline">simpel stockbeheer</a> met SmartStock.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8 mb-8">
-              <Button size="lg" className="text-lg px-10 py-5 bg-blue-700 hover:bg-white hover:text-blue-700 text-white font-bold shadow-lg border border-blue-700 focus:ring-4 focus:ring-yellow-300 transition-all duration-200" onClick={handleLoginClick} style={{boxShadow: '0 8px 32px rgba(255,193,7,0.25)'}}>
+              <Button size="lg" className="text-lg px-10 py-5 bg-blue-700 hover:bg-white hover:text-blue-700 text-white font-bold shadow-lg shadow-blue-900/30 border border-blue-700 focus:ring-4 focus:ring-yellow-300 transition-all duration-200" onClick={handleLoginClick} style={{boxShadow: '0 8px 32px rgba(255,193,7,0.25)'}}>
                 Start Hier
               </Button>
             </div>
@@ -184,14 +185,14 @@ export const HomePage = () => {
 
       {/* How It Works Section */}
       <section className="py-20 bg-gray-50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center ">
+        <div className="px-4 sm:px-6 lg:px-8 text-center ">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8">Hoe Werkt Gratis Stockbeheer met SmartStock?</h2>
           <div className="flex justify-center">
             <video
               src="/intro_vid.mp4"
               controls
               // loading="lazy" // Niet standaard ondersteund voor <video>, optimalisatie kan via JS of plugin
-              className="rounded-xl shadow-lg w-full max-w-3xl"
+              className="rounded-xl shadow-lg w-full"
               poster="/videobanner.jpg"
               aria-label="Introductievideo: eenvoudig en gratis stockbeheer voor KMO's"
             >
@@ -203,12 +204,12 @@ export const HomePage = () => {
 
       {/* Features Section */}
       <section id="features" className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Alles Wat U Nodig Heeft Voor SmartStock
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-xl text-gray-600">
               Ons uitgebreide platform biedt alle tools die u nodig heeft om uw SmartStock te optimaliseren.
             </p>
           </div>
@@ -235,7 +236,7 @@ export const HomePage = () => {
 
       {/* Pricing Section */}
       <section id="pricing" className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Eenvoudige, Transparante Prijzen
@@ -279,7 +280,7 @@ export const HomePage = () => {
 
       {/* Benefits Section */}
       <section id="about" className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
@@ -312,12 +313,12 @@ export const HomePage = () => {
 
       {/* Contact Section */}
       <section id="contact" className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Neem Contact Op
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-xl text-gray-600">
               Heeft u vragen? We horen graag van u. Stuur ons een bericht en we reageren zo snel mogelijk.
             </p>
           </div>

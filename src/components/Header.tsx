@@ -25,8 +25,8 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav }: HeaderProps)
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white shadow-sm border-b">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-50 bg-white pl-8 pr-8 shadow-sm border-b w-full">
+      <div className="w-full">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
             <Package className="h-8 w-8 text-blue-600 mr-3" />
