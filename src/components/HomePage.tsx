@@ -112,7 +112,6 @@ export const HomePage = () => {
         <title>Smartstock: Eenvoudig & Gratis Stockbeheer voor KMO's | Slim Voorraadbeheer</title>
         <meta name="description" content="Eenvoudig, gratis en slim stockbeheer voor KMO's en zelfstandigen. Probeer SmartStock en ontdek de beste stockbeheer app voor Vlaanderen!" />
         <meta name="keywords" content="stockbeheer, gratis stockbeheer, stockbeheer app, voorraadbeheer, KMO, eenvoudig voorraadbeheer, voorraad app, voorraadbeheer Vlaanderen, voorraadbeheer Gent, voorraadbeheer Brugge, voorraadbeheer Antwerpen" />
-        <link rel="canonical" href="https://www.smartstock.be/" />
         {/* Open Graph tags */}
         <meta property="og:title" content="Smartstock: Eenvoudig & Gratis Stockbeheer voor KMO's" />
         <meta property="og:description" content="Eenvoudig, gratis en slim stockbeheer voor KMO's en zelfstandigen. Probeer SmartStock en ontdek de beste stockbeheer app voor Vlaanderen!" />
@@ -153,9 +152,18 @@ export const HomePage = () => {
         {/* Hero Section */}
       <section 
         className="py-60 bg-cover bg-center bg-no-repeat relative"
-        style={{ backgroundImage: 'url("/Inventory-Management.png")' }}
-        aria-label="Hero sectie over eenvoudig stockbeheer"
       >
+        <picture>
+          <source srcSet="/optimized/Inventory-Management.webp" type="image/webp" />
+          <source srcSet="/optimized/Inventory-Management.png" type="image/png" />
+          <img 
+            src="/optimized/Inventory-Management.png" 
+            alt="Voorraadbeheer dashboard voorbeeld" 
+            className="absolute inset-0 w-full h-full object-cover object-center -z-10" 
+            loading="eager"
+            aria-label="Hero sectie over eenvoudig stockbeheer"
+          />
+        </picture>
         <div className="absolute inset-0 bg-gradient-to-br from-blue-200 to-indigo-35"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center">
@@ -372,7 +380,9 @@ export const HomePage = () => {
                 <div className="space-y-4">
                   <div className="flex items-center">
                     <Mail className="h-5 w-5 text-blue-600 mr-3" aria-label="E-mail" />
-                    <span className="text-gray-700">info@smartstock.be</span>
+                    <span className="text-gray-700">
+                      {['info','smartstock.be'].join('@').replace(/\./,'.')}
+                    </span>
                   </div>
                 </div>
               </div>
