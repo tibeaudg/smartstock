@@ -263,7 +263,7 @@ export const StockList = () => {
             <h1 className="text-2xl font-bold text-gray-900">Producten</h1>
             <p className="text-sm text-gray-600">{activeBranch.branch_name}</p>
           </div>
-          <Button onClick={() => setIsAddModalOpen(true)} size="sm">
+          <Button onClick={() => setIsAddModalOpen(true)}>
             <Plus className="h-4 w-4 mr-2" />
             Toevoegen
           </Button>
@@ -290,7 +290,7 @@ export const StockList = () => {
           activeFiltersCount={activeFiltersCount}
         />
 
-        <div className="space-y-3">
+        <div className="space-y-4">
           {filteredProducts.length === 0 ? (
             <Card className="bg-white">
               <CardContent className="p-6 text-center">
@@ -302,23 +302,43 @@ export const StockList = () => {
           ) : (
             filteredProducts.map((product) => {
               const stockStatus = getStockStatus(product.quantity_in_stock, product.minimum_stock_level);
-              
               return (
-                <Card key={product.id} className="relative bg-white cursor-pointer hover:shadow-lg transition-shadow">
-                  <CardHeader className="pb-3">
-                    <div className="flex justify-between items-start">
-                      <div className="flex-1 min-w-0 flex items-center gap-3" onClick={() => { setSelectedProduct(product); setIsEditInfoModalOpen(true); }}>
+                <Card key={product.id} className="relative bg-white rounded-2xl shadow-lg p-0 overflow-hidden">
+                  {/* Actieknoppen rechtsboven */}
+                  <div className="absolute top-3 right-3 flex flex-col gap-2 z-10">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={e => { e.stopPropagation(); setSelectedProduct(product); setIsEditInfoModalOpen(true); }}
+                      className="text-gray-600 hover:text-blue-700 p-2"
+                      aria-label="Bewerken"
+                    >
+                      <Edit className="h-5 w-5" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={e => { e.stopPropagation(); handleDelete(product.id); }}
+                      className="text-red-600 hover:text-red-700 p-2"
+                      aria-label="Verwijder"
+                    >
+                      <Trash2 className="h-5 w-5" />
+                    </Button>
+                  </div>
+                  <CardHeader className="pb-0 px-0 pt-0">
+                    <div className="flex flex-col items-stretch">
+                      <div className="flex items-center gap-4 px-4 pt-4">
                         {product.image_url ? (
                           <img
                             src={product.image_url}
                             alt={product.name}
-                            className="w-16 h-16 object-cover rounded border cursor-zoom-in"
+                            className="w-24 h-24 object-cover rounded-xl border cursor-zoom-in flex-shrink-0"
                             onClick={e => { e.stopPropagation(); setPreviewImageUrl(product.image_url!); setIsImagePreviewOpen(true); }}
                           />
                         ) : (
-                          <div className="w-16 h-16 bg-gray-200 rounded border flex items-center justify-center text-xs text-gray-400">Geen</div>
+                          <div className="w-24 h-24 bg-gray-200 rounded-xl border flex items-center justify-center text-xs text-gray-400 flex-shrink-0">Geen</div>
                         )}
-                        <div>
+                        <div className="flex-1 min-w-0">
                           <CardTitle className="text-lg font-semibold text-gray-900 truncate">
                             {product.name}
                           </CardTitle>
@@ -329,70 +349,53 @@ export const StockList = () => {
                           )}
                         </div>
                       </div>
-                      <div className="flex space-x-2 ml-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={e => { e.stopPropagation(); handleStockAction(product, 'in'); }}
-                          className="text-gray-600 hover:text-white hover:bg-green-600 hover:border-green-600"
-                        >
-                          <Plus className="h-4 w-4" />
-                          In
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={e => { e.stopPropagation(); handleStockAction(product, 'out'); }}
-                          className="text-gray-600 hover:text-white hover:bg-red-600 hover:border-red-600"
-                        >
-                          <Minus className="h-4 w-4" />
-                          Out
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={e => { e.stopPropagation(); setSelectedProduct(product); setIsEditInfoModalOpen(true); }}
-                          className="text-gray-600 hover:text-blue-700"
-                        >
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={e => { e.stopPropagation(); handleDelete(product.id); }}
-                          className="text-red-600 hover:text-red-700"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
                     </div>
                   </CardHeader>
-                  <CardContent className="pt-0">
-                    <div className="space-y-3">
-                      <div className="flex justify-between items-center">
+                  <CardContent className="pt-2 pb-4 px-4">
+                    <div className="space-y-2">
+                      <div className="flex items-center">
                         <span className="text-sm font-medium text-gray-700">Stock Niveau:</span>
-                        <div className="flex items-center space-x-2">
-                          <span className="font-semibold">{product.quantity_in_stock}</span>
+                        <div className="flex items-center space-x-2 ml-2">
+                          <span className="font-semibold text-lg">{product.quantity_in_stock}</span>
                           <Badge
                             variant={getStockStatusVariant(stockStatus)}
-                            className="text-xs"
+                            className="text-xs px-2 py-1 rounded-full"
                           >
                             {stockStatus}
                           </Badge>
                         </div>
                       </div>
-                      
-                      <div className="flex justify-between items-center">
+                      <div className="flex items-center">
                         <span className="text-sm font-medium text-gray-700">Eenheidsprijs:</span>
-                        <span className="font-semibold text-green-600">
+                        <span className="font-semibold text-green-600 text-base ml-2">
                           €{product.unit_price.toFixed(2)}
                         </span>
                       </div>
-                      
-                      <div className="flex justify-between items-center">
+                      <div className="flex items-center">
                         <span className="text-sm font-medium text-gray-700">Min. Niveau:</span>
-                        <span>{product.minimum_stock_level}</span>
+                        <span className="ml-2">{product.minimum_stock_level}</span>
                       </div>
+                    </div>
+                    {/* In/Uit knoppen onderaan, elk 50% breed */}
+                    <div className="flex flex-row gap-2 mt-6">
+                      <Button
+                        variant="outline"
+                        size="lg"
+                        onClick={e => { e.stopPropagation(); handleStockAction(product, 'in'); }}
+                        className="flex-1 text-green-600 bg-green-200 border border-green-600 hover:text-white hover:bg-green-600 hover:border-green-600 flex items-center justify-center gap-2"
+                      >
+                        <Plus className="h-5 w-5" />
+                        In
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="lg"
+                        onClick={e => { e.stopPropagation(); handleStockAction(product, 'out'); }}
+                        className="flex-1 text-red-600 bg-red-200 border border-red-600 hover:text-white hover:bg-red-600 hover:border-red-600 flex items-center justify-center gap-2"
+                      >
+                        <Minus className="h-5 w-5" />
+                        Uit
+                      </Button>
                     </div>
                   </CardContent>
                 </Card>
@@ -442,6 +445,15 @@ export const StockList = () => {
           imageUrl={previewImageUrl}
           alt="Productfoto preview"
         />
+        {/* AddProductModal hier toevoegen zodat hij ook op mobiel werkt */}
+        <AddProductModal
+          isOpen={isAddModalOpen}
+          onClose={() => setIsAddModalOpen(false)}
+          onProductAdded={() => {
+            refetch();
+            setIsAddModalOpen(false);
+          }}
+        />
       </div>
     );
   }
@@ -468,7 +480,7 @@ export const StockList = () => {
           )}
           <Button onClick={() => setIsAddModalOpen(true)}>
             <Plus className="h-4 w-4 mr-2" />
-            Nieuw product toevoegen
+            Toevoegen
           </Button>
         </div>
       </div>
@@ -596,7 +608,7 @@ export const StockList = () => {
                             variant="outline"
                             size="sm"
                             onClick={() => handleStockAction(product, 'in')}
-                            className="text-gray-600 hover:text-white hover:bg-green-600 hover:border-green-600"
+                            className="text-green-600 bg-green-200 border border-green-600 hover:text-white hover:bg-green-600 hover:border-green-600"
                           >
                             <Plus className="h-4 w-4" />
                           </Button>
@@ -604,7 +616,7 @@ export const StockList = () => {
                             variant="outline"
                             size="sm"
                             onClick={() => handleStockAction(product, 'out')}
-                            className="text-gray-600 hover:text-white hover:bg-red-600 hover:border-green-600"
+                            className="text-red-600 bg-red-200 border border-red-600 hover:text-white hover:bg-red-600 hover:border-green-600"
                           >
                             <Minus className="h-4 w-4" />
                           </Button>

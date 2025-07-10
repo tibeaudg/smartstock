@@ -62,7 +62,7 @@ export const HomePage = () => {
       period: '/maand',
       description: 'Perfect om te beginnen met SmartStock',
       features: [
-        'Tot 30 producten',
+        'Tot 30 verschillende producten',
         'Basis voorraadvolging',
         'E-mailondersteuning',
       ],
@@ -74,7 +74,7 @@ export const HomePage = () => {
       period: '/maand',
       description: 'Voor kleine bedrijven die hun voorraad willen uitbreiden',
       features: [
-        'Tot 150 producten',
+        'Tot 150 verschillende producten',
         'Geavanceerde analyses',
         'Prioritaire ondersteuning',
       ],
@@ -86,7 +86,7 @@ export const HomePage = () => {
       period: '/maand',
       description: 'Ideaal voor groeiende bedrijven met meer complexe behoeften',
       features: [
-        'Tot 500 producten',
+        'Tot 500 verschillende producten',
         'Uitgebreide rapportage',
         'Toegewijde ondersteuning',
       ],
@@ -98,7 +98,7 @@ export const HomePage = () => {
       period: '/maand',
       description: 'Voor grote organisaties met onbeperkte mogelijkheden',
       features: [
-        'Tot 1.000 producten',
+        'Tot 1.000 verschillende producten',
         'On-premise implementatie',
         '24/7 telefonische support',
       ],
@@ -140,7 +140,7 @@ export const HomePage = () => {
               "postalCode": "9000",
               "addressCountry": "BE"
             },
-            "description": "Eenvoudig en gratis stockbeheer voor KMO's en zelfstandigen in Vlaanderen.",
+            "description": "Eenvoudig stockbeheer.",
             "areaServed": ["Gent", "Brugge", "Antwerpen", "Vlaanderen"]
           }
         `}</script>
@@ -154,13 +154,13 @@ export const HomePage = () => {
       <section 
         className="py-60 bg-cover bg-center bg-no-repeat relative"
         style={{ backgroundImage: 'url("/Inventory-Management.png")' }}
-        aria-label="Hero sectie over eenvoudig en gratis stockbeheer voor KMO's"
+        aria-label="Hero sectie over eenvoudig stockbeheer"
       >
         <div className="absolute inset-0 bg-gradient-to-br from-blue-200 to-indigo-35"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center">
             <h1 className="text-4xl md:text-6xl font-bold text-black mb-6">
-              Eenvoudig & Gratis Stockbeheer voor KMO's en Zelfstandigen
+              Eenvoudig stockbeheer 
             </h1>
             <p className="text-xl text-black mb-8 max-w-3xl mx-auto">
               SmartStock is dé <strong>gratis stockbeheer app</strong> voor KMO's, zelfstandigen en kleine bedrijven in Vlaanderen. Beheer je voorraad eenvoudig, snel en veilig. Start vandaag nog met <a href="/gratis-stockbeheer" className="text-blue-700 underline">gratis stockbeheer</a> en ontdek waarom steeds meer ondernemers kiezen voor <a href="/simpelstockbeheer" className="text-blue-700 underline">simpel stockbeheer</a> met SmartStock.
@@ -168,7 +168,6 @@ export const HomePage = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8 mb-8">
               <Button size="lg" className="text-lg px-10 py-5 bg-blue-700 hover:bg-white hover:text-blue-700 text-white font-bold shadow-lg border border-blue-700 focus:ring-4 focus:ring-yellow-300 transition-all duration-200" onClick={handleLoginClick} style={{boxShadow: '0 8px 32px rgba(255,193,7,0.25)'}}>
                 Start Hier
-                <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </div>
           </div>
@@ -294,7 +293,6 @@ export const HomePage = () => {
               </div>
               <Button className="w-full text-lg py-6 bg-yellow-400 hover:bg-yellow-500 text-black font-bold shadow-lg border-4 border-white focus:ring-4 focus:ring-yellow-300 transition-all duration-200" onClick={handleLoginClick} style={{boxShadow: '0 8px 32px rgba(255,193,7,0.25)'}}>
                 Start Hier
-                <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
               <p className="text-sm text-gray-500 text-center mt-4">
                 Instellen in minder dan 1 minuut

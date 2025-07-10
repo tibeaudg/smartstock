@@ -6,7 +6,7 @@ export default function GratisStockbeheer() {
     <main className="max-w-3xl mx-auto px-4 py-12">
       <h1 className="text-4xl font-bold mb-6">Gratis Stockbeheer App voor KMO's</h1>
       <p className="text-lg mb-4">
-        Wil je <strong>gratis stockbeheer</strong> proberen? Met SmartStock beheer je tot 30 producten volledig gratis. Ideaal voor starters, kleine bedrijven en zelfstandigen die hun voorraad willen digitaliseren zonder kosten.
+        Wil je <strong>gratis stockbeheer</strong> proberen? Met SmartStock beheer je tot 30 verschillende producten volledig gratis. Ideaal voor starters, kleine bedrijven en zelfstandigen die hun voorraad willen digitaliseren zonder kosten.
       </p>
       <h2 className="text-2xl font-semibold mb-3">Voordelen van gratis stockbeheer</h2>
       <ul className="list-disc ml-6 mb-4">

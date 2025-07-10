@@ -53,3 +53,14 @@
 .read-the-docs {
   color: #888;
 }
+
+/* Scrollbars verbergen op mobiel, scrollen blijft mogelijk */
+@media (max-width: 600px) {
+  body, html {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE en Edge */
+  }
+  body::-webkit-scrollbar, html::-webkit-scrollbar {
+    display: none; /* Chrome, Safari en Opera */
+  }
+}

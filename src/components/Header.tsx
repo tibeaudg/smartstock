@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Package } from 'lucide-react';
 
@@ -10,6 +10,8 @@ interface HeaderProps {
 }
 
 export const Header = ({ onLoginClick, onNavigate, simplifiedNav }: HeaderProps) => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   const handleLoginClick = () => {
     if (onLoginClick) {
       onLoginClick();
@@ -30,45 +32,21 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav }: HeaderProps)
             <Package className="h-8 w-8 text-blue-600 mr-3" />
             <span className="text-2xl font-bold text-gray-900">SmartStock</span>
           </div>
-          
-          {simplifiedNav ? (
-            <nav className="hidden md:flex space-x-8">
-              <a href="/" className="text-gray-600 hover:text-gray-900 transition-colors">Home</a>
-              <a href="/diensten" className="text-gray-600 hover:text-gray-900 transition-colors">Diensten</a>
-              <a href="/over-ons" className="text-gray-600 hover:text-gray-900 transition-colors">Over Ons</a>
-              <a href="/blog" className="text-gray-600 hover:text-gray-900 transition-colors">Blog</a>
-              <a href="/contact" className="text-gray-600 hover:text-gray-900 transition-colors">Contact</a>
-            </nav>
-          ) : (
-            <nav className="hidden md:flex space-x-8">
-              <button 
-                onClick={() => handleNavClick('features')}
-                className="text-gray-600 hover:text-gray-900 transition-colors"
-              >
-                Functies
-              </button>
-              <button 
-                onClick={() => handleNavClick('pricing')}
-                className="text-gray-600 hover:text-gray-900 transition-colors"
-              >
-                Prijzen
-              </button>
-              <button 
-                onClick={() => handleNavClick('about')}
-                className="text-gray-600 hover:text-gray-900 transition-colors"
-              >
-                Over Ons
-              </button>
-              <button 
-                onClick={() => handleNavClick('contact')}
-                className="text-gray-600 hover:text-gray-900 transition-colors"
-              >
-                Contact
-              </button>
-            </nav>
-          )}
+          {/* Hamburger menu voor mobiel */}
+          <div className="flex md:hidden items-center">
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
+              aria-label="Menu"
+            >
+              <svg className="h-6 w-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+          </div>
 
-          <div className="flex items-center space-x-4">
+          {/* Desktop knoppen */}
+          <div className="hidden md:flex items-center space-x-4">
             <Button variant="ghost" onClick={handleLoginClick}>
               Inloggen
             </Button>
@@ -78,6 +56,22 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav }: HeaderProps)
           </div>
         </div>
       </div>
+      {/* Mobiel menu overlay */}
+      {mobileMenuOpen && (
+        <div className="md:hidden fixed inset-0 bg-black bg-opacity-40 z-50" onClick={() => setMobileMenuOpen(false)}>
+          <div className="absolute top-0 right-0 w-64 h-full bg-white shadow-lg p-6 flex flex-col space-y-4" onClick={e => e.stopPropagation()}>
+
+            <div className="border-t pt-4 mt-4 flex flex-col space-y-2">
+              <Button variant="ghost" onClick={() => { handleLoginClick(); setMobileMenuOpen(false); }}>
+                Inloggen
+              </Button>
+              <Button onClick={() => { handleLoginClick(); setMobileMenuOpen(false); }}>
+                Probeer Gratis
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 };

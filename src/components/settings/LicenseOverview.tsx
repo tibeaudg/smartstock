@@ -281,7 +281,7 @@ export const LicenseOverview = () => {
                     <div className="flex-grow">
                       <h3 className="text-lg font-semibold text-gray-900">{plan.name}</h3>
                       <p className="text-sm text-gray-600">
-                        Inclusief {plan.limit} producten.
+                        Inclusief {plan.limit} verschillende producten.
                       </p>
                       {plan.id === 'enterprise' && (
                         <p className="text-xs text-gray-500">

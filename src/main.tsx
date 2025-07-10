@@ -5,6 +5,7 @@ import './index.css';
 import { checkSupabaseConnection } from './integrations/supabase/client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { setupPersistedQueryClient } from './persistQueryClient';
+import { HelmetProvider } from 'react-helmet-async';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
@@ -161,9 +162,11 @@ async function init() {
     root.render(
       <ErrorBoundary>
         <QueryClientProvider client={queryClient}>
-          <Suspense fallback={<LoadingFallback />}>
-            <App />
-          </Suspense>
+          <HelmetProvider>
+            <Suspense fallback={<LoadingFallback />}>
+              <App />
+            </Suspense>
+          </HelmetProvider>
         </QueryClientProvider>
       </ErrorBoundary>
     );
