@@ -44,7 +44,7 @@ export const EditProductStockModal = ({
 
   if (!isOpen) return null;
 
-  const actionTitle = actionType === 'in' ? 'Stock Toevoegen' : 'Stock Verwijderen';
+  const actionTitle = actionType === 'in' ? 'Toevoegen' : 'Uithalen';
   const actionColor = actionType === 'in' ? 'text-green-600' : 'text-red-600';
 
   const handleSubmit = async () => {

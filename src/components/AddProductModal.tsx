@@ -280,7 +280,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto w-full max-w-full p-2 md:p-6">
+      <DialogContent className="w-full max-w-full p-2 md:w-auto md:max-w-lg md:p-6">
         <DialogHeader>
           <DialogTitle>Nieuw Product Toevoegen</DialogTitle>
         </DialogHeader>
@@ -329,7 +329,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
             />
 
             {/* Responsive grid: 1 kolom op mobiel, 3 op desktop */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className=" grid grid-cols-1 md:grid-cols-3 gap-4">
               <FormField
                 control={form.control}
                 name="quantityInStock"
@@ -382,11 +382,10 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                 )}
               />
 
-              {/* Prijsvelden in 2 kolommen op desktop, 1 op mobiel */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-2">
+              {/* Prijsvelden onder elkaar in één kolom */}
+              <div className="flex flex-col gap-2 p-2">
                 <div>
                   <FormLabel htmlFor="purchasePrice">Inkoopprijs</FormLabel>
-                  <FormControl></FormControl>
                   <Input
                     id="purchasePrice"
                     type="number"

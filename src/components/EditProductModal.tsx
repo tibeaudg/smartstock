@@ -196,7 +196,7 @@ export const EditProductModal = ({
   if (!isOpen) return null;
 
   // Add this to show the action type
-  const actionTitle = actionType === 'in' ? 'IN' : 'UIT';
+  const actionTitle = actionType === 'in' ? 'Toevoegen' : 'Uithalen';
   const actionColor = actionType === 'in' ? 'text-green-600' : 'text-red-600';
 
   return (
@@ -204,7 +204,6 @@ export const EditProductModal = ({
       <DialogContent className="max-w-sm w-sm max-h-[90vh] overflow-y-auto mx-auto px-4 sm:px-8">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            {actionType === 'in' ? <Plus className="h-5 w-5" /> : <Minus className="h-5 w-5" />}
             <span className={actionColor}>{actionTitle}: {product.name}</span>
           </DialogTitle>
         </DialogHeader>

@@ -125,54 +125,66 @@ export const EditProductInfoModal = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-lg w-full max-h-[90vh] overflow-y-auto mx-auto px-4 sm:px-8">
+      <DialogContent className="w-full max-w-full  md:w-auto md:max-w-lg md:p-6">
         <DialogHeader>
           <DialogTitle>Productinformatie aanpassen: {product.name}</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4 mt-2">
-          <Label>Productnaam</Label>
-          <Input name="name" value={form.name} onChange={handleChange} disabled={loading} required />
-          <Label>Beschrijving</Label>
-          <Input name="description" value={form.description} onChange={handleChange} disabled={loading} />
-          <Label>Voorraad</Label>
-          <Input name="quantity_in_stock" type="number" value={form.quantity_in_stock} onChange={handleChange} disabled={loading} min={0} required />
-          <Label>Min. Niveau</Label>
-          <Input name="minimum_stock_level" type="number" value={form.minimum_stock_level} onChange={handleChange} disabled={loading} min={0} required />
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <Label htmlFor="purchase_price">Inkoopprijs</Label>
-              <Input
-                id="purchase_price"
-                name="purchase_price"
-                type="number"
-                step="0.01"
-                min="0"
-                value={form.purchase_price}
-                onChange={handleChange}
-                disabled={loading}
-                required
-              />
-            </div>
-            <div>
-              <Label htmlFor="sale_price">Verkoopprijs</Label>
-              <Input
-                id="sale_price"
-                name="sale_price"
-                type="number"
-                step="0.01"
-                min="0"
-                value={form.sale_price}
-                onChange={handleChange}
-                disabled={loading}
-                required
-              />
+          <div className="mb-4">
+            <Label>Productnaam</Label>
+            <Input name="name" value={form.name} onChange={handleChange} disabled={loading} required />
+          </div>
+          <div className="mb-4">
+            <Label>Beschrijving</Label>
+            <Input name="description" value={form.description} onChange={handleChange} disabled={loading} />
+          </div>
+          <div className="mb-4">
+            <Label>Voorraad</Label>
+            <Input name="quantity_in_stock" type="number" value={form.quantity_in_stock} onChange={handleChange} disabled={loading} min={0} required />
+          </div>
+          <div className="mb-4">
+            <Label>Min. Niveau</Label>
+            <Input name="minimum_stock_level" type="number" value={form.minimum_stock_level} onChange={handleChange} disabled={loading} min={0} required />
+          </div>
+          <div className="mb-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="purchase_price">Inkoopprijs</Label>
+                <Input
+                  id="purchase_price"
+                  name="purchase_price"
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  value={form.purchase_price}
+                  onChange={handleChange}
+                  disabled={loading}
+                  required
+                />
+              </div>
+              <div>
+                <Label htmlFor="sale_price">Verkoopprijs</Label>
+                <Input
+                  id="sale_price"
+                  name="sale_price"
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  value={form.sale_price}
+                  onChange={handleChange}
+                  disabled={loading}
+                  required
+                />
+              </div>
             </div>
           </div>
-          <Label>Productfoto</Label>
-          <Input type="file" accept="image/*" onChange={handleImageChange} disabled={loading} />
-          {imagePreview && (
-            <img src={imagePreview} alt="Preview" className="mt-2 w-24 h-24 object-cover rounded border" />
-          )}
+          <div className="mb-4">
+            <Label>Productfoto</Label>
+            <Input type="file" accept="image/*" onChange={handleImageChange} disabled={loading} />
+            {imagePreview && (
+              <img src={imagePreview} alt="Preview" className="mt-2 w-24 h-24 object-cover rounded border" />
+            )}
+          </div>
           <div className="flex justify-end gap-2">
             <Button type="button" variant="outline" onClick={onClose} disabled={loading}>
               Annuleren
