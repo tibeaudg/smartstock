@@ -6,10 +6,10 @@ export default function VoorraadbeheerFoutenVoorkomen() {
   return (
     <main className="max-w-3xl mx-auto px-4 py-12">
       <SEO
-        title="Fouten in Voorraadbeheer Voorkomen | SmartStock"
+        title="Fouten in Voorraadbeheer Voorkomen | stockflow"
         description="Veelgemaakte fouten in voorraadbeheer voorkomen? Lees onze tips en best practices voor een foutloos voorraadbeheer in je bedrijf."
         keywords="voorraadbeheer fouten, voorraadbeheer tips, voorraadbeheer best practices, fouten voorkomen voorraad, stockbeheer fouten"
-        url="https://www.smartstock.be/voorraadbeheer-fouten-voorkomen"
+        url="https://www.stockflow.be/voorraadbeheer-fouten-voorkomen"
       />
       <h1 className="text-4xl font-bold mb-6">Fouten in Voorraadbeheer Voorkomen</h1>
       <p className="text-lg mb-4">
@@ -32,11 +32,11 @@ export default function VoorraadbeheerFoutenVoorkomen() {
         "@type": "Article",
         "headline": "Fouten in Voorraadbeheer Voorkomen",
         "description": "Veelgemaakte fouten in voorraadbeheer voorkomen? Lees onze tips en best practices voor een foutloos voorraadbeheer in je bedrijf.",
-        "author": { "@type": "Organization", "name": "SmartStock" },
-        "publisher": { "@type": "Organization", "name": "SmartStock", "logo": { "@type": "ImageObject", "url": "https://www.smartstock.be/logo.png" } },
-        "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.smartstock.be/voorraadbeheer-fouten-voorkomen" },
+        "author": { "@type": "Organization", "name": "stockflow" },
+        "publisher": { "@type": "Organization", "name": "stockflow", "logo": { "@type": "ImageObject", "url": "https://www.stockflow.be/logo.png" } },
+        "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.stockflow.be/voorraadbeheer-fouten-voorkomen" },
         "datePublished": "2024-06-01",
-        "image": "https://www.smartstock.be/Inventory-Management.png"
+        "image": "https://www.stockflow.be/Inventory-Management.png"
       }`}} />
     </main>
   );

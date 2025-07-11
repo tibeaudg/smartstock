@@ -6,10 +6,10 @@ export default function MobielVoorraadbeheer() {
   return (
     <main className="max-w-3xl mx-auto px-4 py-12">
       <SEO
-        title="Mobiel Voorraadbeheer | SmartStock"
+        title="Mobiel Voorraadbeheer | stockflow"
         description="Mobiel voorraadbeheer: beheer je voorraad eenvoudig via je smartphone of tablet. Ontdek de voordelen van een mobiele voorraadbeheer app."
         keywords="mobiel voorraadbeheer, voorraadbeheer app, voorraadbeheer smartphone, voorraadbeheer tablet, mobiele voorraadbeheer software"
-        url="https://www.smartstock.be/mobiel-voorraadbeheer"
+        url="https://www.stockflow.be/mobiel-voorraadbeheer"
       />
       <h1 className="text-4xl font-bold mb-6">Mobiel Voorraadbeheer</h1>
       <p className="text-lg mb-4">
@@ -32,11 +32,11 @@ export default function MobielVoorraadbeheer() {
         "@type": "Article",
         "headline": "Mobiel Voorraadbeheer",
         "description": "Mobiel voorraadbeheer: beheer je voorraad eenvoudig via je smartphone of tablet. Ontdek de voordelen van een mobiele voorraadbeheer app.",
-        "author": { "@type": "Organization", "name": "SmartStock" },
-        "publisher": { "@type": "Organization", "name": "SmartStock", "logo": { "@type": "ImageObject", "url": "https://www.smartstock.be/logo.png" } },
-        "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.smartstock.be/mobiel-voorraadbeheer" },
+        "author": { "@type": "Organization", "name": "stockflow" },
+        "publisher": { "@type": "Organization", "name": "stockflow", "logo": { "@type": "ImageObject", "url": "https://www.stockflow.be/logo.png" } },
+        "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.stockflow.be/mobiel-voorraadbeheer" },
         "datePublished": "2024-06-01",
-        "image": "https://www.smartstock.be/Inventory-Management.png"
+        "image": "https://www.stockflow.be/Inventory-Management.png"
       }`}} />
     </main>
   );

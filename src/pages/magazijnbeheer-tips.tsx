@@ -6,10 +6,10 @@ export default function MagazijnbeheerTips() {
   return (
     <main className="max-w-3xl mx-auto px-4 py-12">
       <SEO
-        title="Magazijnbeheer Tips voor KMO's | SmartStock"
-        description="De beste tips voor magazijnbeheer, magazijn optimaliseren en voorraadlogistiek voor KMO's. Leer hoe je je magazijn efficiënt beheert en kosten bespaart met SmartStock."
+        title="Magazijnbeheer Tips voor KMO's | stockflow"
+        description="De beste tips voor magazijnbeheer, magazijn optimaliseren en voorraadlogistiek voor KMO's. Leer hoe je je magazijn efficiënt beheert en kosten bespaart met stockflow."
         keywords="magazijnbeheer, magazijn optimaliseren, voorraadlogistiek, picking, opslag, magazijn tips, voorraadbeheer, KMO, kleine onderneming, magazijn software"
-        url="https://www.smartstock.be/magazijnbeheer-tips"
+        url="https://www.stockflow.be/magazijnbeheer-tips"
       />
       <h1 className="text-4xl font-bold mb-6">Magazijnbeheer Tips voor KMO's</h1>
       <p className="text-lg mb-4">
@@ -18,7 +18,7 @@ export default function MagazijnbeheerTips() {
       <h2 className="text-2xl font-semibold mb-3">1. Optimaliseer de indeling van je magazijn</h2>
       <p className="mb-4">Zorg voor een logische indeling en duidelijke labeling. Dit versnelt het <strong>picken</strong> en voorkomt fouten.</p>
       <h2 className="text-2xl font-semibold mb-3">2. Digitaliseer je magazijnbeheer</h2>
-      <p className="mb-4">Gebruik een <strong>magazijnbeheer app</strong> zoals SmartStock voor realtime inzicht in je voorraad en locatie van producten.</p>
+      <p className="mb-4">Gebruik een <strong>magazijnbeheer app</strong> zoals stockflow voor realtime inzicht in je voorraad en locatie van producten.</p>
       <h2 className="text-2xl font-semibold mb-3">3. Automatiseer voorraadopslag en -verplaatsingen</h2>
       <p className="mb-4">Automatische meldingen en digitale registratie van verplaatsingen voorkomen zoekgeraakte producten.</p>
       <h2 className="text-2xl font-semibold mb-3">4. Train je medewerkers</h2>
@@ -35,12 +35,12 @@ export default function MagazijnbeheerTips() {
         "@context": "https://schema.org",
         "@type": "Article",
         "headline": "Magazijnbeheer Tips voor KMO's",
-        "description": "De beste tips voor magazijnbeheer, magazijn optimaliseren en voorraadlogistiek voor KMO's. Leer hoe je je magazijn efficiënt beheert en kosten bespaart met SmartStock.",
-        "author": { "@type": "Organization", "name": "SmartStock" },
-        "publisher": { "@type": "Organization", "name": "SmartStock", "logo": { "@type": "ImageObject", "url": "https://www.smartstock.be/logo.png" } },
-        "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.smartstock.be/magazijnbeheer-tips" },
+        "description": "De beste tips voor magazijnbeheer, magazijn optimaliseren en voorraadlogistiek voor KMO's. Leer hoe je je magazijn efficiënt beheert en kosten bespaart met stockflow.",
+        "author": { "@type": "Organization", "name": "stockflow" },
+        "publisher": { "@type": "Organization", "name": "stockflow", "logo": { "@type": "ImageObject", "url": "https://www.stockflow.be/logo.png" } },
+        "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.stockflow.be/magazijnbeheer-tips" },
         "datePublished": "2024-06-01",
-        "image": "https://www.smartstock.be/Inventory-Management.png"
+        "image": "https://www.stockflow.be/Inventory-Management.png"
       }`}} />
     </main>
   );

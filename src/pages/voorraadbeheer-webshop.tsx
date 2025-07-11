@@ -6,10 +6,10 @@ export default function VoorraadbeheerWebshop() {
   return (
     <main className="max-w-3xl mx-auto px-4 py-12">
       <SEO
-        title="Voorraadbeheer voor Webshops | SmartStock"
-        description="Voorraadbeheer voor webshops: tips, integraties en automatisering. Ontdek hoe je als e-commerce ondernemer je webshopvoorraad efficiënt beheert met SmartStock."
+        title="Voorraadbeheer voor Webshops | stockflow"
+        description="Voorraadbeheer voor webshops: tips, integraties en automatisering. Ontdek hoe je als e-commerce ondernemer je webshopvoorraad efficiënt beheert met stockflow."
         keywords="voorraadbeheer webshop, e-commerce voorraad, webshop voorraadbeheer, voorraad integratie, voorraad automatiseren, webshop voorraad app"
-        url="https://www.smartstock.be/voorraadbeheer-webshop"
+        url="https://www.stockflow.be/voorraadbeheer-webshop"
       />
       <h1 className="text-4xl font-bold mb-6">Voorraadbeheer voor Webshops</h1>
       <p className="text-lg mb-4">
@@ -31,12 +31,12 @@ export default function VoorraadbeheerWebshop() {
         "@context": "https://schema.org",
         "@type": "Article",
         "headline": "Voorraadbeheer voor Webshops",
-        "description": "Voorraadbeheer voor webshops: tips, integraties en automatisering. Ontdek hoe je als e-commerce ondernemer je webshopvoorraad efficiënt beheert met SmartStock.",
-        "author": { "@type": "Organization", "name": "SmartStock" },
-        "publisher": { "@type": "Organization", "name": "SmartStock", "logo": { "@type": "ImageObject", "url": "https://www.smartstock.be/logo.png" } },
-        "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.smartstock.be/voorraadbeheer-webshop" },
+        "description": "Voorraadbeheer voor webshops: tips, integraties en automatisering. Ontdek hoe je als e-commerce ondernemer je webshopvoorraad efficiënt beheert met stockflow.",
+        "author": { "@type": "Organization", "name": "stockflow" },
+        "publisher": { "@type": "Organization", "name": "stockflow", "logo": { "@type": "ImageObject", "url": "https://www.stockflow.be/logo.png" } },
+        "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.stockflow.be/voorraadbeheer-webshop" },
         "datePublished": "2024-06-01",
-        "image": "https://www.smartstock.be/Inventory-Management.png"
+        "image": "https://www.stockflow.be/Inventory-Management.png"
       }`}} />
     </main>
   );

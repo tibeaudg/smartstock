@@ -6,10 +6,10 @@ export default function VoorraadbeheerExcelVsSoftware() {
   return (
     <main className="max-w-3xl mx-auto px-4 py-12">
       <SEO
-        title="Voorraadbeheer: Excel vs. Software | SmartStock"
+        title="Voorraadbeheer: Excel vs. Software | stockflow"
         description="Voorraadbeheer in Excel of met software? Vergelijk de voordelen en nadelen van Excel en moderne voorraadbeheer apps voor KMO's."
         keywords="voorraadbeheer excel, voorraadbeheer software, excel vs software, voorraadbeheer vergelijken, voorraadbeheer overstappen"
-        url="https://www.smartstock.be/voorraadbeheer-excel-vs-software"
+        url="https://www.stockflow.be/voorraadbeheer-excel-vs-software"
       />
       <h1 className="text-4xl font-bold mb-6">Voorraadbeheer: Excel vs. Software</h1>
       <p className="text-lg mb-4">
@@ -43,11 +43,11 @@ export default function VoorraadbeheerExcelVsSoftware() {
         "@type": "Article",
         "headline": "Voorraadbeheer: Excel vs. Software",
         "description": "Voorraadbeheer in Excel of met software? Vergelijk de voordelen en nadelen van Excel en moderne voorraadbeheer apps voor KMO's.",
-        "author": { "@type": "Organization", "name": "SmartStock" },
-        "publisher": { "@type": "Organization", "name": "SmartStock", "logo": { "@type": "ImageObject", "url": "https://www.smartstock.be/logo.png" } },
-        "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.smartstock.be/voorraadbeheer-excel-vs-software" },
+        "author": { "@type": "Organization", "name": "stockflow" },
+        "publisher": { "@type": "Organization", "name": "stockflow", "logo": { "@type": "ImageObject", "url": "https://www.stockflow.be/logo.png" } },
+        "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.stockflow.be/voorraadbeheer-excel-vs-software" },
         "datePublished": "2024-06-01",
-        "image": "https://www.smartstock.be/Inventory-Management.png"
+        "image": "https://www.stockflow.be/Inventory-Management.png"
       }`}} />
     </main>
   );

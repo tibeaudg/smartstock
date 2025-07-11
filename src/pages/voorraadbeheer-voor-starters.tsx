@@ -6,10 +6,10 @@ export default function VoorraadbeheerVoorStarters() {
   return (
     <main className="max-w-3xl mx-auto px-4 py-12">
       <SEO
-        title="Voorraadbeheer voor Starters | SmartStock"
+        title="Voorraadbeheer voor Starters | stockflow"
         description="Voorraadbeheer voor starters: tips en stappenplan voor kleine bedrijven en zelfstandigen. Leer hoe je eenvoudig begint met voorraadbeheer."
         keywords="voorraadbeheer starters, voorraadbeheer kleine bedrijven, voorraadbeheer beginnen, voorraadbeheer tips, voorraadbeheer stappenplan"
-        url="https://www.smartstock.be/voorraadbeheer-voor-starters"
+        url="https://www.stockflow.be/voorraadbeheer-voor-starters"
       />
       <h1 className="text-4xl font-bold mb-6">Voorraadbeheer voor Starters</h1>
       <p className="text-lg mb-4">
@@ -20,7 +20,7 @@ export default function VoorraadbeheerVoorStarters() {
       <h2 className="text-2xl font-semibold mb-3">2. Controleer je voorraad regelmatig</h2>
       <p className="mb-4">Plan vaste momenten om je voorraad te tellen en bij te werken.</p>
       <h2 className="text-2xl font-semibold mb-3">3. Kies voor schaalbare software</h2>
-      <p className="mb-4">Start gratis met SmartStock en upgrade als je bedrijf groeit.</p>
+      <p className="mb-4">Start gratis met stockflow en upgrade als je bedrijf groeit.</p>
       <h2 className="text-2xl font-semibold mb-3">Meer weten?</h2>
       <ul className="list-disc ml-6 mb-4">
         <li><Link to="/voorraadbeheer-tips" className="text-blue-700 underline">Voorraadbeheer tips</Link></li>
@@ -32,11 +32,11 @@ export default function VoorraadbeheerVoorStarters() {
         "@type": "Article",
         "headline": "Voorraadbeheer voor Starters",
         "description": "Voorraadbeheer voor starters: tips en stappenplan voor kleine bedrijven en zelfstandigen. Leer hoe je eenvoudig begint met voorraadbeheer.",
-        "author": { "@type": "Organization", "name": "SmartStock" },
-        "publisher": { "@type": "Organization", "name": "SmartStock", "logo": { "@type": "ImageObject", "url": "https://www.smartstock.be/logo.png" } },
-        "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.smartstock.be/voorraadbeheer-voor-starters" },
+        "author": { "@type": "Organization", "name": "stockflow" },
+        "publisher": { "@type": "Organization", "name": "stockflow", "logo": { "@type": "ImageObject", "url": "https://www.stockflow.be/logo.png" } },
+        "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.stockflow.be/voorraadbeheer-voor-starters" },
         "datePublished": "2024-06-01",
-        "image": "https://www.smartstock.be/Inventory-Management.png"
+        "image": "https://www.stockflow.be/Inventory-Management.png"
       }`}} />
     </main>
   );

@@ -153,7 +153,7 @@ export const InvoicingOverview = () => {
                 <div className="text-xs text-gray-700 mb-2">Scan de QR-code met je bank-app of gebruik onderstaande gegevens:</div>
                 <div className="text-xs text-gray-700">
                   <b>IBAN:</b> BE86731056413050<br />
-                  <b>Naam:</b> Smartstock<br />
+                  <b>Naam:</b> stockflow<br />
                   <b>Bedrag:</b> €{currentInvoice.amount.toFixed(2)}<br />
                   <b>Mededeling:</b> {currentInvoice.payment_reference}
                 </div>
@@ -162,7 +162,7 @@ export const InvoicingOverview = () => {
                 <InvoiceQRCode
                   iban="BE86731056413050"
                   amount={currentInvoice.amount}
-                  name="Smartstock"
+                  name="stockflow"
                   paymentReference={currentInvoice.payment_reference || ''}
                 />
               </div>

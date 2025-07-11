@@ -6,10 +6,10 @@ export default function VoorraadbeheerAutomatiseren() {
   return (
     <main className="max-w-3xl mx-auto px-4 py-12">
       <SEO
-        title="Voorraadbeheer Automatiseren | SmartStock"
+        title="Voorraadbeheer Automatiseren | stockflow"
         description="Voorraadbeheer automatiseren? Ontdek de voordelen, tips en tools om je voorraadbeheer slimmer en efficiënter te maken met automatisering."
         keywords="voorraadbeheer automatiseren, voorraadbeheer automatisering, voorraadbeheer koppelen, voorraadbeheer integratie, voorraadbeheer software"
-        url="https://www.smartstock.be/voorraadbeheer-automatiseren"
+        url="https://www.stockflow.be/voorraadbeheer-automatiseren"
       />
       <h1 className="text-4xl font-bold mb-6">Voorraadbeheer Automatiseren</h1>
       <p className="text-lg mb-4">
@@ -32,11 +32,11 @@ export default function VoorraadbeheerAutomatiseren() {
         "@type": "Article",
         "headline": "Voorraadbeheer Automatiseren",
         "description": "Voorraadbeheer automatiseren? Ontdek de voordelen, tips en tools om je voorraadbeheer slimmer en efficiënter te maken met automatisering.",
-        "author": { "@type": "Organization", "name": "SmartStock" },
-        "publisher": { "@type": "Organization", "name": "SmartStock", "logo": { "@type": "ImageObject", "url": "https://www.smartstock.be/logo.png" } },
-        "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.smartstock.be/voorraadbeheer-automatiseren" },
+        "author": { "@type": "Organization", "name": "stockflow" },
+        "publisher": { "@type": "Organization", "name": "stockflow", "logo": { "@type": "ImageObject", "url": "https://www.stockflow.be/logo.png" } },
+        "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.stockflow.be/voorraadbeheer-automatiseren" },
         "datePublished": "2024-06-01",
-        "image": "https://www.smartstock.be/Inventory-Management.png"
+        "image": "https://www.stockflow.be/Inventory-Management.png"
       }`}} />
     </main>
   );

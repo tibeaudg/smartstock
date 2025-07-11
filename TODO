@@ -22,8 +22,8 @@ const corsHeaders = {
 };
 
 const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
-const FROM_EMAIL = 'noreply@smartstock.app';
-const FROM_NAME = 'Smartstock';
+const FROM_EMAIL = 'noreply@stockflow.app';
+const FROM_NAME = 'stockflow';
 
 async function sendReminderEmail(to: string, subject: string, html: string) {
   const res = await fetch('https://api.resend.com/emails', {
@@ -75,15 +75,15 @@ serve(async (req) => {
         .single();
       if (userError || !user?.email) continue;
       // Stuur e-mail
-      const subject = `Herinnering: openstaande factuur Smartstock`;
+      const subject = `Herinnering: openstaande factuur stockflow`;
       const html = `
         <h2>Herinnering: openstaande factuur</h2>
         <p>Beste ${user.first_name || ''} ${user.last_name || ''},</p>
         <p>Uw factuur van €${inv.amount.toFixed(2)} met vervaldatum ${inv.due_date} is nog niet betaald.</p>
-        <p>Gelieve te betalen op IBAN <b>BE86731056413050</b> t.n.v. <b>Smartstock</b> met mededeling <b>${inv.payment_reference}</b>.</p>
-        <p>U kunt ook eenvoudig betalen door de QR-code te scannen in uw Smartstock portaal.</p>
+        <p>Gelieve te betalen op IBAN <b>BE86731056413050</b> t.n.v. <b>stockflow</b> met mededeling <b>${inv.payment_reference}</b>.</p>
+        <p>U kunt ook eenvoudig betalen door de QR-code te scannen in uw stockflow portaal.</p>
         <p>Al betaald? Dan mag u deze herinnering negeren.</p>
-        <p>Met vriendelijke groet,<br/>Smartstock</p>
+        <p>Met vriendelijke groet,<br/>stockflow</p>
       `;
       try {
         await sendReminderEmail(user.email, subject, html);

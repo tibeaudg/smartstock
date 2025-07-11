@@ -9,15 +9,15 @@ interface SEOProps {
   url?: string;
 }
 
-const defaultTitle = 'SmartStock - Slim Voorraadbeheer';
-const defaultDescription = 'Beheer je voorraad eenvoudig, snel en slim met SmartStock.';
+const defaultTitle = 'stockflow - Slim Voorraadbeheer';
+const defaultDescription = 'Beheer je voorraad eenvoudig, snel en slim met stockflow.';
 const defaultImage = '/public/Inventory-Management.png';
-const defaultUrl = 'https://smartstock.app';
+const defaultUrl = 'https://stockflow.app';
 
 export const SEO: React.FC<SEOProps> = ({
   title = defaultTitle,
   description = defaultDescription,
-  keywords = 'voorraadbeheer, stock, inventaris, MKB, magazijn, smartstock',
+  keywords = 'voorraadbeheer, stock, inventaris, MKB, magazijn, stockflow',
   image = defaultImage,
   url = defaultUrl,
 }) => (

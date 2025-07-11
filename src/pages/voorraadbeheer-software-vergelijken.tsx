@@ -6,10 +6,10 @@ export default function VoorraadbeheerSoftwareVergelijken() {
   return (
     <main className="max-w-3xl mx-auto px-4 py-12">
       <SEO
-        title="Voorraadbeheer Software Vergelijken | SmartStock"
+        title="Voorraadbeheer Software Vergelijken | stockflow"
         description="Vergelijk de beste voorraadbeheer software en stockbeheer apps voor KMO's. Ontdek welke oplossing het beste past bij jouw bedrijf."
         keywords="voorraadbeheer software, stockbeheer tools, voorraadbeheer app, voorraadbeheer vergelijken, beste voorraadbeheer software, KMO, kleine onderneming"
-        url="https://www.smartstock.be/voorraadbeheer-software-vergelijken"
+        url="https://www.stockflow.be/voorraadbeheer-software-vergelijken"
       />
       <h1 className="text-4xl font-bold mb-6">Voorraadbeheer Software Vergelijken</h1>
       <p className="text-lg mb-4">
@@ -36,7 +36,7 @@ export default function VoorraadbeheerSoftwareVergelijken() {
         </thead>
         <tbody>
           <tr>
-            <td className="border px-2 py-1">SmartStock</td>
+            <td className="border px-2 py-1">stockflow</td>
             <td className="border px-2 py-1">Ja (tot 30 producten)</td>
             <td className="border px-2 py-1">✔️</td>
             <td className="border px-2 py-1">✔️</td>
@@ -59,7 +59,7 @@ export default function VoorraadbeheerSoftwareVergelijken() {
         </tbody>
       </table>
       <h2 className="text-2xl font-semibold mb-3">Conclusie</h2>
-      <p className="mb-4">Kies een <strong>voorraadbeheer app</strong> die past bij de grootte en wensen van jouw bedrijf. SmartStock is ideaal voor KMO's die eenvoudig willen starten en later willen opschalen.</p>
+      <p className="mb-4">Kies een <strong>voorraadbeheer app</strong> die past bij de grootte en wensen van jouw bedrijf. stockflow is ideaal voor KMO's die eenvoudig willen starten en later willen opschalen.</p>
       <h2 className="text-2xl font-semibold mb-3">Meer lezen?</h2>
       <ul className="list-disc ml-6 mb-4">
         <li><Link to="/magazijnbeheer-tips" className="text-blue-700 underline">Magazijnbeheer tips voor KMO's</Link></li>
@@ -71,11 +71,11 @@ export default function VoorraadbeheerSoftwareVergelijken() {
         "@type": "Article",
         "headline": "Voorraadbeheer Software Vergelijken",
         "description": "Vergelijk de beste voorraadbeheer software en stockbeheer apps voor KMO's. Ontdek welke oplossing het beste past bij jouw bedrijf.",
-        "author": { "@type": "Organization", "name": "SmartStock" },
-        "publisher": { "@type": "Organization", "name": "SmartStock", "logo": { "@type": "ImageObject", "url": "https://www.smartstock.be/logo.png" } },
-        "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.smartstock.be/voorraadbeheer-software-vergelijken" },
+        "author": { "@type": "Organization", "name": "stockflow" },
+        "publisher": { "@type": "Organization", "name": "stockflow", "logo": { "@type": "ImageObject", "url": "https://www.stockflow.be/logo.png" } },
+        "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.stockflow.be/voorraadbeheer-software-vergelijken" },
         "datePublished": "2024-06-01",
-        "image": "https://www.smartstock.be/Inventory-Management.png"
+        "image": "https://www.stockflow.be/Inventory-Management.png"
       }`}} />
     </main>
   );

@@ -26,7 +26,7 @@ export const HomePage = () => {
   const features = [
     {
       icon: Package,
-      title: 'SmartStock',
+      title: 'stockflow',
       description: 'Volg voorraadniveaus, beheer producten en automatiseer voorraadwaarschuwingen met gemak.',
     },
     {
@@ -60,7 +60,7 @@ export const HomePage = () => {
       name: 'Free',
       price: '€0',
       period: '/maand',
-      description: 'Perfect om te beginnen met SmartStock',
+      description: 'Perfect om te beginnen met stockflow',
       features: [
         'Tot 30 verschillende producten',
         'Basis voorraadvolging',
@@ -109,28 +109,28 @@ export const HomePage = () => {
   return (
     <div className="min-h-screen bg-white">
       <Helmet>
-        <title>Smartstock: Eenvoudig & Gratis Stockbeheer voor KMO's | Slim Voorraadbeheer</title>
-        <meta name="description" content="Eenvoudig, gratis en slim stockbeheer voor KMO's en zelfstandigen. Probeer SmartStock en ontdek de beste stockbeheer app voor Vlaanderen!" />
+        <title>stockflow: Eenvoudig & Gratis Stockbeheer voor KMO's | Slim Voorraadbeheer</title>
+        <meta name="description" content="Eenvoudig, gratis en slim stockbeheer voor KMO's en zelfstandigen. Probeer stockflow en ontdek de beste stockbeheer app voor Vlaanderen!" />
         <meta name="keywords" content="stockbeheer, gratis stockbeheer, stockbeheer app, voorraadbeheer, KMO, eenvoudig voorraadbeheer, voorraad app, voorraadbeheer Vlaanderen, voorraadbeheer Gent, voorraadbeheer Brugge, voorraadbeheer Antwerpen" />
         {/* Open Graph tags */}
-        <meta property="og:title" content="Smartstock: Eenvoudig & Gratis Stockbeheer voor KMO's" />
-        <meta property="og:description" content="Eenvoudig, gratis en slim stockbeheer voor KMO's en zelfstandigen. Probeer SmartStock en ontdek de beste stockbeheer app voor Vlaanderen!" />
-        <meta property="og:image" content="https://www.smartstock.be/Inventory-Management.png" />
-        <meta property="og:url" content="https://www.smartstock.be/" />
+        <meta property="og:title" content="stockflow: Eenvoudig & Gratis Stockbeheer voor KMO's" />
+        <meta property="og:description" content="Eenvoudig, gratis en slim stockbeheer voor KMO's en zelfstandigen. Probeer stockflow en ontdek de beste stockbeheer app voor Vlaanderen!" />
+        <meta property="og:image" content="https://www.stockflow.be/Inventory-Management.png" />
+        <meta property="og:url" content="https://www.stockflow.be/" />
         <meta property="og:type" content="website" />
         {/* Twitter Card tags */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Smartstock: Eenvoudig & Gratis Stockbeheer voor KMO's" />
-        <meta name="twitter:description" content="Eenvoudig, gratis en slim stockbeheer voor KMO's en zelfstandigen. Probeer SmartStock en ontdek de beste stockbeheer app voor Vlaanderen!" />
-        <meta name="twitter:image" content="https://www.smartstock.be/Inventory-Management.png" />
+        <meta name="twitter:title" content="stockflow: Eenvoudig & Gratis Stockbeheer voor KMO's" />
+        <meta name="twitter:description" content="Eenvoudig, gratis en slim stockbeheer voor KMO's en zelfstandigen. Probeer stockflow en ontdek de beste stockbeheer app voor Vlaanderen!" />
+        <meta name="twitter:image" content="https://www.stockflow.be/Inventory-Management.png" />
         <script type="application/ld+json">{`
           {
             "@context": "https://schema.org",
             "@type": "LocalBusiness",
-            "name": "SmartStock",
-            "image": "https://www.smartstock.be/logo.png",
-            "@id": "https://www.smartstock.be/",
-            "url": "https://www.smartstock.be/",
+            "name": "stockflow",
+            "image": "https://www.stockflow.be/logo.png",
+            "@id": "https://www.stockflow.be/",
+            "url": "https://www.stockflow.be/",
             "telephone": "+32-123-456-789",
             "address": {
               "@type": "PostalAddress",
@@ -172,7 +172,7 @@ export const HomePage = () => {
               Eenvoudig stockbeheer 
             </h1>
             <p className="text-xl text-black mb-8 drop-shadow-[0_2px_8px_rgba(0,0,0,0.18)]">
-              SmartStock is dé <strong>gratis stockbeheer app</strong> voor KMO's, zelfstandigen en kleine bedrijven in Vlaanderen. Beheer je voorraad eenvoudig, snel en veilig. Start vandaag nog met <a href="/gratis-stockbeheer" className="text-blue-700 underline">gratis stockbeheer</a> en ontdek waarom steeds meer ondernemers kiezen voor <a href="/simpelstockbeheer" className="text-blue-700 underline">simpel stockbeheer</a> met SmartStock.
+              stockflow is dé <strong>gratis stockbeheer app</strong> voor KMO's, zelfstandigen en kleine bedrijven in Vlaanderen. Beheer je voorraad eenvoudig, snel en veilig. Start vandaag nog met <a href="/gratis-stockbeheer" className="text-blue-700 underline">gratis stockbeheer</a> en ontdek waarom steeds meer ondernemers kiezen voor <a href="/simpelstockbeheer" className="text-blue-700 underline">simpel stockbeheer</a> met stockflow.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8 mb-8">
               <Button size="lg" className="text-lg px-10 py-5 bg-blue-700 hover:bg-white hover:text-blue-700 text-white font-bold shadow-lg shadow-blue-900/30 border border-blue-700 focus:ring-4 focus:ring-yellow-300 transition-all duration-200" onClick={handleLoginClick} style={{boxShadow: '0 8px 32px rgba(255,193,7,0.25)'}}>
@@ -186,7 +186,7 @@ export const HomePage = () => {
       {/* How It Works Section */}
       <section className="py-20 bg-gray-50">
         <div className="px-4 sm:px-6 lg:px-8 text-center ">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8">Hoe Werkt Gratis Stockbeheer met SmartStock?</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8">Hoe Werkt Gratis Stockbeheer met stockflow?</h2>
           <div className="flex justify-center">
             <video
               src="/intro_vid.mp4"
@@ -207,10 +207,10 @@ export const HomePage = () => {
         <div className="px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Alles Wat U Nodig Heeft Voor SmartStock
+              Alles Wat U Nodig Heeft Voor stockflow
             </h2>
             <p className="text-xl text-gray-600">
-              Ons uitgebreide platform biedt alle tools die u nodig heeft om uw SmartStock te optimaliseren.
+              Ons uitgebreide platform biedt alle tools die u nodig heeft om uw stockflow te optimaliseren.
             </p>
           </div>
           
@@ -284,7 +284,7 @@ export const HomePage = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-                Waarom Kiezen Voor SmartStock?
+                Waarom Kiezen Voor stockflow?
               </h2>
               <div className="space-y-4">
                 {benefits.map((benefit, index) => (
@@ -382,7 +382,7 @@ export const HomePage = () => {
                   <div className="flex items-center">
                     <Mail className="h-5 w-5 text-blue-600 mr-3" aria-label="E-mail" />
                     <span className="text-gray-700">
-                      {['info','smartstock.be'].join('@').replace(/\./,'.')}
+                      {['info','stockflow.be'].join('@').replace(/\./,'.')}
                     </span>
                   </div>
                 </div>
@@ -397,7 +397,7 @@ export const HomePage = () => {
       <footer className="bg-gray-900 text-white py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h3 className="text-2xl font-bold mb-4">SmartStock</h3>
+            <h3 className="text-2xl font-bold mb-4">stockflow</h3>
             <p className="text-gray-400 mb-8">
               Professioneel voorraadbeheer voor KMO's
             </p>
@@ -407,7 +407,7 @@ export const HomePage = () => {
               <Link to="/contact" className="hover:text-blue-400 transition-colors">Contact Ondersteuning</Link>
             </div>
             <p className="text-gray-500 text-sm mt-8">
-              © 2024 SmartStock. Alle rechten voorbehouden.
+              © 2024 stockflow. Alle rechten voorbehouden.
             </p>
           </div>
         </div>

@@ -82,7 +82,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
               <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
                 <Package className="w-5 h-5 text-white" />
               </div>
-              <h1 className="text-lg font-semibold text-gray-900">SmartStock</h1>
+              <h1 className="text-lg font-semibold text-gray-900">stockflow</h1>
             </div>
           )}
 
@@ -146,7 +146,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
               <HelpCircle className="w-5 h-5 flex-shrink-0" />
               <div>
                 <p className="font-medium">Hulp nodig?</p>
-                <p className="text-xs text-gray-500">info@smartstock.be</p>
+                <p className="text-xs text-gray-500">info@stockflow.be</p>
               </div>
             </div>
         </div>

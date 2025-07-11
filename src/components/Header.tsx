@@ -30,7 +30,7 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav }: HeaderProps)
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
             <Package className="h-8 w-8 text-blue-600 mr-3" />
-            <span className="text-2xl font-bold text-gray-900">SmartStock</span>
+            <span className="text-2xl font-bold text-gray-900">stockflow</span>
           </div>
           {/* Hamburger menu voor mobiel */}
           <div className="flex md:hidden items-center">
