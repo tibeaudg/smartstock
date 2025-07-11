@@ -1,5 +1,18 @@
 import { Database } from '@/types/supabase';
 
+export type Product = {
+  id: string;
+  name: string;
+  description: string | null;
+  quantity_in_stock: number;
+  minimum_stock_level: number;
+  unit_price: number;
+  purchase_price: number;
+  sale_price: number;
+  status: string | null;
+  image_url?: string | null;
+};
+
 export type StockTransaction = {
   id: string;
   created_at: string;
@@ -8,6 +21,8 @@ export type StockTransaction = {
   transaction_type: 'incoming' | 'outgoing';
   quantity: number;
   unit_price: number;
+  purchase_price?: number;
+  sale_price?: number;
   // total_value is calculated from quantity * unit_price
   reference_number: string | null;
   notes: string | null;

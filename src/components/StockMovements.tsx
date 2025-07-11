@@ -263,13 +263,16 @@ export const StockMovements = () => {
                   {!isMobile && (
                     <>
                       <td className="px-4 py-2 text-right text-sm">
-                        €{transaction.unit_price.toFixed(2)}
+                        €{(transaction.transaction_type === 'incoming'
+                          ? (transaction.purchase_price ?? transaction.unit_price)
+                          : (transaction.sale_price ?? transaction.unit_price)
+                        ).toFixed(2)}
                       </td>
                       <td className="px-4 py-2 text-right text-sm">
                         {transaction.transaction_type === 'outgoing' ? (
-                          <span className="text-green-600">+ €{(transaction.quantity * transaction.unit_price).toFixed(2)}</span>
+                          <span className="text-green-600">+ €{(transaction.quantity * (transaction.sale_price ?? transaction.unit_price)).toFixed(2)}</span>
                         ) : (
-                          <>€{(transaction.quantity * transaction.unit_price).toFixed(2)}</>
+                          <span className="text-red-600">- €{(transaction.quantity * (transaction.purchase_price ?? transaction.unit_price)).toFixed(2)}</span>
                         )}
                       </td>
                     </>

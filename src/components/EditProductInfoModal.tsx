@@ -13,6 +13,8 @@ interface Product {
   quantity_in_stock: number;
   minimum_stock_level: number;
   unit_price: number;
+  purchase_price: number;
+  sale_price: number;
   status: string | null;
   branch_id?: string;
   image_url?: string | null;
@@ -40,6 +42,8 @@ export const EditProductInfoModal = ({
     quantity_in_stock: product.quantity_in_stock,
     minimum_stock_level: product.minimum_stock_level,
     unit_price: product.unit_price,
+    purchase_price: product.purchase_price,
+    sale_price: product.sale_price,
   });
 
   useEffect(() => {
@@ -50,6 +54,8 @@ export const EditProductInfoModal = ({
         quantity_in_stock: product.quantity_in_stock,
         minimum_stock_level: product.minimum_stock_level,
         unit_price: product.unit_price,
+        purchase_price: product.purchase_price,
+        sale_price: product.sale_price,
       });
       setImagePreview(product.image_url || null);
       setProductImage(null);
@@ -69,7 +75,7 @@ export const EditProductInfoModal = ({
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    setForm({ ...form, [e.target.name]: e.target.type === 'number' ? Number(e.target.value) : e.target.value });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -98,6 +104,8 @@ export const EditProductInfoModal = ({
         quantity_in_stock: Number(form.quantity_in_stock),
         minimum_stock_level: Number(form.minimum_stock_level),
         unit_price: Number(form.unit_price),
+        purchase_price: Number(form.purchase_price),
+        sale_price: Number(form.sale_price),
         image_url: imageUrl,
         updated_at: new Date().toISOString(),
       })
@@ -130,8 +138,36 @@ export const EditProductInfoModal = ({
           <Input name="quantity_in_stock" type="number" value={form.quantity_in_stock} onChange={handleChange} disabled={loading} min={0} required />
           <Label>Min. Niveau</Label>
           <Input name="minimum_stock_level" type="number" value={form.minimum_stock_level} onChange={handleChange} disabled={loading} min={0} required />
-          <Label>Prijs</Label>
-          <Input name="unit_price" type="number" step="0.01" value={form.unit_price} onChange={handleChange} disabled={loading} min={0} required />
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="purchase_price">Inkoopprijs</Label>
+              <Input
+                id="purchase_price"
+                name="purchase_price"
+                type="number"
+                step="0.01"
+                min="0"
+                value={form.purchase_price}
+                onChange={handleChange}
+                disabled={loading}
+                required
+              />
+            </div>
+            <div>
+              <Label htmlFor="sale_price">Verkoopprijs</Label>
+              <Input
+                id="sale_price"
+                name="sale_price"
+                type="number"
+                step="0.01"
+                min="0"
+                value={form.sale_price}
+                onChange={handleChange}
+                disabled={loading}
+                required
+              />
+            </div>
+          </div>
           <Label>Productfoto</Label>
           <Input type="file" accept="image/*" onChange={handleImageChange} disabled={loading} />
           {imagePreview && (

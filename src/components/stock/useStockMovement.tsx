@@ -11,6 +11,8 @@ interface Product {
   quantity_in_stock: number;
   minimum_stock_level: number;
   unit_price: number;
+  purchase_price: number;
+  sale_price: number;
   status: string | null;
   image_url?: string | null; // <-- toegevoegd
 }
@@ -69,7 +71,9 @@ export const useStockMovement = (
         product_name: product.name,
         transaction_type: transactionType,
         quantity: quantityNum,
-        unit_price: product.unit_price, // Use the product's existing unit price
+        unit_price: transactionType === 'incoming' ? product.purchase_price : product.sale_price,
+        purchase_price: product.purchase_price,
+        sale_price: product.sale_price,
         created_by: user.id,
         branch_id: activeBranch.branch_id
       };

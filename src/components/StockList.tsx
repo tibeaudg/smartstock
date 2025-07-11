@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import type { Product } from '@/types/stockTypes';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
@@ -15,18 +16,6 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { EditProductInfoModal } from './EditProductInfoModal';
 import { EditProductStockModal } from './EditProductStockModal';
 import { ImagePreviewModal } from './ImagePreviewModal';
-
-interface Product {
-  id: string;
-  name: string;
-  description: string | null;
-  quantity_in_stock: number;
-  minimum_stock_level: number;
-  unit_price: number;
-  status: string | null;
-  branch_id?: string | null;
-  image_url?: string | null; // <-- toegevoegd
-}
 
 const getStockStatus = (quantity: number, minLevel: number) => {
   if (quantity > minLevel) {
@@ -61,7 +50,11 @@ const fetchProducts = async (branchId: string) => {
     .eq('branch_id', branchId)
     .order('created_at', { ascending: false });
   if (error) throw new Error(error.message);
-  return data || [];
+  return (data || []).map((p: any) => ({
+    ...p,
+    purchase_price: typeof p.purchase_price === 'number' ? p.purchase_price : 0,
+    sale_price: typeof p.sale_price === 'number' ? p.sale_price : 0,
+  }));
 };
 
 export const StockList = () => {
@@ -530,7 +523,10 @@ export const StockList = () => {
                   Min. Niveau
                 </th>
                 <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Eenheidsprijs
+                  Aankoopprijs
+                </th>
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Verkoopprijs
                 </th>
                 <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Status
@@ -594,8 +590,11 @@ export const StockList = () => {
                       <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900">
                         {product.minimum_stock_level}
                       </td>
-                      <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-green-600">
-                        €{product.unit_price.toFixed(2)}
+                      <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-blue-600">
+                        <span className="text-red-600">€{product.purchase_price?.toFixed(2) ?? '-'}</span>
+                      </td>
+                      <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-orange-600">
+                        <span className="text-green-600">€{product.sale_price?.toFixed(2) ?? '-'}</span>
                       </td>
                       <td className="px-4 py-2 whitespace-nowrap">
                         <Badge variant={getStockStatusVariant(stockStatus)}>

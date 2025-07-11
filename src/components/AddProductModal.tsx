@@ -29,7 +29,8 @@ interface FormData {
   supplierName: string;
   quantityInStock: number;
   minimumStockLevel: number;
-  unitPrice: number;
+  purchasePrice: number;
+  salePrice: number;
 }
 
 export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductModalProps) => {
@@ -51,7 +52,8 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
       supplierName: '',
       quantityInStock: 0,
       minimumStockLevel: 10,
-      unitPrice: 0,
+      purchasePrice: 0,
+      salePrice: 0,
     },
   });
 
@@ -180,7 +182,9 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
         description: data.description || null,
         quantity_in_stock: data.quantityInStock,
         minimum_stock_level: data.minimumStockLevel,
-        unit_price: data.unitPrice,
+        unit_price: data.purchasePrice, // legacy fallback
+        purchase_price: data.purchasePrice,
+        sale_price: data.salePrice,
         branch_id: activeBranch.branch_id,
         image_url: imageUrl,
         user_id: user.id || (user?.id ?? ''), // fallback voor zekerheid
@@ -208,7 +212,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
         product_name: data.name,
         transaction_type: 'incoming' as const,
         quantity: data.quantityInStock || 0,
-        unit_price: data.unitPrice,
+        unit_price: data.purchasePrice,
         created_by: user.id,
         branch_id: activeBranch.branch_id,
         reference_number: 'INITIAL_STOCK',
@@ -376,31 +380,28 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                 )}
               />
 
-              <FormField
-                control={form.control}
-                name="unitPrice"
-                rules={{ 
-                  required: 'Prijs is verplicht',
-                  min: { value: 0, message: 'Prijs moet 0 of meer zijn' }
-                }}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Prijs *</FormLabel>
-                    <FormControl>
-                      <Input 
-                        {...field} 
-                        type="number" 
-                        step="0.01"
-                        min="0"
-                        placeholder="0.00"
-                        disabled={loading}
-                        onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="purchasePrice">Inkoopprijs</Label>
+                  <Input
+                    id="purchasePrice"
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    {...form.register('purchasePrice', { required: true, min: 0 })}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="salePrice">Verkoopprijs</Label>
+                  <Input
+                    id="salePrice"
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    {...form.register('salePrice', { required: true, min: 0 })}
+                  />
+                </div>
+              </div>
 
               {/* Afbeelding upload veld */}
               <div>

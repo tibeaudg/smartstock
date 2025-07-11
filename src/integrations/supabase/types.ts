@@ -380,6 +380,8 @@ export type Database = {
           supplier_name: string | null
           unit_price: number
           updated_at: string | null
+          purchase_price: number
+          sale_price: number
         }
         Insert: {
           branch_id?: string | null
@@ -396,6 +398,8 @@ export type Database = {
           supplier_name?: string | null
           unit_price?: number
           updated_at?: string | null
+          purchase_price?: number
+          sale_price?: number
         }
         Update: {
           branch_id?: string | null
@@ -412,6 +416,8 @@ export type Database = {
           supplier_name?: string | null
           unit_price?: number
           updated_at?: string | null
+          purchase_price?: number
+          sale_price?: number
         }
         Relationships: [
           {
