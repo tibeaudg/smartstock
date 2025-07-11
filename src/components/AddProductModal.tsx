@@ -280,7 +280,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto w-full max-w-full p-2 md:p-6">
         <DialogHeader>
           <DialogTitle>Nieuw Product Toevoegen</DialogTitle>
         </DialogHeader>
@@ -295,7 +295,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                 <FormItem>
                   <FormLabel>Product Naam *</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="Voer product naam in" disabled={loading} />
+                    <Input {...field} placeholder="Voer product naam in" disabled={loading} className="py-3 px-3 text-base" />
                   </FormControl>
                   {duplicateName && (
                     <div className="flex items-center text-sm text-red-600 mt-1">
@@ -319,7 +319,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                       {...field} 
                       placeholder="Voer product beschrijving in" 
                       disabled={loading}
-                      className="resize-none"
+                      className="resize-none py-3 px-3 text-base"
                       rows={3}
                     />
                   </FormControl>
@@ -328,8 +328,8 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
               )}
             />
 
-
-            <div className="grid grid-cols-3 gap-4">
+            {/* Responsive grid: 1 kolom op mobiel, 3 op desktop */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <FormField
                 control={form.control}
                 name="quantityInStock"
@@ -348,6 +348,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                         placeholder="0"
                         disabled={loading}
                         onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                        className="py-3 px-3 text-base"
                       />
                     </FormControl>
                     <FormMessage />
@@ -373,6 +374,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                         placeholder="10"
                         disabled={loading}
                         onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                        className="py-3 px-3 text-base"
                       />
                     </FormControl>
                     <FormMessage />
@@ -380,15 +382,18 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                 )}
               />
 
-              <div className="grid grid-cols-2 gap-4">
+              {/* Prijsvelden in 2 kolommen op desktop, 1 op mobiel */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-2">
                 <div>
-                  <Label htmlFor="purchasePrice">Inkoopprijs</Label>
+                  <FormLabel htmlFor="purchasePrice">Inkoopprijs</FormLabel>
+                  <FormControl></FormControl>
                   <Input
                     id="purchasePrice"
                     type="number"
                     step="0.01"
                     min="0"
                     {...form.register('purchasePrice', { required: true, min: 0 })}
+                    className="py-3 px-3 text-base"
                   />
                 </div>
                 <div>
@@ -399,25 +404,26 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                     step="0.01"
                     min="0"
                     {...form.register('salePrice', { required: true, min: 0 })}
+                    className="py-3 px-3 text-base"
                   />
                 </div>
               </div>
 
               {/* Afbeelding upload veld */}
-              <div>
+              <div className="flex flex-col gap-2">
                 <Label>Productfoto</Label>
-                <Input type="file" accept="image/*" onChange={handleImageChange} disabled={loading} />
+                <Input type="file" accept="image/*" onChange={handleImageChange} disabled={loading} className="py-2" />
                 {imagePreview && (
-                  <img src={imagePreview} alt="Preview" className="mt-2 w-24 h-24 object-cover rounded border" />
+                  <img src={imagePreview} alt="Preview" className="mt-2 w-24 h-24 max-w-full object-cover rounded border mx-auto" />
                 )}
               </div>
             </div>
 
-            <div className="flex justify-end space-x-2 pt-4">
-              <Button type="button" variant="outline" onClick={onClose} disabled={loading}>
+            <div className="flex flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-2 pt-4">
+              <Button type="button" variant="outline" onClick={onClose} disabled={loading} className="w-full sm:w-auto">
                 Annuleren
               </Button>
-              <Button type="submit" disabled={loading}>
+              <Button type="submit" disabled={loading} className="w-full sm:w-auto">
                 {loading ? 'Toevoegen...' : 'Product Toevoegen'}
               </Button>
             </div>
