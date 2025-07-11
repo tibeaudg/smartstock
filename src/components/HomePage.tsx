@@ -92,7 +92,6 @@ export const HomePage = () => {
       period: '/maand',
       description: 'Perfect voor freelancers en starters.',
       features: ['Tot 30 producten', 'Basis voorraadvolging', 'Community ondersteuning'],
-      cta: 'Start Gratis',
       popular: false,
     },
     {
@@ -101,8 +100,7 @@ export const HomePage = () => {
       period: '/maand',
       description: 'Voor kleine bedrijven die willen groeien.',
       features: ['Tot 150 producten', 'Geavanceerde analyses', 'Prioritaire e-mailondersteuning'],
-      cta: 'Kies Starter',
-      popular: true,
+      popular: false,
     },
     {
       name: 'Business',
@@ -110,16 +108,14 @@ export const HomePage = () => {
       period: '/maand',
       description: 'Ideaal voor gevestigde KMO\'s.',
       features: ['Tot 500 producten', 'Uitgebreide rapportage', 'Telefonische ondersteuning'],
-      cta: 'Kies Business',
       popular: false,
     },
     {
       name: 'Enterprise',
-      price: '€29',
+      price: '€39',
       period: '/maand',
-      description: 'Voor ambitieuze bedrijven met complexe noden.',
-      features: ['Onbeperkt aantal producten', 'API toegang', 'Persoonlijke onboarding', 'Premium support'],
-      cta: 'Contacteer ons',
+      description: 'Voor bedrijven met complexe noden.',
+      features: ['Onbeperkt', 'Persoonlijke onboarding', 'Premium support'],
       popular: false,
     },
   ];
@@ -307,9 +303,6 @@ export const HomePage = () => {
                         </li>
                       ))}
                     </ul>
-                    <Button size="lg" className={`w-full text-lg py-3 font-bold transition-transform transform hover:scale-105 ${plan.popular ? 'bg-blue-600 hover:bg-blue-700 text-white' : 'bg-white hover:bg-gray-100 text-blue-600 border border-blue-600'}`}>
-                      {plan.cta}
-                    </Button>
                   </CardContent>
                 </Card>
               </FadeInWhenVisible>
