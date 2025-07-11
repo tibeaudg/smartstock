@@ -58,8 +58,8 @@ export const StockMovements = () => {
       <Card className="w-full">
         <CardContent className="p-6">
           <div className="text-center text-red-500">
-            <p>Error loading stock movements: {error}</p>
-            <Button variant="outline" onClick={refresh} className="mt-4">
+            <p>Error loading stock movements: {error?.toString()}</p>
+            <Button variant="outline" onClick={() => refresh()} className="mt-4">
               Retry
             </Button>
           </div>
@@ -102,7 +102,7 @@ export const StockMovements = () => {
           </div>
           <Select
             value={filters.transactionType}
-            onValueChange={(value) => setFilters(prev => ({ ...prev, transactionType: value }))}
+            onValueChange={(value) => setFilters(prev => ({ ...prev, transactionType: value as 'all' | 'incoming' | 'outgoing' }))}
           >
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Transaction Type" />
@@ -115,7 +115,7 @@ export const StockMovements = () => {
           </Select>
           <Select
             value={filters.dateRange}
-            onValueChange={(value) => setFilters(prev => ({ ...prev, dateRange: value }))}
+            onValueChange={(value) => setFilters(prev => ({ ...prev, dateRange: value as 'all' | 'today' | 'week' | 'month' | 'custom' }))}
           >
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Date Range" />
@@ -217,6 +217,7 @@ export const StockMovements = () => {
               <tr>
                 <th className="px-4 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Datum</th>
                 <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Gebruiker</th>
                 <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
                 <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Aantal</th>
                 {!isMobile && (
@@ -239,6 +240,11 @@ export const StockMovements = () => {
                     {format(new Date(transaction.created_at), 'dd/MM/yyyy HH:mm')}
                   </td>
                   <td className="px-4 py-2 text-sm">{transaction.product_name}</td>
+                  <td className="px-4 py-2 text-sm">
+                    {transaction.first_name || transaction.last_name
+                      ? `${transaction.first_name ?? ''} ${transaction.last_name ?? ''}`.trim()
+                      : transaction.email || 'Onbekend'}
+                  </td>
                   <td className="px-4 py-2 text-center">
                     <Badge
                       variant={transaction.transaction_type === 'incoming' ? 'default' : 'destructive'}

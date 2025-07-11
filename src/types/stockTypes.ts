@@ -15,6 +15,10 @@ export type StockTransaction = {
   created_by: string;
   supplier_name?: string | null;
   image_url?: string | null; // <-- toegevoegd
+  // Gebruikersinfo
+  first_name?: string | null;
+  last_name?: string | null;
+  email?: string | null;
 };
 
 export type TransactionFilters = {

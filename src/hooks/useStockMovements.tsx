@@ -34,7 +34,8 @@ export const useStockMovements = () => {
         reference_number,
         created_at,
         created_by,
-        branch_id
+        branch_id,
+        profiles:created_by (email, first_name, last_name)
       `)
       .eq('branch_id', activeBranch.branch_id)
       .order('created_at', { ascending: false });
@@ -58,7 +59,12 @@ export const useStockMovements = () => {
     if (filters.searchQuery) query = query.or(`product_name.ilike.%${filters.searchQuery}%,reference_number.ilike.%${filters.searchQuery}%`);
     const { data, error } = await query;
     if (error) throw new Error(error.message);
-    return data || [];
+    return (data || []).map((row: any) => ({
+      ...row,
+      email: row.profiles?.email ?? null,
+      first_name: row.profiles?.first_name ?? null,
+      last_name: row.profiles?.last_name ?? null,
+    }));
   };
 
   const {
