@@ -239,7 +239,7 @@ export const StockMovements = () => {
                   <td className="px-4 py-2 whitespace-nowrap text-sm">
                     {format(new Date(transaction.created_at), 'dd/MM/yyyy HH:mm')}
                   </td>
-                  <td className="px-4 py-2 text-sm">{transaction.product_name}</td>
+                  <td className="px-4 py-2 text-sm font-bold">{transaction.product_name}</td>
                   <td className="px-4 py-2 text-sm">
                     {transaction.first_name || transaction.last_name
                       ? `${transaction.first_name ?? ''} ${transaction.last_name ?? ''}`.trim()
@@ -254,7 +254,11 @@ export const StockMovements = () => {
                     </Badge>
                   </td>
                   <td className="px-4 py-2 text-right text-sm font-medium">
-                    {transaction.quantity}
+                    {transaction.transaction_type === 'outgoing' ? (
+                      <span className="text-red-600">- {transaction.quantity}</span>
+                    ) : (
+                      <span className="text-green-600">+ {transaction.quantity}</span>
+                    )}
                   </td>
                   {!isMobile && (
                     <>
@@ -262,7 +266,11 @@ export const StockMovements = () => {
                         €{transaction.unit_price.toFixed(2)}
                       </td>
                       <td className="px-4 py-2 text-right text-sm">
-                        €{(transaction.quantity * transaction.unit_price).toFixed(2)}
+                        {transaction.transaction_type === 'outgoing' ? (
+                          <span className="text-green-600">+ €{(transaction.quantity * transaction.unit_price).toFixed(2)}</span>
+                        ) : (
+                          <>€{(transaction.quantity * transaction.unit_price).toFixed(2)}</>
+                        )}
                       </td>
                     </>
                   )}

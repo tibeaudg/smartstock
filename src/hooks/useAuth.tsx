@@ -181,6 +181,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   ) => {
     setLoading(true);
     try {
+      if (!firstName || !lastName) {
+        return { error: new Error('Voornaam en achternaam zijn verplicht voor registratie.') };
+      }
       const { data, error: signUpError } = await supabase.auth.signUp({
         email,
         password,
