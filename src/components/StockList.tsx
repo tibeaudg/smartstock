@@ -375,7 +375,7 @@ export const StockList = () => {
                         variant="outline"
                         size="lg"
                         onClick={e => { e.stopPropagation(); handleStockAction(product, 'in'); }}
-                        className="flex-1 text-green-600 bg-green-200 border border-green-600 hover:text-white hover:bg-green-600 hover:border-green-600 flex items-center justify-center gap-2"
+                        className="flex-1 text-green-600 bg-green-100 border border-green-600 hover:text-white hover:bg-green-600 hover:border-green-600 flex items-center justify-center gap-2"
                       >
                         <Plus className="h-5 w-5" />
                         In
@@ -384,7 +384,7 @@ export const StockList = () => {
                         variant="outline"
                         size="lg"
                         onClick={e => { e.stopPropagation(); handleStockAction(product, 'out'); }}
-                        className="flex-1 text-red-600 bg-red-200 border border-red-600 hover:text-white hover:bg-red-600 hover:border-red-600 flex items-center justify-center gap-2"
+                        className="flex-1 text-red-600 bg-red-100 border border-red-600 hover:text-white hover:bg-red-600 hover:border-red-600 flex items-center justify-center gap-2"
                       >
                         <Minus className="h-5 w-5" />
                         Uit
@@ -607,7 +607,7 @@ export const StockList = () => {
                             variant="outline"
                             size="sm"
                             onClick={() => handleStockAction(product, 'in')}
-                            className="text-green-600 bg-green-200 border border-green-600 hover:text-white hover:bg-green-600 hover:border-green-600"
+                            className="text-green-600 bg-green-100 border border-green-600 hover:text-white hover:bg-green-600 hover:border-green-600"
                           >
                             <Plus className="h-4 w-4" />
                           </Button>
@@ -615,7 +615,7 @@ export const StockList = () => {
                             variant="outline"
                             size="sm"
                             onClick={() => handleStockAction(product, 'out')}
-                            className="text-red-600 bg-red-200 border border-red-600 hover:text-white hover:bg-red-600 hover:border-green-600"
+                            className="text-red-600 bg-red-100 border border-red-600 hover:text-white hover:bg-red-600 hover:border-green-600"
                           >
                             <Minus className="h-4 w-4" />
                           </Button>

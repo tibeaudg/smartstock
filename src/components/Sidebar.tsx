@@ -92,12 +92,12 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
         {isOpen && (
           <div className="p-4 border-b border-gray-200 flex-shrink-0">
             <BranchSelector />
-            <p className="text-xs text-gray-500 pt-3">
-              {userProfile?.email ?? 'Laden...'}
+            <p className="text-xs text-gray-700 pt-3 text-center font-medium">
+              {userProfile?.first_name || userProfile?.last_name
+                ? `${userProfile?.first_name ?? ''} ${userProfile?.last_name ?? ''}`.trim()
+                : 'Laden...'}
             </p>
-
           </div>
-          
         )}
         
 

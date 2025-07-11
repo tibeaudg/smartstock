@@ -86,7 +86,7 @@ export const BranchSelector = () => {
                     {isSwitching ? "Wisselen..." : activeBranch?.branch_name || 'Selecteer filiaal'}
                   </span>
                   {activeBranch?.is_main && (
-                    <Badge variant="outline" className="text-xs">
+                    <Badge className="text-xs bg-blue-100 text-blue-700 border border-blue-700">
                       Hoofdvestiging
                     </Badge>
                   )}
@@ -100,7 +100,7 @@ export const BranchSelector = () => {
                 <div className="flex items-center space-x-2">
                   <span>{branch.branch_name}</span>
                   {branch.is_main && (
-                    <Badge variant="outline" className="text-xs">
+                    <Badge className="text-xs bg-blue-100 text-blue-700 border border-blue-700">
                       Hoofdvestiging
                     </Badge>
                   )}
