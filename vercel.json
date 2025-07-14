@@ -1,4 +1,14 @@
 {
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        { "type": "host", "value": "stockflow.be" }
+      ],
+      "destination": "https://www.stockflow.be/:path*",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     { "source": "/ads.txt", "destination": "/ads.txt" },
     { "source": "/robots.txt", "destination": "/robots.txt" },

@@ -19,10 +19,13 @@ export const ProductInfo = ({ product }: ProductInfoProps) => {
   return (
     <div className="mb-4 p-3 bg-gray-50 rounded">
       <p className="text-sm text-gray-600">
-        Current Stock: <span className="font-medium">{product.quantity_in_stock}</span>
+        Voorraadniveau: <span className="font-medium">{product.quantity_in_stock}</span>
       </p>
       <p className="text-sm text-gray-600">
-        Unit Price: <span className="font-medium">${product.unit_price.toFixed(2)}</span>
+        Voorraad status: <span className="font-medium">{product.status ?? 'Onbekend'}</span>
+      </p>
+      <p className="text-sm text-gray-600">
+        Prijs per stuk: <span className="font-medium">${product.unit_price.toFixed(2)}</span>
       </p>
     </div>
   );
