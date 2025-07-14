@@ -1,18 +1,16 @@
 {
-  "redirects": [
-    {
-      "source": "/:path*",
-      "has": [
-        { "type": "host", "value": "stockflow.be" }
-      ],
-      "destination": "https://www.stockflow.be/:path*",
-      "permanent": true
-    }
-  ],
   "rewrites": [
-    { "source": "/ads.txt", "destination": "/ads.txt" },
-    { "source": "/robots.txt", "destination": "/robots.txt" },
-    { "source": "/sitemap.xml", "destination": "/sitemap.xml" },
     { "source": "/(.*)", "destination": "/" }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' https://www.googletagmanager.com https://www.google-analytics.com; connect-src 'self' https://www.google-analytics.com; img-src 'self' https://www.google-analytics.com; style-src 'self' 'unsafe-inline';"
+        }
+      ]
+    }
   ]
 } 

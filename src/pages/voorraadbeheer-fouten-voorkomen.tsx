@@ -1,4 +1,4 @@
-import React from 'react';
+bimport React from 'react';
 import SEO from '../components/SEO';
 import { Link } from 'react-router-dom';
 
