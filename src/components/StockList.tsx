@@ -324,7 +324,7 @@ export const StockList = () => {
                         {product.image_url ? (
                           <img
                             src={product.image_url}
-                            alt={product.name}
+                            alt={`Productfoto van ${product.name} | voorraadbeheer`}
                             className="w-24 h-24 object-cover rounded-xl border cursor-zoom-in flex-shrink-0"
                             onClick={e => { e.stopPropagation(); setPreviewImageUrl(product.image_url!); setIsImagePreviewOpen(true); }}
                           />
@@ -567,7 +567,7 @@ export const StockList = () => {
                           {product.image_url ? (
                             <img
                               src={product.image_url}
-                              alt={product.name}
+                              alt={`Productfoto van ${product.name} | voorraadbeheer`}
                               className="w-16 h-16 object-cover rounded border cursor-zoom-in"
                               onClick={e => { e.stopPropagation(); setPreviewImageUrl(product.image_url!); setIsImagePreviewOpen(true); }}
                             />

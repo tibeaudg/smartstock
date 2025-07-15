@@ -17,6 +17,8 @@ export default function VoorraadbeheerAutomatiseren() {
       </p>
       <h2 className="text-2xl font-semibold mb-3">1. Koppel je voorraadbeheer aan andere systemen</h2>
       <p className="mb-4">Automatische integraties met je webshop, boekhouding of kassasysteem zorgen voor minder handwerk en minder fouten.</p>
+      <h2 className="text-2xl font-semibold mb-3">Voorraadbeheer integreren met je boekhouding en webshop</h2>
+      <p className="mb-4">Met <strong>voorraadbeheer integratie</strong> koppel je eenvoudig je voorraadbeheer aan je boekhouding, webshop of kassasysteem. Zo automatiseer je processen en voorkom je fouten. <a href="/voorraadbeheer-webshop" className="text-blue-700 underline">Lees meer over voorraadbeheer voor webshops</a>.</p>
       <h2 className="text-2xl font-semibold mb-3">2. Gebruik automatische meldingen</h2>
       <p className="mb-4">Laat je software je waarschuwen bij lage voorraad, afwijkingen of bestellingen.</p>
       <h2 className="text-2xl font-semibold mb-3">3. Automatiseer rapportages en analyses</h2>

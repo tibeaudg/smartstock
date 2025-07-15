@@ -43,7 +43,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
     : [
         { id: 'dashboard', label: 'Dashboard', icon: BarChart3, path: '/dashboard', end: true },
         { id: 'stock', label: 'Producten', icon: Package, path: '/dashboard/stock' },
-        { id: 'transactions', label: 'Bewegingslijst', icon: ShoppingCart, path: '/dashboard/transactions' },
+        { id: 'transactions', label: 'Stockmutaties', icon: ShoppingCart, path: '/dashboard/transactions' },
         ...(isOwner
           ? [
               { id: 'admin', label: 'Admin', icon: Settings, path: '/admin' },

@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Loader2 } from 'lucide-react';
 import { BranchProvider } from '@/hooks/useBranches';
 import { useAuth } from '@/hooks/useAuth';
+import SEO from '../components/SEO';
 
 // Facturatiebeheer types
 interface Invoice {
@@ -125,6 +126,12 @@ export default function AdminPage() {
 
   return (
     <BranchProvider>
+      <SEO
+        title="Admin Dashboard | stockflow"
+        description="Beheer gebruikers, facturen en instellingen in het admin dashboard van stockflow."
+        keywords="admin dashboard, voorraadbeheer admin, gebruikersbeheer, facturatiebeheer, stockflow"
+        url="https://www.stockflow.be/admin"
+      />
       <Layout>
         <div className="flex">
           <div className="flex-1 p-4 md:p-8 space-y-6">

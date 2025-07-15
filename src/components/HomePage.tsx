@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Package, BarChart3, Users, Shield, CheckCircle, ArrowRight, Check, Mail, Phone, MapPin, TrendingUp, Zap, Star } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
+import SEO from './SEO';
 import { motion } from 'framer-motion';
 
 // Een herbruikbare component voor fade-in animaties bij het scrollen
@@ -122,27 +122,34 @@ export const HomePage = () => {
 
   return (
     <div className="min-h-screen bg-white font-sans">
-      <Helmet>
-        <title>stockflow: Eenvoudig & Gratis Stockbeheer voor KMO's | Slim Voorraadbeheer</title>
-        <meta name="description" content="Eenvoudig, gratis en slim stockbeheer voor KMO's en zelfstandigen. Probeer stockflow en ontdek de beste stockbeheer app voor Vlaanderen!" />
-        <meta name="keywords" content="stockbeheer, gratis stockbeheer, stockbeheer app, voorraadbeheer, KMO, eenvoudig voorraadbeheer, voorraad app, voorraadbeheer Vlaanderen, voorraadbeheer Gent, voorraadbeheer Brugge, voorraadbeheer Antwerpen" />
-        {/* Voeg hier je andere meta tags toe */}
-      </Helmet>
-      
+      <SEO
+        title="Stockbeheer voor KMO's en Zelfstandigen | stockflow"
+        description="Eenvoudig, gratis en slim stockbeheer voor KMO's en zelfstandigen. Probeer stockflow en ontdek de beste stockbeheer app voor Vlaanderen!"
+        keywords="stockbeheer, gratis stockbeheer, stockbeheer app, voorraadbeheer, KMO, eenvoudig voorraadbeheer, voorraad app, voorraadbeheer Vlaanderen, voorraadbeheer Gent, voorraadbeheer Brugge, voorraadbeheer Antwerpen"
+        url="https://www.stockflow.be/"
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "Article",
+          "headline": "Stockbeheer voor KMO's en Zelfstandigen",
+          "description": "Eenvoudig, gratis en slim stockbeheer voor KMO's en zelfstandigen. Probeer stockflow en ontdek de beste stockbeheer app voor Vlaanderen!",
+          "author": {"@type": "Organization", "name": "stockflow"},
+          "publisher": {"@type": "Organization", "name": "stockflow", "logo": {"@type": "ImageObject", "url": "https://www.stockflow.be/logo.png"}},
+          "image": "https://www.stockflow.be/Inventory-Management.png",
+          "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.stockflow.be/"}
+        }}
+      />
       <Header 
         onLoginClick={handleLoginClick}
         onNavigate={scrollToSection}
-        simplifiedNav={false} // Pas aan naar wens
+        simplifiedNav={false}
       />
-
       {/* Hero Section */}
       <section className="relative pt-12 pb-5 lg:pt-48 lg:pb-44 text-center overflow-hidden bg-gray-50" style={{backgroundImage: 'url(/Inventory-Management.png)', backgroundSize: 'cover', backgroundPosition: 'center'}}>
          <div className="absolute inset-0 bg-white/70" style={{backdropFilter: 'blur(0px)'}}></div>
          <div className="relative px-4 sm:px-6 lg:px-8 z-10">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: 'easeOut' }}>
-               {/* Verwijder losse <img> */}
                <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 mb-6 tracking-tight">
-                  Stop met raden. Start met weten.
+                  Stockbeheer voor KMO's en zelfstandigen
                </h1>
                <p className="max-w-2xl mx-auto text-lg md:text-xl text-gray-600 mb-10">
                   stockflow is de meest intuïtieve <strong>stockbeheer app</strong> voor KMO's in Vlaanderen. Krijg volledige controle over je voorraad, bespaar kosten en maak slimmere beslissingen.
@@ -158,7 +165,20 @@ export const HomePage = () => {
             </motion.div>
          </div>
       </section>
-
+      {/* Interne links naar SEO-pagina's */}
+      <nav className="max-w-3xl mx-auto mt-8 mb-4 flex flex-wrap gap-2 justify-center">
+        <Link to="/voorraadbeheer-tips" className="text-blue-700 underline">Voorraadbeheer tips</Link>
+        <Link to="/magazijnbeheer-tips" className="text-blue-700 underline">Magazijnbeheer tips</Link>
+        <Link to="/voorraadbeheer-software-vergelijken" className="text-blue-700 underline">Software vergelijken</Link>
+        <Link to="/voorraadbeheer-webshop" className="text-blue-700 underline">Voorraadbeheer webshop</Link>
+        <Link to="/voorraadbeheer-fouten-voorkomen" className="text-blue-700 underline">Fouten voorkomen</Link>
+        <Link to="/voorraadbeheer-automatiseren" className="text-blue-700 underline">Automatiseren</Link>
+        <Link to="/inventarisatie-tips" className="text-blue-700 underline">Inventarisatie tips</Link>
+        <Link to="/voorraadbeheer-horeca" className="text-blue-700 underline">Voorraadbeheer horeca</Link>
+        <Link to="/voorraadbeheer-excel-vs-software" className="text-blue-700 underline">Excel vs. software</Link>
+        <Link to="/voorraadbeheer-voor-starters" className="text-blue-700 underline">Voorraadbeheer voor starters</Link>
+        <Link to="/mobiel-voorraadbeheer" className="text-blue-700 underline">Mobiel voorraadbeheer</Link>
+      </nav>
       {/* Trusted By Section */}
       <div className="py-12 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -169,10 +189,10 @@ export const HomePage = () => {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5, duration: 0.8 }}
             >
-                <div className="col-span-1 flex justify-center py-2"><img className="h-20" src="/ronde.png" alt="Company Logo 1" /></div>
-                <div className="col-span-1 flex justify-center py-2"><img className="h-20" src="/vlaanderen.png" alt="Company Logo 2" /></div>
-                <div className="col-span-1 flex justify-center py-2"><img className="h-20" src="/tom.png" alt="Company Logo 3" /></div>
-                <div className="col-span-1 flex justify-center py-2"><img className="h-20" src="/del.png" alt="Company Logo 4" /></div>
+                <div className="col-span-1 flex justify-center py-2"><img className="h-20" src="/ronde.png" alt="Logo klant voorraadbeheer stockflow ronde" /></div>
+                <div className="col-span-1 flex justify-center py-2"><img className="h-20" src="/vlaanderen.png" alt="Logo klant voorraadbeheer stockflow vlaanderen" /></div>
+                <div className="col-span-1 flex justify-center py-2"><img className="h-20" src="/tom.png" alt="Logo klant voorraadbeheer stockflow tom" /></div>
+                <div className="col-span-1 flex justify-center py-2"><img className="h-20" src="/del.png" alt="Logo klant voorraadbeheer stockflow del" /></div>
                 <div className="col-span-1 flex justify-center py-2 hidden lg:flex"><img className="h-20" src="standaard.png" alt="Company Logo 5" /></div>
             </motion.div>
         </div>
@@ -249,7 +269,7 @@ export const HomePage = () => {
                     </div>
                     <p className="text-gray-700 mb-6 italic">"{testimonial.quote}"</p>
                     <div className="flex items-center">
-                      <img className="h-12 w-12 rounded-full mr-4 object-cover" src={testimonial.avatar} alt={testimonial.name} />
+                      <img className="h-12 w-12 rounded-full mr-4 object-cover" src={testimonial.avatar} alt={`Klantreview ${testimonial.name} voorraadbeheer`} />
                       <div>
                         <p className="font-semibold text-gray-900">{testimonial.name}</p>
                         <p className="text-sm text-gray-500">{testimonial.role}</p>

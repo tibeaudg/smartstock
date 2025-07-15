@@ -1,6 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { SuggestionInput } from "@/components/SuggestionInput";
+import SEO from '../components/SEO';
 
 const SUGGESTIES = [
   { label: "Home", path: "/" },
@@ -43,6 +44,12 @@ const NotFound = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
       <div className="text-center max-w-lg w-full bg-white p-8 rounded shadow">
+        <SEO
+          title="Pagina niet gevonden (404) | stockflow"
+          description="Deze pagina bestaat niet. Vind hier snel de juiste voorraadbeheer informatie, tips en oplossingen voor KMO's."
+          keywords="404, pagina niet gevonden, voorraadbeheer, stockbeheer, tips, KMO"
+          url={`https://www.stockflow.be${location.pathname}`}
+        />
         <h1 className="text-5xl font-bold mb-2 text-blue-700">404</h1>
         <p className="text-lg text-gray-700 mb-4">
           Oeps! Deze pagina bestaat niet.<br />
@@ -90,6 +97,13 @@ const NotFound = () => {
           ))}
         </div>
         <p className="mt-6 text-xs text-gray-400">Foutmelding: Pagina niet gevonden ({location.pathname})</p>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "name": "Pagina niet gevonden (404)",
+          "description": "Deze pagina bestaat niet. Vind hier snel de juiste voorraadbeheer informatie, tips en oplossingen voor KMO's.",
+          "url": "https://www.stockflow.be${location.pathname}"
+        }`}} />
       </div>
     </div>
   );

@@ -60,6 +60,8 @@ export default function VoorraadbeheerSoftwareVergelijken() {
       </table>
       <h2 className="text-2xl font-semibold mb-3">Conclusie</h2>
       <p className="mb-4">Kies een <strong>voorraadbeheer app</strong> die past bij de grootte en wensen van jouw bedrijf. stockflow is ideaal voor KMO's die eenvoudig willen starten en later willen opschalen.</p>
+      <h2 className="text-2xl font-semibold mb-3">De beste voorraadbeheer software kiezen</h2>
+      <p className="mb-4">Wil je de <strong>beste voorraadbeheer software</strong> kiezen voor jouw bedrijf? Bekijk <a href="/voorraadbeheer-voor-starters" className="text-blue-700 underline">het stappenplan voor starters</a> en <a href="/voorraadbeheer-tips" className="text-blue-700 underline">onze voorraadbeheer tips</a> voor een goede keuze.</p>
       <h2 className="text-2xl font-semibold mb-3">Meer lezen?</h2>
       <ul className="list-disc ml-6 mb-4">
         <li><Link to="/magazijnbeheer-tips" className="text-blue-700 underline">Magazijnbeheer tips voor KMO's</Link></li>

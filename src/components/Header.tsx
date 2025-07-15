@@ -47,10 +47,10 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav }: HeaderProps)
 
           {/* Desktop knoppen */}
           <div className="hidden md:flex items-center space-x-4">
-            <Button variant="ghost" onClick={handleLoginClick}>
+            <Button variant="ghost" onClick={handleLoginClick} title="Inloggen op voorraadbeheer dashboard">
               Inloggen
             </Button>
-            <Button onClick={handleLoginClick}>
+            <Button onClick={handleLoginClick} title="Probeer gratis voorraadbeheer app">
               Probeer Gratis
             </Button>
           </div>

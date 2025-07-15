@@ -21,6 +21,8 @@ export default function VoorraadbeheerVoorStarters() {
       <p className="mb-4">Plan vaste momenten om je voorraad te tellen en bij te werken.</p>
       <h2 className="text-2xl font-semibold mb-3">3. Kies voor schaalbare software</h2>
       <p className="mb-4">Start gratis met stockflow en upgrade als je bedrijf groeit.</p>
+      <h2 className="text-2xl font-semibold mb-3">Stappenplan voorraadbeheer voor starters</h2>
+      <p className="mb-4">Wil je <strong>beginnen met voorraadbeheer</strong>? Volg dit eenvoudige <strong>voorraadbeheer stappenplan</strong> voor kleine bedrijven en zelfstandigen. Start met een <a href="/gratis-stockbeheer" className="text-blue-700 underline">gratis voorraadbeheer app</a>, digitaliseer je administratie en voorkom fouten. <a href="/voorraadbeheer-fouten-voorkomen" className="text-blue-700 underline">Bekijk tips om fouten te voorkomen</a>.</p>
       <h2 className="text-2xl font-semibold mb-3">Meer weten?</h2>
       <ul className="list-disc ml-6 mb-4">
         <li><Link to="/voorraadbeheer-tips" className="text-blue-700 underline">Voorraadbeheer tips</Link></li>

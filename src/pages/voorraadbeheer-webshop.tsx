@@ -17,6 +17,8 @@ export default function VoorraadbeheerWebshop() {
       </p>
       <h2 className="text-2xl font-semibold mb-3">1. Koppel je webshop aan je voorraadbeheer</h2>
       <p className="mb-4">Automatische synchronisatie voorkomt fouten en dubbele administratie. Kies voor een voorraadbeheer app die integreert met jouw e-commerce platform.</p>
+      <h2 className="text-2xl font-semibold mb-3">Voorraadbeheer koppelen aan je e-commerce platform</h2>
+      <p className="mb-4">Koppel je <strong>voorraadbeheer</strong> eenvoudig aan <strong>WooCommerce</strong>, <strong>Shopify</strong> of <strong>Magento</strong>. Zo synchroniseer je automatisch je webshop voorraad en voorkom je nee-verkoop. <a href="/voorraadbeheer-automatiseren" className="text-blue-700 underline">Lees meer over voorraadbeheer automatiseren</a>.</p>
       <h2 className="text-2xl font-semibold mb-3">2. Automatiseer je voorraadmeldingen</h2>
       <p className="mb-4">Ontvang direct een melding bij lage voorraad, zodat je tijdig kunt bijbestellen.</p>
       <h2 className="text-2xl font-semibold mb-3">3. Analyseer je bestsellers en slow-movers</h2>

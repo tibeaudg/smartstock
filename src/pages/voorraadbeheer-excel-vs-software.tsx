@@ -32,6 +32,8 @@ export default function VoorraadbeheerExcelVsSoftware() {
         <li>Veilig en altijd beschikbaar</li>
         <li>Gemakkelijk te delen met je team</li>
       </ul>
+      <h2 className="text-2xl font-semibold mb-3">Overstappen van Excel naar voorraadbeheer software</h2>
+      <p className="mb-4">Wil je <strong>overstappen van Excel naar een voorraadbeheer app</strong>? Ontdek de voordelen van moderne voorraadbeheer software voor KMO's. <a href="/voorraadbeheer-software-vergelijken" className="text-blue-700 underline">Vergelijk voorraadbeheer software</a> en <a href="/gratis-stockbeheer" className="text-blue-700 underline">probeer gratis stockflow</a>.</p>
       <h2 className="text-2xl font-semibold mb-3">Meer weten?</h2>
       <ul className="list-disc ml-6 mb-4">
         <li><Link to="/voorraadbeheer-tips" className="text-blue-700 underline">Voorraadbeheer tips</Link></li>

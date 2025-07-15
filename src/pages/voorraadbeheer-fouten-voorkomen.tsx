@@ -21,6 +21,8 @@ export default function VoorraadbeheerFoutenVoorkomen() {
       <p className="mb-4">Plan periodieke tellingen om afwijkingen snel te ontdekken en te corrigeren.</p>
       <h2 className="text-2xl font-semibold mb-3">3. Automatiseer meldingen en rapportages</h2>
       <p className="mb-4">Laat je software je waarschuwen bij lage voorraad of afwijkingen.</p>
+      <h2 className="text-2xl font-semibold mb-3">Meest gemaakte fouten in voorraadbeheer</h2>
+      <p className="mb-4">Veel <strong>voorraadbeheer fouten</strong> ontstaan door handmatige processen en gebrek aan automatisering. Gebruik <a href="/voorraadbeheer-tips" className="text-blue-700 underline">onze tips</a> en <a href="/voorraadbeheer-software-vergelijken" className="text-blue-700 underline">moderne voorraadbeheer software</a> om fouten te voorkomen.</p>
       <h2 className="text-2xl font-semibold mb-3">Meer tips?</h2>
       <ul className="list-disc ml-6 mb-4">
         <li><Link to="/voorraadbeheer-tips" className="text-blue-700 underline">Voorraadbeheer tips</Link></li>

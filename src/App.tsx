@@ -126,9 +126,27 @@ const AuthRoute = () => {
 };
 
 function App() {
+  const localBusinessSchema = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "stockflow",
+    "image": "https://www.stockflow.be/logo.png",
+    "@id": "https://www.stockflow.be/",
+    "url": "https://www.stockflow.be/",
+    "telephone": "+32-123-456-789",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Voorbeeldstraat 1",
+      "addressLocality": "Gent",
+      "postalCode": "9000",
+      "addressCountry": "BE"
+    },
+    "description": "Simpel stockbeheer voor KMO's en zelfstandigen. Beheer je voorraad eenvoudig online met stockflow.",
+    "areaServed": ["Gent", "Brugge", "Antwerpen", "Vlaanderen"]
+  };
   return (
     <>
-      <SEO />
+      <SEO structuredData={localBusinessSchema} />
       <ContentWrapper>
         {/* Verwijderde dubbele wrapper */}
         <QueryClientProvider client={queryClient}>

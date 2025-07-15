@@ -24,22 +24,24 @@ export default function VoorraadbeheerTips() {
       <p className="mb-4">Een goede structuur in je magazijn en digitale inventarisatie maakt het beheer eenvoudiger en sneller.</p>
       <h2 className="text-2xl font-semibold mb-3">5. Kies voor schaalbare software</h2>
       <p className="mb-4">Start gratis met stockflow en upgrade eenvoudig als je bedrijf groeit. Zo betaal je nooit te veel.</p>
+      <h2 className="text-2xl font-semibold mb-3">Voorraadbeheer automatiseren en kosten besparen</h2>
+      <p className="mb-4">Door voorraadbeheer te automatiseren met een moderne <strong>voorraadbeheer app voor KMO's</strong>, bespaar je niet alleen tijd maar ook kosten. Automatische meldingen, realtime inzicht en integraties met je boekhouding zorgen voor minder fouten en een efficiënter proces. <a href="/voorraadbeheer-automatiseren" className="text-blue-700 underline">Lees meer over voorraadbeheer automatiseren</a>.</p>
       <h2 className="text-2xl font-semibold mb-3">Veelgestelde vragen over voorraadbeheer</h2>
       <ul className="list-disc ml-6 mb-4">
         <li><strong>Wat is het verschil tussen stockbeheer en voorraadbeheer?</strong> In België worden deze termen vaak door elkaar gebruikt, maar ze betekenen hetzelfde: het beheren van je producten en materialen.</li>
-        <li><strong>Welke software is geschikt voor kleine bedrijven?</strong> stockflow is speciaal ontwikkeld voor KMO's en zelfstandigen.</li>
-        <li><strong>Hoe kan ik gratis starten met voorraadbeheer?</strong> Maak een gratis account aan en beheer tot 30 producten zonder kosten.</li>
+        <li><strong>Welke software is geschikt voor kleine bedrijven?</strong> <a href="/voorraadbeheer-software-vergelijken" className="text-blue-700 underline">stockflow is speciaal ontwikkeld voor KMO's en zelfstandigen</a>.</li>
+        <li><strong>Hoe kan ik gratis starten met voorraadbeheer?</strong> <a href="/gratis-stockbeheer" className="text-blue-700 underline">Maak een gratis account aan en beheer tot 30 producten zonder kosten</a>.</li>
+        <li><strong>Hoe kan ik voorraadbeheer automatiseren?</strong> <a href="/voorraadbeheer-automatiseren" className="text-blue-700 underline">Lees alles over voorraadbeheer automatiseren</a>.</li>
+        <li><strong>Hoe voorkom ik fouten in voorraadbeheer?</strong> <a href="/voorraadbeheer-fouten-voorkomen" className="text-blue-700 underline">Bekijk tips om fouten te voorkomen</a>.</li>
       </ul>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
         "@context": "https://schema.org",
-        "@type": "Article",
-        "headline": "Voorraadbeheer Tips voor KMO's",
-        "description": "De beste tips voor voorraadbeheer, stockbeheer en magazijnbeheer voor KMO's. Leer hoe je efficiënt je voorraad beheert en kosten bespaart met stockflow.",
-        "author": { "@type": "Organization", "name": "stockflow" },
-        "publisher": { "@type": "Organization", "name": "stockflow", "logo": { "@type": "ImageObject", "url": "https://www.stockflow.be/logo.png" } },
-        "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.stockflow.be/voorraadbeheer-tips" },
-        "datePublished": "2024-06-01",
-        "image": "https://www.stockflow.be/Inventory-Management.png"
+        "@type": "FAQPage",
+        "mainEntity": [
+          {"@type": "Question", "name": "Wat is het verschil tussen stockbeheer en voorraadbeheer?", "acceptedAnswer": {"@type": "Answer", "text": "In België worden deze termen vaak door elkaar gebruikt, maar ze betekenen hetzelfde: het beheren van je producten en materialen."}},
+          {"@type": "Question", "name": "Welke software is geschikt voor kleine bedrijven?", "acceptedAnswer": {"@type": "Answer", "text": "stockflow is speciaal ontwikkeld voor KMO's en zelfstandigen."}},
+          {"@type": "Question", "name": "Hoe kan ik gratis starten met voorraadbeheer?", "acceptedAnswer": {"@type": "Answer", "text": "Maak een gratis account aan en beheer tot 30 producten zonder kosten."}}
+        ]
       }`}} />
     </main>
   );

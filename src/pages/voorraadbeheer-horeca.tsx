@@ -21,6 +21,8 @@ export default function VoorraadbeheerHoreca() {
       <p className="mb-4">Met een horeca voorraad app zoals stockflow heb je altijd inzicht, ook op je smartphone of tablet.</p>
       <h2 className="text-2xl font-semibold mb-3">3. Analyseer je verbruik en bestellingen</h2>
       <p className="mb-4">Bekijk welke producten snel gaan en pas je bestellingen hierop aan.</p>
+      <h2 className="text-2xl font-semibold mb-3">Voorraadbeheer voor kleine horeca, keuken en bakkers</h2>
+      <p className="mb-4">Voor kleine horeca, keukens en bakkers is <strong>voorraadbeheer</strong> vaak een uitdaging. Met <a href="/voorraadbeheer-app" className="text-blue-700 underline">een slimme voorraadbeheer app</a> kun je eenvoudig je voorraad bijhouden, verspilling voorkomen en altijd voldoen aan de voedselveiligheidseisen. <a href="/voorraadbeheer-fouten-voorkomen" className="text-blue-700 underline">Bekijk tips om fouten te voorkomen</a>.</p>
       <h2 className="text-2xl font-semibold mb-3">Meer weten?</h2>
       <ul className="list-disc ml-6 mb-4">
         <li><Link to="/voorraadbeheer-tips" className="text-blue-700 underline">Voorraadbeheer tips</Link></li>

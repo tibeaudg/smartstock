@@ -7,6 +7,7 @@ interface SEOProps {
   keywords?: string;
   image?: string;
   url?: string;
+  structuredData?: object; // Nieuw: extra structured data als JSON object
 }
 
 const defaultTitle = 'stockflow - Slim Voorraadbeheer';
@@ -20,6 +21,7 @@ export const SEO: React.FC<SEOProps> = ({
   keywords = 'voorraadbeheer, stock, inventaris, MKB, magazijn, stockflow',
   image = defaultImage,
   url = defaultUrl,
+  structuredData,
 }) => (
   <Helmet>
     <title>{title}</title>
@@ -35,6 +37,9 @@ export const SEO: React.FC<SEOProps> = ({
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={image} />
     <link rel="canonical" href={url} />
+    {structuredData && (
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+    )}
   </Helmet>
 );
 
