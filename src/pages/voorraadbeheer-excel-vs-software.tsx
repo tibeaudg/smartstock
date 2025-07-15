@@ -1,10 +1,14 @@
 import React from 'react';
 import SEO from '../components/SEO';
 import { Link } from 'react-router-dom';
+import SeoPageLayout from '../components/SeoPageLayout';
 
 export default function VoorraadbeheerExcelVsSoftware() {
   return (
-    <main className="max-w-3xl mx-auto px-4 py-12">
+    <SeoPageLayout
+      title="Voorraadbeheer: Excel vs. Software"
+      image="/jan.png"
+    >
       <SEO
         title="Voorraadbeheer: Excel vs. Software | stockflow"
         description="Voorraadbeheer in Excel of met software? Vergelijk de voordelen en nadelen van Excel en moderne voorraadbeheer apps voor KMO's."
@@ -51,6 +55,6 @@ export default function VoorraadbeheerExcelVsSoftware() {
         "datePublished": "2024-06-01",
         "image": "https://www.stockflow.be/Inventory-Management.png"
       }`}} />
-    </main>
+    </SeoPageLayout>
   );
 } 

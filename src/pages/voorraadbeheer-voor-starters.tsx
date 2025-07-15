@@ -1,10 +1,14 @@
 import React from 'react';
 import SEO from '../components/SEO';
 import { Link } from 'react-router-dom';
+import SeoPageLayout from '../components/SeoPageLayout';
 
 export default function VoorraadbeheerVoorStarters() {
   return (
-    <main className="max-w-3xl mx-auto px-4 py-12">
+    <SeoPageLayout
+      title="Voorraadbeheer voor Starters"
+      image="/optimized/a.png"
+    >
       <SEO
         title="Voorraadbeheer voor Starters | stockflow"
         description="Voorraadbeheer voor starters: tips en stappenplan voor kleine bedrijven en zelfstandigen. Leer hoe je eenvoudig begint met voorraadbeheer."
@@ -40,6 +44,6 @@ export default function VoorraadbeheerVoorStarters() {
         "datePublished": "2024-06-01",
         "image": "https://www.stockflow.be/Inventory-Management.png"
       }`}} />
-    </main>
+    </SeoPageLayout>
   );
 } 

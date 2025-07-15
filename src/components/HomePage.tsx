@@ -91,7 +91,7 @@ export const HomePage = () => {
       price: '€0',
       period: '/maand',
       description: 'Perfect voor freelancers en starters.',
-      features: ['Tot 30 producten', 'Basis voorraadvolging', 'Community ondersteuning'],
+      features: ['Tot 30 verschillende producten', 'Basis voorraadvolging', 'Community ondersteuning'],
       popular: false,
     },
     {
@@ -99,7 +99,7 @@ export const HomePage = () => {
       price: '€4',
       period: '/maand',
       description: 'Voor kleine bedrijven die willen groeien.',
-      features: ['Tot 150 producten', 'Geavanceerde analyses', 'Prioritaire e-mailondersteuning'],
+      features: ['Tot 150 verschillende producten', 'Geavanceerde analyses', 'Prioritaire e-mailondersteuning'],
       popular: false,
     },
     {
@@ -107,7 +107,7 @@ export const HomePage = () => {
       price: '€12',
       period: '/maand',
       description: 'Ideaal voor gevestigde KMO\'s.',
-      features: ['Tot 500 producten', 'Uitgebreide rapportage', 'Telefonische ondersteuning'],
+      features: ['Tot 500 verschillende producten', 'Uitgebreide rapportage', 'Telefonische ondersteuning'],
       popular: false,
     },
     {

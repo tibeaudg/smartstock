@@ -1,10 +1,14 @@
 import React from 'react';
 import SEO from '../components/SEO';
 import { Link } from 'react-router-dom';
+import SeoPageLayout from '../components/SeoPageLayout';
 
 export default function MagazijnbeheerTips() {
   return (
-    <main className="max-w-3xl mx-auto px-4 py-12">
+    <SeoPageLayout
+      title="Magazijnbeheer Tips voor KMO's"
+      image="/anke.png"
+    >
       <SEO
         title="Magazijnbeheer Tips voor KMO's | stockflow"
         description="De beste tips voor magazijnbeheer, magazijn optimaliseren en voorraadlogistiek voor KMO's. Leer hoe je je magazijn efficiënt beheert en kosten bespaart met stockflow."
@@ -42,6 +46,6 @@ export default function MagazijnbeheerTips() {
         "datePublished": "2024-06-01",
         "image": "https://www.stockflow.be/Inventory-Management.png"
       }`}} />
-    </main>
+    </SeoPageLayout>
   );
 } 

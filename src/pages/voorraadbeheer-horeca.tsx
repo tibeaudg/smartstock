@@ -1,10 +1,14 @@
 import React from 'react';
 import SEO from '../components/SEO';
 import { Link } from 'react-router-dom';
+import SeoPageLayout from '../components/SeoPageLayout';
 
 export default function VoorraadbeheerHoreca() {
   return (
-    <main className="max-w-3xl mx-auto px-4 py-12">
+    <SeoPageLayout
+      title="Voorraadbeheer voor Horeca"
+      image="/ronde.png"
+    >
       <SEO
         title="Voorraadbeheer voor Horeca | stockflow"
         description="Voorraadbeheer voor horeca: tips voor restaurants, cafés en bakkers. Ontdek hoe je eenvoudig je horeca voorraad beheert met stockflow."
@@ -40,6 +44,6 @@ export default function VoorraadbeheerHoreca() {
         "datePublished": "2024-06-01",
         "image": "https://www.stockflow.be/Inventory-Management.png"
       }`}} />
-    </main>
+    </SeoPageLayout>
   );
 } 

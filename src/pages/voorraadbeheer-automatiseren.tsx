@@ -1,10 +1,14 @@
 import React from 'react';
 import SEO from '../components/SEO';
 import { Link } from 'react-router-dom';
+import SeoPageLayout from '../components/SeoPageLayout';
 
 export default function VoorraadbeheerAutomatiseren() {
   return (
-    <main className="max-w-3xl mx-auto px-4 py-12">
+    <SeoPageLayout
+      title="Voorraadbeheer Automatiseren"
+      image="/optimized/a.png"
+    >
       <SEO
         title="Voorraadbeheer Automatiseren | stockflow"
         description="Voorraadbeheer automatiseren? Ontdek de voordelen, tips en tools om je voorraadbeheer slimmer en efficiënter te maken met automatisering."
@@ -40,6 +44,6 @@ export default function VoorraadbeheerAutomatiseren() {
         "datePublished": "2024-06-01",
         "image": "https://www.stockflow.be/Inventory-Management.png"
       }`}} />
-    </main>
+    </SeoPageLayout>
   );
 } 

@@ -1,10 +1,14 @@
 import React from 'react';
 import SEO from '../components/SEO';
 import { Link } from 'react-router-dom';
+import SeoPageLayout from '../components/SeoPageLayout';
 
 export default function VoorraadbeheerFoutenVoorkomen() {
   return (
-    <main className="max-w-3xl mx-auto px-4 py-12">
+    <SeoPageLayout
+      title="Fouten in Voorraadbeheer Voorkomen"
+      image="/optimized/logo.png"
+    >
       <SEO
         title="Fouten in Voorraadbeheer Voorkomen | stockflow"
         description="Veelgemaakte fouten in voorraadbeheer voorkomen? Lees onze tips en best practices voor een foutloos voorraadbeheer in je bedrijf."
@@ -40,6 +44,6 @@ export default function VoorraadbeheerFoutenVoorkomen() {
         "datePublished": "2024-06-01",
         "image": "https://www.stockflow.be/Inventory-Management.png"
       }`}} />
-    </main>
+    </SeoPageLayout>
   );
 } 

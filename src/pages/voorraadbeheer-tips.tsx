@@ -1,9 +1,13 @@
 import React from 'react';
 import SEO from '../components/SEO';
+import SeoPageLayout from '../components/SeoPageLayout';
 
 export default function VoorraadbeheerTips() {
   return (
-    <main className="max-w-3xl mx-auto px-4 py-12">
+    <SeoPageLayout
+      title="Voorraadbeheer Tips voor KMO's"
+      image="/optimized/Inventory-Management.png"
+    >
       <SEO
         title="Voorraadbeheer Tips voor KMO's | stockflow"
         description="De beste tips voor voorraadbeheer, stockbeheer en magazijnbeheer voor KMO's. Leer hoe je efficiënt je voorraad beheert en kosten bespaart met stockflow."
@@ -43,6 +47,6 @@ export default function VoorraadbeheerTips() {
           {"@type": "Question", "name": "Hoe kan ik gratis starten met voorraadbeheer?", "acceptedAnswer": {"@type": "Answer", "text": "Maak een gratis account aan en beheer tot 30 producten zonder kosten."}}
         ]
       }`}} />
-    </main>
+    </SeoPageLayout>
   );
 } 

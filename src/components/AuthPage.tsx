@@ -9,6 +9,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
+import { Header } from './Header';
 
 export const AuthPage = () => {
   const [mode, setMode] = useState<'login' | 'register' | 'reset'>('login');
@@ -92,102 +93,103 @@ export const AuthPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">stockflow</h1>
-          <p className="text-gray-600">Professioneel Voorraadbeheer</p>
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col">
+      <Header onLoginClick={() => {}} hideAuthButtons />
+      <div className="flex-1 flex items-center justify-center p-4">
+        <div className="w-full max-w-md">
+          <div className="text-center mb-8">
+            {/* Verwijder dubbele logo/tekst, want dit zit nu in de header */}
+          </div>
+          <Card className="shadow-lg">
+            <CardHeader>
+              <CardTitle>
+                {mode === 'login' && 'Inloggen'}
+                {mode === 'register' && 'Account aanmaken'}
+                {mode === 'reset' && 'Wachtwoord herstellen'}
+              </CardTitle>
+              <CardDescription>
+                {mode === 'login' && 'Voer je gegevens in om in te loggen'}
+                {mode === 'register' && 'Vul je gegevens in om een account aan te maken'}
+                {mode === 'reset' && 'Voer je e-mailadres in om een resetlink te ontvangen'}
+              </CardDescription>
+            </CardHeader>
 
-        <Card className="shadow-lg">
-          <CardHeader>
-            <CardTitle>
-              {mode === 'login' && 'Inloggen'}
-              {mode === 'register' && 'Account aanmaken'}
-              {mode === 'reset' && 'Wachtwoord herstellen'}
-            </CardTitle>
-            <CardDescription>
-              {mode === 'login' && 'Voer je gegevens in om in te loggen'}
-              {mode === 'register' && 'Vul je gegevens in om een account aan te maken'}
-              {mode === 'reset' && 'Voer je e-mailadres in om een resetlink te ontvangen'}
-            </CardDescription>
-          </CardHeader>
-
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              {/* De JSX voor de formuliervelden blijft hetzelfde als in jouw code */}
-              {mode === 'register' && (
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="firstName">Voornaam</Label>
-                    <Input id="firstName" type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} required disabled={isSubmitting} />
+            <CardContent>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                {/* De JSX voor de formuliervelden blijft hetzelfde als in jouw code */}
+                {mode === 'register' && (
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="firstName">Voornaam</Label>
+                      <Input id="firstName" type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} required disabled={isSubmitting} />
+                    </div>
+                    <div>
+                      <Label htmlFor="lastName">Achternaam</Label>
+                      <Input id="lastName" type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} required disabled={isSubmitting} />
+                    </div>
                   </div>
-                  <div>
-                    <Label htmlFor="lastName">Achternaam</Label>
-                    <Input id="lastName" type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} required disabled={isSubmitting} />
-                  </div>
-                </div>
-              )}
-
-              <div>
-                <Label htmlFor="email">E-mailadres</Label>
-                <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required disabled={isSubmitting} />
-              </div>
-
-              {mode !== 'reset' && (
-                <div>
-                  <Label htmlFor="password">Wachtwoord</Label>
-                  <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required disabled={isSubmitting} />
-                </div>
-              )}
-
-              {mode === 'register' && (
-                <div>
-                  <Label htmlFor="confirmPassword">Bevestig wachtwoord</Label>
-                  <Input id="confirmPassword" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required disabled={isSubmitting} />
-                </div>
-              )}
-              
-              <Button type="submit" className="w-full" disabled={isSubmitting}>
-                {isSubmitting ? (
-                  <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Even geduld...</>
-                ) : (
-                  <>
-                    {mode === 'login' && 'Inloggen'}
-                    {mode === 'register' && 'Account aanmaken'}
-                    {mode === 'reset' && 'Verzend reset-instructies'}
-                  </>
                 )}
-              </Button>
-            </form>
-          </CardContent>
 
-          <CardFooter className="flex flex-col space-y-2 pt-6">
-            {/* De JSX voor de footer links blijft hetzelfde als in jouw code */}
-            {mode === 'login' && (
-              <>
-                <button type="button" onClick={() => { setMode('reset'); clearForm(); }} className="text-sm text-blue-600 hover:underline" disabled={isSubmitting}>
-                  Wachtwoord vergeten?
-                </button>
+                <div>
+                  <Label htmlFor="email">E-mailadres</Label>
+                  <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required disabled={isSubmitting} />
+                </div>
+
+                {mode !== 'reset' && (
+                  <div>
+                    <Label htmlFor="password">Wachtwoord</Label>
+                    <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required disabled={isSubmitting} />
+                  </div>
+                )}
+
+                {mode === 'register' && (
+                  <div>
+                    <Label htmlFor="confirmPassword">Bevestig wachtwoord</Label>
+                    <Input id="confirmPassword" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required disabled={isSubmitting} />
+                  </div>
+                )}
+                
+                <Button type="submit" className="w-full" disabled={isSubmitting}>
+                  {isSubmitting ? (
+                    <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Even geduld...</>
+                  ) : (
+                    <>
+                      {mode === 'login' && 'Inloggen'}
+                      {mode === 'register' && 'Account aanmaken'}
+                      {mode === 'reset' && 'Verzend reset-instructies'}
+                    </>
+                  )}
+                </Button>
+              </form>
+            </CardContent>
+
+            <CardFooter className="flex flex-col space-y-2 pt-6">
+              {/* De JSX voor de footer links blijft hetzelfde als in jouw code */}
+              {mode === 'login' && (
+                <>
+                  <button type="button" onClick={() => { setMode('reset'); clearForm(); }} className="text-sm text-blue-600 hover:underline" disabled={isSubmitting}>
+                    Wachtwoord vergeten?
+                  </button>
+                  <div className="text-sm text-gray-600">
+                    Nog geen account?{' '}
+                    <button type="button" onClick={() => { setMode('register'); clearForm(); }} className="text-blue-600 hover:underline" disabled={isSubmitting}>
+                      Registreer
+                    </button>
+                  </div>
+                </>
+              )}
+
+              {(mode === 'register' || mode === 'reset') && (
                 <div className="text-sm text-gray-600">
-                  Nog geen account?{' '}
-                  <button type="button" onClick={() => { setMode('register'); clearForm(); }} className="text-blue-600 hover:underline" disabled={isSubmitting}>
-                    Registreer
+                  Toch inloggen?{' '}
+                  <button type="button" onClick={() => { setMode('login'); clearForm(); }} className="text-blue-600 hover:underline" disabled={isSubmitting}>
+                    Login
                   </button>
                 </div>
-              </>
-            )}
-
-            {(mode === 'register' || mode === 'reset') && (
-              <div className="text-sm text-gray-600">
-                Toch inloggen?{' '}
-                <button type="button" onClick={() => { setMode('login'); clearForm(); }} className="text-blue-600 hover:underline" disabled={isSubmitting}>
-                  Login
-                </button>
-              </div>
-            )}
-          </CardFooter>
-        </Card>
+              )}
+            </CardFooter>
+          </Card>
+        </div>
       </div>
     </div>
   );

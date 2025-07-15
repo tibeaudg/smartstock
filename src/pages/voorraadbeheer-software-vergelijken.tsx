@@ -1,10 +1,14 @@
 import React from 'react';
 import SEO from '../components/SEO';
 import { Link } from 'react-router-dom';
+import SeoPageLayout from '../components/SeoPageLayout';
 
 export default function VoorraadbeheerSoftwareVergelijken() {
   return (
-    <main className="max-w-3xl mx-auto px-4 py-12">
+    <SeoPageLayout
+      title="Voorraadbeheer Software Vergelijken"
+      image="/optimized/Inventory-Management.png"
+    >
       <SEO
         title="Voorraadbeheer Software Vergelijken | stockflow"
         description="Vergelijk de beste voorraadbeheer software en stockbeheer apps voor KMO's. Ontdek welke oplossing het beste past bij jouw bedrijf."
@@ -79,6 +83,6 @@ export default function VoorraadbeheerSoftwareVergelijken() {
         "datePublished": "2024-06-01",
         "image": "https://www.stockflow.be/Inventory-Management.png"
       }`}} />
-    </main>
+    </SeoPageLayout>
   );
 } 
