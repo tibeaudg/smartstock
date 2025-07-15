@@ -166,7 +166,7 @@ export const HomePage = () => {
          </div>
       </section>
       {/* Interne links naar SEO-pagina's */}
-      <nav className="max-w-3xl mx-auto mt-8 mb-4 flex flex-wrap gap-2 justify-center">
+      <nav className="hidden max-w-3xl mx-auto mt-8 mb-4 flex flex-wrap gap-2 justify-center">
         <Link to="/voorraadbeheer-tips" className="text-blue-700 underline">Voorraadbeheer tips</Link>
         <Link to="/magazijnbeheer-tips" className="text-blue-700 underline">Magazijnbeheer tips</Link>
         <Link to="/voorraadbeheer-software-vergelijken" className="text-blue-700 underline">Software vergelijken</Link>
