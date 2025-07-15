@@ -253,8 +253,8 @@ export const StockList = () => {
       <div className="space-y-4">
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Producten</h1>
-            <p className="text-sm text-gray-600">{activeBranch.branch_name}</p>
+            <h1 className="text-2xl font-bold text-gray-900">Voorraadbeheer: Producten Overzicht</h1>
+            <p className="text-sm text-gray-600">Beheer je voorraad, producten en inventaris eenvoudig met Stockflow voorraadbeheer software.</p>
           </div>
           <Button onClick={() => setIsAddModalOpen(true)}>
             <Plus className="h-4 w-4 mr-2" />

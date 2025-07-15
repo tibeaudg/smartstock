@@ -18,6 +18,19 @@ import AdminInvoicingPage from "./components/AdminInvoicingPage";
 import AdminUserDetailPage from './pages/AdminUserDetailPage';
 import { AlertCircle } from "lucide-react";
 import SEO from './components/SEO';
+import VoorraadbeheerTips from './pages/voorraadbeheer-tips';
+import MagazijnbeheerTips from './pages/magazijnbeheer-tips';
+import VoorraadbeheerSoftwareVergelijken from './pages/voorraadbeheer-software-vergelijken';
+import VoorraadbeheerWebshop from './pages/voorraadbeheer-webshop';
+import VoorraadbeheerFoutenVoorkomen from './pages/voorraadbeheer-fouten-voorkomen';
+import VoorraadbeheerAutomatiseren from './pages/voorraadbeheer-automatiseren';
+import InventarisatieTips from './pages/inventarisatie-tips';
+import VoorraadbeheerHoreca from './pages/voorraadbeheer-horeca';
+import VoorraadbeheerExcelVsSoftware from './pages/voorraadbeheer-excel-vs-software';
+import VoorraadbeheerVoorStarters from './pages/voorraadbeheer-voor-starters';
+import MobielVoorraadbeheer from './pages/mobiel-voorraadbeheer';
+import SimpelStockbeheer from './pages/simpelstockbeheer';
+import GratisStockbeheer from './pages/gratis-stockbeheer';
 
 // Configure QueryClient
 const queryClient = new QueryClient({
@@ -159,6 +172,19 @@ function App() {
                   {/* Openbare routes */}
                   <Route path="/" element={<HomePage />} />
                   <Route path="/auth" element={<AuthRoute />} />
+                  <Route path="/voorraadbeheer-tips" element={<VoorraadbeheerTips />} />
+                  <Route path="/magazijnbeheer-tips" element={<MagazijnbeheerTips />} />
+                  <Route path="/voorraadbeheer-software-vergelijken" element={<VoorraadbeheerSoftwareVergelijken />} />
+                  <Route path="/voorraadbeheer-webshop" element={<VoorraadbeheerWebshop />} />
+                  <Route path="/voorraadbeheer-fouten-voorkomen" element={<VoorraadbeheerFoutenVoorkomen />} />
+                  <Route path="/voorraadbeheer-automatiseren" element={<VoorraadbeheerAutomatiseren />} />
+                  <Route path="/inventarisatie-tips" element={<InventarisatieTips />} />
+                  <Route path="/voorraadbeheer-horeca" element={<VoorraadbeheerHoreca />} />
+                  <Route path="/voorraadbeheer-excel-vs-software" element={<VoorraadbeheerExcelVsSoftware />} />
+                  <Route path="/voorraadbeheer-voor-starters" element={<VoorraadbeheerVoorStarters />} />
+                  <Route path="/mobiel-voorraadbeheer" element={<MobielVoorraadbeheer />} />
+                  <Route path="/simpelstockbeheer" element={<SimpelStockbeheer />} />
+                  <Route path="/gratis-stockbeheer" element={<GratisStockbeheer />} />
 
                   {/* Beschermde dashboard routes */}
                   <Route

@@ -72,9 +72,9 @@ export const StockMovementForm = ({
       {/* Quantity Input */}
       <div className="space-y-2">
         <Label htmlFor="quantity" className="text-base">
-          Quantity {transactionType === 'outgoing' && 
+          Voorraad mutatie hoeveelheid {transactionType === 'outgoing' && 
             <span className="text-sm text-muted-foreground ml-1">
-              (Available: {currentStock})
+              (Beschikbaar: {currentStock})
             </span>
           }
         </Label>
