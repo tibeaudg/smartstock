@@ -10,6 +10,7 @@ import { toast } from 'sonner';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
 import { Header } from './Header';
+import { cn } from '@/lib/utils';
 
 export const AuthPage = () => {
   const [mode, setMode] = useState<'login' | 'register' | 'reset'>('login');
@@ -98,24 +99,45 @@ export const AuthPage = () => {
       <div className="flex-1 flex items-center justify-center p-4">
         <div className="w-full max-w-md">
           <div className="text-center mb-8">
-            {/* Verwijder dubbele logo/tekst, want dit zit nu in de header */}
+
           </div>
+          
           <Card className="shadow-lg">
+            
             <CardHeader>
-              <CardTitle>
-                {mode === 'login' && 'Inloggen'}
-                {mode === 'register' && 'Account aanmaken'}
-                {mode === 'reset' && 'Wachtwoord herstellen'}
-              </CardTitle>
-              <CardDescription>
-                {mode === 'login' && 'Voer je gegevens in om in te loggen'}
-                {mode === 'register' && 'Vul je gegevens in om een account aan te maken'}
-                {mode === 'reset' && 'Voer je e-mailadres in om een resetlink te ontvangen'}
-              </CardDescription>
+            {/* Switcher bovenaan de modal */}
+            <div className="flex justify-center mb-4">
+              <button
+                className={cn(
+                  'px-16 py-2 rounded-l font-semibold border border-r-0',
+                  mode === 'login'
+                    ? 'bg-blue-600 text-white border-blue-600 shadow'
+                    : 'bg-white text-blue-700 border-gray-300 hover:bg-blue-50'
+                )}
+                onClick={() => { setMode('login'); clearForm(); }}
+                disabled={isSubmitting || mode === 'login'}
+                type="button"
+              >
+                Inloggen
+              </button>
+              <button
+                className={cn(
+                  'px-16 py-2 rounded-r font-semibold border',
+                  mode === 'register'
+                    ? 'bg-blue-600 text-white border-blue-600 shadow'
+                    : 'bg-white text-blue-700 border-gray-300 hover:bg-blue-50'
+                )}
+                onClick={() => { setMode('register'); clearForm(); }}
+                disabled={isSubmitting || mode === 'register'}
+                type="button"
+              >
+                Registreren
+              </button>
+            </div>
             </CardHeader>
 
             <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form onSubmit={handleSubmit} className="space-y-2">
                 {/* De JSX voor de formuliervelden blijft hetzelfde als in jouw code */}
                 {mode === 'register' && (
                   <div className="grid grid-cols-2 gap-4">
@@ -170,22 +192,7 @@ export const AuthPage = () => {
                   <button type="button" onClick={() => { setMode('reset'); clearForm(); }} className="text-sm text-blue-600 hover:underline" disabled={isSubmitting}>
                     Wachtwoord vergeten?
                   </button>
-                  <div className="text-sm text-gray-600">
-                    Nog geen account?{' '}
-                    <button type="button" onClick={() => { setMode('register'); clearForm(); }} className="text-blue-600 hover:underline" disabled={isSubmitting}>
-                      Registreer
-                    </button>
-                  </div>
                 </>
-              )}
-
-              {(mode === 'register' || mode === 'reset') && (
-                <div className="text-sm text-gray-600">
-                  Toch inloggen?{' '}
-                  <button type="button" onClick={() => { setMode('login'); clearForm(); }} className="text-blue-600 hover:underline" disabled={isSubmitting}>
-                    Login
-                  </button>
-                </div>
               )}
             </CardFooter>
           </Card>
