@@ -9,6 +9,29 @@ if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
   throw new Error('Missing Supabase credentials');
 }
 
+// Create a safe storage fallback for environments where localStorage is not available
+function getSafeLocalStorage() {
+  try {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      // Test access
+      const testKey = '__test__';
+      window.localStorage.setItem(testKey, '1');
+      window.localStorage.removeItem(testKey);
+      return window.localStorage;
+    }
+  } catch (e) {
+    // localStorage is not available (private mode, security, etc.)
+  }
+  // Fallback: in-memory storage (not persistent)
+  let store = {};
+  return {
+    getItem: (key) => (key in store ? store[key] : null),
+    setItem: (key, value) => { store[key] = value; },
+    removeItem: (key) => { delete store[key]; },
+    clear: () => { store = {}; },
+  };
+}
+
 // Create Supabase client with proper configuration
 export const supabase = createClient<Database>(
   SUPABASE_URL,
@@ -17,7 +40,7 @@ export const supabase = createClient<Database>(
     auth: {
       persistSession: true,
       storageKey: 'smart-inventory-auth',
-      storage: window.localStorage,
+      storage: getSafeLocalStorage(),
       autoRefreshToken: true,
       detectSessionInUrl: true,  // <-- Enable this to handle session tokens from URL automatically
       debug: true // Enable debug mode
