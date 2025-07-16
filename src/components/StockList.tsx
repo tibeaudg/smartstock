@@ -253,8 +253,7 @@ export const StockList = () => {
       <div className="space-y-4">
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Voorraadbeheer: Producten Overzicht</h1>
-            <p className="text-sm text-gray-600">Beheer je voorraad, producten en inventaris eenvoudig met Stockflow voorraadbeheer software.</p>
+            <h1 className="text-2xl font-bold text-gray-900">Producten</h1>
           </div>
           <Button onClick={() => setIsAddModalOpen(true)}>
             <Plus className="h-4 w-4 mr-2" />
@@ -283,120 +282,110 @@ export const StockList = () => {
           activeFiltersCount={activeFiltersCount}
         />
 
-        <div className="space-y-4">
-          {filteredProducts.length === 0 ? (
-            <Card className="bg-white">
-              <CardContent className="p-6 text-center">
-                <p className="text-gray-500">
-                  {productsTyped.length === 0 ? 'No products found for this branch.' : 'No products match your filters.'}
-                </p>
-              </CardContent>
-            </Card>
-          ) : (
-            filteredProducts.map((product) => {
-              const stockStatus = getStockStatus(product.quantity_in_stock, product.minimum_stock_level);
-              return (
-                <Card key={product.id} className="relative bg-white rounded-2xl shadow-lg p-0 overflow-hidden">
-                  {/* Actieknoppen rechtsboven */}
-                  <div className="absolute top-3 right-3 flex flex-col gap-2 z-10">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={e => { e.stopPropagation(); setSelectedProduct(product); setIsEditInfoModalOpen(true); }}
-                      className="text-gray-600 hover:text-blue-700 p-2"
-                      aria-label="Bewerken"
-                    >
-                      <Edit className="h-5 w-5" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={e => { e.stopPropagation(); handleDelete(product.id); }}
-                      className="text-red-600 hover:text-red-700 p-2"
-                      aria-label="Verwijder"
-                    >
-                      <Trash2 className="h-5 w-5" />
-                    </Button>
-                  </div>
-                  <CardHeader className="pb-0 px-0 pt-0">
-                    <div className="flex flex-col items-stretch">
-                      <div className="flex items-center gap-4 px-4 pt-4">
-                        {product.image_url ? (
-                          <img
-                            src={product.image_url}
-                            alt={`Productfoto van ${product.name} | voorraadbeheer`}
-                            className="w-24 h-24 object-cover rounded-xl border cursor-zoom-in flex-shrink-0"
-                            onClick={e => { e.stopPropagation(); setPreviewImageUrl(product.image_url!); setIsImagePreviewOpen(true); }}
-                          />
-                        ) : (
-                          <div className="w-24 h-24 bg-gray-200 rounded-xl border flex items-center justify-center text-xs text-gray-400 flex-shrink-0">Geen</div>
-                        )}
-                        <div className="flex-1 min-w-0">
-                          <CardTitle className="text-lg font-semibold text-gray-900 truncate">
-                            {product.name}
-                          </CardTitle>
-                          {product.description && (
-                            <p className="text-sm text-gray-600 mt-1 line-clamp-2">
-                              {product.description}
-                            </p>
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200 text-xs md:text-sm">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-2 py-2 text-left font-medium text-gray-500 uppercase tracking-wider">Product</th>
+                <th className="px-2 py-2 text-left font-medium text-gray-500 uppercase tracking-wider">Stock</th>
+                <th className="px-2 py-2 text-left font-medium text-gray-500 uppercase tracking-wider">Min.</th>
+                <th className="px-2 py-2 text-left font-medium text-gray-500 uppercase tracking-wider">Prijs</th>
+                <th className="px-2 py-2 text-left font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                <th className="px-2 py-2 text-left font-medium text-gray-500 uppercase tracking-wider">Acties</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {filteredProducts.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="px-2 py-4 text-center text-gray-500">
+                    {productsTyped.length === 0 ? 'Geen producten gevonden voor dit filiaal.' : 'Geen producten voldoen aan je filters.'}
+                  </td>
+                </tr>
+              ) : (
+                filteredProducts.map((product) => {
+                  const stockStatus = getStockStatus(product.quantity_in_stock, product.minimum_stock_level);
+                  return (
+                    <tr key={product.id} className="hover:bg-gray-50 transition-colors">
+                      <td className="px-2 py-2 whitespace-nowrap">
+                        <div className="flex items-center gap-2">
+                          {product.image_url ? (
+                            <img
+                              src={product.image_url}
+                              alt={`Productfoto van ${product.name} | voorraadbeheer`}
+                              className="w-10 h-10 object-cover rounded border cursor-zoom-in"
+                              onClick={e => { e.stopPropagation(); setPreviewImageUrl(product.image_url!); setIsImagePreviewOpen(true); }}
+                            />
+                          ) : (
+                            <div className="w-10 h-10 bg-gray-200 rounded border flex items-center justify-center text-[10px] text-gray-400">Geen</div>
                           )}
+                          <div>
+                            <div className="font-medium text-gray-900 truncate max-w-[80px]">{product.name}</div>
+                            {product.description && (
+                              <div className="text-[10px] text-gray-500 truncate max-w-[80px]">{product.description}</div>
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="pt-2 pb-4 px-4">
-                    <div className="space-y-2">
-                      <div className="flex items-center">
-                        <span className="text-sm font-medium text-gray-700">Stock Niveau:</span>
-                        <div className="flex items-center space-x-2 ml-2">
-                          <span className="font-semibold text-lg">{product.quantity_in_stock}</span>
-                          <Badge
-                            variant={getStockStatusVariant(stockStatus)}
-                            className="text-xs px-2 py-1 rounded-full"
+                      </td>
+                      <td className="px-2 py-2 text-center font-semibold">{product.quantity_in_stock}</td>
+                      <td className="px-2 py-2 text-center">{product.minimum_stock_level}</td>
+                      <td className="px-2 py-2 text-center text-green-600 font-semibold">€{product.unit_price.toFixed(2)}</td>
+                      <td className="px-2 py-2 text-center">
+                        <Badge variant={getStockStatusVariant(stockStatus)} className="text-[10px] px-2 py-1 rounded-full">
+                          {stockStatus}
+                        </Badge>
+                      </td>
+                      <td className="px-2 py-2 text-center">
+                        <div className="flex flex-row gap-1 items-center justify-center">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={e => { e.stopPropagation(); handleStockAction(product, 'in'); }}
+                            className="text-green-600 border-green-600 hover:text-white hover:bg-green-600 hover:border-green-600 flex items-center gap-1 px-2 py-1"
                           >
-                            {stockStatus}
-                          </Badge>
+                            <Plus className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={e => { e.stopPropagation(); handleStockAction(product, 'out'); }}
+                            className="text-red-600 border-red-600 hover:text-white hover:bg-red-600 hover:border-red-600 flex items-center gap-1 px-2 py-1"
+                          >
+                            <Minus className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={e => { e.stopPropagation(); setSelectedProduct(product); setIsEditInfoModalOpen(true); }}
+                            className="text-gray-600 hover:text-blue-700 p-1"
+                            aria-label="Bewerken"
+                          >
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={e => { e.stopPropagation(); handleDelete(product.id); }}
+                            className="text-red-600 hover:text-red-700 p-1"
+                            aria-label="Verwijder"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
                         </div>
-                      </div>
-                      <div className="flex items-center">
-                        <span className="text-sm font-medium text-gray-700">Eenheidsprijs:</span>
-                        <span className="font-semibold text-green-600 text-base ml-2">
-                          €{product.unit_price.toFixed(2)}
-                        </span>
-                      </div>
-                      <div className="flex items-center">
-                        <span className="text-sm font-medium text-gray-700">Min. Niveau:</span>
-                        <span className="ml-2">{product.minimum_stock_level}</span>
-                      </div>
-                    </div>
-                    {/* In/Uit knoppen onderaan, elk 50% breed */}
-                    <div className="flex flex-row gap-2 mt-6">
-                      <Button
-                        variant="outline"
-                        size="lg"
-                        onClick={e => { e.stopPropagation(); handleStockAction(product, 'in'); }}
-                        className="flex-1 text-green-600 bg-green-100 border border-green-600 hover:text-white hover:bg-green-600 hover:border-green-600 flex items-center justify-center gap-2"
-                      >
-                        <Plus className="h-5 w-5" />
-                        In
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="lg"
-                        onClick={e => { e.stopPropagation(); handleStockAction(product, 'out'); }}
-                        className="flex-1 text-red-600 bg-red-100 border border-red-600 hover:text-white hover:bg-red-600 hover:border-red-600 flex items-center justify-center gap-2"
-                      >
-                        <Minus className="h-5 w-5" />
-                        Uit
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })
-          )}
+                      </td>
+                    </tr>
+                  );
+                })
+              )}
+            </tbody>
+          </table>
         </div>
 
+        <ImagePreviewModal
+          isOpen={isImagePreviewOpen}
+          onClose={() => setIsImagePreviewOpen(false)}
+          imageUrl={previewImageUrl}
+          alt="Productfoto preview"
+        />
         {selectedProduct && (
           <EditProductStockModal
             isOpen={isEditModalOpen}
@@ -415,7 +404,6 @@ export const StockList = () => {
             actionType={selectedAction!}
           />
         )}
-
         {selectedProduct && (
           <EditProductInfoModal
             isOpen={isEditInfoModalOpen}
@@ -431,14 +419,6 @@ export const StockList = () => {
             product={selectedProduct}
           />
         )}
-
-        <ImagePreviewModal
-          isOpen={isImagePreviewOpen}
-          onClose={() => setIsImagePreviewOpen(false)}
-          imageUrl={previewImageUrl}
-          alt="Productfoto preview"
-        />
-        {/* AddProductModal hier toevoegen zodat hij ook op mobiel werkt */}
         <AddProductModal
           isOpen={isAddModalOpen}
           onClose={() => setIsAddModalOpen(false)}

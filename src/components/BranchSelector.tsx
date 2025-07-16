@@ -84,8 +84,8 @@ export const BranchSelector = () => {
           disabled={isSwitching}
         >
           <SelectTrigger className={cn(
-            "w-full bg-white border-gray-200",
-            isSwitching && "animate-pulse opacity-70"
+            "w-full bg-white border-gray-200 p-4",
+            isSwitching && "animate-pulse opacity-70 p-4"
           )}>
             <SelectValue>
               <div className="flex items-center justify-between w-full">
