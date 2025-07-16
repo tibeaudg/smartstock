@@ -183,34 +183,6 @@ const AuthRoute = () => {
 };
 
 export default function App() {
-  const [storageError, setStorageError] = useState(false);
-
-  React.useEffect(() => {
-    if (!isLocalStorageAvailable()) {
-      setStorageError(true);
-    }
-  }, []);
-
-  if (storageError) {
-    return (
-      <div style={{ padding: 32, textAlign: 'center', color: '#b91c1c', background: '#fef2f2', minHeight: '100vh' }}>
-        <h1 style={{ fontSize: 28, marginBottom: 16 }}>Opslag niet beschikbaar</h1>
-        <p style={{ marginBottom: 16 }}>
-          De applicatie kan geen gegevens opslaan in je browser. Dit kan komen door:
-          <ul style={{ textAlign: 'left', maxWidth: 400, margin: '16px auto' }}>
-            <li>Private/incognito modus</li>
-            <li>Uitgeschakelde cookies of opslag</li>
-            <li>Strenge privacy-instellingen</li>
-            <li>Een in-app browser (zoals Facebook/Instagram)</li>
-          </ul>
-          <br />
-          Schakel deze instellingen uit of gebruik een andere browser om SmartStock te gebruiken.
-        </p>
-        <button onClick={() => window.location.reload()} style={{ background: '#2563eb', color: 'white', padding: '10px 24px', borderRadius: 6, fontSize: 16, border: 'none' }}>Opnieuw proberen</button>
-      </div>
-    );
-  }
-
   const localBusinessSchema = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",

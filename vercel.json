@@ -4,13 +4,8 @@
   ],
   "headers": [
     {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; connect-src 'self' https://www.google-analytics.com https://sszuxnqhbxauvershuys.supabase.co; img-src 'self' https://www.google-analytics.com; style-src 'self' 'unsafe-inline';"
-        }
-      ]
+      "source": "/(.*)"
+
     }
   ]
 } 

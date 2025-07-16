@@ -58,6 +58,14 @@ export const BranchSelector = () => {
     );
   }
 
+  if (!branches || !Array.isArray(branches)) {
+    return (
+      <div style={{ color: '#b91c1c', background: '#fef2f2', padding: 24, borderRadius: 8, marginBottom: 24 }}>
+        <b>Fout:</b> Filialen konden niet worden geladen. Probeer de pagina te verversen of neem contact op met de beheerder.
+      </div>
+    );
+  }
+
   if (branches.length === 0) {
     return null;
   }

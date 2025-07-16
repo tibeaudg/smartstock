@@ -1,5 +1,0 @@
-# ads.txt voor stockflow
-# Voeg hier je eigen advertentiepartners toe
-
-# Google AdSense voorbeeld
-google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0 
