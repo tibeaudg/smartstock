@@ -142,8 +142,8 @@ export const UserManagement = () => {
   // Open modal en laad huidige filialen
   const handleOpenManageBranches = async (user: DisplayUser) => {
     setManageBranchesUser(user);
-    const branches = await fetchUserBranches(user.userId);
-    setUserBranches(branches);
+    const userBranchIds = await fetchUserBranches(user.userId);
+    setUserBranches(userBranchIds);
   };
 
   // Sla toegewezen filialen op
@@ -184,123 +184,132 @@ export const UserManagement = () => {
 
   return (
     <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle>Gebruiker uitnodigen</CardTitle>
-          <CardDescription>Voeg een nieuwe of bestaande gebruiker toe aan een filiaal.</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid gap-4 md:grid-cols-3">
-            <div>
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" value={inviteEmail} onChange={e => setInviteEmail(e.target.value)} placeholder="gebruiker@email.com" />
-            </div>
-            <div>
-              <Label>Rol</Label>
-              <Select value={inviteRole} onValueChange={setInviteRole}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="staff">Medewerker</SelectItem>
-                  <SelectItem value="admin">Beheerder</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div>
-              <Label>Filiaal</Label>
-              <Select value={selectedBranchId} onValueChange={setSelectedBranchId} disabled={branches.length === 0}>
-                <SelectTrigger><SelectValue placeholder="Selecteer een filiaal" /></SelectTrigger>
-                <SelectContent>
-                  {branches.map(branch => (
-                    <SelectItem key={branch.branch_id} value={branch.branch_id}>{branch.branch_name}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-          <Button type="button" onClick={handleInviteUser} disabled={inviting || !inviteEmail || !selectedBranchId}>
-            {inviting && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-            {inviting ? 'Uitnodigen...' : 'Verstuur Uitnodiging'}
-          </Button>
-        </CardContent>
-      </Card>
+      {/* Check of branches beschikbaar is */}
+      {(!branches || !Array.isArray(branches)) ? (
+        <div style={{ color: '#b91c1c', background: '#fef2f2', padding: 24, borderRadius: 8, marginBottom: 24 }}>
+          <b>Fout:</b> Filialen konden niet worden geladen. Probeer de pagina te verversen of neem contact op met de beheerder.
+        </div>
+      ) : (
+        <>
+          <Card>
+            <CardHeader>
+              <CardTitle>Gebruiker uitnodigen</CardTitle>
+              <CardDescription>Voeg een nieuwe of bestaande gebruiker toe aan een filiaal.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid gap-4 md:grid-cols-3">
+                <div>
+                  <Label htmlFor="email">Email</Label>
+                  <Input id="email" value={inviteEmail} onChange={e => setInviteEmail(e.target.value)} placeholder="gebruiker@email.com" />
+                </div>
+                <div>
+                  <Label>Rol</Label>
+                  <Select value={inviteRole} onValueChange={setInviteRole}>
+                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="staff">Medewerker</SelectItem>
+                      <SelectItem value="admin">Beheerder</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label>Filiaal</Label>
+                  <Select value={selectedBranchId} onValueChange={setSelectedBranchId} disabled={branches.length === 0}>
+                    <SelectTrigger><SelectValue placeholder="Selecteer een filiaal" /></SelectTrigger>
+                    <SelectContent>
+                      {branches.map(branch => (
+                        <SelectItem key={branch.branch_id} value={branch.branch_id}>{branch.branch_name}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              <Button type="button" onClick={handleInviteUser} disabled={inviting || !inviteEmail || !selectedBranchId}>
+                {inviting && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+                {inviting ? 'Uitnodigen...' : 'Verstuur Uitnodiging'}
+              </Button>
+            </CardContent>
+          </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Gebruikers in Filiaal</CardTitle>
-          <CardDescription>Overzicht van gebruikers in het geselecteerde filiaal.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          {users.length === 0 && (loading || isFetching) ? (
-            <Card>
-              <CardHeader>
-                <CardTitle>Gebruikers laden...</CardTitle>
-              </CardHeader>
-              <CardContent className="flex flex-col items-center justify-center py-12">
-                <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
-                <span className="mt-2 text-gray-600">Gebruikers worden geladen...</span>
-              </CardContent>
-            </Card>
-          ) : (
-            <ul className="space-y-2">
-              {users.length > 0 ? users.map(u => (
-                <li key={u.id} className="flex justify-between items-center border p-3 rounded-md">
-                  <div>
-                    <p className="font-medium">{u.email}</p>
-                    <p className="text-sm text-gray-500 capitalize">{u.role}</p>
-                  </div>
-                  <div className="flex gap-2">
-                    {/* Verberg 'Filialen beheren' knop voor admin zelf */}
-                    {!(u.userId === user?.id && u.role === 'admin') && (
-                      <Button variant="outline" size="sm" onClick={() => handleOpenManageBranches(u)}>
-                        Filialen beheren
-                      </Button>
-                    )}
-                    {u.userId !== user?.id && (
-                      <Button variant="destructive" size="sm" onClick={() => handleDeleteUserCompletely(u.userId)} disabled={deletingUserId === u.userId}>
-                        {deletingUserId === u.userId ? 'Verwijderen...' : 'Verwijder'}
-                      </Button>
-                    )}
-                  </div>
-                </li>
-              )) : (
-                <div className="text-center text-gray-500 py-4">Geen gebruikers gevonden in dit filiaal.</div>
+          <Card>
+            <CardHeader>
+              <CardTitle>Gebruikers in Filiaal</CardTitle>
+              <CardDescription>Overzicht van gebruikers in het geselecteerde filiaal.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              {users.length === 0 && (loading || isFetching) ? (
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Gebruikers laden...</CardTitle>
+                  </CardHeader>
+                  <CardContent className="flex flex-col items-center justify-center py-12">
+                    <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
+                    <span className="mt-2 text-gray-600">Gebruikers worden geladen...</span>
+                  </CardContent>
+                </Card>
+              ) : (
+                <ul className="space-y-2">
+                  {users.length > 0 ? users.map(u => (
+                    <li key={u.id} className="flex justify-between items-center border p-3 rounded-md">
+                      <div>
+                        <p className="font-medium">{u.email}</p>
+                        <p className="text-sm text-gray-500 capitalize">{u.role}</p>
+                      </div>
+                      <div className="flex gap-2">
+                        {/* Verberg 'Filialen beheren' knop voor admin zelf */}
+                        {!(u.userId === user?.id && u.role === 'admin') && (
+                          <Button variant="outline" size="sm" onClick={() => handleOpenManageBranches(u)}>
+                            Filialen beheren
+                          </Button>
+                        )}
+                        {u.userId !== user?.id && (
+                          <Button variant="destructive" size="sm" onClick={() => handleDeleteUserCompletely(u.userId)} disabled={deletingUserId === u.userId}>
+                            {deletingUserId === u.userId ? 'Verwijderen...' : 'Verwijder'}
+                          </Button>
+                        )}
+                      </div>
+                    </li>
+                  )) : (
+                    <div className="text-center text-gray-500 py-4">Geen gebruikers gevonden in dit filiaal.</div>
+                  )}
+                </ul>
               )}
-            </ul>
-          )}
-        </CardContent>
-      </Card>
+            </CardContent>
+          </Card>
 
-      {/* Modal voor filialen beheren */}
-      <Dialog open={!!manageBranchesUser} onOpenChange={open => !open && setManageBranchesUser(null)}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Filialen beheren voor {manageBranchesUser?.email}</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-2">
-            {branches.map(branch => (
-              <label key={branch.branch_id} className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={userBranches.includes(branch.branch_id)}
-                  onChange={e => {
-                    if (e.target.checked) {
-                      setUserBranches([...userBranches, branch.branch_id]);
-                    } else {
-                      setUserBranches(userBranches.filter(id => id !== branch.branch_id));
-                    }
-                  }}
-                />
-                {branch.branch_name}
-              </label>
-            ))}
-          </div>
-          <DialogFooter>
-            <Button onClick={handleSaveBranches} disabled={savingBranches}>
-              {savingBranches ? 'Opslaan...' : 'Opslaan'}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+          {/* Modal voor filialen beheren */}
+          <Dialog open={!!manageBranchesUser} onOpenChange={open => !open && setManageBranchesUser(null)}>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Filialen beheren voor {manageBranchesUser?.email}</DialogTitle>
+              </DialogHeader>
+              <div className="space-y-2">
+                {branches.map(branch => (
+                  <label key={branch.branch_id} className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      checked={userBranches.includes(branch.branch_id)}
+                      onChange={e => {
+                        if (e.target.checked) {
+                          setUserBranches([...userBranches, branch.branch_id]);
+                        } else {
+                          setUserBranches(userBranches.filter(id => id !== branch.branch_id));
+                        }
+                      }}
+                    />
+                    {branch.branch_name}
+                  </label>
+                ))}
+              </div>
+              <DialogFooter>
+                <Button onClick={handleSaveBranches} disabled={savingBranches}>
+                  {savingBranches ? 'Opslaan...' : 'Opslaan'}
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        </>
+      )}
     </div>
   );
 };
