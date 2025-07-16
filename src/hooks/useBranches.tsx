@@ -64,14 +64,11 @@ const setBranchIdToStorage = (branchId: string | null) => {
 
 // Verplaats alle state en logica naar binnen in BranchProvider
 export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
+  const { user, authLoading } = useAuth();
   const [branches, setBranches] = useState<Branch[]>([]);
   const [activeBranch, setActiveBranchState] = useState<Branch | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [hasNoBranches, setHasNoBranches] = useState<boolean>(false);
-
-  // Hier moeten user en authLoading vandaan komen, waarschijnlijk uit context of props
-  // Voeg eventueel imports of context hooks toe als dat nodig is
-  // const { user, authLoading } = useAuth();
 
   // Synchroniseer branch tussen tabbladen
   useEffect(() => {
@@ -87,21 +84,21 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
   }, [branches, activeBranch]);
 
   const fetchBranches = async (cancelled?: { current: boolean }) => {
-    // if (!user) {
-    //   if (!cancelled?.current) {
-    //     setBranches([]);
-    //     setActiveBranchState(null);
-    //     setHasNoBranches(false);
-    //     setLoading(false);
-    //     setBranchIdToStorage(null);
-    //   }
-    //   return;
-    // }
+    if (!user || !user.id) {
+      if (!cancelled?.current) {
+        setBranches([]);
+        setActiveBranchState(null);
+        setHasNoBranches(false);
+        setLoading(false);
+        setBranchIdToStorage(null);
+      }
+      return;
+    }
 
     try {
-      console.log('Fetching branches for user:', 'user.id'); // user.id is not defined here, assuming it will be passed or handled elsewhere
+      console.log('Fetching branches for user:', user.id);
       const { data, error } = await supabase.rpc('get_user_branches', {
-        user_id: 'user.id' // Placeholder for user.id
+        user_id: user.id
       });
 
       if (error) {
@@ -117,12 +114,15 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
         const found = storedId ? data.find(b => b.branch_id === storedId) : null;
         if (found) {
           setActiveBranchState(found);
-        } else if (!activeBranch) {
-          // Fallback: main branch of eerste branch
+        } else {
+          // Altijd hoofdvestiging als fallback
           const mainBranch = data.find(b => b.is_main) || data[0];
           if (mainBranch) {
             setActiveBranchState(mainBranch);
             setBranchIdToStorage(mainBranch.branch_id);
+          } else {
+            setActiveBranchState(null);
+            setBranchIdToStorage(null);
           }
         }
       }

@@ -10,6 +10,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { useDashboardData } from '@/hooks/useDashboardData';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useBranches } from '@/hooks/useBranches';
+import { BranchSelector } from './BranchSelector';
 
 interface DashboardProps {
   userRole: 'admin' | 'staff';
@@ -69,6 +70,10 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
 
   return (
     <div className="space-y-8 max-w-[1600px] mx-auto">
+      {/* BranchSelector alleen op mobiel */}
+      <div className="md:hidden mb-4">
+        <BranchSelector />
+      </div>
       {/* Header */}
       <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
         <div className="flex-1">
