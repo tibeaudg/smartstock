@@ -253,11 +253,11 @@ export const LicenseOverview = () => {
           <CardDescription>Kies of wijzig uw abonnement. De prijzen worden berekend op basis van uw huidig verbruik.</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 sm:flex-col lg:flex-row lg:justify-center lg:items-stretch">
             {Array.isArray(data?.availablePlans) ?
               // Sorteer de plannen op gewenste volgorde
               [...data.availablePlans].sort((a, b) => {
-                const order = ['free', 'starter', 'business', 'enterprise'];
+                const order = ['free', 'starter', 'business'];
                 return order.indexOf(a.id) - order.indexOf(b.id);
               }).map((plan) => {
                 const isActive = data.activePlanId === plan.id;
@@ -266,6 +266,7 @@ export const LicenseOverview = () => {
                     key={plan.id}
                     className={clsx(
                       'relative flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border rounded-lg px-6 py-4 transition-all',
+                      'w-full lg:w-96',
                       {
                         'border-blue-500 bg-blue-50 ring-2 ring-blue-200': isActive,
                         'bg-white': !isActive,

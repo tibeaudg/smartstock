@@ -91,7 +91,7 @@ export const HomePage = () => {
       price: '€0',
       period: '/maand',
       description: 'Perfect voor freelancers en starters.',
-      features: ['Tot 30 verschillende producten', 'Basis voorraadvolging', 'Community ondersteuning'],
+      features: ['Tot 500 verschillende producten', 'Basis voorraadvolging', 'Community ondersteuning'],
       popular: false,
     },
     {
@@ -99,23 +99,15 @@ export const HomePage = () => {
       price: '€4',
       period: '/maand',
       description: 'Voor kleine bedrijven die willen groeien.',
-      features: ['Tot 150 verschillende producten', 'Geavanceerde analyses', 'Prioritaire e-mailondersteuning'],
+      features: ['Tot 1000 verschillende producten', 'Geavanceerde analyses', 'Prioritaire e-mailondersteuning'],
       popular: false,
     },
     {
       name: 'Business',
-      price: '€12',
+      price: '€7',
       period: '/maand',
       description: 'Ideaal voor gevestigde KMO\'s.',
-      features: ['Tot 500 verschillende producten', 'Uitgebreide rapportage', 'Telefonische ondersteuning'],
-      popular: false,
-    },
-    {
-      name: 'Enterprise',
-      price: '€39',
-      period: '/maand',
-      description: 'Voor bedrijven met complexe noden.',
-      features: ['Onbeperkt', 'Persoonlijke onboarding', 'Premium support'],
+      features: ['Onbeperkt', 'Uitgebreide rapportage', 'Telefonische ondersteuning'],
       popular: false,
     },
   ];
@@ -294,39 +286,40 @@ export const HomePage = () => {
               </p>
             </div>
           </FadeInWhenVisible>
-          
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-center">
-            {pricingPlans.map((plan, index) => (
-              <FadeInWhenVisible key={index}>
-                <Card className={`text-center transition-all duration-300 ${plan.popular ? 'border-2 border-blue-600 scale-105 shadow-2xl' : 'border-gray-200 bg-white'}`}>
-                  {plan.popular && (
-                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                      <span className="bg-blue-600 text-white px-4 py-1 rounded-full text-sm font-semibold">
-                        Meest Gekozen
-                      </span>
-                    </div>
-                  )}
-                  <CardHeader className="pt-10">
-                    <CardTitle className="text-2xl font-bold">{plan.name}</CardTitle>
-                    <div className="mt-4">
-                      <span className="text-5xl font-extrabold text-gray-900">{plan.price}</span>
-                      <span className="text-gray-500 ml-1">{plan.period}</span>
-                    </div>
-                    <CardDescription className="mt-2 h-12">{plan.description}</CardDescription>
-                  </CardHeader>
-                  <CardContent className="px-8 pb-8">
-                    <ul className="space-y-4 mb-8 text-left">
-                      {plan.features.map((feature, featureIndex) => (
-                        <li key={featureIndex} className="flex items-center">
-                          <Check className="h-5 w-5 text-green-500 mr-3 flex-shrink-0" />
-                          <span className="text-gray-700">{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </CardContent>
-                </Card>
-              </FadeInWhenVisible>
-            ))}
+          <div className="flex justify-center w-full">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-8 gap-x-12 w-full md:w-auto">
+              {pricingPlans.map((plan, index) => (
+                <FadeInWhenVisible key={index}>
+                  <Card className={`text-center transition-all duration-300 ${plan.popular ? 'border-2 border-blue-600 scale-105 shadow-2xl' : 'border-gray-200 bg-white'}`}>
+                    {plan.popular && (
+                      <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                        <span className="bg-blue-600 text-white px-4 py-1 rounded-full text-sm font-semibold">
+                          Meest Gekozen
+                        </span>
+                      </div>
+                    )}
+                    <CardHeader className="pt-10">
+                      <CardTitle className="text-2xl font-bold">{plan.name}</CardTitle>
+                      <div className="mt-4">
+                        <span className="text-5xl font-extrabold text-gray-900">{plan.price}</span>
+                        <span className="text-gray-500 ml-1">{plan.period}</span>
+                      </div>
+                      <CardDescription className="mt-2 h-12">{plan.description}</CardDescription>
+                    </CardHeader>
+                    <CardContent className="px-8 pb-8">
+                      <ul className="space-y-4 mb-8 text-left">
+                        {plan.features.map((feature, featureIndex) => (
+                          <li key={featureIndex} className="flex items-center">
+                            <Check className="h-5 w-5 text-green-500 mr-3 flex-shrink-0" />
+                            <span className="text-gray-700">{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </CardContent>
+                  </Card>
+                </FadeInWhenVisible>
+              ))}
+            </div>
           </div>
         </div>
       </section>
