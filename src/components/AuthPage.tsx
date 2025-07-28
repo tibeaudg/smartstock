@@ -96,82 +96,127 @@ export const AuthPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col">
       <Header onLoginClick={() => {}} hideAuthButtons />
-      <div className="flex-1 flex items-center justify-center p-4">
-        <div className="w-full max-w-md">
-          <div className="text-center mb-8">
-
+      <div className="flex-1 flex items-center justify-center p-4 sm:p-6">
+        <div className="w-full max-w-md mx-auto">
+          <div className="text-center mb-6 sm:mb-8">
+            {/* Optional: Add logo or title here */}
           </div>
           
-          <Card className="shadow-lg">
-            
-            <CardHeader>
-            {/* Switcher bovenaan de modal */}
-            <div className="flex justify-center mb-4">
-              <button
-                className={cn(
-                  'px-16 py-2 rounded-l font-semibold border border-r-0',
-                  mode === 'login'
-                    ? 'bg-blue-600 text-white border-blue-600 shadow'
-                    : 'bg-white text-blue-700 border-gray-300 hover:bg-blue-50'
-                )}
-                onClick={() => { setMode('login'); clearForm(); }}
-                disabled={isSubmitting || mode === 'login'}
-                type="button"
-              >
-                Inloggen
-              </button>
-              <button
-                className={cn(
-                  'px-16 py-2 rounded-r font-semibold border',
-                  mode === 'register'
-                    ? 'bg-blue-600 text-white border-blue-600 shadow'
-                    : 'bg-white text-blue-700 border-gray-300 hover:bg-blue-50'
-                )}
-                onClick={() => { setMode('register'); clearForm(); }}
-                disabled={isSubmitting || mode === 'register'}
-                type="button"
-              >
-                Registreren
-              </button>
-            </div>
+          <Card className="shadow-lg mx-2 sm:mx-0">
+            <CardHeader className="pb-4 sm:pb-6">
+              {/* Switcher bovenaan de modal - verbeterd voor mobiel */}
+              <div className="flex justify-center">
+                <div className="flex w-full max-w-xs rounded-lg border border-gray-300 bg-gray-50 p-1">
+                  <button
+                    className={cn(
+                      'flex-1 px-3 py-2.5 text-sm font-medium rounded-md transition-all duration-200',
+                      mode === 'login'
+                        ? 'bg-white text-blue-600 shadow-sm border border-gray-200'
+                        : 'text-gray-600 hover:text-gray-800'
+                    )}
+                    onClick={() => { setMode('login'); clearForm(); }}
+                    disabled={isSubmitting || mode === 'login'}
+                    type="button"
+                  >
+                    Inloggen
+                  </button>
+                  <button
+                    className={cn(
+                      'flex-1 px-3 py-2.5 text-sm font-medium rounded-md transition-all duration-200',
+                      mode === 'register'
+                        ? 'bg-white text-blue-600 shadow-sm border border-gray-200'
+                        : 'text-gray-600 hover:text-gray-800'
+                    )}
+                    onClick={() => { setMode('register'); clearForm(); }}
+                    disabled={isSubmitting || mode === 'register'}
+                    type="button"
+                  >
+                    Registreren
+                  </button>
+                </div>
+              </div>
             </CardHeader>
 
-            <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-2">
+            <CardContent className="px-4 sm:px-6">
+              <form onSubmit={handleSubmit} className="space-y-4">
                 {/* De JSX voor de formuliervelden blijft hetzelfde als in jouw code */}
                 {mode === 'register' && (
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor="firstName">Voornaam</Label>
-                      <Input id="firstName" type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} required disabled={isSubmitting} />
+                      <Label htmlFor="firstName" className="text-sm font-medium">Voornaam</Label>
+                      <Input 
+                        id="firstName" 
+                        type="text" 
+                        value={firstName} 
+                        onChange={(e) => setFirstName(e.target.value)} 
+                        required 
+                        disabled={isSubmitting}
+                        className="mt-1 h-10"
+                      />
                     </div>
                     <div>
-                      <Label htmlFor="lastName">Achternaam</Label>
-                      <Input id="lastName" type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} required disabled={isSubmitting} />
+                      <Label htmlFor="lastName" className="text-sm font-medium">Achternaam</Label>
+                      <Input 
+                        id="lastName" 
+                        type="text" 
+                        value={lastName} 
+                        onChange={(e) => setLastName(e.target.value)} 
+                        required 
+                        disabled={isSubmitting}
+                        className="mt-1 h-10"
+                      />
                     </div>
                   </div>
                 )}
 
                 <div>
-                  <Label htmlFor="email">E-mailadres</Label>
-                  <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required disabled={isSubmitting} />
+                  <Label htmlFor="email" className="text-sm font-medium">E-mailadres</Label>
+                  <Input 
+                    id="email" 
+                    type="email" 
+                    value={email} 
+                    onChange={(e) => setEmail(e.target.value)} 
+                    required 
+                    disabled={isSubmitting}
+                    className="mt-1 h-10"
+                  />
                 </div>
 
                 {mode !== 'reset' && (
                   <div>
-                    <Label htmlFor="password">Wachtwoord</Label>
-                    <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required disabled={isSubmitting} />
+                    <Label htmlFor="password" className="text-sm font-medium">Wachtwoord</Label>
+                    <Input 
+                      id="password" 
+                      type="password" 
+                      value={password} 
+                      onChange={(e) => setPassword(e.target.value)} 
+                      required 
+                      disabled={isSubmitting}
+                      className="mt-1 h-10"
+                    />
                   </div>
                 )}
 
                 {mode === 'register' && (
                   <div>
-                    <Label htmlFor="confirmPassword">Bevestig wachtwoord</Label>
-                    <Input id="confirmPassword" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required disabled={isSubmitting} />
+                    <Label htmlFor="confirmPassword" className="text-sm font-medium">Bevestig wachtwoord</Label>
+                    <Input 
+                      id="confirmPassword" 
+                      type="password" 
+                      value={confirmPassword} 
+                      onChange={(e) => setConfirmPassword(e.target.value)} 
+                      required 
+                      disabled={isSubmitting}
+                      className="mt-1 h-10"
+                    />
                   </div>
                 )}
                 
-                <Button type="submit" className="w-full" disabled={isSubmitting}>
+                <Button 
+                  type="submit" 
+                  className="w-full h-11 text-sm font-medium mt-6" 
+                  disabled={isSubmitting}
+                >
                   {isSubmitting ? (
                     <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Even geduld...</>
                   ) : (
@@ -185,11 +230,16 @@ export const AuthPage = () => {
               </form>
             </CardContent>
 
-            <CardFooter className="flex flex-col space-y-2 pt-6">
+            <CardFooter className="flex flex-col space-y-2 pt-4 pb-6 px-4 sm:px-6">
               {/* De JSX voor de footer links blijft hetzelfde als in jouw code */}
               {mode === 'login' && (
                 <>
-                  <button type="button" onClick={() => { setMode('reset'); clearForm(); }} className="text-sm text-blue-600 hover:underline" disabled={isSubmitting}>
+                  <button 
+                    type="button" 
+                    onClick={() => { setMode('reset'); clearForm(); }} 
+                    className="text-sm text-blue-600 hover:text-blue-700 hover:underline transition-colors" 
+                    disabled={isSubmitting}
+                  >
                     Wachtwoord vergeten?
                   </button>
                 </>
