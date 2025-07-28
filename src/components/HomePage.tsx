@@ -150,9 +150,6 @@ export const HomePage = () => {
                   <Button size="lg" className="text-lg px-8 py-6 bg-blue-600 hover:bg-blue-700 text-white font-bold shadow-lg transition-transform transform hover:scale-105" onClick={handleLoginClick}>
                      Start Gratis in 1 Minuut <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
-                  <Button size="lg" variant="outline" className="text-lg px-8 py-6" onClick={() => scrollToSection('features')}>
-                     Ontdek de voordelen
-                  </Button>
                </div>
             </motion.div>
          </div>
@@ -178,10 +175,7 @@ export const HomePage = () => {
          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <FadeInWhenVisible>
                <div className="text-center mb-16">
-                  <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4 tracking-tight">De juiste tools voor een vlekkeloze stockflow</h2>
-                  <p className="max-w-3xl mx-auto text-xl text-gray-600">
-                     Alles wat je nodig hebt om je voorraadbeheer te transformeren van een last naar een strategisch voordeel.
-                  </p>
+                  <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4 tracking-tight">De juiste tools voor een vlekkeloos voorraadbeheer</h2>
                </div>
             </FadeInWhenVisible>
             

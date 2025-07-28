@@ -86,14 +86,6 @@ export const Settings = () => {
               <User className="w-4 h-4" />
               <span>Profiel</span>
             </TabsTrigger>
-            <TabsTrigger value="license" className="hidden flex items-center space-x-2">
-              <FileText className="w-4 h-4" />
-              <span>Licentie</span>
-            </TabsTrigger>
-              <TabsTrigger value="invoicing" className="hiddenflex items-center space-x-2">
-              <Banknote className="w-4 h-4" />
-              <span>Facturatie</span>
-            </TabsTrigger>
             <TabsTrigger value="branches" className="flex items-center space-x-2">
               <Building2 className="w-4 h-4" />
               <span>Filialen</span>
