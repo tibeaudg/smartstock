@@ -171,24 +171,7 @@ export const HomePage = () => {
         <Link to="/voorraadbeheer-voor-starters" className="text-blue-700 underline">Voorraadbeheer voor starters</Link>
         <Link to="/mobiel-voorraadbeheer" className="text-blue-700 underline">Mobiel voorraadbeheer</Link>
       </nav>
-      {/* Trusted By Section */}
-      <div className="py-12 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <p className="text-center text-sm font-semibold text-gray-500 tracking-wider">Vertrouwd door honderden bedrijven in vlaanderen</p>
-            <motion.div 
-              className="mt-6 grid grid-cols-2 gap-8 md:grid-cols-4 lg:grid-cols-5"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5, duration: 0.8 }}
-            >
-                <div className="col-span-1 flex justify-center py-2"><img className="h-20" src="/ronde.png" alt="Logo klant voorraadbeheer stockflow ronde" /></div>
-                <div className="col-span-1 flex justify-center py-2"><img className="h-20" src="/vlaanderen.png" alt="Logo klant voorraadbeheer stockflow vlaanderen" /></div>
-                <div className="col-span-1 flex justify-center py-2"><img className="h-20" src="/tom.png" alt="Logo klant voorraadbeheer stockflow tom" /></div>
-                <div className="col-span-1 flex justify-center py-2"><img className="h-20" src="/del.png" alt="Logo klant voorraadbeheer stockflow del" /></div>
-                <div className="col-span-1 flex justify-center py-2 hidden lg:flex"><img className="h-20" src="standaard.png" alt="Company Logo 5" /></div>
-            </motion.div>
-        </div>
-      </div>
+
       
       {/* Features/Benefits Section */}
       <section id="features" className="py-20 bg-gray-50">
@@ -275,54 +258,6 @@ export const HomePage = () => {
         </div>
       </section>
 
-      {/* Pricing Section */}
-      <section id="pricing" className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <FadeInWhenVisible>
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4 tracking-tight">Kies het plan dat bij je past</h2>
-              <p className="max-w-3xl mx-auto text-xl text-gray-600">
-                Start gratis, en upgrade wanneer jij er klaar voor bent. Simpel en transparant.
-              </p>
-            </div>
-          </FadeInWhenVisible>
-          <div className="flex justify-center w-full">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-8 gap-x-12 w-full md:w-auto">
-              {pricingPlans.map((plan, index) => (
-                <FadeInWhenVisible key={index}>
-                  <Card className={`text-center transition-all duration-300 ${plan.popular ? 'border-2 border-blue-600 scale-105 shadow-2xl' : 'border-gray-200 bg-white'}`}>
-                    {plan.popular && (
-                      <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                        <span className="bg-blue-600 text-white px-4 py-1 rounded-full text-sm font-semibold">
-                          Meest Gekozen
-                        </span>
-                      </div>
-                    )}
-                    <CardHeader className="pt-10">
-                      <CardTitle className="text-2xl font-bold">{plan.name}</CardTitle>
-                      <div className="mt-4">
-                        <span className="text-5xl font-extrabold text-gray-900">{plan.price}</span>
-                        <span className="text-gray-500 ml-1">{plan.period}</span>
-                      </div>
-                      <CardDescription className="mt-2 h-12">{plan.description}</CardDescription>
-                    </CardHeader>
-                    <CardContent className="px-8 pb-8">
-                      <ul className="space-y-4 mb-8 text-left">
-                        {plan.features.map((feature, featureIndex) => (
-                          <li key={featureIndex} className="flex items-center">
-                            <Check className="h-5 w-5 text-green-500 mr-3 flex-shrink-0" />
-                            <span className="text-gray-700">{feature}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </CardContent>
-                  </Card>
-                </FadeInWhenVisible>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Final CTA Section */}
       <section className="bg-white">
@@ -340,31 +275,6 @@ export const HomePage = () => {
               </FadeInWhenVisible>
           </div>
       </section>
-
-            {/* Contactformulier onderaan */}
-            <section className="bg-gray-50 py-16">
-        <div className="max-w-2xl mx-auto px-4">
-          <h2 className="text-center text-3xl md:text-4xl font-extrabold text-gray-900 mb-4 tracking-tight">Contacteer ons</h2>
-          <form className="space-y-6">
-            <div>
-              <label htmlFor="contact-name" className="block text-sm font-medium text-gray-700">Naam</label>
-              <Input id="contact-name" name="name" type="text" autoComplete="name" required className="mt-1" />
-            </div>
-            <div>
-              <label htmlFor="contact-email" className="block text-sm font-medium text-gray-700">E-mail</label>
-              <Input id="contact-email" name="email" type="email" autoComplete="email" required className="mt-1" />
-            </div>
-            <div>
-              <label htmlFor="contact-message" className="block text-sm font-medium text-gray-700">Bericht</label>
-              <Textarea id="contact-message" name="message" rows={5} required className="mt-1" />
-            </div>
-            <div className="pt-2">
-              <Button type="submit" className="w-full text-lg font-bold bg-blue-600 hover:bg-blue-700 text-white py-3">Verstuur</Button>
-            </div>
-          </form>
-        </div>
-      </section>
-
 
 
 
