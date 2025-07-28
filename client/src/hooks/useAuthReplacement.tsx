@@ -6,12 +6,16 @@ import {
   ReactNode,
 } from 'react';
 import type { Profile } from '@shared/schema';
+import { api } from '@/lib/api';
+
+// Simple auth replacement that uses localStorage for demo purposes
+// In a real application, you'd use proper JWT tokens and server-side authentication
 
 export type UserProfile = Profile & { blocked?: boolean };
 
 interface AuthContextType {
-  user: any | null;
-  session: any | null;
+  user: any | null; // Mock user object
+  session: any | null; // Mock session object
   userProfile: UserProfile | null;
   loading: boolean;
   signIn: (email: string, password: string) => Promise<{ error: any | null }>;
@@ -39,19 +43,14 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [session, setSession] = useState<Session | null>(null);
-  const [userProfile, setUserProfile] = useState<
-    UserProfile | null
-  >(null);
+  const [user, setUser] = useState<any | null>(null);
+  const [session, setSession] = useState<any | null>(null);
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
 
   const fetchUserProfile = async (userId: string): Promise<UserProfile | null> => {
     try {
-      const response = await fetch(`/api/profiles/${userId}`);
-      if (!response.ok) return null;
-      
-      const profile = await response.json();
+      const profile = await api.profiles.getById(userId);
       return profile as UserProfile;
     } catch (err) {
       console.error('Error fetching user profile:', err);
@@ -70,19 +69,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           const sessionData = JSON.parse(storedSession);
           const userData = JSON.parse(storedUser);
           
-          // Check if session is still valid
-          if (sessionData.expires_at > Date.now()) {
-            setSession(sessionData);
-            setUser(userData);
-            
-            // Fetch current profile data
-            const profile = await fetchUserProfile(userData.id);
-            setUserProfile(profile);
-          } else {
-            // Session expired, clear it
-            localStorage.removeItem('stockflow-session');
-            localStorage.removeItem('stockflow-user');
-          }
+          setSession(sessionData);
+          setUser(userData);
+          
+          // Fetch current profile data
+          const profile = await fetchUserProfile(userData.id);
+          setUserProfile(profile);
         }
       } catch (error) {
         console.error('Error during auth initialization:', error);
@@ -98,16 +90,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   }, []);
 
   const signIn = async (email: string, password: string) => {
-    setLoading(true);
     try {
-      // Mock authentication - validate with backend
-      const response = await fetch('/api/profiles');
-      if (!response.ok) {
-        return { error: { message: 'Failed to connect to server' } };
-      }
-      
-      const profiles = await response.json();
-      const profile = profiles.find((p: any) => p.email === email);
+      // Mock authentication - in real app, you'd validate with backend
+      // For demo, we'll use the admin profile from storage
+      const profiles = await api.profiles.getAll();
+      const profile = profiles.find(p => p.email === email);
       
       if (!profile) {
         return { error: { message: 'Invalid email or password' } };
@@ -135,11 +122,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       setUserProfile(profile as UserProfile);
 
       return { error: null };
-    } catch (error: any) {
+    } catch (error) {
       console.error('Sign in error:', error);
       return { error: { message: 'Failed to sign in' } };
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -148,57 +133,37 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     password: string,
     firstName: string,
     lastName: string,
-    role: 'admin' | 'staff' = 'admin'
+    role: 'admin' | 'staff' = 'staff'
   ) => {
-    setLoading(true);
     try {
-      if (!firstName || !lastName) {
-        return { error: { message: 'First name and last name are required for registration.' } };
-      }
-
       // Create new profile
-      const response = await fetch('/api/profiles', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email,
-          first_name: firstName,
-          last_name: lastName,
-          role,
-        }),
+      const newProfile = await api.profiles.create({
+        email,
+        first_name: firstName,
+        last_name: lastName,
+        role,
       });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        return { error: { message: errorData.error || 'Failed to create account' } };
-      }
 
       // Auto sign in after successful signup
       return await signIn(email, password);
-    } catch (error: any) {
+    } catch (error) {
       console.error('Sign up error:', error);
       return { error: { message: 'Failed to create account' } };
-    } finally {
-      setLoading(false);
     }
   };
 
   const resetPassword = async (email: string) => {
-    setLoading(true);
     try {
       // Mock password reset - in real app, you'd send reset email
       console.log('Password reset requested for:', email);
       return { error: null };
-    } catch (error: any) {
+    } catch (error) {
       console.error('Password reset error:', error);
       return { error: { message: 'Failed to send password reset email' } };
-    } finally {
-      setLoading(false);
     }
   };
 
   const signOut = async () => {
-    setLoading(true);
     try {
       // Clear localStorage and state
       localStorage.removeItem('stockflow-session');
@@ -209,8 +174,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       setUserProfile(null);
     } catch (error) {
       console.error('Sign out error:', error);
-    } finally {
-      setLoading(false);
     }
   };
 

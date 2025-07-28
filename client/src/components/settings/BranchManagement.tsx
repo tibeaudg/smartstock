@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
-import { supabase } from '@/integrations/supabase/client';
+import { api } from '@/lib/api';
 import { useQuery } from '@tanstack/react-query';
 
 import { Button } from '@/components/ui/button';
@@ -48,9 +48,14 @@ export const BranchManagement = () => {
   // React Query: fetch admin branches
   const fetchAdminBranches = async () => {
     if (!user) return [];
-    const { data, error } = await supabase.rpc('get_admin_branches', { admin_id: user.id });
-    if (error) throw error;
-    return data as AdminBranch[];
+    const data = await api.branches.getAll(user.id);
+    return data.map((branch: any) => ({
+      branch_id: branch.id,
+      branch_name: branch.name,
+      is_main: branch.is_main || false,
+      user_count: 1,
+      created_at: branch.created_at || new Date().toISOString(),
+    })) as AdminBranch[];
   };
 
   const {

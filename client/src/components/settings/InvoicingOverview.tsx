@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAuth } from '@/hooks/useAuth';
-import { supabase } from '@/integrations/supabase/client';
+import { api } from '@/lib/api';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Loader2, AlertCircle, FileText } from 'lucide-react';
@@ -20,13 +20,8 @@ export const InvoicingOverview = () => {
   const { user } = useAuth();
   // React Query: fetch invoices
   const fetchInvoicesFromDB = async () => {
-    if (!user) throw new Error('Geen gebruiker');
-    const { data, error } = await supabase
-      .from('invoices')
-      .select('*')
-      .eq('user_id', user.id)
-      .order('invoice_date', { ascending: false });
-    if (error) throw error;
+    if (!user) throw new Error('No user');
+    const data = await api.invoices.getAll(user.id);
     return data as Invoice[];
   };
 

@@ -148,10 +148,7 @@ export const HomePage = () => {
                </p>
                <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Button size="lg" className="text-lg px-8 py-6 bg-blue-600 hover:bg-blue-700 text-white font-bold shadow-lg transition-transform transform hover:scale-105" onClick={handleLoginClick}>
-                     Start Gratis in 1 Minuut <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
-                  <Button size="lg" variant="outline" className="text-lg px-8 py-6" onClick={() => scrollToSection('features')}>
-                     Ontdek de voordelen
+                     Start Nu - Volledig Gratis <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                </div>
             </motion.div>
