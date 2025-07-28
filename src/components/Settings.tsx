@@ -86,11 +86,11 @@ export const Settings = () => {
               <User className="w-4 h-4" />
               <span>Profiel</span>
             </TabsTrigger>
-            <TabsTrigger value="license" className="flex items-center space-x-2">
+            <TabsTrigger value="license" className="hidden flex items-center space-x-2">
               <FileText className="w-4 h-4" />
               <span>Licentie</span>
             </TabsTrigger>
-              <TabsTrigger value="invoicing" className="flex items-center space-x-2">
+              <TabsTrigger value="invoicing" className="hiddenflex items-center space-x-2">
               <Banknote className="w-4 h-4" />
               <span>Facturatie</span>
             </TabsTrigger>
