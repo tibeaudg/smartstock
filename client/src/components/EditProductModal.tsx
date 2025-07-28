@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Plus, Minus } from 'lucide-react';
-import { api } from '@/lib/api';
+import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
@@ -61,11 +61,11 @@ export const EditProductModal = ({
     setLoading(true);
 
     try {
-      // Get current user from useAuth hook
-      const { user } = require('@/hooks/useAuth').useAuth();
+      // Get current user
+      const { data: { user } } = await supabase.auth.getUser();
       
       if (!user) {
-        throw new Error('Not logged in');
+        throw new Error('Niet ingelogd');
       }
 
       const numericQuantity = parseInt(quantity);
@@ -81,22 +81,40 @@ export const EditProductModal = ({
       }
 
       // Create transaction with created_by field
-      await api.stockTransactions.create({
-        product_id: product.id,
-        product_name: product.name,
-        transaction_type: actionType === 'in' ? 'incoming' : 'outgoing',
-        quantity: numericQuantity,
-        unit_price: product.unit_price,
-        reference_number: `STOCK_${actionType?.toUpperCase()}_${Date.now()}`,
-        notes: `Stock ${actionType === 'in' ? 'added' : 'removed'} via stock management`,
-        created_by: user.id,
-        branch_id: product.branch_id
-      });
+      const { data: transactionData, error: transactionError } = await supabase
+        .from('stock_transactions')
+        .insert({
+          product_id: product.id,
+          product_name: product.name,
+          transaction_type: actionType === 'in' ? 'incoming' : 'outgoing',
+          quantity: numericQuantity,
+          unit_price: product.unit_price,
+          reference_number: `STOCK_${actionType?.toUpperCase()}_${Date.now()}`,
+          notes: `Voorraad ${actionType === 'in' ? 'toegevoegd' : 'verwijderd'} via voorraad beheer`,
+          created_by: user.id,
+          branch_id: product.branch_id // Add this if you have branch information
+        })
+        .select()
+        .single();
+
+      if (transactionError) {
+        console.error('Transaction error:', transactionError);
+        throw new Error(`Fout bij het maken van de transactie: ${transactionError.message}`);
+      }
 
       // Then update the product quantity
-      await api.products.update(product.id, { 
-        quantity_in_stock: newQuantity,
-      });
+      const { error: updateError } = await supabase
+        .from('products')
+        .update({ 
+          quantity_in_stock: newQuantity,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', product.id);
+
+      if (updateError) {
+        console.error('Update error:', updateError);
+        throw new Error(`Fout bij het bijwerken van de voorraad: ${updateError.message}`);
+      }
 
       toast.success(`Voorraad succesvol ${actionType === 'in' ? 'toegevoegd' : 'verwijderd'}`);
       onProductUpdated();
@@ -131,16 +149,38 @@ export const EditProductModal = ({
   const handleProductInfoUpdate = async (data: any) => {
     setLoading(true);
     let imageUrl = product.image_url;
-    // Skip image upload for now in the demo
-    
-    await api.products.update(product.id, {
-      name: data.name,
-      description: data.description,
-      quantity_in_stock: data.quantity_in_stock,
-      minimum_stock_level: data.minimum_stock_level,
-      unit_price: data.unit_price,
-      image_url: imageUrl,
-    });
+    if (productImage) {
+      const fileExt = productImage.name.split('.').pop();
+      const fileName = `${Date.now()}_${Math.random().toString(36).substring(2, 8)}.${fileExt}`;
+      const { error: uploadError } = await supabase.storage
+        .from('product-images')
+        .upload(fileName, productImage, { upsert: false });
+      if (uploadError) {
+        toast.error('Fout bij uploaden van afbeelding');
+        setLoading(false);
+        return;
+      }
+      // Gebruik het SUPABASE_URL direct uit de client config
+      const SUPABASE_URL = "https://sszuxnqhbxauvershuys.supabase.co";
+      imageUrl = `${SUPABASE_URL}/storage/v1/object/public/product-images/${fileName}`;
+    }
+    const { error: updateError } = await supabase
+      .from('products')
+      .update({
+        name: data.name,
+        description: data.description,
+        quantity_in_stock: data.quantity_in_stock,
+        minimum_stock_level: data.minimum_stock_level,
+        unit_price: data.unit_price,
+        image_url: imageUrl,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', product.id);
+    if (updateError) {
+      toast.error('Fout bij het bijwerken van product info');
+      setLoading(false);
+      return;
+    }
     toast.success('Productinformatie bijgewerkt!');
     onProductUpdated();
     onClose();

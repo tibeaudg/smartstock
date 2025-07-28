@@ -5,24 +5,27 @@ import {
   useContext,
   ReactNode,
 } from 'react';
-import type { Profile } from '@shared/schema';
+import { supabase } from '@/integrations/supabase/client'; // getypeerd met Database
+import type { User, AuthError, Session } from '@supabase/supabase-js';
+import type { Database } from '@/integrations/supabase/types';
 
-export type UserProfile = Profile & { blocked?: boolean };
+// 1. Add 'blocked' to the UserProfile type
+export type UserProfile = Database['public']['Tables']['profiles']['Row'] & { blocked?: boolean };
 
 interface AuthContextType {
-  user: any | null;
-  session: any | null;
+  user: User | null;
+  session: Session | null;
   userProfile: UserProfile | null;
   loading: boolean;
-  signIn: (email: string, password: string) => Promise<{ error: any | null }>;
+  signIn: (email: string, password: string) => Promise<{ error: AuthError | null }>;
   signUp: (
     email: string,
     password: string,
     firstName: string,
     lastName: string,
     role?: 'admin' | 'staff'
-  ) => Promise<{ error: any | null }>;
-  resetPassword: (email: string) => Promise<{ error: any | null }>;
+  ) => Promise<{ error: AuthError | null }>;
+  resetPassword: (email: string) => Promise<{ error: AuthError | null }>;
   signOut: () => Promise<void>;
 }
 
@@ -46,98 +49,124 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   >(null);
   const [loading, setLoading] = useState(true);
 
-  const fetchUserProfile = async (userId: string): Promise<UserProfile | null> => {
+  // 2. When fetching the user profile, make sure 'blocked' is included
+  const fetchUserProfile = async (
+    userId: string
+  ): Promise<UserProfile | null> => {
     try {
-      const response = await fetch(`/api/profiles/${userId}`);
-      if (!response.ok) return null;
-      
-      const profile = await response.json();
-      return profile as UserProfile;
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', userId)
+        .single();
+
+      if (error) {
+        console.error('Error fetching user profile:', error.message);
+        return null;
+      }
+      return data as UserProfile;
     } catch (err) {
-      console.error('Error fetching user profile:', err);
+      console.error('Unexpected error fetching user profile:', err);
       return null;
     }
   };
 
   useEffect(() => {
+    const cancelled = { current: false };
     const initializeAuth = async () => {
       try {
-        // Check localStorage for existing session
-        const storedSession = localStorage.getItem('stockflow-session');
-        const storedUser = localStorage.getItem('stockflow-user');
-        
-        if (storedSession && storedUser) {
-          const sessionData = JSON.parse(storedSession);
-          const userData = JSON.parse(storedUser);
-          
-          // Check if session is still valid
-          if (sessionData.expires_at > Date.now()) {
-            setSession(sessionData);
-            setUser(userData);
-            
-            // Fetch current profile data
-            const profile = await fetchUserProfile(userData.id);
-            setUserProfile(profile);
-          } else {
-            // Session expired, clear it
-            localStorage.removeItem('stockflow-session');
-            localStorage.removeItem('stockflow-user');
-          }
+        const {
+          data: { session: currentSession },
+          error,
+        } = await supabase.auth.getSession();
+
+        if (error) {
+          console.error('Error getting session:', error.message);
+          if (!cancelled.current) setLoading(false);
+          return;
+        }
+
+        if (currentSession && !cancelled.current) {
+          setSession(currentSession);
+          setUser(currentSession.user);
+
+          const profile = await fetchUserProfile(currentSession.user.id);
+          if (!cancelled.current) setUserProfile(profile);
         }
       } catch (error) {
         console.error('Error during auth initialization:', error);
-        // Clear invalid data
-        localStorage.removeItem('stockflow-session');
-        localStorage.removeItem('stockflow-user');
       } finally {
-        setLoading(false);
+        if (!cancelled.current) setLoading(false);
       }
     };
 
     initializeAuth();
+
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      async (_event, newSession) => {
+        if (cancelled.current) return;
+
+        setSession(newSession);
+        setUser(newSession?.user ?? null);
+
+        if (newSession?.user) {
+          const profile = await fetchUserProfile(newSession.user.id);
+          if (!cancelled.current) setUserProfile(profile);
+        } else {
+          setUserProfile(null);
+        }
+      }
+    );
+
+    return () => {
+      cancelled.current = true;
+      listener?.subscription.unsubscribe();
+    };
   }, []);
+
+  useEffect(() => {
+    if (!user) return;
+    // Realtime subscription op eigen profiel
+    const channel = supabase.channel('profile-blocked-check')
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'profiles',
+          filter: `id=eq.${user.id}`,
+        },
+        (payload) => {
+          setUserProfile((prev) => {
+            const prevBlocked = prev?.blocked;
+            const newBlocked = payload.new?.blocked;
+            if (typeof prevBlocked !== 'undefined') {
+              if (prevBlocked && !newBlocked) {
+                // Deblokkeren: direct naar dashboard
+                window.location.replace('/dashboard');
+              } else if (prevBlocked !== newBlocked) {
+                // Blokkeren: forceer reload
+                window.location.reload();
+              }
+            }
+            return { ...prev, ...payload.new };
+          });
+        }
+      )
+      .subscribe();
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [user]);
 
   const signIn = async (email: string, password: string) => {
     setLoading(true);
     try {
-      // Mock authentication - validate with backend
-      const response = await fetch('/api/profiles');
-      if (!response.ok) {
-        return { error: { message: 'Failed to connect to server' } };
-      }
-      
-      const profiles = await response.json();
-      const profile = profiles.find((p: any) => p.email === email);
-      
-      if (!profile) {
-        return { error: { message: 'Invalid email or password' } };
-      }
-
-      // Create mock user and session
-      const mockUser = {
-        id: profile.id,
-        email: profile.email,
-        created_at: profile.created_at,
-      };
-
-      const mockSession = {
-        access_token: 'mock-token',
-        user: mockUser,
-        expires_at: Date.now() + (24 * 60 * 60 * 1000), // 24 hours
-      };
-
-      // Store in localStorage
-      localStorage.setItem('stockflow-session', JSON.stringify(mockSession));
-      localStorage.setItem('stockflow-user', JSON.stringify(mockUser));
-
-      setSession(mockSession);
-      setUser(mockUser);
-      setUserProfile(profile as UserProfile);
-
-      return { error: null };
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      return { error };
     } catch (error: any) {
-      console.error('Sign in error:', error);
-      return { error: { message: 'Failed to sign in' } };
+      console.error('Exception during sign in:', error);
+      return { error };
     } finally {
       setLoading(false);
     }
@@ -153,31 +182,43 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setLoading(true);
     try {
       if (!firstName || !lastName) {
-        return { error: { message: 'First name and last name are required for registration.' } };
+        return { error: new Error('Voornaam en achternaam zijn verplicht voor registratie.') };
       }
-
-      // Create new profile
-      const response = await fetch('/api/profiles', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email,
-          first_name: firstName,
-          last_name: lastName,
-          role,
-        }),
+      const { data, error: signUpError } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/dashboard/settings`,
+        },
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        return { error: { message: errorData.error || 'Failed to create account' } };
+      if (signUpError) return { error: signUpError };
+
+      const userId = data?.user?.id;
+      if (!userId) {
+        return { error: new Error('Geen user ID gevonden na registratie') };
       }
 
-      // Auto sign in after successful signup
-      return await signIn(email, password);
+      // Profiel aanmaken in de 'profiles' tabel
+      const { error: profileError } = await supabase.from('profiles').upsert({
+        id: userId,
+        email,
+        first_name: firstName,
+        last_name: lastName,
+        role,
+        updated_at: new Date().toISOString(),
+      }, { onConflict: 'id' }); // Zorgt dat upsert op basis van primary key 'id' werkt
+      
+
+      if (profileError) {
+        console.error('Fout bij aanmaken profiel:', profileError.message);
+        return { error: profileError };
+      }
+
+      return { error: null };
     } catch (error: any) {
-      console.error('Sign up error:', error);
-      return { error: { message: 'Failed to create account' } };
+      console.error('Exception tijdens registratie:', error);
+      return { error };
     } finally {
       setLoading(false);
     }
@@ -186,12 +227,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const resetPassword = async (email: string) => {
     setLoading(true);
     try {
-      // Mock password reset - in real app, you'd send reset email
-      console.log('Password reset requested for:', email);
-      return { error: null };
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/dashboard`,
+      });
+      return { error };
     } catch (error: any) {
-      console.error('Password reset error:', error);
-      return { error: { message: 'Failed to send password reset email' } };
+      console.error('Exception during password reset:', error);
+      return { error };
     } finally {
       setLoading(false);
     }
@@ -200,15 +242,16 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const signOut = async () => {
     setLoading(true);
     try {
-      // Clear localStorage and state
-      localStorage.removeItem('stockflow-session');
-      localStorage.removeItem('stockflow-user');
-      
-      setSession(null);
-      setUser(null);
-      setUserProfile(null);
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        console.error('Error signing out:', error.message);
+      } else {
+        setUser(null);
+        setSession(null);
+        setUserProfile(null);
+      }
     } catch (error) {
-      console.error('Sign out error:', error);
+      console.error('Exception during sign out:', error);
     } finally {
       setLoading(false);
     }

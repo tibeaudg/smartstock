@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { api } from '@/lib/api';
+import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
 interface Product {
@@ -81,13 +81,24 @@ export const EditProductInfoModal = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    
-    try {
-      // For now, skip image upload and use existing image_url
-      // In a real app, you'd implement proper file upload to your server
-      let imageUrl = product.image_url;
-      
-      await api.products.update(product.id, {
+    let imageUrl = product.image_url;
+    if (productImage) {
+      const fileExt = productImage.name.split('.').pop();
+      const fileName = `${Date.now()}_${Math.random().toString(36).substring(2, 8)}.${fileExt}`;
+      const { error: uploadError } = await supabase.storage
+        .from('product-images')
+        .upload(fileName, productImage, { upsert: false });
+      if (uploadError) {
+        toast.error('Fout bij uploaden van afbeelding');
+        setLoading(false);
+        return;
+      }
+      const SUPABASE_URL = "https://sszuxnqhbxauvershuys.supabase.co";
+      imageUrl = `${SUPABASE_URL}/storage/v1/object/public/product-images/${fileName}`;
+    }
+    const { error: updateError } = await supabase
+      .from('products')
+      .update({
         name: form.name,
         description: form.description,
         quantity_in_stock: Number(form.quantity_in_stock),
@@ -96,17 +107,18 @@ export const EditProductInfoModal = ({
         purchase_price: Number(form.purchase_price),
         sale_price: Number(form.sale_price),
         image_url: imageUrl,
-      });
-      
-      toast.success('Product information updated!');
-      onProductUpdated();
-      onClose();
-    } catch (error: any) {
-      console.error('Error updating product:', error);
-      toast.error('Error updating product information');
-    } finally {
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', product.id);
+    if (updateError) {
+      toast.error('Fout bij het bijwerken van product info');
       setLoading(false);
+      return;
     }
+    toast.success('Productinformatie bijgewerkt!');
+    onProductUpdated();
+    onClose();
+    setLoading(false);
   };
 
   if (!isOpen) return null;

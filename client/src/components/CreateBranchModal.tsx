@@ -18,7 +18,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
-import { api } from '@/lib/api';
+import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import { CreditCard } from 'lucide-react';
@@ -71,14 +71,20 @@ export const CreateBranchModal = ({
     const fetchLicense = async () => {
       if (!user) return;
 
-      try {
-        // Simplified license check - skip for demo
-        setLicenseInfo({ license_type: 'standard' });
+      const { data, error } = await supabase
+        .from('licenses')
+        .select('license_type')
+        .eq('admin_user_id', user.id)
+        .eq('is_active', true)
+        .single();
+
+      if (error) {
+        console.error('Error fetching license:', error);
+      } else {
+        setLicenseInfo(data);
         if (isAdditionalBranch) {
           setShowPaymentWarning(true);
         }
-      } catch (error) {
-        console.error('Error fetching license:', error);
       }
     };
 
@@ -92,28 +98,38 @@ export const CreateBranchModal = ({
 
     setLoading(true);
     try {
-      // Create branch using our API (simplified for demo)
-      const branchData = await api.branches.getAll(); // This would be a create call in real implementation
-      
-      // For demo purposes, we'll simulate branch creation
-      const newBranch = {
-        id: `branch-${Date.now()}`,
-        name: data.branchName,
-        address: data.address || null,
-        phone: data.phone || null,
-        email: data.email || null,
-        is_main: !isAdditionalBranch,
-        is_active: true,
-        user_id: user.id,
-      };
+      const { data: branchData, error: branchError } = await supabase
+        .from('branches')
+        .insert({
+          name: data.branchName,
+          address: data.address || null,
+          phone: data.phone || null,
+          email: data.email || null,
+          is_main: !isAdditionalBranch,
+          is_active: true,
+          user_id: user.id, // <-- automatisch koppelen aan gebruiker
+        })
+        .select()
+        .single();
 
-      // Set the new branch as active after creation
-      if (newBranch && newBranch.id) {
+      if (branchError) throw branchError;
+
+      const { error: assignError } = await supabase.from('branch_users').insert({
+        branch_id: branchData.id,
+        user_id: user.id,
+        role: 'admin',
+        granted_by: user.id,
+      });
+
+      if (assignError) throw assignError;
+
+      // Zet de nieuwe branch direct als actief na aanmaken
+      if (branchData && branchData.id) {
         setActiveBranch({
-          branch_id: newBranch.id,
-          branch_name: newBranch.name,
-          is_main: newBranch.is_main,
-          user_role: 'admin',
+          branch_id: branchData.id,
+          branch_name: branchData.name,
+          is_main: branchData.is_main,
+          user_role: 'admin', // of haal uit branchData als beschikbaar
         });
       }
 

@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
-import { api } from '@/lib/api';
+import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
 import { toast } from 'sonner';
@@ -66,12 +66,15 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
         setDuplicateName(false);
         return;
       }
-      try {
-        const products = await api.products.getAll(activeBranch?.branch_id);
-        const exists = products.some(p => p.name === name);
-        setDuplicateName(exists);
-      } catch (error) {
-        console.error('Error checking duplicate:', error);
+      const { data, error } = await supabase
+        .from('products')
+        .select('id')
+        .eq('name', name)
+        .eq('branch_id', activeBranch?.branch_id);
+
+      if (!error && data && data.length > 0) {
+        setDuplicateName(true);
+      } else {
         setDuplicateName(false);
       }
     };
@@ -121,26 +124,89 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
 
     setLoading(true);
     try {      
-      // Simplified implementation without image upload for now
+      // Haal huidig actief plan op vóór toevoegen
+      const { data: beforeLicenseData } = await supabase.functions.invoke('get-license-and-usage');
+      const beforePlan = beforeLicenseData?.activePlanId;
+      console.log('[AddProductModal] user.id:', user.id, 'beforePlan:', beforePlan, 'beforeLicenseData:', beforeLicenseData);
+
       let imageUrl = null;
+
+
+      // Handle supplier
+      let supplierId = null;
+      if (data.supplierName.trim()) {
+        const { data: existingSupplier } = await supabase
+          .from('suppliers')
+          .select('id')
+          .eq('name', data.supplierName.trim())
+          .single();
+
+        if (existingSupplier) {
+          supplierId = existingSupplier.id;
+        } else {
+          const { data: newSupplier, error: supplierError } = await supabase
+            .from('suppliers')
+            .insert({ name: data.supplierName.trim() })
+            .select('id')
+            .single();
+
+          if (supplierError) {
+            console.error('Error creating supplier:', supplierError);
+            toast.error('Fout bij het aanmaken van leverancier');
+            return;
+          }
+          supplierId = newSupplier.id;
+        }
+      }
+
+      // Upload image if exists
+      if (productImage) {
+        const fileExt = productImage.name.split('.').pop();
+        const fileName = `${Date.now()}_${Math.random().toString(36).substring(2, 8)}.${fileExt}`;
+        const { data: uploadData, error: uploadError } = await supabase.storage
+          .from('product-images')
+          .upload(fileName, productImage, { upsert: false });
+        if (uploadError) {
+          toast.error('Fout bij uploaden van afbeelding');
+          setLoading(false);
+          return;
+        }
+        // Gebruik het SUPABASE_URL direct uit de client config
+        const SUPABASE_URL = "https://sszuxnqhbxauvershuys.supabase.co";
+        imageUrl = `${SUPABASE_URL}/storage/v1/object/public/product-images/${fileName}`;
+      }
 
       // Create product with branch_id
       const productData = {
         name: data.name,
-        description: data.description || '',
+        description: data.description || null,
         quantity_in_stock: data.quantityInStock,
         minimum_stock_level: data.minimumStockLevel,
-        unit_price: data.purchasePrice,
+        unit_price: data.purchasePrice, // legacy fallback
         purchase_price: data.purchasePrice,
         sale_price: data.salePrice,
         branch_id: activeBranch.branch_id,
         image_url: imageUrl,
-        user_id: user.id,
+        user_id: user.id || (user?.id ?? ''), // fallback voor zekerheid
+        supplier_id: supplierId,
       };
 
-      const insertedProduct = await api.products.create(productData);
 
-      // Create initial stock transaction
+      const { data: insertedProduct, error: productError } = await supabase
+        .from('products')
+        .insert(productData)
+        .select()
+        .single();
+
+      if (productError) {
+        console.error('Error adding product:', productError);
+        toast.error(`Fout bij het toevoegen van product: ${productError.message}`);
+        return;
+      }
+      // Direct na toevoegen: forceer refresh van productCount
+      queryClient.invalidateQueries({ queryKey: ['productCount', activeBranch.branch_id, user.id] });
+
+      // Always create a transaction for new products
       const stockTransactionData = {
         product_id: insertedProduct.id,
         product_name: data.name,
@@ -150,13 +216,34 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
         created_by: user.id,
         branch_id: activeBranch.branch_id,
         reference_number: 'INITIAL_STOCK',
-        notes: 'New product added'
+        notes: 'Nieuw product toegevoegd'
       };
 
-      await api.stockTransactions.create(stockTransactionData);
+      
+      const { error: transactionError } = await supabase
+        .from('stock_transactions')
+        .insert(stockTransactionData);
 
-      toast.success('Product successfully added!');
+      if (transactionError) {
+        console.error('Error creating initial stock transaction:', transactionError);
+        toast.error('Product created but failed to record initial stock');
+      } else {
+        console.log('Initial stock transaction created successfully');
+      }
+
+      toast.success('Product succesvol toegevoegd!');
       form.reset();
+      // Na succesvol toevoegen, check licentie
+      const { data: licenseData, error: licenseError } = await supabase.functions.invoke('get-license-and-usage');
+      console.log('[AddProductModal] user.id:', user.id, 'afterPlan:', licenseData?.activePlanId, 'licenseData:', licenseData);
+      if (!licenseError && licenseData) {
+        const afterPlan = licenseData.activePlanId;
+        if (beforePlan && afterPlan && beforePlan !== afterPlan) {
+          onClose();
+          setShowUpgradeNotice(true);
+          return;
+        }
+      }
       onProductAdded();
       onClose();
     } catch (error) {

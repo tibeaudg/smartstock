@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import type { Product } from '@/types/stockTypes';
-import { api } from '@/lib/api';
+import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
 import { Button } from '@/components/ui/button';
@@ -42,9 +42,14 @@ const getStockStatusVariant = (status: string) => {
 
 type StockAction = 'in' | 'out';
 
-// Fetch products via our API
+// Haal producten op via React Query
 const fetchProducts = async (branchId: string) => {
-  const data = await api.products.getAll(branchId);
+  const { data, error } = await supabase
+    .from('products')
+    .select(`*`)
+    .eq('branch_id', branchId)
+    .order('created_at', { ascending: false });
+  if (error) throw new Error(error.message);
   return (data || []).map((p: any) => ({
     ...p,
     purchase_price: typeof p.purchase_price === 'number' ? p.purchase_price : 0,
