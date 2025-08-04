@@ -85,45 +85,91 @@ export const HomePage = () => {
     },
   ];
 
-  const pricingPlans = [
+
+  // --- BEGIN USP DATA ---
+  const usps = [
     {
-      name: 'Free',
-      price: '€0',
-      period: '/maand',
-      description: 'Perfect voor freelancers en starters.',
-      features: ['Tot 500 verschillende producten', 'Basis voorraadvolging', 'Community ondersteuning'],
-      popular: false,
+      icon: <Package className="h-8 w-8" />,
+      title: "Eenvoudig plannen",
+      desc: "Plan en publiceer voorraadupdates in seconden.",
     },
     {
-      name: 'Starter',
-      price: '€4',
-      period: '/maand',
-      description: 'Voor kleine bedrijven die willen groeien.',
-      features: ['Tot 1000 verschillende producten', 'Geavanceerde analyses', 'Prioritaire e-mailondersteuning'],
-      popular: false,
+      icon: <BarChart3 className="h-8 w-8" />,
+      title: "Realtime inzicht", 
+      desc: "Direct overzicht van je voorraad en prestaties.",
     },
     {
-      name: 'Business',
-      price: '€7',
-      period: '/maand',
-      description: 'Ideaal voor gevestigde KMO\'s.',
-      features: ['Onbeperkt', 'Uitgebreide rapportage', 'Telefonische ondersteuning'],
-      popular: false,
+      icon: <Users className="h-8 w-8" />,
+      title: "Samenwerken",
+      desc: "Werk moeiteloos samen met je team.",
+    },
+    {
+      icon: <Shield className="h-8 w-8" />,
+      title: "Veilig & betrouwbaar",
+      desc: "Jouw data is altijd veilig en beschermd.",
     },
   ];
+  // --- EINDE USP DATA ---
+
+  // --- BEGIN CAPABILITIES DATA ---
+  const capabilities = [
+
+    {
+      icon: <Users className="h-12 w-12" />,
+      title: "Samenwerking",
+      desc: "Werk efficiënt samen met je team.",
+      learnMore: "#",
+    },
+    {
+      icon: <BarChart3 className="h-12 w-12" />,
+      title: "Rapportages",
+      desc: "Krijg inzicht in trends en prestaties.",
+      learnMore: "#",
+    },
+    {
+      icon: <Shield className="h-12 w-12" />,
+      title: "Veiligheid",
+      desc: "Jouw data is veilig in de cloud.",
+      learnMore: "#",
+    },
+  ];
+  // --- EINDE CAPABILITIES DATA ---
+
+  // --- BEGIN FEATURE DATA ---
+  const landingFeatures = [
+    {
+      title: "Krachtig voorraadbeheer",
+      desc: "Beheer je producten, locaties en voorraden centraal. Automatiseer bestellingen en voorkom tekorten.",
+      img: "/optimized/image.png",
+      reverse: false,
+    },
+    {
+      title: "Slimme rapportages",
+      desc: "Genereer rapporten en krijg inzicht in trends, zodat je altijd de juiste beslissingen neemt.",
+      img: "/optimized/desktop.png",
+      reverse: true,
+    },
+    {
+      title: "Mobiel & desktop",
+      desc: "Altijd en overal toegang tot je voorraad, op elk apparaat.",
+      img: "/optimized/mobile.png",
+      reverse: false,
+    },
+  ];
+  // --- EINDE FEATURE DATA ---
 
   return (
-    <div className="min-h-screen bg-white font-sans">
+    <div className="bg-white text-gray-900 font-sans">
       <SEO
-        title="Stockbeheer voor KMO's en Zelfstandigen | stockflow"
-        description="Eenvoudig, gratis en slim stockbeheer voor KMO's en zelfstandigen. Probeer stockflow en ontdek de beste stockbeheer app voor Vlaanderen!"
-        keywords="stockbeheer, gratis stockbeheer, stockbeheer app, voorraadbeheer, KMO, eenvoudig voorraadbeheer, voorraad app, voorraadbeheer Vlaanderen, voorraadbeheer Gent, voorraadbeheer Brugge, voorraadbeheer Antwerpen"
+        title="Gratis Voorraadbeheer voor Zelfstandigen | stockflow"
+        description="Eenvoudig, gratis en slim Voorraadbeheer voor zelfstandigen. Probeer stockflow en ontdek de beste Voorraadbeheer app voor Vlaanderen!"
+        keywords="Voorraadbeheer, gratis Voorraadbeheer, Voorraadbeheer app, voorraadbeheer, KMO, eenvoudig voorraadbeheer, voorraad app, voorraadbeheer Vlaanderen, voorraadbeheer Gent, voorraadbeheer Brugge, voorraadbeheer Antwerpen"
         url="https://www.stockflow.be/"
         structuredData={{
           "@context": "https://schema.org",
           "@type": "Article",
-          "headline": "Stockbeheer voor KMO's en Zelfstandigen",
-          "description": "Eenvoudig, gratis en slim stockbeheer voor KMO's en zelfstandigen. Probeer stockflow en ontdek de beste stockbeheer app voor Vlaanderen!",
+          "headline": "Voorraadbeheer voor Zelfstandigen",
+          "description": "Eenvoudig, gratis en slim Voorraadbeheer voor zelfstandigen. Probeer stockflow en ontdek de beste Voorraadbeheer app voor Vlaanderen!",
           "author": {"@type": "Organization", "name": "stockflow"},
           "publisher": {"@type": "Organization", "name": "stockflow", "logo": {"@type": "ImageObject", "url": "https://www.stockflow.be/logo.png"}},
           "image": "https://www.stockflow.be/Inventory-Management.png",
@@ -135,190 +181,160 @@ export const HomePage = () => {
         onNavigate={scrollToSection}
         simplifiedNav={false}
       />
-      {/* Hero Section */}
-      <section className="relative pt-12 pb-5 lg:pt-48 lg:pb-44 text-center overflow-hidden bg-gray-50" style={{backgroundImage: 'url(/Inventory-Management.png)', backgroundSize: 'cover', backgroundPosition: 'center'}}>
-         <div className="absolute inset-0 bg-white/70" style={{backdropFilter: 'blur(0px)'}}></div>
-         <div className="relative px-4 sm:px-6 lg:px-8 z-10">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: 'easeOut' }}>
-               <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 mb-6 tracking-tight">
-                  Gratis & Eenvoudig Voorraadbeheer
-               </h1>
-               <p className="max-w-2xl mx-auto text-lg md:text-xl text-gray-600 mb-10">
-                  Geen betalingsgegevens nodig!
-               </p>
-               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Button size="lg" className="text-lg px-8 py-6 bg-blue-600 hover:bg-blue-700 text-white font-bold shadow-lg transition-transform transform hover:scale-105" onClick={handleLoginClick}>
-                     Start Gratis in 1 Minuut <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
-               </div>
-            </motion.div>
-         </div>
-      </section>
-      {/* Interne links naar SEO-pagina's */}
-      <nav className="hidden max-w-3xl mx-auto mt-8 mb-4 flex flex-wrap gap-2 justify-center">
-        <Link to="/voorraadbeheer-tips" className="text-blue-700 underline">Voorraadbeheer tips</Link>
-        <Link to="/magazijnbeheer-tips" className="text-blue-700 underline">Magazijnbeheer tips</Link>
-        <Link to="/voorraadbeheer-software-vergelijken" className="text-blue-700 underline">Software vergelijken</Link>
-        <Link to="/voorraadbeheer-webshop" className="text-blue-700 underline">Voorraadbeheer webshop</Link>
-        <Link to="/voorraadbeheer-fouten-voorkomen" className="text-blue-700 underline">Fouten voorkomen</Link>
-        <Link to="/voorraadbeheer-automatiseren" className="text-blue-700 underline">Automatiseren</Link>
-        <Link to="/inventarisatie-tips" className="text-blue-700 underline">Inventarisatie tips</Link>
-        <Link to="/voorraadbeheer-horeca" className="text-blue-700 underline">Voorraadbeheer horeca</Link>
-        <Link to="/voorraadbeheer-excel-vs-software" className="text-blue-700 underline">Excel vs. software</Link>
-        <Link to="/voorraadbeheer-voor-starters" className="text-blue-700 underline">Voorraadbeheer voor starters</Link>
-        <Link to="/mobiel-voorraadbeheer" className="text-blue-700 underline">Mobiel voorraadbeheer</Link>
-      </nav>
 
-      
-      {/* Features/Benefits Section */}
-      <section id="features" className="py-20 bg-gray-50">
-         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <FadeInWhenVisible>
-               <div className="text-center mb-16">
-                  <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4 tracking-tight">De juiste tools voor een vlekkeloos voorraadbeheer</h2>
-               </div>
-            </FadeInWhenVisible>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-               {features.map((feature, index) => (
-                 <FadeInWhenVisible key={index}>
-                    <Card className="text-left bg-white border-gray-200 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-                       <CardHeader>
-                          <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
-                             <feature.icon className="h-6 w-6 text-blue-600" aria-label={feature.title} />
-                          </div>
-                          <CardTitle className="text-xl font-bold text-gray-900">{feature.title}</CardTitle>
-                       </CardHeader>
-                       <CardContent>
-                          <p className="text-gray-600">{feature.description}</p>
-                       </CardContent>
-                    </Card>
-                 </FadeInWhenVisible>
-               ))}
-            </div>
-         </div>
-      </section>
-
-      {/* Video: Hoe het werkt */}
-      <section className="py-20 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <FadeInWhenVisible>
-            <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-6 tracking-tight">Hoe werkt het?</h2>
-            <p className="max-w-2xl mx-auto text-xl text-gray-600 mb-8">Bekijk in 1 minuut hoe eenvoudig voorraadbeheer kan zijn met stockflow.</p>
-            <div className="flex justify-center">
-              <video controls poster="/Inventory-Management.png" className="rounded-xl shadow-lg w-full max-w-2xl">
-                <source src="/intro_vid.mp4" type="video/mp4" />
-                Je browser ondersteunt deze video niet.
-              </video>
-            </div>
-          </FadeInWhenVisible>
+      {/* HERO SECTION - SocialPilot style */}
+      <section className="max-w-6xl mx-auto px-4 py-12 md:py-20 text-center relative overflow-hidden rounded-lg" style={{backgroundImage: 'url(/Inventory-Management.png)', backgroundSize: 'cover', backgroundPosition: 'center', minHeight: '60vh'}}>
+        <div className="absolute inset-0 bg-white/70 md:bg-white/80"></div>
+        <div className="relative z-10">
+          <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold mb-4 md:mb-6 leading-tight">
+            <span className="block">Het Enige Voorraadbeheer</span>
+            <span className="block text-blue-600">Platform Die Je Nodig Hebt</span>
+          </h1>
+          <p className="text-lg md:text-xl lg:text-2xl text-gray-600 mb-6 md:mb-8 max-w-3xl mx-auto px-4">
+            Start je reis naar een hogere ROI met enterprise-grade mogelijkheden.
+          </p>
+          <div className="flex flex-col md:flex-row gap-4 justify-center mb-6 md:mb-8 px-4">
+            <Button size="lg" className="bg-blue-600 text-white px-6 md:px-8 py-3 md:py-4 rounded-lg font-semibold hover:bg-blue-700 transition text-base md:text-lg" onClick={handleLoginClick}>
+              Start Gratis
+            </Button>
+            <Button size="lg" variant="outline" className="border-blue-600 text-blue-600 px-6 md:px-8 py-3 md:py-4 rounded-lg font-semibold hover:bg-blue-50 transition text-base md:text-lg" onClick={() => scrollToSection('video-section')}>
+              Hoe het werkt
+            </Button>
+          </div>
+          <div className="flex flex-col md:flex-row justify-center gap-4 md:gap-8 text-sm text-gray-500 px-4">
+            <span>• 100% Gratis. Voor Altijd.</span>
+            <span>• Geen verplichtingen</span>
+          </div>
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section id="testimonials" className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <FadeInWhenVisible>
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4 tracking-tight">Wat onze klanten zeggen</h2>
-              <p className="max-w-3xl mx-auto text-xl text-gray-600">
-                Echte verhalen van ondernemers zoals jij.
-              </p>
-            </div>
-          </FadeInWhenVisible>
+      {/* TOP-TIER CAPABILITIES - SocialPilot style */}
+      <section className="bg-gray-50 py-20">
+        <div className="max-w-6xl mx-auto px-4">
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <FadeInWhenVisible key={index}>
-                <Card className="bg-gray-50 border-0 shadow-md">
-                  <CardContent className="pt-6">
-                    <div className="flex items-center mb-4">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
-                      ))}
-                    </div>
-                    <p className="text-gray-700 mb-6 italic">"{testimonial.quote}"</p>
-                    <div className="flex items-center">
-                      <img className="h-12 w-12 rounded-full mr-4 object-cover" src={testimonial.avatar} alt={`Klantreview ${testimonial.name} voorraadbeheer`} />
-                      <div>
-                        <p className="font-semibold text-gray-900">{testimonial.name}</p>
-                        <p className="text-sm text-gray-500">{testimonial.role}</p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </FadeInWhenVisible>
+            {capabilities.map((capability) => (
+              <div key={capability.title} className="bg-white p-8 rounded-lg shadow-lg hover:shadow-md transition-shadow">
+                <div className="text-blue-600 mb-4">{capability.icon}</div>
+                <h3 className="text-xl font-bold mb-3">{capability.title}</h3>
+                <p className="text-gray-600 mb-4">{capability.desc}</p>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
 
-      {/* Final CTA Section */}
-      <section className="bg-white">
-          <div className="max-w-4xl mx-auto text-center py-16 px-4 sm:py-20 sm:px-6 lg:px-8">
-              <FadeInWhenVisible>
-                  <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
-                      <span className="block">Klaar om je voorraadbeheer te vereenvoudigen?</span>
-                  </h2>
-                  <p className="mt-4 text-lg leading-6 text-gray-600">
-                      Creëer vandaag nog je gratis account. Geen creditcard nodig, geen verplichtingen.
-                  </p>
-                  <Button size="lg" className="mt-8 w-full sm:w-auto text-xl px-10 py-6 bg-blue-600 hover:bg-blue-700 text-white font-bold shadow-lg transition-transform transform hover:scale-105" onClick={handleLoginClick}>
-                      Transformeer je Stockbeheer
-                  </Button>
-              </FadeInWhenVisible>
+
+      {/* FEATURES (afwisselend beeld/tekst) */}
+      {landingFeatures.map((feature, idx) => (
+        <section
+          key={feature.title}
+          className="max-w-6xl mx-auto px-4 py-20"
+        >
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-6">{feature.title}</h2>
+            <p className="text-lg text-gray-700 leading-relaxed max-w-3xl mx-auto">{feature.desc}</p>
           </div>
+          <div className="flex justify-center">
+            <img
+              src={feature.img}
+              alt={feature.title}
+              className="rounded-lg w-full max-w-4xl h-80 object-contain"
+            />
+          </div>
+        </section>
+      ))}
+
+      {/* VIDEO SECTION */}
+      <section id="video-section" className="bg-gray-50 py-20">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <h2 className="text-4xl font-bold mb-6">
+            <span className="block">Hoe Werkt Het?</span>
+            <span className="block text-blue-600">Bekijk in 1 Minuut</span>
+          </h2>
+          <p className="text-xl text-gray-600 mb-12 max-w-2xl mx-auto">
+            Ontdek hoe eenvoudig voorraadbeheer kan zijn met stockflow.
+          </p>
+          <div className="flex justify-center">
+            <video 
+              controls 
+              poster="/Inventory-Management.png" 
+              className="rounded-lg shadow-lg w-full max-w-3xl"
+            >
+              <source src="/intro_vid.mp4" type="video/mp4" />
+              Je browser ondersteunt deze video niet.
+            </video>
+          </div>
+        </div>
+      </section>
+
+      {/* TESTIMONIALS - SocialPilot style */}
+      <section className="bg-gray-50 py-20">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold mb-4">
+              <span className="block">Hoor Van Onze</span>
+              <span className="block text-blue-600">Gebruikers</span>
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {testimonials.map((t) => (
+              <div
+                key={t.name}
+                className="bg-white p-8 rounded-lg shadow-lg"
+              >
+                <p className="italic mb-6 text-gray-700">"{t.quote}"</p>
+                <div className="flex items-center">
+                  <img className="h-12 w-12 rounded-full mr-4 object-cover" src={t.avatar} alt={t.name} />
+                  <div>
+                    <div className="font-bold">{t.name}</div>
+                    <div className="text-sm text-gray-500">{t.role}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </section>
 
 
+      {/* FINAL CTA - SocialPilot style */}
+      <section className="bg-blue-600 text-white py-20">
+        <div className="max-w-4xl mx-auto text-center px-4">
+          <h2 className="text-4xl font-bold mb-6">
+            Focus op het Bouwen van Geweldige Bedrijven
+          </h2>
+          <p className="text-xl mb-8 opacity-90">
+            Met de beste mogelijkheden toegankelijk voor iedereen.
+          </p>
+          <div className="flex flex-col md:flex-row gap-4 justify-center">
+            <Button size="lg" className="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold shadow-lg hover:bg-gray-100 transition text-lg" onClick={handleLoginClick}>
+              Start Gratis
+            </Button>
 
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white">
-        <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-          <div className="xl:grid xl:grid-cols-3 xl:gap-8">
-              <div className="space-y-8 xl:col-span-1">
-                  <h3 className="text-2xl font-bold">stockflow</h3>
-                  <p className="text-gray-400 text-base">
-                      Eenvoudig en slim stockbeheer voor KMO's en zelfstandigen in Vlaanderen.
-                  </p>
-              </div>
-              <div className="mt-12 grid grid-cols-2 gap-8 xl:mt-0 xl:col-span-2">
-                  <div className="md:grid md:grid-cols-2 md:gap-8">
-                      <div>
-                          <h4 className="text-sm font-semibold text-gray-200 tracking-wider uppercase">Product</h4>
-                          <ul className="mt-4 space-y-4">
-                              <li><Link to="#features" onClick={(e) => { e.preventDefault(); scrollToSection('features'); }} className="text-base text-gray-400 hover:text-white">Voordelen</Link></li>
-                              <li><Link to="#pricing" onClick={(e) => { e.preventDefault(); scrollToSection('pricing'); }} className="text-base text-gray-400 hover:text-white">Prijzen</Link></li>
-                              <li><Link to="#testimonials" onClick={(e) => { e.preventDefault(); scrollToSection('testimonials'); }} className="text-base text-gray-400 hover:text-white">Klanten</Link></li>
-                          </ul>
-                      </div>
-                      <div className="mt-12 md:mt-0">
-                          <h4 className="text-sm font-semibold text-gray-200 tracking-wider uppercase">Bedrijf</h4>
-                          <ul className="mt-4 space-y-4">
-                              <li><Link to="/over-ons" className="text-base text-gray-400 hover:text-white">Over Ons</Link></li>
-                              <li><Link to="/blog" className="text-base text-gray-400 hover:text-white">Blog</Link></li>
-                              <li><Link to="/contact" className="text-base text-gray-400 hover:text-white">Contact</Link></li>
-                          </ul>
-                      </div>
-                  </div>
-                  <div className="md:grid md:grid-cols-2 md:gap-8">
-                      <div>
-                          <h4 className="text-sm font-semibold text-gray-200 tracking-wider uppercase">Wettelijk</h4>
-                          <ul className="mt-4 space-y-4">
-                              <li><Link to="/privacybeleid" className="text-base text-gray-400 hover:text-white">Privacybeleid</Link></li>
-                              <li><Link to="/gebruiksvoorwaarden" className="text-base text-gray-400 hover:text-white">Gebruiksvoorwaarden</Link></li>
-                          </ul>
-                      </div>
-                  </div>
-              </div>
           </div>
-          <div className="mt-12 border-t border-gray-700 pt-8">
-              <p className="text-base text-gray-400 text-center">&copy; {new Date().getFullYear()} stockflow. Alle rechten voorbehouden.</p>
+        </div>
+      </section>
+
+      {/* FOOTER - SocialPilot style */}
+      <footer className="bg-gray-900 text-gray-200 py-12">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+            <div>
+              <h3 className="text-xl font-bold mb-4">stockflow</h3>
+              <p className="text-gray-400">
+                Eenvoudig en slim Voorraadbeheer voor KMO's en zelfstandigen in Vlaanderen.
+              </p>
+            </div>
+
+
+          </div>
+          <div className="border-t border-gray-700 pt-8 text-center">
+            <p className="text-gray-400">&copy; {new Date().getFullYear()} stockflow. Alle rechten voorbehouden.</p>
           </div>
         </div>
       </footer>
-
-
     </div>
   );
 };
