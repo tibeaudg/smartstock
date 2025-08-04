@@ -90,8 +90,9 @@ export const StockMovements = () => {
       {/* Filters */}
       <div className="space-y-4">
         {/* Search and Quick Filters */}
-        <div className="flex flex-col sm:flex-row gap-4">
-          <div className="flex-1 relative">
+        <div className="space-y-4">
+          {/* Search bar - full width */}
+          <div className="relative">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Zoek producten"
@@ -100,34 +101,38 @@ export const StockMovements = () => {
               onChange={(e) => setFilters(prev => ({ ...prev, searchQuery: e.target.value }))}
             />
           </div>
-          <Select
-            value={filters.transactionType}
-            onValueChange={(value) => setFilters(prev => ({ ...prev, transactionType: value as 'all' | 'incoming' | 'outgoing' }))}
-          >
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Transaction Type" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Alle Types</SelectItem>
-              <SelectItem value="incoming">In</SelectItem>
-              <SelectItem value="outgoing">Out</SelectItem>
-            </SelectContent>
-          </Select>
-          <Select
-            value={filters.dateRange}
-            onValueChange={(value) => setFilters(prev => ({ ...prev, dateRange: value as 'all' | 'today' | 'week' | 'month' | 'custom' }))}
-          >
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Date Range" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Datum</SelectItem>
-              <SelectItem value="today">Vandaag</SelectItem>
-              <SelectItem value="week">Laatste 7 Dagen</SelectItem>
-              <SelectItem value="month">Laatste 30 Dagen</SelectItem>
-              <SelectItem value="custom">Aangepast</SelectItem>
-            </SelectContent>
-          </Select>
+          
+          {/* Filters row - side by side on mobile */}
+          <div className="flex gap-2">
+            <Select
+              value={filters.transactionType}
+              onValueChange={(value) => setFilters(prev => ({ ...prev, transactionType: value as 'all' | 'incoming' | 'outgoing' }))}
+            >
+              <SelectTrigger className="flex-1">
+                <SelectValue placeholder="Type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Alle Types</SelectItem>
+                <SelectItem value="incoming">In</SelectItem>
+                <SelectItem value="outgoing">Out</SelectItem>
+              </SelectContent>
+            </Select>
+            <Select
+              value={filters.dateRange}
+              onValueChange={(value) => setFilters(prev => ({ ...prev, dateRange: value as 'all' | 'today' | 'week' | 'month' | 'custom' }))}
+            >
+              <SelectTrigger className="flex-1">
+                <SelectValue placeholder="Datum" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Alle</SelectItem>
+                <SelectItem value="today">Vandaag</SelectItem>
+                <SelectItem value="week">7 Dagen</SelectItem>
+                <SelectItem value="month">30 Dagen</SelectItem>
+                <SelectItem value="custom">Aangepast</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
 
         {/* Date Range Picker (if custom selected) */}
@@ -208,58 +213,57 @@ export const StockMovements = () => {
       )}
 
 
-      {/* Transactions Table */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-        <div className="overflow-x-auto">
-          
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-4 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Datum</th>
-                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
-                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Gebruiker</th>
-                <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-                <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Aantal</th>
-                {!isMobile && (
-                  <>
-                    <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Eenheidsprijs</th>
-                    <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Totaal</th>
-                  </>
-                )}
-              </tr>
-            </thead>
+             {/* Transactions Table */}
+       <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+         <div className={isMobile ? "" : "overflow-x-auto"}>
+           
+           <table className={`${isMobile ? "w-full" : "min-w-full"} divide-y divide-gray-200`}>
+                         <thead className="bg-gray-50">
+               <tr>
+                 <th className={`${isMobile ? "px-2 py-2" : "px-4 py-2"} text-left text-xs font-medium text-gray-500 uppercase tracking-wider ${isMobile ? "w-1/2" : ""}`}>Product</th>
+                 <th className={`${isMobile ? "px-1 py-2" : "px-4 py-2"} text-left text-xs font-medium text-gray-500 uppercase tracking-wider ${isMobile ? "w-1/6" : ""}`}>Gebruiker</th>
+                 <th className={`${isMobile ? "px-1 py-2" : "px-4 py-2"} text-center text-xs font-medium text-gray-500 uppercase tracking-wider ${isMobile ? "w-1/6" : ""}`}>Type</th>
+                 <th className={`${isMobile ? "px-2 py-2" : "px-4 py-2"} text-right text-xs font-medium text-gray-500 uppercase tracking-wider ${isMobile ? "w-1/6" : ""}`}>Aantal</th>
+                 {!isMobile && (
+                   <>
+                     <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Eenheidsprijs</th>
+                     <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Totaal</th>
+                   </>
+                 )}
+               </tr>
+             </thead>
             <tbody className="divide-y divide-gray-200">
               {transactions.map((transaction, index) => (
-                <tr 
-                  key={transaction.id}
-                  className={`${
-                    index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
-                  } hover:bg-gray-100 transition-colors`}
-                >
-                  <td className="px-4 py-2 whitespace-nowrap text-sm">
-                    {format(new Date(transaction.created_at), 'dd/MM/yyyy HH:mm')}
-                  </td>
-                  <td className="px-4 py-2 text-sm font-bold">{transaction.product_name}</td>
-                  <td className="px-4 py-2 text-sm">
-                    {transaction.first_name || transaction.last_name
-                      ? `${transaction.first_name ?? ''} ${transaction.last_name ?? ''}`.trim()
-                      : transaction.email || 'Onbekend'}
-                  </td>
-                  <td className="px-4 py-2 text-center">
-                    <Badge
-                      variant={transaction.transaction_type === 'incoming' ? 'default' : 'destructive'}
-                      className={transaction.transaction_type === 'incoming' ? 'bg-green-500 hover:bg-green-600' : ''}
-                    >
-                      {transaction.transaction_type === 'incoming' ? 'In' : 'Uit'}
-                    </Badge>
-                  </td>
-                  <td className="px-4 py-2 text-right text-sm font-medium">
-                    {transaction.transaction_type === 'outgoing' ? (
-                      <span className="text-red-600">- {transaction.quantity}</span>
-                    ) : (
-                      <span className="text-green-600">+ {transaction.quantity}</span>
-                    )}
-                  </td>
+                                 <tr 
+                   key={transaction.id}
+                   className={`${
+                     index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
+                   } hover:bg-gray-100 transition-colors`}
+                 >
+                   <td className={`${isMobile ? "px-2 py-2" : "px-4 py-2"} text-sm`}>
+                     <div className="font-bold break-words">{transaction.product_name}</div>
+                     <div className="text-xs text-gray-500 mt-1">
+                       {format(new Date(transaction.created_at), 'dd/MM/yyyy HH:mm')}
+                     </div>
+                   </td>
+                   <td className={`${isMobile ? "px-1 py-2" : "px-4 py-2"} text-sm`}>
+                     <div className="break-words">{transaction.first_name || 'Onbekend'}</div>
+                   </td>
+                   <td className={`${isMobile ? "px-1 py-2" : "px-4 py-2"} text-center`}>
+                     <Badge
+                       variant={transaction.transaction_type === 'incoming' ? 'default' : 'destructive'}
+                       className={`${transaction.transaction_type === 'incoming' ? 'bg-green-500 hover:bg-green-600' : ''} ${isMobile ? 'text-xs px-1 py-0' : ''}`}
+                     >
+                       {transaction.transaction_type === 'incoming' ? 'In' : 'Uit'}
+                     </Badge>
+                   </td>
+                   <td className={`${isMobile ? "px-2 py-2" : "px-4 py-2"} text-right text-sm font-medium`}>
+                     {transaction.transaction_type === 'outgoing' ? (
+                       <span className="text-red-600">- {transaction.quantity}</span>
+                     ) : (
+                       <span className="text-green-600">+ {transaction.quantity}</span>
+                     )}
+                   </td>
                   {!isMobile && (
                     <>
                       <td className="px-4 py-2 text-right text-sm">

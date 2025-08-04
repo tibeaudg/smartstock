@@ -9,7 +9,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { User, Key, CheckCircle, Check } from 'lucide-react';
+import { User, Key, CheckCircle, Check, LogOut } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { useNavigate } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
@@ -32,7 +34,9 @@ const passwordSchema = z.object({
 type PasswordFormData = z.infer<typeof passwordSchema>;
 
 export const ProfileSettings = () => {
-  const { userProfile, user } = useAuth();
+  const { userProfile, user, signOut } = useAuth();
+  const isMobile = useIsMobile();
+  const navigate = useNavigate();
 
   const [isProfileLoading, setIsProfileLoading] = useState(false);
   const [isProfileSuccess, setIsProfileSuccess] = useState(false);
@@ -123,6 +127,15 @@ const onPasswordSubmit: SubmitHandler<PasswordFormData> = async (data) => {
       // await supabase.functions.invoke('delete-user-account');
   };
 
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      navigate('/auth');
+    } catch (error) {
+      console.error('Error during sign out:', error);
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="grid gap-6 md:grid-cols-2">
@@ -192,6 +205,31 @@ const onPasswordSubmit: SubmitHandler<PasswordFormData> = async (data) => {
 
         </Card>
       </div>
+
+      {/* Logout Section - Only visible on mobile */}
+      {isMobile && (
+        <Card className="border-red-200 bg-red-50">
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2 text-red-700">
+              <LogOut className="w-4 h-4" />
+              <span>Afmelden</span>
+            </CardTitle>
+            <CardDescription className="text-red-600">
+              Meld u af van uw account
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Button
+              variant="destructive"
+              onClick={handleSignOut}
+              className="w-full"
+            >
+              <LogOut className="w-4 h-4 mr-2" />
+              Afmelden
+            </Button>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 };

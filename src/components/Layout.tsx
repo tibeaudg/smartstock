@@ -3,6 +3,7 @@ import { Sidebar } from './Sidebar';
 import { MobileBottomNav } from './MobileBottomNav';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { UserProfile } from '@/hooks/useAuth';
+import { BranchSelector } from './BranchSelector';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -22,6 +23,15 @@ export const Layout = ({ children, currentTab, onTabChange, userRole, userProfil
 
   return (
     <div className="h-screen flex flex-col bg-gray-100">
+      {/* Header with Branch Selector - Only on Mobile */}
+      {isMobile && (
+        <div className="bg-white border-b border-gray-200 px-4 py-3 flex-shrink-0">
+          <div className="max-w-7xl mx-auto">
+            <BranchSelector />
+          </div>
+        </div>
+      )}
+
       <div className="flex flex-1 overflow-hidden">
         {!isMobile && (
           <Sidebar

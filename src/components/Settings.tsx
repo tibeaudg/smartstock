@@ -30,8 +30,11 @@ import {
 export const Settings = () => {
   const { userProfile } = useAuth();
   const location = useLocation();
-  // Lees gewenste tab uit router state
-  const initialTab = (location.state && location.state.tab) || 'profile';
+  
+  // Get tab from URL query parameter or router state
+  const urlParams = new URLSearchParams(location.search);
+  const tabFromUrl = urlParams.get('tab');
+  const initialTab = tabFromUrl || (location.state && location.state.tab) || 'profile';
   const [activeTab, setActiveTab] = useState(initialTab);
 
   // Dispatch event bij mount of route-verandering naar settings

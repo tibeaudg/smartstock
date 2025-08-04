@@ -16,6 +16,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { EditProductInfoModal } from './EditProductInfoModal';
 import { EditProductStockModal } from './EditProductStockModal';
 import { ImagePreviewModal } from './ImagePreviewModal';
+import { ProductActionModal } from './ProductActionModal';
 
 const getStockStatus = (quantity: number, minLevel: number) => {
   if (quantity > minLevel) {
@@ -64,6 +65,7 @@ export const StockList = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditInfoModalOpen, setIsEditInfoModalOpen] = useState(false);
+  const [isProductActionModalOpen, setIsProductActionModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [selectedAction, setSelectedAction] = useState<StockAction | null>(null);
   const [selectedProductIds, setSelectedProductIds] = useState<string[]>([]);
@@ -156,33 +158,40 @@ export const StockList = () => {
     setIsEditModalOpen(true);
   };
 
-  const queryClient = useQueryClient();
-
-  const handleDelete = async (productId: string) => {
-    if (!user || !activeBranch) {
-      toast.error('Je moet ingelogd zijn en een filiaal geselecteerd hebben');
-      return;
-    }
-    const confirmMessage = 'Weet je zeker dat je dit product wilt verwijderen?\n\n' +
-      'LET OP: Dit zal ook alle gerelateerde transacties verwijderen!';
-    if (!confirm(confirmMessage)) return;
-    try {
-      const { error: deleteError } = await supabase
-        .from('products')
-        .delete()
-        .match({ id: productId, branch_id: activeBranch.branch_id });
-      if (deleteError) {
-        toast.error(`Verwijderen mislukt: ${deleteError.message}`);
-        return;
-      }
-      toast.success('Product en gerelateerde transacties succesvol verwijderd');
-      refetch();
-      // Forceer update van productCount in Sidebar
-      queryClient.invalidateQueries({ queryKey: ['productCount', activeBranch.branch_id, user.id] });
-    } catch (error) {
-      toast.error('Er is een onverwachte fout opgetreden');
+  // Mobile action handlers
+  const handleMobileStockIn = () => {
+    if (selectedProduct) {
+      setSelectedAction('in');
+      setIsProductActionModalOpen(false);
+      setIsEditModalOpen(true);
     }
   };
+
+  const handleMobileStockOut = () => {
+    if (selectedProduct) {
+      setSelectedAction('out');
+      setIsProductActionModalOpen(false);
+      setIsEditModalOpen(true);
+    }
+  };
+
+  const handleMobileEdit = () => {
+    setIsProductActionModalOpen(false);
+    setIsEditInfoModalOpen(true);
+  };
+
+
+
+  // Back navigation handlers
+  const handleBackToActionModal = () => {
+    setIsEditModalOpen(false);
+    setIsEditInfoModalOpen(false);
+    setIsProductActionModalOpen(true);
+  };
+
+  const queryClient = useQueryClient();
+
+
 
   // Handle select all
   useEffect(() => {
@@ -287,17 +296,15 @@ export const StockList = () => {
             <thead className="bg-gray-50">
               <tr>
                 <th className="px-2 py-2 text-left font-medium text-gray-500 uppercase tracking-wider">Product</th>
-                <th className="px-2 py-2 text-left font-medium text-gray-500 uppercase tracking-wider">Stock</th>
-                <th className="px-2 py-2 text-left font-medium text-gray-500 uppercase tracking-wider">Min.</th>
-                <th className="px-2 py-2 text-left font-medium text-gray-500 uppercase tracking-wider">Prijs</th>
-                <th className="px-2 py-2 text-left font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                <th className="px-2 py-2 text-left font-medium text-gray-500 uppercase tracking-wider">Acties</th>
+                <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Stock</th>
+                <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Min.</th>
+                <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Status</th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {filteredProducts.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-2 py-4 text-center text-gray-500">
+                  <td colSpan={4} className="px-2 py-4 text-center text-gray-500">
                     {productsTyped.length === 0 ? 'Geen producten gevonden voor dit filiaal.' : 'Geen producten voldoen aan je filters.'}
                   </td>
                 </tr>
@@ -305,15 +312,18 @@ export const StockList = () => {
                 filteredProducts.map((product) => {
                   const stockStatus = getStockStatus(product.quantity_in_stock, product.minimum_stock_level);
                   return (
-                    <tr key={product.id} className="hover:bg-gray-50 transition-colors">
+                                         <tr 
+                       key={product.id} 
+                       className="hover:bg-gray-50 transition-colors cursor-pointer"
+                       onClick={() => { setSelectedProduct(product); setIsProductActionModalOpen(true); }}
+                     >
                       <td className="px-2 py-2 whitespace-nowrap">
                         <div className="flex items-center gap-2">
                           {product.image_url ? (
                             <img
                               src={product.image_url}
                               alt={`Productfoto van ${product.name} | voorraadbeheer`}
-                              className="w-10 h-10 object-cover rounded border cursor-zoom-in"
-                              onClick={e => { e.stopPropagation(); setPreviewImageUrl(product.image_url!); setIsImagePreviewOpen(true); }}
+                              className="w-10 h-10 object-cover rounded border"
                             />
                           ) : (
                             <div className="w-10 h-10 bg-gray-200 rounded border flex items-center justify-center text-[10px] text-gray-400">Geen</div>
@@ -328,49 +338,10 @@ export const StockList = () => {
                       </td>
                       <td className="px-2 py-2 text-center font-semibold">{product.quantity_in_stock}</td>
                       <td className="px-2 py-2 text-center">{product.minimum_stock_level}</td>
-                      <td className="px-2 py-2 text-center text-green-600 font-semibold">€{product.unit_price.toFixed(2)}</td>
                       <td className="px-2 py-2 text-center">
                         <Badge variant={getStockStatusVariant(stockStatus)} className="text-[10px] px-2 py-1 rounded-full">
                           {stockStatus}
                         </Badge>
-                      </td>
-                      <td className="px-2 py-2 text-center">
-                        <div className="flex flex-row gap-1 items-center justify-center">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={e => { e.stopPropagation(); handleStockAction(product, 'in'); }}
-                            className="text-green-600 border-green-600 hover:text-white hover:bg-green-600 hover:border-green-600 flex items-center gap-1 px-2 py-1"
-                          >
-                            <Plus className="h-4 w-4" />
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={e => { e.stopPropagation(); handleStockAction(product, 'out'); }}
-                            className="text-red-600 border-red-600 hover:text-white hover:bg-red-600 hover:border-red-600 flex items-center gap-1 px-2 py-1"
-                          >
-                            <Minus className="h-4 w-4" />
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={e => { e.stopPropagation(); setSelectedProduct(product); setIsEditInfoModalOpen(true); }}
-                            className="text-gray-600 hover:text-blue-700 p-1"
-                            aria-label="Bewerken"
-                          >
-                            <Edit className="h-4 w-4" />
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={e => { e.stopPropagation(); handleDelete(product.id); }}
-                            className="text-red-600 hover:text-red-700 p-1"
-                            aria-label="Verwijder"
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </div>
                       </td>
                     </tr>
                   );
@@ -380,45 +351,58 @@ export const StockList = () => {
           </table>
         </div>
 
+        <ProductActionModal
+          isOpen={isProductActionModalOpen}
+          onClose={() => {
+            setIsProductActionModalOpen(false);
+            setSelectedProduct(null);
+          }}
+          product={selectedProduct}
+          onEdit={handleMobileEdit}
+          onStockIn={handleMobileStockIn}
+          onStockOut={handleMobileStockOut}
+        />
         <ImagePreviewModal
           isOpen={isImagePreviewOpen}
           onClose={() => setIsImagePreviewOpen(false)}
           imageUrl={previewImageUrl}
           alt="Productfoto preview"
         />
-        {selectedProduct && (
-          <EditProductStockModal
-            isOpen={isEditModalOpen}
-            onClose={() => {
-              setIsEditModalOpen(false);
-              setSelectedProduct(null);
-              setSelectedAction(null);
-            }}
-            onProductUpdated={() => {
-              refetch();
-              setIsEditModalOpen(false);
-              setSelectedProduct(null);
-              setSelectedAction(null);
-            }}
-            product={selectedProduct}
-            actionType={selectedAction!}
-          />
-        )}
-        {selectedProduct && (
-          <EditProductInfoModal
-            isOpen={isEditInfoModalOpen}
-            onClose={() => {
-              setIsEditInfoModalOpen(false);
-              setSelectedProduct(null);
-            }}
-            onProductUpdated={() => {
-              refetch();
-              setIsEditInfoModalOpen(false);
-              setSelectedProduct(null);
-            }}
-            product={selectedProduct}
-          />
-        )}
+                 {selectedProduct && (
+           <EditProductStockModal
+             isOpen={isEditModalOpen}
+             onClose={() => {
+               setIsEditModalOpen(false);
+               setSelectedProduct(null);
+               setSelectedAction(null);
+             }}
+             onProductUpdated={() => {
+               refetch();
+               setIsEditModalOpen(false);
+               setSelectedProduct(null);
+               setSelectedAction(null);
+             }}
+             product={selectedProduct}
+             actionType={selectedAction!}
+             onBack={handleBackToActionModal}
+           />
+         )}
+         {selectedProduct && (
+           <EditProductInfoModal
+             isOpen={isEditInfoModalOpen}
+             onClose={() => {
+               setIsEditInfoModalOpen(false);
+               setSelectedProduct(null);
+             }}
+             onProductUpdated={() => {
+               refetch();
+               setIsEditInfoModalOpen(false);
+               setSelectedProduct(null);
+             }}
+             product={selectedProduct}
+             onBack={handleBackToActionModal}
+           />
+         )}
         <AddProductModal
           isOpen={isAddModalOpen}
           onClose={() => setIsAddModalOpen(false)}
@@ -530,8 +514,9 @@ export const StockList = () => {
                   return (
                     <tr
                       key={product.id}
-                      className={`${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'} hover:bg-gray-100 transition-colors`}
+                      className={`${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'} hover:bg-gray-100 transition-colors cursor-pointer`}
                       style={{ height: '80px' }}
+                      onClick={() => { setSelectedProduct(product); setIsEditInfoModalOpen(true); }}
                     >
                       {isAdmin && (
                         <td className="px-2 py-2 text-center">
@@ -586,7 +571,7 @@ export const StockList = () => {
                           <Button
                             variant="outline"
                             size="sm"
-                            onClick={() => handleStockAction(product, 'in')}
+                            onClick={(e) => { e.stopPropagation(); handleStockAction(product, 'in'); }}
                             className="text-green-600 bg-green-100 border border-green-600 hover:text-white hover:bg-green-600 hover:border-green-600"
                           >
                             <Plus className="h-4 w-4" />
@@ -594,24 +579,12 @@ export const StockList = () => {
                           <Button
                             variant="outline"
                             size="sm"
-                            onClick={() => handleStockAction(product, 'out')}
+                            onClick={(e) => { e.stopPropagation(); handleStockAction(product, 'out'); }}
                             className="text-red-600 bg-red-100 border border-red-600 hover:text-white hover:bg-red-600 hover:border-green-600"
                           >
                             <Minus className="h-4 w-4" />
                           </Button>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => { setSelectedProduct(product); setIsEditInfoModalOpen(true); }}
-                            className="text-gray-600 hover:text-blue-700"
-                          >
-                            <Edit className="h-4 w-4" />
-                          </Button>
-                          {isAdmin && (
-                            <Button variant="destructive" size="sm" onClick={() => handleDelete(product.id)}>
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          )}
+
                         </div>
                       </td>
                     </tr>

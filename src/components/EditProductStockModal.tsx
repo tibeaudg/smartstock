@@ -6,6 +6,8 @@ import { Label } from '@/components/ui/label';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { useQueryClient } from '@tanstack/react-query';
+import { ArrowLeft } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface Product {
   id: string;
@@ -25,6 +27,7 @@ interface EditProductStockModalProps {
   onProductUpdated: () => void;
   product: Product;
   actionType: 'in' | 'out';
+  onBack?: () => void; // New prop for back navigation
 }
 
 export const EditProductStockModal = ({
@@ -32,11 +35,13 @@ export const EditProductStockModal = ({
   onClose,
   onProductUpdated,
   product,
-  actionType
+  actionType,
+  onBack
 }: EditProductStockModalProps) => {
   const [quantity, setQuantity] = useState<string>('');
   const [loading, setLoading] = useState(false);
   const queryClient = useQueryClient();
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     if (isOpen) setQuantity('');
@@ -107,37 +112,72 @@ export const EditProductStockModal = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-xs mx-auto px-14">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
+      <DialogContent className={`${isMobile ? 'w-full max-w-full mx-auto p-0 h-full max-h-full rounded-none' : 'max-w-xs mx-auto px-14'}`}>
+        <DialogHeader className={`${isMobile ? 'p-4 border-b' : ''}`}>
+          {isMobile && onBack && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onBack}
+              className="absolute left-4 top-4 z-10"
+            >
+              <ArrowLeft className="h-4 w-4" />
+            </Button>
+          )}
+          <DialogTitle className={`flex items-center gap-2 ${isMobile ? 'text-center pr-8' : ''}`}>
             <span className={actionColor}>{actionTitle}: {product.name}</span>
           </DialogTitle>
         </DialogHeader>
-        <div className="py-4">
-          <div className="grid gap-2">
-            <Label htmlFor="quantity">Aantal</Label>
-            <Input
-              id="quantity"
-              type="number"
-              value={quantity}
-              onChange={(e) => setQuantity(e.target.value)}
-              placeholder="Voer aantal in"
-              min="1"
-            />
+        
+        <div className={`${isMobile ? 'flex-1 overflow-y-auto p-4' : 'py-4'}`}>
+          <div className="grid gap-4">
+            <div className="grid gap-2">
+              <Label htmlFor="quantity">Aantal</Label>
+              <Input
+                id="quantity"
+                type="number"
+                value={quantity}
+                onChange={(e) => setQuantity(e.target.value)}
+                placeholder="Voer aantal in"
+                min="1"
+                className={isMobile ? 'text-lg' : ''}
+              />
+            </div>
+            
+            {isMobile && (
+              <div className="bg-gray-50 p-4 rounded-lg">
+                <div className="text-sm text-gray-600 mb-2">Huidige voorraad</div>
+                <div className="text-2xl font-bold">{product.quantity_in_stock}</div>
+                <div className="text-sm text-gray-500 mt-1">
+                  {actionType === 'in' 
+                    ? `Na toevoegen: ${product.quantity_in_stock + (parseInt(quantity) || 0)}`
+                    : `Na uithalen: ${product.quantity_in_stock - (parseInt(quantity) || 0)}`
+                  }
+                </div>
+              </div>
+            )}
           </div>
         </div>
-        <DialogFooter>
-          <Button variant="outline" onClick={onClose} disabled={loading}>
-            Annuleren
-          </Button>
-          <Button
-            onClick={handleSubmit}
-            disabled={loading}
-            className={actionType === 'in' ? 'bg-green-600 hover:bg-green-700' : 'bg-red-600 hover:bg-red-700'}
-          >
-            {loading ? 'Bezig...' : actionType === 'in' ? 'Toevoegen' : 'Verwijderen'}
-          </Button>
-        </DialogFooter>
+
+        <div className={`${isMobile ? 'p-4 border-t bg-gray-50' : ''}`}>
+          <div className={`flex gap-2 ${isMobile ? 'flex-col' : 'justify-end'}`}>
+            <Button 
+              variant="outline" 
+              onClick={onClose} 
+              disabled={loading}
+              className={isMobile ? 'w-full' : ''}
+            >
+              Annuleren
+            </Button>
+            <Button
+              onClick={handleSubmit}
+              disabled={loading}
+              className={`${actionType === 'in' ? 'bg-green-600 hover:bg-green-700' : 'bg-red-600 hover:bg-red-700'} ${isMobile ? 'w-full' : ''}`}
+            >
+              {loading ? 'Bezig...' : actionType === 'in' ? 'Toevoegen' : 'Verwijderen'}
+            </Button>
+          </div>
+        </div>
       </DialogContent>
     </Dialog>
   );

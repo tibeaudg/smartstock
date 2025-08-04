@@ -46,11 +46,7 @@ export const AuthPage = () => {
           return;
         }
 
-        toast.success('Welkom terug!');
-        // De onAuthStateChange listener in je AuthProvider zou de app state moeten bijwerken.
-        // De redirect gebeurt dan vanzelf, of je kunt hem hier forceren.
-        const from = (location.state as any)?.from?.pathname || '/dashboard';
-        navigate(from, { replace: true });
+
 
       } else if (mode === 'register') {
         if (password !== confirmPassword) {

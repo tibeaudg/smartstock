@@ -15,6 +15,7 @@ import { AlertCircle } from 'lucide-react'; // Optional: for a warning icon
 import { useNavigate } from 'react-router-dom';
 import { Info } from 'lucide-react';
 import { useQueryClient } from '@tanstack/react-query';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface AddProductModalProps {
   isOpen: boolean;
@@ -43,6 +44,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [showUpgradeNotice, setShowUpgradeNotice] = useState(false);
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
 
   const form = useForm<FormData>({
     defaultValues: {
@@ -280,13 +282,14 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-full max-w-full p-2 md:w-auto md:max-w-lg md:p-6">
-        <DialogHeader>
+      <DialogContent className={`w-full max-w-full mx-auto p-0 ${isMobile ? 'h-full max-h-full rounded-none' : 'md:w-auto md:max-w-lg md:p-6 md:rounded-lg'}`}>
+        <DialogHeader className={`${isMobile ? 'p-4 border-b' : ''}`}>
           <DialogTitle>Nieuw Product Toevoegen</DialogTitle>
         </DialogHeader>
 
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+        <div className={`${isMobile ? 'flex-1 overflow-y-auto p-4' : ''}`}>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
             <FormField
               control={form.control}
               name="name"
@@ -418,16 +421,29 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-2 pt-4">
-              <Button type="button" variant="outline" onClick={onClose} disabled={loading} className="w-full sm:w-auto">
-                Annuleren
-              </Button>
-              <Button type="submit" disabled={loading} className="w-full sm:w-auto">
-                {loading ? 'Toevoegen...' : 'Product Toevoegen'}
-              </Button>
+            <div className={`${isMobile ? 'p-4 border-t bg-gray-50' : 'pt-4'}`}>
+              <div className={`flex gap-2 ${isMobile ? 'flex-col' : 'flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-2'}`}>
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  onClick={onClose} 
+                  disabled={loading} 
+                  className={isMobile ? 'w-full' : 'w-full sm:w-auto'}
+                >
+                  Annuleren
+                </Button>
+                <Button 
+                  type="submit" 
+                  disabled={loading} 
+                  className={isMobile ? 'w-full' : 'w-full sm:w-auto'}
+                >
+                  {loading ? 'Toevoegen...' : 'Product Toevoegen'}
+                </Button>
+              </div>
             </div>
           </form>
         </Form>
+        </div>
       </DialogContent>
       {showUpgradeNotice && (
   <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/30">

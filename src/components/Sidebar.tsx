@@ -5,17 +5,19 @@ import {
   Settings, 
   Menu,
   X,
-  LogOut,
   HelpCircle,
   CircleUserRound 
 } 
 from 'lucide-react';
+import { BranchSelector } from './BranchSelector';
 
 
 import { Button } from '@/components/ui/button';
 import { useAuth, UserProfile } from '@/hooks/useAuth';
 import { useNavigate, NavLink } from 'react-router-dom';
-import { BranchSelector } from './BranchSelector';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { LogOut } from 'lucide-react';
+
 import { useProductCount } from '@/hooks/useDashboardData';
 
 
@@ -29,13 +31,24 @@ interface SidebarProps {
 }
 
 export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProps) => {
+  const { productCount, isLoading } = useProductCount();
+  const isMobile = useIsMobile();
   const { signOut } = useAuth();
   const navigate = useNavigate();
-  const { productCount, isLoading } = useProductCount();
 
   // If blocked, only show settings/invoicing
   const isBlocked = userProfile?.blocked;
   const isOwner = userProfile && userProfile.role === 'admin' && !userProfile.blocked;
+  
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      navigate('/auth');
+    } catch (error) {
+      console.error('Error during sign out:', error);
+    }
+  };
+  
   const menuItems = isBlocked
     ? [
         { id: 'settings', label: 'Instellingen', icon: Settings, path: '/dashboard/settings' },
@@ -52,14 +65,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
         { id: 'settings', label: 'Instellingen', icon: Settings, path: '/dashboard/settings' },
       ];
 
-  const handleSignOut = async () => {
-    try {
-      await signOut();
-      navigate('/auth');
-    } catch (error) {
-      console.error('Error during sign out:', error);
-    }
-  };
+
 
   return (
     <>
@@ -85,63 +91,71 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
               <h1 className="text-lg font-semibold text-gray-900">stockflow</h1>
             </div>
           )}
-
         </div>
 
-        {/* Branch Selector */}
+        {/* User Info */}
         {isOpen && (
           <div className="p-4 border-b border-gray-200 flex-shrink-0">
-            <BranchSelector />
-            <p className="text-xs text-gray-700 pt-3 text-center font-medium">
+            <p className="text-xs text-gray-700 text-center font-medium">
               {userProfile?.first_name || userProfile?.last_name
                 ? `${userProfile?.first_name ?? ''} ${userProfile?.last_name ?? ''}`.trim()
                 : 'Laden...'}
             </p>
           </div>
         )}
-        
 
-        {/* Navigation */}
-        <nav className="flex-1 p-4 overflow-y-auto text-sm">
-          <ul className="space-y-2">
-            {menuItems.map((item) => {
-              const Icon = item.icon;
-              // Producten label aanpassen
-              let label = item.label;
-              if (item.id === 'stock') {
-                label += ` `;
-                if (isLoading) {
-                  label += '(...)';
-                } else {
-                  label += `(${productCount})`;
+        {/* Branch Selector - Only on Desktop */}
+        {isOpen && !isMobile && (
+          <div className="p-4 border-b border-gray-200 flex-shrink-0">
+            <BranchSelector />
+          </div>
+        )}
+
+        {/* Scrollable Content Area */}
+        <div className="flex-1 flex flex-col min-h-0">
+          {/* Navigation */}
+          <nav className="flex-1 p-4 overflow-y-auto text-sm">
+            <ul className="space-y-2">
+              {menuItems.map((item) => {
+                const Icon = item.icon;
+                // Producten label aanpassen
+                let label = item.label;
+                if (item.id === 'stock') {
+                  label += ` `;
+                  if (isLoading) {
+                    label += '(...)';
+                  } else {
+                    label += `(${productCount})`;
+                  }
                 }
-              }
-              
-              return (
-                <li key={item.id}>
-                  <NavLink
-                    to={item.path}
-                    end={item.end} 
+                
+                return (
+                  <li key={item.id}>
+                    <NavLink
+                      to={item.path}
+                      end={item.end} 
+                      className={({ isActive }) => `
+                        w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-left transition-colors
+                        ${isActive 
+                          ? 'bg-blue-50 text-blue-700 border border-blue-200' 
+                          : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                        }
+                      `}
+                    >
+                      <Icon className="w-5 h-5 flex-shrink-0" />
+                      {isOpen && <span className="font-medium ml-3">{label}</span>}
+                    </NavLink>
+                  </li>
+                );
+              })}
+            </ul>
+          </nav>
+        </div>
 
-                    className={({ isActive }) => `
-                      w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-left transition-colors
-                      ${isActive 
-                        ? 'bg-blue-50 text-blue-700 border border-blue-200' 
-                        : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                      }
-                    `}
-                  >
-                    <Icon className="w-5 h-5 flex-shrink-0" />
-                    {isOpen && <span className="font-medium ml-3">{label}</span>}
-                  </NavLink>
-                </li>
-              );
-            })}
-          </ul>
-        </nav>
-
-        {/* Help Section */}
-        <div className="border-t border-gray-200 p-4 flex-shrink-0">
+        {/* Fixed Bottom Section */}
+        <div className="flex-shrink-0">
+          {/* Help Section */}
+          <div className="border-t border-gray-200 p-4">
             <div className="flex items-center space-x-3 px-3 py-2 text-gray-600">
               <HelpCircle className="w-5 h-5 flex-shrink-0" />
               <div>
@@ -149,27 +163,23 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
                 <p className="text-xs text-gray-500">info@stockflow.be</p>
               </div>
             </div>
-        </div>
-
-
-        <div className="border-t border-gray-200 p-4 flex-shrink-0">
-              <div>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleSignOut}
-                  className={`
-                    w-full justify-start text-gray-600 hover:text-red-600 hover:bg-red-50
-                    ${!isOpen ? 'px-2' : 'px-3'}
-                  `}
-                >
-                  <LogOut className="w-4 h-4 flex-shrink-0" />
-                  {isOpen && <span className="ml-3">Afmelden</span>}
-                </Button>              
           </div>
+
+          {/* Logout Button - Only on Desktop */}
+          {!isMobile && (
+            <div className="border-t border-gray-200 p-4">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleSignOut}
+                className="w-full justify-start text-gray-600 hover:text-red-600 hover:bg-red-50"
+              >
+                <LogOut className="w-4 h-4 flex-shrink-0" />
+                {isOpen && <span className="ml-3">Afmelden</span>}
+              </Button>
+            </div>
+          )}
         </div>
-          
-          
       </div>
     </>
   );

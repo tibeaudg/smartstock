@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Building2, Plus } from 'lucide-react';
 import { useBranches } from '@/hooks/useBranches';
 import { CreateBranchModal } from './CreateBranchModal';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
+import { useNavigate } from 'react-router-dom';
 
 export const BranchSelector = () => {
   const { branches, activeBranch, setActiveBranch, loading, refreshBranches } = useBranches();
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [isSwitching, setIsSwitching] = useState(false);
+  const navigate = useNavigate();
 
   const handleValueChange = async (value: string) => {
     if (value === 'add-new') {
@@ -47,6 +50,10 @@ export const BranchSelector = () => {
   const handleBranchCreated = async () => {
     setShowCreateModal(false);
     await refreshBranches();
+  };
+
+  const handleNavigateToBranches = () => {
+    navigate('/dashboard/settings?tab=branches');
   };
 
   if (loading) {
@@ -118,6 +125,15 @@ export const BranchSelector = () => {
           </SelectContent>
         </Select>
 
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={handleNavigateToBranches}
+          className="w-full flex items-center justify-center gap-2 text-blue-600 border-blue-200 hover:bg-blue-50"
+        >
+          <Plus className="h-4 w-4" />
+          Filiaal toevoegen
+        </Button>
       </div>
 
       <CreateBranchModal 
