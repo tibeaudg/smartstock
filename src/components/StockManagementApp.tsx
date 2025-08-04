@@ -70,7 +70,7 @@ const AppContent: React.FC = () => {
         onOpenChange={() => {
         }}
         onBranchCreated={() => {
-          console.log('New branch created');
+          // New branch created successfully
         }}
       />
     </div>

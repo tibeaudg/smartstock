@@ -24,6 +24,19 @@ export default tseslint.config(
         { allowConstantExport: true },
       ],
       "@typescript-eslint/no-unused-vars": "off",
+      // Security rules
+      "no-console": ["warn", { allow: ["warn", "error"] }],
+      "no-debugger": "error",
+      "no-eval": "error",
+      "no-implied-eval": "error",
+      "no-new-func": "error",
+      "no-script-url": "error",
+      "no-unsafe-optional-chaining": "error",
+      "no-unsafe-unary-negation": "error",
+      "prefer-promise-reject-errors": "error",
+      "require-await": "error",
+      "no-var": "error",
+      "prefer-const": "error",
     },
   }
 );

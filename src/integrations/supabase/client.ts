@@ -2,8 +2,8 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from './types';
 
-const SUPABASE_URL = "https://sszuxnqhbxauvershuys.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNzenV4bnFoYnhhdXZlcnNodXlzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk4OTEyODYsImV4cCI6MjA2NTQ2NzI4Nn0.-jvEJ1uUwdcJKZ1JbgOtD6jr-e0FoeepPrj8rpSFviQ";
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || "https://sszuxnqhbxauvershuys.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNzenV4bnFoYnhhdXZlcnNodXlzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk4OTEyODYsImV4cCI6MjA2NTQ2NzI4Nn0.-jvEJ1uUwdcJKZ1JbgOtD6jr-e0FoeepPrj8rpSFviQ";
 
 if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
   throw new Error('Missing Supabase credentials');
@@ -43,7 +43,6 @@ export const supabase = createClient<Database>(
       storage: getSafeLocalStorage(),
       autoRefreshToken: true,
       detectSessionInUrl: true,  // <-- Enable this to handle session tokens from URL automatically
-      debug: true // Enable debug mode
     },
     global: {
       headers: {
@@ -55,7 +54,7 @@ export const supabase = createClient<Database>(
 
 // Listen for auth state changes
 supabase.auth.onAuthStateChange((event, session) => {
-  console.log('Auth state changed:', event, session ? 'Session exists' : 'No session');
+  // Auth state change logging removed for production security
 });
 
 // Export a function to check connection

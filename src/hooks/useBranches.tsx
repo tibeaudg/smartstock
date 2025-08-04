@@ -96,7 +96,7 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     try {
-      console.log('Fetching branches for user:', user.id);
+      // Fetching branches for user
       const { data, error } = await supabase.rpc('get_user_branches', {
         user_id: user.id
       });

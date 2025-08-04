@@ -1,8 +1,11 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { rateLimiter } from './rate-limiter.ts';
 
 const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Origin': process.env.NODE_ENV === 'development' 
+    ? '*' 
+    : 'https://stockflow.app,https://www.stockflow.app',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-application-name'
 };
 const createErrorResponse = (message, status) => {
@@ -19,6 +22,23 @@ serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders });
   }
+
+  // Rate limiting check
+  if (rateLimiter.isRateLimited(req)) {
+    return new Response(JSON.stringify({ 
+      error: 'Rate limit exceeded. Please try again later.',
+      retryAfter: Math.ceil((rateLimiter.getResetTime(req) - Date.now()) / 1000)
+    }), {
+      status: 429,
+      headers: {
+        ...corsHeaders,
+        'Content-Type': 'application/json',
+        'X-RateLimit-Remaining': rateLimiter.getRemainingRequests(req).toString(),
+        'X-RateLimit-Reset': rateLimiter.getResetTime(req).toString()
+      }
+    });
+  }
+
   try {
     const supabaseClient = createClient(Deno.env.get('SUPABASE_URL'), Deno.env.get('SUPABASE_ANON_KEY'), {
       global: {
