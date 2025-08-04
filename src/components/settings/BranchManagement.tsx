@@ -262,7 +262,7 @@ export const BranchManagement = () => {
         </Dialog>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-2">
         {adminBranches.map((branch) => (
           <Card key={branch.branch_id}>
             <CardHeader>

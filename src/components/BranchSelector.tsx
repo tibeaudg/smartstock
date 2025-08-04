@@ -122,18 +122,24 @@ export const BranchSelector = () => {
                 </div>
               </SelectItem>
             ))}
+            
+            {/* Separator */}
+            <div className="border-t border-gray-200 my-1" />
+            
+            {/* Add Branch Button */}
+            <div className="p-1">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleNavigateToBranches}
+                className="w-full flex items-center justify-center gap-2 text-blue-600 hover:bg-blue-50 h-8"
+              >
+                <Plus className="h-3 w-3" />
+                Filiaal toevoegen
+              </Button>
+            </div>
           </SelectContent>
         </Select>
-
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={handleNavigateToBranches}
-          className="w-full flex items-center justify-center gap-2 text-blue-600 border-blue-200 hover:bg-blue-50"
-        >
-          <Plus className="h-4 w-4" />
-          Filiaal toevoegen
-        </Button>
       </div>
 
       <CreateBranchModal 
