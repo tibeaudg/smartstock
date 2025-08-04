@@ -85,8 +85,8 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
 
       // Generate daily activity (voor gekozen bereik)
       const activity = [];
-      let start = dateFrom ? new Date(dateFrom) : new Date();
-      let end = dateTo ? new Date(dateTo) : new Date();
+      const start = dateFrom ? new Date(dateFrom) : new Date();
+      const end = dateTo ? new Date(dateTo) : new Date();
       start.setHours(0, 0, 0, 0);
       end.setHours(0, 0, 0, 0);
       // Loop van start t/m end (inclusief)

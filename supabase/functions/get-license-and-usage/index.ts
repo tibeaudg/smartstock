@@ -81,7 +81,7 @@ serve(async (req) => {
     // Bouw calculatedPlans met correcte prijs per plan
     const calculatedPlans = sortedPlans.map((plan) => {
       let simulatedTotalPrice = plan.price + extraUserCost + extraBranchCost;
-      let overLimit = totalProducts > plan.limit;
+      const overLimit = totalProducts > plan.limit;
       // Alleen bij enterprise extra producten aanrekenen
       if (plan.id === 'enterprise' && totalProducts > plan.limit) {
         simulatedTotalPrice += (totalProducts - plan.limit) * 0.01;

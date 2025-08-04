@@ -86,7 +86,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
     });
 
     return () => subscription.unsubscribe?.();
-    // eslint-disable-next-line
+     
   }, [form, activeBranch]);
 
   // Afhandeling voor image preview

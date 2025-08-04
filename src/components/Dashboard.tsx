@@ -23,7 +23,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
   // Bepaal start- en einddatum op basis van selectie
   const today = new Date();
   let dateFrom: Date | undefined;
-  let dateTo: Date | undefined = endOfToday();
+  const dateTo: Date | undefined = endOfToday();
   if (rangeType === 'week') dateFrom = startOfWeek(today, { weekStartsOn: 1 });
   else if (rangeType === 'month') dateFrom = startOfMonth(today);
   else if (rangeType === 'quarter') dateFrom = startOfQuarter(today);
@@ -36,7 +36,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
   // State voor grafiek-periode
   const [chartRangeType, setChartRangeType] = useState<'week' | 'month' | 'quarter' | 'year' | 'all'>('month');
   let chartDateFrom: Date | undefined;
-  let chartDateTo: Date | undefined = endOfToday();
+  const chartDateTo: Date | undefined = endOfToday();
   if (chartRangeType === 'week') chartDateFrom = startOfWeek(today, { weekStartsOn: 1 });
   else if (chartRangeType === 'month') chartDateFrom = startOfMonth(today);
   else if (chartRangeType === 'quarter') chartDateFrom = startOfQuarter(today);
