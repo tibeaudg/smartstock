@@ -7,7 +7,7 @@ const Index = () => {
   return (
     <>
       <SEO
-        title="Stockflow - Slim en Efficiënt Voorraadbeheer"
+        title="Stockflow - Gratis Voorraadbeheer"
         description="Ontdek Stockflow: dé oplossing voor eenvoudig en efficiënt voorraadbeheer. Automatiseer, bespaar tijd en krijg direct inzicht. Probeer gratis!"
         keywords="voorraadbeheer, stockflow, voorraad, magazijn, automatiseren, KMO, inventaris, voorraadbeheer software, voorraad optimaliseren"
       />

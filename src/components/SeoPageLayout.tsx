@@ -20,7 +20,7 @@ const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({ title, image, children })
         />
         <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-white/60 to-transparent pointer-events-none" />
       </div>
-      <main className="max-w-3xl mx-auto px-4 py-8 md:py-12 w-full">
+      <main className="max-w-5xl mx-auto px-4 py-8 md:py-12 w-full">
         {children}
       </main>
     </div>

@@ -55,7 +55,6 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButton
       icon: <Star className="h-4 w-4" />,
       items: [
         { label: 'Klantenverhalen', sectionId: 'testimonials-section' },
-        { label: 'Beoordelingen', sectionId: 'testimonials-section' },
       ]
     },
     {
@@ -66,14 +65,6 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButton
         { label: 'Hoe werkt het?', sectionId: 'video-section' },
       ]
     },
-    {
-      label: 'Over Ons',
-      icon: <Users className="h-4 w-4" />,
-      items: [
-        { label: 'Voor Vlaamse KMO\'s', sectionId: 'benefits-section' },
-        { label: 'Waarom Gratis?', sectionId: 'benefits-section' },
-      ]
-    }
   ];
 
   return (
