@@ -485,7 +485,7 @@ export const HomePage = () => {
           </div>
           
           {/* Desktop FAQ */}
-          <div className="hidden md:space-y-6">
+          <div className="md:space-y-6">
             {faqData.map((faq, index) => (
               <FadeInWhenVisible key={index}>
                 <Card className="shadow-md">
