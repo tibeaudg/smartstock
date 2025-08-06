@@ -144,10 +144,10 @@ export default function GratisStockbeheer() {
           </div>
           <div className="grid md:grid-cols-2 gap-6">
             <div className="bg-white bg-opacity-10 p-6 rounded-lg">
-              <h3 className="text-xl font-semibold mb-4 text-white">
+              <h3 className="text-xl font-semibold mb-4 text-black">
                 Voor starters
               </h3>
-              <ul className="space-y-3 text-white">
+              <ul className="space-y-3 text-black">
                 {benefits.slice(0, 4).map((benefit, index) => (
                   <li key={index} className="flex items-center">
                     <Check className="w-5 h-5 text-green-300 mr-3 flex-shrink-0" />
@@ -157,10 +157,10 @@ export default function GratisStockbeheer() {
               </ul>
             </div>
             <div className="bg-white bg-opacity-10 p-6 rounded-lg">
-              <h3 className="text-xl font-semibold mb-4 text-white">
+              <h3 className="text-xl font-semibold mb-4 text-black">
                 Voor groeiende bedrijven
               </h3>
-              <ul className="space-y-3 text-white">
+              <ul className="space-y-3 text-black">
                 {benefits.slice(4).map((benefit, index) => (
                   <li key={index} className="flex items-center">
                     <Check className="w-5 h-5 text-green-300 mr-3 flex-shrink-0" />
@@ -219,14 +219,14 @@ export default function GratisStockbeheer() {
             Gratis vs Betaalde Stockbeheer Software
           </h2>
           
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="flex flex-col gap-4 justify-center items-center">
             <div className="bg-green-50 p-6 rounded-lg border border-green-200">
               <h3 className="text-xl font-bold mb-4 text-green-800">Gratis Versie</h3>
               <div className="text-3xl font-bold text-green-600 mb-4">€0/maand</div>
               <ul className="space-y-3">
                 <li className="flex items-center">
                   <Check className="w-5 h-5 text-green-600 mr-3" />
-                  <span>Tot 30 producten</span>
+                  <span>Onbeperkte producten</span>
                 </li>
                 <li className="flex items-center">
                   <Check className="w-5 h-5 text-green-600 mr-3" />
@@ -239,29 +239,6 @@ export default function GratisStockbeheer() {
                 <li className="flex items-center">
                   <Check className="w-5 h-5 text-green-600 mr-3" />
                   <span>Email support</span>
-                </li>
-              </ul>
-            </div>
-            
-            <div className="bg-blue-50 p-6 rounded-lg border border-blue-200">
-              <h3 className="text-xl font-bold mb-4 text-blue-800">Premium Versie</h3>
-              <div className="text-3xl font-bold text-blue-600 mb-4">€29/maand</div>
-              <ul className="space-y-3">
-                <li className="flex items-center">
-                  <Check className="w-5 h-5 text-blue-600 mr-3" />
-                  <span>Onbeperkte producten</span>
-                </li>
-                <li className="flex items-center">
-                  <Check className="w-5 h-5 text-blue-600 mr-3" />
-                  <span>Geavanceerde rapportages</span>
-                </li>
-                <li className="flex items-center">
-                  <Check className="w-5 h-5 text-blue-600 mr-3" />
-                  <span>Multi-branch ondersteuning</span>
-                </li>
-                <li className="flex items-center">
-                  <Check className="w-5 h-5 text-blue-600 mr-3" />
-                  <span>Prioriteit support</span>
                 </li>
               </ul>
             </div>
@@ -363,7 +340,7 @@ export default function GratisStockbeheer() {
 
       {/* Related Articles */}
       <div className="max-w-4xl mx-auto mb-8">
-        <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
+        <h2 className="text-3xl font-bold mb-6 text-center text-gray-800 mt-10">
           Meer lezen over stockbeheer?
         </h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
