@@ -14,7 +14,8 @@
     "security:check": "npm audit --audit-level=moderate",
     "deps:check": "npm outdated",
     "deps:update": "npm update",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "optimize-images": "node scripts/optimize-images.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
@@ -95,6 +96,7 @@
     "imagemin-mozjpeg": "^10.0.0",
     "imagemin-pngquant": "^10.0.0",
     "imagemin-svgo": "^11.0.1",
+    "sharp": "^0.33.0",
     "lovable-tagger": "^1.1.7",
     "postcss": "^8.4.47",
     "tailwindcss": "^3.4.11",

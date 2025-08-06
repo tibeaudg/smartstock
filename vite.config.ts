@@ -20,4 +20,37 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    // Optimize bundle size
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          router: ['react-router-dom'],
+          ui: ['@radix-ui/react-tooltip', '@radix-ui/react-dialog'],
+        },
+      },
+    },
+    // Enable modern build features
+    target: 'esnext',
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: mode === 'production',
+        drop_debugger: mode === 'production',
+      },
+    },
+    // Optimize CSS
+    cssCodeSplit: true,
+    // Optimize assets
+    assetsInlineLimit: 4096,
+  },
+  // Optimize dependencies
+  optimizeDeps: {
+    include: ['react', 'react-dom', 'react-router-dom'],
+  },
+  // Performance optimizations
+  esbuild: {
+    target: 'esnext',
+  },
 }));

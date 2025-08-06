@@ -1,19 +1,130 @@
-import imagemin from 'imagemin';
-import imageminMozjpeg from 'imagemin-mozjpeg';
-import imageminPngquant from 'imagemin-pngquant';
-import path from 'path';
-import { fileURLToPath } from 'url';
+const sharp = require('sharp');
+const fs = require('fs');
+const path = require('path');
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const PUBLIC_DIR = path.join(__dirname, '../public');
+const OPTIMIZED_DIR = path.join(PUBLIC_DIR, 'optimized');
 
-(async () => {
-  const files = await imagemin([path.join(__dirname, '../public/*.{jpg,jpeg,png}')], {
-    destination: path.join(__dirname, '../public/optimized'),
-    plugins: [
-      imageminMozjpeg({ quality: 75 }),
-      imageminPngquant({ quality: [0.6, 0.8] })
-    ]
-  });
-  console.log('Geoptimaliseerde afbeeldingen:', files.map(f => path.basename(f.destinationPath)));
-})(); 
+// Ensure optimized directory exists
+if (!fs.existsSync(OPTIMIZED_DIR)) {
+  fs.mkdirSync(OPTIMIZED_DIR, { recursive: true });
+}
+
+// Image formats to convert
+const IMAGE_EXTENSIONS = ['.png', '.jpg', '.jpeg'];
+
+// Quality settings for different formats
+const QUALITY_SETTINGS = {
+  webp: 80,
+  avif: 75,
+  jpeg: 85,
+  png: 90
+};
+
+async function optimizeImage(inputPath, outputPath, format = 'webp') {
+  try {
+    const image = sharp(inputPath);
+    
+    // Get image metadata
+    const metadata = await image.metadata();
+    
+    // Resize if image is too large (max 1920px width)
+    if (metadata.width > 1920) {
+      image.resize(1920, null, {
+        withoutEnlargement: true,
+        fit: 'inside'
+      });
+    }
+    
+    // Apply format-specific optimizations
+    switch (format) {
+      case 'webp':
+        await image
+          .webp({ quality: QUALITY_SETTINGS.webp })
+          .toFile(outputPath);
+        break;
+      case 'avif':
+        await image
+          .avif({ quality: QUALITY_SETTINGS.avif })
+          .toFile(outputPath);
+        break;
+      case 'jpeg':
+        await image
+          .jpeg({ quality: QUALITY_SETTINGS.jpeg, progressive: true })
+          .toFile(outputPath);
+        break;
+      case 'png':
+        await image
+          .png({ quality: QUALITY_SETTINGS.png, compressionLevel: 9 })
+          .toFile(outputPath);
+        break;
+      default:
+        await image
+          .webp({ quality: QUALITY_SETTINGS.webp })
+          .toFile(outputPath);
+    }
+    
+    console.log(`✅ Optimized: ${path.basename(inputPath)} → ${path.basename(outputPath)}`);
+  } catch (error) {
+    console.error(`❌ Error optimizing ${inputPath}:`, error.message);
+  }
+}
+
+async function processDirectory(dirPath) {
+  const files = fs.readdirSync(dirPath);
+  
+  for (const file of files) {
+    const filePath = path.join(dirPath, file);
+    const stat = fs.statSync(filePath);
+    
+    if (stat.isDirectory()) {
+      // Skip node_modules and .git
+      if (file !== 'node_modules' && file !== '.git' && file !== 'optimized') {
+        await processDirectory(filePath);
+      }
+    } else {
+      const ext = path.extname(file).toLowerCase();
+      if (IMAGE_EXTENSIONS.includes(ext)) {
+        const fileName = path.basename(file, ext);
+        const relativePath = path.relative(PUBLIC_DIR, filePath);
+        const outputDir = path.dirname(path.join(OPTIMIZED_DIR, relativePath));
+        
+        // Ensure output directory exists
+        if (!fs.existsSync(outputDir)) {
+          fs.mkdirSync(outputDir, { recursive: true });
+        }
+        
+        // Create optimized versions
+        const outputPathWebP = path.join(outputDir, `${fileName}.webp`);
+        const outputPathAvif = path.join(outputDir, `${fileName}.avif`);
+        
+        // Convert to WebP (primary modern format)
+        await optimizeImage(filePath, outputPathWebP, 'webp');
+        
+        // Convert to AVIF (next-gen format for browsers that support it)
+        await optimizeImage(filePath, outputPathAvif, 'avif');
+      }
+    }
+  }
+}
+
+async function main() {
+  console.log('🚀 Starting image optimization...');
+  console.log(`📁 Processing directory: ${PUBLIC_DIR}`);
+  
+  try {
+    await processDirectory(PUBLIC_DIR);
+    console.log('✅ Image optimization completed!');
+    console.log(`📂 Optimized images saved to: ${OPTIMIZED_DIR}`);
+  } catch (error) {
+    console.error('❌ Error during optimization:', error);
+    process.exit(1);
+  }
+}
+
+// Run if called directly
+if (require.main === module) {
+  main();
+}
+
+module.exports = { optimizeImage, processDirectory }; 

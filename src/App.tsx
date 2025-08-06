@@ -18,6 +18,7 @@ import AdminInvoicingPage from "./components/AdminInvoicingPage";
 import AdminUserDetailPage from './pages/AdminUserDetailPage';
 import { AlertCircle } from "lucide-react";
 import SEO from './components/SEO';
+import PreloadResources from './components/PreloadResources';
 import VoorraadbeheerTips from './pages/voorraadbeheer-tips';
 import MagazijnbeheerTips from './pages/magazijnbeheer-tips';
 import VoorraadbeheerSoftwareVergelijken from './pages/voorraadbeheer-software-vergelijken';
@@ -205,6 +206,15 @@ export default function App() {
   return (
     <ErrorBoundary>
       <SEO structuredData={localBusinessSchema} />
+      <PreloadResources 
+        criticalImages={[
+          '/logo.png',
+          '/Inventory-Management.png'
+        ]}
+        criticalFonts={[
+          'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap'
+        ]}
+      />
       <ContentWrapper>
         {/* Verwijderde dubbele wrapper */}
         <QueryClientProvider client={queryClient}>
