@@ -84,37 +84,10 @@ const NotFound = () => {
         <h1 className="text-5xl font-bold mb-2 text-blue-700">404</h1>
         <p className="text-lg text-gray-700 mb-4">
           Oeps! Deze pagina bestaat niet.<br />
-          Misschien zocht je één van deze pagina's?
         </p>
-        
-        {/* Helpful search section */}
-        <div className="mb-6">
-          <h2 className="text-xl font-semibold mb-3">Vind wat je zoekt</h2>
-          <SuggestionInput
-            value={zoek}
-            onChange={setZoek}
-            suggestions={SUGGESTIES.map(s => s.label)}
-            placeholder="Zoek een pagina..."
-            label="Zoeken"
-          />
-        </div>
 
-        {/* Popular pages section */}
-        <div className="mb-6">
-          <h3 className="text-lg font-semibold mb-3">Populaire pagina's</h3>
-          <div className="space-y-2">
-            {(zoek ? filtered : SUGGESTIES).slice(0, 6).map(s => (
-              <div key={s.path}>
-                <a
-                  href={s.path}
-                  className="text-blue-600 hover:underline text-base block py-1 hover:bg-blue-50 rounded px-2"
-                >
-                  {s.label}
-                </a>
-              </div>
-            ))}
-          </div>
-        </div>
+
+
 
         {/* Action buttons */}
         <div className="flex gap-3 justify-center mb-6">
@@ -122,14 +95,8 @@ const NotFound = () => {
             href="/"
             className="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
           >
-            Terug naar Home
+            Terug
           </a>
-          <button
-            onClick={() => navigate(-1)}
-            className="inline-block px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700 transition-colors"
-          >
-            Vorige pagina
-          </button>
         </div>
 
         {/* Contact and social section */}
@@ -137,25 +104,11 @@ const NotFound = () => {
           <p className="text-sm text-gray-600 mb-4">
             Kan je niet vinden wat je zoekt? Neem contact met ons op.
           </p>
-          <div className="flex justify-center gap-4 mb-4">
-            {SOCIALS.map(s => (
-              <a
-                key={s.label}
-                href={s.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={s.label}
-                className="text-2xl hover:scale-110 transition-transform"
-              >
-                <span role="img" aria-label={s.label}>{s.icon}</span>
-              </a>
-            ))}
-          </div>
           <a 
-            href="mailto:support@stockflow.app" 
+            href="mailto:info@stockflow.be" 
             className="text-blue-600 hover:underline text-sm"
           >
-            support@stockflow.app
+            info@stockflow.be
           </a>
         </div>
 
