@@ -31,6 +31,7 @@ import VoorraadbeheerVoorStarters from './pages/voorraadbeheer-voor-starters';
 import MobielVoorraadbeheer from './pages/mobiel-voorraadbeheer';
 import SimpelStockbeheer from './pages/simpelstockbeheer';
 import GratisStockbeheer from './pages/gratis-stockbeheer';
+import VoorraadbeheerExcel from './pages/voorraadbeheer-excel';
 import React, { useState } from 'react';
 
 // ErrorBoundary component
@@ -229,6 +230,7 @@ export default function App() {
                   <Route path="/mobiel-voorraadbeheer" element={<MobielVoorraadbeheer />} />
                   <Route path="/simpelstockbeheer" element={<SimpelStockbeheer />} />
                   <Route path="/gratis-stockbeheer" element={<GratisStockbeheer />} />
+                  <Route path="/voorraadbeheer-excel" element={<VoorraadbeheerExcel />} />
 
                   {/* Beschermde dashboard routes */}
                   <Route

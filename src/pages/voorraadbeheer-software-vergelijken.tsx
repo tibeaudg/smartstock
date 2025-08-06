@@ -47,14 +47,14 @@ export default function VoorraadbeheerSoftwareVergelijken() {
       image="/optimized/Inventory-Management.png"
     >
       <SEO
-        title="Stockbeheer Software Vergelijken 2024 | Beste Voorraadbeheer Software"
-        description="Vergelijk de beste stockbeheer software en voorraadbeheer programma's voor KMO's. Ontdek welke software voor voorraadbeheer het beste past bij jouw bedrijf. Gratis vergelijking van stockbeheer programma's."
-        keywords="stockbeheer software, software stockbeheer, programma stockbeheer, voorraadbeheer software, stockbeheer programma, software vergelijken, beste voorraadbeheer software, voorraadbeheer software kiezen, voorraadbeheersoftware, bedrijfssoftware vergelijken, voorraadbeheer app, programma voorraadbeheer, software voor voorraadbeheer, voorraad app, app voorraadbeheer, beste voorraadbeheer app, voorraadbeheer programma"
+        title="Software Stockbeheer 2024: Beste Voorraadbeheer Software Vergelijken | stockflow"
+        description="Vergelijk de beste software stockbeheer programma's voor KMO's. Ontdek welke voorraadbeheer software het beste past bij jouw bedrijf. Gratis vergelijking en tips."
+        keywords="software stockbeheer, stockbeheer software, programma stockbeheer, voorraadbeheer software, stockbeheer programma, software vergelijken, beste voorraadbeheer software, voorraadbeheer software kiezen, voorraadbeheersoftware, bedrijfssoftware vergelijken, voorraadbeheer app, programma voorraadbeheer, software voor voorraadbeheer, voorraad app, app voorraadbeheer, beste voorraadbeheer app, voorraadbeheer programma, software stockbeheer 2024"
         url="https://www.stockflow.be/voorraadbeheer-software-vergelijken"
       />
 
       {/* Hero Section */}
-      <div className="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-2xl p-8 mb-8">
+      <div className="bg-gradient-to-br from-blue-300 to-indigo-500 rounded-2xl p-8 mb-8">
         <div className="max-w-7xl mx-auto text-center">
           <h1 className="text-5xl font-bold text-gray-900 mb-4">
             Stockbeheer Software Vergelijken
@@ -211,7 +211,7 @@ export default function VoorraadbeheerSoftwareVergelijken() {
 
       {/* Stappenplan Section */}
       <section className="mb-12">
-        <div className="bg-gradient-to-r from-indigo-50 to-blue-50 rounded-2xl p-8">
+        <div className="bg-gradient-to-br from-blue-300 to-indigo-500 rounded-2xl p-8">
           <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">
             Stappenplan: Software vergelijken en kiezen
           </h2>
