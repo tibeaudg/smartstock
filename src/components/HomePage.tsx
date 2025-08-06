@@ -542,7 +542,7 @@ export const HomePage = () => {
         <div className="max-w-6xl mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-8 mb-6 md:mb-8">
             <div>
-              <h3 className="text-lg md:text-xl font-bold mb-3 md:mb-4">stockflow</h3>
+              <img src="/logo.png" alt="stockflow" className="h-8 md:h-10" />
               <p className="text-gray-400 text-sm md:text-base mb-3 md:mb-4">
                 Het beste gratis voorraadbeheer programma voor Vlaamse KMO's. Eenvoudig, veilig en zonder verborgen kosten.
               </p>
