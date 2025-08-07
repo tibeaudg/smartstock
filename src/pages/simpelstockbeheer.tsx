@@ -1,10 +1,15 @@
-import React from 'react';
+﻿import React from 'react';
 import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
 import SeoPageLayout from '../components/SeoPageLayout';
-import { Check, Star, Smartphone, Zap, Shield, Users, TrendingUp, Gift, Clock, BarChart3, Settings } from 'lucide-react';
+import { Check, Star, Smartphone, Bell, Zap, Shield, Users, TrendingUp } from 'lucide-react';
+import { usePageRefresh } from '@/hooks/usePageRefresh';
 
 export default function SimpelStockbeheer() {
+  // Gebruik de page refresh hook
+  usePageRefresh();
+  
+  
   const features = [
     {
       icon: Smartphone,
@@ -100,7 +105,7 @@ export default function SimpelStockbeheer() {
     {
       title: "Voorraadbeheer Tips",
       url: "/voorraadbeheer-tips",
-      description: "Beste tips voor efficiënt voorraadbeheer"
+      description: "Beste tips voor efficiÃ«nt voorraadbeheer"
     },
     {
       title: "Gratis Stockbeheer",
@@ -161,7 +166,7 @@ export default function SimpelStockbeheer() {
             <h2 className="text-3xl font-bold mb-4">Waarom Kiezen voor Simpel Stockbeheer?</h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
               Op zoek naar <strong>simpel stockbeheer</strong> dat werkt voor jouw bedrijf? stockflow biedt een 
-              gebruiksvriendelijke oplossing waarmee je snel en efficiënt je voorraad beheert, zonder gedoe.
+              gebruiksvriendelijke oplossing waarmee je snel en efficiÃ«nt je voorraad beheert, zonder gedoe.
             </p>
           </div>
           

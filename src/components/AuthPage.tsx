@@ -11,6 +11,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
 import { Header } from './Header';
 import { cn } from '@/lib/utils';
+import { usePageRefresh } from '@/hooks/usePageRefresh';
 
 export const AuthPage = () => {
   const [mode, setMode] = useState<'login' | 'register' | 'reset'>('login');
@@ -24,6 +25,9 @@ export const AuthPage = () => {
   const { signIn, signUp, resetPassword } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  
+  // Gebruik de page refresh hook
+  usePageRefresh();
 
   const clearForm = () => {
     setEmail('');

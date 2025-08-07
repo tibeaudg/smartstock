@@ -1,10 +1,15 @@
-import React from 'react';
+﻿import React from 'react';
 import SEO from '../components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '../components/SeoPageLayout';
-import { Check, X, Star, Smartphone, Zap, Shield, Users, TrendingUp, AlertTriangle, Clock, Database, Settings } from 'lucide-react';
+import { AlertTriangle, Clock, Shield, Database, Settings, Users } from 'lucide-react';
+import { usePageRefresh } from '@/hooks/usePageRefresh';
 
 export default function VoorraadbeheerFoutenVoorkomen() {
+  // Gebruik de page refresh hook
+  usePageRefresh();
+  
+  
   const commonMistakes = [
     {
       title: "Handmatige invoer fouten",
@@ -86,7 +91,7 @@ export default function VoorraadbeheerFoutenVoorkomen() {
     {
       title: "Train je team",
       description: "Zorg dat iedereen het systeem kent",
-      benefits: ["Betere compliance", "Minder fouten", "Efficiënter werk"]
+      benefits: ["Betere compliance", "Minder fouten", "EfficiÃ«nter werk"]
     }
   ];
 
@@ -115,13 +120,13 @@ export default function VoorraadbeheerFoutenVoorkomen() {
           </p>
           <div className="flex justify-center space-x-4">
             <div className="bg-white bg-opacity-20 px-4 py-2 rounded-full">
-              <span className="text-sm text-black font-bold">✓ Best practices</span>
+              <span className="text-sm text-black font-bold">âœ“ Best practices</span>
             </div>
             <div className="bg-white bg-opacity-20 px-4 py-2 rounded-full">
-              <span className="text-sm text-black font-bold">✓ Praktische tips</span>
+              <span className="text-sm text-black font-bold">âœ“ Praktische tips</span>
             </div>
             <div className="bg-white bg-opacity-20 px-4 py-2 rounded-full">
-              <span className="text-sm text-black font-bold">✓ Foutpreventie</span>
+              <span className="text-sm text-black font-bold">âœ“ Foutpreventie</span>
             </div>
           </div>
         </div>
@@ -131,7 +136,7 @@ export default function VoorraadbeheerFoutenVoorkomen() {
       <div className="bg-gray-50 p-8 rounded-lg mb-8">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-start space-x-4">
-            <div className="text-red-500 text-3xl mt-1 flex-shrink-0">⚠️</div>
+            <div className="text-red-500 text-3xl mt-1 flex-shrink-0">âš ï¸</div>
             <div>
               <h2 className="text-2xl font-bold mb-4 text-gray-800">
                 Waarom foutpreventie belangrijk is
@@ -191,7 +196,7 @@ export default function VoorraadbeheerFoutenVoorkomen() {
       <div className="bg-gradient-to-br from-red-300 to-pink-500 p-8 rounded-lg mb-8">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-6">
-            <div className="text-red-600 text-4xl mx-auto mb-4">🛡️</div>
+            <div className="text-red-600 text-4xl mx-auto mb-4">ðŸ›¡ï¸</div>
             <h2 className="text-3xl font-bold mb-4 text-white">
               Tips om fouten te voorkomen
             </h2>
@@ -289,7 +294,7 @@ export default function VoorraadbeheerFoutenVoorkomen() {
         
         <div className="grid md:grid-cols-2 gap-8">
           <div className="bg-white border border-gray-200 rounded-lg p-6">
-            <h3 className="text-xl font-semibold mb-4 text-green-600">✅ Wat je wel moet gebruiken</h3>
+            <h3 className="text-xl font-semibold mb-4 text-green-600">âœ… Wat je wel moet gebruiken</h3>
             <ul className="space-y-3 text-gray-700">
               <li className="flex items-start">
                 <Check className="w-5 h-5 text-green-600 mr-3 mt-0.5 flex-shrink-0" />
@@ -311,7 +316,7 @@ export default function VoorraadbeheerFoutenVoorkomen() {
           </div>
           
           <div className="bg-white border border-gray-200 rounded-lg p-6">
-            <h3 className="text-xl font-semibold mb-4 text-red-600">❌ Wat je moet vermijden</h3>
+            <h3 className="text-xl font-semibold mb-4 text-red-600">âŒ Wat je moet vermijden</h3>
             <ul className="space-y-3 text-gray-700">
               <li className="flex items-start">
                 <X className="w-5 h-5 text-red-600 mr-3 mt-0.5 flex-shrink-0" />
@@ -337,7 +342,7 @@ export default function VoorraadbeheerFoutenVoorkomen() {
       {/* FAQ Section */}
       <div className="max-w-4xl mx-auto mb-12">
         <div className="text-center mb-8">
-          <div className="text-red-600 text-4xl mx-auto mb-4">❓</div>
+          <div className="text-red-600 text-4xl mx-auto mb-4">â“</div>
           <h2 className="text-3xl font-bold mb-4 text-gray-800">
             Veelgestelde vragen over foutpreventie
           </h2>
@@ -404,7 +409,7 @@ export default function VoorraadbeheerFoutenVoorkomen() {
       {/* CTA Section */}
       <div className="bg-gradient-to-br from-red-300 to-pink-500 text-white p-8 rounded-lg text-center">
         <div className="max-w-2xl mx-auto">
-          <div className="text-4xl mx-auto mb-4">🛡️</div>
+          <div className="text-4xl mx-auto mb-4">ðŸ›¡ï¸</div>
           <h2 className="text-3xl font-bold mb-4">
             Klaar om fouten te voorkomen?
           </h2>
@@ -441,7 +446,7 @@ export default function VoorraadbeheerFoutenVoorkomen() {
                 Voorraadbeheer tips
               </h3>
               <p className="text-gray-600 text-sm">
-                Praktische tips voor efficiënt voorraadbeheer en kostenbesparing.
+                Praktische tips voor efficiÃ«nt voorraadbeheer en kostenbesparing.
               </p>
             </div>
           </Link>

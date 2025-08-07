@@ -1,10 +1,15 @@
-import React from 'react';
+﻿import React from 'react';
 import SEO from '../components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '../components/SeoPageLayout';
-import { Check, Star, Smartphone, Zap, Shield, Users, TrendingUp, Settings, Database, Bell, BarChart3, RefreshCw } from 'lucide-react';
+import { Check, Star, Smartphone, Bell, Zap, Shield, Users, TrendingUp } from 'lucide-react';
+import { usePageRefresh } from '@/hooks/usePageRefresh';
 
 export default function VoorraadbeheerAutomatiseren() {
+  // Gebruik de page refresh hook
+  usePageRefresh();
+  
+  
   const automationBenefits = [
     {
       title: "Tijdsbesparing",
@@ -100,7 +105,7 @@ export default function VoorraadbeheerAutomatiseren() {
     >
       <SEO
         title="Voorraadbeheer Automatiseren | Complete Gids | stockflow"
-        description="Voorraadbeheer automatiseren? Complete gids met voordelen, tips en tools om je voorraadbeheer slimmer en efficiënter te maken met automatisering. Ontdek hoe je tijd kunt besparen en fouten kunt voorkomen."
+        description="Voorraadbeheer automatiseren? Complete gids met voordelen, tips en tools om je voorraadbeheer slimmer en efficiÃ«nter te maken met automatisering. Ontdek hoe je tijd kunt besparen en fouten kunt voorkomen."
         keywords="voorraadbeheer automatiseren, voorraadbeheer automatisering, voorraadbeheer koppelen, voorraadbeheer integratie, voorraadbeheer software, voorraadbeheer automatiseren tips, voorraadbeheer automatiseren voordelen, voorraadbeheer automatiseren kosten, voorraadbeheer automatiseren implementatie, voorraadbeheer automatiseren software, voorraadbeheer automatiseren webshop, voorraadbeheer automatiseren boekhouding"
         url="https://www.stockflow.be/voorraadbeheer-automatiseren"
         image="/optimized/Inventory-Management.png"
@@ -118,13 +123,13 @@ export default function VoorraadbeheerAutomatiseren() {
           </p>
           <div className="flex justify-center space-x-4">
             <div className="bg-white bg-opacity-20 px-4 py-2 rounded-full">
-              <span className="text-sm text-black font-bold">✓ 70% tijdsbesparing</span>
+              <span className="text-sm text-black font-bold">âœ“ 70% tijdsbesparing</span>
             </div>
             <div className="bg-white bg-opacity-20 px-4 py-2 rounded-full">
-              <span className="text-sm text-black font-bold">✓ 90% minder fouten</span>
+              <span className="text-sm text-black font-bold">âœ“ 90% minder fouten</span>
             </div>
             <div className="bg-white bg-opacity-20 px-4 py-2 rounded-full">
-              <span className="text-sm text-black font-bold">✓ Realtime inzicht</span>
+              <span className="text-sm text-black font-bold">âœ“ Realtime inzicht</span>
             </div>
           </div>
         </div>
@@ -134,7 +139,7 @@ export default function VoorraadbeheerAutomatiseren() {
       <div className="bg-gray-50 p-8 rounded-lg mb-8">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-start space-x-4">
-            <div className="text-teal-500 text-3xl mt-1 flex-shrink-0">🤖</div>
+            <div className="text-teal-500 text-3xl mt-1 flex-shrink-0">ðŸ¤–</div>
             <div>
               <h2 className="text-2xl font-bold mb-4 text-gray-800">
                 Waarom voorraadbeheer automatiseren?
@@ -175,7 +180,7 @@ export default function VoorraadbeheerAutomatiseren() {
       <div className="bg-gradient-to-br from-teal-300 to-cyan-500 p-8 rounded-lg mb-8">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-6">
-            <div className="text-teal-600 text-4xl mx-auto mb-4">⚡</div>
+            <div className="text-teal-600 text-4xl mx-auto mb-4">âš¡</div>
             <h2 className="text-3xl font-bold mb-4 text-white">
               Automatisering functies
             </h2>
@@ -280,7 +285,7 @@ export default function VoorraadbeheerAutomatiseren() {
         
         <div className="grid md:grid-cols-2 gap-8">
           <div className="bg-white border border-gray-200 rounded-lg p-6">
-            <h3 className="text-xl font-semibold mb-4 text-green-600">💰 Financiële voordelen</h3>
+            <h3 className="text-xl font-semibold mb-4 text-green-600">ðŸ’° FinanciÃ«le voordelen</h3>
             <ul className="space-y-3 text-gray-700">
               <li className="flex items-start">
                 <Check className="w-5 h-5 text-green-600 mr-3 mt-0.5 flex-shrink-0" />
@@ -302,7 +307,7 @@ export default function VoorraadbeheerAutomatiseren() {
           </div>
           
           <div className="bg-white border border-gray-200 rounded-lg p-6">
-            <h3 className="text-xl font-semibold mb-4 text-blue-600">⏰ Tijdsvoordelen</h3>
+            <h3 className="text-xl font-semibold mb-4 text-blue-600">â° Tijdsvoordelen</h3>
             <ul className="space-y-3 text-gray-700">
               <li className="flex items-start">
                 <Check className="w-5 h-5 text-blue-600 mr-3 mt-0.5 flex-shrink-0" />
@@ -328,7 +333,7 @@ export default function VoorraadbeheerAutomatiseren() {
       {/* FAQ Section */}
       <div className="max-w-4xl mx-auto mb-12">
         <div className="text-center mb-8">
-          <div className="text-teal-600 text-4xl mx-auto mb-4">❓</div>
+          <div className="text-teal-600 text-4xl mx-auto mb-4">â“</div>
           <h2 className="text-3xl font-bold mb-4 text-gray-800">
             Veelgestelde vragen over automatisering
           </h2>
@@ -343,8 +348,8 @@ export default function VoorraadbeheerAutomatiseren() {
               Hoeveel kost voorraadbeheer automatisering?
             </h3>
             <p className="text-gray-700">
-              De kosten variëren afhankelijk van je behoeften. stockflow biedt een gratis versie aan, 
-              terwijl premium versies vanaf €29 per maand kosten. De ROI is meestal binnen 3-6 maanden bereikt.
+              De kosten variÃ«ren afhankelijk van je behoeften. stockflow biedt een gratis versie aan, 
+              terwijl premium versies vanaf â‚¬29 per maand kosten. De ROI is meestal binnen 3-6 maanden bereikt.
             </p>
           </div>
 
@@ -395,7 +400,7 @@ export default function VoorraadbeheerAutomatiseren() {
       {/* CTA Section */}
       <div className="bg-gradient-to-br from-teal-300 to-cyan-500 text-white p-8 rounded-lg text-center">
         <div className="max-w-2xl mx-auto">
-          <div className="text-4xl mx-auto mb-4">🤖</div>
+          <div className="text-4xl mx-auto mb-4">ðŸ¤–</div>
           <h2 className="text-3xl font-bold mb-4">
             Klaar om voorraadbeheer te automatiseren?
           </h2>
@@ -442,7 +447,7 @@ export default function VoorraadbeheerAutomatiseren() {
                 Voorraadbeheer tips
               </h3>
               <p className="text-gray-600 text-sm">
-                Praktische tips voor efficiënt voorraadbeheer en kostenbesparing.
+                Praktische tips voor efficiÃ«nt voorraadbeheer en kostenbesparing.
               </p>
             </div>
           </Link>
@@ -469,7 +474,7 @@ export default function VoorraadbeheerAutomatiseren() {
             "name": "Hoeveel kost voorraadbeheer automatisering?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "De kosten variëren afhankelijk van je behoeften. stockflow biedt een gratis versie aan, terwijl premium versies vanaf €29 per maand kosten. De ROI is meestal binnen 3-6 maanden bereikt."
+              "text": "De kosten variÃ«ren afhankelijk van je behoeften. stockflow biedt een gratis versie aan, terwijl premium versies vanaf â‚¬29 per maand kosten. De ROI is meestal binnen 3-6 maanden bereikt."
             }
           },
           {
@@ -511,7 +516,7 @@ export default function VoorraadbeheerAutomatiseren() {
         "@context": "https://schema.org",
         "@type": "Article",
         "headline": "Voorraadbeheer Automatiseren",
-        "description": "Voorraadbeheer automatiseren? Complete gids met voordelen, tips en tools om je voorraadbeheer slimmer en efficiënter te maken met automatisering. Ontdek hoe je tijd kunt besparen en fouten kunt voorkomen.",
+        "description": "Voorraadbeheer automatiseren? Complete gids met voordelen, tips en tools om je voorraadbeheer slimmer en efficiÃ«nter te maken met automatisering. Ontdek hoe je tijd kunt besparen en fouten kunt voorkomen.",
         "image": "https://www.stockflow.be/optimized/Inventory-Management.png",
         "author": {
           "@type": "Organization",

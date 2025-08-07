@@ -1,8 +1,13 @@
-import React from 'react';
+﻿import React from 'react';
 import SEO from '../components/SEO';
 import SeoPageLayout from '../components/SeoPageLayout';
+import { usePageRefresh } from '@/hooks/usePageRefresh';
 
 export default function VoorraadbeheerExcel() {
+  // Gebruik de page refresh hook
+  usePageRefresh();
+  
+  
   return (
     <SeoPageLayout
       title="Voorraadbeheer in Excel: Complete Gids 2024"
@@ -44,7 +49,7 @@ export default function VoorraadbeheerExcel() {
       <div className="bg-gray-50 p-8 rounded-lg mb-8">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-start space-x-4">
-            <div className="text-green-500 text-3xl mt-1 flex-shrink-0">📊</div>
+            <div className="text-green-500 text-3xl mt-1 flex-shrink-0">ðŸ“Š</div>
             <div>
               <h2 className="text-2xl font-bold mb-4 text-gray-800">
                 Voorraadbeheer in Excel: Voordelen en nadelen
@@ -70,7 +75,7 @@ export default function VoorraadbeheerExcel() {
           <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
             <div className="flex items-center mb-4">
               <div className="bg-green-100 p-3 rounded-full mr-4">
-                <div className="text-green-600 text-xl">💰</div>
+                <div className="text-green-600 text-xl">ðŸ’°</div>
               </div>
               <h3 className="text-xl font-bold text-gray-800">Gratis te gebruiken</h3>
             </div>
@@ -82,7 +87,7 @@ export default function VoorraadbeheerExcel() {
           <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
             <div className="flex items-center mb-4">
               <div className="bg-blue-100 p-3 rounded-full mr-4">
-                <div className="text-blue-600 text-xl">📚</div>
+                <div className="text-blue-600 text-xl">ðŸ“š</div>
               </div>
               <h3 className="text-xl font-bold text-gray-800">Vertrouwd en bekend</h3>
             </div>
@@ -94,7 +99,7 @@ export default function VoorraadbeheerExcel() {
           <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
             <div className="flex items-center mb-4">
               <div className="bg-purple-100 p-3 rounded-full mr-4">
-                <div className="text-purple-600 text-xl">🔧</div>
+                <div className="text-purple-600 text-xl">ðŸ”§</div>
               </div>
               <h3 className="text-xl font-bold text-gray-800">Volledig aanpasbaar</h3>
             </div>
@@ -106,7 +111,7 @@ export default function VoorraadbeheerExcel() {
           <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
             <div className="flex items-center mb-4">
               <div className="bg-orange-100 p-3 rounded-full mr-4">
-                <div className="text-orange-600 text-xl">📊</div>
+                <div className="text-orange-600 text-xl">ðŸ“Š</div>
               </div>
               <h3 className="text-xl font-bold text-gray-800">Uitgebreide rapportages</h3>
             </div>
@@ -126,30 +131,30 @@ export default function VoorraadbeheerExcel() {
           
           <div className="grid md:grid-cols-2 gap-6">
             <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="text-xl font-bold mb-3 text-red-800">❌ Geen real-time updates</h3>
+              <h3 className="text-xl font-bold mb-3 text-red-800">âŒ Geen real-time updates</h3>
               <p className="text-gray-700">
                 Excel bestanden moeten handmatig worden bijgewerkt. Geen automatische synchronisatie.
               </p>
             </div>
 
             <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="text-xl font-bold mb-3 text-red-800">❌ Foutgevoelig</h3>
+              <h3 className="text-xl font-bold mb-3 text-red-800">âŒ Foutgevoelig</h3>
               <p className="text-gray-700">
-                Handmatige invoer leidt tot fouten. Één verkeerde cel kan alles verstoren.
+                Handmatige invoer leidt tot fouten. Ã‰Ã©n verkeerde cel kan alles verstoren.
               </p>
             </div>
 
             <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="text-xl font-bold mb-3 text-red-800">❌ Geen automatisering</h3>
+              <h3 className="text-xl font-bold mb-3 text-red-800">âŒ Geen automatisering</h3>
               <p className="text-gray-700">
                 Geen automatische meldingen bij lage voorraad of bestellingen.
               </p>
             </div>
 
             <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="text-xl font-bold mb-3 text-red-800">❌ Beperkte toegang</h3>
+              <h3 className="text-xl font-bold mb-3 text-red-800">âŒ Beperkte toegang</h3>
               <p className="text-gray-700">
-                Alleen beschikbaar op één computer. Geen mobiele toegang mogelijk.
+                Alleen beschikbaar op Ã©Ã©n computer. Geen mobiele toegang mogelijk.
               </p>
             </div>
           </div>
@@ -165,7 +170,7 @@ export default function VoorraadbeheerExcel() {
         <div className="space-y-6">
           <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
             <h3 className="text-xl font-bold mb-3 text-gray-800">
-              ✅ Je hebt meer dan 50 producten
+              âœ… Je hebt meer dan 50 producten
             </h3>
             <p className="text-gray-700">
               Excel wordt onoverzichtelijk bij veel producten. Software houdt alles georganiseerd.
@@ -174,7 +179,7 @@ export default function VoorraadbeheerExcel() {
 
           <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
             <h3 className="text-xl font-bold mb-3 text-gray-800">
-              ✅ Je team werkt samen aan voorraad
+              âœ… Je team werkt samen aan voorraad
             </h3>
             <p className="text-gray-700">
               Software biedt real-time samenwerking. Excel bestanden kunnen conflicteren.
@@ -183,7 +188,7 @@ export default function VoorraadbeheerExcel() {
 
           <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
             <h3 className="text-xl font-bold mb-3 text-gray-800">
-              ✅ Je wilt automatisering
+              âœ… Je wilt automatisering
             </h3>
             <p className="text-gray-700">
               Automatische meldingen, bestellingen en rapportages besparen veel tijd.
@@ -192,7 +197,7 @@ export default function VoorraadbeheerExcel() {
 
           <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
             <h3 className="text-xl font-bold mb-3 text-gray-800">
-              ✅ Je werkt mobiel
+              âœ… Je werkt mobiel
             </h3>
             <p className="text-gray-700">
               Moderne software werkt op alle apparaten. Excel is beperkt tot desktop.
@@ -213,11 +218,11 @@ export default function VoorraadbeheerExcel() {
           <div className="bg-white p-6 rounded-lg max-w-md mx-auto">
             <h3 className="text-lg font-bold mb-3 text-gray-800">Template bevat:</h3>
             <ul className="text-gray-700 text-left space-y-2">
-              <li>• Product catalogus met categorieën</li>
-              <li>• Voorraad tracking met minimum niveaus</li>
-              <li>• Automatische berekeningen</li>
-              <li>• Rapportage draaitabellen</li>
-              <li>• Bestellingen overzicht</li>
+              <li>â€¢ Product catalogus met categorieÃ«n</li>
+              <li>â€¢ Voorraad tracking met minimum niveaus</li>
+              <li>â€¢ Automatische berekeningen</li>
+              <li>â€¢ Rapportage draaitabellen</li>
+              <li>â€¢ Bestellingen overzicht</li>
             </ul>
             <button className="mt-4 bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
               Download Gratis Template

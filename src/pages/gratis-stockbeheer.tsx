@@ -3,8 +3,12 @@ import SEO from '../components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '../components/SeoPageLayout';
 import { Check, Star, Smartphone, Zap, Shield, Users, TrendingUp, Gift } from 'lucide-react';
+import { usePageRefresh } from '@/hooks/usePageRefresh';
 
 export default function GratisStockbeheer() {
+  // Gebruik de page refresh hook
+  usePageRefresh();
+  
   const features = [
     {
       icon: Gift,

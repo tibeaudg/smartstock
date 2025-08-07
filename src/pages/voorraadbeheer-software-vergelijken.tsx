@@ -1,10 +1,15 @@
-import React from 'react';
+﻿import React from 'react';
 import SEO from '../components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '../components/SeoPageLayout';
-import { Check, X, Star, Smartphone, Bell, Zap, Shield, Users, TrendingUp } from 'lucide-react';
+import { Check, Star, Smartphone, Bell, Zap, Shield, Users, TrendingUp } from 'lucide-react';
+import { usePageRefresh } from '@/hooks/usePageRefresh';
 
 export default function VoorraadbeheerSoftwareVergelijken() {
+  // Gebruik de page refresh hook
+  usePageRefresh();
+  
+  
   const comparisonData = [
     {
       name: "stockflow",
@@ -18,7 +23,7 @@ export default function VoorraadbeheerSoftwareVergelijken() {
       name: "Exact",
       tagline: "Online Handel Essentials",
       features: ["Onbeperkte producten", "Mobiele app", "Geen automatische meldingen", "Desktop software", "API integraties"],
-      price: "€255/maand",
+      price: "â‚¬255/maand",
       rating: 4,
       highlight: false,
     },
@@ -26,7 +31,7 @@ export default function VoorraadbeheerSoftwareVergelijken() {
       name: "Visma Net",
       tagline: "Logistics",
       features: ["Beperkte gratis versie", "Geen mobiele app", "Automatische meldingen", "Desktop software", "Basis rapportages"],
-      price: "€450/maand",
+      price: "â‚¬450/maand",
       rating: 3.9,
       highlight: false,
     }
@@ -337,7 +342,7 @@ export default function VoorraadbeheerSoftwareVergelijken() {
                 Voorraadbeheer tips
               </h3>
               <p className="text-gray-600 text-sm">
-                Praktische tips voor efficiënt voorraadbeheer en kostenbesparing.
+                Praktische tips voor efficiÃ«nt voorraadbeheer en kostenbesparing.
               </p>
             </div>
           </Link>

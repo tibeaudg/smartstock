@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Loader2 } from 'lucide-react';
 import { BranchProvider } from '@/hooks/useBranches';
 import { useAuth } from '@/hooks/useAuth';
+import { usePageRefresh } from '@/hooks/usePageRefresh';
 import SEO from '../components/SEO';
 
 // Facturatiebeheer types
@@ -92,6 +93,9 @@ export default function AdminPage() {
   const { user, profile } = useAuth();
   const [activeTab, setActiveTab] = useState<'invoicing' | 'users'>('invoicing');
   const [selectedUser, setSelectedUser] = useState<UserProfile | null>(null);
+  
+  // Gebruik de page refresh hook
+  usePageRefresh();
   // Facturatiebeheer
   const { data: invoices = [], isLoading: loadingInvoices } = useQuery({
     queryKey: ['allInvoices'],

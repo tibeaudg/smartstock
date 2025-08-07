@@ -1,10 +1,15 @@
-import React from 'react';
+﻿import React from 'react';
 import SEO from '../components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '../components/SeoPageLayout';
-import { Check, Star, Smartphone, Zap, Shield, Users, TrendingUp, Rocket, BookOpen, Target } from 'lucide-react';
+import { BookOpen, Target, TrendingUp, Shield, Users, Rocket, Check } from 'lucide-react';
+import { usePageRefresh } from '@/hooks/usePageRefresh';
 
 export default function VoorraadbeheerVoorStarters() {
+  // Gebruik de page refresh hook
+  usePageRefresh();
+  
+  
   const steps = [
     {
       icon: BookOpen,
@@ -78,13 +83,13 @@ export default function VoorraadbeheerVoorStarters() {
           </p>
           <div className="flex justify-center space-x-4">
             <div className="bg-white bg-opacity-20 px-4 py-2 rounded-full">
-              <span className="text-sm text-black font-bold">✓ Complete gids</span>
+              <span className="text-sm text-black font-bold">âœ“ Complete gids</span>
             </div>
             <div className="bg-white bg-opacity-20 px-4 py-2 rounded-full">
-              <span className="text-sm text-black font-bold">✓ Praktische tips</span>
+              <span className="text-sm text-black font-bold">âœ“ Praktische tips</span>
             </div>
             <div className="bg-white bg-opacity-20 px-4 py-2 rounded-full">
-              <span className="text-sm text-black font-bold">✓ Stappenplan</span>
+              <span className="text-sm text-black font-bold">âœ“ Stappenplan</span>
             </div>
           </div>
         </div>
@@ -94,7 +99,7 @@ export default function VoorraadbeheerVoorStarters() {
       <div className="bg-gray-50 p-8 rounded-lg mb-8">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-start space-x-4">
-            <div className="text-purple-500 text-3xl mt-1 flex-shrink-0">🚀</div>
+            <div className="text-purple-500 text-3xl mt-1 flex-shrink-0">ðŸš€</div>
             <div>
               <h2 className="text-2xl font-bold mb-4 text-gray-800">
                 Waarom voorraadbeheer voor starters?
@@ -130,7 +135,7 @@ export default function VoorraadbeheerVoorStarters() {
                     {step.description}
                   </p>
                   <div className={`bg-${step.color}-50 p-4 rounded-lg`}>
-                    <h4 className={`font-semibold text-${step.color}-800 mb-2`}>💡 Praktische tip:</h4>
+                    <h4 className={`font-semibold text-${step.color}-800 mb-2`}>ðŸ’¡ Praktische tip:</h4>
                     <p className={`text-${step.color}-700 text-sm`}>
                       {index === 0 && "Begin met je 10 best verkopende producten. Dit geeft je direct de meeste impact."}
                       {index === 1 && "Plan elke week een vast moment voor voorraadcontrole, bijvoorbeeld op maandagochtend."}
@@ -151,7 +156,7 @@ export default function VoorraadbeheerVoorStarters() {
       <div className="bg-gradient-to-br from-purple-300 to-indigo-500 p-8 rounded-lg mb-8">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-6">
-            <div className="text-purple-600 text-4xl mx-auto mb-4">💡</div>
+            <div className="text-purple-600 text-4xl mx-auto mb-4">ðŸ’¡</div>
             <h2 className="text-3xl font-bold mb-4 text-white">
               Praktische tips voor starters
             </h2>
@@ -196,7 +201,7 @@ export default function VoorraadbeheerVoorStarters() {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow">
             <div className="text-center mb-4">
-              <div className="text-green-600 text-3xl mb-2">💰</div>
+              <div className="text-green-600 text-3xl mb-2">ðŸ’°</div>
               <h3 className="text-lg font-bold text-gray-800">Kostenbesparing</h3>
             </div>
             <p className="text-gray-600 text-sm text-center">
@@ -206,7 +211,7 @@ export default function VoorraadbeheerVoorStarters() {
           
           <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow">
             <div className="text-center mb-4">
-              <div className="text-blue-600 text-3xl mb-2">⏰</div>
+              <div className="text-blue-600 text-3xl mb-2">â°</div>
               <h3 className="text-lg font-bold text-gray-800">Tijdsbesparing</h3>
             </div>
             <p className="text-gray-600 text-sm text-center">
@@ -216,7 +221,7 @@ export default function VoorraadbeheerVoorStarters() {
           
           <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow">
             <div className="text-center mb-4">
-              <div className="text-purple-600 text-3xl mb-2">📊</div>
+              <div className="text-purple-600 text-3xl mb-2">ðŸ“Š</div>
               <h3 className="text-lg font-bold text-gray-800">Betere inzichten</h3>
             </div>
             <p className="text-gray-600 text-sm text-center">
@@ -226,7 +231,7 @@ export default function VoorraadbeheerVoorStarters() {
           
           <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow">
             <div className="text-center mb-4">
-              <div className="text-orange-600 text-3xl mb-2">🎯</div>
+              <div className="text-orange-600 text-3xl mb-2">ðŸŽ¯</div>
               <h3 className="text-lg font-bold text-gray-800">Klanttevredenheid</h3>
             </div>
             <p className="text-gray-600 text-sm text-center">
@@ -236,7 +241,7 @@ export default function VoorraadbeheerVoorStarters() {
           
           <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow">
             <div className="text-center mb-4">
-              <div className="text-red-600 text-3xl mb-2">📈</div>
+              <div className="text-red-600 text-3xl mb-2">ðŸ“ˆ</div>
               <h3 className="text-lg font-bold text-gray-800">Groeipotentieel</h3>
             </div>
             <p className="text-gray-600 text-sm text-center">
@@ -246,7 +251,7 @@ export default function VoorraadbeheerVoorStarters() {
           
           <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow">
             <div className="text-center mb-4">
-              <div className="text-indigo-600 text-3xl mb-2">🛡️</div>
+              <div className="text-indigo-600 text-3xl mb-2">ðŸ›¡ï¸</div>
               <h3 className="text-lg font-bold text-gray-800">Risicobeheer</h3>
             </div>
             <p className="text-gray-600 text-sm text-center">
@@ -265,44 +270,44 @@ export default function VoorraadbeheerVoorStarters() {
           
           <div className="grid md:grid-cols-2 gap-8">
             <div>
-              <h3 className="text-xl font-semibold mb-4 text-red-600">❌ Wat je moet vermijden</h3>
+              <h3 className="text-xl font-semibold mb-4 text-red-600">âŒ Wat je moet vermijden</h3>
               <ul className="space-y-3 text-gray-700">
                 <li className="flex items-start">
-                  <span className="text-red-500 mr-2">•</span>
+                  <span className="text-red-500 mr-2">â€¢</span>
                   <span>Te complex beginnen met te veel functies</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-red-500 mr-2">•</span>
+                  <span className="text-red-500 mr-2">â€¢</span>
                   <span>Geen vaste procedures voor voorraadcontrole</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-red-500 mr-2">•</span>
+                  <span className="text-red-500 mr-2">â€¢</span>
                   <span>Geen minimumvoorraad niveaus instellen</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-red-500 mr-2">•</span>
+                  <span className="text-red-500 mr-2">â€¢</span>
                   <span>Voorraadbeheer uitstellen tot het te laat is</span>
                 </li>
               </ul>
             </div>
             
             <div>
-              <h3 className="text-xl font-semibold mb-4 text-green-600">✅ Wat je wel moet doen</h3>
+              <h3 className="text-xl font-semibold mb-4 text-green-600">âœ… Wat je wel moet doen</h3>
               <ul className="space-y-3 text-gray-700">
                 <li className="flex items-start">
-                  <span className="text-green-500 mr-2">•</span>
+                  <span className="text-green-500 mr-2">â€¢</span>
                   <span>Klein beginnen en geleidelijk uitbreiden</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-green-500 mr-2">•</span>
+                  <span className="text-green-500 mr-2">â€¢</span>
                   <span>Vaste momenten inplannen voor controle</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-green-500 mr-2">•</span>
+                  <span className="text-green-500 mr-2">â€¢</span>
                   <span>Automatische meldingen instellen</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-green-500 mr-2">•</span>
+                  <span className="text-green-500 mr-2">â€¢</span>
                   <span>Direct beginnen, niet uitstellen</span>
                 </li>
               </ul>
@@ -314,7 +319,7 @@ export default function VoorraadbeheerVoorStarters() {
       {/* FAQ Section */}
       <div className="max-w-4xl mx-auto mb-12">
         <div className="text-center mb-8">
-          <div className="text-purple-600 text-4xl mx-auto mb-4">❓</div>
+          <div className="text-purple-600 text-4xl mx-auto mb-4">â“</div>
           <h2 className="text-3xl font-bold mb-4 text-gray-800">
             Veelgestelde vragen voor starters
           </h2>
@@ -383,7 +388,7 @@ export default function VoorraadbeheerVoorStarters() {
       {/* CTA Section */}
       <div className="bg-gradient-to-br from-purple-300 to-indigo-500 text-white p-8 rounded-lg text-center">
         <div className="max-w-2xl mx-auto">
-          <div className="text-4xl mx-auto mb-4">🚀</div>
+          <div className="text-4xl mx-auto mb-4">ðŸš€</div>
           <h2 className="text-3xl font-bold mb-4">
             Klaar om te beginnen met voorraadbeheer?
           </h2>
@@ -420,7 +425,7 @@ export default function VoorraadbeheerVoorStarters() {
                 Voorraadbeheer tips
               </h3>
               <p className="text-gray-600 text-sm">
-                Praktische tips voor efficiënt voorraadbeheer en kostenbesparing.
+                Praktische tips voor efficiÃ«nt voorraadbeheer en kostenbesparing.
               </p>
             </div>
           </Link>

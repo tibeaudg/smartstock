@@ -10,6 +10,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
 import { useQueryClient } from '@tanstack/react-query';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { usePageRefresh } from '@/hooks/usePageRefresh';
 
 interface Product {
   id: string;
@@ -47,6 +48,9 @@ export const EditProductInfoModal = ({
   const [loading, setLoading] = useState(false);
   const [productImage, setProductImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(product.image_url || null);
+  
+  // Gebruik de page refresh hook
+  usePageRefresh();
   const [form, setForm] = useState({
     name: product.name,
     description: product.description || '',

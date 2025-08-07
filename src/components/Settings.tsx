@@ -19,6 +19,7 @@ import { LicenseOverview } from './settings/LicenseOverview';
 import { InvoicingOverview } from '@/components/settings/InvoicingOverview';
 import { useAuth } from '@/hooks/useAuth';
 import { useLocation } from 'react-router-dom';
+import { usePageRefresh } from '@/hooks/usePageRefresh';
 import {
   Building2,
   User,
@@ -30,6 +31,9 @@ import {
 export const Settings = () => {
   const { userProfile } = useAuth();
   const location = useLocation();
+  
+  // Gebruik de page refresh hook
+  usePageRefresh();
   
   // Get tab from URL query parameter or router state
   const urlParams = new URLSearchParams(location.search);

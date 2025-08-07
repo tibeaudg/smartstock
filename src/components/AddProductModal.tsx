@@ -16,6 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import { Info } from 'lucide-react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { usePageRefresh } from '@/hooks/usePageRefresh';
 
 interface AddProductModalProps {
   isOpen: boolean;
@@ -45,6 +46,9 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
   const [showUpgradeNotice, setShowUpgradeNotice] = useState(false);
   const navigate = useNavigate();
   const isMobile = useIsMobile();
+  
+  // Gebruik de page refresh hook
+  usePageRefresh();
 
   const form = useForm<FormData>({
     defaultValues: {

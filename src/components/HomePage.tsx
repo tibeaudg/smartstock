@@ -8,6 +8,7 @@ import { Package, BarChart3, Users, Shield, CheckCircle, ArrowRight, Check, Mail
 import { useNavigate, Link } from 'react-router-dom';
 import SEO from './SEO';
 import { motion } from 'framer-motion';
+import { usePageRefresh } from '@/hooks/usePageRefresh';
 
 // Een herbruikbare component voor fade-in animaties bij het scrollen
 const FadeInWhenVisible = ({ children }) => {
@@ -90,6 +91,9 @@ const MobileCarousel = ({ items, renderItem }) => {
 
 export const HomePage = () => {
   const navigate = useNavigate();
+  
+  // Gebruik de page refresh hook
+  usePageRefresh();
 
   const handleLoginClick = () => {
     navigate('/auth');

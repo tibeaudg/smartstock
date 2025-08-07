@@ -1,10 +1,15 @@
-import React from 'react';
+﻿import React from 'react';
 import SEO from '../components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '../components/SeoPageLayout';
-import { Check, Star, Smartphone, Zap, Shield, Users, TrendingUp, Clipboard, Clock, BarChart3, Settings, Calculator, AlertTriangle, FileText } from 'lucide-react';
+import { Check, Star, Smartphone, Bell, Zap, Shield, Users, TrendingUp } from 'lucide-react';
+import { usePageRefresh } from '@/hooks/usePageRefresh';
 
 export default function InventarisatieTips() {
+  // Gebruik de page refresh hook
+  usePageRefresh();
+  
+  
   const tips = [
     {
       icon: Clipboard,
@@ -23,7 +28,7 @@ export default function InventarisatieTips() {
       description: "Zorg voor een overzichtelijke administratie en duidelijke productlabels.",
       details: [
         "Gebruik gestandaardiseerde labels",
-        "Maak duidelijke productcategorieën",
+        "Maak duidelijke productcategorieÃ«n",
         "Nummer alle locaties consistent",
         "Documenteer alle afwijkingen"
       ]
@@ -76,10 +81,10 @@ export default function InventarisatieTips() {
 
   const benefits = [
     "Accurate voorraad informatie",
-    "Betere financiële planning",
+    "Betere financiÃ«le planning",
     "Vroegtijdige detectie van problemen",
     "Verbeterde klanttevredenheid",
-    "Kostenbesparing door efficiëntie",
+    "Kostenbesparing door efficiÃ«ntie",
     "Compliance met regelgeving"
   ];
 
@@ -139,7 +144,7 @@ export default function InventarisatieTips() {
     },
     {
       question: "Hoeveel kost een goede inventarisatie?",
-      answer: "Kosten variëren van €500-5000 afhankelijk van de grootte van je voorraad en gewenste nauwkeurigheid. De investering verdient zich terug door betere voorraad controle."
+      answer: "Kosten variÃ«ren van â‚¬500-5000 afhankelijk van de grootte van je voorraad en gewenste nauwkeurigheid. De investering verdient zich terug door betere voorraad controle."
     }
   ];
 
@@ -147,12 +152,12 @@ export default function InventarisatieTips() {
     {
       title: "Voorraadbeheer Tips",
       url: "/voorraadbeheer-tips",
-      description: "Beste tips voor efficiënt voorraadbeheer"
+      description: "Beste tips voor efficiÃ«nt voorraadbeheer"
     },
     {
       title: "Magazijnbeheer Tips",
       url: "/magazijnbeheer-tips",
-      description: "Tips voor efficiënt magazijnbeheer"
+      description: "Tips voor efficiÃ«nt magazijnbeheer"
     },
     {
       title: "Voorraadbeheer Automatiseren",
@@ -168,7 +173,7 @@ export default function InventarisatieTips() {
     >
       <SEO
         title="Inventarisatie Tips | Voorraad Tellen | stockflow"
-        description="De beste tips voor inventarisatie en voorraad tellen. Leer hoe je efficiënt en foutloos je voorraad inventariseert met stockflow."
+        description="De beste tips voor inventarisatie en voorraad tellen. Leer hoe je efficiÃ«nt en foutloos je voorraad inventariseert met stockflow."
         keywords="inventarisatie, voorraad tellen, inventariseren, voorraadcontrole, voorraadbeheer, inventarisatie tips, voorraad telling, inventarisatie software, inventarisatie app, voorraad inventariseren, inventarisatie procedure, inventarisatie nauwkeurigheid, inventarisatie kosten, inventarisatie automatisering, inventarisatie planning, inventarisatie best practices"
         url="https://www.stockflow.be/inventarisatie-tips"
         image="/optimized/Inventory-Management.png"
@@ -208,7 +213,7 @@ export default function InventarisatieTips() {
             <h2 className="text-3xl font-bold mb-4">Waarom Inventarisatie Belangrijk Is</h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
               Regelmatige inventarisatie is essentieel voor accurate voorraad informatie, 
-              financiële planning en het voorkomen van voorraad problemen.
+              financiÃ«le planning en het voorkomen van voorraad problemen.
             </p>
           </div>
           
@@ -243,9 +248,9 @@ export default function InventarisatieTips() {
       <section className="py-16 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">6 Essentiële Inventarisatie Tips</h2>
+            <h2 className="text-3xl font-bold mb-4">6 EssentiÃ«le Inventarisatie Tips</h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Implementeer deze tips om je inventarisatie efficiënter en nauwkeuriger te maken.
+              Implementeer deze tips om je inventarisatie efficiÃ«nter en nauwkeuriger te maken.
             </p>
           </div>
           
@@ -387,7 +392,7 @@ export default function InventarisatieTips() {
           <h2 className="text-3xl font-bold mb-4">Klaar om je Inventarisatie te Verbeteren?</h2>
           <p className="text-xl mb-8 max-w-2xl mx-auto">
             Begin vandaag nog met het optimaliseren van je inventarisatie proces. 
-            stockflow helpt je om efficiënter en nauwkeuriger te inventariseren.
+            stockflow helpt je om efficiÃ«nter en nauwkeuriger te inventariseren.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link 
@@ -445,7 +450,7 @@ export default function InventarisatieTips() {
         "@context": "https://schema.org",
         "@type": "Article",
         "headline": "Inventarisatie Tips",
-        "description": "De beste tips voor inventarisatie en voorraad tellen. Leer hoe je efficiënt en foutloos je voorraad inventariseert met stockflow.",
+        "description": "De beste tips voor inventarisatie en voorraad tellen. Leer hoe je efficiÃ«nt en foutloos je voorraad inventariseert met stockflow.",
         "image": "https://www.stockflow.be/optimized/Inventory-Management.png",
         "author": {
           "@type": "Organization",

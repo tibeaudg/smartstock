@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Loader2 } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
+import { usePageRefresh } from '@/hooks/usePageRefresh';
 
 // Factuurtype (pas aan op basis van je backend structuur)
 interface Invoice {
@@ -28,6 +29,10 @@ async function fetchUserInvoices(userId: string): Promise<Invoice[]> {
 
 export default function AdminUserDetailPage() {
   const { id: userId } = useParams<{ id: string }>();
+  
+  // Gebruik de page refresh hook
+  usePageRefresh();
+  
   const { data: invoices = [], isLoading, error } = useQuery({
     queryKey: ['userInvoices', userId],
     queryFn: () => fetchUserInvoices(userId!),

@@ -3,6 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Button } from '@/components/ui/button';
 import { Edit, Minus, Plus, Trash2 } from 'lucide-react';
 import type { Product } from '@/types/stockTypes';
+import { usePageRefresh } from '@/hooks/usePageRefresh';
 
 interface ProductActionModalProps {
   isOpen: boolean;
@@ -21,6 +22,9 @@ export const ProductActionModal = ({
   onStockIn,
   onStockOut
 }: ProductActionModalProps) => {
+  // Gebruik de page refresh hook
+  usePageRefresh();
+  
   if (!product) return null;
 
   return (

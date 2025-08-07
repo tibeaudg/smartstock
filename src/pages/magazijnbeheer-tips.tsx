@@ -1,10 +1,15 @@
-import React from 'react';
+﻿import React from 'react';
 import SEO from '../components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '../components/SeoPageLayout';
-import { Check, Star, Smartphone, Zap, Shield, Users, TrendingUp, Warehouse, Package, MapPin, Clock, BarChart3, Settings, AlertTriangle } from 'lucide-react';
+import { Check, Star, Smartphone, Bell, Zap, Shield, Users, TrendingUp } from 'lucide-react';
+import { usePageRefresh } from '@/hooks/usePageRefresh';
 
 export default function MagazijnbeheerTips() {
+  // Gebruik de page refresh hook
+  usePageRefresh();
+  
+  
   const tips = [
     {
       icon: MapPin,
@@ -14,7 +19,7 @@ export default function MagazijnbeheerTips() {
         "Gebruik ABC-analyse voor productplaatsing",
         "Houd veel verkochte producten dicht bij het pickgebied",
         "Label alle locaties duidelijk",
-        "Creëer een logische looproute"
+        "CreÃ«er een logische looproute"
       ]
     },
     {
@@ -42,7 +47,7 @@ export default function MagazijnbeheerTips() {
     {
       icon: Users,
       title: "Train je Medewerkers",
-      description: "Goede instructies en training zorgen voor minder fouten en een hogere efficiëntie.",
+      description: "Goede instructies en training zorgen voor minder fouten en een hogere efficiÃ«ntie.",
       details: [
         "Regelmatige training sessies",
         "Duidelijke procedures en checklists",
@@ -75,7 +80,7 @@ export default function MagazijnbeheerTips() {
   ];
 
   const benefits = [
-    "Verhoogde efficiëntie en productiviteit",
+    "Verhoogde efficiÃ«ntie en productiviteit",
     "Lagere operationele kosten",
     "Betere klanttevredenheid door snellere leveringen",
     "Minder fouten en retouren",
@@ -117,7 +122,7 @@ export default function MagazijnbeheerTips() {
       answer: "Voorraadbeheer focust op het beheren van producten en aantallen, terwijl magazijnbeheer zich richt op de fysieke opslag, indeling en processen binnen het magazijn."
     },
     {
-      question: "Hoe kan ik mijn magazijn efficiënter maken?",
+      question: "Hoe kan ik mijn magazijn efficiÃ«nter maken?",
       answer: "Begin met een ABC-analyse, optimaliseer de indeling, digitaliseer processen en train je medewerkers. Gebruik magazijnbeheer software voor realtime inzicht."
     },
     {
@@ -130,7 +135,7 @@ export default function MagazijnbeheerTips() {
     },
     {
       question: "Hoeveel kost magazijnbeheer software?",
-      answer: "Kosten variëren van €50-500 per maand afhankelijk van de grootte van je magazijn en gewenste functionaliteiten. stockflow biedt een betaalbare oplossing voor KMO's."
+      answer: "Kosten variÃ«ren van â‚¬50-500 per maand afhankelijk van de grootte van je magazijn en gewenste functionaliteiten. stockflow biedt een betaalbare oplossing voor KMO's."
     },
     {
       question: "Hoe lang duurt het om magazijnbeheer software te implementeren?",
@@ -142,7 +147,7 @@ export default function MagazijnbeheerTips() {
     {
       title: "Voorraadbeheer Tips",
       url: "/voorraadbeheer-tips",
-      description: "Beste tips voor efficiënt voorraadbeheer"
+      description: "Beste tips voor efficiÃ«nt voorraadbeheer"
     },
     {
       title: "Mobiel Voorraadbeheer",
@@ -152,7 +157,7 @@ export default function MagazijnbeheerTips() {
     {
       title: "Inventarisatie Tips",
       url: "/inventarisatie-tips",
-      description: "Tips voor efficiënte inventarisatie"
+      description: "Tips voor efficiÃ«nte inventarisatie"
     }
   ];
 
@@ -163,8 +168,8 @@ export default function MagazijnbeheerTips() {
     >
       <SEO
         title="Magazijnbeheer Tips voor KMO's | Optimaliseer je Magazijn | stockflow"
-        description="De beste tips voor magazijnbeheer, magazijn optimaliseren en voorraadlogistiek voor KMO's. Leer hoe je je magazijn efficiënt beheert en kosten bespaart met stockflow."
-        keywords="magazijnbeheer, magazijn optimaliseren, voorraadlogistiek, picking, opslag, magazijn tips, voorraadbeheer, KMO, kleine onderneming, magazijn software, magazijnbeheer app, magazijn efficiëntie, magazijn indeling, magazijn processen, magazijn automatisering, magazijn training, magazijn KPI's, magazijn veiligheid, magazijn kostenbesparing"
+        description="De beste tips voor magazijnbeheer, magazijn optimaliseren en voorraadlogistiek voor KMO's. Leer hoe je je magazijn efficiÃ«nt beheert en kosten bespaart met stockflow."
+        keywords="magazijnbeheer, magazijn optimaliseren, voorraadlogistiek, picking, opslag, magazijn tips, voorraadbeheer, KMO, kleine onderneming, magazijn software, magazijnbeheer app, magazijn efficiÃ«ntie, magazijn indeling, magazijn processen, magazijn automatisering, magazijn training, magazijn KPI's, magazijn veiligheid, magazijn kostenbesparing"
         url="https://www.stockflow.be/magazijnbeheer-tips"
         image="/optimized/Inventory-Management.png"
       />
@@ -176,7 +181,7 @@ export default function MagazijnbeheerTips() {
             Magazijnbeheer Tips voor KMO's
           </h1>
           <p className="text-xl mb-8 max-w-3xl mx-auto">
-            Efficiënt <strong>magazijnbeheer</strong> is cruciaal voor een vlotte bedrijfsvoering. 
+            EfficiÃ«nt <strong>magazijnbeheer</strong> is cruciaal voor een vlotte bedrijfsvoering. 
             Met deze tips optimaliseer je je magazijn, verbeter je de voorraadlogistiek en bespaar je kosten.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -202,14 +207,14 @@ export default function MagazijnbeheerTips() {
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">Waarom Magazijnbeheer Belangrijk Is</h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Een goed georganiseerd magazijn is de basis voor efficiënte bedrijfsvoering. 
+              Een goed georganiseerd magazijn is de basis voor efficiÃ«nte bedrijfsvoering. 
               Het zorgt voor snellere orderverwerking, lagere kosten en hogere klanttevredenheid.
             </p>
           </div>
           
           <div className="grid md:grid-cols-2 gap-8">
             <div>
-              <h3 className="text-xl font-semibold mb-4">Voordelen van Efficiënt Magazijnbeheer</h3>
+              <h3 className="text-xl font-semibold mb-4">Voordelen van EfficiÃ«nt Magazijnbeheer</h3>
               <ul className="space-y-2">
                 {benefits.slice(0, 3).map((benefit, index) => (
                   <li key={index} className="flex items-start">
@@ -238,7 +243,7 @@ export default function MagazijnbeheerTips() {
       <section className="py-16 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">6 Essentiële Magazijnbeheer Tips</h2>
+            <h2 className="text-3xl font-bold mb-4">6 EssentiÃ«le Magazijnbeheer Tips</h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
               Implementeer deze tips om je magazijn te optimaliseren en je bedrijfsprocessen te verbeteren.
             </p>
@@ -298,7 +303,7 @@ export default function MagazijnbeheerTips() {
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">Best Practices voor Magazijnbeheer</h2>
             <p className="text-lg text-gray-600">
-              Volg deze best practices om je magazijn efficiënt te beheren
+              Volg deze best practices om je magazijn efficiÃ«nt te beheren
             </p>
           </div>
           
@@ -320,7 +325,7 @@ export default function MagazijnbeheerTips() {
                 </li>
                 <li className="flex items-start">
                   <Check className="text-green-500 mr-2 mt-1" size={16} />
-                  <span>Creëer een logische looproute voor medewerkers</span>
+                  <span>CreÃ«er een logische looproute voor medewerkers</span>
                 </li>
               </ul>
             </div>
@@ -377,7 +382,7 @@ export default function MagazijnbeheerTips() {
           <h2 className="text-3xl font-bold mb-4">Klaar om je Magazijn te Optimaliseren?</h2>
           <p className="text-xl mb-8 max-w-2xl mx-auto">
             Begin vandaag nog met het verbeteren van je magazijnbeheer. 
-            stockflow helpt je om efficiënter te werken en kosten te besparen.
+            stockflow helpt je om efficiÃ«nter te werken en kosten te besparen.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link 
@@ -435,7 +440,7 @@ export default function MagazijnbeheerTips() {
         "@context": "https://schema.org",
         "@type": "Article",
         "headline": "Magazijnbeheer Tips voor KMO's",
-        "description": "De beste tips voor magazijnbeheer, magazijn optimaliseren en voorraadlogistiek voor KMO's. Leer hoe je je magazijn efficiënt beheert en kosten bespaart met stockflow.",
+        "description": "De beste tips voor magazijnbeheer, magazijn optimaliseren en voorraadlogistiek voor KMO's. Leer hoe je je magazijn efficiÃ«nt beheert en kosten bespaart met stockflow.",
         "image": "https://www.stockflow.be/optimized/Inventory-Management.png",
         "author": {
           "@type": "Organization",

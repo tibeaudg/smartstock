@@ -4,6 +4,7 @@ import { Layout } from './Layout';
 import { CreateBranchModal } from './CreateBranchModal';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches, BranchProvider } from '@/hooks/useBranches';
+import { usePageRefresh } from '@/hooks/usePageRefresh';
 
 function isLocalStorageAvailable() {
   try {
@@ -21,6 +22,9 @@ const AppContent: React.FC = () => {
   const { userProfile } = useAuth();
   const { hasNoBranches } = useBranches();
   const location = useLocation();
+  
+  // Gebruik de page refresh hook
+  usePageRefresh();
 
   if (!isLocalStorageAvailable()) {
     return (

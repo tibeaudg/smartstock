@@ -1,8 +1,12 @@
 import React from 'react';
 import SEO from '../components/SEO';
 import SeoPageLayout from '../components/SeoPageLayout';
+import { usePageRefresh } from '@/hooks/usePageRefresh';
 
 export default function VoorraadbeheerTips() {
+  // Gebruik de page refresh hook
+  usePageRefresh();
+  
   return (
     <SeoPageLayout
       title="Voorraadbeheer Tips voor KMO's"

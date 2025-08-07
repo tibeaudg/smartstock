@@ -2,6 +2,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { SuggestionInput } from "@/components/SuggestionInput";
 import SEO from '../components/SEO';
+import { usePageRefresh } from '@/hooks/usePageRefresh';
 
 const SUGGESTIES = [
   { label: "Home", path: "/" },
@@ -28,6 +29,9 @@ const NotFound = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [zoek, setZoek] = useState("");
+  
+  // Gebruik de page refresh hook
+  usePageRefresh();
 
   useEffect(() => {
     console.error(
