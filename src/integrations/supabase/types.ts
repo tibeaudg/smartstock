@@ -207,6 +207,87 @@ export type Database = {
         }
         Relationships: []
       }
+      features: {
+        Row: {
+          id: string
+          title: string
+          description: string
+          category: 'optimization' | 'premium' | 'analytics' | 'integration'
+          status: 'planned' | 'in-development' | 'released'
+          priority: 'low' | 'medium' | 'high'
+          estimated_release: string | null
+          icon: string
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          title: string
+          description: string
+          category: 'optimization' | 'premium' | 'analytics' | 'integration'
+          status?: 'planned' | 'in-development' | 'released'
+          priority?: 'low' | 'medium' | 'high'
+          estimated_release?: string | null
+          icon: string
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          title?: string
+          description?: string
+          category?: 'optimization' | 'premium' | 'analytics' | 'integration'
+          status?: 'planned' | 'in-development' | 'released'
+          priority?: 'low' | 'medium' | 'high'
+          estimated_release?: string | null
+          icon?: string
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      feature_votes: {
+        Row: {
+          id: string
+          feature_id: string
+          user_id: string
+          voted: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          feature_id: string
+          user_id: string
+          voted?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          feature_id?: string
+          user_id?: string
+          voted?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "feature_votes_feature_id_fkey"
+            columns: ["feature_id"]
+            isOneToOne: false
+            referencedRelation: "features"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "feature_votes_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       licenses: {
         Row: {
           admin_user_id: string | null
@@ -605,33 +686,6 @@ export type Database = {
     CompositeTypes: {
       [_ in never]: never
     }
-            Row: {
-          id: string;
-          email: string;
-          first_name: string | null;
-          last_name: string | null;
-          role: 'admin' | 'staff';
-          created_at: string;
-          updated_at: string;
-        };
-        Insert: {
-          id?: string;
-          email: string;
-          first_name?: string | null;
-          last_name?: string | null;
-          role?: 'admin' | 'staff';
-          created_at?: string;
-          updated_at?: string;
-        };
-        Update: {
-          id?: string;
-          email?: string;
-          first_name?: string | null;
-          last_name?: string | null;
-          role?: 'admin' | 'staff';
-          created_at?: string;
-          updated_at?: string;
-        };
   }
 }
 

@@ -247,7 +247,9 @@ export const LicenseOverview = () => {
         </CardContent>
       </Card>
 
-      <Card>
+
+      {/* Abonnementen */}
+      <Card className="hidden">
         <CardHeader>
           <CardTitle>Abonnementen</CardTitle>
           <CardDescription>Kies of wijzig uw abonnement. De prijzen worden berekend op basis van uw huidig verbruik.</CardDescription>

@@ -15,6 +15,7 @@ import {
 import { BranchManagement } from './settings/BranchManagement';
 import { ProfileSettings } from './settings/ProfileSettings';
 import { UserManagement } from './settings/UserManagement';
+import { ModuleManagement } from './settings/ModuleManagement';
 import { LicenseOverview } from './settings/LicenseOverview';
 import { InvoicingOverview } from '@/components/settings/InvoicingOverview';
 import { useAuth } from '@/hooks/useAuth';
@@ -26,6 +27,7 @@ import {
   Banknote,
   Users,
   FileText,
+  Key,
 } from 'lucide-react';
 
 export const Settings = () => {
@@ -88,7 +90,7 @@ export const Settings = () => {
       >
         {/* Tab buttons */}
         {isAdmin && (
-          <TabsList className="grid w-full grid-cols-2 lg:grid-cols-5 gap-1">
+          <TabsList className="grid w-full grid-cols-2 lg:grid-cols-5 gap-1 mb-10">
             <TabsTrigger value="profile" className="flex items-center space-x-2">
               <User className="w-4 h-4" />
               <span>Profiel</span>
@@ -97,9 +99,28 @@ export const Settings = () => {
               <Building2 className="w-4 h-4" />
               <span>Filialen</span>
             </TabsTrigger>
-            <TabsTrigger value="users" className="flex items-center space-x-2">
+              <TabsTrigger value="users" className="flex items-center space-x-2">
+                <Users className="w-4 h-4" />
+                <span>Gebruikers</span>
+              </TabsTrigger>
+
+              <TabsTrigger value="license" className="flex items-center space-x-2">
+                <Key className="w-4 h-4" />
+                <span>Licentie</span>
+              </TabsTrigger>
+
+              <TabsTrigger value="invoicing" className="flex items-center space-x-2">
+                <Banknote className="w-4 h-4" />
+                <span>Facturatie</span>
+              </TabsTrigger>
+
+
+
+
+
+            <TabsTrigger value="modules" className="flex items-center space-x-2">
               <Users className="w-4 h-4" />
-              <span>Gebruikers</span>
+              <span>Modules</span>
             </TabsTrigger>
           </TabsList>
         )}
@@ -169,6 +190,23 @@ export const Settings = () => {
                 </CardContent>
               </Card>
             </TabsContent>
+
+            <TabsContent value="modules" className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Modules</CardTitle>
+                  <CardDescription>
+                    Stem op toekomstige modules en bekijk de status van de huidige modules
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ModuleManagement />
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+
+
           </>
         )}
       </Tabs>

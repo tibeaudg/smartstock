@@ -10,6 +10,7 @@ import { BranchProvider } from '@/hooks/useBranches';
 import { useAuth } from '@/hooks/useAuth';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import SEO from '../components/SEO';
+import { FeatureManagement } from '@/pages/admin/FeatureManagement';
 
 // Facturatiebeheer types
 interface Invoice {
@@ -91,7 +92,7 @@ async function fetchUserInvoices(userId: string): Promise<Invoice[]> {
 
 export default function AdminPage() {
   const { user, profile } = useAuth();
-  const [activeTab, setActiveTab] = useState<'invoicing' | 'users'>('invoicing');
+  const [activeTab, setActiveTab] = useState<'invoicing' | 'users' | 'features'>('invoicing');
   const [selectedUser, setSelectedUser] = useState<UserProfile | null>(null);
   
   // Gebruik de page refresh hook
@@ -142,6 +143,7 @@ export default function AdminPage() {
             <div className="mb-4 flex gap-2">
               <button className={`px-4 py-2 rounded ${activeTab === 'invoicing' ? 'bg-blue-600 text-white' : 'bg-gray-100'}`} onClick={() => setActiveTab('invoicing')}>Facturatiebeheer</button>
               <button className={`px-4 py-2 rounded ${activeTab === 'users' ? 'bg-blue-600 text-white' : 'bg-gray-100'}`} onClick={() => setActiveTab('users')}>Gebruikersbeheer</button>
+              <button className={`px-4 py-2 rounded ${activeTab === 'features' ? 'bg-blue-600 text-white' : 'bg-gray-100'}`} onClick={() => setActiveTab('features')}>Feature Management</button>
             </div>
             {activeTab === 'invoicing' && (
               <Card>
@@ -298,6 +300,9 @@ export default function AdminPage() {
                   )}
                 </CardContent>
               </Card>
+            )}
+            {activeTab === 'features' && (
+              <FeatureManagement />
             )}
           </div>
         </div>
