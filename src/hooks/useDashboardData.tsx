@@ -1,49 +1,32 @@
-import { useEffect } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './useAuth';
 import { useBranches } from './useBranches';
+import { useEffect } from 'react';
 
-export interface DashboardMetrics {
-  totalStockValue: number;
-  totalProducts: number;
-  incomingToday: number;
-  outgoingToday: number;
-  lowStockAlerts: number;
-}
-
-export interface StockTrendData {
-  date: string;
-  value: number;
-}
-
-export interface CategoryData {
-  name: string;
-  value: number;
-  products: number;
-}
-
-export interface DailyActivityData {
-  date: string;
-  incoming: number;
-  outgoing: number;
-}
-
-export interface DashboardData {
-  metrics: DashboardMetrics;
-  stockTrends: StockTrendData[];
-  categoryData: CategoryData[];
-  dailyActivity: DailyActivityData[];
-}
-
-export interface UseDashboardDataParams {
+interface UseDashboardDataParams {
   dateFrom?: Date;
   dateTo?: Date;
+}
+
+interface DashboardData {
+  totalValue: number;
+  totalProducts: number;
+  lowStockCount: number;
+  incomingToday: number;
+  outgoingToday: number;
+  totalTransactions: number;
+  dailyActivity?: Array<{
+    date: string;
+    incoming: number;
+    outgoing: number;
+  }>;
 }
 
 export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = {}) => {
   const { user } = useAuth();
   const { activeBranch } = useBranches();
+  const queryClient = useQueryClient();
 
   const fetchDashboardData = async () => {
     if (!user || !activeBranch) throw new Error('Geen gebruiker of filiaal');
@@ -83,79 +66,118 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
         ?.filter(t => t.transaction_type === 'outgoing' && new Date(t.created_at) >= today)
         .reduce((sum, t) => sum + t.quantity, 0) || 0;
 
-      // Generate daily activity (voor gekozen bereik)
-      const activity = [];
-      const start = dateFrom ? new Date(dateFrom) : new Date();
-      const end = dateTo ? new Date(dateTo) : new Date();
-      start.setHours(0, 0, 0, 0);
-      end.setHours(0, 0, 0, 0);
-      // Loop van start t/m end (inclusief)
-      for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-        const nextDay = new Date(d);
-        nextDay.setDate(d.getDate() + 1);
-        const dayTransactions = transactions?.filter((t) => {
-          const tDate = new Date(t.created_at);
-          return tDate >= d && tDate < nextDay;
-        }) || [];
-        const incoming = dayTransactions.filter((t) => t.transaction_type === 'incoming')
-          .reduce((sum, t) => sum + t.quantity, 0);
-        const outgoing = dayTransactions.filter((t) => t.transaction_type === 'outgoing')
-          .reduce((sum, t) => sum + t.quantity, 0);
-        activity.push({
-          date: d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-          incoming,
-          outgoing,
-        });
-      }
-
-
-      // Generate stock trends (last 7 days, optional)
-      const trends = [];
-      // ...optioneel: trends vullen...
+      // Generate daily activity data for chart
+      const dailyActivity = generateDailyActivity(transactions || [], dateFrom, dateTo);
 
       return {
-        metrics: {
-          totalStockValue: totalValue,
-          totalProducts: productsData?.length || 0,
-          incomingToday,
-          outgoingToday,
-          lowStockAlerts: lowStockCount,
-        },
-        stockTrends: trends,
-        dailyActivity: activity,
+        totalValue,
+        totalProducts: productsData?.length || 0,
+        lowStockCount,
+        incomingToday,
+        outgoingToday,
+        totalTransactions: transactions?.length || 0,
+        dailyActivity,
       };
-    } catch (err) {
-      throw new Error(err instanceof Error ? err.message : 'An error occurred while fetching dashboard data');
+    } catch (error) {
+      console.error('Error fetching dashboard data:', error);
+      throw error;
     }
   };
 
+  // Helper function to generate daily activity data
+  const generateDailyActivity = (transactions: any[], from?: Date, to?: Date) => {
+    const activityMap = new Map<string, { incoming: number; outgoing: number }>();
+    
+    // Initialize all days in range with 0 values
+    const startDate = from || new Date(Date.now() - 30 * 24 * 60 * 60 * 1000); // Default to 30 days ago
+    const endDate = to || new Date();
+    
+    for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
+      const dateStr = d.toISOString().split('T')[0];
+      activityMap.set(dateStr, { incoming: 0, outgoing: 0 });
+    }
+
+    // Add transaction data
+    transactions.forEach(transaction => {
+      const dateStr = new Date(transaction.created_at).toISOString().split('T')[0];
+      const existing = activityMap.get(dateStr) || { incoming: 0, outgoing: 0 };
+      
+      if (transaction.transaction_type === 'incoming') {
+        existing.incoming += transaction.quantity;
+      } else if (transaction.transaction_type === 'outgoing') {
+        existing.outgoing += transaction.quantity;
+      }
+      
+      activityMap.set(dateStr, existing);
+    });
+
+    // Convert to array format for chart
+    return Array.from(activityMap.entries()).map(([date, data]) => ({
+      date,
+      incoming: data.incoming,
+      outgoing: data.outgoing,
+    }));
+  };
+
+  // Real-time updates voor dashboard data
+  useEffect(() => {
+    if (!user?.id || !activeBranch?.branch_id) return;
+
+    const dashboardChannel = supabase
+      .channel('dashboard-changes-' + activeBranch.branch_id)
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'products',
+          filter: `branch_id=eq.${activeBranch.branch_id}`,
+        },
+        () => {
+          console.log('Product wijziging gedetecteerd, refresh dashboard...');
+          queryClient.invalidateQueries({ 
+            queryKey: ['dashboardData', activeBranch.branch_id, dateFrom, dateTo] 
+          });
+        }
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'stock_transactions',
+          filter: `branch_id=eq.${activeBranch.branch_id}`,
+        },
+        () => {
+          console.log('Stock transaction wijziging gedetecteerd, refresh dashboard...');
+          queryClient.invalidateQueries({ 
+            queryKey: ['dashboardData', activeBranch.branch_id, dateFrom, dateTo] 
+          });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(dashboardChannel);
+    };
+  }, [user?.id, activeBranch?.branch_id, queryClient, dateFrom, dateTo]);
+
   const {
     data: dashboardData,
-    isLoading: loading,
+    isLoading,
     error,
-    refetch,
-  } = useQuery({
-    queryKey: ['dashboardData', activeBranch?.branch_id, user?.id, dateFrom?.toISOString(), dateTo?.toISOString()],
+  } = useQuery<DashboardData>({
+    queryKey: ['dashboardData', activeBranch?.branch_id, dateFrom, dateTo],
     queryFn: fetchDashboardData,
     enabled: !!user && !!activeBranch,
     refetchOnWindowFocus: true,
-    staleTime: 1000 * 60 * 2,
+    staleTime: 1000 * 60 * 2, // 2 minuten cache
   });
 
   return {
-    metrics: dashboardData?.metrics ?? {
-      totalStockValue: 0,
-      totalProducts: 0,
-      incomingToday: 0,
-      outgoingToday: 0,
-      lowStockAlerts: 0,
-    },
-    stockTrends: dashboardData?.stockTrends ?? [],
-    categoryData: dashboardData?.categoryData ?? [],
-    dailyActivity: dashboardData?.dailyActivity ?? [],
-    loading,
+    data: dashboardData,
+    isLoading,
     error,
-    refresh: refetch,
   };
 };
 

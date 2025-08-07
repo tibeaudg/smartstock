@@ -157,6 +157,44 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
     };
   }, [/* user, authLoading */]);
 
+  // Real-time updates voor branches
+  useEffect(() => {
+    if (!user?.id) return;
+
+    // Luister naar wijzigingen in branches tabel
+    const branchesChannel = supabase
+      .channel('branches-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'branches',
+        },
+        () => {
+          console.log('Branch wijziging gedetecteerd, refresh branches...');
+          fetchBranches();
+        }
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'branch_users',
+        },
+        () => {
+          console.log('Branch user wijziging gedetecteerd, refresh branches...');
+          fetchBranches();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(branchesChannel);
+    };
+  }, [user?.id]);
+
   const setActiveBranch = (branch: Branch) => {
     setActiveBranchState(branch);
     setBranchIdToStorage(branch.branch_id);

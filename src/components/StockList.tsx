@@ -1,79 +1,87 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import type { Product } from '@/types/stockTypes';
+import React, { useState, useMemo, useEffect } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
-import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Edit, Minus, Plus, Trash2 } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { 
+  Search, 
+  Filter, 
+  Plus, 
+  MoreHorizontal, 
+  Package, 
+  TrendingUp, 
+  TrendingDown,
+  Edit,
+  Trash2,
+  X,
+  Minus
+} from 'lucide-react';
+import { ProductActionModal } from './ProductActionModal';
 import { EditProductModal } from './EditProductModal';
-import { AddProductModal } from './AddProductModal';
+import { EditProductInfoModal } from './EditProductInfoModal';
+import { StockMovementForm } from './stock/StockMovementForm';
 import { ProductFilters } from './ProductFilters';
+import { ImagePreviewModal } from './ImagePreviewModal';
+import { AddProductModal } from './AddProductModal';
+import { EditProductStockModal } from './EditProductStockModal';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { toast } from 'sonner';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { EditProductInfoModal } from './EditProductInfoModal';
-import { EditProductStockModal } from './EditProductStockModal';
-import { ImagePreviewModal } from './ImagePreviewModal';
-import { ProductActionModal } from './ProductActionModal';
 
 const getStockStatus = (quantity: number, minLevel: number) => {
-  if (quantity > minLevel) {
-    return 'In Stock';
-  } else if (quantity > 0) {
-    return 'Laag';
-  } else {
-    return 'Op';
-  }
+  if (quantity === 0) return 'Op';
+  if (quantity <= minLevel) return 'Laag';
+  return 'In Stock';
 };
 
 const getStockStatusVariant = (status: string) => {
   switch (status) {
-    case 'In Stock':
-      return 'success';
-    case 'Laag':
-      return 'warning';
-    case 'Op':
-      return 'destructive';
-    default:
-      return 'default';
+    case 'In Stock': return 'default';
+    case 'Laag': return 'secondary';
+    case 'Op': return 'destructive';
+    default: return 'default';
   }
 };
 
+interface Product {
+  id: string;
+  name: string;
+  description: string | null;
+  quantity_in_stock: number;
+  minimum_stock_level: number;
+  unit_price: number;
+  purchase_price: number;
+  sale_price: number;
+  status: string | null;
+  category_name: string | null;
+  supplier_name: string | null;
+  image_url?: string | null;
+}
+
 type StockAction = 'in' | 'out';
 
-// Haal producten op via React Query
 const fetchProducts = async (branchId: string) => {
   const { data, error } = await supabase
     .from('products')
-    .select(`*`)
+    .select('*')
     .eq('branch_id', branchId)
-    .order('created_at', { ascending: false });
-  if (error) throw new Error(error.message);
-  return (data || []).map((p: any) => ({
-    ...p,
-    purchase_price: typeof p.purchase_price === 'number' ? p.purchase_price : 0,
-    sale_price: typeof p.sale_price === 'number' ? p.sale_price : 0,
-  }));
+    .order('name');
+  
+  if (error) throw error;
+  return data || [];
 };
 
 export const StockList = () => {
   const { user, userProfile } = useAuth();
   const { activeBranch } = useBranches();
+  const queryClient = useQueryClient();
   const isMobile = useIsMobile();
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [isEditInfoModalOpen, setIsEditInfoModalOpen] = useState(false);
-  const [isProductActionModalOpen, setIsProductActionModalOpen] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [selectedAction, setSelectedAction] = useState<StockAction | null>(null);
-  const [selectedProductIds, setSelectedProductIds] = useState<string[]>([]);
-  const [selectAll, setSelectAll] = useState(false);
-  const [isImagePreviewOpen, setIsImagePreviewOpen] = useState(false);
-  const [previewImageUrl, setPreviewImageUrl] = useState<string | null>(null);
 
-  // Filter states
+  // State voor filters
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');
   const [supplierFilter, setSupplierFilter] = useState('');
@@ -83,9 +91,28 @@ export const StockList = () => {
   const [minStockFilter, setMinStockFilter] = useState('');
   const [maxStockFilter, setMaxStockFilter] = useState('');
 
-  // Calculate active filters count
-  const activeFiltersCount = useMemo(() => {
+  // State voor modals
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isEditInfoModalOpen, setIsEditInfoModalOpen] = useState(false);
+  const [isProductActionModalOpen, setIsProductActionModalOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [selectedAction, setSelectedAction] = useState<StockAction>('in');
+
+  // State voor bulk selectie (desktop)
+  const [selectedProductIds, setSelectedProductIds] = useState<string[]>([]);
+  const [selectAll, setSelectAll] = useState(false);
+
+  // State voor image preview
+  const [isImagePreviewOpen, setIsImagePreviewOpen] = useState(false);
+  const [previewImageUrl, setPreviewImageUrl] = useState<string>('');
+
+  // State voor add modal
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
+  // Tel actieve filters
+  const activeFilterCount = useMemo(() => {
     let count = 0;
+    if (searchTerm !== '') count++;
     if (categoryFilter !== '') count++;
     if (supplierFilter !== '') count++;
     if (stockStatusFilter !== 'all') count++;
@@ -111,6 +138,45 @@ export const StockList = () => {
     // @ts-expect-error: keepPreviousData is supported in v5, type mismatch workaround
     keepPreviousData: true,
   });
+
+  // Real-time updates voor producten
+  useEffect(() => {
+    if (!user?.id || !activeBranch?.branch_id) return;
+
+    const productsChannel = supabase
+      .channel('products-changes-' + activeBranch.branch_id)
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'products',
+          filter: `branch_id=eq.${activeBranch.branch_id}`,
+        },
+        () => {
+          console.log('Product wijziging gedetecteerd, refresh producten...');
+          queryClient.invalidateQueries({ queryKey: ['products', activeBranch.branch_id] });
+        }
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'stock_transactions',
+          filter: `branch_id=eq.${activeBranch.branch_id}`,
+        },
+        () => {
+          console.log('Stock transaction wijziging gedetecteerd, refresh producten...');
+          queryClient.invalidateQueries({ queryKey: ['products', activeBranch.branch_id] });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(productsChannel);
+    };
+  }, [user?.id, activeBranch?.branch_id, queryClient]);
 
   const productsTyped: Product[] = Array.isArray(products) ? products : [];
 
@@ -141,6 +207,15 @@ export const StockList = () => {
              matchesMinPrice && matchesMaxPrice && matchesMinStock && matchesMaxStock;
     });
   }, [productsTyped, searchTerm, categoryFilter, supplierFilter, stockStatusFilter, minPriceFilter, maxPriceFilter, minStockFilter, maxStockFilter]);
+
+  // Update selectedProductIds when selectAll changes
+  useEffect(() => {
+    if (selectAll) {
+      setSelectedProductIds(filteredProducts.map(p => p.id));
+    } else {
+      setSelectedProductIds([]);
+    }
+  }, [selectAll, filteredProducts]);
 
   const handleClearFilters = () => {
     setCategoryFilter('');
@@ -180,8 +255,6 @@ export const StockList = () => {
     setIsEditInfoModalOpen(true);
   };
 
-
-
   // Back navigation handlers
   const handleBackToActionModal = () => {
     setIsEditModalOpen(false);
@@ -189,51 +262,32 @@ export const StockList = () => {
     setIsProductActionModalOpen(true);
   };
 
-  const queryClient = useQueryClient();
-
-
-
-  // Handle select all
-  useEffect(() => {
-    
-    if (selectAll) {
-      const ids = filteredProducts.map((p) => p.id);
-      if (ids.length !== selectedProductIds.length || !ids.every((id, i) => id === selectedProductIds[i])) {
-        setSelectedProductIds(ids);
-      }
-    } else if (selectedProductIds.length > 0) {
-      setSelectedProductIds([]);
-    }
-    // eslint-disable-next-line
-  }, [selectAll, filteredProducts]);
-
-  // Handle single select
   const handleSelectProduct = (id: string) => {
-    setSelectedProductIds((prev) =>
-      prev.includes(id) ? prev.filter((pid) => pid !== id) : [...prev, id]
+    setSelectedProductIds(prev => 
+      prev.includes(id) 
+        ? prev.filter(productId => productId !== id)
+        : [...prev, id]
     );
   };
 
-  // Bulk delete
   const handleBulkDelete = async () => {
-    if (!user || !activeBranch || selectedProductIds.length === 0) return;
-    if (!window.confirm('Weet je zeker dat je de geselecteerde producten wilt verwijderen?')) return;
+    if (selectedProductIds.length === 0) return;
+    
     try {
       const { error } = await supabase
         .from('products')
         .delete()
-        .in('id', selectedProductIds)
-        .eq('branch_id', activeBranch.branch_id);
-      if (error) {
-        toast.error('Bulk verwijderen mislukt: ' + error.message);
-        return;
-      }
-      toast.success('Geselecteerde producten verwijderd');
+        .in('id', selectedProductIds);
+      
+      if (error) throw error;
+      
+      toast.success(`${selectedProductIds.length} product(en) verwijderd`);
       setSelectedProductIds([]);
       setSelectAll(false);
       refetch();
-    } catch (err) {
-      toast.error('Onverwachte fout bij bulk verwijderen');
+    } catch (error) {
+      console.error('Error deleting products:', error);
+      toast.error('Fout bij verwijderen van producten');
     }
   };
 
@@ -264,7 +318,7 @@ export const StockList = () => {
           <div>
             <h1 className="text-2xl font-bold text-gray-900">Producten</h1>
           </div>
-          <Button onClick={() => setIsAddModalOpen(true)}>
+          <Button onClick={() => setIsProductActionModalOpen(true)}>
             <Plus className="h-4 w-4 mr-2" />
             Toevoegen
           </Button>
@@ -288,7 +342,7 @@ export const StockList = () => {
           maxStockFilter={maxStockFilter}
           onMaxStockFilterChange={setMaxStockFilter}
           onClearFilters={handleClearFilters}
-          activeFiltersCount={activeFiltersCount}
+          activeFiltersCount={activeFilterCount}
         />
 
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-x-auto">
@@ -460,7 +514,7 @@ export const StockList = () => {
         maxStockFilter={maxStockFilter}
         onMaxStockFilterChange={setMaxStockFilter}
         onClearFilters={handleClearFilters}
-        activeFiltersCount={activeFiltersCount}
+        activeFiltersCount={activeFilterCount}
       />
 
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">

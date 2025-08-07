@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Layout } from '@/components/Layout';
@@ -12,19 +12,7 @@ import { usePageRefresh } from '@/hooks/usePageRefresh';
 import SEO from '../components/SEO';
 import { FeatureManagement } from '@/pages/admin/FeatureManagement';
 
-// Facturatiebeheer types
-interface Invoice {
-  id: string;
-  user_id: string;
-  period: string;
-  amount: number;
-  status: string;
-  invoice_date: string;
-  due_date: string;
-  paid_at: string | null;
-  payment_reference: string | null;
-}
-
+// Gebruikersbeheer types
 interface UserProfile {
   id: string;
   email: string;
@@ -37,16 +25,46 @@ interface UserProfile {
   blocked: boolean | null;
 }
 
-// Facturatiebeheer functies
-async function fetchAllInvoices(): Promise<Invoice[]> {
-  const { data, error } = await supabase
-    .from('invoices')
-    .select('*')
-    .order('invoice_date', { ascending: false });
-  if (error) throw error;
-  return data || [];
+interface UserStats {
+  userId: string;
+  productCount: number;
+  branchCount: number;
+  linkedUserCount: number;
+  licenseCost: number;
 }
 
+// Plan informatie voor prijsberekening
+const plans = {
+  'free': { price: 0, limit: 50 },
+  'starter': { price: 9.99, limit: 200 },
+  'professional': { price: 19.99, limit: 1000 },
+  'enterprise': { price: 49.99, limit: 10000 }
+};
+
+// Simuleer de prijsberekening voor een gebruiker
+function calculateUserLicenseCost(planId: string | null, stats: Omit<UserStats, 'userId' | 'licenseCost'>): number {
+  const plan = plans[planId as keyof typeof plans] || plans.free;
+  let price = plan.price;
+  
+  // Extra gebruikers boven 1
+  if (stats.linkedUserCount > 1) {
+    price += (stats.linkedUserCount - 1) * 1; // €1 per extra gebruiker
+  }
+  
+  // Extra filialen boven 1 (eerste gratis)
+  if (stats.branchCount > 1) {
+    price += (stats.branchCount - 1) * 2; // €2 per extra filiaal
+  }
+  
+  // Alleen bij enterprise extra producten aanrekenen
+  if (planId === 'enterprise' && stats.productCount > plan.limit) {
+    price += (stats.productCount - plan.limit) * 0.01;
+  }
+  
+  return price;
+}
+
+// Gebruikersbeheer functies
 async function fetchUserProfiles(): Promise<UserProfile[]> {
   const { data, error } = await supabase
     .from('profiles')
@@ -55,20 +73,60 @@ async function fetchUserProfiles(): Promise<UserProfile[]> {
   return data || [];
 }
 
-async function markInvoicePaid(id: string) {
-  const { error } = await supabase
-    .from('invoices')
-    .update({ status: 'paid', paid_at: new Date().toISOString() })
-    .eq('id', id);
-  if (error) throw error;
-}
+async function fetchUserStats(userId: string): Promise<UserStats> {
+  try {
+    // Haal producten op voor deze gebruiker
+    const { count: productCount } = await supabase
+      .from('products')
+      .select('*', { count: 'exact', head: true })
+      .eq('user_id', userId);
 
-async function markInvoiceUnpaid(id: string) {
-  const { error } = await supabase
-    .from('invoices')
-    .update({ status: 'open', paid_at: null })
-    .eq('id', id);
-  if (error) throw error;
+    // Haal filialen op voor deze gebruiker
+    const { count: branchCount } = await supabase
+      .from('branches')
+      .select('*', { count: 'exact', head: true })
+      .eq('user_id', userId);
+
+    // Haal gelinkte gebruikers op (branch_users waar deze gebruiker admin is)
+    const { count: linkedUserCount } = await supabase
+      .from('branch_users')
+      .select('*', { count: 'exact', head: true })
+      .eq('user_id', userId);
+
+    const stats = {
+      userId,
+      productCount: productCount || 0,
+      branchCount: branchCount || 0,
+      linkedUserCount: linkedUserCount || 0,
+      licenseCost: 0
+    };
+
+    // Bereken licentie kosten
+    const { data: userData } = await supabase
+      .from('profiles')
+      .select('selected_plan')
+      .eq('id', userId)
+      .single();
+
+    if (userData) {
+      stats.licenseCost = calculateUserLicenseCost(userData.selected_plan, {
+        productCount: stats.productCount,
+        branchCount: stats.branchCount,
+        linkedUserCount: stats.linkedUserCount
+      });
+    }
+
+    return stats;
+  } catch (error) {
+    console.error('Error fetching user stats:', error);
+    return {
+      userId,
+      productCount: 0,
+      branchCount: 0,
+      linkedUserCount: 0,
+      licenseCost: 0
+    };
+  }
 }
 
 async function blockUser(id: string, blocked: boolean) {
@@ -79,165 +137,145 @@ async function blockUser(id: string, blocked: boolean) {
   if (error) throw new Error(error.message);
 }
 
-// Gebruikersbeheer detail
-async function fetchUserInvoices(userId: string): Promise<Invoice[]> {
-  const { data, error } = await supabase
-    .from('invoices')
-    .select('*')
-    .eq('user_id', userId)
-    .order('invoice_date', { ascending: false });
-  if (error) throw error;
-  return data || [];
-}
-
 export default function AdminPage() {
-  const { user, profile } = useAuth();
-  const [activeTab, setActiveTab] = useState<'invoicing' | 'users' | 'features'>('invoicing');
+  const { user, userProfile } = useAuth();
+  const [activeTab, setActiveTab] = useState<'users' | 'features'>('users');
   const [selectedUser, setSelectedUser] = useState<UserProfile | null>(null);
   
   // Gebruik de page refresh hook
   usePageRefresh();
-  // Facturatiebeheer
-  const { data: invoices = [], isLoading: loadingInvoices } = useQuery({
-    queryKey: ['allInvoices'],
-    queryFn: fetchAllInvoices,
-    refetchOnWindowFocus: true,
-    refetchInterval: 5000,
-  });
+  
   // Gebruikersbeheer
   const { data: users = [], isLoading: loadingUsers } = useQuery({
     queryKey: ['userProfiles'],
     queryFn: fetchUserProfiles,
   });
+
+  // Bereken statistieken voor gebruikers
+  const [userStats, setUserStats] = useState<UserStats[]>([]);
+  const [loadingStats, setLoadingStats] = useState(false);
+
+  useEffect(() => {
+    if (users.length === 0) {
+      setUserStats([]);
+      return;
+    }
+
+    const loadUserStats = async () => {
+      setLoadingStats(true);
+      try {
+        const stats = await Promise.all(
+          users.map(user => fetchUserStats(user.id))
+        );
+        setUserStats(stats);
+      } catch (error) {
+        console.error('Error loading user stats:', error);
+        setUserStats([]);
+      } finally {
+        setLoadingStats(false);
+      }
+    };
+
+    loadUserStats();
+  }, [users]);
+  
   const queryClient = useQueryClient();
-  const markPaidMutation = useMutation({
-    mutationFn: (id: string) => markInvoicePaid(id),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['allInvoices'] }),
-  });
-  const markUnpaidMutation = useMutation({
-    mutationFn: (id: string) => markInvoiceUnpaid(id),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['allInvoices'] }),
-  });
   const blockMutation = useMutation({
     mutationFn: ({ id, blocked }: { id: string; blocked: boolean }) => blockUser(id, blocked),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['userProfiles'] }),
   });
-  // Facturen van geselecteerde gebruiker
-  const { data: userInvoices = [], isLoading: loadingUserInvoices } = useQuery({
-    queryKey: ['userInvoices', selectedUser?.id],
-    queryFn: () => selectedUser ? fetchUserInvoices(selectedUser.id) : Promise.resolve([]),
-    enabled: !!selectedUser,
-  });
+
+  // Real-time updates voor admin data
+  useEffect(() => {
+    if (!user?.id) return;
+
+    const adminChannel = supabase
+      .channel('admin-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'profiles',
+        },
+        () => {
+          console.log('Profile wijziging gedetecteerd, refresh gebruikers...');
+          queryClient.invalidateQueries({ queryKey: ['userProfiles'] });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(adminChannel);
+    };
+  }, [user?.id, queryClient]);
 
   return (
     <BranchProvider>
       <SEO
         title="Admin Dashboard | stockflow"
-        description="Beheer gebruikers, facturen en instellingen in het admin dashboard van stockflow."
-        keywords="admin dashboard, voorraadbeheer admin, gebruikersbeheer, facturatiebeheer, stockflow"
+        description="Beheer gebruikers en instellingen in het admin dashboard van stockflow."
+        keywords="admin dashboard, voorraadbeheer admin, gebruikersbeheer, stockflow"
         url="https://www.stockflow.be/admin"
       />
-      <Layout>
-        <div className="flex">
-          <div className="flex-1 p-4 md:p-8 space-y-6">
-            <div className="mb-4 flex gap-2">
-              <button className={`px-4 py-2 rounded ${activeTab === 'invoicing' ? 'bg-blue-600 text-white' : 'bg-gray-100'}`} onClick={() => setActiveTab('invoicing')}>Facturatiebeheer</button>
-              <button className={`px-4 py-2 rounded ${activeTab === 'users' ? 'bg-blue-600 text-white' : 'bg-gray-100'}`} onClick={() => setActiveTab('users')}>Gebruikersbeheer</button>
-              <button className={`px-4 py-2 rounded ${activeTab === 'features' ? 'bg-blue-600 text-white' : 'bg-gray-100'}`} onClick={() => setActiveTab('features')}>Feature Management</button>
-            </div>
-            {activeTab === 'invoicing' && (
-              <Card>
-                <CardHeader>
-                  <CardTitle>Facturatiebeheer</CardTitle>
-                  <CardDescription>Overzicht van alle facturen. Filter op status en markeer als betaald of onbetaald.</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-sm text-left">
-                      <thead className="text-xs uppercase bg-gray-50">
-                        <tr>
-                          <th className="px-4 py-2">Gebruiker</th>
-                          <th className="px-4 py-2">Periode</th>
-                          <th className="px-4 py-2">Bedrag</th>
-                          <th className="px-4 py-2">Status</th>
-                          <th className="px-4 py-2">Factuurdatum</th>
-                          <th className="px-4 py-2">Vervaldatum</th>
-                          <th className="px-4 py-2">Betaald op</th>
-                          <th className="px-4 py-2">Acties</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {invoices.length === 0 ? (
-                          <tr><td colSpan={8} className="text-center py-4">Geen facturen gevonden.</td></tr>
-                        ) : invoices.map((inv) => {
-                          const user = users.find(u => u.id === inv.user_id);
-                          return (
-                            <tr key={inv.id} className="bg-white border-b">
-                              <td className="px-4 py-2">{user ? `${user.email}` : inv.user_id}</td>
-                              <td className="px-4 py-2">{inv.period}</td>
-                              <td className="px-4 py-2 font-mono">€{inv.amount.toFixed(2)}</td>
-                              <td className="px-4 py-2">{inv.status === 'paid' ? 'Betaald' : 'Open'}</td>
-                              <td className="px-4 py-2">{new Date(inv.invoice_date).toLocaleDateString('nl-BE')}</td>
-                              <td className="px-4 py-2">{new Date(inv.due_date).toLocaleDateString('nl-BE')}</td>
-                              <td className="px-4 py-2">{inv.paid_at ? new Date(inv.paid_at).toLocaleDateString('nl-BE') : '-'}</td>
-                              <td className="px-4 py-2 flex gap-2">
-                                {inv.status !== 'paid' && (
-                                  <button
-                                    className="px-2 py-1 rounded bg-green-600 text-white text-xs"
-                                    onClick={() => markPaidMutation.mutate(inv.id)}
-                                    disabled={markPaidMutation.isPending}
-                                  >
-                                    Markeer als betaald
-                                  </button>
-                                )}
-                                {inv.status === 'paid' && (
-                                  <button
-                                    className="px-2 py-1 rounded bg-yellow-600 text-white text-xs"
-                                    onClick={() => markUnpaidMutation.mutate(inv.id)}
-                                    disabled={markUnpaidMutation.isPending}
-                                  >
-                                    Zet op onbetaald
-                                  </button>
-                                )}
-                              </td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </table>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-            {activeTab === 'users' && (
-              <Card>
-                <CardHeader>
-                  <CardTitle>Gebruikersbeheer</CardTitle>
-                  <CardDescription>Beheer gebruikers, blokkeer/deblokkeer en bekijk facturen.</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-sm text-left">
-                      <thead className="text-xs uppercase bg-gray-50">
-                        <tr>
-                          <th className="px-4 py-2">Email</th>
-                          <th className="px-4 py-2">Naam</th>
-                          <th className="px-4 py-2">Rol</th>
-                          <th className="px-4 py-2">Plan</th>
-                          <th className="px-4 py-2">Geblokkeerd</th>
-                          <th className="px-4 py-2">Aangemaakt</th>
-                          <th className="px-4 py-2">Acties</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {users.length === 0 ? (
-                          <tr><td colSpan={7} className="text-center py-4">Geen gebruikers gevonden.</td></tr>
-                        ) : users.map((user) => (
+      <Layout 
+        currentTab="admin"
+        onTabChange={() => {}}
+        userRole="admin"
+        userProfile={userProfile}
+      >
+        <div className="flex-1 p-4 md:p-8 space-y-6">
+          <div className="mb-4 flex gap-2">
+            <button className={`px-4 py-2 rounded ${activeTab === 'users' ? 'bg-blue-600 text-white' : 'bg-gray-100'}`} onClick={() => setActiveTab('users')}>Gebruikersbeheer</button>
+            <button className={`px-4 py-2 rounded ${activeTab === 'features' ? 'bg-blue-600 text-white' : 'bg-gray-100'}`} onClick={() => setActiveTab('features')}>Feature Management</button>
+          </div>
+          {activeTab === 'users' && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Gebruikersbeheer</CardTitle>
+                <CardDescription>Beheer gebruikers, blokkeer/deblokkeer en bekijk gebruikersgegevens.</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm text-left">
+                    <thead className="text-xs uppercase bg-gray-50">
+                      <tr>
+                        <th className="px-4 py-2">Email</th>
+                        <th className="px-4 py-2">Naam</th>
+                        <th className="px-4 py-2">Rol</th>
+                        <th className="px-4 py-2">Plan</th>
+                        <th className="px-4 py-2">Producten</th>
+                        <th className="px-4 py-2">Filialen</th>
+                        <th className="px-4 py-2">Gelinkte Gebruikers</th>
+                        <th className="px-4 py-2">Licentie Kosten</th>
+                        <th className="px-4 py-2">Geblokkeerd</th>
+                        <th className="px-4 py-2">Aangemaakt</th>
+                        <th className="px-4 py-2">Acties</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {users.length === 0 ? (
+                        <tr><td colSpan={11} className="text-center py-4">Geen gebruikers gevonden.</td></tr>
+                      ) : users.map((user) => {
+                        const stats = userStats.find(s => s.userId === user.id);
+                        return (
                           <tr key={user.id} className="bg-white border-b hover:bg-blue-50 cursor-pointer" onClick={() => setSelectedUser(user)}>
                             <td className="px-4 py-2">{user.email}</td>
                             <td className="px-4 py-2">{user.first_name} {user.last_name}</td>
                             <td className="px-4 py-2">{user.role}</td>
-                            <td className="px-4 py-2">{user.selected_plan}</td>
+                            <td className="px-4 py-2">{user.selected_plan || 'Geen plan'}</td>
+                            <td className="px-4 py-2 text-center">
+                              {loadingStats ? <Loader2 className="w-4 h-4 animate-spin mx-auto" /> : stats?.productCount || 0}
+                            </td>
+                            <td className="px-4 py-2 text-center">
+                              {loadingStats ? <Loader2 className="w-4 h-4 animate-spin mx-auto" /> : stats?.branchCount || 0}
+                            </td>
+                            <td className="px-4 py-2 text-center">
+                              {loadingStats ? <Loader2 className="w-4 h-4 animate-spin mx-auto" /> : stats?.linkedUserCount || 0}
+                            </td>
+                            <td className="px-4 py-2 text-center font-mono">
+                              {loadingStats ? <Loader2 className="w-4 h-4 animate-spin mx-auto" /> : `€${(stats?.licenseCost || 0).toFixed(2)}`}
+                            </td>
                             <td className="px-4 py-2">{user.blocked ? 'Ja' : 'Nee'}</td>
                             <td className="px-4 py-2">{new Date(user.created_at).toLocaleDateString('nl-BE')}</td>
                             <td className="px-4 py-2">
@@ -250,61 +288,83 @@ export default function AdminPage() {
                               </button>
                             </td>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                  {/* Gebruikersfacturen detail */}
-                  {selectedUser && (
-                    <div className="mt-8">
-                      <Card>
-                        <CardHeader>
-                          <CardTitle>Facturen van {selectedUser.email}</CardTitle>
-                          <CardDescription>Alle facturen van deze gebruiker.</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                          {loadingUserInvoices ? (
-                            <div className="flex items-center gap-2"><Loader2 className="w-4 h-4 animate-spin" /> Laden...</div>
-                          ) : (
-                            <div className="overflow-x-auto">
-                              <table className="w-full text-sm text-left">
-                                <thead className="text-xs uppercase bg-gray-50">
-                                  <tr>
-                                    <th className="px-4 py-2">Periode</th>
-                                    <th className="px-4 py-2">Bedrag</th>
-                                    <th className="px-4 py-2">Status</th>
-                                    <th className="px-4 py-2">Factuurdatum</th>
-                                    <th className="px-4 py-2">Betaald op</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {userInvoices.length === 0 ? (
-                                    <tr><td colSpan={5} className="text-center py-4">Geen facturen gevonden.</td></tr>
-                                  ) : userInvoices.map((inv) => (
-                                    <tr key={inv.id} className="bg-white border-b">
-                                      <td className="px-4 py-2">{inv.period}</td>
-                                      <td className="px-4 py-2 font-mono">€{inv.amount.toFixed(2)}</td>
-                                      <td className="px-4 py-2">{inv.status === 'paid' ? 'Betaald' : 'Open'}</td>
-                                      <td className="px-4 py-2">{new Date(inv.invoice_date).toLocaleDateString('nl-BE')}</td>
-                                      <td className="px-4 py-2">{inv.paid_at ? new Date(inv.paid_at).toLocaleDateString('nl-BE') : '-'}</td>
-                                    </tr>
-                                  ))}
-                                </tbody>
-                              </table>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+                {/* Gebruikersdetails */}
+                {selectedUser && (
+                  <div className="mt-8">
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Details van {selectedUser.email}</CardTitle>
+                        <CardDescription>Gebruikersgegevens en instellingen.</CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="space-y-4">
+                          <div>
+                            <h4 className="font-semibold mb-2">Gebruikersgegevens</h4>
+                            <div className="grid grid-cols-2 gap-4 text-sm">
+                              <div>
+                                <span className="font-medium">Email:</span> {selectedUser.email}
+                              </div>
+                              <div>
+                                <span className="font-medium">Naam:</span> {selectedUser.first_name} {selectedUser.last_name}
+                              </div>
+                              <div>
+                                <span className="font-medium">Rol:</span> {selectedUser.role}
+                              </div>
+                              <div>
+                                <span className="font-medium">Plan:</span> {selectedUser.selected_plan || 'Geen plan'}
+                              </div>
+                              <div>
+                                <span className="font-medium">Status:</span> 
+                                <span className={`ml-2 px-2 py-1 rounded text-xs ${selectedUser.blocked ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'}`}>
+                                  {selectedUser.blocked ? 'Geblokkeerd' : 'Actief'}
+                                </span>
+                              </div>
+                              <div>
+                                <span className="font-medium">Aangemaakt:</span> {new Date(selectedUser.created_at).toLocaleDateString('nl-BE')}
+                              </div>
                             </div>
-                          )}
-                          <button className="mt-4 px-4 py-2 bg-gray-200 rounded" onClick={() => setSelectedUser(null)}>Terug naar gebruikerslijst</button>
-                        </CardContent>
-                      </Card>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            )}
-            {activeTab === 'features' && (
-              <FeatureManagement />
-            )}
-          </div>
+                          </div>
+                          {(() => {
+                            const stats = userStats.find(s => s.userId === selectedUser.id);
+                            if (!stats) return null;
+                            return (
+                              <div>
+                                <h4 className="font-semibold mb-2">Gebruiksstatistieken</h4>
+                                <div className="grid grid-cols-2 gap-4 text-sm">
+                                  <div>
+                                    <span className="font-medium">Aantal producten:</span> {stats.productCount}
+                                  </div>
+                                  <div>
+                                    <span className="font-medium">Aantal filialen:</span> {stats.branchCount}
+                                  </div>
+                                  <div>
+                                    <span className="font-medium">Gelinkte gebruikers:</span> {stats.linkedUserCount}
+                                  </div>
+                                  <div>
+                                    <span className="font-medium">Maandelijkse licentie kosten:</span> 
+                                    <span className="ml-2 font-mono text-blue-600">€{stats.licenseCost.toFixed(2)}</span>
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          })()}
+                        </div>
+                        <button className="mt-4 px-4 py-2 bg-gray-200 rounded" onClick={() => setSelectedUser(null)}>Terug naar gebruikerslijst</button>
+                      </CardContent>
+                    </Card>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          )}
+          {activeTab === 'features' && (
+            <FeatureManagement />
+          )}
         </div>
       </Layout>
     </BranchProvider>

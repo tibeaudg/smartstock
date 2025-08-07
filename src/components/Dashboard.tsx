@@ -31,7 +31,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
   else dateFrom = undefined;
 
   // Haal alle dashboarddata op (voor de statistieken)
-  const { metrics, loading } = useDashboardData();
+  const { data: metrics, isLoading: loading } = useDashboardData();
 
   // State voor grafiek-periode
   const [chartRangeType, setChartRangeType] = useState<'week' | 'month' | 'quarter' | 'year' | 'all'>('month');
@@ -44,7 +44,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
   else chartDateFrom = undefined;
 
   // Haal alleen de grafiekdata op voor het gekozen bereik
-  const { dailyActivity } = useDashboardData({ dateFrom: chartDateFrom, dateTo: chartDateTo });
+  const { data: chartData } = useDashboardData({ dateFrom: chartDateFrom, dateTo: chartDateTo });
 
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8'];
 
@@ -68,6 +68,16 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
     );
   }
 
+  // Fallback waarden als metrics undefined is
+  const safeMetrics = metrics || {
+    totalValue: 0,
+    totalProducts: 0,
+    lowStockCount: 0,
+    incomingToday: 0,
+    outgoingToday: 0,
+    totalTransactions: 0
+  };
+
   return (
     <div className="space-y-8 max-w-[1600px] mx-auto">
 
@@ -89,7 +99,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
           </CardHeader>
           <CardContent className="pt-0">
             <div className="text-3xl font-bold text-gray-900">
-              €{metrics.totalStockValue.toLocaleString()}
+              €{safeMetrics.totalValue.toLocaleString()}
             </div>
           </CardContent>
         </Card>
@@ -100,7 +110,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
             <Package className="h-6 w-6 text-purple-600" />
           </CardHeader>
           <CardContent className="pt-0">
-            <div className="text-3xl font-bold text-gray-900">{metrics.totalProducts}</div>
+            <div className="text-3xl font-bold text-gray-900">{safeMetrics.totalProducts}</div>
           </CardContent>
         </Card>
 
@@ -111,7 +121,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
           </CardHeader>
           <CardContent className="pt-0">
             <div className="text-3xl font-bold text-green-600">
-              {metrics.incomingToday}
+              {safeMetrics.incomingToday}
             </div>
           </CardContent>
         </Card>
@@ -123,7 +133,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
           </CardHeader>
           <CardContent className="pt-0">
             <div className="text-3xl font-bold text-red-600">
-              {metrics.outgoingToday}
+              {safeMetrics.outgoingToday}
             </div>
           </CardContent>
         </Card>
@@ -135,7 +145,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
           </CardHeader>
           <CardContent className="pt-0">
             <div className="text-3xl font-bold text-yellow-600">
-              {metrics.lowStockAlerts}
+              {safeMetrics.lowStockCount}
             </div>
           </CardContent>
         </Card>
@@ -158,7 +168,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
           </select>
         </div>
         <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={dailyActivity || []} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+          <BarChart data={chartData?.dailyActivity || []} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="date" />
             <YAxis />

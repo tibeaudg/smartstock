@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
 import { supabase } from '@/integrations/supabase/client';
@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 
 // TYPE-SAFETY: Interfaces voor duidelijkere datastructuren
@@ -36,6 +36,7 @@ interface DisplayUser {
 export const UserManagement = () => {
   const { user } = useAuth();
   const { branches, activeBranch } = useBranches();
+  const queryClient = useQueryClient();
   const [inviting, setInviting] = useState(false);
   const [inviteEmail, setInviteEmail] = useState('');
   const [inviteRole, setInviteRole] = useState('staff');
@@ -80,6 +81,44 @@ export const UserManagement = () => {
     refetchOnWindowFocus: true,
     staleTime: 1000 * 60 * 2,
   });
+
+  // Real-time updates voor gebruikers
+  useEffect(() => {
+    if (!user?.id || !selectedBranchId) return;
+
+    const usersChannel = supabase
+      .channel('branch-users-changes-' + selectedBranchId)
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'branch_users',
+          filter: `branch_id=eq.${selectedBranchId}`,
+        },
+        () => {
+          console.log('Branch user wijziging gedetecteerd, refresh gebruikers...');
+          queryClient.invalidateQueries({ queryKey: ['branchUsers', selectedBranchId] });
+        }
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'profiles',
+        },
+        () => {
+          console.log('Profile wijziging gedetecteerd, refresh gebruikers...');
+          queryClient.invalidateQueries({ queryKey: ['branchUsers', selectedBranchId] });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(usersChannel);
+    };
+  }, [user?.id, selectedBranchId, queryClient]);
 
   const handleInviteUser = async () => {
     if (!inviteEmail || !selectedBranchId || !user) return;

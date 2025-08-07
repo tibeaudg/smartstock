@@ -9,12 +9,12 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 export const useStockMovements = () => {
   const { user } = useAuth();
   const { activeBranch } = useBranches();
+  const queryClient = useQueryClient();
   const [filters, setFilters] = useState<TransactionFilters>({
     dateRange: 'all',
     transactionType: 'all',
     searchQuery: '',
   });
-  const queryClient = useQueryClient();
 
   // Helper om filters te serialiseren voor queryKey
   const filtersKey = JSON.stringify(filters);
@@ -80,6 +80,34 @@ export const useStockMovements = () => {
     staleTime: 1000 * 60 * 2,
   });
 
+  // Real-time updates voor stock transactions
+  useEffect(() => {
+    if (!user?.id || !activeBranch?.branch_id) return;
+
+    const transactionsChannel = supabase
+      .channel('stock-transactions-changes-' + activeBranch.branch_id)
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'stock_transactions',
+          filter: `branch_id=eq.${activeBranch.branch_id}`,
+        },
+        () => {
+          console.log('Stock transaction wijziging gedetecteerd, refresh transactions...');
+          queryClient.invalidateQueries({ 
+            queryKey: ['stockTransactions', activeBranch.branch_id, filtersKey] 
+          });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(transactionsChannel);
+    };
+  }, [user?.id, activeBranch?.branch_id, queryClient, filtersKey]);
+
   // Stats berekenen uit data
   const stats = transactions.reduce(
     (acc, curr) => {
@@ -91,9 +119,6 @@ export const useStockMovements = () => {
     },
     { totalIncoming: 0, totalOutgoing: 0, totalValue: 0, transactionCount: 0 }
   );
-
-  // Real-time updates: refetch bij mutatie elders
-  // (optioneel: kan met queryClient.invalidateQueries in andere componenten)
 
   return {
     transactions,
