@@ -13,6 +13,7 @@ from 'lucide-react';
 import { BranchSelector } from './BranchSelector';
 import { ChatModal } from './ChatModal';
 import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
 
 import { Button } from '@/components/ui/button';
 import { useAuth, UserProfile } from '@/hooks/useAuth';
@@ -21,7 +22,6 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { LogOut } from 'lucide-react';
 
 import { useProductCount } from '@/hooks/useDashboardData';
-
 
 interface SidebarProps {
   currentTab: string;
@@ -60,7 +60,6 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
         { id: 'dashboard', label: 'Dashboard', icon: BarChart3, path: '/dashboard', end: true },
         { id: 'stock', label: 'Producten', icon: Package, path: '/dashboard/stock' },
         { id: 'transactions', label: 'Stockmutaties', icon: ShoppingCart, path: '/dashboard/transactions' },
-
         { id: 'settings', label: 'Instellingen', icon: Settings, path: '/dashboard/settings' },
         ...(isOwner
           ? [
@@ -68,8 +67,6 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
             ]
           : []),
       ];
-
-
 
   return (
     <>
@@ -158,39 +155,78 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
 
         {/* Fixed Bottom Section */}
         <div className="flex-shrink-0">
-          {/* Help Section */}
-          <div className="border-t border-gray-200 p-4">
-            <div className="flex items-center space-x-3 px-3 py-2 text-gray-600">
-              <HelpCircle className="w-5 h-5 flex-shrink-0" />
-              <div>
-                <p className="font-medium">Hulp nodig?</p>
-                <button
-                  className="text-xs text-blue-600 underline hover:text-blue-800 mt-1"
-                  onClick={() => setChatOpen(true)}
-                >
-                  Start chat
-                </button>
-              </div>
-            </div>
-          </div>
-          {/* Chat Modal */}
-          <ChatModal open={chatOpen} onClose={() => setChatOpen(false)} />
-          {/* Logout Button - Only on Desktop */}
-          {!isMobile && (
-            <div className="border-t border-gray-200 p-4">
+          {/* Help Section as professional submenu button */}
+          <div className="border-t border-gray-200">
+            <div className="p-4">
               <Button
+                type="button"
                 variant="ghost"
                 size="sm"
-                onClick={handleSignOut}
-                className="w-full justify-start text-gray-600 hover:text-red-600 hover:bg-red-50"
+                onClick={() => setChatOpen(true)}
+                className={`w-full flex items-center px-3 py-2 rounded-lg text-left transition-colors
+                  text-gray-600 hover:bg-blue-50 hover:text-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
+                  ${isOpen ? '' : 'justify-center'}`}
+                aria-label="Open hulp chat"
               >
-                <LogOut className="w-4 h-4 flex-shrink-0" />
-                {isOpen && <span className="ml-3">Afmelden</span>}
+                <HelpCircle className="w-5 h-5 flex-shrink-0" />
+                {isOpen && (
+                  <>
+                    <span className="font-medium ml-3 flex-1 text-left">Hulp nodig?</span>
+                    <svg className="w-4 h-4 ml-auto text-gray-400 group-hover:text-blue-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </>
+                )}
               </Button>
+            </div>
+          </div>
+
+          {/* Logout Section - Desktop Only */}
+          {!isMobile && (
+            <div className="border-t border-gray-200">
+              <div className="p-4">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleSignOut}
+                  className={`
+                    w-full justify-start text-gray-600 hover:text-red-600 hover:bg-red-50 
+                    focus:ring-2 focus:ring-red-500 focus:ring-offset-2 
+                    transition-all duration-200 rounded-lg
+                    ${isOpen ? 'px-3' : 'px-2'}
+                  `}
+                  aria-label={isOpen ? "Afmelden" : "Uitloggen"}
+                >
+                  <LogOut className="w-4 h-4 flex-shrink-0" />
+                  {isOpen && <span className="ml-3 font-medium">Afmelden</span>}
+                </Button>
+              </div>
             </div>
           )}
         </div>
       </div>
+
+      {/* Mobile Sidebar Close Button */}
+      {isMobile && isOpen && (
+        <button
+          className="fixed top-4 right-4 z-50 bg-white text-gray-700 rounded-full p-2 shadow-md md:hidden border border-gray-200 hover:bg-gray-100"
+          onClick={onToggle}
+          aria-label="Sluit menu"
+        >
+          <X className="w-6 h-6" />
+        </button>
+      )}
+
+      {/* Chat Modal - Rendered using Portal to escape sidebar container */}
+      {chatOpen && createPortal(
+        <ChatModal 
+          open={chatOpen} 
+          onClose={() => setChatOpen(false)} 
+          aria-describedby="chat-modal-description"
+        />,
+        document.body
+      )}
     </>
   );
 };
