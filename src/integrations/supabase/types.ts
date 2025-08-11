@@ -635,6 +635,7 @@ export type Database = {
           selected_plan: string | null
           blocked: boolean | null
           onboarding_completed: boolean | null
+          last_login: string | null
         }
         Insert: {
           created_at?: string | null
@@ -647,6 +648,7 @@ export type Database = {
           selected_plan?: string | null
           blocked?: boolean | null
           onboarding_completed?: boolean | null
+          last_login?: string | null
         }
         Update: {
           created_at?: string | null
@@ -659,6 +661,7 @@ export type Database = {
           selected_plan?: string | null
           blocked?: boolean | null
           onboarding_completed?: boolean | null
+          last_login?: string | null
         }
         Relationships: []
       }

@@ -11,7 +11,8 @@ import {
 } 
 from 'lucide-react';
 import { BranchSelector } from './BranchSelector';
-
+import { ChatModal } from './ChatModal';
+import React, { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { useAuth, UserProfile } from '@/hooks/useAuth';
@@ -36,6 +37,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
   const isMobile = useIsMobile();
   const { signOut } = useAuth();
   const navigate = useNavigate();
+  const [chatOpen, setChatOpen] = useState(false);
 
   // If blocked, only show settings/invoicing
   const isBlocked = userProfile?.blocked;
@@ -162,11 +164,17 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
               <HelpCircle className="w-5 h-5 flex-shrink-0" />
               <div>
                 <p className="font-medium">Hulp nodig?</p>
-                <p className="text-xs text-gray-500">info@stockflow.be</p>
+                <button
+                  className="text-xs text-blue-600 underline hover:text-blue-800 mt-1"
+                  onClick={() => setChatOpen(true)}
+                >
+                  Start chat
+                </button>
               </div>
             </div>
           </div>
-
+          {/* Chat Modal */}
+          <ChatModal open={chatOpen} onClose={() => setChatOpen(false)} />
           {/* Logout Button - Only on Desktop */}
           {!isMobile && (
             <div className="border-t border-gray-200 p-4">

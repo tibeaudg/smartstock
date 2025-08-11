@@ -12,6 +12,7 @@ import { usePageRefresh } from '@/hooks/usePageRefresh';
 import SEO from '../components/SEO';
 import { FeatureManagement } from '@/pages/admin/FeatureManagement';
 import { OnboardingModal } from '@/components/onboarding/OnboardingModal';
+import { AdminChatList } from '@/components/AdminChatList';
 
 // Gebruikersbeheer types
 interface UserProfile {
@@ -24,6 +25,7 @@ interface UserProfile {
   updated_at: string;
   selected_plan: string | null;
   blocked: boolean | null;
+  last_login?: string | null;
 }
 
 interface UserStats {
@@ -140,7 +142,7 @@ async function blockUser(id: string, blocked: boolean) {
 
 export default function AdminPage() {
   const { user, userProfile } = useAuth();
-  const [activeTab, setActiveTab] = useState<'users' | 'features' | 'onboarding'>('users');
+  const [activeTab, setActiveTab] = useState<'users' | 'features' | 'onboarding' | 'chats'>('users');
   const [selectedUser, setSelectedUser] = useState<UserProfile | null>(null);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [companyTypes, setCompanyTypes] = useState<Record<string, { type: string; custom_type: string | null }>>({});
@@ -262,6 +264,7 @@ export default function AdminPage() {
             <button className={`px-4 py-2 rounded ${activeTab === 'users' ? 'bg-blue-600 text-white' : 'bg-gray-100'}`} onClick={() => setActiveTab('users')}>Gebruikersbeheer</button>
             <button className={`px-4 py-2 rounded ${activeTab === 'features' ? 'bg-blue-600 text-white' : 'bg-gray-100'}`} onClick={() => setActiveTab('features')}>Feature Management</button>
             <button className={`px-4 py-2 rounded ${activeTab === 'onboarding' ? 'bg-blue-600 text-white' : 'bg-gray-100'}`} onClick={() => setActiveTab('onboarding')}>Onboarding Antwoorden</button>
+            <button className={`px-4 py-2 rounded ${activeTab === 'chats' ? 'bg-blue-600 text-white' : 'bg-gray-100'}`} onClick={() => setActiveTab('chats')}>Chats</button>
             <button className="px-4 py-2 rounded bg-green-600 text-white" onClick={() => setShowOnboarding(true)}>Onboarding Flow Testen</button>
           </div>
           {activeTab === 'users' && (
@@ -286,13 +289,14 @@ export default function AdminPage() {
                         <th className="px-4 py-2">Licentie Kosten</th>
                         <th className="px-4 py-2">Geblokkeerd</th>
                         <th className="px-4 py-2">Aangemaakt</th>
+                        <th className="px-4 py-2">Laatste login</th>
                         <th className="px-4 py-2">Acties</th>
                         <th className="px-4 py-2">Bedrijfstype</th>
                       </tr>
                     </thead>
                     <tbody>
                       {users.length === 0 ? (
-                        <tr><td colSpan={12} className="text-center py-4">Geen gebruikers gevonden.</td></tr>
+                        <tr><td colSpan={13} className="text-center py-4">Geen gebruikers gevonden.</td></tr>
                       ) : users.map((user) => {
                         const stats = userStats.find(s => s.userId === user.id);
                         return (
@@ -316,6 +320,7 @@ export default function AdminPage() {
                             </td>
                             <td className="px-4 py-2">{user.blocked ? 'Ja' : 'Nee'}</td>
                             <td className="px-4 py-2">{new Date(user.created_at).toLocaleDateString('nl-BE')}</td>
+                            <td className="px-4 py-2">{user.last_login ? new Date(user.last_login).toLocaleString('nl-BE') : '-'}</td>
                             <td className="px-4 py-2">
                               <button
                                 className={`px-2 py-1 rounded text-xs ${user.blocked ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}
@@ -452,6 +457,9 @@ export default function AdminPage() {
                 </div>
               </CardContent>
             </Card>
+          )}
+          {activeTab === 'chats' && (
+            <AdminChatList />
           )}
         </div>
       </Layout>

@@ -162,7 +162,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const signIn = async (email: string, password: string) => {
     setLoading(true);
     try {
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      if (!error && data?.user) {
+        // Update last_login in profiles
+        await supabase.from('profiles').update({ last_login: new Date().toISOString() }).eq('id', data.user.id);
+      }
       return { error };
     } catch (error: any) {
       console.error('Exception during sign in:', error);
