@@ -34,6 +34,7 @@ import SimpelStockbeheer from './pages/simpelstockbeheer';
 import GratisStockbeheer from './pages/gratis-stockbeheer';
 import VoorraadbeheerExcel from './pages/voorraadbeheer-excel';
 import React, { useState } from 'react';
+import { OnboardingModal } from "./components/onboarding/OnboardingModal";
 
 // ErrorBoundary component
 class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean; error: any }> {

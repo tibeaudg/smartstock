@@ -104,12 +104,12 @@ export const Settings = () => {
                 <span>Gebruikers</span>
               </TabsTrigger>
 
-              <TabsTrigger value="license" className="flex items-center space-x-2">
+              <TabsTrigger value="license" className="flex items-center space-x-2 hidden">
                 <Key className="w-4 h-4" />
                 <span>Licentie</span>
               </TabsTrigger>
 
-              <TabsTrigger value="invoicing" className="flex items-center space-x-2">
+              <TabsTrigger value="invoicing" className="flex items-center space-x-2 hidden">
                 <Banknote className="w-4 h-4" />
                 <span>Facturatie</span>
               </TabsTrigger>

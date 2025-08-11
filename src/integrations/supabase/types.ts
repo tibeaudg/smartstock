@@ -1,3 +1,34 @@
+      company_types: {
+        Row: {
+          id: string;
+          user_id: string;
+          type: string;
+          custom_type: string | null;
+          created_at: string | null;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          type: string;
+          custom_type?: string | null;
+          created_at?: string | null;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          type?: string;
+          custom_type?: string | null;
+          created_at?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "company_types_user_id_fkey";
+            columns: ["user_id"];
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
 export type Json =
   | string
   | number
@@ -9,6 +40,88 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      onboarding_answers: {
+        Row: {
+          id: string;
+          user_id: string;
+          employees: string | null;
+          stock_size: string | null;
+          wants_notifications: boolean | null;
+          wants_demo_stock: boolean | null;
+          main_goal: string | null;
+          uses_barcodes: boolean | null;
+          uses_other_system: boolean | null;
+          other_system_name: string | null;
+          created_at: string | null;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          employees?: string | null;
+          stock_size?: string | null;
+          wants_notifications?: boolean | null;
+          wants_demo_stock?: boolean | null;
+          main_goal?: string | null;
+          uses_barcodes?: boolean | null;
+          uses_other_system?: boolean | null;
+          other_system_name?: string | null;
+          created_at?: string | null;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          employees?: string | null;
+          stock_size?: string | null;
+          wants_notifications?: boolean | null;
+          wants_demo_stock?: boolean | null;
+          main_goal?: string | null;
+          uses_barcodes?: boolean | null;
+          uses_other_system?: boolean | null;
+          other_system_name?: string | null;
+          created_at?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "onboarding_answers_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
+      company_types: {
+        Row: {
+          id: string;
+          user_id: string;
+          type: string;
+          custom_type: string | null;
+          created_at: string | null;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          type: string;
+          custom_type?: string | null;
+          created_at?: string | null;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          type?: string;
+          custom_type?: string | null;
+          created_at?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "company_types_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
       audit_logs: {
         Row: {
           action: string
@@ -521,6 +634,7 @@ export type Database = {
           updated_at: string | null
           selected_plan: string | null
           blocked: boolean | null
+          onboarding_completed: boolean | null
         }
         Insert: {
           created_at?: string | null
@@ -532,6 +646,7 @@ export type Database = {
           updated_at?: string | null
           selected_plan?: string | null
           blocked?: boolean | null
+          onboarding_completed?: boolean | null
         }
         Update: {
           created_at?: string | null
@@ -543,6 +658,7 @@ export type Database = {
           updated_at?: string | null
           selected_plan?: string | null
           blocked?: boolean | null
+          onboarding_completed?: boolean | null
         }
         Relationships: []
       }

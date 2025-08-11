@@ -10,7 +10,7 @@ import type { User, AuthError, Session } from '@supabase/supabase-js';
 import type { Database } from '@/integrations/supabase/types';
 
 // 1. Add 'blocked' to the UserProfile type
-export type UserProfile = Database['public']['Tables']['profiles']['Row'] & { blocked?: boolean };
+export type UserProfile = Database['public']['Tables']['profiles']['Row'] & { blocked?: boolean; onboarding_completed?: boolean };
 
 interface AuthContextType {
   user: User | null;

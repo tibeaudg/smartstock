@@ -11,6 +11,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import SEO from '../components/SEO';
 import { FeatureManagement } from '@/pages/admin/FeatureManagement';
+import { OnboardingModal } from '@/components/onboarding/OnboardingModal';
 
 // Gebruikersbeheer types
 interface UserProfile {
@@ -139,8 +140,11 @@ async function blockUser(id: string, blocked: boolean) {
 
 export default function AdminPage() {
   const { user, userProfile } = useAuth();
-  const [activeTab, setActiveTab] = useState<'users' | 'features'>('users');
+  const [activeTab, setActiveTab] = useState<'users' | 'features' | 'onboarding'>('users');
   const [selectedUser, setSelectedUser] = useState<UserProfile | null>(null);
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  const [companyTypes, setCompanyTypes] = useState<Record<string, { type: string; custom_type: string | null }>>({});
+  const [onboardingAnswers, setOnboardingAnswers] = useState<any[]>([]);
   
   // Gebruik de page refresh hook
   usePageRefresh();
@@ -178,7 +182,36 @@ export default function AdminPage() {
 
     loadUserStats();
   }, [users]);
-  
+
+  // Haal company_types op voor alle users
+  useEffect(() => {
+    async function fetchCompanyTypes() {
+      if (users.length === 0) return;
+      const { data, error } = await supabase
+        .from('company_types')
+        .select('user_id, type, custom_type');
+      if (!error && data) {
+        const map: Record<string, { type: string; custom_type: string | null }> = {};
+        data.forEach((row: any) => {
+          map[row.user_id] = { type: row.type, custom_type: row.custom_type };
+        });
+        setCompanyTypes(map);
+      }
+    }
+    fetchCompanyTypes();
+  }, [users]);
+
+  // Haal onboarding antwoorden op
+  useEffect(() => {
+    async function fetchOnboardingAnswers() {
+      const { data, error } = await supabase
+        .from('onboarding_answers')
+        .select('user_id, employees, stock_size, wants_notifications, wants_demo_stock, main_goal, uses_barcodes, uses_other_system, other_system_name');
+      if (!error && data) setOnboardingAnswers(data);
+    }
+    fetchOnboardingAnswers();
+  }, [users]);
+
   const queryClient = useQueryClient();
   const blockMutation = useMutation({
     mutationFn: ({ id, blocked }: { id: string; blocked: boolean }) => blockUser(id, blocked),
@@ -228,6 +261,8 @@ export default function AdminPage() {
           <div className="mb-4 flex gap-2">
             <button className={`px-4 py-2 rounded ${activeTab === 'users' ? 'bg-blue-600 text-white' : 'bg-gray-100'}`} onClick={() => setActiveTab('users')}>Gebruikersbeheer</button>
             <button className={`px-4 py-2 rounded ${activeTab === 'features' ? 'bg-blue-600 text-white' : 'bg-gray-100'}`} onClick={() => setActiveTab('features')}>Feature Management</button>
+            <button className={`px-4 py-2 rounded ${activeTab === 'onboarding' ? 'bg-blue-600 text-white' : 'bg-gray-100'}`} onClick={() => setActiveTab('onboarding')}>Onboarding Antwoorden</button>
+            <button className="px-4 py-2 rounded bg-green-600 text-white" onClick={() => setShowOnboarding(true)}>Onboarding Flow Testen</button>
           </div>
           {activeTab === 'users' && (
             <Card>
@@ -242,6 +277,7 @@ export default function AdminPage() {
                       <tr>
                         <th className="px-4 py-2">Email</th>
                         <th className="px-4 py-2">Naam</th>
+                        <th className="px-4 py-2">Bedrijfstype</th>
                         <th className="px-4 py-2">Rol</th>
                         <th className="px-4 py-2">Plan</th>
                         <th className="px-4 py-2">Producten</th>
@@ -251,17 +287,19 @@ export default function AdminPage() {
                         <th className="px-4 py-2">Geblokkeerd</th>
                         <th className="px-4 py-2">Aangemaakt</th>
                         <th className="px-4 py-2">Acties</th>
+                        <th className="px-4 py-2">Bedrijfstype</th>
                       </tr>
                     </thead>
                     <tbody>
                       {users.length === 0 ? (
-                        <tr><td colSpan={11} className="text-center py-4">Geen gebruikers gevonden.</td></tr>
+                        <tr><td colSpan={12} className="text-center py-4">Geen gebruikers gevonden.</td></tr>
                       ) : users.map((user) => {
                         const stats = userStats.find(s => s.userId === user.id);
                         return (
                           <tr key={user.id} className="bg-white border-b hover:bg-blue-50 cursor-pointer" onClick={() => setSelectedUser(user)}>
                             <td className="px-4 py-2">{user.email}</td>
                             <td className="px-4 py-2">{user.first_name} {user.last_name}</td>
+                            <td className="px-4 py-2">{companyTypes[user.id]?.type === 'Overig' ? companyTypes[user.id]?.custom_type : companyTypes[user.id]?.type || '-'}</td>
                             <td className="px-4 py-2">{user.role}</td>
                             <td className="px-4 py-2">{user.selected_plan || 'Geen plan'}</td>
                             <td className="px-4 py-2 text-center">
@@ -286,6 +324,9 @@ export default function AdminPage() {
                               >
                                 {user.blocked ? 'Deblokkeren' : 'Blokkeren'}
                               </button>
+                            </td>
+                            <td className="px-4 py-2">
+                              {companyTypes[user.id]?.type === 'Overig' ? companyTypes[user.id]?.custom_type : companyTypes[user.id]?.type || '-'}
                             </td>
                           </tr>
                         );
@@ -365,8 +406,56 @@ export default function AdminPage() {
           {activeTab === 'features' && (
             <FeatureManagement />
           )}
+          {activeTab === 'onboarding' && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Onboarding Antwoorden</CardTitle>
+                <CardDescription>Overzicht van alle antwoorden op de onboarding vragen.</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm text-left">
+                    <thead className="text-xs uppercase bg-gray-50">
+                      <tr>
+                        <th className="px-4 py-2">Gebruiker</th>
+                        <th className="px-4 py-2">Medewerkers</th>
+                        <th className="px-4 py-2">Voorraadgrootte</th>
+                        <th className="px-4 py-2">Meldingen</th>
+                        <th className="px-4 py-2">Demo voorraad</th>
+                        <th className="px-4 py-2">Doel</th>
+                        <th className="px-4 py-2">Barcodes</th>
+                        <th className="px-4 py-2">Ander systeem</th>
+                        <th className="px-4 py-2">Naam systeem</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {onboardingAnswers.length === 0 ? (
+                        <tr><td colSpan={9} className="text-center py-4">Geen antwoorden gevonden.</td></tr>
+                      ) : onboardingAnswers.map(ans => {
+                        const user = users.find(u => u.id === ans.user_id);
+                        return (
+                          <tr key={ans.user_id} className="bg-white border-b">
+                            <td className="px-4 py-2">{user ? `${user.first_name || ''} ${user.last_name || ''} (${user.email})` : ans.user_id}</td>
+                            <td className="px-4 py-2">{ans.employees}</td>
+                            <td className="px-4 py-2">{ans.stock_size}</td>
+                            <td className="px-4 py-2">{ans.wants_notifications ? 'Ja' : 'Nee'}</td>
+                            <td className="px-4 py-2">{ans.wants_demo_stock ? 'Ja' : 'Nee'}</td>
+                            <td className="px-4 py-2">{ans.main_goal}</td>
+                            <td className="px-4 py-2">{ans.uses_barcodes ? 'Ja' : 'Nee'}</td>
+                            <td className="px-4 py-2">{ans.uses_other_system ? 'Ja' : 'Nee'}</td>
+                            <td className="px-4 py-2">{ans.other_system_name || '-'}</td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </CardContent>
+            </Card>
+          )}
         </div>
       </Layout>
+      {showOnboarding && <OnboardingModal forceOpen onClose={() => setShowOnboarding(false)} />}
     </BranchProvider>
   );
 }
