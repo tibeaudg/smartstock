@@ -11,6 +11,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import SEO from '../components/SEO';
 import { FeatureManagement } from '@/pages/admin/FeatureManagement';
+import { AdminNotificationManager } from '@/components/AdminNotificationManager';
 import { OnboardingModal } from '@/components/onboarding/OnboardingModal';
 import { AdminChatList } from '@/components/AdminChatList';
 
@@ -142,7 +143,7 @@ async function blockUser(id: string, blocked: boolean) {
 
 export default function AdminPage() {
   const { user, userProfile } = useAuth();
-  const [activeTab, setActiveTab] = useState<'users' | 'features' | 'onboarding' | 'chats'>('users');
+  const [activeTab, setActiveTab] = useState<'users' | 'features' | 'onboarding' | 'chats' | 'notifications'>('users');
   const [selectedUser, setSelectedUser] = useState<UserProfile | null>(null);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [companyTypes, setCompanyTypes] = useState<Record<string, { type: string; custom_type: string | null }>>({});
@@ -265,8 +266,12 @@ export default function AdminPage() {
             <button className={`px-4 py-2 rounded ${activeTab === 'features' ? 'bg-blue-600 text-white' : 'bg-gray-100'}`} onClick={() => setActiveTab('features')}>Feature Management</button>
             <button className={`px-4 py-2 rounded ${activeTab === 'onboarding' ? 'bg-blue-600 text-white' : 'bg-gray-100'}`} onClick={() => setActiveTab('onboarding')}>Onboarding Antwoorden</button>
             <button className={`px-4 py-2 rounded ${activeTab === 'chats' ? 'bg-blue-600 text-white' : 'bg-gray-100'}`} onClick={() => setActiveTab('chats')}>Chats</button>
+            <button className={`px-4 py-2 rounded ${activeTab === 'notifications' ? 'bg-blue-600 text-white' : 'bg-gray-100'}`} onClick={() => setActiveTab('notifications')}>Meldingen</button>
             <button className="px-4 py-2 rounded bg-green-600 text-white" onClick={() => setShowOnboarding(true)}>Onboarding Flow Testen</button>
           </div>
+          {activeTab === 'notifications' && (
+            <AdminNotificationManager />
+          )}
           {activeTab === 'users' && (
             <Card>
               <CardHeader>
@@ -291,7 +296,6 @@ export default function AdminPage() {
                         <th className="px-4 py-2">Aangemaakt</th>
                         <th className="px-4 py-2">Laatste login</th>
                         <th className="px-4 py-2">Acties</th>
-                        <th className="px-4 py-2">Bedrijfstype</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -330,9 +334,7 @@ export default function AdminPage() {
                                 {user.blocked ? 'Deblokkeren' : 'Blokkeren'}
                               </button>
                             </td>
-                            <td className="px-4 py-2">
-                              {companyTypes[user.id]?.type === 'Overig' ? companyTypes[user.id]?.custom_type : companyTypes[user.id]?.type || '-'}
-                            </td>
+
                           </tr>
                         );
                       })}

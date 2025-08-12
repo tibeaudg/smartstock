@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { NotificationButton } from './NotificationButton';
+import { useNotifications } from '../hooks/useNotifications';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
@@ -17,6 +19,12 @@ interface DashboardProps {
 }
 
 export const Dashboard = ({ userRole }: DashboardProps) => {
+  const { notifications, loading: notificationsLoading, unreadCount, markAllAsRead } = useNotifications();
+  const [showNotifications, setShowNotifications] = useState(false);
+  const handleNotificationClick = () => {
+    setShowNotifications((prev) => !prev);
+    if (unreadCount > 0) markAllAsRead();
+  };
   const isMobile = useIsMobile();
   const [rangeType, setRangeType] = useState<'week' | 'month' | 'quarter' | 'year' | 'all'>('month');
 
@@ -79,7 +87,32 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
   };
 
   return (
-    <div className="space-y-8 max-w-[1600px] mx-auto">
+    <div className="-top-6 space-y-6 max-w-[1600px] mx-auto relative">
+      {/* Notification Bell - absolute top right */}
+      <div className="absolute right-0 top-0 z-30 p-0">
+        <NotificationButton unreadCount={unreadCount} onClick={handleNotificationClick} />
+      </div>
+      {/* Notification Overlay */}
+      {showNotifications && (
+        <div className="fixed top-20 right-8 z-[100] bg-white border border-gray-200 rounded-lg shadow-xl p-4 w-80 max-h-[60vh] overflow-y-auto">
+          <h4 className="font-semibold mb-2">Meldingen</h4>
+          {notificationsLoading ? (
+            <div className="text-gray-500 text-sm">Laden...</div>
+          ) : notifications.length === 0 ? (
+            <div className="text-gray-700 text-sm">Geen meldingen.</div>
+          ) : (
+            <ul className="divide-y divide-gray-200">
+              {notifications.map((n) => (
+                <li key={n.id} className={`py-2 ${!n.read ? 'bg-blue-50' : ''}`}>
+                  <div className="font-medium text-gray-900 text-sm">{n.title}</div>
+                  <div className="text-gray-700 text-xs mb-1">{n.message}</div>
+                  <div className="text-gray-400 text-xs">{new Date(n.created_at).toLocaleString()}</div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
 
       {/* Header */}
       <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">

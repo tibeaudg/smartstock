@@ -16,6 +16,7 @@ import { Suspense } from "react";
 import { ContentWrapper } from "./ContentWrapper";
 import AdminInvoicingPage from "./components/AdminInvoicingPage";
 import AdminUserDetailPage from './pages/AdminUserDetailPage';
+import AdminNotificationsPage from './pages/AdminNotificationsPage';
 import { AlertCircle } from "lucide-react";
 import SEO from './components/SEO';
 import PreloadResources from './components/PreloadResources';
@@ -260,6 +261,7 @@ export default function App() {
 
                   <Route path="/admin" element={<AdminInvoicingPage />} />
                   <Route path="/admin/user/:id" element={<AdminUserDetailPage />} />
+                  <Route path="/admin/notifications" element={<AdminNotificationsPage />} />
 
                   {/* Fallback route */}
                   <Route path="*" element={<NotFound />} />
