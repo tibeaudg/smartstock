@@ -368,16 +368,6 @@ export default function GratisStockbeheer() {
               </p>
             </div>
           </Link>
-          <Link to="/simpelstockbeheer" className="group">
-            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow group-hover:border-green-300">
-              <h3 className="font-semibold text-gray-900 mb-2 group-hover:text-green-600 transition-colors">
-                Simpel stockbeheer
-              </h3>
-              <p className="text-gray-600 text-sm">
-                Ontdek hoe eenvoudig voorraadbeheer kan zijn met de juiste tools.
-              </p>
-            </div>
-          </Link>
         </div>
       </div>
 

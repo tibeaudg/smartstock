@@ -31,7 +31,6 @@ import VoorraadbeheerHoreca from './pages/voorraadbeheer-horeca';
 import VoorraadbeheerExcelVsSoftware from './pages/voorraadbeheer-excel-vs-software';
 import VoorraadbeheerVoorStarters from './pages/voorraadbeheer-voor-starters';
 import MobielVoorraadbeheer from './pages/mobiel-voorraadbeheer';
-import SimpelStockbeheer from './pages/simpelstockbeheer';
 import GratisStockbeheer from './pages/gratis-stockbeheer';
 import VoorraadbeheerExcel from './pages/voorraadbeheer-excel';
 import React, { useState } from 'react';
@@ -240,7 +239,6 @@ export default function App() {
                   <Route path="/voorraadbeheer-excel-vs-software" element={<VoorraadbeheerExcelVsSoftware />} />
                   <Route path="/voorraadbeheer-voor-starters" element={<VoorraadbeheerVoorStarters />} />
                   <Route path="/mobiel-voorraadbeheer" element={<MobielVoorraadbeheer />} />
-                  <Route path="/simpelstockbeheer" element={<SimpelStockbeheer />} />
                   <Route path="/gratis-stockbeheer" element={<GratisStockbeheer />} />
                   <Route path="/voorraadbeheer-excel" element={<VoorraadbeheerExcel />} />
 

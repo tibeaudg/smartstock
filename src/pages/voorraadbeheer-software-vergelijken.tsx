@@ -2,13 +2,16 @@
 import SEO from '../components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '../components/SeoPageLayout';
+import Footer from '../components/Footer';
 import { Check, Star, Smartphone, Bell, Zap, Shield, Users, TrendingUp } from 'lucide-react';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
+import { Header } from '@/components/Header';
 
 export default function VoorraadbeheerSoftwareVergelijken() {
   // Gebruik de page refresh hook
   usePageRefresh();
   
+
   
   const comparisonData = [
     {
@@ -47,7 +50,7 @@ export default function VoorraadbeheerSoftwareVergelijken() {
   ];
 
   return (
-    <SeoPageLayout
+    <><SeoPageLayout
       title="Voorraadbeheer Software Vergelijken"
       image="/optimized/Inventory-Management.png"
     >
@@ -55,9 +58,12 @@ export default function VoorraadbeheerSoftwareVergelijken() {
         title="Software Stockbeheer 2024: Beste Voorraadbeheer Software Vergelijken | stockflow"
         description="Vergelijk de beste software stockbeheer programma's voor KMO's. Ontdek welke voorraadbeheer software het beste past bij jouw bedrijf. Gratis vergelijking en tips."
         keywords="software stockbeheer, stockbeheer software, programma stockbeheer, voorraadbeheer software, stockbeheer programma, software vergelijken, beste voorraadbeheer software, voorraadbeheer software kiezen, voorraadbeheersoftware, bedrijfssoftware vergelijken, voorraadbeheer app, programma voorraadbeheer, software voor voorraadbeheer, voorraad app, app voorraadbeheer, beste voorraadbeheer app, voorraadbeheer programma, software stockbeheer 2024"
-        url="https://www.stockflow.be/voorraadbeheer-software-vergelijken"
-      />
+        url="https://www.stockflow.be/voorraadbeheer-software-vergelijken" />
 
+      <Header 
+        simplifiedNav={false}
+        hideNotifications={true}
+      />
       {/* Hero Section */}
       <div className="bg-gradient-to-br from-blue-300 to-indigo-500 rounded-2xl p-8 mb-8">
         <div className="max-w-7xl mx-auto text-center">
@@ -65,7 +71,7 @@ export default function VoorraadbeheerSoftwareVergelijken() {
             Stockbeheer Software Vergelijken
           </h1>
           <p className="text-xl text-gray-600 mb-6 max-w-5xl mx-auto">
-            Vergelijk de beste <strong>stockbeheer software</strong> en <strong>voorraadbeheer programma's</strong> voor KMO's. 
+            Vergelijk de beste <strong>stockbeheer software</strong> en <strong>voorraadbeheer programma's</strong> voor KMO's.
             Ontdek welke <strong>software voor voorraadbeheer</strong> het beste past bij jouw bedrijf in 2024.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
@@ -92,8 +98,8 @@ export default function VoorraadbeheerSoftwareVergelijken() {
             Wat is stockbeheer software?
           </h2>
           <p className="text-lg text-gray-700 mb-6 leading-relaxed">
-            <strong>Stockbeheer software</strong> is een programma dat je helpt bij het beheren van je voorraad, 
-            het bijhouden van inkomende en uitgaande goederen, en het optimaliseren van je voorraadniveaus. 
+            <strong>Stockbeheer software</strong> is een programma dat je helpt bij het beheren van je voorraad,
+            het bijhouden van inkomende en uitgaande goederen, en het optimaliseren van je voorraadniveaus.
             Een goed <strong>voorraadbeheer programma</strong> bespaart je tijd, geld en voorkomt voorraadtekorten.
           </p>
           <div className="grid md:grid-cols-2 gap-6">
@@ -170,9 +176,7 @@ export default function VoorraadbeheerSoftwareVergelijken() {
         </h2>
         <div className="grid lg:grid-cols-3 gap-6">
           {comparisonData.map((software, index) => (
-            <div key={index} className={`bg-white rounded-2xl shadow-lg border-2 transition-all hover:shadow-xl ${
-              software.highlight ? 'border-blue-500 relative' : 'border-gray-200'
-            }`}>
+            <div key={index} className={`bg-white rounded-2xl shadow-lg border-2 transition-all hover:shadow-xl ${software.highlight ? 'border-blue-500 relative' : 'border-gray-200'}`}>
               {software.highlight && (
                 <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
                   <span className="bg-blue-500 text-white px-4 py-1 rounded-full text-sm font-medium">
@@ -186,9 +190,7 @@ export default function VoorraadbeheerSoftwareVergelijken() {
                   <p className="text-gray-600 mb-3">{software.tagline}</p>
                   <div className="flex items-center justify-center gap-1 mb-3">
                     {[...Array(5)].map((_, i) => (
-                      <Star key={i} className={`w-4 h-4 ${
-                        i < Math.floor(software.rating) ? 'text-yellow-400 fill-current' : 'text-gray-300'
-                      }`} />
+                      <Star key={i} className={`w-4 h-4 ${i < Math.floor(software.rating) ? 'text-yellow-400 fill-current' : 'text-gray-300'}`} />
                     ))}
                     <span className="text-sm text-gray-600 ml-2">({software.rating})</span>
                   </div>
@@ -220,8 +222,8 @@ export default function VoorraadbeheerSoftwareVergelijken() {
           <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">
             Stappenplan: Software vergelijken en kiezen
           </h2>
-                     <div className="max-w-7xl mx-auto">
-             <div className="grid md:grid-cols-2 gap-8">
+          <div className="max-w-7xl mx-auto">
+            <div className="grid md:grid-cols-2 gap-8">
               <div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-4">Stap 1: Bepaal je behoeften</h3>
                 <ul className="space-y-3 text-gray-700">
@@ -267,25 +269,25 @@ export default function VoorraadbeheerSoftwareVergelijken() {
           <h2 className="text-3xl font-bold text-gray-900 mb-4 text-center">
             Conclusie: Kies de beste stockbeheer software
           </h2>
-                     <div className="max-w-7xl mx-auto">
-             <p className="text-lg text-gray-700 mb-6 leading-relaxed">
-              Na het vergelijken van verschillende <strong>stockbeheer software</strong> oplossingen, 
-              blijkt dat <strong>stockflow</strong> de beste keuze is voor KMO's die op zoek zijn naar een 
-              gebruiksvriendelijke, betaalbare en schaalbare oplossing. Met een gratis versie voor 
+          <div className="max-w-7xl mx-auto">
+            <p className="text-lg text-gray-700 mb-6 leading-relaxed">
+              Na het vergelijken van verschillende <strong>stockbeheer software</strong> oplossingen,
+              blijkt dat <strong>stockflow</strong> de beste keuze is voor KMO's die op zoek zijn naar een
+              gebruiksvriendelijke, betaalbare en schaalbare oplossing. Met een gratis versie voor
               kleine bedrijven en een betaalbare premium versie, is het perfect voor groeiende ondernemingen.
             </p>
             <div className="grid md:grid-cols-2 gap-6">
               <div className="bg-white p-6 rounded-xl shadow-lg">
                 <h3 className="font-semibold text-gray-900 mb-3">Voor kleine bedrijven</h3>
                 <p className="text-gray-600 text-sm">
-                  Start gratis met stockflow en upgrade wanneer je groeit. 
+                  Start gratis met stockflow en upgrade wanneer je groeit.
                   Perfect voor starters en kleine ondernemingen.
                 </p>
               </div>
               <div className="bg-white p-6 rounded-xl shadow-lg">
                 <h3 className="font-semibold text-gray-900 mb-3">Voor groeiende bedrijven</h3>
                 <p className="text-gray-600 text-sm">
-                  Schaal eenvoudig op met premium functies zoals 
+                  Schaal eenvoudig op met premium functies zoals
                   multi-branch ondersteuning en geavanceerde rapportages.
                 </p>
               </div>
@@ -304,14 +306,14 @@ export default function VoorraadbeheerSoftwareVergelijken() {
             Probeer stockflow gratis en ervaar het verschil
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link 
-              to="/" 
+            <Link
+              to="/"
               className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
             >
               Start gratis
             </Link>
-            <Link 
-              to="/" 
+            <Link
+              to="/"
               className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors"
             >
               Meer informatie
@@ -368,21 +370,21 @@ export default function VoorraadbeheerSoftwareVergelijken() {
           <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
             <h3 className="font-semibold text-gray-900 mb-2">Wat is het verschil tussen stockbeheer software en voorraadbeheer software?</h3>
             <p className="text-gray-600 text-sm">
-              Beide termen verwijzen naar dezelfde type software. Stockbeheer software is de Nederlandse term, 
+              Beide termen verwijzen naar dezelfde type software. Stockbeheer software is de Nederlandse term,
               terwijl voorraadbeheer software ook veel gebruikt wordt. Beide helpen je bij het beheren van je voorraad.
             </p>
           </div>
           <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
             <h3 className="font-semibold text-gray-900 mb-2">Welke stockbeheer software is het beste voor kleine bedrijven?</h3>
             <p className="text-gray-600 text-sm">
-              Voor kleine bedrijven is stockflow aan te raden vanwege de gratis versie, gebruiksvriendelijkheid 
+              Voor kleine bedrijven is stockflow aan te raden vanwege de gratis versie, gebruiksvriendelijkheid
               en betaalbare premium opties. Het is perfect voor starters die willen groeien.
             </p>
           </div>
           <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
             <h3 className="font-semibold text-gray-900 mb-2">Kun je stockbeheer software gratis proberen?</h3>
             <p className="text-gray-600 text-sm">
-              Ja, veel stockbeheer software biedt gratis versies aan. stockflow biedt bijvoorbeeld een gratis 
+              Ja, veel stockbeheer software biedt gratis versies aan. stockflow biedt bijvoorbeeld een gratis
               versie aan voor maximaal 30 producten, perfect om te testen of het bij je past.
             </p>
           </div>
@@ -390,7 +392,8 @@ export default function VoorraadbeheerSoftwareVergelijken() {
       </section>
 
       {/* Structured Data */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
+      <script type="application/ld+json" dangerouslySetInnerHTML={{
+        __html: `{
         "@context": "https://schema.org",
         "@type": "Article",
         "headline": "Stockbeheer Software Vergelijken 2024",
@@ -417,7 +420,8 @@ export default function VoorraadbeheerSoftwareVergelijken() {
         "image": "https://www.stockflow.be/optimized/Inventory-Management.png",
         "articleSection": "Voorraadbeheer",
         "keywords": "stockbeheer software, software stockbeheer, programma stockbeheer, voorraadbeheer software, stockbeheer programma, software vergelijken, beste voorraadbeheer software, voorraadbeheer software kiezen, voorraadbeheersoftware, bedrijfssoftware vergelijken, voorraadbeheer app, programma voorraadbeheer, software voor voorraadbeheer, voorraad app, app voorraadbeheer, beste voorraadbeheer app, voorraadbeheer programma"
-      }`}} />
-    </SeoPageLayout>
+      }` }} />
+    </SeoPageLayout><Footer /></>
+
   );
 } 

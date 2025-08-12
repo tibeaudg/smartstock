@@ -51,32 +51,6 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButton
     setActiveDropdown(null);
   };
 
-  const navigationItems = [
-    {
-      label: 'Features',
-      icon: <BarChart3 className="h-4 w-4" />,
-      items: [
-        { label: 'Voorraadbeheer', sectionId: 'features-section' },
-        { label: 'Rapportages', sectionId: 'features-section' },
-        { label: 'Mobiel Gebruik', sectionId: 'features-section' },
-      ]
-    },
-    {
-      label: 'Reviews',
-      icon: <Star className="h-4 w-4" />,
-      items: [
-        { label: 'Klantenverhalen', sectionId: 'testimonials-section' },
-      ]
-    },
-    {
-      label: 'FAQ',
-      icon: <HelpCircle className="h-4 w-4" />,
-      items: [
-        { label: 'Veelgestelde Vragen', sectionId: 'faq-section' },
-        { label: 'Hoe werkt het?', sectionId: 'video-section' },
-      ]
-    },
-  ];
 
   return (
     <>
@@ -94,40 +68,6 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButton
               </Link>
             </div>
 
-            {/* Desktop Navigation */}
-            {!simplifiedNav && (
-              <nav className="hidden lg:flex items-center space-x-6">
-                {navigationItems.map((item) => (
-                  <div
-                    key={item.label}
-                    className="relative group"
-                    onMouseEnter={() => setActiveDropdown(item.label)}
-                    onMouseLeave={() => setActiveDropdown(null)}
-                  >
-                    <button className="flex items-center space-x-1 text-gray-700 hover:text-blue-600 transition-colors py-2 px-3 rounded-md hover:bg-gray-50">
-                      {item.icon}
-                      <span className="font-medium text-sm">{item.label}</span>
-                      <ChevronDown className="h-3 w-3 transition-transform group-hover:rotate-180" />
-                    </button>
-                    
-                    {/* Dropdown Menu */}
-                    {activeDropdown === item.label && (
-                      <div className="absolute top-full left-0 mt-1 w-48 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-50">
-                        {item.items.map((subItem, index) => (
-                          <button
-                            key={index}
-                            onClick={() => handleNavClick(subItem.sectionId)}
-                            className="w-full text-left px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors text-sm"
-                          >
-                            {subItem.label}
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </nav>
-            )}
 
             {/* Desktop Auth Buttons */}
 
@@ -138,7 +78,7 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButton
                 )}
                 {!hideAuthButtons && (
                   <>
-                    <Button variant="ghost" size="sm" onClick={handleLoginClick} className="text-sm">
+                    <Button variant="outline" size="sm" onClick={handleLoginClick} className="text-sm border border-blue-600">
                       Inloggen
                     </Button>
                     <Button size="sm" onClick={handleLoginClick} className="text-sm">
@@ -214,47 +154,30 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButton
       )}
             
             {/* Mobile Navigation Items */}
-            <div className="flex-1 overflow-y-auto p-6">
-              {!simplifiedNav && (
-                <div className="space-y-6">
-                  {navigationItems.map((item) => (
-                    <div key={item.label} className="space-y-3">
-                      <div className="flex items-center space-x-3 text-gray-900 font-semibold">
-                        {item.icon}
-                        <span>{item.label}</span>
-                      </div>
-                      <div className="ml-7 space-y-2">
-                        {item.items.map((subItem, index) => (
-                          <button
-                            key={index}
-                            onClick={() => handleNavClick(subItem.sectionId)}
-                            className="block w-full text-left py-3 px-4 text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors text-sm"
-                          >
-                            {subItem.label}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
+            <div className="flex-1 overflow-y-auto p-6 bg-gray-100">
 
               {/* Mobile Auth Buttons */}
               {!hideAuthButtons && (
-                <div className="mt-8 pt-6 border-t border-gray-200 space-y-3">
+                <div className="space-y-3">
+
                   <Button 
                     variant="outline" 
-                    className="w-full" 
+                    className="w-full border border-blue-600" 
                     onClick={() => { handleLoginClick(); setMobileMenuOpen(false); }}
                   >
                     Inloggen
                   </Button>
+
+
+
                   <Button 
                     className="w-full" 
                     onClick={() => { handleLoginClick(); setMobileMenuOpen(false); }}
                   >
                     Probeer Gratis
                   </Button>
+
+
                 </div>
               )}
             </div>

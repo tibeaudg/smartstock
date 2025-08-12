@@ -2,8 +2,10 @@
 import SEO from '../components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '../components/SeoPageLayout';
-import { Globe, ShoppingCart, Settings, Bell, Shield, BarChart3, TrendingUp } from 'lucide-react';
+import Footer from '../components/Footer';
+import { Globe, ShoppingCart, Settings, Bell, Shield, BarChart3, TrendingUp, Check } from 'lucide-react';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
+import { Header } from '@/components/Header';
 
 export default function VoorraadbeheerWebshop() {
   // Gebruik de page refresh hook
@@ -81,6 +83,10 @@ export default function VoorraadbeheerWebshop() {
         url="https://www.stockflow.be/voorraadbeheer-webshop"
         image="/optimized/Inventory-Management.png"
       />
+      <Header 
+        simplifiedNav={false}
+        hideNotifications={true}
+      />
 
       {/* Hero Section */}
       <div className="bg-gradient-to-br from-orange-300 to-red-500 text-white py-16 px-6 rounded-lg mb-8">
@@ -94,13 +100,13 @@ export default function VoorraadbeheerWebshop() {
           </p>
           <div className="flex justify-center space-x-4">
             <div className="bg-white bg-opacity-20 px-4 py-2 rounded-full">
-              <span className="text-sm text-black font-bold">âœ“ Webshop integratie</span>
+              <span className="text-sm text-black font-bold">Webshop integratie</span>
             </div>
             <div className="bg-white bg-opacity-20 px-4 py-2 rounded-full">
-              <span className="text-sm text-black font-bold">âœ“ Automatische sync</span>
+              <span className="text-sm text-black font-bold">Automatische sync</span>
             </div>
             <div className="bg-white bg-opacity-20 px-4 py-2 rounded-full">
-              <span className="text-sm text-black font-bold">âœ“ Nee-verkoop voorkomen</span>
+              <span className="text-sm text-black font-bold">Nee-verkoop voorkomen</span>
             </div>
           </div>
         </div>
@@ -110,7 +116,6 @@ export default function VoorraadbeheerWebshop() {
       <div className="bg-gray-50 p-8 rounded-lg mb-8">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-start space-x-4">
-            <div className="text-orange-500 text-3xl mt-1 flex-shrink-0">ðŸ›’</div>
             <div>
               <h2 className="text-2xl font-bold mb-4 text-gray-800">
                 Waarom voorraadbeheer voor webshops?
@@ -157,7 +162,6 @@ export default function VoorraadbeheerWebshop() {
       <div className="bg-gradient-to-br from-orange-300 to-red-500 p-8 rounded-lg mb-8">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-6">
-            <div className="text-orange-600 text-4xl mx-auto mb-4">ðŸ”—</div>
             <h2 className="text-3xl font-bold mb-4 text-white">
               Webshop integraties
             </h2>
@@ -166,13 +170,13 @@ export default function VoorraadbeheerWebshop() {
             {integrations.map((integration, index) => (
               <div key={index} className="bg-white bg-opacity-10 p-6 rounded-lg">
                 <div className="flex items-center mb-4">
-                  <integration.icon className="w-8 h-8 text-white mr-3" />
-                  <h3 className="text-xl font-semibold text-white">{integration.name}</h3>
+                  <integration.icon className="w-8 h-8 text-orange mr-3" />
+                  <h3 className="text-xl font-semibold text-black">{integration.name}</h3>
                 </div>
-                <p className="text-white text-sm mb-4 opacity-90">{integration.description}</p>
+                <p className="text-black text-sm mb-4 opacity-90">{integration.description}</p>
                 <ul className="space-y-2">
                   {integration.features.map((feature, featureIndex) => (
-                    <li key={featureIndex} className="flex items-center text-white text-sm">
+                    <li key={featureIndex} className="flex items-center text-black text-sm">
                       <Check className="w-4 h-4 text-orange-300 mr-2 flex-shrink-0" />
                       <span>{feature}</span>
                     </li>
@@ -194,7 +198,6 @@ export default function VoorraadbeheerWebshop() {
           {benefits.map((benefit, index) => (
             <div key={index} className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow">
               <div className="text-center mb-4">
-                <div className="text-orange-600 text-2xl mb-2">âœ“</div>
                 <h3 className="text-sm font-semibold text-gray-800">{benefit}</h3>
               </div>
             </div>
@@ -257,7 +260,7 @@ export default function VoorraadbeheerWebshop() {
         
         <div className="grid md:grid-cols-2 gap-8">
           <div className="bg-white border border-gray-200 rounded-lg p-6">
-            <h3 className="text-xl font-semibold mb-4 text-green-600">âœ… Wat je wel moet doen</h3>
+            <h3 className="text-xl font-semibold mb-4 text-green-600">Wat je wel moet doen</h3>
             <ul className="space-y-3 text-gray-700">
               <li className="flex items-start">
                 <Check className="w-5 h-5 text-green-600 mr-3 mt-0.5 flex-shrink-0" />
@@ -279,22 +282,22 @@ export default function VoorraadbeheerWebshop() {
           </div>
           
           <div className="bg-white border border-gray-200 rounded-lg p-6">
-            <h3 className="text-xl font-semibold mb-4 text-red-600">âŒ Wat je moet vermijden</h3>
+            <h3 className="text-xl font-semibold mb-4 text-red-600">Wat je moet vermijden</h3>
             <ul className="space-y-3 text-gray-700">
               <li className="flex items-start">
-                <span className="text-red-500 mr-3 mt-0.5">â€¢</span>
+                <Check className="text-red-500 mr-3 mt-0.5"></Check>
                 <span>Handmatige voorraad updates</span>
               </li>
               <li className="flex items-start">
-                <span className="text-red-500 mr-3 mt-0.5">â€¢</span>
+                <Check className="text-red-500 mr-3 mt-0.5"></Check>
                 <span>Geen backup van voorraadgegevens</span>
               </li>
               <li className="flex items-start">
-                <span className="text-red-500 mr-3 mt-0.5">â€¢</span>
+                <Check className="text-red-500 mr-3 mt-0.5"></Check>
                 <span>Geen monitoring van voorraadniveaus</span>
               </li>
               <li className="flex items-start">
-                <span className="text-red-500 mr-3 mt-0.5">â€¢</span>
+                <Check className="text-red-500 mr-3 mt-0.5"></Check>
                 <span>Geen integratie tussen systemen</span>
               </li>
             </ul>
@@ -305,7 +308,7 @@ export default function VoorraadbeheerWebshop() {
       {/* FAQ Section */}
       <div className="max-w-4xl mx-auto mb-12">
         <div className="text-center mb-8">
-          <div className="text-orange-600 text-4xl mx-auto mb-4">â“</div>
+          <div className="text-orange-600 text-4xl mx-auto mb-4">?</div>
           <h2 className="text-3xl font-bold mb-4 text-gray-800">
             Veelgestelde vragen over webshop voorraadbeheer
           </h2>
@@ -366,7 +369,7 @@ export default function VoorraadbeheerWebshop() {
             </h3>
             <p className="text-gray-700 mb-3">
               stockflow ondersteunt multi-channel voorraadbeheer. Je kunt voorraad beheren voor 
-              webshop, marktplaats, fysieke verkoop en meer vanuit Ã©Ã©n systeem.
+              webshop, marktplaats, fysieke verkoop en meer vanuit kassa systeem.
             </p>
           </div>
         </div>
@@ -375,7 +378,6 @@ export default function VoorraadbeheerWebshop() {
       {/* CTA Section */}
       <div className="bg-gradient-to-br from-orange-300 to-red-500 text-white p-8 rounded-lg text-center">
         <div className="max-w-2xl mx-auto">
-          <div className="text-4xl mx-auto mb-4">ðŸ›’</div>
           <h2 className="text-3xl font-bold mb-4">
             Klaar om je webshop voorraad te optimaliseren?
           </h2>
@@ -401,7 +403,7 @@ export default function VoorraadbeheerWebshop() {
       </div>
 
       {/* Related Articles */}
-      <div className="max-w-4xl mx-auto mb-8">
+      <div className="max-w-4xl mx-auto mb-8 mt-8">
         <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
           Meer lezen over webshop voorraadbeheer?
         </h2>
@@ -481,7 +483,7 @@ export default function VoorraadbeheerWebshop() {
             "name": "Wat als ik meerdere verkoopkanalen heb?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "stockflow ondersteunt multi-channel voorraadbeheer. Je kunt voorraad beheren voor webshop, marktplaats, fysieke verkoop en meer vanuit Ã©Ã©n systeem."
+              "text": "stockflow ondersteunt multi-channel voorraadbeheer. Je kunt voorraad beheren voor webshop, marktplaats, fysieke verkoop en meer vanuit kassa systeem."
             }
           }
         ]
@@ -512,6 +514,7 @@ export default function VoorraadbeheerWebshop() {
           "@id": "https://www.stockflow.be/voorraadbeheer-webshop"
         }
       }`}} />
+      <Footer />
     </SeoPageLayout>
   );
 } 

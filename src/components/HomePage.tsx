@@ -542,53 +542,47 @@ export const HomePage = () => {
         </div>
       </section>
 
-      {/* FOOTER - Compact op mobiel */}
-      <footer className="bg-gray-900 text-gray-200 py-8 md:py-12">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-8 mb-6 md:mb-8">
-            <div>
-              <img src="/logo.png" alt="stockflow" className="h-8 md:h-10" />
-              <p className="text-gray-400 text-sm md:text-base mb-3 md:mb-4">
-                Het beste gratis voorraadbeheer programma voor Vlaamse KMO's. Eenvoudig, veilig en zonder verborgen kosten.
-              </p>
-              <div className="flex space-x-4">
-                <Link to="/voorraadbeheer-tips" className="text-blue-400 hover:text-blue-300 text-sm">Tips</Link>
-                <Link to="/voorraadbeheer-software-vergelijken" className="text-blue-400 hover:text-blue-300 text-sm">Vergelijking</Link>
-              </div>
-            </div>
-            <div>
-              <h4 className="font-bold mb-3 md:mb-4 text-sm md:text-base">Voorraadbeheer</h4>
-              <ul className="space-y-2 text-gray-400 text-sm">
-                <li><Link to="/gratis-stockbeheer" className="hover:text-white">Gratis Stockbeheer</Link></li>
-                <li><Link to="/voorraadbeheer-horeca" className="hover:text-white">Voorraadbeheer Horeca</Link></li>
-                <li><Link to="/voorraadbeheer-webshop" className="hover:text-white">Voorraadbeheer Webshop</Link></li>
-                <li><Link to="/mobiel-voorraadbeheer" className="hover:text-white">Mobiel Voorraadbeheer</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-bold mb-3 md:mb-4 text-sm md:text-base">Regio's</h4>
-              <ul className="space-y-2 text-gray-400 text-sm">
-                <li><Link to="/voorraadbeheer-gent" className="hover:text-white">Voorraadbeheer Gent</Link></li>
-                <li><Link to="/voorraadbeheer-antwerpen" className="hover:text-white">Voorraadbeheer Antwerpen</Link></li>
-                <li><Link to="/voorraadbeheer-brugge" className="hover:text-white">Voorraadbeheer Brugge</Link></li>
-                <li><Link to="/voorraadbeheer-vlaanderen" className="hover:text-white">Voorraadbeheer Vlaanderen</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-bold mb-3 md:mb-4 text-sm md:text-base">Support</h4>
-              <ul className="space-y-2 text-gray-400 text-sm">
-                <li><Link to="/contact" className="hover:text-white">Contact</Link></li>
-                <li><Link to="/help" className="hover:text-white">Help Center</Link></li>
-                <li><Link to="/privacy" className="hover:text-white">Privacy</Link></li>
-                <li><Link to="/terms" className="hover:text-white">Algemene Voorwaarden</Link></li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-gray-700 pt-6 md:pt-8 text-center">
-            <p className="text-gray-400 text-sm">&copy; {new Date().getFullYear()} stockflow. Alle rechten voorbehouden. Gratis voorraadbeheer voor Vlaamse KMO's.</p>
-          </div>
-        </div>
-      </footer>
+
+
+
+<footer className="bg-gray-900 text-gray-200 py-12 md:py-16">
+  <div className="max-w-4xl mx-auto px-6 text-center">
+    <img
+      src="/logo.png"
+      alt="stockflow"
+      className="h-10 md:h-12 mx-auto mb-6"
+    />
+    <p className="text-gray-400 text-base md:text-lg mb-8 leading-relaxed max-w-2xl mx-auto">
+      Het beste gratis voorraadbeheerprogramma voor Vlaamse KMO's. 
+      Eenvoudig, veilig en zonder verborgen kosten.
+    </p>
+
+    <div className="flex justify-center space-x-10 mb-10">
+      <Link
+        to="/voorraadbeheer-tips"
+        className="text-blue-400 hover:text-blue-300 text-sm md:text-base transition-colors duration-200"
+      >
+        Tips
+      </Link>
+      <Link
+        to="/voorraadbeheer-software-vergelijken"
+        className="text-blue-400 hover:text-blue-300 text-sm md:text-base transition-colors duration-200"
+      >
+        Vergelijking
+      </Link>
+    </div>
+
+    <div className="border-t border-gray-700 pt-6">
+      <p className="text-gray-500 text-xs md:text-sm">
+        &copy; {new Date().getFullYear()} stockflow. Alle rechten voorbehouden. 
+        Gratis voorraadbeheer voor Vlaamse KMO's.
+      </p>
+    </div>
+  </div>
+</footer>
+
+
+
     </div>
   );
 };

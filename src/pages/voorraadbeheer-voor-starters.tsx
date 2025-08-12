@@ -2,8 +2,11 @@
 import SEO from '../components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '../components/SeoPageLayout';
+import Footer from '../components/Footer';
 import { BookOpen, Target, TrendingUp, Shield, Users, Rocket, Check } from 'lucide-react';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
+import { Header } from '@/components/Header';
+
 
 export default function VoorraadbeheerVoorStarters() {
   // Gebruik de page refresh hook
@@ -69,6 +72,10 @@ export default function VoorraadbeheerVoorStarters() {
         keywords="voorraadbeheer starters, voorraadbeheer kleine bedrijven, voorraadbeheer beginnen, voorraadbeheer tips, voorraadbeheer stappenplan, voorraadbeheer KMO, voorraadbeheer zelfstandigen, voorraadbeheer beginners, voorraadbeheer opzetten, voorraadbeheer implementeren, stockbeheer starters, stockbeheer kleine bedrijven, voorraadbeheer gids, voorraadbeheer handleiding"
         url="https://www.stockflow.be/voorraadbeheer-voor-starters"
         image="/optimized/Inventory-Management.png"
+      />
+      <Header 
+        simplifiedNav={false}
+        hideNotifications={true}
       />
 
       {/* Hero Section */}
@@ -525,6 +532,7 @@ export default function VoorraadbeheerVoorStarters() {
           "@id": "https://www.stockflow.be/voorraadbeheer-voor-starters"
         }
       }`}} />
+      <Footer />
     </SeoPageLayout>
   );
 } 

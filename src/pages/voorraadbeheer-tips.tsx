@@ -1,6 +1,8 @@
 import React from 'react';
 import SEO from '../components/SEO';
 import SeoPageLayout from '../components/SeoPageLayout';
+import Footer from '../components/Footer';
+
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 
 export default function VoorraadbeheerTips() {
@@ -8,7 +10,7 @@ export default function VoorraadbeheerTips() {
   usePageRefresh();
   
   return (
-    <SeoPageLayout
+    <><SeoPageLayout
       title="Voorraadbeheer Tips voor KMO's"
       image="/optimized/Inventory-Management.png"
     >
@@ -17,8 +19,7 @@ export default function VoorraadbeheerTips() {
         description="Ontdek 5 bewezen voorraadbeheer tips die je vandaag nog kunt toepassen. Bespaar 70% tijd, voorkom tekorten en groei je KMO. Gratis tips van experts."
         keywords="voorraadbeheer, stockbeheer, magazijnbeheer, inventarisatie, voorraad optimaliseren, KMO, kleine onderneming, voorraad tips, voorraadbeheer software, voorraadbeheer app, stockflow, gratis voorraadbeheer, voorraadbeheer automatiseren, voorraadbeheer 2024, voorraadbeheer tips KMO"
         url="https://www.stockflow.be/voorraadbeheer-tips"
-        image="/optimized/Inventory-Management.png"
-      />
+        image="/optimized/Inventory-Management.png" />
 
       {/* Hero Section */}
       <div className="bg-gradient-to-br from-blue-300 to-indigo-500 text-white py-16 px-6 rounded-lg mb-8">
@@ -27,11 +28,11 @@ export default function VoorraadbeheerTips() {
             Voorraadbeheer Tips voor KMO's
           </h1>
           <p className="text-xl mb-8 leading-relaxed">
-            Ontdek <strong>professionele tips</strong> om je voorraadbeheer te optimaliseren. 
+            Ontdek <strong>professionele tips</strong> om je voorraadbeheer te optimaliseren.
             Bespaar kosten, voorkom tekorten en groei je bedrijf met slim stockbeheer.
           </p>
           <div className="flex justify-center space-x-4">
-          <div className="bg-white bg-opacity-20 px-4 py-2 rounded-full">
+            <div className="bg-white bg-opacity-20 px-4 py-2 rounded-full">
               <span className="text-sm text-black font-bold">Direct toepasbaar</span>
             </div>
 
@@ -56,12 +57,11 @@ export default function VoorraadbeheerTips() {
                 Waarom is voorraadbeheer cruciaal voor KMO's?
               </h2>
               <p className="text-lg text-gray-700 leading-relaxed">
-                Goed <strong>voorraadbeheer</strong> is de ruggengraat van elke succesvolle KMO. 
-                Het bepaalt je winstgevendheid, klanttevredenheid en groeipotentieel. 
-                Met de juiste strategieën en tools kun je kosten besparen, tekorten voorkomen 
-                en je klanten beter bedienen. Ontdek hieronder praktische tips om je 
-                <strong> stockbeheer</strong> naar het volgende niveau te tillen. 
-                <a href="/simpelstockbeheer" className="text-blue-700 underline font-semibold">Start eenvoudig met simpel stockbeheer</a> of 
+                Goed <strong>voorraadbeheer</strong> is de ruggengraat van elke succesvolle KMO.
+                Het bepaalt je winstgevendheid, klanttevredenheid en groeipotentieel.
+                Met de juiste strategieën en tools kun je kosten besparen, tekorten voorkomen
+                en je klanten beter bedienen. Ontdek hieronder praktische tips om je
+                <strong> stockbeheer</strong> naar het volgende niveau te tillen.
                 <a href="/mobiel-voorraadbeheer" className="text-blue-700 underline font-semibold">ontdek mobiel voorraadbeheer</a> voor maximale flexibiliteit.
               </p>
             </div>
@@ -74,7 +74,7 @@ export default function VoorraadbeheerTips() {
         <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">
           Top 5 Voorraadbeheer Tips voor KMO's
         </h2>
-        
+
         <div className="space-y-8">
           {/* Tip 1 */}
           <div className="bg-white border border-gray-200 rounded-lg p-8 shadow-sm hover:shadow-md transition-shadow">
@@ -86,18 +86,18 @@ export default function VoorraadbeheerTips() {
                 <h3 className="text-2xl font-bold mb-3 text-gray-800">
                   1. Digitaliseer je voorraadbeheer
                 </h3>
-                                <p className="text-gray-700 mb-4 leading-relaxed">
-                  Stap af van Excel-spreadsheets en papieren lijsten. Gebruik een moderne 
-                  <strong> voorraadbeheer app</strong> zoals stockflow om altijd en overal  
-                  real-time inzicht te hebben in je voorraad. Dit voorkomt fouten, bespaart  
-                  tijd en geeft je de controle die je nodig hebt. 
-                  <a href="/voorraadbeheer-excel-vs-software" className="text-blue-700 underline">Lees waarom moderne software beter is dan Excel</a> en 
+                <p className="text-gray-700 mb-4 leading-relaxed">
+                  Stap af van Excel-spreadsheets en papieren lijsten. Gebruik een moderne
+                  <strong> voorraadbeheer app</strong> zoals stockflow om altijd en overal
+                  real-time inzicht te hebben in je voorraad. Dit voorkomt fouten, bespaart
+                  tijd en geeft je de controle die je nodig hebt.
+                  <a href="/voorraadbeheer-excel-vs-software" className="text-blue-700 underline">Lees waarom moderne software beter is dan Excel</a> en
                   <a href="/voorraadbeheer-software-vergelijken" className="text-blue-700 underline">vergelijk verschillende oplossingen</a>.
                 </p>
                 <div className="bg-blue-50 p-4 rounded-lg">
                   <h4 className="font-semibold text-blue-800 mb-2">💡 Praktische tip:</h4>
                   <p className="text-blue-700 text-sm">
-                    Start met het digitaliseren van je best verkopende producten. 
+                    Start met het digitaliseren van je best verkopende producten.
                     Dit geeft je direct de meeste impact met minimale inspanning.
                   </p>
                 </div>
@@ -116,11 +116,11 @@ export default function VoorraadbeheerTips() {
                   2. Automatiseer meldingen bij lage voorraad
                 </h3>
                 <p className="text-gray-700 mb-4 leading-relaxed">
-                  Stel automatische meldingen in zodat je nooit meer misgrijpt. 
-                  Definieer minimumvoorraad niveaus voor elk product en ontvang 
-                  tijdige waarschuwingen. Zo kun je proactief bijbestellen en 
-                  voorkom je nee-verkoop situaties. 
-                  <a href="/voorraadbeheer-automatiseren" className="text-green-700 underline">Ontdek meer over voorraadbeheer automatiseren</a> en 
+                  Stel automatische meldingen in zodat je nooit meer misgrijpt.
+                  Definieer minimumvoorraad niveaus voor elk product en ontvang
+                  tijdige waarschuwingen. Zo kun je proactief bijbestellen en
+                  voorkom je nee-verkoop situaties.
+                  <a href="/voorraadbeheer-automatiseren" className="text-green-700 underline">Ontdek meer over voorraadbeheer automatiseren</a> en
                   <a href="/voorraadbeheer-fouten-voorkomen" className="text-green-700 underline">leer hoe je fouten kunt voorkomen</a>.
                 </p>
                 <div className="bg-green-50 p-4 rounded-lg">
@@ -146,11 +146,11 @@ export default function VoorraadbeheerTips() {
                   3. Analyseer je voorraadrotatie
                 </h3>
                 <p className="text-gray-700 mb-4 leading-relaxed">
-                  Bekijk welke producten snel of juist langzaam verkopen. 
-                  Gebruik voorraadrotatie analyses om je inkoop te optimaliseren 
-                  en voorkom overstock of dode voorraad. Dit is cruciaal voor 
-                  een gezonde cashflow. 
-                  <a href="/magazijnbeheer-tips" className="text-purple-700 underline">Lees magazijnbeheer tips</a> voor betere organisatie en 
+                  Bekijk welke producten snel of juist langzaam verkopen.
+                  Gebruik voorraadrotatie analyses om je inkoop te optimaliseren
+                  en voorkom overstock of dode voorraad. Dit is cruciaal voor
+                  een gezonde cashflow.
+                  <a href="/magazijnbeheer-tips" className="text-purple-700 underline">Lees magazijnbeheer tips</a> voor betere organisatie en
                   <a href="/voorraadbeheer-voor-starters" className="text-purple-700 underline">ontdek tips voor starters</a>.
                 </p>
                 <div className="bg-purple-50 p-4 rounded-lg">
@@ -176,10 +176,10 @@ export default function VoorraadbeheerTips() {
                   4. Werk met duidelijke productcategorieën
                 </h3>
                 <p className="text-gray-700 mb-4 leading-relaxed">
-                  Een goede structuur in je magazijn en digitale inventarisatie 
-                  maakt het beheer eenvoudiger en sneller. Categoriseer je producten 
-                  logisch en gebruik consistente naamgeving. 
-                  <a href="/mobiel-voorraadbeheer" className="text-orange-700 underline">Mobiel voorraadbeheer</a> maakt dit nog eenvoudiger en 
+                  Een goede structuur in je magazijn en digitale inventarisatie
+                  maakt het beheer eenvoudiger en sneller. Categoriseer je producten
+                  logisch en gebruik consistente naamgeving.
+                  <a href="/mobiel-voorraadbeheer" className="text-orange-700 underline">Mobiel voorraadbeheer</a> maakt dit nog eenvoudiger en
                   <a href="/inventarisatie-tips" className="text-orange-700 underline">inventarisatie tips</a> helpen je bij de implementatie.
                 </p>
                 <div className="bg-orange-50 p-4 rounded-lg">
@@ -205,10 +205,10 @@ export default function VoorraadbeheerTips() {
                   5. Kies voor schaalbare software
                 </h3>
                 <p className="text-gray-700 mb-4 leading-relaxed">
-                  Start gratis met stockflow en upgrade eenvoudig als je bedrijf groeit. 
-                  Zo betaal je nooit te veel en groei je mee met je behoeften. 
-                  Schaalbare software groeit met je mee. 
-                  <a href="/gratis-stockbeheer" className="text-red-700 underline">Ontdek gratis stockbeheer opties</a> en 
+                  Start gratis met stockflow en upgrade eenvoudig als je bedrijf groeit.
+                  Zo betaal je nooit te veel en groei je mee met je behoeften.
+                  Schaalbare software groeit met je mee.
+                  <a href="/gratis-stockbeheer" className="text-red-700 underline">Ontdek gratis stockbeheer opties</a> en
                   <a href="/voorraadbeheer-webshop" className="text-red-700 underline">leer over voorraadbeheer voor webshops</a>.
                 </p>
                 <div className="bg-red-50 p-4 rounded-lg">
@@ -283,8 +283,8 @@ export default function VoorraadbeheerTips() {
             </div>
           </div>
           <div className="text-center mt-6">
-            <a 
-              href="/voorraadbeheer-automatiseren" 
+            <a
+              href="/voorraadbeheer-automatiseren"
               className="inline-flex items-center px-6 py-3 bg-blue-700 text-white font-semibold rounded-lg hover:bg-green-700 transition-colors"
             >
               Lees meer over voorraadbeheer automatiseren
@@ -304,15 +304,15 @@ export default function VoorraadbeheerTips() {
             Antwoorden op de meest gestelde vragen van KMO's
           </p>
         </div>
-        
+
         <div className="space-y-6">
           <div className="bg-white border border-gray-200 rounded-lg p-6">
             <h3 className="text-xl font-semibold mb-3 text-gray-800">
               Wat is het verschil tussen stockbeheer en voorraadbeheer?
             </h3>
             <p className="text-gray-700">
-              In België worden deze termen vaak door elkaar gebruikt, maar ze betekenen hetzelfde: 
-              het beheren van je producten en materialen. Beide termen verwijzen naar het proces 
+              In België worden deze termen vaak door elkaar gebruikt, maar ze betekenen hetzelfde:
+              het beheren van je producten en materialen. Beide termen verwijzen naar het proces
               van het bijhouden, controleren en optimaliseren van je voorraad.
             </p>
           </div>
@@ -324,8 +324,8 @@ export default function VoorraadbeheerTips() {
             <p className="text-gray-700 mb-3">
               <a href="/voorraadbeheer-software-vergelijken" className="text-blue-700 underline font-semibold">
                 stockflow is speciaal ontwikkeld voor KMO's en zelfstandigen
-              </a>. 
-              De software is gebruiksvriendelijk, betaalbaar en schaalbaar. 
+              </a>.
+              De software is gebruiksvriendelijk, betaalbaar en schaalbaar.
               Je kunt gratis starten en meegroeien met je bedrijf.
             </p>
             <p className="text-gray-700">
@@ -342,7 +342,7 @@ export default function VoorraadbeheerTips() {
             <p className="text-gray-700 mb-3">
               <a href="/gratis-stockbeheer" className="text-blue-700 underline font-semibold">
                 Maak een gratis account aan en beheer tot 30 producten zonder kosten
-              </a>. 
+              </a>.
               Dit is perfect om te testen of voorraadbeheer software iets voor jou is.
             </p>
           </div>
@@ -354,7 +354,7 @@ export default function VoorraadbeheerTips() {
             <p className="text-gray-700 mb-3">
               <a href="/voorraadbeheer-automatiseren" className="text-blue-700 underline font-semibold">
                 Lees alles over voorraadbeheer automatiseren
-              </a>. 
+              </a>.
               Ontdek hoe je processen kunt automatiseren en tijd kunt besparen.
             </p>
           </div>
@@ -366,7 +366,7 @@ export default function VoorraadbeheerTips() {
             <p className="text-gray-700 mb-3">
               <a href="/voorraadbeheer-fouten-voorkomen" className="text-blue-700 underline font-semibold">
                 Bekijk tips om fouten te voorkomen
-              </a>. 
+              </a>.
               Leer hoe je veelvoorkomende fouten kunt vermijden en je proces kunt optimaliseren.
             </p>
           </div>
@@ -381,28 +381,30 @@ export default function VoorraadbeheerTips() {
             Klaar om je voorraadbeheer te optimaliseren?
           </h2>
           <p className="text-xl mb-6 opacity-90">
-            Start vandaag nog met professioneel voorraadbeheer. 
+            Start vandaag nog met professioneel voorraadbeheer.
             Gratis voor kleine bedrijven, schaalbaar voor groei.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a 
-              href="/gratis-stockbeheer" 
+            <a
+              href="/gratis-stockbeheer"
               className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
             >
               Gratis starten
             </a>
-            <a 
-              href="/" 
+            <a
+              href="/"
               className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors"
             >
               Meer informatie
             </a>
           </div>
         </div>
+
       </div>
 
       {/* Structured Data */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
+      <script type="application/ld+json" dangerouslySetInnerHTML={{
+        __html: `{
         "@context": "https://schema.org",
         "@type": "FAQPage",
         "mainEntity": [
@@ -447,9 +449,10 @@ export default function VoorraadbeheerTips() {
             }
           }
         ]
-      }`}} />
+      }` }} />
 
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
+      <script type="application/ld+json" dangerouslySetInnerHTML={{
+        __html: `{
         "@context": "https://schema.org",
         "@type": "Article",
         "headline": "Voorraadbeheer Tips 2024: 5 Bewezen Strategieën voor KMO's",
@@ -476,7 +479,7 @@ export default function VoorraadbeheerTips() {
         "articleSection": "Voorraadbeheer",
         "keywords": "voorraadbeheer tips, stockbeheer KMO, voorraadbeheer 2024, voorraadbeheer automatiseren",
         "wordCount": "2500"
-      }`}} />
-    </SeoPageLayout>
+      }` }} />
+    </SeoPageLayout><Footer /></>
   );
 } 

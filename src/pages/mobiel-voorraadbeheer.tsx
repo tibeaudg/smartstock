@@ -168,7 +168,6 @@ export default function MobielVoorraadbeheer() {
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
               In de moderne zakenwereld is flexibiliteit cruciaal. Mobiel voorraadbeheer geeft je de vrijheid 
               om je voorraad te beheren waar en wanneer je maar wilt. 
-              <a href="/simpelstockbeheer" className="text-blue-700 underline font-semibold">Start eenvoudig met simpel stockbeheer</a> en 
               <a href="/voorraadbeheer-tips" className="text-blue-700 underline font-semibold">ontdek meer voorraadbeheer tips</a>.
             </p>
           </div>
