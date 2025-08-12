@@ -11,9 +11,10 @@ interface HeaderProps {
   onNavigate?: (sectionId: string) => void;
   simplifiedNav?: boolean;
   hideAuthButtons?: boolean;
+  hideNotifications?: boolean;
 }
 
-export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButtons }: HeaderProps) => {
+export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButtons, hideNotifications }: HeaderProps) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -132,7 +133,9 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButton
 
               {/* Desktop Notification Button */}
               <div className="hidden md:flex items-center space-x-3">
-                <NotificationButton unreadCount={unreadCount} onClick={handleNotificationClick} />
+                {!hideNotifications && (
+                  <NotificationButton unreadCount={unreadCount} onClick={handleNotificationClick} />
+                )}
                 {!hideAuthButtons && (
                   <>
                     <Button variant="ghost" size="sm" onClick={handleLoginClick} className="text-sm">
@@ -177,14 +180,16 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButton
             <div className="flex items-center justify-between p-6 border-b border-gray-200">
               <h3 className="text-lg font-semibold text-gray-900">Menu</h3>
               <div className="flex items-center space-x-2">
-                <NotificationButton unreadCount={unreadCount} onClick={handleNotificationClick} />
-                <button
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="p-2 rounded-md hover:bg-gray-100"
-                >
-                  <X className="h-5 w-5 text-gray-600" />
-                </button>
-              </div>
+                  {!hideNotifications && (
+                    <NotificationButton unreadCount={unreadCount} onClick={handleNotificationClick} />
+                  )}
+                  <button
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="p-2 rounded-md hover:bg-gray-100"
+                  >
+                    <X className="h-5 w-5 text-gray-600" />
+                  </button>
+                </div>
             </div>
       {/* Notification Overlay */}
       {showNotifications && (

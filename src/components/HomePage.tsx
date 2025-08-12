@@ -307,6 +307,7 @@ export const HomePage = () => {
         onLoginClick={handleLoginClick}
         onNavigate={scrollToSection}
         simplifiedNav={false}
+        hideNotifications={true}
       />
 
       {/* HERO SECTION - Geoptimaliseerd voor SEO */}
