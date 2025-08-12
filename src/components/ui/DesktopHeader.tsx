@@ -10,7 +10,7 @@ interface DesktopHeaderProps {
 
 export const DesktopHeader: React.FC<DesktopHeaderProps> = ({ title, unreadCount = 0, onNotificationClick }) => {
   return (
-    <header className="hidden lg:flex top-0 z-40 items-center justify-between px-8 h-[70px] bg-white">
+    <header className="hidden lg:flex fixed top-0 left-0 right-0 z-40 items-center justify-between px-8 h-[70px] bg-white shadow-sm">
       <div className="flex items-center space-x-3 p-4 flex-shrink-0">
         <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
           <Package className="w-5 h-5 text-white" />
