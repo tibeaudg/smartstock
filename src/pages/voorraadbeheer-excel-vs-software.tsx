@@ -44,7 +44,7 @@ export default function VoorraadbeheerExcelVsSoftware() {
     {
       feature: "Kosten",
       excel: "Gratis",
-      software: "Vanaf â‚¬0/maand",
+      software: "Vanaf €0/maand",
       winner: "software"
     },
     {
@@ -375,7 +375,7 @@ export default function VoorraadbeheerExcelVsSoftware() {
               <a href="/gratis-stockbeheer" className="text-indigo-700 underline font-semibold">
                 stockflow biedt een gratis versie aan
               </a> voor kleine bedrijven. 
-              Premium versies kosten vanaf â‚¬29 per maand, afhankelijk van je behoeften.
+              Premium versies kosten vanaf €29 per maand, afhankelijk van je behoeften.
             </p>
           </div>
 
@@ -498,7 +498,7 @@ export default function VoorraadbeheerExcelVsSoftware() {
             "name": "Hoeveel kost voorraadbeheer software?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "stockflow biedt een gratis versie aan voor kleine bedrijven. Premium versies kosten vanaf â‚¬29 per maand, afhankelijk van je behoeften."
+              "text": "stockflow biedt een gratis versie aan voor kleine bedrijven. Premium versies kosten vanaf €29 per maand, afhankelijk van je behoeften."
             }
           },
           {

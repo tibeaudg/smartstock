@@ -4,6 +4,8 @@ import SeoPageLayout from '../components/SeoPageLayout';
 import Footer from '../components/Footer';
 
 import { usePageRefresh } from '@/hooks/usePageRefresh';
+import { Header } from '@/components/Header';
+
 
 export default function VoorraadbeheerTips() {
   // Gebruik de page refresh hook
@@ -20,6 +22,11 @@ export default function VoorraadbeheerTips() {
         keywords="voorraadbeheer, stockbeheer, magazijnbeheer, inventarisatie, voorraad optimaliseren, KMO, kleine onderneming, voorraad tips, voorraadbeheer software, voorraadbeheer app, stockflow, gratis voorraadbeheer, voorraadbeheer automatiseren, voorraadbeheer 2024, voorraadbeheer tips KMO"
         url="https://www.stockflow.be/voorraadbeheer-tips"
         image="/optimized/Inventory-Management.png" />
+
+      <Header 
+        simplifiedNav={false}
+        hideNotifications={true}
+      />
 
       {/* Hero Section */}
       <div className="bg-gradient-to-br from-blue-300 to-indigo-500 text-white py-16 px-6 rounded-lg mb-8">

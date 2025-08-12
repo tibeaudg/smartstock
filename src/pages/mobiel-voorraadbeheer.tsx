@@ -94,7 +94,7 @@ export default function MobielVoorraadbeheer() {
     },
     {
       question: "Hoeveel kost mobiel voorraadbeheer?",
-      answer: "stockflow biedt een betaalbare oplossing vanaf â‚¬25 per maand, inclusief alle mobiele functionaliteiten."
+      answer: "stockflow biedt een betaalbare oplossing vanaf €25 per maand, inclusief alle mobiele functionaliteiten."
     },
     {
       question: "Kan ik mijn team uitnodigen voor mobiel voorraadbeheer?",

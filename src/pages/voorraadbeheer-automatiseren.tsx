@@ -509,7 +509,7 @@ export default function VoorraadbeheerAutomatiseren() {
             "name": "Hoeveel kost voorraadbeheer automatisering?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "De kosten variëren afhankelijk van je behoeften. stockflow biedt een gratis versie aan, terwijl premium versies vanaf â‚¬29 per maand kosten. De ROI is meestal binnen 3-6 maanden bereikt."
+              "text": "De kosten variëren afhankelijk van je behoeften. stockflow biedt een gratis versie aan, terwijl premium versies vanaf €29 per maand kosten. De ROI is meestal binnen 3-6 maanden bereikt."
             }
           },
           {

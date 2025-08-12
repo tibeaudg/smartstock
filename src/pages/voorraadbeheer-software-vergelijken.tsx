@@ -26,7 +26,7 @@ export default function VoorraadbeheerSoftwareVergelijken() {
       name: "Exact",
       tagline: "Online Handel Essentials",
       features: ["Onbeperkte producten", "Mobiele app", "Geen automatische meldingen", "Desktop software", "API integraties"],
-      price: "â‚¬255/maand",
+      price: "€255/maand",
       rating: 4,
       highlight: false,
     },
@@ -34,7 +34,7 @@ export default function VoorraadbeheerSoftwareVergelijken() {
       name: "Visma Net",
       tagline: "Logistics",
       features: ["Beperkte gratis versie", "Geen mobiele app", "Automatische meldingen", "Desktop software", "Basis rapportages"],
-      price: "â‚¬450/maand",
+      price: "€450/maand",
       rating: 3.9,
       highlight: false,
     }
