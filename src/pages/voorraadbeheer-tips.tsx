@@ -157,7 +157,6 @@ export default function VoorraadbeheerTips() {
                   Gebruik voorraadrotatie analyses om je inkoop te optimaliseren
                   en voorkom overstock of dode voorraad. Dit is cruciaal voor
                   een gezonde cashflow.
-                  <a href="/magazijnbeheer-tips" className="text-purple-700 underline">Lees magazijnbeheer tips</a> voor betere organisatie en
                   <a href="/voorraadbeheer-voor-starters" className="text-purple-700 underline">ontdek tips voor starters</a>.
                 </p>
                 <div className="bg-purple-50 p-4 rounded-lg">

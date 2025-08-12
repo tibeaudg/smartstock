@@ -109,11 +109,6 @@ export default function MobielVoorraadbeheer() {
       description: "Beste tips voor efficiÃ«nt voorraadbeheer"
     },
     {
-      title: "Magazijnbeheer Tips",
-      url: "/magazijnbeheer-tips",
-      description: "Tips voor efficiÃ«nt magazijnbeheer"
-    },
-    {
       title: "Voorraadbeheer Software Vergelijken",
       url: "/voorraadbeheer-software-vergelijken",
       description: "Vergelijk verschillende voorraadbeheer oplossingen"

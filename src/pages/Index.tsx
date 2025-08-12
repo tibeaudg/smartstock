@@ -99,9 +99,6 @@ const Index = () => {
           <Link to="/voorraadbeheer-tips" className="text-blue-700 underline block">
             Lees onze voorraadbeheer tips voor KMO's
           </Link>
-          <Link to="/magazijnbeheer-tips" className="text-blue-700 underline block">
-            Magazijnbeheer tips voor KMO's
-          </Link>
           <Link to="/voorraadbeheer-software-vergelijken" className="text-blue-700 underline block">
             Vergelijk voorraadbeheer software
           </Link>

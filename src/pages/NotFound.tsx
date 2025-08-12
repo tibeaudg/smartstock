@@ -7,12 +7,10 @@ import { usePageRefresh } from '@/hooks/usePageRefresh';
 const SUGGESTIES = [
   { label: "Home", path: "/" },
   { label: "Voorraadbeheer tips", path: "/voorraadbeheer-tips" },
-  { label: "Magazijnbeheer tips", path: "/magazijnbeheer-tips" },
   { label: "Software vergelijken", path: "/voorraadbeheer-software-vergelijken" },
   { label: "Voorraadbeheer webshop", path: "/voorraadbeheer-webshop" },
   { label: "Fouten voorkomen", path: "/voorraadbeheer-fouten-voorkomen" },
   { label: "Automatiseren", path: "/voorraadbeheer-automatiseren" },
-  { label: "Inventarisatie tips", path: "/inventarisatie-tips" },
   { label: "Voorraadbeheer horeca", path: "/voorraadbeheer-horeca" },
   { label: "Excel vs. software", path: "/voorraadbeheer-excel-vs-software" },
   { label: "Voorraadbeheer voor starters", path: "/voorraadbeheer-voor-starters" },

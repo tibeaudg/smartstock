@@ -58,7 +58,6 @@ export const PreloadResources: React.FC<PreloadResourcesProps> = ({
       
       {/* Resource hints for performance */}
       <link rel="prefetch" href="/voorraadbeheer-tips" />
-      <link rel="prefetch" href="/magazijnbeheer-tips" />
       <link rel="prefetch" href="/voorraadbeheer-software-vergelijken" />
     </Helmet>
   );
