@@ -17,7 +17,7 @@ export default function VoorraadbeheerTips() {
       image="/optimized/Inventory-Management.png"
     >
       <SEO
-        title="Voorraadbeheer Tips 2024: 5 Bewezen Strategieën voor KMO's | stockflow"
+        title="Voorraadbeheer Tips: 5 Bewezen Strategieën voor KMO's | stockflow"
         description="Ontdek 5 bewezen voorraadbeheer tips die je vandaag nog kunt toepassen. Bespaar 70% tijd, voorkom tekorten en groei je KMO. Gratis tips van experts."
         keywords="voorraadbeheer, stockbeheer, magazijnbeheer, inventarisatie, voorraad optimaliseren, KMO, kleine onderneming, voorraad tips, voorraadbeheer software, voorraadbeheer app, stockflow, gratis voorraadbeheer, voorraadbeheer automatiseren, voorraadbeheer 2024, voorraadbeheer tips KMO"
         url="https://www.stockflow.be/voorraadbeheer-tips"
@@ -462,7 +462,7 @@ export default function VoorraadbeheerTips() {
         __html: `{
         "@context": "https://schema.org",
         "@type": "Article",
-        "headline": "Voorraadbeheer Tips 2024: 5 Bewezen Strategieën voor KMO's",
+        "headline": "Voorraadbeheer Tips: 5 Bewezen Strategieën voor KMO's",
         "description": "Ontdek 5 bewezen voorraadbeheer tips die je vandaag nog kunt toepassen. Bespaar 70% tijd, voorkom tekorten en groei je KMO. Gratis tips van experts.",
         "image": "https://www.stockflow.be/optimized/Inventory-Management.png",
         "author": {
@@ -477,14 +477,14 @@ export default function VoorraadbeheerTips() {
             "url": "https://www.stockflow.be/logo.png"
           }
         },
-        "datePublished": "2024-01-01",
-        "dateModified": "2024-12-19",
+        "datePublished": "2025-01-01",
+        "dateModified": "2025-06-19",
         "mainEntityOfPage": {
           "@type": "WebPage",
           "@id": "https://www.stockflow.be/voorraadbeheer-tips"
         },
         "articleSection": "Voorraadbeheer",
-        "keywords": "voorraadbeheer tips, stockbeheer KMO, voorraadbeheer 2024, voorraadbeheer automatiseren",
+        "keywords": "voorraadbeheer tips, stockbeheer KMO, voorraadbeheer, voorraadbeheer automatiseren",
         "wordCount": "2500"
       }` }} />
     </SeoPageLayout><Footer /></>

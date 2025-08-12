@@ -55,7 +55,7 @@ export default function GratisStockbeheer() {
 
   return (
     <SeoPageLayout
-      title="Gratis Stockbeheer App voor KMO's"
+      title="Voorraadbeheer: Gratis Stockbeheer App voor KMO's"
       image="/optimized/Inventory-Management.png"
     >
       <SEO
