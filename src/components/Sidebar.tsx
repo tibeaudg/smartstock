@@ -74,6 +74,8 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
       {isOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden" onClick={onToggle} />
       )}
+
+      
       
       {/* Sidebar */}
       <div className={`
@@ -82,21 +84,19 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
         ${isOpen ? 'md:relative md:translate-x-0' : 'md:relative'}
         ${!isOpen ? 'md:translate-x-0' : ''}
       `}>
-        {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-200 flex-shrink-0">
-          {isOpen && (
-            <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                <Package className="w-5 h-5 text-white" />
-              </div>
-              <h1 className="text-lg font-semibold text-gray-900">stockflow</h1>
-            </div>
-          )}
+
+      <div className="flex items-center pl-5 space-x-3 h-[70px] flex-shrink-0">
+        <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+          <Package className="w-5 h-5 text-white" />
         </div>
+        <h1 className="text-lg font-semibold text-gray-900">stockflow</h1>
+      </div>
+        
+
 
         {/* User Info */}
         {isOpen && (
-          <div className="p-4 border-b border-gray-200 flex-shrink-0">
+          <div className="px-3 py-2 border-b border-t border-gray-200 flex-shrink-0">
             <p className="text-xs text-gray-700 text-center font-medium">
               {userProfile?.first_name || userProfile?.last_name
                 ? `${userProfile?.first_name ?? ''} ${userProfile?.last_name ?? ''}`.trim()
@@ -107,19 +107,20 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
 
         {/* Branch Selector - Only on Desktop */}
         {isOpen && !isMobile && (
-          <div className="p-4 border-b border-gray-200 flex-shrink-0">
+          <div className="px-3 py-4 border-b border-gray-200 flex-shrink-0">
             <BranchSelector />
           </div>
         )}
 
-        {/* Scrollable Content Area */}
-        <div className="flex-1 flex flex-col min-h-0">
+        {/* Sidebar Content Area (no internal scrolling) */}
+        
+        <div className="flex-2 flex flex-col min-h-0 max-h-screen">
           {/* Navigation */}
-          <nav className="flex-1 p-4 overflow-y-auto text-sm">
-            <ul className="space-y-2">
+          
+          <nav className="flex-1 px-3 py-4 text-sm pb-60">
+            <ul className="space-y-1">
               {menuItems.map((item) => {
                 const Icon = item.icon;
-                // Producten label aanpassen
                 let label = item.label;
                 if (item.id === 'stock') {
                   label += ` `;
@@ -129,12 +130,11 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
                     label += `(${productCount})`;
                   }
                 }
-                
                 return (
                   <li key={item.id}>
                     <NavLink
                       to={item.path}
-                      end={item.end} 
+                      end={item.end}
                       className={({ isActive }) => `
                         w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-left transition-colors
                         ${isActive 
@@ -157,7 +157,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
         <div className="flex-shrink-0">
           {/* Help Section as professional submenu button */}
           <div className="border-t border-gray-200">
-            <div className="p-4">
+            <div className="px-3 py-2">
               <Button
                 type="button"
                 variant="ghost"
@@ -184,7 +184,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
           {/* Logout Section - Desktop Only */}
           {!isMobile && (
             <div className="border-t border-gray-200">
-              <div className="p-4">
+              <div className="px-3 py-2">
                 <Button
                   type="button"
                   variant="ghost"

@@ -72,10 +72,7 @@ export const StockMovements = () => {
     <div className="space-y-4">
       {/* Header */}
       <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Bewegingslijst</h1>
 
-        </div>
         <Button
           variant="default"
           size="sm"
@@ -101,9 +98,8 @@ export const StockMovements = () => {
               onChange={(e) => setFilters(prev => ({ ...prev, searchQuery: e.target.value }))}
             />
           </div>
-          
-          {/* Filters row - side by side on mobile */}
-          <div className="flex gap-2">
+          {/* Filters row and Toevoegen button */}
+          <div className="flex gap-2 items-center">
             <Select
               value={filters.transactionType}
               onValueChange={(value) => setFilters(prev => ({ ...prev, transactionType: value as 'all' | 'incoming' | 'outgoing' }))}
@@ -132,6 +128,15 @@ export const StockMovements = () => {
                 <SelectItem value="custom">Aangepast</SelectItem>
               </SelectContent>
             </Select>
+            {/* Toevoegen button next to filters */}
+            <Button
+              variant="default"
+              size="sm"
+              className="ml-2"
+              // onClick={handleAddTransaction} // Uncomment and implement this handler as needed
+            >
+              + Toevoegen
+            </Button>
           </div>
         </div>
 

@@ -217,14 +217,14 @@ export default function App() {
           'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap'
         ]}
       />
-      <ContentWrapper>
-        {/* Verwijderde dubbele wrapper */}
-        <QueryClientProvider client={queryClient}>
-          <AuthProvider>
-            <TooltipProvider>
-              <Toaster />
-              <Sonner />
-              <BrowserRouter>
+      {/* Verwijderde dubbele wrapper */}
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <ContentWrapper>
                 <Routes>
                   {/* Openbare routes */}
                   <Route path="/" element={<HomePage />} />
@@ -266,11 +266,11 @@ export default function App() {
                   {/* Fallback route */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>
-              </BrowserRouter>
-            </TooltipProvider>
-          </AuthProvider>
-        </QueryClientProvider>
-      </ContentWrapper>
+              </ContentWrapper>
+            </BrowserRouter>
+          </TooltipProvider>
+        </AuthProvider>
+      </QueryClientProvider>
     </ErrorBoundary>
   );
 }
