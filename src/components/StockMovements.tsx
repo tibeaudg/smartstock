@@ -129,14 +129,7 @@ export const StockMovements = () => {
               </SelectContent>
             </Select>
             {/* Toevoegen button next to filters */}
-            <Button
-              variant="default"
-              size="sm"
-              className="ml-2"
-              // onClick={handleAddTransaction} // Uncomment and implement this handler as needed
-            >
-              + Toevoegen
-            </Button>
+
           </div>
         </div>
 

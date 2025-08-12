@@ -10,11 +10,11 @@ interface NotificationButtonProps {
 export const NotificationButton: React.FC<NotificationButtonProps> = ({ unreadCount, onClick }) => {
   return (
     <button
-      className="relative flex items-center justify-center w-10 h-10 rounded-full bg-white border border-gray-200 shadow hover:bg-blue-50 transition-colors"
+      className="relative flex items-center justify-center w-10 h-10 rounded-full bg-blue-600 text-white border border-blue-200 shadow hover:bg-blue-50 transition-colors"
       onClick={onClick}
       aria-label="Notifications"
     >
-      <Bell className="h-6 w-6 text-gray-700" />
+      <Bell className="h-6 w-6 text-white" />
       {unreadCount > 0 && (
         <Badge className="absolute -top-1 -right-1 bg-red-500 text-white text-xs px-1.5 py-0.5 rounded-full">
           {unreadCount}

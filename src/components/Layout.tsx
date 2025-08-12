@@ -81,8 +81,8 @@ export const Layout = ({ children, currentTab, onTabChange, userRole, userProfil
           </div>
         )}
 
-        <main className={`flex-1 overflow-y-auto ${isMobile ? 'mt-16 pb-16' : ''} ${sidebarOpen ? 'ml-64' : 'ml-[68px]'}`}>
-          <div className="mx-auto w-full max-w-7xl px-4 md:px-6">
+        <main className={`flex-1 p-4 pt-8 md:pt-20 md:pl-64 overflow-y-auto ${isMobile ? 'mt-16 pb-16' : ''}`}>
+          <div className={`${isMobile ? 'w-full' : 'mx-auto w-full max-w-7xl px-4 md:px-6'}`}>
             {children}
           </div>
         </main>

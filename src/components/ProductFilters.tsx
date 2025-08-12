@@ -52,24 +52,21 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
 
   return (
     <div className="space-y-4">
-      {/* Search Bar */}
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-        <Input
-          placeholder="Zoek producten"
-          value={searchTerm}
-          onChange={(e) => onSearchChange(e.target.value)}
-          className="pl-10 h-12 text-base"
-        />
-      </div>
-
-      {/* Filters Toggle */}
       <Collapsible open={isFiltersOpen} onOpenChange={setIsFiltersOpen}>
-        <div className="flex items-center justify-between">
+        {/* Search Bar + Filters Toggle */}
+        <div className="flex gap-2 items-center">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+            <Input
+              placeholder="Zoek producten"
+              value={searchTerm}
+              onChange={(e) => onSearchChange(e.target.value)}
+              className="pl-10 h-12 text-base w-full"
+            />
+          </div>
           <CollapsibleTrigger asChild>
-            <Button variant="outline" className="flex items-center gap-2">
+            <Button variant="outline" className="flex items-center gap-2 h-12">
               <Filter className="h-4 w-4" />
-              Geavanceerde Filters
               {activeFiltersCount > 0 && (
                 <Badge variant="secondary" className="ml-1">
                   {activeFiltersCount}
@@ -82,20 +79,17 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
               variant="ghost"
               size="sm"
               onClick={onClearFilters}
-              className="text-red-600 hover:text-red-700"
+              className="text-red-600 hover:text-red-700 ml-2"
             >
               <X className="h-4 w-4 mr-1" />
               Clear All
             </Button>
           )}
         </div>
-
         <CollapsibleContent>
           <Card className="mt-4">
             <CardContent className="p-4">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-
-
                 {/* Stock Status Filter */}
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-700">Stock Status</label>
@@ -111,7 +105,6 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
                     </SelectContent>
                   </Select>
                 </div>
-
                 {/* Price Range Filters */}
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-700">Min Prijs ($)</label>
@@ -124,7 +117,6 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
                     step="0.01"
                   />
                 </div>
-
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-700">Max Prijs ($)</label>
                   <Input
@@ -136,9 +128,6 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
                     step="0.01"
                   />
                 </div>
-
-
-
               </div>
             </CardContent>
           </Card>
@@ -146,4 +135,4 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
       </Collapsible>
     </div>
   );
-};
+}

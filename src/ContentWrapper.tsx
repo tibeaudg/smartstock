@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { DesktopHeader } from './components/ui/DesktopHeader';
+import { Header } from './components/ui/Header';
 import { useNotifications } from './hooks/useNotifications';
 
 const getPageTitle = (pathname: string) => {
@@ -24,7 +24,7 @@ export const ContentWrapper: React.FC<{ children: React.ReactNode }> = ({ childr
     <>
       {/* Desktop header for all pages except landing/auth */}
       {title && (
-        <DesktopHeader title={title} unreadCount={unreadCount} />
+        <Header title={title} unreadCount={unreadCount} />
       )}
       <div>
         {children}
