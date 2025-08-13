@@ -19,6 +19,13 @@ export const AdminChatList: React.FC = () => {
   const [messages, setMessages] = useState<any[]>([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const scrollContainerRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop = scrollContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
 
   useEffect(() => {
     let mounted = true;
@@ -82,7 +89,7 @@ export const AdminChatList: React.FC = () => {
           </button>
         </CardHeader>
         <CardContent>
-          <div className="h-64 overflow-y-auto border rounded p-2 mb-2 bg-gray-50">
+          <div ref={scrollContainerRef} className="h-64 overflow-y-auto border rounded p-2 mb-2 bg-gray-50">
             {loading ? (
               <div className="text-center text-gray-400 mt-24">Laden…</div>
             ) : messages.length === 0 ? (

@@ -1,15 +1,12 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './useAuth';
-import type { Database } from '@/types/supabase';
-import type { SupabaseClient } from '@supabase/supabase-js';
 
 export const useUnreadMessages = () => {
   const [unreadCount, setUnreadCount] = useState(0);
   const { user } = useAuth();
 
   useEffect(() => {
-    console.log('useUnreadMessages: Auth state changed', { user });
     if (!user) {
       setUnreadCount(0);
       return;
@@ -17,55 +14,61 @@ export const useUnreadMessages = () => {
 
     let mounted = true;
 
-    // Initial fetch of unread messages
     const fetchUnreadCount = async () => {
+      if (!mounted || !user) return;
+      
       try {
-        console.log('Fetching unread count for user:', user.id);
-        // Get active chat for current user
+        // Get active chats for the user
         const { data: activeChats, error: chatError } = await supabase
           .from('chats')
-          .select('id, is_closed')
+          .select('id')
           .eq('user_id', user.id)
           .eq('is_closed', false);
 
-        console.log('Active chats:', { activeChats, chatError });
+        if (chatError) {
+          console.error('Error fetching active chats:', chatError);
+          return;
+        }
 
-        if (chatError) throw chatError;
+        if (!activeChats?.length) {
+          if (mounted) setUnreadCount(0);
+          return;
+        }
 
-        if (activeChats && activeChats.length > 0) {
-          // Get unread messages count across all active chats
-          const { count, error: countError } = await supabase
-            .from('chat_messages')
-            .select('*', { count: 'exact', head: true })
-            .in('chat_id', activeChats.map(chat => chat.id))
-            .eq('sender_type', 'admin')
-            .eq('is_read', false);
+        // Get unread messages count
+        const { count, error: countError } = await supabase
+          .from('chat_messages')
+          .select('*', { count: 'exact', head: true })
+          .in('chat_id', activeChats.map(chat => chat.id))
+          .eq('sender_type', 'admin')
+          .eq('is_read', false);
 
-          if (countError) throw countError;
-          
-          console.log('Unread messages count:', { count });
-          
-          if (mounted) {
-            setUnreadCount(count || 0);
-          }
+        if (countError) {
+          console.error('Error counting unread messages:', countError);
+          return;
+        }
+
+        if (mounted) {
+          setUnreadCount(count || 0);
         }
       } catch (error) {
-        console.error('Error fetching unread messages:', error);
+        console.error('Error in fetchUnreadCount:', error);
       }
     };
 
+    // Initial fetch
     fetchUnreadCount();
 
-    // Subscribe to changes in chat_messages
-    const subscription = supabase
-      .channel('chat-messages')
+    // Subscribe to message changes
+    const channel = supabase.channel('chat-updates');
+    
+    const subscription = channel
       .on(
         'postgres_changes',
         {
-          event: 'INSERT',
+          event: 'UPDATE',
           schema: 'public',
-          table: 'chat_messages',
-          filter: `sender_type=eq.admin`
+          table: 'chat_messages'
         },
         () => {
           fetchUnreadCount();
@@ -74,10 +77,9 @@ export const useUnreadMessages = () => {
       .on(
         'postgres_changes',
         {
-          event: 'UPDATE',
+          event: 'INSERT',
           schema: 'public',
-          table: 'chat_messages',
-          filter: `is_read=eq.true`
+          table: 'chat_messages'
         },
         () => {
           fetchUnreadCount();
@@ -87,7 +89,7 @@ export const useUnreadMessages = () => {
 
     return () => {
       mounted = false;
-      subscription.unsubscribe();
+      if (subscription) subscription.unsubscribe();
     };
   }, [user]);
 

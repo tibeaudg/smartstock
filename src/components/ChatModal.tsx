@@ -34,16 +34,26 @@ export const ChatModal: React.FC<ChatModalProps> = ({
   const inputRef = useRef<HTMLInputElement>(null);
 
   // Auto-scroll to bottom when new messages arrive
-  const scrollToBottom = useCallback(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  const scrollToBottom = useCallback((smooth = true) => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({
+        behavior: smooth ? 'smooth' : 'auto',
+        block: 'end',
+      });
+    }
   }, []);
 
+  // Scroll to bottom when messages change or when loading completes
   useEffect(() => {
-    scrollToBottom();
-  }, [messages, scrollToBottom]);
+    if (!loading) {
+      scrollToBottom(false); // Use instant scroll when loading messages
+    }
+  }, [messages, loading, scrollToBottom]);
 
   // Initialize chat when modal opens
   useEffect(() => {
+    let mounted = true;
+
     if (!open || !user) {
       // Reset state when closing
       if (!open) {
@@ -52,29 +62,57 @@ export const ChatModal: React.FC<ChatModalProps> = ({
         setError(null);
         setInput('');
       }
-      return;
+      return () => { mounted = false; };
     }
 
     const initializeChat = async () => {
+      if (!mounted) return;
       setLoading(true);
       setError(null);
       
       try {
         const chat = await getOrCreateChat(user.id);
+        if (!mounted) return;
         setChatId(chat.id);
+        
+        console.log('Chat initialized with profile:', { userProfile, chatId: chat.id });
+        
+        // Mark messages as read based on user role
+        try {
+          if (userProfile?.role === 'admin') {
+            // When admin opens chat, mark user messages as read
+            const updatedMessages = await markMessagesAsRead(chat.id, 'user');
+            if (!mounted) return;
+            console.log('Admin opened chat, marking user messages as read:', updatedMessages);
+          } else {
+            // When regular user opens chat, mark admin messages as read
+            const updatedMessages = await markMessagesAsRead(chat.id, 'admin');
+            if (!mounted) return;
+            console.log('User opened chat, marking admin messages as read:', updatedMessages);
+          }
+        } catch (err) {
+          // Log error but continue with chat initialization
+          console.warn('Failed to mark messages as read:', err);
+        }
+
+        // Then fetch the updated messages
         const chatMessages = await fetchChatMessages(chat.id);
-        await markMessagesAsRead(chat.id, 'admin');
+        if (!mounted) return;
         setMessages(chatMessages);
       } catch (err) {
+        if (!mounted) return;
         console.error('Failed to initialize chat:', err);
         setError('Kon chat niet laden. Probeer het opnieuw.');
       } finally {
-        setLoading(false);
+        if (mounted) {
+          setLoading(false);
+        }
       }
     };
 
     initializeChat();
-  }, [open, user]);
+    return () => { mounted = false; };
+  }, [open, user, userProfile?.role]); // Added userProfile?.role as dependency
 
   // Focus input when chat opens
   useEffect(() => {
@@ -111,8 +149,10 @@ export const ChatModal: React.FC<ChatModalProps> = ({
       setInput(messageText); // Restore the message
     } finally {
       setSending(false);
+      // Scroll to bottom immediately after sending a message
+      scrollToBottom(false);
     }
-  }, [input, chatId, user, sending]);
+  }, [input, chatId, user, sending, scrollToBottom]);
 
   // Handle escape key to close modal
   useEffect(() => {
@@ -211,6 +251,13 @@ const ChatContent: React.FC<ChatContentProps> = ({
   inputRef,
   messagesEndRef,
 }) => {
+  const scrollContainerRef = React.useRef<HTMLDivElement>(null);
+  React.useEffect(() => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop = scrollContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
+
   return (
     <div className="bg-white rounded-xl shadow-2xl w-full max-w-md mx-auto flex flex-col max-h-[600px] overflow-hidden">
       {/* Header */}
@@ -219,8 +266,8 @@ const ChatContent: React.FC<ChatContentProps> = ({
           <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
             <MessageCircle className="w-4 h-4 text-white" />
           </div>
-          <div>
-            <h2 id="chat-modal-title" className="text-lg font-semibold text-gray-900">
+          <div className="flex flex-col">
+            <h2 className="text-sm font-semibold text-gray-800">
               Support Chat
             </h2>
             <p className="text-xs text-gray-500">We helpen je graag</p>
@@ -239,7 +286,7 @@ const ChatContent: React.FC<ChatContentProps> = ({
 
       {/* Messages Area */}
       <div className="flex-1 overflow-hidden flex flex-col min-h-0">
-        <div className="flex-1 overflow-y-auto p-4 space-y-3">
+        <div ref={scrollContainerRef} className="flex-1 overflow-y-auto p-4 space-y-3 scroll-smooth">
           {loading ? (
             <div className="flex items-center justify-center h-32">
               <div className="flex items-center gap-2 text-gray-500">

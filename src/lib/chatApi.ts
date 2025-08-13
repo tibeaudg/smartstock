@@ -81,10 +81,60 @@ export async function fetchAllChats() {
 }
 
 export async function markMessagesAsRead(chatId: string, senderType: 'user' | 'admin') {
-  const { error } = await supabase
-    .from('chat_messages')
-    .update({ is_read: true })
-    .eq('chat_id', chatId)
-    .eq('sender_type', senderType);
-  if (error) throw error;
+  console.log('Marking messages as read:', { chatId, senderType });
+  
+  try {
+    // First, find all unread message IDs
+    const { data: messages, error: findError } = await supabase
+      .from('chat_messages')
+      .select('id, is_read, sender_type')
+      .eq('chat_id', chatId)
+      .eq('sender_type', senderType)
+      .eq('is_read', false);
+
+    if (findError) {
+      console.error('Error finding unread messages:', findError);
+      throw findError;
+    }
+
+    console.log('Found unread messages:', messages);
+
+    if (!messages || messages.length === 0) {
+      console.log('No unread messages to update');
+      return [];
+    }
+
+    if (messages.length === 0) {
+      console.log('No unread messages to update');
+      return [];
+    }
+
+    // Update all messages in a single query
+    const { data: updatedMessages, error: updateError } = await supabase
+      .from('chat_messages')
+      .update({ 
+        is_read: true,
+        updated_at: new Date().toISOString()
+      })
+      .in('id', messages.map(msg => msg.id))
+      .select();
+
+    if (updateError) {
+      console.error('Error updating messages:', updateError);
+      throw updateError;
+    }
+
+    // If no data is returned but the update was successful, return the original messages as updated
+    const result = updatedMessages || messages.map(msg => ({
+      ...msg,
+      is_read: true,
+      updated_at: new Date().toISOString()
+    }));
+
+    console.log('Successfully updated messages:', result);
+    return result;
+  } catch (error) {
+    console.error('Error in markMessagesAsRead:', error);
+    throw error;
+  }
 }
