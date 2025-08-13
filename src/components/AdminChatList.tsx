@@ -12,7 +12,21 @@ export const AdminChatList: React.FC = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    fetchAllChats().then(setChats);
+    let mounted = true;
+    const loadChats = async () => {
+      try {
+        const result = await fetchAllChats();
+        if (mounted) {
+          setChats(result);
+        }
+      } catch (error) {
+        console.error('Error loading chats:', error);
+      }
+    };
+    loadChats();
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   async function openChat(chat: any) {
@@ -43,7 +57,7 @@ export const AdminChatList: React.FC = () => {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Chat met gebruiker {selectedChat.user_first_name}</CardTitle>
+          <CardTitle>Chat met {selectedChat.profiles?.first_name || 'gebruiker'} {selectedChat.profiles?.last_name || ''}</CardTitle>
           <button className="text-xs text-blue-600 underline" onClick={() => setSelectedChat(null)}>
             Terug naar alle chats
           </button>
@@ -95,7 +109,7 @@ export const AdminChatList: React.FC = () => {
           <ul>
             {chats.map(chat => (
               <li key={chat.id} className="border-b last:border-b-0 py-2 flex justify-between items-center">
-                <span>Chat met gebruiker {chat.user_id}</span>
+                <span>Chat met {chat.profiles?.first_name || 'gebruiker'} {chat.profiles?.last_name || ''}</span>
                 <button className="text-blue-600 underline text-xs" onClick={() => openChat(chat)}>
                   Openen
                 </button>

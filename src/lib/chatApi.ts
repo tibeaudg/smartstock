@@ -43,7 +43,15 @@ export async function sendChatMessage({ chatId, senderType, senderId, message }:
 export async function fetchAllChats() {
   const { data, error } = await supabase
     .from('chats')
-    .select('*, chat_messages(*)')
+    .select(`
+      *,
+      chat_messages(*),
+      profiles:user_id (
+        first_name,
+        last_name,
+        email
+      )
+    `)
     .order('updated_at', { ascending: false });
   if (error) throw error;
   return data || [];
