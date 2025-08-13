@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { fetchAllChats, fetchChatMessages, sendChatMessage, markMessagesAsRead } from '@/lib/chatApi';
 import { useAuth } from '@/hooks/useAuth';
+import { MessageSquare, MessageSquareDashed } from 'lucide-react';
 
 // Helper function to check if a date is today
 function isToday(date: Date) {
@@ -161,17 +162,27 @@ export const AdminChatList: React.FC = () => {
                           )}
                         </div>
                         {lastMessage && (
-                          <p className="text-sm text-gray-500 truncate max-w-xs">
-                            {lastMessage.message}
-                          </p>
+                          <div className="flex items-center gap-2">
+                            {hasUnread && (
+                              <MessageSquare className="w-4 h-4 text-blue-500" />
+                            )}
+                            <p className="text-sm text-gray-500 truncate max-w-xs">
+                              {lastMessage.message}
+                            </p>
+                          </div>
                         )}
                       </div>
                     </div>
-                    {timestamp && (
-                      <span className="text-xs text-gray-500 flex-shrink-0">
-                        {timestamp}
-                      </span>
-                    )}
+                    <div className="flex items-center gap-2">
+                      {!hasUnread && lastMessage && (
+                        <MessageSquareDashed className="w-4 h-4 text-gray-400" />
+                      )}
+                      {timestamp && (
+                        <span className="text-xs text-gray-500 flex-shrink-0">
+                          {timestamp}
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </button>
               );

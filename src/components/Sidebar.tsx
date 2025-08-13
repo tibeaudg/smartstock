@@ -7,7 +7,9 @@ import {
   X,
   HelpCircle,
   CircleUserRound, 
-  Users
+  Users,
+  MessageSquare,
+  Bell
 } 
 from 'lucide-react';
 import { BranchSelector } from './BranchSelector';
@@ -177,10 +179,14 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
                 aria-label="Open hulp chat"
               >
                 <div className="relative">
-                  <HelpCircle className={`w-5 h-5 flex-shrink-0 ${unreadMessages > 0 ? 'text-blue-600' : ''}`} />
+                  {unreadMessages > 0 ? (
+                    <MessageSquare className="w-5 h-5 flex-shrink-0 text-blue-600" />
+                  ) : (
+                    <HelpCircle className="w-5 h-5 flex-shrink-0" />
+                  )}
                   {unreadMessages > 0 && !isOpen && (
-                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">
-                      {unreadMessages}
+                    <span className="absolute -top-1 -right-1 flex items-center justify-center">
+                      <Bell className="w-4 h-4 text-red-500 fill-current animate-pulse" />
                     </span>
                   )}
                 </div>

@@ -19,12 +19,24 @@ function isLocalStorageAvailable() {
 }
 
 const AppContent: React.FC = () => {
-  const { userProfile } = useAuth();
+  const { userProfile, loading } = useAuth();
   const { hasNoBranches } = useBranches();
   const location = useLocation();
   
   // Gebruik de page refresh hook
   usePageRefresh();
+
+  // Show loading state while auth is being determined
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!isLocalStorageAvailable()) {
     return (

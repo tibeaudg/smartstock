@@ -9,19 +9,26 @@ export const useUnreadMessages = () => {
   const { user } = useAuth();
 
   useEffect(() => {
-    if (!user) return;
+    console.log('useUnreadMessages: Auth state changed', { user });
+    if (!user) {
+      setUnreadCount(0);
+      return;
+    }
 
     let mounted = true;
 
     // Initial fetch of unread messages
     const fetchUnreadCount = async () => {
       try {
+        console.log('Fetching unread count for user:', user.id);
         // Get active chat for current user
         const { data: activeChats, error: chatError } = await supabase
           .from('chats')
-          .select('id')
+          .select('id, is_closed')
           .eq('user_id', user.id)
           .eq('is_closed', false);
+
+        console.log('Active chats:', { activeChats, chatError });
 
         if (chatError) throw chatError;
 
@@ -35,6 +42,8 @@ export const useUnreadMessages = () => {
             .eq('is_read', false);
 
           if (countError) throw countError;
+          
+          console.log('Unread messages count:', { count });
           
           if (mounted) {
             setUnreadCount(count || 0);

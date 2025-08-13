@@ -33,7 +33,13 @@ export async function fetchChatMessages(chatId: string) {
 export async function sendChatMessage({ chatId, senderType, senderId, message }: { chatId: string, senderType: 'user' | 'admin', senderId: string, message: string }) {
   const { data, error } = await supabase
     .from('chat_messages')
-    .insert({ chat_id: chatId, sender_type: senderType, sender_id: senderId, message })
+    .insert({ 
+      chat_id: chatId, 
+      sender_type: senderType, 
+      sender_id: senderId, 
+      message,
+      is_read: false // Always set new messages as unread
+    })
     .select()
     .single();
   if (error) throw error;
