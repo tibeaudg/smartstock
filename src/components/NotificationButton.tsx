@@ -10,7 +10,7 @@ interface NotificationButtonProps {
 export const NotificationButton: React.FC<NotificationButtonProps> = ({ unreadCount, onClick }) => {
   return (
     <button
-      className="relative flex items-center justify-center w-10 h-10 rounded-full bg-blue-600 text-white border border-blue-200 shadow hover:bg-blue-50 transition-colors"
+      className="hidden relative flex items-center justify-center w-10 h-10 rounded-full bg-blue-600 text-white border border-blue-200 shadow hover:bg-blue-50 transition-colors"
       onClick={onClick}
       aria-label="Notifications"
     >
