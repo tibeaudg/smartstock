@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { fetchAllChats, fetchChatMessages, sendChatMessage } from '@/lib/chatApi';
+import { fetchAllChats, fetchChatMessages, sendChatMessage, markMessagesAsRead } from '@/lib/chatApi';
 import { useAuth } from '@/hooks/useAuth';
+
+// Helper function to check if a date is today
+function isToday(date: Date) {
+  const today = new Date();
+  return date.getDate() === today.getDate() &&
+    date.getMonth() === today.getMonth() &&
+    date.getFullYear() === today.getFullYear();
+}
 
 export const AdminChatList: React.FC = () => {
   const { user } = useAuth();
@@ -30,11 +38,21 @@ export const AdminChatList: React.FC = () => {
   }, []);
 
   async function openChat(chat: any) {
-    setSelectedChat(chat);
-    setLoading(true);
-    const msgs = await fetchChatMessages(chat.id);
-    setMessages(msgs);
-    setLoading(false);
+    try {
+      setSelectedChat(chat);
+      setLoading(true);
+      
+      // Mark messages as read first
+      await markMessagesAsRead(chat.id, 'user');
+      
+      // Then fetch the messages to ensure we get the updated read status
+      const msgs = await fetchChatMessages(chat.id);
+      setMessages(msgs);
+    } catch (error) {
+      console.error('Error opening chat:', error);
+    } finally {
+      setLoading(false);
+    }
   }
 
   async function handleSend(e: React.FormEvent) {
@@ -97,25 +115,68 @@ export const AdminChatList: React.FC = () => {
   }
 
   return (
-    <Card>
+    <Card className="h-full">
       <CardHeader>
-        <CardTitle>Chatgesprekken</CardTitle>
-        <p className="text-sm text-gray-500">Overzicht van alle support chats. Klik op een chat om te antwoorden.</p>
+        <CardTitle>Support Chats</CardTitle>
+        <p className="text-sm text-gray-500">Beheer hier alle actieve support chats</p>
       </CardHeader>
       <CardContent>
         {chats.length === 0 ? (
           <div className="text-gray-400 text-center py-12">Nog geen chats gevonden.</div>
         ) : (
-          <ul>
-            {chats.map(chat => (
-              <li key={chat.id} className="border-b last:border-b-0 py-2 flex justify-between items-center">
-                <span>Chat met {chat.profiles?.first_name || 'gebruiker'} {chat.profiles?.last_name || ''}</span>
-                <button className="text-blue-600 underline text-xs" onClick={() => openChat(chat)}>
-                  Openen
+          <div className="space-y-1">
+            {chats.map(chat => {
+              const hasUnread = chat.unread_count > 0;
+              const lastMessage = chat.chat_messages?.[chat.chat_messages?.length - 1];
+              const timestamp = lastMessage ? new Date(lastMessage.created_at).toLocaleString('nl-NL', {
+                hour: '2-digit',
+                minute: '2-digit',
+                ...(isToday(new Date(lastMessage.created_at)) ? {} : { day: '2-digit', month: '2-digit' })
+              }) : '';
+
+              return (
+                <button
+                  key={chat.id}
+                  onClick={() => openChat(chat)}
+                  className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${
+                    hasUnread ? 'bg-blue-50 hover:bg-blue-100' : 'hover:bg-gray-50'
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-3">
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                        hasUnread ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-gray-600'
+                      }`}>
+                        {chat.profiles?.first_name?.[0] || chat.profiles?.last_name?.[0] || '?'}
+                      </div>
+                      <div>
+                        <div className="flex items-center space-x-2">
+                          <span className="font-medium">
+                            {chat.profiles?.first_name || 'Gebruiker'} {chat.profiles?.last_name || ''}
+                          </span>
+                          {hasUnread && (
+                            <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">
+                              {chat.unread_count}
+                            </span>
+                          )}
+                        </div>
+                        {lastMessage && (
+                          <p className="text-sm text-gray-500 truncate max-w-xs">
+                            {lastMessage.message}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                    {timestamp && (
+                      <span className="text-xs text-gray-500 flex-shrink-0">
+                        {timestamp}
+                      </span>
+                    )}
+                  </div>
                 </button>
-              </li>
-            ))}
-          </ul>
+              );
+            })}
+          </div>
         )}
       </CardContent>
     </Card>

@@ -20,6 +20,7 @@ import { useAuth, UserProfile } from '@/hooks/useAuth';
 import { useNavigate, NavLink } from 'react-router-dom';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { LogOut } from 'lucide-react';
+import { useUnreadMessages } from '@/hooks/useUnreadMessages';
 
 import { useProductCount } from '@/hooks/useDashboardData';
 
@@ -38,6 +39,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
   const { signOut } = useAuth();
   const navigate = useNavigate();
   const [chatOpen, setChatOpen] = useState(false);
+  const unreadMessages = useUnreadMessages();
 
   // If blocked, only show settings/invoicing
   const isBlocked = userProfile?.blocked;
@@ -163,16 +165,41 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
                 variant="ghost"
                 size="sm"
                 onClick={() => setChatOpen(true)}
-                className={`w-full flex items-center px-3 py-2 rounded-lg text-left transition-colors
-                  text-gray-600 hover:bg-blue-50 hover:text-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
-                  ${isOpen ? '' : 'justify-center'}`}
+                className={`
+                  w-full flex items-center px-3 py-2 rounded-lg text-left transition-colors
+                  ${unreadMessages > 0 
+                    ? 'bg-blue-50 text-blue-700 hover:bg-blue-100' 
+                    : 'text-gray-600 hover:bg-blue-50 hover:text-blue-700'
+                  }
+                  focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
+                  ${isOpen ? '' : 'justify-center'}
+                `}
                 aria-label="Open hulp chat"
               >
-                <HelpCircle className="w-5 h-5 flex-shrink-0" />
+                <div className="relative">
+                  <HelpCircle className={`w-5 h-5 flex-shrink-0 ${unreadMessages > 0 ? 'text-blue-600' : ''}`} />
+                  {unreadMessages > 0 && !isOpen && (
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">
+                      {unreadMessages}
+                    </span>
+                  )}
+                </div>
                 {isOpen && (
                   <>
                     <span className="font-medium ml-3 flex-1 text-left">Hulp nodig?</span>
-                    <svg className="w-4 h-4 ml-auto text-gray-400 group-hover:text-blue-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    {unreadMessages > 0 && (
+                      <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full mr-2">
+                        {unreadMessages}
+                      </span>
+                    )}
+                    <svg 
+                      className={`w-4 h-4 ml-auto transition-colors ${
+                        unreadMessages > 0 ? 'text-blue-600' : 'text-gray-400 group-hover:text-blue-600'
+                      }`} 
+                      fill="none" 
+                      stroke="currentColor" 
+                      viewBox="0 0 24 24"
+                    >
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
                   </>

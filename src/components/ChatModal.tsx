@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { MessageCircle, X, Send, Loader2, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
-import { getOrCreateChat, fetchChatMessages, sendChatMessage } from '@/lib/chatApi';
+import { getOrCreateChat, fetchChatMessages, sendChatMessage, markMessagesAsRead } from '@/lib/chatApi';
 
 interface Message {
   id: string;
@@ -63,6 +63,7 @@ export const ChatModal: React.FC<ChatModalProps> = ({
         const chat = await getOrCreateChat(user.id);
         setChatId(chat.id);
         const chatMessages = await fetchChatMessages(chat.id);
+        await markMessagesAsRead(chat.id, 'admin');
         setMessages(chatMessages);
       } catch (err) {
         console.error('Failed to initialize chat:', err);

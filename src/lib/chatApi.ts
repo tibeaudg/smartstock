@@ -41,11 +41,11 @@ export async function sendChatMessage({ chatId, senderType, senderId, message }:
 }
 
 export async function fetchAllChats() {
-  const { data, error } = await supabase
+  // First fetch all chats with user profiles
+  const { data: chats, error: chatsError } = await supabase
     .from('chats')
     .select(`
       *,
-      chat_messages(*),
       profiles:user_id (
         first_name,
         last_name,
@@ -53,6 +53,32 @@ export async function fetchAllChats() {
       )
     `)
     .order('updated_at', { ascending: false });
+
+  if (chatsError) throw chatsError;
+
+  // Then fetch unread counts for each chat
+  const chatsWithCounts = await Promise.all((chats || []).map(async (chat) => {
+    const { count } = await supabase
+      .from('chat_messages')
+      .select('*', { count: 'exact', head: true })
+      .eq('chat_id', chat.id)
+      .eq('sender_type', 'user')
+      .eq('is_read', false);
+
+    return {
+      ...chat,
+      unread_count: count || 0
+    };
+  }));
+
+  return chatsWithCounts;
+}
+
+export async function markMessagesAsRead(chatId: string, senderType: 'user' | 'admin') {
+  const { error } = await supabase
+    .from('chat_messages')
+    .update({ is_read: true })
+    .eq('chat_id', chatId)
+    .eq('sender_type', senderType);
   if (error) throw error;
-  return data || [];
 }
