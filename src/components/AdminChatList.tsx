@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { fetchAllChats, fetchChatMessages, sendChatMessage, markMessagesAsRead } from '@/lib/chatApi';
 import { useAuth } from '@/hooks/useAuth';
+import { useUnreadMessages } from '@/hooks/UnreadMessagesContext';
 import { MessageSquare, MessageSquareDashed } from 'lucide-react';
 
 // Helper function to check if a date is today
@@ -13,6 +14,7 @@ function isToday(date: Date) {
 }
 
 export const AdminChatList: React.FC = () => {
+  const { resetUnreadCount } = useUnreadMessages();
   const { user } = useAuth();
   const [chats, setChats] = useState<any[]>([]);
   const [selectedChat, setSelectedChat] = useState<any | null>(null);
@@ -49,10 +51,10 @@ export const AdminChatList: React.FC = () => {
     try {
       setSelectedChat(chat);
       setLoading(true);
-      
+      // Instantly reset unread messages count in sidebar
+      resetUnreadCount();
       // Mark messages as read first
       await markMessagesAsRead(chat.id, 'user');
-      
       // Then fetch the messages to ensure we get the updated read status
       const msgs = await fetchChatMessages(chat.id);
       setMessages(msgs);

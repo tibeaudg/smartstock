@@ -16,12 +16,14 @@ interface ChatModalProps {
   open: boolean;
   onClose: () => void;
   'aria-describedby'?: string;
+  resetUnreadMessages?: () => void;
 }
 
 export const ChatModal: React.FC<ChatModalProps> = ({ 
   open, 
   onClose, 
-  'aria-describedby': ariaDescribedBy 
+  'aria-describedby': ariaDescribedBy,
+  resetUnreadMessages
 }) => {
   const { user, userProfile } = useAuth();
   const [chatId, setChatId] = useState<string | null>(null);
@@ -66,6 +68,8 @@ export const ChatModal: React.FC<ChatModalProps> = ({
     }
 
     const initializeChat = async () => {
+      // Instantly reset unread messages count in sidebar
+      if (resetUnreadMessages) resetUnreadMessages();
       if (!mounted) return;
       setLoading(true);
       setError(null);
@@ -90,6 +94,8 @@ export const ChatModal: React.FC<ChatModalProps> = ({
             if (!mounted) return;
             console.log('User opened chat, marking admin messages as read:', updatedMessages);
           }
+          // Trigger unread count refresh in sidebar
+          if (resetUnreadMessages) resetUnreadMessages();
         } catch (err) {
           // Log error but continue with chat initialization
           console.warn('Failed to mark messages as read:', err);
@@ -187,7 +193,7 @@ export const ChatModal: React.FC<ChatModalProps> = ({
       {/* Desktop Position */}
       <div
         className="absolute top-1/2 -translate-y-1/2 hidden md:block"
-        style={{ left: '55%', transform: 'translate(-55%, -50%)' }}
+        style={{ left: '55%', transform: 'translate(-55%, -50%)', width: '500px' }}
         onClick={(e) => e.stopPropagation()}
       >
         <ChatContent 

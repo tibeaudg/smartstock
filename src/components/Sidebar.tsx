@@ -22,7 +22,7 @@ import { useAuth, UserProfile } from '@/hooks/useAuth';
 import { useNavigate, NavLink } from 'react-router-dom';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { LogOut } from 'lucide-react';
-import { useUnreadMessages } from '@/hooks/useUnreadMessages';
+import { useUnreadMessages } from '@/hooks/UnreadMessagesContext';
 
 import { useProductCount } from '@/hooks/useDashboardData';
 
@@ -41,7 +41,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
   const { signOut } = useAuth();
   const navigate = useNavigate();
   const [chatOpen, setChatOpen] = useState(false);
-  const unreadMessages = useUnreadMessages();
+  const { unreadCount: unreadMessages, resetUnreadCount } = useUnreadMessages();
 
   // If blocked, only show settings/invoicing
   const isBlocked = userProfile?.blocked;
@@ -257,6 +257,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
           open={chatOpen} 
           onClose={() => setChatOpen(false)} 
           aria-describedby="chat-modal-description"
+          resetUnreadMessages={resetUnreadCount}
         />,
         document.body
       )}

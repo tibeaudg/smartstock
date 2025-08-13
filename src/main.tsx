@@ -1,6 +1,8 @@
 import React, { Suspense, ReactNode, Component } from 'react';
 import { createRoot, Root } from 'react-dom/client';
 import App from './App';
+import { UnreadMessagesProvider } from './hooks/UnreadMessagesContext';
+import { AuthProvider } from './hooks/useAuth';
 import './index.css';
 import { checkSupabaseConnection } from './integrations/supabase/client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -159,17 +161,23 @@ async function init() {
 
     // De root wordt hier aangemaakt en de app wordt gerenderd
     root = createRoot(rootElement);
-    root.render(
+    const AppTree = (
       <ErrorBoundary>
         <QueryClientProvider client={queryClient}>
           <HelmetProvider>
-            <Suspense fallback={<LoadingFallback />}>
-              <App />
-            </Suspense>
+            {/* AuthProvider must wrap UnreadMessagesProvider */}
+            <AuthProvider>
+              <UnreadMessagesProvider>
+                <Suspense fallback={<LoadingFallback />}>
+                  <App />
+                </Suspense>
+              </UnreadMessagesProvider>
+            </AuthProvider>
           </HelmetProvider>
         </QueryClientProvider>
       </ErrorBoundary>
     );
+    root.render(AppTree);
   } catch (error) {
     console.error('Initialisatie van de app is mislukt:', error);
 
