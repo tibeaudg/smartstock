@@ -60,10 +60,14 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
   const isOwner = userProfile && userProfile.role === 'admin' && !userProfile.blocked;
 
   const toggleSubmenu = (menuId: string) => {
-    setOpenSubmenus(prev => ({
-      ...prev,
-      [menuId]: !prev[menuId]
-    }));
+    setOpenSubmenus(prev => {
+      // If we're opening this submenu, close all others
+      if (!prev[menuId]) {
+        return { [menuId]: true };
+      }
+      // If we're closing this submenu, just close it
+      return { ...prev, [menuId]: false };
+    });
   };
   
   const handleSignOut = async () => {
@@ -93,6 +97,9 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
     { id: 'cms', label: 'CMS', path: '/admin/cms' },
     { id: 'notifications', label: 'Meldingen', path: '/admin/notifications' },
     { id: 'chat', label: 'Chat', path: '/admin/chat' },
+    { id: 'invoicing', label: 'Facturatie', path: '/admin/invoicing' },
+    { id: 'backlinks', label: 'Backlinks', path: '/admin/backlinks' },
+    { id: 'seo', label: 'SEO', path: '/admin/seo' }
   ];
 
   const menuItems = isBlocked
@@ -150,17 +157,6 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
           {isOpen && <h1 className="text-lg font-semibold text-gray-900">stockflow</h1>}
         </div>
 
-        {/* User Info */}
-        {isOpen && (
-          <div className="px-3 py-2 border-b border-t border-gray-200 flex-shrink-0">
-            <p className="text-xs text-gray-700 text-center font-medium">
-              {userProfile?.first_name || userProfile?.last_name
-                ? `${userProfile?.first_name ?? ''} ${userProfile?.last_name ?? ''}`.trim()
-                : 'Laden...'}
-            </p>
-          </div>
-        )}
-
         {/* Branch Selector - Only on Desktop */}
         {isOpen && !isMobile && (
           <div className="px-3 py-4 border-b border-gray-200 flex-shrink-0">
@@ -197,10 +193,13 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
                       if (hasSubItems) {
                         e.preventDefault();
                         toggleSubmenu(item.id);
+                      } else {
+                        // Close all submenus when clicking a regular menu item
+                        setOpenSubmenus({});
                       }
                     }}
                     className={`
-                      w-full flex items-center px-3 py-2 rounded-lg text-left transition-colors
+                      w-full font-semibold flex items-center px-3 py-2 rounded-lg text-left transition-colors
                       ${(isItemActive || isSubmenuOpen)
                         ? 'bg-blue-50 text-blue-700 border border-blue-200' 
                         : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'

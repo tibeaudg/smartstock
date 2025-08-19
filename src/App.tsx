@@ -26,6 +26,10 @@ import AdminNotificationsPage from './pages/AdminNotificationsPage';
 import { AlertCircle } from "lucide-react";
 import SEO from './components/SEO';
 import PreloadResources from './components/PreloadResources';
+import { Admin } from './components/Admin';
+import AdminCMS from './components/AdminCMS';
+import { AdminChatList } from './components/AdminChatList';
+import { BacklinkMonitor } from './components/BacklinkMonitor';
 import VoorraadbeheerTips from './pages/voorraadbeheer-tips';
 import VoorraadbeheerSoftwareVergelijken from './pages/voorraadbeheer-software-vergelijken';
 import VoorraadbeheerWebshop from './pages/voorraadbeheer-webshop';
@@ -265,9 +269,26 @@ export default function App() {
                     </Route>
                   </Route>
 
-                  <Route path="/admin" element={<AdminInvoicingPage />} />
-                  <Route path="/admin/user/:id" element={<AdminUserDetailPage />} />
-                  <Route path="/admin/notifications" element={<AdminNotificationsPage />} />
+                  {/* Admin routes */}
+                  <Route
+                    path="/admin"
+                    element={
+                      <ProtectedRoute>
+                        <StockManagementApp />
+                      </ProtectedRoute>
+                    }
+                  >
+                    <Route element={<Admin />}>
+                      <Route index element={<AdminInvoicingPage />} />
+                      <Route path="cms" element={<AdminCMS />} />
+                      <Route path="notifications" element={<AdminNotificationsPage />} />
+                      <Route path="chat" element={<AdminChatList />} />
+                      <Route path="invoicing" element={<AdminInvoicingPage />} />
+                      <Route path="backlinks" element={<BacklinkMonitor />} />
+                      <Route path="seo" element={<SEO />} />
+                      <Route path="user/:id" element={<AdminUserDetailPage />} />
+                    </Route>
+                  </Route>
 
                   {/* Fallback route */}
                   <Route path="*" element={<NotFound />} />
