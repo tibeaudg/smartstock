@@ -11,6 +11,12 @@ import { Dashboard } from "./components/Dashboard";
 import { StockList } from "./components/StockList";
 import { StockMovements } from "./components/StockMovements";
 import { Settings } from "./components/Settings";
+import { ProfileSettings } from "./components/settings/ProfileSettings";
+import { BranchManagement } from "./components/settings/BranchManagement";
+import { UserManagement } from "./components/settings/UserManagement";
+import { ModuleManagement } from "./components/settings/ModuleManagement";
+import { LicenseOverview } from "./components/settings/LicenseOverview";
+import { InvoicingOverview } from "./components/settings/InvoicingOverview";
 import { useAuth, AuthProvider } from "./hooks/useAuth";
 import { Suspense } from "react";
 import { ContentWrapper } from "./ContentWrapper";
@@ -248,7 +254,15 @@ export default function App() {
                     <Route index element={<Dashboard userRole="staff" />} />
                     <Route path="stock" element={<StockList />} />
                     <Route path="transactions" element={<StockMovements />} />
-                    <Route path="settings" element={<Settings />} />
+                    <Route path="settings" element={<Settings />}>
+                      <Route index element={<ProfileSettings />} />
+                      <Route path="profile" element={<ProfileSettings />} />
+                      <Route path="branches" element={<BranchManagement />} />
+                      <Route path="users" element={<UserManagement />} />
+                      <Route path="modules" element={<ModuleManagement />} />
+                      <Route path="license" element={<LicenseOverview />} />
+                      <Route path="invoicing" element={<InvoicingOverview />} />
+                    </Route>
                   </Route>
 
                   <Route path="/admin" element={<AdminInvoicingPage />} />
