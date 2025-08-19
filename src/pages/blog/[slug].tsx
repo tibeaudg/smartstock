@@ -4,6 +4,8 @@ import { fetchBlogPostBySlug } from '../../integrations/supabase/client';
 import SEO from '../../components/SEO';
 import type { BlogPost } from '../../integrations/supabase/types';
 
+import { BlogLayout } from '../../components/BlogLayout';
+
 export default function BlogPostPage() {
   const { slug } = useParams();
   const [post, setPost] = useState<BlogPost | null>(null);
@@ -57,7 +59,10 @@ export default function BlogPostPage() {
     }
   };
   return (
-    <>
+    <BlogLayout
+      title={post.title}
+      image={post.og_image}
+    >
       <SEO
         title={post.meta_title || post.title}
         description={post.meta_description}
@@ -65,10 +70,16 @@ export default function BlogPostPage() {
         url={canonicalUrl}
         structuredData={structuredData}
       />
-      <article className="prose mx-auto p-4">
-        <h1>{post.title}</h1>
-        <div>{post.content}</div>
-      </article>
-    </>
+      <div className="mt-8">
+        <p className="text-gray-600 text-sm mb-4">
+          {new Date(post.date_published).toLocaleDateString('nl-BE', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          })} • door {post.author || 'StockFlow'}
+        </p>
+        <div className="prose prose-lg prose-blue">{post.content}</div>
+      </div>
+    </BlogLayout>
   );
 }

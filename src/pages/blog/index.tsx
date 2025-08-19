@@ -4,6 +4,8 @@ import SEO from '../../components/SEO';
 import { fetchBlogPosts } from '../../integrations/supabase/client';
 import type { BlogPost } from '../../integrations/supabase/types';
 
+import { BlogLayout } from '../../components/BlogLayout';
+
 export default function BlogListPage() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
@@ -33,25 +35,47 @@ export default function BlogListPage() {
   }
 
   return (
-    <>
+    <BlogLayout
+      title="Blog | StockFlow"
+      image="/optimized/Inventory-Management.png"
+    >
       <SEO
         title="Blog | StockFlow"
         description="Lees de nieuwste blogposts over voorraadbeheer en optimalisatie."
         url="https://www.stockflow.be/blog"
       />
-      <section className="max-w-2xl mx-auto p-4">
-        <h1 className="text-3xl font-bold mb-6">Blog</h1>
-        <ul className="space-y-4">
-          {posts.map(post => (
-            <li key={post.id}>
-              <Link to={`/blog/${post.slug}`} className="text-xl font-semibold text-blue-600 hover:underline">
-                {post.title}
+      <div className="grid gap-8">
+        {posts.map(post => (
+          <article key={post.id} className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-100 transition-transform hover:scale-[1.02] hover:shadow-lg">
+            {post.og_image && (
+              <img 
+                src={post.og_image} 
+                alt={post.title}
+                className="w-full h-48 object-cover"
+              />
+            )}
+            <div className="p-6">
+              <Link to={`/blog/${post.slug}`} className="block">
+                <h2 className="text-2xl font-bold text-gray-900 mb-2 hover:text-blue-600 transition-colors">
+                  {post.title}
+                </h2>
               </Link>
-              <p className="text-gray-600">{post.meta_description}</p>
-            </li>
-          ))}
-        </ul>
-      </section>
-    </>
+              <p className="text-gray-600 mb-4">{post.meta_description}</p>
+              <div className="flex items-center text-sm text-gray-500">
+                <time dateTime={post.date_published}>
+                  {new Date(post.date_published).toLocaleDateString('nl-BE', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                  })}
+                </time>
+                <span className="mx-2">•</span>
+                <span>{post.author || 'StockFlow'}</span>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </BlogLayout>
   );
 }
