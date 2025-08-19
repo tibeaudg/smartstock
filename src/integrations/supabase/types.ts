@@ -1,3 +1,16 @@
+// BlogPost type for Supabase integration
+export type BlogPost = {
+  id: string;
+  title: string;
+  slug: string;
+  content: string;
+  meta_title?: string;
+  meta_description?: string;
+  og_image?: string;
+  published: boolean;
+  date_published?: string;
+  author?: string;
+};
       company_types: {
         Row: {
           id: string;

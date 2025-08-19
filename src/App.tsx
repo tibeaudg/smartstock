@@ -32,6 +32,8 @@ import { AdminChatList } from './components/AdminChatList';
 import VoorraadbeheerTips from './pages/voorraadbeheer-tips';
 import VoorraadbeheerSoftwareVergelijken from './pages/voorraadbeheer-software-vergelijken';
 import VoorraadbeheerWebshop from './pages/voorraadbeheer-webshop';
+import BlogListPage from './pages/blog';
+import BlogPostPage from './pages/blog/[slug]';
 import VoorraadbeheerFoutenVoorkomen from './pages/voorraadbeheer-fouten-voorkomen';
 import VoorraadbeheerAutomatiseren from './pages/voorraadbeheer-automatiseren';
 import VoorraadbeheerHoreca from './pages/voorraadbeheer-horeca';
@@ -243,6 +245,10 @@ export default function App() {
                   <Route path="/voorraadbeheer-excel-vs-software" element={<VoorraadbeheerExcelVsSoftware />} />
                   <Route path="/voorraadbeheer-voor-starters" element={<VoorraadbeheerVoorStarters />} />
                   <Route path="/mobiel-voorraadbeheer" element={<MobielVoorraadbeheer />} />
+                  
+                  {/* Blog routes */}
+                  <Route path="/blog" element={<BlogListPage />} />
+                  <Route path="/blog/:slug" element={<BlogPostPage />} />
                   <Route path="/gratis-stockbeheer" element={<GratisStockbeheer />} />
 
                   {/* Beschermde dashboard routes */}
