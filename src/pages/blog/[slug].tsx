@@ -77,7 +77,7 @@ export default function BlogPostPage() {
             day: 'numeric'
           })} • door {post.author || 'StockFlow'}
         </p>
-        <div className="prose prose-lg prose-blue">{post.content}</div>
+  <div className="prose prose-lg prose-blue" dangerouslySetInnerHTML={{ __html: post.content }} />
       </div>
     </BlogLayout>
   );

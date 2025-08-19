@@ -12,7 +12,7 @@ export default function AdminCMS() {
     metaTitle: '',
     metaDescription: '',
     ogImage: '',
-    published: false,
+    published: true,
     datePublished: new Date().toISOString().slice(0, 10),
     author: 'Admin'
   });
@@ -20,7 +20,6 @@ export default function AdminCMS() {
   const handleContentChange = (newContent: string) => {
     setForm(prev => ({ ...prev, content: newContent }));
   };
-  const [showPreview, setShowPreview] = useState(false);
 
   useEffect(() => {
     fetchBlogPosts().then(setPosts).catch(console.error);
@@ -54,7 +53,6 @@ export default function AdminCMS() {
       datePublished: post.date_published || new Date().toISOString().slice(0, 10),
       author: post.author || 'Admin'
     });
-    setShowPreview(false);
   };
 
   const handleSave = async () => {
@@ -94,11 +92,10 @@ export default function AdminCMS() {
         metaTitle: '',
         metaDescription: '',
         ogImage: '',
-        published: false,
+        published: true,
         datePublished: new Date().toISOString().slice(0, 10),
         author: 'Admin'
       });
-      setShowPreview(true);
     } catch (err) {
       alert('Failed to ' + (editing ? 'update' : 'add') + ' post: ' + (err as Error).message);
     }
@@ -138,43 +135,35 @@ export default function AdminCMS() {
           onChange={handleContentChange}
         />
         <input 
-          className="cms-input" 
+          className="cms-input hidden" 
           placeholder="Meta Title" 
           value={form.metaTitle} 
           onChange={e => setForm({ ...form, metaTitle: e.target.value })} 
         />
         <input 
-          className="cms-input" 
+          className="cms-input hidden" 
           placeholder="Meta Description" 
           value={form.metaDescription} 
           onChange={e => setForm({ ...form, metaDescription: e.target.value })} 
         />
         <input 
-          className="cms-input" 
+          className="cms-input hidden" 
           placeholder="OG Image URL" 
           value={form.ogImage} 
           onChange={e => setForm({ ...form, ogImage: e.target.value })} 
         />
         <input 
-          className="cms-input" 
+          className="cms-input hidden" 
           placeholder="Author" 
           value={form.author} 
           onChange={e => setForm({ ...form, author: e.target.value })} 
         />
         <input 
-          className="cms-input" 
+          className="cms-input hidden" 
           type="date" 
           value={form.datePublished} 
           onChange={e => setForm({ ...form, datePublished: e.target.value })} 
         />
-        <label style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <input 
-            type="checkbox" 
-            checked={form.published} 
-            onChange={e => setForm({ ...form, published: e.target.checked })} 
-          /> 
-          Published
-        </label>
         <div style={{ display: 'flex', gap: 12 }}>
           <button 
             type="submit" 
@@ -201,9 +190,9 @@ export default function AdminCMS() {
                   metaTitle: '',
                   metaDescription: '',
                   ogImage: '',
-                  published: false,
+                  published: true,
                   datePublished: new Date().toISOString().slice(0, 10),
-                  author: 'Admin'
+                  author: 'StockFlow'
                 });
               }}
               style={{ 
@@ -219,46 +208,6 @@ export default function AdminCMS() {
           )}
         </div>
       </form>
-
-      {/* Preview Module */}
-      {showPreview && (
-        <div style={{ marginTop: 32, background: '#fff', padding: 20, borderRadius: 8, boxShadow: '0 1px 4px #eee' }}>
-          <h3>Post Preview</h3>
-          <h4>{form.title || '(No Title)'}</h4>
-          <p><strong>Slug:</strong> {form.slug}</p>
-          <p><strong>Published:</strong> {form.published ? 'Yes' : 'No'}</p>
-          <p><strong>Author:</strong> {form.author}</p>
-          <p><strong>Date Published:</strong> {form.datePublished}</p>
-          <div style={{ margin: '12px 0', whiteSpace: 'pre-wrap', background: '#f6f6f6', padding: 12, borderRadius: 4 }}>
-            {form.content || '(No Content)'}
-          </div>
-          <div style={{ fontSize: '0.95em', color: '#555' }}>
-            <p><strong>Meta Title:</strong> {form.metaTitle}</p>
-            <p><strong>Meta Description:</strong> {form.metaDescription}</p>
-            {form.ogImage && (
-              <p><strong>OG Image:</strong> {form.ogImage}</p>
-            )}
-          </div>
-          {form.slug && (
-            <a 
-              href={`/blog/${form.slug}`} 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              style={{ 
-                display: 'inline-block', 
-                marginTop: 16, 
-                background: '#007bff', 
-                color: '#fff', 
-                padding: '8px 16px', 
-                borderRadius: 4, 
-                textDecoration: 'none' 
-              }}
-            >
-              Open Post Page
-            </a>
-          )}
-        </div>
-      )}
 
       <div style={{ marginTop: 40 }}>
         <h3>All Blogposts</h3>
