@@ -51,7 +51,7 @@ export default function AdminCMS() {
       ogImage: post.og_image || '',
       published: post.published || false,
       datePublished: post.date_published || new Date().toISOString().slice(0, 10),
-      author: post.author || 'Admin'
+      author: 'Admin'
     });
   };
 

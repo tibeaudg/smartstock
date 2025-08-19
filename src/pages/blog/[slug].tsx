@@ -55,7 +55,7 @@ export default function BlogPostPage() {
     'datePublished': post.date_published || '',
     'author': {
       '@type': 'Person',
-      'name': post.author || 'StockFlow'
+      'name': 'StockFlow'
     }
   };
   return (
@@ -75,7 +75,7 @@ export default function BlogPostPage() {
             year: 'numeric',
             month: 'long',
             day: 'numeric'
-          })} • door {post.author || 'StockFlow'}
+          })} • door {'StockFlow'}
         </p>
   <div className="prose prose-lg prose-blue" dangerouslySetInnerHTML={{ __html: post.content }} />
       </div>

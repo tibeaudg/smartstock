@@ -1,3 +1,6 @@
+import { type } from "os";
+import { string } from "zod";
+
 // BlogPost type for Supabase integration
 export type BlogPost = {
   id: string;
@@ -39,9 +42,13 @@ export type BlogPost = {
             columns: ["user_id"];
             referencedRelation: "profiles";
             referencedColumns: ["id"];
-          }
+          },
         ];
       };
+
+
+
+
 export type Json =
   | string
   | number

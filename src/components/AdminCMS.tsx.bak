@@ -359,7 +359,7 @@ export default function AdminCMS() {
       ogImage: post.seo.ogImage,
       published: post.published,
       datePublished: post.datePublished || new Date().toISOString().slice(0, 10),
-      author: post.author || 'Admin'
+      author: 'Admin'
     });
     setShowPreview(false);
   };

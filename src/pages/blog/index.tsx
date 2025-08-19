@@ -69,7 +69,7 @@ export default function BlogListPage() {
                   })}
                 </time>
                 <span className="mx-2">•</span>
-                <span>{post.author || 'StockFlow'}</span>
+                <span>{'StockFlow'}</span>
               </div>
             </div>
           </article>
