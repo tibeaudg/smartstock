@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { fetchBlogPosts, addBlogPost, updateBlogPost, deleteBlogPost } from '../integrations/supabase/client';
+import { RichTextEditor } from './RichTextEditor';
 
 export default function AdminCMS() {
   const [posts, setPosts] = useState<any[]>([]);
@@ -15,6 +16,10 @@ export default function AdminCMS() {
     datePublished: new Date().toISOString().slice(0, 10),
     author: 'Admin'
   });
+  
+  const handleContentChange = (newContent: string) => {
+    setForm(prev => ({ ...prev, content: newContent }));
+  };
   const [showPreview, setShowPreview] = useState(false);
 
   useEffect(() => {
@@ -128,13 +133,9 @@ export default function AdminCMS() {
           onChange={e => setForm({ ...form, slug: e.target.value })} 
           required 
         />
-        <textarea 
-          className="cms-input" 
-          placeholder="Content" 
-          value={form.content} 
-          onChange={e => setForm({ ...form, content: e.target.value })} 
-          rows={4} 
-          required 
+        <RichTextEditor 
+          content={form.content}
+          onChange={handleContentChange}
         />
         <input 
           className="cms-input" 

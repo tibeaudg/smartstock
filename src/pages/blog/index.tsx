@@ -37,7 +37,6 @@ export default function BlogListPage() {
   return (
     <BlogLayout
       title="Blog | StockFlow"
-      image="/optimized/Inventory-Management.png"
     >
       <SEO
         title="Blog | StockFlow"

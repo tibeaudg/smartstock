@@ -61,7 +61,6 @@ export default function BlogPostPage() {
   return (
     <BlogLayout
       title={post.title}
-      image={post.og_image}
     >
       <SEO
         title={post.meta_title || post.title}
