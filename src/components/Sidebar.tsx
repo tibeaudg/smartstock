@@ -94,12 +94,6 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
 
   const adminSubItems = [
     { id: 'overview', label: 'Overzicht', path: '/admin' },
-    { id: 'cms', label: 'CMS', path: '/admin/cms' },
-    { id: 'notifications', label: 'Meldingen', path: '/admin/notifications' },
-    { id: 'chat', label: 'Chat', path: '/admin/chat' },
-    { id: 'invoicing', label: 'Facturatie', path: '/admin/invoicing' },
-    { id: 'backlinks', label: 'Backlinks', path: '/admin/backlinks' },
-    { id: 'seo', label: 'SEO', path: '/admin/seo' }
   ];
 
   const menuItems = isBlocked

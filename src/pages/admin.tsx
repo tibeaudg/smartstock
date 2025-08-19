@@ -270,9 +270,9 @@ export default function AdminPage() {
         userProfile={userProfile}
       >
         
-    <div className="flex-2 flex min-h-screen">
+    <div className="-ml-72 -mt-20 flex-2 flex min-h-screen">
       {/* Sub-sidebar with fixed width and full viewport height */}
-      <div className="w-56 min-w-[224px] max-w-[224px] h-screen flex flex-col bg-white border-r p-2">
+      <div className="-pl-60 w-56 min-w-[224px]  h-screen flex flex-col bg-white border-r p-2">
         
         {/* Navigatie-items worden nu dynamisch gerenderd */}
         <nav className="flex-1 space-y-1 p-2 font-semibold text-sm">

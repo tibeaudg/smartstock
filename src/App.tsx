@@ -29,7 +29,6 @@ import PreloadResources from './components/PreloadResources';
 import { Admin } from './components/Admin';
 import AdminCMS from './components/AdminCMS';
 import { AdminChatList } from './components/AdminChatList';
-import { BacklinkMonitor } from './components/BacklinkMonitor';
 import VoorraadbeheerTips from './pages/voorraadbeheer-tips';
 import VoorraadbeheerSoftwareVergelijken from './pages/voorraadbeheer-software-vergelijken';
 import VoorraadbeheerWebshop from './pages/voorraadbeheer-webshop';
@@ -284,7 +283,6 @@ export default function App() {
                       <Route path="notifications" element={<AdminNotificationsPage />} />
                       <Route path="chat" element={<AdminChatList />} />
                       <Route path="invoicing" element={<AdminInvoicingPage />} />
-                      <Route path="backlinks" element={<BacklinkMonitor />} />
                       <Route path="seo" element={<SEO />} />
                       <Route path="user/:id" element={<AdminUserDetailPage />} />
                     </Route>
