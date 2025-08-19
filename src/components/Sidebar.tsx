@@ -79,18 +79,11 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
     }
   };
   
-  const settingsSubItems = isOwner 
-    ? [
-        { id: 'profile', label: 'Profiel', path: '/dashboard/settings/profile' },
-        { id: 'branches', label: 'Filialen', path: '/dashboard/settings/branches' },
-        { id: 'users', label: 'Gebruikers', path: '/dashboard/settings/users' },
-        { id: 'modules', label: 'Modules', path: '/dashboard/settings/modules' },
-        { id: 'license', label: 'Licentie', path: '/dashboard/settings/license' },
-        { id: 'invoicing', label: 'Facturatie', path: '/dashboard/settings/invoicing' },
-      ]
-    : [
-        { id: 'profile', label: 'Profiel', path: '/dashboard/settings/profile' },
-      ];
+  const settingsSubItems = [
+    { id: 'branches', label: 'Filialen', path: '/dashboard/settings/branches' },
+    { id: 'users', label: 'Gebruikers', path: '/dashboard/settings/users' },
+    { id: 'modules', label: 'Modules', path: '/dashboard/settings/modules' },
+  ];
 
   const adminSubItems = [
     { id: 'overview', label: 'Overzicht', path: '/admin' },
@@ -290,29 +283,6 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
             </div>
           </div>
 
-          {/* Logout Section - Desktop Only */}
-          {!isMobile && (
-            <div className="border-t border-gray-200">
-              <div className="px-3 py-2">
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleSignOut}
-                  className={`
-                    w-full justify-start text-gray-600 hover:text-red-600 hover:bg-red-50 
-                    focus:ring-2 focus:ring-red-500 focus:ring-offset-2 
-                    transition-all duration-200 rounded-lg
-                    ${isOpen ? 'px-3' : 'px-2'}
-                  `}
-                  aria-label={isOpen ? "Afmelden" : "Uitloggen"}
-                >
-                  <LogOut className="w-4 h-4 flex-shrink-0" />
-                  {isOpen && <span className="ml-3 font-medium">Afmelden</span>}
-                </Button>
-              </div>
-            </div>
-          )}
         </div>
       </div>
 
