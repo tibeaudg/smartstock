@@ -32,41 +32,6 @@ export const Layout = ({ children, currentTab, onTabChange, userRole, userProfil
 
   return (
     <div className="h-screen flex flex-col pt-6 bg-gray-100">
-      {/* Header with Branch Selector and Notification Bell - Only on Mobile */}
-      {isMobile && (
-        <div className="bg-white border-b border-gray-200 px-4 py-3 flex-shrink-0 fixed top-0 left-0 right-0 z-30">
-          <div className="max-w-7xl mx-auto flex items-center justify-between">
-            <BranchSelector />
-            <div className="ml-2">
-              <NotificationButton unreadCount={unreadCount} onClick={handleNotificationClick} />
-            </div>
-          </div>
-
-
-          {/* Notification Overlay */}
-          {showNotifications && (
-            <div className="fixed top-16 right-4 z-[100] bg-white border border-gray-200 rounded-lg shadow-xl p-4 w-80 max-h-[60vh] overflow-y-auto">
-              <h4 className="font-semibold mb-2">Meldingen</h4>
-              {notificationsLoading ? (
-                <div className="text-gray-500 text-sm">Laden...</div>
-              ) : notifications.length === 0 ? (
-                <div className="text-gray-700 text-sm">Geen meldingen.</div>
-              ) : (
-                <ul className="divide-y divide-gray-200">
-                  {notifications.map((n) => (
-                    <li key={n.id} className={`py-2 ${!n.read ? 'bg-blue-50' : ''}`}>
-                      <div className="font-medium text-gray-900 text-sm">{n.title}</div>
-                      <div className="text-gray-700 text-xs mb-1">{n.message}</div>
-                      <div className="text-gray-400 text-xs">{new Date(n.created_at).toLocaleString()}</div>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          )}
-        </div>
-      )}
-
       <div className="flex flex-1 overflow-hidden">
         {!isMobile && (
           <div className="fixed left-0 top-0 h-full z-20">
@@ -81,7 +46,7 @@ export const Layout = ({ children, currentTab, onTabChange, userRole, userProfil
           </div>
         )}
 
-        <main className={`flex-1 p-4 pt-8 md:pt-20 md:pl-64 overflow-y-auto ${isMobile ? 'mt-16 pb-16' : ''}`}>
+        <main className={`flex-1 p-4 pt-8 md:pt-20 md:pl-64 overflow-y-auto`}>
           <div className={`${isMobile ? 'w-full' : 'mx-auto w-full max-w-7xl px-4 md:px-6'}`}>
             {children}
           </div>

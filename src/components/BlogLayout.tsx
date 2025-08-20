@@ -17,6 +17,7 @@ export const BlogLayout: React.FC<BlogLayoutProps> = ({
         onLoginClick={() => {}} 
         hideAuthButtons 
         simplifiedNav 
+        hideNotifications
       />
       
       {/* Hero Section */}

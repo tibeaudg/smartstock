@@ -10,7 +10,7 @@ interface SeoPageLayoutProps {
 const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({ title, image, children }) => {
   return (
     <div className="min-h-screen bg-white flex flex-col">
-      <Header onLoginClick={() => {}} hideAuthButtons />
+      <Header onLoginClick={() => {}} hideAuthButtons hideNotifications />
       <div className="relative w-full h-56 md:h-72 lg:h-96 overflow-hidden flex-shrink-0">
         <img
           src={image}

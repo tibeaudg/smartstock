@@ -9,6 +9,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
+
 import { Button } from '@/components/ui/button';
 
 interface HeaderProps {
@@ -22,6 +24,7 @@ export const Header: React.FC<HeaderProps> = ({ title, unreadCount = 0, onNotifi
   const { signOut } = useAuth();
   return (
     <>
+
       {/* Desktop Header */}
       <header className="hidden lg:flex fixed top-0 left-0 right-0 z-40 items-center justify-between px-8 h-[70px] bg-white shadow-sm">
         <div className="flex items-center space-x-3 p-4 flex-shrink-0">
@@ -33,15 +36,18 @@ export const Header: React.FC<HeaderProps> = ({ title, unreadCount = 0, onNotifi
         
         <div className="flex items-center space-x-4">
           <NotificationButton unreadCount={unreadCount} onClick={onNotificationClick} />
-          
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="default" size="icon" className="h-8 w-8 rounded-full">
+
+
+
+              <Button size="icon" className="relative flex items-center justify-center w-10 h-10 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-colors">
                 <User className="h-5 w-5" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48">
               <DropdownMenuItem onClick={() => navigate('/dashboard/settings/profile')}>
+
                 <User className="mr-2 h-4 w-4" />
                 <span>Mijn Profiel</span>
               </DropdownMenuItem>
@@ -59,7 +65,11 @@ export const Header: React.FC<HeaderProps> = ({ title, unreadCount = 0, onNotifi
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-      </header>      {/* Mobile Header */}
+      </header>      
+      
+      
+      
+      {/* Mobile Header */}
       <header className="lg:hidden fixed top-0 left-0 right-0 z-40 bg-white shadow-sm">
         <div className="flex items-center justify-between px-4 h-[60px] border-b border-gray-100">
           <div className="flex items-center space-x-3">
