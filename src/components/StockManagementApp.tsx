@@ -74,6 +74,8 @@ const AppContent: React.FC = () => {
         }}
         userRole={userProfile.role}
         userProfile={userProfile}
+        // Use an admin-friendly variant when browsing /admin routes so we can control spacing fully
+        variant={location.pathname.startsWith('/admin') ? 'admin' : 'default'}
       >
         {/* Main scrollable content */}
         <div className="flex-1 h-full overflow-y-auto">

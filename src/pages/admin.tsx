@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Layout } from '@/components/Layout';
-import { Sidebar } from '@/components/Sidebar';
-import { Header } from '@/components/Header';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Loader2 } from 'lucide-react';
 import { BranchProvider } from '@/hooks/useBranches';
@@ -145,7 +143,7 @@ async function blockUser(id: string, blocked: boolean) {
 
 export default function AdminPage() {
   const { user, userProfile } = useAuth();
-  const [activeTab, setActiveTab] = useState<'users' | 'features' | 'onboarding' | 'chats' | 'notifications' | 'blogcms'>('users');
+  const [activeTab, setActiveTab] = useState<'users' | 'features' | 'onboarding' | 'chats' | 'notifications' | 'blogcms' | 'bloganalytics'>('users');
   const [selectedUser, setSelectedUser] = useState<UserProfile | null>(null);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [companyTypes, setCompanyTypes] = useState<Record<string, { type: string; custom_type: string | null }>>({});
@@ -269,14 +267,15 @@ export default function AdminPage() {
         onTabChange={() => {}}
         userRole="admin"
         userProfile={userProfile}
+        variant="admin"
       >
         
-    <div className="-ml-72 -mt-20 flex-2 flex min-h-screen">
+    <div className="flex flex-1 min-h-[calc(100vh-80px)]">
       {/* Sub-sidebar with fixed width and full viewport height */}
-      <div className="-pl-60 w-56 min-w-[224px]  h-screen flex flex-col bg-white border-r p-2">
+      <div className="w-56 min-w-[224px] h-200 flex flex-col bg-white border-r p-2">
         
         {/* Navigatie-items worden nu dynamisch gerenderd */}
-        <nav className="flex-1 space-y-1 p-2 font-semibold text-sm">
+        <nav className="flex-1 space-y-2 p-2 font-semibold text-sm">
           {sidebarNavItems.map((item) => (
             <button
               key={item.id}
@@ -310,7 +309,7 @@ export default function AdminPage() {
 
 
           {/* Main content area */}
-          <div className="flex-1 p-4 md:p-8 space-y-6">
+          <div className="flex-1 p-6 md:p-8 space-y-6">
             {activeTab === 'blogcms' && (
               <Card>
                 <CardHeader>

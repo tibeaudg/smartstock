@@ -76,7 +76,7 @@ export const Settings = () => {
 
   if (isBlocked) {
     return (
-      <div className="space-y-6">
+      <div className="space-y-6 pt-24 pb-24 md:pt-0">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Instellingen</h1>
           <p className="font-bold p-2 items-center justify-center text-blue-700 mt-2 bg-blue-50 border border-blue-200">
@@ -89,7 +89,7 @@ export const Settings = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pt-24 pb-24 md:pt-0">
       {/* Menu */}
       <div className="flex">
         <div className="flex-1 p-4 md:p-8 space-y-6">

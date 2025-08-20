@@ -10,7 +10,7 @@ export const Admin = () => {
         keywords="admin dashboard, voorraadbeheer admin, gebruikersbeheer, stockflow"
         url="https://www.stockflow.be/admin"
       />
-      <div className="container py-6">
+      <div className="py-6 px-6">
         <Outlet />
       </div>
     </div>

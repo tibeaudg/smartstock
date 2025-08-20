@@ -13,9 +13,12 @@ interface LayoutProps {
   onTabChange: (tab: string) => void;
   userRole: 'admin' | 'staff';
   userProfile?: UserProfile;
+  // When set to 'admin', the inner max-width container and default paddings are disabled
+  // so pages can render full-bleed layouts (e.g., with a sub-sidebar) without hacks.
+  variant?: 'default' | 'admin';
 }
 
-export const Layout = ({ children, currentTab, onTabChange, userRole, userProfile }: LayoutProps) => {
+export const Layout = ({ children, currentTab, onTabChange, userRole, userProfile, variant = 'default' }: LayoutProps) => {
   const isMobile = useIsMobile();
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
@@ -46,8 +49,10 @@ export const Layout = ({ children, currentTab, onTabChange, userRole, userProfil
           </div>
         )}
 
-        <main className={`flex-1 p-4 pt-8 md:pt-20 md:pl-64 overflow-y-auto`}>
-          <div className={`${isMobile ? 'w-full' : 'mx-auto w-full max-w-7xl px-4 md:px-6'}`}>
+        <main
+          className={`flex-1 ${variant === 'admin' ? 'p-0 md:pl-28 md:pt-0' : 'p-4'} pt-8 md:pt-20 md:pl-64 overflow-y-auto`}
+        >
+          <div className={`${isMobile ? 'w-full' : variant === 'admin' ? 'w-full' : 'mx-auto w-full max-w-7xl px-4 md:px-6'}`}>
             {children}
           </div>
         </main>
