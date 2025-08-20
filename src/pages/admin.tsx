@@ -15,6 +15,7 @@ import { AdminNotificationManager } from '@/components/AdminNotificationManager'
 import { OnboardingModal } from '@/components/onboarding/OnboardingModal';
 import { AdminChatList } from '@/components/AdminChatList';
 import AdminCMS from '../components/AdminCMS';
+import BlogAnalytics from '../components/admin/BlogAnalytics';
 
 // Gebruikersbeheer types
 interface UserProfile {
@@ -221,7 +222,7 @@ export default function AdminPage() {
     mutationFn: ({ id, blocked }: { id: string; blocked: boolean }) => blockUser(id, blocked),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['userProfiles'] }),
   });
-  const sidebarNavItems: { id: 'users' | 'features' | 'onboarding' | 'chats' | 'notifications' | 'blogcms'; label: string }[] = [
+  const sidebarNavItems: { id: 'users' | 'features' | 'onboarding' | 'chats' | 'notifications' | 'blogcms' | 'bloganalytics'; label: string }[] = [
   { id: 'users', label: 'Gebruikersbeheer' },
   { id: 'features', label: 'Feature Management' },
   { id: 'onboarding', label: 'Onboarding Antwoorden' },
@@ -321,6 +322,17 @@ export default function AdminPage() {
                   <React.Suspense fallback={<div>Loading CMS...</div>}>
                     <AdminCMS />
                   </React.Suspense>
+                </CardContent>
+              </Card>
+            )}
+            {activeTab === 'bloganalytics' && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Blog Analytics</CardTitle>
+                  <CardDescription>Bekijk bezoekersstatistieken en prestaties van je blogposts.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <BlogAnalytics />
                 </CardContent>
               </Card>
             )}

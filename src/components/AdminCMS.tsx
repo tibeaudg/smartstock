@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { fetchBlogPosts, addBlogPost, updateBlogPost, deleteBlogPost } from '../integrations/supabase/client';
+import { fetchBlogPosts, addBlogPost, updateBlogPost, deleteBlogPost, getBlogAnalyticsSummary } from '../integrations/supabase/client';
 import { RichTextEditor } from './RichTextEditor';
 
 export default function AdminCMS() {
   const [posts, setPosts] = useState<any[]>([]);
   const [editing, setEditing] = useState<string | null>(null);
+  const [analytics, setAnalytics] = useState<any[]>([]);
   const [form, setForm] = useState({
     title: '',
     slug: '',
@@ -23,6 +24,7 @@ export default function AdminCMS() {
 
   useEffect(() => {
     fetchBlogPosts().then(setPosts).catch(console.error);
+    getBlogAnalyticsSummary().then(setAnalytics).catch(console.error);
   }, []);
 
   const handleTitleChange = (title: string) => {
@@ -209,6 +211,33 @@ export default function AdminCMS() {
         </div>
       </form>
 
+      {/* Quick Analytics Summary */}
+      {analytics.length > 0 && (
+        <div style={{ marginTop: 40, marginBottom: 20 }}>
+          <h3>Quick Analytics Overview</h3>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px', marginBottom: '20px' }}>
+            <div style={{ background: '#f8f9fa', padding: '16px', borderRadius: '8px', textAlign: 'center' }}>
+              <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#007bff' }}>
+                {analytics.reduce((sum, item) => sum + item.total_views, 0)}
+              </div>
+              <div style={{ fontSize: '14px', color: '#6c757d' }}>Total Views</div>
+            </div>
+            <div style={{ background: '#f8f9fa', padding: '16px', borderRadius: '8px', textAlign: 'center' }}>
+              <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#28a745' }}>
+                {analytics.reduce((sum, item) => sum + item.unique_visitors, 0)}
+              </div>
+              <div style={{ fontSize: '14px', color: '#6c757d' }}>Unique Visitors</div>
+            </div>
+            <div style={{ background: '#f8f9fa', padding: '16px', borderRadius: '8px', textAlign: 'center' }}>
+              <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#ffc107' }}>
+                {posts.length}
+              </div>
+              <div style={{ fontSize: '14px', color: '#6c757d' }}>Total Posts</div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div style={{ marginTop: 40 }}>
         <h3>All Blogposts</h3>
         <ul style={{ listStyle: 'none', padding: 0 }}>
@@ -217,6 +246,17 @@ export default function AdminCMS() {
               <div>
                 <strong>{post.title}</strong> 
                 <span style={{ color: '#888' }}>({post.slug})</span>
+                {(() => {
+                  const postAnalytics = analytics.find(a => a.slug === post.slug);
+                  return postAnalytics ? (
+                    <div style={{ marginTop: '4px', fontSize: '12px', color: '#666' }}>
+                      👁️ {postAnalytics.total_views} views • 👤 {postAnalytics.unique_visitors} unique visitors
+                      {postAnalytics.avg_time_on_page_seconds && (
+                        <span> • ⏱️ {Math.round(postAnalytics.avg_time_on_page_seconds)}s avg time</span>
+                      )}
+                    </div>
+                  ) : null;
+                })()}
               </div>
               <div style={{ display: 'flex', gap: 8 }}>
                 <button 
