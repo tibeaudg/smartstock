@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { fetchNotifications, sendNotification } from '../lib/notifications';
+import { fetchNotifications, sendNotification, deleteNotification } from '../lib/notifications';
 import { useAuth } from '../hooks/useAuth';
 import { supabase } from '../integrations/supabase/client';
 import { Button } from '@/components/ui/button';
+import { Trash2 } from 'lucide-react';
 
 export default function AdminNotificationsPage() {
   const { user } = useAuth();
@@ -31,12 +32,51 @@ export default function AdminNotificationsPage() {
 
   const handleShowUsers = async (notificationId: string) => {
     setShowUsers(notificationId);
-    // Fetch users who have read this notification
-    const { data, error } = await supabase
+    const { data: reads, error: readsError } = await supabase
       .from('notification_reads')
       .select('user_id, read_at')
       .eq('notification_id', notificationId);
-    if (!error && data) setUsers(data);
+    if (readsError || !reads || reads.length === 0) {
+      setUsers([]);
+      return;
+    }
+    const userIds = Array.from(new Set(reads.map((r: any) => r.user_id)));
+    const { data: profiles, error: profilesError } = await supabase
+      .from('profiles')
+      .select('id, first_name, last_name, email')
+      .in('id', userIds);
+    const idToProfile: Record<string, any> = {};
+    if (!profilesError && profiles) {
+      for (const p of profiles) idToProfile[p.id] = p;
+    }
+    const merged = reads.map((r: any) => {
+      const p = idToProfile[r.user_id];
+      const fullName = p ? [p.first_name, p.last_name].filter(Boolean).join(' ') : '';
+      const display = fullName || (p?.email ?? r.user_id);
+      return { user_id: r.user_id, read_at: r.read_at, display };
+    });
+    setUsers(merged);
+  };
+
+  const handleDelete = async (notificationId: string) => {
+    if (!window.confirm('Weet je zeker dat je deze melding wilt verwijderen?')) return;
+    try {
+      await deleteNotification(notificationId);
+    } catch (e: any) {
+      console.error('Delete notification failed:', e?.message || e);
+      alert(e?.message || 'Kon melding niet verwijderen. Controleer RLS/policies in Supabase.');
+      return;
+    }
+    try {
+      if (user) {
+        const refreshed = await fetchNotifications(user.id);
+        setNotifications(refreshed);
+      }
+    } catch {}
+    if (showUsers === notificationId) {
+      setShowUsers(null);
+      setUsers([]);
+    }
   };
 
   return (
@@ -64,15 +104,24 @@ export default function AdminNotificationsPage() {
         <ul className="divide-y divide-gray-200">
           {notifications.map(n => (
             <li key={n.id} className="py-3">
-              <div className="flex justify-between items-center">
+              <div className="flex justify-between items-center gap-2">
                 <div>
                   <div className="font-medium">{n.title}</div>
                   <div className="text-gray-600 text-sm">{n.message}</div>
                   <div className="text-gray-400 text-xs">{new Date(n.created_at).toLocaleString()}</div>
                 </div>
-                <Button size="sm" variant="outline" onClick={() => handleShowUsers(n.id)}>
-                  Geopend door
-                </Button>
+                <div className="flex items-center gap-2">
+                  <Button size="sm" variant="outline" onClick={() => handleShowUsers(n.id)}>
+                    Geopend door
+                  </Button>
+                  <button
+                    className="p-2 rounded hover:bg-red-100 text-red-600"
+                    title="Verwijder melding"
+                    onClick={() => handleDelete(n.id)}
+                  >
+                    <Trash2 className="h-5 w-5" />
+                  </button>
+                </div>
               </div>
               {showUsers === n.id && (
                 <div className="mt-2 bg-gray-50 p-2 rounded">
@@ -82,7 +131,7 @@ export default function AdminNotificationsPage() {
                   ) : (
                     <ul className="text-xs">
                       {users.map(u => (
-                        <li key={u.user_id}>{u.user_id} <span className="text-gray-400">({new Date(u.read_at).toLocaleString()})</span></li>
+                        <li key={u.user_id}>{u.display} <span className="text-gray-400">({new Date(u.read_at).toLocaleString()})</span></li>
                       ))}
                     </ul>
                   )}
