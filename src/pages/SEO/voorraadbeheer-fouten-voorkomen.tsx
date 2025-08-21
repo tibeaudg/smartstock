@@ -1,8 +1,8 @@
 ﻿import React from 'react';
-import SEO from '../components/SEO';
+import SEO from '../../components/SEO';
 import { Link } from 'react-router-dom';
-import SeoPageLayout from '../components/SeoPageLayout';
-import { AlertTriangle, Clock, Shield, Database, Settings, Users } from 'lucide-react';
+import SeoPageLayout from '../../components/SeoPageLayout';
+import { AlertTriangle, Clock, Shield, Database, Settings, Users, Check, X } from 'lucide-react';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 
 export default function VoorraadbeheerFoutenVoorkomen() {

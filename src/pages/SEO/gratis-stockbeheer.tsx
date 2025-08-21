@@ -1,7 +1,7 @@
 import React from 'react';
-import SEO from '../components/SEO';
+import SEO from '../../components/SEO';
 import { Link } from 'react-router-dom';
-import SeoPageLayout from '../components/SeoPageLayout';
+import SeoPageLayout from '../../components/SeoPageLayout';
 import { Check, Star, Smartphone, Zap, Shield, Users, TrendingUp, Gift } from 'lucide-react';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 

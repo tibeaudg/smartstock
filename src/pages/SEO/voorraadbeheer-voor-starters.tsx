@@ -1,8 +1,8 @@
 ﻿import React from 'react';
-import SEO from '../components/SEO';
+import SEO from '../../components/SEO';
 import { Link } from 'react-router-dom';
-import SeoPageLayout from '../components/SeoPageLayout';
-import Footer from '../components/Footer';
+import SeoPageLayout from '../../components/SeoPageLayout';
+import Footer from '../../components/Footer';
 import { BookOpen, Target, TrendingUp, Shield, Users, Rocket, Check } from 'lucide-react';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { Header } from '@/components/Header';

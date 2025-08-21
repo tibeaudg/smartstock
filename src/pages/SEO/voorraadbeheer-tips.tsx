@@ -1,7 +1,7 @@
 import React from 'react';
-import SEO from '../components/SEO';
-import SeoPageLayout from '../components/SeoPageLayout';
-import Footer from '../components/Footer';
+import SEO from '../../components/SEO';
+import SeoPageLayout from '../../components/SeoPageLayout';
+import Footer from '../../components/Footer';
 
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { Header } from '@/components/Header';

@@ -1,12 +1,12 @@
 ﻿import React from 'react';
-import SEO from '../components/SEO';
+import SEO from '../../components/SEO';
 import { Link } from 'react-router-dom';
-import SeoPageLayout from '../components/SeoPageLayout';
+import SeoPageLayout from '../../components/SeoPageLayout';
 import { Check, Star, Smartphone, Bell, Zap, Shield, Users, TrendingUp } from 'lucide-react';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { Utensils, Coffee, ChefHat, Clock, AlertTriangle } from 'lucide-react';
 import { Header } from '@/components/Header';
-import Footer from '../components/Footer';
+import Footer from '../../components/Footer';
 
 export default function VoorraadbeheerHoreca() {
   // Gebruik de page refresh hook
