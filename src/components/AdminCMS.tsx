@@ -36,9 +36,6 @@ export default function AdminCMS() {
     setForm(form => ({
       ...form,
       title,
-      slug,
-      metaTitle: title,
-      metaDescription: `Lees meer over ${title} op StockFlow.`
     }));
   };
 
@@ -134,10 +131,7 @@ export default function AdminCMS() {
           onChange={e => setForm({ ...form, slug: e.target.value })} 
           required 
         />
-        <RichTextEditor 
-          content={form.content}
-          onChange={handleContentChange}
-        />
+
         <input 
           className="cms-input" 
           placeholder="Meta Title" 
@@ -150,6 +144,17 @@ export default function AdminCMS() {
           value={form.metaDescription} 
           onChange={e => setForm({ ...form, metaDescription: e.target.value })} 
         />
+
+
+        <RichTextEditor 
+          content={form.content}
+          onChange={handleContentChange}
+        />
+
+
+
+
+
         <input 
           className="cms-input hidden" 
           placeholder="OG Image URL" 
