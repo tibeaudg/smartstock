@@ -19,9 +19,15 @@ export async function updateBlogPost(id: string, post: Partial<BlogPost>): Promi
   return data?.[0];
 }
 
-export async function deleteBlogPost(id: string): Promise<void> {
-  const { error } = await supabase.from('blogposts').delete().eq('id', id);
+export async function deleteBlogPost(id: string): Promise<BlogPost[]> {
+  // Use array response to avoid 406 when zero rows are returned
+  const { data, error } = await supabase
+    .from('blogposts')
+    .delete()
+    .eq('id', id)
+    .select('*');
   if (error) throw error;
+  return data || [];
 }
 
 export async function fetchBlogPostBySlug(slug: string): Promise<BlogPost | null> {

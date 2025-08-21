@@ -104,13 +104,15 @@ export default function AdminCMS() {
   };
 
   const handleDelete = async (id: string) => {
-    if (window.confirm('Are you sure you want to delete this post?')) {
-      try {
-        await deleteBlogPost(id);
-        setPosts(posts.filter(p => p.id !== id));
-      } catch (err) {
-        alert('Failed to delete post: ' + (err as Error).message);
-      }
+    if (!window.confirm('Weet je zeker dat je deze post wil verwijderen?')) return;
+    try {
+      const deleted = await deleteBlogPost(id);
+      // Verwijder lokaal
+      setPosts(prev => prev.filter(p => p.id !== id));
+      // Optioneel: feedback tonen
+      console.log('Blogpost verwijderd', deleted[0]?.id || id);
+    } catch (err) {
+      alert('Verwijderen mislukt: ' + (err as Error).message);
     }
   };
 
