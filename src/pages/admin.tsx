@@ -269,7 +269,7 @@ export default function AdminPage() {
         userProfile={userProfile}
         variant="admin"
       >
-                 <div className="flex flex-col flex-1 min-h-[calc(100vh-80px)] pl-64 -mt-20">
+        <div className="flex flex-col flex-1 min-h-[calc(100vh-80px)] pl-64">
           {/* Top navigation bar (horizontaal i.p.v. sidebar) */}
           <div className="w-full">
             <div className="flex flex-wrap items-center justify-between gap-2 p-4">
