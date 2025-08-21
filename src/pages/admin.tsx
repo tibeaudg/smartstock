@@ -269,47 +269,41 @@ export default function AdminPage() {
         userProfile={userProfile}
         variant="admin"
       >
-        
-    <div className="flex flex-1 min-h-[calc(100vh-80px)]">
-      {/* Sub-sidebar with fixed width and full viewport height */}
-      <div className="w-56 min-w-[224px] h-200 flex flex-col bg-white border-r p-2">
-        
-        {/* Navigatie-items worden nu dynamisch gerenderd */}
-        <nav className="flex-1 space-y-2 p-2 font-semibold text-sm">
-          {sidebarNavItems.map((item) => (
-            <button
-              key={item.id}
-              onClick={() => setActiveTab(item.id)}
-              className={`
-                w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-left transition-colors
-                border  /* <-- Altijd een border */
-                ${
-                  activeTab === item.id
-                    ? 'bg-blue-50 text-blue-700 border-blue-200' /* Actieve staat */
-                    : 'text-gray-600 border-transparent hover:bg-gray-50 hover:text-gray-900' /* Inactieve staat */
-                }
-              `}
-            >
-              {item.label}
-            </button>
-          ))}
-        </nav>
-        
-        {/* Vaste knop onderaan */}
-        <div className="p-2">
-          <button 
-            className="w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-left transition-colors text-gray-600 hover:bg-gray-50 hover:text-gray-900" 
-            onClick={() => setShowOnboarding(true)}
-          >
-            Onboarding Flow Testen
-          </button>
-        </div>
-        </div>
-
-
+                 <div className="flex flex-col flex-1 min-h-[calc(100vh-80px)] pl-64 -mt-20">
+          {/* Top navigation bar (horizontaal i.p.v. sidebar) */}
+          <div className="w-full">
+            <div className="flex flex-wrap items-center justify-between gap-2 p-4">
+              <nav className="flex flex-wrap items-center gap-2 font-semibold text-sm">
+                {sidebarNavItems.map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => setActiveTab(item.id)}
+                    className={`
+                      px-3 py-2 rounded-lg transition-colors border
+                      ${
+                        activeTab === item.id
+                          ? 'bg-blue-50 text-blue-700 border-blue-200'
+                          : 'text-gray-600 border-transparent hover:bg-gray-50 hover:text-gray-900'
+                      }
+                    `}
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </nav>
+              <div className="shrink-0">
+                <button
+                  className="px-3 py-2 rounded-lg transition-colors text-gray-600 hover:bg-gray-50 hover:text-gray-900 border border-transparent"
+                  onClick={() => setShowOnboarding(true)}
+                >
+                  Onboarding Flow Testen
+                </button>
+              </div>
+            </div>
+          </div>
 
           {/* Main content area */}
-          <div className="flex-1 p-6 md:p-8 space-y-6">
+          <div className="w-full flex-1 px-4 md:px-6 space-y-6">
             {activeTab === 'blogcms' && (
               <Card>
                 <CardHeader>

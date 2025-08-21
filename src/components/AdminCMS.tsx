@@ -137,13 +137,13 @@ export default function AdminCMS() {
           onChange={handleContentChange}
         />
         <input 
-          className="cms-input hidden" 
+          className="cms-input" 
           placeholder="Meta Title" 
           value={form.metaTitle} 
           onChange={e => setForm({ ...form, metaTitle: e.target.value })} 
         />
         <input 
-          className="cms-input hidden" 
+          className="cms-input" 
           placeholder="Meta Description" 
           value={form.metaDescription} 
           onChange={e => setForm({ ...form, metaDescription: e.target.value })} 

@@ -50,7 +50,7 @@ export const Layout = ({ children, currentTab, onTabChange, userRole, userProfil
         )}
 
         <main
-          className={`flex-1 ${variant === 'admin' ? 'p-0 md:pl-28 md:pt-0' : 'p-4'} pt-8 md:pt-20 md:pl-64 overflow-y-auto`}
+          className={`flex-1 ${variant === 'admin' ? 'pt-0 md:pt-0 md:pl-0 overflow-y-auto' : 'p-4'} pt-8 md:pt-20 md:pl-64 overflow-y-auto`}
         >
           <div className={`${isMobile ? 'w-full' : variant === 'admin' ? 'w-full' : 'mx-auto w-full max-w-7xl px-4 md:px-6'}`}>
             {children}
