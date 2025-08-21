@@ -2,41 +2,54 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.stockflow.be/</loc>
+    <lastmod>2025-08-21T09:16:00.091Z</lastmod>
   </url>
   <url>
     <loc>https://www.stockflow.be/blog</loc>
+    <lastmod>2025-08-21T09:16:00.091Z</lastmod>
   </url>
   <url>
     <loc>https://www.stockflow.be/gratis-stockbeheer</loc>
-  </url>
-  <url>
-    <loc>https://www.stockflow.be/voorraadbeheer-tips</loc>
-  </url>
-  <url>
-    <loc>https://www.stockflow.be/voorraadbeheer-horeca</loc>
-  </url>
-  <url>
-    <loc>https://www.stockflow.be/voorraadbeheer-webshop</loc>
-  </url>
-  <url>
-    <loc>https://www.stockflow.be/voorraadbeheer-automatiseren</loc>
-  </url>
-  <url>
-    <loc>https://www.stockflow.be/voorraadbeheer-excel-vs-software</loc>
-  </url>
-  <url>
-    <loc>https://www.stockflow.be/voorraadbeheer-fouten-voorkomen</loc>
-  </url>
-  <url>
-    <loc>https://www.stockflow.be/blog/voorraadbeheer-software-vergelijken</loc>
-  </url>
-  <url>
-    <loc>https://www.stockflow.be/voorraadbeheer-voor-starters</loc>
+    <lastmod>2025-08-21T09:16:00.091Z</lastmod>
   </url>
   <url>
     <loc>https://www.stockflow.be/mobiel-voorraadbeheer</loc>
+    <lastmod>2025-08-21T09:16:00.091Z</lastmod>
   </url>
   <url>
-    <loc>https://www.stockflow.be/inventarisatie-tips</loc>
+    <loc>https://www.stockflow.be/voorraadbeheer-automatiseren</loc>
+    <lastmod>2025-08-21T09:16:00.091Z</lastmod>
   </url>
-</urlset> 
+  <url>
+    <loc>https://www.stockflow.be/voorraadbeheer-excel-vs-software</loc>
+    <lastmod>2025-08-21T09:16:00.091Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.stockflow.be/voorraadbeheer-fouten-voorkomen</loc>
+    <lastmod>2025-08-21T09:16:00.091Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.stockflow.be/voorraadbeheer-horeca</loc>
+    <lastmod>2025-08-21T09:16:00.091Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.stockflow.be/voorraadbeheer-software-vergelijken</loc>
+    <lastmod>2025-08-21T09:16:00.091Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.stockflow.be/voorraadbeheer-tips</loc>
+    <lastmod>2025-08-21T09:16:00.091Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.stockflow.be/voorraadbeheer-voor-starters</loc>
+    <lastmod>2025-08-21T09:16:00.091Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.stockflow.be/voorraadbeheer-webshop</loc>
+    <lastmod>2025-08-21T09:16:00.091Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.stockflow.be/blog/voorraadbeheer-tips</loc>
+    <lastmod>2025-08-01T00:00:00.000Z</lastmod>
+  </url>
+</urlset>
