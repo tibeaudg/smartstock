@@ -41,8 +41,16 @@ import VoorraadbeheerExcelVsSoftware from './pages/SEO/voorraadbeheer-excel-vs-s
 import VoorraadbeheerVoorStarters from './pages/SEO/voorraadbeheer-voor-starters';
 import MobielVoorraadbeheer from './pages/SEO/mobiel-voorraadbeheer';
 import GratisStockbeheer from './pages/SEO/gratis-stockbeheer';
+import Voorraadbeheer from './pages/SEO/voorraadbeheer';
+
 import React, { useState } from 'react';
 import { OnboardingModal } from "./components/onboarding/OnboardingModal";
+import VoorraadbeheerSoftware from "./pages/SEO/voorraadbeheer-software";
+import Stockbeheer from "./pages/SEO/stockbeheer";
+import SimpelStockbeheer from "./pages/SEO/simpelstockbeheer";
+import GratisVoorraadbeheer from "./pages/SEO/gratis-voorraadbeheer";
+import VoorraadbeheerVoorHoreca from "./pages/SEO/voorraadbeheer-voor-horeca";
+
 
 // ErrorBoundary component
 class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean; error: any }> {
@@ -210,7 +218,6 @@ export default function App() {
       "addressCountry": "BE"
     },
     "description": "Simpel stockbeheer voor KMO's en zelfstandigen. Beheer je voorraad eenvoudig online met stockflow.",
-    "areaServed": ["Gent", "Brugge", "Antwerpen", "Vlaanderen"]
   };
   return (
     <ErrorBoundary>
@@ -245,6 +252,12 @@ export default function App() {
                   <Route path="/voorraadbeheer-excel-vs-software" element={<VoorraadbeheerExcelVsSoftware />} />
                   <Route path="/voorraadbeheer-voor-starters" element={<VoorraadbeheerVoorStarters />} />
                   <Route path="/mobiel-voorraadbeheer" element={<MobielVoorraadbeheer />} />
+                  <Route path="/voorraadbeheer-software" element={<VoorraadbeheerSoftware />} />
+                  <Route path="/voorraadbeheer" element={<Voorraadbeheer />} />
+                  <Route path="/stockbeheer" element={<Stockbeheer />} />
+                  <Route path="/simpelstockbeheer" element={<SimpelStockbeheer />} />
+                  <Route path="/gratis-voorraadbeheer" element={<GratisVoorraadbeheer />} />
+                  <Route path="/voorraadbeheer-voor-horeca" element={<VoorraadbeheerVoorHoreca />} />
                   
                   {/* Blog routes */}
                   <Route path="/blog" element={<BlogListPage />} />

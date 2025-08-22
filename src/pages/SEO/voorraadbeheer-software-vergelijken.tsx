@@ -5,7 +5,7 @@ import SeoPageLayout from '../../components/SeoPageLayout';
 import Footer from '../../components/Footer';
 import { Check, Star, Smartphone, Bell, Zap, Shield, Users, TrendingUp } from 'lucide-react';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
-import { Header } from '@/components/Header';
+import { Header } from '@/components/HeaderPublic';
 
 export default function VoorraadbeheerSoftwareVergelijken() {
   // Gebruik de page refresh hook

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Header } from './Header';
+import { Header } from './HeaderPublic';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -277,7 +277,7 @@ export const HomePage = () => {
       <SEO
         title="Gratis Voorraadbeheer voor KMO's in Vlaanderen | stockflow"
         description="Ontdek het beste gratis voorraadbeheer programma voor Vlaamse KMO's. Eenvoudig, gratis en slim voorraadbeheer zonder verborgen kosten. Start vandaag nog!"
-        keywords="gratis voorraadbeheer, voorraadbeheer programma, voorraadbeheersysteem, stockbeheer app, voorraadbeheer software, voorraadbeheer KMO, voorraadbeheer Vlaanderen, voorraadbeheer Gent, voorraadbeheer Brugge, voorraadbeheer Antwerpen, gratis stockbeheer, voorraad app, magazijnbeheer"
+        keywords="software voorraadbeheer, magazijn software, gratis voorraadbeheer, voorraadbeheer programma, voorraadbeheersysteem, stockbeheer software, voorraadbeheer software, voorraadbeheer KMO, voorraadbeheer Vlaanderen, voorraadbeheer Gent, gratis stockbeheer, voorraad app, magazijnbeheer, software magazijnbeheer, software stockbeheer, voorraadbeheer app"
         url="https://www.stockflow.be/"
         structuredData={{
           "@context": "https://schema.org",
@@ -323,7 +323,7 @@ export const HomePage = () => {
           </p>
           <div className="flex flex-col md:flex-row gap-4 justify-center mb-6 md:mb-8 px-4">
             <Button size="lg" className="bg-blue-600 text-white px-6 md:px-8 py-3 md:py-4 rounded-lg font-semibold hover:bg-blue-700 transition text-base md:text-lg" onClick={handleLoginClick}>
-              Start Gratis Nu
+              Start Nu Gratis!
             </Button>
             <Button size="lg" variant="outline" className="border-blue-600 text-blue-600 px-6 md:px-8 py-3 md:py-4 rounded-lg font-semibold hover:bg-blue-50 transition text-base md:text-lg" onClick={() => scrollToSection('video-section')}>
               Hoe werkt het?
@@ -333,7 +333,7 @@ export const HomePage = () => {
       </section>
 
       {/* VOORDELEN SECTIE - Compact op mobiel */}
-      <section id="benefits-section" className="bg-blue-50 py-12 md:py-16">
+      <section id="benefits-section" className="bg-gray-50 py-12 md:py-16">
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-8 md:mb-12">
             <h2 className="text-2xl md:text-3xl font-bold mb-4">Waarom KMO's in Vlaanderen Kiezen voor stockflow</h2>
@@ -398,8 +398,8 @@ export const HomePage = () => {
       <section id="video-section" className="bg-gray-50 py-12 md:py-20">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4 md:mb-6">
-            <span className="block">Hoe Werkt Gratis</span>
-            <span className="block text-blue-600">Voorraadbeheer?</span>
+            <span className="block">Hoe Werkt</span>
+            <span className="block text-blue-600">Stockflow?</span>
           </h2>
           <p className="text-lg md:text-xl text-gray-600 mb-8 md:mb-12 max-w-2xl mx-auto">
             Ontdek hoe eenvoudig voorraadbeheer kan zijn met stockflow. Bekijk hoe Vlaamse KMO's hun voorraad beheren.
@@ -524,8 +524,11 @@ export const HomePage = () => {
         </div>
       </section>
 
+
+
+
       {/* FINAL CTA - Compact op mobiel */}
-      <section className="bg-blue-600 text-white py-12 md:py-20">
+      <section className="bg-white text-black py-12 md:py-20">
         <div className="max-w-4xl mx-auto text-center px-4">
           <h2 className="text-3xl md:text-4xl font-bold mb-4 md:mb-6">
             Start Vandaag Nog Met Gratis Voorraadbeheer
@@ -534,8 +537,8 @@ export const HomePage = () => {
             Sluit je aan bij honderden Vlaamse KMO's die al profiteren van professioneel voorraadbeheer zonder kosten.
           </p>
           <div className="flex flex-col md:flex-row gap-4 justify-center">
-            <Button size="lg" className="bg-white text-blue-600 px-6 md:px-8 py-3 md:py-4 rounded-lg font-semibold shadow-lg hover:bg-gray-100 transition text-base md:text-lg" onClick={handleLoginClick}>
-              Start Gratis Nu
+            <Button size="lg" className="bg-blue-600 text-white px-6 md:px-8 py-3 md:py-4 rounded-lg font-semibold shadow-lg hover:bg-gray-100 transition text-base md:text-lg" onClick={handleLoginClick}>
+              Start Nu Gratis!
             </Button>
           </div>
           <p className="text-sm mt-4 opacity-75">Geen creditcard vereist • Direct toegang • Nederlandse support</p>
@@ -556,21 +559,6 @@ export const HomePage = () => {
       Het beste gratis voorraadbeheerprogramma voor Vlaamse KMO's. 
       Eenvoudig, veilig en zonder verborgen kosten.
     </p>
-
-    <div className="flex justify-center space-x-10 mb-10">
-      <Link
-        to="/voorraadbeheer-tips"
-        className="text-blue-400 hover:text-blue-300 text-sm md:text-base transition-colors duration-200"
-      >
-        Tips
-      </Link>
-      <Link
-        to="/voorraadbeheer-software-vergelijken"
-        className="text-blue-400 hover:text-blue-300 text-sm md:text-base transition-colors duration-200"
-      >
-        Vergelijking
-      </Link>
-    </div>
 
     <div className="border-t border-gray-700 pt-6">
       <p className="text-gray-500 text-xs md:text-sm">

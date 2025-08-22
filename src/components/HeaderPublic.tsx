@@ -43,14 +43,6 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButton
     }
   };
 
-  const handleNavClick = (sectionId: string) => {
-    if (onNavigate) {
-      onNavigate(sectionId);
-    }
-    setMobileMenuOpen(false);
-    setActiveDropdown(null);
-  };
-
 
   return (
     <>
@@ -60,7 +52,7 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButton
           : 'bg-white/90 backdrop-blur-sm'
       }`}>
         <div className="w-full">
-          <div className="flex justify-between items-center h-16 px-4 md:px-8">
+          <div className="flex justify-between items-center h-16 px-4 md:px-8 border-b border-gray-200 shadow-sm">
             <div className="flex items-center">
               <Link to="/" className="flex items-center group">
                 <Package className="h-8 w-8 text-blue-600 mr-3 group-hover:scale-110 transition-transform" />
@@ -69,7 +61,6 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButton
             </div>
 
 
-            {/* Desktop Auth Buttons */}
 
               {/* Desktop Notification Button */}
               <div className="hidden md:flex items-center space-x-3">
@@ -78,11 +69,8 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButton
                 )}
                 {!hideAuthButtons && (
                   <>
-                    <Button variant="outline" size="sm" onClick={handleLoginClick} className="text-sm border border-blue-600">
-                      Inloggen
-                    </Button>
                     <Button size="sm" onClick={handleLoginClick} className="text-sm">
-                      Probeer Gratis
+                      Aanmelden
                     </Button>
                   </>
                 )}

@@ -9,7 +9,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
-import { Header } from './Header';
+import { Header } from './HeaderPublic';
 import { cn } from '@/lib/utils';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 
