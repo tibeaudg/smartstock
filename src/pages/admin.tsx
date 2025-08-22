@@ -77,6 +77,28 @@ async function fetchUserProfiles(): Promise<UserProfile[]> {
   return data || [];
 }
 
+// Functie om gebruikersstatistieken te berekenen
+function calculateUserStats(users: UserProfile[]) {
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const weekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+  const monthAgo = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate());
+  const yearAgo = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate());
+
+  const newUsersToday = users.filter(user => new Date(user.created_at) >= today).length;
+  const newUsersThisWeek = users.filter(user => new Date(user.created_at) >= weekAgo).length;
+  const newUsersThisMonth = users.filter(user => new Date(user.created_at) >= monthAgo).length;
+  const newUsersThisYear = users.filter(user => new Date(user.created_at) >= yearAgo).length;
+
+  return {
+    totalUsers: users.length,
+    newUsersToday,
+    newUsersThisWeek,
+    newUsersThisMonth,
+    newUsersThisYear
+  };
+}
+
 async function fetchUserStats(userId: string): Promise<UserStats> {
   try {
     // Haal producten op voor deze gebruiker
@@ -339,6 +361,40 @@ export default function AdminPage() {
                 <CardDescription>Beheer gebruikers, blokkeer/deblokkeer en bekijk gebruikersgegevens.</CardDescription>
               </CardHeader>
               <CardContent>
+                {/* Stats Cards */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
+                  <Card className="bg-blue-50 border-blue-200">
+                    <CardContent className="p-4">
+                      <div className="text-2xl font-bold text-blue-700">{users.length}</div>
+                      <div className="text-sm text-blue-600">Totaal gebruikers</div>
+                    </CardContent>
+                  </Card>
+                  <Card className="bg-green-50 border-green-200">
+                    <CardContent className="p-4">
+                      <div className="text-2xl font-bold text-green-700">{calculateUserStats(users).newUsersToday}</div>
+                      <div className="text-sm text-green-600">Nieuwe vandaag</div>
+                    </CardContent>
+                  </Card>
+                  <Card className="bg-yellow-50 border-yellow-200">
+                    <CardContent className="p-4">
+                      <div className="text-2xl font-bold text-yellow-700">{calculateUserStats(users).newUsersThisWeek}</div>
+                      <div className="text-sm text-yellow-600">Nieuwe deze week</div>
+                    </CardContent>
+                  </Card>
+                  <Card className="bg-purple-50 border-purple-200">
+                    <CardContent className="p-4">
+                      <div className="text-2xl font-bold text-purple-700">{calculateUserStats(users).newUsersThisMonth}</div>
+                      <div className="text-sm text-purple-600">Nieuwe deze maand</div>
+                    </CardContent>
+                  </Card>
+                  <Card className="bg-orange-50 border-orange-200">
+                    <CardContent className="p-4">
+                      <div className="text-2xl font-bold text-orange-700">{calculateUserStats(users).newUsersThisYear}</div>
+                      <div className="text-sm text-orange-600">Nieuwe dit jaar</div>
+                    </CardContent>
+                  </Card>
+                </div>
+
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm text-left">
                     <thead className="text-xs uppercase bg-gray-50">
