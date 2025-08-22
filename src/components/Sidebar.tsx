@@ -270,7 +270,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
                 </div>
                 {isOpen && (
                   <>
-                    <span className="font-medium ml-3 flex-1 text-left">Hulp nodig?</span>
+                    <span className="font-medium ml-3 flex-1 text-left">Support</span>
                     {unreadMessages > 0 && (
                       <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full mr-2">
                         {unreadMessages}
