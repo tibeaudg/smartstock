@@ -3,9 +3,13 @@ import {
   BarChart3, 
   Package, 
   ShoppingCart, 
-  Settings
+  Settings,
+  Users,
+  MessageSquare,
+  Bell,
+  FileText
 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth'; // FIX: use import, not require
 import { FloatingChatButton } from './FloatingChatButton';
 import { ChatModal } from './ChatModal';
@@ -20,8 +24,11 @@ export const MobileBottomNav = ({ currentTab, onTabChange, userRole }: MobileBot
   // FIX: use hook directly
   const { userProfile } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const isBlocked = userProfile?.blocked;
-  const menuItems = isBlocked
+  const isAdminPage = location.pathname.startsWith('/admin');
+  
+  const regularMenuItems = isBlocked
     ? [
         { id: 'settings', label: 'Instellingen', icon: Settings, path: '/dashboard/settings' },
       ]
@@ -31,6 +38,15 @@ export const MobileBottomNav = ({ currentTab, onTabChange, userRole }: MobileBot
         { id: 'transactions', label: 'Bewegingslijst', icon: ShoppingCart, path: '/dashboard/transactions' },
         { id: 'settings', label: 'Instellingen', icon: Settings, path: '/dashboard/settings' },
       ];
+
+  const adminMenuItems = [
+    { id: 'users', label: 'Gebruikers', icon: Users, path: '/admin' },
+    { id: 'notifications', label: 'Meldingen', icon: Bell, path: '/admin' },
+    { id: 'chats', label: 'Chats', icon: MessageSquare, path: '/admin' },
+    { id: 'blogcms', label: 'Blog CMS', icon: FileText, path: '/admin' },
+  ];
+
+  const menuItems = isAdminPage ? adminMenuItems : regularMenuItems;
 
   const handleNav = (item: typeof menuItems[0]) => {
     if (onTabChange) onTabChange(item.id);
