@@ -293,7 +293,7 @@ export default function AdminPage() {
         userProfile={userProfile}
         variant="admin"
       >
-        <div className="flex flex-col flex-1 min-h-[calc(100vh-80px)]">
+        <div className="lg:ml-64 flex flex-col flex-1 min-h-[calc(100vh-80px)]">
           {/* Top navigation bar - responsive design */}
           <div className="w-full">
             <div className="mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 p-4">
