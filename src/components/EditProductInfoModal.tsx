@@ -350,7 +350,11 @@ export const EditProductInfoModal = ({
                     </PopoverTrigger>
                     <PopoverContent className="w-full p-0">
                       <Command>
-                        <CommandInput placeholder="Categorie zoeken..." />
+                        <CommandInput 
+                          placeholder="Categorie zoeken..." 
+                          value={form.category_name}
+                          onValueChange={(value) => handleCategoryChange(value)}
+                        />
                         <CommandList>
                           <CommandEmpty>
                             <div className="p-2 text-center">
@@ -358,14 +362,28 @@ export const EditProductInfoModal = ({
                               <Button
                                 variant="outline"
                                 size="sm"
-                                onClick={() => {
-                                  if (form.category_name.trim()) {
-                                    // Voeg nieuwe categorie toe aan lokale state
-                                    const newCategory = { id: Date.now().toString(), name: form.category_name.trim() };
-                                    setCategories(prev => [...prev, newCategory]);
-                                    setCategoryOpen(false);
-                                  }
-                                }}
+                                                                     onClick={async () => {
+                                       if (form.category_name.trim()) {
+                                         try {
+                                           const { data: newCategory, error } = await supabase
+                                             .from('categories')
+                                             .insert({ name: form.category_name.trim() })
+                                             .select('id, name')
+                                             .single();
+                                           
+                                           if (error) {
+                                             toast.error('Fout bij het aanmaken van categorie');
+                                             return;
+                                           }
+                                           
+                                           setCategories(prev => [...prev, newCategory]);
+                                           setCategoryOpen(false);
+                                           toast.success('Nieuwe categorie toegevoegd!');
+                                         } catch (error) {
+                                           toast.error('Fout bij het aanmaken van categorie');
+                                         }
+                                       }
+                                     }}
                                 className="w-full"
                               >
                                 <Plus className="w-4 h-4 mr-2" />
@@ -414,8 +432,12 @@ export const EditProductInfoModal = ({
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-full p-0">
-                      <Command>
-                        <CommandInput placeholder="Leverancier zoeken..." />
+                                             <Command>
+                         <CommandInput 
+                           placeholder="Leverancier zoeken..." 
+                           value={form.supplier_name}
+                           onValueChange={(value) => handleSupplierChange(value)}
+                         />
                         <CommandList>
                           <CommandEmpty>
                             <div className="p-2 text-center">

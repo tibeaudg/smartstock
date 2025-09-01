@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Scan, Plus, Camera, Package, AlertCircle, ArrowUpDown } from 'lucide-react';
+import { Scan, Plus, Camera, Package, AlertCircle, ArrowUpDown, Check, ChevronsUpDown, Tag, Truck } from 'lucide-react';
 import { BarcodeScanner } from '@/components/BarcodeScanner';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
@@ -12,6 +12,9 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { cn } from '@/lib/utils';
 
 interface ProductFormData {
   name: string;
@@ -47,12 +50,62 @@ export default function ScanPage() {
     barcode: '',
   });
 
+  // State voor categorieën en leveranciers dropdowns
+  const [categories, setCategories] = useState<Array<{ id: string; name: string }>>([]);
+  const [suppliers, setSuppliers] = useState<Array<{ id: string; name: string }>>([]);
+  const [categoryOpen, setCategoryOpen] = useState(false);
+  const [supplierOpen, setSupplierOpen] = useState(false);
+
   const handleBarcodeDetected = (barcode: string) => {
     setFormData(prev => ({ ...prev, barcode }));
     setTransactionType('incoming'); // Reset to incoming for new barcodes
     setShowScanner(false);
     setShowProductForm(true);
     toast.success(`Barcode gedetecteerd: ${barcode}`);
+  };
+
+  // Haal categorieën en leveranciers op bij component mount
+  useEffect(() => {
+    if (user) {
+      fetchCategories();
+      fetchSuppliers();
+    }
+  }, [user]);
+
+  const fetchCategories = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('categories')
+        .select('id, name')
+        .order('name');
+      
+      if (error) {
+        console.error('Error fetching categories:', error);
+        return;
+      }
+      
+      setCategories(data || []);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+  };
+
+  const fetchSuppliers = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('suppliers')
+        .select('id, name')
+        .order('name');
+      
+      if (error) {
+        console.error('Error fetching suppliers:', error);
+        return;
+      }
+      
+      setSuppliers(data || []);
+    } catch (error) {
+      console.error('Error fetching suppliers:', error);
+    }
   };
 
   const handleInputChange = (field: keyof ProductFormData, value: string | number) => {
@@ -128,12 +181,68 @@ export default function ScanPage() {
           return;
         }
 
+        // Handle supplier
+        let supplierId = null;
+        if (formData.supplierName.trim()) {
+          const { data: existingSupplier } = await supabase
+            .from('suppliers')
+            .select('id')
+            .eq('name', formData.supplierName.trim())
+            .single();
+
+          if (existingSupplier) {
+            supplierId = existingSupplier.id;
+          } else {
+            const { data: newSupplier, error: supplierError } = await supabase
+              .from('suppliers')
+              .insert({ name: formData.supplierName.trim() })
+              .select('id')
+              .single();
+
+            if (supplierError) {
+              console.error('Error creating supplier:', supplierError);
+              toast.error('Fout bij het aanmaken van leverancier');
+              setLoading(false);
+              return;
+            }
+            supplierId = newSupplier.id;
+          }
+        }
+
+        // Handle category
+        let categoryId = null;
+        if (formData.categoryName.trim()) {
+          const { data: existingCategory } = await supabase
+            .from('categories')
+            .select('id')
+            .eq('name', formData.categoryName.trim())
+            .single();
+
+          if (existingCategory) {
+            categoryId = existingCategory.id;
+          } else {
+            const { data: newCategory, error: categoryError } = await supabase
+              .from('categories')
+              .insert({ name: formData.categoryName.trim() })
+              .select('id')
+              .single();
+
+            if (categoryError) {
+              console.error('Error creating category:', categoryError);
+              toast.error('Fout bij het aanmaken van categorie');
+              setLoading(false);
+              return;
+            }
+            categoryId = newCategory.id;
+          }
+        }
+
         // Insert new product
         const productData = {
           name: formData.name.trim(),
           description: formData.description.trim() || null,
-          category_name: formData.categoryName.trim() || null,
-          supplier_name: formData.supplierName.trim() || null,
+          category_id: categoryId,
+          supplier_id: supplierId,
           quantity_in_stock: formData.quantityInStock,
           minimum_stock_level: formData.minimumStockLevel,
           purchase_price: formData.purchasePrice,
@@ -415,27 +524,169 @@ export default function ScanPage() {
                        <Label htmlFor="category" className="text-sm font-medium text-gray-700">
                          Categorie
                        </Label>
-                       <Input
-                         id="category"
-                         type="text"
-                         value={formData.categoryName}
-                         onChange={(e) => handleInputChange('categoryName', e.target.value)}
-                         placeholder="Bijv. Elektronica, Voeding"
-                         className="mt-1"
-                       />
+                       <Popover open={categoryOpen} onOpenChange={setCategoryOpen}>
+                         <PopoverTrigger asChild>
+                           <Button
+                             variant="outline"
+                             role="combobox"
+                             aria-expanded={categoryOpen}
+                             className="w-full justify-between mt-1"
+                           >
+                             {formData.categoryName ? formData.categoryName : "Selecteer categorie..."}
+                             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                           </Button>
+                         </PopoverTrigger>
+                         <PopoverContent className="w-full p-0">
+                           <Command>
+                             <CommandInput 
+                               placeholder="Categorie zoeken..." 
+                               value={formData.categoryName}
+                               onValueChange={(value) => handleInputChange('categoryName', value)}
+                             />
+                             <CommandList>
+                               <CommandEmpty>
+                                 <div className="p-2 text-center">
+                                   <p className="text-sm text-gray-500 mb-2">Geen categorie gevonden</p>
+                                   <Button
+                                     variant="outline"
+                                     size="sm"
+                                     onClick={async () => {
+                                       if (formData.categoryName.trim()) {
+                                         try {
+                                           const { data: newCategory, error } = await supabase
+                                             .from('categories')
+                                             .insert({ name: formData.categoryName.trim() })
+                                             .select('id, name')
+                                             .single();
+                                           
+                                           if (error) {
+                                             toast.error('Fout bij het aanmaken van categorie');
+                                             return;
+                                           }
+                                           
+                                           setCategories(prev => [...prev, newCategory]);
+                                           setCategoryOpen(false);
+                                           toast.success('Nieuwe categorie toegevoegd!');
+                                         } catch (error) {
+                                           toast.error('Fout bij het aanmaken van categorie');
+                                         }
+                                       }
+                                     }}
+                                     className="w-full"
+                                   >
+                                     <Plus className="w-4 h-4 mr-2" />
+                                     "{formData.categoryName}" toevoegen
+                                   </Button>
+                                 </div>
+                               </CommandEmpty>
+                               <CommandGroup>
+                                 {categories.map((category) => (
+                                   <CommandItem
+                                     key={category.id}
+                                     value={category.name}
+                                     onSelect={() => {
+                                       handleInputChange('categoryName', category.name);
+                                       setCategoryOpen(false);
+                                     }}
+                                   >
+                                     <Check
+                                       className={cn(
+                                         "mr-2 h-4 w-4",
+                                         formData.categoryName === category.name ? "opacity-100" : "opacity-0"
+                                       )}
+                                     />
+                                     {category.name}
+                                   </CommandItem>
+                                 ))}
+                               </CommandGroup>
+                             </CommandList>
+                           </Command>
+                         </PopoverContent>
+                       </Popover>
                      </div>
                      <div>
                        <Label htmlFor="supplier" className="text-sm font-medium text-gray-700">
                          Leverancier
                        </Label>
-                       <Input
-                         id="supplier"
-                         type="text"
-                         value={formData.supplierName}
-                         onChange={(e) => handleInputChange('supplierName', e.target.value)}
-                         placeholder="Naam van leverancier"
-                         className="mt-1"
-                       />
+                       <Popover open={supplierOpen} onOpenChange={setSupplierOpen}>
+                         <PopoverTrigger asChild>
+                           <Button
+                             variant="outline"
+                             role="combobox"
+                             aria-expanded={supplierOpen}
+                             className="w-full justify-between mt-1"
+                           >
+                             {formData.supplierName ? formData.supplierName : "Selecteer leverancier..."}
+                             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                           </Button>
+                         </PopoverTrigger>
+                         <PopoverContent className="w-full p-0">
+                           <Command>
+                             <CommandInput 
+                               placeholder="Leverancier zoeken..." 
+                               value={formData.supplierName}
+                               onValueChange={(value) => handleInputChange('supplierName', value)}
+                             />
+                             <CommandList>
+                               <CommandEmpty>
+                                 <div className="p-2 text-center">
+                                   <p className="text-sm text-gray-500 mb-2">Geen leverancier gevonden</p>
+                                   <Button
+                                     variant="outline"
+                                     size="sm"
+                                     onClick={async () => {
+                                       if (formData.supplierName.trim()) {
+                                         try {
+                                           const { data: newSupplier, error } = await supabase
+                                             .from('suppliers')
+                                             .insert({ name: formData.supplierName.trim() })
+                                             .select('id, name')
+                                             .single();
+                                           
+                                           if (error) {
+                                             toast.error('Fout bij het aanmaken van leverancier');
+                                             return;
+                                           }
+                                           
+                                           setSuppliers(prev => [...prev, newSupplier]);
+                                           setSupplierOpen(false);
+                                           toast.success('Nieuwe leverancier toegevoegd!');
+                                         } catch (error) {
+                                           toast.error('Fout bij het aanmaken van leverancier');
+                                         }
+                                       }
+                                     }}
+                                     className="w-full"
+                                   >
+                                     <Plus className="w-4 h-4 mr-2" />
+                                     "{formData.supplierName}" toevoegen
+                                   </Button>
+                                 </div>
+                               </CommandEmpty>
+                               <CommandGroup>
+                                 {suppliers.map((supplier) => (
+                                   <CommandItem
+                                     key={supplier.id}
+                                     value={supplier.name}
+                                     onSelect={() => {
+                                       handleInputChange('supplierName', supplier.name);
+                                       setSupplierOpen(false);
+                                     }}
+                                   >
+                                     <Check
+                                       className={cn(
+                                         "mr-2 h-4 w-4",
+                                         formData.supplierName === supplier.name ? "opacity-100" : "opacity-0"
+                                       )}
+                                     />
+                                     {supplier.name}
+                                   </CommandItem>
+                                 ))}
+                               </CommandGroup>
+                             </CommandList>
+                           </Command>
+                         </PopoverContent>
+                       </Popover>
                      </div>
                    </div>
                  )}
@@ -513,7 +764,7 @@ export default function ScanPage() {
                                      <Button
                      type="submit"
                      disabled={loading}
-                     className="flex-1"
+                     className="flex-1 p-2"
                      size="lg"
                    >
                      {loading ? (
@@ -533,7 +784,7 @@ export default function ScanPage() {
                     variant="outline"
                     onClick={resetForm}
                     disabled={loading}
-                    className="flex-1"
+                    className="flex-1 p-2"
                     size="lg"
                   >
                     Annuleren

@@ -439,8 +439,12 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                           </Button>
                         </PopoverTrigger>
                         <PopoverContent className="w-full p-0">
-                          <Command>
-                            <CommandInput placeholder="Categorie zoeken..." />
+                                                     <Command>
+                             <CommandInput 
+                               placeholder="Categorie zoeken..." 
+                               value={field.value}
+                               onValueChange={field.onChange}
+                             />
                             <CommandList>
                               <CommandEmpty>
                                 <div className="p-2 text-center">
@@ -448,14 +452,28 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                                   <Button
                                     variant="outline"
                                     size="sm"
-                                    onClick={() => {
-                                      if (field.value.trim()) {
-                                        // Voeg nieuwe categorie toe aan lokale state
-                                        const newCategory = { id: Date.now().toString(), name: field.value.trim() };
-                                        setCategories(prev => [...prev, newCategory]);
-                                        setCategoryOpen(false);
-                                      }
-                                    }}
+                                                                         onClick={async () => {
+                                       if (field.value.trim()) {
+                                         try {
+                                           const { data: newCategory, error } = await supabase
+                                             .from('categories')
+                                             .insert({ name: field.value.trim() })
+                                             .select('id, name')
+                                             .single();
+                                           
+                                           if (error) {
+                                             toast.error('Fout bij het aanmaken van categorie');
+                                             return;
+                                           }
+                                           
+                                           setCategories(prev => [...prev, newCategory]);
+                                           setCategoryOpen(false);
+                                           toast.success('Nieuwe categorie toegevoegd!');
+                                         } catch (error) {
+                                           toast.error('Fout bij het aanmaken van categorie');
+                                         }
+                                       }
+                                     }}
                                     className="w-full"
                                   >
                                     <Plus className="w-4 h-4 mr-2" />
@@ -514,8 +532,12 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                           </Button>
                         </PopoverTrigger>
                         <PopoverContent className="w-full p-0">
-                          <Command>
-                            <CommandInput placeholder="Leverancier zoeken..." />
+                                                     <Command>
+                             <CommandInput 
+                               placeholder="Leverancier zoeken..." 
+                               value={field.value}
+                               onValueChange={field.onChange}
+                             />
                             <CommandList>
                               <CommandEmpty>
                                 <div className="p-2 text-center">
@@ -523,14 +545,28 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                                   <Button
                                     variant="outline"
                                     size="sm"
-                                    onClick={() => {
-                                      if (field.value.trim()) {
-                                        // Voeg nieuwe leverancier toe aan lokale state
-                                        const newSupplier = { id: Date.now().toString(), name: field.value.trim() };
-                                        setSuppliers(prev => [...prev, newSupplier]);
-                                        setSupplierOpen(false);
-                                      }
-                                    }}
+                                                                         onClick={async () => {
+                                       if (field.value.trim()) {
+                                         try {
+                                           const { data: newSupplier, error } = await supabase
+                                             .from('suppliers')
+                                             .insert({ name: field.value.trim() })
+                                             .select('id, name')
+                                             .single();
+                                           
+                                           if (error) {
+                                             toast.error('Fout bij het aanmaken van leverancier');
+                                             return;
+                                           }
+                                           
+                                           setSuppliers(prev => [...prev, newSupplier]);
+                                           setSupplierOpen(false);
+                                           toast.success('Nieuwe leverancier toegevoegd!');
+                                         } catch (error) {
+                                           toast.error('Fout bij het aanmaken van leverancier');
+                                         }
+                                       }
+                                     }}
                                     className="w-full"
                                   >
                                     <Plus className="w-4 h-4 mr-2" />
