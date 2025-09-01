@@ -21,7 +21,7 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({ title, unreadCount = 0, onNotificationClick }) => {
   const navigate = useNavigate();
-  const { signOut } = useAuth();
+  const { signOut, user } = useAuth();
   return (
     <>
 
@@ -35,7 +35,9 @@ export const Header: React.FC<HeaderProps> = ({ title, unreadCount = 0, onNotifi
         </div>
         
         <div className="flex items-center space-x-4">
-          <NotificationButton unreadCount={unreadCount} onClick={onNotificationClick} />
+          {user && (
+            <NotificationButton unreadCount={unreadCount} onClick={onNotificationClick} />
+          )}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button size="icon" className="relative flex items-center justify-center w-10 h-10 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-colors">
@@ -79,7 +81,9 @@ export const Header: React.FC<HeaderProps> = ({ title, unreadCount = 0, onNotifi
             </div>
           </div>
           <div className="flex items-center space-x-2">
-            <NotificationButton unreadCount={unreadCount} onClick={onNotificationClick} />
+            {user && (
+              <NotificationButton unreadCount={unreadCount} onClick={onNotificationClick} />
+            )}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full">

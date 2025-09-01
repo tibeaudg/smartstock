@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Header } from './components/ui/Header';
 import { useNotifications } from './hooks/useNotifications';
+import { useAuth } from './hooks/useAuth';
 
 const getPageTitle = (pathname: string) => {
   if (pathname.startsWith('/dashboard/stock')) return 'Producten';
@@ -18,6 +19,7 @@ const getPageTitle = (pathname: string) => {
 
 export const ContentWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
+  const { user } = useAuth();
   const { notifications, loading, unreadCount, markAllAsRead } = useNotifications();
   const [showNotifications, setShowNotifications] = useState(false);
   const title = getPageTitle(location.pathname);
@@ -34,7 +36,7 @@ export const ContentWrapper: React.FC<{ children: React.ReactNode }> = ({ childr
         <Header title={title} unreadCount={unreadCount} onNotificationClick={handleNotificationClick} />
       )}
       {/* Notification Overlay (internal pages only) */}
-      {title && showNotifications && (
+      {title && user && showNotifications && (
         <div className="fixed top-20 right-4 z-[100] bg-white border border-gray-200 rounded-lg shadow-xl p-4 w-80 max-h-[60vh] overflow-y-auto">
           <h4 className="font-semibold mb-2">Meldingen</h4>
           {loading ? (
