@@ -123,6 +123,7 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({ onBarcodeDetecte
     }
     if (videoRef.current) {
       videoRef.current.srcObject = null;
+      videoRef.current.style.display = 'none';
     }
   };
 
@@ -147,10 +148,19 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({ onBarcodeDetecte
       
       streamRef.current = stream;
       
-      // Set video source
+      // Set video source and ensure it plays
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
-        await videoRef.current.play();
+        videoRef.current.style.display = 'block';
+        
+        // Wait for video to be ready
+        await new Promise((resolve) => {
+          if (videoRef.current) {
+            videoRef.current.onloadedmetadata = () => {
+              videoRef.current?.play().then(resolve);
+            };
+          }
+        });
       }
 
       // Get available video devices after permission
@@ -345,10 +355,11 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({ onBarcodeDetecte
                     <div className="relative">
                       <video
                         ref={videoRef}
-                        className="w-full h-64 object-cover"
+                        className="w-full h-64 object-cover bg-black"
                         autoPlay
                         playsInline
                         muted
+                        style={{ display: 'block' }}
                       />
                       {/* Scanning overlay */}
                       <div className="absolute inset-0 border-2 border-blue-500 border-dashed pointer-events-none">
