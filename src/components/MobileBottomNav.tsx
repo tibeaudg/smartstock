@@ -33,7 +33,7 @@ export const MobileBottomNav = ({ currentTab, onTabChange, userRole }: MobileBot
     : [
         { id: 'dashboard', label: 'Dashboard', icon: BarChart3, path: '/dashboard' },
         { id: 'stock', label: 'Producten', icon: Package, path: '/dashboard/stock' },
-        { id: 'scan', label: 'Scannen', icon: Scan, path: '/dashboard/scan' },
+        { id: 'scan', label: 'Beheren', icon: Scan, path: '/dashboard/scan' },
         { id: 'transactions', label: 'Bewegingslijst', icon: ShoppingCart, path: '/dashboard/transactions' },
       ];
 
@@ -69,9 +69,7 @@ export const MobileBottomNav = ({ currentTab, onTabChange, userRole }: MobileBot
                   : 'text-gray-600'
               }`}
             >
-              <item.icon className={`h-5 w-5 mb-1 ${
-                item.id === 'scan' ? 'text-gray-600' : ''
-              }`} />
+              <item.icon className={`h-5 w-5 mb-1`} />
               <span className="text-xs font-medium">{item.label}</span>
             </button>
           ))}

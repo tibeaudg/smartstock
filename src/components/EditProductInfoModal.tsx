@@ -5,12 +5,15 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Trash2, ArrowLeft } from 'lucide-react';
+import { Trash2, ArrowLeft, Check, ChevronsUpDown, Plus } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
 import { useQueryClient } from '@tanstack/react-query';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { cn } from '@/lib/utils';
 
 interface Product {
   id: string;
@@ -24,6 +27,8 @@ interface Product {
   status: string | null;
   branch_id?: string;
   image_url?: string | null;
+  category_name?: string | null;
+  supplier_name?: string | null;
 }
 
 interface EditProductInfoModalProps {
@@ -49,6 +54,12 @@ export const EditProductInfoModal = ({
   const [productImage, setProductImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(product.image_url || null);
   
+  // State voor categorieën en leveranciers
+  const [categories, setCategories] = useState<Array<{ id: string; name: string }>>([]);
+  const [suppliers, setSuppliers] = useState<Array<{ id: string; name: string }>>([]);
+  const [categoryOpen, setCategoryOpen] = useState(false);
+  const [supplierOpen, setSupplierOpen] = useState(false);
+  
   // Gebruik de page refresh hook
   usePageRefresh();
   const [form, setForm] = useState({
@@ -59,6 +70,8 @@ export const EditProductInfoModal = ({
     unit_price: product.unit_price,
     purchase_price: product.purchase_price,
     sale_price: product.sale_price,
+    category_name: product.category_name || '',
+    supplier_name: product.supplier_name || '',
   });
 
   useEffect(() => {
@@ -71,11 +84,57 @@ export const EditProductInfoModal = ({
         unit_price: product.unit_price,
         purchase_price: product.purchase_price,
         sale_price: product.sale_price,
+        category_name: product.category_name || '',
+        supplier_name: product.supplier_name || '',
       });
       setImagePreview(product.image_url || null);
       setProductImage(null);
     }
   }, [isOpen, product]);
+
+  // Haal categorieën en leveranciers op
+  useEffect(() => {
+    if (user) {
+      fetchCategories();
+      fetchSuppliers();
+    }
+  }, [user]);
+
+  const fetchCategories = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('categories')
+        .select('id, name')
+        .order('name');
+      
+      if (error) {
+        console.error('Error fetching categories:', error);
+        return;
+      }
+      
+      setCategories(data || []);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+  };
+
+  const fetchSuppliers = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('suppliers')
+        .select('id, name')
+        .order('name');
+      
+      if (error) {
+        console.error('Error fetching suppliers:', error);
+        return;
+      }
+      
+      setSuppliers(data || []);
+    } catch (error) {
+      console.error('Error fetching suppliers:', error);
+    }
+  };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
@@ -91,6 +150,14 @@ export const EditProductInfoModal = ({
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.type === 'number' ? Number(e.target.value) : e.target.value });
+  };
+
+  const handleCategoryChange = (value: string) => {
+    setForm({ ...form, category_name: value });
+  };
+
+  const handleSupplierChange = (value: string) => {
+    setForm({ ...form, supplier_name: value });
   };
 
   const handleDelete = async () => {
@@ -268,23 +335,133 @@ export const EditProductInfoModal = ({
               <div className={`grid ${isMobile ? 'grid-cols-1 gap-4' : 'grid-cols-2 gap-4'}`}>
                 <div>
                   <Label>Categorie</Label>
-                  <Input 
-                    name="category_name" 
-                    value={form.category_name} 
-                    onChange={handleChange} 
-                    disabled={loading}
-                    placeholder="Bijv. Elektronica, Voeding"
-                  />
+                  <Popover open={categoryOpen} onOpenChange={setCategoryOpen}>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        aria-expanded={categoryOpen}
+                        className="w-full justify-between py-3 px-3 text-base"
+                        disabled={loading}
+                      >
+                        {form.category_name ? form.category_name : "Selecteer categorie..."}
+                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-full p-0">
+                      <Command>
+                        <CommandInput placeholder="Categorie zoeken..." />
+                        <CommandList>
+                          <CommandEmpty>
+                            <div className="p-2 text-center">
+                              <p className="text-sm text-gray-500 mb-2">Geen categorie gevonden</p>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => {
+                                  if (form.category_name.trim()) {
+                                    // Voeg nieuwe categorie toe aan lokale state
+                                    const newCategory = { id: Date.now().toString(), name: form.category_name.trim() };
+                                    setCategories(prev => [...prev, newCategory]);
+                                    setCategoryOpen(false);
+                                  }
+                                }}
+                                className="w-full"
+                              >
+                                <Plus className="w-4 h-4 mr-2" />
+                                "{form.category_name}" toevoegen
+                              </Button>
+                            </div>
+                          </CommandEmpty>
+                          <CommandGroup>
+                            {categories.map((category) => (
+                              <CommandItem
+                                key={category.id}
+                                value={category.name}
+                                onSelect={() => {
+                                  handleCategoryChange(category.name);
+                                  setCategoryOpen(false);
+                                }}
+                              >
+                                <Check
+                                  className={cn(
+                                    "mr-2 h-4 w-4",
+                                    form.category_name === category.name ? "opacity-100" : "opacity-0"
+                                  )}
+                                />
+                                {category.name}
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
                 </div>
                 <div>
                   <Label>Leverancier</Label>
-                  <Input 
-                    name="supplier_name" 
-                    value={form.supplier_name} 
-                    onChange={handleChange} 
-                    disabled={loading}
-                    placeholder="Naam van leverancier"
-                  />
+                  <Popover open={supplierOpen} onOpenChange={setSupplierOpen}>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        aria-expanded={supplierOpen}
+                        className="w-full justify-between py-3 px-3 text-base"
+                        disabled={loading}
+                      >
+                        {form.supplier_name ? form.supplier_name : "Selecteer leverancier..."}
+                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-full p-0">
+                      <Command>
+                        <CommandInput placeholder="Leverancier zoeken..." />
+                        <CommandList>
+                          <CommandEmpty>
+                            <div className="p-2 text-center">
+                              <p className="text-sm text-gray-500 mb-2">Geen leverancier gevonden</p>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => {
+                                  if (form.supplier_name.trim()) {
+                                    // Voeg nieuwe leverancier toe aan lokale state
+                                    const newSupplier = { id: Date.now().toString(), name: form.supplier_name.trim() };
+                                    setSuppliers(prev => [...prev, newSupplier]);
+                                    setSupplierOpen(false);
+                                  }
+                                }}
+                                className="w-full"
+                              >
+                                <Plus className="w-4 h-4 mr-2" />
+                                "{form.supplier_name}" toevoegen
+                              </Button>
+                            </div>
+                          </CommandEmpty>
+                          <CommandGroup>
+                            {suppliers.map((supplier) => (
+                              <CommandItem
+                                key={supplier.id}
+                                value={supplier.name}
+                                onSelect={() => {
+                                  handleSupplierChange(supplier.name);
+                                  setSupplierOpen(false);
+                                }}
+                              >
+                                <Check
+                                  className={cn(
+                                    "mr-2 h-4 w-4",
+                                    form.supplier_name === supplier.name ? "opacity-100" : "opacity-0"
+                                  )}
+                                />
+                                {supplier.name}
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
                 </div>
               </div>
             </div>

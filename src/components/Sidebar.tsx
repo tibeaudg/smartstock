@@ -102,7 +102,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
       ]
     : [
         { id: 'dashboard', label: 'Dashboard', icon: BarChart3, path: '/dashboard', end: true },
-        { id: 'scan', label: 'Scannen', icon: Scan, path: '/dashboard/scan' },
+        { id: 'scan', label: 'Beheren', icon: Scan, path: '/dashboard/scan' },
 
         { 
           id: 'stock', 

@@ -11,12 +11,15 @@ import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
 import { toast } from 'sonner';
 import { SuggestionInput } from './SuggestionInput';
-import { AlertCircle } from 'lucide-react'; // Optional: for a warning icon
+import { AlertCircle, Check, ChevronsUpDown, Plus } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Info } from 'lucide-react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { cn } from '@/lib/utils';
 
 interface AddProductModalProps {
   isOpen: boolean;
@@ -46,6 +49,12 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
   const [showUpgradeNotice, setShowUpgradeNotice] = useState(false);
   const navigate = useNavigate();
   const isMobile = useIsMobile();
+  
+  // State voor categorieën en leveranciers
+  const [categories, setCategories] = useState<Array<{ id: string; name: string }>>([]);
+  const [suppliers, setSuppliers] = useState<Array<{ id: string; name: string }>>([]);
+  const [categoryOpen, setCategoryOpen] = useState(false);
+  const [supplierOpen, setSupplierOpen] = useState(false);
   
   // Gebruik de page refresh hook
   usePageRefresh();
@@ -94,6 +103,50 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
     return () => subscription.unsubscribe?.();
      
   }, [form, activeBranch]);
+
+  // Haal categorieën en leveranciers op
+  useEffect(() => {
+    if (user) {
+      fetchCategories();
+      fetchSuppliers();
+    }
+  }, [user]);
+
+  const fetchCategories = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('categories')
+        .select('id, name')
+        .order('name');
+      
+      if (error) {
+        console.error('Error fetching categories:', error);
+        return;
+      }
+      
+      setCategories(data || []);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+  };
+
+  const fetchSuppliers = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('suppliers')
+        .select('id, name')
+        .order('name');
+      
+      if (error) {
+        console.error('Error fetching suppliers:', error);
+        return;
+      }
+      
+      setSuppliers(data || []);
+    } catch (error) {
+      console.error('Error fetching suppliers:', error);
+    }
+  };
 
   // Afhandeling voor image preview
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -372,12 +425,68 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                   <FormItem>
                     <FormLabel>Categorie</FormLabel>
                     <FormControl>
-                      <Input 
-                        {...field} 
-                        placeholder="Bijv. Elektronica, Voeding"
-                        disabled={loading}
-                        className="py-3 px-3 text-base"
-                      />
+                      <Popover open={categoryOpen} onOpenChange={setCategoryOpen}>
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant="outline"
+                            role="combobox"
+                            aria-expanded={categoryOpen}
+                            className="w-full justify-between py-3 px-3 text-base"
+                            disabled={loading}
+                          >
+                            {field.value ? field.value : "Selecteer categorie..."}
+                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-full p-0">
+                          <Command>
+                            <CommandInput placeholder="Categorie zoeken..." />
+                            <CommandList>
+                              <CommandEmpty>
+                                <div className="p-2 text-center">
+                                  <p className="text-sm text-gray-500 mb-2">Geen categorie gevonden</p>
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => {
+                                      if (field.value.trim()) {
+                                        // Voeg nieuwe categorie toe aan lokale state
+                                        const newCategory = { id: Date.now().toString(), name: field.value.trim() };
+                                        setCategories(prev => [...prev, newCategory]);
+                                        setCategoryOpen(false);
+                                      }
+                                    }}
+                                    className="w-full"
+                                  >
+                                    <Plus className="w-4 h-4 mr-2" />
+                                    "{field.value}" toevoegen
+                                  </Button>
+                                </div>
+                              </CommandEmpty>
+                              <CommandGroup>
+                                {categories.map((category) => (
+                                  <CommandItem
+                                    key={category.id}
+                                    value={category.name}
+                                    onSelect={() => {
+                                      field.onChange(category.name);
+                                      setCategoryOpen(false);
+                                    }}
+                                  >
+                                    <Check
+                                      className={cn(
+                                        "mr-2 h-4 w-4",
+                                        field.value === category.name ? "opacity-100" : "opacity-0"
+                                      )}
+                                    />
+                                    {category.name}
+                                  </CommandItem>
+                                ))}
+                              </CommandGroup>
+                            </CommandList>
+                          </Command>
+                        </PopoverContent>
+                      </Popover>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -391,12 +500,68 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                   <FormItem>
                     <FormLabel>Leverancier</FormLabel>
                     <FormControl>
-                      <Input 
-                        {...field} 
-                        placeholder="Naam van leverancier"
-                        disabled={loading}
-                        className="py-3 px-3 text-base"
-                      />
+                      <Popover open={supplierOpen} onOpenChange={setSupplierOpen}>
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant="outline"
+                            role="combobox"
+                            aria-expanded={supplierOpen}
+                            className="w-full justify-between py-3 px-3 text-base"
+                            disabled={loading}
+                          >
+                            {field.value ? field.value : "Selecteer leverancier..."}
+                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-full p-0">
+                          <Command>
+                            <CommandInput placeholder="Leverancier zoeken..." />
+                            <CommandList>
+                              <CommandEmpty>
+                                <div className="p-2 text-center">
+                                  <p className="text-sm text-gray-500 mb-2">Geen leverancier gevonden</p>
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => {
+                                      if (field.value.trim()) {
+                                        // Voeg nieuwe leverancier toe aan lokale state
+                                        const newSupplier = { id: Date.now().toString(), name: field.value.trim() };
+                                        setSuppliers(prev => [...prev, newSupplier]);
+                                        setSupplierOpen(false);
+                                      }
+                                    }}
+                                    className="w-full"
+                                  >
+                                    <Plus className="w-4 h-4 mr-2" />
+                                    "{field.value}" toevoegen
+                                  </Button>
+                                </div>
+                              </CommandEmpty>
+                              <CommandGroup>
+                                {suppliers.map((supplier) => (
+                                  <CommandItem
+                                    key={supplier.id}
+                                    value={supplier.name}
+                                    onSelect={() => {
+                                      field.onChange(supplier.name);
+                                      setSupplierOpen(false);
+                                    }}
+                                  >
+                                    <Check
+                                      className={cn(
+                                        "mr-2 h-4 w-4",
+                                        field.value === supplier.name ? "opacity-100" : "opacity-0"
+                                      )}
+                                    />
+                                    {supplier.name}
+                                  </CommandItem>
+                                ))}
+                              </CommandGroup>
+                            </CommandList>
+                          </Command>
+                        </PopoverContent>
+                      </Popover>
                     </FormControl>
                     <FormMessage />
                   </FormItem>

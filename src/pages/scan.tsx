@@ -286,15 +286,7 @@ export default function ScanPage() {
   return (
     <div className="container mx-auto px-4 py-4 md:py-8">
       <div className="max-w-4xl mx-auto pb-24">
-                 {/* Header */}
-         <div className="mb-6 md:mb-8">
-           <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Product Scannen</h1>
-           <p className="text-sm md:text-base text-gray-600">
-             Scan barcodes of voer handmatig in om nieuwe producten toe te voegen aan {activeBranch.branch_name}
-           </p>
-         </div>
-
-                 {/* Scanner Section */}
+         {/* Scanner Section */}
          <Card className="mb-6 md:mb-8">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">

@@ -19,7 +19,9 @@ import {
   Edit,
   Trash2,
   X,
-  Minus
+  Minus,
+  Tag,
+  Truck
 } from 'lucide-react';
 import { ProductActionModal } from './ProductActionModal';
 import { EditProductModal } from './EditProductModal';
@@ -30,6 +32,7 @@ import { ImagePreviewModal } from './ImagePreviewModal';
 import { AddProductModal } from './AddProductModal';
 import { EditProductStockModal } from './EditProductStockModal';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { toast } from 'sonner';
 
 const getStockStatus = (quantity: number, minLevel: number) => {
@@ -44,15 +47,6 @@ const getStockStatusVariant = (status: string) => {
     case 'Laag': return 'warning';
     case 'Op': return 'destructive';
     default: return 'destructive';
-  }
-};
-
-const getStockStatusClasses = (status: string) => {
-  switch (status) {
-    case 'In Stock': return 'text-green-600 bg-green-100 border border-green-600 hover:text-white hover:bg-green-600 hover:border-green-600';
-    case 'Laag': return 'text-yellow-600 bg-yellow-100 border border-yellow-600 hover:text-white hover:bg-yellow-600 hover:border-yellow-600';
-    case 'Op': return 'text-red-600 bg-red-100 border border-red-600 hover:text-white hover:bg-red-600 hover:border-red-600';
-    default: return 'text-red-600 bg-red-100 border border-red-600 hover:text-white hover:bg-red-600 hover:border-red-600';
   }
 };
 
@@ -89,6 +83,8 @@ export const StockList = () => {
   const { activeBranch } = useBranches();
   const queryClient = useQueryClient();
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   // State voor filters
   const [searchTerm, setSearchTerm] = useState('');
@@ -117,6 +113,36 @@ export const StockList = () => {
 
   // State voor add modal
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
+  // Mobile tab switcher state
+  const [activeTab, setActiveTab] = useState<'products' | 'categories' | 'suppliers'>('products');
+
+  // Update active tab based on current route
+  useEffect(() => {
+    if (location.pathname.includes('/categories')) {
+      setActiveTab('categories');
+    } else if (location.pathname.includes('/suppliers')) {
+      setActiveTab('suppliers');
+    } else {
+      setActiveTab('products');
+    }
+  }, [location.pathname]);
+
+  // Handle tab change
+  const handleTabChange = (tab: 'products' | 'categories' | 'suppliers') => {
+    setActiveTab(tab);
+    switch (tab) {
+      case 'categories':
+        navigate('/dashboard/categories');
+        break;
+      case 'suppliers':
+        navigate('/dashboard/suppliers');
+        break;
+      default:
+        navigate('/dashboard/stock');
+        break;
+    }
+  };
 
   // Tel actieve filters
   const activeFilterCount = useMemo(() => {
@@ -330,94 +356,177 @@ export const StockList = () => {
   if (isMobile) {
     return (
       <div className="space-y-4">
-        <div className="flex justify-center items-center sm:mt-8 mt-4">
-          <Button onClick={() => setIsProductActionModalOpen(true)}>
-            <Plus className="h-4 w-4" />
-            Toevoegen
-          </Button>
+        {/* Mobile Tab Switcher */}
+        <div className="mb-4 mt-4">
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-1">
+            <div className="flex space-x-1">
+              <button
+                onClick={() => handleTabChange('products')}
+                className={`flex-1 flex items-center justify-center gap-1.5 px-2 py-2.5 rounded-md text-xs font-medium transition-colors ${
+                  activeTab === 'products'
+                    ? 'bg-blue-100 text-blue-700 border border-blue-200'
+                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                }`}
+              >
+                <Package className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Producten</span>
+                <span className="sm:hidden">Prod</span>
+              </button>
+              <button
+                onClick={() => handleTabChange('categories')}
+                className={`flex-1 flex items-center justify-center gap-1.5 px-2 py-2.5 rounded-md text-xs font-medium transition-colors ${
+                  activeTab === 'categories'
+                    ? 'bg-blue-100 text-blue-700 border border-blue-200'
+                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                }`}
+              >
+                <Tag className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Categorieën</span>
+                <span className="sm:hidden">Cat</span>
+              </button>
+              <button
+                onClick={() => handleTabChange('suppliers')}
+                className={`flex-1 flex items-center justify-center gap-1.5 px-2 py-2.5 rounded-md text-xs font-medium transition-colors ${
+                  activeTab === 'suppliers'
+                    ? 'bg-blue-100 text-blue-700 border border-blue-200'
+                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                }`}
+              >
+                <Truck className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Leveranciers</span>
+                <span className="sm:hidden">Lev</span>
+              </button>
+            </div>
+          </div>
         </div>
 
-        <ProductFilters
-          searchTerm={searchTerm}
-          onSearchChange={setSearchTerm}
-          categoryFilter={categoryFilter}
-          onCategoryFilterChange={setCategoryFilter}
-          supplierFilter={supplierFilter}
-          onSupplierFilterChange={setSupplierFilter}
-          stockStatusFilter={stockStatusFilter}
-          onStockStatusFilterChange={setStockStatusFilter}
-          minPriceFilter={minPriceFilter}
-          onMinPriceFilterChange={setMinPriceFilter}
-          maxPriceFilter={maxPriceFilter}
-          onMaxPriceFilterChange={setMaxPriceFilter}
-          minStockFilter={minStockFilter}
-          onMinStockFilterChange={setMinStockFilter}
-          maxStockFilter={maxStockFilter}
-          onMaxStockFilterChange={setMaxStockFilter}
-          onClearFilters={handleClearFilters}
-          activeFiltersCount={activeFilterCount}
-        />
+        {/* Only show products content when on products tab */}
+        {activeTab === 'products' && (
+          <>
 
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200 text-xs md:text-sm">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-2 py-2 text-left font-medium text-gray-500 uppercase tracking-wider">Product</th>
-                <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Stock</th>
-                <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Min.</th>
-                <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Status</th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {filteredProducts.length === 0 ? (
-                <tr>
-                  <td colSpan={4} className="px-2 py-4 text-center text-gray-500">
-                    {productsTyped.length === 0 ? 'Geen producten gevonden voor dit filiaal.' : 'Geen producten voldoen aan je filters.'}
-                  </td>
-                </tr>
-              ) : (
-                filteredProducts.map((product) => {
-                  const stockStatus = getStockStatus(product.quantity_in_stock, product.minimum_stock_level);
-                  return (
-                                         <tr 
-                       key={product.id} 
-                       className="hover:bg-gray-50 transition-colors cursor-pointer"
-                       onClick={() => { setSelectedProduct(product); setIsProductActionModalOpen(true); }}
-                     >
-                      <td className="px-2 py-2 whitespace-nowrap">
-                        <div className="flex items-center gap-2">
-                          {product.image_url ? (
-                            <img
-                              src={product.image_url}
-                              alt={`Productfoto van ${product.name} | voorraadbeheer`}
-                              className="w-10 h-10 object-cover rounded border"
-                            />
-                          ) : (
-                            <div className="w-10 h-10 bg-gray-200 rounded border flex items-center justify-center text-[10px] text-gray-400">Geen</div>
-                          )}
-                          <div>
-                            <div className="font-medium text-gray-900 truncate max-w-[80px]">{product.name}</div>
-                            {product.description && (
-                              <div className="text-[10px] text-gray-500 truncate max-w-[80px]">{product.description}</div>
-                            )}
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-2 py-2 text-center font-semibold">{product.quantity_in_stock}</td>
-                      <td className="px-2 py-2 text-center">{product.minimum_stock_level}</td>
-                      <td className="px-2 py-2 text-center">
-                        <Badge variant={getStockStatusVariant(stockStatus)} className={`text-[10px] px-2 py-1 rounded-full ${getStockStatusClasses(stockStatus)}`}>
-                          {stockStatus}
-                        </Badge>
+
+            <ProductFilters
+              searchTerm={searchTerm}
+              onSearchChange={setSearchTerm}
+              categoryFilter={categoryFilter}
+              onCategoryFilterChange={setCategoryFilter}
+              supplierFilter={supplierFilter}
+              onSupplierFilterChange={setSupplierFilter}
+              stockStatusFilter={stockStatusFilter}
+              onStockStatusFilterChange={setStockStatusFilter}
+              minPriceFilter={minPriceFilter}
+              onMinPriceFilterChange={setMinPriceFilter}
+              maxPriceFilter={maxPriceFilter}
+              onMaxPriceFilterChange={setMaxPriceFilter}
+              minStockFilter={minStockFilter}
+              onMinStockFilterChange={setMinStockFilter}
+              maxStockFilter={maxStockFilter}
+              onMaxStockFilterChange={setMaxStockFilter}
+              onClearFilters={handleClearFilters}
+              activeFiltersCount={activeFilterCount}
+            />
+
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200 text-xs md:text-sm">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-2 py-2 text-left font-medium text-gray-500 uppercase tracking-wider">Product</th>
+                    <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Stock</th>
+                    <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Min.</th>
+                    <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {filteredProducts.length === 0 ? (
+                    <tr>
+                      <td colSpan={4} className="px-2 py-4 text-center text-gray-500">
+                        {productsTyped.length === 0 ? 'Geen producten gevonden voor dit filiaal.' : 'Geen producten voldoen aan je filters.'}
                       </td>
                     </tr>
-                  );
-                })
-              )}
-            </tbody>
-          </table>
-        </div>
+                  ) : (
+                    filteredProducts.map((product) => {
+                      const stockStatus = getStockStatus(product.quantity_in_stock, product.minimum_stock_level);
+                      return (
+                        <tr 
+                          key={product.id} 
+                          className="hover:bg-gray-50 transition-colors cursor-pointer"
+                          onClick={() => { setSelectedProduct(product); setIsProductActionModalOpen(true); }}
+                        >
+                          <td className="px-2 py-2 whitespace-nowrap">
+                            <div className="flex items-center gap-2">
+                              {product.image_url ? (
+                                <img
+                                  src={product.image_url}
+                                  alt={`Productfoto van ${product.name} | voorraadbeheer`}
+                                  className="w-10 h-10 object-cover rounded border"
+                                />
+                              ) : (
+                                <div className="w-10 h-10 bg-gray-200 rounded border flex items-center justify-center text-[10px] text-gray-400">Geen</div>
+                              )}
+                              <div>
+                                <div className="font-medium text-gray-900 truncate max-w-[80px]">{product.name}</div>
+                                {product.description && (
+                                  <div className="text-[10px] text-gray-500 truncate max-w-[80px]">{product.description}</div>
+                                )}
+                              </div>
+                            </div>
+                          </td>
+                          <td className="px-2 py-2 text-center font-semibold">{product.quantity_in_stock}</td>
+                          <td className="px-2 py-2 text-center">{product.minimum_stock_level}</td>
+                          <td className="px-2 py-2 text-center">
+                            <Badge variant={getStockStatusVariant(stockStatus)}>
+                              {stockStatus}
+                            </Badge>
+                          </td>
+                        </tr>
+                      );
+                    })
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </>
+        )}
 
+        {/* Categories Tab Content */}
+        {activeTab === 'categories' && (
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+            <div className="text-center">
+              <Tag className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-gray-900 mb-2">
+                Categorieën Beheren
+              </h3>
+              <p className="text-base text-gray-600 mb-4">
+                Beheer uw productcategorieën voor betere organisatie van uw voorraad
+              </p>
+              <Button onClick={() => navigate('/dashboard/categories')}>
+                <Tag className="w-4 h-4 mr-2" />
+                Naar Categorieën
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {/* Suppliers Tab Content */}
+        {activeTab === 'suppliers' && (
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+            <div className="text-center">
+              <Truck className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-gray-900 mb-2">
+                Leveranciers Beheren
+              </h3>
+              <p className="text-base text-gray-600 mb-4">
+                Beheer uw leveranciers voor betere organisatie van uw inkoop en voorraad
+              </p>
+              <Button onClick={() => navigate('/dashboard/suppliers')}>
+                <Truck className="w-4 h-4 mr-2" />
+                Naar Leveranciers
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {/* All modals for mobile view */}
         <ProductActionModal
           isOpen={isProductActionModalOpen}
           onClose={() => {
@@ -435,41 +544,41 @@ export const StockList = () => {
           imageUrl={previewImageUrl}
           alt="Productfoto preview"
         />
-                 {selectedProduct && (
-           <EditProductStockModal
-             isOpen={isEditModalOpen}
-             onClose={() => {
-               setIsEditModalOpen(false);
-               setSelectedProduct(null);
-               setSelectedAction(null);
-             }}
-             onProductUpdated={() => {
-               refetch();
-               setIsEditModalOpen(false);
-               setSelectedProduct(null);
-               setSelectedAction(null);
-             }}
-             product={selectedProduct}
-             actionType={selectedAction!}
-             onBack={handleBackToActionModal}
-           />
-         )}
-         {selectedProduct && (
-           <EditProductInfoModal
-             isOpen={isEditInfoModalOpen}
-             onClose={() => {
-               setIsEditInfoModalOpen(false);
-               setSelectedProduct(null);
-             }}
-             onProductUpdated={() => {
-               refetch();
-               setIsEditInfoModalOpen(false);
-               setSelectedProduct(null);
-             }}
-             product={selectedProduct}
-             onBack={handleBackToActionModal}
-           />
-         )}
+        {selectedProduct && (
+          <EditProductStockModal
+            isOpen={isEditModalOpen}
+            onClose={() => {
+              setIsEditModalOpen(false);
+              setSelectedProduct(null);
+              setSelectedAction(null);
+            }}
+            onProductUpdated={() => {
+              refetch();
+              setIsEditModalOpen(false);
+              setSelectedProduct(null);
+              setSelectedAction(null);
+            }}
+            product={selectedProduct}
+            actionType={selectedAction!}
+            onBack={handleBackToActionModal}
+          />
+        )}
+        {selectedProduct && (
+          <EditProductInfoModal
+            isOpen={isEditInfoModalOpen}
+            onClose={() => {
+              setIsEditInfoModalOpen(false);
+              setSelectedProduct(null);
+            }}
+            onProductUpdated={() => {
+              refetch();
+              setIsEditInfoModalOpen(false);
+              setSelectedProduct(null);
+            }}
+            product={selectedProduct}
+            onBack={handleBackToActionModal}
+          />
+        )}
         <AddProductModal
           isOpen={isAddModalOpen}
           onClose={() => setIsAddModalOpen(false)}
@@ -499,10 +608,6 @@ export const StockList = () => {
               Verwijder geselecteerde ({selectedProductIds.length})
             </Button>
           )}
-          <Button onClick={() => setIsAddModalOpen(true)}>
-            <Plus className="h-4 w-4 mr-2" />
-            Toevoegen
-          </Button>
         </div>
       </div>
 
@@ -626,7 +731,7 @@ export const StockList = () => {
                         <span className="text-green-600">€{product.sale_price?.toFixed(2) ?? '-'}</span>
                       </td>
                       <td className="px-4 py-2 whitespace-nowrap">
-                        <Badge variant={getStockStatusVariant(stockStatus)} className={getStockStatusClasses(stockStatus)}>
+                        <Badge variant={getStockStatusVariant(stockStatus)}>
                           {stockStatus}
                         </Badge>
                       </td>
