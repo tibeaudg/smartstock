@@ -87,7 +87,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
   };
 
   return (
-    <div className=" space-y-6 max-w-[1600px] mx-auto relative pt-24 pb-24 md:pt-0">
+    <div className=" space-y-6 max-w-[1600px] mx-auto relative pt-6 pb-24 md:pt-0">
   {/* ...existing code... (removed duplicate header and notification bell, now handled globally) */}
 
       {/* Metrics Cards */}

@@ -50,6 +50,8 @@ import Stockbeheer from "./pages/SEO/stockbeheer";
 import SimpelStockbeheer from "./pages/SEO/simpelstockbeheer";
 import GratisVoorraadbeheer from "./pages/SEO/gratis-voorraadbeheer";
 import VoorraadbeheerVoorHoreca from "./pages/SEO/voorraadbeheer-voor-horeca";
+import CategoriesPage from './pages/categories';
+import SuppliersPage from './pages/suppliers';
 
 
 // ErrorBoundary component
@@ -276,6 +278,8 @@ export default function App() {
                     <Route index element={<Dashboard userRole="staff" />} />
                     <Route path="scan" element={<ScanPage />} />
                     <Route path="stock" element={<StockList />} />
+                    <Route path="categories" element={<CategoriesPage />} />
+                    <Route path="suppliers" element={<SuppliersPage />} />
                     <Route path="transactions" element={<StockMovements />} />
                     <Route path="settings" element={<Settings />}>
                       <Route index element={<ProfileSettings />} />

@@ -104,7 +104,17 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
         { id: 'dashboard', label: 'Dashboard', icon: BarChart3, path: '/dashboard', end: true },
         { id: 'scan', label: 'Scannen', icon: Scan, path: '/dashboard/scan' },
 
-        { id: 'stock', label: 'Producten', icon: Package, path: '/dashboard/stock' },
+        { 
+          id: 'stock', 
+          label: 'Producten', 
+          icon: Package, 
+          path: '/dashboard/stock',
+          subItems: [
+            { id: 'products', label: 'Producten', path: '/dashboard/stock' },
+            { id: 'categories', label: 'Categorieën', path: '/dashboard/categories' },
+            { id: 'suppliers', label: 'Leveranciers', path: '/dashboard/suppliers' }
+          ]
+        },
         { id: 'transactions', label: 'Stockmutaties', icon: ShoppingCart, path: '/dashboard/transactions' },
         { 
           id: 'settings', 

@@ -165,6 +165,33 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
         }
       }
 
+      // Handle category
+      let categoryId = null;
+      if (data.categoryName.trim()) {
+        const { data: existingCategory } = await supabase
+          .from('categories')
+          .select('id')
+          .eq('name', data.categoryName.trim())
+          .single();
+
+        if (existingCategory) {
+          categoryId = existingCategory.id;
+        } else {
+          const { data: newCategory, error: categoryError } = await supabase
+            .from('categories')
+            .insert({ name: data.categoryName.trim() })
+            .select('id')
+            .single();
+
+          if (categoryError) {
+            console.error('Error creating category:', categoryError);
+            toast.error('Fout bij het aanmaken van categorie');
+            return;
+          }
+          categoryId = newCategory.id;
+        }
+      }
+
       // Upload image if exists
       if (productImage) {
         const fileExt = productImage.name.split('.').pop();
@@ -195,6 +222,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
         image_url: imageUrl,
         user_id: user.id || (user?.id ?? ''), // fallback voor zekerheid
         supplier_id: supplierId,
+        category_id: categoryId,
       };
 
 
@@ -334,6 +362,47 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                 </FormItem>
               )}
             />
+
+            {/* Category and Supplier fields */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="categoryName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Categorie</FormLabel>
+                    <FormControl>
+                      <Input 
+                        {...field} 
+                        placeholder="Bijv. Elektronica, Voeding"
+                        disabled={loading}
+                        className="py-3 px-3 text-base"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="supplierName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Leverancier</FormLabel>
+                    <FormControl>
+                      <Input 
+                        {...field} 
+                        placeholder="Naam van leverancier"
+                        disabled={loading}
+                        className="py-3 px-3 text-base"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
 
             {/* Responsive grid: 1 kolom op mobiel, 3 op desktop */}
             <div className=" grid grid-cols-1 md:grid-cols-3 gap-4">

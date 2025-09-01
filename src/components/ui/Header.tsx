@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { NotificationButton } from '../NotificationButton';
-import { Package, Menu, User, LogOut } from 'lucide-react';
+import { Package, User, LogOut, Settings } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import {
@@ -38,18 +38,18 @@ export const Header: React.FC<HeaderProps> = ({ title, unreadCount = 0, onNotifi
           <NotificationButton unreadCount={unreadCount} onClick={onNotificationClick} />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-
-
-
               <Button size="icon" className="relative flex items-center justify-center w-10 h-10 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-colors">
                 <User className="h-5 w-5" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48">
               <DropdownMenuItem onClick={() => navigate('/dashboard/settings/profile')}>
-
                 <User className="mr-2 h-4 w-4" />
                 <span>Mijn Profiel</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate('/dashboard/settings')}>
+                <Settings className="mr-2 h-4 w-4" />
+                <span>Instellingen</span>
               </DropdownMenuItem>
               <DropdownMenuItem onClick={async () => {
                 try {
@@ -65,10 +65,8 @@ export const Header: React.FC<HeaderProps> = ({ title, unreadCount = 0, onNotifi
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-      </header>      
-      
-      
-      
+      </header>
+
       {/* Mobile Header */}
       <header className="lg:hidden fixed top-0 left-0 right-0 z-40 bg-white shadow-sm">
         <div className="flex items-center justify-between px-4 h-[60px] border-b border-gray-100">
@@ -91,7 +89,11 @@ export const Header: React.FC<HeaderProps> = ({ title, unreadCount = 0, onNotifi
               <DropdownMenuContent align="end" className="w-48">
                 <DropdownMenuItem onClick={() => navigate('/dashboard/settings/profile')}>
                   <User className="mr-2 h-4 w-4" />
-                  <span>My Profile</span>
+                  <span>Mijn Profiel</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate('/dashboard/settings')}>
+                  <Settings className="mr-2 h-4 w-4" />
+                  <span>Instellingen</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={async () => {
                   try {
@@ -102,14 +104,11 @@ export const Header: React.FC<HeaderProps> = ({ title, unreadCount = 0, onNotifi
                   }
                 }}>
                   <LogOut className="mr-2 h-4 w-4" />
-                  <span>Log out</span>
+                  <span>Afmelden</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-        </div>
-        <div className="px-4 py-2 border-b border-gray-100">
-          <h1 className="text-lg font-bold text-gray-900 truncate">{title}</h1>
         </div>
       </header>
     </>

@@ -3,11 +3,11 @@ import {
   BarChart3, 
   Package, 
   ShoppingCart, 
-  Settings,
   Users,
   MessageSquare,
   Bell,
-  FileText
+  FileText,
+  Scan
 } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth'; // FIX: use import, not require
@@ -29,14 +29,12 @@ export const MobileBottomNav = ({ currentTab, onTabChange, userRole }: MobileBot
   const isAdminPage = location.pathname.startsWith('/admin');
   
   const regularMenuItems = isBlocked
-    ? [
-        { id: 'settings', label: 'Instellingen', icon: Settings, path: '/dashboard/settings' },
-      ]
+    ? []
     : [
         { id: 'dashboard', label: 'Dashboard', icon: BarChart3, path: '/dashboard' },
         { id: 'stock', label: 'Producten', icon: Package, path: '/dashboard/stock' },
+        { id: 'scan', label: 'Scannen', icon: Scan, path: '/dashboard/scan' },
         { id: 'transactions', label: 'Bewegingslijst', icon: ShoppingCart, path: '/dashboard/transactions' },
-        { id: 'settings', label: 'Instellingen', icon: Settings, path: '/dashboard/settings' },
       ];
 
   const adminMenuItems = [
@@ -66,10 +64,14 @@ export const MobileBottomNav = ({ currentTab, onTabChange, userRole }: MobileBot
               className={`flex flex-col items-center py-2 px-3 rounded-lg transition-colors ${
                 currentTab === item.id
                   ? 'text-blue-700 bg-blue-50'
+                  : item.id === 'scan'
+                  ? 'text-gray-600'
                   : 'text-gray-600'
               }`}
             >
-              <item.icon className="h-5 w-5 mb-1" />
+              <item.icon className={`h-5 w-5 mb-1 ${
+                item.id === 'scan' ? 'text-gray-600' : ''
+              }`} />
               <span className="text-xs font-medium">{item.label}</span>
             </button>
           ))}

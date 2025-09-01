@@ -71,7 +71,7 @@ export const StockMovements = () => {
   return (
     <div className="space-y-4">
       {/* Header */}
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center sm:mt-8 mt-4">
 
         <Button
           variant="default"

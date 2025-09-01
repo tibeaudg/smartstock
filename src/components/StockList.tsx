@@ -40,10 +40,19 @@ const getStockStatus = (quantity: number, minLevel: number) => {
 
 const getStockStatusVariant = (status: string) => {
   switch (status) {
-    case 'In Stock': return 'default';
-    case 'Laag': return 'secondary';
+    case 'In Stock': return 'success';
+    case 'Laag': return 'warning';
     case 'Op': return 'destructive';
-    default: return 'default';
+    default: return 'destructive';
+  }
+};
+
+const getStockStatusClasses = (status: string) => {
+  switch (status) {
+    case 'In Stock': return 'text-green-600 bg-green-100 border border-green-600 hover:text-white hover:bg-green-600 hover:border-green-600';
+    case 'Laag': return 'text-yellow-600 bg-yellow-100 border border-yellow-600 hover:text-white hover:bg-yellow-600 hover:border-yellow-600';
+    case 'Op': return 'text-red-600 bg-red-100 border border-red-600 hover:text-white hover:bg-red-600 hover:border-red-600';
+    default: return 'text-red-600 bg-red-100 border border-red-600 hover:text-white hover:bg-red-600 hover:border-red-600';
   }
 };
 
@@ -321,7 +330,7 @@ export const StockList = () => {
   if (isMobile) {
     return (
       <div className="space-y-4">
-        <div className="flex justify-center items-center">
+        <div className="flex justify-center items-center sm:mt-8 mt-4">
           <Button onClick={() => setIsProductActionModalOpen(true)}>
             <Plus className="h-4 w-4" />
             Toevoegen
@@ -397,7 +406,7 @@ export const StockList = () => {
                       <td className="px-2 py-2 text-center font-semibold">{product.quantity_in_stock}</td>
                       <td className="px-2 py-2 text-center">{product.minimum_stock_level}</td>
                       <td className="px-2 py-2 text-center">
-                        <Badge variant={getStockStatusVariant(stockStatus)} className="text-[10px] px-2 py-1 rounded-full">
+                        <Badge variant={getStockStatusVariant(stockStatus)} className={`text-[10px] px-2 py-1 rounded-full ${getStockStatusClasses(stockStatus)}`}>
                           {stockStatus}
                         </Badge>
                       </td>
@@ -617,7 +626,7 @@ export const StockList = () => {
                         <span className="text-green-600">€{product.sale_price?.toFixed(2) ?? '-'}</span>
                       </td>
                       <td className="px-4 py-2 whitespace-nowrap">
-                        <Badge variant={getStockStatusVariant(stockStatus)}>
+                        <Badge variant={getStockStatusVariant(stockStatus)} className={getStockStatusClasses(stockStatus)}>
                           {stockStatus}
                         </Badge>
                       </td>
@@ -635,7 +644,7 @@ export const StockList = () => {
                             variant="outline"
                             size="sm"
                             onClick={(e) => { e.stopPropagation(); handleStockAction(product, 'out'); }}
-                            className="text-red-600 bg-red-100 border border-red-600 hover:text-white hover:bg-red-600 hover:border-green-600"
+                            className="text-red-600 bg-red-100 border border-red-600 hover:text-white hover:bg-red-600 hover:border-red-600"
                           >
                             <Minus className="h-4 w-4" />
                           </Button>

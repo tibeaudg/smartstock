@@ -143,29 +143,94 @@ export const EditProductInfoModal = ({
       const SUPABASE_URL = "https://sszuxnqhbxauvershuys.supabase.co";
       imageUrl = `${SUPABASE_URL}/storage/v1/object/public/product-images/${fileName}`;
     }
-    const { error: updateError } = await supabase
-      .from('products')
-      .update({
-        name: form.name,
-        description: form.description,
-        quantity_in_stock: Number(form.quantity_in_stock),
-        minimum_stock_level: Number(form.minimum_stock_level),
-        unit_price: Number(form.unit_price),
-        purchase_price: Number(form.purchase_price),
-        sale_price: Number(form.sale_price),
-        image_url: imageUrl,
-        updated_at: new Date().toISOString(),
-      })
-      .eq('id', product.id);
-    if (updateError) {
-      toast.error('Fout bij het bijwerken van product info');
+
+    try {
+      // Handle supplier
+      let supplierId = null;
+      if (form.supplier_name.trim()) {
+        const { data: existingSupplier } = await supabase
+          .from('suppliers')
+          .select('id')
+          .eq('name', form.supplier_name.trim())
+          .single();
+
+        if (existingSupplier) {
+          supplierId = existingSupplier.id;
+        } else {
+          const { data: newSupplier, error: supplierError } = await supabase
+            .from('suppliers')
+            .insert({ name: form.supplier_name.trim() })
+            .select('id')
+            .single();
+
+          if (supplierError) {
+            console.error('Error creating supplier:', supplierError);
+            toast.error('Fout bij het aanmaken van leverancier');
+            setLoading(false);
+            return;
+          }
+          supplierId = newSupplier.id;
+        }
+      }
+
+      // Handle category
+      let categoryId = null;
+      if (form.category_name.trim()) {
+        const { data: existingCategory } = await supabase
+          .from('categories')
+          .select('id')
+          .eq('name', form.category_name.trim())
+          .single();
+
+        if (existingCategory) {
+          categoryId = existingCategory.id;
+        } else {
+          const { data: newCategory, error: categoryError } = await supabase
+            .from('categories')
+            .insert({ name: form.category_name.trim() })
+            .select('id')
+            .single();
+
+          if (categoryError) {
+            console.error('Error creating category:', categoryError);
+            toast.error('Fout bij het aanmaken van categorie');
+            setLoading(false);
+            return;
+          }
+          categoryId = newCategory.id;
+        }
+      }
+
+      const { error: updateError } = await supabase
+        .from('products')
+        .update({
+          name: form.name,
+          description: form.description,
+          quantity_in_stock: Number(form.quantity_in_stock),
+          minimum_stock_level: Number(form.minimum_stock_level),
+          unit_price: Number(form.unit_price),
+          purchase_price: Number(form.purchase_price),
+          sale_price: Number(form.sale_price),
+          image_url: imageUrl,
+          category_id: categoryId,
+          supplier_id: supplierId,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', product.id);
+      if (updateError) {
+        toast.error('Fout bij het bijwerken van product info');
+        setLoading(false);
+        return;
+      }
+      toast.success('Productinformatie bijgewerkt!');
+      onProductUpdated();
+      onClose();
+    } catch (error) {
+      console.error('Error updating product:', error);
+      toast.error('Onverwachte fout bij het bijwerken van product');
+    } finally {
       setLoading(false);
-      return;
     }
-    toast.success('Productinformatie bijgewerkt!');
-    onProductUpdated();
-    onClose();
-    setLoading(false);
   };
 
   if (!isOpen) return null;
@@ -198,6 +263,30 @@ export const EditProductInfoModal = ({
             <div className="mb-4">
               <Label>Beschrijving</Label>
               <Input name="description" value={form.description} onChange={handleChange} disabled={loading} />
+            </div>
+            <div className="mb-4">
+              <div className={`grid ${isMobile ? 'grid-cols-1 gap-4' : 'grid-cols-2 gap-4'}`}>
+                <div>
+                  <Label>Categorie</Label>
+                  <Input 
+                    name="category_name" 
+                    value={form.category_name} 
+                    onChange={handleChange} 
+                    disabled={loading}
+                    placeholder="Bijv. Elektronica, Voeding"
+                  />
+                </div>
+                <div>
+                  <Label>Leverancier</Label>
+                  <Input 
+                    name="supplier_name" 
+                    value={form.supplier_name} 
+                    onChange={handleChange} 
+                    disabled={loading}
+                    placeholder="Naam van leverancier"
+                  />
+                </div>
+              </div>
             </div>
             <div className="mb-4">
               <Label>Voorraad</Label>
