@@ -73,28 +73,78 @@ const fetchProducts = async (branchId: string) => {
   try {
     console.log('fetchProducts called with branchId:', branchId);
     
-    const { data, error } = await supabase
+    // Haal eerst de producten op
+    const { data: products, error: productsError } = await supabase
       .from('products')
       .select('*')
       .eq('branch_id', branchId)
       .order('name');
     
-    if (error) {
-      console.error('Error fetching products:', error);
-      throw error;
+    if (productsError) {
+      console.error('Error fetching products:', productsError);
+      throw productsError;
     }
     
-    console.log(`Fetched ${data?.length || 0} products for branch:`, { 
+    if (!products || products.length === 0) {
+      return [];
+    }
+    
+    // Haal de unieke categorie en leverancier IDs op
+    const categoryIds = [...new Set(products.map(p => p.category_id).filter(Boolean))];
+    const supplierIds = [...new Set(products.map(p => p.supplier_id).filter(Boolean))];
+    
+    // Haal categorie namen op
+    let categories: { [key: string]: string } = {};
+    if (categoryIds.length > 0) {
+      const { data: categoryData, error: categoryError } = await supabase
+        .from('categories')
+        .select('id, name')
+        .in('id', categoryIds);
+      
+      if (!categoryError && categoryData) {
+        categories = categoryData.reduce((acc, cat) => {
+          acc[cat.id] = cat.name;
+          return acc;
+        }, {} as { [key: string]: string });
+      }
+    }
+    
+    // Haal leverancier namen op
+    let suppliers: { [key: string]: string } = {};
+    if (supplierIds.length > 0) {
+      const { data: supplierData, error: supplierError } = await supabase
+        .from('suppliers')
+        .select('id, name')
+        .in('id', supplierIds);
+      
+      if (!supplierError && supplierData) {
+        suppliers = supplierData.reduce((acc, sup) => {
+          acc[sup.id] = sup.name;
+          return acc;
+        }, {} as { [key: string]: string });
+      }
+    }
+    
+    // Voeg de namen toe aan de producten
+    const transformedData = products.map(product => ({
+      ...product,
+      category_name: product.category_id ? categories[product.category_id] || null : null,
+      supplier_name: product.supplier_id ? suppliers[product.supplier_id] || null : null
+    }));
+    
+    console.log(`Fetched ${transformedData.length || 0} products for branch:`, { 
       branchId,
-      totalProducts: data?.length || 0,
-      firstProduct: data?.[0] ? {
-        id: data[0].id,
-        name: data[0].name,
-        category_id: data[0].category_id,
-        supplier_id: data[0].supplier_id
+      totalProducts: transformedData.length || 0,
+      firstProduct: transformedData[0] ? {
+        id: transformedData[0].id,
+        name: transformedData[0].name,
+        category_id: transformedData[0].category_id,
+        supplier_id: transformedData[0].supplier_id,
+        category_name: transformedData[0].category_name,
+        supplier_name: transformedData[0].supplier_name
       } : null
     });
-    return data || [];
+    return transformedData;
   } catch (error) {
     console.error('Error in fetchProducts:', error);
     throw error;

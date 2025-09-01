@@ -309,6 +309,8 @@ export const EditProductInfoModal = ({
           image_url: imageUrl,
           category_id: categoryId,
           supplier_id: supplierId,
+          category_name: form.category_name.trim() || null,
+          supplier_name: form.supplier_name.trim() || null,
           updated_at: new Date().toISOString(),
         })
         .eq('id', product.id);
