@@ -157,7 +157,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [user]);
+  }, [user?.id]); // Alleen afhankelijk van user.id, niet van het hele user object
 
   const signIn = async (email: string, password: string) => {
     setLoading(true);

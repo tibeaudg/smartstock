@@ -161,8 +161,8 @@ export const StockList = () => {
 
   // State voor filters
   const [searchTerm, setSearchTerm] = useState('');
-  const [categoryFilter, setCategoryFilter] = useState('');
-  const [supplierFilter, setSupplierFilter] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('all');
+  const [supplierFilter, setSupplierFilter] = useState('all');
   const [stockStatusFilter, setStockStatusFilter] = useState('all');
   const [minPriceFilter, setMinPriceFilter] = useState('');
   const [maxPriceFilter, setMaxPriceFilter] = useState('');
@@ -219,7 +219,7 @@ export const StockList = () => {
         setCategoryFilter(filterValue);
         setCategoryFilterName(filterName || '');
         // Clear other filters
-        setSupplierFilter('');
+        setSupplierFilter('all');
         setSupplierFilterName('');
         setSearchTerm('');
         setStockStatusFilter('all');
@@ -232,7 +232,7 @@ export const StockList = () => {
         setSupplierFilter(filterValue);
         setSupplierFilterName(filterName || '');
         // Clear other filters
-        setCategoryFilter('');
+        setCategoryFilter('all');
         setCategoryFilterName('');
         setSearchTerm('');
         setStockStatusFilter('all');
@@ -251,9 +251,9 @@ export const StockList = () => {
   useEffect(() => {
     if (activeBranch?.branch_id) {
       // Reset filters when branch changes
-      setCategoryFilter('');
+      setCategoryFilter('all');
       setCategoryFilterName('');
-      setSupplierFilter('');
+      setSupplierFilter('all');
       setSupplierFilterName('');
       setSearchTerm('');
       setStockStatusFilter('all');
@@ -270,9 +270,9 @@ export const StockList = () => {
   // Cleanup effect for filters when component unmounts
   useEffect(() => {
     return () => {
-      setCategoryFilter('');
+      setCategoryFilter('all');
       setCategoryFilterName('');
-      setSupplierFilter('');
+      setSupplierFilter('all');
       setSupplierFilterName('');
       setSearchTerm('');
       setStockStatusFilter('all');
@@ -347,15 +347,15 @@ export const StockList = () => {
   const activeFilterCount = useMemo(() => {
     let count = 0;
     if (searchTerm !== '') count++;
-    if (categoryFilter !== '') count++;
-    if (supplierFilter !== '') count++;
+    if (categoryFilter !== 'all' && categoryFilter !== '') count++;
+    if (supplierFilter !== 'all' && supplierFilter !== '') count++;
     if (stockStatusFilter !== 'all') count++;
     if (minPriceFilter !== '') count++;
     if (maxPriceFilter !== '') count++;
     if (minStockFilter !== '') count++;
     if (maxStockFilter !== '') count++;
     return count;
-  }, [categoryFilter, supplierFilter, stockStatusFilter, minPriceFilter, maxPriceFilter, minStockFilter, maxStockFilter]);
+  }, [categoryFilter, supplierFilter, stockStatusFilter, minPriceFilter, maxPriceFilter, minStockFilter, maxStockFilter, searchTerm]);
 
   // Filter products based on all filter criteria
   const {
@@ -419,10 +419,10 @@ export const StockList = () => {
       const stockStatus = getStockStatus(product.quantity_in_stock, product.minimum_stock_level);
       
       // Category filter
-      const matchesCategory = categoryFilter === '' || product.category_id === categoryFilter;
+      const matchesCategory = categoryFilter === 'all' || categoryFilter === '' || product.category_id === categoryFilter;
       
       // Supplier filter
-      const matchesSupplier = supplierFilter === '' || product.supplier_id === supplierFilter;
+      const matchesSupplier = supplierFilter === 'all' || supplierFilter === '' || product.supplier_id === supplierFilter;
       
       // Search term filter
       const matchesSearch = searchTerm === '' || 
@@ -461,9 +461,9 @@ export const StockList = () => {
   const handleClearFilters = () => {
     console.log('Clearing all filters');
     setSearchTerm('');
-    setCategoryFilter('');
+    setCategoryFilter('all');
     setCategoryFilterName('');
-    setSupplierFilter('');
+    setSupplierFilter('all');
     setSupplierFilterName('');
     setStockStatusFilter('all');
     setMinPriceFilter('');
@@ -558,6 +558,34 @@ export const StockList = () => {
       toast.error('Fout bij verwijderen van producten');
     }
   };
+
+  // Test functie voor filters
+  const testFilters = () => {
+    console.log('Testing filters...');
+    console.log('Current filters:', {
+      categoryFilter,
+      categoryFilterName,
+      supplierFilter,
+      supplierFilterName
+    });
+    console.log('Available categories:', categories);
+    console.log('Available suppliers:', suppliers);
+    console.log('Products:', productsTyped.map(p => ({
+      id: p.id,
+      name: p.name,
+      category_id: p.category_id,
+      supplier_id: p.supplier_id,
+      category_name: p.category_name,
+      supplier_name: p.supplier_name
+    })));
+  };
+
+  // Debug effect voor filters
+  useEffect(() => {
+    if (location.pathname.includes('/stock')) {
+      testFilters();
+    }
+  }, [location.pathname, categoryFilter, supplierFilter, searchTerm, productsTyped]);
 
   if (loading) {
     return (
@@ -812,9 +840,9 @@ export const StockList = () => {
             }}
             onProductUpdated={() => {
               // Clear filters when product is updated to show all products
-              setCategoryFilter('');
+              setCategoryFilter('all');
               setCategoryFilterName('');
-              setSupplierFilter('');
+              setSupplierFilter('all');
               setSupplierFilterName('');
               setSearchTerm('');
               setStockStatusFilter('all');
@@ -844,9 +872,9 @@ export const StockList = () => {
             }}
             onProductUpdated={() => {
               // Clear filters when product is updated to show all products
-              setCategoryFilter('');
+              setCategoryFilter('all');
               setCategoryFilterName('');
-              setSupplierFilter('');
+              setSupplierFilter('all');
               setSupplierFilterName('');
               setSearchTerm('');
               setStockStatusFilter('all');
@@ -870,9 +898,9 @@ export const StockList = () => {
           onClose={() => setIsAddModalOpen(false)}
           onProductAdded={() => {
             // Clear filters when new product is added to show all products
-            setCategoryFilter('');
+            setCategoryFilter('all');
             setCategoryFilterName('');
-            setSupplierFilter('');
+            setSupplierFilter('all');
             setSupplierFilterName('');
             setSearchTerm('');
             setStockStatusFilter('all');
@@ -958,10 +986,10 @@ export const StockList = () => {
             console.log('Category filter changed:', value);
             setCategoryFilter(value);
             // Update category name when filter changes
-            if (value) {
-                          // Find category name by ID
-            const category = categories.find(cat => cat.id === value);
-            setCategoryFilterName(category?.name || 'Gefilterd');
+            if (value && value !== 'all') {
+              // Find category name by ID
+              const category = categories.find(cat => cat.id === value);
+              setCategoryFilterName(category?.name || 'Gefilterd');
             } else {
               setCategoryFilterName('');
             }
@@ -971,7 +999,7 @@ export const StockList = () => {
             console.log('Supplier filter changed:', value);
             setSupplierFilter(value);
             // Update supplier name when filter changes
-            if (value) {
+            if (value && value !== 'all') {
               // Find supplier name by ID
               const supplier = suppliers.find(sup => sup.id === value);
               setSupplierFilterName(supplier?.name || '');

@@ -59,6 +59,13 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
     fetchSuppliers();
   }, []);
 
+  // Auto-open filters when category or supplier filter is set
+  useEffect(() => {
+    if (categoryFilter || supplierFilter) {
+      setIsFiltersOpen(true);
+    }
+  }, [categoryFilter, supplierFilter]);
+
   const fetchCategories = async () => {
     try {
       const { data, error } = await supabase
@@ -143,7 +150,7 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
                       <SelectValue placeholder="Selecteer categorie..." />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Alle categorieën</SelectItem>
+                      <SelectItem value="all">Alle categorieën</SelectItem>
                       {categories.map((category) => (
                         <SelectItem key={category.id} value={category.id}>
                           {category.name}
@@ -161,7 +168,7 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
                       <SelectValue placeholder="Selecteer leverancier..." />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Alle leveranciers</SelectItem>
+                      <SelectItem value="all">Alle leveranciers</SelectItem>
                       {suppliers.map((supplier) => (
                         <SelectItem key={supplier.id} value={supplier.id}>
                           {supplier.name}
