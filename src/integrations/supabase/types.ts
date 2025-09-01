@@ -628,6 +628,7 @@ export type Database = {
           updated_at: string | null
           purchase_price: number
           sale_price: number
+          barcode: string | null
         }
         Insert: {
           branch_id?: string | null
@@ -646,6 +647,7 @@ export type Database = {
           updated_at?: string | null
           purchase_price?: number
           sale_price?: number
+          barcode?: string | null
         }
         Update: {
           branch_id?: string | null
@@ -664,6 +666,7 @@ export type Database = {
           updated_at?: string | null
           purchase_price?: number
           sale_price?: number
+          barcode?: string | null
         }
         Relationships: [
           {

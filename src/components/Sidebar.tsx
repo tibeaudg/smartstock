@@ -9,7 +9,8 @@ import {
   CircleUserRound, 
   Users,
   MessageSquare,
-  Bell
+  Bell,
+  Scan
 } 
 from 'lucide-react';
 import { BranchSelector } from './BranchSelector';
@@ -62,6 +63,8 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
       ]
     : [
         { id: 'dashboard', label: 'Dashboard', icon: BarChart3, path: '/dashboard', end: true },
+        { id: 'scan', label: 'Scannen', icon: Scan, path: '/dashboard/scan' },
+
         { id: 'stock', label: 'Producten', icon: Package, path: '/dashboard/stock' },
         { id: 'transactions', label: 'Stockmutaties', icon: ShoppingCart, path: '/dashboard/transactions' },
         { id: 'settings', label: 'Instellingen', icon: Settings, path: '/dashboard/settings' },

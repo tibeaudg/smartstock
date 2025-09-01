@@ -30,6 +30,7 @@ import VoorraadbeheerExcelVsSoftware from './pages/voorraadbeheer-excel-vs-softw
 import VoorraadbeheerVoorStarters from './pages/voorraadbeheer-voor-starters';
 import MobielVoorraadbeheer from './pages/mobiel-voorraadbeheer';
 import GratisStockbeheer from './pages/gratis-stockbeheer';
+import ScanPage from './pages/scan';
 import React, { useState } from 'react';
 import { OnboardingModal } from "./components/onboarding/OnboardingModal";
 
@@ -246,6 +247,7 @@ export default function App() {
                     }
                   >
                     <Route index element={<Dashboard userRole="staff" />} />
+                    <Route path="scan" element={<ScanPage />} />
                     <Route path="stock" element={<StockList />} />
                     <Route path="transactions" element={<StockMovements />} />
                     <Route path="settings" element={<Settings />} />
