@@ -51,7 +51,6 @@ export default function VoorraadbeheerSoftwareVergelijken() {
   return (
     <><SeoPageLayout
       title="Voorraadbeheer Software Vergelijken"
-      image="/logo.png"
     >
       <SEO
         title="Software Stockbeheer 2024: Beste Voorraadbeheer Software Vergelijken | stockflow"

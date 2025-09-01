@@ -1,7 +1,6 @@
 import SEO from '../../components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '../../components/SeoPageLayout';
-import {  Users } from 'lucide-react';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { Utensils, Coffee, ChefHat } from 'lucide-react';
 

@@ -7,7 +7,7 @@ interface SeoPageLayoutProps {
   children: React.ReactNode;
 }
 
-const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({ title, children }) => {
+const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({ children }) => {
   const navigate = useNavigate();
 
   const handleLoginClick = () => {

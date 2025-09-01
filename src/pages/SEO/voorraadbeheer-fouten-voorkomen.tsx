@@ -97,7 +97,6 @@ export default function VoorraadbeheerFoutenVoorkomen() {
   return (
     <SeoPageLayout
       title="Fouten in Voorraadbeheer Voorkomen"
-        image="/logo.png"
     >
       <SEO
         title="Fouten in Voorraadbeheer Voorkomen | Best Practices | stockflow"
