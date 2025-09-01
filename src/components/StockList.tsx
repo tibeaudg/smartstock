@@ -208,14 +208,15 @@ export const StockList = () => {
     });
   }, [productsTyped, searchTerm, categoryFilter, supplierFilter, stockStatusFilter, minPriceFilter, maxPriceFilter, minStockFilter, maxStockFilter]);
 
-  // Update selectedProductIds when selectAll changes
-  useEffect(() => {
-    if (selectAll) {
+  // Handle select all checkbox change
+  const handleSelectAllChange = (checked: boolean) => {
+    setSelectAll(checked);
+    if (checked) {
       setSelectedProductIds(filteredProducts.map(p => p.id));
     } else {
       setSelectedProductIds([]);
     }
-  }, [selectAll, filteredProducts]);
+  };
 
   const handleClearFilters = () => {
     setCategoryFilter('');
@@ -263,11 +264,17 @@ export const StockList = () => {
   };
 
   const handleSelectProduct = (id: string) => {
-    setSelectedProductIds(prev => 
-      prev.includes(id) 
+    setSelectedProductIds(prev => {
+      const newSelection = prev.includes(id) 
         ? prev.filter(productId => productId !== id)
-        : [...prev, id]
-    );
+        : [...prev, id];
+      
+      // Update selectAll state based on whether all products are selected
+      const allSelected = newSelection.length === filteredProducts.length;
+      setSelectAll(allSelected);
+      
+      return newSelection;
+    });
   };
 
   const handleBulkDelete = async () => {
@@ -521,7 +528,7 @@ export const StockList = () => {
                     <input
                       type="checkbox"
                       checked={selectAll && filteredProducts.length > 0}
-                      onChange={() => setSelectAll((prev) => !prev)}
+                      onChange={(e) => handleSelectAllChange(e.target.checked)}
                     />
                   </th>
                 )}

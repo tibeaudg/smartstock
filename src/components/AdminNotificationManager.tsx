@@ -20,7 +20,14 @@ export const AdminNotificationManager: React.FC = () => {
     setDeletingId(notificationId);
     try {
       await deleteNotification(notificationId);
-      fetchNotifications(user.id).then(setNotifications);
+      if (user) {
+        const refreshed = await fetchNotifications(user.id);
+        setNotifications(refreshed);
+      }
+      if (showUsers === notificationId) {
+        setShowUsers(null);
+        setUsers([]);
+      }
     } finally {
       setDeletingId(null);
     }
@@ -42,12 +49,31 @@ export const AdminNotificationManager: React.FC = () => {
   };
 
   const handleShowUsers = async (notificationId: string) => {
-    setShowUsers(notificationId);
-    const { data, error } = await supabase
+    setShowUsers(prev => (prev === notificationId ? null : notificationId));
+    const { data: reads, error: readsError } = await supabase
       .from('notification_reads')
       .select('user_id, read_at')
       .eq('notification_id', notificationId);
-    if (!error && data) setUsers(data);
+    if (readsError || !reads || reads.length === 0) {
+      setUsers([]);
+      return;
+    }
+    const userIds = Array.from(new Set(reads.map((r: any) => r.user_id)));
+    const { data: profiles, error: profilesError } = await supabase
+      .from('profiles')
+      .select('id, first_name, last_name, email')
+      .in('id', userIds);
+    const idToProfile: Record<string, any> = {};
+    if (!profilesError && profiles) {
+      for (const p of profiles) idToProfile[p.id] = p;
+    }
+    const merged = reads.map((r: any) => {
+      const p = idToProfile[r.user_id];
+      const fullName = p ? [p.first_name, p.last_name].filter(Boolean).join(' ') : '';
+      const display = fullName || (p?.email ?? r.user_id);
+      return { user_id: r.user_id, read_at: r.read_at, display };
+    });
+    setUsers(merged);
   };
 
   return (
@@ -103,7 +129,7 @@ export const AdminNotificationManager: React.FC = () => {
                   ) : (
                     <ul className="text-xs">
                       {users.map(u => (
-                        <li key={u.user_id}>{u.user_id} <span className="text-gray-400">({new Date(u.read_at).toLocaleString()})</span></li>
+                        <li key={u.user_id}>{u.display} <span className="text-gray-400">({new Date(u.read_at).toLocaleString()})</span></li>
                       ))}
                     </ul>
                   )}

@@ -58,11 +58,11 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
 
   if (loading) {
     return (
-      <div className="space-y-8 max-w-[1600px] mx-auto">
+      <div className="space-y-8 max-w-[1600px] mx-auto pt-24 pb-64 md:pt-0">
         <div className="flex justify-between items-center">
           <h1 className="text-4xl font-bold text-gray-900">Dashboard</h1>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 md:pt-10 lg:grid-cols-5 gap-6">
           {[...Array(5)].map((_, i) => (
             <Card key={i} className="animate-pulse bg-white">
               <CardContent className="p-6">
@@ -87,7 +87,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
   };
 
   return (
-    <div className=" space-y-6 max-w-[1600px] mx-auto relative">
+    <div className=" space-y-6 max-w-[1600px] mx-auto relative pt-24 pb-24 md:pt-0">
   {/* ...existing code... (removed duplicate header and notification bell, now handled globally) */}
 
       {/* Metrics Cards */}

@@ -1,3 +1,47 @@
+import { type } from "os";
+import { string } from "zod";
+
+// BlogPost type for Supabase integration
+export type BlogPost = {
+  id: string;
+  title: string;
+  slug: string;
+  content: string;
+  meta_title?: string;
+  meta_description?: string;
+  og_image?: string;
+  published: boolean;
+  date_published?: string;
+  author?: string;
+};
+
+// Blog Analytics types
+export type BlogAnalytics = {
+  id: string;
+  blog_post_id?: string;
+  slug: string;
+  visitor_ip?: string;
+  user_agent?: string;
+  referrer?: string;
+  country?: string;
+  city?: string;
+  page_load_time_ms?: number;
+  time_on_page_seconds?: number;
+  is_unique_visit: boolean;
+  created_at: string;
+  updated_at: string;
+};
+
+export type BlogAnalyticsSummary = {
+  slug: string;
+  blog_post_id?: string;
+  total_views: number;
+  unique_visitors: number;
+  avg_load_time_ms?: number;
+  avg_time_on_page_seconds?: number;
+  first_view: string;
+  last_view: string;
+};
       company_types: {
         Row: {
           id: string;
@@ -26,9 +70,13 @@
             columns: ["user_id"];
             referencedRelation: "profiles";
             referencedColumns: ["id"];
-          }
+          },
         ];
       };
+
+
+
+
 export type Json =
   | string
   | number

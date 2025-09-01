@@ -11,6 +11,12 @@ import { Dashboard } from "./components/Dashboard";
 import { StockList } from "./components/StockList";
 import { StockMovements } from "./components/StockMovements";
 import { Settings } from "./components/Settings";
+import { ProfileSettings } from "./components/settings/ProfileSettings";
+import { BranchManagement } from "./components/settings/BranchManagement";
+import { UserManagement } from "./components/settings/UserManagement";
+import { ModuleManagement } from "./components/settings/ModuleManagement";
+import { LicenseOverview } from "./components/settings/LicenseOverview";
+import { InvoicingOverview } from "./components/settings/InvoicingOverview";
 import { useAuth, AuthProvider } from "./hooks/useAuth";
 import { Suspense } from "react";
 import { ContentWrapper } from "./ContentWrapper";
@@ -20,6 +26,7 @@ import AdminNotificationsPage from './pages/AdminNotificationsPage';
 import { AlertCircle } from "lucide-react";
 import SEO from './components/SEO';
 import PreloadResources from './components/PreloadResources';
+<<<<<<< HEAD
 import VoorraadbeheerTips from './pages/voorraadbeheer-tips';
 import VoorraadbeheerSoftwareVergelijken from './pages/voorraadbeheer-software-vergelijken';
 import VoorraadbeheerWebshop from './pages/voorraadbeheer-webshop';
@@ -31,8 +38,33 @@ import VoorraadbeheerVoorStarters from './pages/voorraadbeheer-voor-starters';
 import MobielVoorraadbeheer from './pages/mobiel-voorraadbeheer';
 import GratisStockbeheer from './pages/gratis-stockbeheer';
 import ScanPage from './pages/scan';
+=======
+import { Admin } from './components/Admin';
+import AdminCMS from './components/AdminCMS';
+import { AdminChatList } from './components/AdminChatList';
+import VoorraadbeheerTips from './pages/SEO/voorraadbeheer-tips';
+import VoorraadbeheerSoftwareVergelijken from './pages/SEO/voorraadbeheer-software-vergelijken';
+import VoorraadbeheerWebshop from './pages/SEO/voorraadbeheer-webshop';
+import BlogListPage from './pages/blog';
+import BlogPostPage from './pages/blog/[slug]';
+import VoorraadbeheerFoutenVoorkomen from './pages/SEO/voorraadbeheer-fouten-voorkomen';
+import VoorraadbeheerAutomatiseren from './pages/SEO/voorraadbeheer-automatiseren';
+import VoorraadbeheerHoreca from './pages/SEO/voorraadbeheer-horeca';
+import VoorraadbeheerExcelVsSoftware from './pages/SEO/voorraadbeheer-excel-vs-software';
+import VoorraadbeheerVoorStarters from './pages/SEO/voorraadbeheer-voor-starters';
+import MobielVoorraadbeheer from './pages/SEO/mobiel-voorraadbeheer';
+import GratisStockbeheer from './pages/SEO/gratis-stockbeheer';
+import Voorraadbeheer from './pages/SEO/voorraadbeheer';
+
+>>>>>>> 44965885aceba11fd427b73a9454e2883183d978
 import React, { useState } from 'react';
 import { OnboardingModal } from "./components/onboarding/OnboardingModal";
+import VoorraadbeheerSoftware from "./pages/SEO/voorraadbeheer-software";
+import Stockbeheer from "./pages/SEO/stockbeheer";
+import SimpelStockbeheer from "./pages/SEO/simpelstockbeheer";
+import GratisVoorraadbeheer from "./pages/SEO/gratis-voorraadbeheer";
+import VoorraadbeheerVoorHoreca from "./pages/SEO/voorraadbeheer-voor-horeca";
+
 
 // ErrorBoundary component
 class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean; error: any }> {
@@ -200,7 +232,6 @@ export default function App() {
       "addressCountry": "BE"
     },
     "description": "Simpel stockbeheer voor KMO's en zelfstandigen. Beheer je voorraad eenvoudig online met stockflow.",
-    "areaServed": ["Gent", "Brugge", "Antwerpen", "Vlaanderen"]
   };
   return (
     <ErrorBoundary>
@@ -235,6 +266,16 @@ export default function App() {
                   <Route path="/voorraadbeheer-excel-vs-software" element={<VoorraadbeheerExcelVsSoftware />} />
                   <Route path="/voorraadbeheer-voor-starters" element={<VoorraadbeheerVoorStarters />} />
                   <Route path="/mobiel-voorraadbeheer" element={<MobielVoorraadbeheer />} />
+                  <Route path="/voorraadbeheer-software" element={<VoorraadbeheerSoftware />} />
+                  <Route path="/voorraadbeheer" element={<Voorraadbeheer />} />
+                  <Route path="/stockbeheer" element={<Stockbeheer />} />
+                  <Route path="/simpelstockbeheer" element={<SimpelStockbeheer />} />
+                  <Route path="/gratis-voorraadbeheer" element={<GratisVoorraadbeheer />} />
+                  <Route path="/voorraadbeheer-voor-horeca" element={<VoorraadbeheerVoorHoreca />} />
+                  
+                  {/* Blog routes */}
+                  <Route path="/blog" element={<BlogListPage />} />
+                  <Route path="/blog/:slug" element={<BlogPostPage />} />
                   <Route path="/gratis-stockbeheer" element={<GratisStockbeheer />} />
 
                   {/* Beschermde dashboard routes */}
@@ -250,12 +291,36 @@ export default function App() {
                     <Route path="scan" element={<ScanPage />} />
                     <Route path="stock" element={<StockList />} />
                     <Route path="transactions" element={<StockMovements />} />
-                    <Route path="settings" element={<Settings />} />
+                    <Route path="settings" element={<Settings />}>
+                      <Route index element={<ProfileSettings />} />
+                      <Route path="profile" element={<ProfileSettings />} />
+                      <Route path="branches" element={<BranchManagement />} />
+                      <Route path="users" element={<UserManagement />} />
+                      <Route path="modules" element={<ModuleManagement />} />
+                      <Route path="license" element={<LicenseOverview />} />
+                      <Route path="invoicing" element={<InvoicingOverview />} />
+                    </Route>
                   </Route>
 
-                  <Route path="/admin" element={<AdminInvoicingPage />} />
-                  <Route path="/admin/user/:id" element={<AdminUserDetailPage />} />
-                  <Route path="/admin/notifications" element={<AdminNotificationsPage />} />
+                  {/* Admin routes */}
+                  <Route
+                    path="/admin"
+                    element={
+                      <ProtectedRoute>
+                        <StockManagementApp />
+                      </ProtectedRoute>
+                    }
+                  >
+                    <Route element={<Admin />}>
+                      <Route index element={<AdminInvoicingPage />} />
+                      <Route path="cms" element={<AdminCMS />} />
+                      <Route path="notifications" element={<AdminNotificationsPage />} />
+                      <Route path="chat" element={<AdminChatList />} />
+                      <Route path="invoicing" element={<AdminInvoicingPage />} />
+                      <Route path="seo" element={<SEO />} />
+                      <Route path="user/:id" element={<AdminUserDetailPage />} />
+                    </Route>
+                  </Route>
 
                   {/* Fallback route */}
                   <Route path="*" element={<NotFound />} />

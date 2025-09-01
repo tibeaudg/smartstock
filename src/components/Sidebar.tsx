@@ -9,22 +9,18 @@ import {
   CircleUserRound, 
   Users,
   MessageSquare,
-  Bell,
-  Scan
+  Bell
 } 
 from 'lucide-react';
 import { BranchSelector } from './BranchSelector';
 import { ChatModal } from './ChatModal';
 import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
-
 import { Button } from '@/components/ui/button';
 import { useAuth, UserProfile } from '@/hooks/useAuth';
-import { useNavigate, NavLink } from 'react-router-dom';
+import { useNavigate, NavLink, useLocation } from 'react-router-dom';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { LogOut } from 'lucide-react';
 import { useUnreadMessages } from '@/hooks/UnreadMessagesContext';
-
 import { useProductCount } from '@/hooks/useDashboardData';
 
 interface SidebarProps {
@@ -36,6 +32,19 @@ interface SidebarProps {
   onToggle: () => void;
 }
 
+interface MenuItem {
+  id: string;
+  label: string;
+  icon: React.ComponentType;
+  path: string;
+  end?: boolean;
+  subItems?: {
+    id: string;
+    label: string;
+    path: string;
+  }[];
+}
+
 export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProps) => {
   const { productCount, isLoading } = useProductCount();
   const isMobile = useIsMobile();
@@ -43,10 +52,22 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
   const navigate = useNavigate();
   const [chatOpen, setChatOpen] = useState(false);
   const { unreadCount: unreadMessages, resetUnreadCount } = useUnreadMessages();
+  const [openSubmenus, setOpenSubmenus] = useState<Record<string, boolean>>({});
 
   // If blocked, only show settings/invoicing
   const isBlocked = userProfile?.blocked;
   const isOwner = userProfile && userProfile.role === 'admin' && !userProfile.blocked;
+
+  const toggleSubmenu = (menuId: string) => {
+    setOpenSubmenus(prev => {
+      // If we're opening this submenu, close all others
+      if (!prev[menuId]) {
+        return { [menuId]: true };
+      }
+      // If we're closing this submenu, just close it
+      return { ...prev, [menuId]: false };
+    });
+  };
   
   const handleSignOut = async () => {
     try {
@@ -57,9 +78,25 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
     }
   };
   
+  const settingsSubItems = [
+    { id: 'branches', label: 'Filialen', path: '/dashboard/settings/branches' },
+    { id: 'users', label: 'Gebruikers', path: '/dashboard/settings/users' },
+    { id: 'modules', label: 'Modules', path: '/dashboard/settings/modules' },
+  ];
+
+  const adminSubItems = [
+    { id: 'overview', label: 'Overzicht', path: '/admin' },
+  ];
+
   const menuItems = isBlocked
     ? [
-        { id: 'settings', label: 'Instellingen', icon: Settings, path: '/dashboard/settings' },
+        { 
+          id: 'settings', 
+          label: 'Instellingen', 
+          icon: Settings, 
+          path: '/dashboard/settings',
+          subItems: [{ id: 'invoicing', label: 'Facturatie', path: '/dashboard/settings/invoicing' }]
+        },
       ]
     : [
         { id: 'dashboard', label: 'Dashboard', icon: BarChart3, path: '/dashboard', end: true },
@@ -67,10 +104,22 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
 
         { id: 'stock', label: 'Producten', icon: Package, path: '/dashboard/stock' },
         { id: 'transactions', label: 'Stockmutaties', icon: ShoppingCart, path: '/dashboard/transactions' },
-        { id: 'settings', label: 'Instellingen', icon: Settings, path: '/dashboard/settings' },
+        { 
+          id: 'settings', 
+          label: 'Instellingen', 
+          icon: Settings, 
+          path: '/dashboard/settings',
+          subItems: settingsSubItems
+        },
         ...(isOwner
           ? [
-              { id: 'admin', label: 'Admin', icon: Users, path: '/admin' },
+              { 
+                id: 'admin', 
+                label: 'Admin', 
+                icon: Users, 
+                path: '/admin',
+                subItems: adminSubItems
+              },
             ]
           : []),
       ];
@@ -81,8 +130,6 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
       {isOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden" onClick={onToggle} />
       )}
-
-      
       
       {/* Sidebar */}
       <div className={`
@@ -91,26 +138,12 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
         ${isOpen ? 'md:relative md:translate-x-0' : 'md:relative'}
         ${!isOpen ? 'md:translate-x-0' : ''}
       `}>
-
-      <div className="flex items-center pl-5 space-x-3 h-[70px] flex-shrink-0">
-        <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-          <Package className="w-5 h-5 text-white" />
-        </div>
-        <h1 className="text-lg font-semibold text-gray-900">stockflow</h1>
-      </div>
-        
-
-
-        {/* User Info */}
-        {isOpen && (
-          <div className="px-3 py-2 border-b border-t border-gray-200 flex-shrink-0">
-            <p className="text-xs text-gray-700 text-center font-medium">
-              {userProfile?.first_name || userProfile?.last_name
-                ? `${userProfile?.first_name ?? ''} ${userProfile?.last_name ?? ''}`.trim()
-                : 'Laden...'}
-            </p>
+        <div className="flex items-center pl-5 space-x-3 h-[70px] flex-shrink-0">
+          <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+            <Package className="w-5 h-5 text-white" />
           </div>
-        )}
+          {isOpen && <h1 className="text-lg font-semibold text-gray-900">stockflow</h1>}
+        </div>
 
         {/* Branch Selector - Only on Desktop */}
         {isOpen && !isMobile && (
@@ -119,50 +152,93 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
           </div>
         )}
 
-        {/* Sidebar Content Area (no internal scrolling) */}
-        
-        <div className="flex-2 flex flex-col min-h-0 max-h-screen">
-          {/* Navigation */}
-          
-          <nav className="flex-1 px-3 py-4 text-sm pb-60">
-            <ul className="space-y-1">
-              {menuItems.map((item) => {
-                const Icon = item.icon;
-                let label = item.label;
-                if (item.id === 'stock') {
-                  label += ` `;
-                  if (isLoading) {
-                    label += '(...)';
-                  } else {
-                    label += `(${productCount})`;
-                  }
+        {/* Navigation */}
+        <nav className="flex-1 px-3 py-4 text-sm pb-60 overflow-y-auto">
+          <ul className="space-y-1">
+            {menuItems.map((item) => {
+              const Icon = item.icon;
+              let label = item.label;
+              if (item.id === 'stock') {
+                label += ` `;
+                if (isLoading) {
+                  label += '(...)';
+                } else {
+                  label += `(${productCount})`;
                 }
-                return (
-                  <li key={item.id}>
-                    <NavLink
-                      to={item.path}
-                      end={item.end}
-                      className={({ isActive }) => `
-                        w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-left transition-colors
-                        ${isActive 
-                          ? 'bg-blue-50 text-blue-700 border border-blue-200' 
-                          : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                        }
-                      `}
-                    >
+              }
+
+              const hasSubItems = item.subItems && item.subItems.length > 0;
+              const isSubmenuOpen = openSubmenus[item.id];
+              const isItemActive = location.pathname === item.path || 
+                (hasSubItems && item.subItems.some(sub => location.pathname === sub.path));
+
+              return (
+                <li key={item.id} className="space-y-1">
+                  <NavLink
+                    to={hasSubItems ? '#' : item.path}
+                    end={item.end}
+                    onClick={(e) => {
+                      if (hasSubItems) {
+                        e.preventDefault();
+                        toggleSubmenu(item.id);
+                      } else {
+                        // Close all submenus when clicking a regular menu item
+                        setOpenSubmenus({});
+                      }
+                    }}
+                    className={`
+                      w-full font-semibold flex items-center px-3 py-2 rounded-lg text-left transition-colors
+                      ${(isItemActive || isSubmenuOpen)
+                        ? 'bg-blue-50 text-blue-700 border border-blue-200' 
+                        : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                      }
+                    `}
+                  >
+                    <div className="flex items-center w-full">
                       <Icon className="w-5 h-5 flex-shrink-0" />
-                      {isOpen && <span className="font-medium ml-3">{label}</span>}
-                    </NavLink>
-                  </li>
-                );
-              })}
-            </ul>
-          </nav>
-        </div>
+                      {isOpen && (
+                        <div className="flex items-center justify-between flex-1 ml-3">
+                          <span>{label}</span>
+                          {hasSubItems && (
+                            <ChevronDown 
+                              className={`w-4 h-4 transform transition-transform ${isSubmenuOpen ? 'rotate-180' : ''}`} 
+                            />
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </NavLink>
+
+                  {/* Submenu */}
+                  {isOpen && hasSubItems && isSubmenuOpen && (
+                    <ul className="ml-4 space-y-1">
+                      {item.subItems.map((subItem) => (
+                        <li key={subItem.id}>
+                          <NavLink
+                            to={subItem.path}
+                            className={({ isActive }) => `
+                              w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-left transition-colors text-sm
+                              ${isActive 
+                                ? 'bg-blue-50 text-blue-700 border border-blue-200' 
+                                : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                              }
+                            `}
+                          >
+                            <span>{subItem.label}</span>
+                          </NavLink>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
 
         {/* Fixed Bottom Section */}
         <div className="flex-shrink-0">
-          {/* Help Section as professional submenu button */}
+          {/* Help Section */}
           <div className="border-t border-gray-200">
             <div className="px-3 py-2">
               <Button
@@ -195,51 +271,19 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
                 </div>
                 {isOpen && (
                   <>
-                    <span className="font-medium ml-3 flex-1 text-left">Hulp nodig?</span>
+                    <span className="font-medium ml-3 flex-1 text-left">Support</span>
                     {unreadMessages > 0 && (
                       <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full mr-2">
                         {unreadMessages}
                       </span>
                     )}
-                    <svg 
-                      className={`w-4 h-4 ml-auto transition-colors ${
-                        unreadMessages > 0 ? 'text-blue-600' : 'text-gray-400 group-hover:text-blue-600'
-                      }`} 
-                      fill="none" 
-                      stroke="currentColor" 
-                      viewBox="0 0 24 24"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
+                    <ChevronDown className="w-4 h-4 ml-auto" />
                   </>
                 )}
               </Button>
             </div>
           </div>
 
-          {/* Logout Section - Desktop Only */}
-          {!isMobile && (
-            <div className="border-t border-gray-200">
-              <div className="px-3 py-2">
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleSignOut}
-                  className={`
-                    w-full justify-start text-gray-600 hover:text-red-600 hover:bg-red-50 
-                    focus:ring-2 focus:ring-red-500 focus:ring-offset-2 
-                    transition-all duration-200 rounded-lg
-                    ${isOpen ? 'px-3' : 'px-2'}
-                  `}
-                  aria-label={isOpen ? "Afmelden" : "Uitloggen"}
-                >
-                  <LogOut className="w-4 h-4 flex-shrink-0" />
-                  {isOpen && <span className="ml-3 font-medium">Afmelden</span>}
-                </Button>
-              </div>
-            </div>
-          )}
         </div>
       </div>
 

@@ -1,3 +1,5 @@
+import { supabase } from '../integrations/supabase/client';
+
 // Delete a notification (admin only)
 export async function deleteNotification(notificationId: string) {
   const { error } = await supabase
@@ -6,7 +8,6 @@ export async function deleteNotification(notificationId: string) {
     .eq('id', notificationId);
   if (error) throw error;
 }
-import { supabase } from '../integrations/supabase/client';
 
 export interface Notification {
   id: string;
@@ -54,7 +55,7 @@ export async function markAllNotificationsAsRead(userId: string, notificationIds
   // Upsert to avoid duplicates
   const { error } = await supabase
     .from('notification_reads')
-    .upsert(inserts, { onConflict: ['notification_id', 'user_id'] });
+    .upsert(inserts, { onConflict: 'notification_id,user_id' });
   if (error) throw error;
 }
 

@@ -2,18 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Layout } from '@/components/Layout';
-import { Sidebar } from '@/components/Sidebar';
-import { Header } from '@/components/Header';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Loader2 } from 'lucide-react';
 import { BranchProvider } from '@/hooks/useBranches';
 import { useAuth } from '@/hooks/useAuth';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
+import { useIsMobile } from '@/hooks/use-mobile';
 import SEO from '../components/SEO';
 import { FeatureManagement } from '@/pages/admin/FeatureManagement';
 import { AdminNotificationManager } from '@/components/AdminNotificationManager';
 import { OnboardingModal } from '@/components/onboarding/OnboardingModal';
 import { AdminChatList } from '@/components/AdminChatList';
+import AdminCMS from '../components/AdminCMS';
+import BlogAnalytics from '../components/admin/BlogAnalytics';
 
 // Gebruikersbeheer types
 interface UserProfile {
@@ -75,6 +76,28 @@ async function fetchUserProfiles(): Promise<UserProfile[]> {
     .select('*');
   if (error) throw error;
   return data || [];
+}
+
+// Functie om gebruikersstatistieken te berekenen
+function calculateUserStats(users: UserProfile[]) {
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const weekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+  const monthAgo = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate());
+  const yearAgo = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate());
+
+  const newUsersToday = users.filter(user => new Date(user.created_at) >= today).length;
+  const newUsersThisWeek = users.filter(user => new Date(user.created_at) >= weekAgo).length;
+  const newUsersThisMonth = users.filter(user => new Date(user.created_at) >= monthAgo).length;
+  const newUsersThisYear = users.filter(user => new Date(user.created_at) >= yearAgo).length;
+
+  return {
+    totalUsers: users.length,
+    newUsersToday,
+    newUsersThisWeek,
+    newUsersThisMonth,
+    newUsersThisYear
+  };
 }
 
 async function fetchUserStats(userId: string): Promise<UserStats> {
@@ -143,7 +166,8 @@ async function blockUser(id: string, blocked: boolean) {
 
 export default function AdminPage() {
   const { user, userProfile } = useAuth();
-  const [activeTab, setActiveTab] = useState<'users' | 'features' | 'onboarding' | 'chats' | 'notifications'>('users');
+  const isMobile = useIsMobile();
+  const [activeTab, setActiveTab] = useState<'users' | 'features' | 'onboarding' | 'chats' | 'notifications' | 'blogcms' | 'bloganalytics'>('users');
   const [selectedUser, setSelectedUser] = useState<UserProfile | null>(null);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [companyTypes, setCompanyTypes] = useState<Record<string, { type: string; custom_type: string | null }>>({});
@@ -220,6 +244,14 @@ export default function AdminPage() {
     mutationFn: ({ id, blocked }: { id: string; blocked: boolean }) => blockUser(id, blocked),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['userProfiles'] }),
   });
+  const sidebarNavItems: { id: 'users' | 'features' | 'onboarding' | 'chats' | 'notifications' | 'blogcms' | 'bloganalytics'; label: string }[] = [
+  { id: 'users', label: 'Gebruikersbeheer' },
+  { id: 'features', label: 'Feature Management' },
+  { id: 'onboarding', label: 'Onboarding Antwoorden' },
+  { id: 'chats', label: 'Chats' },
+  { id: 'notifications', label: 'Meldingen' },
+  { id: 'blogcms', label: 'Blogpost CMS' },
+];
 
   // Real-time updates voor admin data
   useEffect(() => {
@@ -259,210 +291,409 @@ export default function AdminPage() {
         onTabChange={() => {}}
         userRole="admin"
         userProfile={userProfile}
+        variant="admin"
       >
-        <div className="flex-1 p-4 md:p-8 space-y-6">
-          <div className="mb-4 flex gap-2">
-            <button className={`px-4 py-2 rounded ${activeTab === 'users' ? 'bg-blue-600 text-white' : 'bg-gray-100'}`} onClick={() => setActiveTab('users')}>Gebruikersbeheer</button>
-            <button className={`px-4 py-2 rounded ${activeTab === 'features' ? 'bg-blue-600 text-white' : 'bg-gray-100'}`} onClick={() => setActiveTab('features')}>Feature Management</button>
-            <button className={`px-4 py-2 rounded ${activeTab === 'onboarding' ? 'bg-blue-600 text-white' : 'bg-gray-100'}`} onClick={() => setActiveTab('onboarding')}>Onboarding Antwoorden</button>
-            <button className={`px-4 py-2 rounded ${activeTab === 'chats' ? 'bg-blue-600 text-white' : 'bg-gray-100'}`} onClick={() => setActiveTab('chats')}>Chats</button>
-            <button className={`px-4 py-2 rounded ${activeTab === 'notifications' ? 'bg-blue-600 text-white' : 'bg-gray-100'}`} onClick={() => setActiveTab('notifications')}>Meldingen</button>
-            <button className="px-4 py-2 rounded bg-green-600 text-white" onClick={() => setShowOnboarding(true)}>Onboarding Flow Testen</button>
-          </div>
-          {activeTab === 'notifications' && (
-            <AdminNotificationManager />
-          )}
-          {activeTab === 'users' && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Gebruikersbeheer</CardTitle>
-                <CardDescription>Beheer gebruikers, blokkeer/deblokkeer en bekijk gebruikersgegevens.</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm text-left">
-                    <thead className="text-xs uppercase bg-gray-50">
-                      <tr>
-                        <th className="px-4 py-2">Email</th>
-                        <th className="px-4 py-2">Naam</th>
-                        <th className="px-4 py-2">Bedrijfstype</th>
-                        <th className="px-4 py-2">Rol</th>
-                        <th className="px-4 py-2">Plan</th>
-                        <th className="px-4 py-2">Producten</th>
-                        <th className="px-4 py-2">Filialen</th>
-                        <th className="px-4 py-2">Gelinkte Gebruikers</th>
-                        <th className="px-4 py-2">Licentie Kosten</th>
-                        <th className="px-4 py-2">Geblokkeerd</th>
-                        <th className="px-4 py-2">Aangemaakt</th>
-                        <th className="px-4 py-2">Laatste login</th>
-                        <th className="px-4 py-2">Acties</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {users.length === 0 ? (
-                        <tr><td colSpan={13} className="text-center py-4">Geen gebruikers gevonden.</td></tr>
-                      ) : users.map((user) => {
-                        const stats = userStats.find(s => s.userId === user.id);
-                        return (
-                          <tr key={user.id} className="bg-white border-b hover:bg-blue-50 cursor-pointer" onClick={() => setSelectedUser(user)}>
-                            <td className="px-4 py-2">{user.email}</td>
-                            <td className="px-4 py-2">{user.first_name} {user.last_name}</td>
-                            <td className="px-4 py-2">{companyTypes[user.id]?.type === 'Overig' ? companyTypes[user.id]?.custom_type : companyTypes[user.id]?.type || '-'}</td>
-                            <td className="px-4 py-2">{user.role}</td>
-                            <td className="px-4 py-2">{user.selected_plan || 'Geen plan'}</td>
-                            <td className="px-4 py-2 text-center">
-                              {loadingStats ? <Loader2 className="w-4 h-4 animate-spin mx-auto" /> : stats?.productCount || 0}
-                            </td>
-                            <td className="px-4 py-2 text-center">
-                              {loadingStats ? <Loader2 className="w-4 h-4 animate-spin mx-auto" /> : stats?.branchCount || 0}
-                            </td>
-                            <td className="px-4 py-2 text-center">
-                              {loadingStats ? <Loader2 className="w-4 h-4 animate-spin mx-auto" /> : stats?.linkedUserCount || 0}
-                            </td>
-                            <td className="px-4 py-2 text-center font-mono">
-                              {loadingStats ? <Loader2 className="w-4 h-4 animate-spin mx-auto" /> : `€${(stats?.licenseCost || 0).toFixed(2)}`}
-                            </td>
-                            <td className="px-4 py-2">{user.blocked ? 'Ja' : 'Nee'}</td>
-                            <td className="px-4 py-2">{new Date(user.created_at).toLocaleDateString('nl-BE')}</td>
-                            <td className="px-4 py-2">{user.last_login ? new Date(user.last_login).toLocaleString('nl-BE') : '-'}</td>
-                            <td className="px-4 py-2">
-                              <button
-                                className={`px-2 py-1 rounded text-xs ${user.blocked ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}
-                                onClick={e => { e.stopPropagation(); blockMutation.mutate({ id: user.id, blocked: !!user.blocked }); }}
-                                disabled={blockMutation.isPending}
-                              >
-                                {user.blocked ? 'Deblokkeren' : 'Blokkeren'}
-                              </button>
-                            </td>
-
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
+        <div className="lg:ml-64 flex flex-col flex-1 min-h-[calc(100vh-80px)]">
+          {/* Top navigation bar - responsive design */}
+          <div className="w-full">
+            <div className="mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 p-4">
+              {/* Mobile: Vertical tab navigation */}
+              {isMobile ? (
+                <div className="space-y-2">
+                  <nav className="flex flex-col gap-1">
+                    {sidebarNavItems.map((item) => (
+                      <button
+                        key={item.id}
+                        onClick={() => setActiveTab(item.id)}
+                        className={`
+                          w-full text-left px-3 py-2 rounded-lg transition-colors border text-sm
+                          ${
+                            activeTab === item.id
+                              ? 'bg-blue-50 text-blue-700 border-blue-200'
+                              : 'text-gray-600 border-transparent hover:bg-gray-50 hover:text-gray-900'
+                          }
+                        `}
+                      >
+                        {item.label}
+                      </button>
+                    ))}
+                  </nav>
+                  <button
+                    className="w-full px-3 py-2 rounded-lg transition-colors text-gray-600 hover:bg-gray-50 hover:text-gray-900 border border-transparent text-sm"
+                    onClick={() => setShowOnboarding(true)}
+                  >
+                    Onboarding Flow Testen
+                  </button>
                 </div>
-                {/* Gebruikersdetails */}
-                {selectedUser && (
-                  <div className="mt-8">
-                    <Card>
-                      <CardHeader>
-                        <CardTitle>Details van {selectedUser.email}</CardTitle>
-                        <CardDescription>Gebruikersgegevens en instellingen.</CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="space-y-4">
-                          <div>
-                            <h4 className="font-semibold mb-2">Gebruikersgegevens</h4>
-                            <div className="grid grid-cols-2 gap-4 text-sm">
-                              <div>
-                                <span className="font-medium">Email:</span> {selectedUser.email}
-                              </div>
-                              <div>
-                                <span className="font-medium">Naam:</span> {selectedUser.first_name} {selectedUser.last_name}
-                              </div>
-                              <div>
-                                <span className="font-medium">Rol:</span> {selectedUser.role}
-                              </div>
-                              <div>
-                                <span className="font-medium">Plan:</span> {selectedUser.selected_plan || 'Geen plan'}
-                              </div>
-                              <div>
-                                <span className="font-medium">Status:</span> 
-                                <span className={`ml-2 px-2 py-1 rounded text-xs ${selectedUser.blocked ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'}`}>
-                                  {selectedUser.blocked ? 'Geblokkeerd' : 'Actief'}
-                                </span>
-                              </div>
-                              <div>
-                                <span className="font-medium">Aangemaakt:</span> {new Date(selectedUser.created_at).toLocaleDateString('nl-BE')}
-                              </div>
-                            </div>
-                          </div>
-                          {(() => {
-                            const stats = userStats.find(s => s.userId === selectedUser.id);
-                            if (!stats) return null;
-                            return (
-                              <div>
-                                <h4 className="font-semibold mb-2">Gebruiksstatistieken</h4>
-                                <div className="grid grid-cols-2 gap-4 text-sm">
-                                  <div>
-                                    <span className="font-medium">Aantal producten:</span> {stats.productCount}
-                                  </div>
-                                  <div>
-                                    <span className="font-medium">Aantal filialen:</span> {stats.branchCount}
-                                  </div>
-                                  <div>
-                                    <span className="font-medium">Gelinkte gebruikers:</span> {stats.linkedUserCount}
-                                  </div>
-                                  <div>
-                                    <span className="font-medium">Maandelijkse licentie kosten:</span> 
-                                    <span className="ml-2 font-mono text-blue-600">€{stats.licenseCost.toFixed(2)}</span>
-                                  </div>
-                                </div>
-                              </div>
-                            );
-                          })()}
-                        </div>
-                        <button className="mt-4 px-4 py-2 bg-gray-200 rounded" onClick={() => setSelectedUser(null)}>Terug naar gebruikerslijst</button>
+              ) : (
+                /* Desktop: Horizontal tab navigation */
+                <>
+                  <nav className="flex flex-wrap items-center gap-2 font-semibold text-sm">
+                    {sidebarNavItems.map((item) => (
+                      <button
+                        key={item.id}
+                        onClick={() => setActiveTab(item.id)}
+                        className={`
+                          px-3 py-2 rounded-lg transition-colors border
+                          ${
+                            activeTab === item.id
+                              ? 'bg-blue-50 text-blue-700 border-blue-200'
+                              : 'text-gray-600 border-transparent hover:bg-gray-50 hover:text-gray-900'
+                          }
+                        `}
+                      >
+                        {item.label}
+                      </button>
+                    ))}
+                  </nav>
+                  <div className="shrink-0">
+                    <button
+                      className="px-3 py-2 rounded-lg transition-colors text-gray-600 hover:bg-gray-50 hover:text-gray-900 border border-transparent"
+                      onClick={() => setShowOnboarding(true)}
+                    >
+                      Onboarding Flow Testen
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+
+          {/* Main content area */}
+          <div className="w-full flex-1 px-2 sm:px-4 md:px-6 space-y-6 mt-6 mb-24">
+            {activeTab === 'blogcms' && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Blogpost CMS</CardTitle>
+                  <CardDescription>Beheer en optimaliseer blogposts voor SEO.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {/* Blogpost CMS UI */}
+                  <React.Suspense fallback={<div>Loading CMS...</div>}>
+                    <AdminCMS />
+                  </React.Suspense>
+                </CardContent>
+              </Card>
+            )}
+            {activeTab === 'bloganalytics' && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Blog Analytics</CardTitle>
+                  <CardDescription>Bekijk bezoekersstatistieken en prestaties van je blogposts.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <BlogAnalytics />
+                </CardContent>
+              </Card>
+            )}
+            {activeTab === 'notifications' && (
+              <AdminNotificationManager />
+            )}
+            {activeTab === 'users' && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Gebruikersbeheer</CardTitle>
+                  <CardDescription>Beheer gebruikers, blokkeer/deblokkeer en bekijk gebruikersgegevens.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {/* Stats Cards - responsive grid */}
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-4 mb-6">
+                    <Card className="bg-blue-50 border-blue-200">
+                      <CardContent className="p-2 sm:p-4">
+                        <div className="text-lg sm:text-2xl font-bold text-blue-700">{users.length}</div>
+                        <div className="text-xs sm:text-sm text-blue-600">Totaal gebruikers</div>
+                      </CardContent>
+                    </Card>
+                    <Card className="bg-green-50 border-green-200">
+                      <CardContent className="p-2 sm:p-4">
+                        <div className="text-lg sm:text-2xl font-bold text-green-700">{calculateUserStats(users).newUsersToday}</div>
+                        <div className="text-xs sm:text-sm text-green-600">Nieuwe vandaag</div>
+                      </CardContent>
+                    </Card>
+                    <Card className="bg-yellow-50 border-yellow-200">
+                      <CardContent className="p-2 sm:p-4">
+                        <div className="text-lg sm:text-2xl font-bold text-yellow-700">{calculateUserStats(users).newUsersThisWeek}</div>
+                        <div className="text-xs sm:text-sm text-yellow-600">Nieuwe deze week</div>
+                      </CardContent>
+                    </Card>
+                    <Card className="bg-purple-50 border-purple-200">
+                      <CardContent className="p-2 sm:p-4">
+                        <div className="text-lg sm:text-2xl font-bold text-purple-700">{calculateUserStats(users).newUsersThisMonth}</div>
+                        <div className="text-xs sm:text-sm text-purple-600">Nieuwe deze maand</div>
+                      </CardContent>
+                    </Card>
+                    <Card className="bg-orange-50 border-orange-200">
+                      <CardContent className="p-2 sm:p-4">
+                        <div className="text-lg sm:text-2xl font-bold text-orange-700">{calculateUserStats(users).newUsersThisYear}</div>
+                        <div className="text-xs sm:text-sm text-orange-600">Nieuwe dit jaar</div>
                       </CardContent>
                     </Card>
                   </div>
-                )}
-              </CardContent>
-            </Card>
-          )}
-          {activeTab === 'features' && (
-            <FeatureManagement />
-          )}
-          {activeTab === 'onboarding' && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Onboarding Antwoorden</CardTitle>
-                <CardDescription>Overzicht van alle antwoorden op de onboarding vragen.</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm text-left">
-                    <thead className="text-xs uppercase bg-gray-50">
-                      <tr>
-                        <th className="px-4 py-2">Gebruiker</th>
-                        <th className="px-4 py-2">Medewerkers</th>
-                        <th className="px-4 py-2">Voorraadgrootte</th>
-                        <th className="px-4 py-2">Meldingen</th>
-                        <th className="px-4 py-2">Demo voorraad</th>
-                        <th className="px-4 py-2">Doel</th>
-                        <th className="px-4 py-2">Barcodes</th>
-                        <th className="px-4 py-2">Ander systeem</th>
-                        <th className="px-4 py-2">Naam systeem</th>
-                      </tr>
-                    </thead>
-                    <tbody>
+
+                  {/* Mobile: Card-based user list */}
+                  {isMobile ? (
+                    <div className="space-y-4">
+                      {users.length === 0 ? (
+                        <div className="text-center py-8 text-gray-500">Geen gebruikers gevonden.</div>
+                      ) : users.map((user) => {
+                        const stats = userStats.find(s => s.userId === user.id);
+                        return (
+                          <Card key={user.id} className="cursor-pointer hover:bg-gray-50" onClick={() => setSelectedUser(user)}>
+                            <CardContent className="p-4">
+                              <div className="space-y-2">
+                                <div className="flex justify-between items-start">
+                                  <div className="flex-1">
+                                    <h3 className="font-semibold text-sm">{user.email}</h3>
+                                    <p className="text-xs text-gray-600">{user.first_name} {user.last_name}</p>
+                                  </div>
+                                  <span className={`px-2 py-1 rounded text-xs ${user.blocked ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'}`}>
+                                    {user.blocked ? 'Geblokkeerd' : 'Actief'}
+                                  </span>
+                                </div>
+                                <div className="grid grid-cols-2 gap-2 text-xs text-gray-600">
+                                  <div>Plan: {user.selected_plan || 'Geen'}</div>
+                                  <div>Rol: {user.role}</div>
+                                  <div>Producten: {loadingStats ? <Loader2 className="w-3 h-3 animate-spin inline" /> : stats?.productCount || 0}</div>
+                                  <div>Filialen: {loadingStats ? <Loader2 className="w-3 h-3 animate-spin inline" /> : stats?.branchCount || 0}</div>
+                                </div>
+                                <div className="flex justify-between items-center pt-2">
+                                  <span className="text-xs text-gray-500">
+                                    {new Date(user.created_at).toLocaleDateString('nl-BE')}
+                                  </span>
+                                  <button
+                                    className={`px-2 py-1 rounded text-xs ${user.blocked ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}
+                                    onClick={e => { e.stopPropagation(); blockMutation.mutate({ id: user.id, blocked: !!user.blocked }); }}
+                                    disabled={blockMutation.isPending}
+                                  >
+                                    {user.blocked ? 'Deblokkeren' : 'Blokkeren'}
+                                  </button>
+                                </div>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    /* Desktop: Table layout */
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-sm text-left">
+                        <thead className="text-xs uppercase bg-gray-50">
+                          <tr>
+                            <th className="px-4 py-2">Email</th>
+                            <th className="px-4 py-2">Naam</th>
+                            <th className="px-4 py-2">Bedrijfstype</th>
+                            <th className="px-4 py-2">Rol</th>
+                            <th className="px-4 py-2">Plan</th>
+                            <th className="px-4 py-2">Producten</th>
+                            <th className="px-4 py-2">Filialen</th>
+                            <th className="px-4 py-2">Gelinkte Gebruikers</th>
+                            <th className="px-4 py-2">Licentie Kosten</th>
+                            <th className="px-4 py-2">Geblokkeerd</th>
+                            <th className="px-4 py-2">Aangemaakt</th>
+                            <th className="px-4 py-2">Laatste login</th>
+                            <th className="px-4 py-2">Acties</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {users.length === 0 ? (
+                            <tr><td colSpan={13} className="text-center py-4">Geen gebruikers gevonden.</td></tr>
+                          ) : users.map((user) => {
+                            const stats = userStats.find(s => s.userId === user.id);
+                            return (
+                              <tr key={user.id} className="bg-white border-b hover:bg-blue-50 cursor-pointer" onClick={() => setSelectedUser(user)}>
+                                <td className="px-4 py-2">{user.email}</td>
+                                <td className="px-4 py-2">{user.first_name} {user.last_name}</td>
+                                <td className="px-4 py-2">{companyTypes[user.id]?.type === 'Overig' ? companyTypes[user.id]?.custom_type : companyTypes[user.id]?.type || '-'}</td>
+                                <td className="px-4 py-2">{user.role}</td>
+                                <td className="px-4 py-2">{user.selected_plan || 'Geen plan'}</td>
+                                <td className="px-4 py-2 text-center">
+                                  {loadingStats ? <Loader2 className="w-4 h-4 animate-spin mx-auto" /> : stats?.productCount || 0}
+                                </td>
+                                <td className="px-4 py-2 text-center">
+                                  {loadingStats ? <Loader2 className="w-4 h-4 animate-spin mx-auto" /> : stats?.branchCount || 0}
+                                </td>
+                                <td className="px-4 py-2 text-center">
+                                  {loadingStats ? <Loader2 className="w-4 h-4 animate-spin mx-auto" /> : stats?.linkedUserCount || 0}
+                                </td>
+                                <td className="px-4 py-2 text-center font-mono">
+                                  {loadingStats ? <Loader2 className="w-4 h-4 animate-spin mx-auto" /> : `€${(stats?.licenseCost || 0).toFixed(2)}`}
+                                </td>
+                                <td className="px-4 py-2">{user.blocked ? 'Ja' : 'Nee'}</td>
+                                <td className="px-4 py-2">{new Date(user.created_at).toLocaleDateString('nl-BE')}</td>
+                                <td className="px-4 py-2">{user.last_login ? new Date(user.last_login).toLocaleString('nl-BE') : '-'}</td>
+                                <td className="px-4 py-2">
+                                  <button
+                                    className={`px-2 py-1 rounded text-xs ${user.blocked ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}
+                                    onClick={e => { e.stopPropagation(); blockMutation.mutate({ id: user.id, blocked: !!user.blocked }); }}
+                                    disabled={blockMutation.isPending}
+                                  >
+                                    {user.blocked ? 'Deblokkeren' : 'Blokkeren'}
+                                  </button>
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                  
+                  {/* Gebruikersdetails */}
+                  {selectedUser && (
+                    <div className="mt-8">
+                      <Card>
+                        <CardHeader>
+                          <CardTitle>Details van {selectedUser.email}</CardTitle>
+                          <CardDescription>Gebruikersgegevens en instellingen.</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="space-y-4">
+                            <div>
+                              <h4 className="font-semibold mb-2">Gebruikersgegevens</h4>
+                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                                <div>
+                                  <span className="font-medium">Email:</span> {selectedUser.email}
+                                </div>
+                                <div>
+                                  <span className="font-medium">Naam:</span> {selectedUser.first_name} {selectedUser.last_name}
+                                </div>
+                                <div>
+                                  <span className="font-medium">Rol:</span> {selectedUser.role}
+                                </div>
+                                <div>
+                                  <span className="font-medium">Plan:</span> {selectedUser.selected_plan || 'Geen plan'}
+                                </div>
+                                <div>
+                                  <span className="font-medium">Status:</span> 
+                                  <span className={`ml-2 px-2 py-1 rounded text-xs ${selectedUser.blocked ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'}`}>
+                                    {selectedUser.blocked ? 'Geblokkeerd' : 'Actief'}
+                                  </span>
+                                </div>
+                                <div>
+                                  <span className="font-medium">Aangemaakt:</span> {new Date(selectedUser.created_at).toLocaleDateString('nl-BE')}
+                                </div>
+                              </div>
+                            </div>
+                            {(() => {
+                              const stats = userStats.find(s => s.userId === selectedUser.id);
+                              if (!stats) return null;
+                              return (
+                                <div>
+                                  <h4 className="font-semibold mb-2">Gebruiksstatistieken</h4>
+                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                                    <div>
+                                      <span className="font-medium">Aantal producten:</span> {stats.productCount}
+                                    </div>
+                                    <div>
+                                      <span className="font-medium">Aantal filialen:</span> {stats.branchCount}
+                                    </div>
+                                    <div>
+                                      <span className="font-medium">Gelinkte gebruikers:</span> {stats.linkedUserCount}
+                                    </div>
+                                    <div>
+                                      <span className="font-medium">Maandelijkse licentie kosten:</span> 
+                                      <span className="ml-2 font-mono text-blue-600">€{stats.licenseCost.toFixed(2)}</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              );
+                            })()}
+                          </div>
+                          <button className="mt-4 px-4 py-2 bg-gray-200 rounded" onClick={() => setSelectedUser(null)}>Terug naar gebruikerslijst</button>
+                        </CardContent>
+                      </Card>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+            {activeTab === 'features' && (
+              <FeatureManagement />
+            )}
+            {activeTab === 'onboarding' && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Onboarding Antwoorden</CardTitle>
+                  <CardDescription>Overzicht van alle antwoorden op de onboarding vragen.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {/* Mobile: Card-based layout for onboarding answers */}
+                  {isMobile ? (
+                    <div className="space-y-4">
                       {onboardingAnswers.length === 0 ? (
-                        <tr><td colSpan={9} className="text-center py-4">Geen antwoorden gevonden.</td></tr>
+                        <div className="text-center py-8 text-gray-500">Geen antwoorden gevonden.</div>
                       ) : onboardingAnswers.map(ans => {
                         const user = users.find(u => u.id === ans.user_id);
                         return (
-                          <tr key={ans.user_id} className="bg-white border-b">
-                            <td className="px-4 py-2">{user ? `${user.first_name || ''} ${user.last_name || ''} (${user.email})` : ans.user_id}</td>
-                            <td className="px-4 py-2">{ans.employees}</td>
-                            <td className="px-4 py-2">{ans.stock_size}</td>
-                            <td className="px-4 py-2">{ans.wants_notifications ? 'Ja' : 'Nee'}</td>
-                            <td className="px-4 py-2">{ans.wants_demo_stock ? 'Ja' : 'Nee'}</td>
-                            <td className="px-4 py-2">{ans.main_goal}</td>
-                            <td className="px-4 py-2">{ans.uses_barcodes ? 'Ja' : 'Nee'}</td>
-                            <td className="px-4 py-2">{ans.uses_other_system ? 'Ja' : 'Nee'}</td>
-                            <td className="px-4 py-2">{ans.other_system_name || '-'}</td>
-                          </tr>
+                          <Card key={ans.user_id} className="p-4">
+                            <div className="space-y-2">
+                              <h3 className="font-semibold text-sm">{user ? `${user.first_name || ''} ${user.last_name || ''}` : 'Onbekende gebruiker'}</h3>
+                              <p className="text-xs text-gray-600">{user?.email || ans.user_id}</p>
+                              <div className="grid grid-cols-2 gap-2 text-xs">
+                                <div><span className="font-medium">Medewerkers:</span> {ans.employees}</div>
+                                <div><span className="font-medium">Voorraadgrootte:</span> {ans.stock_size}</div>
+                                <div><span className="font-medium">Meldingen:</span> {ans.wants_notifications ? 'Ja' : 'Nee'}</div>
+                                <div><span className="font-medium">Demo voorraad:</span> {ans.wants_demo_stock ? 'Ja' : 'Nee'}</div>
+                                <div><span className="font-medium">Doel:</span> {ans.main_goal}</div>
+                                <div><span className="font-medium">Barcodes:</span> {ans.uses_barcodes ? 'Ja' : 'Nee'}</div>
+                                <div><span className="font-medium">Ander systeem:</span> {ans.uses_other_system ? 'Ja' : 'Nee'}</div>
+                                {ans.other_system_name && (
+                                  <div><span className="font-medium">Systeem naam:</span> {ans.other_system_name}</div>
+                                )}
+                              </div>
+                            </div>
+                          </Card>
                         );
                       })}
-                    </tbody>
-                  </table>
-                </div>
-              </CardContent>
-            </Card>
-          )}
-          {activeTab === 'chats' && (
-            <AdminChatList />
-          )}
+                    </div>
+                  ) : (
+                    /* Desktop: Table layout */
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-sm text-left">
+                        <thead className="text-xs uppercase bg-gray-50">
+                          <tr>
+                            <th className="px-4 py-2">Gebruiker</th>
+                            <th className="px-4 py-2">Medewerkers</th>
+                            <th className="px-4 py-2">Voorraadgrootte</th>
+                            <th className="px-4 py-2">Meldingen</th>
+                            <th className="px-4 py-2">Demo voorraad</th>
+                            <th className="px-4 py-2">Doel</th>
+                            <th className="px-4 py-2">Barcodes</th>
+                            <th className="px-4 py-2">Ander systeem</th>
+                            <th className="px-4 py-2">Naam systeem</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {onboardingAnswers.length === 0 ? (
+                            <tr><td colSpan={9} className="text-center py-4">Geen antwoorden gevonden.</td></tr>
+                          ) : onboardingAnswers.map(ans => {
+                            const user = users.find(u => u.id === ans.user_id);
+                            return (
+                              <tr key={ans.user_id} className="bg-white border-b">
+                                <td className="px-4 py-2">{user ? `${user.first_name || ''} ${user.last_name || ''} (${user.email})` : ans.user_id}</td>
+                                <td className="px-4 py-2">{ans.employees}</td>
+                                <td className="px-4 py-2">{ans.stock_size}</td>
+                                <td className="px-4 py-2">{ans.wants_notifications ? 'Ja' : 'Nee'}</td>
+                                <td className="px-4 py-2">{ans.wants_demo_stock ? 'Ja' : 'Nee'}</td>
+                                <td className="px-4 py-2">{ans.main_goal}</td>
+                                <td className="px-4 py-2">{ans.uses_barcodes ? 'Ja' : 'Nee'}</td>
+                                <td className="px-4 py-2">{ans.uses_other_system ? 'Ja' : 'Nee'}</td>
+                                <td className="px-4 py-2">{ans.other_system_name || '-'}</td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+            {activeTab === 'chats' && (
+              <AdminChatList />
+            )}
+          </div>
         </div>
       </Layout>
       {showOnboarding && <OnboardingModal forceOpen onClose={() => setShowOnboarding(false)} />}

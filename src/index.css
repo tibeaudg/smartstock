@@ -2,6 +2,53 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Blog Styles */
+.blog-content {
+  @apply max-w-[65ch] mx-auto;
+}
+
+.blog-content p {
+  @apply mb-6 text-gray-700 leading-relaxed;
+}
+
+.blog-content h2 {
+  @apply text-2xl font-bold mt-8 mb-4 text-gray-900;
+}
+
+.blog-content h3 {
+  @apply text-xl font-semibold mt-6 mb-3 text-gray-900;
+}
+
+.blog-content ul,
+.blog-content ol {
+  @apply my-4 ml-6;
+}
+
+.blog-content li {
+  @apply mb-2;
+}
+
+.blog-content img {
+  @apply my-8 rounded-lg shadow-lg mx-auto;
+}
+
+.blog-content blockquote {
+  @apply pl-4 border-l-4 border-blue-500 italic my-6 text-gray-600;
+}
+
+.blog-content a {
+  @apply text-blue-600 hover:text-blue-800 underline;
+}
+
+/* Rich Text Editor Styles */
+.ProseMirror {
+  @apply min-h-[200px] outline-none;
+}
+
+.ProseMirror p.is-editor-empty:first-child::before {
+  @apply text-gray-400 float-left h-0 pointer-events-none content-[attr(data-placeholder)];
+}
+
 /* Design Tokens */
 @layer base {
   :root {

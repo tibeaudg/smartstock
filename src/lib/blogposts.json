@@ -1,0 +1,16 @@
+[
+    {
+        "id": "1",
+        "title": "Voorraadbeheer Tips",
+        "slug": "voorraadbeheer-tips",
+        "content": "...",
+        "seo": {
+            "metaTitle": "Voorraadbeheer Tips | StockFlow",
+            "metaDescription": "De beste tips voor voorraadbeheer in jouw bedrijf.",
+            "ogImage": "/public/Inventory-Management.png"
+        },
+        "published": true,
+        "datePublished": "2025-08-01",
+        "author": "StockFlow Team"
+    }
+]

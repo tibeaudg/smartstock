@@ -25,7 +25,7 @@ export const UnreadMessagesProvider: React.FC<{ children: React.ReactNode }> = (
       .select('*', { count: 'exact', head: true })
       .eq('sender_type', 'admin')
       .eq('is_read', false)
-      .eq('chat_id', supabase.auth.user()?.id);
+  .eq('chat_id', user?.id);
     if (error) {
       setUnreadCount(0);
       return;
@@ -42,7 +42,7 @@ export const UnreadMessagesProvider: React.FC<{ children: React.ReactNode }> = (
       .select('id')
       .eq('sender_type', 'admin')
       .eq('is_read', false)
-      .eq('chat_id', supabase.auth.user()?.id);
+  .eq('chat_id', user?.id);
     if (error || !messages || messages.length === 0) {
       setUnreadCount(0);
       return;
