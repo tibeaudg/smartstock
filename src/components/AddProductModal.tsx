@@ -30,6 +30,8 @@ interface AddProductModalProps {
 interface FormData {
   name: string;
   description: string;
+  categoryId: string;
+  supplierId: string;
   categoryName: string;
   supplierName: string;
   quantityInStock: number;
@@ -63,6 +65,8 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
     defaultValues: {
       name: '',
       description: '',
+      categoryId: '',
+      supplierId: '',
       categoryName: '',
       supplierName: '',
       quantityInStock: 0,
@@ -192,8 +196,9 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
 
 
       // Handle supplier
-      let supplierId = null;
-      if (data.supplierName.trim()) {
+      let supplierId = data.supplierId || null;
+      if (data.supplierName.trim() && !supplierId) {
+        // If we have a name but no ID, try to find existing or create new
         const { data: existingSupplier } = await supabase
           .from('suppliers')
           .select('id')
@@ -219,8 +224,9 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
       }
 
       // Handle category
-      let categoryId = null;
-      if (data.categoryName.trim()) {
+      let categoryId = data.categoryId || null;
+      if (data.categoryName.trim() && !categoryId) {
+        // If we have a name but no ID, try to find existing or create new
         const { data: existingCategory } = await supabase
           .from('categories')
           .select('id')
@@ -467,6 +473,8 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                                            }
                                            
                                            setCategories(prev => [...prev, newCategory]);
+                                           // Also set the category ID in the form
+                                           form.setValue('categoryId', newCategory.id);
                                            setCategoryOpen(false);
                                            toast.success('Nieuwe categorie toegevoegd!');
                                          } catch (error) {
@@ -488,6 +496,8 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                                     value={category.name}
                                     onSelect={() => {
                                       field.onChange(category.name);
+                                      // Also set the category ID
+                                      form.setValue('categoryId', category.id);
                                       setCategoryOpen(false);
                                     }}
                                   >
@@ -560,6 +570,8 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                                            }
                                            
                                            setSuppliers(prev => [...prev, newSupplier]);
+                                           // Also set the supplier ID in the form
+                                           form.setValue('supplierId', newSupplier.id);
                                            setSupplierOpen(false);
                                            toast.success('Nieuwe leverancier toegevoegd!');
                                          } catch (error) {
@@ -581,6 +593,8 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                                     value={supplier.name}
                                     onSelect={() => {
                                       field.onChange(supplier.name);
+                                      // Also set the supplier ID
+                                      form.setValue('supplierId', supplier.id);
                                       setSupplierOpen(false);
                                     }}
                                   >

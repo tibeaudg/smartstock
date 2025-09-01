@@ -27,6 +27,8 @@ interface Product {
   status: string | null;
   branch_id?: string;
   image_url?: string | null;
+  category_id?: string | null;
+  supplier_id?: string | null;
   category_name?: string | null;
   supplier_name?: string | null;
 }
@@ -70,6 +72,8 @@ export const EditProductInfoModal = ({
     unit_price: product.unit_price,
     purchase_price: product.purchase_price,
     sale_price: product.sale_price,
+    category_id: product.category_id || '',
+    supplier_id: product.supplier_id || '',
     category_name: product.category_name || '',
     supplier_name: product.supplier_name || '',
   });
@@ -84,6 +88,8 @@ export const EditProductInfoModal = ({
         unit_price: product.unit_price,
         purchase_price: product.purchase_price,
         sale_price: product.sale_price,
+        category_id: product.category_id || '',
+        supplier_id: product.supplier_id || '',
         category_name: product.category_name || '',
         supplier_name: product.supplier_name || '',
       });
@@ -153,11 +159,23 @@ export const EditProductInfoModal = ({
   };
 
   const handleCategoryChange = (value: string) => {
-    setForm({ ...form, category_name: value });
+    // Find the category by name and set both ID and name
+    const category = categories.find(cat => cat.name === value);
+    setForm({ 
+      ...form, 
+      category_id: category?.id || '', 
+      category_name: value 
+    });
   };
 
   const handleSupplierChange = (value: string) => {
-    setForm({ ...form, supplier_name: value });
+    // Find the supplier by name and set both ID and name
+    const supplier = suppliers.find(sup => sup.name === value);
+    setForm({ 
+      ...form, 
+      supplier_id: supplier?.id || '', 
+      supplier_name: value 
+    });
   };
 
   const handleDelete = async () => {
@@ -213,8 +231,9 @@ export const EditProductInfoModal = ({
 
     try {
       // Handle supplier
-      let supplierId = null;
-      if (form.supplier_name.trim()) {
+      let supplierId = form.supplier_id || null;
+      if (form.supplier_name.trim() && !supplierId) {
+        // If we have a name but no ID, try to find existing or create new
         const { data: existingSupplier } = await supabase
           .from('suppliers')
           .select('id')
@@ -241,8 +260,9 @@ export const EditProductInfoModal = ({
       }
 
       // Handle category
-      let categoryId = null;
-      if (form.category_name.trim()) {
+      let categoryId = form.category_id || null;
+      if (form.category_name.trim() && !categoryId) {
+        // If we have a name but no ID, try to find existing or create new
         const { data: existingCategory } = await supabase
           .from('categories')
           .select('id')
@@ -377,6 +397,8 @@ export const EditProductInfoModal = ({
                                            }
                                            
                                            setCategories(prev => [...prev, newCategory]);
+                                           // Also set the category ID in the form
+                                           setForm(prev => ({ ...prev, category_id: newCategory.id }));
                                            setCategoryOpen(false);
                                            toast.success('Nieuwe categorie toegevoegd!');
                                          } catch (error) {
@@ -445,12 +467,29 @@ export const EditProductInfoModal = ({
                               <Button
                                 variant="outline"
                                 size="sm"
-                                onClick={() => {
+                                onClick={async () => {
                                   if (form.supplier_name.trim()) {
-                                    // Voeg nieuwe leverancier toe aan lokale state
-                                    const newSupplier = { id: Date.now().toString(), name: form.supplier_name.trim() };
-                                    setSuppliers(prev => [...prev, newSupplier]);
-                                    setSupplierOpen(false);
+                                    // Voeg nieuwe leverancier toe aan database
+                                    try {
+                                      const { data: newSupplier, error } = await supabase
+                                        .from('suppliers')
+                                        .insert({ name: form.supplier_name.trim() })
+                                        .select('id, name')
+                                        .single();
+                                      
+                                      if (error) {
+                                        toast.error('Fout bij het aanmaken van leverancier');
+                                        return;
+                                      }
+                                      
+                                      setSuppliers(prev => [...prev, newSupplier]);
+                                      // Also set the supplier ID in the form
+                                      setForm(prev => ({ ...prev, supplier_id: newSupplier.id }));
+                                      setSupplierOpen(false);
+                                      toast.success('Nieuwe leverancier toegevoegd!');
+                                    } catch (error) {
+                                      toast.error('Fout bij het aanmaken van leverancier');
+                                    }
                                   }
                                 }}
                                 className="w-full"

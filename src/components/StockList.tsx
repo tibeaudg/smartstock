@@ -60,6 +60,8 @@ interface Product {
   purchase_price: number;
   sale_price: number;
   status: string | null;
+  category_id: string | null;
+  supplier_id: string | null;
   category_name: string | null;
   supplier_name: string | null;
   image_url?: string | null;
@@ -67,14 +69,29 @@ interface Product {
 
 type StockAction = 'in' | 'out';
 
-const fetchProducts = async (branchId: string) => {
-  const { data, error } = await supabase
+const fetchProducts = async (branchId: string, filters?: {
+  categoryId?: string;
+  supplierId?: string;
+}) => {
+  let query = supabase
     .from('products')
     .select('*')
-    .eq('branch_id', branchId)
-    .order('name');
+    .eq('branch_id', branchId);
+
+  // Apply category filter if provided
+  if (filters?.categoryId) {
+    query = query.eq('category_id', filters.categoryId);
+  }
+
+  // Apply supplier filter if provided
+  if (filters?.supplierId) {
+    query = query.eq('supplier_id', filters.supplierId);
+  }
+
+  const { data, error } = await query.order('name');
   
   if (error) throw error;
+  
   return data || [];
 };
 
@@ -95,6 +112,10 @@ export const StockList = () => {
   const [maxPriceFilter, setMaxPriceFilter] = useState('');
   const [minStockFilter, setMinStockFilter] = useState('');
   const [maxStockFilter, setMaxStockFilter] = useState('');
+  
+  // State voor filter namen (voor weergave)
+  const [categoryFilterName, setCategoryFilterName] = useState('');
+  const [supplierFilterName, setSupplierFilterName] = useState('');
 
   // State voor modals
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -127,6 +148,49 @@ export const StockList = () => {
       setActiveTab('products');
     }
   }, [location.pathname]);
+
+  // Check for filters from navigation state
+  useEffect(() => {
+    if (location.state) {
+      const { filterType, filterValue, filterName } = location.state;
+      
+      if (filterType === 'category' && filterValue) {
+        setCategoryFilter(filterValue);
+        setCategoryFilterName(filterName || '');
+        // Clear other filters
+        setSupplierFilter('');
+        setSupplierFilterName('');
+        setSearchTerm('');
+      } else if (filterType === 'supplier' && filterValue) {
+        setSupplierFilter(filterValue);
+        setSupplierFilterName(filterName || '');
+        // Clear other filters
+        setCategoryFilter('');
+        setCategoryFilterName('');
+        setSearchTerm('');
+      }
+      
+            // Clear navigation state to prevent re-applying filters on refresh
+      navigate(location.pathname, { replace: true, state: {} });
+    }
+  }, [location.state, navigate, location.pathname]);
+
+  // Clear filters when component unmounts or branch changes
+  useEffect(() => {
+    if (activeBranch?.branch_id) {
+      // Reset filters when branch changes
+      setCategoryFilter('');
+      setCategoryFilterName('');
+      setSupplierFilter('');
+      setSupplierFilterName('');
+      setSearchTerm('');
+      setStockStatusFilter('all');
+      setMinPriceFilter('');
+      setMaxPriceFilter('');
+      setMinStockFilter('');
+      setMaxStockFilter('');
+    }
+  }, [activeBranch?.branch_id]);
 
   // Handle tab change
   const handleTabChange = (tab: 'products' | 'categories' | 'suppliers') => {
@@ -164,8 +228,11 @@ export const StockList = () => {
     isLoading: loading,
     refetch
   } = useQuery<Product[]>({
-    queryKey: ['products', activeBranch?.branch_id],
-    queryFn: () => activeBranch && user ? fetchProducts(activeBranch.branch_id) : [],
+    queryKey: ['products', activeBranch?.branch_id, categoryFilter, supplierFilter],
+    queryFn: () => activeBranch && user ? fetchProducts(activeBranch.branch_id, {
+      categoryId: categoryFilter || undefined,
+      supplierId: supplierFilter || undefined
+    }) : [],
     enabled: !!user && !!activeBranch,
     refetchOnWindowFocus: true,
     staleTime: 1000 * 60 * 2, // 2 minuten cache
@@ -254,8 +321,11 @@ export const StockList = () => {
   };
 
   const handleClearFilters = () => {
+    setSearchTerm('');
     setCategoryFilter('');
+    setCategoryFilterName('');
     setSupplierFilter('');
+    setSupplierFilterName('');
     setStockStatusFilter('all');
     setMinPriceFilter('');
     setMaxPriceFilter('');
@@ -403,7 +473,42 @@ export const StockList = () => {
         {/* Only show products content when on products tab */}
         {activeTab === 'products' && (
           <>
-
+            {/* Filter Header */}
+            {(categoryFilter || supplierFilter) && (
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-medium text-blue-900">
+                      Gefilterd op:
+                    </span>
+                    {categoryFilter && (
+                      <Badge variant="secondary" className="bg-blue-100 text-blue-800">
+                        Categorie: {categoryFilterName || 'Gefilterd'}
+                      </Badge>
+                    )}
+                    {supplierFilter && (
+                      <Badge variant="secondary" className="bg-blue-100 text-blue-800">
+                        Leverancier: {supplierFilterName || 'Gefilterd'}
+                      </Badge>
+                    )}
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      setCategoryFilter('');
+                      setCategoryFilterName('');
+                      setSupplierFilter('');
+                      setSupplierFilterName('');
+                    }}
+                    className="text-blue-700 border-blue-300 hover:bg-blue-100"
+                  >
+                    <X className="w-4 h-4 mr-1" />
+                    Filters wissen
+                  </Button>
+                </div>
+              </div>
+            )}
 
             <ProductFilters
               searchTerm={searchTerm}

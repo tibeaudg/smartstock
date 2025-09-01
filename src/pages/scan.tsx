@@ -19,6 +19,8 @@ import { cn } from '@/lib/utils';
 interface ProductFormData {
   name: string;
   description: string;
+  categoryId: string;
+  supplierId: string;
   categoryName: string;
   supplierName: string;
   quantityInStock: number;
@@ -41,6 +43,8 @@ export default function ScanPage() {
   const [formData, setFormData] = useState<ProductFormData>({
     name: '',
     description: '',
+    categoryId: '',
+    supplierId: '',
     categoryName: '',
     supplierName: '',
     quantityInStock: 1,
@@ -109,7 +113,23 @@ export default function ScanPage() {
   };
 
   const handleInputChange = (field: keyof ProductFormData, value: string | number) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData(prev => {
+      const newData = { ...prev, [field]: value };
+      
+      // If changing category name, also update category ID
+      if (field === 'categoryName') {
+        const category = categories.find(cat => cat.name === value);
+        newData.categoryId = category?.id || '';
+      }
+      
+      // If changing supplier name, also update supplier ID
+      if (field === 'supplierName') {
+        const supplier = suppliers.find(sup => sup.name === value);
+        newData.supplierId = supplier?.id || '';
+      }
+      
+      return newData;
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -324,6 +344,8 @@ export default function ScanPage() {
       setFormData({
         name: '',
         description: '',
+        categoryId: '',
+        supplierId: '',
         categoryName: '',
         supplierName: '',
         quantityInStock: 1,
@@ -349,6 +371,8 @@ export default function ScanPage() {
     setFormData({
       name: '',
       description: '',
+      categoryId: '',
+      supplierId: '',
       categoryName: '',
       supplierName: '',
       quantityInStock: 1,
@@ -565,6 +589,8 @@ export default function ScanPage() {
                                            }
                                            
                                            setCategories(prev => [...prev, newCategory]);
+                                           // Also set the category ID in the form
+                                           setFormData(prev => ({ ...prev, categoryId: newCategory.id }));
                                            setCategoryOpen(false);
                                            toast.success('Nieuwe categorie toegevoegd!');
                                          } catch (error) {
@@ -649,6 +675,8 @@ export default function ScanPage() {
                                            }
                                            
                                            setSuppliers(prev => [...prev, newSupplier]);
+                                           // Also set the supplier ID in the form
+                                           setFormData(prev => ({ ...prev, supplierId: newSupplier.id }));
                                            setSupplierOpen(false);
                                            toast.success('Nieuwe leverancier toegevoegd!');
                                          } catch (error) {

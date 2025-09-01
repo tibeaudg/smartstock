@@ -21,6 +21,7 @@ interface Supplier {
   address: string | null;
   created_at: string;
   updated_at: string;
+  product_count?: number;
 }
 
 export default function SuppliersPage() {
@@ -80,18 +81,36 @@ export default function SuppliersPage() {
 
   const fetchSuppliers = async () => {
     try {
-      const { data, error } = await supabase
+      // First get all suppliers
+      const { data: suppliersData, error: suppliersError } = await supabase
         .from('suppliers')
         .select('*')
         .order('name');
 
-      if (error) {
-        console.error('Error fetching suppliers:', error);
+      if (suppliersError) {
+        console.error('Error fetching suppliers:', suppliersError);
         toast.error('Fout bij het ophalen van leveranciers');
         return;
       }
 
-      setSuppliers(data || []);
+      // Then get product count for each supplier
+      const suppliersWithCount = await Promise.all(
+        (suppliersData || []).map(async (supplier) => {
+          const { count, error: countError } = await supabase
+            .from('products')
+            .select('*', { count: 'exact', head: true })
+            .eq('supplier_id', supplier.id);
+
+          if (countError) {
+            console.error('Error counting products for supplier:', supplier.id, countError);
+            return { ...supplier, product_count: 0 };
+          }
+
+          return { ...supplier, product_count: count || 0 };
+        })
+      );
+
+      setSuppliers(suppliersWithCount);
     } catch (error) {
       console.error('Error fetching suppliers:', error);
       toast.error('Onverwachte fout bij het ophalen van leveranciers');
@@ -234,6 +253,17 @@ export default function SuppliersPage() {
     setSelectedSupplier(null);
   };
 
+  const handleSupplierClick = (supplier: Supplier) => {
+    // Navigate to products page with supplier filter
+    navigate('/dashboard/stock', { 
+      state: { 
+        filterType: 'supplier', 
+        filterValue: supplier.id,
+        filterName: supplier.name 
+      } 
+    });
+  };
+
   if (!user) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -348,13 +378,22 @@ export default function SuppliersPage() {
             </Card>
           ) : (
             suppliers.map((supplier) => (
-              <Card key={supplier.id}>
+              <Card 
+                key={supplier.id} 
+                className="cursor-pointer hover:shadow-md transition-shadow"
+                onClick={() => handleSupplierClick(supplier)}
+              >
                 <CardContent className={`${isMobile ? 'p-4' : 'p-6'}`}>
                   <div className="flex items-center justify-between">
                     <div className="flex-1">
-                      <h3 className={`${isMobile ? 'text-base' : 'text-lg'} font-semibold text-gray-900 mb-2`}>
-                        {supplier.name}
-                      </h3>
+                      <div className="flex items-center gap-2 mb-2">
+                        <h3 className={`${isMobile ? 'text-base' : 'text-lg'} font-semibold text-gray-900`}>
+                          {supplier.name}
+                        </h3>
+                        <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded-full">
+                          {supplier.product_count || 0} product{supplier.product_count !== 1 ? 'en' : ''}
+                        </span>
+                      </div>
                       <div className="space-y-1 text-sm text-gray-600">
                         {supplier.email && (
                           <div className="flex items-center gap-2">
@@ -383,7 +422,10 @@ export default function SuppliersPage() {
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => openEditModal(supplier)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          openEditModal(supplier);
+                        }}
                         className={isMobile ? 'px-2 py-1' : ''}
                       >
                         <Edit className="w-4 h-4" />
@@ -392,7 +434,10 @@ export default function SuppliersPage() {
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => openDeleteModal(supplier)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          openDeleteModal(supplier);
+                        }}
                         className={`${isMobile ? 'px-2 py-1' : ''} text-red-600 hover:text-red-700 hover:bg-red-50`}
                       >
                         <Trash2 className="w-4 h-4" />

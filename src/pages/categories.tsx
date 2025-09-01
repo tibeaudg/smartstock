@@ -19,6 +19,7 @@ interface Category {
   description: string | null;
   created_at: string;
   updated_at: string;
+  product_count?: number;
 }
 
 export default function CategoriesPage() {
@@ -77,18 +78,36 @@ export default function CategoriesPage() {
 
   const fetchCategories = async () => {
     try {
-      const { data, error } = await supabase
+      // First get all categories
+      const { data: categoriesData, error: categoriesError } = await supabase
         .from('categories')
         .select('*')
         .order('name');
 
-      if (error) {
-        console.error('Error fetching categories:', error);
+      if (categoriesError) {
+        console.error('Error fetching categories:', categoriesError);
         toast.error('Fout bij het ophalen van categorieën');
         return;
       }
 
-      setCategories(data || []);
+      // Then get product count for each category
+      const categoriesWithCount = await Promise.all(
+        (categoriesData || []).map(async (category) => {
+          const { count, error: countError } = await supabase
+            .from('products')
+            .select('*', { count: 'exact', head: true })
+            .eq('category_id', category.id);
+
+          if (countError) {
+            console.error('Error counting products for category:', category.id, countError);
+            return { ...category, product_count: 0 };
+          }
+
+          return { ...category, product_count: count || 0 };
+        })
+      );
+
+      setCategories(categoriesWithCount);
     } catch (error) {
       console.error('Error fetching categories:', error);
       toast.error('Onverwachte fout bij het ophalen van categorieën');
@@ -225,6 +244,17 @@ export default function CategoriesPage() {
     setSelectedCategory(null);
   };
 
+  const handleCategoryClick = (category: Category) => {
+    // Navigate to products page with category filter
+    navigate('/dashboard/stock', { 
+      state: { 
+        filterType: 'category', 
+        filterValue: category.id,
+        filterName: category.name 
+      } 
+    });
+  };
+
   if (!user) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -339,13 +369,22 @@ export default function CategoriesPage() {
             </Card>
           ) : (
             categories.map((category) => (
-              <Card key={category.id}>
+              <Card 
+                key={category.id} 
+                className="cursor-pointer hover:shadow-md transition-shadow"
+                onClick={() => handleCategoryClick(category)}
+              >
                 <CardContent className={`${isMobile ? 'p-4' : 'p-6'}`}>
                   <div className="flex items-center justify-between">
                     <div className="flex-1">
-                      <h3 className={`${isMobile ? 'text-base' : 'text-lg'} font-semibold text-gray-900 mb-2`}>
-                        {category.name}
-                      </h3>
+                      <div className="flex items-center gap-2 mb-2">
+                        <h3 className={`${isMobile ? 'text-base' : 'text-lg'} font-semibold text-gray-900`}>
+                          {category.name}
+                        </h3>
+                        <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded-full">
+                          {category.product_count || 0} product{category.product_count !== 1 ? 'en' : ''}
+                        </span>
+                      </div>
                       {category.description && (
                         <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600`}>
                           {category.description}
@@ -359,7 +398,10 @@ export default function CategoriesPage() {
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => openEditModal(category)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          openEditModal(category);
+                        }}
                         className={isMobile ? 'px-2 py-1' : ''}
                       >
                         <Edit className="w-4 h-4" />
@@ -368,7 +410,10 @@ export default function CategoriesPage() {
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => openDeleteModal(category)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          openDeleteModal(category);
+                        }}
                         className={`${isMobile ? 'px-2 py-1' : ''} text-red-600 hover:text-red-700 hover:bg-red-50`}
                       >
                         <Trash2 className="w-4 h-4" />
