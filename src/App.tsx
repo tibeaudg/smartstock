@@ -26,19 +26,6 @@ import AdminNotificationsPage from './pages/AdminNotificationsPage';
 import { AlertCircle } from "lucide-react";
 import SEO from './components/SEO';
 import PreloadResources from './components/PreloadResources';
-<<<<<<< HEAD
-import VoorraadbeheerTips from './pages/voorraadbeheer-tips';
-import VoorraadbeheerSoftwareVergelijken from './pages/voorraadbeheer-software-vergelijken';
-import VoorraadbeheerWebshop from './pages/voorraadbeheer-webshop';
-import VoorraadbeheerFoutenVoorkomen from './pages/voorraadbeheer-fouten-voorkomen';
-import VoorraadbeheerAutomatiseren from './pages/voorraadbeheer-automatiseren';
-import VoorraadbeheerHoreca from './pages/voorraadbeheer-horeca';
-import VoorraadbeheerExcelVsSoftware from './pages/voorraadbeheer-excel-vs-software';
-import VoorraadbeheerVoorStarters from './pages/voorraadbeheer-voor-starters';
-import MobielVoorraadbeheer from './pages/mobiel-voorraadbeheer';
-import GratisStockbeheer from './pages/gratis-stockbeheer';
-import ScanPage from './pages/scan';
-=======
 import { Admin } from './components/Admin';
 import AdminCMS from './components/AdminCMS';
 import { AdminChatList } from './components/AdminChatList';
@@ -55,8 +42,7 @@ import VoorraadbeheerVoorStarters from './pages/SEO/voorraadbeheer-voor-starters
 import MobielVoorraadbeheer from './pages/SEO/mobiel-voorraadbeheer';
 import GratisStockbeheer from './pages/SEO/gratis-stockbeheer';
 import Voorraadbeheer from './pages/SEO/voorraadbeheer';
-
->>>>>>> 44965885aceba11fd427b73a9454e2883183d978
+import ScanPage from './pages/scan';
 import React, { useState } from 'react';
 import { OnboardingModal } from "./components/onboarding/OnboardingModal";
 import VoorraadbeheerSoftware from "./pages/SEO/voorraadbeheer-software";

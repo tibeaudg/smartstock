@@ -9,7 +9,9 @@ import {
   CircleUserRound, 
   Users,
   MessageSquare,
-  Bell
+  Bell,
+  Scan,
+  ChevronDown
 } 
 from 'lucide-react';
 import { BranchSelector } from './BranchSelector';
