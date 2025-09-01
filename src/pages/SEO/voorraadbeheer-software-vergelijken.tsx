@@ -1,4 +1,3 @@
-import React from 'react';
 import SEO from '../../components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '../../components/SeoPageLayout';
@@ -26,7 +25,7 @@ export default function VoorraadbeheerSoftwareVergelijken() {
       name: "Exact",
       tagline: "Online Handel Essentials",
       features: ["Onbeperkte producten", "Mobiele app", "Geen automatische meldingen", "Desktop software", "API integraties"],
-      price: "€255/maand",
+      price: "ï¿½255/maand",
       rating: 4,
       highlight: false,
     },
@@ -34,7 +33,7 @@ export default function VoorraadbeheerSoftwareVergelijken() {
       name: "Visma Net",
       tagline: "Logistics",
       features: ["Beperkte gratis versie", "Geen mobiele app", "Automatische meldingen", "Desktop software", "Basis rapportages"],
-      price: "€450/maand",
+      price: "ï¿½450/maand",
       rating: 3.9,
       highlight: false,
     }
@@ -52,7 +51,7 @@ export default function VoorraadbeheerSoftwareVergelijken() {
   return (
     <><SeoPageLayout
       title="Voorraadbeheer Software Vergelijken"
-      image="/optimized/Inventory-Management.png"
+      image="/logo.png"
     >
       <SEO
         title="Software Stockbeheer 2024: Beste Voorraadbeheer Software Vergelijken | stockflow"
@@ -417,7 +416,7 @@ export default function VoorraadbeheerSoftwareVergelijken() {
         },
         "datePublished": "2024-01-15",
         "dateModified": "2024-01-15",
-        "image": "https://www.stockflow.be/optimized/Inventory-Management.png",
+        "image": "https://www.stockflow.be/logo.png",
         "articleSection": "Voorraadbeheer",
         "keywords": "stockbeheer software, software stockbeheer, programma stockbeheer, voorraadbeheer software, stockbeheer programma, software vergelijken, beste voorraadbeheer software, voorraadbeheer software kiezen, voorraadbeheersoftware, bedrijfssoftware vergelijken, voorraadbeheer app, programma voorraadbeheer, software voor voorraadbeheer, voorraad app, app voorraadbeheer, beste voorraadbeheer app, voorraadbeheer programma"
       }` }} />
