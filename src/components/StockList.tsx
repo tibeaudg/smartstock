@@ -838,6 +838,17 @@ export const StockList = () => {
                 onClearFilters={handleClearFilters}
                 activeFiltersCount={activeFilterCount}
               />
+              
+              {/* Nieuw Product Knop voor Mobiel */}
+              <div className="mt-4">
+                <Button 
+                  onClick={() => setIsAddModalOpen(true)} 
+                  className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white"
+                >
+                  <Plus className="w-5 h-5 mr-2" />
+                  Nieuw Product Toevoegen
+                </Button>
+              </div>
             </div>
 
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-x-auto">

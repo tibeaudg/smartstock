@@ -441,7 +441,7 @@ export default function ScanPage() {
             <div className="flex flex-col sm:flex-row gap-4">
               <Button
                 onClick={() => setShowScanner(true)}
-                className="flex-1 p-2"
+                className="flex-1 h-12 px-4 p-2"
                 size="lg"
                 disabled={!cameraSupported}
               >
@@ -453,7 +453,7 @@ export default function ScanPage() {
                 <Button
                   onClick={() => setShowDebugInfo(true)}
                   variant="outline"
-                  className="p-2"
+                  className="flex-1 h-12 px-4 p-2"
                   size="lg"
                 >
                   <AlertCircle className="w-5 h-5 mr-2" />
@@ -823,7 +823,7 @@ export default function ScanPage() {
                                      <Button
                      type="submit"
                      disabled={loading}
-                     className="flex-1 p-2"
+                     className="flex-1 h-12 px-4"
                      size="lg"
                    >
                      {loading ? (
@@ -843,7 +843,7 @@ export default function ScanPage() {
                     variant="outline"
                     onClick={resetForm}
                     disabled={loading}
-                    className="flex-1 p-2"
+                    className="flex-1 h-12 px-4"
                     size="lg"
                   >
                     Annuleren
