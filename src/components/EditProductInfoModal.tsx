@@ -230,6 +230,8 @@ export const EditProductInfoModal = ({
     }
 
     try {
+      console.log('Updating product with form data:', form);
+      
       // Handle supplier
       let supplierId = form.supplier_id || null;
       if (form.supplier_name.trim() && !supplierId) {
@@ -242,6 +244,7 @@ export const EditProductInfoModal = ({
 
         if (existingSupplier) {
           supplierId = existingSupplier.id;
+          console.log('Found existing supplier:', existingSupplier);
         } else {
           const { data: newSupplier, error: supplierError } = await supabase
             .from('suppliers')
@@ -256,6 +259,7 @@ export const EditProductInfoModal = ({
             return;
           }
           supplierId = newSupplier.id;
+          console.log('Created new supplier:', newSupplier);
         }
       }
 
@@ -271,6 +275,7 @@ export const EditProductInfoModal = ({
 
         if (existingCategory) {
           categoryId = existingCategory.id;
+          console.log('Found existing category:', existingCategory);
         } else {
           const { data: newCategory, error: categoryError } = await supabase
             .from('categories')
@@ -285,8 +290,11 @@ export const EditProductInfoModal = ({
             return;
           }
           categoryId = newCategory.id;
+          console.log('Created new category:', newCategory);
         }
       }
+
+      console.log('Final IDs for update:', { categoryId, supplierId });
 
       const { error: updateError } = await supabase
         .from('products')
@@ -304,12 +312,20 @@ export const EditProductInfoModal = ({
           updated_at: new Date().toISOString(),
         })
         .eq('id', product.id);
+        
       if (updateError) {
+        console.error('Error updating product:', updateError);
         toast.error('Fout bij het bijwerken van product info');
         setLoading(false);
         return;
       }
+      
+      console.log('Product updated successfully');
       toast.success('Productinformatie bijgewerkt!');
+      
+      // Invalidate all product queries to ensure fresh data
+      queryClient.invalidateQueries({ queryKey: ['products'] });
+      
       onProductUpdated();
       onClose();
     } catch (error) {

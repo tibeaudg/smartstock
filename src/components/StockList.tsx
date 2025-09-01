@@ -69,30 +69,36 @@ interface Product {
 
 type StockAction = 'in' | 'out';
 
-const fetchProducts = async (branchId: string, filters?: {
-  categoryId?: string;
-  supplierId?: string;
-}) => {
-  let query = supabase
-    .from('products')
-    .select('*')
-    .eq('branch_id', branchId);
-
-  // Apply category filter if provided
-  if (filters?.categoryId) {
-    query = query.eq('category_id', filters.categoryId);
+const fetchProducts = async (branchId: string) => {
+  try {
+    console.log('fetchProducts called with branchId:', branchId);
+    
+    const { data, error } = await supabase
+      .from('products')
+      .select('*')
+      .eq('branch_id', branchId)
+      .order('name');
+    
+    if (error) {
+      console.error('Error fetching products:', error);
+      throw error;
+    }
+    
+    console.log(`Fetched ${data?.length || 0} products for branch:`, { 
+      branchId,
+      totalProducts: data?.length || 0,
+      firstProduct: data?.[0] ? {
+        id: data[0].id,
+        name: data[0].name,
+        category_id: data[0].category_id,
+        supplier_id: data[0].supplier_id
+      } : null
+    });
+    return data || [];
+  } catch (error) {
+    console.error('Error in fetchProducts:', error);
+    throw error;
   }
-
-  // Apply supplier filter if provided
-  if (filters?.supplierId) {
-    query = query.eq('supplier_id', filters.supplierId);
-  }
-
-  const { data, error } = await query.order('name');
-  
-  if (error) throw error;
-  
-  return data || [];
 };
 
 export const StockList = () => {
@@ -116,6 +122,10 @@ export const StockList = () => {
   // State voor filter namen (voor weergave)
   const [categoryFilterName, setCategoryFilterName] = useState('');
   const [supplierFilterName, setSupplierFilterName] = useState('');
+  
+  // State voor categorieën en leveranciers (voor filter namen)
+  const [categories, setCategories] = useState<Array<{ id: string; name: string }>>([]);
+  const [suppliers, setSuppliers] = useState<Array<{ id: string; name: string }>>([]);
 
   // State voor modals
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -155,22 +165,34 @@ export const StockList = () => {
       const { filterType, filterValue, filterName } = location.state;
       
       if (filterType === 'category' && filterValue) {
+        console.log('Setting category filter:', filterValue, filterName);
         setCategoryFilter(filterValue);
         setCategoryFilterName(filterName || '');
         // Clear other filters
         setSupplierFilter('');
         setSupplierFilterName('');
         setSearchTerm('');
+        setStockStatusFilter('all');
+        setMinPriceFilter('');
+        setMaxPriceFilter('');
+        setMinStockFilter('');
+        setMaxStockFilter('');
       } else if (filterType === 'supplier' && filterValue) {
+        console.log('Setting supplier filter:', filterValue, filterName);
         setSupplierFilter(filterValue);
         setSupplierFilterName(filterName || '');
         // Clear other filters
         setCategoryFilter('');
         setCategoryFilterName('');
         setSearchTerm('');
+        setStockStatusFilter('all');
+        setMinPriceFilter('');
+        setMaxPriceFilter('');
+        setMinStockFilter('');
+        setMaxStockFilter('');
       }
       
-            // Clear navigation state to prevent re-applying filters on refresh
+      // Clear navigation state to prevent re-applying filters on refresh
       navigate(location.pathname, { replace: true, state: {} });
     }
   }, [location.state, navigate, location.pathname]);
@@ -189,8 +211,71 @@ export const StockList = () => {
       setMaxPriceFilter('');
       setMinStockFilter('');
       setMaxStockFilter('');
+      
+      // Force refetch to get fresh data
+      queryClient.invalidateQueries({ queryKey: ['products'] });
     }
-  }, [activeBranch?.branch_id]);
+  }, [activeBranch?.branch_id, queryClient]);
+
+  // Cleanup effect for filters when component unmounts
+  useEffect(() => {
+    return () => {
+      setCategoryFilter('');
+      setCategoryFilterName('');
+      setSupplierFilter('');
+      setSupplierFilterName('');
+      setSearchTerm('');
+      setStockStatusFilter('all');
+      setMinPriceFilter('');
+      setMaxPriceFilter('');
+      setMinStockFilter('');
+      setMaxStockFilter('');
+    };
+  }, []);
+
+  // Haal categorieën en leveranciers op
+  useEffect(() => {
+    if (user) {
+      fetchCategories();
+      fetchSuppliers();
+    }
+  }, [user]);
+
+  const fetchCategories = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('categories')
+        .select('id, name')
+        .order('name');
+      
+      if (error) {
+        console.error('Error fetching categories:', error);
+        return;
+      }
+      
+      setCategories(data || []);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+  };
+
+  const fetchSuppliers = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('suppliers')
+        .select('id, name')
+        .order('name');
+      
+      if (error) {
+        console.error('Error fetching suppliers:', error);
+        return;
+      }
+      
+      setSuppliers(data || []);
+    } catch (error) {
+      console.error('Error fetching suppliers:', error);
+    }
+  };
 
   // Handle tab change
   const handleTabChange = (tab: 'products' | 'categories' | 'suppliers') => {
@@ -228,12 +313,9 @@ export const StockList = () => {
     isLoading: loading,
     refetch
   } = useQuery<Product[]>({
-    queryKey: ['products', activeBranch?.branch_id, categoryFilter, supplierFilter],
-    queryFn: () => activeBranch && user ? fetchProducts(activeBranch.branch_id, {
-      categoryId: categoryFilter || undefined,
-      supplierId: supplierFilter || undefined
-    }) : [],
-    enabled: !!user && !!activeBranch,
+    queryKey: ['products', activeBranch?.branch_id],
+    queryFn: () => activeBranch && user ? fetchProducts(activeBranch.branch_id) : [],
+    enabled: !!user && !!activeBranch && !!activeBranch.branch_id,
     refetchOnWindowFocus: true,
     staleTime: 1000 * 60 * 2, // 2 minuten cache
     gcTime: 1000 * 60 * 60 * 24, // 24 uur garbage collect
@@ -286,6 +368,12 @@ export const StockList = () => {
     return productsTyped.filter((product) => {
       const stockStatus = getStockStatus(product.quantity_in_stock, product.minimum_stock_level);
       
+      // Category filter
+      const matchesCategory = categoryFilter === '' || product.category_id === categoryFilter;
+      
+      // Supplier filter
+      const matchesSupplier = supplierFilter === '' || product.supplier_id === supplierFilter;
+      
       // Search term filter
       const matchesSearch = searchTerm === '' || 
         product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -305,7 +393,7 @@ export const StockList = () => {
       const matchesMinStock = minStockFilter === '' || product.quantity_in_stock >= parseInt(minStockFilter);
       const matchesMaxStock = maxStockFilter === '' || product.quantity_in_stock <= parseInt(maxStockFilter);
 
-      return matchesSearch &&  matchesStockStatus && 
+      return matchesCategory && matchesSupplier && matchesSearch && matchesStockStatus && 
              matchesMinPrice && matchesMaxPrice && matchesMinStock && matchesMaxStock;
     });
   }, [productsTyped, searchTerm, categoryFilter, supplierFilter, stockStatusFilter, minPriceFilter, maxPriceFilter, minStockFilter, maxStockFilter]);
@@ -321,6 +409,7 @@ export const StockList = () => {
   };
 
   const handleClearFilters = () => {
+    console.log('Clearing all filters');
     setSearchTerm('');
     setCategoryFilter('');
     setCategoryFilterName('');
@@ -331,7 +420,24 @@ export const StockList = () => {
     setMaxPriceFilter('');
     setMinStockFilter('');
     setMaxStockFilter('');
+    
+    // Force refetch to get fresh data
+    if (activeBranch?.branch_id) {
+      queryClient.invalidateQueries({ queryKey: ['products'] });
+    }
   };
+
+  // Add escape key handler for clearing filters
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        handleClearFilters();
+      }
+    };
+
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [handleClearFilters]);
 
   const handleStockAction = (product: Product, action: StockAction) => {
     setSelectedProduct(product);
@@ -475,7 +581,7 @@ export const StockList = () => {
           <>
             {/* Filter Header */}
             {(categoryFilter || supplierFilter) && (
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4 filter-header">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span className="text-sm font-medium text-blue-900">
@@ -495,12 +601,7 @@ export const StockList = () => {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => {
-                      setCategoryFilter('');
-                      setCategoryFilterName('');
-                      setSupplierFilter('');
-                      setSupplierFilterName('');
-                    }}
+                    onClick={handleClearFilters}
                     className="text-blue-700 border-blue-300 hover:bg-blue-100"
                   >
                     <X className="w-4 h-4 mr-1" />
@@ -510,26 +611,28 @@ export const StockList = () => {
               </div>
             )}
 
-            <ProductFilters
-              searchTerm={searchTerm}
-              onSearchChange={setSearchTerm}
-              categoryFilter={categoryFilter}
-              onCategoryFilterChange={setCategoryFilter}
-              supplierFilter={supplierFilter}
-              onSupplierFilterChange={setSupplierFilter}
-              stockStatusFilter={stockStatusFilter}
-              onStockStatusFilterChange={setStockStatusFilter}
-              minPriceFilter={minPriceFilter}
-              onMinPriceFilterChange={setMinPriceFilter}
-              maxPriceFilter={maxPriceFilter}
-              onMaxPriceFilterChange={setMaxPriceFilter}
-              minStockFilter={minStockFilter}
-              onMinStockFilterChange={setMinStockFilter}
-              maxStockFilter={maxStockFilter}
-              onMaxStockFilterChange={setMaxStockFilter}
-              onClearFilters={handleClearFilters}
-              activeFiltersCount={activeFilterCount}
-            />
+            <div className="filter-area">
+              <ProductFilters
+                searchTerm={searchTerm}
+                onSearchChange={setSearchTerm}
+                categoryFilter={categoryFilter}
+                onCategoryFilterChange={setCategoryFilter}
+                supplierFilter={supplierFilter}
+                onSupplierFilterChange={setSupplierFilter}
+                stockStatusFilter={stockStatusFilter}
+                onStockStatusFilterChange={setStockStatusFilter}
+                minPriceFilter={minPriceFilter}
+                onMinPriceFilterChange={setMinPriceFilter}
+                maxPriceFilter={maxPriceFilter}
+                onMaxPriceFilterChange={setMaxPriceFilter}
+                minStockFilter={minStockFilter}
+                onMinStockFilterChange={setMinStockFilter}
+                maxStockFilter={maxStockFilter}
+                onMaxStockFilterChange={setMaxStockFilter}
+                onClearFilters={handleClearFilters}
+                activeFiltersCount={activeFilterCount}
+              />
+            </div>
 
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200 text-xs md:text-sm">
@@ -658,6 +761,20 @@ export const StockList = () => {
               setSelectedAction(null);
             }}
             onProductUpdated={() => {
+              // Clear filters when product is updated to show all products
+              setCategoryFilter('');
+              setCategoryFilterName('');
+              setSupplierFilter('');
+              setSupplierFilterName('');
+              setSearchTerm('');
+              setStockStatusFilter('all');
+              setMinPriceFilter('');
+              setMaxPriceFilter('');
+              setMinStockFilter('');
+              setMaxStockFilter('');
+              
+              // Force refetch to get updated data
+              queryClient.invalidateQueries({ queryKey: ['products'] });
               refetch();
               setIsEditModalOpen(false);
               setSelectedProduct(null);
@@ -676,6 +793,20 @@ export const StockList = () => {
               setSelectedProduct(null);
             }}
             onProductUpdated={() => {
+              // Clear filters when product is updated to show all products
+              setCategoryFilter('');
+              setCategoryFilterName('');
+              setSupplierFilter('');
+              setSupplierFilterName('');
+              setSearchTerm('');
+              setStockStatusFilter('all');
+              setMinPriceFilter('');
+              setMaxPriceFilter('');
+              setMinStockFilter('');
+              setMaxStockFilter('');
+              
+              // Force refetch to get updated data
+              queryClient.invalidateQueries({ queryKey: ['products'] });
               refetch();
               setIsEditInfoModalOpen(false);
               setSelectedProduct(null);
@@ -688,6 +819,20 @@ export const StockList = () => {
           isOpen={isAddModalOpen}
           onClose={() => setIsAddModalOpen(false)}
           onProductAdded={() => {
+            // Clear filters when new product is added to show all products
+            setCategoryFilter('');
+            setCategoryFilterName('');
+            setSupplierFilter('');
+            setSupplierFilterName('');
+            setSearchTerm('');
+            setStockStatusFilter('all');
+            setMinPriceFilter('');
+            setMaxPriceFilter('');
+            setMinStockFilter('');
+            setMaxStockFilter('');
+            
+            // Force refetch to get updated data
+            queryClient.invalidateQueries({ queryKey: ['products'] });
             refetch();
             setIsAddModalOpen(false);
           }}
@@ -714,28 +859,90 @@ export const StockList = () => {
             </Button>
           )}
         </div>
+        <div className="flex gap-2">
+          <Button onClick={() => setIsAddModalOpen(true)} className="flex items-center gap-2">
+            <Plus className="w-4 h-4" />
+            Toevoegen
+          </Button>
+        </div>
       </div>
 
-      <ProductFilters
-        searchTerm={searchTerm}
-        onSearchChange={setSearchTerm}
-        categoryFilter={categoryFilter}
-        onCategoryFilterChange={setCategoryFilter}
-        supplierFilter={supplierFilter}
-        onSupplierFilterChange={setSupplierFilter}
-        stockStatusFilter={stockStatusFilter}
-        onStockStatusFilterChange={setStockStatusFilter}
-        minPriceFilter={minPriceFilter}
-        onMinPriceFilterChange={setMinPriceFilter}
-        maxPriceFilter={maxPriceFilter}
-        onMaxPriceFilterChange={setMaxPriceFilter}
-        minStockFilter={minStockFilter}
-        onMinStockFilterChange={setMinStockFilter}
-        maxStockFilter={maxStockFilter}
-        onMaxStockFilterChange={setMaxStockFilter}
-        onClearFilters={handleClearFilters}
-        activeFiltersCount={activeFilterCount}
-      />
+      {/* Filter Header */}
+      {(categoryFilter || supplierFilter) && (
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4 filter-header">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-medium text-blue-900">
+                Gefilterd op:
+              </span>
+              {categoryFilter && (
+                <Badge variant="secondary" className="bg-blue-100 text-blue-800">
+                  Categorie: {categoryFilterName || 'Gefilterd'}
+                </Badge>
+              )}
+              {supplierFilter && (
+                <Badge variant="secondary" className="bg-blue-100 text-blue-800">
+                  Leverancier: {supplierFilterName || 'Gefilterd'}
+                </Badge>
+              )}
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleClearFilters}
+              className="text-blue-700 border-blue-300 hover:bg-blue-100"
+            >
+              <X className="w-4 h-4 mr-1" />
+              Filters wissen
+            </Button>
+          </div>
+        </div>
+      )}
+
+      <div className="filter-area">
+        <ProductFilters
+          searchTerm={searchTerm}
+          onSearchChange={setSearchTerm}
+          categoryFilter={categoryFilter}
+          onCategoryFilterChange={(value) => {
+            console.log('Category filter changed:', value);
+            setCategoryFilter(value);
+            // Update category name when filter changes
+            if (value) {
+                          // Find category name by ID
+            const category = categories.find(cat => cat.id === value);
+            setCategoryFilterName(category?.name || 'Gefilterd');
+            } else {
+              setCategoryFilterName('');
+            }
+          }}
+          supplierFilter={supplierFilter}
+          onSupplierFilterChange={(value) => {
+            console.log('Supplier filter changed:', value);
+            setSupplierFilter(value);
+            // Update supplier name when filter changes
+            if (value) {
+              // Find supplier name by ID
+              const supplier = suppliers.find(sup => sup.id === value);
+              setSupplierFilterName(supplier?.name || '');
+            } else {
+              setSupplierFilterName('');
+            }
+          }}
+          stockStatusFilter={stockStatusFilter}
+          onStockStatusFilterChange={setStockStatusFilter}
+          minPriceFilter={minPriceFilter}
+          onMinPriceFilterChange={setMinPriceFilter}
+          maxPriceFilter={maxPriceFilter}
+          onMaxPriceFilterChange={setMaxPriceFilter}
+          minStockFilter={minStockFilter}
+          onMinStockFilterChange={setMinStockFilter}
+          maxStockFilter={maxStockFilter}
+          onMaxStockFilterChange={setMaxStockFilter}
+          onClearFilters={handleClearFilters}
+          activeFiltersCount={activeFilterCount}
+        />
+      </div>
 
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
         <div className="overflow-x-auto">
