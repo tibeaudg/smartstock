@@ -1,9 +1,8 @@
 import SEO from '../../components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '../../components/SeoPageLayout';
-import { Shield, TrendingUp } from 'lucide-react';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
-import { Utensils, Coffee, ChefHat, Clock, AlertTriangle } from 'lucide-react';
+import { Utensils, Coffee, ChefHat } from 'lucide-react';
 
 export default function VoorraadbeheerHoreca() {
   // Gebruik de page refresh hook

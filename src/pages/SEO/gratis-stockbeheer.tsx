@@ -1,8 +1,7 @@
-import React from 'react';
 import SEO from '../../components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '../../components/SeoPageLayout';
-import { Check, Star, Smartphone, Zap, Shield, Users, TrendingUp, Gift } from 'lucide-react';
+import { Check, Smartphone, Zap, Shield, Users, TrendingUp, Gift } from 'lucide-react';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 
 export default function GratisStockbeheer() {
@@ -56,14 +55,12 @@ export default function GratisStockbeheer() {
   return (
     <SeoPageLayout
       title="Voorraadbeheer: Gratis Stockbeheer App voor KMO's"
-      image="/optimized/Inventory-Management.png"
     >
       <SEO
         title="Gratis Stockbeheer App voor KMO's | Professioneel Voorraadbeheer | stockflow"
         description="Ontdek gratis stockbeheer voor KMO's. Beheer tot 30 producten gratis met stockflow. Professioneel voorraadbeheer zonder kosten, perfect voor starters en kleine bedrijven."
         keywords="gratis stockbeheer, gratis voorraadbeheer, stockbeheer app gratis, voorraadbeheer gratis, gratis stockbeheer software, gratis voorraadbeheer app, stockbeheer zonder kosten, voorraadbeheer KMO, gratis voorraadbeheer software, stockbeheer starters, voorraadbeheer kleine bedrijven, gratis stockbeheer app, voorraadbeheer app gratis, stockflow gratis, gratis voorraadbeheer programma"
         url="https://www.stockflow.be/gratis-stockbeheer"
-        image="/optimized/Inventory-Management.png"
       />
 
       {/* Hero Section */}
@@ -424,7 +421,7 @@ export default function GratisStockbeheer() {
         "@type": "Article",
         "headline": "Gratis Stockbeheer App voor KMO's",
         "description": "Ontdek gratis stockbeheer voor KMO's. Beheer tot 30 producten gratis met stockflow. Professioneel voorraadbeheer zonder kosten, perfect voor starters en kleine bedrijven.",
-        "image": "https://www.stockflow.be/optimized/Inventory-Management.png",
+        "image": "https://www.stockflow.be/logo.png",
         "author": {
           "@type": "Organization",
           "name": "stockflow"

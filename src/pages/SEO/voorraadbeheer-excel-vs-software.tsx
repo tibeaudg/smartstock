@@ -1,8 +1,7 @@
-import React from 'react';
 import SEO from '../../components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '../../components/SeoPageLayout';
-import { Check, Star, Smartphone, Bell, Zap, Shield, Users, TrendingUp, AlertTriangle, FileSpreadsheet, X } from 'lucide-react';
+import { Check, AlertTriangle, FileSpreadsheet, X } from 'lucide-react';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 
 export default function VoorraadbeheerExcelVsSoftware() {
@@ -44,7 +43,7 @@ export default function VoorraadbeheerExcelVsSoftware() {
     {
       feature: "Kosten",
       excel: "Gratis",
-      software: "Vanaf €0/maand",
+      software: "Vanaf ï¿½0/maand",
       winner: "software"
     },
     {
@@ -82,14 +81,12 @@ export default function VoorraadbeheerExcelVsSoftware() {
   return (
     <SeoPageLayout
       title="Voorraadbeheer: Excel vs. Software"
-      image="/optimized/Inventory-Management.png"
     >
       <SEO
         title="Voorraadbeheer: Excel vs. Software | Complete Vergelijking | stockflow"
         description="Voorraadbeheer in Excel of met software? Complete vergelijking van voordelen en nadelen. Ontdek wanneer je moet overstappen van Excel naar moderne voorraadbeheer software voor KMO's."
         keywords="voorraadbeheer excel, voorraadbeheer software, excel vs software, voorraadbeheer vergelijken, voorraadbeheer overstappen, excel voorraadbeheer, software voorraadbeheer, voorraadbeheer excel vs software, voorraadbeheer app vs excel, voorraadbeheer overstappen excel, voorraadbeheer software vergelijken, excel voorraadbeheer nadelen, voorraadbeheer software voordelen"
         url="https://www.stockflow.be/voorraadbeheer-excel-vs-software"
-        image="/optimized/Inventory-Management.png"
       />
 
       {/* Hero Section */}
@@ -375,7 +372,7 @@ export default function VoorraadbeheerExcelVsSoftware() {
               <a href="/gratis-stockbeheer" className="text-indigo-700 underline font-semibold">
                 stockflow biedt een gratis versie aan
               </a> voor kleine bedrijven. 
-              Premium versies kosten vanaf €29 per maand, afhankelijk van je behoeften.
+              Premium versies kosten vanaf ï¿½29 per maand, afhankelijk van je behoeften.
             </p>
           </div>
 
@@ -498,7 +495,7 @@ export default function VoorraadbeheerExcelVsSoftware() {
             "name": "Hoeveel kost voorraadbeheer software?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "stockflow biedt een gratis versie aan voor kleine bedrijven. Premium versies kosten vanaf €29 per maand, afhankelijk van je behoeften."
+              "text": "stockflow biedt een gratis versie aan voor kleine bedrijven. Premium versies kosten vanaf ï¿½29 per maand, afhankelijk van je behoeften."
             }
           },
           {

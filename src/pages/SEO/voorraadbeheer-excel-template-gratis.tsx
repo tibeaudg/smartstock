@@ -334,7 +334,7 @@ export default function VoorraadbeheerExcelTemplateGratis() {
         "@type": "Article",
         "headline": "Voorraadbeheer Excel Template Gratis - Download Nu",
         "description": "Download onze gratis voorraadbeheer excel template. Eenvoudig voorraadbeheer met Excel, automatische berekeningen en bestelpuntmeldingen. Gratis download!",
-        "image": "https://www.stockflow.be/optimized/Inventory-Management.png",
+        "image": "https://www.stockflow.be/logo.png",
         "author": {
           "@type": "Organization",
           "name": "stockflow"

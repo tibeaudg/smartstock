@@ -1,7 +1,7 @@
 import SEO from '../../components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '../../components/SeoPageLayout';
-import { Globe, ShoppingCart, Settings, Bell, Shield, BarChart3, TrendingUp } from 'lucide-react';
+import { Globe, ShoppingCart, Settings } from 'lucide-react';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 
 export default function VoorraadbeheerWebshop() {
@@ -48,43 +48,6 @@ export default function VoorraadbeheerWebshop() {
     }
   ];
 
-  const challenges = [
-    {
-      title: "Nee-verkoop voorkomen",
-      description: "Automatische synchronisatie zorgt ervoor dat je webshop altijd de juiste voorraad toont.",
-      icon: Bell,
-      color: "red"
-    },
-    {
-      title: "Dubbele administratie",
-      description: "E�n systeem voor zowel je webshop als je magazijn voorkomt fouten.",
-      icon: Shield,
-      color: "blue"
-    },
-    {
-      title: "Voorraad optimalisatie",
-      description: "Analyseer je verkoopcijfers om je inkoop te optimaliseren.",
-      icon: BarChart3,
-      color: "green"
-    },
-    {
-      title: "Multi-channel verkoop",
-      description: "Beheer voorraad voor webshop, marktplaats en fysieke verkoop.",
-      icon: TrendingUp,
-      color: "purple"
-    }
-  ];
-
-  const benefits = [
-    "Automatische synchronisatie tussen webshop en magazijn",
-    "Real-time voorraad updates",
-    "Voorkom nee-verkoop en klachten",
-    "Bespaar tijd op administratie",
-    "Betere klanttevredenheid",
-    "Geoptimaliseerde inkoop",
-    "Multi-channel voorraadbeheer",
-    "Automatische meldingen bij lage voorraad"
-  ];
 
   return (
     <SeoPageLayout title="Voorraadbeheer voor Webshops">

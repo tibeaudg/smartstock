@@ -2,7 +2,7 @@ import React from 'react';
 import SEO from '../../components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '../../components/SeoPageLayout';
-import { Check, Star, Smartphone, Bell, Zap, Shield, Users, TrendingUp, BarChart3, Camera, Clock, Globe, Package, Wifi } from 'lucide-react';
+import { Check, Smartphone, Users, BarChart3, Camera, Clock, Globe, Package, Wifi } from 'lucide-react';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 
 export default function MobielVoorraadbeheer() {
@@ -94,7 +94,7 @@ export default function MobielVoorraadbeheer() {
     },
     {
       question: "Hoeveel kost mobiel voorraadbeheer?",
-      answer: "stockflow biedt een betaalbare oplossing vanaf €25 per maand, inclusief alle mobiele functionaliteiten."
+      answer: "stockflow biedt een betaalbare oplossing vanaf ï¿½25 per maand, inclusief alle mobiele functionaliteiten."
     },
     {
       question: "Kan ik mijn team uitnodigen voor mobiel voorraadbeheer?",
@@ -118,14 +118,12 @@ export default function MobielVoorraadbeheer() {
   return (
     <SeoPageLayout
       title="Mobiel Voorraadbeheer"
-      image="/optimized/Inventory-Management.png"
     >
       <SEO
         title="Mobiel Voorraadbeheer | Voorraadbeheer App | stockflow"
         description="Mobiel voorraadbeheer: beheer je voorraad eenvoudig via je smartphone of tablet. Ontdek de voordelen van een mobiele voorraadbeheer app."
         keywords="mobiel voorraadbeheer, voorraadbeheer app, voorraadbeheer smartphone, voorraadbeheer tablet, mobiele voorraadbeheer software, voorraadbeheer mobiel, voorraadbeheer app downloaden, voorraadbeheer iOS, voorraadbeheer Android, voorraadbeheer offline, voorraadbeheer barcode scanning, voorraadbeheer realtime, voorraadbeheer team, voorraadbeheer onderweg"
         url="https://www.stockflow.be/mobiel-voorraadbeheer"
-        image="/optimized/Inventory-Management.png"
       />
 
       {/* Hero Section */}
@@ -399,7 +397,7 @@ export default function MobielVoorraadbeheer() {
         "@type": "Article",
         "headline": "Mobiel Voorraadbeheer",
         "description": "Mobiel voorraadbeheer: beheer je voorraad eenvoudig via je smartphone of tablet. Ontdek de voordelen van een mobiele voorraadbeheer app.",
-        "image": "https://www.stockflow.be/optimized/Inventory-Management.png",
+        "image": "https://www.stockflow.be/logo.png",
         "author": {
           "@type": "Organization",
           "name": "stockflow"

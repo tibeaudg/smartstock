@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Header } from './HeaderPublic';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Package, BarChart3, Users, Shield, CheckCircle, ArrowRight, Check, Mail, Phone, MapPin, TrendingUp, Zap, Star, Clock, Euro, Target, ChevronLeft, ChevronRight } from 'lucide-react';
-import { useNavigate, Link } from 'react-router-dom';
+import { Package, BarChart3, Users, Shield, TrendingUp, Zap, Clock, Euro, Target, ChevronLeft, ChevronRight, Star } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import SEO from './SEO';
 import { motion } from 'framer-motion';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
