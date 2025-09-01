@@ -176,6 +176,13 @@ export default function AdminPage() {
   // Gebruik de page refresh hook
   usePageRefresh();
   
+  // Toegangscontrole - alleen eigenaren kunnen de admin pagina bekijken
+  if (!userProfile || userProfile.is_owner !== true) {
+    // Redirect naar dashboard als gebruiker geen eigenaar is
+    window.location.href = '/dashboard';
+    return null;
+  }
+  
   // Gebruikersbeheer
   const { data: users = [], isLoading: loadingUsers } = useQuery({
     queryKey: ['userProfiles'],

@@ -1060,7 +1060,7 @@ export const StockList = () => {
 
 
 
-  const isAdmin = userProfile?.role === 'admin';
+  const isAdmin = userProfile?.is_owner === true;
 
 
 

@@ -58,7 +58,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
 
   // If blocked, only show settings/invoicing
   const isBlocked = userProfile?.blocked;
-  const isOwner = userProfile && userProfile.role === 'admin' && !userProfile.blocked;
+  const isOwner = userProfile && userProfile.is_owner === true && !userProfile.blocked;
 
   const toggleSubmenu = (menuId: string) => {
     setOpenSubmenus(prev => {

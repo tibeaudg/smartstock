@@ -26,6 +26,7 @@ export const MobileBottomNav = ({ currentTab, onTabChange, userRole }: MobileBot
   const navigate = useNavigate();
   const location = useLocation();
   const isBlocked = userProfile?.blocked;
+  const isOwner = userProfile && userProfile.is_owner === true && !userProfile.blocked;
   const isAdminPage = location.pathname.startsWith('/admin');
   
   const regularMenuItems = isBlocked
@@ -44,7 +45,8 @@ export const MobileBottomNav = ({ currentTab, onTabChange, userRole }: MobileBot
     { id: 'blogcms', label: 'Blog CMS', icon: FileText, path: '/admin' },
   ];
 
-  const menuItems = isAdminPage ? adminMenuItems : regularMenuItems;
+  // Alleen admin menu items tonen als gebruiker eigenaar is
+  const menuItems = isAdminPage && isOwner ? adminMenuItems : regularMenuItems;
 
   const handleNav = (item: typeof menuItems[0]) => {
     if (onTabChange) onTabChange(item.id);
