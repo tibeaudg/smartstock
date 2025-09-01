@@ -694,8 +694,8 @@ export const StockList = () => {
       
       // Test if the filter is working correctly
       const allProducts = productsTyped.length;
-      const filteredProducts = filteredProducts.length;
-      console.log(`🔍 Filter effectiveness: ${filteredProducts}/${allProducts} products shown`);
+      const filteredCount = matchingProducts.length;
+      console.log(`🔍 Filter effectiveness: ${filteredCount}/${allProducts} products shown`);
     }
     
     if (supplierFilter !== 'all' && supplierFilter !== '') {
