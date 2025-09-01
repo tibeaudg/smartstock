@@ -843,7 +843,7 @@ export const StockList = () => {
               <div className="mt-4">
                 <Button 
                   onClick={() => setIsAddModalOpen(true)} 
-                  className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white"
+                  className="w-full h-10 bg-blue-700 hover:bg-blue-700/80 text-white"
                 >
                   <Plus className="w-5 h-5 mr-2" />
                   Nieuw Product Toevoegen

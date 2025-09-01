@@ -373,7 +373,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className={`w-full max-w-full mx-auto p-0 ${isMobile ? 'h-full max-h-full rounded-none' : 'md:w-auto md:max-w-lg md:p-6 md:rounded-lg'}`}>
+      <DialogContent className={`w-full max-w-full mx-auto p-0 ${isMobile ? 'h-full max-h-full rounded-none bg-white' : 'bg-white md:w-auto md:max-w-lg md:p-6 md:rounded-lg'}`}>
         <DialogHeader className={`${isMobile ? 'p-4 border-b' : ''}`}>
           <DialogTitle>Nieuw Product Toevoegen</DialogTitle>
         </DialogHeader>
@@ -632,7 +632,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                   <FormItem>
                     <FormLabel>Voorraad *</FormLabel>
                     <FormControl>
-                      <Input 
+                                              <Input 
                         {...field} 
                         type="number" 
                         min="0"
@@ -658,7 +658,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                   <FormItem>
                     <FormLabel>Min. Niveau *</FormLabel>
                     <FormControl>
-                      <Input 
+                                              <Input 
                         {...field} 
                         type="number" 
                         min="0"

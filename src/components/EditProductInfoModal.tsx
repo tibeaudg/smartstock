@@ -342,7 +342,7 @@ export const EditProductInfoModal = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className={`w-full max-w-full mx-auto p-0 ${isMobile ? 'h-full max-h-full rounded-none' : 'md:w-auto md:max-w-lg md:p-6 md:rounded-lg'}`}>
+      <DialogContent className={`w-full max-w-full mx-auto p-0 ${isMobile ? 'h-full max-h-full rounded-none bg-gray-100' : 'bg-gray-100 md:w-auto md:max-w-lg md:p-6 md:rounded-lg'}`}>
         <DialogHeader className={`${isMobile ? 'p-4 border-b' : 'p-0'}`}>
           {isMobile && onBack && (
             <Button
