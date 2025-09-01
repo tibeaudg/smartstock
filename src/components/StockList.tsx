@@ -211,41 +211,99 @@ export const StockList = () => {
 
   // Check for filters from navigation state
   useEffect(() => {
-    if (location.state) {
+    console.log('📍 Location state changed:', location.state);
+    if (location.state && Object.keys(location.state).length > 0) {
       const { filterType, filterValue, filterName } = location.state;
+      console.log('⚙️ Processing filter:', { filterType, filterValue, filterName });
       
+      // Use a callback approach to ensure state updates are applied correctly
       if (filterType === 'category' && filterValue) {
-        console.log('Setting category filter:', filterValue, filterName);
-        setCategoryFilter(filterValue);
-        setCategoryFilterName(filterName || '');
-        // Clear other filters
-        setSupplierFilter('all');
-        setSupplierFilterName('');
-        setSearchTerm('');
-        setStockStatusFilter('all');
-        setMinPriceFilter('');
-        setMaxPriceFilter('');
-        setMinStockFilter('');
-        setMaxStockFilter('');
+        console.log('🏷️ Setting category filter:', filterValue, filterName);
+        
+        // Batch all state updates together
+        Promise.resolve().then(() => {
+          setCategoryFilter(filterValue);
+          setCategoryFilterName(filterName || '');
+          // Clear other filters
+          setSupplierFilter('all');
+          setSupplierFilterName('');
+          setSearchTerm('');
+          setStockStatusFilter('all');
+          setMinPriceFilter('');
+          setMaxPriceFilter('');
+          setMinStockFilter('');
+          setMaxStockFilter('');
+        });
+        
       } else if (filterType === 'supplier' && filterValue) {
-        console.log('Setting supplier filter:', filterValue, filterName);
-        setSupplierFilter(filterValue);
-        setSupplierFilterName(filterName || '');
-        // Clear other filters
-        setCategoryFilter('all');
-        setCategoryFilterName('');
-        setSearchTerm('');
-        setStockStatusFilter('all');
-        setMinPriceFilter('');
-        setMaxPriceFilter('');
-        setMinStockFilter('');
-        setMaxStockFilter('');
+        console.log('🚚 Setting supplier filter:', filterValue, filterName);
+        
+        // Batch all state updates together
+        Promise.resolve().then(() => {
+          setSupplierFilter(filterValue);
+          setSupplierFilterName(filterName || '');
+          // Clear other filters
+          setCategoryFilter('all');
+          setCategoryFilterName('');
+          setSearchTerm('');
+          setStockStatusFilter('all');
+          setMinPriceFilter('');
+          setMaxPriceFilter('');
+          setMinStockFilter('');
+          setMaxStockFilter('');
+        });
       }
       
-      // Clear navigation state to prevent re-applying filters on refresh
-      navigate(location.pathname, { replace: true, state: {} });
+      // Clear navigation state after a longer delay to ensure filters are applied
+      setTimeout(() => {
+        console.log('🧹 Clearing navigation state');
+        navigate(location.pathname, { replace: true, state: {} });
+      }, 1000);
     }
-  }, [location.state, navigate, location.pathname]);
+  }, [location.state, navigate]);
+
+  // Debug logging voor filter wijzigingen
+  useEffect(() => {
+    console.log('🔄 Filters changed:', { 
+      categoryFilter, 
+      categoryFilterName, 
+      supplierFilter, 
+      supplierFilterName,
+      searchTerm,
+      stockStatusFilter
+    });
+    
+    // Log wanneer filters daadwerkelijk worden toegepast
+    if (categoryFilter !== 'all' && categoryFilter !== '') {
+      console.log('✅ Category filter applied:', categoryFilter, categoryFilterName);
+    }
+    if (supplierFilter !== 'all' && supplierFilter !== '') {
+      console.log('✅ Supplier filter applied:', supplierFilter, supplierFilterName);
+    }
+  }, [categoryFilter, categoryFilterName, supplierFilter, supplierFilterName, searchTerm, stockStatusFilter]);
+
+  // Extra effect om te controleren of filters correct zijn ingesteld
+  useEffect(() => {
+    if (location.state && Object.keys(location.state).length > 0) {
+      const { filterType, filterValue, filterName } = location.state;
+      
+      // Check if filters are actually set after a delay
+      setTimeout(() => {
+        if (filterType === 'category' && categoryFilter === filterValue) {
+          console.log('🎯 Category filter successfully applied!');
+        } else if (filterType === 'supplier' && supplierFilter === filterValue) {
+          console.log('🎯 Supplier filter successfully applied!');
+        } else {
+          console.log('❌ Filter not applied correctly:', {
+            filterType,
+            filterValue,
+            currentCategoryFilter: categoryFilter,
+            currentSupplierFilter: supplierFilter
+          });
+        }
+      }, 200);
+    }
+  }, [location.state, categoryFilter, supplierFilter]);
 
   // Clear filters when component unmounts or branch changes
   useEffect(() => {
@@ -415,7 +473,15 @@ export const StockList = () => {
   const productsTyped: Product[] = Array.isArray(products) ? products : [];
 
   const filteredProducts = useMemo(() => {
-    return productsTyped.filter((product) => {
+    console.log('🔍 Filtering products with:', { 
+      categoryFilter, 
+      supplierFilter, 
+      totalProducts: productsTyped.length,
+      categoryFilterName,
+      supplierFilterName
+    });
+    
+    const filtered = productsTyped.filter((product) => {
       const stockStatus = getStockStatus(product.quantity_in_stock, product.minimum_stock_level);
       
       // Category filter
@@ -443,9 +509,48 @@ export const StockList = () => {
       const matchesMinStock = minStockFilter === '' || product.quantity_in_stock >= parseInt(minStockFilter);
       const matchesMaxStock = maxStockFilter === '' || product.quantity_in_stock <= parseInt(maxStockFilter);
 
+      // Enhanced logging for category filter
+      if (categoryFilter !== 'all' && categoryFilter !== '') {
+        console.log('📋 Product category check:', { 
+          productName: product.name, 
+          productCategoryId: product.category_id, 
+          categoryFilter, 
+          matchesCategory,
+          productType: typeof product.category_id,
+          filterType: typeof categoryFilter
+        });
+      }
+
+      // Enhanced logging for supplier filter
+      if (supplierFilter !== 'all' && supplierFilter !== '') {
+        console.log('📋 Product supplier check:', { 
+          productName: product.name, 
+          productSupplierId: product.supplier_id, 
+          supplierFilter, 
+          matchesSupplier,
+          productType: typeof product.supplier_id,
+          filterType: typeof supplierFilter
+        });
+      }
+
       return matchesCategory && matchesSupplier && matchesSearch && matchesStockStatus && 
              matchesMinPrice && matchesMaxPrice && matchesMinStock && matchesMaxStock;
     });
+    
+    console.log(`📊 Filtering result: ${filtered.length} products match filters out of ${productsTyped.length} total`);
+    
+    // Log detailed filtering info
+    if (categoryFilter !== 'all' && categoryFilter !== '') {
+      const categoryProducts = productsTyped.filter(p => p.category_id === categoryFilter);
+      console.log(`🎯 Products with category ${categoryFilter}:`, categoryProducts.map(p => ({ name: p.name, category_id: p.category_id })));
+    }
+    
+    if (supplierFilter !== 'all' && supplierFilter !== '') {
+      const supplierProducts = productsTyped.filter(p => p.supplier_id === supplierFilter);
+      console.log(`🎯 Products with supplier ${supplierFilter}:`, supplierProducts.map(p => ({ name: p.name, supplier_id: p.supplier_id })));
+    }
+    
+    return filtered;
   }, [productsTyped, searchTerm, categoryFilter, supplierFilter, stockStatusFilter, minPriceFilter, maxPriceFilter, minStockFilter, maxStockFilter]);
 
   // Handle select all checkbox change
@@ -561,7 +666,7 @@ export const StockList = () => {
 
   // Test functie voor filters
   const testFilters = () => {
-    console.log('Testing filters...');
+    console.log('🧪 Testing filters...');
     console.log('Current filters:', {
       categoryFilter,
       categoryFilterName,
@@ -578,11 +683,34 @@ export const StockList = () => {
       category_name: p.category_name,
       supplier_name: p.supplier_name
     })));
+    
+    // Test filtering logic
+    if (categoryFilter !== 'all' && categoryFilter !== '') {
+      const matchingProducts = productsTyped.filter(p => p.category_id === categoryFilter);
+      console.log(`🎯 Products matching category ${categoryFilter}:`, matchingProducts.length);
+      matchingProducts.forEach(p => {
+        console.log(`  - ${p.name} (category_id: ${p.category_id})`);
+      });
+      
+      // Test if the filter is working correctly
+      const allProducts = productsTyped.length;
+      const filteredProducts = filteredProducts.length;
+      console.log(`🔍 Filter effectiveness: ${filteredProducts}/${allProducts} products shown`);
+    }
+    
+    if (supplierFilter !== 'all' && supplierFilter !== '') {
+      const matchingProducts = productsTyped.filter(p => p.supplier_id === supplierFilter);
+      console.log(`🎯 Products matching supplier ${supplierFilter}:`, matchingProducts.length);
+      matchingProducts.forEach(p => {
+        console.log(`  - ${p.name} (supplier_id: ${p.supplier_id})`);
+      });
+    }
   };
 
   // Debug effect voor filters
   useEffect(() => {
     if (location.pathname.includes('/stock')) {
+      console.log('🔍 Stock page detected, running test filters...');
       testFilters();
     }
   }, [location.pathname, categoryFilter, supplierFilter, searchTerm, productsTyped]);
@@ -658,19 +786,19 @@ export const StockList = () => {
         {activeTab === 'products' && (
           <>
             {/* Filter Header */}
-            {(categoryFilter || supplierFilter) && (
+            {((categoryFilter && categoryFilter !== 'all' && categoryFilter !== '') || (supplierFilter && supplierFilter !== 'all' && supplierFilter !== '')) && (
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4 filter-header">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span className="text-sm font-medium text-blue-900">
                       Gefilterd op:
                     </span>
-                    {categoryFilter && (
+                    {categoryFilter && categoryFilter !== 'all' && categoryFilter !== '' && (
                       <Badge variant="secondary" className="bg-blue-100 text-blue-800">
                         Categorie: {categoryFilterName || 'Gefilterd'}
                       </Badge>
                     )}
-                    {supplierFilter && (
+                    {supplierFilter && supplierFilter !== 'all' && supplierFilter !== '' && (
                       <Badge variant="secondary" className="bg-blue-100 text-blue-800">
                         Leverancier: {supplierFilterName || 'Gefilterd'}
                       </Badge>

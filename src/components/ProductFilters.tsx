@@ -61,7 +61,9 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
 
   // Auto-open filters when category or supplier filter is set
   useEffect(() => {
-    if (categoryFilter || supplierFilter) {
+    console.log('🎛️ ProductFilters: categoryFilter or supplierFilter changed:', { categoryFilter, supplierFilter });
+    if ((categoryFilter && categoryFilter !== 'all' && categoryFilter !== '') || (supplierFilter && supplierFilter !== 'all' && supplierFilter !== '')) {
+      console.log('🔓 Auto-opening filters');
       setIsFiltersOpen(true);
     }
   }, [categoryFilter, supplierFilter]);
@@ -158,6 +160,9 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
                       ))}
                     </SelectContent>
                   </Select>
+                  <div className="text-xs text-gray-500">
+                    Huidige waarde: {categoryFilter} (type: {typeof categoryFilter})
+                  </div>
                 </div>
 
                 {/* Supplier Filter */}
@@ -176,6 +181,9 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
                       ))}
                     </SelectContent>
                   </Select>
+                  <div className="text-xs text-gray-500">
+                    Huidige waarde: {supplierFilter} (type: {typeof supplierFilter})
+                  </div>
                 </div>
 
                 {/* Stock Status Filter */}

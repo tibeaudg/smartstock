@@ -254,6 +254,7 @@ export default function SuppliersPage() {
   };
 
   const handleSupplierClick = (supplier: Supplier) => {
+    console.log('🖱️ Supplier clicked:', supplier);
     // Navigate to products page with supplier filter
     navigate('/dashboard/stock', { 
       state: { 
@@ -261,6 +262,11 @@ export default function SuppliersPage() {
         filterValue: supplier.id,
         filterName: supplier.name 
       } 
+    });
+    console.log('🚀 Navigating to stock with state:', { 
+      filterType: 'supplier', 
+      filterValue: supplier.id,
+      filterName: supplier.name 
     });
   };
 

@@ -245,6 +245,7 @@ export default function CategoriesPage() {
   };
 
   const handleCategoryClick = (category: Category) => {
+    console.log('🖱️ Category clicked:', category);
     // Navigate to products page with category filter
     navigate('/dashboard/stock', { 
       state: { 
@@ -252,6 +253,11 @@ export default function CategoriesPage() {
         filterValue: category.id,
         filterName: category.name 
       } 
+    });
+    console.log('🚀 Navigating to stock with state:', { 
+      filterType: 'category', 
+      filterValue: category.id,
+      filterName: category.name 
     });
   };
 
