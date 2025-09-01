@@ -59,14 +59,7 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
     fetchSuppliers();
   }, []);
 
-  // Auto-open filters when category or supplier filter is set
-  useEffect(() => {
-    console.log('🎛️ ProductFilters: categoryFilter or supplierFilter changed:', { categoryFilter, supplierFilter });
-    if ((categoryFilter && categoryFilter !== 'all' && categoryFilter !== '') || (supplierFilter && supplierFilter !== 'all' && supplierFilter !== '')) {
-      console.log('🔓 Auto-opening filters');
-      setIsFiltersOpen(true);
-    }
-  }, [categoryFilter, supplierFilter]);
+
 
   const fetchCategories = async () => {
     try {
