@@ -21,6 +21,7 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({ onBarcodeDetecte
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const codeReaderRef = useRef<BrowserMultiFormatReader | null>(null);
+  const [isInitializing, setIsInitializing] = useState(true); // New state for initialization
 
   useEffect(() => {
     // Check if camera is supported
@@ -38,6 +39,24 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({ onBarcodeDetecte
     
     // Initialize ZXing reader
     codeReaderRef.current = new BrowserMultiFormatReader();
+    
+    // Auto-start camera when component mounts (with delay to ensure component is ready)
+    const autoStartCamera = async () => {
+      try {
+        // Small delay to ensure component is fully mounted
+        await new Promise(resolve => setTimeout(resolve, 500));
+        await startScanning();
+      } catch (err) {
+        console.error('Auto-start camera failed:', err);
+        setIsInitializing(false);
+      }
+    };
+    
+    if (cameraSupported) {
+      autoStartCamera();
+    } else {
+      setIsInitializing(false);
+    }
     
     return () => {
       if (streamRef.current) {
@@ -190,7 +209,14 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({ onBarcodeDetecte
           {cameraSupported && (
             <div className="mb-6">
               <div className="relative bg-gray-100 rounded-lg overflow-hidden mb-4">
-                {isScanning ? (
+                {isInitializing ? (
+                  <div className="w-full h-64 flex items-center justify-center">
+                    <div className="text-center text-gray-500">
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-2"></div>
+                      <p className="text-sm">Camera wordt gestart...</p>
+                    </div>
+                  </div>
+                ) : isScanning ? (
                   <div className="relative">
                     <video
                       ref={videoRef}
@@ -228,10 +254,10 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({ onBarcodeDetecte
                   <Button
                     onClick={startScanning}
                     className="flex-1"
-                    disabled={!!error}
+                    disabled={!!error || isInitializing}
                   >
                     <Scan className="w-4 h-4 mr-2" />
-                    Start Camera
+                    {isInitializing ? 'Initialiseren...' : 'Start Camera'}
                   </Button>
                 ) : (
                   <Button

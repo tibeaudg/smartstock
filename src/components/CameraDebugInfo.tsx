@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { AlertCircle, Camera, Smartphone, CheckCircle, XCircle, Info } from 'lucide-react';
+import { AlertCircle, Camera, Smartphone, CheckCircle, XCircle, Info, Play, Square } from 'lucide-react';
 import { useMobile } from '@/hooks/use-mobile';
+import { BrowserMultiFormatReader } from '@zxing/library';
 
 export const CameraDebugInfo: React.FC = () => {
   const { isMobile, isIOS, isSafari, cameraSupported, userAgent } = useMobile();
@@ -11,6 +12,10 @@ export const CameraDebugInfo: React.FC = () => {
     camera: 'unknown',
     microphone: 'unknown'
   });
+  const [testStream, setTestStream] = useState<MediaStream | null>(null);
+  const [testVideo, setTestVideo] = useState<HTMLVideoElement | null>(null);
+  const [isTesting, setIsTesting] = useState(false);
+  const [testResults, setTestResults] = useState<string[]>([]);
 
   useEffect(() => {
     const checkDevices = async () => {
@@ -18,9 +23,11 @@ export const CameraDebugInfo: React.FC = () => {
         if (navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
           const deviceList = await navigator.mediaDevices.enumerateDevices();
           setDevices(deviceList);
+          addTestResult(`Gevonden apparaten: ${deviceList.length} totaal`);
         }
       } catch (error) {
         console.error('Error enumerating devices:', error);
+        addTestResult(`Fout bij ophalen apparaten: ${error}`);
       }
     };
 
@@ -34,9 +41,11 @@ export const CameraDebugInfo: React.FC = () => {
             camera: cameraPermission.state,
             microphone: microphonePermission.state
           });
+          addTestResult(`Camera permissie: ${cameraPermission.state}`);
         }
       } catch (error) {
         console.error('Error checking permissions:', error);
+        addTestResult(`Fout bij controleren permissies: ${error}`);
       }
     };
 
@@ -44,13 +53,63 @@ export const CameraDebugInfo: React.FC = () => {
     checkPermissions();
   }, []);
 
+  const addTestResult = (result: string) => {
+    setTestResults(prev => [...prev, `${new Date().toLocaleTimeString()}: ${result}`]);
+  };
+
   const testCamera = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      stream.getTracks().forEach(track => track.stop());
-      alert('Camera test succesvol! Camera werkt correct.');
+      setIsTesting(true);
+      addTestResult('Start camera test...');
+      
+      const stream = await navigator.mediaDevices.getUserMedia({ 
+        video: { 
+          width: { ideal: 1280 },
+          height: { ideal: 720 }
+        } 
+      });
+      
+      setTestStream(stream);
+      addTestResult('Camera stream verkregen!');
+      
+      if (testVideo) {
+        testVideo.srcObject = stream;
+        await testVideo.play();
+        addTestResult('Video element gestart');
+      }
+      
     } catch (error: any) {
-      alert(`Camera test gefaald: ${error.message}`);
+      console.error('Camera test failed:', error);
+      addTestResult(`Camera test gefaald: ${error.name} - ${error.message}`);
+    } finally {
+      setIsTesting(false);
+    }
+  };
+
+  const stopTest = () => {
+    if (testStream) {
+      testStream.getTracks().forEach(track => track.stop());
+      setTestStream(null);
+      if (testVideo) {
+        testVideo.srcObject = null;
+      }
+      addTestResult('Camera test gestopt');
+    }
+  };
+
+  const testZXing = async () => {
+    try {
+      addTestResult('Test ZXing library...');
+      const reader = new BrowserMultiFormatReader();
+      addTestResult('ZXing reader geïnitialiseerd');
+      
+      // Test device enumeration
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      const videoDevices = devices.filter(device => device.kind === 'videoinput');
+      addTestResult(`ZXing kan ${videoDevices.length} video apparaten vinden`);
+      
+    } catch (error: any) {
+      addTestResult(`ZXing test gefaald: ${error.message}`);
     }
   };
 
@@ -116,6 +175,13 @@ export const CameraDebugInfo: React.FC = () => {
                   <div className="font-medium">Camera {index + 1}</div>
                   <div className="text-gray-600">{device.label || `Camera ${index + 1}`}</div>
                   <div className="text-xs text-gray-500">ID: {device.deviceId.substring(0, 20)}...</div>
+                  {device.label && (
+                    <div className="text-xs text-blue-600">
+                      {device.label.toLowerCase().includes('back') || 
+                       device.label.toLowerCase().includes('environment') || 
+                       device.label.toLowerCase().includes('achter') ? '🔙 Achtercamera' : '📱 Voorkamera'}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -123,6 +189,66 @@ export const CameraDebugInfo: React.FC = () => {
             <div className="text-sm text-gray-500">Geen camera's gevonden</div>
           )}
         </div>
+
+        {/* Test Video */}
+        {testStream && (
+          <div className="space-y-2">
+            <h3 className="font-medium">Camera Test Video</h3>
+            <div className="relative bg-gray-100 rounded-lg overflow-hidden">
+              <video
+                ref={setTestVideo}
+                className="w-full h-48 object-cover"
+                autoPlay
+                playsInline
+                muted
+              />
+            </div>
+          </div>
+        )}
+
+        {/* Test Results */}
+        <div className="space-y-2">
+          <h3 className="font-medium">Test Resultaten</h3>
+          <div className="max-h-32 overflow-y-auto text-xs bg-gray-50 p-2 rounded">
+            {testResults.length > 0 ? (
+              testResults.map((result, index) => (
+                <div key={index} className="mb-1">{result}</div>
+              ))
+            ) : (
+              <div className="text-gray-500">Nog geen tests uitgevoerd</div>
+            )}
+          </div>
+        </div>
+
+        {/* Test Buttons */}
+        <div className="flex gap-2">
+          <Button 
+            onClick={testCamera} 
+            variant="outline" 
+            disabled={isTesting}
+            className="flex-1"
+          >
+            <Play className="w-4 h-4 mr-2" />
+            Test Camera
+          </Button>
+          <Button 
+            onClick={stopTest} 
+            variant="outline" 
+            disabled={!testStream}
+            className="flex-1"
+          >
+            <Square className="w-4 h-4 mr-2" />
+            Stop Test
+          </Button>
+        </div>
+        
+        <Button 
+          onClick={testZXing} 
+          variant="outline" 
+          className="w-full"
+        >
+          Test ZXing Library
+        </Button>
 
         {/* iOS Specific Tips */}
         {isIOS && (
@@ -136,18 +262,28 @@ export const CameraDebugInfo: React.FC = () => {
                   <li>• Ga naar Instellingen → Safari → Camera → Toestaan</li>
                   <li>• Zorg dat je HTTPS gebruikt (niet HTTP)</li>
                   <li>• Probeer de pagina te verversen na het geven van toestemming</li>
+                  <li>• Sluit andere apps die de camera gebruiken</li>
                 </ul>
               </div>
             </div>
           </div>
         )}
 
-        {/* Test Button */}
-        <div className="pt-2">
-          <Button onClick={testCamera} variant="outline" className="w-full">
-            <Camera className="w-4 h-4 mr-2" />
-            Test Camera Toegang
-          </Button>
+        {/* General Troubleshooting */}
+        <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
+          <div className="flex items-start gap-2">
+            <Info className="w-4 h-4 text-blue-600 mt-0.5" />
+            <div className="text-sm text-blue-700">
+              <p className="font-medium mb-1">Algemene Tips:</p>
+              <ul className="space-y-1 text-xs">
+                <li>• Zorg dat je HTTPS gebruikt</li>
+                <li>• Geef camera toegang wanneer gevraagd</li>
+                <li>• Sluit andere apps die de camera gebruiken</li>
+                <li>• Probeer de browser te verversen</li>
+                <li>• Controleer browser instellingen voor camera toegang</li>
+              </ul>
+            </div>
+          </div>
         </div>
 
         {/* User Agent */}
