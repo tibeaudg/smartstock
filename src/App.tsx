@@ -20,10 +20,8 @@ import { InvoicingOverview } from "./components/settings/InvoicingOverview";
 import { useAuth, AuthProvider } from "./hooks/useAuth";
 import { Suspense } from "react";
 import { ContentWrapper } from "./ContentWrapper";
-import AdminInvoicingPage from "./components/AdminInvoicingPage";
 import AdminUserDetailPage from './pages/AdminUserDetailPage';
 import AdminNotificationsPage from './pages/AdminNotificationsPage';
-import { AlertCircle } from "lucide-react";
 import SEO from './components/SEO';
 import PreloadResources from './components/PreloadResources';
 import { Admin } from './components/Admin';
@@ -44,7 +42,6 @@ import GratisStockbeheer from './pages/SEO/gratis-stockbeheer';
 import Voorraadbeheer from './pages/SEO/voorraadbeheer';
 import ScanPage from './pages/scan';
 import React, { useState } from 'react';
-import { OnboardingModal } from "./components/onboarding/OnboardingModal";
 import VoorraadbeheerSoftware from "./pages/SEO/voorraadbeheer-software";
 import Stockbeheer from "./pages/SEO/stockbeheer";
 import SimpelStockbeheer from "./pages/SEO/simpelstockbeheer";
@@ -302,11 +299,9 @@ export default function App() {
                     }
                   >
                     <Route element={<Admin />}>
-                      <Route index element={<AdminInvoicingPage />} />
                       <Route path="cms" element={<AdminCMS />} />
                       <Route path="notifications" element={<AdminNotificationsPage />} />
                       <Route path="chat" element={<AdminChatList />} />
-                      <Route path="invoicing" element={<AdminInvoicingPage />} />
                       <Route path="seo" element={<SEO />} />
                       <Route path="user/:id" element={<AdminUserDetailPage />} />
                     </Route>
