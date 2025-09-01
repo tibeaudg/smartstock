@@ -148,7 +148,7 @@
   input,
   textarea,
   select {
-    background-color: white !important;
+    background-color: bg-gray-100/50 !important;
     color: inherit;
   }
 

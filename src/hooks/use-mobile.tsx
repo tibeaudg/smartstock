@@ -17,31 +17,53 @@ export function useMobile() {
       const isMobileDevice = mobileRegex.test(ua.toLowerCase());
       setIsMobile(isMobileDevice);
 
-      // Check if iOS
+      // Check if iOS (more specific detection)
       const isIOSDevice = /iPad|iPhone|iPod/.test(ua) && !(window as any).MSStream;
       setIsIOS(isIOSDevice);
 
-      // Check if Safari
-      const isSafariBrowser = /Safari/.test(ua) && !/Chrome/.test(ua);
+      // Check if Safari (more specific detection)
+      const isSafariBrowser = /Safari/.test(ua) && !/Chrome/.test(ua) && !/CriOS/.test(ua) && !/FxiOS/.test(ua);
       setIsSafari(isSafariBrowser);
 
       // Check camera support
       const hasCameraSupport = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
       setCameraSupported(hasCameraSupport);
+
+      // Log device info for debugging
+      console.log('Device Info:', {
+        userAgent: ua,
+        isMobile: isMobileDevice,
+        isIOS: isIOSDevice,
+        isSafari: isSafariBrowser,
+        cameraSupported: hasCameraSupport,
+        mediaDevices: !!navigator.mediaDevices,
+        getUserMedia: !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia),
+        permissions: !!navigator.permissions,
+        secureContext: window.isSecureContext
+      });
+
+      // Additional iOS specific checks
+      if (isIOSDevice) {
+        console.log('iOS Device detected:', {
+          isSafari: isSafariBrowser,
+          isChrome: /CriOS/.test(ua),
+          isFirefox: /FxiOS/.test(ua),
+          isSecureContext: window.isSecureContext,
+          hasMediaDevices: !!navigator.mediaDevices,
+          hasPermissions: !!navigator.permissions
+        });
+      }
     };
 
     checkDevice();
 
-    // Log device info for debugging
-    console.log('Device Info:', {
-      userAgent: navigator.userAgent,
-      isMobile,
-      isIOS,
-      isSafari,
-      cameraSupported,
-      mediaDevices: !!navigator.mediaDevices,
-      getUserMedia: !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia)
-    });
+    // Re-check on focus (useful for permission changes)
+    const handleFocus = () => {
+      setTimeout(checkDevice, 1000);
+    };
+
+    window.addEventListener('focus', handleFocus);
+    return () => window.removeEventListener('focus', handleFocus);
   }, []);
 
   return {
