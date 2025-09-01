@@ -10,7 +10,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useMobile } from '@/hooks/use-mobile';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 interface Supplier {
@@ -27,7 +27,7 @@ interface Supplier {
 export default function SuppliersPage() {
   const { user } = useAuth();
   const { activeBranch } = useBranches();
-  const isMobile = useIsMobile();
+  const { isMobile } = useMobile();
   const navigate = useNavigate();
   const location = useLocation();
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);

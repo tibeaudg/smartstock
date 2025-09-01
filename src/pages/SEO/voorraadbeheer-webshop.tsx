@@ -1,4 +1,4 @@
-ï»¿import React from 'react';
+import React from 'react';
 import SEO from '../../components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '../../components/SeoPageLayout';
@@ -24,7 +24,7 @@ export default function VoorraadbeheerWebshop() {
     },
     {
       question: "Kan ik multi-channel verkoop beheren met voorraadbeheer?",
-      answer: "Ja, voorraadbeheer voor webshops ondersteunt multi-channel verkoop. Je kunt voorraad beheren voor webshop, marktplaats, fysieke verkoop en andere kanalen vanuit Ã©Ã©n systeem."
+      answer: "Ja, voorraadbeheer voor webshops ondersteunt multi-channel verkoop. Je kunt voorraad beheren voor webshop, marktplaats, fysieke verkoop en andere kanalen vanuit één systeem."
     }
   ];
 
@@ -58,7 +58,7 @@ export default function VoorraadbeheerWebshop() {
     },
     {
       title: "Dubbele administratie",
-      description: "EÃ©n systeem voor zowel je webshop als je magazijn voorkomt fouten.",
+      description: "Eén systeem voor zowel je webshop als je magazijn voorkomt fouten.",
       icon: Shield,
       color: "blue"
     },
@@ -91,7 +91,7 @@ export default function VoorraadbeheerWebshop() {
     <SeoPageLayout title="Voorraadbeheer voor Webshops">
       <SEO
         title="Voorraadbeheer voor Webshops | E-commerce Stockbeheer | stockflow"
-        description="Voorraadbeheer voor webshops: complete gids met integraties en automatisering. Ontdek hoe je als e-commerce ondernemer je webshopvoorraad efficiÃ«nt beheert en nee-verkoop voorkomt."
+        description="Voorraadbeheer voor webshops: complete gids met integraties en automatisering. Ontdek hoe je als e-commerce ondernemer je webshopvoorraad efficiënt beheert en nee-verkoop voorkomt."
         keywords="voorraadbeheer webshop, e-commerce voorraad, webshop voorraadbeheer, voorraad integratie, voorraad automatiseren, webshop voorraad app, e-commerce stockbeheer, webshop voorraad synchronisatie, voorraadbeheer e-commerce, webshop voorraad optimalisatie, voorraadbeheer online shop, e-commerce voorraadbeheer software, webshop voorraad management, voorraadbeheer webshop integratie"
         url="https://www.stockflow.be/voorraadbeheer-webshop"
       />
@@ -143,7 +143,7 @@ export default function VoorraadbeheerWebshop() {
                 Waarom voorraadbeheer voor webshops?
               </h2>
               <p className="text-lg text-gray-700 mb-6 leading-relaxed">
-                Voorraadbeheer voor webshops is cruciaal voor het succes van e-commerce ondernemingen. Het voorkomt nee-verkoop, verhoogt klanttevredenheid en elimineert dubbele administratie. Met automatische synchronisatie tussen je webshop en magazijn werk je efficiÃ«nter.
+                Voorraadbeheer voor webshops is cruciaal voor het succes van e-commerce ondernemingen. Het voorkomt nee-verkoop, verhoogt klanttevredenheid en elimineert dubbele administratie. Met automatische synchronisatie tussen je webshop en magazijn werk je efficiënter.
               </p>
               <div className="space-y-4">
                 <div className="bg-blue-50 p-4 rounded-lg">
@@ -156,7 +156,7 @@ export default function VoorraadbeheerWebshop() {
                 </div>
                 <div className="bg-purple-50 p-4 rounded-lg">
                   <h3 className="font-semibold text-purple-800 mb-2">Multi-channel verkoop beheren</h3>
-                  <p className="text-gray-700">Voorraadbeheer voor webshops ondersteunt verkoop via meerdere kanalen vanuit Ã©Ã©n systeem.</p>
+                  <p className="text-gray-700">Voorraadbeheer voor webshops ondersteunt verkoop via meerdere kanalen vanuit één systeem.</p>
                 </div>
               </div>
             </div>
@@ -249,7 +249,7 @@ export default function VoorraadbeheerWebshop() {
             <div className="bg-gray-50 p-6 rounded-lg">
               <h3 className="text-xl font-semibold mb-4">Multi-channel verkoop beheren</h3>
               <p className="text-gray-700">
-                Voorraadbeheer voor webshops ondersteunt verkoop via meerdere kanalen. Beheer voorraad voor webshop, marktplaats, fysieke verkoop en andere kanalen vanuit Ã©Ã©n systeem.
+                Voorraadbeheer voor webshops ondersteunt verkoop via meerdere kanalen. Beheer voorraad voor webshop, marktplaats, fysieke verkoop en andere kanalen vanuit één systeem.
               </p>
             </div>
           </div>
@@ -273,7 +273,7 @@ export default function VoorraadbeheerWebshop() {
               Start Gratis Nu
             </Link>
           </div>
-          <p className="text-sm mt-4 opacity-75">Geen creditcard vereist â€¢ Direct toegang â€¢ Nederlandse support</p>
+          <p className="text-sm mt-4 opacity-75">Geen creditcard vereist • Direct toegang • Nederlandse support</p>
         </div>
       </section>
 
@@ -338,7 +338,7 @@ export default function VoorraadbeheerWebshop() {
         "@context": "https://schema.org",
         "@type": "Article",
         "headline": "Voorraadbeheer voor Webshops | E-commerce Stockbeheer",
-        "description": "Voorraadbeheer voor webshops: complete gids met integraties en automatisering. Ontdek hoe je als e-commerce ondernemer je webshopvoorraad efficiÃ«nt beheert en nee-verkoop voorkomt.",
+        "description": "Voorraadbeheer voor webshops: complete gids met integraties en automatisering. Ontdek hoe je als e-commerce ondernemer je webshopvoorraad efficiënt beheert en nee-verkoop voorkomt.",
         "image": "https://www.stockflow.be/optimized/Inventory-Management.png",
         "author": {
           "@type": "Organization",

@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { User, Key, CheckCircle, Check, LogOut } from 'lucide-react';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useMobile } from '@/hooks/use-mobile';
 import { useNavigate } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -35,7 +35,7 @@ type PasswordFormData = z.infer<typeof passwordSchema>;
 
 export const ProfileSettings = () => {
   const { userProfile, user, signOut } = useAuth();
-  const isMobile = useIsMobile();
+  const { isMobile } = useMobile();
   const navigate = useNavigate();
 
   const [isProfileLoading, setIsProfileLoading] = useState(false);

@@ -1,4 +1,4 @@
-ï»¿import React from 'react';
+import React from 'react';
 import SEO from '../../components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '../../components/SeoPageLayout';
@@ -211,7 +211,7 @@ export default function VoorraadbeheerVoorStarters() {
                 Implementeer voorraadbeheer voor starters stap voor stap
               </h2>
               <p className="text-lg text-gray-700 leading-relaxed">
-                Begin met Ã©Ã©n stap tegelijk om overweldiging te voorkomen. Start met een eenvoudige administratie, dan voeg je regelmatige controles toe, en vervolgens implementeer je schaalbare software. Voorraadbeheer voor starters is geschikt voor bedrijven van alle groottes en kan direct worden toegepast.
+                Begin met één stap tegelijk om overweldiging te voorkomen. Start met een eenvoudige administratie, dan voeg je regelmatige controles toe, en vervolgens implementeer je schaalbare software. Voorraadbeheer voor starters is geschikt voor bedrijven van alle groottes en kan direct worden toegepast.
               </p>
             </div>
           </div>
@@ -231,12 +231,12 @@ export default function VoorraadbeheerVoorStarters() {
             <div className="bg-gray-50 p-6 rounded-lg">
               <h3 className="text-xl font-semibold mb-4">Kostenbesparing voor starters</h3>
               <p className="text-gray-700">
-                Voorraadbeheer voor starters helpt je om tot 20% te besparen op voorraadkosten. Voorkom overstock en tekorten door betere planning en controle. Deze besparingen kunnen direct worden geÃ¯nvesteerd in de groei van je bedrijf.
+                Voorraadbeheer voor starters helpt je om tot 20% te besparen op voorraadkosten. Voorkom overstock en tekorten door betere planning en controle. Deze besparingen kunnen direct worden geïnvesteerd in de groei van je bedrijf.
               </p>
             </div>
             
             <div className="bg-gray-50 p-6 rounded-lg">
-              <h3 className="text-xl font-semibold mb-4">Tijdsbesparing en efficiÃ«ntie</h3>
+              <h3 className="text-xl font-semibold mb-4">Tijdsbesparing en efficiëntie</h3>
               <p className="text-gray-700">
                 Voorraadbeheer voor starters bespaart je uren per week op administratie. Automatiseer processen en focus je tijd op wat echt belangrijk is: het laten groeien van je bedrijf en het bedienen van je klanten.
               </p>
@@ -262,7 +262,7 @@ export default function VoorraadbeheerVoorStarters() {
               Start Gratis Nu
             </Link>
           </div>
-          <p className="text-sm mt-4 opacity-75">Geen creditcard vereist â€¢ Direct toegang â€¢ Nederlandse support</p>
+          <p className="text-sm mt-4 opacity-75">Geen creditcard vereist • Direct toegang • Nederlandse support</p>
         </div>
       </section>
 

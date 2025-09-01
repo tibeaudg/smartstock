@@ -6,7 +6,7 @@ import { Loader2 } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useMobile } from '@/hooks/use-mobile';
 
 // Factuurtype (pas aan op basis van je backend structuur)
 interface Invoice {
@@ -30,7 +30,7 @@ async function fetchUserInvoices(userId: string): Promise<Invoice[]> {
 
 export default function AdminUserDetailPage() {
   const { id: userId } = useParams<{ id: string }>();
-  const isMobile = useIsMobile();
+  const { isMobile } = useMobile();
   
   // Gebruik de page refresh hook
   usePageRefresh();

@@ -2,8 +2,9 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Camera, Scan, X, CheckCircle, AlertCircle, QrCode } from 'lucide-react';
+import { Camera, Scan, X, CheckCircle, AlertCircle, QrCode, Smartphone } from 'lucide-react';
 import { toast } from 'sonner';
+import { BrowserMultiFormatReader, Result } from '@zxing/library';
 
 interface BarcodeScannerProps {
   onBarcodeDetected: (barcode: string) => void;
@@ -16,8 +17,10 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({ onBarcodeDetecte
   const [scanResult, setScanResult] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [cameraSupported, setCameraSupported] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
+  const codeReaderRef = useRef<BrowserMultiFormatReader | null>(null);
 
   useEffect(() => {
     // Check if camera is supported
@@ -25,9 +28,23 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({ onBarcodeDetecte
       setCameraSupported(true);
     }
     
+    // Check if mobile device
+    const checkMobile = () => {
+      const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
+      const isMobileDevice = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent.toLowerCase());
+      setIsMobile(isMobileDevice);
+    };
+    checkMobile();
+    
+    // Initialize ZXing reader
+    codeReaderRef.current = new BrowserMultiFormatReader();
+    
     return () => {
       if (streamRef.current) {
         streamRef.current.getTracks().forEach(track => track.stop());
+      }
+      if (codeReaderRef.current) {
+        codeReaderRef.current.reset();
       }
     };
   }, []);
@@ -37,36 +54,83 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({ onBarcodeDetecte
       setError(null);
       setScanResult(null);
       
-      const stream = await navigator.mediaDevices.getUserMedia({ 
-        video: { 
-          facingMode: 'environment',
-          width: { ideal: 1280 },
-          height: { ideal: 720 }
-        } 
-      });
-      
-      streamRef.current = stream;
-      
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        videoRef.current.play();
-        setIsScanning(true);
-        
-        // Simulate barcode detection for demo purposes
-        // In production, this would use a real barcode detection library
-        setTimeout(() => {
-          // For now, we'll just show a demo message
-          toast.info('Camera gestart! Richt je camera op een barcode of gebruik handmatige invoer.');
-        }, 1000);
+      if (!codeReaderRef.current) {
+        throw new Error('Barcode reader niet geïnitialiseerd');
       }
-    } catch (err) {
+
+      // Get available video devices
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      const videoDevices = devices.filter(device => device.kind === 'videoinput');
+      
+      // Prefer back camera on mobile devices
+      let selectedDeviceId = undefined;
+      if (isMobile && videoDevices.length > 1) {
+        // Try to find back camera (usually has "back" or "environment" in the label)
+        const backCamera = videoDevices.find(device => 
+          device.label.toLowerCase().includes('back') || 
+          device.label.toLowerCase().includes('environment') ||
+          device.label.toLowerCase().includes('achter')
+        );
+        if (backCamera) {
+          selectedDeviceId = backCamera.deviceId;
+        }
+      }
+
+      // Start scanning with ZXing
+      await codeReaderRef.current.decodeFromVideoDevice(
+        selectedDeviceId,
+        videoRef.current!,
+        (result: Result | null, error: any) => {
+          if (result) {
+            const barcode = result.getText();
+            console.log('Barcode detected:', barcode);
+            setScanResult(barcode);
+            setIsScanning(false);
+            toast.success(`Barcode gedetecteerd: ${barcode}`);
+            
+            // Stop scanning and call callback
+            if (codeReaderRef.current) {
+              codeReaderRef.current.reset();
+            }
+            onBarcodeDetected(barcode);
+          }
+          
+          if (error && error.name !== 'NotFoundException') {
+            console.error('Scanning error:', error);
+            // Don't show error for NotFoundException as it's normal during scanning
+          }
+        }
+      );
+
+      setIsScanning(true);
+      toast.info('Camera gestart! Richt je camera op een barcode.');
+      
+    } catch (err: any) {
       console.error('Error accessing camera:', err);
-      setError('Kan camera niet openen. Controleer of je camera toegang hebt gegeven.');
-      toast.error('Camera toegang geweigerd');
+      
+      let errorMessage = 'Kan camera niet openen.';
+      
+      if (err.name === 'NotAllowedError') {
+        errorMessage = 'Camera toegang geweigerd. Geef toegang tot je camera in je browser instellingen.';
+      } else if (err.name === 'NotFoundError') {
+        errorMessage = 'Geen camera gevonden op dit apparaat.';
+      } else if (err.name === 'NotReadableError') {
+        errorMessage = 'Camera wordt al gebruikt door een andere applicatie.';
+      } else if (err.name === 'OverconstrainedError') {
+        errorMessage = 'Camera voldoet niet aan de vereiste specificaties.';
+      } else if (err.name === 'TypeError') {
+        errorMessage = 'Camera niet ondersteund op dit apparaat.';
+      }
+      
+      setError(errorMessage);
+      toast.error(errorMessage);
     }
   };
 
   const stopScanning = () => {
+    if (codeReaderRef.current) {
+      codeReaderRef.current.reset();
+    }
     if (streamRef.current) {
       streamRef.current.getTracks().forEach(track => track.stop());
       streamRef.current = null;
@@ -141,6 +205,13 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({ onBarcodeDetecte
                         <div className="w-32 h-1 bg-blue-500 animate-pulse"></div>
                       </div>
                     </div>
+                    {/* Mobile indicator */}
+                    {isMobile && (
+                      <div className="absolute top-2 left-2 bg-blue-600 text-white px-2 py-1 rounded text-xs flex items-center">
+                        <Smartphone className="w-3 h-3 mr-1" />
+                        Mobiel
+                      </div>
+                    )}
                   </div>
                 ) : (
                   <div className="w-full h-64 flex items-center justify-center">
@@ -215,12 +286,31 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({ onBarcodeDetecte
                 <p className="font-medium mb-1">Hoe werkt het?</p>
                 <ul className="space-y-1 text-xs">
                   <li>• Start de camera en richt op een barcode</li>
+                  <li>• Houd de camera stil voor betere detectie</li>
                   <li>• Of voer de barcode handmatig in</li>
-                  <li>• Klik op "Barcode Gebruiken" om door te gaan</li>
+                  <li>• Ondersteunde formaten: EAN-13, EAN-8, UPC-A, UPC-E, Code 128, Code 39</li>
                 </ul>
               </div>
             </div>
           </div>
+
+          {/* Troubleshooting for iPhone */}
+          {isMobile && (
+            <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+              <div className="flex items-start gap-2">
+                <AlertCircle className="w-4 h-4 text-yellow-600 mt-0.5 flex-shrink-0" />
+                <div className="text-sm text-yellow-700">
+                  <p className="font-medium mb-1">iPhone Tips:</p>
+                  <ul className="space-y-1 text-xs">
+                    <li>• Zorg dat je Safari gebruikt (niet Chrome/Firefox)</li>
+                    <li>• Geef camera toegang wanneer gevraagd</li>
+                    <li>• Houd de camera ongeveer 10-15cm van de barcode</li>
+                    <li>• Zorg voor goede belichting</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

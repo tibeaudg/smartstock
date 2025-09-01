@@ -4,11 +4,11 @@ import { useAuth } from '../hooks/useAuth';
 import { supabase } from '../integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Trash2 } from 'lucide-react';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useMobile } from '@/hooks/use-mobile';
 
 export default function AdminNotificationsPage() {
   const { user } = useAuth();
-  const isMobile = useIsMobile();
+  const { isMobile } = useMobile();
   const [notifications, setNotifications] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showUsers, setShowUsers] = useState<string | null>(null);

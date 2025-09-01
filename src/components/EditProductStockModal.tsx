@@ -7,7 +7,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { useQueryClient } from '@tanstack/react-query';
 import { ArrowLeft } from 'lucide-react';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useMobile } from '@/hooks/use-mobile';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 
 interface Product {
@@ -42,7 +42,7 @@ export const EditProductStockModal = ({
   const [quantity, setQuantity] = useState<string>('');
   const [loading, setLoading] = useState(false);
   const queryClient = useQueryClient();
-  const isMobile = useIsMobile();
+  const { isMobile } = useMobile();
   
   // Gebruik de page refresh hook
   usePageRefresh();

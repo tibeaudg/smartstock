@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import SEO from '../../components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '../../components/SeoPageLayout';
@@ -70,7 +70,7 @@ export default function MobielVoorraadbeheer() {
     },
     {
       title: "Tijdens Inventarisatie",
-      description: "Tel voorraad efficiÃ«nt met mobiele tools en directe registratie.",
+      description: "Tel voorraad efficiënt met mobiele tools en directe registratie.",
       icon: Check
     }
   ];
@@ -94,7 +94,7 @@ export default function MobielVoorraadbeheer() {
     },
     {
       question: "Hoeveel kost mobiel voorraadbeheer?",
-      answer: "stockflow biedt een betaalbare oplossing vanaf €25 per maand, inclusief alle mobiele functionaliteiten."
+      answer: "stockflow biedt een betaalbare oplossing vanaf �25 per maand, inclusief alle mobiele functionaliteiten."
     },
     {
       question: "Kan ik mijn team uitnodigen voor mobiel voorraadbeheer?",
@@ -106,7 +106,7 @@ export default function MobielVoorraadbeheer() {
     {
       title: "Voorraadbeheer Tips",
       url: "/voorraadbeheer-tips",
-      description: "Beste tips voor efficiÃ«nt voorraadbeheer"
+      description: "Beste tips voor efficiënt voorraadbeheer"
     },
     {
       title: "Voorraadbeheer Software Vergelijken",
@@ -201,15 +201,15 @@ export default function MobielVoorraadbeheer() {
               </p>
               <div className="space-y-3">
                 <div className="flex items-center">
-                  <div className="bg-blue-100 text-blue-600 rounded-full w-8 h-8 flex items-center justify-center mr-3 font-semibold">âœ“</div>
+                  <div className="bg-blue-100 text-blue-600 rounded-full w-8 h-8 flex items-center justify-center mr-3 font-semibold">✓</div>
                   <span>Realtime synchronisatie</span>
                 </div>
                 <div className="flex items-center">
-                  <div className="bg-blue-100 text-blue-600 rounded-full w-8 h-8 flex items-center justify-center mr-3 font-semibold">âœ“</div>
+                  <div className="bg-blue-100 text-blue-600 rounded-full w-8 h-8 flex items-center justify-center mr-3 font-semibold">✓</div>
                   <span>Gedeelde toegang</span>
                 </div>
                 <div className="flex items-center">
-                  <div className="bg-blue-100 text-blue-600 rounded-full w-8 h-8 flex items-center justify-center mr-3 font-semibold">âœ“</div>
+                  <div className="bg-blue-100 text-blue-600 rounded-full w-8 h-8 flex items-center justify-center mr-3 font-semibold">✓</div>
                   <span>Audit trail</span>
                 </div>
               </div>
@@ -284,7 +284,7 @@ export default function MobielVoorraadbeheer() {
             <div>
               <h3 className="text-xl font-semibold mb-4">Productiviteit</h3>
               <p className="text-gray-600 mb-4">
-                Werk efficiÃ«nter door directe toegang tot voorraad informatie en geautomatiseerde processen.
+                Werk efficiënter door directe toegang tot voorraad informatie en geautomatiseerde processen.
               </p>
               <ul className="space-y-2">
                 {benefits.slice(0, 3).map((benefit, index) => (

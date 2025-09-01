@@ -4,10 +4,12 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Scan, Plus, Camera, Package, AlertCircle, ArrowUpDown, Check, ChevronsUpDown, Tag, Truck } from 'lucide-react';
+import { Scan, Plus, Camera, Package, AlertCircle, ArrowUpDown, Check, ChevronsUpDown, Tag, Truck, X } from 'lucide-react';
 import { BarcodeScanner } from '@/components/BarcodeScanner';
+import { CameraDebugInfo } from '@/components/CameraDebugInfo';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
+import { useMobile } from '@/hooks/use-mobile';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { useQueryClient } from '@tanstack/react-query';
@@ -31,13 +33,18 @@ interface ProductFormData {
 }
 
 export default function ScanPage() {
-  const { user } = useAuth();
+  const { user, userProfile } = useAuth();
   const { activeBranch, loading: branchLoading } = useBranches();
+  const { isMobile, isIOS, isSafari, cameraSupported } = useMobile();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   
+  // Check if user is owner (using is_owner field from profiles table)
+  const isOwner = userProfile && userProfile.is_owner === true && !userProfile.blocked;
+  
   const [showScanner, setShowScanner] = useState(false);
   const [showProductForm, setShowProductForm] = useState(false);
+  const [showDebugInfo, setShowDebugInfo] = useState(false);
   const [loading, setLoading] = useState(false);
   const [transactionType, setTransactionType] = useState<'incoming' | 'outgoing'>('incoming');
   const [formData, setFormData] = useState<ProductFormData>({
@@ -431,17 +438,49 @@ export default function ScanPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="flex flex-col sm:flex-row gap-4 ">
+            <div className="flex flex-col sm:flex-row gap-4">
               <Button
                 onClick={() => setShowScanner(true)}
                 className="flex-1 p-2"
                 size="lg"
+                disabled={!cameraSupported}
               >
                 <Camera className="w-5 h-5 mr-2" />
                 Start Scanner
               </Button>
               
+              {isOwner && (
+                <Button
+                  onClick={() => setShowDebugInfo(true)}
+                  variant="outline"
+                  className="p-2"
+                  size="lg"
+                >
+                  <AlertCircle className="w-5 h-5 mr-2" />
+                  Debug Info
+                </Button>
+              )}
             </div>
+            
+            {/* Camera Support Warning */}
+            {!cameraSupported && (
+              <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                <div className="flex items-center text-red-700">
+                  <AlertCircle className="w-4 h-4 mr-2" />
+                  <span className="text-sm">Camera wordt niet ondersteund op dit apparaat/browser</span>
+                </div>
+              </div>
+            )}
+            
+            {/* iOS Safari Warning */}
+            {isMobile && isIOS && !isSafari && (
+              <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                <div className="flex items-center text-yellow-700">
+                  <AlertCircle className="w-4 h-4 mr-2" />
+                  <span className="text-sm">Voor beste resultaten op iPhone/iPad, gebruik Safari browser</span>
+                </div>
+              </div>
+            )}
           </CardContent>
         </Card>
 
@@ -866,6 +905,28 @@ export default function ScanPage() {
           onBarcodeDetected={handleBarcodeDetected}
           onClose={() => setShowScanner(false)}
         />
+      )}
+
+      {/* Debug Info Modal - Only for owners */}
+      {isOwner && showDebugInfo && (
+        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-xl font-semibold text-gray-900">Camera Debug Informatie</h2>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setShowDebugInfo(false)}
+                  className="h-8 w-8 p-0"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+              <CameraDebugInfo />
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

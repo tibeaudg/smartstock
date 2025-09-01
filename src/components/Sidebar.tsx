@@ -21,7 +21,7 @@ import { createPortal } from 'react-dom';
 import { Button } from '@/components/ui/button';
 import { useAuth, UserProfile } from '@/hooks/useAuth';
 import { useNavigate, NavLink, useLocation } from 'react-router-dom';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useMobile } from '@/hooks/use-mobile';
 import { useUnreadMessages } from '@/hooks/UnreadMessagesContext';
 import { useProductCount } from '@/hooks/useDashboardData';
 
@@ -49,7 +49,7 @@ interface MenuItem {
 
 export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProps) => {
   const { productCount, isLoading } = useProductCount();
-  const isMobile = useIsMobile();
+  const { isMobile } = useMobile();
   const { signOut } = useAuth();
   const navigate = useNavigate();
   const [chatOpen, setChatOpen] = useState(false);
@@ -102,7 +102,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
       ]
     : [
         { id: 'dashboard', label: 'Dashboard', icon: BarChart3, path: '/dashboard', end: true },
-        { id: 'scan', label: 'Beheren', icon: Scan, path: '/dashboard/scan' },
+        { id: 'scan', label: 'Scannen', icon: Scan, path: '/dashboard/scan' },
 
         { 
           id: 'stock', 

@@ -10,7 +10,7 @@ import { format, addDays, startOfWeek, startOfMonth, startOfQuarter, startOfYear
 import { cn } from '@/lib/utils';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, BarChart, Bar } from 'recharts';
 import { useDashboardData } from '@/hooks/useDashboardData';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useMobile } from '@/hooks/use-mobile';
 import { useBranches } from '@/hooks/useBranches';
 
 
@@ -25,7 +25,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
     setShowNotifications((prev) => !prev);
     if (unreadCount > 0) markAllAsRead();
   };
-  const isMobile = useIsMobile();
+  const { isMobile } = useMobile();
   const [rangeType, setRangeType] = useState<'week' | 'month' | 'quarter' | 'year' | 'all'>('month');
 
   // Bepaal start- en einddatum op basis van selectie

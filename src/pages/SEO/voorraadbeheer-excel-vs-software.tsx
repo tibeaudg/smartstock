@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import SEO from '../../components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '../../components/SeoPageLayout';
@@ -44,7 +44,7 @@ export default function VoorraadbeheerExcelVsSoftware() {
     {
       feature: "Kosten",
       excel: "Gratis",
-      software: "Vanaf €0/maand",
+      software: "Vanaf �0/maand",
       winner: "software"
     },
     {
@@ -105,13 +105,13 @@ export default function VoorraadbeheerExcelVsSoftware() {
           </p>
           <div className="flex justify-center space-x-4">
             <div className="bg-white bg-opacity-20 px-4 py-2 rounded-full">
-              <span className="text-sm text-black font-bold">âœ“ Complete vergelijking</span>
+              <span className="text-sm text-black font-bold">✓ Complete vergelijking</span>
             </div>
             <div className="bg-white bg-opacity-20 px-4 py-2 rounded-full">
-              <span className="text-sm text-black font-bold">âœ“ Praktische tips</span>
+              <span className="text-sm text-black font-bold">✓ Praktische tips</span>
             </div>
             <div className="bg-white bg-opacity-20 px-4 py-2 rounded-full">
-              <span className="text-sm text-black font-bold">âœ“ Overstap advies</span>
+              <span className="text-sm text-black font-bold">✓ Overstap advies</span>
             </div>
           </div>
         </div>
@@ -121,7 +121,7 @@ export default function VoorraadbeheerExcelVsSoftware() {
       <div className="bg-gray-50 p-8 rounded-lg mb-8">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-start space-x-4">
-            <div className="text-indigo-500 text-3xl mt-1 flex-shrink-0">âš–ï¸</div>
+            <div className="text-indigo-500 text-3xl mt-1 flex-shrink-0">⚖️</div>
             <div>
               <h2 className="text-2xl font-bold mb-4 text-gray-800">
                 Excel vs. Software: De grote vergelijking
@@ -206,7 +206,7 @@ export default function VoorraadbeheerExcelVsSoftware() {
       <div className="bg-gradient-to-br from-indigo-300 to-purple-500 p-8 rounded-lg mb-8">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-6">
-            <div className="text-indigo-600 text-4xl mx-auto mb-4">ðŸš€</div>
+            <div className="text-indigo-600 text-4xl mx-auto mb-4">🚀</div>
             <h2 className="text-3xl font-bold mb-4 text-white">
               Voorraadbeheer Software
             </h2>
@@ -250,7 +250,7 @@ export default function VoorraadbeheerExcelVsSoftware() {
         
         <div className="grid md:grid-cols-2 gap-8">
           <div className="bg-white border border-gray-200 rounded-lg p-8 shadow-sm">
-            <h3 className="text-xl font-semibold mb-4 text-green-600">âœ… Tijd om over te stappen</h3>
+            <h3 className="text-xl font-semibold mb-4 text-green-600">✅ Tijd om over te stappen</h3>
             <ul className="space-y-3 text-gray-700">
               <li className="flex items-start">
                 <Check className="w-5 h-5 text-green-600 mr-3 mt-0.5 flex-shrink-0" />
@@ -276,7 +276,7 @@ export default function VoorraadbeheerExcelVsSoftware() {
           </div>
           
           <div className="bg-white border border-gray-200 rounded-lg p-8 shadow-sm">
-            <h3 className="text-xl font-semibold mb-4 text-blue-600">â³ Excel is nog voldoende</h3>
+            <h3 className="text-xl font-semibold mb-4 text-blue-600">⏳ Excel is nog voldoende</h3>
             <ul className="space-y-3 text-gray-700">
               <li className="flex items-start">
                 <Check className="w-5 h-5 text-blue-600 mr-3 mt-0.5 flex-shrink-0" />
@@ -347,7 +347,7 @@ export default function VoorraadbeheerExcelVsSoftware() {
       {/* FAQ Section */}
       <div className="max-w-4xl mx-auto mb-12">
         <div className="text-center mb-8">
-          <div className="text-indigo-600 text-4xl mx-auto mb-4">â“</div>
+          <div className="text-indigo-600 text-4xl mx-auto mb-4">❓</div>
           <h2 className="text-3xl font-bold mb-4 text-gray-800">
             Veelgestelde vragen over Excel vs. Software
           </h2>
@@ -375,7 +375,7 @@ export default function VoorraadbeheerExcelVsSoftware() {
               <a href="/gratis-stockbeheer" className="text-indigo-700 underline font-semibold">
                 stockflow biedt een gratis versie aan
               </a> voor kleine bedrijven. 
-              Premium versies kosten vanaf €29 per maand, afhankelijk van je behoeften.
+              Premium versies kosten vanaf �29 per maand, afhankelijk van je behoeften.
             </p>
           </div>
 
@@ -416,7 +416,7 @@ export default function VoorraadbeheerExcelVsSoftware() {
       {/* CTA Section */}
       <div className="bg-gradient-to-br from-indigo-300 to-purple-500 text-white p-8 rounded-lg text-center">
         <div className="max-w-2xl mx-auto">
-          <div className="text-4xl mx-auto mb-4">ðŸš€</div>
+          <div className="text-4xl mx-auto mb-4">🚀</div>
           <h2 className="text-3xl font-bold mb-4">
             Klaar om over te stappen van Excel?
           </h2>
@@ -463,7 +463,7 @@ export default function VoorraadbeheerExcelVsSoftware() {
                 Voorraadbeheer tips
               </h3>
               <p className="text-gray-600 text-sm">
-                Praktische tips voor efficiÃ«nt voorraadbeheer en kostenbesparing.
+                Praktische tips voor efficiënt voorraadbeheer en kostenbesparing.
               </p>
             </div>
           </Link>
@@ -498,7 +498,7 @@ export default function VoorraadbeheerExcelVsSoftware() {
             "name": "Hoeveel kost voorraadbeheer software?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "stockflow biedt een gratis versie aan voor kleine bedrijven. Premium versies kosten vanaf €29 per maand, afhankelijk van je behoeften."
+              "text": "stockflow biedt een gratis versie aan voor kleine bedrijven. Premium versies kosten vanaf �29 per maand, afhankelijk van je behoeften."
             }
           },
           {

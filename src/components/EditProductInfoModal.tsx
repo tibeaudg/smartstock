@@ -9,7 +9,7 @@ import { Trash2, ArrowLeft, Check, ChevronsUpDown, Plus } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
 import { useQueryClient } from '@tanstack/react-query';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useMobile } from '@/hooks/use-mobile';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -51,7 +51,7 @@ export const EditProductInfoModal = ({
   const { user } = useAuth();
   const { activeBranch } = useBranches();
   const queryClient = useQueryClient();
-  const isMobile = useIsMobile();
+  const { isMobile } = useMobile();
   const [loading, setLoading] = useState(false);
   const [productImage, setProductImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(product.image_url || null);

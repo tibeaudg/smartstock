@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { format } from 'date-fns';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useMobile } from '@/hooks/use-mobile';
 import { useStockMovements } from '@/hooks/useStockMovements';
 import { TransactionFilters } from '@/types/stockTypes';
 import { CalendarIcon, Download, Filter, Search, X } from 'lucide-react';
@@ -16,7 +16,7 @@ import * as XLSX from 'xlsx';
 import { toast } from 'sonner';
 
 export const StockMovements = () => {
-  const isMobile = useIsMobile();
+  const { isMobile } = useMobile();
   const {
     transactions,
     stats,

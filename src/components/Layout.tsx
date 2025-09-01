@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Sidebar } from './Sidebar';
 import { MobileBottomNav } from './MobileBottomNav';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useMobile } from '@/hooks/use-mobile';
 import { UserProfile } from '@/hooks/useAuth';
 import { BranchSelector } from './BranchSelector';
 import { NotificationButton } from './NotificationButton';
@@ -19,7 +19,7 @@ interface LayoutProps {
 }
 
 export const Layout = ({ children, currentTab, onTabChange, userRole, userProfile, variant = 'default' }: LayoutProps) => {
-  const isMobile = useIsMobile();
+  const { isMobile } = useMobile();
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   const handleTabChange = (tab: string) => {

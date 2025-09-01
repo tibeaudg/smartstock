@@ -7,7 +7,7 @@ import { Loader2 } from 'lucide-react';
 import { BranchProvider } from '@/hooks/useBranches';
 import { useAuth } from '@/hooks/useAuth';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useMobile } from '@/hooks/use-mobile';
 import SEO from '../components/SEO';
 import { FeatureManagement } from '@/pages/admin/FeatureManagement';
 import { AdminNotificationManager } from '@/components/AdminNotificationManager';
@@ -166,7 +166,7 @@ async function blockUser(id: string, blocked: boolean) {
 
 export default function AdminPage() {
   const { user, userProfile } = useAuth();
-  const isMobile = useIsMobile();
+  const { isMobile } = useMobile();
   const [activeTab, setActiveTab] = useState<'users' | 'features' | 'onboarding' | 'chats' | 'notifications' | 'blogcms' | 'bloganalytics'>('users');
   const [selectedUser, setSelectedUser] = useState<UserProfile | null>(null);
   const [showOnboarding, setShowOnboarding] = useState(false);

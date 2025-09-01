@@ -15,7 +15,7 @@ import { AlertCircle, Check, ChevronsUpDown, Plus } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Info } from 'lucide-react';
 import { useQueryClient } from '@tanstack/react-query';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useMobile } from '@/hooks/use-mobile';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -50,7 +50,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [showUpgradeNotice, setShowUpgradeNotice] = useState(false);
   const navigate = useNavigate();
-  const isMobile = useIsMobile();
+  const { isMobile } = useMobile();
   
   // State voor categorieën en leveranciers
   const [categories, setCategories] = useState<Array<{ id: string; name: string }>>([]);

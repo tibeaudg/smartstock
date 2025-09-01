@@ -31,7 +31,7 @@ import { ProductFilters } from './ProductFilters';
 import { ImagePreviewModal } from './ImagePreviewModal';
 import { AddProductModal } from './AddProductModal';
 import { EditProductStockModal } from './EditProductStockModal';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useMobile } from '@/hooks/use-mobile';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { toast } from 'sonner';
 
@@ -155,7 +155,7 @@ export const StockList = () => {
   const { user, userProfile } = useAuth();
   const { activeBranch } = useBranches();
   const queryClient = useQueryClient();
-  const isMobile = useIsMobile();
+  const { isMobile } = useMobile();
   const navigate = useNavigate();
   const location = useLocation();
 
