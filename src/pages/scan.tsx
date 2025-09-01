@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Scan, Plus, Camera, Package, AlertCircle } from 'lucide-react';
+import { Scan, Plus, Camera, Package, AlertCircle, ArrowUpDown } from 'lucide-react';
 import { BarcodeScanner } from '@/components/BarcodeScanner';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
@@ -114,9 +114,7 @@ export default function ScanPage() {
         purchase_price: formData.purchasePrice,
         sale_price: formData.salePrice,
         barcode: formData.barcode || null,
-        branch_id: activeBranch.branch_id,
-        created_by: user.id,
-        status: 'active'
+        branch_id: activeBranch.branch_id
       };
 
       const { data: insertedProduct, error: productError } = await supabase
@@ -362,7 +360,7 @@ export default function ScanPage() {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                   <div>
                     <Label htmlFor="quantity" className="text-sm font-medium text-gray-700">
-                      Voorraad *
+                      Aantal *
                     </Label>
                     <Input
                       id="quantity"
