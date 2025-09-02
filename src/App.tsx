@@ -49,6 +49,7 @@ import GratisVoorraadbeheer from "./pages/SEO/gratis-voorraadbeheer";
 import VoorraadbeheerVoorHoreca from "./pages/SEO/voorraadbeheer-voor-horeca";
 import CategoriesPage from './pages/categories';
 import SuppliersPage from './pages/suppliers';
+import AdminPage from './pages/admin';
 
 
 // ErrorBoundary component
@@ -292,6 +293,15 @@ export default function App() {
                   {/* Admin routes */}
                   <Route
                     path="/admin"
+                    element={
+                      <ProtectedRoute>
+                        <AdminPage />
+                      </ProtectedRoute>
+                    }
+                  />
+                  
+                  <Route
+                    path="/admin/*"
                     element={
                       <ProtectedRoute>
                         <StockManagementApp />

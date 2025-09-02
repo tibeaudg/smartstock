@@ -15,6 +15,7 @@ import { OnboardingModal } from '@/components/onboarding/OnboardingModal';
 import { AdminChatList } from '@/components/AdminChatList';
 import AdminCMS from '../components/AdminCMS';
 import BlogAnalytics from '../components/admin/BlogAnalytics';
+import { useNavigate } from 'react-router-dom';
 
 // Gebruikersbeheer types
 interface UserProfile {
@@ -167,6 +168,7 @@ async function blockUser(id: string, blocked: boolean) {
 export default function AdminPage() {
   const { user, userProfile } = useAuth();
   const { isMobile } = useMobile();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<'users' | 'features' | 'onboarding' | 'chats' | 'notifications' | 'blogcms' | 'bloganalytics'>('users');
   const [selectedUser, setSelectedUser] = useState<UserProfile | null>(null);
   const [showOnboarding, setShowOnboarding] = useState(false);
@@ -179,7 +181,7 @@ export default function AdminPage() {
   // Toegangscontrole - alleen eigenaren kunnen de admin pagina bekijken
   if (!userProfile || userProfile.is_owner !== true) {
     // Redirect naar dashboard als gebruiker geen eigenaar is
-    window.location.href = '/dashboard';
+    navigate('/dashboard');
     return null;
   }
   

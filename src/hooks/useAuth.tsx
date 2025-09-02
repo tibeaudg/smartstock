@@ -64,6 +64,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         console.error('Error fetching user profile:', error.message);
         return null;
       }
+      
       return data as UserProfile;
     } catch (err) {
       console.error('Unexpected error fetching user profile:', err);
