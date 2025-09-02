@@ -47,7 +47,9 @@ export async function sendChatMessage({ chatId, senderType, senderId, message }:
 }
 
 export async function fetchAllChats() {
-  // First fetch all chats with user profiles
+  console.log('Fetching all chats...');
+  
+  // First fetch all active chats with user profiles
   const { data: chats, error: chatsError } = await supabase
     .from('chats')
     .select(`
@@ -58,25 +60,56 @@ export async function fetchAllChats() {
         email
       )
     `)
+    .eq('is_closed', false)
     .order('updated_at', { ascending: false });
 
-  if (chatsError) throw chatsError;
+  if (chatsError) {
+    console.error('Error fetching chats:', chatsError);
+    throw chatsError;
+  }
 
-  // Then fetch unread counts for each chat
+  console.log('Raw chats from database:', chats);
+  console.log('Found chats:', chats?.length || 0);
+
+  // Then fetch unread counts and latest messages for each chat
   const chatsWithCounts = await Promise.all((chats || []).map(async (chat) => {
-    const { count } = await supabase
+    console.log('Processing chat:', chat.id, 'for user:', chat.user_id);
+    
+    // Fetch unread count
+    const { count: unreadCount, error: countError } = await supabase
       .from('chat_messages')
       .select('*', { count: 'exact', head: true })
       .eq('chat_id', chat.id)
       .eq('sender_type', 'user')
       .eq('is_read', false);
 
-    return {
+    if (countError) {
+      console.error('Error fetching unread count for chat:', chat.id, countError);
+    }
+
+    // Fetch latest messages (last 5 messages for preview)
+    const { data: latestMessages, error: messagesError } = await supabase
+      .from('chat_messages')
+      .select('id, message, created_at, sender_type, is_read')
+      .eq('chat_id', chat.id)
+      .order('created_at', { ascending: false })
+      .limit(5);
+
+    if (messagesError) {
+      console.error('Error fetching messages for chat:', chat.id, messagesError);
+    }
+
+    const chatWithData = {
       ...chat,
-      unread_count: count || 0
+      unread_count: unreadCount || 0,
+      chat_messages: latestMessages || []
     };
+
+    console.log('Chat with data:', chatWithData);
+    return chatWithData;
   }));
 
+  console.log('Final chats with counts:', chatsWithCounts);
   return chatsWithCounts;
 }
 
@@ -137,4 +170,72 @@ export async function markMessagesAsRead(chatId: string, senderType: 'user' | 'a
     console.error('Error in markMessagesAsRead:', error);
     throw error;
   }
+}
+
+// Test functie om fetchAllChats te testen zonder is_closed filter
+export async function fetchAllChatsTest() {
+  console.log('=== TEST: fetchAllChats without is_closed filter ===');
+  
+  // Test fetchAllChats without the is_closed filter
+  const { data: chats, error: chatsError } = await supabase
+    .from('chats')
+    .select(`
+      *,
+      profiles:user_id (
+        first_name,
+        last_name,
+        email
+      )
+    `)
+    // .eq('is_closed', false)  // Comment this out for testing
+    .order('updated_at', { ascending: false });
+
+  if (chatsError) {
+    console.error('Error fetching chats without closed filter:', chatsError);
+    throw chatsError;
+  }
+
+  console.log('Chats without is_closed filter:', chats);
+  console.log('Found chats without filter:', chats?.length || 0);
+
+  // Then fetch unread counts and latest messages for each chat
+  const chatsWithCounts = await Promise.all((chats || []).map(async (chat) => {
+    console.log('Processing chat:', chat.id, 'for user:', chat.user_id);
+    
+    // Fetch unread count
+    const { count: unreadCount, error: countError } = await supabase
+      .from('chat_messages')
+      .select('*', { count: 'exact', head: true })
+      .eq('chat_id', chat.id)
+      .eq('sender_type', 'user')
+      .eq('is_read', false);
+
+    if (countError) {
+      console.error('Error fetching unread count for chat:', chat.id, countError);
+    }
+
+    // Fetch latest messages (last 5 messages for preview)
+    const { data: latestMessages, error: messagesError } = await supabase
+      .from('chat_messages')
+      .select('id, message, created_at, sender_type, is_read')
+      .eq('chat_id', chat.id)
+      .order('created_at', { ascending: false })
+      .limit(5);
+
+    if (messagesError) {
+      console.error('Error fetching messages for chat:', chat.id, messagesError);
+    }
+
+    const chatWithData = {
+      ...chat,
+      unread_count: unreadCount || 0,
+      chat_messages: latestMessages || []
+    };
+
+    console.log('Chat with data:', chatWithData);
+    return chatWithData;
+  }));
+
+  console.log('Final chats with counts (without filter):', chatsWithCounts);
+  return chatsWithCounts;
 }
