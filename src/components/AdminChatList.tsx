@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { fetchAllChats, fetchChatMessages, sendChatMessage, markMessagesAsRead, fetchAllChatsTest } from '@/lib/chatApi';
+import { fetchAllChats, fetchChatMessages, sendChatMessage, markMessagesAsRead, fetchAllChatsTest, debugAllChats, fetchAllChatsIncludingClosed } from '@/lib/chatApi';
 import { useAuth } from '@/hooks/useAuth';
 import { useUnreadMessages } from '@/hooks/UnreadMessagesContext';
 import { MessageSquare, MessageSquareDashed, RefreshCw } from 'lucide-react';
@@ -165,41 +165,18 @@ export const AdminChatList: React.FC = () => {
             <CardTitle>Support Chats</CardTitle>
             <p className="text-sm text-gray-500">Beheer hier alle actieve support chats</p>
           </div>
-          <div className="flex gap-2">
-            <button
-              onClick={() => loadChats(true)}
-              disabled={refreshing}
-              className="flex items-center gap-2 px-3 py-2 text-sm bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-lg transition-colors disabled:opacity-50"
-            >
-              <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
-              {refreshing ? 'Verversen...' : 'Verversen'}
-            </button>
-            <button
-              onClick={async () => {
-                console.log('=== DEBUG INFO ===');
-                console.log('Current chats in state:', chats);
-                console.log('Current chats length:', chats.length);
-                
-                // Test functie zonder is_closed filter
-                try {
-                  console.log('Testing fetchAllChats without is_closed filter...');
-                  const testResult = await fetchAllChatsTest();
-                  console.log('Test result:', testResult);
-                  
-                  // Update de chat lijst met het test resultaat
-                  if (testResult && testResult.length > chats.length) {
-                    console.log('Found more chats! Updating state...');
-                    setChats(testResult);
-                  }
-                } catch (error) {
-                  console.error('Test error:', error);
-                }
-              }}
-              className="px-3 py-2 text-sm bg-gray-50 hover:bg-gray-100 text-gray-600 rounded-lg transition-colors"
-            >
-              Test
-            </button>
-          </div>
+                     <div className="flex gap-2">
+             <button
+               onClick={() => loadChats(true)}
+               disabled={refreshing}
+               className="flex items-center gap-2 px-3 py-2 text-sm bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-lg transition-colors disabled:opacity-50"
+             >
+               <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
+               {refreshing ? 'Verversen...' : 'Verversen'}
+             </button>
+
+
+           </div>
         </div>
       </CardHeader>
         <CardContent>
