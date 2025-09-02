@@ -514,3 +514,40 @@ export async function testRLSPolicies() {
     allProfiles
   };
 }
+
+// Functie om een chat en alle bijbehorende berichten te verwijderen
+export async function deleteChat(chatId: string) {
+  try {
+    console.log('Deleting chat:', chatId);
+    
+    // Eerst alle berichten van deze chat verwijderen
+    const { error: messagesError } = await supabase
+      .from('chat_messages')
+      .delete()
+      .eq('chat_id', chatId);
+    
+    if (messagesError) {
+      console.error('Error deleting chat messages:', messagesError);
+      throw messagesError;
+    }
+    
+    console.log('Chat messages deleted successfully');
+    
+    // Dan de chat zelf verwijderen
+    const { error: chatError } = await supabase
+      .from('chats')
+      .delete()
+      .eq('id', chatId);
+    
+    if (chatError) {
+      console.error('Error deleting chat:', chatError);
+      throw chatError;
+    }
+    
+    console.log('Chat deleted successfully');
+    return { success: true };
+  } catch (error) {
+    console.error('Error in deleteChat:', error);
+    throw error;
+  }
+}
