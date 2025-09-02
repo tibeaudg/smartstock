@@ -49,7 +49,7 @@ export async function sendChatMessage({ chatId, senderType, senderId, message }:
 export async function fetchAllChats() {
   console.log('Fetching all chats...');
   
-  // First fetch all active chats with user profiles
+  // First fetch all chats (including closed) with user profiles
   const { data: chats, error: chatsError } = await supabase
     .from('chats')
     .select(`
@@ -60,7 +60,6 @@ export async function fetchAllChats() {
         email
       )
     `)
-    .eq('is_closed', false)
     .order('updated_at', { ascending: false });
 
   if (chatsError) {
@@ -92,17 +91,20 @@ export async function fetchAllChats() {
       .from('chat_messages')
       .select('id, message, created_at, sender_type, is_read')
       .eq('chat_id', chat.id)
-      .order('created_at', { ascending: false })
+      .order('created_at', { ascending: true }) // Verander naar ascending voor correcte volgorde
       .limit(5);
 
     if (messagesError) {
       console.error('Error fetching messages for chat:', chat.id, messagesError);
     }
 
+    // Reverse de volgorde zodat nieuwste bericht laatste is voor de UI
+    const reversedMessages = latestMessages ? [...latestMessages].reverse() : [];
+
     const chatWithData = {
       ...chat,
       unread_count: unreadCount || 0,
-      chat_messages: latestMessages || []
+      chat_messages: reversedMessages
     };
 
     console.log('Chat with data:', chatWithData);

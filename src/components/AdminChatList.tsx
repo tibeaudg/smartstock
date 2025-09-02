@@ -3,7 +3,8 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { fetchAllChats, fetchChatMessages, sendChatMessage, markMessagesAsRead, fetchAllChatsTest, debugAllChats, fetchAllChatsIncludingClosed } from '@/lib/chatApi';
 import { useAuth } from '@/hooks/useAuth';
 import { useUnreadMessages } from '@/hooks/UnreadMessagesContext';
-import { MessageSquare, MessageSquareDashed, RefreshCw } from 'lucide-react';
+import { MessageSquare, MessageSquareDashed, RefreshCw, Bug } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 
 // Helper function to check if a date is today
 function isToday(date: Date) {
@@ -23,6 +24,7 @@ export const AdminChatList: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const scrollContainerRef = React.useRef<HTMLDivElement>(null);
   const [refreshing, setRefreshing] = useState(false);
+  const [debugInfo, setDebugInfo] = useState<string>('');
 
   React.useEffect(() => {
     if (scrollContainerRef.current) {
@@ -114,6 +116,128 @@ export const AdminChatList: React.FC = () => {
     setLoading(false);
   }
 
+  // Eenvoudige debug functie
+  const debugDatabase = async () => {
+    try {
+      setDebugInfo('Debug gestart...\n');
+      
+      // Test 1: Haal alle chats op
+      const allChats = await fetchAllChats();
+      setDebugInfo(prev => prev + `Chats geladen: ${allChats?.length || 0}\n`);
+      
+      // Test 2: Toon details van elke chat
+      if (allChats && allChats.length > 0) {
+        setDebugInfo(prev => prev + `\n=== CHAT DETAILS ===\n`);
+        allChats.forEach((chat, index) => {
+          setDebugInfo(prev => prev + 
+            `Chat ${index + 1}: ${chat.id}\n` +
+            `  User: ${chat.profiles?.first_name} ${chat.profiles?.last_name}\n` +
+            `  Berichten: ${chat.chat_messages?.length || 0}\n` +
+            `  Unread: ${chat.unread_count || 0}\n` +
+            `  Laatste bericht: ${chat.chat_messages?.[chat.chat_messages?.length - 1]?.message || 'Geen'}\n`
+          );
+        });
+      }
+      
+      // Test 3: Haal alle berichten op
+      const { data: allMessages, error: messagesError } = await supabase
+        .from('chat_messages')
+        .select('*')
+        .order('created_at', { ascending: false });
+      
+      if (messagesError) {
+        setDebugInfo(prev => prev + `\nError ophalen berichten: ${messagesError.message}\n`);
+      } else {
+        setDebugInfo(prev => prev + `\nAlle berichten in database: ${allMessages?.length || 0}\n`);
+        
+        // Test 4: Controleer berichten per chat
+        if (allChats && allChats.length > 0) {
+          setDebugInfo(prev => prev + `\n=== BERICHTEN PER CHAT ===\n`);
+          allChats.forEach((chat, index) => {
+            const chatMessages = allMessages?.filter(msg => msg.chat_id === chat.id);
+            setDebugInfo(prev => prev + 
+              `Chat ${index + 1} (${chat.id}): ${chatMessages?.length || 0} berichten\n`
+            );
+            
+            if (chatMessages && chatMessages.length > 0) {
+              setDebugInfo(prev => prev + 
+                `  Laatste: "${chatMessages[chatMessages.length - 1].message}"\n`
+              );
+            }
+          });
+        }
+      }
+      
+      // Test 5: Controleer of er een mismatch is tussen fetchAllChats en directe database query
+      setDebugInfo(prev => prev + `\n=== VERGELIJKING ===\n`);
+      const chatsWithMessages = allChats?.filter(chat => 
+        allMessages?.some(msg => msg.chat_id === chat.id)
+      );
+      setDebugInfo(prev => prev + 
+        `Chats met berichten (volgens database): ${chatsWithMessages?.length || 0}\n` +
+        `Chats met berichten (volgens fetchAllChats): ${allChats?.filter(chat => chat.chat_messages && chat.chat_messages.length > 0).length || 0}\n`
+      );
+      
+      // Test 6: Specifiek onderzoek voor emperio test chat
+      setDebugInfo(prev => prev + `\n=== SPECIFIEK ONDERZOEK EMPERIO ===\n`);
+      const emperioChat = allChats?.find(chat => chat.profiles?.first_name === 'emperio');
+      if (emperioChat) {
+        setDebugInfo(prev => prev + 
+          `Emperio chat ID: ${emperioChat.id}\n` +
+          `User ID: ${emperioChat.user_id}\n` +
+          `Is closed: ${emperioChat.is_closed}\n`
+        );
+        
+        // Controleer of er berichten zijn voor deze specifieke chat
+        const emperioMessages = allMessages?.filter(msg => msg.chat_id === emperioChat.id);
+        setDebugInfo(prev => prev + 
+          `Berichten voor emperio chat: ${emperioMessages?.length || 0}\n`
+        );
+        
+        if (emperioMessages && emperioMessages.length > 0) {
+          setDebugInfo(prev => prev + `Eerste paar berichten:\n`);
+          emperioMessages.slice(0, 3).forEach((msg, index) => {
+            setDebugInfo(prev => prev + 
+              `  ${index + 1}. "${msg.message}" (${msg.created_at})\n`
+            );
+          });
+        }
+        
+        // Controleer of er berichten zijn met dezelfde user_id
+        const userMessages = allMessages?.filter(msg => msg.sender_id === emperioChat.user_id);
+        setDebugInfo(prev => prev + 
+          `Berichten van emperio user: ${userMessages?.length || 0}\n`
+        );
+      }
+      
+      // Test 7: Controleer alle chat IDs in berichten
+      setDebugInfo(prev => prev + `\n=== ALLE CHAT IDS IN BERICHTEN ===\n`);
+      const uniqueChatIds = [...new Set(allMessages?.map(msg => msg.chat_id) || [])];
+      setDebugInfo(prev => prev + `Unieke chat IDs in berichten: ${uniqueChatIds.join(', ')}\n`);
+      
+      // Test 8: Controleer of er berichten zijn die niet aan chats zijn gekoppeld
+      if (allChats && allMessages) {
+        const chatIds = allChats.map(chat => chat.id);
+        const orphanedMessages = allMessages.filter(msg => !chatIds.includes(msg.chat_id));
+        setDebugInfo(prev => prev + 
+          `Berichten zonder geldige chat: ${orphanedMessages.length}\n`
+        );
+        
+        if (orphanedMessages.length > 0) {
+          setDebugInfo(prev => prev + `Eerste paar orphaned berichten:\n`);
+          orphanedMessages.slice(0, 3).forEach((msg, index) => {
+            setDebugInfo(prev => prev + 
+              `  ${index + 1}. Chat ID: ${msg.chat_id}, Bericht: "${msg.message}"\n`
+            );
+          });
+        }
+      }
+      
+    } catch (error) {
+      setDebugInfo(prev => prev + `Error tijdens debug: ${error}\n`);
+    }
+  };
+
   if (selectedChat) {
     return (
       <Card>
@@ -174,21 +298,45 @@ export const AdminChatList: React.FC = () => {
                <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
                {refreshing ? 'Verversen...' : 'Verversen'}
              </button>
+             <button
+               onClick={debugDatabase}
+               className="flex items-center gap-2 px-3 py-2 text-sm bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-lg transition-colors"
+             >
+               <Bug className="w-4 h-4" />
+               Debug
+             </button>
 
 
            </div>
         </div>
       </CardHeader>
-        <CardContent>
-          {refreshing && (
-            <div className="flex justify-center items-center mb-2">
-              <RefreshCw className="w-6 h-6 text-blue-500 animate-spin" />
-              <span className="ml-2 text-sm text-gray-500">Nieuwe chats ophalen...</span>
-            </div>
-          )}
-          <div className="mb-2 text-xs text-gray-500 text-center">
-            Laatste update: {new Date().toLocaleTimeString('nl-NL')} | Polling elke 3 seconden
-          </div>
+                 <CardContent>
+           {refreshing && (
+             <div className="flex justify-center items-center mb-2">
+               <RefreshCw className="w-6 h-6 text-blue-500 animate-spin" />
+               <span className="ml-2 text-sm text-gray-500">Nieuwe chats ophalen...</span>
+             </div>
+           )}
+           
+           {/* Debug informatie weergeven */}
+           {debugInfo && (
+             <div className="mb-4 p-3 bg-gray-50 border border-gray-200 rounded-lg">
+               <h4 className="font-medium text-gray-800 mb-2">Debug Informatie:</h4>
+               <pre className="text-xs text-gray-700 whitespace-pre-wrap overflow-auto max-h-32">
+                 {debugInfo}
+               </pre>
+               <button 
+                 onClick={() => setDebugInfo('')}
+                 className="mt-2 text-xs text-gray-600 underline"
+               >
+                 Sluiten
+               </button>
+             </div>
+           )}
+           
+           <div className="mb-2 text-xs text-gray-500 text-center">
+             Laatste update: {new Date().toLocaleTimeString('nl-NL')} | Polling elke 3 seconden
+           </div>
           {chats.length === 0 ? (
             <div className="text-gray-400 text-center py-12">Nog geen chats gevonden.</div>
           ) : (
@@ -228,13 +376,19 @@ export const AdminChatList: React.FC = () => {
                               </span>
                             )}
                           </div>
-                          {lastMessage && (
+                          {lastMessage ? (
                             <div className="flex items-center gap-2">
                               {hasUnread && (
                                 <MessageSquare className="w-4 h-4 text-blue-500" />
                               )}
                               <p className="text-sm text-gray-500 truncate max-w-xs">
                                 {lastMessage.message}
+                              </p>
+                            </div>
+                          ) : (
+                            <div className="flex items-center gap-2">
+                              <p className="text-sm text-gray-400 italic">
+                                Geen berichten
                               </p>
                             </div>
                           )}
