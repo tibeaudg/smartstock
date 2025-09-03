@@ -59,9 +59,6 @@ export const Header: React.FC<HeaderProps> = ({ title, unreadCount = 0, onNotifi
           )}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button size="icon" className="relative flex items-center justify-center w-10 h-10 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-colors">
-                <User className="h-5 w-5" />
-              </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48">
               <DropdownMenuItem onClick={() => navigate('/dashboard/settings/profile')}>
