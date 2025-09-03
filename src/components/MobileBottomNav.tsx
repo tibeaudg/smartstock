@@ -7,7 +7,9 @@ import {
   MessageSquare,
   Bell,
   FileText,
-  Scan
+  Scan,
+  Settings,
+  ArrowLeft
 } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth'; // FIX: use import, not require
@@ -36,13 +38,24 @@ export const MobileBottomNav = ({ currentTab, onTabChange, userRole }: MobileBot
         { id: 'stock', label: 'Producten', icon: Package, path: '/dashboard/stock' },
         { id: 'scan', label: 'Scannen', icon: Scan, path: '/dashboard/scan' },
         { id: 'transactions', label: 'Bewegingen', icon: ShoppingCart, path: '/dashboard/transactions' },
+        { id: 'settings', label: 'Instellingen', icon: Settings, path: '/dashboard/settings' },
+        ...(isOwner && !isAdminPage
+          ? [
+              { id: 'admin', label: 'Admin', icon: Users, path: '/admin' },
+            ]
+          : []),
       ];
+
+
+
+      
 
   const adminMenuItems = [
     { id: 'users', label: 'Gebruikers', icon: Users, path: '/admin' },
     { id: 'notifications', label: 'Meldingen', icon: Bell, path: '/admin' },
     { id: 'chats', label: 'Chats', icon: MessageSquare, path: '/admin' },
     { id: 'blogcms', label: 'Blog CMS', icon: FileText, path: '/admin' },
+    { id: 'back', label: 'Terug', icon: ArrowLeft, path: '/dashboard' },
   ];
 
   // Alleen admin menu items tonen als gebruiker eigenaar is
@@ -57,13 +70,17 @@ export const MobileBottomNav = ({ currentTab, onTabChange, userRole }: MobileBot
 
   return (
     <>
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-2 z-50">
-        <nav className="flex justify-around">
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50">
+        <nav className={`flex items-center py-1 ${
+          menuItems.length > 4 ? 'justify-between px-1' : 'justify-around px-2'
+        }`}>
           {menuItems.map((item) => (
             <button
               key={item.id}
               onClick={() => handleNav(item)}
-              className={`flex flex-col items-center py-2 px-3 rounded-lg transition-colors ${
+              className={`flex flex-col items-center justify-center py-2 px-1 transition-colors ${
+                menuItems.length > 4 ? 'flex-1' : 'min-w-0'
+              } ${
                 currentTab === item.id
                   ? 'text-blue-700 bg-blue-50'
                   : item.id === 'scan'
@@ -72,7 +89,7 @@ export const MobileBottomNav = ({ currentTab, onTabChange, userRole }: MobileBot
               }`}
             >
               <item.icon className={`h-5 w-5 mb-1`} />
-              <span className="text-xs font-medium">{item.label}</span>
+              <span className="text-xs font-medium text-center leading-tight truncate w-full">{item.label}</span>
             </button>
           ))}
         </nav>

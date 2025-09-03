@@ -81,6 +81,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
   };
   
   const settingsSubItems = [
+    { id: 'profile', label: 'Profiel', path: '/dashboard/settings/profile' },
     { id: 'branches', label: 'Filialen', path: '/dashboard/settings/branches' },
     { id: 'users', label: 'Gebruikers', path: '/dashboard/settings/users' },
     { id: 'modules', label: 'Modules', path: '/dashboard/settings/modules' },

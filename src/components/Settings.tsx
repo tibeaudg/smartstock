@@ -21,6 +21,7 @@ import { InvoicingOverview } from '@/components/settings/InvoicingOverview';
 import { useAuth } from '@/hooks/useAuth';
 import { useLocation, useNavigate, Outlet, useMatch } from 'react-router-dom';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
+import { useMobile } from '@/hooks/use-mobile';
 import {
   Building2,
   User,
@@ -34,6 +35,7 @@ export const Settings = () => {
   const { userProfile } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
+  const { isMobile } = useMobile();
   
   // Gebruik de page refresh hook
   usePageRefresh();
@@ -67,8 +69,6 @@ export const Settings = () => {
           { id: 'branches', label: 'Filialen', icon: <Building2 className="w-4 h-4" /> },
           { id: 'users', label: 'Gebruikers', icon: <Users className="w-4 h-4" /> },
           { id: 'modules', label: 'Modules', icon: <FileText className="w-4 h-4" /> },
-          { id: 'license', label: 'Licentie', icon: <Key className="w-4 h-4" /> },
-          { id: 'invoicing', label: 'Facturatie', icon: <Banknote className="w-4 h-4" /> },
         ]
       : []),
     ...(isBlocked ? [{ id: 'invoicing', label: 'Facturatie', icon: <Banknote className="w-4 h-4" /> }] : []),
@@ -84,6 +84,43 @@ export const Settings = () => {
           </p>
         </div>
         <Outlet />
+      </div>
+    );
+  }
+
+  const handleSubmenuClick = (itemId: string) => {
+    navigate(`/dashboard/settings/${itemId}`);
+  };
+
+  if (isMobile) {
+    return (
+      <div className="space-y-6 pt-6 pb-12">
+        <div className="p-4">
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">Instellingen</h1>
+          
+          {/* Mobile Submenu */}
+          <div className="space-y-2 mb-6">
+            {menuItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => handleSubmenuClick(item.id)}
+                className={`w-full flex items-center space-x-3 p-3 rounded-lg text-left transition-colors ${
+                  currentPath === item.id
+                    ? 'bg-blue-50 text-blue-700 border border-blue-200'
+                    : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50'
+                }`}
+              >
+                {item.icon}
+                <span className="font-medium">{item.label}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+        
+        {/* Content */}
+        <div className="p-4">
+          <Outlet />
+        </div>
       </div>
     );
   }
