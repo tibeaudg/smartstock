@@ -6,10 +6,8 @@ import { useNotifications } from './hooks/useNotifications';
 import { useAuth } from './hooks/useAuth';
 
 const getPageTitle = (pathname: string) => {
-  if (pathname.startsWith('/dashboard/stock')) return 'Producten';
-  if (pathname.startsWith('/dashboard/transactions')) return 'Voorraadmutaties';
-  if (pathname.startsWith('/dashboard/settings')) return 'Instellingen';
-  if (pathname.startsWith('/dashboard')) return 'Dashboard';
+  // Don't show header for dashboard pages as they use Layout component
+  if (pathname.startsWith('/dashboard') || pathname.startsWith('/admin')) return '';
   if (pathname.startsWith('/admin/notifications')) return 'Meldingen';
   if (pathname.startsWith('/admin/user')) return 'Gebruiker';
   if (pathname.startsWith('/admin')) return 'Admin';

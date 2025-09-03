@@ -11,7 +11,9 @@ import {
   MessageSquare,
   Bell,
   Scan,
-  ChevronDown
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight
 } 
 from 'lucide-react';
 import { BranchSelector } from './BranchSelector';
@@ -140,16 +142,18 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
   return (
     <>
       {/* Mobile overlay */}
-      {isOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden" onClick={onToggle} />
+      {isMobile && isOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-40" onClick={onToggle} />
       )}
       
       {/* Sidebar */}
       <div className={`
         fixed left-0 top-0 h-screen bg-white border-r border-gray-200 transition-all duration-300 z-50 flex flex-col
-        ${isOpen ? 'w-64' : 'w-16'}
-        ${isOpen ? 'md:relative md:translate-x-0' : 'md:relative'}
-        ${!isOpen ? 'md:translate-x-0' : ''}
+        ${isMobile 
+          ? (isOpen ? 'w-64 translate-x-0' : 'w-16 -translate-x-full') 
+          : (isOpen ? 'w-64' : 'w-16')
+        }
+        ${!isMobile ? 'md:relative md:translate-x-0' : ''}
       `}>
         <div className="flex items-center pl-5 space-x-3 h-[70px] flex-shrink-0">
           <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
@@ -158,8 +162,10 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
           {isOpen && <h1 className="text-lg font-semibold text-gray-900">stockflow</h1>}
         </div>
 
-        {/* Branch Selector - Only on Desktop */}
-        {isOpen && !isMobile && (
+
+
+        {/* Branch Selector - Show on both Desktop and Mobile when open */}
+        {isOpen && (
           <div className="px-3 py-4 border-b border-gray-200 flex-shrink-0">
             <BranchSelector />
           </div>
@@ -300,16 +306,9 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
         </div>
       </div>
 
-      {/* Mobile Sidebar Close Button */}
-      {isMobile && isOpen && (
-        <button
-          className="fixed top-4 right-4 z-50 bg-white text-gray-700 rounded-full p-2 shadow-md md:hidden border border-gray-200 hover:bg-gray-100"
-          onClick={onToggle}
-          aria-label="Sluit menu"
-        >
-          <X className="w-6 h-6" />
-        </button>
-      )}
+
+
+
 
       {/* Chat Modal - Rendered using Portal to escape sidebar container */}
       {chatOpen && createPortal(
