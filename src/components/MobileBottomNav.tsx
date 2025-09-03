@@ -35,7 +35,7 @@ export const MobileBottomNav = ({ currentTab, onTabChange, userRole }: MobileBot
         { id: 'dashboard', label: 'Dashboard', icon: BarChart3, path: '/dashboard' },
         { id: 'stock', label: 'Producten', icon: Package, path: '/dashboard/stock' },
         { id: 'scan', label: 'Scannen', icon: Scan, path: '/dashboard/scan' },
-        { id: 'transactions', label: 'Bewegingslijst', icon: ShoppingCart, path: '/dashboard/transactions' },
+        { id: 'transactions', label: 'Bewegingen', icon: ShoppingCart, path: '/dashboard/transactions' },
       ];
 
   const adminMenuItems = [

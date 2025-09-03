@@ -828,6 +828,79 @@ export const StockList = () => {
         {/* Only show products content when on products tab */}
         {activeTab === 'products' && (
           <>
+            {/* Action Buttons for Mobile */}
+            <div className="space-y-2">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" className="w-full h-10">
+                    <Settings className="w-4 h-4 mr-2" />
+                    Kolommen Beheren
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuItem disabled className="font-semibold">
+                    Kolom Zichtbaarheid
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuCheckboxItem
+                    checked={columnVisibility.product}
+                    onCheckedChange={() => toggleColumnVisibility('product')}
+                  >
+                    Product
+                  </DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem
+                    checked={columnVisibility.current}
+                    onCheckedChange={() => toggleColumnVisibility('current')}
+                  >
+                    Huidig Stock
+                  </DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem
+                    checked={columnVisibility.minimum}
+                    onCheckedChange={() => toggleColumnVisibility('minimum')}
+                  >
+                    Minimum Stock
+                  </DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem
+                    checked={columnVisibility.category}
+                    onCheckedChange={() => toggleColumnVisibility('category')}
+                  >
+                    Categorie
+                  </DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem
+                    checked={columnVisibility.supplier}
+                    onCheckedChange={() => toggleColumnVisibility('supplier')}
+                  >
+                    Leverancier
+                  </DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem
+                    checked={columnVisibility.purchasePrice}
+                    onCheckedChange={() => toggleColumnVisibility('purchasePrice')}
+                  >
+                    Aankoopprijs
+                  </DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem
+                    checked={columnVisibility.salePrice}
+                    onCheckedChange={() => toggleColumnVisibility('salePrice')}
+                  >
+                    Verkoopprijs
+                  </DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem
+                    checked={columnVisibility.status}
+                    onCheckedChange={() => toggleColumnVisibility('status')}
+                  >
+                    Status
+                  </DropdownMenuCheckboxItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              <Button 
+                onClick={() => setIsAddModalOpen(true)} 
+                className="w-full h-10 bg-blue-700 hover:bg-blue-700/80 text-white"
+              >
+                <Plus className="w-5 h-5 mr-2" />
+                Nieuw Product Toevoegen
+              </Button>
+            </div>
+
             {/* Filter Header */}
             {((categoryFilter && categoryFilter !== 'all' && categoryFilter !== '') || 
               (supplierFilter && supplierFilter !== 'all' && supplierFilter !== '') ||
@@ -889,7 +962,8 @@ export const StockList = () => {
               </div>
             )}
 
-            <div className="filter-area">
+            {/* Search and Advanced Filters - Right above table */}
+            <div className="mb-4">
               <ProductFilters
                 searchTerm={searchTerm}
                 onSearchChange={setSearchTerm}
@@ -910,79 +984,6 @@ export const StockList = () => {
                 onClearFilters={handleClearFilters}
                 activeFiltersCount={activeFilterCount}
               />
-              
-              {/* Kolom Zichtbaarheid en Nieuw Product Knoppen voor Mobiel */}
-              <div className="mt-4 space-y-2">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="outline" className="w-full h-10">
-                      <Settings className="w-4 h-4 mr-2" />
-                      Kolommen Beheren
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-56">
-                    <DropdownMenuItem disabled className="font-semibold">
-                      Kolom Zichtbaarheid
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuCheckboxItem
-                      checked={columnVisibility.product}
-                      onCheckedChange={() => toggleColumnVisibility('product')}
-                    >
-                      Product
-                    </DropdownMenuCheckboxItem>
-                    <DropdownMenuCheckboxItem
-                      checked={columnVisibility.current}
-                      onCheckedChange={() => toggleColumnVisibility('current')}
-                    >
-                      Huidig Stock
-                    </DropdownMenuCheckboxItem>
-                    <DropdownMenuCheckboxItem
-                      checked={columnVisibility.minimum}
-                      onCheckedChange={() => toggleColumnVisibility('minimum')}
-                    >
-                      Minimum Stock
-                    </DropdownMenuCheckboxItem>
-                    <DropdownMenuCheckboxItem
-                      checked={columnVisibility.category}
-                      onCheckedChange={() => toggleColumnVisibility('category')}
-                    >
-                      Categorie
-                    </DropdownMenuCheckboxItem>
-                    <DropdownMenuCheckboxItem
-                      checked={columnVisibility.supplier}
-                      onCheckedChange={() => toggleColumnVisibility('supplier')}
-                    >
-                      Leverancier
-                    </DropdownMenuCheckboxItem>
-                    <DropdownMenuCheckboxItem
-                      checked={columnVisibility.purchasePrice}
-                      onCheckedChange={() => toggleColumnVisibility('purchasePrice')}
-                    >
-                      Aankoopprijs
-                    </DropdownMenuCheckboxItem>
-                    <DropdownMenuCheckboxItem
-                      checked={columnVisibility.salePrice}
-                      onCheckedChange={() => toggleColumnVisibility('salePrice')}
-                    >
-                      Verkoopprijs
-                    </DropdownMenuCheckboxItem>
-                    <DropdownMenuCheckboxItem
-                      checked={columnVisibility.status}
-                      onCheckedChange={() => toggleColumnVisibility('status')}
-                    >
-                      Status
-                    </DropdownMenuCheckboxItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-                <Button 
-                  onClick={() => setIsAddModalOpen(true)} 
-                  className="w-full h-10 bg-blue-700 hover:bg-blue-700/80 text-white"
-                >
-                  <Plus className="w-5 h-5 mr-2" />
-                  Nieuw Product Toevoegen
-                </Button>
-              </div>
             </div>
 
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-x-auto">
