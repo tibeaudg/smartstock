@@ -95,28 +95,6 @@ export const Settings = () => {
   if (isMobile) {
     return (
       <div className="space-y-6 pt-6 pb-12">
-        <div className="p-4">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Instellingen</h1>
-          
-          {/* Mobile Submenu */}
-          <div className="space-y-2 mb-6">
-            {menuItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => handleSubmenuClick(item.id)}
-                className={`w-full flex items-center space-x-3 p-3 rounded-lg text-left transition-colors ${
-                  currentPath === item.id
-                    ? 'bg-blue-50 text-blue-700 border border-blue-200'
-                    : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50'
-                }`}
-              >
-                {item.icon}
-                <span className="font-medium">{item.label}</span>
-              </button>
-            ))}
-          </div>
-        </div>
-        
         {/* Content */}
         <div className="p-4">
           <Outlet />

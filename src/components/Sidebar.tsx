@@ -203,6 +203,10 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
                       } else {
                         // Close all submenus when clicking a regular menu item
                         setOpenSubmenus({});
+                        // Auto-close sidebar on mobile when menu item is clicked
+                        if (isMobile) {
+                          onToggle();
+                        }
                       }
                     }}
                     className={`
@@ -235,6 +239,12 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
                         <li key={subItem.id}>
                           <NavLink
                             to={subItem.path}
+                            onClick={() => {
+                              // Auto-close sidebar on mobile when submenu item is clicked
+                              if (isMobile) {
+                                onToggle();
+                              }
+                            }}
                             className={({ isActive }) => `
                               w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-left transition-colors text-sm
                               ${isActive 

@@ -780,50 +780,7 @@ export const StockList = () => {
   // Mobile card view
   if (isMobile) {
     return (
-      <div className="space-y-4">
-        {/* Mobile Tab Switcher */}
-        <div className="mb-4 mt-4">
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-1">
-            <div className="flex space-x-1">
-              <button
-                onClick={() => handleTabChange('products')}
-                className={`flex-1 flex items-center justify-center gap-1.5 px-2 py-2.5 rounded-md text-xs font-medium transition-colors ${
-                  activeTab === 'products'
-                    ? 'bg-blue-100 text-blue-700 border border-blue-200'
-                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
-                }`}
-              >
-                <Package className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Producten</span>
-                <span className="sm:hidden">Prod</span>
-              </button>
-              <button
-                onClick={() => handleTabChange('categories')}
-                className={`flex-1 flex items-center justify-center gap-1.5 px-2 py-2.5 rounded-md text-xs font-medium transition-colors ${
-                  activeTab === 'categories'
-                    ? 'bg-blue-100 text-blue-700 border border-blue-200'
-                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
-                }`}
-              >
-                <Tag className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Categorieën</span>
-                <span className="sm:hidden">Cat</span>
-              </button>
-              <button
-                onClick={() => handleTabChange('suppliers')}
-                className={`flex-1 flex items-center justify-center gap-1.5 px-2 py-2.5 rounded-md text-xs font-medium transition-colors ${
-                  activeTab === 'suppliers'
-                    ? 'bg-blue-100 text-blue-700 border border-blue-200'
-                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
-                }`}
-              >
-                <Truck className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Leveranciers</span>
-                <span className="sm:hidden">Lev</span>
-              </button>
-            </div>
-          </div>
-        </div>
+      <div className="space-y-4 pt-4">
 
         {/* Only show products content when on products tab */}
         {activeTab === 'products' && (
