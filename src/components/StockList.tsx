@@ -856,15 +856,19 @@ export const StockList = () => {
                 <thead className="bg-gray-50">
                   <tr>
                     <th className="px-2 py-2 text-left font-medium text-gray-500 uppercase tracking-wider">Product</th>
-                    <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Stock</th>
+                    <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Huidig</th>
                     <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Min.</th>
+                    <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Categorie</th>
+                    <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Leverancier</th>
+                    <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Aankoop</th>
+                    <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Verkoop</th>
                     <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Status</th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
                   {filteredProducts.length === 0 ? (
                     <tr>
-                      <td colSpan={4} className="px-2 py-4 text-center text-gray-500">
+                      <td colSpan={8} className="px-2 py-4 text-center text-gray-500">
                         {productsTyped.length === 0 ? 'Geen producten gevonden voor dit filiaal.' : 'Geen producten voldoen aan je filters.'}
                       </td>
                     </tr>
@@ -898,6 +902,26 @@ export const StockList = () => {
                           </td>
                           <td className="px-2 py-2 text-center font-semibold">{product.quantity_in_stock}</td>
                           <td className="px-2 py-2 text-center">{product.minimum_stock_level}</td>
+                          <td className="px-2 py-2 text-center">
+                            <span className="text-xs text-gray-600 truncate max-w-[60px] block">
+                              {product.category_name || '-'}
+                            </span>
+                          </td>
+                          <td className="px-2 py-2 text-center">
+                            <span className="text-xs text-gray-600 truncate max-w-[60px] block">
+                              {product.supplier_name || '-'}
+                            </span>
+                          </td>
+                          <td className="px-2 py-2 text-center">
+                            <span className="text-xs text-red-600">
+                              €{product.purchase_price?.toFixed(2) ?? '-'}
+                            </span>
+                          </td>
+                          <td className="px-2 py-2 text-center">
+                            <span className="text-xs text-green-600">
+                              €{product.sale_price?.toFixed(2) ?? '-'}
+                            </span>
+                          </td>
                           <td className="px-2 py-2 text-center">
                             <Badge variant={getStockStatusVariant(stockStatus)}>
                               {stockStatus}
@@ -1178,22 +1202,28 @@ export const StockList = () => {
                 <th className="px-4 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Product
                 </th>
-                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Stock Niveau
+                <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Huidig
                 </th>
-                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Min. Niveau
+                <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Minimum
                 </th>
-                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Categorie
+                </th>
+                <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Leverancier
+                </th>
+                <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Aankoopprijs
                 </th>
-                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Verkoopprijs
                 </th>
-                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Status
                 </th>
-                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Acties
                 </th>
               </tr>
@@ -1201,7 +1231,7 @@ export const StockList = () => {
             <tbody className="bg-white divide-y divide-gray-200">
               {filteredProducts.length === 0 ? (
                 <tr>
-                  <td colSpan={isAdmin ? 9 : 8} className="px-4 py-2 text-center text-gray-500">
+                  <td colSpan={isAdmin ? 11 : 10} className="px-4 py-2 text-center text-gray-500">
                     {productsTyped.length === 0 ? 'No products found for this branch.' : 'No products match your filters.'}
                   </td>
                 </tr>
@@ -1247,25 +1277,31 @@ export const StockList = () => {
                           </div>
                         </div>
                       </td>
-                      <td className="px-4 py-2 whitespace-nowrap text-sm font-medium">
+                      <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-center">
                         {product.quantity_in_stock}
                       </td>
-                      <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900">
+                      <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 text-center">
                         {product.minimum_stock_level}
                       </td>
-                      <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-blue-600">
+                      <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-600 text-center">
+                        {product.category_name || '-'}
+                      </td>
+                      <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-600 text-center">
+                        {product.supplier_name || '-'}
+                      </td>
+                      <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-blue-600 text-center">
                         <span className="text-red-600">€{product.purchase_price?.toFixed(2) ?? '-'}</span>
                       </td>
-                      <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-orange-600">
+                      <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-orange-600 text-center">
                         <span className="text-green-600">€{product.sale_price?.toFixed(2) ?? '-'}</span>
                       </td>
-                      <td className="px-4 py-2 whitespace-nowrap">
+                      <td className="px-4 py-2 whitespace-nowrap text-center">
                         <Badge variant={getStockStatusVariant(stockStatus)}>
                           {stockStatus}
                         </Badge>
                       </td>
-                      <td className="px-4 py-1 whitespace-nowrap text-sm font-medium">
-                        <div className="flex space-x-2">
+                      <td className="px-4 py-1 whitespace-nowrap text-sm font-medium text-center">
+                        <div className="flex space-x-2 justify-center">
                           <Button
                             variant="outline"
                             size="sm"

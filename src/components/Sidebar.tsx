@@ -115,7 +115,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
             { id: 'suppliers', label: 'Leveranciers', path: '/dashboard/suppliers' }
           ]
         },
-        { id: 'transactions', label: 'Stockmutaties', icon: ShoppingCart, path: '/dashboard/transactions' },
+        { id: 'transactions', label: 'Bewegingen', icon: ShoppingCart, path: '/dashboard/transactions' },
         { 
           id: 'settings', 
           label: 'Instellingen', 
