@@ -69,6 +69,7 @@ interface Product {
   category_name: string | null;
   supplier_name: string | null;
   image_url?: string | null;
+  location?: string | null;
 }
 
 type StockAction = 'in' | 'out';
@@ -209,6 +210,7 @@ export const StockList = () => {
     minimum: true,
     category: true,
     supplier: true,
+    location: true,
     purchasePrice: true,
     salePrice: true,
     status: true,
@@ -806,6 +808,12 @@ export const StockList = () => {
                     Product
                   </DropdownMenuCheckboxItem>
                   <DropdownMenuCheckboxItem
+                    checked={columnVisibility.location}
+                    onCheckedChange={() => toggleColumnVisibility('location')}
+                  >
+                    Locatie
+                  </DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem
                     checked={columnVisibility.current}
                     onCheckedChange={() => toggleColumnVisibility('current')}
                   >
@@ -950,6 +958,9 @@ export const StockList = () => {
                     {columnVisibility.product && (
                       <th className="px-2 py-2 text-left font-medium text-gray-500 uppercase tracking-wider">Product</th>
                     )}
+                    {columnVisibility.location && (
+                      <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Locatie</th>
+                    )}
                     {columnVisibility.current && (
                       <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Huidig</th>
                     )}
@@ -1008,6 +1019,13 @@ export const StockList = () => {
                                   )}
                                 </div>
                               </div>
+                            </td>
+                          )}
+                          {columnVisibility.location && (
+                            <td className="px-2 py-2 text-center">
+                              <span className="text-xs text-gray-600 truncate max-w-[60px] block">
+                                {product.location || '-'}
+                              </span>
                             </td>
                           )}
                           {columnVisibility.current && (
@@ -1244,6 +1262,12 @@ export const StockList = () => {
                 Product
               </DropdownMenuCheckboxItem>
               <DropdownMenuCheckboxItem
+                checked={columnVisibility.location}
+                onCheckedChange={() => toggleColumnVisibility('location')}
+              >
+                Locatie
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem
                 checked={columnVisibility.current}
                 onCheckedChange={() => toggleColumnVisibility('current')}
               >
@@ -1425,6 +1449,11 @@ export const StockList = () => {
                     Product
                   </th>
                 )}
+                {columnVisibility.location && (
+                  <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Locatie
+                  </th>
+                )}
                 {columnVisibility.current && (
                   <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Huidig
@@ -1519,6 +1548,11 @@ export const StockList = () => {
                               )}
                             </div>
                           </div>
+                        </td>
+                      )}
+                      {columnVisibility.location && (
+                        <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-600 text-center">
+                          {product.location || '-'}
                         </td>
                       )}
                       {columnVisibility.current && (

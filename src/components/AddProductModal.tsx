@@ -38,6 +38,7 @@ interface FormData {
   minimumStockLevel: number;
   purchasePrice: number;
   salePrice: number;
+  location: string;
 }
 
 export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductModalProps) => {
@@ -73,6 +74,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
       minimumStockLevel: 10,
       purchasePrice: 0,
       salePrice: 0,
+      location: '',
     },
   });
 
@@ -282,6 +284,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
         user_id: user.id || (user?.id ?? ''), // fallback voor zekerheid
         supplier_id: supplierId,
         category_id: categoryId,
+        location: data.location.trim() || null,
       };
 
 
@@ -415,6 +418,25 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                       disabled={loading}
                       className="resize-none py-3 px-3 text-base"
                       rows={3}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="location"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Locatie</FormLabel>
+                  <FormControl>
+                    <Input 
+                      {...field} 
+                      placeholder="Voer locatie in (bijv. A1, Rek 3, etc.)" 
+                      disabled={loading}
+                      className="py-3 px-3 text-base"
                     />
                   </FormControl>
                   <FormMessage />
