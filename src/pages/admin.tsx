@@ -15,6 +15,7 @@ import { OnboardingModal } from '@/components/onboarding/OnboardingModal';
 import { AdminChatList } from '@/components/AdminChatList';
 import AdminCMS from '../components/AdminCMS';
 import BlogAnalytics from '../components/admin/BlogAnalytics';
+import { AuthConversionAnalytics } from '@/components/analytics/AuthConversionAnalytics';
 import { useNavigate } from 'react-router-dom';
 
 // Gebruikersbeheer types
@@ -197,7 +198,7 @@ export default function AdminPage() {
   const { user, userProfile } = useAuth();
   const { isMobile } = useMobile();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<'users' | 'features' | 'onboarding' | 'chats' | 'notifications' | 'blogcms' | 'bloganalytics'>('users');
+  const [activeTab, setActiveTab] = useState<'users' | 'features' | 'onboarding' | 'chats' | 'notifications' | 'blogcms' | 'bloganalytics' | 'conversionanalytics'>('users');
   const [selectedUser, setSelectedUser] = useState<UserProfile | null>(null);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [companyTypes, setCompanyTypes] = useState<Record<string, { type: string; custom_type: string | null }>>({});
@@ -281,13 +282,15 @@ export default function AdminPage() {
     mutationFn: ({ id, blocked }: { id: string; blocked: boolean }) => blockUser(id, blocked),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['userProfiles'] }),
   });
-  const sidebarNavItems: { id: 'users' | 'features' | 'onboarding' | 'chats' | 'notifications' | 'blogcms' | 'bloganalytics'; label: string }[] = [
+  const sidebarNavItems: { id: 'users' | 'features' | 'onboarding' | 'chats' | 'notifications' | 'blogcms' | 'bloganalytics' | 'conversionanalytics'; label: string }[] = [
   { id: 'users', label: 'Gebruikersbeheer' },
   { id: 'features', label: 'Feature Management' },
   { id: 'onboarding', label: 'Onboarding Antwoorden' },
   { id: 'chats', label: 'Chats' },
   { id: 'notifications', label: 'Meldingen' },
   { id: 'blogcms', label: 'Blogpost CMS' },
+  { id: 'bloganalytics', label: 'Blog Analytics' },
+  { id: 'conversionanalytics', label: 'Conversie Analytics' },
 ];
 
   // Real-time updates voor admin data
@@ -422,6 +425,9 @@ export default function AdminPage() {
                   <BlogAnalytics />
                 </CardContent>
               </Card>
+            )}
+            {activeTab === 'conversionanalytics' && (
+              <AuthConversionAnalytics />
             )}
             {activeTab === 'notifications' && (
               <AdminNotificationManager />

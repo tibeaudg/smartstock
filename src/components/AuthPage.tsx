@@ -12,6 +12,7 @@ import { Loader2 } from 'lucide-react';
 import { Header } from './HeaderPublic';
 import { cn } from '@/lib/utils';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
+import { useAuthConversionTracking } from '@/hooks/useAuthConversionTracking';
 
 export const AuthPage = () => {
   const [mode, setMode] = useState<'login' | 'register' | 'reset'>('login');
@@ -29,6 +30,17 @@ export const AuthPage = () => {
   // Gebruik de page refresh hook
   usePageRefresh();
 
+  // Conversie tracking hook
+  const {
+    trackRegistrationStarted,
+    trackRegistrationCompleted,
+    trackLoginAttempt,
+    trackLoginSuccess,
+    trackFormAbandonment,
+    trackError,
+    isTrackingReady
+  } = useAuthConversionTracking({ email });
+
   const clearForm = () => {
     setEmail('');
     setPassword('');
@@ -43,21 +55,44 @@ export const AuthPage = () => {
 
     try {
       if (mode === 'login') {
+        // Track login attempt
+        if (isTrackingReady) {
+          await trackLoginAttempt();
+        }
+
         const { error } = await signIn(email, password);
 
         if (error) {
+          // Track login error
+          if (isTrackingReady) {
+            await trackError(error.message, 'login_attempt');
+          }
           toast.error(error?.message === 'Invalid login credentials' ? 'Ongeldig e-mailadres of wachtwoord.' : error?.message || 'Inloggen mislukt.');
           return;
         }
 
-
+        // Track successful login
+        if (isTrackingReady) {
+          await trackLoginSuccess();
+        }
 
       } else if (mode === 'register') {
+        // Track registration started
+        if (isTrackingReady) {
+          await trackRegistrationStarted();
+        }
+
         if (password !== confirmPassword) {
+          if (isTrackingReady) {
+            await trackFormAbandonment('password_mismatch');
+          }
           toast.error('Wachtwoorden komen niet overeen.');
           return;
         }
         if (password.length < 8) { // Aangeraden: 8 tekens
+          if (isTrackingReady) {
+            await trackFormAbandonment('password_too_short');
+          }
           toast.error('Wachtwoord moet minimaal 8 tekens zijn.');
           return;
         }
@@ -65,8 +100,17 @@ export const AuthPage = () => {
         const { error } = await signUp(email, password, firstName, lastName, 'admin');
 
         if (error) {
+          // Track registration error
+          if (isTrackingReady) {
+            await trackError(error.message, 'registration_started');
+          }
           toast.error(error.message.includes('User already registered') ? 'Er bestaat al een account met dit e-mailadres.' : error.message);
           return;
+        }
+
+        // Track successful registration
+        if (isTrackingReady) {
+          await trackRegistrationCompleted();
         }
 
         toast.success('Account aangemaakt!', { description: 'Controleer je inbox om je e-mailadres te bevestigen.' });
@@ -127,7 +171,14 @@ export const AuthPage = () => {
                         ? 'bg-white text-blue-600 shadow-sm border border-gray-200'
                         : 'text-gray-600 hover:text-gray-800'
                     )}
-                    onClick={() => { setMode('register'); clearForm(); }}
+                    onClick={async () => { 
+                      setMode('register'); 
+                      clearForm(); 
+                      // Track when user switches to registration mode
+                      if (isTrackingReady) {
+                        await trackRegistrationStarted();
+                      }
+                    }}
                     disabled={isSubmitting || mode === 'register'}
                     type="button"
                   >
