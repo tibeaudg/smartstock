@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -29,6 +29,32 @@ export const AuthPage = () => {
   
   // Gebruik de page refresh hook
   usePageRefresh();
+
+  // Google Tag Manager setup
+  useEffect(() => {
+    // Load Google Tag Manager script
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = 'https://www.googletagmanager.com/gtag/js?id=AW-758697169';
+    document.head.appendChild(script);
+
+    // Initialize gtag
+    window.dataLayer = window.dataLayer || [];
+    function gtag(...args: any[]) {
+      window.dataLayer.push(args);
+    }
+    window.gtag = gtag;
+    gtag('js', new Date());
+    gtag('config', 'AW-758697169');
+
+    return () => {
+      // Cleanup: remove script when component unmounts
+      const existingScript = document.querySelector('script[src*="googletagmanager.com/gtag/js?id=AW-758697169"]');
+      if (existingScript) {
+        document.head.removeChild(existingScript);
+      }
+    };
+  }, []);
 
   // Conversie tracking hook
   const {
