@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator, DropdownMenuCheckboxItem } from '@/components/ui/dropdown-menu';
 import { 
   Search, 
   Filter, 
@@ -21,7 +22,10 @@ import {
   X,
   Minus,
   Tag,
-  Truck
+  Truck,
+  Eye,
+  EyeOff,
+  Settings
 } from 'lucide-react';
 import { ProductActionModal } from './ProductActionModal';
 import { EditProductModal } from './EditProductModal';
@@ -197,6 +201,45 @@ export const StockList = () => {
 
   // Mobile tab switcher state
   const [activeTab, setActiveTab] = useState<'products' | 'categories' | 'suppliers'>('products');
+
+  // Column visibility state
+  const [columnVisibility, setColumnVisibility] = useState({
+    product: true,
+    current: true,
+    minimum: true,
+    category: true,
+    supplier: true,
+    purchasePrice: true,
+    salePrice: true,
+    status: true,
+    actions: true
+  });
+
+  // Load column visibility from localStorage on component mount
+  useEffect(() => {
+    const savedVisibility = localStorage.getItem('stockTableColumnVisibility');
+    if (savedVisibility) {
+      try {
+        const parsed = JSON.parse(savedVisibility);
+        setColumnVisibility(prev => ({ ...prev, ...parsed }));
+      } catch (error) {
+        console.error('Error parsing saved column visibility:', error);
+      }
+    }
+  }, []);
+
+  // Save column visibility to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('stockTableColumnVisibility', JSON.stringify(columnVisibility));
+  }, [columnVisibility]);
+
+  // Toggle column visibility
+  const toggleColumnVisibility = (column: keyof typeof columnVisibility) => {
+    setColumnVisibility(prev => ({
+      ...prev,
+      [column]: !prev[column]
+    }));
+  };
 
   // Update active tab based on current route
   useEffect(() => {
@@ -786,10 +829,17 @@ export const StockList = () => {
         {activeTab === 'products' && (
           <>
             {/* Filter Header */}
-            {((categoryFilter && categoryFilter !== 'all' && categoryFilter !== '') || (supplierFilter && supplierFilter !== 'all' && supplierFilter !== '')) && (
+            {((categoryFilter && categoryFilter !== 'all' && categoryFilter !== '') || 
+              (supplierFilter && supplierFilter !== 'all' && supplierFilter !== '') ||
+              (searchTerm && searchTerm !== '') ||
+              (stockStatusFilter && stockStatusFilter !== 'all') ||
+              (minPriceFilter && minPriceFilter !== '') ||
+              (maxPriceFilter && maxPriceFilter !== '') ||
+              (minStockFilter && minStockFilter !== '') ||
+              (maxStockFilter && maxStockFilter !== '')) && (
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4 filter-header">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 flex-wrap">
                     <span className="text-sm font-medium text-blue-900">
                       Gefilterd op:
                     </span>
@@ -801,6 +851,28 @@ export const StockList = () => {
                     {supplierFilter && supplierFilter !== 'all' && supplierFilter !== '' && (
                       <Badge variant="secondary" className="bg-blue-100 text-blue-800">
                         Leverancier: {supplierFilterName || 'Gefilterd'}
+                      </Badge>
+                    )}
+                    {searchTerm && searchTerm !== '' && (
+                      <Badge variant="secondary" className="bg-blue-100 text-blue-800">
+                        Zoekterm: "{searchTerm}"
+                      </Badge>
+                    )}
+                    {stockStatusFilter && stockStatusFilter !== 'all' && (
+                      <Badge variant="secondary" className="bg-blue-100 text-blue-800">
+                        Status: {stockStatusFilter === 'in-stock' ? 'In Stock' : 
+                                stockStatusFilter === 'low-stock' ? 'Laag' : 
+                                stockStatusFilter === 'out-of-stock' ? 'Op' : stockStatusFilter}
+                      </Badge>
+                    )}
+                    {(minPriceFilter && minPriceFilter !== '') || (maxPriceFilter && maxPriceFilter !== '') && (
+                      <Badge variant="secondary" className="bg-blue-100 text-blue-800">
+                        Prijs: {minPriceFilter && `€${minPriceFilter}`}{minPriceFilter && maxPriceFilter && ' - '}{maxPriceFilter && `€${maxPriceFilter}`}
+                      </Badge>
+                    )}
+                    {(minStockFilter && minStockFilter !== '') || (maxStockFilter && maxStockFilter !== '') && (
+                      <Badge variant="secondary" className="bg-blue-100 text-blue-800">
+                        Stock: {minStockFilter && minStockFilter}{minStockFilter && maxStockFilter && ' - '}{maxStockFilter && maxStockFilter}
                       </Badge>
                     )}
                   </div>
@@ -839,8 +911,70 @@ export const StockList = () => {
                 activeFiltersCount={activeFilterCount}
               />
               
-              {/* Nieuw Product Knop voor Mobiel */}
-              <div className="mt-4">
+              {/* Kolom Zichtbaarheid en Nieuw Product Knoppen voor Mobiel */}
+              <div className="mt-4 space-y-2">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" className="w-full h-10">
+                      <Settings className="w-4 h-4 mr-2" />
+                      Kolommen Beheren
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-56">
+                    <DropdownMenuItem disabled className="font-semibold">
+                      Kolom Zichtbaarheid
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuCheckboxItem
+                      checked={columnVisibility.product}
+                      onCheckedChange={() => toggleColumnVisibility('product')}
+                    >
+                      Product
+                    </DropdownMenuCheckboxItem>
+                    <DropdownMenuCheckboxItem
+                      checked={columnVisibility.current}
+                      onCheckedChange={() => toggleColumnVisibility('current')}
+                    >
+                      Huidig Stock
+                    </DropdownMenuCheckboxItem>
+                    <DropdownMenuCheckboxItem
+                      checked={columnVisibility.minimum}
+                      onCheckedChange={() => toggleColumnVisibility('minimum')}
+                    >
+                      Minimum Stock
+                    </DropdownMenuCheckboxItem>
+                    <DropdownMenuCheckboxItem
+                      checked={columnVisibility.category}
+                      onCheckedChange={() => toggleColumnVisibility('category')}
+                    >
+                      Categorie
+                    </DropdownMenuCheckboxItem>
+                    <DropdownMenuCheckboxItem
+                      checked={columnVisibility.supplier}
+                      onCheckedChange={() => toggleColumnVisibility('supplier')}
+                    >
+                      Leverancier
+                    </DropdownMenuCheckboxItem>
+                    <DropdownMenuCheckboxItem
+                      checked={columnVisibility.purchasePrice}
+                      onCheckedChange={() => toggleColumnVisibility('purchasePrice')}
+                    >
+                      Aankoopprijs
+                    </DropdownMenuCheckboxItem>
+                    <DropdownMenuCheckboxItem
+                      checked={columnVisibility.salePrice}
+                      onCheckedChange={() => toggleColumnVisibility('salePrice')}
+                    >
+                      Verkoopprijs
+                    </DropdownMenuCheckboxItem>
+                    <DropdownMenuCheckboxItem
+                      checked={columnVisibility.status}
+                      onCheckedChange={() => toggleColumnVisibility('status')}
+                    >
+                      Status
+                    </DropdownMenuCheckboxItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
                 <Button 
                   onClick={() => setIsAddModalOpen(true)} 
                   className="w-full h-10 bg-blue-700 hover:bg-blue-700/80 text-white"
@@ -855,20 +989,36 @@ export const StockList = () => {
               <table className="min-w-full divide-y divide-gray-200 text-xs md:text-sm">
                 <thead className="bg-gray-50">
                   <tr>
-                    <th className="px-2 py-2 text-left font-medium text-gray-500 uppercase tracking-wider">Product</th>
-                    <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Huidig</th>
-                    <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Min.</th>
-                    <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Categorie</th>
-                    <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Leverancier</th>
-                    <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Aankoop</th>
-                    <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Verkoop</th>
-                    <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                    {columnVisibility.product && (
+                      <th className="px-2 py-2 text-left font-medium text-gray-500 uppercase tracking-wider">Product</th>
+                    )}
+                    {columnVisibility.current && (
+                      <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Huidig</th>
+                    )}
+                    {columnVisibility.minimum && (
+                      <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Min.</th>
+                    )}
+                    {columnVisibility.category && (
+                      <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Categorie</th>
+                    )}
+                    {columnVisibility.supplier && (
+                      <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Leverancier</th>
+                    )}
+                    {columnVisibility.purchasePrice && (
+                      <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Aankoop</th>
+                    )}
+                    {columnVisibility.salePrice && (
+                      <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Verkoop</th>
+                    )}
+                    {columnVisibility.status && (
+                      <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                    )}
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
                   {filteredProducts.length === 0 ? (
                     <tr>
-                      <td colSpan={8} className="px-2 py-4 text-center text-gray-500">
+                      <td colSpan={Object.values(columnVisibility).filter(Boolean).length} className="px-2 py-4 text-center text-gray-500">
                         {productsTyped.length === 0 ? 'Geen producten gevonden voor dit filiaal.' : 'Geen producten voldoen aan je filters.'}
                       </td>
                     </tr>
@@ -881,52 +1031,68 @@ export const StockList = () => {
                           className="hover:bg-gray-50 transition-colors cursor-pointer"
                           onClick={() => { setSelectedProduct(product); setIsProductActionModalOpen(true); }}
                         >
-                          <td className="px-2 py-2 whitespace-nowrap">
-                            <div className="flex items-center gap-2">
-                              {product.image_url ? (
-                                <img
-                                  src={product.image_url}
-                                  alt={`Productfoto van ${product.name} | voorraadbeheer`}
-                                  className="w-10 h-10 object-cover rounded border"
-                                />
-                              ) : (
-                                <div className="w-10 h-10 bg-gray-200 rounded border flex items-center justify-center text-[10px] text-gray-400">Geen</div>
-                              )}
-                              <div>
-                                <div className="font-medium text-gray-900 truncate max-w-[80px]">{product.name}</div>
-                                {product.description && (
-                                  <div className="text-[10px] text-gray-500 truncate max-w-[80px]">{product.description}</div>
+                          {columnVisibility.product && (
+                            <td className="px-2 py-2 whitespace-nowrap">
+                              <div className="flex items-center gap-2">
+                                {product.image_url ? (
+                                  <img
+                                    src={product.image_url}
+                                    alt={`Productfoto van ${product.name} | voorraadbeheer`}
+                                    className="w-10 h-10 object-cover rounded border"
+                                  />
+                                ) : (
+                                  <div className="w-10 h-10 bg-gray-200 rounded border flex items-center justify-center text-[10px] text-gray-400">Geen</div>
                                 )}
+                                <div>
+                                  <div className="font-medium text-gray-900 truncate max-w-[80px]">{product.name}</div>
+                                  {product.description && (
+                                    <div className="text-[10px] text-gray-500 truncate max-w-[80px]">{product.description}</div>
+                                  )}
+                                </div>
                               </div>
-                            </div>
-                          </td>
-                          <td className="px-2 py-2 text-center font-semibold">{product.quantity_in_stock}</td>
-                          <td className="px-2 py-2 text-center">{product.minimum_stock_level}</td>
-                          <td className="px-2 py-2 text-center">
-                            <span className="text-xs text-gray-600 truncate max-w-[60px] block">
-                              {product.category_name || '-'}
-                            </span>
-                          </td>
-                          <td className="px-2 py-2 text-center">
-                            <span className="text-xs text-gray-600 truncate max-w-[60px] block">
-                              {product.supplier_name || '-'}
-                            </span>
-                          </td>
-                          <td className="px-2 py-2 text-center">
-                            <span className="text-xs text-red-600">
-                              €{product.purchase_price?.toFixed(2) ?? '-'}
-                            </span>
-                          </td>
-                          <td className="px-2 py-2 text-center">
-                            <span className="text-xs text-green-600">
-                              €{product.sale_price?.toFixed(2) ?? '-'}
-                            </span>
-                          </td>
-                          <td className="px-2 py-2 text-center">
-                            <Badge variant={getStockStatusVariant(stockStatus)}>
-                              {stockStatus}
-                            </Badge>
-                          </td>
+                            </td>
+                          )}
+                          {columnVisibility.current && (
+                            <td className="px-2 py-2 text-center font-semibold">{product.quantity_in_stock}</td>
+                          )}
+                          {columnVisibility.minimum && (
+                            <td className="px-2 py-2 text-center">{product.minimum_stock_level}</td>
+                          )}
+                          {columnVisibility.category && (
+                            <td className="px-2 py-2 text-center">
+                              <span className="text-xs text-gray-600 truncate max-w-[60px] block">
+                                {product.category_name || '-'}
+                              </span>
+                            </td>
+                          )}
+                          {columnVisibility.supplier && (
+                            <td className="px-2 py-2 text-center">
+                              <span className="text-xs text-gray-600 truncate max-w-[60px] block">
+                                {product.supplier_name || '-'}
+                              </span>
+                            </td>
+                          )}
+                          {columnVisibility.purchasePrice && (
+                            <td className="px-2 py-2 text-center">
+                              <span className="text-xs text-red-600">
+                                €{product.purchase_price?.toFixed(2) ?? '-'}
+                              </span>
+                            </td>
+                          )}
+                          {columnVisibility.salePrice && (
+                            <td className="px-2 py-2 text-center">
+                              <span className="text-xs text-green-600">
+                                €{product.sale_price?.toFixed(2) ?? '-'}
+                              </span>
+                            </td>
+                          )}
+                          {columnVisibility.status && (
+                            <td className="px-2 py-2 text-center">
+                              <Badge variant={getStockStatusVariant(stockStatus)}>
+                                {stockStatus}
+                              </Badge>
+                            </td>
+                          )}
                         </tr>
                       );
                     })
@@ -1092,7 +1258,7 @@ export const StockList = () => {
   // Desktop table view
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center">
+      <div className="flex justify-left items-center">
         <div className="flex gap-2">
           {isAdmin && selectedProductIds.length > 0 && (
             <Button variant="destructive" onClick={handleBulkDelete}>
@@ -1101,6 +1267,74 @@ export const StockList = () => {
           )}
         </div>
         <div className="flex gap-2">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="flex items-center gap-2">
+                <Settings className="w-4 h-4" />
+                Kolommen
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuItem disabled className="font-semibold">
+                Kolom Zichtbaarheid
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuCheckboxItem
+                checked={columnVisibility.product}
+                onCheckedChange={() => toggleColumnVisibility('product')}
+              >
+                Product
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem
+                checked={columnVisibility.current}
+                onCheckedChange={() => toggleColumnVisibility('current')}
+              >
+                Huidig Stock
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem
+                checked={columnVisibility.minimum}
+                onCheckedChange={() => toggleColumnVisibility('minimum')}
+              >
+                Minimum Stock
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem
+                checked={columnVisibility.category}
+                onCheckedChange={() => toggleColumnVisibility('category')}
+              >
+                Categorie
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem
+                checked={columnVisibility.supplier}
+                onCheckedChange={() => toggleColumnVisibility('supplier')}
+              >
+                Leverancier
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem
+                checked={columnVisibility.purchasePrice}
+                onCheckedChange={() => toggleColumnVisibility('purchasePrice')}
+              >
+                Aankoopprijs
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem
+                checked={columnVisibility.salePrice}
+                onCheckedChange={() => toggleColumnVisibility('salePrice')}
+              >
+                Verkoopprijs
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem
+                checked={columnVisibility.status}
+                onCheckedChange={() => toggleColumnVisibility('status')}
+              >
+                Status
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem
+                checked={columnVisibility.actions}
+                onCheckedChange={() => toggleColumnVisibility('actions')}
+              >
+                Acties
+              </DropdownMenuCheckboxItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
           <Button onClick={() => setIsAddModalOpen(true)} className="flex items-center gap-2">
             <Plus className="w-4 h-4" />
             Toevoegen
@@ -1109,21 +1343,50 @@ export const StockList = () => {
       </div>
 
       {/* Filter Header */}
-      {(categoryFilter || supplierFilter) && (
+      {((categoryFilter && categoryFilter !== 'all' && categoryFilter !== '') || 
+        (supplierFilter && supplierFilter !== 'all' && supplierFilter !== '') ||
+        (searchTerm && searchTerm !== '') ||
+        (stockStatusFilter && stockStatusFilter !== 'all') ||
+        (minPriceFilter && minPriceFilter !== '') ||
+        (maxPriceFilter && maxPriceFilter !== '') ||
+        (minStockFilter && minStockFilter !== '') ||
+        (maxStockFilter && maxStockFilter !== '')) && (
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4 filter-header">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <span className="text-sm font-medium text-blue-900">
                 Gefilterd op:
               </span>
-              {categoryFilter && (
+              {categoryFilter && categoryFilter !== 'all' && categoryFilter !== '' && (
                 <Badge variant="secondary" className="bg-blue-100 text-blue-800">
                   Categorie: {categoryFilterName || 'Gefilterd'}
                 </Badge>
               )}
-              {supplierFilter && (
+              {supplierFilter && supplierFilter !== 'all' && supplierFilter !== '' && (
                 <Badge variant="secondary" className="bg-blue-100 text-blue-800">
                   Leverancier: {supplierFilterName || 'Gefilterd'}
+                </Badge>
+              )}
+              {searchTerm && searchTerm !== '' && (
+                <Badge variant="secondary" className="bg-blue-100 text-blue-800">
+                  Zoekterm: "{searchTerm}"
+                </Badge>
+              )}
+              {stockStatusFilter && stockStatusFilter !== 'all' && (
+                <Badge variant="secondary" className="bg-blue-100 text-blue-800">
+                  Status: {stockStatusFilter === 'in-stock' ? 'In Stock' : 
+                          stockStatusFilter === 'low-stock' ? 'Laag' : 
+                          stockStatusFilter === 'out-of-stock' ? 'Op' : stockStatusFilter}
+                </Badge>
+              )}
+              {(minPriceFilter && minPriceFilter !== '') || (maxPriceFilter && maxPriceFilter !== '') && (
+                <Badge variant="secondary" className="bg-blue-100 text-blue-800">
+                  Prijs: {minPriceFilter && `€${minPriceFilter}`}{minPriceFilter && maxPriceFilter && ' - '}{maxPriceFilter && `€${maxPriceFilter}`}
+                </Badge>
+              )}
+              {(minStockFilter && minStockFilter !== '') || (maxStockFilter && maxStockFilter !== '') && (
+                <Badge variant="secondary" className="bg-blue-100 text-blue-800">
+                  Stock: {minStockFilter && minStockFilter}{minStockFilter && maxStockFilter && ' - '}{maxStockFilter && maxStockFilter}
                 </Badge>
               )}
             </div>
@@ -1199,39 +1462,60 @@ export const StockList = () => {
                     />
                   </th>
                 )}
-                <th className="px-4 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Product
-                </th>
-                <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Huidig
-                </th>
-                <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Minimum
-                </th>
-                <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Categorie
-                </th>
-                <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Leverancier
-                </th>
-                <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Aankoopprijs
-                </th>
-                <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Verkoopprijs
-                </th>
-                <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Status
-                </th>
-                <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Acties
-                </th>
+                {columnVisibility.product && (
+                  <th className="px-4 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Product
+                  </th>
+                )}
+                {columnVisibility.current && (
+                  <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Huidig
+                  </th>
+                )}
+                {columnVisibility.minimum && (
+                  <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Minimum
+                  </th>
+                )}
+                {columnVisibility.category && (
+                  <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Categorie
+                  </th>
+                )}
+                {columnVisibility.supplier && (
+                  <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Leverancier
+                  </th>
+                )}
+                {columnVisibility.purchasePrice && (
+                  <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Aankoopprijs
+                  </th>
+                )}
+                {columnVisibility.salePrice && (
+                  <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Verkoopprijs
+                  </th>
+                )}
+                {columnVisibility.status && (
+                  <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Status
+                  </th>
+                )}
+                {columnVisibility.actions && (
+                  <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Acties
+                  </th>
+                )}
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {filteredProducts.length === 0 ? (
                 <tr>
-                  <td colSpan={isAdmin ? 11 : 10} className="px-4 py-2 text-center text-gray-500">
+                  <td colSpan={
+                    (isAdmin ? 1 : 0) + 
+                    Object.values(columnVisibility).filter(Boolean).length
+                  } className="px-4 py-2 text-center text-gray-500">
                     {productsTyped.length === 0 ? 'No products found for this branch.' : 'No products match your filters.'}
                   </td>
                 </tr>
@@ -1255,72 +1539,89 @@ export const StockList = () => {
                           />
                         </td>
                       )}
-                      <td className="px-4 py-2 whitespace-nowrap">
-                        <div className="flex items-center gap-4">
-                          {product.image_url ? (
-                            <img
-                              src={product.image_url}
-                              alt={`Productfoto van ${product.name} | voorraadbeheer`}
-                              className="w-16 h-16 object-cover rounded border cursor-zoom-in"
-                              onClick={e => { e.stopPropagation(); setPreviewImageUrl(product.image_url!); setIsImagePreviewOpen(true); }}
-                            />
-                          ) : (
-                            <div className="w-16 h-16 bg-gray-200 rounded border flex items-center justify-center text-xs text-gray-400">Geen Foto</div>
-                          )}
-                          <div>
-                            <div className="text-sm font-medium text-gray-900">{product.name}</div>
-                            {product.description && (
-                              <div className="text-xs text-gray-500 max-w-xs truncate pr-20">
-                                {product.description}
-                              </div>
+                      {columnVisibility.product && (
+                        <td className="px-4 py-2 whitespace-nowrap">
+                          <div className="flex items-center gap-4">
+                            {product.image_url ? (
+                              <img
+                                src={product.image_url}
+                                alt={`Productfoto van ${product.name} | voorraadbeheer`}
+                                className="w-16 h-16 object-cover rounded border cursor-zoom-in"
+                                onClick={e => { e.stopPropagation(); setPreviewImageUrl(product.image_url!); setIsImagePreviewOpen(true); }}
+                              />
+                            ) : (
+                              <div className="w-16 h-16 bg-gray-200 rounded border flex items-center justify-center text-xs text-gray-400">Geen Foto</div>
                             )}
+                            <div>
+                              <div className="text-sm font-medium text-gray-900">{product.name}</div>
+                              {product.description && (
+                                <div className="text-xs text-gray-500 max-w-xs truncate pr-20">
+                                  {product.description}
+                                </div>
+                              )}
+                            </div>
                           </div>
-                        </div>
-                      </td>
-                      <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-center">
-                        {product.quantity_in_stock}
-                      </td>
-                      <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 text-center">
-                        {product.minimum_stock_level}
-                      </td>
-                      <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-600 text-center">
-                        {product.category_name || '-'}
-                      </td>
-                      <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-600 text-center">
-                        {product.supplier_name || '-'}
-                      </td>
-                      <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-blue-600 text-center">
-                        <span className="text-red-600">€{product.purchase_price?.toFixed(2) ?? '-'}</span>
-                      </td>
-                      <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-orange-600 text-center">
-                        <span className="text-green-600">€{product.sale_price?.toFixed(2) ?? '-'}</span>
-                      </td>
-                      <td className="px-4 py-2 whitespace-nowrap text-center">
-                        <Badge variant={getStockStatusVariant(stockStatus)}>
-                          {stockStatus}
-                        </Badge>
-                      </td>
-                      <td className="px-4 py-1 whitespace-nowrap text-sm font-medium text-center">
-                        <div className="flex space-x-2 justify-center">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={(e) => { e.stopPropagation(); handleStockAction(product, 'in'); }}
-                            className="text-green-600 bg-green-100 border border-green-600 hover:text-white hover:bg-green-600 hover:border-green-600"
-                          >
-                            <Plus className="h-4 w-4" />
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={(e) => { e.stopPropagation(); handleStockAction(product, 'out'); }}
-                            className="text-red-600 bg-red-100 border border-red-600 hover:text-white hover:bg-red-600 hover:border-red-600"
-                          >
-                            <Minus className="h-4 w-4" />
-                          </Button>
-
-                        </div>
-                      </td>
+                        </td>
+                      )}
+                      {columnVisibility.current && (
+                        <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-center">
+                          {product.quantity_in_stock}
+                        </td>
+                      )}
+                      {columnVisibility.minimum && (
+                        <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 text-center">
+                          {product.minimum_stock_level}
+                        </td>
+                      )}
+                      {columnVisibility.category && (
+                        <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-600 text-center">
+                          {product.category_name || '-'}
+                        </td>
+                      )}
+                      {columnVisibility.supplier && (
+                        <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-600 text-center">
+                          {product.supplier_name || '-'}
+                        </td>
+                      )}
+                      {columnVisibility.purchasePrice && (
+                        <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-blue-600 text-center">
+                          <span className="text-red-600">€{product.purchase_price?.toFixed(2) ?? '-'}</span>
+                        </td>
+                      )}
+                      {columnVisibility.salePrice && (
+                        <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-orange-600 text-center">
+                          <span className="text-green-600">€{product.sale_price?.toFixed(2) ?? '-'}</span>
+                        </td>
+                      )}
+                      {columnVisibility.status && (
+                        <td className="px-4 py-2 whitespace-nowrap text-center">
+                          <Badge variant={getStockStatusVariant(stockStatus)}>
+                            {stockStatus}
+                          </Badge>
+                        </td>
+                      )}
+                      {columnVisibility.actions && (
+                        <td className="px-4 py-1 whitespace-nowrap text-sm font-medium text-center">
+                          <div className="flex space-x-2 justify-center">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={(e) => { e.stopPropagation(); handleStockAction(product, 'in'); }}
+                              className="text-green-600 bg-green-100 border border-green-600 hover:text-white hover:bg-green-600 hover:border-green-600"
+                            >
+                              <Plus className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={(e) => { e.stopPropagation(); handleStockAction(product, 'out'); }}
+                              className="text-red-600 bg-red-100 border border-red-600 hover:text-white hover:bg-red-600 hover:border-red-600"
+                            >
+                              <Minus className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </td>
+                      )}
                     </tr>
                   );
                 })
