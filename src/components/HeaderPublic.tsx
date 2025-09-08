@@ -1,10 +1,10 @@
 
-import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Package, ChevronDown, Users, Star, HelpCircle, BarChart3, X } from 'lucide-react';
+import { Package, X } from 'lucide-react';
 import { NotificationButton } from './NotificationButton';
 import { useNotifications } from '../hooks/useNotifications';
 import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
 interface HeaderProps {
   onLoginClick?: () => void;

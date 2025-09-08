@@ -31,6 +31,7 @@ interface Product {
   supplier_id?: string | null;
   category_name?: string | null;
   supplier_name?: string | null;
+  location?: string | null;
 }
 
 interface EditProductInfoModalProps {
@@ -76,6 +77,7 @@ export const EditProductInfoModal = ({
     supplier_id: product.supplier_id || '',
     category_name: product.category_name || '',
     supplier_name: product.supplier_name || '',
+    location: product.location || '',
   });
 
   useEffect(() => {
@@ -92,6 +94,7 @@ export const EditProductInfoModal = ({
         supplier_id: product.supplier_id || '',
         category_name: product.category_name || '',
         supplier_name: product.supplier_name || '',
+        location: product.location || '',
       });
       setImagePreview(product.image_url || null);
       setProductImage(null);
@@ -311,6 +314,7 @@ export const EditProductInfoModal = ({
           supplier_id: supplierId,
           category_name: form.category_name.trim() || null,
           supplier_name: form.supplier_name.trim() || null,
+          location: form.location.trim() || null,
           updated_at: new Date().toISOString(),
         })
         .eq('id', product.id);
@@ -342,7 +346,7 @@ export const EditProductInfoModal = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className={`w-full max-w-full mx-auto p-0 ${isMobile ? 'h-full max-h-full rounded-none' : 'md:w-auto md:max-w-lg md:p-6 md:rounded-lg'}`}>
+      <DialogContent className={`w-full max-w-full mx-auto p-0 ${isMobile ? 'h-full max-h-full rounded-none' : ' md:w-auto md:max-w-lg md:p-6 md:rounded-lg'}`}>
         <DialogHeader className={`${isMobile ? 'p-4 border-b' : 'p-0'}`}>
           {isMobile && onBack && (
             <Button
@@ -368,6 +372,10 @@ export const EditProductInfoModal = ({
             <div className="mb-4">
               <Label>Beschrijving</Label>
               <Input name="description" value={form.description} onChange={handleChange} disabled={loading} />
+            </div>
+            <div className="mb-4">
+              <Label>Locatie</Label>
+              <Input name="location" value={form.location} onChange={handleChange} disabled={loading} placeholder="Voer locatie in (bijv. A1, Rek 3, etc.)" />
             </div>
             <div className="mb-4">
               <div className={`grid ${isMobile ? 'grid-cols-1 gap-4' : 'grid-cols-2 gap-4'}`}>

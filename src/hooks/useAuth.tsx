@@ -9,8 +9,8 @@ import { supabase } from '@/integrations/supabase/client'; // getypeerd met Data
 import type { User, AuthError, Session } from '@supabase/supabase-js';
 import type { Database } from '@/integrations/supabase/types';
 
-// 1. Add 'blocked' to the UserProfile type
-export type UserProfile = Database['public']['Tables']['profiles']['Row'] & { blocked?: boolean; onboarding_completed?: boolean };
+// UserProfile type from database schema
+export type UserProfile = Database['public']['Tables']['profiles']['Row'];
 
 interface AuthContextType {
   user: User | null;
@@ -49,7 +49,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   >(null);
   const [loading, setLoading] = useState(true);
 
-  // 2. When fetching the user profile, make sure 'blocked' is included
+  // Fetch user profile from database
   const fetchUserProfile = async (
     userId: string
   ): Promise<UserProfile | null> => {
@@ -64,6 +64,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         console.error('Error fetching user profile:', error.message);
         return null;
       }
+      
       return data as UserProfile;
     } catch (err) {
       console.error('Unexpected error fetching user profile:', err);
@@ -210,6 +211,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         first_name: firstName,
         last_name: lastName,
         role,
+        is_owner: true, // Nieuwe gebruikers zijn standaard eigenaar
         updated_at: new Date().toISOString(),
       }, { onConflict: 'id' }); // Zorgt dat upsert op basis van primary key 'id' werkt
       

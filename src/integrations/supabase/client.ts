@@ -1,5 +1,5 @@
 // BlogPost CRUD functions
-import type { BlogPost, BlogAnalytics, BlogAnalyticsSummary } from './types';
+import type { BlogPost, BlogAnalytics, BlogAnalyticsSummary, AuthConversionEvent, AuthConversionAnalytics, AuthConversionFunnel } from './types';
 
 export async function fetchBlogPosts(): Promise<BlogPost[]> {
   const { data, error } = await supabase.from('blogposts').select('*').order('date_published', { ascending: false });
@@ -71,11 +71,11 @@ function getSafeLocalStorage() {
     // localStorage is not available (private mode, security, etc.)
   }
   // Fallback: in-memory storage (not persistent)
-  let store = {};
+  let store: Record<string, string> = {};
   return {
-    getItem: (key) => (key in store ? store[key] : null),
-    setItem: (key, value) => { store[key] = value; },
-    removeItem: (key) => { delete store[key]; },
+    getItem: (key: string) => (key in store ? store[key] : null),
+    setItem: (key: string, value: string) => { store[key] = value; },
+    removeItem: (key: string) => { delete store[key]; },
     clear: () => { store = {}; },
   };
 }
@@ -101,14 +101,14 @@ export const supabase = createClient<Database>(
 );
 
 // Listen for auth state changes
-supabase.auth.onAuthStateChange((event, session) => {
+supabase.auth.onAuthStateChange(() => {
   // Auth state change logging removed for production security
 });
 
 // Export a function to check connection
 export const checkSupabaseConnection = async () => {
   try {
-    const { data, error } = await supabase.from('profiles').select('count');
+    const { error } = await supabase.from('profiles').select('count');
     if (error) {
       console.error('Supabase connection test failed:', error);
       return false;
@@ -170,6 +170,90 @@ export async function getBlogAnalyticsBySlug(slug: string): Promise<BlogAnalytic
     return data || [];
   } catch (error) {
     console.error('Error fetching blog analytics by slug:', error);
+    return [];
+  }
+}
+
+// Auth Conversion Tracking functions
+export async function trackAuthConversionEvent(event: Omit<AuthConversionEvent, 'id' | 'created_at' | 'updated_at'>): Promise<void> {
+  try {
+    const { error } = await supabase.from('auth_conversion_events').insert([event]);
+    if (error) {
+      console.error('Failed to track auth conversion event:', error);
+    }
+  } catch (error) {
+    console.error('Error tracking auth conversion event:', error);
+  }
+}
+
+export async function getAuthConversionAnalytics(startDate?: string, endDate?: string): Promise<AuthConversionAnalytics[]> {
+  try {
+    let query = supabase.from('auth_conversion_analytics').select('*');
+    
+    if (startDate) {
+      query = query.gte('date', startDate);
+    }
+    
+    if (endDate) {
+      query = query.lte('date', endDate);
+    }
+    
+    const { data, error } = await query.order('date', { ascending: false });
+    
+    if (error) {
+      console.error('Failed to fetch auth conversion analytics:', error);
+      return [];
+    }
+    
+    return data || [];
+  } catch (error) {
+    console.error('Error fetching auth conversion analytics:', error);
+    return [];
+  }
+}
+
+export async function getAuthConversionFunnel(startDate?: string, endDate?: string): Promise<AuthConversionFunnel[]> {
+  try {
+    let query = supabase.from('auth_conversion_funnel').select('*');
+    
+    if (startDate) {
+      query = query.gte('date', startDate);
+    }
+    
+    if (endDate) {
+      query = query.lte('date', endDate);
+    }
+    
+    const { data, error } = await query.order('date', { ascending: false });
+    
+    if (error) {
+      console.error('Failed to fetch auth conversion funnel:', error);
+      return [];
+    }
+    
+    return data || [];
+  } catch (error) {
+    console.error('Error fetching auth conversion funnel:', error);
+    return [];
+  }
+}
+
+export async function getAuthConversionEventsBySession(sessionId: string): Promise<AuthConversionEvent[]> {
+  try {
+    const { data, error } = await supabase
+      .from('auth_conversion_events')
+      .select('*')
+      .eq('session_id', sessionId)
+      .order('created_at', { ascending: true });
+    
+    if (error) {
+      console.error('Failed to fetch auth conversion events by session:', error);
+      return [];
+    }
+    
+    return data || [];
+  } catch (error) {
+    console.error('Error fetching auth conversion events by session:', error);
     return [];
   }
 }

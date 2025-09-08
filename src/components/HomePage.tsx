@@ -4,8 +4,13 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+<<<<<<< HEAD
 import { Package, BarChart3, Users, Shield, Check, TrendingUp, Zap, Star, Clock, Euro, Target, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
+=======
+import { Package, BarChart3, Users, Shield, TrendingUp, Zap, Clock, Euro, Target, ChevronLeft, ChevronRight, Star } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+>>>>>>> 128516f429572808dc7f24a60607ad6c4aba2b77
 import SEO from './SEO';
 import { motion } from 'framer-motion';
 import { usePageRefresh } from '@/hooks/usePageRefresh';

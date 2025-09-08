@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { AlertCircle, Camera, Smartphone, CheckCircle, XCircle, Info, Play, Square } from 'lucide-react';
+import { AlertCircle, Camera, Smartphone, CheckCircle, XCircle, Info, Play, Square, ArrowLeft } from 'lucide-react';
 import { useMobile } from '@/hooks/use-mobile';
 import { BrowserMultiFormatReader } from '@zxing/library';
 
@@ -16,6 +16,7 @@ export const CameraDebugInfo: React.FC = () => {
   const [testVideo, setTestVideo] = useState<HTMLVideoElement | null>(null);
   const [isTesting, setIsTesting] = useState(false);
   const [testResults, setTestResults] = useState<string[]>([]);
+  const [selectedCamera, setSelectedCamera] = useState<string>('');
 
   useEffect(() => {
     const checkDevices = async () => {
@@ -24,6 +25,13 @@ export const CameraDebugInfo: React.FC = () => {
           const deviceList = await navigator.mediaDevices.enumerateDevices();
           setDevices(deviceList);
           addTestResult(`Gevonden apparaten: ${deviceList.length} totaal`);
+          
+          const videoDevices = deviceList.filter(device => device.kind === 'videoinput');
+          addTestResult(`Video apparaten: ${videoDevices.length}`);
+          
+          videoDevices.forEach((device, index) => {
+            addTestResult(`Camera ${index + 1}: ${device.label || 'Onbekende camera'}`);
+          });
         }
       } catch (error) {
         console.error('Error enumerating devices:', error);
@@ -42,6 +50,7 @@ export const CameraDebugInfo: React.FC = () => {
             microphone: microphonePermission.state
           });
           addTestResult(`Camera permissie: ${cameraPermission.state}`);
+          addTestResult(`Microfoon permissie: ${microphonePermission.state}`);
         }
       } catch (error) {
         console.error('Error checking permissions:', error);
@@ -62,12 +71,17 @@ export const CameraDebugInfo: React.FC = () => {
       setIsTesting(true);
       addTestResult('Start camera test...');
       
-      const stream = await navigator.mediaDevices.getUserMedia({ 
-        video: { 
-          width: { ideal: 1280 },
-          height: { ideal: 720 }
-        } 
-      });
+      const constraints = {
+        video: {
+          width: { ideal: 1280, min: 640 },
+          height: { ideal: 720, min: 480 },
+          facingMode: isMobile ? 'environment' : 'user'
+        }
+      };
+      
+      addTestResult(`Camera constraints: ${JSON.stringify(constraints)}`);
+      
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
       
       setTestStream(stream);
       addTestResult('Camera stream verkregen!');
@@ -78,9 +92,27 @@ export const CameraDebugInfo: React.FC = () => {
         addTestResult('Video element gestart');
       }
       
+      // Get stream info
+      const videoTrack = stream.getVideoTracks()[0];
+      if (videoTrack) {
+        const settings = videoTrack.getSettings();
+        addTestResult(`Video resolutie: ${settings.width}x${settings.height}`);
+        addTestResult(`Video framerate: ${settings.frameRate || 'onbekend'}`);
+        addTestResult(`Camera device: ${videoTrack.label}`);
+        setSelectedCamera(videoTrack.label);
+      }
+      
     } catch (error: any) {
       console.error('Camera test failed:', error);
       addTestResult(`Camera test gefaald: ${error.name} - ${error.message}`);
+      
+      if (error.name === 'NotAllowedError') {
+        addTestResult('Tip: Geef camera toegang in browser instellingen');
+      } else if (error.name === 'NotFoundError') {
+        addTestResult('Tip: Geen camera gevonden op dit apparaat');
+      } else if (error.name === 'NotReadableError') {
+        addTestResult('Tip: Camera wordt al gebruikt door een andere app');
+      }
     } finally {
       setIsTesting(false);
     }
@@ -107,6 +139,14 @@ export const CameraDebugInfo: React.FC = () => {
       const devices = await navigator.mediaDevices.enumerateDevices();
       const videoDevices = devices.filter(device => device.kind === 'videoinput');
       addTestResult(`ZXing kan ${videoDevices.length} video apparaten vinden`);
+      
+      // Test specific camera if selected
+      if (selectedCamera) {
+        const device = videoDevices.find(d => d.label === selectedCamera);
+        if (device) {
+          addTestResult(`Test camera: ${device.label}`);
+        }
+      }
       
     } catch (error: any) {
       addTestResult(`ZXing test gefaald: ${error.message}`);
@@ -179,7 +219,8 @@ export const CameraDebugInfo: React.FC = () => {
                     <div className="text-xs text-blue-600">
                       {device.label.toLowerCase().includes('back') || 
                        device.label.toLowerCase().includes('environment') || 
-                       device.label.toLowerCase().includes('achter') ? '🔙 Achtercamera' : '📱 Voorkamera'}
+                       device.label.toLowerCase().includes('achter') || 
+                       device.label.toLowerCase().includes('rear') ? '🔙 Achtercamera' : '📱 Voorkamera'}
                     </div>
                   )}
                 </div>
@@ -202,6 +243,11 @@ export const CameraDebugInfo: React.FC = () => {
                 playsInline
                 muted
               />
+              {selectedCamera && (
+                <div className="absolute top-2 left-2 bg-blue-600 text-white px-2 py-1 rounded text-xs">
+                  {selectedCamera}
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -263,6 +309,9 @@ export const CameraDebugInfo: React.FC = () => {
                   <li>• Zorg dat je HTTPS gebruikt (niet HTTP)</li>
                   <li>• Probeer de pagina te verversen na het geven van toestemming</li>
                   <li>• Sluit andere apps die de camera gebruiken</li>
+                  {!isSafari && (
+                    <li className="font-bold text-red-600">⚠️ Je gebruikt niet Safari - dit kan problemen veroorzaken</li>
+                  )}
                 </ul>
               </div>
             </div>
@@ -281,6 +330,8 @@ export const CameraDebugInfo: React.FC = () => {
                 <li>• Sluit andere apps die de camera gebruiken</li>
                 <li>• Probeer de browser te verversen</li>
                 <li>• Controleer browser instellingen voor camera toegang</li>
+                <li>• Houd de camera ongeveer 10-15cm van de barcode</li>
+                <li>• Zorg voor goede belichting</li>
               </ul>
             </div>
           </div>

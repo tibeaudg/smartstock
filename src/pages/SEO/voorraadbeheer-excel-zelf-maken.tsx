@@ -346,7 +346,7 @@ export default function VoorraadbeheerExcelZelfMaken() {
         "@type": "Article",
         "headline": "Voorraadbeheer Excel Zelf Maken - Stapsgewijze Handleiding",
         "description": "Leer hoe je voorraadbeheer excel zelf kunt maken. Stapsgewijze handleiding met formules, functies en templates. Gratis tutorial voor beginners.",
-        "image": "https://www.stockflow.be/optimized/Inventory-Management.png",
+        "image": "https://www.stockflow.be/logo.png",
         "author": {
           "@type": "Organization",
           "name": "stockflow"

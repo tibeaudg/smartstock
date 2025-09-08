@@ -15,6 +15,8 @@ import { OnboardingModal } from '@/components/onboarding/OnboardingModal';
 import { AdminChatList } from '@/components/AdminChatList';
 import AdminCMS from '../components/AdminCMS';
 import BlogAnalytics from '../components/admin/BlogAnalytics';
+import { AuthConversionAnalytics } from '@/components/analytics/AuthConversionAnalytics';
+import { useNavigate } from 'react-router-dom';
 
 // Gebruikersbeheer types
 interface UserProfile {
@@ -36,6 +38,7 @@ interface UserStats {
   branchCount: number;
   linkedUserCount: number;
   licenseCost: number;
+  statsLastUpdated?: string;
 }
 
 // Plan informatie voor prijsberekening
@@ -47,7 +50,7 @@ const plans = {
 };
 
 // Simuleer de prijsberekening voor een gebruiker
-function calculateUserLicenseCost(planId: string | null, stats: Omit<UserStats, 'userId' | 'licenseCost'>): number {
+function calculateUserLicenseCost(planId: string | null, stats: Omit<UserStats, 'userId' | 'licenseCost' | 'statsLastUpdated'>): number {
   const plan = plans[planId as keyof typeof plans] || plans.free;
   let price = plan.price;
   
@@ -102,30 +105,56 @@ function calculateUserStats(users: UserProfile[]) {
 
 async function fetchUserStats(userId: string): Promise<UserStats> {
   try {
-    // Haal producten op voor deze gebruiker
-    const { count: productCount } = await supabase
+    // Gebruik de database functie get_admin_branches om alle filialen en gebruikers op te halen
+    const { data: adminBranches, error: branchesError } = await supabase.rpc('get_admin_branches', {
+      admin_id: userId
+    });
+
+    if (branchesError) throw branchesError;
+
+    // Als gebruiker geen filialen heeft, return 0 voor alles
+    if (!adminBranches || adminBranches.length === 0) {
+      return {
+        userId,
+        productCount: 0,
+        branchCount: 0,
+        linkedUserCount: 0,
+        licenseCost: 0,
+        statsLastUpdated: new Date().toISOString()
+      };
+    }
+
+    // Tel alle producten in alle filialen van deze gebruiker
+    const branchIds = adminBranches.map(b => b.branch_id);
+    const { count: productCount, error: productsError } = await supabase
       .from('products')
       .select('*', { count: 'exact', head: true })
-      .eq('user_id', userId);
+      .in('branch_id', branchIds);
 
-    // Haal filialen op voor deze gebruiker
-    const { count: branchCount } = await supabase
-      .from('branches')
-      .select('*', { count: 'exact', head: true })
-      .eq('user_id', userId);
+    if (productsError) throw productsError;
 
-    // Haal gelinkte gebruikers op (branch_users waar deze gebruiker admin is)
-    const { count: linkedUserCount } = await supabase
+    // Tel alle unieke gebruikers die toegang hebben tot de filialen van deze gebruiker
+    const { data: linkedUsers, error: linkedUsersError } = await supabase
       .from('branch_users')
-      .select('*', { count: 'exact', head: true })
-      .eq('user_id', userId);
+      .select('user_id')
+      .in('branch_id', branchIds);
+
+    if (linkedUsersError) throw linkedUsersError;
+
+    // Tel unieke gebruikers (exclusief de huidige gebruiker)
+    const uniqueLinkedUsers = new Set(
+      linkedUsers
+        ?.map(u => u.user_id)
+        .filter(id => id !== userId && id !== null)
+    );
 
     const stats = {
       userId,
       productCount: productCount || 0,
-      branchCount: branchCount || 0,
-      linkedUserCount: linkedUserCount || 0,
-      licenseCost: 0
+      branchCount: adminBranches.length,
+      linkedUserCount: uniqueLinkedUsers.size,
+      licenseCost: 0,
+      statsLastUpdated: new Date().toISOString()
     };
 
     // Bereken licentie kosten
@@ -151,7 +180,8 @@ async function fetchUserStats(userId: string): Promise<UserStats> {
       productCount: 0,
       branchCount: 0,
       linkedUserCount: 0,
-      licenseCost: 0
+      licenseCost: 0,
+      statsLastUpdated: new Date().toISOString()
     };
   }
 }
@@ -167,7 +197,8 @@ async function blockUser(id: string, blocked: boolean) {
 export default function AdminPage() {
   const { user, userProfile } = useAuth();
   const { isMobile } = useMobile();
-  const [activeTab, setActiveTab] = useState<'users' | 'features' | 'onboarding' | 'chats' | 'notifications' | 'blogcms' | 'bloganalytics'>('users');
+  const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState<'users' | 'features' | 'onboarding' | 'chats' | 'notifications' | 'blogcms' | 'bloganalytics' | 'conversionanalytics'>('users');
   const [selectedUser, setSelectedUser] = useState<UserProfile | null>(null);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [companyTypes, setCompanyTypes] = useState<Record<string, { type: string; custom_type: string | null }>>({});
@@ -175,6 +206,13 @@ export default function AdminPage() {
   
   // Gebruik de page refresh hook
   usePageRefresh();
+  
+  // Toegangscontrole - alleen eigenaren kunnen de admin pagina bekijken
+  if (!userProfile || userProfile.is_owner !== true) {
+    // Redirect naar dashboard als gebruiker geen eigenaar is
+    navigate('/dashboard');
+    return null;
+  }
   
   // Gebruikersbeheer
   const { data: users = [], isLoading: loadingUsers } = useQuery({
@@ -244,13 +282,15 @@ export default function AdminPage() {
     mutationFn: ({ id, blocked }: { id: string; blocked: boolean }) => blockUser(id, blocked),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['userProfiles'] }),
   });
-  const sidebarNavItems: { id: 'users' | 'features' | 'onboarding' | 'chats' | 'notifications' | 'blogcms' | 'bloganalytics'; label: string }[] = [
+  const sidebarNavItems: { id: 'users' | 'features' | 'onboarding' | 'chats' | 'notifications' | 'blogcms' | 'bloganalytics' | 'conversionanalytics'; label: string }[] = [
   { id: 'users', label: 'Gebruikersbeheer' },
   { id: 'features', label: 'Feature Management' },
   { id: 'onboarding', label: 'Onboarding Antwoorden' },
   { id: 'chats', label: 'Chats' },
   { id: 'notifications', label: 'Meldingen' },
   { id: 'blogcms', label: 'Blogpost CMS' },
+  { id: 'bloganalytics', label: 'Blog Analytics' },
+  { id: 'conversionanalytics', label: 'Conversie Analytics' },
 ];
 
   // Real-time updates voor admin data
@@ -386,6 +426,9 @@ export default function AdminPage() {
                 </CardContent>
               </Card>
             )}
+            {activeTab === 'conversionanalytics' && (
+              <AuthConversionAnalytics />
+            )}
             {activeTab === 'notifications' && (
               <AdminNotificationManager />
             )}
@@ -492,12 +535,13 @@ export default function AdminPage() {
                             <th className="px-4 py-2">Geblokkeerd</th>
                             <th className="px-4 py-2">Aangemaakt</th>
                             <th className="px-4 py-2">Laatste login</th>
+                            <th className="px-4 py-2">Laatste update</th>
                             <th className="px-4 py-2">Acties</th>
                           </tr>
                         </thead>
                         <tbody>
                           {users.length === 0 ? (
-                            <tr><td colSpan={13} className="text-center py-4">Geen gebruikers gevonden.</td></tr>
+                            <tr><td colSpan={14} className="text-center py-4">Geen gebruikers gevonden.</td></tr>
                           ) : users.map((user) => {
                             const stats = userStats.find(s => s.userId === user.id);
                             return (
@@ -522,6 +566,9 @@ export default function AdminPage() {
                                 <td className="px-4 py-2">{user.blocked ? 'Ja' : 'Nee'}</td>
                                 <td className="px-4 py-2">{new Date(user.created_at).toLocaleDateString('nl-BE')}</td>
                                 <td className="px-4 py-2">{user.last_login ? new Date(user.last_login).toLocaleString('nl-BE') : '-'}</td>
+                                <td className="px-4 py-2 text-xs">
+                                  {loadingStats ? <Loader2 className="w-4 h-4 animate-spin mx-auto" /> : stats?.statsLastUpdated ? new Date(stats.statsLastUpdated).toLocaleString('nl-BE') : '-'}
+                                </td>
                                 <td className="px-4 py-2">
                                   <button
                                     className={`px-2 py-1 rounded text-xs ${user.blocked ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}

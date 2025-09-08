@@ -38,6 +38,7 @@ interface FormData {
   minimumStockLevel: number;
   purchasePrice: number;
   salePrice: number;
+  location: string;
 }
 
 export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductModalProps) => {
@@ -73,6 +74,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
       minimumStockLevel: 10,
       purchasePrice: 0,
       salePrice: 0,
+      location: '',
     },
   });
 
@@ -282,6 +284,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
         user_id: user.id || (user?.id ?? ''), // fallback voor zekerheid
         supplier_id: supplierId,
         category_id: categoryId,
+        location: data.location.trim() || null,
       };
 
 
@@ -373,7 +376,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className={`w-full max-w-full mx-auto p-0 ${isMobile ? 'h-full max-h-full rounded-none' : 'md:w-auto md:max-w-lg md:p-6 md:rounded-lg'}`}>
+      <DialogContent className={`w-full max-w-full mx-auto p-0 ${isMobile ? 'h-full max-h-full rounded-none bg-white' : 'bg-white md:w-auto md:max-w-lg md:p-6 md:rounded-lg'}`}>
         <DialogHeader className={`${isMobile ? 'p-4 border-b' : ''}`}>
           <DialogTitle>Nieuw Product Toevoegen</DialogTitle>
         </DialogHeader>
@@ -415,6 +418,25 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                       disabled={loading}
                       className="resize-none py-3 px-3 text-base"
                       rows={3}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="location"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Locatie</FormLabel>
+                  <FormControl>
+                    <Input 
+                      {...field} 
+                      placeholder="Voer locatie in (bijv. A1, Rek 3, etc.)" 
+                      disabled={loading}
+                      className="py-3 px-3 text-base"
                     />
                   </FormControl>
                   <FormMessage />
@@ -632,7 +654,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                   <FormItem>
                     <FormLabel>Voorraad *</FormLabel>
                     <FormControl>
-                      <Input 
+                                              <Input 
                         {...field} 
                         type="number" 
                         min="0"
@@ -658,7 +680,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                   <FormItem>
                     <FormLabel>Min. Niveau *</FormLabel>
                     <FormControl>
-                      <Input 
+                                              <Input 
                         {...field} 
                         type="number" 
                         min="0"

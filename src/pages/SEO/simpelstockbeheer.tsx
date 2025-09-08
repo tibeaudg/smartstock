@@ -1,10 +1,7 @@
-import React from 'react';
 import SEO from '../../components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '../../components/SeoPageLayout';
-import { Check, Star, Smartphone, Bell, Zap, Shield, Users, TrendingUp, BarChart3, Camera, Clock, Globe, Package, Wifi } from 'lucide-react';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
-import { Button } from 'react-day-picker';
 
 export default function VoorraadbeheerSoftware() {
   // Gebruik de page refresh hook
@@ -15,11 +12,11 @@ export default function VoorraadbeheerSoftware() {
      const faqData = [
      {
        question: "Wat is Simpel Stockbeheer?",
-       answer: "Simpel Stockbeheer is een digitaal systeem dat je helpt bij het beheren van je voorraad. Het vervangt handmatige processen door geautomatiseerde oplossingen die real-time inzicht geven in je voorraad, automatische bestellingen plaatsen en je magazijn efficiënt beheren."
+       answer: "Simpel Stockbeheer is een digitaal systeem dat je helpt bij het beheren van je voorraad. Het vervangt handmatige processen door geautomatiseerde oplossingen die real-time inzicht geven in je voorraad, automatische bestellingen plaatsen en je magazijn efficiï¿½nt beheren."
      },
      {
        question: "Hoe werkt Simpel Stockbeheer?",
-       answer: "Simpel Stockbeheer werkt door je voorraad digitaal bij te houden, automatische bestellingen te plaatsen wanneer voorraad onder het minimum niveau komt, en real-time rapportages te genereren. Het systeem integreert met je andere bedrijfssystemen voor optimale efficiëntie."
+       answer: "Simpel Stockbeheer werkt door je voorraad digitaal bij te houden, automatische bestellingen te plaatsen wanneer voorraad onder het minimum niveau komt, en real-time rapportages te genereren. Het systeem integreert met je andere bedrijfssystemen voor optimale efficiï¿½ntie."
      },
      {
        question: "Welke voordelen biedt Simpel Stockbeheer?",
@@ -52,7 +49,7 @@ export default function VoorraadbeheerSoftware() {
                  <span className="text-blue-600">Simpel Stockbeheer</span> voor optimale controle
                </h1>
                <p className="text-lg text-gray-700 mb-8 leading-relaxed">
-                 Moderne Simpel Stockbeheer is essentieel voor elke onderneming die producten verkoopt. Met de juiste Simpel Stockbeheer kun je real-time inzicht krijgen in je voorraad, automatische bestellingen plaatsen en je magazijn efficiënt beheren. Simpel Stockbeheer helpt je om kosten te besparen, klanttevredenheid te verhogen en je bedrijfsprocessen te optimaliseren. Ontdek hoe Simpel Stockbeheer jouw bedrijf kan transformeren.
+                 Moderne Simpel Stockbeheer is essentieel voor elke onderneming die producten verkoopt. Met de juiste Simpel Stockbeheer kun je real-time inzicht krijgen in je voorraad, automatische bestellingen plaatsen en je magazijn efficiï¿½nt beheren. Simpel Stockbeheer helpt je om kosten te besparen, klanttevredenheid te verhogen en je bedrijfsprocessen te optimaliseren. Ontdek hoe Simpel Stockbeheer jouw bedrijf kan transformeren.
                </p>
             </div>
             {/* Right Side - Image */}
@@ -89,7 +86,7 @@ export default function VoorraadbeheerSoftware() {
                  Wat is Simpel Stockbeheer en <span className="text-blue-600">waarom heb je het nodig?</span>
                </h2>
                <p className="text-lg text-gray-700 mb-6 leading-relaxed">
-                 Simpel Stockbeheer is een digitaal systeem dat je helpt bij het beheren van je voorraad. Het vervangt handmatige processen en Excel-sheets door geautomatiseerde oplossingen. Met Simpel Stockbeheer kun je real-time bijhouden welke producten je hebt, wanneer je moet bestellen en hoe je magazijn het beste georganiseerd kan worden. Simpel Stockbeheer is onmisbaar voor moderne bedrijven die efficiënt willen werken.
+                 Simpel Stockbeheer is een digitaal systeem dat je helpt bij het beheren van je voorraad. Het vervangt handmatige processen en Excel-sheets door geautomatiseerde oplossingen. Met Simpel Stockbeheer kun je real-time bijhouden welke producten je hebt, wanneer je moet bestellen en hoe je magazijn het beste georganiseerd kan worden. Simpel Stockbeheer is onmisbaar voor moderne bedrijven die efficiï¿½nt willen werken.
                </p>
               <div className="space-y-4">
                                  <div className="bg-blue-50 p-4 rounded-lg">
@@ -117,10 +114,10 @@ export default function VoorraadbeheerSoftware() {
             {/* Left Side - Text Content */}
             <div className="lg:col-span-2">
                              <h2 className="text-3xl font-bold mb-6 text-blue-600">
-                 Simpel Stockbeheer methodes en strategieën
+                 Simpel Stockbeheer methodes en strategieï¿½n
                </h2>
                <p className="text-lg text-gray-700 mb-8">
-                 Moderne Simpel Stockbeheer ondersteunt verschillende methodes. Hier zijn de meest gebruikte voorraadbeheer strategieën:
+                 Moderne Simpel Stockbeheer ondersteunt verschillende methodes. Hier zijn de meest gebruikte voorraadbeheer strategieï¿½n:
                </p>
               
               <div className="space-y-6">
@@ -173,7 +170,7 @@ export default function VoorraadbeheerSoftware() {
                  Starten met <span className="text-blue-600">Simpel Stockbeheer</span>
                </h2>
                <p className="text-lg text-gray-700 leading-relaxed">
-                 De tijd van handmatige voorraadadministratie en Excel-sheets is voorbij. Moderne Simpel Stockbeheer biedt geavanceerde functionaliteiten die je bedrijf naar een hoger niveau tillen. Met Simpel Stockbeheer integreer je eenvoudig je CRM, orderbeheer, facturatie en boekhouding in één systeem. Simpel Stockbeheer is geschikt voor zowel kleine bedrijven als grote organisaties met uitgebreide magazijnbehoeften.
+                 De tijd van handmatige voorraadadministratie en Excel-sheets is voorbij. Moderne Simpel Stockbeheer biedt geavanceerde functionaliteiten die je bedrijf naar een hoger niveau tillen. Met Simpel Stockbeheer integreer je eenvoudig je CRM, orderbeheer, facturatie en boekhouding in ï¿½ï¿½n systeem. Simpel Stockbeheer is geschikt voor zowel kleine bedrijven als grote organisaties met uitgebreide magazijnbehoeften.
                </p>
             </div>
           </div>
@@ -225,7 +222,7 @@ export default function VoorraadbeheerSoftware() {
               Start Gratis Nu
             </Link>
           </div>
-          <p className="text-sm mt-4 opacity-75">Geen creditcard vereist • Direct toegang • Nederlandse support</p>
+          <p className="text-sm mt-4 opacity-75">Geen creditcard vereist ï¿½ Direct toegang ï¿½ Nederlandse support</p>
         </div>
       </section>
 

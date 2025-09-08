@@ -19,46 +19,129 @@ export const UnreadMessagesProvider: React.FC<{ children: React.ReactNode }> = (
       setUnreadCount(0);
       return;
     }
-    // Count unread messages for the current user
-    const { count, error } = await supabase
-      .from('chat_messages')
-      .select('*', { count: 'exact', head: true })
-      .eq('sender_type', 'admin')
-      .eq('is_read', false)
-  .eq('chat_id', user?.id);
-    if (error) {
+    
+    try {
+      // First get the user's chat
+      const { data: chats, error: chatError } = await supabase
+        .from('chats')
+        .select('id')
+        .eq('user_id', user.id)
+        .eq('is_closed', false)
+        .limit(1);
+      
+      if (chatError || !chats || chats.length === 0) {
+        setUnreadCount(0);
+        return;
+      }
+      
+      const chatId = chats[0].id;
+      
+      // Count unread messages for the current user's chat
+      const { count, error } = await supabase
+        .from('chat_messages')
+        .select('*', { count: 'exact', head: true })
+        .eq('sender_type', 'admin')
+        .eq('is_read', false)
+        .eq('chat_id', chatId);
+        
+      if (error) {
+        console.error('Error counting unread messages:', error);
+        setUnreadCount(0);
+        return;
+      }
+      
+      setUnreadCount(count || 0);
+    } catch (error) {
+      console.error('Error in refreshUnreadCount:', error);
       setUnreadCount(0);
-      return;
     }
-    setUnreadCount(count || 0);
   }, [user]);
 
   // Reset unread count by marking all as read in DB
   const resetUnreadCount = useCallback(async () => {
     if (!user) return;
-    // Mark all unread admin messages as read for this user
-    const { data: messages, error } = await supabase
-      .from('chat_messages')
-      .select('id')
-      .eq('sender_type', 'admin')
-      .eq('is_read', false)
-  .eq('chat_id', user?.id);
-    if (error || !messages || messages.length === 0) {
+    
+    try {
+      // First get the user's chat
+      const { data: chats, error: chatError } = await supabase
+        .from('chats')
+        .select('id')
+        .eq('user_id', user.id)
+        .eq('is_closed', false)
+        .limit(1);
+      
+      if (chatError || !chats || chats.length === 0) {
+        setUnreadCount(0);
+        return;
+      }
+      
+      const chatId = chats[0].id;
+      
+      // Mark all unread admin messages as read for this user's chat
+      const { data: messages, error } = await supabase
+        .from('chat_messages')
+        .select('id')
+        .eq('sender_type', 'admin')
+        .eq('is_read', false)
+        .eq('chat_id', chatId);
+        
+      if (error || !messages || messages.length === 0) {
+        setUnreadCount(0);
+        return;
+      }
+      
+      await supabase
+        .from('chat_messages')
+        .update({ is_read: true })
+        .in('id', messages.map((msg: any) => msg.id));
+        
       setUnreadCount(0);
-      return;
+    } catch (error) {
+      console.error('Error in resetUnreadCount:', error);
+      setUnreadCount(0);
     }
-    await supabase
-      .from('chat_messages')
-      .update({ is_read: true })
-      .in('id', messages.map((msg: any) => msg.id));
-    setUnreadCount(0);
   }, [user]);
 
   useEffect(() => {
     refreshUnreadCount();
-    // Optionally, subscribe to realtime changes for chat_messages
-    // ...existing code...
-  }, [refreshUnreadCount]);
+    
+    // Subscribe to realtime changes for chat_messages
+    if (user) {
+      const channel = supabase
+        .channel('chat_messages_changes')
+        .on(
+          'postgres_changes',
+          {
+            event: '*',
+            schema: 'public',
+            table: 'chat_messages'
+          },
+          (payload) => {
+            console.log('Chat message change detected:', payload);
+            
+            // Only refresh if the message is from admin and unread
+            if (payload.eventType === 'INSERT' && 
+                payload.new?.sender_type === 'admin' && 
+                payload.new?.is_read === false) {
+              console.log('New unread admin message, refreshing count...');
+              refreshUnreadCount();
+            } else if (payload.eventType === 'UPDATE' && 
+                       payload.new?.sender_type === 'admin') {
+              // Refresh when admin messages are marked as read/unread
+              console.log('Admin message updated, refreshing count...');
+              refreshUnreadCount();
+            }
+          }
+        )
+        .subscribe();
+
+      // Cleanup subscription on unmount
+      return () => {
+        console.log('Cleaning up chat messages subscription');
+        supabase.removeChannel(channel);
+      };
+    }
+  }, [refreshUnreadCount, user]);
 
   return (
     <UnreadMessagesContext.Provider value={{ unreadCount, refreshUnreadCount, resetUnreadCount }}>

@@ -5,6 +5,7 @@ import { CreateBranchModal } from './CreateBranchModal';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches, BranchProvider } from '@/hooks/useBranches';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
+import { UnreadMessagesProvider } from '@/hooks/UnreadMessagesContext';
 
 function isLocalStorageAvailable() {
   try {
@@ -97,6 +98,8 @@ const AppContent: React.FC = () => {
 
 export const StockManagementApp: React.FC = () => (
   <BranchProvider>
-    <AppContent />
+    <UnreadMessagesProvider>
+      <AppContent />
+    </UnreadMessagesProvider>
   </BranchProvider>
 );

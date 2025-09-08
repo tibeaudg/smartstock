@@ -67,12 +67,85 @@ export default function ScanPage() {
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [supplierOpen, setSupplierOpen] = useState(false);
 
-  const handleBarcodeDetected = (barcode: string) => {
+  const handleBarcodeDetected = async (barcode: string) => {
     setFormData(prev => ({ ...prev, barcode }));
-    setTransactionType('incoming'); // Reset to incoming for new barcodes
     setShowScanner(false);
-    setShowProductForm(true);
-    toast.success(`Barcode gedetecteerd: ${barcode}`);
+    
+    // Zoek eerst naar bestaande producten met deze barcode
+    try {
+      const { data: existingProduct, error } = await supabase
+        .from('products')
+        .select('*')
+        .eq('barcode', barcode)
+        .eq('branch_id', activeBranch.branch_id)
+        .single();
+
+      if (error && error.code !== 'PGRST116') { // PGRST116 = no rows returned
+        console.error('Error searching for product:', error);
+        toast.error('Fout bij het zoeken naar product');
+        return;
+      }
+
+      if (existingProduct) {
+        // Product bestaat al - toon melding en vul gegevens in
+        toast.success(`Product gevonden: ${existingProduct.name}`);
+        
+        // Vul de form in met bestaande productgegevens
+        setFormData(prev => ({
+          ...prev,
+          name: existingProduct.name,
+          description: existingProduct.description || '',
+          categoryId: existingProduct.category_id || '',
+          supplierId: existingProduct.supplier_id || '',
+          categoryName: existingProduct.category_name || '',
+          supplierName: existingProduct.supplier_name || '',
+          quantityInStock: 1, // Reset naar 1 voor nieuwe transactie
+          minimumStockLevel: existingProduct.minimum_stock_level || 10,
+          purchasePrice: existingProduct.purchase_price || 0,
+          salePrice: existingProduct.sale_price || 0,
+          barcode: barcode
+        }));
+        
+        // Stel transaction type in op basis van bestaande voorraad
+        if (existingProduct.quantity_in_stock > 0) {
+          setTransactionType('outgoing'); // Kan zowel in als uit
+        } else {
+          setTransactionType('incoming'); // Alleen in als voorraad 0 is
+        }
+        
+        setShowProductForm(true);
+      } else {
+        // Nieuw product - toon melding
+        toast.info('Nieuw product toevoegen');
+        
+        // Reset form voor nieuw product
+        setFormData(prev => ({
+          ...prev,
+          name: '',
+          description: '',
+          categoryId: '',
+          supplierId: '',
+          categoryName: '',
+          supplierName: '',
+          quantityInStock: 1,
+          minimumStockLevel: 10,
+          purchasePrice: 0,
+          salePrice: 0,
+          barcode: barcode
+        }));
+        
+        setTransactionType('incoming'); // Alleen toevoegen voor nieuwe producten
+        setShowProductForm(true);
+      }
+    } catch (error) {
+      console.error('Error searching for product:', error);
+      toast.error('Fout bij het zoeken naar product');
+      
+      // Fallback: toon form voor nieuw product
+      setFormData(prev => ({ ...prev, barcode }));
+      setTransactionType('incoming');
+      setShowProductForm(true);
+    }
   };
 
   // Haal categorieën en leveranciers op bij component mount
@@ -390,6 +463,8 @@ export default function ScanPage() {
     });
     setTransactionType('incoming');
     setShowProductForm(false);
+    setCategoryOpen(false);
+    setSupplierOpen(false);
   };
 
   if (!user || branchLoading) {
@@ -441,7 +516,7 @@ export default function ScanPage() {
             <div className="flex flex-col sm:flex-row gap-4">
               <Button
                 onClick={() => setShowScanner(true)}
-                className="flex-1 p-2"
+                className="flex-1 h-12 px-4 p-2"
                 size="lg"
                 disabled={!cameraSupported}
               >
@@ -453,7 +528,7 @@ export default function ScanPage() {
                 <Button
                   onClick={() => setShowDebugInfo(true)}
                   variant="outline"
-                  className="p-2"
+                  className="flex-1 h-12 px-4 p-2"
                   size="lg"
                 >
                   <AlertCircle className="w-5 h-5 mr-2" />
@@ -539,6 +614,19 @@ export default function ScanPage() {
                   </div>
                 )}
 
+                {/* Huidige Voorraad Info voor bestaande producten */}
+                {formData.barcode && (
+                  <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
+                    <Label className="text-sm font-medium text-green-700">Product Status</Label>
+                    <p className="text-sm text-green-700 mt-1">
+                      {transactionType === 'incoming' 
+                        ? 'Nieuw product wordt toegevoegd aan de voorraad'
+                        : 'Bestaand product wordt uit de voorraad gehaald'
+                      }
+                    </p>
+                  </div>
+                )}
+
                 {/* Product Name */}
                 <div>
                   <Label htmlFor="name" className="text-sm font-medium text-gray-700">
@@ -551,8 +639,14 @@ export default function ScanPage() {
                     onChange={(e) => handleInputChange('name', e.target.value)}
                     placeholder="Voer product naam in"
                     required
+                    disabled={formData.name !== ''} // Uitschakelen voor bestaande producten
                     className="mt-1"
                   />
+                  {formData.name !== '' && (
+                    <p className="text-sm text-gray-500 mt-1">
+                      Product naam kan niet worden gewijzigd voor bestaande producten
+                    </p>
+                  )}
                 </div>
 
                                  {/* Description - Only show for incoming transactions */}
@@ -823,7 +917,7 @@ export default function ScanPage() {
                                      <Button
                      type="submit"
                      disabled={loading}
-                     className="flex-1 p-2"
+                     className="flex-1 h-12 px-4"
                      size="lg"
                    >
                      {loading ? (
@@ -843,7 +937,7 @@ export default function ScanPage() {
                     variant="outline"
                     onClick={resetForm}
                     disabled={loading}
-                    className="flex-1 p-2"
+                    className="flex-1 h-12 px-4"
                     size="lg"
                   >
                     Annuleren

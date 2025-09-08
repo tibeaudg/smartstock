@@ -1,6 +1,6 @@
 import React from 'react';
 import { NotificationButton } from '../NotificationButton';
-import { Package, User, LogOut, Settings } from 'lucide-react';
+import { Package, User, LogOut, Settings, Menu, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import {
@@ -17,30 +17,48 @@ interface HeaderProps {
   title: string;
   unreadCount?: number;
   onNotificationClick?: () => void;
+  sidebarOpen?: boolean;
+  onSidebarToggle?: () => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ title, unreadCount = 0, onNotificationClick }) => {
+export const Header: React.FC<HeaderProps> = ({ title, unreadCount = 0, onNotificationClick, sidebarOpen, onSidebarToggle }) => {
   const navigate = useNavigate();
-  const { signOut } = useAuth();
+  const { signOut, user } = useAuth();
   return (
     <>
 
       {/* Desktop Header */}
       <header className="hidden lg:flex fixed top-0 left-0 right-0 z-40 items-center justify-between px-8 h-[70px] bg-white shadow-sm">
-        <div className="flex items-center space-x-3 p-4 flex-shrink-0">
+        {/* Left side - Sidebar toggle */}
+        <div className="flex items-center">
+          {onSidebarToggle && (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={onSidebarToggle}
+              className="w-10 h-10 hover:bg-gray-100"
+              aria-label={sidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
+            >
+              {sidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </Button>
+          )}
+        </div>
+        
+        {/* Center - Logo */}
+        <div className="flex items-center space-x-3">
           <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
             <Package className="w-5 h-5 text-white" />
           </div>
           <h1 className="text-lg font-semibold text-gray-900">stockflow</h1>
         </div>
         
+        {/* Right side - Notifications and user menu */}
         <div className="flex items-center space-x-4">
-          <NotificationButton unreadCount={unreadCount} onClick={onNotificationClick} />
+          {user && (
+            <NotificationButton unreadCount={unreadCount} onClick={onNotificationClick} />
+          )}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button size="icon" className="relative flex items-center justify-center w-10 h-10 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-colors">
-                <User className="h-5 w-5" />
-              </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48">
               <DropdownMenuItem onClick={() => navigate('/dashboard/settings/profile')}>
@@ -70,21 +88,37 @@ export const Header: React.FC<HeaderProps> = ({ title, unreadCount = 0, onNotifi
       {/* Mobile Header */}
       <header className="lg:hidden fixed top-0 left-0 right-0 z-40 bg-white shadow-sm">
         <div className="flex items-center justify-between px-4 h-[60px] border-b border-gray-100">
-          <div className="flex items-center space-x-3">
-            <div className="flex items-center space-x-2">
-              <div className="w-7 h-7 bg-blue-600 rounded-lg flex items-center justify-center">
-                <Package className="w-4 h-4 text-white" />
-              </div>
-              <span className="text-base font-semibold text-gray-900">stockflow</span>
-            </div>
+          {/* Left side - Sidebar toggle */}
+          <div className="flex items-center">
+            {onSidebarToggle && (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={onSidebarToggle}
+                className="w-10 h-10 hover:bg-gray-100"
+                aria-label={sidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
+              >
+                {sidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              </Button>
+            )}
           </div>
+          
+          {/* Center - Logo */}
           <div className="flex items-center space-x-2">
-            <NotificationButton unreadCount={unreadCount} onClick={onNotificationClick} />
+            <div className="w-7 h-7 bg-blue-600 rounded-lg flex items-center justify-center">
+              <Package className="w-4 h-4 text-white" />
+            </div>
+            <span className="text-base font-semibold text-gray-900">stockflow</span>
+          </div>
+          
+          {/* Right side - Notifications and user menu */}
+          <div className="flex items-center space-x-2">
+            {user && (
+              <NotificationButton unreadCount={unreadCount} onClick={onNotificationClick} />
+            )}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full">
-                  <User className="h-5 w-5" />
-                </Button>
+
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">
                 <DropdownMenuItem onClick={() => navigate('/dashboard/settings/profile')}>

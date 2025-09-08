@@ -1,10 +1,8 @@
-import React from 'react';
 import SEO from '../../components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '../../components/SeoPageLayout';
-import { Check, Star, Smartphone, Bell, Zap, Shield, Users, TrendingUp } from 'lucide-react';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
-import { Utensils, Coffee, ChefHat, Clock, AlertTriangle } from 'lucide-react';
+import { Utensils, Coffee, ChefHat } from 'lucide-react';
 
 export default function VoorraadbeheerHoreca() {
   // Gebruik de page refresh hook
@@ -17,7 +15,7 @@ export default function VoorraadbeheerHoreca() {
     },
     {
       question: "Welke horeca types kunnen profiteren van voorraadbeheer?",
-      answer: "Alle horeca types kunnen profiteren: restaurants (ingrediënten en dranken), cafés (dranken en snacks), bakkerijen (meel en ingrediënten), en andere horeca ondernemingen. Voorraadbeheer voor horeca is geschikt voor elke grootte."
+      answer: "Alle horeca types kunnen profiteren: restaurants (ingrediï¿½nten en dranken), cafï¿½s (dranken en snacks), bakkerijen (meel en ingrediï¿½nten), en andere horeca ondernemingen. Voorraadbeheer voor horeca is geschikt voor elke grootte."
     },
     {
       question: "Hoe voorkom ik verspilling in de horeca?",
@@ -32,13 +30,13 @@ export default function VoorraadbeheerHoreca() {
   const horecaTypes = [
     {
       name: "Restaurants",
-      description: "Beheer ingrediënten, dranken en voorraad",
-      features: ["Ingrediënten tracking", "Recept integratie", "Leverancier management"],
+      description: "Beheer ingrediï¿½nten, dranken en voorraad",
+      features: ["Ingrediï¿½nten tracking", "Recept integratie", "Leverancier management"],
       icon: Utensils,
       color: "red"
     },
     {
-      name: "Cafés",
+      name: "Cafï¿½s",
       description: "Focus op dranken en snacks",
       features: ["Dranken voorraad", "Snack management", "Dagelijkse controle"],
       icon: Coffee,
@@ -46,57 +44,21 @@ export default function VoorraadbeheerHoreca() {
     },
     {
       name: "Bakkerijen",
-      description: "Beheer meel, ingrediënten en eindproducten",
-      features: ["Ingrediënten tracking", "Productie planning", "Houdbaarheid controle"],
+      description: "Beheer meel, ingrediï¿½nten en eindproducten",
+      features: ["Ingrediï¿½nten tracking", "Productie planning", "Houdbaarheid controle"],
       icon: ChefHat,
       color: "yellow"
     }
   ];
 
-  const challenges = [
-    {
-      title: "Houdbaarheid beheer",
-      description: "Voorkom verspilling door houdbaarheidsdata te tracken en meldingen in te stellen.",
-      icon: Clock,
-      color: "green"
-    },
-    {
-      title: "Seizoensinvloeden",
-      description: "Pas je voorraad aan aan seizoensgebonden vraag en beschikbaarheid.",
-      icon: TrendingUp,
-      color: "blue"
-    },
-    {
-      title: "Voedselveiligheid",
-      description: "Zorg voor traceerbaarheid en houdbaarheidscontrole volgens HACCP richtlijnen.",
-      icon: Shield,
-      color: "purple"
-    },
-    {
-      title: "Dagelijkse controle",
-      description: "Controleer dagelijks je voorraad om tekorten en overstock te voorkomen.",
-      icon: AlertTriangle,
-      color: "red"
-    }
-  ];
 
-  const benefits = [
-    "Voorkom verspilling en bespaar kosten",
-    "Altijd voldoen aan voedselveiligheidseisen",
-    "Eenvoudige dagelijkse controle",
-    "Automatische meldingen bij lage voorraad",
-    "Betere inkoop door inzicht in verbruik",
-    "HACCP compliant voorraadbeheer",
-    "Mobiele toegang voor keukenpersoneel",
-    "Integratie met leveranciers mogelijk"
-  ];
 
   return (
     <SeoPageLayout title="Voorraadbeheer voor Horeca">
       <SEO
-        title="Voorraadbeheer voor Horeca | Restaurant & Café Stockbeheer | stockflow"
-        description="Voorraadbeheer voor horeca: complete gids voor restaurants, cafés en bakkers. Ontdek hoe je eenvoudig je horeca voorraad beheert, verspilling voorkomt en voldoet aan voedselveiligheidseisen."
-        keywords="voorraadbeheer horeca, horeca voorraad, voorraadbeheer restaurant, voorraadbeheer café, voorraadbeheer bakker, horeca voorraad app, restaurant voorraadbeheer, café voorraadbeheer, bakker voorraadbeheer, horeca stockbeheer, voorraadbeheer keuken, horeca voorraad management, voorraadbeheer horeca software, horeca voorraad optimalisatie, voedselveiligheid voorraadbeheer, HACCP voorraadbeheer"
+        title="Voorraadbeheer voor Horeca | Restaurant & Cafï¿½ Stockbeheer | stockflow"
+        description="Voorraadbeheer voor horeca: complete gids voor restaurants, cafï¿½s en bakkers. Ontdek hoe je eenvoudig je horeca voorraad beheert, verspilling voorkomt en voldoet aan voedselveiligheidseisen."
+        keywords="voorraadbeheer horeca, horeca voorraad, voorraadbeheer restaurant, voorraadbeheer cafï¿½, voorraadbeheer bakker, horeca voorraad app, restaurant voorraadbeheer, cafï¿½ voorraadbeheer, bakker voorraadbeheer, horeca stockbeheer, voorraadbeheer keuken, horeca voorraad management, voorraadbeheer horeca software, horeca voorraad optimalisatie, voedselveiligheid voorraadbeheer, HACCP voorraadbeheer"
         url="https://www.stockflow.be/voorraadbeheer-horeca"
       />
 
@@ -110,7 +72,7 @@ export default function VoorraadbeheerHoreca() {
                 <span className="text-blue-600">Voorraadbeheer voor Horeca</span> - Complete gids
               </h1>
               <p className="text-lg text-gray-700 mb-8 leading-relaxed">
-                Voorraadbeheer voor horeca is essentieel voor restaurants, cafés en bakkers. Ontdek hoe je eenvoudig je horeca voorraad beheert, verspilling voorkomt en voldoet aan voedselveiligheidseisen. Met voorraadbeheer voor horeca kun je kosten besparen, voedselveiligheid garanderen en je dagelijkse operaties optimaliseren.
+                Voorraadbeheer voor horeca is essentieel voor restaurants, cafï¿½s en bakkers. Ontdek hoe je eenvoudig je horeca voorraad beheert, verspilling voorkomt en voldoet aan voedselveiligheidseisen. Met voorraadbeheer voor horeca kun je kosten besparen, voedselveiligheid garanderen en je dagelijkse operaties optimaliseren.
               </p>
             </div>
             {/* Right Side - Image */}
@@ -147,7 +109,7 @@ export default function VoorraadbeheerHoreca() {
                 Waarom voorraadbeheer voor horeca?
               </h2>
               <p className="text-lg text-gray-700 mb-6 leading-relaxed">
-                Voorraadbeheer voor horeca is cruciaal voor het succes van restaurants, cafés en bakkerijen. Het helpt je om verspilling te voorkomen, kosten te besparen en te voldoen aan voedselveiligheidseisen. Met de juiste voorraadbeheer voor horeca oplossing kun je je dagelijkse operaties optimaliseren.
+                Voorraadbeheer voor horeca is cruciaal voor het succes van restaurants, cafï¿½s en bakkerijen. Het helpt je om verspilling te voorkomen, kosten te besparen en te voldoen aan voedselveiligheidseisen. Met de juiste voorraadbeheer voor horeca oplossing kun je je dagelijkse operaties optimaliseren.
               </p>
               <div className="space-y-4">
                 <div className="bg-blue-50 p-4 rounded-lg">
@@ -160,7 +122,7 @@ export default function VoorraadbeheerHoreca() {
                 </div>
                 <div className="bg-purple-50 p-4 rounded-lg">
                   <h3 className="font-semibold text-purple-800 mb-2">Dagelijkse controle optimaliseren</h3>
-                  <p className="text-gray-700">Voorraadbeheer voor horeca maakt dagelijkse controle eenvoudiger en efficiënter voor je keukenpersoneel.</p>
+                  <p className="text-gray-700">Voorraadbeheer voor horeca maakt dagelijkse controle eenvoudiger en efficiï¿½nter voor je keukenpersoneel.</p>
                 </div>
               </div>
             </div>
@@ -226,7 +188,7 @@ export default function VoorraadbeheerHoreca() {
                 Implementeer voorraadbeheer voor horeca stap voor stap
               </h2>
               <p className="text-lg text-gray-700 leading-relaxed">
-                Begin met het tracken van je belangrijkste ingrediënten en dranken. Voeg geleidelijk meer producten toe en implementeer houdbaarheidscontrole. Voorraadbeheer voor horeca is geschikt voor bedrijven van alle groottes en kan direct worden toegepast.
+                Begin met het tracken van je belangrijkste ingrediï¿½nten en dranken. Voeg geleidelijk meer producten toe en implementeer houdbaarheidscontrole. Voorraadbeheer voor horeca is geschikt voor bedrijven van alle groottes en kan direct worden toegepast.
               </p>
             </div>
           </div>
@@ -277,7 +239,7 @@ export default function VoorraadbeheerHoreca() {
               Start Gratis Nu
             </Link>
           </div>
-          <p className="text-sm mt-4 opacity-75">Geen creditcard vereist • Direct toegang • Nederlandse support</p>
+          <p className="text-sm mt-4 opacity-75">Geen creditcard vereist ï¿½ Direct toegang ï¿½ Nederlandse support</p>
         </div>
       </section>
 
@@ -341,8 +303,8 @@ export default function VoorraadbeheerHoreca() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
         "@context": "https://schema.org",
         "@type": "Article",
-        "headline": "Voorraadbeheer voor Horeca | Restaurant & Café Stockbeheer",
-        "description": "Voorraadbeheer voor horeca: complete gids voor restaurants, cafés en bakkers. Ontdek hoe je eenvoudig je horeca voorraad beheert, verspilling voorkomt en voldoet aan voedselveiligheidseisen.",
+        "headline": "Voorraadbeheer voor Horeca | Restaurant & Cafï¿½ Stockbeheer",
+        "description": "Voorraadbeheer voor horeca: complete gids voor restaurants, cafï¿½s en bakkers. Ontdek hoe je eenvoudig je horeca voorraad beheert, verspilling voorkomt en voldoet aan voedselveiligheidseisen.",
         "image": "https://www.stockflow.be/optimized/Inventory-Management.png",
         "author": {
           "@type": "Organization",

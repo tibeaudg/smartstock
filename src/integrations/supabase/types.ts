@@ -42,6 +42,52 @@ export type BlogAnalyticsSummary = {
   first_view: string;
   last_view: string;
 };
+
+// Auth Conversion Tracking types
+export type AuthConversionEvent = {
+  id: string;
+  event_type: 'page_view' | 'registration_started' | 'registration_completed' | 'login_attempt' | 'login_success';
+  user_id?: string;
+  email?: string;
+  session_id?: string;
+  visitor_ip?: string;
+  user_agent?: string;
+  referrer?: string;
+  utm_source?: string;
+  utm_medium?: string;
+  utm_campaign?: string;
+  country?: string;
+  city?: string;
+  page_load_time_ms?: number;
+  time_on_page_seconds?: number;
+  form_abandonment_step?: string;
+  error_message?: string;
+  created_at: string;
+  updated_at: string;
+};
+
+export type AuthConversionAnalytics = {
+  date: string;
+  event_type: string;
+  event_count: number;
+  unique_sessions: number;
+  unique_visitors: number;
+  unique_emails: number;
+  avg_load_time_ms?: number;
+  avg_time_on_page_seconds?: number;
+};
+
+export type AuthConversionFunnel = {
+  date: string;
+  page_views: number;
+  registration_started: number;
+  registration_completed: number;
+  login_attempts: number;
+  login_success: number;
+  registration_start_rate: number;
+  registration_completion_rate: number;
+  overall_conversion_rate: number;
+};
       company_types: {
         Row: {
           id: string;

@@ -83,7 +83,7 @@ export const ChatModal: React.FC<ChatModalProps> = ({
         
         // Mark messages as read based on user role
         try {
-          if (userProfile?.role === 'admin') {
+          if (userProfile?.is_owner === true) {
             // When admin opens chat, mark user messages as read
             const updatedMessages = await markMessagesAsRead(chat.id, 'user');
             if (!mounted) return;
@@ -118,7 +118,7 @@ export const ChatModal: React.FC<ChatModalProps> = ({
 
     initializeChat();
     return () => { mounted = false; };
-  }, [open, user, userProfile?.role]); // Added userProfile?.role as dependency
+  }, [open, user, userProfile?.is_owner]); // Added userProfile?.is_owner as dependency
 
   // Focus input when chat opens
   useEffect(() => {
