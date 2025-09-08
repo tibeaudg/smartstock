@@ -8,6 +8,7 @@ interface OptimizedImageProps {
   height?: number;
   loading?: 'lazy' | 'eager';
   priority?: boolean;
+  useModernFormats?: boolean;
 }
 
 export const OptimizedImage: React.FC<OptimizedImageProps> = ({
@@ -17,7 +18,8 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
   width,
   height,
   loading = 'lazy',
-  priority = false
+  priority = false,
+  useModernFormats = false
 }) => {
   // Generate optimized image paths
   const getOptimizedSrc = (originalSrc: string, format: string) => {
@@ -34,35 +36,50 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
   const avifSrc = getOptimizedSrc(src, 'avif');
   const originalSrc = src;
 
+  if (useModernFormats) {
+    return (
+      <picture>
+        <source srcSet={avifSrc} type="image/avif" />
+        <source srcSet={webpSrc} type="image/webp" />
+        <img
+          src={originalSrc}
+          alt={alt}
+          className={className}
+          width={width}
+          height={height}
+          loading={priority ? 'eager' : loading}
+          decoding={priority ? 'sync' : 'async'}
+          style={
+            width || height
+              ? {
+                  width: width ? `${width}px` : undefined,
+                  height: height ? `${height}px` : undefined,
+                }
+              : undefined
+          }
+        />
+      </picture>
+    );
+  }
+
   return (
-    <picture>
-      {/* AVIF format (best compression, modern browsers) */}
-      <source
-        srcSet={avifSrc}
-        type="image/avif"
-      />
-      
-      {/* WebP format (good compression, wide support) */}
-      <source
-        srcSet={webpSrc}
-        type="image/webp"
-      />
-      
-      {/* Original format as fallback */}
-      <img
-        src={originalSrc}
-        alt={alt}
-        className={className}
-        width={width}
-        height={height}
-        loading={priority ? 'eager' : loading}
-        decoding={priority ? 'sync' : 'async'}
-        style={{
-          width: width ? `${width}px` : 'auto',
-          height: height ? `${height}px` : 'auto',
-        }}
-      />
-    </picture>
+    <img
+      src={originalSrc}
+      alt={alt}
+      className={className}
+      width={width}
+      height={height}
+      loading={priority ? 'eager' : loading}
+      decoding={priority ? 'sync' : 'async'}
+      style={
+        width || height
+          ? {
+              width: width ? `${width}px` : undefined,
+              height: height ? `${height}px` : undefined,
+            }
+          : undefined
+      }
+    />
   );
 };
 

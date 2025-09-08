@@ -59,8 +59,14 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButton
                 <span className="text-xl md:text-2xl font-bold text-gray-900 group-hover:text-blue-700 transition-colors">stockflow</span>
               </Link>
             </div>
-
-
+            {onNavigate && (
+              <nav className="hidden lg:flex items-center gap-6 text-sm">
+                <button className="text-gray-700 hover:text-blue-700" onClick={() => onNavigate('features-section')}>Features</button>
+                <button className="text-gray-700 hover:text-blue-700" onClick={() => onNavigate('testimonials-section')}>Reviews</button>
+                <button className="text-gray-700 hover:text-blue-700" onClick={() => onNavigate('faq-section')}>FAQ</button>
+                <button className="text-gray-700 hover:text-blue-700" onClick={() => onNavigate('contact-section')}>Contact</button>
+              </nav>
+            )}
 
               {/* Desktop Notification Button */}
               <div className="hidden md:flex items-center space-x-3">
