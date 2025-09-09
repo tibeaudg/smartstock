@@ -13,7 +13,8 @@ import {
   Scan,
   ChevronDown,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  FileText
 } 
 from 'lucide-react';
 import { BranchSelector } from './BranchSelector';
@@ -86,7 +87,6 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
     { id: 'profile', label: 'Profiel', path: '/dashboard/settings/profile' },
     { id: 'branches', label: 'Filialen', path: '/dashboard/settings/branches' },
     { id: 'users', label: 'Gebruikers', path: '/dashboard/settings/users' },
-    { id: 'modules', label: 'Modules', path: '/dashboard/settings/modules' },
   ];
 
   const adminSubItems = [
@@ -126,6 +126,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
           path: '/dashboard/settings',
           subItems: settingsSubItems
         },
+        { id: 'modules', label: 'Modules', icon: FileText, path: '/dashboard/settings/modules' },
         ...(isOwner
           ? [
               { 

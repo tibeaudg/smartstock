@@ -2,6 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { StripeProvider } from "@/components/providers/StripeProvider";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { StockManagementApp } from "./components/StockManagementApp";
 import { HomePage } from "./components/HomePage";
@@ -17,6 +18,7 @@ import { UserManagement } from "./components/settings/UserManagement";
 import { ModuleManagement } from "./components/settings/ModuleManagement";
 import { LicenseOverview } from "./components/settings/LicenseOverview";
 import { InvoicingOverview } from "./components/settings/InvoicingOverview";
+import { InvoiceList } from "./components/payments/InvoiceList";
 import { useAuth, AuthProvider } from "./hooks/useAuth";
 import { Suspense } from "react";
 import { ContentWrapper } from "./ContentWrapper";
@@ -234,7 +236,8 @@ export default function App() {
       {/* Verwijderde dubbele wrapper */}
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
-          <TooltipProvider>
+          <StripeProvider>
+            <TooltipProvider>
             <Toaster />
             <Sonner />
             <BrowserRouter>
@@ -285,6 +288,7 @@ export default function App() {
                       <Route path="branches" element={<BranchManagement />} />
                       <Route path="users" element={<UserManagement />} />
                       <Route path="modules" element={<ModuleManagement />} />
+                      <Route path="invoices" element={<InvoiceList />} />
                       <Route path="license" element={<LicenseOverview />} />
                       <Route path="invoicing" element={<InvoicingOverview />} />
                     </Route>
@@ -322,7 +326,8 @@ export default function App() {
                 </Routes>
               </ContentWrapper>
             </BrowserRouter>
-          </TooltipProvider>
+            </TooltipProvider>
+          </StripeProvider>
         </AuthProvider>
       </QueryClientProvider>
     </ErrorBoundary>

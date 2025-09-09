@@ -505,6 +505,162 @@ export type Database = {
         }
         Relationships: []
       }
+      modules: {
+        Row: {
+          id: string
+          title: string
+          description: string
+          category: 'analytics' | 'automation' | 'integration' | 'premium'
+          status: 'available' | 'coming-soon' | 'beta'
+          price_monthly: number
+          price_yearly: number
+          features: any
+          icon: string
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          title: string
+          description: string
+          category: 'analytics' | 'automation' | 'integration' | 'premium'
+          status?: 'available' | 'coming-soon' | 'beta'
+          price_monthly?: number
+          price_yearly?: number
+          features?: any
+          icon?: string
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          title?: string
+          description?: string
+          category?: 'analytics' | 'automation' | 'integration' | 'premium'
+          status?: 'available' | 'coming-soon' | 'beta'
+          price_monthly?: number
+          price_yearly?: number
+          features?: any
+          icon?: string
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      user_module_subscriptions: {
+        Row: {
+          id: string
+          user_id: string
+          module_id: string
+          status: 'active' | 'cancelled' | 'expired'
+          billing_cycle: 'monthly' | 'yearly'
+          start_date: string
+          end_date: string
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          module_id: string
+          status?: 'active' | 'cancelled' | 'expired'
+          billing_cycle: 'monthly' | 'yearly'
+          start_date?: string
+          end_date: string
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          module_id?: string
+          status?: 'active' | 'cancelled' | 'expired'
+          billing_cycle?: 'monthly' | 'yearly'
+          start_date?: string
+          end_date?: string
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_module_subscriptions_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "modules"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_module_subscriptions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      invoices: {
+        Row: {
+          id: string
+          user_id: string
+          subscription_id: string | null
+          invoice_number: string
+          amount: number
+          currency: string
+          status: 'pending' | 'paid' | 'failed' | 'cancelled'
+          stripe_invoice_id: string | null
+          pdf_url: string | null
+          due_date: string | null
+          paid_at: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          subscription_id?: string | null
+          invoice_number: string
+          amount: number
+          currency?: string
+          status?: 'pending' | 'paid' | 'failed' | 'cancelled'
+          stripe_invoice_id?: string | null
+          pdf_url?: string | null
+          due_date?: string | null
+          paid_at?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          subscription_id?: string | null
+          invoice_number?: string
+          amount?: number
+          currency?: string
+          status?: 'pending' | 'paid' | 'failed' | 'cancelled'
+          stripe_invoice_id?: string | null
+          pdf_url?: string | null
+          due_date?: string | null
+          paid_at?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invoices_subscription_id_fkey"
+            columns: ["subscription_id"]
+            isOneToOne: false
+            referencedRelation: "user_module_subscriptions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "invoices_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       feature_votes: {
         Row: {
           id: string

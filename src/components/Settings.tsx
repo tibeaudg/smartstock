@@ -64,11 +64,11 @@ export const Settings = () => {
   // Define menu items
   const menuItems = [
     { id: 'profile', label: 'Profiel', icon: <User className="w-4 h-4" /> },
+    { id: 'invoices', label: 'Facturen', icon: <Banknote className="w-4 h-4" /> },
     ...(isAdmin
       ? [
           { id: 'branches', label: 'Filialen', icon: <Building2 className="w-4 h-4" /> },
           { id: 'users', label: 'Gebruikers', icon: <Users className="w-4 h-4" /> },
-          { id: 'modules', label: 'Modules', icon: <FileText className="w-4 h-4" /> },
         ]
       : []),
     ...(isBlocked ? [{ id: 'invoicing', label: 'Facturatie', icon: <Banknote className="w-4 h-4" /> }] : []),

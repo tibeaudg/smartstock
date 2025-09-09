@@ -9,7 +9,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { useMobile } from '@/hooks/use-mobile';
 import SEO from '../components/SEO';
-import { FeatureManagement } from '@/pages/admin/FeatureManagement';
+import { AdminModuleManagement } from '@/pages/admin/ModuleManagement';
 import { AdminNotificationManager } from '@/components/AdminNotificationManager';
 import { OnboardingModal } from '@/components/onboarding/OnboardingModal';
 import { AdminChatList } from '@/components/AdminChatList';
@@ -284,7 +284,7 @@ export default function AdminPage() {
   });
   const sidebarNavItems: { id: 'users' | 'features' | 'onboarding' | 'chats' | 'notifications' | 'blogcms' | 'bloganalytics' | 'conversionanalytics'; label: string }[] = [
   { id: 'users', label: 'Gebruikersbeheer' },
-  { id: 'features', label: 'Feature Management' },
+  { id: 'features', label: 'Module Management' },
   { id: 'onboarding', label: 'Onboarding Antwoorden' },
   { id: 'chats', label: 'Chats' },
   { id: 'notifications', label: 'Meldingen' },
@@ -656,7 +656,7 @@ export default function AdminPage() {
               </Card>
             )}
             {activeTab === 'features' && (
-              <FeatureManagement />
+              <AdminModuleManagement />
             )}
             {activeTab === 'onboarding' && (
               <Card>
