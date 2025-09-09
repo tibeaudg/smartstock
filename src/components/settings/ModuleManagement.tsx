@@ -18,6 +18,7 @@ import { useNavigate } from 'react-router-dom';
 // Module interface
 interface Module {
   id: string;
+  slug?: string;
   title: string;
   description: string;
   status: 'available' | 'coming-soon' | 'beta';

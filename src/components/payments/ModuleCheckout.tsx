@@ -11,6 +11,7 @@ import { useAuth } from '@/hooks/useAuth';
 interface ModuleCheckoutProps {
   module: {
     id: string;
+    slug?: string;
     title: string;
     description: string;
     status: 'available' | 'coming-soon' | 'beta';
@@ -66,8 +67,16 @@ export const ModuleCheckout: React.FC<ModuleCheckoutProps> = ({
 
     setIsProcessing(true);
     try {
+      const moduleId = module.slug || module.id;
+      console.log('Creating checkout session for module:', {
+        moduleId,
+        moduleSlug: module.slug,
+        moduleUuid: module.id,
+        moduleTitle: module.title
+      });
+      
       const { url } = await createCheckoutSession({
-        moduleId: module.id,
+        moduleId: moduleId, // Use slug if available, fallback to ID
         billingCycle: 'monthly',
         userId: user.id,
         successUrl: `${window.location.origin}/dashboard/settings/modules?success=true`,

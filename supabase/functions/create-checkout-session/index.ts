@@ -45,7 +45,7 @@ serve(async (req) => {
         .from('modules')
         .select('*')
         .eq('slug', moduleId)
-        .single()
+        .maybeSingle()
       
       module = result.data
       moduleError = result.error
@@ -54,6 +54,7 @@ serve(async (req) => {
       try {
         const titleMap: Record<string, string> = {
           'delivery-notes': 'Leveringsbonnen Beheer',
+          'scanning': 'Barcode Scanner',
           'advanced-analytics': 'Geavanceerde Analytics',
           'auto-reorder': 'Automatische Herbestelling',
           'ecommerce-integration': 'E-commerce Integratie',
@@ -66,7 +67,7 @@ serve(async (req) => {
             .from('modules')
             .select('*')
             .eq('title', title)
-            .single()
+            .maybeSingle()
           
           module = result.data
           moduleError = result.error
@@ -74,6 +75,7 @@ serve(async (req) => {
           // Try hardcoded UUIDs as fallback
           const hardcodedIds: Record<string, string> = {
             'delivery-notes': '550e8400-e29b-41d4-a716-446655440000',
+            'scanning': '550e8400-e29b-41d4-a716-446655440005',
             'advanced-analytics': '550e8400-e29b-41d4-a716-446655440001',
             'auto-reorder': '550e8400-e29b-41d4-a716-446655440002',
             'ecommerce-integration': '550e8400-e29b-41d4-a716-446655440003',
@@ -86,7 +88,7 @@ serve(async (req) => {
               .from('modules')
               .select('*')
               .eq('id', hardcodedId)
-              .single()
+              .maybeSingle()
             
             module = result.data
             moduleError = result.error
@@ -96,7 +98,7 @@ serve(async (req) => {
               .from('modules')
               .select('*')
               .eq('id', moduleId)
-              .single()
+              .maybeSingle()
             
             module = result.data
             moduleError = result.error
@@ -108,7 +110,7 @@ serve(async (req) => {
           .from('modules')
           .select('*')
           .eq('id', moduleId)
-          .single()
+          .maybeSingle()
         
         module = result.data
         moduleError = result.error
@@ -117,8 +119,13 @@ serve(async (req) => {
 
     if (moduleError) {
       console.error('Module error:', moduleError)
+      console.error('ModuleId searched:', moduleId)
       return new Response(
-        JSON.stringify({ error: `Module error: ${moduleError.message}` }),
+        JSON.stringify({ 
+          error: `Module error: ${moduleError.message}`,
+          moduleId: moduleId,
+          details: moduleError
+        }),
         { 
           status: 404, 
           headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
@@ -127,8 +134,13 @@ serve(async (req) => {
     }
 
     if (!module) {
+      console.error('Module not found for moduleId:', moduleId)
       return new Response(
-        JSON.stringify({ error: 'Module not found' }),
+        JSON.stringify({ 
+          error: 'Module not found',
+          moduleId: moduleId,
+          searchedMethods: ['slug', 'title', 'hardcoded-id', 'direct-id']
+        }),
         { 
           status: 404, 
           headers: { ...corsHeaders, 'Content-Type': 'application/json' } 

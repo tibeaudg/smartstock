@@ -111,7 +111,7 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session, 
       .from('modules')
       .select('id')
       .eq('slug', moduleId)
-      .single()
+      .maybeSingle()
 
     if (!moduleError && module) {
       actualModuleId = module.id
@@ -121,6 +121,7 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session, 
     try {
       const titleMap: Record<string, string> = {
         'delivery-notes': 'Leveringsbonnen Beheer',
+        'scanning': 'Barcode Scanner',
         'advanced-analytics': 'Geavanceerde Analytics',
         'auto-reorder': 'Automatische Herbestelling',
         'ecommerce-integration': 'E-commerce Integratie',
@@ -133,7 +134,7 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session, 
           .from('modules')
           .select('id')
           .eq('title', title)
-          .single()
+          .maybeSingle()
 
         if (!moduleError && module) {
           actualModuleId = module.id
@@ -143,6 +144,7 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session, 
       // Try hardcoded UUIDs as fallback
       const hardcodedIds: Record<string, string> = {
         'delivery-notes': '550e8400-e29b-41d4-a716-446655440000',
+        'scanning': '550e8400-e29b-41d4-a716-446655440005',
         'advanced-analytics': '550e8400-e29b-41d4-a716-446655440001',
         'auto-reorder': '550e8400-e29b-41d4-a716-446655440002',
         'ecommerce-integration': '550e8400-e29b-41d4-a716-446655440003',
