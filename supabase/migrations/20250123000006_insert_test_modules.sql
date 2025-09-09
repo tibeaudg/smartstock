@@ -1,19 +1,22 @@
 -- Insert test modules for development
 INSERT INTO modules (title, description, category, status, price_monthly, price_yearly, features, icon, created_at, updated_at) VALUES
 (
-  'Analytics Basic',
-  'Basis analytics en rapportage voor je voorraadbeheer',
-  'analytics',
+  'Leveringsbonnen Beheer',
+  'Volledig beheer van inkomende en uitgaande leveringsbonnen',
+  'automation',
   'active',
-  9.99,
-  99.99,
+  14.99,
+  149.99,
   ARRAY[
-    'Basis rapporten en statistieken',
-    'Voorraad trends overzicht',
-    'Verkoop analyse',
-    'Email rapporten (wekelijkse)'
+    'Inkomende leveringsbonnen uploaden',
+    'Uitgaande leveringsbonnen genereren',
+    'Producten toevoegen tijdens upload',
+    'Automatische voorraad updates',
+    'PDF export functionaliteit',
+    'Bulk import/export',
+    'Custom leveringsbon templates'
   ],
-  'BarChart3',
+  'Package',
   NOW(),
   NOW()
 ),

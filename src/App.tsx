@@ -52,6 +52,10 @@ import VoorraadbeheerVoorHoreca from "./pages/SEO/voorraadbeheer-voor-horeca";
 import CategoriesPage from './pages/categories';
 import SuppliersPage from './pages/suppliers';
 import AdminPage from './pages/admin';
+import { PaymentTestPage } from './pages/PaymentTest';
+import { DeliveryNotesManagement } from './components/delivery-notes/DeliveryNotesManagement';
+import { IncomingDeliveryNotes } from './components/delivery-notes/IncomingDeliveryNotes';
+import { OutgoingDeliveryNotes } from './components/delivery-notes/OutgoingDeliveryNotes';
 
 
 // ErrorBoundary component
@@ -282,6 +286,11 @@ export default function App() {
                     <Route path="categories" element={<CategoriesPage />} />
                     <Route path="suppliers" element={<SuppliersPage />} />
                     <Route path="transactions" element={<StockMovements />} />
+                    <Route path="delivery-notes" element={<DeliveryNotesManagement />}>
+                      <Route index element={<IncomingDeliveryNotes />} />
+                      <Route path="incoming" element={<IncomingDeliveryNotes />} />
+                      <Route path="outgoing" element={<OutgoingDeliveryNotes />} />
+                    </Route>
                     <Route path="settings" element={<Settings />}>
                       <Route index element={<ProfileSettings />} />
                       <Route path="profile" element={<ProfileSettings />} />
@@ -317,6 +326,7 @@ export default function App() {
                       <Route path="notifications" element={<AdminNotificationsPage />} />
                       <Route path="chat" element={<AdminChatList />} />
                       <Route path="seo" element={<SEO />} />
+                      <Route path="payment-test" element={<PaymentTestPage />} />
                       <Route path="user/:id" element={<AdminUserDetailPage />} />
                     </Route>
                   </Route>

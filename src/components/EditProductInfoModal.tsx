@@ -110,10 +110,13 @@ export const EditProductInfoModal = ({
   }, [user]);
 
   const fetchCategories = async () => {
+    if (!user) return;
+    
     try {
       const { data, error } = await supabase
         .from('categories')
         .select('id, name')
+        .eq('user_id', user.id)
         .order('name');
       
       if (error) {
@@ -271,10 +274,11 @@ export const EditProductInfoModal = ({
       if (form.category_name.trim() && !categoryId) {
         // If we have a name but no ID, try to find existing or create new
         const { data: existingCategory } = await supabase
-          .from('categories')
-          .select('id')
-          .eq('name', form.category_name.trim())
-          .single();
+        .from('categories')
+        .select('id')
+        .eq('name', form.category_name.trim())
+        .eq('user_id', user.id)
+        .single();
 
         if (existingCategory) {
           categoryId = existingCategory.id;
@@ -282,7 +286,7 @@ export const EditProductInfoModal = ({
         } else {
           const { data: newCategory, error: categoryError } = await supabase
             .from('categories')
-            .insert({ name: form.category_name.trim() })
+            .insert({ name: form.category_name.trim(), user_id: user.id })
             .select('id')
             .single();
 
@@ -413,7 +417,7 @@ export const EditProductInfoModal = ({
                                          try {
                                            const { data: newCategory, error } = await supabase
                                              .from('categories')
-                                             .insert({ name: form.category_name.trim() })
+                                             .insert({ name: form.category_name.trim(), user_id: user.id })
                                              .select('id, name')
                                              .single();
                                            

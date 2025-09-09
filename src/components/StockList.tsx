@@ -395,10 +395,13 @@ export const StockList = () => {
   }, [user]);
 
   const fetchCategories = async () => {
+    if (!user) return;
+    
     try {
       const { data, error } = await supabase
         .from('categories')
         .select('id, name')
+        .eq('user_id', user.id)
         .order('name');
       
       if (error) {
@@ -413,10 +416,13 @@ export const StockList = () => {
   };
 
   const fetchSuppliers = async () => {
+    if (!user) return;
+    
     try {
       const { data, error } = await supabase
         .from('suppliers')
         .select('id, name')
+        .eq('user_id', user.id)
         .order('name');
       
       if (error) {

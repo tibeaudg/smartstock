@@ -77,11 +77,14 @@ export default function CategoriesPage() {
   }, [user]);
 
   const fetchCategories = async () => {
+    if (!user) return;
+    
     try {
-      // First get all categories
+      // First get all categories for the current user
       const { data: categoriesData, error: categoriesError } = await supabase
         .from('categories')
         .select('*')
+        .eq('user_id', user.id)
         .order('name');
 
       if (categoriesError) {
@@ -122,12 +125,18 @@ export default function CategoriesPage() {
       return;
     }
 
+    if (!user) {
+      toast.error('Je moet ingelogd zijn om categorieën toe te voegen');
+      return;
+    }
+
     try {
       const { data, error } = await supabase
         .from('categories')
         .insert({
           name: formData.name.trim(),
-          description: formData.description.trim() || null
+          description: formData.description.trim() || null,
+          user_id: user.id
         })
         .select()
         .single();

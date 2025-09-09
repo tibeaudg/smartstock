@@ -14,7 +14,9 @@ import {
   ChevronDown,
   ChevronLeft,
   ChevronRight,
-  FileText
+  FileText,
+  Truck,
+  LogOut
 } 
 from 'lucide-react';
 import { BranchSelector } from './BranchSelector';
@@ -27,6 +29,7 @@ import { useNavigate, NavLink, useLocation } from 'react-router-dom';
 import { useMobile } from '@/hooks/use-mobile';
 import { useUnreadMessages } from '@/hooks/UnreadMessagesContext';
 import { useProductCount } from '@/hooks/useDashboardData';
+import { useModuleAccess } from '@/hooks/useModuleAccess';
 
 interface SidebarProps {
   currentTab: string;
@@ -58,6 +61,9 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
   const [supportOpen, setSupportOpen] = useState(false);
   const { unreadCount: unreadMessages, resetUnreadCount } = useUnreadMessages();
   const [openSubmenus, setOpenSubmenus] = useState<Record<string, boolean>>({});
+  
+  // Check if user has access to delivery notes module
+  const { data: deliveryNotesAccess } = useModuleAccess('delivery-notes');
 
   // If blocked, only show settings/invoicing
   const isBlocked = userProfile?.blocked;
@@ -119,6 +125,16 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
           ]
         },
         { id: 'transactions', label: 'Bewegingen', icon: ShoppingCart, path: '/dashboard/transactions' },
+        ...(deliveryNotesAccess?.hasAccess ? [{
+          id: 'delivery-notes',
+          label: 'Leveringsbonnen',
+          icon: Truck,
+          path: '/dashboard/delivery-notes',
+          subItems: [
+            { id: 'incoming', label: 'Inkomend', path: '/dashboard/delivery-notes/incoming' },
+            { id: 'outgoing', label: 'Uitgaand', path: '/dashboard/delivery-notes/outgoing' }
+          ]
+        }] : []),
         { 
           id: 'settings', 
           label: 'Instellingen', 
@@ -268,6 +284,30 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
 
         {/* Fixed Bottom Section */}
         <div className="flex-shrink-0">
+          {/* Sign Out Button */}
+          <div className="border-t border-gray-200">
+            <div className="px-3 py-2">
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={handleSignOut}
+                className={`
+                  w-full flex items-center px-3 py-2 rounded-lg text-left transition-colors
+                  text-gray-600 hover:bg-red-50 hover:text-red-700
+                  focus:ring-2 focus:ring-red-500 focus:ring-offset-2
+                  ${isOpen ? '' : 'justify-center'}
+                `}
+                aria-label="Afmelden"
+              >
+                <LogOut className="w-5 h-5 flex-shrink-0" />
+                {isOpen && (
+                  <span className="font-medium ml-3 flex-1 text-left">Afmelden</span>
+                )}
+              </Button>
+            </div>
+          </div>
+
           {/* Help Section */}
           <div className="border-t border-gray-200">
             <div className="px-3 py-2">

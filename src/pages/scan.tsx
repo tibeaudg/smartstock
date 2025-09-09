@@ -157,10 +157,13 @@ export default function ScanPage() {
   }, [user]);
 
   const fetchCategories = async () => {
+    if (!user) return;
+    
     try {
       const { data, error } = await supabase
         .from('categories')
         .select('id, name')
+        .eq('user_id', user.id)
         .order('name');
       
       if (error) {
@@ -316,6 +319,7 @@ export default function ScanPage() {
             .from('categories')
             .select('id')
             .eq('name', formData.categoryName.trim())
+            .eq('user_id', user.id)
             .single();
 
           if (existingCategory) {
@@ -323,7 +327,7 @@ export default function ScanPage() {
           } else {
             const { data: newCategory, error: categoryError } = await supabase
               .from('categories')
-              .insert({ name: formData.categoryName.trim() })
+              .insert({ name: formData.categoryName.trim(), user_id: user.id })
               .select('id')
               .single();
 
@@ -704,7 +708,7 @@ export default function ScanPage() {
                                          try {
                                            const { data: newCategory, error } = await supabase
                                              .from('categories')
-                                             .insert({ name: formData.categoryName.trim() })
+                                             .insert({ name: formData.categoryName.trim(), user_id: user.id })
                                              .select('id, name')
                                              .single();
                                            

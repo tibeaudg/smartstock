@@ -62,10 +62,13 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
 
 
   const fetchCategories = async () => {
+    if (!user) return;
+    
     try {
       const { data, error } = await supabase
         .from('categories')
         .select('id, name')
+        .eq('user_id', user.id)
         .order('name');
       
       if (error) {

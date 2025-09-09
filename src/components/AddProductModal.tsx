@@ -119,10 +119,13 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
   }, [user]);
 
   const fetchCategories = async () => {
+    if (!user) return;
+    
     try {
       const { data, error } = await supabase
         .from('categories')
         .select('id, name')
+        .eq('user_id', user.id)
         .order('name');
       
       if (error) {
@@ -233,6 +236,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
           .from('categories')
           .select('id')
           .eq('name', data.categoryName.trim())
+          .eq('user_id', user.id)
           .single();
 
         if (existingCategory) {
@@ -240,7 +244,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
         } else {
           const { data: newCategory, error: categoryError } = await supabase
             .from('categories')
-            .insert({ name: data.categoryName.trim() })
+            .insert({ name: data.categoryName.trim(), user_id: user.id })
             .select('id')
             .single();
 
@@ -485,7 +489,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                                          try {
                                            const { data: newCategory, error } = await supabase
                                              .from('categories')
-                                             .insert({ name: field.value.trim() })
+                                             .insert({ name: field.value.trim(), user_id: user.id })
                                              .select('id, name')
                                              .single();
                                            

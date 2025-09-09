@@ -80,11 +80,14 @@ export default function SuppliersPage() {
   }, [user]);
 
   const fetchSuppliers = async () => {
+    if (!user) return;
+    
     try {
-      // First get all suppliers
+      // First get all suppliers for the current user
       const { data: suppliersData, error: suppliersError } = await supabase
         .from('suppliers')
         .select('*')
+        .eq('user_id', user.id)
         .order('name');
 
       if (suppliersError) {
@@ -125,6 +128,11 @@ export default function SuppliersPage() {
       return;
     }
 
+    if (!user) {
+      toast.error('Je moet ingelogd zijn om leveranciers toe te voegen');
+      return;
+    }
+
     try {
       const { data, error } = await supabase
         .from('suppliers')
@@ -132,7 +140,8 @@ export default function SuppliersPage() {
           name: formData.name.trim(),
           email: formData.email.trim() || null,
           phone: formData.phone.trim() || null,
-          address: formData.address.trim() || null
+          address: formData.address.trim() || null,
+          user_id: user.id
         })
         .select()
         .single();
