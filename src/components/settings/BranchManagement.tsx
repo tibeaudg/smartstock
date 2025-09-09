@@ -8,13 +8,13 @@ import { useQuery } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger,
 } from '@/components/ui/dialog';
 
 import { toast } from '@/hooks/use-toast';
-import { Loader2, Building2, Plus, Edit, Users, Calendar } from 'lucide-react';
+import { Loader2, Building2, Plus, Edit, Users, Calendar, Euro } from 'lucide-react';
 
 interface BranchFormData {
   name: string;
@@ -29,6 +29,16 @@ interface UserBranch {
   is_main: boolean;
   user_count?: number;
   created_at: string;
+}
+
+interface PricingInfo {
+  totalUsers: number;
+  totalBranches: number;
+  extraUsers: number;
+  extraBranches: number;
+  userCost: number;
+  branchCost: number;
+  totalCost: number;
 }
 
 export const BranchManagement = () => {
@@ -67,6 +77,68 @@ export const BranchManagement = () => {
     staleTime: 1000 * 60 * 2,
   });
 
+  // Fetch pricing information
+  const fetchPricingInfo = async (): Promise<PricingInfo> => {
+    if (!user) return { totalUsers: 0, totalBranches: 0, extraUsers: 0, extraBranches: 0, userCost: 0, branchCost: 0, totalCost: 0 };
+    
+    // Get all branches for this user
+    const { data: branches, error: branchesError } = await supabase
+      .from('branches')
+      .select('id')
+      .eq('user_id', user.id);
+    
+    if (branchesError) {
+      console.error('Error fetching branches for pricing:', branchesError);
+      return { totalUsers: 0, totalBranches: 0, extraUsers: 0, extraBranches: 0, userCost: 0, branchCost: 0, totalCost: 0 };
+    }
+    
+    const branchIds = branches?.map(b => b.id) || [];
+    
+    // Get all users across all branches for this user
+    const { data: branchUsers, error: usersError } = await supabase
+      .from('branch_users')
+      .select('user_id')
+      .in('branch_id', branchIds);
+    
+    if (usersError) {
+      console.error('Error fetching branch users for pricing:', usersError);
+      return { totalUsers: 0, totalBranches: 0, extraUsers: 0, extraBranches: 0, userCost: 0, branchCost: 0, totalCost: 0 };
+    }
+    
+    // Count unique users
+    const uniqueUsers = new Set(branchUsers?.map(u => u.user_id) || []);
+    const totalUsers = uniqueUsers.size;
+    const totalBranches = branchIds.length;
+    
+    // Pricing: €2 per extra user (first user is free), €5 per extra branch (main branch is free)
+    const extraUsers = Math.max(0, totalUsers - 1); // First user is free
+    const extraBranches = Math.max(0, totalBranches - 1); // Main branch is free
+    const userCost = extraUsers * 2;
+    const branchCost = extraBranches * 5;
+    const totalCost = userCost + branchCost;
+    
+    return {
+      totalUsers,
+      totalBranches,
+      extraUsers,
+      extraBranches,
+      userCost,
+      branchCost,
+      totalCost
+    };
+  };
+
+  const {
+    data: pricingInfo,
+    isLoading: pricingLoading,
+  } = useQuery<PricingInfo>({
+    queryKey: ['pricingInfo', user?.id],
+    queryFn: fetchPricingInfo,
+    enabled: !!user,
+    refetchOnWindowFocus: true,
+    staleTime: 1000 * 60 * 2,
+  });
+
   // Delete branch
   const deleteBranch = async (branchId: string) => {
     const confirmed = window.confirm('Weet je zeker dat je dit filiaal wilt verwijderen?');
@@ -82,6 +154,8 @@ export const BranchManagement = () => {
     } else {
       toast({ title: 'Verwijderd', description: 'Filiaal succesvol verwijderd.' });
       refetch();
+      // Refresh pricing info
+      queryClient.invalidateQueries({ queryKey: ['pricingInfo', user.id] });
     }
   };
 
@@ -148,6 +222,8 @@ export const BranchManagement = () => {
       setEditingBranch(null);
       reset();
       await refreshBranches();
+      // Refresh pricing info
+      queryClient.invalidateQueries({ queryKey: ['pricingInfo', user.id] });
     } catch (error) {
       console.error(error);
       toast({
@@ -203,6 +279,39 @@ export const BranchManagement = () => {
 
   return (
     <div className="space-y-6">
+      {/* Pricing Information Card */}
+      <Card className="border-purple-200 bg-purple-50">
+        <CardContent className="space-y-6 p-6">
+          {pricingLoading ? (
+            <div className="flex items-center justify-center py-4">
+              <Loader2 className="w-6 h-6 animate-spin text-purple-600" />
+              <span className="ml-2 text-purple-600">Kosten berekenen...</span>
+            </div>
+          ) : (
+            <div className="space-y-4">
+
+              {/* Extra Filialen */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <Building2 className="w-6 h-6 text-purple-600" />
+                  <div>
+                    <h3 className="font-semibold text-purple-800 text-lg">Extra Filialen</h3>
+                    <p className="text-sm text-purple-600">€5 per extra filiaal/maand</p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <div className="text-3xl font-bold text-purple-600">
+                    €{pricingInfo?.branchCost || 0}
+                  </div>
+                  <div className="text-sm text-gray-500">{pricingInfo?.extraBranches || 0} van {pricingInfo?.totalBranches || 0} totaal</div>
+                </div>
+              </div>
+
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
       <div>
         <h1 className="text-3xl font-bold text-gray-900">Filialen Beheer</h1>
         <p className="text-gray-600 mt-2">Beheer je filialen en pas de namen aan zoals je wilt.</p>

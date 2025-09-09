@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Euro, Users, Building2 } from 'lucide-react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 
@@ -31,6 +31,16 @@ interface DisplayUser {
   userId: string;
   email: string;
   role: string;
+}
+
+interface PricingInfo {
+  totalUsers: number;
+  totalBranches: number;
+  extraUsers: number;
+  extraBranches: number;
+  userCost: number;
+  branchCost: number;
+  totalCost: number;
 }
 
 export const UserManagement = () => {
@@ -82,6 +92,68 @@ export const UserManagement = () => {
     staleTime: 1000 * 60 * 2,
   });
 
+  // Fetch pricing information
+  const fetchPricingInfo = async (): Promise<PricingInfo> => {
+    if (!user) return { totalUsers: 0, totalBranches: 0, extraUsers: 0, extraBranches: 0, userCost: 0, branchCost: 0, totalCost: 0 };
+    
+    // Get all branches for this user
+    const { data: branches, error: branchesError } = await supabase
+      .from('branches')
+      .select('id')
+      .eq('user_id', user.id);
+    
+    if (branchesError) {
+      console.error('Error fetching branches for pricing:', branchesError);
+      return { totalUsers: 0, totalBranches: 0, extraUsers: 0, extraBranches: 0, userCost: 0, branchCost: 0, totalCost: 0 };
+    }
+    
+    const branchIds = branches?.map(b => b.id) || [];
+    
+    // Get all users across all branches for this user
+    const { data: branchUsers, error: usersError } = await supabase
+      .from('branch_users')
+      .select('user_id')
+      .in('branch_id', branchIds);
+    
+    if (usersError) {
+      console.error('Error fetching branch users for pricing:', usersError);
+      return { totalUsers: 0, totalBranches: 0, extraUsers: 0, extraBranches: 0, userCost: 0, branchCost: 0, totalCost: 0 };
+    }
+    
+    // Count unique users
+    const uniqueUsers = new Set(branchUsers?.map(u => u.user_id) || []);
+    const totalUsers = uniqueUsers.size;
+    const totalBranches = branchIds.length;
+    
+    // Pricing: €2 per extra user (first user is free), €5 per extra branch (main branch is free)
+    const extraUsers = Math.max(0, totalUsers - 1); // First user is free
+    const extraBranches = Math.max(0, totalBranches - 1); // Main branch is free
+    const userCost = extraUsers * 2;
+    const branchCost = extraBranches * 5;
+    const totalCost = userCost + branchCost;
+    
+    return {
+      totalUsers,
+      totalBranches,
+      extraUsers,
+      extraBranches,
+      userCost,
+      branchCost,
+      totalCost
+    };
+  };
+
+  const {
+    data: pricingInfo,
+    isLoading: pricingLoading,
+  } = useQuery<PricingInfo>({
+    queryKey: ['pricingInfo', user?.id],
+    queryFn: fetchPricingInfo,
+    enabled: !!user,
+    refetchOnWindowFocus: true,
+    staleTime: 1000 * 60 * 2,
+  });
+
   // Real-time updates voor gebruikers
   useEffect(() => {
     if (!user?.id || !selectedBranchId) return;
@@ -99,6 +171,7 @@ export const UserManagement = () => {
         () => {
           console.log('Branch user wijziging gedetecteerd, refresh gebruikers...');
           queryClient.invalidateQueries({ queryKey: ['branchUsers', selectedBranchId] });
+          queryClient.invalidateQueries({ queryKey: ['pricingInfo', user.id] });
         }
       )
       .on(
@@ -111,6 +184,7 @@ export const UserManagement = () => {
         () => {
           console.log('Profile wijziging gedetecteerd, refresh gebruikers...');
           queryClient.invalidateQueries({ queryKey: ['branchUsers', selectedBranchId] });
+          queryClient.invalidateQueries({ queryKey: ['pricingInfo', user.id] });
         }
       )
       .subscribe();
@@ -145,6 +219,7 @@ export const UserManagement = () => {
     setInviteEmail('');
     setInviteRole("staff");
     refetch();
+    queryClient.invalidateQueries({ queryKey: ['pricingInfo', user.id] });
   };
 
   const handleRemoveUser = async (userIdToRemove: string) => {
@@ -165,6 +240,7 @@ export const UserManagement = () => {
     } else {
       toast({ title: "Gebruiker verwijderd", description: "De gebruiker is verwijderd uit dit filiaal." });
       refetch();
+      queryClient.invalidateQueries({ queryKey: ['pricingInfo', user.id] });
     }
   };
 
@@ -203,6 +279,7 @@ export const UserManagement = () => {
     setSavingBranches(false);
     setManageBranchesUser(null);
     refetch();
+    queryClient.invalidateQueries({ queryKey: ['pricingInfo', user.id] });
   };
 
   // Volledig verwijderen van gebruiker (branch_users, profiles, auth)
@@ -219,10 +296,39 @@ export const UserManagement = () => {
     setDeletingUserId(null);
     toast({ title: 'Gebruiker verwijderd', description: 'Het account is volledig verwijderd.' });
     refetch();
+    queryClient.invalidateQueries({ queryKey: ['pricingInfo', user.id] });
   };
 
   return (
     <div className="space-y-6">
+      {/* Pricing Information Card */}
+      <Card className="border-blue-200 bg-blue-50">
+        <CardContent className="p-6">
+          {pricingLoading ? (
+            <div className="flex items-center justify-center py-4">
+              <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
+              <span className="ml-2 text-blue-600">Kosten berekenen...</span>
+            </div>
+          ) : (
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <Users className="w-6 h-6 text-blue-600" />
+                <div>
+                  <h3 className="font-semibold text-blue-800 text-lg">Extra Gebruikers</h3>
+                  <p className="text-sm text-blue-600">€2 per extra gebruiker/maand</p>
+                </div>
+              </div>
+              <div className="text-right">
+                <div className="text-3xl font-bold text-blue-600">
+                  €{pricingInfo?.userCost || 0}
+                </div>
+                <div className="text-sm text-gray-500">{pricingInfo?.extraUsers || 0} van {pricingInfo?.totalUsers || 0} totaal</div>
+              </div>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
       {/* Check of branches beschikbaar is */}
       {(!branches || !Array.isArray(branches)) ? (
         <div style={{ color: '#b91c1c', background: '#fef2f2', padding: 24, borderRadius: 8, marginBottom: 24 }}>

@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { toast } from '@/hooks/use-toast';
-import { Loader2, CreditCard, Eye, Calendar, Star, TrendingUp, Settings, ShoppingCart, BarChart3, Package, Zap, Check, X, Clock, Euro, TestTube, Receipt, DollarSign, CalendarDays } from 'lucide-react';
+import { Loader2, CreditCard, Eye, Calendar, Star, TrendingUp, Settings, ShoppingCart, BarChart3, Package, Zap, Check, X, Clock, Euro, TestTube, Receipt, DollarSign, CalendarDays, Users, Building2 } from 'lucide-react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { ModuleCheckout } from '@/components/payments/ModuleCheckout';
 import { TestCheckout } from '@/components/payments/TestCheckout';
@@ -44,6 +44,17 @@ interface ActiveSubscription {
     price_monthly: number;
     icon: string;
   } | null;
+}
+
+// User and branch statistics interface
+interface UserBranchStats {
+  totalUsers: number;
+  totalBranches: number;
+  extraUsers: number;
+  extraBranches: number;
+  userCost: number;
+  branchCost: number;
+  totalUserBranchCost: number;
 }
 
 
@@ -121,6 +132,65 @@ export const ModuleManagement = () => {
         ...item,
         modules: Array.isArray(item.modules) ? item.modules[0] || null : item.modules || null
       }));
+    },
+    enabled: !!user,
+  });
+
+  // Fetch user and branch statistics
+  const {
+    data: userBranchStats,
+    isLoading: userBranchStatsLoading,
+    error: userBranchStatsError
+  } = useQuery<UserBranchStats>({
+    queryKey: ['userBranchStats', user?.id],
+    queryFn: async () => {
+      if (!user) return { totalUsers: 0, totalBranches: 0, extraUsers: 0, extraBranches: 0, userCost: 0, branchCost: 0, totalUserBranchCost: 0 };
+      
+      // Get all branches for this user
+      const { data: branches, error: branchesError } = await supabase
+        .from('branches')
+        .select('id')
+        .eq('user_id', user.id);
+      
+      if (branchesError) {
+        console.error('Error fetching branches:', branchesError);
+        throw branchesError;
+      }
+      
+      const branchIds = branches?.map(b => b.id) || [];
+      
+      // Get all users across all branches for this user
+      const { data: branchUsers, error: usersError } = await supabase
+        .from('branch_users')
+        .select('user_id')
+        .in('branch_id', branchIds);
+      
+      if (usersError) {
+        console.error('Error fetching branch users:', usersError);
+        throw usersError;
+      }
+      
+      // Count unique users
+      const uniqueUsers = new Set(branchUsers?.map(u => u.user_id) || []);
+      const totalUsers = uniqueUsers.size;
+      const totalBranches = branchIds.length;
+      
+      // Pricing: €2 per extra user (first user is free), €5 per extra branch (main branch is free)
+      const extraUsers = Math.max(0, totalUsers - 1); // First user is free
+      const extraBranches = Math.max(0, totalBranches - 1); // Main branch is free
+      const userCost = extraUsers * 2;
+      const branchCost = extraBranches * 5;
+      const totalUserBranchCost = userCost + branchCost;
+      
+      return {
+        totalUsers,
+        totalBranches,
+        extraUsers,
+        extraBranches,
+        userCost,
+        branchCost,
+        totalUserBranchCost
+      };
     },
     enabled: !!user,
   });
@@ -384,7 +454,7 @@ export const ModuleManagement = () => {
         <CardContent className="space-y-4">
           {/* Total Cost Summary */}
           <div className={`bg-white rounded-lg p-4 border ${(activeSubscriptions as ActiveSubscription[]).length > 0 ? 'border-green-200' : 'border-gray-200'}`}>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div className="text-center">
                 <div className="flex items-center justify-center gap-2 mb-2">
                   <DollarSign className={`w-5 h-5 ${(activeSubscriptions as ActiveSubscription[]).length > 0 ? 'text-green-600' : 'text-gray-500'}`} />
@@ -396,12 +466,23 @@ export const ModuleManagement = () => {
               </div>
               <div className="text-center">
                 <div className="flex items-center justify-center gap-2 mb-2">
-                  <Calendar className={`w-5 h-5 ${(activeSubscriptions as ActiveSubscription[]).length > 0 ? 'text-green-600' : 'text-gray-500'}`} />
-                  <span className={`font-semibold ${(activeSubscriptions as ActiveSubscription[]).length > 0 ? 'text-green-800' : 'text-gray-700'}`}>Jaarlijkse Kosten</span>
+                  <Users className={`w-5 h-5 ${userBranchStats?.extraUsers > 0 ? 'text-blue-600' : 'text-gray-500'}`} />
+                  <span className={`font-semibold ${userBranchStats?.extraUsers > 0 ? 'text-blue-800' : 'text-gray-700'}`}>Extra Gebruikers (€{userBranchStats?.userCost || 0})</span>
                 </div>
-                <div className={`text-2xl font-bold ${(activeSubscriptions as ActiveSubscription[]).length > 0 ? 'text-green-600' : 'text-gray-500'}`}>
-                  €{((activeSubscriptions as ActiveSubscription[]).reduce((total, sub) => total + (sub.modules?.price_monthly || 0), 0) * 12).toFixed(2)}
+                <div className={`text-2xl font-bold ${userBranchStats?.extraUsers > 0 ? 'text-blue-600' : 'text-gray-500'}`}>
+                  {userBranchStats?.extraUsers || 0}
                 </div>
+                <div className="text-xs text-gray-500">van {userBranchStats?.totalUsers || 0} totaal</div>
+              </div>
+              <div className="text-center">
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <Building2 className={`w-5 h-5 ${userBranchStats?.extraBranches > 0 ? 'text-purple-600' : 'text-gray-500'}`} />
+                  <span className={`font-semibold ${userBranchStats?.extraBranches > 0 ? 'text-purple-800' : 'text-gray-700'}`}>Extra Filialen (€{userBranchStats?.branchCost || 0})</span>
+                </div>
+                <div className={`text-2xl font-bold ${userBranchStats?.extraBranches > 0 ? 'text-purple-600' : 'text-gray-500'}`}>
+                  {userBranchStats?.extraBranches || 0}
+                </div>
+                <div className="text-xs text-gray-500">van {userBranchStats?.totalBranches || 0} totaal</div>
               </div>
               <div className="text-center">
                 <div className="flex items-center justify-center gap-2 mb-2">
@@ -415,10 +496,15 @@ export const ModuleManagement = () => {
             </div>
             <p className={`text-sm mt-3 text-center ${(activeSubscriptions as ActiveSubscription[]).length > 0 ? 'text-green-600' : 'text-gray-500'}`}>
               {(activeSubscriptions as ActiveSubscription[]).length > 0 
-                ? `Je hebt toegang tot ${(activeSubscriptions as ActiveSubscription[]).length} module${(activeSubscriptions as ActiveSubscription[]).length !== 1 ? 's' : ''} met een totale maandelijkse kost van €${(activeSubscriptions as ActiveSubscription[]).reduce((total, sub) => total + (sub.modules?.price_monthly || 0), 0).toFixed(2)}`
-                : 'Je hebt nog geen actieve module abonnementen. Bekijk de beschikbare modules hieronder om te beginnen.'
+                ? `Je hebt toegang tot ${(activeSubscriptions as ActiveSubscription[]).length} module${(activeSubscriptions as ActiveSubscription[]).length !== 1 ? 's' : ''} met een totale maandelijkse kost van €${(activeSubscriptions as ActiveSubscription[]).reduce((total, sub) => total + (sub.modules?.price_monthly || 0), 0).toFixed(2)}${userBranchStats?.totalUserBranchCost > 0 ? ` + €${userBranchStats.totalUserBranchCost} voor extra gebruikers en filialen` : ''}`
+                : `Je hebt nog geen actieve module abonnementen. Bekijk de beschikbare modules hieronder om te beginnen.${userBranchStats?.totalUserBranchCost > 0 ? ` Huidige kosten voor extra gebruikers en filialen: €${userBranchStats.totalUserBranchCost}/maand.` : ''}`
               }
             </p>
+            {userBranchStats && (userBranchStats.totalUsers > 0 || userBranchStats.totalBranches > 0) && (
+              <p className="text-xs mt-2 text-center text-gray-500">
+                💡 Je eerste gebruiker en hoofdvestiging zijn gratis. Alleen extra gebruikers (€2/maand) en extra filialen (€5/maand) worden aangerekend.
+              </p>
+            )}
           </div>
 
           {/* Individual Subscriptions - Only show if there are active subscriptions */}
