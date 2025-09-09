@@ -8,18 +8,19 @@ import { Loader2, CreditCard, Check, Euro } from 'lucide-react';
 import { createCheckoutSession, createPaymentIntent, confirmPaymentIntent } from '@/services/paymentService';
 import { useAuth } from '@/hooks/useAuth';
 
-interface Module {
-  id: string;
-  title: string;
-  description: string;
-  price_monthly: number;
-  price_yearly: number;
-  features: string[];
-  category: string;
-}
-
 interface ModuleCheckoutProps {
-  module: Module;
+  module: {
+    id: string;
+    title: string;
+    description: string;
+    status: 'available' | 'coming-soon' | 'beta';
+    price_monthly: number;
+    features: string[];
+    icon: string;
+    is_subscribed: boolean;
+    subscription_status?: 'active' | 'cancelled' | 'expired';
+    subscription_end_date?: string;
+  };
   onSuccess: () => void;
   onCancel: () => void;
 }

@@ -20,10 +20,8 @@ interface Module {
   id: string;
   title: string;
   description: string;
-  category: 'analytics' | 'automation' | 'integration' | 'premium';
   status: 'available' | 'coming-soon' | 'beta';
   price_monthly: number;
-  price_yearly: number;
   features: string[];
   icon: string;
   is_subscribed: boolean;
@@ -31,19 +29,11 @@ interface Module {
   subscription_end_date?: string;
 }
 
-// Category configuration
-const categories = {
-  analytics: { name: 'Analytics & Rapportages', color: 'bg-green-100 text-green-800', icon: BarChart3 },
-  automation: { name: 'Automatisering', color: 'bg-blue-100 text-blue-800', icon: Settings },
-  integration: { name: 'Integraties', color: 'bg-orange-100 text-orange-800', icon: Zap },
-  premium: { name: 'Premium Features', color: 'bg-purple-100 text-purple-800', icon: Star }
-};
 
 export const ModuleManagement = () => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [sortBy, setSortBy] = useState<'priority' | 'status'>('priority');
   const [checkoutModule, setCheckoutModule] = useState<Module | null>(null);
 
@@ -78,6 +68,7 @@ export const ModuleManagement = () => {
           const subscription = activeSubscriptions.get(module.id);
           return {
             ...module,
+            features: Array.isArray(module.features) ? module.features : [],
             is_subscribed: !!subscription,
             subscription_status: subscription?.status,
             subscription_end_date: subscription?.end_date
@@ -87,6 +78,7 @@ export const ModuleManagement = () => {
       
       return data?.map(module => ({
         ...module,
+        features: Array.isArray(module.features) ? module.features : [],
         is_subscribed: false
       })) || [];
     },
@@ -190,21 +182,19 @@ export const ModuleManagement = () => {
     setCheckoutModule(null);
   };
 
-  // Filter and sort modules
-  const filteredAndSortedModules = modules
-    .filter(module => selectedCategory === 'all' || module.category === selectedCategory)
-    .sort((a, b) => {
-      switch (sortBy) {
-        case 'priority':
-          // Sort by price (lower price first)
-          return a.price_monthly - b.price_monthly;
-        case 'status':
-          const statusOrder = { 'available': 3, 'beta': 2, 'coming-soon': 1 };
-          return statusOrder[b.status] - statusOrder[a.status];
-        default:
-          return 0;
-      }
-    });
+  // Sort modules
+  const sortedModules = modules.sort((a, b) => {
+    switch (sortBy) {
+      case 'priority':
+        // Sort by price (lower price first)
+        return a.price_monthly - b.price_monthly;
+      case 'status':
+        const statusOrder = { 'available': 3, 'beta': 2, 'coming-soon': 1 };
+        return statusOrder[b.status] - statusOrder[a.status];
+      default:
+        return 0;
+    }
+  });
 
   const activeSubscriptions = modules.filter(module => module.is_subscribed).length;
 
@@ -237,7 +227,13 @@ export const ModuleManagement = () => {
       pos: Package,
       production: Settings,
       forecast: BarChart3,
-      invoicing: ShoppingCart
+      invoicing: ShoppingCart,
+      truck: Package,
+      'bar-chart': BarChart3,
+      'shopping-cart': ShoppingCart,
+      'trending-up': TrendingUp,
+      'settings': Settings,
+      'star': Star
     };
     return iconMap[iconName] || Settings;
   };
@@ -270,10 +266,8 @@ export const ModuleManagement = () => {
 
       {/* Modules List */}
       <div className="space-y-4">
-        {filteredAndSortedModules.map((module) => {
+        {sortedModules.map((module) => {
           const Icon = getIcon(module.icon || 'dashboard'); // Fallback to dashboard icon
-          const categoryInfo = categories[module.category] || categories.analytics; // Fallback to analytics
-          const CategoryIcon = categoryInfo.icon;
           
           return (
             <Card key={module.id} className="hover:shadow-md transition-shadow">
@@ -324,6 +318,10 @@ export const ModuleManagement = () => {
                   </div>
                   
                   <div className="flex flex-col items-center gap-2 ml-4">
+                    <div className="text-right">
+                      <div className="text-2xl font-bold text-gray-900">€{module.price_monthly}</div>
+                      <div className="text-sm text-gray-500">per maand</div>
+                    </div>
                     {module.status === 'available' ? (
                       <div className="flex flex-col gap-2">
                         {!module.is_subscribed ? (
@@ -372,7 +370,7 @@ export const ModuleManagement = () => {
         })}
       </div>
 
-      {filteredAndSortedModules.length === 0 && (
+      {sortedModules.length === 0 && (
         <Card>
           <CardContent className="p-8 text-center">
             <Package className="w-12 h-12 text-gray-400 mx-auto mb-4" />

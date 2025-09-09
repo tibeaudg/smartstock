@@ -46,7 +46,8 @@ export const useModuleAccess = (moduleSlug: string) => {
             'advanced-analytics': 'Geavanceerde Analytics',
             'auto-reorder': 'Automatische Herbestelling',
             'ecommerce-integration': 'E-commerce Integratie',
-            'premium-support': 'Premium Support'
+            'premium-support': 'Premium Support',
+            'scanning': 'Barcode Scanner'
           };
           
           const title = titleMap[moduleSlug];
@@ -68,7 +69,8 @@ export const useModuleAccess = (moduleSlug: string) => {
             'advanced-analytics': '550e8400-e29b-41d4-a716-446655440001',
             'auto-reorder': '550e8400-e29b-41d4-a716-446655440002',
             'ecommerce-integration': '550e8400-e29b-41d4-a716-446655440003',
-            'premium-support': '550e8400-e29b-41d4-a716-446655440004'
+            'premium-support': '550e8400-e29b-41d4-a716-446655440004',
+            'scanning': '550e8400-e29b-41d4-a716-446655440005'
           };
           
           if (hardcodedIds[moduleSlug]) {

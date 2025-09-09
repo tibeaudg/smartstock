@@ -62,8 +62,9 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
   const { unreadCount: unreadMessages, resetUnreadCount } = useUnreadMessages();
   const [openSubmenus, setOpenSubmenus] = useState<Record<string, boolean>>({});
   
-  // Check if user has access to delivery notes module
+  // Check if user has access to modules
   const { data: deliveryNotesAccess } = useModuleAccess('delivery-notes');
+  const { data: scanningAccess } = useModuleAccess('scanning');
 
   // If blocked, only show settings/invoicing
   const isBlocked = userProfile?.blocked;
@@ -111,7 +112,6 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
       ]
     : [
         { id: 'dashboard', label: 'Dashboard', icon: BarChart3, path: '/dashboard', end: true },
-        { id: 'scan', label: 'Scannen', icon: Scan, path: '/dashboard/scan' },
 
         { 
           id: 'stock', 
@@ -142,7 +142,15 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
           path: '/dashboard/settings',
           subItems: settingsSubItems
         },
-        { id: 'modules', label: 'Modules', icon: FileText, path: '/dashboard/settings/modules' },
+        { 
+          id: 'modules', 
+          label: 'Modules', 
+          icon: FileText, 
+          path: '/dashboard/settings/modules',
+          subItems: [
+            ...(scanningAccess?.hasAccess ? [{ id: 'scan', label: 'Scannen', path: '/dashboard/scan' }] : [])
+          ]
+        },
         ...(isOwner
           ? [
               { 
