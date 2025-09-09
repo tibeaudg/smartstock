@@ -368,138 +368,146 @@ export const ModuleManagement = () => {
   return (
     <div className="space-y-6">
       {/* Active Subscriptions Overview */}
-      {(activeSubscriptions as ActiveSubscription[]).length > 0 && (
-        <Card className="border-green-200 bg-green-50">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-green-800">
-              <Receipt className="w-5 h-5" />
-              Actieve Module Abonnementen
-            </CardTitle>
-            <CardDescription className="text-green-700">
-              Overzicht van je gekochte modules en facturatie
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {/* Total Cost Summary */}
-            <div className="bg-white rounded-lg p-4 border border-green-200">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="text-center">
-                  <div className="flex items-center justify-center gap-2 mb-2">
-                    <DollarSign className="w-5 h-5 text-green-600" />
-                    <span className="font-semibold text-green-800">Maandelijkse Kosten</span>
-                  </div>
-                  <div className="text-2xl font-bold text-green-600">
-                    €{(activeSubscriptions as ActiveSubscription[]).reduce((total, sub) => total + (sub.modules?.price_monthly || 0), 0).toFixed(2)}
-                  </div>
+      <Card className={`${(activeSubscriptions as ActiveSubscription[]).length > 0 ? 'border-green-200 bg-green-50' : 'border-gray-200 bg-gray-50'}`}>
+        <CardHeader>
+          <CardTitle className={`flex items-center gap-2 ${(activeSubscriptions as ActiveSubscription[]).length > 0 ? 'text-green-800' : 'text-gray-800'}`}>
+            <Receipt className="w-5 h-5" />
+            {(activeSubscriptions as ActiveSubscription[]).length > 0 ? 'Actieve Module Abonnementen' : 'Module Abonnementen Overzicht'}
+          </CardTitle>
+          <CardDescription className={`${(activeSubscriptions as ActiveSubscription[]).length > 0 ? 'text-green-700' : 'text-gray-600'}`}>
+            {(activeSubscriptions as ActiveSubscription[]).length > 0 
+              ? 'Overzicht van je gekochte modules en facturatie'
+              : 'Je hebt nog geen actieve module abonnementen. Bekijk de beschikbare modules hieronder.'
+            }
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {/* Total Cost Summary */}
+          <div className={`bg-white rounded-lg p-4 border ${(activeSubscriptions as ActiveSubscription[]).length > 0 ? 'border-green-200' : 'border-gray-200'}`}>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="text-center">
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <DollarSign className={`w-5 h-5 ${(activeSubscriptions as ActiveSubscription[]).length > 0 ? 'text-green-600' : 'text-gray-500'}`} />
+                  <span className={`font-semibold ${(activeSubscriptions as ActiveSubscription[]).length > 0 ? 'text-green-800' : 'text-gray-700'}`}>Maandelijkse Kosten</span>
                 </div>
-                <div className="text-center">
-                  <div className="flex items-center justify-center gap-2 mb-2">
-                    <Calendar className="w-5 h-5 text-green-600" />
-                    <span className="font-semibold text-green-800">Jaarlijkse Kosten</span>
-                  </div>
-                  <div className="text-2xl font-bold text-green-600">
-                    €{((activeSubscriptions as ActiveSubscription[]).reduce((total, sub) => total + (sub.modules?.price_monthly || 0), 0) * 12).toFixed(2)}
-                  </div>
-                </div>
-                <div className="text-center">
-                  <div className="flex items-center justify-center gap-2 mb-2">
-                    <Check className="w-5 h-5 text-green-600" />
-                    <span className="font-semibold text-green-800">Actieve Modules</span>
-                  </div>
-                  <div className="text-2xl font-bold text-green-600">
-                    {(activeSubscriptions as ActiveSubscription[]).length}
-                  </div>
+                <div className={`text-2xl font-bold ${(activeSubscriptions as ActiveSubscription[]).length > 0 ? 'text-green-600' : 'text-gray-500'}`}>
+                  €{(activeSubscriptions as ActiveSubscription[]).reduce((total, sub) => total + (sub.modules?.price_monthly || 0), 0).toFixed(2)}
                 </div>
               </div>
-              <p className="text-sm text-green-600 mt-3 text-center">
-                Je hebt toegang tot {(activeSubscriptions as ActiveSubscription[]).length} module{(activeSubscriptions as ActiveSubscription[]).length !== 1 ? 's' : ''} met een totale maandelijkse kost van €{(activeSubscriptions as ActiveSubscription[]).reduce((total, sub) => total + (sub.modules?.price_monthly || 0), 0).toFixed(2)}
-              </p>
+              <div className="text-center">
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <Calendar className={`w-5 h-5 ${(activeSubscriptions as ActiveSubscription[]).length > 0 ? 'text-green-600' : 'text-gray-500'}`} />
+                  <span className={`font-semibold ${(activeSubscriptions as ActiveSubscription[]).length > 0 ? 'text-green-800' : 'text-gray-700'}`}>Jaarlijkse Kosten</span>
+                </div>
+                <div className={`text-2xl font-bold ${(activeSubscriptions as ActiveSubscription[]).length > 0 ? 'text-green-600' : 'text-gray-500'}`}>
+                  €{((activeSubscriptions as ActiveSubscription[]).reduce((total, sub) => total + (sub.modules?.price_monthly || 0), 0) * 12).toFixed(2)}
+                </div>
+              </div>
+              <div className="text-center">
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <Check className={`w-5 h-5 ${(activeSubscriptions as ActiveSubscription[]).length > 0 ? 'text-green-600' : 'text-gray-500'}`} />
+                  <span className={`font-semibold ${(activeSubscriptions as ActiveSubscription[]).length > 0 ? 'text-green-800' : 'text-gray-700'}`}>Actieve Modules</span>
+                </div>
+                <div className={`text-2xl font-bold ${(activeSubscriptions as ActiveSubscription[]).length > 0 ? 'text-green-600' : 'text-gray-500'}`}>
+                  {(activeSubscriptions as ActiveSubscription[]).length}
+                </div>
+              </div>
             </div>
+            <p className={`text-sm mt-3 text-center ${(activeSubscriptions as ActiveSubscription[]).length > 0 ? 'text-green-600' : 'text-gray-500'}`}>
+              {(activeSubscriptions as ActiveSubscription[]).length > 0 
+                ? `Je hebt toegang tot ${(activeSubscriptions as ActiveSubscription[]).length} module${(activeSubscriptions as ActiveSubscription[]).length !== 1 ? 's' : ''} met een totale maandelijkse kost van €${(activeSubscriptions as ActiveSubscription[]).reduce((total, sub) => total + (sub.modules?.price_monthly || 0), 0).toFixed(2)}`
+                : 'Je hebt nog geen actieve module abonnementen. Bekijk de beschikbare modules hieronder om te beginnen.'
+              }
+            </p>
+          </div>
 
-            {/* Individual Subscriptions */}
-            <div className="space-y-3">
-              {(activeSubscriptions as ActiveSubscription[]).map((subscription) => {
-                if (!subscription.modules) return null;
-                
-                const daysUntilRenewal = Math.ceil((new Date(subscription.end_date).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
-                const isExpiringSoon = daysUntilRenewal <= 7;
-                
-                return (
-                  <div key={subscription.id} className="bg-white rounded-lg p-4 border border-green-200">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                          {subscription.modules.icon === 'scan' && <Package className="w-5 h-5 text-green-600" />}
-                          {subscription.modules.icon === 'truck' && <ShoppingCart className="w-5 h-5 text-green-600" />}
-                          {subscription.modules.icon === 'bar-chart' && <BarChart3 className="w-5 h-5 text-green-600" />}
-                          {subscription.modules.icon === 'settings' && <Settings className="w-5 h-5 text-green-600" />}
-                          {subscription.modules.icon === 'zap' && <Zap className="w-5 h-5 text-green-600" />}
-                          {!['scan', 'truck', 'bar-chart', 'settings', 'zap'].includes(subscription.modules.icon) && 
-                            <Package className="w-5 h-5 text-green-600" />}
+          {/* Individual Subscriptions - Only show if there are active subscriptions */}
+          {(activeSubscriptions as ActiveSubscription[]).length > 0 && (
+            <>
+              <div className="space-y-3">
+                {(activeSubscriptions as ActiveSubscription[]).map((subscription) => {
+                  if (!subscription.modules) return null;
+                  
+                  const daysUntilRenewal = Math.ceil((new Date(subscription.end_date).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
+                  const isExpiringSoon = daysUntilRenewal <= 7;
+                  
+                  return (
+                    <div key={subscription.id} className="bg-white rounded-lg p-4 border border-green-200">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                            {subscription.modules.icon === 'scan' && <Package className="w-5 h-5 text-green-600" />}
+                            {subscription.modules.icon === 'truck' && <ShoppingCart className="w-5 h-5 text-green-600" />}
+                            {subscription.modules.icon === 'bar-chart' && <BarChart3 className="w-5 h-5 text-green-600" />}
+                            {subscription.modules.icon === 'settings' && <Settings className="w-5 h-5 text-green-600" />}
+                            {subscription.modules.icon === 'zap' && <Zap className="w-5 h-5 text-green-600" />}
+                            {!['scan', 'truck', 'bar-chart', 'settings', 'zap'].includes(subscription.modules.icon) && 
+                              <Package className="w-5 h-5 text-green-600" />}
+                          </div>
+                          <div>
+                            <h4 className="font-semibold text-green-800">{subscription.modules.title}</h4>
+                            <p className="text-sm text-green-600">
+                              €{subscription.modules.price_monthly}/maand
+                            </p>
+                          </div>
                         </div>
-                        <div>
-                          <h4 className="font-semibold text-green-800">{subscription.modules.title}</h4>
-                          <p className="text-sm text-green-600">
-                            €{subscription.modules.price_monthly}/maand
+                        <div className="text-right">
+                          <Badge className="bg-green-100 text-green-800 border-green-300">
+                            Actief
+                          </Badge>
+                          <p className="text-xs text-green-600 mt-1">
+                            {subscription.billing_cycle === 'monthly' ? 'Maandelijks' : 'Jaarlijks'}
                           </p>
                         </div>
                       </div>
-                      <div className="text-right">
-                        <Badge className="bg-green-100 text-green-800 border-green-300">
-                          Actief
-                        </Badge>
-                        <p className="text-xs text-green-600 mt-1">
-                          {subscription.billing_cycle === 'monthly' ? 'Maandelijks' : 'Jaarlijks'}
-                        </p>
+                      
+                      {/* Renewal Info */}
+                      <div className="mt-3 pt-3 border-t border-green-200">
+                        <div className="flex items-center justify-between text-sm">
+                          <div className="flex items-center gap-2">
+                            <CalendarDays className="w-4 h-4 text-green-600" />
+                            <span className="text-green-700">
+                              Verlengt op {new Date(subscription.end_date).toLocaleDateString('nl-NL', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
+                              })}
+                            </span>
+                          </div>
+                          <div className={`flex items-center gap-1 ${
+                            isExpiringSoon ? 'text-orange-600' : 'text-green-600'
+                          }`}>
+                            <Clock className="w-4 h-4" />
+                            <span>
+                              {daysUntilRenewal > 0 
+                                ? `${daysUntilRenewal} dag${daysUntilRenewal !== 1 ? 'en' : ''}`
+                                : 'Vandaag'
+                              }
+                            </span>
+                          </div>
+                        </div>
+                        {isExpiringSoon && (
+                          <p className="text-xs text-orange-600 mt-1">
+                            ⚠️ Abonnement verloopt binnenkort
+                          </p>
+                        )}
                       </div>
                     </div>
-                    
-                    {/* Renewal Info */}
-                    <div className="mt-3 pt-3 border-t border-green-200">
-                      <div className="flex items-center justify-between text-sm">
-                        <div className="flex items-center gap-2">
-                          <CalendarDays className="w-4 h-4 text-green-600" />
-                          <span className="text-green-700">
-                            Verlengt op {new Date(subscription.end_date).toLocaleDateString('nl-NL', {
-                              year: 'numeric',
-                              month: 'long',
-                              day: 'numeric'
-                            })}
-                          </span>
-                        </div>
-                        <div className={`flex items-center gap-1 ${
-                          isExpiringSoon ? 'text-orange-600' : 'text-green-600'
-                        }`}>
-                          <Clock className="w-4 h-4" />
-                          <span>
-                            {daysUntilRenewal > 0 
-                              ? `${daysUntilRenewal} dag${daysUntilRenewal !== 1 ? 'en' : ''}`
-                              : 'Vandaag'
-                            }
-                          </span>
-                        </div>
-                      </div>
-                      {isExpiringSoon && (
-                        <p className="text-xs text-orange-600 mt-1">
-                          ⚠️ Abonnement verloopt binnenkort
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+                  );
+                })}
+              </div>
 
-            {/* Additional Info */}
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-              <p className="text-sm text-blue-700">
-                💡 <strong>Tip:</strong> Je abonnementen worden automatisch verlengd. 
-                Je kunt ze op elk moment beheren via je Stripe dashboard.
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-      )}
+              {/* Additional Info */}
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                <p className="text-sm text-blue-700">
+                  💡 <strong>Tip:</strong> Je abonnementen worden automatisch verlengd. 
+                  Je kunt ze op elk moment beheren via je Stripe dashboard.
+                </p>
+              </div>
+            </>
+          )}
+        </CardContent>
+      </Card>
       
       {/* Header */}
       <div>
