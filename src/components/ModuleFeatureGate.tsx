@@ -121,7 +121,7 @@ export const ModuleFeatureGate: React.FC<ModuleFeatureGateProps> = ({
                     title: moduleTitle,
                     description: moduleDescription,
                     price_monthly: modulePrice,
-                    price_yearly: modulePrice * 10, // 10 maanden voor jaarlijks
+                    price_yearly: 0, // Geen jaarlijkse prijs
                     features: [
                       'Onbeperkt gebruik van deze functie',
                       'Premium support',

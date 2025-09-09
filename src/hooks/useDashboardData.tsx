@@ -172,6 +172,9 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
     enabled: !!user && !!activeBranch,
     refetchOnWindowFocus: true,
     staleTime: 1000 * 60 * 2, // 2 minuten cache
+    onError: (error) => {
+      console.error('Dashboard data fetch error:', error);
+    },
   });
 
   return {

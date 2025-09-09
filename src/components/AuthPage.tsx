@@ -26,6 +26,11 @@ export const AuthPage = () => {
   const { signIn, signUp, resetPassword } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+
+  const handleLoginClick = () => {
+    // Navigeer naar de homepage
+    navigate('/');
+  };
   
   // Gebruik de page refresh hook
   usePageRefresh();
@@ -165,7 +170,13 @@ export const AuthPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col">
-      <Header onLoginClick={() => {}} hideAuthButtons />
+      <Header 
+        onLoginClick={handleLoginClick}
+        onNavigate={undefined}
+        simplifiedNav={false}
+        hideAuthButtons={true}
+        hideNotifications={true}
+      />
       <div className="flex-1 flex items-center justify-center p-4 sm:p-6">
         <div className="w-full max-w-md mx-auto">
           <div className="text-center mb-6 sm:mb-8">

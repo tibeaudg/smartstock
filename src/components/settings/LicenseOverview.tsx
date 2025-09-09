@@ -105,6 +105,9 @@ export const LicenseOverview = () => {
     refetchOnWindowFocus: true,
     refetchOnMount: true,
     staleTime: 1000 * 60 * 2,
+    onError: (error) => {
+      console.error('License overview fetch error:', error);
+    },
   });
   React.useEffect(() => {
     if (data && user) {

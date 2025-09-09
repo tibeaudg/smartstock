@@ -19,7 +19,7 @@ interface Module {
   title: string;
   description: string;
   category: 'analytics' | 'automation' | 'integration' | 'premium';
-  status: 'available' | 'coming-soon' | 'beta';
+  status: 'available' | 'active' | 'coming-soon' | 'beta';
   price_monthly: number;
   price_yearly: number;
   features: string[];
@@ -226,8 +226,8 @@ export const AdminModuleManagement = () => {
         case 'price':
           return a.price_monthly - b.price_monthly;
         case 'status':
-          const statusOrder = { 'available': 3, 'beta': 2, 'coming-soon': 1 };
-          return statusOrder[b.status] - statusOrder[a.status];
+          const statusOrder = { 'available': 4, 'active': 3, 'beta': 2, 'coming-soon': 1 };
+          return (statusOrder[b.status] || 0) - (statusOrder[a.status] || 0);
         case 'created':
           return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
         default:
@@ -238,6 +238,7 @@ export const AdminModuleManagement = () => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'available': return 'bg-green-100 text-green-800';
+      case 'active': return 'bg-green-100 text-green-800';
       case 'beta': return 'bg-blue-100 text-blue-800';
       case 'coming-soon': return 'bg-yellow-100 text-yellow-800';
       default: return 'bg-gray-100 text-gray-800';
@@ -313,7 +314,7 @@ export const AdminModuleManagement = () => {
               <div className="ml-3">
                 <p className="text-sm font-medium text-gray-600">Beschikbaar</p>
                 <p className="text-2xl font-bold text-gray-900">
-                  {modules.filter(m => m.status === 'available').length}
+                  {modules.filter(m => m.status === 'available' || m.status === 'active').length}
                 </p>
               </div>
             </div>
@@ -409,8 +410,8 @@ export const AdminModuleManagement = () => {
       {/* Modules List */}
       <div className="space-y-4">
         {filteredAndSortedModules.map((module) => {
-          const Icon = getIcon(module.icon);
-          const CategoryIcon = categories[module.category].icon;
+          const Icon = getIcon(module.icon || 'dashboard'); // Fallback to dashboard icon
+          const CategoryIcon = categories[module.category]?.icon || categories.analytics.icon;
           
           return (
             <Card key={module.id} className="hover:shadow-md transition-shadow">
@@ -422,7 +423,9 @@ export const AdminModuleManagement = () => {
                       <h3 className="text-lg font-semibold text-gray-900">{module.title}</h3>
                       <Badge className={getStatusColor(module.status)}>
                         {module.status === 'available' ? 'Beschikbaar' : 
-                         module.status === 'beta' ? 'Beta' : 'Binnenkort'}
+                         module.status === 'active' ? 'Actief' :
+                         module.status === 'beta' ? 'Beta' : 
+                         module.status === 'coming-soon' ? 'Binnenkort' : module.status}
                       </Badge>
                     </div>
                     
@@ -445,7 +448,7 @@ export const AdminModuleManagement = () => {
                     <div className="flex items-center gap-4 text-sm text-gray-500">
                       <div className="flex items-center gap-1">
                         <CategoryIcon className="w-4 h-4" />
-                        <span>{categories[module.category].name}</span>
+                        <span>{categories[module.category]?.name || 'Onbekende categorie'}</span>
                       </div>
                       <div className="flex items-center gap-1">
                         <Euro className="w-4 h-4" />
@@ -563,6 +566,7 @@ export const AdminModuleManagement = () => {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="available">Beschikbaar</SelectItem>
+                    <SelectItem value="active">Actief</SelectItem>
                     <SelectItem value="beta">Beta</SelectItem>
                     <SelectItem value="coming-soon">Binnenkort</SelectItem>
                   </SelectContent>

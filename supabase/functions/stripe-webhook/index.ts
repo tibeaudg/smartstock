@@ -103,6 +103,62 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session, 
     return
   }
 
+  // Get the actual module ID - try slug first, fallback to title, then direct ID
+  let actualModuleId = moduleId;
+  
+  try {
+    const { data: module, error: moduleError } = await supabase
+      .from('modules')
+      .select('id')
+      .eq('slug', moduleId)
+      .single()
+
+    if (!moduleError && module) {
+      actualModuleId = module.id
+    }
+  } catch (err) {
+    // If slug column doesn't exist, try to find by title
+    try {
+      const titleMap: Record<string, string> = {
+        'delivery-notes': 'Leveringsbonnen Beheer',
+        'advanced-analytics': 'Geavanceerde Analytics',
+        'auto-reorder': 'Automatische Herbestelling',
+        'ecommerce-integration': 'E-commerce Integratie',
+        'premium-support': 'Premium Support'
+      };
+      
+      const title = titleMap[moduleId];
+      if (title) {
+        const { data: module, error: moduleError } = await supabase
+          .from('modules')
+          .select('id')
+          .eq('title', title)
+          .single()
+
+        if (!moduleError && module) {
+          actualModuleId = module.id
+        }
+      }
+    } catch (titleErr) {
+      // Try hardcoded UUIDs as fallback
+      const hardcodedIds: Record<string, string> = {
+        'delivery-notes': '550e8400-e29b-41d4-a716-446655440000',
+        'advanced-analytics': '550e8400-e29b-41d4-a716-446655440001',
+        'auto-reorder': '550e8400-e29b-41d4-a716-446655440002',
+        'ecommerce-integration': '550e8400-e29b-41d4-a716-446655440003',
+        'premium-support': '550e8400-e29b-41d4-a716-446655440004'
+      };
+      
+      const hardcodedId = hardcodedIds[moduleId];
+      if (hardcodedId) {
+        actualModuleId = hardcodedId;
+        console.log('Using hardcoded UUID for module:', moduleId, actualModuleId);
+      } else {
+        console.log('No hardcoded UUID found, using moduleId directly:', moduleId);
+      }
+    }
+  }
+
   // Get subscription details
   const subscription = session.subscription as string
   if (!subscription) {
@@ -110,20 +166,16 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session, 
     return
   }
 
-  // Calculate end date
+  // Calculate end date - only monthly billing for delivery-notes
   const endDate = new Date()
-  if (billingCycle === 'monthly') {
-    endDate.setMonth(endDate.getMonth() + 1)
-  } else {
-    endDate.setFullYear(endDate.getFullYear() + 1)
-  }
+  endDate.setMonth(endDate.getMonth() + 1)
 
   // Create or update user subscription
   const { error } = await supabase
     .from('user_module_subscriptions')
     .upsert({
       user_id: userId,
-      module_id: moduleId,
+      module_id: actualModuleId,
       stripe_subscription_id: subscription,
       stripe_customer_id: session.customer,
       status: 'active',
@@ -139,7 +191,7 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session, 
     throw error
   }
 
-  console.log(`Subscription created for user ${userId}, module ${moduleId}`)
+  console.log(`Subscription created for user ${userId}, module ${actualModuleId} (slug: ${moduleId})`)
 }
 
 async function handleInvoicePaymentSucceeded(invoice: Stripe.Invoice, supabase: any) {

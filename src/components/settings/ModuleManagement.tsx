@@ -271,7 +271,7 @@ export const ModuleManagement = () => {
       {/* Modules List */}
       <div className="space-y-4">
         {filteredAndSortedModules.map((module) => {
-          const Icon = getIcon(module.icon);
+          const Icon = getIcon(module.icon || 'dashboard'); // Fallback to dashboard icon
           const categoryInfo = categories[module.category] || categories.analytics; // Fallback to analytics
           const CategoryIcon = categoryInfo.icon;
           

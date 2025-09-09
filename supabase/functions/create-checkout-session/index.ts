@@ -37,12 +37,83 @@ serve(async (req) => {
       )
     }
 
-    // Get module details from database
-    const { data: module, error: moduleError } = await supabase
-      .from('modules')
-      .select('*')
-      .eq('id', moduleId)
-      .single()
+    // Get module details from database - try slug first, fallback to title, then direct ID
+    let module, moduleError;
+    
+    try {
+      const result = await supabase
+        .from('modules')
+        .select('*')
+        .eq('slug', moduleId)
+        .single()
+      
+      module = result.data
+      moduleError = result.error
+    } catch (err) {
+      // If slug column doesn't exist, try to find by title
+      try {
+        const titleMap: Record<string, string> = {
+          'delivery-notes': 'Leveringsbonnen Beheer',
+          'advanced-analytics': 'Geavanceerde Analytics',
+          'auto-reorder': 'Automatische Herbestelling',
+          'ecommerce-integration': 'E-commerce Integratie',
+          'premium-support': 'Premium Support'
+        };
+        
+        const title = titleMap[moduleId];
+        if (title) {
+          const result = await supabase
+            .from('modules')
+            .select('*')
+            .eq('title', title)
+            .single()
+          
+          module = result.data
+          moduleError = result.error
+        } else {
+          // Try hardcoded UUIDs as fallback
+          const hardcodedIds: Record<string, string> = {
+            'delivery-notes': '550e8400-e29b-41d4-a716-446655440000',
+            'advanced-analytics': '550e8400-e29b-41d4-a716-446655440001',
+            'auto-reorder': '550e8400-e29b-41d4-a716-446655440002',
+            'ecommerce-integration': '550e8400-e29b-41d4-a716-446655440003',
+            'premium-support': '550e8400-e29b-41d4-a716-446655440004'
+          };
+          
+          const hardcodedId = hardcodedIds[moduleId];
+          if (hardcodedId) {
+            const result = await supabase
+              .from('modules')
+              .select('*')
+              .eq('id', hardcodedId)
+              .single()
+            
+            module = result.data
+            moduleError = result.error
+          } else {
+            // Try direct ID lookup as last resort
+            const result = await supabase
+              .from('modules')
+              .select('*')
+              .eq('id', moduleId)
+              .single()
+            
+            module = result.data
+            moduleError = result.error
+          }
+        }
+      } catch (titleErr) {
+        // Try direct ID lookup as last resort
+        const result = await supabase
+          .from('modules')
+          .select('*')
+          .eq('id', moduleId)
+          .single()
+        
+        module = result.data
+        moduleError = result.error
+      }
+    }
 
     if (moduleError) {
       console.error('Module error:', moduleError)
@@ -82,9 +153,9 @@ serve(async (req) => {
       )
     }
 
-    // Calculate price
-    const price = billingCycle === 'monthly' ? module.price_monthly : module.price_yearly
-    const interval = billingCycle === 'monthly' ? 'month' : 'year'
+    // Calculate price - only monthly pricing for delivery-notes
+    const price = module.price_monthly
+    const interval = 'month'
 
     // Create or get Stripe customer
     let customerId = user.stripe_customer_id

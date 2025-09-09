@@ -78,6 +78,9 @@ export const useStockMovements = () => {
     enabled: !!user && !!activeBranch,
     refetchOnWindowFocus: true,
     staleTime: 1000 * 60 * 2,
+    onError: (error) => {
+      console.error('Stock movements fetch error:', error);
+    },
   });
 
   // Real-time updates voor stock transactions

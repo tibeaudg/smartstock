@@ -470,6 +470,7 @@ export const StockList = () => {
   const {
     data: products = [],
     isLoading: loading,
+    error: productsError,
     refetch
   } = useQuery<Product[]>({
     queryKey: ['products', activeBranch?.branch_id],
@@ -480,6 +481,9 @@ export const StockList = () => {
     gcTime: 1000 * 60 * 60 * 24, // 24 uur garbage collect
     // @ts-expect-error: keepPreviousData is supported in v5, type mismatch workaround
     keepPreviousData: true,
+    onError: (error) => {
+      console.error('Products fetch error:', error);
+    },
   });
 
   // Real-time updates voor producten
@@ -770,6 +774,23 @@ export const StockList = () => {
     return (
       <div className="flex items-center justify-center py-20">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
+  if (productsError) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <div className="text-center max-w-md">
+          <div className="text-red-500 text-6xl mb-4">⚠️</div>
+          <h2 className="text-xl font-semibold text-gray-900 mb-2">Fout bij laden van producten</h2>
+          <p className="text-gray-600 mb-4">
+            Er is een probleem opgetreden bij het ophalen van de productgegevens.
+          </p>
+          <Button onClick={() => refetch()} variant="outline">
+            Opnieuw proberen
+          </Button>
+        </div>
       </div>
     );
   }

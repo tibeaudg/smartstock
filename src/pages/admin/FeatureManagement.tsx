@@ -431,7 +431,7 @@ export const FeatureManagement = () => {
       <div className="space-y-4">
         {filteredAndSortedFeatures.map((feature) => {
           const Icon = getIcon(feature.icon);
-          const CategoryIcon = categories[feature.category].icon;
+          const CategoryIcon = categories[feature.category]?.icon || categories.optimization.icon;
           
           return (
             <Card key={feature.id} className="hover:shadow-md transition-shadow">
@@ -456,7 +456,7 @@ export const FeatureManagement = () => {
                     <div className="flex items-center gap-4 text-sm text-gray-500">
                       <div className="flex items-center gap-1">
                         <CategoryIcon className="w-4 h-4" />
-                        <span>{categories[feature.category].name}</span>
+                        <span>{categories[feature.category]?.name || 'Onbekende categorie'}</span>
                       </div>
                       {feature.estimated_release && (
                         <div className="flex items-center gap-1">

@@ -1,7 +1,7 @@
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+// QueryClient wordt nu beheerd in main.tsx
 import { StripeProvider } from "@/components/providers/StripeProvider";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { StockManagementApp } from "./components/StockManagementApp";
@@ -68,8 +68,21 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { has
     return { hasError: true, error };
   }
   componentDidCatch(error, errorInfo) {
-    // Je kunt hier logging toevoegen
-    // console.error('ErrorBoundary caught:', error, errorInfo);
+    // Log de fout voor debugging
+    console.error('App ErrorBoundary caught:', error, errorInfo);
+    
+    // Log naar een externe service indien beschikbaar
+    if (typeof window !== 'undefined' && window.location.hostname !== 'localhost') {
+      // Hier kun je externe error logging toevoegen (bijv. Sentry)
+      console.error('Production error:', {
+        message: error.message,
+        stack: error.stack,
+        componentStack: errorInfo.componentStack,
+        timestamp: new Date().toISOString(),
+        userAgent: navigator.userAgent,
+        url: window.location.href
+      });
+    }
   }
   handleReload = () => {
     window.location.reload();
@@ -101,20 +114,7 @@ function isLocalStorageAvailable() {
   }
 }
 
-// Configure QueryClient
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 1000 * 60 * 5, // 5 minuten
-      // --- DEFINITIEVE OPLOSSING ---
-      // Zet deze optie op `true`. Dit is de ingebouwde, robuuste oplossing
-      // van React Query voor het herstellen van de verbinding en het verversen
-      // van data wanneer de gebruiker terugkeert naar de app.
-      refetchOnWindowFocus: true, 
-      retry: 1,
-    },
-  },
-});
+// QueryClient wordt nu gecentraliseerd beheerd in main.tsx
 
 const LoadingScreen = () => (
   <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -237,8 +237,7 @@ export default function App() {
           'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap'
         ]}
       />
-      {/* Verwijderde dubbele wrapper */}
-      <QueryClientProvider client={queryClient}>
+      {/* QueryClientProvider wordt nu beheerd in main.tsx */}
         <AuthProvider>
           <StripeProvider>
             <TooltipProvider>
@@ -339,7 +338,6 @@ export default function App() {
             </TooltipProvider>
           </StripeProvider>
         </AuthProvider>
-      </QueryClientProvider>
     </ErrorBoundary>
   );
 }
