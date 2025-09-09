@@ -144,55 +144,63 @@ export const useAllModuleAccess = () => {
         return {};
       }
 
-      // Try to get modules with slug, fallback to without slug
-      let data, error;
-      
-      try {
-        const result = await supabase
-          .from('user_module_subscriptions')
-          .select(`
-            module_id, 
-            status, 
-            end_date, 
-            billing_cycle,
-            modules!inner(slug)
-          `)
-          .eq('user_id', user.id)
-          .eq('status', 'active');
-        
-        data = result.data;
-        error = result.error;
-      } catch (err) {
-        // If slug column doesn't exist, use simple query
-        const result = await supabase
-          .from('user_module_subscriptions')
-          .select('module_id, status, end_date, billing_cycle')
-          .eq('user_id', user.id)
-          .eq('status', 'active');
-        
-        data = result.data;
-        error = result.error;
-      }
+      console.log('Fetching all module access for user:', user.id);
+
+      // Get all active subscriptions with module details
+      const { data: subscriptions, error } = await supabase
+        .from('user_module_subscriptions')
+        .select(`
+          module_id, 
+          status, 
+          end_date, 
+          billing_cycle,
+          modules!inner(
+            id,
+            title,
+            slug
+          )
+        `)
+        .eq('user_id', user.id)
+        .eq('status', 'active');
 
       if (error) {
         console.warn('All module access query error:', error);
         return {};
       }
 
-      if (!data) {
+      if (!subscriptions) {
+        console.log('No subscriptions found for user');
         return {};
       }
+
+      console.log('Found subscriptions:', subscriptions);
 
       const accessMap: Record<string, ModuleAccess> = {};
       const now = new Date();
 
-      data.forEach(subscription => {
+      subscriptions.forEach(subscription => {
         const endDate = new Date(subscription.end_date);
         const isExpired = endDate < now;
         
-        // Use slug if available, otherwise use module_id (but only if it's a valid UUID)
-        const moduleKey = (subscription as any).modules?.slug || 
-          (isValidUUID(subscription.module_id) ? subscription.module_id : null);
+        // Get module info
+        const module = (subscription as any).modules;
+        if (!module) return;
+
+        // Use slug if available, otherwise map by title
+        let moduleKey = module.slug;
+        
+        if (!moduleKey) {
+          // Map by title as fallback
+          const titleMap: Record<string, string> = {
+            'Leveringsbonnen Beheer': 'delivery-notes',
+            'Barcode Scanner': 'scanning',
+            'Geavanceerde Analytics': 'advanced-analytics',
+            'Automatische Herbestelling': 'auto-reorder',
+            'E-commerce Integratie': 'ecommerce-integration',
+            'Premium Support': 'premium-support'
+          };
+          moduleKey = titleMap[module.title] || module.id;
+        }
 
         if (moduleKey) {
           accessMap[moduleKey] = {
@@ -201,9 +209,12 @@ export const useAllModuleAccess = () => {
             endDate: subscription.end_date,
             billingCycle: subscription.billing_cycle
           };
+          
+          console.log(`Module access set for ${moduleKey}:`, accessMap[moduleKey]);
         }
       });
 
+      console.log('Final access map:', accessMap);
       return accessMap;
     },
     enabled: !!user,

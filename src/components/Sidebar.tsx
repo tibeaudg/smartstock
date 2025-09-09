@@ -16,7 +16,8 @@ import {
   ChevronRight,
   FileText,
   Truck,
-  LogOut
+  LogOut,
+  Star
 } 
 from 'lucide-react';
 import { BranchSelector } from './BranchSelector';
@@ -29,7 +30,7 @@ import { useNavigate, NavLink, useLocation } from 'react-router-dom';
 import { useMobile } from '@/hooks/use-mobile';
 import { useUnreadMessages } from '@/hooks/UnreadMessagesContext';
 import { useProductCount } from '@/hooks/useDashboardData';
-import { useModuleAccess } from '@/hooks/useModuleAccess';
+import { useModuleAccess, useAllModuleAccess } from '@/hooks/useModuleAccess';
 
 interface SidebarProps {
   currentTab: string;
@@ -63,12 +64,14 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
   const [openSubmenus, setOpenSubmenus] = useState<Record<string, boolean>>({});
   
   // Check if user has access to modules
-  const { data: deliveryNotesAccess } = useModuleAccess('delivery-notes');
-  const { data: scanningAccess } = useModuleAccess('scanning');
+  const { data: allModuleAccess } = useAllModuleAccess();
   
   // Debug logging
-  console.log('Sidebar - deliveryNotesAccess:', deliveryNotesAccess);
-  console.log('Sidebar - scanningAccess:', scanningAccess);
+  console.log('Sidebar - allModuleAccess:', allModuleAccess);
+  
+  // Extract specific module access
+  const deliveryNotesAccess = allModuleAccess?.['delivery-notes'];
+  const scanningAccess = allModuleAccess?.['scanning'];
 
   // If blocked, only show settings/invoicing
   const isBlocked = userProfile?.blocked;
@@ -293,6 +296,51 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
             })}
           </ul>
         </nav>
+
+        {/* Active Modules Section */}
+        {allModuleAccess && Object.keys(allModuleAccess).length > 0 && (
+          <div className="px-3 py-4 border-t border-gray-200">
+            <div className="mb-3">
+              <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                Actieve Modules
+              </h3>
+            </div>
+            <div className="space-y-2">
+              {Object.entries(allModuleAccess).map(([moduleKey, access]) => {
+                if (!access.hasAccess) return null;
+                
+                const moduleLabels: Record<string, string> = {
+                  'delivery-notes': 'Leveringsbonnen',
+                  'scanning': 'Barcode Scanner',
+                  'advanced-analytics': 'Analytics',
+                  'auto-reorder': 'Herbestelling',
+                  'ecommerce-integration': 'E-commerce',
+                  'premium-support': 'Premium Support'
+                };
+                
+                const moduleIcons: Record<string, any> = {
+                  'delivery-notes': Truck,
+                  'scanning': Scan,
+                  'advanced-analytics': BarChart3,
+                  'auto-reorder': Settings,
+                  'ecommerce-integration': ShoppingCart,
+                  'premium-support': Star
+                };
+                
+                const Icon = moduleIcons[moduleKey] || Package;
+                const label = moduleLabels[moduleKey] || moduleKey;
+                
+                return (
+                  <div key={moduleKey} className="flex items-center gap-2 px-2 py-1 bg-green-50 rounded-lg border border-green-200">
+                    <Icon className="w-4 h-4 text-green-600 flex-shrink-0" />
+                    <span className="text-xs text-green-700 font-medium truncate">{label}</span>
+                    <div className="w-2 h-2 bg-green-500 rounded-full flex-shrink-0 ml-auto"></div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
         {/* Fixed Bottom Section */}
         <div className="flex-shrink-0">

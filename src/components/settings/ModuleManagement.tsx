@@ -382,17 +382,37 @@ export const ModuleManagement = () => {
           <CardContent className="space-y-4">
             {/* Total Cost Summary */}
             <div className="bg-white rounded-lg p-4 border border-green-200">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <DollarSign className="w-5 h-5 text-green-600" />
-                  <span className="font-semibold text-green-800">Maandelijkse Kosten</span>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="text-center">
+                  <div className="flex items-center justify-center gap-2 mb-2">
+                    <DollarSign className="w-5 h-5 text-green-600" />
+                    <span className="font-semibold text-green-800">Maandelijkse Kosten</span>
+                  </div>
+                  <div className="text-2xl font-bold text-green-600">
+                    €{(activeSubscriptions as ActiveSubscription[]).reduce((total, sub) => total + (sub.modules?.price_monthly || 0), 0).toFixed(2)}
+                  </div>
                 </div>
-                <div className="text-2xl font-bold text-green-600">
-                  €{(activeSubscriptions as ActiveSubscription[]).reduce((total, sub) => total + (sub.modules?.price_monthly || 0), 0).toFixed(2)}
+                <div className="text-center">
+                  <div className="flex items-center justify-center gap-2 mb-2">
+                    <Calendar className="w-5 h-5 text-green-600" />
+                    <span className="font-semibold text-green-800">Jaarlijkse Kosten</span>
+                  </div>
+                  <div className="text-2xl font-bold text-green-600">
+                    €{((activeSubscriptions as ActiveSubscription[]).reduce((total, sub) => total + (sub.modules?.price_monthly || 0), 0) * 12).toFixed(2)}
+                  </div>
+                </div>
+                <div className="text-center">
+                  <div className="flex items-center justify-center gap-2 mb-2">
+                    <Check className="w-5 h-5 text-green-600" />
+                    <span className="font-semibold text-green-800">Actieve Modules</span>
+                  </div>
+                  <div className="text-2xl font-bold text-green-600">
+                    {(activeSubscriptions as ActiveSubscription[]).length}
+                  </div>
                 </div>
               </div>
-              <p className="text-sm text-green-600 mt-1">
-                {(activeSubscriptions as ActiveSubscription[]).length} actieve abonnement{(activeSubscriptions as ActiveSubscription[]).length !== 1 ? 'en' : ''}
+              <p className="text-sm text-green-600 mt-3 text-center">
+                Je hebt toegang tot {(activeSubscriptions as ActiveSubscription[]).length} module{(activeSubscriptions as ActiveSubscription[]).length !== 1 ? 's' : ''} met een totale maandelijkse kost van €{(activeSubscriptions as ActiveSubscription[]).reduce((total, sub) => total + (sub.modules?.price_monthly || 0), 0).toFixed(2)}
               </p>
             </div>
 

@@ -423,6 +423,7 @@ export default function ScanPage() {
       // Invalidate queries to refresh data
       queryClient.invalidateQueries({ queryKey: ['productCount', activeBranch.branch_id, user.id] });
       queryClient.invalidateQueries({ queryKey: ['products', activeBranch.branch_id] });
+      queryClient.invalidateQueries({ queryKey: ['stockTransactions'] });
 
       toast.success(transactionType === 'in' 
         ? 'Product succesvol toegevoegd!' 

@@ -326,9 +326,11 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
 
       if (transactionError) {
         console.error('Error creating initial stock transaction:', transactionError);
-        toast.error('Product created but failed to record initial stock');
+        toast.error(`Product aangemaakt maar voorraad transactie mislukt: ${transactionError.message}`);
       } else {
         console.log('Initial stock transaction created successfully');
+        // Invalidate stock transactions query to refresh the movements list
+        queryClient.invalidateQueries({ queryKey: ['stockTransactions'] });
       }
 
       toast.success('Product succesvol toegevoegd!');

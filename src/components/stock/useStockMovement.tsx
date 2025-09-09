@@ -107,6 +107,9 @@ export const useStockMovement = (
           : `Removed ${quantityNum} items from stock`
       );
 
+      // Invalidate stock transactions query to refresh the movements list
+      queryClient.invalidateQueries({ queryKey: ['stockTransactions'] });
+      
       onProductUpdated();
       onClose();
     } catch (error) {
