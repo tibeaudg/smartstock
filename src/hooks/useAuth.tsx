@@ -211,7 +211,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         first_name: firstName,
         last_name: lastName,
         role,
-        is_owner: true, // Nieuwe gebruikers zijn standaard eigenaar
+        is_owner: false, // Nieuwe gebruikers zijn standaard GEEN eigenaar
         updated_at: new Date().toISOString(),
       }, { onConflict: 'id' }); // Zorgt dat upsert op basis van primary key 'id' werkt
       

@@ -70,19 +70,7 @@ export const StockMovements = () => {
 
   return (
     <div className="space-y-4">
-      {/* Header */}
-      <div className="flex justify-between items-center sm:mt-8 mt-4">
 
-        <Button
-          variant="default"
-          size="sm"
-          onClick={handleExport}
-          disabled={loading || transactions.length === 0}
-        >
-          <Download className="h-4 w-4 mr-2 " />
-          Export
-        </Button>
-      </div>
 
       {/* Filters */}
       <div className="space-y-4">
@@ -249,8 +237,8 @@ export const StockMovements = () => {
                    </td>
                    <td className={`${isMobile ? "px-1 py-2" : "px-4 py-2"} text-center`}>
                      <Badge
-                       variant={transaction.transaction_type === 'incoming' ? 'default' : 'destructive'}
-                       className={`${transaction.transaction_type === 'incoming' ? 'bg-green-500 hover:bg-green-600' : ''} ${isMobile ? 'text-xs px-1 py-0' : ''}`}
+                       variant={transaction.transaction_type === 'incoming' ? 'success' : 'destructive'}
+                       className={`${transaction.transaction_type === 'incoming' ? 'success' : ''} ${isMobile ? 'text-xs px-1 py-0' : ''}`}
                      >
                        {transaction.transaction_type === 'incoming' ? 'In' : 'Uit'}
                      </Badge>

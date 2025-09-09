@@ -17,7 +17,7 @@ import {
 } 
 from 'lucide-react';
 import { BranchSelector } from './BranchSelector';
-import { ChatModal } from './ChatModal';
+import { SupportModal } from './SupportModal';
 import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Button } from '@/components/ui/button';
@@ -54,7 +54,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
   const { isMobile } = useMobile();
   const { signOut } = useAuth();
   const navigate = useNavigate();
-  const [chatOpen, setChatOpen] = useState(false);
+  const [supportOpen, setSupportOpen] = useState(false);
   const { unreadCount: unreadMessages, resetUnreadCount } = useUnreadMessages();
   const [openSubmenus, setOpenSubmenus] = useState<Record<string, boolean>>({});
 
@@ -274,7 +274,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
                 type="button"
                 variant="ghost"
                 size="sm"
-                onClick={() => setChatOpen(true)}
+                onClick={() => setSupportOpen(true)}
                 className={`
                   w-full flex items-center px-3 py-2 rounded-lg text-left transition-colors
                   ${unreadMessages > 0 
@@ -320,12 +320,12 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
 
 
 
-      {/* Chat Modal - Rendered using Portal to escape sidebar container */}
-      {chatOpen && createPortal(
-        <ChatModal 
-          open={chatOpen} 
-          onClose={() => setChatOpen(false)} 
-          aria-describedby="chat-modal-description"
+      {/* Support Modal - Rendered using Portal to escape sidebar container */}
+      {supportOpen && createPortal(
+        <SupportModal 
+          open={supportOpen} 
+          onClose={() => setSupportOpen(false)} 
+          aria-describedby="support-modal-description"
           resetUnreadMessages={resetUnreadCount}
         />,
         document.body

@@ -1319,7 +1319,7 @@ export const StockList = () => {
           </DropdownMenu>
           <Button onClick={() => setIsAddModalOpen(true)} className="flex items-center gap-2">
             <Plus className="w-4 h-4" />
-            Toevoegen
+            Nieuw Product Toevoegen
           </Button>
         </div>
       </div>
