@@ -74,7 +74,7 @@ export const EditProductStockModal = ({
         setLoading(false);
         return;
       }
-      const { error: transactionError } = await supabase
+        const { error: transactionError } = await supabase
         .from('stock_transactions')
         .insert({
           product_id: product.id,
@@ -84,7 +84,8 @@ export const EditProductStockModal = ({
           unit_price: product.unit_price,
           reference_number: `STOCK_${actionType?.toUpperCase()}_${Date.now()}`,
           notes: `Voorraad ${actionType === 'in' ? 'toegevoegd' : 'verwijderd'} via voorraad beheer`,
-          created_by: user.id,
+          user_id: user.id, // Behoud user_id voor backward compatibility
+          created_by: user.id, // Nieuwe kolom voor relaties
           branch_id: product.branch_id
         });
       if (transactionError) {

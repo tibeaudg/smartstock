@@ -313,7 +313,8 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
         transaction_type: 'incoming' as const,
         quantity: data.quantityInStock || 0,
         unit_price: data.purchasePrice,
-        created_by: user.id,
+        user_id: user.id, // Behoud user_id voor backward compatibility
+        created_by: user.id, // Nieuwe kolom voor relaties
         branch_id: activeBranch.branch_id,
         reference_number: 'INITIAL_STOCK',
         notes: 'Nieuw product toegevoegd'

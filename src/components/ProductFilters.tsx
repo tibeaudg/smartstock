@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Search, Filter, X } from 'lucide-react';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/hooks/useAuth';
 
 interface ProductFiltersProps {
   searchTerm: string;
@@ -49,15 +50,18 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
   categoryFilter,
   onCategoryFilterChange,
 }) => {
+  const { user } = useAuth();
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [categories, setCategories] = useState<Array<{ id: string; name: string }>>([]);
   const [suppliers, setSuppliers] = useState<Array<{ id: string; name: string }>>([]);
 
-  // Fetch categories and suppliers when component mounts
+  // Fetch categories and suppliers when component mounts and user is available
   useEffect(() => {
-    fetchCategories();
-    fetchSuppliers();
-  }, []);
+    if (user) {
+      fetchCategories();
+      fetchSuppliers();
+    }
+  }, [user]);
 
 
 
@@ -83,10 +87,13 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
   };
 
   const fetchSuppliers = async () => {
+    if (!user) return;
+    
     try {
       const { data, error } = await supabase
         .from('suppliers')
         .select('id, name')
+        .eq('user_id', user.id)
         .order('name');
       
       if (error) {

@@ -38,6 +38,10 @@ export const useModuleAccess = (moduleSlug: string) => {
         if (!moduleError && module) {
           moduleId = module.id;
           console.log('Found module by slug:', moduleSlug, 'ID:', moduleId);
+        } else if (moduleError && moduleError.code === '42703') {
+          // Column 'slug' doesn't exist, skip to fallback
+          console.log('Slug column does not exist, using fallback');
+          throw new Error('Slug column not found');
         }
       } catch (error) {
         // If slug column doesn't exist, try to find by title

@@ -510,7 +510,6 @@ export type Database = {
           id: string
           title: string
           description: string
-          category: 'analytics' | 'automation' | 'integration' | 'premium'
           status: 'available' | 'coming-soon' | 'beta'
           price_monthly: number
           price_yearly: number
@@ -523,7 +522,6 @@ export type Database = {
           id?: string
           title: string
           description: string
-          category: 'analytics' | 'automation' | 'integration' | 'premium'
           status?: 'available' | 'coming-soon' | 'beta'
           price_monthly?: number
           price_yearly?: number
@@ -536,7 +534,6 @@ export type Database = {
           id?: string
           title?: string
           description?: string
-          category?: 'analytics' | 'automation' | 'integration' | 'premium'
           status?: 'available' | 'coming-soon' | 'beta'
           price_monthly?: number
           price_yearly?: number

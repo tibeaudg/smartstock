@@ -83,6 +83,87 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
     return () => window.removeEventListener('storage', onStorage);
   }, [branches, activeBranch]);
 
+  const createDefaultBranch = async (userId: string) => {
+    try {
+      console.log('Creating default branch for user:', userId);
+      
+      // Probeer eerst met alle kolommen
+      let branchData, branchError;
+      
+      try {
+        const result = await supabase
+          .from('branches')
+          .insert({
+            name: 'Hoofdvestiging',
+            address: '',
+            phone: '',
+            email: '',
+            is_main: true,
+            is_active: true,
+            user_id: userId,
+          })
+          .select()
+          .single();
+        
+        branchData = result.data;
+        branchError = result.error;
+      } catch (err) {
+        console.log('First attempt failed, trying without is_active...');
+        // Probeer zonder is_active kolom
+        const result = await supabase
+          .from('branches')
+          .insert({
+            name: 'Hoofdvestiging',
+            address: '',
+            phone: '',
+            email: '',
+            is_main: true,
+            user_id: userId,
+          })
+          .select()
+          .single();
+        
+        branchData = result.data;
+        branchError = result.error;
+      }
+
+      if (branchError || !branchData) {
+        console.error('Error creating default branch:', branchError);
+        return null;
+      }
+
+      // Koppel gebruiker aan branch - probeer dit in een aparte transactie
+      try {
+        const { error: assignError } = await supabase.from('branch_users').insert({
+          branch_id: branchData.id,
+          user_id: userId,
+          role: 'admin',
+          granted_by: userId,
+        });
+
+        if (assignError) {
+          console.error('Error assigning user to branch:', assignError);
+          // Als de assignment faalt, kunnen we nog steeds de branch gebruiken
+          // De gebruiker kan later handmatig worden toegevoegd
+        }
+      } catch (assignErr) {
+        console.error('Exception assigning user to branch:', assignErr);
+        // Ga door, de branch is wel aangemaakt
+      }
+
+      console.log('Default branch created successfully:', branchData);
+      return {
+        branch_id: branchData.id,
+        branch_name: branchData.name,
+        is_main: branchData.is_main || true,
+        user_role: 'admin',
+      };
+    } catch (error) {
+      console.error('Exception creating default branch:', error);
+      return null;
+    }
+  };
+
   const fetchBranches = async (cancelled?: { current: boolean }) => {
     if (!user || !user.id) {
       if (!cancelled?.current) {
@@ -102,27 +183,106 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
       });
 
       if (error) {
-        if (!cancelled?.current) setLoading(false);
+        console.error('Error fetching branches with RPC, trying direct query:', error);
+        // Fallback: probeer direct de branches tabel te queryen
+        const { data: directData, error: directError } = await supabase
+          .from('branches')
+          .select(`
+            id,
+            name,
+            is_main,
+            user_id,
+            branch_users!inner(role)
+          `)
+          .eq('user_id', user.id);
+
+        if (directError) {
+          console.error('Direct query also failed:', directError);
+          if (!cancelled?.current) setLoading(false);
+          return;
+        }
+
+        // Transform direct data to match expected format
+        const transformedData = directData?.map(branch => ({
+          branch_id: branch.id,
+          branch_name: branch.name,
+          is_main: branch.is_main || false,
+          user_role: branch.branch_users?.[0]?.role || 'admin'
+        })) || [];
+
+        if (transformedData.length === 0) {
+          console.log('No branches found via direct query, creating default branch...');
+          const defaultBranch = await createDefaultBranch(user.id);
+          if (defaultBranch) {
+            if (!cancelled?.current) {
+              setBranches([defaultBranch]);
+              setActiveBranchState(defaultBranch);
+              setBranchIdToStorage(defaultBranch.branch_id);
+              setHasNoBranches(false);
+            }
+          } else {
+            // Als alles faalt, maak een lokale fallback branch
+            console.log('Creating local fallback branch...');
+            const fallbackBranch = {
+              branch_id: 'fallback-' + user.id,
+              branch_name: 'Hoofdvestiging',
+              is_main: true,
+              user_role: 'admin'
+            };
+            if (!cancelled?.current) {
+              setBranches([fallbackBranch]);
+              setActiveBranchState(fallbackBranch);
+              setBranchIdToStorage(fallbackBranch.branch_id);
+              setHasNoBranches(false);
+            }
+          }
+        } else {
+          if (!cancelled?.current) {
+            setBranches(transformedData);
+            setHasNoBranches(false);
+            // Set active branch
+            const mainBranch = transformedData.find(b => b.is_main) || transformedData[0];
+            if (mainBranch) {
+              setActiveBranchState(mainBranch);
+              setBranchIdToStorage(mainBranch.branch_id);
+            }
+          }
+        }
         return;
       }
 
       if (data && !cancelled?.current) {
         setBranches(data);
         setHasNoBranches(data.length === 0);
-        // Probeer branch uit localStorage te herstellen
-        const storedId = getBranchIdFromStorage();
-        const found = storedId ? data.find(b => b.branch_id === storedId) : null;
-        if (found) {
-          setActiveBranchState(found);
-        } else {
-          // Altijd hoofdvestiging als fallback
-          const mainBranch = data.find(b => b.is_main) || data[0];
-          if (mainBranch) {
-            setActiveBranchState(mainBranch);
-            setBranchIdToStorage(mainBranch.branch_id);
+        
+        // Als er geen branches zijn, maak automatisch een standaard branch aan
+        if (data.length === 0) {
+          console.log('No branches found, creating default branch...');
+          const defaultBranch = await createDefaultBranch(user.id);
+          if (defaultBranch) {
+            setBranches([defaultBranch]);
+            setActiveBranchState(defaultBranch);
+            setBranchIdToStorage(defaultBranch.branch_id);
+            setHasNoBranches(false);
           } else {
-            setActiveBranchState(null);
-            setBranchIdToStorage(null);
+            setHasNoBranches(true);
+          }
+        } else {
+          // Probeer branch uit localStorage te herstellen
+          const storedId = getBranchIdFromStorage();
+          const found = storedId ? data.find(b => b.branch_id === storedId) : null;
+          if (found) {
+            setActiveBranchState(found);
+          } else {
+            // Altijd hoofdvestiging als fallback
+            const mainBranch = data.find(b => b.is_main) || data[0];
+            if (mainBranch) {
+              setActiveBranchState(mainBranch);
+              setBranchIdToStorage(mainBranch.branch_id);
+            } else {
+              setActiveBranchState(null);
+              setBranchIdToStorage(null);
+            }
           }
         }
       }

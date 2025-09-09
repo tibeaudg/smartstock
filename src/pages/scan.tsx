@@ -395,7 +395,8 @@ export default function ScanPage() {
         transaction_type: transactionType,
         quantity: formData.quantityInStock,
         unit_price: transactionType === 'incoming' ? formData.purchasePrice : formData.salePrice,
-        created_by: user.id,
+        user_id: user.id, // Behoud user_id voor backward compatibility
+        created_by: user.id, // Nieuwe kolom voor relaties
         branch_id: activeBranch.branch_id,
         reference_number: transactionType === 'incoming' ? 'SCANNED_PRODUCT' : 'SCANNED_OUTGOING',
         notes: transactionType === 'incoming' 

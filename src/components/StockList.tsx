@@ -1078,14 +1078,14 @@ export const StockList = () => {
                           {columnVisibility.purchasePrice && (
                             <td className="px-2 py-2 text-center">
                               <span className="text-xs text-red-600">
-                                €{product.purchase_price?.toFixed(2) ?? '-'}
+                                €{product.purchase_price ? Number(product.purchase_price).toFixed(2) : '-'}
                               </span>
                             </td>
                           )}
                           {columnVisibility.salePrice && (
                             <td className="px-2 py-2 text-center">
                               <span className="text-xs text-green-600">
-                                €{product.sale_price?.toFixed(2) ?? '-'}
+                                €{product.sale_price ? Number(product.sale_price).toFixed(2) : '-'}
                               </span>
                             </td>
                           )}
@@ -1604,12 +1604,12 @@ export const StockList = () => {
                       )}
                       {columnVisibility.purchasePrice && (
                         <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-blue-600 text-center">
-                          <span className="text-red-600">€{product.purchase_price?.toFixed(2) ?? '-'}</span>
+                          <span className="text-red-600">€{product.purchase_price ? Number(product.purchase_price).toFixed(2) : '-'}</span>
                         </td>
                       )}
                       {columnVisibility.salePrice && (
                         <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-orange-600 text-center">
-                          <span className="text-green-600">€{product.sale_price?.toFixed(2) ?? '-'}</span>
+                          <span className="text-green-600">€{product.sale_price ? Number(product.sale_price).toFixed(2) : '-'}</span>
                         </td>
                       )}
                       {columnVisibility.status && (

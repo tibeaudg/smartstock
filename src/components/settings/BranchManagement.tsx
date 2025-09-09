@@ -23,11 +23,11 @@ interface BranchFormData {
   email: string;
 }
 
-interface AdminBranch {
+interface UserBranch {
   branch_id: string;
   branch_name: string;
   is_main: boolean;
-  user_count: number;
+  user_count?: number;
   created_at: string;
 }
 
@@ -36,7 +36,7 @@ export const BranchManagement = () => {
   const { refreshBranches } = useBranches();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-  const [editingBranch, setEditingBranch] = useState<AdminBranch | null>(null);
+  const [editingBranch, setEditingBranch] = useState<UserBranch | null>(null);
 
   const {
     register,
@@ -45,23 +45,23 @@ export const BranchManagement = () => {
     formState: { errors },
   } = useForm<BranchFormData>();
 
-  // React Query: fetch admin branches
-  const fetchAdminBranches = async () => {
+  // React Query: fetch user branches
+  const fetchUserBranches = async () => {
     if (!user) return [];
-    const { data, error } = await supabase.rpc('get_admin_branches', { admin_id: user.id });
+    const { data, error } = await supabase.rpc('get_user_branches', { user_id: user.id });
     if (error) throw error;
-    return data as AdminBranch[];
+    return data as UserBranch[];
   };
 
   const {
-    data: adminBranches = [],
+    data: userBranches = [],
     isLoading,
     isFetching,
     error,
     refetch,
   } = useQuery({
-    queryKey: ['adminBranches', user?.id],
-    queryFn: fetchAdminBranches,
+    queryKey: ['userBranches', user?.id],
+    queryFn: fetchUserBranches,
     enabled: !!user,
     refetchOnWindowFocus: true,
     staleTime: 1000 * 60 * 2,
@@ -160,7 +160,7 @@ export const BranchManagement = () => {
     }
   };
 
-  const handleEditBranch = async (branch: AdminBranch) => {
+  const handleEditBranch = async (branch: UserBranch) => {
     const { data, error } = await supabase
       .from('branches')
       .select('*')
@@ -203,6 +203,11 @@ export const BranchManagement = () => {
 
   return (
     <div className="space-y-6">
+      <div>
+        <h1 className="text-3xl font-bold text-gray-900">Filialen Beheer</h1>
+        <p className="text-gray-600 mt-2">Beheer je filialen en pas de namen aan zoals je wilt.</p>
+      </div>
+      
       <div className="flex justify-between items-center">
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
@@ -263,7 +268,7 @@ export const BranchManagement = () => {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-2">
-        {adminBranches.map((branch) => (
+        {userBranches.map((branch) => (
           <Card key={branch.branch_id}>
             <CardHeader>
               <CardTitle className="flex justify-between items-center">
@@ -308,13 +313,13 @@ export const BranchManagement = () => {
         ))}
       </div>
 
-      {adminBranches.length === 0 && (isLoading || isFetching) ? (
+      {userBranches.length === 0 && (isLoading || isFetching) ? (
         <div className="flex flex-col items-center justify-center py-8">
           <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
           <span className="mt-2 text-gray-600">Filialen laden...</span>
         </div>
       ) : (
-        adminBranches.length === 0 && (
+        userBranches.length === 0 && (
           <Card>
             <CardContent className="text-center py-8">
               <Building2 className="w-12 h-12 mx-auto text-gray-400 mb-4" />

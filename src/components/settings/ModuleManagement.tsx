@@ -73,26 +73,35 @@ export const ModuleManagement = () => {
   } = useQuery<Module[]>({
     queryKey: ['modules'],
     queryFn: async () => {
+      console.log('Fetching modules from database...');
       const { data, error } = await supabase
         .from('modules')
         .select('*')
         .order('created_at', { ascending: false });
       
-      if (error) throw error;
+      console.log('Modules query result:', { data, error });
+      
+      if (error) {
+        console.error('Error fetching modules:', error);
+        throw error;
+      }
       
       // Get user subscriptions for each module
       if (user) {
-        const { data: subscriptions } = await supabase
+        console.log('Fetching subscriptions for user:', user.id);
+        const { data: subscriptions, error: subscriptionError } = await supabase
           .from('user_module_subscriptions')
           .select('module_id, status, end_date')
           .eq('user_id', user.id)
           .eq('status', 'active');
         
+        console.log('Subscriptions query result:', { subscriptions, subscriptionError });
+        
         const activeSubscriptions = new Map(
           subscriptions?.map(sub => [sub.module_id, { status: sub.status, end_date: sub.end_date }]) || []
         );
         
-        return data?.map(module => {
+        const result = data?.map(module => {
           const subscription = activeSubscriptions.get(module.id);
           return {
             ...module,
@@ -102,13 +111,19 @@ export const ModuleManagement = () => {
             subscription_end_date: subscription?.end_date
           };
         }) || [];
+        
+        console.log('Final modules result:', result);
+        return result;
       }
       
-      return data?.map(module => ({
+      const result = data?.map(module => ({
         ...module,
         features: Array.isArray(module.features) ? module.features : [],
         is_subscribed: false
       })) || [];
+      
+      console.log('Modules result (no user):', result);
+      return result;
     },
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
@@ -280,12 +295,39 @@ export const ModuleManagement = () => {
       <div className="bg-red-50 border border-red-200 rounded-lg p-6">
         <h3 className="text-red-800 font-semibold">Fout bij laden</h3>
         <p className="text-red-600">Er is een fout opgetreden bij het laden van de modules.</p>
+        <details className="mt-4">
+          <summary className="cursor-pointer text-red-700 font-medium">Technische details</summary>
+          <pre className="mt-2 text-xs text-red-600 bg-red-100 p-2 rounded overflow-auto">
+            {JSON.stringify(error, null, 2)}
+          </pre>
+        </details>
       </div>
     );
   }
 
   return (
     <div className="space-y-6">
+      {/* Debug Info */}
+      {process.env.NODE_ENV === 'development' && (
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <h4 className="text-blue-800 font-semibold mb-2">Debug Info</h4>
+          <div className="text-sm text-blue-700">
+            <p>Modules count: {modules.length}</p>
+            <p>Is loading: {isLoading ? 'Yes' : 'No'}</p>
+            <p>Has error: {error ? 'Yes' : 'No'}</p>
+            <p>User ID: {user?.id || 'Not logged in'}</p>
+            {modules.length > 0 && (
+              <details className="mt-2">
+                <summary className="cursor-pointer">Modules data</summary>
+                <pre className="mt-2 text-xs bg-blue-100 p-2 rounded overflow-auto max-h-40">
+                  {JSON.stringify(modules, null, 2)}
+                </pre>
+              </details>
+            )}
+          </div>
+        </div>
+      )}
+      
       {/* Header */}
       <div>
         <h1 className="text-3xl font-bold text-gray-900">Module Beheer</h1>

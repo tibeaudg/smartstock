@@ -193,7 +193,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
 
 
 
-        {/* Branch Selector - Show on both Desktop and Mobile when open */}
+        {/* Branch Selector - Always show when sidebar is open */}
         {isOpen && (
           <div className="px-3 py-4 border-b border-gray-200 flex-shrink-0">
             <BranchSelector />

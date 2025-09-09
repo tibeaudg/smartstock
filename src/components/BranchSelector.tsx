@@ -53,7 +53,7 @@ export const BranchSelector = () => {
   };
 
   const handleNavigateToBranches = () => {
-    navigate('/dashboard/settings?tab=branches');
+    navigate('/dashboard/settings/branches');
   };
 
   if (loading) {
@@ -74,7 +74,23 @@ export const BranchSelector = () => {
   }
 
   if (branches.length === 0) {
-    return null;
+    return (
+      <div className="space-y-2">
+        <div className="flex items-center space-x-2 text-xs text-gray-500 uppercase tracking-wide font-medium">
+          <Building2 className="h-3 w-3" />
+          <span>Actief Filiaal</span>
+        </div>
+        <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg border border-blue-200">
+          <div className="flex items-center space-x-3">
+            <Building2 className="h-5 w-5 text-blue-600" />
+            <div className="flex flex-col">
+              <span className="text-sm font-medium text-blue-900">Standaard filiaal wordt aangemaakt...</span>
+              <span className="text-xs text-blue-700">Even geduld, we maken je eerste filiaal aan</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
