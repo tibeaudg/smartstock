@@ -52,20 +52,10 @@ export const SupportModal: React.FC<SupportModalProps> = ({
     {
       id: 'chat',
       title: 'Chat met ons',
-      description: isPremium ? 'Direct contact met ons support team' : 'Premium functie - Upgrade vereist',
+      description: 'Direct contact met ons support team',
       icon: MessageCircle,
-      action: isPremium ? () => setChatOpen(true) : () => {
-        // For free users, show info about premium requirement
-        toast.info('Premium functie', {
-          description: 'Chat support is alleen beschikbaar voor premium gebruikers. Bezoek onze homepage voor meer informatie over upgraden.',
-          action: {
-            label: 'Bekijk plannen',
-            onClick: () => window.open('/', '_blank')
-          }
-        });
-      },
-      color: isPremium ? 'bg-blue-500' : 'bg-gray-400',
-      disabled: !isPremium
+      action: () => setChatOpen(true),
+      color: 'bg-blue-500'
     },
     {
       id: 'videos',
@@ -92,20 +82,10 @@ export const SupportModal: React.FC<SupportModalProps> = ({
     {
       id: 'phone',
       title: 'Bel ons',
-      description: isPremium ? 'Premium support telefoonnummer' : 'Premium functie - Upgrade vereist',
+      description: 'Direct telefonisch contact met ons support team',
       icon: Phone,
-      action: isPremium ? () => setPhoneOpen(true) : () => {
-        // For free users, show info about premium requirement
-        toast.info('Premium functie', {
-          description: 'Telefoon support is alleen beschikbaar voor premium gebruikers. Bezoek onze homepage voor meer informatie over upgraden.',
-          action: {
-            label: 'Bekijk plannen',
-            onClick: () => window.open('/', '_blank')
-          }
-        });
-      },
-      color: isPremium ? 'bg-orange-500' : 'bg-gray-400',
-      disabled: !isPremium
+      action: () => setPhoneOpen(true),
+      color: 'bg-orange-500'
     },
     {
       id: 'email',
@@ -442,7 +422,7 @@ const PhoneContent: React.FC<PhoneContentProps> = ({
           </div>
           <div className="flex flex-col">
             <h2 className="text-xl font-bold text-gray-800">
-              Premium Support
+              Telefoon Support
             </h2>
             <p className="text-sm text-gray-600">Direct telefonisch contact</p>
           </div>
@@ -469,7 +449,7 @@ const PhoneContent: React.FC<PhoneContentProps> = ({
               Maandag - Vrijdag: 9:00 - 17:00
             </p>
             <p className="text-sm text-gray-500 mt-1">
-              Premium support voor al je vragen
+              Support voor al je vragen
             </p>
           </div>
 
@@ -502,10 +482,10 @@ const PhoneContent: React.FC<PhoneContentProps> = ({
           </div>
 
           <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-            <h4 className="font-semibold text-blue-900 mb-2">Premium Support</h4>
+            <h4 className="font-semibold text-blue-900 mb-2">Support Team</h4>
             <p className="text-sm text-blue-700">
-              Als premium gebruiker krijg je directe toegang tot ons support team. 
-              We helpen je graag met al je vragen over StockFlow.
+              Ons support team staat klaar om je te helpen met al je vragen over StockFlow. 
+              We zorgen voor snelle en professionele ondersteuning.
             </p>
           </div>
         </div>
