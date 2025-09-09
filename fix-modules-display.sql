@@ -47,7 +47,7 @@ BEGIN
     RAISE NOTICE 'Created RLS policy: Anyone can view modules';
 END $$;
 
--- Stap 3: Fix existing modules without category
+bij -- Stap 3: Fix existing modules without category
 UPDATE modules SET category = 'automation' WHERE category IS NULL AND slug IN ('delivery-notes', 'scanning');
 UPDATE modules SET category = 'analytics' WHERE category IS NULL AND slug = 'advanced-analytics';
 UPDATE modules SET category = 'automation' WHERE category IS NULL AND slug = 'auto-reorder';

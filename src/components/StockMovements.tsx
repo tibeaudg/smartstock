@@ -34,11 +34,11 @@ export const StockMovements = () => {
         'Product': t.product_name,
         'Type': t.transaction_type,
         'Quantity': t.quantity,
-        'Unit Price': t.unit_price.toFixed(2),
-        'Total Value': (t.quantity * t.unit_price).toFixed(2),
+        'Unit Price': (Number(t.unit_price) || 0).toFixed(2),
+        'Total Value': (Number(t.total_value) || (t.quantity * Number(t.unit_price))).toFixed(2),
         'Reference': t.reference_number || '',
         'Notes': t.notes || '',
-        'Supplier': t.supplier_name || ''
+        'User': t.first_name || 'Onbekend'
       }));
 
       const ws = XLSX.utils.json_to_sheet(exportData);
@@ -253,16 +253,13 @@ export const StockMovements = () => {
                   {!isMobile && (
                     <>
                       <td className="px-4 py-2 text-right text-sm">
-                        €{(transaction.transaction_type === 'incoming'
-                          ? (transaction.purchase_price ?? transaction.unit_price)
-                          : (transaction.sale_price ?? transaction.unit_price)
-                        ).toFixed(2)}
+                        €{(Number(transaction.unit_price) || 0).toFixed(2)}
                       </td>
                       <td className="px-4 py-2 text-right text-sm">
                         {transaction.transaction_type === 'outgoing' ? (
-                          <span className="text-green-600">+ €{(transaction.quantity * (transaction.sale_price ?? transaction.unit_price)).toFixed(2)}</span>
+                          <span className="text-green-600">+ €{(Number(transaction.total_value) || (transaction.quantity * Number(transaction.unit_price))).toFixed(2)}</span>
                         ) : (
-                          <span className="text-red-600">- €{(transaction.quantity * (transaction.purchase_price ?? transaction.unit_price)).toFixed(2)}</span>
+                          <span className="text-red-600">- €{(Number(transaction.total_value) || (transaction.quantity * Number(transaction.unit_price))).toFixed(2)}</span>
                         )}
                       </td>
                     </>

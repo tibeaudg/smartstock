@@ -10,6 +10,7 @@ import { CameraDebugInfo } from '@/components/CameraDebugInfo';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
 import { useMobile } from '@/hooks/use-mobile';
+import { useModuleAccess } from '@/hooks/useModuleAccess';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { useQueryClient } from '@tanstack/react-query';
@@ -42,11 +43,14 @@ export default function ScanPage() {
   // Check if user is owner (using is_owner field from profiles table)
   const isOwner = userProfile && userProfile.is_owner === true && !userProfile.blocked;
   
+  // Check module access for barcode scanner
+  const { data: scannerAccess, isLoading: scannerAccessLoading } = useModuleAccess('scanning');
+  
   const [showScanner, setShowScanner] = useState(false);
   const [showProductForm, setShowProductForm] = useState(false);
   const [showDebugInfo, setShowDebugInfo] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [transactionType, setTransactionType] = useState<'incoming' | 'outgoing'>('incoming');
+  const [transactionType, setTransactionType] = useState<'in' | 'out'>('in');
   const [formData, setFormData] = useState<ProductFormData>({
     name: '',
     description: '',
@@ -223,7 +227,7 @@ export default function ScanPage() {
       return;
     }
 
-    if (transactionType === 'incoming' && !formData.name.trim()) {
+    if (transactionType === 'in' && !formData.name.trim()) {
       toast.error('Product naam is verplicht');
       return;
     }
@@ -234,7 +238,7 @@ export default function ScanPage() {
       let existingProduct: any = null;
       
       // For outgoing transactions, barcode is required
-      if (transactionType === 'outgoing' && !formData.barcode) {
+      if (transactionType === 'out' && !formData.barcode) {
         toast.error('Barcode is verplicht voor het verwijderen van producten');
         setLoading(false);
         return;
@@ -252,13 +256,13 @@ export default function ScanPage() {
         existingProduct = productData;
 
         if (existingProduct) {
-          if (transactionType === 'incoming') {
+          if (transactionType === 'in') {
             toast.error(`Product met barcode ${formData.barcode} bestaat al: ${existingProduct.name}`);
             setLoading(false);
             return;
           }
         } else {
-          if (transactionType === 'outgoing') {
+          if (transactionType === 'out') {
             toast.error(`Product met barcode ${formData.barcode} bestaat niet in de voorraad`);
             setLoading(false);
             return;
@@ -269,7 +273,7 @@ export default function ScanPage() {
       let productId: string;
       let productName: string;
 
-      if (transactionType === 'incoming') {
+      if (transactionType === 'in') {
         // Check if product name already exists in this branch
         const { data: duplicateName } = await supabase
           .from('products')
@@ -392,14 +396,14 @@ export default function ScanPage() {
       const stockTransactionData = {
         product_id: productId,
         product_name: productName,
-        transaction_type: transactionType,
+        transaction_type: transactionType === 'in' ? 'incoming' : 'outgoing',
         quantity: formData.quantityInStock,
-        unit_price: transactionType === 'incoming' ? formData.purchasePrice : formData.salePrice,
+        unit_price: transactionType === 'in' ? formData.purchasePrice : formData.salePrice,
         user_id: user.id, // Behoud user_id voor backward compatibility
         created_by: user.id, // Nieuwe kolom voor relaties
         branch_id: activeBranch.branch_id,
-        reference_number: transactionType === 'incoming' ? 'SCANNED_PRODUCT' : 'SCANNED_OUTGOING',
-        notes: transactionType === 'incoming' 
+        reference_number: transactionType === 'in' ? 'SCANNED_PRODUCT' : 'SCANNED_OUTGOING',
+        notes: transactionType === 'in' 
           ? `Product toegevoegd via barcode scanner: ${formData.barcode || 'geen barcode'}`
           : `Product verwijderd via barcode scanner: ${formData.barcode || 'geen barcode'}`
       };
@@ -410,7 +414,7 @@ export default function ScanPage() {
 
       if (transactionError) {
         console.error('Error creating stock transaction:', transactionError);
-        toast.error(transactionType === 'incoming' 
+        toast.error(transactionType === 'in' 
           ? 'Product aangemaakt maar voorraad transactie mislukt'
           : 'Voorraad transactie mislukt'
         );
@@ -420,7 +424,7 @@ export default function ScanPage() {
       queryClient.invalidateQueries({ queryKey: ['productCount', activeBranch.branch_id, user.id] });
       queryClient.invalidateQueries({ queryKey: ['products', activeBranch.branch_id] });
 
-      toast.success(transactionType === 'incoming' 
+      toast.success(transactionType === 'in' 
         ? 'Product succesvol toegevoegd!' 
         : 'Product succesvol uit voorraad gehaald!'
       );
@@ -503,6 +507,61 @@ export default function ScanPage() {
     );
   }
 
+  // Show loading state while checking module access
+  if (scannerAccessLoading) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <p className="text-gray-600">Module toegang controleren...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Show module access required message if user doesn't have access
+  if (!scannerAccess?.hasAccess) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <Card className="max-w-2xl mx-auto">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-orange-600">
+              <AlertCircle className="w-5 h-5" />
+              Module Toegang Vereist
+            </CardTitle>
+            <CardDescription>
+              Je hebt geen toegang tot de Barcode Scanner module. Koop deze module om barcodes te kunnen scannen.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <p className="text-gray-600">
+                De Barcode Scanner module biedt de volgende functionaliteiten:
+              </p>
+              <ul className="list-disc list-inside space-y-2 text-gray-600">
+                <li>Barcode scanner met camera</li>
+                <li>Automatische product detectie</li>
+                <li>Snelle voorraad updates</li>
+                <li>Inkomende en uitgaande transacties</li>
+                <li>Product informatie automatisch invullen</li>
+              </ul>
+              <div className="flex gap-4">
+                <Button onClick={() => navigate('/modules')}>
+                  Bekijk Modules
+                </Button>
+                <Button variant="outline" onClick={() => navigate('/dashboard')}>
+                  Terug naar Dashboard
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   return (
     <div className="container mx-auto px-4 py-4 md:py-8">
       <div className="max-w-4xl mx-auto pb-24">
@@ -570,10 +629,10 @@ export default function ScanPage() {
                          <CardHeader>
                <CardTitle className="flex items-center gap-2">
                  <Package className="w-5 h-5 text-green-600" />
-                 {transactionType === 'incoming' ? 'Nieuw Product Toevoegen' : 'Product Uit Voorraad Halen'}
+                 {transactionType === 'in' ? 'Nieuw Product Toevoegen' : 'Product Uit Voorraad Halen'}
                </CardTitle>
                <CardDescription>
-                 {transactionType === 'incoming' 
+                 {transactionType === 'in' 
                    ? 'Vul de productgegevens in om het product toe te voegen aan je voorraad'
                    : 'Scan een bestaand product om het uit de voorraad te halen'
                  }
@@ -584,9 +643,9 @@ export default function ScanPage() {
                  <div className="bg-gray-100 rounded-lg p-1 flex items-center w-full max-w-xs">
                    <button
                      type="button"
-                     onClick={() => setTransactionType('incoming')}
+                     onClick={() => setTransactionType('in')}
                      className={`flex-1 px-3 py-2 rounded-md text-xs md:text-sm font-medium transition-colors ${
-                       transactionType === 'incoming'
+                       transactionType === 'in'
                          ? 'bg-white text-blue-600 shadow-sm'
                          : 'text-gray-500 hover:text-gray-700'
                      }`}
@@ -596,9 +655,9 @@ export default function ScanPage() {
                    </button>
                    <button
                      type="button"
-                     onClick={() => setTransactionType('outgoing')}
+                     onClick={() => setTransactionType('out')}
                      className={`flex-1 px-3 py-2 rounded-md text-xs md:text-sm font-medium transition-colors ${
-                       transactionType === 'outgoing'
+                       transactionType === 'out'
                          ? 'bg-white text-red-600 shadow-sm'
                          : 'text-gray-500 hover:text-gray-700'
                        }`}
@@ -624,7 +683,7 @@ export default function ScanPage() {
                   <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
                     <Label className="text-sm font-medium text-green-700">Product Status</Label>
                     <p className="text-sm text-green-700 mt-1">
-                      {transactionType === 'incoming' 
+                      {transactionType === 'in' 
                         ? 'Nieuw product wordt toegevoegd aan de voorraad'
                         : 'Bestaand product wordt uit de voorraad gehaald'
                       }
@@ -655,7 +714,7 @@ export default function ScanPage() {
                 </div>
 
                                  {/* Description - Only show for incoming transactions */}
-                 {transactionType === 'incoming' && (
+                 {transactionType === 'in' && (
                    <div>
                      <Label htmlFor="description" className="text-sm font-medium text-gray-700">
                        Beschrijving
@@ -672,7 +731,7 @@ export default function ScanPage() {
                  )}
 
                  {/* Category and Supplier - Only show for incoming transactions */}
-                 {transactionType === 'incoming' && (
+                 {transactionType === 'in' && (
                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                      <div>
                        <Label htmlFor="category" className="text-sm font-medium text-gray-700">
@@ -850,7 +909,7 @@ export default function ScanPage() {
                  )}
 
                                  {/* Stock and Pricing */}
-                 <div className={`grid gap-4 ${transactionType === 'incoming' ? 'grid-cols-1 md:grid-cols-4' : 'grid-cols-1 md:grid-cols-2'}`}>
+                 <div className={`grid gap-4 ${transactionType === 'in' ? 'grid-cols-1 md:grid-cols-4' : 'grid-cols-1 md:grid-cols-2'}`}>
                    <div>
                      <Label htmlFor="quantity" className="text-sm font-medium text-gray-700">
                        Aantal *
@@ -866,7 +925,7 @@ export default function ScanPage() {
                      />
                    </div>
                    
-                   {transactionType === 'incoming' && (
+                   {transactionType === 'in' && (
                      <div>
                        <Label htmlFor="minStock" className="text-sm font-medium text-gray-700">
                          Minimale Voorraad
@@ -882,7 +941,7 @@ export default function ScanPage() {
                      </div>
                    )}
                    
-                   {transactionType === 'incoming' && (
+                   {transactionType === 'in' && (
                      <div>
                        <Label htmlFor="purchasePrice" className="text-sm font-medium text-gray-700">
                          Inkoopprijs (€)
@@ -899,7 +958,7 @@ export default function ScanPage() {
                      </div>
                    )}
                    
-                   {transactionType === 'incoming' && (
+                   {transactionType === 'in' && (
                      <div>
                        <Label htmlFor="salePrice" className="text-sm font-medium text-gray-700">
                          Verkoopprijs (€)
@@ -928,12 +987,12 @@ export default function ScanPage() {
                      {loading ? (
                        <>
                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                         {transactionType === 'incoming' ? 'Product Toevoegen...' : 'Product Verwijderen...'}
+                         {transactionType === 'in' ? 'Product Toevoegen...' : 'Product Verwijderen...'}
                        </>
                      ) : (
                        <>
                          <Plus className="w-4 h-4 mr-2" />
-                         {transactionType === 'incoming' ? 'Product Toevoegen' : 'Product Verwijderen'}
+                         {transactionType === 'in' ? 'Product Toevoegen' : 'Product Verwijderen'}
                        </>
                      )}
                    </Button>

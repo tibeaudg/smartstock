@@ -20,16 +20,12 @@ export type StockTransaction = {
   product_name: string;
   transaction_type: 'incoming' | 'outgoing';
   quantity: number;
-  unit_price: number;
-  purchase_price?: number;
-  sale_price?: number;
-  // total_value is calculated from quantity * unit_price
+  unit_price: number | string; // Can be string from database
+  total_value?: number | string; // Calculated field, can be string from database
   reference_number: string | null;
   notes: string | null;
   branch_id: string;
   created_by: string;
-  supplier_name?: string | null;
-  image_url?: string | null; // <-- toegevoegd
   // Gebruikersinfo
   first_name?: string | null;
   last_name?: string | null;

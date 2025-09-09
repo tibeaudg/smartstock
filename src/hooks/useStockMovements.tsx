@@ -30,6 +30,7 @@ export const useStockMovements = () => {
         transaction_type,
         quantity,
         unit_price,
+        total_value,
         notes,
         reference_number,
         created_at,
@@ -116,7 +117,7 @@ export const useStockMovements = () => {
     (acc, curr) => {
       if (curr.transaction_type === 'incoming') acc.totalIncoming += curr.quantity;
       else acc.totalOutgoing += curr.quantity;
-      acc.totalValue += curr.quantity * curr.unit_price;
+      acc.totalValue += Number(curr.total_value) || (curr.quantity * Number(curr.unit_price));
       acc.transactionCount++;
       return acc;
     },

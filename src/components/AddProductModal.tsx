@@ -192,10 +192,9 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
 
     setLoading(true);
     try {      
-      // Haal huidig actief plan op vóór toevoegen
-      const { data: beforeLicenseData } = await supabase.functions.invoke('get-license-and-usage');
-      const beforePlan = beforeLicenseData?.activePlanId;
-      console.log('[AddProductModal] user.id:', user.id, 'beforePlan:', beforePlan, 'beforeLicenseData:', beforeLicenseData);
+      // Skip license check for now - function doesn't exist
+      // TODO: Implement proper license checking if needed
+      console.log('[AddProductModal] user.id:', user.id, 'adding product');
 
       let imageUrl = null;
 
@@ -334,17 +333,9 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
 
       toast.success('Product succesvol toegevoegd!');
       form.reset();
-      // Na succesvol toevoegen, check licentie
-      const { data: licenseData, error: licenseError } = await supabase.functions.invoke('get-license-and-usage');
-      console.log('[AddProductModal] user.id:', user.id, 'afterPlan:', licenseData?.activePlanId, 'licenseData:', licenseData);
-      if (!licenseError && licenseData) {
-        const afterPlan = licenseData.activePlanId;
-        if (beforePlan && afterPlan && beforePlan !== afterPlan) {
-          onClose();
-          setShowUpgradeNotice(true);
-          return;
-        }
-      }
+      // Skip license check for now - function doesn't exist
+      // TODO: Implement proper license checking if needed
+      console.log('[AddProductModal] user.id:', user.id, 'product added successfully');
       onProductAdded();
       onClose();
     } catch (error) {

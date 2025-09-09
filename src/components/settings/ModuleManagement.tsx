@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { toast } from '@/hooks/use-toast';
-import { Loader2, CreditCard, Eye, Calendar, Star, TrendingUp, Settings, ShoppingCart, BarChart3, Package, Zap, Check, X, Clock, Euro, TestTube } from 'lucide-react';
+import { Loader2, CreditCard, Eye, Calendar, Star, TrendingUp, Settings, ShoppingCart, BarChart3, Package, Zap, Check, X, Clock, Euro, TestTube, Receipt, DollarSign, CalendarDays } from 'lucide-react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { ModuleCheckout } from '@/components/payments/ModuleCheckout';
 import { TestCheckout } from '@/components/payments/TestCheckout';
@@ -28,6 +28,22 @@ interface Module {
   is_subscribed: boolean;
   subscription_status?: 'active' | 'cancelled' | 'expired';
   subscription_end_date?: string;
+}
+
+// Active subscription interface
+interface ActiveSubscription {
+  id: string;
+  module_id: string;
+  status: 'active' | 'cancelled' | 'expired';
+  billing_cycle: 'monthly' | 'yearly';
+  start_date: string;
+  end_date: string;
+  modules: {
+    title: string;
+    slug?: string;
+    price_monthly: number;
+    icon: string;
+  } | null;
 }
 
 
@@ -64,6 +80,50 @@ export const ModuleManagement = () => {
       setSearchParams({});
     }
   }, [searchParams, setSearchParams, queryClient]);
+
+  // Fetch active subscriptions
+  const {
+    data: activeSubscriptions = [],
+    isLoading: subscriptionsLoading,
+    error: subscriptionsError
+  } = useQuery<ActiveSubscription[]>({
+    queryKey: ['activeSubscriptions', user?.id],
+    queryFn: async () => {
+      if (!user) return [];
+      
+      const { data, error } = await supabase
+        .from('user_module_subscriptions')
+        .select(`
+          id,
+          module_id,
+          status,
+          billing_cycle,
+          start_date,
+          end_date,
+          modules!inner(
+            title,
+            slug,
+            price_monthly,
+            icon
+          )
+        `)
+        .eq('user_id', user.id)
+        .eq('status', 'active')
+        .order('created_at', { ascending: false });
+      
+      if (error) {
+        console.error('Error fetching active subscriptions:', error);
+        throw error;
+      }
+      
+      // Transform the data to match our interface
+      return (data || []).map(item => ({
+        ...item,
+        modules: Array.isArray(item.modules) ? item.modules[0] || null : item.modules || null
+      }));
+    },
+    enabled: !!user,
+  });
 
   // Fetch modules from database
   const {
@@ -239,7 +299,7 @@ export const ModuleManagement = () => {
     }
   });
 
-  const activeSubscriptions = modules.filter(module => module.is_subscribed).length;
+  const activeSubscriptionsCount = modules.filter(module => module.is_subscribed).length;
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -307,25 +367,118 @@ export const ModuleManagement = () => {
 
   return (
     <div className="space-y-6">
-      {/* Debug Info */}
-      {process.env.NODE_ENV === 'development' && (
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <h4 className="text-blue-800 font-semibold mb-2">Debug Info</h4>
-          <div className="text-sm text-blue-700">
-            <p>Modules count: {modules.length}</p>
-            <p>Is loading: {isLoading ? 'Yes' : 'No'}</p>
-            <p>Has error: {error ? 'Yes' : 'No'}</p>
-            <p>User ID: {user?.id || 'Not logged in'}</p>
-            {modules.length > 0 && (
-              <details className="mt-2">
-                <summary className="cursor-pointer">Modules data</summary>
-                <pre className="mt-2 text-xs bg-blue-100 p-2 rounded overflow-auto max-h-40">
-                  {JSON.stringify(modules, null, 2)}
-                </pre>
-              </details>
-            )}
-          </div>
-        </div>
+      {/* Active Subscriptions Overview */}
+      {(activeSubscriptions as ActiveSubscription[]).length > 0 && (
+        <Card className="border-green-200 bg-green-50">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-green-800">
+              <Receipt className="w-5 h-5" />
+              Actieve Module Abonnementen
+            </CardTitle>
+            <CardDescription className="text-green-700">
+              Overzicht van je gekochte modules en facturatie
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {/* Total Cost Summary */}
+            <div className="bg-white rounded-lg p-4 border border-green-200">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <DollarSign className="w-5 h-5 text-green-600" />
+                  <span className="font-semibold text-green-800">Maandelijkse Kosten</span>
+                </div>
+                <div className="text-2xl font-bold text-green-600">
+                  €{(activeSubscriptions as ActiveSubscription[]).reduce((total, sub) => total + (sub.modules?.price_monthly || 0), 0).toFixed(2)}
+                </div>
+              </div>
+              <p className="text-sm text-green-600 mt-1">
+                {(activeSubscriptions as ActiveSubscription[]).length} actieve abonnement{(activeSubscriptions as ActiveSubscription[]).length !== 1 ? 'en' : ''}
+              </p>
+            </div>
+
+            {/* Individual Subscriptions */}
+            <div className="space-y-3">
+              {(activeSubscriptions as ActiveSubscription[]).map((subscription) => {
+                if (!subscription.modules) return null;
+                
+                const daysUntilRenewal = Math.ceil((new Date(subscription.end_date).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
+                const isExpiringSoon = daysUntilRenewal <= 7;
+                
+                return (
+                  <div key={subscription.id} className="bg-white rounded-lg p-4 border border-green-200">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                          {subscription.modules.icon === 'scan' && <Package className="w-5 h-5 text-green-600" />}
+                          {subscription.modules.icon === 'truck' && <ShoppingCart className="w-5 h-5 text-green-600" />}
+                          {subscription.modules.icon === 'bar-chart' && <BarChart3 className="w-5 h-5 text-green-600" />}
+                          {subscription.modules.icon === 'settings' && <Settings className="w-5 h-5 text-green-600" />}
+                          {subscription.modules.icon === 'zap' && <Zap className="w-5 h-5 text-green-600" />}
+                          {!['scan', 'truck', 'bar-chart', 'settings', 'zap'].includes(subscription.modules.icon) && 
+                            <Package className="w-5 h-5 text-green-600" />}
+                        </div>
+                        <div>
+                          <h4 className="font-semibold text-green-800">{subscription.modules.title}</h4>
+                          <p className="text-sm text-green-600">
+                            €{subscription.modules.price_monthly}/maand
+                          </p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <Badge className="bg-green-100 text-green-800 border-green-300">
+                          Actief
+                        </Badge>
+                        <p className="text-xs text-green-600 mt-1">
+                          {subscription.billing_cycle === 'monthly' ? 'Maandelijks' : 'Jaarlijks'}
+                        </p>
+                      </div>
+                    </div>
+                    
+                    {/* Renewal Info */}
+                    <div className="mt-3 pt-3 border-t border-green-200">
+                      <div className="flex items-center justify-between text-sm">
+                        <div className="flex items-center gap-2">
+                          <CalendarDays className="w-4 h-4 text-green-600" />
+                          <span className="text-green-700">
+                            Verlengt op {new Date(subscription.end_date).toLocaleDateString('nl-NL', {
+                              year: 'numeric',
+                              month: 'long',
+                              day: 'numeric'
+                            })}
+                          </span>
+                        </div>
+                        <div className={`flex items-center gap-1 ${
+                          isExpiringSoon ? 'text-orange-600' : 'text-green-600'
+                        }`}>
+                          <Clock className="w-4 h-4" />
+                          <span>
+                            {daysUntilRenewal > 0 
+                              ? `${daysUntilRenewal} dag${daysUntilRenewal !== 1 ? 'en' : ''}`
+                              : 'Vandaag'
+                            }
+                          </span>
+                        </div>
+                      </div>
+                      {isExpiringSoon && (
+                        <p className="text-xs text-orange-600 mt-1">
+                          ⚠️ Abonnement verloopt binnenkort
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Additional Info */}
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+              <p className="text-sm text-blue-700">
+                💡 <strong>Tip:</strong> Je abonnementen worden automatisch verlengd. 
+                Je kunt ze op elk moment beheren via je Stripe dashboard.
+              </p>
+            </div>
+          </CardContent>
+        </Card>
       )}
       
       {/* Header */}
@@ -334,27 +487,6 @@ export const ModuleManagement = () => {
         <p className="text-gray-600 mt-2">Beheer je module abonnementen en toegang</p>
       </div>
 
-      {/* Active Subscriptions Summary */}
-      {activeSubscriptions > 0 && (
-        <Card className="bg-green-50 border-green-200">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                <Check className="w-5 h-5 text-green-600" />
-              </div>
-              <div>
-                <h3 className="font-semibold text-green-900">
-                  {activeSubscriptions} Actieve Module{activeSubscriptions > 1 ? 's' : ''}
-                </h3>
-                <p className="text-sm text-green-700">
-                  Je hebt toegang tot {activeSubscriptions} module{activeSubscriptions > 1 ? 's' : ''}. 
-                  De functionaliteiten zijn direct beschikbaar in de sidebar.
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      )}
 
       {/* Modules List */}
       <div className="space-y-4">

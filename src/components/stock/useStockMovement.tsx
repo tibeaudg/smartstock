@@ -72,11 +72,11 @@ export const useStockMovement = (
         transaction_type: transactionType,
         quantity: quantityNum,
         unit_price: transactionType === 'incoming' ? product.purchase_price : product.sale_price,
-        purchase_price: product.purchase_price,
-        sale_price: product.sale_price,
         user_id: user.id, // Behoud user_id voor backward compatibility
         created_by: user.id, // Nieuwe kolom voor relaties
-        branch_id: activeBranch.branch_id
+        branch_id: activeBranch.branch_id,
+        reference_number: `MANUAL_${transactionType.toUpperCase()}`,
+        notes: `Handmatige ${transactionType === 'incoming' ? 'toevoeging' : 'verwijdering'} van voorraad`
       };
 
       // Create the transaction
