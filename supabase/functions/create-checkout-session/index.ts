@@ -171,6 +171,18 @@ serve(async (req) => {
 
     // Create or get Stripe customer
     let customerId = user.stripe_customer_id
+    
+    // Check if customer exists in Stripe, if not create a new one
+    if (customerId) {
+      try {
+        await stripe.customers.retrieve(customerId)
+        console.log('Using existing customer:', customerId)
+      } catch (error) {
+        console.log('Customer not found in Stripe, creating new one:', error.message)
+        customerId = null
+      }
+    }
+    
     if (!customerId) {
       const customer = await stripe.customers.create({
         email: user.email,
@@ -179,6 +191,7 @@ serve(async (req) => {
         },
       })
       customerId = customer.id
+      console.log('Created new customer:', customerId)
 
       // Update user with Stripe customer ID
       await supabase

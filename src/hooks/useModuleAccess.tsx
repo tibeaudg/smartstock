@@ -33,10 +33,11 @@ export const useModuleAccess = (moduleSlug: string) => {
           .from('modules')
           .select('id')
           .eq('slug', moduleSlug)
-          .single();
+          .maybeSingle();
 
         if (!moduleError && module) {
           moduleId = module.id;
+          console.log('Found module by slug:', moduleSlug, 'ID:', moduleId);
         }
       } catch (error) {
         // If slug column doesn't exist, try to find by title
@@ -56,10 +57,11 @@ export const useModuleAccess = (moduleSlug: string) => {
               .from('modules')
               .select('id')
               .eq('title', title)
-              .single();
+              .maybeSingle();
 
             if (!moduleError && module) {
               moduleId = module.id;
+              console.log('Found module by title:', title, 'ID:', moduleId);
             }
           }
         } catch (titleError) {
@@ -89,6 +91,8 @@ export const useModuleAccess = (moduleSlug: string) => {
         return { hasAccess: false };
       }
 
+      console.log('Checking module access for:', moduleSlug, 'moduleId:', moduleId, 'userId:', user.id);
+      
       const { data, error } = await supabase
         .from('user_module_subscriptions')
         .select('status, end_date, billing_cycle')
@@ -102,7 +106,10 @@ export const useModuleAccess = (moduleSlug: string) => {
         return { hasAccess: false };
       }
 
+      console.log('Module access query result:', data);
+
       if (!data) {
+        console.log('No active subscription found for module:', moduleSlug);
         return { hasAccess: false };
       }
 

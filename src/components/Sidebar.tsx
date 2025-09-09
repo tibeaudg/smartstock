@@ -65,6 +65,10 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
   // Check if user has access to modules
   const { data: deliveryNotesAccess } = useModuleAccess('delivery-notes');
   const { data: scanningAccess } = useModuleAccess('scanning');
+  
+  // Debug logging
+  console.log('Sidebar - deliveryNotesAccess:', deliveryNotesAccess);
+  console.log('Sidebar - scanningAccess:', scanningAccess);
 
   // If blocked, only show settings/invoicing
   const isBlocked = userProfile?.blocked;

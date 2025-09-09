@@ -58,11 +58,30 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         .from('profiles')
         .select('*')
         .eq('id', userId)
-        .single();
+        .maybeSingle(); // Gebruik maybeSingle() in plaats van single() om 0 rijen te accepteren
 
       if (error) {
         console.error('Error fetching user profile:', error.message);
         return null;
+      }
+      
+      // Als er geen profiel bestaat, maak een basis profiel object
+      if (!data) {
+        console.log('No profile found for user, creating basic profile object');
+        return {
+          id: userId,
+          email: '',
+          first_name: null,
+          last_name: null,
+          role: 'user' as const,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+          selected_plan: null,
+          blocked: false,
+          onboarding_completed: false,
+          last_login: null,
+          is_owner: false
+        };
       }
       
       return data as UserProfile;

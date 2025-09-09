@@ -50,14 +50,9 @@ export function useAuthConversionTracking({ userId, email }: UseAuthConversionTr
     let city: string | undefined;
 
     try {
-      // This is a simplified approach - in production you'd use a proper IP geolocation service
-      const response = await fetch('https://ipapi.co/json/');
-      if (response.ok) {
-        const data = await response.json();
-        visitorIp = data.ip;
-        country = data.country_name;
-        city = data.city;
-      }
+      // Skip IP geolocation due to CSP restrictions
+      // In production, you'd handle this server-side or use a different approach
+      console.log('Skipping IP geolocation due to CSP restrictions');
     } catch (error) {
       console.warn('Could not fetch visitor location:', error);
     }

@@ -162,7 +162,7 @@ async function fetchUserStats(userId: string): Promise<UserStats> {
       .from('profiles')
       .select('selected_plan')
       .eq('id', userId)
-      .single();
+      .maybeSingle();
 
     if (userData) {
       stats.licenseCost = calculateUserLicenseCost(userData.selected_plan, {

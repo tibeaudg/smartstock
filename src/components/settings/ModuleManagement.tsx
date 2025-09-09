@@ -13,7 +13,7 @@ import { TestCheckout } from '@/components/payments/TestCheckout';
 import { EdgeFunctionTest } from '@/components/payments/EdgeFunctionTest';
 import { EnvironmentTest } from '@/components/payments/EnvironmentTest';
 import { DirectFunctionTest } from '@/components/payments/DirectFunctionTest';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 // Module interface
 interface Module {
@@ -35,8 +35,35 @@ export const ModuleManagement = () => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [sortBy, setSortBy] = useState<'priority' | 'status'>('priority');
   const [checkoutModule, setCheckoutModule] = useState<Module | null>(null);
+
+  // Handle success/cancel messages from URL params
+  React.useEffect(() => {
+    const success = searchParams.get('success');
+    const canceled = searchParams.get('canceled');
+    
+    if (success === 'true') {
+      toast({
+        title: 'Module succesvol gekocht! 🎉',
+        description: 'Je hebt nu toegang tot deze module. De functionaliteit is direct beschikbaar.',
+      });
+      // Clear URL params
+      setSearchParams({});
+      // Refresh module data
+      queryClient.invalidateQueries({ queryKey: ['modules'] });
+      queryClient.invalidateQueries({ queryKey: ['moduleAccess'] });
+    } else if (canceled === 'true') {
+      toast({
+        title: 'Aankoop geannuleerd',
+        description: 'Je hebt de aankoop geannuleerd. Je kunt opnieuw proberen wanneer je wilt.',
+        variant: 'destructive',
+      });
+      // Clear URL params
+      setSearchParams({});
+    }
+  }, [searchParams, setSearchParams, queryClient]);
 
   // Fetch modules from database
   const {
@@ -264,6 +291,28 @@ export const ModuleManagement = () => {
         <h1 className="text-3xl font-bold text-gray-900">Module Beheer</h1>
         <p className="text-gray-600 mt-2">Beheer je module abonnementen en toegang</p>
       </div>
+
+      {/* Active Subscriptions Summary */}
+      {activeSubscriptions > 0 && (
+        <Card className="bg-green-50 border-green-200">
+          <CardContent className="p-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                <Check className="w-5 h-5 text-green-600" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-green-900">
+                  {activeSubscriptions} Actieve Module{activeSubscriptions > 1 ? 's' : ''}
+                </h3>
+                <p className="text-sm text-green-700">
+                  Je hebt toegang tot {activeSubscriptions} module{activeSubscriptions > 1 ? 's' : ''}. 
+                  De functionaliteiten zijn direct beschikbaar in de sidebar.
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Modules List */}
       <div className="space-y-4">

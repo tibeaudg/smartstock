@@ -286,7 +286,7 @@ export async function debugAllChats() {
         .from('chats')
         .select('*')
         .eq('id', chat.id)
-        .single();
+        .maybeSingle();
 
       if (singleError) {
         console.error(`Error fetching single chat ${chat.id}:`, singleError);
@@ -299,7 +299,7 @@ export async function debugAllChats() {
         .from('profiles')
         .select('id, first_name, last_name, email')
         .eq('id', chat.user_id)
-        .single();
+        .maybeSingle();
 
       if (profileError) {
         console.error(`Error fetching profile for user ${chat.user_id}:`, profileError);
@@ -445,7 +445,7 @@ export async function testRLSPolicies() {
         .from('chats')
         .select('*')
         .eq('id', chat.id)
-        .single();
+        .maybeSingle();
 
       if (singleError) {
         console.error(`Error fetching single chat ${chat.id}:`, singleError);
@@ -458,7 +458,7 @@ export async function testRLSPolicies() {
         .from('profiles')
         .select('id, first_name, last_name, email')
         .eq('id', chat.user_id)
-        .single();
+        .maybeSingle();
 
       if (profileError) {
         console.error(`Error fetching profile for user ${chat.user_id}:`, profileError);
