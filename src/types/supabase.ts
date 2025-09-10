@@ -35,6 +35,7 @@ export interface Database extends DatabaseGenerated {
           message: string;
           is_read: boolean;
           created_at: string;
+          updated_at: string;
         };
         Insert: {
           id?: string;
@@ -44,6 +45,7 @@ export interface Database extends DatabaseGenerated {
           message: string;
           is_read?: boolean;
           created_at?: string;
+          updated_at?: string;
         };
         Update: {
           id?: string;
@@ -53,6 +55,7 @@ export interface Database extends DatabaseGenerated {
           message?: string;
           is_read?: boolean;
           created_at?: string;
+          updated_at?: string;
         };
       };
     };

@@ -186,7 +186,19 @@ export const AdminChatList: React.FC = () => {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Chat met {selectedChat.profiles?.first_name || 'gebruiker'} {selectedChat.profiles?.last_name || ''}</CardTitle>
+          <CardTitle>Chat met {(() => {
+            const firstName = selectedChat.profiles?.first_name?.trim();
+            const lastName = selectedChat.profiles?.last_name?.trim();
+            const email = selectedChat.profiles?.email;
+            
+            if (firstName || lastName) {
+              return `${firstName || ''} ${lastName || ''}`.trim();
+            } else if (email) {
+              return email.split('@')[0];
+            } else {
+              return 'gebruiker';
+            }
+          })()}</CardTitle>
           <button className="text-xs text-blue-600 underline" onClick={() => setSelectedChat(null)}>
             Terug naar alle chats
           </button>
@@ -243,7 +255,19 @@ export const AdminChatList: React.FC = () => {
             <p className="text-gray-600 mb-6">
               Weet je zeker dat je de chat met{' '}
               <span className="font-medium">
-                {chatToDelete.profiles?.first_name || 'gebruiker'} {chatToDelete.profiles?.last_name || ''}
+                {(() => {
+                  const firstName = chatToDelete.profiles?.first_name?.trim();
+                  const lastName = chatToDelete.profiles?.last_name?.trim();
+                  const email = chatToDelete.profiles?.email;
+                  
+                  if (firstName || lastName) {
+                    return `${firstName || ''} ${lastName || ''}`.trim();
+                  } else if (email) {
+                    return email.split('@')[0];
+                  } else {
+                    return 'gebruiker';
+                  }
+                })()}
               </span>{' '}
               wilt verwijderen? Dit kan niet ongedaan worden gemaakt.
             </p>
@@ -349,12 +373,39 @@ export const AdminChatList: React.FC = () => {
                         <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
                           hasUnread ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-gray-600'
                         }`}>
-                          {chat.profiles?.first_name?.[0] || chat.profiles?.last_name?.[0] || '?'}
+                          {(() => {
+                            const firstName = chat.profiles?.first_name?.trim();
+                            const lastName = chat.profiles?.last_name?.trim();
+                            const email = chat.profiles?.email;
+                            
+                            if (firstName) {
+                              return firstName[0].toUpperCase();
+                            } else if (lastName) {
+                              return lastName[0].toUpperCase();
+                            } else if (email) {
+                              return email[0].toUpperCase();
+                            } else {
+                              return '?';
+                            }
+                          })()}
                         </div>
                         <div>
                           <div className="flex items-center space-x-2">
                             <span className="font-medium">
-                              {chat.profiles?.first_name || 'Gebruiker'} {chat.profiles?.last_name || ''}
+                              {(() => {
+                                const firstName = chat.profiles?.first_name?.trim();
+                                const lastName = chat.profiles?.last_name?.trim();
+                                const email = chat.profiles?.email;
+                                
+                                if (firstName || lastName) {
+                                  return `${firstName || ''} ${lastName || ''}`.trim();
+                                } else if (email) {
+                                  // Gebruik email als fallback, maar toon alleen het deel voor @
+                                  return email.split('@')[0];
+                                } else {
+                                  return 'Gebruiker';
+                                }
+                              })()}
                             </span>
                             {hasUnread && (
                               <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">

@@ -109,6 +109,7 @@ export type Database = {
           message: string;
           is_read: boolean;
           created_at: string;
+          updated_at: string;
         };
         Insert: {
           id?: string;
@@ -118,6 +119,7 @@ export type Database = {
           message: string;
           is_read?: boolean;
           created_at?: string;
+          updated_at?: string;
         };
         Update: {
           id?: string;
@@ -127,6 +129,7 @@ export type Database = {
           message?: string;
           is_read?: boolean;
           created_at?: string;
+          updated_at?: string;
         };
       };
 
