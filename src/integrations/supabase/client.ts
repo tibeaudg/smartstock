@@ -1,5 +1,5 @@
 // BlogPost CRUD functions
-import type { BlogPost, BlogAnalytics, BlogAnalyticsSummary, AuthConversionEvent, AuthConversionAnalytics, AuthConversionFunnel } from './types';
+import type { BlogPost, AuthConversionEvent, AuthConversionAnalytics, AuthConversionFunnel } from './types';
 
 export async function fetchBlogPosts(): Promise<BlogPost[]> {
   const { data, error } = await supabase.from('blogposts').select('*').order('date_published', { ascending: false });
@@ -120,59 +120,6 @@ export const checkSupabaseConnection = async () => {
   }
 };
 
-// Blog Analytics functions
-export async function trackBlogView(analytics: Omit<BlogAnalytics, 'id' | 'created_at' | 'updated_at'>): Promise<void> {
-  try {
-    const { error } = await supabase.from('blog_analytics').insert([analytics]);
-    if (error) {
-      console.error('Failed to track blog view:', error);
-    }
-  } catch (error) {
-    console.error('Error tracking blog view:', error);
-  }
-}
-
-export async function getBlogAnalyticsSummary(slug?: string): Promise<BlogAnalyticsSummary[]> {
-  try {
-    let query = supabase.from('blog_analytics_summary').select('*');
-    
-    if (slug) {
-      query = query.eq('slug', slug);
-    }
-    
-    const { data, error } = await query.order('total_views', { ascending: false });
-    
-    if (error) {
-      console.error('Failed to fetch blog analytics:', error);
-      return [];
-    }
-    
-    return data || [];
-  } catch (error) {
-    console.error('Error fetching blog analytics:', error);
-    return [];
-  }
-}
-
-export async function getBlogAnalyticsBySlug(slug: string): Promise<BlogAnalytics[]> {
-  try {
-    const { data, error } = await supabase
-      .from('blog_analytics')
-      .select('*')
-      .eq('slug', slug)
-      .order('created_at', { ascending: false });
-    
-    if (error) {
-      console.error('Failed to fetch blog analytics by slug:', error);
-      return [];
-    }
-    
-    return data || [];
-  } catch (error) {
-    console.error('Error fetching blog analytics by slug:', error);
-    return [];
-  }
-}
 
 // Auth Conversion Tracking functions
 export async function trackAuthConversionEvent(event: Omit<AuthConversionEvent, 'id' | 'created_at' | 'updated_at'>): Promise<void> {

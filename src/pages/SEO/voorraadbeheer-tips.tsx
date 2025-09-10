@@ -40,25 +40,25 @@ export default function VoorraadbeheerTips() {
       />
 
       {/* Hero Section - Split Layout */}
-      <section className="bg-white py-16 px-4">
+      <section className="bg-white py-8 sm:py-12 md:py-16 px-4">
         <div className="max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-3 gap-4 items-center">
+          <div className="grid lg:grid-cols-3 gap-6 sm:gap-8 items-center">
             {/* Left Side - Text Content */}
             <div className="lg:col-span-2">
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6">
                 <span className="text-blue-600">Voorraadbeheer Tips</span> voor optimale controle
               </h1>
-                             <p className="text-lg text-gray-700 mb-8 leading-relaxed">
+                             <p className="text-sm sm:text-base md:text-lg text-gray-700 mb-6 sm:mb-8 leading-relaxed">
                  Ontdek praktische voorraadbeheer tips die je direct kunt toepassen. Van het organiseren van je magazijn tot het optimaliseren van je bestelprocessen - deze voorraadbeheer tips helpen je om slimmer te werken, kosten te besparen en fouten te voorkomen. Leer van experts hoe je je voorraadbeheer naar het volgende niveau tilt met bewezen strategieën en best practices.
                </p>
             </div>
             {/* Right Side - Image */}
             <div className="lg:col-span-1">
-              <div className=" rounded-lg text-center">
+              <div className="rounded-lg text-center">
                 <img 
                   src="https://rompslomp.nl/hs-fs/hubfs/voorraadbeheer.jpg?width=1200&height=800&name=voorraadbeheer.jpg" 
                   alt="Voorraadbeheer Tips" 
-                  className="w-96 h-96 mx-auto object-cover rounded-lg mb-4"
+                  className="w-full max-w-sm sm:max-w-md lg:w-96 h-64 sm:h-80 lg:h-96 mx-auto object-cover rounded-lg mb-4"
                 />
               </div>
             </div>
@@ -67,39 +67,39 @@ export default function VoorraadbeheerTips() {
       </section>
 
       {/* What is Voorraadbeheer Tips Section */}
-      <section className="py-16 px-4 bg-gray-50">
+      <section className="py-8 sm:py-12 md:py-16 px-4 bg-gray-50">
         <div className="max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-3 gap-4 items-center">
+          <div className="grid lg:grid-cols-3 gap-6 sm:gap-8 items-center">
             {/* Left Side - Image */}
             <div className="lg:col-span-1">
-              <div className=" rounded-lg text-center">
+              <div className="rounded-lg text-center">
                 <img 
                   src="https://www.greatplacetowork.ca/images/Asset_3.webp" 
                   alt="Team Samenwerking" 
-                  className="w-full h-96 mx-auto object-cover rounded-lg"
+                  className="w-full h-64 sm:h-80 lg:h-96 mx-auto object-cover rounded-lg"
                 />
               </div>
             </div>
             {/* Right Side - Text Content */}
             <div className="lg:col-span-2">
-                             <h2 className="text-3xl font-bold mb-6">
+                             <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 sm:mb-6">
                  Waarom zijn voorraadbeheer tips essentieel voor je bedrijf?
                </h2>
-               <p className="text-lg text-gray-700 mb-6 leading-relaxed">
+               <p className="text-sm sm:text-base md:text-lg text-gray-700 mb-4 sm:mb-6 leading-relaxed">
                  Voorraadbeheer tips zijn de sleutel tot een efficiënt en winstgevend bedrijf. Zonder goede voorraadbeheer tips loop je het risico op overstock, tekorten, verspilling en klachten. Met de juiste voorraadbeheer tips kun je je magazijn optimaliseren, je cashflow verbeteren en je klanten beter bedienen. Deze praktische voorraadbeheer tips zijn gebaseerd op jarenlange ervaring in verschillende sectoren.
                </p>
-               <div className="space-y-4">
-                 <div className="bg-blue-50 p-4 rounded-lg">
-                   <h3 className="font-semibold text-blue-800 mb-2">Voorkom overstock met voorraadbeheer tips</h3>
-                   <p className="text-gray-700">Voorraadbeheer tips leren je hoe je <span className="text-blue-600 font-semibold">overstock</span> kunt voorkomen door betere forecasting en regelmatige voorraadcontroles.</p>
+               <div className="space-y-3 sm:space-y-4">
+                 <div className="bg-blue-50 p-3 sm:p-4 rounded-lg">
+                   <h3 className="text-sm sm:text-base font-semibold text-blue-800 mb-2">Voorkom overstock met voorraadbeheer tips</h3>
+                   <p className="text-xs sm:text-sm text-gray-700">Voorraadbeheer tips leren je hoe je <span className="text-blue-600 font-semibold">overstock</span> kunt voorkomen door betere forecasting en regelmatige voorraadcontroles.</p>
                  </div>
-                 <div className="bg-green-50 p-4 rounded-lg">
-                   <h3 className="font-semibold text-green-800 mb-2">Optimaliseer je magazijnruimte</h3>
-                   <p className="text-gray-700">Voorraadbeheer tips helpen je om je magazijn efficiënter in te richten en meer producten in minder ruimte op te slaan.</p>
+                 <div className="bg-green-50 p-3 sm:p-4 rounded-lg">
+                   <h3 className="text-sm sm:text-base font-semibold text-green-800 mb-2">Optimaliseer je magazijnruimte</h3>
+                   <p className="text-xs sm:text-sm text-gray-700">Voorraadbeheer tips helpen je om je magazijn efficiënter in te richten en meer producten in minder ruimte op te slaan.</p>
                  </div>
-                 <div className="bg-purple-50 p-4 rounded-lg">
-                   <h3 className="font-semibold text-purple-800 mb-2">Verbeter je bestelprocessen</h3>
-                   <p className="text-gray-700">Voorraadbeheer tips geven je inzicht in wanneer en hoeveel je moet bestellen om optimale voorraadniveaus te behouden.</p>
+                 <div className="bg-purple-50 p-3 sm:p-4 rounded-lg">
+                   <h3 className="text-sm sm:text-base font-semibold text-purple-800 mb-2">Verbeter je bestelprocessen</h3>
+                   <p className="text-xs sm:text-sm text-gray-700">Voorraadbeheer tips geven je inzicht in wanneer en hoeveel je moet bestellen om optimale voorraadniveaus te behouden.</p>
                  </div>
                </div>
             </div>
@@ -108,29 +108,29 @@ export default function VoorraadbeheerTips() {
       </section>
 
       {/* Different Methods Section */}
-      <section className="py-16 px-4 bg-white">
+      <section className="py-8 sm:py-12 md:py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-3 gap-4 items-start">
+          <div className="grid lg:grid-cols-3 gap-6 sm:gap-8 items-start">
             {/* Left Side - Text Content */}
             <div className="lg:col-span-2">
-                             <h2 className="text-3xl font-bold mb-6 text-blue-600">
+                             <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 sm:mb-6 text-blue-600">
                  Praktische voorraadbeheer tips
                </h2>
-               <p className="text-lg text-gray-700 mb-8">
+               <p className="text-sm sm:text-base md:text-lg text-gray-700 mb-6 sm:mb-8">
                  Deze voorraadbeheer tips zijn direct toepasbaar en gebaseerd op echte ervaringen. Implementeer deze voorraadbeheer tips stap voor stap voor optimale resultaten:
                </p>
                
-               <div className="space-y-6">
-                 <div className="border-l-4 border-blue-500 pl-6">
-                   <h3 className="text-xl font-bold mb-3">1. Organiseer je magazijn volgens de ABC-methode:</h3>
-                   <p className="text-gray-700 leading-relaxed">
+               <div className="space-y-4 sm:space-y-6">
+                 <div className="border-l-4 border-blue-500 pl-4 sm:pl-6">
+                   <h3 className="text-lg sm:text-xl font-bold mb-2 sm:mb-3">1. Organiseer je magazijn volgens de ABC-methode:</h3>
+                   <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
                      Deze voorraadbeheer tip helpt je om je magazijn efficiënt in te richten. Categoriseer je producten in A (hoogste waarde, 20% van producten), B (gemiddelde waarde, 30% van producten) en C (laagste waarde, 50% van producten). Plaats A-producten dicht bij de uitgang voor snelle toegang. Deze voorraadbeheer tip kan je pickingtijd met 30% verminderen.
                    </p>
                  </div>
                  
-                 <div className="border-l-4 border-green-500 pl-6">
-                   <h3 className="text-xl font-bold mb-3">2. Stel minimum- en maximumvoorraad niveaus in:</h3>
-                   <p className="text-gray-700 leading-relaxed">
+                 <div className="border-l-4 border-green-500 pl-4 sm:pl-6">
+                   <h3 className="text-lg sm:text-xl font-bold mb-2 sm:mb-3">2. Stel minimum- en maximumvoorraad niveaus in:</h3>
+                   <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
                      Deze essentiële voorraadbeheer tip voorkomt zowel tekorten als overstock. Bepaal voor elk product het minimum niveau (wanneer je moet bestellen) en maximum niveau (hoeveel je maximaal wilt hebben). Deze voorraadbeheer tip zorgt voor een gezonde voorraadrotatie en optimale cashflow.
                    </p>
                  </div>
@@ -138,11 +138,11 @@ export default function VoorraadbeheerTips() {
             </div>
             {/* Right Side - Image */}
             <div className="lg:col-span-1">
-              <div className=" rounded-lg text-center">
+              <div className="rounded-lg text-center">
                 <img 
                   src="https://www.warehousingandfulfillment.com/wp-content/uploads/2020/04/Barcode-Scanning-Technologies.jpg" 
                   alt="Barcode Scanning" 
-                  className="w-96 h-96 mx-auto object-cover rounded-lg mb-4"
+                  className="w-full max-w-sm sm:max-w-md lg:w-96 h-64 sm:h-80 lg:h-96 mx-auto object-cover rounded-lg mb-4"
                 />
               </div>
             </div>

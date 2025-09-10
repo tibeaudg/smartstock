@@ -809,7 +809,7 @@ export const StockList = () => {
   // Mobile card view
   if (isMobile) {
     return (
-      <div className="space-y-4 pt-4">
+      <div className="space-y-3 sm:space-y-4 pt-3 sm:pt-4 px-2 sm:px-4">
 
         {/* Only show products content when on products tab */}
         {activeTab === 'products' && (
@@ -818,7 +818,7 @@ export const StockList = () => {
             <div className="space-y-2">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="w-full h-10">
+                  <Button variant="outline" className="w-full h-10 text-sm">
                     <Settings className="w-4 h-4 mr-2" />
                     Kolommen Beheren
                   </Button>

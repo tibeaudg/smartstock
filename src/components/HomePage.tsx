@@ -541,11 +541,11 @@ export const HomePage = () => {
       <section className="max-w-6xl mx-auto px-4 py-8 md:py-20 text-center relative overflow-hidden rounded-lg" style={{backgroundImage: 'url(/Inventory-Management.png)', backgroundSize: 'cover', backgroundPosition: 'center', minHeight: '50vh'}}>
         <div className="absolute inset-0 bg-gradient-to-b from-white/60 to-white/85 md:from-white/70 md:to-white/85"></div>
         <div className="relative z-10">
-          <h1 className="text-3xl md:text-5xl lg:text-7xl font-bold mb-4 md:mb-6 leading-tight">
+          <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-7xl font-bold mb-4 md:mb-6 leading-tight px-2">
             <span className="block">Gratis Voorraadbeheer</span>
             <span className="block text-blue-600">voor KMO's in Vlaanderen</span>
           </h1>
-          <p className="text-base md:text-xl lg:text-2xl text-gray-600 mb-6 md:mb-8 max-w-3xl mx-auto px-4">
+          <p className="text-sm sm:text-base md:text-xl lg:text-2xl text-gray-600 mb-6 md:mb-8 max-w-3xl mx-auto px-4">
             Het enige voorraadbeheer programma dat 100% gratis is voor Vlaamse KMO's. Geen verborgen kosten, geen limieten.
           </p>
           {/* Social proof */}
@@ -557,11 +557,11 @@ export const HomePage = () => {
             </div>
             <span className="text-sm text-gray-600">4.8/5 gebaseerd op 150+ reviews</span>
           </div>
-          <div className="flex flex-col md:flex-row gap-4 justify-center mb-6 md:mb-8 px-4">
-            <Button data-analytics-id="hero-start" size="lg" className="bg-blue-600 text-white px-6 md:px-8 py-3 md:py-4 rounded-lg font-semibold hover:bg-blue-700 transition text-base md:text-lg" onClick={handleLoginClick}>
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-6 md:mb-8 px-4">
+            <Button data-analytics-id="hero-start" size="lg" className="bg-blue-600 text-white px-4 sm:px-6 md:px-8 py-3 md:py-4 rounded-lg font-semibold hover:bg-blue-700 transition text-sm sm:text-base md:text-lg w-full sm:w-auto" onClick={handleLoginClick}>
               Start Nu Gratis!
             </Button>
-            <Button data-analytics-id="hero-how-it-works" size="lg" variant="outline" className="border-blue-600 text-blue-600 px-6 md:px-8 py-3 md:py-4 rounded-lg font-semibold hover:bg-blue-50 transition text-base md:text-lg" onClick={handleHowItWorksClick}>
+            <Button data-analytics-id="hero-how-it-works" size="lg" variant="outline" className="border-blue-600 text-blue-600 px-4 sm:px-6 md:px-8 py-3 md:py-4 rounded-lg font-semibold hover:bg-blue-50 transition text-sm sm:text-base md:text-lg w-full sm:w-auto" onClick={handleHowItWorksClick}>
               Hoe werkt het?
             </Button>
           </div>
@@ -574,7 +574,7 @@ export const HomePage = () => {
             <p className="text-red-600 text-sm mt-2">Controleer je e-mailadres en probeer opnieuw.</p>
           )}
           {/* Trust badges */}
-          <div className="flex flex-wrap justify-center gap-4 mt-6 text-xs text-gray-600">
+          <div className="flex flex-wrap justify-center gap-3 sm:gap-4 mt-6 text-xs text-gray-600 px-4">
             <div className="flex items-center gap-2"><Shield className="h-4 w-4 text-blue-600" /> GDPR-compliant</div>
             <div className="flex items-center gap-2"><Shield className="h-4 w-4 text-blue-600" /> SSL-versleuteling</div>
             <div className="flex items-center gap-2"><Check className="h-4 w-4 text-blue-600" /> Dagelijkse back-ups</div>
@@ -585,7 +585,7 @@ export const HomePage = () => {
       {/* KENGETALLEN / SOCIAL PROOF STRIP */}
       <section id="stats-section" className="bg-white py-8 md:py-12">
         <div className="max-w-6xl mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-6 divide-x-0 md:divide-x md:divide-dashed md:divide-gray-200">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8 divide-x-0 md:divide-x md:divide-dashed md:divide-gray-200">
             {[
               { icon: Users, value: '3.200+', label: "zelfstandigen & KMO's" },
               { icon: Star, value: '150+', label: '5‑sterren reviews' },
@@ -593,9 +593,9 @@ export const HomePage = () => {
               { icon: Package, value: '500k+', label: 'productbewegingen' },
             ].map((s, i) => (
               <div key={i} className="flex flex-col items-center text-center md:px-6">
-                <s.icon className="h-8 w-8 text-gray-400 mb-3" />
-                <div className="text-3xl md:text-5xl font-extrabold tracking-tight text-blue-700">{s.value}</div>
-                <div className="mt-2 text-sm md:text-base text-gray-700 font-medium">{s.label}</div>
+                <s.icon className="h-6 w-6 sm:h-8 sm:w-8 text-gray-400 mb-2 sm:mb-3" />
+                <div className="text-xl sm:text-2xl md:text-3xl lg:text-5xl font-extrabold tracking-tight text-blue-700">{s.value}</div>
+                <div className="mt-1 sm:mt-2 text-xs sm:text-sm md:text-base text-gray-700 font-medium text-center leading-tight">{s.label}</div>
               </div>
             ))}
           </div>
@@ -606,8 +606,8 @@ export const HomePage = () => {
       <section id="benefits-section" className="bg-gray-50 py-12 md:py-16">
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-8 md:mb-12">
-            <h2 className="text-2xl md:text-3xl font-bold mb-4">Waarom KMO's in Vlaanderen Kiezen voor stockflow</h2>
-            <p className="text-base md:text-lg text-gray-600">Het beste gratis voorraadbeheer programma, specifiek ontwikkeld voor Vlaamse bedrijven</p>
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 px-4">Waarom KMO's in Vlaanderen Kiezen voor stockflow</h2>
+            <p className="text-sm sm:text-base md:text-lg text-gray-600 px-4">Het beste gratis voorraadbeheer programma, specifiek ontwikkeld voor Vlaamse bedrijven</p>
           </div>
           
           {/* Desktop Grid */}
@@ -645,19 +645,19 @@ export const HomePage = () => {
         {landingFeatures.map((feature, idx) => (
           <div
             key={feature.title}
-            className={`max-w-6xl mx-auto px-4 py-12 md:py-20 ${
+            className={`max-w-6xl mx-auto px-4 py-8 sm:py-12 md:py-20 ${
               feature.reverse ? 'md:flex-row-reverse' : 'md:flex-row'
             } flex flex-col items-center`}
           >
-            <div className="text-center md:text-left mb-8 md:mb-0 md:w-1/2 md:pr-8">
-              <h2 className="text-2xl md:text-3xl font-bold mb-4 md:mb-6">{feature.title}</h2>
-              <p className="text-base md:text-lg text-gray-700 leading-relaxed">{feature.desc}</p>
+            <div className="text-center md:text-left mb-6 sm:mb-8 md:mb-0 md:w-1/2 md:pr-8">
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-3 sm:mb-4 md:mb-6 px-4 md:px-0">{feature.title}</h2>
+              <p className="text-sm sm:text-base md:text-lg text-gray-700 leading-relaxed px-4 md:px-0">{feature.desc}</p>
             </div>
-            <div className="md:w-1/2">
+            <div className="md:w-1/2 w-full px-4 md:px-0">
               <OptimizedImage
                 src={feature.img}
                 alt={`${feature.title} - Voorraadbeheer voor KMO's`}
-                className="rounded-lg w-full max-w-md mx-auto h-64 md:h-80 object-contain"
+                className="rounded-lg w-full max-w-sm sm:max-w-md mx-auto h-48 sm:h-64 md:h-80 object-contain"
                 useModernFormats={false}
               />
             </div>
@@ -668,18 +668,18 @@ export const HomePage = () => {
       {/* VIDEO SECTION - Compact op mobiel */}
       <section id="video-section" className="bg-gray-50 py-12 md:py-20">
         <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 md:mb-6">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 md:mb-6 px-4">
             <span className="block">Hoe Werkt</span>
             <span className="block text-blue-600">Stockflow?</span>
           </h2>
-          <p className="text-lg md:text-xl text-gray-600 mb-8 md:mb-12 max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-6 sm:mb-8 md:mb-12 max-w-2xl mx-auto px-4">
             Ontdek hoe eenvoudig voorraadbeheer kan zijn met stockflow. Bekijk hoe Vlaamse KMO's hun voorraad beheren.
           </p>
-          <div className="flex justify-center">
+          <div className="flex justify-center px-4">
             <video 
               controls 
               poster="/Inventory-Management.png" 
-              className="rounded-lg shadow-lg w-full max-w-3xl"
+              className="rounded-lg shadow-lg w-full max-w-2xl sm:max-w-3xl"
               preload="none"
               onPlay={() => logger.info('Video play', { id: 'intro-video' })}
             >
@@ -726,11 +726,11 @@ export const HomePage = () => {
       <section id="testimonials-section" className="bg-gray-50 py-12 md:py-20">
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-8 md:mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 px-4">
               <span className="block">Vlaamse KMO's Vertellen</span>
               <span className="block text-blue-600">Over stockflow</span>
             </h2>
-            <p className="text-base md:text-lg text-gray-600">Ontdek waarom honderden Vlaamse bedrijven kiezen voor gratis voorraadbeheer</p>
+            <p className="text-sm sm:text-base md:text-lg text-gray-600 px-4">Ontdek waarom honderden Vlaamse bedrijven kiezen voor gratis voorraadbeheer</p>
           </div>
           
           {/* Desktop Grid */}
@@ -786,11 +786,11 @@ export const HomePage = () => {
       <section id="faq-section" className="py-12 md:py-20">
         <div className="max-w-4xl mx-auto px-4">
           <div className="text-center mb-8 md:mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 px-4">
               <span className="block">Veelgestelde Vragen Over</span>
               <span className="block text-blue-600">Gratis Voorraadbeheer</span>
             </h2>
-            <p className="text-base md:text-lg text-gray-600">Alles wat je moet weten over stockflow voor Vlaamse KMO's</p>
+            <p className="text-sm sm:text-base md:text-lg text-gray-600 px-4">Alles wat je moet weten over stockflow voor Vlaamse KMO's</p>
           </div>
           
           {/* Desktop FAQ */}
@@ -832,8 +832,8 @@ export const HomePage = () => {
       <section id="contact-section" className="bg-gray-50 py-12 md:py-20">
         <div className="max-w-4xl mx-auto px-4">
           <div className="text-center mb-8 md:mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-2">Vragen? Neem contact op</h2>
-            <p className="text-base md:text-lg text-gray-600">We antwoorden meestal binnen 1 werkdag.</p>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 px-4">Vragen? Neem contact op</h2>
+            <p className="text-sm sm:text-base md:text-lg text-gray-600 px-4">We antwoorden meestal binnen 1 werkdag.</p>
           </div>
           <form onSubmit={handleSubmit(onSubmitContact)} className="bg-white rounded-lg shadow-md p-6 space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -865,18 +865,18 @@ export const HomePage = () => {
       {/* FINAL CTA - Compact op mobiel */}
       <section className="bg-white text-black py-12 md:py-20">
         <div className="max-w-4xl mx-auto text-center px-4">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 md:mb-6">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 md:mb-6 px-4">
             Start Vandaag Nog Met Gratis Voorraadbeheer
           </h2>
-          <p className="text-lg md:text-xl mb-6 md:mb-8 opacity-90">
+          <p className="text-base sm:text-lg md:text-xl mb-6 md:mb-8 opacity-90 px-4">
             Sluit je aan bij honderden Vlaamse KMO's die al profiteren van professioneel voorraadbeheer zonder kosten.
           </p>
-          <div className="flex flex-col md:flex-row gap-4 justify-center">
-            <Button data-analytics-id="final-start" size="lg" className="bg-blue-600 text-white px-6 md:px-8 py-3 md:py-4 rounded-lg font-semibold shadow-lg hover:bg-blue-700 transition text-base md:text-lg" onClick={handleLoginClick}>
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4">
+            <Button data-analytics-id="final-start" size="lg" className="bg-blue-600 text-white px-4 sm:px-6 md:px-8 py-3 md:py-4 rounded-lg font-semibold shadow-lg hover:bg-blue-700 transition text-sm sm:text-base md:text-lg w-full sm:w-auto" onClick={handleLoginClick}>
               Start Nu Gratis!
             </Button>
           </div>
-          <p className="text-sm mt-4 opacity-75">Geen creditcard vereist • Direct toegang • Nederlandse support</p>
+          <p className="text-xs sm:text-sm mt-4 opacity-75 px-4">Geen creditcard vereist • Direct toegang • Nederlandse support</p>
         </div>
       </section>
 

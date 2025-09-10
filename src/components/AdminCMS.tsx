@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { fetchBlogPosts, addBlogPost, updateBlogPost, deleteBlogPost, getBlogAnalyticsSummary } from '../integrations/supabase/client';
+import { fetchBlogPosts, addBlogPost, updateBlogPost, deleteBlogPost } from '../integrations/supabase/client';
 import { RichTextEditor } from './RichTextEditor';
 
 export default function AdminCMS() {
@@ -22,10 +22,7 @@ export default function AdminCMS() {
     setForm(prev => ({ ...prev, content: newContent }));
   };
 
-  useEffect(() => {
-    fetchBlogPosts().then(setPosts).catch(console.error);
-    getBlogAnalyticsSummary().then(setAnalytics).catch(console.error);
-  }, []);
+
 
   const handleTitleChange = (title: string) => {
     const slug = title

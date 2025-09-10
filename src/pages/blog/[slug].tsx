@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import { fetchBlogPostBySlug } from '../../integrations/supabase/client';
 import SEO from '../../components/SEO';
 import type { BlogPost } from '../../integrations/supabase/types';
-import { useBlogAnalytics } from '../../hooks/useBlogAnalytics';
 
 import { BlogLayout } from '../../components/BlogLayout';
 
@@ -13,11 +12,7 @@ export default function BlogPostPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Track analytics for this blog post
-  const { timeOnPage, pageLoadTime } = useBlogAnalytics({ 
-    slug: slug || '', 
-    blogPostId: post?.id 
-  });
+
 
   useEffect(() => {
     async function loadPost() {

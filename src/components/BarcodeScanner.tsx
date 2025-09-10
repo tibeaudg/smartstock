@@ -10,9 +10,18 @@ import { IOSCameraHelper } from './IOSCameraHelper';
 interface BarcodeScannerProps {
   onBarcodeDetected: (barcode: string) => void;
   onClose: () => void;
+  onScanSuccess?: () => void;
+  settings?: {
+    sound_enabled?: boolean;
+    vibration_enabled?: boolean;
+    auto_focus?: boolean;
+    flash_enabled?: boolean;
+    scan_timeout?: number;
+    camera_resolution?: 'high' | 'medium' | 'low';
+  };
 }
 
-export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({ onBarcodeDetected, onClose }) => {
+export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({ onBarcodeDetected, onClose, onScanSuccess, settings }) => {
   const [isScanning, setIsScanning] = useState(false);
   const [manualBarcode, setManualBarcode] = useState('');
   const [scanResult, setScanResult] = useState<string | null>(null);
@@ -203,6 +212,12 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({ onBarcodeDetecte
             if (codeReaderRef.current) {
               codeReaderRef.current.reset();
             }
+            
+            // Trigger scan success feedback
+            if (onScanSuccess) {
+              onScanSuccess();
+            }
+            
             onBarcodeDetected(barcode);
           }
           

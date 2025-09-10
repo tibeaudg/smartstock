@@ -149,14 +149,17 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
           path: '/dashboard/settings',
           subItems: settingsSubItems
         },
+        ...(scanningAccess?.hasAccess ? [{
+          id: 'scanner',
+          label: 'Scanner',
+          icon: Scan,
+          path: '/dashboard/scan'
+        }] : []),
         { 
           id: 'modules', 
           label: 'Modules', 
           icon: FileText, 
-          path: '/dashboard/settings/modules',
-          subItems: [
-            ...(scanningAccess?.hasAccess ? [{ id: 'scan', label: 'Scannen', path: '/dashboard/scan' }] : [])
-          ]
+          path: '/dashboard/settings/modules'
         },
         ...(isOwner
           ? [
@@ -187,24 +190,24 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
         }
         ${!isMobile ? 'md:relative md:translate-x-0' : ''}
       `}>
-        <div className="flex items-center pl-5 space-x-3 h-[70px] flex-shrink-0">
-          <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-            <Package className="w-5 h-5 text-white" />
+        <div className="flex items-center pl-3 sm:pl-5 space-x-2 sm:space-x-3 h-[60px] sm:h-[70px] flex-shrink-0">
+          <div className="w-7 h-7 sm:w-8 sm:h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+            <Package className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
           </div>
-          {isOpen && <h1 className="text-lg font-semibold text-gray-900">stockflow</h1>}
+          {isOpen && <h1 className="text-base sm:text-lg font-semibold text-gray-900">stockflow</h1>}
         </div>
 
 
 
         {/* Branch Selector - Always show when sidebar is open */}
         {isOpen && (
-          <div className="px-3 py-4 border-b border-gray-200 flex-shrink-0">
+          <div className="px-2 sm:px-3 py-3 sm:py-4 border-b border-gray-200 flex-shrink-0">
             <BranchSelector />
           </div>
         )}
 
         {/* Navigation */}
-        <nav className="flex-1 px-3 py-4 text-sm pb-60 overflow-y-auto">
+        <nav className="flex-1 px-2 sm:px-3 py-3 sm:py-4 text-xs sm:text-sm pb-40 sm:pb-60 overflow-y-auto">
           <ul className="space-y-1">
             {menuItems.map((item) => {
               const Icon = item.icon;
@@ -242,7 +245,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
                       }
                     }}
                     className={`
-                      w-full font-semibold flex items-center px-3 py-2 rounded-lg text-left transition-colors
+                      w-full font-semibold flex items-center px-2 sm:px-3 py-2 rounded-lg text-left transition-colors
                       ${(isItemActive || isSubmenuOpen)
                         ? 'bg-blue-50 text-blue-700 border border-blue-200' 
                         : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
@@ -250,13 +253,13 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
                     `}
                   >
                     <div className="flex items-center w-full">
-                      <Icon className="w-5 h-5 flex-shrink-0" />
+                      <Icon className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
                       {isOpen && (
-                        <div className="flex items-center justify-between flex-1 ml-3">
-                          <span>{label}</span>
+                        <div className="flex items-center justify-between flex-1 ml-2 sm:ml-3">
+                          <span className="text-xs sm:text-sm">{label}</span>
                           {hasSubItems && (
                             <ChevronDown 
-                              className={`w-4 h-4 transform transition-transform ${isSubmenuOpen ? 'rotate-180' : ''}`} 
+                              className={`w-3 h-3 sm:w-4 sm:h-4 transform transition-transform ${isSubmenuOpen ? 'rotate-180' : ''}`} 
                             />
                           )}
                         </div>
@@ -266,7 +269,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
 
                   {/* Submenu */}
                   {isOpen && hasSubItems && isSubmenuOpen && (
-                    <ul className="ml-4 space-y-1">
+                    <ul className="ml-3 sm:ml-4 space-y-1">
                       {item.subItems.map((subItem) => (
                         <li key={subItem.id}>
                           <NavLink
@@ -278,7 +281,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
                               }
                             }}
                             className={({ isActive }) => `
-                              w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-left transition-colors text-sm
+                              w-full flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 py-2 rounded-lg text-left transition-colors text-xs sm:text-sm
                               ${isActive 
                                 ? 'bg-blue-50 text-blue-700 border border-blue-200' 
                                 : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
@@ -297,50 +300,6 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
           </ul>
         </nav>
 
-        {/* Active Modules Section */}
-        {allModuleAccess && Object.keys(allModuleAccess).length > 0 && (
-          <div className="px-3 py-4 border-t border-gray-200">
-            <div className="mb-3">
-              <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                Actieve Modules
-              </h3>
-            </div>
-            <div className="space-y-2">
-              {Object.entries(allModuleAccess).map(([moduleKey, access]) => {
-                if (!access.hasAccess) return null;
-                
-                const moduleLabels: Record<string, string> = {
-                  'delivery-notes': 'Leveringsbonnen',
-                  'scanning': 'Barcode Scanner',
-                  'advanced-analytics': 'Analytics',
-                  'auto-reorder': 'Herbestelling',
-                  'ecommerce-integration': 'E-commerce',
-                  'premium-support': 'Premium Support'
-                };
-                
-                const moduleIcons: Record<string, any> = {
-                  'delivery-notes': Truck,
-                  'scanning': Scan,
-                  'advanced-analytics': BarChart3,
-                  'auto-reorder': Settings,
-                  'ecommerce-integration': ShoppingCart,
-                  'premium-support': Star
-                };
-                
-                const Icon = moduleIcons[moduleKey] || Package;
-                const label = moduleLabels[moduleKey] || moduleKey;
-                
-                return (
-                  <div key={moduleKey} className="flex items-center gap-2 px-2 py-1 bg-green-50 rounded-lg border border-green-200">
-                    <Icon className="w-4 h-4 text-green-600 flex-shrink-0" />
-                    <span className="text-xs text-green-700 font-medium truncate">{label}</span>
-                    <div className="w-2 h-2 bg-green-500 rounded-full flex-shrink-0 ml-auto"></div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
 
         {/* Fixed Bottom Section */}
         <div className="flex-shrink-0">

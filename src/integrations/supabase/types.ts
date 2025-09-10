@@ -15,33 +15,6 @@ export type BlogPost = {
   author?: string;
 };
 
-// Blog Analytics types
-export type BlogAnalytics = {
-  id: string;
-  blog_post_id?: string;
-  slug: string;
-  visitor_ip?: string;
-  user_agent?: string;
-  referrer?: string;
-  country?: string;
-  city?: string;
-  page_load_time_ms?: number;
-  time_on_page_seconds?: number;
-  is_unique_visit: boolean;
-  created_at: string;
-  updated_at: string;
-};
-
-export type BlogAnalyticsSummary = {
-  slug: string;
-  blog_post_id?: string;
-  total_views: number;
-  unique_visitors: number;
-  avg_load_time_ms?: number;
-  avg_time_on_page_seconds?: number;
-  first_view: string;
-  last_view: string;
-};
 
 // Auth Conversion Tracking types
 export type AuthConversionEvent = {

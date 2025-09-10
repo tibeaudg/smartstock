@@ -87,64 +87,64 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
   };
 
   return (
-    <div className=" space-y-6 max-w-[1600px] mx-auto relative pt-6 pb-24 md:pt-0">
+    <div className="space-y-4 sm:space-y-6 max-w-[1600px] mx-auto relative pt-4 sm:pt-6 pb-16 sm:pb-24 md:pt-0 px-4 sm:px-6">
   {/* ...existing code... (removed duplicate header and notification bell, now handled globally) */}
 
       {/* Metrics Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-6">
         <Card className="bg-white hover:shadow-lg transition-shadow">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-            <CardTitle className="text-base font-semibold text-gray-700">Totale Waarde</CardTitle>
-            <Euro className="h-6 w-6 text-blue-600" />
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 sm:pb-3">
+            <CardTitle className="text-sm sm:text-base font-semibold text-gray-700">Totale Waarde</CardTitle>
+            <Euro className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600" />
           </CardHeader>
           <CardContent className="pt-0">
-            <div className="text-3xl font-bold text-gray-900">
+            <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">
               €{safeMetrics.totalValue.toLocaleString()}
             </div>
           </CardContent>
         </Card>
 
         <Card className="bg-white hover:shadow-lg transition-shadow">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-            <CardTitle className="text-base font-semibold text-gray-700">Aantal Producten</CardTitle>
-            <Package className="h-6 w-6 text-purple-600" />
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 sm:pb-3">
+            <CardTitle className="text-sm sm:text-base font-semibold text-gray-700">Aantal Producten</CardTitle>
+            <Package className="h-5 w-5 sm:h-6 sm:w-6 text-purple-600" />
           </CardHeader>
           <CardContent className="pt-0">
-            <div className="text-3xl font-bold text-gray-900">{safeMetrics.totalProducts}</div>
+            <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">{safeMetrics.totalProducts}</div>
           </CardContent>
         </Card>
 
         <Card className="bg-white hover:shadow-lg transition-shadow">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-            <CardTitle className="text-base font-semibold text-gray-700">Vandaag Toegevoegd</CardTitle>
-            <TrendingUp className="h-6 w-6 text-green-600" />
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 sm:pb-3">
+            <CardTitle className="text-sm sm:text-base font-semibold text-gray-700">Vandaag Toegevoegd</CardTitle>
+            <TrendingUp className="h-5 w-5 sm:h-6 sm:w-6 text-green-600" />
           </CardHeader>
           <CardContent className="pt-0">
-            <div className="text-3xl font-bold text-green-600">
+            <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-green-600">
               {safeMetrics.incomingToday}
             </div>
           </CardContent>
         </Card>
 
         <Card className="bg-white hover:shadow-lg transition-shadow">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-            <CardTitle className="text-base font-semibold text-gray-700">Vandaag Verzonden</CardTitle>
-            <TrendingDown className="h-6 w-6 text-red-600" />
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 sm:pb-3">
+            <CardTitle className="text-sm sm:text-base font-semibold text-gray-700">Vandaag Verzonden</CardTitle>
+            <TrendingDown className="h-5 w-5 sm:h-6 sm:w-6 text-red-600" />
           </CardHeader>
           <CardContent className="pt-0">
-            <div className="text-3xl font-bold text-red-600">
+            <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-red-600">
               {safeMetrics.outgoingToday}
             </div>
           </CardContent>
         </Card>
 
         <Card className="bg-white hover:shadow-lg transition-shadow">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-            <CardTitle className="text-base font-semibold text-gray-700">Lage Stock Meldingen</CardTitle>
-            <AlertTriangle className="h-6 w-6 text-yellow-600" />
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 sm:pb-3">
+            <CardTitle className="text-sm sm:text-base font-semibold text-gray-700">Lage Stock Meldingen</CardTitle>
+            <AlertTriangle className="h-5 w-5 sm:h-6 sm:w-6 text-yellow-600" />
           </CardHeader>
           <CardContent className="pt-0">
-            <div className="text-3xl font-bold text-yellow-600">
+            <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-yellow-600">
               {safeMetrics.lowStockCount}
             </div>
           </CardContent>
@@ -152,11 +152,11 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
       </div>
 
       {/* Stock Movement Chart */}
-      <div className="bg-white rounded-lg shadow p-6 mt-6">
+      <div className="bg-white rounded-lg shadow p-4 sm:p-6 mt-4 sm:mt-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-2">
-          <h2 className="text-xl font-semibold text-gray-800">Stockbewegingen</h2>
+          <h2 className="text-lg sm:text-xl font-semibold text-gray-800">Stockbewegingen</h2>
           <select
-            className="border rounded px-3 py-2 text-sm w-fit"
+            className="border rounded px-3 py-2 text-sm w-full sm:w-fit"
             value={chartRangeType}
             onChange={e => setChartRangeType(e.target.value as any)}
           >
@@ -167,11 +167,11 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
             <option value="all">Alles</option>
           </select>
         </div>
-        <ResponsiveContainer width="100%" height={300}>
+        <ResponsiveContainer width="100%" height={isMobile ? 250 : 300}>
           <BarChart data={chartData?.dailyActivity || []} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="date" />
-            <YAxis />
+            <XAxis dataKey="date" fontSize={isMobile ? 10 : 12} />
+            <YAxis fontSize={isMobile ? 10 : 12} />
             <Tooltip />
             <Bar dataKey="incoming" fill="#4ade80" name="Inkomend" />
             <Bar dataKey="outgoing" fill="#f87171" name="Uitgaand" />

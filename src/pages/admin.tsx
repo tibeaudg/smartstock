@@ -14,7 +14,6 @@ import { AdminNotificationManager } from '@/components/AdminNotificationManager'
 import { OnboardingModal } from '@/components/onboarding/OnboardingModal';
 import { AdminChatList } from '@/components/AdminChatList';
 import AdminCMS from '../components/AdminCMS';
-import BlogAnalytics from '../components/admin/BlogAnalytics';
 import { AuthConversionAnalytics } from '@/components/analytics/AuthConversionAnalytics';
 import { useNavigate } from 'react-router-dom';
 
@@ -289,7 +288,6 @@ export default function AdminPage() {
   { id: 'chats', label: 'Chats' },
   { id: 'notifications', label: 'Meldingen' },
   { id: 'blogcms', label: 'Blogpost CMS' },
-  { id: 'bloganalytics', label: 'Blog Analytics' },
   { id: 'conversionanalytics', label: 'Conversie Analytics' },
 ];
 
@@ -412,17 +410,6 @@ export default function AdminPage() {
                   <React.Suspense fallback={<div>Loading CMS...</div>}>
                     <AdminCMS />
                   </React.Suspense>
-                </CardContent>
-              </Card>
-            )}
-            {activeTab === 'bloganalytics' && (
-              <Card>
-                <CardHeader>
-                  <CardTitle>Blog Analytics</CardTitle>
-                  <CardDescription>Bekijk bezoekersstatistieken en prestaties van je blogposts.</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <BlogAnalytics />
                 </CardContent>
               </Card>
             )}

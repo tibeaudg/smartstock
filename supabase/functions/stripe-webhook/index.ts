@@ -5,6 +5,7 @@ import Stripe from 'https://esm.sh/stripe@14.21.0'
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, stripe-signature',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
 }
 
 serve(async (req) => {
@@ -12,6 +13,14 @@ serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
   }
+
+  // Only allow POST requests
+  if (req.method !== 'POST') {
+    return new Response('Method not allowed', { status: 405 })
+  }
+
+  // Skip authorization check for webhook endpoints
+  // This allows Stripe to call the webhook without authorization headers
 
   try {
     // Initialize Stripe

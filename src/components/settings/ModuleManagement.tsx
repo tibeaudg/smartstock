@@ -81,6 +81,8 @@ export const ModuleManagement = () => {
       // Refresh module data
       queryClient.invalidateQueries({ queryKey: ['modules'] });
       queryClient.invalidateQueries({ queryKey: ['moduleAccess'] });
+      queryClient.invalidateQueries({ queryKey: ['allModuleAccess'] });
+      queryClient.invalidateQueries({ queryKey: ['activeSubscriptions'] });
     } else if (canceled === 'true') {
       toast({
         title: 'Aankoop geannuleerd',
@@ -255,7 +257,7 @@ export const ModuleManagement = () => {
       console.log('Modules result (no user):', result);
       return result;
     },
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: 1000 * 30, // 30 seconds for faster updates
   });
 
   // Subscription mutation

@@ -170,29 +170,29 @@ export const StockMovements = () => {
 
       {/* Stats Cards */}
       {!loading && transactions.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           <Card>
-            <CardContent className="p-4">
-              <p className="text-sm font-medium text-muted-foreground">Totaal In</p>
-              <p className="text-2xl font-bold text-green-600">{stats.totalIncoming}</p>
+            <CardContent className="p-3 sm:p-4">
+              <p className="text-xs sm:text-sm font-medium text-muted-foreground">Totaal In</p>
+              <p className="text-lg sm:text-xl lg:text-2xl font-bold text-green-600">{stats.totalIncoming}</p>
             </CardContent>
           </Card>
           <Card>
-            <CardContent className="p-4">
-              <p className="text-sm font-medium text-muted-foreground">Totaal Uit</p>
-              <p className="text-2xl font-bold text-red-600">{stats.totalOutgoing}</p>
+            <CardContent className="p-3 sm:p-4">
+              <p className="text-xs sm:text-sm font-medium text-muted-foreground">Totaal Uit</p>
+              <p className="text-lg sm:text-xl lg:text-2xl font-bold text-red-600">{stats.totalOutgoing}</p>
             </CardContent>
           </Card>
           <Card>
-            <CardContent className="p-4">
-              <p className="text-sm font-medium text-muted-foreground">Bewegingen</p>
-              <p className="text-2xl font-bold">{stats.transactionCount}</p>
+            <CardContent className="p-3 sm:p-4">
+              <p className="text-xs sm:text-sm font-medium text-muted-foreground">Bewegingen</p>
+              <p className="text-lg sm:text-xl lg:text-2xl font-bold">{stats.transactionCount}</p>
             </CardContent>
           </Card>
           <Card>
-            <CardContent className="p-4">
-              <p className="text-sm font-medium text-muted-foreground">Huidige Waarde Stock</p>
-              <p className="text-2xl font-bold">€{stats.totalValue.toFixed(2)}</p>
+            <CardContent className="p-3 sm:p-4">
+              <p className="text-xs sm:text-sm font-medium text-muted-foreground">Huidige Waarde Stock</p>
+              <p className="text-lg sm:text-xl lg:text-2xl font-bold">€{stats.totalValue.toFixed(2)}</p>
             </CardContent>
           </Card>
         </div>
