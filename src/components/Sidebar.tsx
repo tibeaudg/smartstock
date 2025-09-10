@@ -344,29 +344,8 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
 
         {/* Fixed Bottom Section */}
         <div className="flex-shrink-0">
-          {/* Sign Out Button */}
-          <div className="border-t border-gray-200">
-            <div className="px-3 py-2">
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                onClick={handleSignOut}
-                className={`
-                  w-full flex items-center px-3 py-2 rounded-lg text-left transition-colors
-                  text-gray-600 hover:bg-red-50 hover:text-red-700
-                  focus:ring-2 focus:ring-red-500 focus:ring-offset-2
-                  ${isOpen ? '' : 'justify-center'}
-                `}
-                aria-label="Afmelden"
-              >
-                <LogOut className="w-5 h-5 flex-shrink-0" />
-                {isOpen && (
-                  <span className="font-medium ml-3 flex-1 text-left">Afmelden</span>
-                )}
-              </Button>
-            </div>
-          </div>
+
+
 
           {/* Help Section */}
           <div className="border-t border-gray-200">
@@ -413,6 +392,31 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
               </Button>
             </div>
           </div>
+
+        {/* Sign Out Button */}
+        <div className="border-t border-gray-200">
+          <div className="px-3 py-2">
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={handleSignOut}
+                className={`
+                  w-full flex items-center px-3 py-2 rounded-lg text-left transition-colors
+                  text-red-600 hover:bg-red-50 hover:text-red-700
+                  focus:ring-2 focus:ring-red-500 focus:ring-offset-2
+                  ${isOpen ? '' : 'justify-center'}
+                `}
+                aria-label="Afmelden"
+              >
+                <LogOut className="w-5 h-5 flex-shrink-0" />
+                {isOpen && (
+                  <span className="font-medium ml-3 flex-1 text-left">Afmelden</span>
+                )}
+              </Button>
+            </div>
+          </div>
+
 
         </div>
       </div>
