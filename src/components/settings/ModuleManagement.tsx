@@ -535,7 +535,6 @@ export const ModuleManagement = () => {
                 <div className={`text-2xl font-bold ${userBranchStats?.extraUsers > 0 ? 'text-blue-600' : 'text-gray-500'}`}>
                   {userBranchStats?.extraUsers || 0}
                 </div>
-                <div className="text-xs text-gray-500">van {userBranchStats?.totalUsers || 0} totaal</div>
               </div>
               <div className="text-center">
                 <div className="flex items-center justify-center gap-2 mb-2">
@@ -545,7 +544,6 @@ export const ModuleManagement = () => {
                 <div className={`text-2xl font-bold ${userBranchStats?.extraBranches > 0 ? 'text-purple-600' : 'text-gray-500'}`}>
                   {userBranchStats?.extraBranches || 0}
                 </div>
-                <div className="text-xs text-gray-500">van {userBranchStats?.totalBranches || 0} totaal</div>
               </div>
               <div className="text-center">
                 <div className="flex items-center justify-center gap-2 mb-2">

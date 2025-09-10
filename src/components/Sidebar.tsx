@@ -17,7 +17,14 @@ import {
   FileText,
   Truck,
   LogOut,
-  Star
+  Star,
+  TrendingUp,
+  Brain,
+  PieChart,
+  Download,
+  Filter,
+  Database,
+  Activity
 } 
 from 'lucide-react';
 import { BranchSelector } from './BranchSelector';
@@ -69,6 +76,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
   // Extract specific module access
   const deliveryNotesAccess = allModuleAccess?.['delivery-notes'];
   const scanningAccess = allModuleAccess?.['scanning'];
+  const advancedAnalyticsAccess = allModuleAccess?.['advanced-analytics'];
 
   // If blocked, only show settings/invoicing
   const isBlocked = userProfile?.blocked;
@@ -104,6 +112,15 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
     { id: 'overview', label: 'Overzicht', path: '/admin' },
   ];
 
+  const analyticsSubItems = [
+    { id: 'dashboard', label: 'Dashboard', path: '/dashboard/analytics' },
+    { id: 'predictions', label: 'AI Voorspellingen', path: '/dashboard/analytics/predictions' },
+    { id: 'reports', label: 'Custom Rapporten', path: '/dashboard/analytics/reports' },
+    { id: 'export', label: 'Export Data', path: '/dashboard/analytics/export' },
+    { id: 'api', label: 'API Toegang', path: '/dashboard/analytics/api' },
+    { id: 'filtering', label: 'Advanced Filtering', path: '/dashboard/analytics/filtering' },
+  ];
+
   const menuItems = isBlocked
     ? [
         { 
@@ -134,6 +151,13 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
           label: 'Leveringsbonnen',
           icon: Truck,
           path: '/dashboard/delivery-notes'
+        }] : []),
+        ...(advancedAnalyticsAccess?.hasAccess ? [{
+          id: 'analytics',
+          label: 'Geavanceerde Analytics',
+          icon: TrendingUp,
+          path: '/dashboard/analytics',
+          subItems: analyticsSubItems
         }] : []),
         { 
           id: 'settings', 

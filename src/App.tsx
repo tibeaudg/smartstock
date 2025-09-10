@@ -29,6 +29,12 @@ import PreloadResources from './components/PreloadResources';
 import { Admin } from './components/Admin';
 import AdminCMS from './components/AdminCMS';
 import { AdminChatList } from './components/AdminChatList';
+import { AnalyticsDashboard } from './components/analytics/AnalyticsDashboard';
+import { AIPredictions } from './components/analytics/AIPredictions';
+import { CustomReports } from './components/analytics/CustomReports';
+import { ExportData } from './components/analytics/ExportData';
+import { APIAccess } from './components/analytics/APIAccess';
+import { AdvancedFiltering } from './components/analytics/AdvancedFiltering';
 import VoorraadbeheerTips from './pages/SEO/voorraadbeheer-tips';
 import VoorraadbeheerSoftwareVergelijken from './pages/SEO/voorraadbeheer-software-vergelijken';
 import VoorraadbeheerWebshop from './pages/SEO/voorraadbeheer-webshop';
@@ -290,6 +296,12 @@ export default function App() {
                       <Route path="incoming" element={<IncomingDeliveryNotes />} />
                       <Route path="outgoing" element={<OutgoingDeliveryNotes />} />
                     </Route>
+                    <Route path="analytics" element={<AnalyticsDashboard />} />
+                    <Route path="analytics/predictions" element={<AIPredictions />} />
+                    <Route path="analytics/reports" element={<CustomReports />} />
+                    <Route path="analytics/export" element={<ExportData />} />
+                    <Route path="analytics/api" element={<APIAccess />} />
+                    <Route path="analytics/filtering" element={<AdvancedFiltering />} />
                     <Route path="settings" element={<Settings />}>
                       <Route index element={<ProfileSettings />} />
                       <Route path="profile" element={<ProfileSettings />} />
