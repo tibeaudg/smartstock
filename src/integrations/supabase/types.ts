@@ -61,37 +61,7 @@ export type AuthConversionFunnel = {
   registration_completion_rate: number;
   overall_conversion_rate: number;
 };
-      company_types: {
-        Row: {
-          id: string;
-          user_id: string;
-          type: string;
-          custom_type: string | null;
-          created_at: string | null;
-        };
-        Insert: {
-          id?: string;
-          user_id: string;
-          type: string;
-          custom_type?: string | null;
-          created_at?: string | null;
-        };
-        Update: {
-          id?: string;
-          user_id?: string;
-          type?: string;
-          custom_type?: string | null;
-          created_at?: string | null;
-        };
-        Relationships: [
-          {
-            foreignKeyName: "company_types_user_id_fkey";
-            columns: ["user_id"];
-            referencedRelation: "profiles";
-            referencedColumns: ["id"];
-          },
-        ];
-      };
+
 
 
 
@@ -161,38 +131,6 @@ export type Database = {
       };
 
 
-      company_types: {
-        Row: {
-          id: string;
-          user_id: string;
-          type: string;
-          custom_type: string | null;
-          created_at: string | null;
-        };
-        Insert: {
-          id?: string;
-          user_id: string;
-          type: string;
-          custom_type?: string | null;
-          created_at?: string | null;
-        };
-        Update: {
-          id?: string;
-          user_id?: string;
-          type?: string;
-          custom_type?: string | null;
-          created_at?: string | null;
-        };
-        Relationships: [
-          {
-            foreignKeyName: "company_types_user_id_fkey";
-            columns: ["user_id"];
-            isOneToOne: false;
-            referencedRelation: "profiles";
-            referencedColumns: ["id"];
-          }
-        ];
-      };
       audit_logs: {
         Row: {
           action: string
@@ -959,6 +897,38 @@ export type Database = {
           },
         ]
       }
+      company_types: {
+        Row: {
+          id: string
+          user_id: string
+          type: string
+          custom_type: string | null
+          created_at: string | null
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          type: string
+          custom_type?: string | null
+          created_at?: string | null
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          type?: string
+          custom_type?: string | null
+          created_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "company_types_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       suppliers: {
         Row: {
           address: string | null
@@ -985,6 +955,72 @@ export type Database = {
           phone?: string | null
         }
         Relationships: []
+      }
+      delivery_notes: {
+        Row: {
+          id: string
+          user_id: string
+          type: 'incoming' | 'outgoing'
+          status: 'draft' | 'processing' | 'completed' | 'cancelled'
+          supplier_id: string | null
+          customer_name: string | null
+          customer_email: string | null
+          customer_address: string | null
+          delivery_date: string | null
+          reference_number: string | null
+          notes: string | null
+          total_amount: number
+          created_at: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          type: 'incoming' | 'outgoing'
+          status?: 'draft' | 'processing' | 'completed' | 'cancelled'
+          supplier_id?: string | null
+          customer_name?: string | null
+          customer_email?: string | null
+          customer_address?: string | null
+          delivery_date?: string | null
+          reference_number?: string | null
+          notes?: string | null
+          total_amount?: number
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          type?: 'incoming' | 'outgoing'
+          status?: 'draft' | 'processing' | 'completed' | 'cancelled'
+          supplier_id?: string | null
+          customer_name?: string | null
+          customer_email?: string | null
+          customer_address?: string | null
+          delivery_date?: string | null
+          reference_number?: string | null
+          notes?: string | null
+          total_amount?: number
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "delivery_notes_supplier_id_fkey"
+            columns: ["supplier_id"]
+            isOneToOne: false
+            referencedRelation: "suppliers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "delivery_notes_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
       }
     }
     Views: {

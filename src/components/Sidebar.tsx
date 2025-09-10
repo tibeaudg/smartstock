@@ -133,11 +133,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
           id: 'delivery-notes',
           label: 'Leveringsbonnen',
           icon: Truck,
-          path: '/dashboard/delivery-notes',
-          subItems: [
-            { id: 'incoming', label: 'Inkomend', path: '/dashboard/delivery-notes/incoming' },
-            { id: 'outgoing', label: 'Uitgaand', path: '/dashboard/delivery-notes/outgoing' }
-          ]
+          path: '/dashboard/delivery-notes'
         }] : []),
         { 
           id: 'settings', 

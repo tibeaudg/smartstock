@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useModuleAccess } from '@/hooks/useModuleAccess';
+import { useDeliveryNotesStats } from '@/hooks/useDeliveryNotesStats';
 import { ModuleFeatureGate } from '@/components/ModuleFeatureGate';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -25,10 +26,11 @@ import { OutgoingDeliveryNotes } from './OutgoingDeliveryNotes';
 export const DeliveryNotesManagement: React.FC = () => {
   const { user } = useAuth();
   const { data: access, isLoading } = useModuleAccess('delivery-notes');
+  const { data: stats, isLoading: statsLoading } = useDeliveryNotesStats();
   const navigate = useNavigate();
   const location = useLocation();
 
-  if (isLoading) {
+  if (isLoading || statsLoading) {
     return (
       <div className="flex items-center justify-center py-12">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
@@ -67,7 +69,7 @@ export const DeliveryNotesManagement: React.FC = () => {
                 </div>
                 <div className="ml-4">
                   <p className="text-sm font-medium text-gray-600">Inkomend</p>
-                  <p className="text-2xl font-bold text-gray-900">12</p>
+                  <p className="text-2xl font-bold text-gray-900">{stats?.incoming || 0}</p>
                 </div>
               </div>
             </CardContent>
@@ -81,7 +83,7 @@ export const DeliveryNotesManagement: React.FC = () => {
                 </div>
                 <div className="ml-4">
                   <p className="text-sm font-medium text-gray-600">Uitgaand</p>
-                  <p className="text-2xl font-bold text-gray-900">8</p>
+                  <p className="text-2xl font-bold text-gray-900">{stats?.outgoing || 0}</p>
                 </div>
               </div>
             </CardContent>
@@ -95,7 +97,7 @@ export const DeliveryNotesManagement: React.FC = () => {
                 </div>
                 <div className="ml-4">
                   <p className="text-sm font-medium text-gray-600">In Behandeling</p>
-                  <p className="text-2xl font-bold text-gray-900">3</p>
+                  <p className="text-2xl font-bold text-gray-900">{stats?.inProgress || 0}</p>
                 </div>
               </div>
             </CardContent>
@@ -109,7 +111,7 @@ export const DeliveryNotesManagement: React.FC = () => {
                 </div>
                 <div className="ml-4">
                   <p className="text-sm font-medium text-gray-600">Deze Maand</p>
-                  <p className="text-2xl font-bold text-gray-900">20</p>
+                  <p className="text-2xl font-bold text-gray-900">{stats?.thisMonth || 0}</p>
                 </div>
               </div>
             </CardContent>
