@@ -11,7 +11,6 @@ import { useMobile } from '@/hooks/use-mobile';
 import SEO from '../components/SEO';
 import { AdminModuleManagement } from '@/pages/admin/ModuleManagement';
 import { AdminNotificationManager } from '@/components/AdminNotificationManager';
-import { OnboardingModal } from '@/components/onboarding/OnboardingModal';
 import { AdminChatList } from '@/components/AdminChatList';
 import AdminCMS from '../components/AdminCMS';
 import { AuthConversionAnalytics } from '@/components/analytics/AuthConversionAnalytics';
@@ -197,11 +196,9 @@ export default function AdminPage() {
   const { user, userProfile } = useAuth();
   const { isMobile } = useMobile();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<'users' | 'features' | 'onboarding' | 'chats' | 'notifications' | 'blogcms' | 'bloganalytics' | 'conversionanalytics'>('users');
+  const [activeTab, setActiveTab] = useState<'users' | 'features' | 'chats' | 'notifications' | 'blogcms' | 'bloganalytics' | 'conversionanalytics'>('users');
   const [selectedUser, setSelectedUser] = useState<UserProfile | null>(null);
-  const [showOnboarding, setShowOnboarding] = useState(false);
   const [companyTypes, setCompanyTypes] = useState<Record<string, { type: string; custom_type: string | null }>>({});
-  const [onboardingAnswers, setOnboardingAnswers] = useState<any[]>([]);
   
   // Gebruik de page refresh hook
   usePageRefresh();
@@ -265,26 +262,16 @@ export default function AdminPage() {
     fetchCompanyTypes();
   }, [users]);
 
-  // Haal onboarding antwoorden op
-  useEffect(() => {
-    async function fetchOnboardingAnswers() {
-      const { data, error } = await supabase
-        .from('onboarding_answers')
-        .select('user_id, employees, stock_size, wants_notifications, wants_demo_stock, main_goal, uses_barcodes, uses_other_system, other_system_name');
-      if (!error && data) setOnboardingAnswers(data);
-    }
-    fetchOnboardingAnswers();
-  }, [users]);
+
 
   const queryClient = useQueryClient();
   const blockMutation = useMutation({
     mutationFn: ({ id, blocked }: { id: string; blocked: boolean }) => blockUser(id, blocked),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['userProfiles'] }),
   });
-  const sidebarNavItems: { id: 'users' | 'features' | 'onboarding' | 'chats' | 'notifications' | 'blogcms' | 'bloganalytics' | 'conversionanalytics'; label: string }[] = [
+  const sidebarNavItems: { id: 'users' | 'features' | 'chats' | 'notifications' | 'blogcms' | 'bloganalytics' | 'conversionanalytics'; label: string }[] = [
   { id: 'users', label: 'Gebruikersbeheer' },
   { id: 'features', label: 'Module Management' },
-  { id: 'onboarding', label: 'Onboarding Antwoorden' },
   { id: 'chats', label: 'Chats' },
   { id: 'notifications', label: 'Meldingen' },
   { id: 'blogcms', label: 'Blogpost CMS' },
@@ -356,12 +343,6 @@ export default function AdminPage() {
                       </button>
                     ))}
                   </nav>
-                  <button
-                    className="w-full px-3 py-2 rounded-lg transition-colors text-gray-600 hover:bg-gray-50 hover:text-gray-900 border border-transparent text-sm"
-                    onClick={() => setShowOnboarding(true)}
-                  >
-                    Onboarding Flow Testen
-                  </button>
                 </div>
               ) : (
                 /* Desktop: Horizontal tab navigation */
@@ -384,14 +365,6 @@ export default function AdminPage() {
                       </button>
                     ))}
                   </nav>
-                  <div className="shrink-0">
-                    <button
-                      className="px-3 py-2 rounded-lg transition-colors text-gray-600 hover:bg-gray-50 hover:text-gray-900 border border-transparent"
-                      onClick={() => setShowOnboarding(true)}
-                    >
-                      Onboarding Flow Testen
-                    </button>
-                  </div>
                 </>
               )}
             </div>
@@ -645,92 +618,13 @@ export default function AdminPage() {
             {activeTab === 'features' && (
               <AdminModuleManagement />
             )}
-            {activeTab === 'onboarding' && (
-              <Card>
-                <CardHeader>
-                  <CardTitle>Onboarding Antwoorden</CardTitle>
-                  <CardDescription>Overzicht van alle antwoorden op de onboarding vragen.</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  {/* Mobile: Card-based layout for onboarding answers */}
-                  {isMobile ? (
-                    <div className="space-y-4">
-                      {onboardingAnswers.length === 0 ? (
-                        <div className="text-center py-8 text-gray-500">Geen antwoorden gevonden.</div>
-                      ) : onboardingAnswers.map(ans => {
-                        const user = users.find(u => u.id === ans.user_id);
-                        return (
-                          <Card key={ans.user_id} className="p-4">
-                            <div className="space-y-2">
-                              <h3 className="font-semibold text-sm">{user ? `${user.first_name || ''} ${user.last_name || ''}` : 'Onbekende gebruiker'}</h3>
-                              <p className="text-xs text-gray-600">{user?.email || ans.user_id}</p>
-                              <div className="grid grid-cols-2 gap-2 text-xs">
-                                <div><span className="font-medium">Medewerkers:</span> {ans.employees}</div>
-                                <div><span className="font-medium">Voorraadgrootte:</span> {ans.stock_size}</div>
-                                <div><span className="font-medium">Meldingen:</span> {ans.wants_notifications ? 'Ja' : 'Nee'}</div>
-                                <div><span className="font-medium">Demo voorraad:</span> {ans.wants_demo_stock ? 'Ja' : 'Nee'}</div>
-                                <div><span className="font-medium">Doel:</span> {ans.main_goal}</div>
-                                <div><span className="font-medium">Barcodes:</span> {ans.uses_barcodes ? 'Ja' : 'Nee'}</div>
-                                <div><span className="font-medium">Ander systeem:</span> {ans.uses_other_system ? 'Ja' : 'Nee'}</div>
-                                {ans.other_system_name && (
-                                  <div><span className="font-medium">Systeem naam:</span> {ans.other_system_name}</div>
-                                )}
-                              </div>
-                            </div>
-                          </Card>
-                        );
-                      })}
-                    </div>
-                  ) : (
-                    /* Desktop: Table layout */
-                    <div className="overflow-x-auto">
-                      <table className="w-full text-sm text-left">
-                        <thead className="text-xs uppercase bg-gray-50">
-                          <tr>
-                            <th className="px-4 py-2">Gebruiker</th>
-                            <th className="px-4 py-2">Medewerkers</th>
-                            <th className="px-4 py-2">Voorraadgrootte</th>
-                            <th className="px-4 py-2">Meldingen</th>
-                            <th className="px-4 py-2">Demo voorraad</th>
-                            <th className="px-4 py-2">Doel</th>
-                            <th className="px-4 py-2">Barcodes</th>
-                            <th className="px-4 py-2">Ander systeem</th>
-                            <th className="px-4 py-2">Naam systeem</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {onboardingAnswers.length === 0 ? (
-                            <tr><td colSpan={9} className="text-center py-4">Geen antwoorden gevonden.</td></tr>
-                          ) : onboardingAnswers.map(ans => {
-                            const user = users.find(u => u.id === ans.user_id);
-                            return (
-                              <tr key={ans.user_id} className="bg-white border-b">
-                                <td className="px-4 py-2">{user ? `${user.first_name || ''} ${user.last_name || ''} (${user.email})` : ans.user_id}</td>
-                                <td className="px-4 py-2">{ans.employees}</td>
-                                <td className="px-4 py-2">{ans.stock_size}</td>
-                                <td className="px-4 py-2">{ans.wants_notifications ? 'Ja' : 'Nee'}</td>
-                                <td className="px-4 py-2">{ans.wants_demo_stock ? 'Ja' : 'Nee'}</td>
-                                <td className="px-4 py-2">{ans.main_goal}</td>
-                                <td className="px-4 py-2">{ans.uses_barcodes ? 'Ja' : 'Nee'}</td>
-                                <td className="px-4 py-2">{ans.uses_other_system ? 'Ja' : 'Nee'}</td>
-                                <td className="px-4 py-2">{ans.other_system_name || '-'}</td>
-                              </tr>
-                            );
-                          })}
-                        </tbody>
-                      </table>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            )}
+
             {activeTab === 'chats' && (
               <AdminChatList />
             )}
           </div>
         </div>
       </Layout>
-      {showOnboarding && <OnboardingModal forceOpen onClose={() => setShowOnboarding(false)} />}
     </BranchProvider>
   );
 }

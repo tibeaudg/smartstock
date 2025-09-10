@@ -78,7 +78,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           updated_at: new Date().toISOString(),
           selected_plan: null,
           blocked: false,
-          onboarding_completed: false,
           last_login: null,
           is_owner: false
         };

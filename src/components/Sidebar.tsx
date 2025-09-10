@@ -66,9 +66,6 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
   // Check if user has access to modules
   const { data: allModuleAccess } = useAllModuleAccess();
   
-  // Debug logging
-  console.log('Sidebar - allModuleAccess:', allModuleAccess);
-  
   // Extract specific module access
   const deliveryNotesAccess = allModuleAccess?.['delivery-notes'];
   const scanningAccess = allModuleAccess?.['scanning'];

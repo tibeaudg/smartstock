@@ -47,8 +47,6 @@ export default function ScanPage() {
   // Check module access for barcode scanner
   const { data: scannerAccess, isLoading: scannerAccessLoading, error: scannerAccessError } = useModuleAccess('scanning');
   
-  console.log('ScanPage: scannerAccess:', scannerAccess, 'scannerAccessLoading:', scannerAccessLoading, 'scannerAccessError:', scannerAccessError);
-  
   // Get scanner settings
   const { settings: scannerSettings, onScanSuccess } = useScannerSettings();
   
@@ -56,7 +54,7 @@ export default function ScanPage() {
   const [showProductForm, setShowProductForm] = useState(false);
   const [showDebugInfo, setShowDebugInfo] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [transactionType, setTransactionType] = useState<'in' | 'out'>('in');
+  const [transactionType, setTransactionType] = useState<'incoming' | 'outgoing'>('incoming');
   const [formData, setFormData] = useState<ProductFormData>({
     name: '',
     description: '',
@@ -268,7 +266,7 @@ export default function ScanPage() {
     // Gebruik productData als die beschikbaar is, anders formData
     const dataToUse = productData || formData;
 
-    if (transactionType === 'in' && !dataToUse.name.trim()) {
+    if (transactionType === 'incoming' && !dataToUse.name.trim()) {
       toast.error('Product naam is verplicht');
       return;
     }
@@ -279,7 +277,7 @@ export default function ScanPage() {
       let existingProduct: any = null;
       
       // For outgoing transactions, barcode is required
-      if (transactionType === 'out' && !dataToUse.barcode) {
+      if (transactionType === 'outgoing' && !dataToUse.barcode) {
         toast.error('Barcode is verplicht voor het verwijderen van producten');
         setLoading(false);
         return;
@@ -297,13 +295,13 @@ export default function ScanPage() {
         existingProduct = productData;
 
         if (existingProduct) {
-          if (transactionType === 'in') {
+          if (transactionType === 'incoming') {
             toast.error(`Product met barcode ${dataToUse.barcode} bestaat al: ${existingProduct.name}`);
             setLoading(false);
             return;
           }
         } else {
-          if (transactionType === 'out') {
+          if (transactionType === 'outgoing') {
             toast.error(`Product met barcode ${dataToUse.barcode} bestaat niet in de voorraad`);
             setLoading(false);
             return;
@@ -314,7 +312,7 @@ export default function ScanPage() {
       let productId: string;
       let productName: string;
 
-      if (transactionType === 'in') {
+      if (transactionType === 'incoming') {
         // Check if product name already exists in this branch
         const { data: duplicateName } = await supabase
           .from('products')
@@ -331,11 +329,11 @@ export default function ScanPage() {
 
         // Handle supplier
         let supplierId = null;
-        if (dataToUse.supplierName.trim()) {
+        if (formData.supplierName.trim()) {
           const { data: existingSupplier } = await supabase
             .from('suppliers')
             .select('id')
-            .eq('name', dataToUse.supplierName.trim())
+            .eq('name', formData.supplierName.trim())
             .single();
 
           if (existingSupplier) {
@@ -343,7 +341,7 @@ export default function ScanPage() {
           } else {
             const { data: newSupplier, error: supplierError } = await supabase
               .from('suppliers')
-              .insert({ name: dataToUse.supplierName.trim() })
+              .insert({ name: formData.supplierName.trim() })
               .select('id')
               .single();
 
@@ -359,11 +357,11 @@ export default function ScanPage() {
 
         // Handle category
         let categoryId = null;
-        if (dataToUse.categoryName.trim()) {
+        if (formData.categoryName.trim()) {
           const { data: existingCategory } = await supabase
             .from('categories')
             .select('id')
-            .eq('name', dataToUse.categoryName.trim())
+            .eq('name', formData.categoryName.trim())
             .eq('user_id', user.id)
             .single();
 
@@ -372,7 +370,7 @@ export default function ScanPage() {
           } else {
             const { data: newCategory, error: categoryError } = await supabase
               .from('categories')
-              .insert({ name: dataToUse.categoryName.trim(), user_id: user.id })
+              .insert({ name: formData.categoryName.trim(), user_id: user.id })
               .select('id')
               .single();
 
@@ -392,10 +390,10 @@ export default function ScanPage() {
           description: dataToUse.description.trim() || null,
           category_id: categoryId,
           supplier_id: supplierId,
-          quantity_in_stock: dataToUse.quantityInStock,
-          minimum_stock_level: dataToUse.minimumStockLevel,
-          purchase_price: dataToUse.purchasePrice,
-          sale_price: dataToUse.salePrice,
+          quantity_in_stock: formData.quantityInStock,
+          minimum_stock_level: formData.minimumStockLevel,
+          purchase_price: formData.purchasePrice,
+          sale_price: formData.salePrice,
           barcode: dataToUse.barcode || null,
           branch_id: activeBranch.branch_id
         };
@@ -423,7 +421,7 @@ export default function ScanPage() {
         }
 
         // Check if enough stock is available
-        if (existingProduct.quantity_in_stock < dataToUse.quantityInStock) {
+        if (existingProduct.quantity_in_stock < formData.quantityInStock) {
           toast.error(`Niet genoeg voorraad beschikbaar. Huidige voorraad: ${existingProduct.quantity_in_stock}`);
           setLoading(false);
           return;
@@ -437,14 +435,14 @@ export default function ScanPage() {
       const stockTransactionData = {
         product_id: productId,
         product_name: productName,
-        transaction_type: transactionType === 'in' ? 'incoming' : 'outgoing',
-        quantity: dataToUse.quantityInStock,
-        unit_price: transactionType === 'in' ? dataToUse.purchasePrice : dataToUse.salePrice,
+        transaction_type: transactionType === 'incoming' ? 'incoming' : 'outgoing',
+        quantity: formData.quantityInStock,
+        unit_price: transactionType === 'incoming' ? formData.purchasePrice : formData.salePrice,
         user_id: user.id, // Behoud user_id voor backward compatibility
         created_by: user.id, // Nieuwe kolom voor relaties
         branch_id: activeBranch.branch_id,
-        reference_number: transactionType === 'in' ? 'SCANNED_PRODUCT' : 'SCANNED_OUTGOING',
-        notes: transactionType === 'in' 
+        reference_number: transactionType === 'incoming' ? 'SCANNED_PRODUCT' : 'SCANNED_OUTGOING',
+        notes: transactionType === 'incoming' 
           ? `Product toegevoegd via barcode scanner: ${dataToUse.barcode || 'geen barcode'}`
           : `Product verwijderd via barcode scanner: ${dataToUse.barcode || 'geen barcode'}`
       };
@@ -455,7 +453,7 @@ export default function ScanPage() {
 
       if (transactionError) {
         console.error('Error creating stock transaction:', transactionError);
-        toast.error(transactionType === 'in' 
+        toast.error(transactionType === 'incoming' 
           ? 'Product aangemaakt maar voorraad transactie mislukt'
           : 'Voorraad transactie mislukt'
         );
@@ -466,7 +464,7 @@ export default function ScanPage() {
       queryClient.invalidateQueries({ queryKey: ['products', activeBranch.branch_id] });
       queryClient.invalidateQueries({ queryKey: ['stockTransactions'] });
 
-      toast.success(transactionType === 'in' 
+      toast.success(transactionType === 'incoming' 
         ? 'Product succesvol toegevoegd!' 
         : 'Product succesvol uit voorraad gehaald!'
       );
@@ -569,10 +567,7 @@ export default function ScanPage() {
   }
 
   // Show module access required message if user doesn't have access
-  // Temporary bypass for testing - remove this after fixing the module access issue
-  const hasAccess = scannerAccess?.hasAccess || (scannerAccessError && user); // Allow access if there's an error but user exists
-  
-  if (!hasAccess) {
+  if (!scannerAccess?.hasAccess) {
     return (
       <div className="container mx-auto px-4 py-8">
         <Card className="max-w-2xl mx-auto">
@@ -679,10 +674,10 @@ export default function ScanPage() {
                          <CardHeader>
                <CardTitle className="flex items-center gap-2">
                  <Package className="w-5 h-5 text-green-600" />
-                 {transactionType === 'in' ? 'Nieuw Product Toevoegen' : 'Product Uit Voorraad Halen'}
+                 {transactionType === 'incoming' ? 'Nieuw Product Toevoegen' : 'Product Uit Voorraad Halen'}
                </CardTitle>
                <CardDescription>
-                 {transactionType === 'in' 
+                 {transactionType === 'incoming' 
                    ? 'Vul de productgegevens in om het product toe te voegen aan je voorraad'
                    : 'Scan een bestaand product om het uit de voorraad te halen'
                  }
@@ -693,9 +688,9 @@ export default function ScanPage() {
                  <div className="bg-gray-100 rounded-lg p-1 flex items-center w-full max-w-xs">
                    <button
                      type="button"
-                     onClick={() => setTransactionType('in')}
+                     onClick={() => setTransactionType('incoming')}
                      className={`flex-1 px-3 py-2 rounded-md text-xs md:text-sm font-medium transition-colors ${
-                       transactionType === 'in'
+                       transactionType === 'incoming'
                          ? 'bg-white text-blue-600 shadow-sm'
                          : 'text-gray-500 hover:text-gray-700'
                      }`}
@@ -705,9 +700,9 @@ export default function ScanPage() {
                    </button>
                    <button
                      type="button"
-                     onClick={() => setTransactionType('out')}
+                     onClick={() => setTransactionType('outgoing')}
                      className={`flex-1 px-3 py-2 rounded-md text-xs md:text-sm font-medium transition-colors ${
-                       transactionType === 'out'
+                       transactionType === 'outgoing'
                          ? 'bg-white text-red-600 shadow-sm'
                          : 'text-gray-500 hover:text-gray-700'
                        }`}
@@ -721,19 +716,19 @@ export default function ScanPage() {
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Barcode Display */}
-                {dataToUse.barcode && (
+                {formData.barcode && (
                   <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
                     <Label className="text-sm font-medium text-blue-700">Gedetecteerde Barcode</Label>
-                    <p className="text-lg font-mono text-blue-900">{dataToUse.barcode}</p>
+                    <p className="text-lg font-mono text-blue-900">{formData.barcode}</p>
                   </div>
                 )}
 
                 {/* Huidige Voorraad Info voor bestaande producten */}
-                {dataToUse.barcode && (
+                {formData.barcode && (
                   <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
                     <Label className="text-sm font-medium text-green-700">Product Status</Label>
                     <p className="text-sm text-green-700 mt-1">
-                      {transactionType === 'in' 
+                      {transactionType === 'incoming' 
                         ? 'Nieuw product wordt toegevoegd aan de voorraad'
                         : 'Bestaand product wordt uit de voorraad gehaald'
                       }
@@ -749,14 +744,14 @@ export default function ScanPage() {
                   <Input
                     id="name"
                     type="text"
-                    value={dataToUse.name}
+                    value={formData.name}
                     onChange={(e) => handleInputChange('name', e.target.value)}
                     placeholder="Voer product naam in"
                     required
-                    disabled={dataToUse.name !== ''} // Uitschakelen voor bestaande producten
+                    disabled={formData.name !== ''} // Uitschakelen voor bestaande producten
                     className="mt-1"
                   />
-                  {dataToUse.name !== '' && (
+                  {formData.name !== '' && (
                     <p className="text-sm text-gray-500 mt-1">
                       Product naam kan niet worden gewijzigd voor bestaande producten
                     </p>
@@ -764,14 +759,14 @@ export default function ScanPage() {
                 </div>
 
                                  {/* Description - Only show for incoming transactions */}
-                 {transactionType === 'in' && (
+                 {transactionType === 'incoming' && (
                    <div>
                      <Label htmlFor="description" className="text-sm font-medium text-gray-700">
                        Beschrijving
                      </Label>
                      <Textarea
                        id="description"
-                       value={dataToUse.description}
+                       value={formData.description}
                        onChange={(e) => handleInputChange('description', e.target.value)}
                        placeholder="Voer product beschrijving in"
                        rows={3}
@@ -781,7 +776,7 @@ export default function ScanPage() {
                  )}
 
                  {/* Category and Supplier - Only show for incoming transactions */}
-                 {transactionType === 'in' && (
+                 {transactionType === 'incoming' && (
                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                      <div>
                        <Label htmlFor="category" className="text-sm font-medium text-gray-700">
@@ -795,7 +790,7 @@ export default function ScanPage() {
                              aria-expanded={categoryOpen}
                              className="w-full justify-between mt-1"
                            >
-                             {dataToUse.categoryName ? dataToUse.categoryName : "Selecteer categorie..."}
+                             {formData.categoryName ? formData.categoryName : "Selecteer categorie..."}
                              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                            </Button>
                          </PopoverTrigger>
@@ -803,7 +798,7 @@ export default function ScanPage() {
                            <Command>
                              <CommandInput 
                                placeholder="Categorie zoeken..." 
-                               value={dataToUse.categoryName}
+                               value={formData.categoryName}
                                onValueChange={(value) => handleInputChange('categoryName', value)}
                              />
                              <CommandList>
@@ -814,11 +809,11 @@ export default function ScanPage() {
                                      variant="outline"
                                      size="sm"
                                      onClick={async () => {
-                                       if (dataToUse.categoryName.trim()) {
+                                       if (formData.categoryName.trim()) {
                                          try {
                                            const { data: newCategory, error } = await supabase
                                              .from('categories')
-                                             .insert({ name: dataToUse.categoryName.trim(), user_id: user.id })
+                                             .insert({ name: formData.categoryName.trim(), user_id: user.id })
                                              .select('id, name')
                                              .single();
                                            
@@ -840,7 +835,7 @@ export default function ScanPage() {
                                      className="w-full"
                                    >
                                      <Plus className="w-4 h-4 mr-2" />
-                                     "{dataToUse.categoryName}" toevoegen
+                                     "{formData.categoryName}" toevoegen
                                    </Button>
                                  </div>
                                </CommandEmpty>
@@ -857,7 +852,7 @@ export default function ScanPage() {
                                      <Check
                                        className={cn(
                                          "mr-2 h-4 w-4",
-                                         dataToUse.categoryName === category.name ? "opacity-100" : "opacity-0"
+                                         formData.categoryName === category.name ? "opacity-100" : "opacity-0"
                                        )}
                                      />
                                      {category.name}
@@ -881,7 +876,7 @@ export default function ScanPage() {
                              aria-expanded={supplierOpen}
                              className="w-full justify-between mt-1"
                            >
-                             {dataToUse.supplierName ? dataToUse.supplierName : "Selecteer leverancier..."}
+                             {formData.supplierName ? formData.supplierName : "Selecteer leverancier..."}
                              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                            </Button>
                          </PopoverTrigger>
@@ -889,7 +884,7 @@ export default function ScanPage() {
                            <Command>
                              <CommandInput 
                                placeholder="Leverancier zoeken..." 
-                               value={dataToUse.supplierName}
+                               value={formData.supplierName}
                                onValueChange={(value) => handleInputChange('supplierName', value)}
                              />
                              <CommandList>
@@ -900,11 +895,11 @@ export default function ScanPage() {
                                      variant="outline"
                                      size="sm"
                                      onClick={async () => {
-                                       if (dataToUse.supplierName.trim()) {
+                                       if (formData.supplierName.trim()) {
                                          try {
                                            const { data: newSupplier, error } = await supabase
                                              .from('suppliers')
-                                             .insert({ name: dataToUse.supplierName.trim() })
+                                             .insert({ name: formData.supplierName.trim() })
                                              .select('id, name')
                                              .single();
                                            
@@ -926,7 +921,7 @@ export default function ScanPage() {
                                      className="w-full"
                                    >
                                      <Plus className="w-4 h-4 mr-2" />
-                                     "{dataToUse.supplierName}" toevoegen
+                                     "{formData.supplierName}" toevoegen
                                    </Button>
                                  </div>
                                </CommandEmpty>
@@ -943,7 +938,7 @@ export default function ScanPage() {
                                      <Check
                                        className={cn(
                                          "mr-2 h-4 w-4",
-                                         dataToUse.supplierName === supplier.name ? "opacity-100" : "opacity-0"
+                                         formData.supplierName === supplier.name ? "opacity-100" : "opacity-0"
                                        )}
                                      />
                                      {supplier.name}
@@ -959,7 +954,7 @@ export default function ScanPage() {
                  )}
 
                                  {/* Stock and Pricing */}
-                 <div className={`grid gap-4 ${transactionType === 'in' ? 'grid-cols-1 md:grid-cols-4' : 'grid-cols-1 md:grid-cols-2'}`}>
+                 <div className={`grid gap-4 ${transactionType === 'incoming' ? 'grid-cols-1 md:grid-cols-4' : 'grid-cols-1 md:grid-cols-2'}`}>
                    <div>
                      <Label htmlFor="quantity" className="text-sm font-medium text-gray-700">
                        Aantal *
@@ -968,14 +963,14 @@ export default function ScanPage() {
                        id="quantity"
                        type="number"
                        min="1"
-                       value={dataToUse.quantityInStock}
+                       value={formData.quantityInStock}
                        onChange={(e) => handleInputChange('quantityInStock', parseInt(e.target.value) || 1)}
                        required
                        className="mt-1"
                      />
                    </div>
                    
-                   {transactionType === 'in' && (
+                   {transactionType === 'incoming' && (
                      <div>
                        <Label htmlFor="minStock" className="text-sm font-medium text-gray-700">
                          Minimale Voorraad
@@ -984,14 +979,14 @@ export default function ScanPage() {
                          id="minStock"
                          type="number"
                          min="0"
-                         value={dataToUse.minimumStockLevel}
+                         value={formData.minimumStockLevel}
                          onChange={(e) => handleInputChange('minimumStockLevel', parseInt(e.target.value) || 0)}
                          className="mt-1"
                        />
                      </div>
                    )}
                    
-                   {transactionType === 'in' && (
+                   {transactionType === 'incoming' && (
                      <div>
                        <Label htmlFor="purchasePrice" className="text-sm font-medium text-gray-700">
                          Inkoopprijs (€)
@@ -1001,14 +996,14 @@ export default function ScanPage() {
                          type="number"
                          min="0"
                          step="0.01"
-                         value={dataToUse.purchasePrice}
+                         value={formData.purchasePrice}
                          onChange={(e) => handleInputChange('purchasePrice', parseFloat(e.target.value) || 0)}
                          className="mt-1"
                        />
                      </div>
                    )}
                    
-                   {transactionType === 'in' && (
+                   {transactionType === 'incoming' && (
                      <div>
                        <Label htmlFor="salePrice" className="text-sm font-medium text-gray-700">
                          Verkoopprijs (€)
@@ -1018,7 +1013,7 @@ export default function ScanPage() {
                          type="number"
                          min="0"
                          step="0.01"
-                         value={dataToUse.salePrice}
+                         value={formData.salePrice}
                          onChange={(e) => handleInputChange('salePrice', parseFloat(e.target.value) || 0)}
                          className="mt-1"
                        />
@@ -1037,12 +1032,12 @@ export default function ScanPage() {
                      {loading ? (
                        <>
                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                         {transactionType === 'in' ? 'Product Toevoegen...' : 'Product Verwijderen...'}
+                         {transactionType === 'incoming' ? 'Product Toevoegen...' : 'Product Verwijderen...'}
                        </>
                      ) : (
                        <>
                          <Plus className="w-4 h-4 mr-2" />
-                         {transactionType === 'in' ? 'Product Toevoegen' : 'Product Verwijderen'}
+                         {transactionType === 'incoming' ? 'Product Toevoegen' : 'Product Verwijderen'}
                        </>
                      )}
                    </Button>

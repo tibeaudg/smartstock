@@ -71,6 +71,12 @@ export const ModuleManagement = () => {
     const success = searchParams.get('success');
     const canceled = searchParams.get('canceled');
     
+    // Always refresh module data when component mounts to ensure latest state
+    queryClient.invalidateQueries({ queryKey: ['modules'] });
+    queryClient.invalidateQueries({ queryKey: ['moduleAccess'] });
+    queryClient.invalidateQueries({ queryKey: ['allModuleAccess'] });
+    queryClient.invalidateQueries({ queryKey: ['activeSubscriptions'] });
+    
     if (success === 'true') {
       toast({
         title: 'Module succesvol gekocht! 🎉',
@@ -83,6 +89,12 @@ export const ModuleManagement = () => {
       queryClient.invalidateQueries({ queryKey: ['moduleAccess'] });
       queryClient.invalidateQueries({ queryKey: ['allModuleAccess'] });
       queryClient.invalidateQueries({ queryKey: ['activeSubscriptions'] });
+      queryClient.invalidateQueries({ queryKey: ['scannerSettings'] });
+      
+      // Force refetch of all module-related queries
+      queryClient.refetchQueries({ queryKey: ['modules'] });
+      queryClient.refetchQueries({ queryKey: ['allModuleAccess'] });
+      queryClient.refetchQueries({ queryKey: ['activeSubscriptions'] });
     } else if (canceled === 'true') {
       toast({
         title: 'Aankoop geannuleerd',
@@ -93,6 +105,31 @@ export const ModuleManagement = () => {
       setSearchParams({});
     }
   }, [searchParams, setSearchParams, queryClient]);
+
+  // Refresh data when user returns to the page (focus event)
+  React.useEffect(() => {
+    const handleFocus = () => {
+      queryClient.invalidateQueries({ queryKey: ['modules'] });
+      queryClient.invalidateQueries({ queryKey: ['moduleAccess'] });
+      queryClient.invalidateQueries({ queryKey: ['allModuleAccess'] });
+      queryClient.invalidateQueries({ queryKey: ['activeSubscriptions'] });
+    };
+
+    window.addEventListener('focus', handleFocus);
+    return () => window.removeEventListener('focus', handleFocus);
+  }, [queryClient]);
+
+  // Periodic refresh of module data every 30 seconds
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      queryClient.invalidateQueries({ queryKey: ['modules'] });
+      queryClient.invalidateQueries({ queryKey: ['moduleAccess'] });
+      queryClient.invalidateQueries({ queryKey: ['allModuleAccess'] });
+      queryClient.invalidateQueries({ queryKey: ['activeSubscriptions'] });
+    }, 30000); // 30 seconds
+
+    return () => clearInterval(interval);
+  }, [queryClient]);
 
   // Fetch active subscriptions
   const {
@@ -136,6 +173,7 @@ export const ModuleManagement = () => {
       }));
     },
     enabled: !!user,
+    staleTime: 1000 * 10, // 10 seconds for faster updates
   });
 
   // Fetch user and branch statistics
@@ -195,6 +233,7 @@ export const ModuleManagement = () => {
       };
     },
     enabled: !!user,
+    staleTime: 1000 * 10, // 10 seconds for faster updates
   });
 
   // Fetch modules from database
@@ -257,7 +296,7 @@ export const ModuleManagement = () => {
       console.log('Modules result (no user):', result);
       return result;
     },
-    staleTime: 1000 * 30, // 30 seconds for faster updates
+    staleTime: 1000 * 10, // 10 seconds for faster updates
   });
 
   // Subscription mutation
@@ -311,6 +350,18 @@ export const ModuleManagement = () => {
         });
       });
       
+      // Invalidate all relevant queries to refresh the UI
+      queryClient.invalidateQueries({ queryKey: ['modules'] });
+      queryClient.invalidateQueries({ queryKey: ['moduleAccess'] });
+      queryClient.invalidateQueries({ queryKey: ['allModuleAccess'] });
+      queryClient.invalidateQueries({ queryKey: ['activeSubscriptions'] });
+      queryClient.invalidateQueries({ queryKey: ['scannerSettings'] });
+      
+      // Force refetch of all module-related queries
+      queryClient.refetchQueries({ queryKey: ['modules'] });
+      queryClient.refetchQueries({ queryKey: ['allModuleAccess'] });
+      queryClient.refetchQueries({ queryKey: ['activeSubscriptions'] });
+      
       toast({
         title: action === 'subscribe' ? 'Module geactiveerd!' : 'Abonnement geannuleerd',
         description: action === 'subscribe' ? 'Je hebt nu toegang tot deze module!' : 'Je abonnement is geannuleerd.',
@@ -346,7 +397,17 @@ export const ModuleManagement = () => {
 
   const handleCheckoutSuccess = () => {
     setCheckoutModule(null);
+    // Invalidate all relevant queries to refresh the UI
     queryClient.invalidateQueries({ queryKey: ['modules'] });
+    queryClient.invalidateQueries({ queryKey: ['moduleAccess'] });
+    queryClient.invalidateQueries({ queryKey: ['allModuleAccess'] });
+    queryClient.invalidateQueries({ queryKey: ['activeSubscriptions'] });
+    queryClient.invalidateQueries({ queryKey: ['scannerSettings'] });
+    
+    // Force refetch of all module-related queries
+    queryClient.refetchQueries({ queryKey: ['modules'] });
+    queryClient.refetchQueries({ queryKey: ['allModuleAccess'] });
+    queryClient.refetchQueries({ queryKey: ['activeSubscriptions'] });
     toast({
       title: 'Module geactiveerd!',
       description: 'Je hebt nu toegang tot deze module.',

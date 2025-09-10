@@ -21,10 +21,7 @@ export const useModuleAccess = (moduleSlug: string) => {
   return useQuery<ModuleAccess>({
     queryKey: ['moduleAccess', moduleSlug, user?.id],
     queryFn: async () => {
-      console.log('useModuleAccess: Starting check for module:', moduleSlug, 'user:', user?.id);
-      
       if (!user) {
-        console.log('useModuleAccess: No user found, returning no access');
         return { hasAccess: false };
       }
 
@@ -98,8 +95,6 @@ export const useModuleAccess = (moduleSlug: string) => {
         return { hasAccess: false };
       }
 
-      console.log('useModuleAccess: Checking module access for:', moduleSlug, 'moduleId:', moduleId, 'userId:', user.id);
-      
       const { data, error } = await supabase
         .from('user_module_subscriptions')
         .select('status, end_date, billing_cycle')
@@ -109,14 +104,12 @@ export const useModuleAccess = (moduleSlug: string) => {
         .maybeSingle();
 
       if (error) {
-        console.warn('useModuleAccess: Module access query error for module:', moduleSlug, 'ID:', moduleId, error);
+        console.warn('Module access query error for module:', moduleSlug, 'ID:', moduleId, error);
         return { hasAccess: false };
       }
 
-      console.log('useModuleAccess: Module access query result:', data);
-
       if (!data) {
-        console.log('useModuleAccess: No active subscription found for module:', moduleSlug);
+        console.log('No active subscription found for module:', moduleSlug);
         return { hasAccess: false };
       }
 
@@ -125,20 +118,15 @@ export const useModuleAccess = (moduleSlug: string) => {
       const now = new Date();
       const isExpired = endDate < now;
 
-      console.log('useModuleAccess: Subscription check - endDate:', data.end_date, 'now:', now.toISOString(), 'isExpired:', isExpired);
-
-      const result = {
+      return {
         hasAccess: !isExpired,
         subscriptionStatus: isExpired ? 'expired' : 'active',
         endDate: data.end_date,
         billingCycle: data.billing_cycle
       };
-
-      console.log('useModuleAccess: Final result for module:', moduleSlug, result);
-      return result;
     },
     enabled: !!user && !!moduleSlug,
-    staleTime: 1000 * 30, // 30 seconds for faster updates
+    staleTime: 1000 * 10, // 10 seconds for faster updates
     retry: 1, // Only retry once
     retryDelay: 1000, // Wait 1 second before retry
   });
@@ -228,6 +216,6 @@ export const useAllModuleAccess = () => {
       return accessMap;
     },
     enabled: !!user,
-    staleTime: 1000 * 30, // 30 seconds for faster updates
+    staleTime: 1000 * 10, // 10 seconds for faster updates
   });
 };

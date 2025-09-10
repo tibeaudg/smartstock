@@ -60,7 +60,7 @@ export const useScannerSettings = () => {
       return data || defaultSettings;
     },
     enabled: !!user && !!activeBranch,
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: 1000 * 10, // 10 seconds for faster updates
   });
 
   const saveSettingsMutation = useMutation({
