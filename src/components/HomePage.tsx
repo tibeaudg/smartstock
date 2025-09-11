@@ -533,7 +533,7 @@ export const HomePage = () => {
               <Star key={i} className="h-4 w-4 text-yellow-400 fill-current" />
             ))}
           </div>
-          <span><strong>3.200+</strong> zelfstandigen en KMO's gebruiken stockflow dagelijks</span>
+          <span><strong>32+</strong> zelfstandigen en KMO's gebruiken stockflow dagelijks</span>
         </div>
       </div>
 
@@ -555,7 +555,7 @@ export const HomePage = () => {
                 <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
               ))}
             </div>
-            <span className="text-sm text-gray-600">4.8/5 gebaseerd op 150+ reviews</span>
+            <span className="text-sm text-gray-600">4.8/5 gebaseerd op 15+ reviews</span>
           </div>
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-6 md:mb-8 px-4">
             <Button data-analytics-id="hero-start" size="lg" className="bg-blue-600 text-white px-4 sm:px-6 md:px-8 py-3 md:py-4 rounded-lg font-semibold hover:bg-blue-700 transition text-sm sm:text-base md:text-lg w-full sm:w-auto" onClick={handleLoginClick}>
@@ -585,10 +585,9 @@ export const HomePage = () => {
       {/* KENGETALLEN / SOCIAL PROOF STRIP */}
       <section id="stats-section" className="bg-white py-8 md:py-12">
         <div className="max-w-6xl mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8 divide-x-0 md:divide-x md:divide-dashed md:divide-gray-200">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8 divide-x-0 md:divide-x md:divide-dashed md:divide-gray-200">
             {[
-              { icon: Users, value: '3.200+', label: "zelfstandigen & KMO's" },
-              { icon: Star, value: '150+', label: '5‑sterren reviews' },
+              { icon: Users, value: '32+', label: "zelfstandigen & KMO's" },
               { icon: Clock, value: '17k+', label: 'uren bespaard' },
               { icon: Package, value: '500k+', label: 'productbewegingen' },
             ].map((s, i) => (
