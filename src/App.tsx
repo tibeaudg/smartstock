@@ -56,7 +56,6 @@ import SimpelStockbeheer from "./pages/SEO/simpelstockbeheer";
 import GratisVoorraadbeheer from "./pages/SEO/gratis-voorraadbeheer";
 import VoorraadbeheerVoorHoreca from "./pages/SEO/voorraadbeheer-voor-horeca";
 import StockbeheerSoftware from "./pages/SEO/stockbeheer-software";
-import VoorraadbeheerHoreca from "./pages/SEO/voorraadbeheer-horeca";
 import VoorraadbeheerExcel from "./pages/SEO/voorraadbeheer-excel";
 import GratisVoorraadbeheerApp from "./pages/SEO/gratis-voorraadbeheer-app";
 import GratisVoorraadbeheerSoftware from "./pages/SEO/gratis-voorraadbeheer-software";
