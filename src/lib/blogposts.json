@@ -12,5 +12,33 @@
         "published": true,
         "datePublished": "2025-08-01",
         "author": "StockFlow Team"
+    },
+    {
+        "id": "2",
+        "title": "Excel vs Software: Wat is Beter voor Voorraadbeheer?",
+        "slug": "excel-vs-software-voorraadbeheer",
+        "content": "Vergelijk voorraadbeheer in Excel met gespecialiseerde software. Ontdek waarom Excel beperkt is en hoe software je tijd bespaart, fouten voorkomt en je bedrijf laat groeien. Download ook onze gratis Excel template.",
+        "seo": {
+            "metaTitle": "Excel vs Software: Wat is Beter voor Voorraadbeheer? | StockFlow",
+            "metaDescription": "Vergelijk voorraadbeheer in Excel met gespecialiseerde software. Ontdek waarom Excel beperkt is en hoe software je tijd bespaart. Gratis Excel template beschikbaar.",
+            "ogImage": "/public/Inventory-Management.png"
+        },
+        "published": true,
+        "datePublished": "2024-12-19",
+        "author": "StockFlow Team"
+    },
+    {
+        "id": "3",
+        "title": "Horeca Voorraadbeheer: 5 Essentiële Tips",
+        "slug": "horeca-voorraadbeheer-tips",
+        "content": "Ontdek 5 essentiële tips voor horeca voorraadbeheer. Voorkom verspilling, bespaar kosten en verbeter je menuplanning met deze praktische tips speciaal voor restaurants, cafés en hotels.",
+        "seo": {
+            "metaTitle": "Horeca Voorraadbeheer: 5 Essentiële Tips | StockFlow",
+            "metaDescription": "Ontdek 5 essentiële tips voor horeca voorraadbeheer. Voorkom verspilling, bespaar kosten en verbeter je menuplanning. Speciaal voor restaurants, cafés en hotels.",
+            "ogImage": "/public/Inventory-Management.png"
+        },
+        "published": true,
+        "datePublished": "2024-12-19",
+        "author": "StockFlow Team"
     }
 ]

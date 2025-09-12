@@ -514,7 +514,7 @@ export const HomePage = () => {
       <SEO
         title="Gratis Voorraadbeheer voor KMO's in Vlaanderen | stockflow"
         description="Ontdek het beste gratis voorraadbeheer programma voor Vlaamse KMO's. Eenvoudig, gratis en slim voorraadbeheer zonder verborgen kosten. Start vandaag nog!"
-        keywords="software voorraadbeheer, magazijn software, gratis voorraadbeheer, voorraadbeheer programma, voorraadbeheersysteem, stockbeheer software, voorraadbeheer software, voorraadbeheer KMO, voorraadbeheer Vlaanderen, voorraadbeheer Gent, gratis stockbeheer, voorraad app, magazijnbeheer, software magazijnbeheer, software stockbeheer, voorraadbeheer app"
+        keywords="software voorraadbeheer, magazijn software, gratis voorraadbeheer, voorraadbeheer programma, voorraadbeheersysteem, stockbeheer software, voorraadbeheer software, voorraadbeheer KMO, voorraadbeheer Vlaanderen, voorraadbeheer Gent, gratis stockbeheer, voorraad app, magazijnbeheer, software magazijnbeheer, software stockbeheer, voorraadbeheer app, gratis voorraadbeheer app, gratis voorraadbeheer software, programma stockbeheer gratis, stockbeheer app, magazijnbeheer software gratis, voorraad software gratis, boekhoudprogramma met voorraadbeheer, voorraadbeheer app gratis, gratis voorraadbeheer app download, gratis voorraadbeheer software download, programma stockbeheer gratis download, stockbeheer app gratis, magazijnbeheer software gratis download, voorraad software gratis download, boekhoudprogramma voorraadbeheer gratis"
         url="https://www.stockflow.be/"
         structuredData={structuredData}
       />

@@ -55,6 +55,16 @@ import Stockbeheer from "./pages/SEO/stockbeheer";
 import SimpelStockbeheer from "./pages/SEO/simpelstockbeheer";
 import GratisVoorraadbeheer from "./pages/SEO/gratis-voorraadbeheer";
 import VoorraadbeheerVoorHoreca from "./pages/SEO/voorraadbeheer-voor-horeca";
+import StockbeheerSoftware from "./pages/SEO/stockbeheer-software";
+import VoorraadbeheerHoreca from "./pages/SEO/voorraadbeheer-horeca";
+import VoorraadbeheerExcel from "./pages/SEO/voorraadbeheer-excel";
+import GratisVoorraadbeheerApp from "./pages/SEO/gratis-voorraadbeheer-app";
+import GratisVoorraadbeheerSoftware from "./pages/SEO/gratis-voorraadbeheer-software";
+import ProgrammaStockbeheerGratis from "./pages/SEO/programma-stockbeheer-gratis";
+import StockbeheerApp from "./pages/SEO/stockbeheer-app";
+import MagazijnbeheerSoftwareGratis from "./pages/SEO/magazijnbeheer-software-gratis";
+import VoorraadSoftwareGratis from "./pages/SEO/voorraad-software-gratis";
+import BoekhoudprogrammaMetVoorraadbeheer from "./pages/SEO/boekhoudprogramma-met-voorraadbeheer";
 import CategoriesPage from './pages/categories';
 import SuppliersPage from './pages/suppliers';
 import AdminPage from './pages/admin';
@@ -265,6 +275,9 @@ export default function App() {
                   <Route path="/voorraadbeheer-voor-starters" element={<VoorraadbeheerVoorStarters />} />
                   <Route path="/mobiel-voorraadbeheer" element={<MobielVoorraadbeheer />} />
                   <Route path="/voorraadbeheer-software" element={<VoorraadbeheerSoftware />} />
+                  <Route path="/stockbeheer-software" element={<StockbeheerSoftware />} />
+                  <Route path="/voorraadbeheer-horeca" element={<VoorraadbeheerHoreca />} />
+                  <Route path="/voorraadbeheer-excel" element={<VoorraadbeheerExcel />} />
                   <Route path="/voorraadbeheer" element={<Voorraadbeheer />} />
                   <Route path="/stockbeheer" element={<Stockbeheer />} />
                   <Route path="/simpelstockbeheer" element={<SimpelStockbeheer />} />
@@ -275,6 +288,13 @@ export default function App() {
                   <Route path="/blog" element={<BlogListPage />} />
                   <Route path="/blog/:slug" element={<BlogPostPage />} />
                   <Route path="/gratis-stockbeheer" element={<GratisStockbeheer />} />
+                  <Route path="/gratis-voorraadbeheer-app" element={<GratisVoorraadbeheerApp />} />
+                  <Route path="/gratis-voorraadbeheer-software" element={<GratisVoorraadbeheerSoftware />} />
+                  <Route path="/programma-stockbeheer-gratis" element={<ProgrammaStockbeheerGratis />} />
+                  <Route path="/stockbeheer-app" element={<StockbeheerApp />} />
+                  <Route path="/magazijnbeheer-software-gratis" element={<MagazijnbeheerSoftwareGratis />} />
+                  <Route path="/voorraad-software-gratis" element={<VoorraadSoftwareGratis />} />
+                  <Route path="/boekhoudprogramma-met-voorraadbeheer" element={<BoekhoudprogrammaMetVoorraadbeheer />} />
 
                   {/* Beschermde dashboard routes */}
                   <Route

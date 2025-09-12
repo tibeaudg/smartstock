@@ -2,7 +2,6 @@ import SEO from '../../components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '../../components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
-import { Utensils, Coffee, ChefHat } from 'lucide-react';
 
 export default function VoorraadbeheerHoreca() {
   // Gebruik de page refresh hook
@@ -10,78 +9,70 @@ export default function VoorraadbeheerHoreca() {
   
   const faqData = [
     {
-      question: "Waarom is voorraadbeheer voor horeca belangrijk?",
-      answer: "Voorraadbeheer voor horeca is cruciaal om verspilling te voorkomen, kosten te besparen en te voldoen aan voedselveiligheidseisen. Het helpt je om houdbaarheidsdata te tracken, seizoensinvloeden te beheren en dagelijkse controle te optimaliseren."
+      question: "Wat is voorraadbeheer voor horeca?",
+      answer: "Voorraadbeheer voor horeca is het beheren van voedsel, dranken en andere benodigdheden in restaurants, cafés en hotels. Het omvat het bijhouden van houdbaarheidsdata, het voorkomen van verspilling en het optimaliseren van menuplanning."
     },
     {
-      question: "Welke horeca types kunnen profiteren van voorraadbeheer?",
-      answer: "Alle horeca types kunnen profiteren: restaurants (ingredi�nten en dranken), caf�s (dranken en snacks), bakkerijen (meel en ingredi�nten), en andere horeca ondernemingen. Voorraadbeheer voor horeca is geschikt voor elke grootte."
+      question: "Waarom is voorraadbeheer belangrijk voor horeca?",
+      answer: "Voorraadbeheer is cruciaal voor horeca omdat het verspilling voorkomt, kosten bespaart en ervoor zorgt dat je altijd de juiste ingrediënten beschikbaar hebt. Het helpt ook bij het voldoen aan voedselveiligheidsregelgeving."
     },
     {
-      question: "Hoe voorkom ik verspilling in de horeca?",
-      answer: "Door houdbaarheidsdata te tracken, automatische meldingen in te stellen, dagelijkse controle te implementeren en seizoensinvloeden te beheren. Voorraadbeheer voor horeca helpt je om verspilling te minimaliseren en kosten te besparen."
+      question: "Hoe kan voorraadbeheer software helpen in de horeca?",
+      answer: "Voorraadbeheer software helpt horeca-ondernemers door automatische meldingen bij lage voorraad, houdbaarheidsdata bij te houden, menuplanning te optimaliseren en verspilling te minimaliseren."
     },
     {
-      question: "Is voorraadbeheer voor horeca HACCP compliant?",
-      answer: "Ja, moderne voorraadbeheer voor horeca oplossingen zijn HACCP compliant. Ze bieden traceerbaarheid, houdbaarheidscontrole en voedselveiligheid functies die voldoen aan de wettelijke eisen voor horeca ondernemingen."
+      question: "Is er speciale voorraadbeheer software voor horeca?",
+      answer: "Ja, stockflow biedt specifieke functies voor horeca zoals houdbaarheidsdata tracking, menuplanning en integratie met leveranciers. Dit maakt het ideaal voor restaurants, cafés en hotels."
+    },
+    {
+      question: "Hoe voorkom ik verspilling in mijn horeca-bedrijf?",
+      answer: "Door gebruik te maken van voorraadbeheer software kun je verspilling voorkomen door betere planning, houdbaarheidsdata bij te houden en automatische meldingen te krijgen wanneer producten bijna verlopen."
     }
   ];
-
-  const horecaTypes = [
-    {
-      name: "Restaurants",
-      description: "Beheer ingredi�nten, dranken en voorraad",
-      features: ["Ingredi�nten tracking", "Recept integratie", "Leverancier management"],
-      icon: Utensils,
-      color: "red"
-    },
-    {
-      name: "Caf�s",
-      description: "Focus op dranken en snacks",
-      features: ["Dranken voorraad", "Snack management", "Dagelijkse controle"],
-      icon: Coffee,
-      color: "orange"
-    },
-    {
-      name: "Bakkerijen",
-      description: "Beheer meel, ingredi�nten en eindproducten",
-      features: ["Ingredi�nten tracking", "Productie planning", "Houdbaarheid controle"],
-      icon: ChefHat,
-      color: "yellow"
-    }
-  ];
-
-
 
   return (
     <SeoPageLayout title="Voorraadbeheer voor Horeca">
       <SEO
-        title="Voorraadbeheer voor Horeca | Restaurant & Caf� Stockbeheer | stockflow"
-        description="Voorraadbeheer voor horeca: complete gids voor restaurants, caf�s en bakkers. Ontdek hoe je eenvoudig je horeca voorraad beheert, verspilling voorkomt en voldoet aan voedselveiligheidseisen."
-        keywords="voorraadbeheer horeca, horeca voorraad, voorraadbeheer restaurant, voorraadbeheer caf�, voorraadbeheer bakker, horeca voorraad app, restaurant voorraadbeheer, caf� voorraadbeheer, bakker voorraadbeheer, horeca stockbeheer, voorraadbeheer keuken, horeca voorraad management, voorraadbeheer horeca software, horeca voorraad optimalisatie, voedselveiligheid voorraadbeheer, HACCP voorraadbeheer"
+        title="Voorraadbeheer voor Horeca: Tips & Gratis Software | stockflow"
+        description="Optimaliseer je horeca voorraadbeheer met onze gratis software. Voorkom verspilling, bespaar kosten en verbeter je menuplanning. Speciaal voor restaurants, cafés en hotels."
+        keywords="voorraadbeheer horeca, horeca voorraadbeheer, voorraadbeheer restaurant, voorraadbeheer café, voorraadbeheer hotel, horeca software, restaurant software, voedselverspilling voorkomen, menuplanning, houdbaarheidsdata, stockflow, gratis voorraadbeheer horeca"
         url="https://www.stockflow.be/voorraadbeheer-horeca"
       />
 
       {/* Hero Section - Split Layout */}
-      <section className="bg-white py-16 px-4">
+      <section className="bg-white py-8 sm:py-12 md:py-16 px-4">
         <div className="max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-3 gap-4 items-center">
+          <div className="grid lg:grid-cols-3 gap-6 sm:gap-8 items-center">
             {/* Left Side - Text Content */}
             <div className="lg:col-span-2">
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">
-                <span className="text-blue-600">Voorraadbeheer voor Horeca</span> - Complete gids
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6">
+                <span className="text-blue-600">Voorraadbeheer voor Horeca</span> - Voorkom verspilling, bespaar kosten
               </h1>
-              <p className="text-lg text-gray-700 mb-8 leading-relaxed">
-                Voorraadbeheer voor horeca is essentieel voor restaurants, caf�s en bakkers. Ontdek hoe je eenvoudig je horeca voorraad beheert, verspilling voorkomt en voldoet aan voedselveiligheidseisen. Met voorraadbeheer voor horeca kun je kosten besparen, voedselveiligheid garanderen en je dagelijkse operaties optimaliseren.
+              <p className="text-sm sm:text-base md:text-lg text-gray-700 mb-6 sm:mb-8 leading-relaxed">
+                Optimaliseer je horeca voorraadbeheer met onze gratis software. Voorkom verspilling, bespaar kosten en verbeter je menuplanning. Speciaal ontwikkeld voor restaurants, cafés en hotels om je voorraadbeheer naar het volgende niveau te tillen.
               </p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Link
+                  to="/auth"
+                  className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold shadow-lg hover:bg-blue-700 transition text-center"
+                >
+                  Start Gratis Nu
+                </Link>
+                <Link
+                  to="/voorraadbeheer-software"
+                  className="border border-blue-600 text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition text-center"
+                >
+                  Meer Informatie
+                </Link>
+              </div>
             </div>
             {/* Right Side - Image */}
             <div className="lg:col-span-1">
-              <div className=" rounded-lg text-center">
+              <div className="rounded-lg text-center">
                 <img 
-                  src="https://rompslomp.nl/hs-fs/hubfs/voorraadbeheer.jpg?width=1200&height=800&name=voorraadbeheer.jpg" 
-                  alt="Voorraadbeheer voor Horeca" 
-                  className="w-96 h-96 mx-auto object-cover rounded-lg mb-4"
+                  src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" 
+                  alt="Horeca Voorraadbeheer" 
+                  className="w-full max-w-sm sm:max-w-md lg:w-96 h-64 sm:h-80 lg:h-96 mx-auto object-cover rounded-lg mb-4"
                 />
               </div>
             </div>
@@ -89,40 +80,40 @@ export default function VoorraadbeheerHoreca() {
         </div>
       </section>
 
-      {/* What is Voorraadbeheer voor Horeca Section */}
-      <section className="py-16 px-4 bg-gray-50">
+      {/* What is Horeca Voorraadbeheer Section */}
+      <section className="py-8 sm:py-12 md:py-16 px-4 bg-gray-50">
         <div className="max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-3 gap-4 items-center">
+          <div className="grid lg:grid-cols-3 gap-6 sm:gap-8 items-center">
             {/* Left Side - Image */}
             <div className="lg:col-span-1">
-              <div className=" rounded-lg text-center">
+              <div className="rounded-lg text-center">
                 <img 
-                  src="https://www.greatplacetowork.ca/images/Asset_3.webp" 
-                  alt="Horeca Team" 
-                  className="w-full h-96 mx-auto object-cover rounded-lg"
+                  src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" 
+                  alt="Restaurant Keuken" 
+                  className="w-full h-64 sm:h-80 lg:h-96 mx-auto object-cover rounded-lg"
                 />
               </div>
             </div>
             {/* Right Side - Text Content */}
             <div className="lg:col-span-2">
-              <h2 className="text-3xl font-bold mb-6">
-                Waarom voorraadbeheer voor horeca?
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 sm:mb-6">
+                Waarom is voorraadbeheer cruciaal voor horeca?
               </h2>
-              <p className="text-lg text-gray-700 mb-6 leading-relaxed">
-                Voorraadbeheer voor horeca is cruciaal voor het succes van restaurants, caf�s en bakkerijen. Het helpt je om verspilling te voorkomen, kosten te besparen en te voldoen aan voedselveiligheidseisen. Met de juiste voorraadbeheer voor horeca oplossing kun je je dagelijkse operaties optimaliseren.
+              <p className="text-sm sm:text-base md:text-lg text-gray-700 mb-4 sm:mb-6 leading-relaxed">
+                Voorraadbeheer voor horeca is complexer dan in andere sectoren. Je moet rekening houden met houdbaarheidsdata, seizoensgebonden producten, menuplanning en voedselveiligheid. Goed voorraadbeheer voorkomt verspilling, bespaart kosten en zorgt ervoor dat je klanten altijd de beste kwaliteit krijgen.
               </p>
-              <div className="space-y-4">
-                <div className="bg-blue-50 p-4 rounded-lg">
-                  <h3 className="font-semibold text-blue-800 mb-2">Voorkom verspilling met voorraadbeheer voor horeca</h3>
-                  <p className="text-gray-700">Voorraadbeheer voor horeca helpt je om <span className="text-blue-600 font-semibold">verspilling</span> te minimaliseren door houdbaarheidsdata te tracken en automatische meldingen in te stellen.</p>
+              <div className="space-y-3 sm:space-y-4">
+                <div className="bg-blue-50 p-3 sm:p-4 rounded-lg">
+                  <h3 className="text-sm sm:text-base font-semibold text-blue-800 mb-2">Voorkom voedselverspilling</h3>
+                  <p className="text-xs sm:text-sm text-gray-700">Houd houdbaarheidsdata bij en krijg meldingen voordat producten verlopen, zodat je verspilling kunt voorkomen.</p>
                 </div>
-                <div className="bg-green-50 p-4 rounded-lg">
-                  <h3 className="font-semibold text-green-800 mb-2">Voedselveiligheid garanderen</h3>
-                  <p className="text-gray-700">Voorraadbeheer voor horeca zorgt voor traceerbaarheid en houdbaarheidscontrole volgens HACCP richtlijnen.</p>
+                <div className="bg-green-50 p-3 sm:p-4 rounded-lg">
+                  <h3 className="text-sm sm:text-base font-semibold text-green-800 mb-2">Optimaliseer menuplanning</h3>
+                  <p className="text-xs sm:text-sm text-gray-700">Plan je menu's op basis van beschikbare ingrediënten en voorkom tekorten tijdens service.</p>
                 </div>
-                <div className="bg-purple-50 p-4 rounded-lg">
-                  <h3 className="font-semibold text-purple-800 mb-2">Dagelijkse controle optimaliseren</h3>
-                  <p className="text-gray-700">Voorraadbeheer voor horeca maakt dagelijkse controle eenvoudiger en effici�nter voor je keukenpersoneel.</p>
+                <div className="bg-purple-50 p-3 sm:p-4 rounded-lg">
+                  <h3 className="text-sm sm:text-base font-semibold text-purple-800 mb-2">Bespaar op kosten</h3>
+                  <p className="text-xs sm:text-sm text-gray-700">Door betere planning en minder verspilling kun je tot 20% besparen op je inkoopkosten.</p>
                 </div>
               </div>
             </div>
@@ -130,92 +121,99 @@ export default function VoorraadbeheerHoreca() {
         </div>
       </section>
 
-      {/* Horeca Types Section */}
-      <section className="py-16 px-4 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-3 gap-4 items-start">
-            {/* Left Side - Text Content */}
-            <div className="lg:col-span-2">
-              <h2 className="text-3xl font-bold mb-6 text-blue-600">
-                Voorraadbeheer voor horeca - Verschillende types
-              </h2>
-              <p className="text-lg text-gray-700 mb-8">
-                Voorraadbeheer voor horeca is geschikt voor alle horeca ondernemingen. Ontdek hoe verschillende types kunnen profiteren:
-              </p>
-              
-              <div className="space-y-6">
-                {horecaTypes.slice(0, 2).map((type, index) => (
-                  <div key={index} className="border-l-4 border-blue-500 pl-6">
-                    <h3 className="text-xl font-bold mb-3">{type.name}</h3>
-                    <p className="text-gray-700 leading-relaxed">
-                      {type.description} - {type.features.join(', ')}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-            {/* Right Side - Image */}
-            <div className="lg:col-span-1">
-              <div className=" rounded-lg text-center">
-                <img 
-                  src="https://www.warehousingandfulfillment.com/wp-content/uploads/2020/04/Barcode-Scanning-Technologies.jpg" 
-                  alt="Horeca Voorraad" 
-                  className="w-96 h-96 mx-auto object-cover rounded-lg mb-4"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Starting with Stock Management Section */}
-      <section className="py-16 px-4 bg-gray-50">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-3 gap-8 items-center">
-            {/* Left Side - Large Image */}
-            <div className="lg:col-span-2">
-              <div className=" rounded-lg">
-                <img 
-                  src="https://valuechain.be/media/images/20232316226515_shutterstock-1106078390.width-1292.webp" 
-                  alt="Horeca Keuken" 
-                  className="w-full h-96 object-cover rounded-lg mb-4"
-                />
-              </div>
-            </div>
-            {/* Right Side - Text Content */}
-            <div className="lg:col-span-1">
-              <h2 className="text-3xl font-bold mb-6">
-                Implementeer voorraadbeheer voor horeca stap voor stap
-              </h2>
-              <p className="text-lg text-gray-700 leading-relaxed">
-                Begin met het tracken van je belangrijkste ingredi�nten en dranken. Voeg geleidelijk meer producten toe en implementeer houdbaarheidscontrole. Voorraadbeheer voor horeca is geschikt voor bedrijven van alle groottes en kan direct worden toegepast.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Benefits Section */}
-      <section className="py-16 px-4 bg-white">
+      {/* Horeca Specific Features Section */}
+      <section className="py-8 sm:py-12 md:py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">
-              <span className="text-blue-600">Voordelen</span> van voorraadbeheer voor horeca
+              <span className="text-blue-600">Speciale functies</span> voor horeca voorraadbeheer
             </h2>
+            <p className="text-lg text-gray-700 max-w-3xl mx-auto">
+              Ontdek de horeca-specifieke functies die je voorraadbeheer naar het volgende niveau tillen
+            </p>
           </div>
           
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             <div className="bg-gray-50 p-6 rounded-lg">
-              <h3 className="text-xl font-semibold mb-4">Kostenbesparing voor horeca</h3>
+              <h3 className="text-xl font-semibold mb-4">Houdbaarheidsdata Tracking</h3>
               <p className="text-gray-700">
-                Voorraadbeheer voor horeca helpt je om verspilling te voorkomen en tot 30% te besparen op voorraadkosten. Door betere planning en controle van houdbaarheidsdata minimaliseer je verliezen en optimaliseer je je inkoop.
+                Houd de houdbaarheidsdata van al je producten bij en krijg automatische meldingen voordat ze verlopen. Voorkom verspilling en voedselveiligheidsproblemen.
               </p>
             </div>
             
             <div className="bg-gray-50 p-6 rounded-lg">
-              <h3 className="text-xl font-semibold mb-4">Voedselveiligheid en HACCP compliance</h3>
+              <h3 className="text-xl font-semibold mb-4">Menuplanning Integratie</h3>
               <p className="text-gray-700">
-                Voorraadbeheer voor horeca zorgt voor volledige traceerbaarheid en houdbaarheidscontrole. Voldoe aan HACCP richtlijnen en garandeer voedselveiligheid voor je klanten en inspecteurs.
+                Plan je menu's op basis van beschikbare ingrediënten en voorkom tekorten tijdens service. Optimaliseer je recepten en kosten.
+              </p>
+            </div>
+            
+            <div className="bg-gray-50 p-6 rounded-lg">
+              <h3 className="text-xl font-semibold mb-4">Seizoensgebonden Planning</h3>
+              <p className="text-gray-700">
+                Plan je voorraad op basis van seizoenen en trends. Pas je menu's aan op basis van beschikbaarheid en prijzen van ingrediënten.
+              </p>
+            </div>
+            
+            <div className="bg-gray-50 p-6 rounded-lg">
+              <h3 className="text-xl font-semibold mb-4">Leverancier Beheer</h3>
+              <p className="text-gray-700">
+                Houd je leveranciers bij en vergelijk prijzen. Optimaliseer je bestelprocessen en onderhandel betere deals.
+              </p>
+            </div>
+            
+            <div className="bg-gray-50 p-6 rounded-lg">
+              <h3 className="text-xl font-semibold mb-4">Kostenanalyse</h3>
+              <p className="text-gray-700">
+                Analyseer je voedselkosten per gerecht en optimaliseer je winstmarges. Houd je budgetten bij en identificeer besparingsmogelijkheden.
+              </p>
+            </div>
+            
+            <div className="bg-gray-50 p-6 rounded-lg">
+              <h3 className="text-xl font-semibold mb-4">Mobiele App</h3>
+              <p className="text-gray-700">
+                Beheer je voorraad onderweg met onze mobiele app. Perfect voor chefs en managers die altijd toegang nodig hebben tot hun voorraadgegevens.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Horeca Tips Section */}
+      <section className="py-16 px-4 bg-gray-50">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-4">
+              <span className="text-blue-600">Praktische tips</span> voor horeca voorraadbeheer
+            </h2>
+          </div>
+          
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="bg-white p-6 rounded-lg shadow-lg">
+              <h3 className="text-xl font-semibold mb-4">1. Organiseer je koeling volgens FIFO</h3>
+              <p className="text-gray-700">
+                Gebruik het "First In, First Out" principe. Plaats nieuwe producten achter de oude om verspilling te voorkomen en voedselveiligheid te waarborgen.
+              </p>
+            </div>
+            
+            <div className="bg-white p-6 rounded-lg shadow-lg">
+              <h3 className="text-xl font-semibold mb-4">2. Stel minimum- en maximumvoorraad in</h3>
+              <p className="text-gray-700">
+                Bepaal voor elk product het minimum niveau (wanneer je moet bestellen) en maximum niveau (hoeveel je maximaal wilt hebben) om tekorten en overstock te voorkomen.
+              </p>
+            </div>
+            
+            <div className="bg-white p-6 rounded-lg shadow-lg">
+              <h3 className="text-xl font-semibold mb-4">3. Houd rekening met seizoenen</h3>
+              <p className="text-gray-700">
+                Pas je voorraad aan op basis van seizoenen en lokale evenementen. Plan je menu's op basis van beschikbaarheid en prijzen van ingrediënten.
+              </p>
+            </div>
+            
+            <div className="bg-white p-6 rounded-lg shadow-lg">
+              <h3 className="text-xl font-semibold mb-4">4. Train je personeel</h3>
+              <p className="text-gray-700">
+                Zorg dat al je medewerkers weten hoe ze de voorraadbeheer software moeten gebruiken. Dit voorkomt fouten en zorgt voor consistente data.
               </p>
             </div>
           </div>
@@ -226,10 +224,10 @@ export default function VoorraadbeheerHoreca() {
       <section className="bg-white text-black py-12 md:py-20">
         <div className="max-w-4xl mx-auto text-center px-4">
           <h2 className="text-3xl md:text-4xl font-bold mb-4 md:mb-6">
-            Start Vandaag Met Voorraadbeheer voor Horeca
+            Start Vandaag Met Horeca Voorraadbeheer
           </h2>
           <p className="text-lg md:text-xl mb-6 md:mb-8 opacity-90">
-            Sluit je aan bij honderden Vlaamse horeca ondernemingen die al profiteren van professioneel voorraadbeheer voor horeca zonder kosten.
+            Sluit je aan bij honderden horeca-ondernemers die al profiteren van onze voorraadbeheer software. Begin vandaag nog met het optimaliseren van je horeca voorraadbeheer.
           </p>
           <div className="flex flex-col md:flex-row gap-4 justify-center">
             <Link
@@ -239,7 +237,7 @@ export default function VoorraadbeheerHoreca() {
               Start Gratis Nu
             </Link>
           </div>
-          <p className="text-sm mt-4 opacity-75">Geen creditcard vereist � Direct toegang � Nederlandse support</p>
+          <p className="text-sm mt-4 opacity-75">Geen creditcard vereist • Direct toegang • Nederlandse support</p>
         </div>
       </section>
 
@@ -271,14 +269,14 @@ export default function VoorraadbeheerHoreca() {
             className="h-10 md:h-12 mx-auto mb-6"
           />
           <p className="text-gray-400 text-base md:text-lg mb-8 leading-relaxed max-w-2xl mx-auto">
-            Voorraadbeheer voor horeca - Complete gids voor Vlaamse horeca ondernemingen.
-            Eenvoudig, veilig en zonder verborgen kosten.
+            Voorraadbeheer software speciaal voor horeca.
+            Voorkom verspilling, bespaar kosten.
           </p>
 
           <div className="border-t border-gray-700 pt-6">
             <p className="text-gray-500 text-xs md:text-sm">
               &copy; {new Date().getFullYear()} stockflow. Alle rechten voorbehouden.
-              Voorraadbeheer voor horeca voor Vlaamse KMO's.
+              Voorraadbeheer voor horeca.
             </p>
           </div>
         </div>
@@ -303,8 +301,8 @@ export default function VoorraadbeheerHoreca() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
         "@context": "https://schema.org",
         "@type": "Article",
-        "headline": "Voorraadbeheer voor Horeca | Restaurant & Caf� Stockbeheer",
-        "description": "Voorraadbeheer voor horeca: complete gids voor restaurants, caf�s en bakkers. Ontdek hoe je eenvoudig je horeca voorraad beheert, verspilling voorkomt en voldoet aan voedselveiligheidseisen.",
+        "headline": "Voorraadbeheer voor Horeca: Tips & Gratis Software",
+        "description": "Optimaliseer je horeca voorraadbeheer met onze gratis software. Voorkom verspilling, bespaar kosten en verbeter je menuplanning.",
         "image": "https://www.stockflow.be/optimized/Inventory-Management.png",
         "author": {
           "@type": "Organization",

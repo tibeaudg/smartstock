@@ -33,10 +33,10 @@ export default function VoorraadbeheerSoftware() {
          <SeoPageLayout
        title="Stockbeheer">
       <SEO
-        title="Stockbeheer | Voorraadbeheer App | stockflow"
-        description="Stockbeheer: beheer je voorraad eenvoudig via je smartphone of tablet. Ontdek de voordelen van een mobiele voorraadbeheer app."
-        keywords="Stockbeheer, voorraadbeheer app, voorraadbeheer smartphone, voorraadbeheer tablet, mobiele Stockbeheer, voorraadbeheer mobiel, voorraadbeheer app downloaden, voorraadbeheer iOS, voorraadbeheer Android, voorraadbeheer offline, voorraadbeheer barcode scanning, voorraadbeheer realtime, voorraadbeheer team, voorraadbeheer onderweg"
-        url="https://www.stockflow.be/voorraadbeheer-software"
+        title="Gratis Stockbeheer voor Kleine Ondernemers | stockflow"
+        description="Beheer je voorraad eenvoudig online. Gratis stockbeheer voor winkels, horeca en zelfstandigen. Start direct met stockflow – geen kosten."
+        keywords="stockbeheer, gratis stockbeheer, voorraadbeheer software, stockbeheer programma, magazijnbeheer software, inventarisatie software, stockbeheer app, voorraadbeheer app, stockflow, gratis voorraadbeheer, KMO software, kleine onderneming software"
+        url="https://www.stockflow.be/stockbeheer"
       />
 
       {/* Hero Section - Split Layout */}
