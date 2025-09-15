@@ -15,6 +15,8 @@ interface Product {
   sale_price: number;
   status: string | null;
   image_url?: string | null; // <-- toegevoegd
+  is_variant?: boolean;
+  variant_name?: string | null;
 }
 
 export const useStockMovement = (
@@ -68,7 +70,7 @@ export const useStockMovement = (
 
       const transactionData = {
         product_id: product.id,
-        product_name: product.name,
+        product_name: product.is_variant && product.variant_name ? `${product.name} - ${product.variant_name}` : product.name,
         transaction_type: transactionType,
         quantity: quantityNum,
         unit_price: transactionType === 'incoming' ? product.purchase_price : product.sale_price,
@@ -76,7 +78,9 @@ export const useStockMovement = (
         created_by: user.id, // Nieuwe kolom voor relaties
         branch_id: activeBranch.branch_id,
         reference_number: `MANUAL_${transactionType.toUpperCase()}`,
-        notes: `Handmatige ${transactionType === 'incoming' ? 'toevoeging' : 'verwijdering'} van voorraad`
+        notes: `Handmatige ${transactionType === 'incoming' ? 'toevoeging' : 'verwijdering'} van voorraad`,
+        variant_id: product.is_variant ? product.id : null,
+        variant_name: product.is_variant ? product.variant_name : null
       };
 
       // Create the transaction

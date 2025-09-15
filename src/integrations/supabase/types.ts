@@ -742,6 +742,12 @@ export type Database = {
           purchase_price: number
           sale_price: number
           barcode: string | null
+          parent_product_id: string | null
+          is_variant: boolean | null
+          variant_name: string | null
+          variant_attributes: Json | null
+          variant_sku: string | null
+          variant_barcode: string | null
         }
         Insert: {
           branch_id?: string | null
@@ -761,6 +767,12 @@ export type Database = {
           purchase_price?: number
           sale_price?: number
           barcode?: string | null
+          parent_product_id?: string | null
+          is_variant?: boolean | null
+          variant_name?: string | null
+          variant_attributes?: Json | null
+          variant_sku?: string | null
+          variant_barcode?: string | null
         }
         Update: {
           branch_id?: string | null
@@ -780,6 +792,12 @@ export type Database = {
           purchase_price?: number
           sale_price?: number
           barcode?: string | null
+          parent_product_id?: string | null
+          is_variant?: boolean | null
+          variant_name?: string | null
+          variant_attributes?: Json | null
+          variant_sku?: string | null
+          variant_barcode?: string | null
         }
         Relationships: [
           {
@@ -847,6 +865,8 @@ export type Database = {
           total_value: number | null
           transaction_type: Database["public"]["Enums"]["transaction_type"]
           unit_price: number | null
+          variant_id: string | null
+          variant_name: string | null
         }
         Insert: {
           branch_id?: string | null
@@ -861,6 +881,8 @@ export type Database = {
           total_value?: number | null
           transaction_type: Database["public"]["Enums"]["transaction_type"]
           unit_price?: number | null
+          variant_id?: string | null
+          variant_name?: string | null
         }
         Update: {
           branch_id?: string | null
@@ -875,6 +897,8 @@ export type Database = {
           total_value?: number | null
           transaction_type?: Database["public"]["Enums"]["transaction_type"]
           unit_price?: number | null
+          variant_id?: string | null
+          variant_name?: string | null
         }
         Relationships: [
           {

@@ -20,6 +20,8 @@ interface Product {
   status: string | null;
   branch_id?: string;
   image_url?: string | null;
+  is_variant?: boolean;
+  variant_name?: string | null;
 }
 
 interface EditProductStockModalProps {
@@ -78,7 +80,7 @@ export const EditProductStockModal = ({
         .from('stock_transactions')
         .insert({
           product_id: product.id,
-          product_name: product.name,
+          product_name: product.is_variant && product.variant_name ? `${product.name} - ${product.variant_name}` : product.name,
           transaction_type: actionType === 'in' ? 'incoming' : 'outgoing',
           quantity: numericQuantity,
           unit_price: product.unit_price,
@@ -86,7 +88,9 @@ export const EditProductStockModal = ({
           notes: `Voorraad ${actionType === 'in' ? 'toegevoegd' : 'verwijderd'} via voorraad beheer`,
           user_id: user.id, // Behoud user_id voor backward compatibility
           created_by: user.id, // Nieuwe kolom voor relaties
-          branch_id: product.branch_id
+          branch_id: product.branch_id,
+          variant_id: product.is_variant ? product.id : null,
+          variant_name: product.is_variant ? product.variant_name : null
         });
       if (transactionError) {
         throw new Error(`Fout bij het maken van de transactie: ${transactionError.message}`);

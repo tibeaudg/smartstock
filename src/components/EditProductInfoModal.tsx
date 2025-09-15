@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -56,6 +57,7 @@ export const EditProductInfoModal = ({
   const [loading, setLoading] = useState(false);
   const [productImage, setProductImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(product.image_url || null);
+  const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
   
   // State voor categorieën en leveranciers
   const [categories, setCategories] = useState<Array<{ id: string; name: string }>>([]);
@@ -350,8 +352,8 @@ export const EditProductInfoModal = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className={`w-full max-w-full mx-auto p-0 ${isMobile ? 'h-full max-h-full rounded-none' : ' md:w-auto md:max-w-lg md:p-6 md:rounded-lg'}`}>
-        <DialogHeader className={`${isMobile ? 'p-4 border-b' : 'p-0'}`}>
+      <DialogContent className={`w-full max-w-full mx-auto p-0 ${isMobile ? 'h-full max-h-full rounded-none bg-white' : 'bg-white md:w-auto md:max-w-4xl md:max-h-[90vh] md:p-6 md:rounded-lg'}`}>
+        <DialogHeader className={`${isMobile ? 'p-4 border-b' : ''}`}>
           {isMobile && onBack && (
             <Button
               variant="ghost"
@@ -366,265 +368,374 @@ export const EditProductInfoModal = ({
             Productinformatie aanpassen: {product.name}
           </DialogTitle>
         </DialogHeader>
-        
-        <div className={`${isMobile ? 'flex-1 overflow-y-auto p-4' : 'mt-2'}`}>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="mb-4">
-              <Label>Productnaam</Label>
-              <Input name="name" value={form.name} onChange={handleChange} disabled={loading} required />
-            </div>
-            <div className="mb-4">
-              <Label>Beschrijving</Label>
-              <Input name="description" value={form.description} onChange={handleChange} disabled={loading} />
-            </div>
-            <div className="mb-4">
-              <Label>Locatie</Label>
-              <Input name="location" value={form.location} onChange={handleChange} disabled={loading} placeholder="Voer locatie in (bijv. A1, Rek 3, etc.)" />
-            </div>
-            <div className="mb-4">
-              <div className={`grid ${isMobile ? 'grid-cols-1 gap-4' : 'grid-cols-2 gap-4'}`}>
+
+        <div className={`${isMobile ? 'flex-1 overflow-y-auto p-4' : 'max-h-[calc(90vh-120px)] overflow-y-auto'}`}>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            
+            {/* Basis Informatie Sectie */}
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <h3 className="text-lg font-semibold text-blue-800 mb-4 flex items-center">
+                <div className="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
+                Basis Informatie
+              </h3>
+              <div className="space-y-4">
                 <div>
-                  <Label>Categorie</Label>
-                  <Popover open={categoryOpen} onOpenChange={setCategoryOpen}>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant="outline"
-                        role="combobox"
-                        aria-expanded={categoryOpen}
-                        className="w-full justify-between py-3 px-3 text-base"
-                        disabled={loading}
-                      >
-                        {form.category_name ? form.category_name : "Selecteer categorie..."}
-                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-full p-0">
-                      <Command>
-                        <CommandInput 
-                          placeholder="Categorie zoeken..." 
-                          value={form.category_name}
-                          onValueChange={(value) => handleCategoryChange(value)}
+                  <Label className="text-blue-700 font-medium">Product Naam *</Label>
+                  <Input 
+                    name="name" 
+                    value={form.name} 
+                    onChange={handleChange} 
+                    disabled={loading} 
+                    required 
+                    className="py-3 px-3 text-base border-blue-200 focus:border-blue-500"
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label className="text-blue-700 font-medium">Voorraad *</Label>
+                    <Input 
+                      name="quantity_in_stock" 
+                      type="number" 
+                      value={form.quantity_in_stock} 
+                      onChange={handleChange} 
+                      disabled={loading} 
+                      min={0} 
+                      required 
+                      className="py-3 px-3 text-base border-blue-200 focus:border-blue-500"
+                    />
+                  </div>
+                  <div>
+                    <Label className="text-blue-700 font-medium">Min. Niveau *</Label>
+                    <Input 
+                      name="minimum_stock_level" 
+                      type="number" 
+                      value={form.minimum_stock_level} 
+                      onChange={handleChange} 
+                      disabled={loading} 
+                      min={0} 
+                      required 
+                      className="py-3 px-3 text-base border-blue-200 focus:border-blue-500"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Geavanceerde Opties Sectie */}
+            <div className="space-y-4">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setShowAdvancedOptions(!showAdvancedOptions)}
+                className="w-full justify-between text-gray-600 hover:text-gray-800 border-gray-300"
+              >
+                <span className="flex items-center">
+                  <div className="w-3 h-3 bg-gray-400 rounded-full mr-2"></div>
+                  Geavanceerde Opties
+                </span>
+                <ChevronsUpDown className={`w-4 h-4 transition-transform ${showAdvancedOptions ? 'rotate-180' : ''}`} />
+              </Button>
+
+              {showAdvancedOptions && (
+                <div className="space-y-6 border border-gray-200 rounded-lg p-4 bg-gray-100">
+                  
+                  {/* Product Details Sectie */}
+                  <div className="bg-white border border-gray-200 rounded-lg p-4">
+                    <h4 className="text-md font-semibold text-gray-700 mb-3 flex items-center">
+                      <div className="w-2 h-2 bg-gray-500 rounded-full mr-2"></div>
+                      Product Details
+                    </h4>
+                    <div className="space-y-4">
+                      <div>
+                        <Label className="text-gray-700">Beschrijving</Label>
+                        <Textarea 
+                          name="description" 
+                          value={form.description} 
+                          onChange={handleChange} 
+                          disabled={loading}
+                          className="resize-none py-3 px-3 text-base border-gray-200 focus:border-gray-400"
+                          rows={3}
                         />
-                        <CommandList>
-                          <CommandEmpty>
-                            <div className="p-2 text-center">
-                              <p className="text-sm text-gray-500 mb-2">Geen categorie gevonden</p>
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                                                     onClick={async () => {
-                                       if (form.category_name.trim()) {
-                                         try {
-                                           const { data: newCategory, error } = await supabase
-                                             .from('categories')
-                                             .insert({ name: form.category_name.trim(), user_id: user.id })
-                                             .select('id, name')
-                                             .single();
-                                           
-                                           if (error) {
-                                             toast.error('Fout bij het aanmaken van categorie');
-                                             return;
-                                           }
-                                           
-                                           setCategories(prev => [...prev, newCategory]);
-                                           // Also set the category ID in the form
-                                           setForm(prev => ({ ...prev, category_id: newCategory.id }));
-                                           setCategoryOpen(false);
-                                           toast.success('Nieuwe categorie toegevoegd!');
-                                         } catch (error) {
-                                           toast.error('Fout bij het aanmaken van categorie');
-                                         }
-                                       }
-                                     }}
-                                className="w-full"
-                              >
-                                <Plus className="w-4 h-4 mr-2" />
-                                "{form.category_name}" toevoegen
-                              </Button>
-                            </div>
-                          </CommandEmpty>
-                          <CommandGroup>
-                            {categories.map((category) => (
-                              <CommandItem
-                                key={category.id}
-                                value={category.name}
-                                onSelect={() => {
-                                  handleCategoryChange(category.name);
-                                  setCategoryOpen(false);
-                                }}
-                              >
-                                <Check
-                                  className={cn(
-                                    "mr-2 h-4 w-4",
-                                    form.category_name === category.name ? "opacity-100" : "opacity-0"
-                                  )}
-                                />
-                                {category.name}
-                              </CommandItem>
-                            ))}
-                          </CommandGroup>
-                        </CommandList>
-                      </Command>
-                    </PopoverContent>
-                  </Popover>
+                      </div>
+
+                      <div>
+                        <Label className="text-gray-700">Locatie</Label>
+                        <Input 
+                          name="location" 
+                          value={form.location} 
+                          onChange={handleChange} 
+                          disabled={loading} 
+                          placeholder="Voer locatie in (bijv. A1, Rek 3, etc.)" 
+                          className="py-3 px-3 text-base border-gray-200 focus:border-gray-400"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Categorie en Leverancier Sectie */}
+                  <div className="bg-white border border-gray-200 rounded-lg p-4">
+                    <h4 className="text-md font-semibold text-gray-700 mb-3 flex items-center">
+                      <div className="w-2 h-2 bg-gray-500 rounded-full mr-2"></div>
+                      Categorie & Leverancier
+                    </h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <Label className="text-gray-700">Categorie</Label>
+                        <Popover open={categoryOpen} onOpenChange={setCategoryOpen}>
+                          <PopoverTrigger asChild>
+                            <Button
+                              variant="outline"
+                              role="combobox"
+                              aria-expanded={categoryOpen}
+                              className="w-full justify-between py-3 px-3 text-base border-gray-200 focus:border-gray-400"
+                              disabled={loading}
+                            >
+                              {form.category_name ? form.category_name : "Selecteer categorie..."}
+                              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-full p-0">
+                            <Command>
+                              <CommandInput 
+                                placeholder="Categorie zoeken..." 
+                                value={form.category_name}
+                                onValueChange={(value) => handleCategoryChange(value)}
+                              />
+                              <CommandList>
+                                <CommandEmpty>
+                                  <div className="p-2 text-center">
+                                    <p className="text-sm text-gray-500 mb-2">Geen categorie gevonden</p>
+                                    <Button
+                                      variant="outline"
+                                      size="sm"
+                                      onClick={async () => {
+                                        if (form.category_name.trim()) {
+                                          try {
+                                            const { data: newCategory, error } = await supabase
+                                              .from('categories')
+                                              .insert({ name: form.category_name.trim(), user_id: user.id })
+                                              .select('id, name')
+                                              .single();
+                                            
+                                            if (error) {
+                                              toast.error('Fout bij het aanmaken van categorie');
+                                              return;
+                                            }
+                                            
+                                            setCategories(prev => [...prev, newCategory]);
+                                            setForm(prev => ({ ...prev, category_id: newCategory.id }));
+                                            setCategoryOpen(false);
+                                            toast.success('Nieuwe categorie toegevoegd!');
+                                          } catch (error) {
+                                            toast.error('Fout bij het aanmaken van categorie');
+                                          }
+                                        }
+                                      }}
+                                      className="w-full"
+                                    >
+                                      <Plus className="w-4 h-4 mr-2" />
+                                      "{form.category_name}" toevoegen
+                                    </Button>
+                                  </div>
+                                </CommandEmpty>
+                                <CommandGroup>
+                                  {categories.map((category) => (
+                                    <CommandItem
+                                      key={category.id}
+                                      value={category.name}
+                                      onSelect={() => {
+                                        handleCategoryChange(category.name);
+                                        setCategoryOpen(false);
+                                      }}
+                                    >
+                                      <Check
+                                        className={cn(
+                                          "mr-2 h-4 w-4",
+                                          form.category_name === category.name ? "opacity-100" : "opacity-0"
+                                        )}
+                                      />
+                                      {category.name}
+                                    </CommandItem>
+                                  ))}
+                                </CommandGroup>
+                              </CommandList>
+                            </Command>
+                          </PopoverContent>
+                        </Popover>
+                      </div>
+
+                      <div>
+                        <Label className="text-gray-700">Leverancier</Label>
+                        <Popover open={supplierOpen} onOpenChange={setSupplierOpen}>
+                          <PopoverTrigger asChild>
+                            <Button
+                              variant="outline"
+                              role="combobox"
+                              aria-expanded={supplierOpen}
+                              className="w-full justify-between py-3 px-3 text-base border-gray-200 focus:border-gray-400"
+                              disabled={loading}
+                            >
+                              {form.supplier_name ? form.supplier_name : "Selecteer leverancier..."}
+                              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-full p-0">
+                            <Command>
+                              <CommandInput 
+                                placeholder="Leverancier zoeken..." 
+                                value={form.supplier_name}
+                                onValueChange={(value) => handleSupplierChange(value)}
+                              />
+                              <CommandList>
+                                <CommandEmpty>
+                                  <div className="p-2 text-center">
+                                    <p className="text-sm text-gray-500 mb-2">Geen leverancier gevonden</p>
+                                    <Button
+                                      variant="outline"
+                                      size="sm"
+                                      onClick={async () => {
+                                        if (form.supplier_name.trim()) {
+                                          try {
+                                            const { data: newSupplier, error } = await supabase
+                                              .from('suppliers')
+                                              .insert({ name: form.supplier_name.trim() })
+                                              .select('id, name')
+                                              .single();
+                                            
+                                            if (error) {
+                                              toast.error('Fout bij het aanmaken van leverancier');
+                                              return;
+                                            }
+                                            
+                                            setSuppliers(prev => [...prev, newSupplier]);
+                                            setForm(prev => ({ ...prev, supplier_id: newSupplier.id }));
+                                            setSupplierOpen(false);
+                                            toast.success('Nieuwe leverancier toegevoegd!');
+                                          } catch (error) {
+                                            toast.error('Fout bij het aanmaken van leverancier');
+                                          }
+                                        }
+                                      }}
+                                      className="w-full"
+                                    >
+                                      <Plus className="w-4 h-4 mr-2" />
+                                      "{form.supplier_name}" toevoegen
+                                    </Button>
+                                  </div>
+                                </CommandEmpty>
+                                <CommandGroup>
+                                  {suppliers.map((supplier) => (
+                                    <CommandItem
+                                      key={supplier.id}
+                                      value={supplier.name}
+                                      onSelect={() => {
+                                        handleSupplierChange(supplier.name);
+                                        setSupplierOpen(false);
+                                      }}
+                                    >
+                                      <Check
+                                        className={cn(
+                                          "mr-2 h-4 w-4",
+                                          form.supplier_name === supplier.name ? "opacity-100" : "opacity-0"
+                                        )}
+                                      />
+                                      {supplier.name}
+                                    </CommandItem>
+                                  ))}
+                                </CommandGroup>
+                              </CommandList>
+                            </Command>
+                          </PopoverContent>
+                        </Popover>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Prijzen Sectie */}
+                  <div className="bg-white border border-gray-200 rounded-lg p-4">
+                    <h4 className="text-md font-semibold text-gray-700 mb-3 flex items-center">
+                      <div className="w-2 h-2 bg-gray-500 rounded-full mr-2"></div>
+                      Prijzen
+                    </h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <Label className="text-gray-700">Inkoopprijs</Label>
+                        <Input
+                          name="purchase_price"
+                          type="number"
+                          step="0.01"
+                          min="0"
+                          value={form.purchase_price}
+                          onChange={handleChange}
+                          disabled={loading}
+                          className="py-3 px-3 text-base border-gray-200 focus:border-gray-400"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-gray-700">Verkoopprijs</Label>
+                        <Input
+                          name="sale_price"
+                          type="number"
+                          step="0.01"
+                          min="0"
+                          value={form.sale_price}
+                          onChange={handleChange}
+                          disabled={loading}
+                          className="py-3 px-3 text-base border-gray-200 focus:border-gray-400"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Afbeelding Sectie */}
+                  <div className="bg-white border border-gray-200 rounded-lg p-4">
+                    <h4 className="text-md font-semibold text-gray-700 mb-3 flex items-center">
+                      <div className="w-2 h-2 bg-gray-500 rounded-full mr-2"></div>
+                      Productfoto
+                    </h4>
+                    <div className="space-y-2">
+                      <Input 
+                        type="file" 
+                        accept="image/*" 
+                        onChange={handleImageChange} 
+                        disabled={loading} 
+                        className="py-2 border-gray-200 focus:border-gray-400" 
+                      />
+                      {imagePreview && (
+                        <img 
+                          src={imagePreview} 
+                          alt="Preview" 
+                          className="mt-2 w-24 h-24 max-w-full object-cover rounded border mx-auto" 
+                        />
+                      )}
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <Label>Leverancier</Label>
-                  <Popover open={supplierOpen} onOpenChange={setSupplierOpen}>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant="outline"
-                        role="combobox"
-                        aria-expanded={supplierOpen}
-                        className="w-full justify-between py-3 px-3 text-base"
-                        disabled={loading}
-                      >
-                        {form.supplier_name ? form.supplier_name : "Selecteer leverancier..."}
-                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-full p-0">
-                                             <Command>
-                         <CommandInput 
-                           placeholder="Leverancier zoeken..." 
-                           value={form.supplier_name}
-                           onValueChange={(value) => handleSupplierChange(value)}
-                         />
-                        <CommandList>
-                          <CommandEmpty>
-                            <div className="p-2 text-center">
-                              <p className="text-sm text-gray-500 mb-2">Geen leverancier gevonden</p>
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={async () => {
-                                  if (form.supplier_name.trim()) {
-                                    // Voeg nieuwe leverancier toe aan database
-                                    try {
-                                      const { data: newSupplier, error } = await supabase
-                                        .from('suppliers')
-                                        .insert({ name: form.supplier_name.trim() })
-                                        .select('id, name')
-                                        .single();
-                                      
-                                      if (error) {
-                                        toast.error('Fout bij het aanmaken van leverancier');
-                                        return;
-                                      }
-                                      
-                                      setSuppliers(prev => [...prev, newSupplier]);
-                                      // Also set the supplier ID in the form
-                                      setForm(prev => ({ ...prev, supplier_id: newSupplier.id }));
-                                      setSupplierOpen(false);
-                                      toast.success('Nieuwe leverancier toegevoegd!');
-                                    } catch (error) {
-                                      toast.error('Fout bij het aanmaken van leverancier');
-                                    }
-                                  }
-                                }}
-                                className="w-full"
-                              >
-                                <Plus className="w-4 h-4 mr-2" />
-                                "{form.supplier_name}" toevoegen
-                              </Button>
-                            </div>
-                          </CommandEmpty>
-                          <CommandGroup>
-                            {suppliers.map((supplier) => (
-                              <CommandItem
-                                key={supplier.id}
-                                value={supplier.name}
-                                onSelect={() => {
-                                  handleSupplierChange(supplier.name);
-                                  setSupplierOpen(false);
-                                }}
-                              >
-                                <Check
-                                  className={cn(
-                                    "mr-2 h-4 w-4",
-                                    form.supplier_name === supplier.name ? "opacity-100" : "opacity-0"
-                                  )}
-                                />
-                                {supplier.name}
-                              </CommandItem>
-                            ))}
-                          </CommandGroup>
-                        </CommandList>
-                      </Command>
-                    </PopoverContent>
-                  </Popover>
-                </div>
-              </div>
-            </div>
-            <div className="mb-4">
-              <Label>Voorraad</Label>
-              <Input name="quantity_in_stock" type="number" value={form.quantity_in_stock} onChange={handleChange} disabled={loading} min={0} required />
-            </div>
-            <div className="mb-4">
-              <Label>Min. Niveau</Label>
-              <Input name="minimum_stock_level" type="number" value={form.minimum_stock_level} onChange={handleChange} disabled={loading} min={0} required />
-            </div>
-            <div className="mb-4">
-              <div className={`grid ${isMobile ? 'grid-cols-1 gap-4' : 'grid-cols-2 gap-4'}`}>
-                <div>
-                  <Label htmlFor="purchase_price">Inkoopprijs</Label>
-                  <Input
-                    id="purchase_price"
-                    name="purchase_price"
-                    type="number"
-                    step="0.01"
-                    min="0"
-                    value={form.purchase_price}
-                    onChange={handleChange}
-                    disabled={loading}
-                    required
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="sale_price">Verkoopprijs</Label>
-                  <Input
-                    id="sale_price"
-                    name="sale_price"
-                    type="number"
-                    step="0.01"
-                    min="0"
-                    value={form.sale_price}
-                    onChange={handleChange}
-                    disabled={loading}
-                    required
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="mb-4">
-              <Label>Productfoto</Label>
-              <Input type="file" accept="image/*" onChange={handleImageChange} disabled={loading} />
-              {imagePreview && (
-                <img src={imagePreview} alt="Preview" className="mt-2 w-24 h-24 object-cover rounded border" />
               )}
             </div>
           </form>
         </div>
 
-        <div className={`${isMobile ? 'p-4 border-t bg-gray-50' : 'mt-4'}`}>
-          <div className={`flex ${isMobile ? 'flex-col gap-3' : 'justify-between gap-2'}`}>
+        <div className={`${isMobile ? 'p-4 border-t bg-gray-50' : 'pt-4'}`}>
+          <div className={`flex gap-2 ${isMobile ? 'flex-col' : 'flex-col sm:flex-row justify-between space-y-2 sm:space-y-0 sm:space-x-2'}`}>
             <Button 
               type="button" 
               variant="destructive" 
               onClick={handleDelete} 
               disabled={loading}
-              className={`flex items-center gap-2 ${isMobile ? 'w-full' : ''}`}
+              className={`flex items-center gap-2 ${isMobile ? 'w-full' : 'w-full sm:w-auto'}`}
             >
               <Trash2 className="h-4 w-4" />
               Verwijderen
             </Button>
-            <div className={`flex gap-2 ${isMobile ? 'w-full' : ''}`}>
+            <div className={`flex gap-2 ${isMobile ? 'flex-col' : 'flex-row'}`}>
               <Button 
                 type="button" 
                 variant="outline" 
                 onClick={onClose} 
                 disabled={loading}
-                className={isMobile ? 'flex-1' : ''}
+                className={isMobile ? 'w-full' : 'w-full sm:w-auto'}
               >
                 Annuleren
               </Button>
@@ -632,7 +743,7 @@ export const EditProductInfoModal = ({
                 type="submit" 
                 disabled={loading}
                 onClick={handleSubmit}
-                className={isMobile ? 'flex-1' : ''}
+                className={isMobile ? 'w-full' : 'w-full sm:w-auto'}
               >
                 {loading ? 'Bijwerken...' : 'Productinformatie bijwerken'}
               </Button>

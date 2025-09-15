@@ -19,6 +19,7 @@ import { useMobile } from '@/hooks/use-mobile';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Switch } from '@/components/ui/switch';
 import { cn } from '@/lib/utils';
 
 interface AddProductModalProps {
@@ -50,6 +51,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
   const [productImage, setProductImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [showUpgradeNotice, setShowUpgradeNotice] = useState(false);
+  const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
   const navigate = useNavigate();
   const { isMobile } = useMobile();
   
@@ -58,6 +60,18 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
   const [suppliers, setSuppliers] = useState<Array<{ id: string; name: string }>>([]);
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [supplierOpen, setSupplierOpen] = useState(false);
+  // Variants UI state
+  const [hasVariants, setHasVariants] = useState(false);
+  const [variants, setVariants] = useState<Array<{
+    variantName: string;
+    quantityInStock: number;
+    minimumStockLevel: number;
+    purchasePrice: number;
+    salePrice: number;
+    sku?: string;
+    barcode?: string;
+    location?: string;
+  }>>([]);
   
   // Gebruik de page refresh hook
   usePageRefresh();
@@ -84,6 +98,11 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
     const checkDuplicate = async () => {
       const name = form.getValues('name').trim();
       if (!name) {
+        setDuplicateName(false);
+        return;
+      }
+      // Voor varianten laten we duplicate namen toe; validatie alleen voor hoofdproduct
+      if (hasVariants) {
         setDuplicateName(false);
         return;
       }
@@ -190,6 +209,24 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
       return;
     }
 
+    // Validatie voor varianten
+    if (hasVariants) {
+      const validVariants = variants.filter(v => v.variantName.trim());
+      if (validVariants.length === 0) {
+        toast.error('Voeg minimaal één variant toe');
+        return;
+      }
+      
+      // Controleer of alle varianten verplichte velden hebben
+      for (const variant of validVariants) {
+        if (!variant.variantName.trim()) {
+          toast.error('Alle varianten moeten een naam hebben');
+          return;
+        }
+        // Prijzen zijn niet verplicht
+      }
+    }
+
     setLoading(true);
     try {      
       // Skip license check for now - function doesn't exist
@@ -273,30 +310,31 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
         imageUrl = `${SUPABASE_URL}/storage/v1/object/public/product-images/${fileName}`;
       }
 
-      // Create product with branch_id
+      if (!hasVariants) {
+        // Enkel hoofdproduct aanmaken (zonder varianten)
       const productData = {
         name: data.name,
         description: data.description || null,
         quantity_in_stock: data.quantityInStock,
         minimum_stock_level: data.minimumStockLevel,
-        unit_price: data.purchasePrice, // legacy fallback
+          unit_price: data.purchasePrice,
         purchase_price: data.purchasePrice,
         sale_price: data.salePrice,
         branch_id: activeBranch.branch_id,
         image_url: imageUrl,
-        user_id: user.id || (user?.id ?? ''), // fallback voor zekerheid
+          user_id: user.id || (user?.id ?? ''),
         supplier_id: supplierId,
         category_id: categoryId,
         location: data.location.trim() || null,
+          is_variant: false,
+          parent_product_id: null,
+          variant_name: null,
       };
-
-
       const { data: insertedProduct, error: productError } = await supabase
         .from('products')
         .insert(productData)
         .select()
         .single();
-
       if (productError) {
         console.error('Error adding product:', productError);
         toast.error(`Fout bij het toevoegen van product: ${productError.message}`);
@@ -304,37 +342,125 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
       }
       // Direct na toevoegen: forceer refresh van productCount
       queryClient.invalidateQueries({ queryKey: ['productCount', activeBranch.branch_id, user.id] });
-
-      // Always create a transaction for new products
+        // Initiele transactie
       const stockTransactionData = {
         product_id: insertedProduct.id,
         product_name: data.name,
         transaction_type: 'incoming' as const,
         quantity: data.quantityInStock || 0,
         unit_price: data.purchasePrice,
-        user_id: user.id, // Behoud user_id voor backward compatibility
-        created_by: user.id, // Nieuwe kolom voor relaties
+          user_id: user.id,
+          created_by: user.id,
         branch_id: activeBranch.branch_id,
         reference_number: 'INITIAL_STOCK',
         notes: 'Nieuw product toegevoegd'
       };
-
-      
       const { error: transactionError } = await supabase
         .from('stock_transactions')
         .insert(stockTransactionData);
-
       if (transactionError) {
         console.error('Error creating initial stock transaction:', transactionError);
         toast.error(`Product aangemaakt maar voorraad transactie mislukt: ${transactionError.message}`);
       } else {
-        console.log('Initial stock transaction created successfully');
-        // Invalidate stock transactions query to refresh the movements list
+          queryClient.invalidateQueries({ queryKey: ['stockTransactions'] });
+        }
+      } else {
+        // Hoofdproduct + varianten in batch
+        const parentData = {
+          name: data.name,
+          description: data.description || null,
+          quantity_in_stock: 0,
+          minimum_stock_level: data.minimumStockLevel,
+          unit_price: data.purchasePrice,
+          purchase_price: data.purchasePrice,
+          sale_price: data.salePrice,
+          branch_id: activeBranch.branch_id,
+          image_url: imageUrl,
+          user_id: user.id || (user?.id ?? ''),
+          supplier_id: supplierId,
+          category_id: categoryId,
+          location: data.location.trim() || null,
+          is_variant: false,
+          parent_product_id: null,
+          variant_name: null,
+        };
+        const { data: parent, error: parentError } = await supabase
+          .from('products')
+          .insert(parentData)
+          .select()
+          .single();
+        if (parentError || !parent) {
+          console.error('Error creating parent product:', parentError);
+          toast.error('Fout bij aanmaken hoofdproduct');
+          return;
+        }
+        // Maak varianten
+        const variantRows = variants.filter(v => v.variantName.trim()).map(v => ({
+          name: data.name, // zelfde basisnaam
+          description: data.description || null,
+          quantity_in_stock: v.quantityInStock || 0,
+          minimum_stock_level: v.minimumStockLevel ?? 0,
+          unit_price: v.purchasePrice,
+          purchase_price: v.purchasePrice,
+          sale_price: v.salePrice,
+          branch_id: activeBranch.branch_id,
+          image_url: imageUrl,
+          user_id: user.id || (user?.id ?? ''),
+          supplier_id: supplierId,
+          category_id: categoryId,
+          location: v.location?.trim() || data.location.trim() || null,
+          is_variant: true,
+          parent_product_id: parent.id,
+          variant_name: v.variantName.trim(),
+          variant_sku: v.sku || null,
+          variant_barcode: v.barcode || null,
+        }));
+        let insertedVariants: any[] = [];
+        if (variantRows.length > 0) {
+          const { data: createdVariants, error: varErr } = await supabase
+            .from('products')
+            .insert(variantRows)
+            .select();
+          if (varErr) {
+            console.error('Error creating variants:', varErr);
+            toast.error('Fout bij aanmaken varianten');
+            return;
+          }
+          insertedVariants = createdVariants || [];
+          // Transacties voor elke variant met startvoorraad
+          const transactions = insertedVariants.map((vp, idx) => ({
+            product_id: vp.id,
+            product_name: `${data.name} - ${vp.variant_name}`,
+            transaction_type: 'incoming' as const,
+            quantity: variantRows[idx].quantity_in_stock || 0,
+            unit_price: variantRows[idx].purchase_price,
+            user_id: user.id,
+            created_by: user.id,
+            branch_id: activeBranch.branch_id,
+            reference_number: 'INITIAL_STOCK_VARIANT',
+            notes: 'Nieuw variant toegevoegd',
+            variant_id: vp.id,
+            variant_name: vp.variant_name,
+          }));
+          if (transactions.length > 0) {
+            const { error: tErr } = await supabase
+              .from('stock_transactions')
+              .insert(transactions);
+            if (tErr) {
+              console.error('Error creating variant transactions:', tErr);
+              toast.error('Varianten aangemaakt maar initiele transacties faalden');
+            }
+          }
+        }
+        // refresh counters
+        queryClient.invalidateQueries({ queryKey: ['productCount', activeBranch.branch_id, user.id] });
         queryClient.invalidateQueries({ queryKey: ['stockTransactions'] });
       }
 
-      toast.success('Product succesvol toegevoegd!');
+      toast.success(hasVariants ? 'Hoofdproduct en varianten toegevoegd!' : 'Product succesvol toegevoegd!');
       form.reset();
+      setVariants([]);
+      setHasVariants(false);
       // Skip license check for now - function doesn't exist
       // TODO: Implement proper license checking if needed
       console.log('[AddProductModal] user.id:', user.id, 'product added successfully');
@@ -374,23 +500,36 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className={`w-full max-w-full mx-auto p-0 ${isMobile ? 'h-full max-h-full rounded-none bg-white' : 'bg-white md:w-auto md:max-w-lg md:p-6 md:rounded-lg'}`}>
+      <DialogContent className={`w-full max-w-full mx-auto p-0 ${isMobile ? 'h-full max-h-full rounded-none bg-white' : 'bg-white md:w-auto md:max-w-4xl md:max-h-[90vh] md:p-6 md:rounded-lg'}`}>
         <DialogHeader className={`${isMobile ? 'p-4 border-b' : ''}`}>
           <DialogTitle>Nieuw Product Toevoegen</DialogTitle>
         </DialogHeader>
 
-        <div className={`${isMobile ? 'flex-1 overflow-y-auto p-4' : ''}`}>
+        <div className={`${isMobile ? 'flex-1 overflow-y-auto p-4' : 'max-h-[calc(90vh-120px)] overflow-y-auto'}`}>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+            <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+              
+              {/* Basis Informatie Sectie */}
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <h3 className="text-lg font-semibold text-blue-800 mb-4 flex items-center">
+                  <div className="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
+                  Basis Informatie
+                </h3>
+                <div className="space-y-4">
             <FormField
               control={form.control}
               name="name"
               rules={{ required: 'Product naam is verplicht' }}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Product Naam *</FormLabel>
+                        <FormLabel className="text-blue-700 font-medium">Product Naam *</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="Voer product naam in" disabled={loading} className="py-3 px-3 text-base" />
+                          <Input 
+                            {...field} 
+                            placeholder="Voer product naam in" 
+                            disabled={loading} 
+                            className="py-3 px-3 text-base border-blue-200 focus:border-blue-500" 
+                          />
                   </FormControl>
                   {duplicateName && (
                     <div className="flex items-center text-sm text-red-600 mt-1">
@@ -403,18 +542,102 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
               )}
             />
 
+                  {/* Voorraad velden - alleen tonen als geen varianten */}
+                  {!hasVariants && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <FormField
+                      control={form.control}
+                      name="quantityInStock"
+                      rules={{ 
+                        required: hasVariants ? false : 'Voorraad is verplicht',
+                        min: { value: 0, message: 'Aantal in voorraad moet 0 of meer zijn' }
+                      }}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-blue-700 font-medium">Voorraad {!hasVariants && '*'}</FormLabel>
+                          <FormControl>
+                            <Input 
+                              {...field} 
+                              type="number" 
+                              min="0"
+                              placeholder="0"
+                              disabled={loading}
+                              onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                              className="py-3 px-3 text-base border-blue-200 focus:border-blue-500"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="minimumStockLevel"
+                      rules={{ 
+                        required: hasVariants ? false : 'Minimum niveau is verplicht',
+                        min: { value: 0, message: 'Minimum niveau moet 0 of meer zijn' }
+                      }}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-blue-700 font-medium">Min. Niveau {!hasVariants && '*'}</FormLabel>
+                          <FormControl>
+                            <Input 
+                              {...field} 
+                              type="number" 
+                              min="0"
+                              placeholder="10"
+                              disabled={loading}
+                              onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                              className="py-3 px-3 text-base border-blue-200 focus:border-blue-500"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Geavanceerde Opties Sectie */}
+              <div className="space-y-4">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setShowAdvancedOptions(!showAdvancedOptions)}
+                  className="w-full justify-between text-gray-600 hover:text-gray-800 border-gray-300"
+                >
+                  <span className="flex items-center">
+                    <div className="w-3 h-3 bg-gray-400 rounded-full mr-2"></div>
+                    Geavanceerde Opties
+                  </span>
+                  <ChevronsUpDown className={`w-4 h-4 transition-transform ${showAdvancedOptions ? 'rotate-180' : ''}`} />
+                </Button>
+
+                {showAdvancedOptions && (
+                  <div className="space-y-6 border border-gray-200 rounded-lg p-4 bg-gray-100">
+                    
+                    {/* Product Details Sectie */}
+                    <div className="bg-white border border-gray-200 rounded-lg p-4">
+                      <h4 className="text-md font-semibold text-gray-700 mb-3 flex items-center">
+                        <div className="w-2 h-2 bg-gray-500 rounded-full mr-2"></div>
+                        Product Details
+                      </h4>
+                      <div className="space-y-4">
             <FormField
               control={form.control}
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Beschrijving</FormLabel>
+                              <FormLabel className="text-gray-700">Beschrijving</FormLabel>
                   <FormControl>
                     <Textarea 
                       {...field} 
                       placeholder="Voer product beschrijving in" 
                       disabled={loading}
-                      className="resize-none py-3 px-3 text-base"
+                                  className="resize-none py-3 px-3 text-base border-gray-200 focus:border-gray-400"
                       rows={3}
                     />
                   </FormControl>
@@ -423,33 +646,75 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
               )}
             />
 
+                        {/* Variant Toggle */}
+                        <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <h4 className="text-sm font-medium text-gray-700">Heeft varianten?</h4>
+                              <p className="text-xs text-gray-500 mt-1">
+                                Schakel dit in om meerdere varianten van dit product toe te voegen (bijv. verschillende kleuren, maten)
+                              </p>
+                            </div>
+                <Switch
+                  checked={hasVariants}
+                  onCheckedChange={(checked) => {
+                    setHasVariants(checked);
+                    if (checked && variants.length === 0) {
+                      // Voeg standaard een variant toe wanneer ingeschakeld
+                      setVariants([{
+                        variantName: '',
+                        quantityInStock: 0,
+                        minimumStockLevel: 0,
+                        purchasePrice: 0,
+                        salePrice: 0,
+                        sku: '',
+                        barcode: '',
+                        location: ''
+                      }]);
+                    } else if (!checked) {
+                      // Reset variants wanneer uitgeschakeld
+                      setVariants([]);
+                    }
+                  }}
+                  disabled={loading}
+                />
+                          </div>
+                        </div>
+
             <FormField
               control={form.control}
               name="location"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Locatie</FormLabel>
+                              <FormLabel className="text-gray-700">Locatie</FormLabel>
                   <FormControl>
                     <Input 
                       {...field} 
                       placeholder="Voer locatie in (bijv. A1, Rek 3, etc.)" 
                       disabled={loading}
-                      className="py-3 px-3 text-base"
+                                  className="py-3 px-3 text-base border-gray-200 focus:border-gray-400"
                     />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+                      </div>
+                    </div>
 
-            {/* Category and Supplier fields */}
+                    {/* Categorie en Leverancier Sectie */}
+                    <div className="bg-white border border-gray-200 rounded-lg p-4">
+                      <h4 className="text-md font-semibold text-gray-700 mb-3 flex items-center">
+                        <div className="w-2 h-2 bg-gray-500 rounded-full mr-2"></div>
+                        Categorie & Leverancier
+                      </h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <FormField
                 control={form.control}
                 name="categoryName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Categorie</FormLabel>
+                              <FormLabel className="text-gray-700">Categorie</FormLabel>
                     <FormControl>
                       <Popover open={categoryOpen} onOpenChange={setCategoryOpen}>
                         <PopoverTrigger asChild>
@@ -457,7 +722,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                             variant="outline"
                             role="combobox"
                             aria-expanded={categoryOpen}
-                            className="w-full justify-between py-3 px-3 text-base"
+                                      className="w-full justify-between py-3 px-3 text-base border-gray-200 focus:border-gray-400"
                             disabled={loading}
                           >
                             {field.value ? field.value : "Selecteer categorie..."}
@@ -493,7 +758,6 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                                            }
                                            
                                            setCategories(prev => [...prev, newCategory]);
-                                           // Also set the category ID in the form
                                            form.setValue('categoryId', newCategory.id);
                                            setCategoryOpen(false);
                                            toast.success('Nieuwe categorie toegevoegd!');
@@ -516,7 +780,6 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                                     value={category.name}
                                     onSelect={() => {
                                       field.onChange(category.name);
-                                      // Also set the category ID
                                       form.setValue('categoryId', category.id);
                                       setCategoryOpen(false);
                                     }}
@@ -546,7 +809,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                 name="supplierName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Leverancier</FormLabel>
+                              <FormLabel className="text-gray-700">Leverancier</FormLabel>
                     <FormControl>
                       <Popover open={supplierOpen} onOpenChange={setSupplierOpen}>
                         <PopoverTrigger asChild>
@@ -554,7 +817,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                             variant="outline"
                             role="combobox"
                             aria-expanded={supplierOpen}
-                            className="w-full justify-between py-3 px-3 text-base"
+                                      className="w-full justify-between py-3 px-3 text-base border-gray-200 focus:border-gray-400"
                             disabled={loading}
                           >
                             {field.value ? field.value : "Selecteer leverancier..."}
@@ -590,7 +853,6 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                                            }
                                            
                                            setSuppliers(prev => [...prev, newSupplier]);
-                                           // Also set the supplier ID in the form
                                            form.setValue('supplierId', newSupplier.id);
                                            setSupplierOpen(false);
                                            toast.success('Nieuwe leverancier toegevoegd!');
@@ -613,7 +875,6 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                                     value={supplier.name}
                                     onSelect={() => {
                                       field.onChange(supplier.name);
-                                      // Also set the supplier ID
                                       form.setValue('supplierId', supplier.id);
                                       setSupplierOpen(false);
                                     }}
@@ -637,29 +898,36 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                   </FormItem>
                 )}
               />
+                      </div>
             </div>
 
-            {/* Responsive grid: 1 kolom op mobiel, 3 op desktop */}
-            <div className=" grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {/* Prijzen Sectie - alleen tonen als geen varianten */}
+                    {!hasVariants && (
+                    <div className="bg-white border border-gray-200 rounded-lg p-4">
+                      <h4 className="text-md font-semibold text-gray-700 mb-3 flex items-center">
+                        <div className="w-2 h-2 bg-gray-500 rounded-full mr-2"></div>
+                        Prijzen
+                      </h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <FormField
                 control={form.control}
-                name="quantityInStock"
+                          name="purchasePrice"
                 rules={{ 
-                  required: 'Voorraad is verplicht',
-                  min: { value: 1, message: 'Aantal in voorraad kan niet 0 zijn!' }
+                            required: false,
+                            min: { value: 0, message: 'Moet 0 of meer zijn' }
                 }}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Voorraad *</FormLabel>
+                              <FormLabel className="text-gray-700">Inkoopprijs</FormLabel>
                     <FormControl>
                                               <Input 
                         {...field} 
                         type="number" 
+                                  step="0.01"
                         min="0"
-                        placeholder="0"
                         disabled={loading}
-                        onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
-                        className="py-3 px-3 text-base"
+                                  onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
+                                  className="py-3 px-3 text-base border-gray-200 focus:border-gray-400"
                       />
                     </FormControl>
                     <FormMessage />
@@ -669,64 +937,265 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
 
               <FormField
                 control={form.control}
-                name="minimumStockLevel"
+                          name="salePrice"
                 rules={{ 
-                  required: 'Minimum niveau is verplicht',
-                  min: { value: 0, message: 'Minimum niveau moet 0 of meer zijn' }
+                            required: false,
+                            min: { value: 0, message: 'Moet 0 of meer zijn' }
                 }}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Min. Niveau *</FormLabel>
+                              <FormLabel className="text-gray-700">Verkoopprijs</FormLabel>
                     <FormControl>
                                               <Input 
                         {...field} 
                         type="number" 
+                                  step="0.01"
                         min="0"
-                        placeholder="10"
                         disabled={loading}
-                        onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
-                        className="py-3 px-3 text-base"
+                                  onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
+                                  className="py-3 px-3 text-base border-gray-200 focus:border-gray-400"
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+                      </div>
+                    </div>
+                    )}
 
-              {/* Prijsvelden onder elkaar in één kolom */}
-              <div className="flex flex-col gap-2 p-2">
+                    {/* Afbeelding Sectie */}
+                    <div className="bg-white border border-gray-200 rounded-lg p-4">
+                      <h4 className="text-md font-semibold text-gray-700 mb-3 flex items-center">
+                        <div className="w-2 h-2 bg-gray-500 rounded-full mr-2"></div>
+                        Productfoto
+                      </h4>
+                      <div className="space-y-2">
+                        <Input 
+                          type="file" 
+                          accept="image/*" 
+                          onChange={handleImageChange} 
+                          disabled={loading} 
+                          className="py-2 border-gray-200 focus:border-gray-400" 
+                        />
+                        {imagePreview && (
+                          <img 
+                            src={imagePreview} 
+                            alt="Preview" 
+                            className="mt-2 w-24 h-24 max-w-full object-cover rounded border mx-auto" 
+                          />
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Variant Sectie */}
+                    {hasVariants && (
+                      <div className="bg-white border border-gray-200 rounded-lg p-4">
+                        <h4 className="text-md font-semibold text-gray-700 mb-3 flex items-center">
+                          <div className="w-2 h-2 bg-purple-500 rounded-full mr-2"></div>
+                          Product Varianten
+                        </h4>
+                        <div className="space-y-4">
+                          {variants.map((variant, index) => (
+                            <div key={index} className="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                              <div className="flex items-center justify-between mb-3">
+                                <h5 className="text-sm font-medium text-gray-700">Variant {index + 1}</h5>
+                                {variants.length > 1 && (
+                                  <Button
+                                    type="button"
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => {
+                                      const newVariants = variants.filter((_, i) => i !== index);
+                                      setVariants(newVariants);
+                                    }}
+                                    className="text-red-600 hover:text-red-700"
+                                  >
+                                    Verwijder
+                                  </Button>
+                                )}
+                              </div>
+                              
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <FormLabel htmlFor="purchasePrice">Inkoopprijs</FormLabel>
+                                  <Label htmlFor={`variant-name-${index}`} className="text-sm font-medium text-gray-700">
+                                    Variant naam *
+                                  </Label>
                   <Input
-                    id="purchasePrice"
+                                    id={`variant-name-${index}`}
+                                    value={variant.variantName}
+                                    onChange={(e) => {
+                                      const newVariants = [...variants];
+                                      newVariants[index].variantName = e.target.value;
+                                      setVariants(newVariants);
+                                    }}
+                                    placeholder="bijv. Geel, Groen, Maat M"
+                                    className="mt-1"
+                                    disabled={loading}
+                                  />
+                                </div>
+                                
+                                <div>
+                                  <Label htmlFor={`variant-sku-${index}`} className="text-sm font-medium text-gray-700">
+                                    SKU
+                                  </Label>
+                                  <Input
+                                    id={`variant-sku-${index}`}
+                                    value={variant.sku}
+                                    onChange={(e) => {
+                                      const newVariants = [...variants];
+                                      newVariants[index].sku = e.target.value;
+                                      setVariants(newVariants);
+                                    }}
+                                    placeholder="Variant SKU"
+                                    className="mt-1"
+                                    disabled={loading}
+                                  />
+                                </div>
+                                
+                                <div>
+                                  <Label htmlFor={`variant-barcode-${index}`} className="text-sm font-medium text-gray-700">
+                                    Barcode
+                                  </Label>
+                                  <Input
+                                    id={`variant-barcode-${index}`}
+                                    value={variant.barcode}
+                                    onChange={(e) => {
+                                      const newVariants = [...variants];
+                                      newVariants[index].barcode = e.target.value;
+                                      setVariants(newVariants);
+                                    }}
+                                    placeholder="Variant barcode"
+                                    className="mt-1"
+                                    disabled={loading}
+                                  />
+                                </div>
+                                
+                                <div>
+                                  <Label htmlFor={`variant-location-${index}`} className="text-sm font-medium text-gray-700">
+                                    Locatie
+                                  </Label>
+                                  <Input
+                                    id={`variant-location-${index}`}
+                                    value={variant.location}
+                                    onChange={(e) => {
+                                      const newVariants = [...variants];
+                                      newVariants[index].location = e.target.value;
+                                      setVariants(newVariants);
+                                    }}
+                                    placeholder="bijv. A1, Rek 3"
+                                    className="mt-1"
+                                    disabled={loading}
+                                  />
+                                </div>
+                                
+                                <div>
+                                  <Label htmlFor={`variant-stock-${index}`} className="text-sm font-medium text-gray-700">
+                                    Voorraad *
+                                  </Label>
+                                  <Input
+                                    id={`variant-stock-${index}`}
+                                    type="number"
+                                    min="0"
+                                    value={variant.quantityInStock}
+                                    onChange={(e) => {
+                                      const newVariants = [...variants];
+                                      newVariants[index].quantityInStock = parseInt(e.target.value) || 0;
+                                      setVariants(newVariants);
+                                    }}
+                                    className="mt-1"
+                                    disabled={loading}
+                                  />
+                                </div>
+                                
+                                <div>
+                                  <Label htmlFor={`variant-min-stock-${index}`} className="text-sm font-medium text-gray-700">
+                                    Minimum voorraad
+                                  </Label>
+                                  <Input
+                                    id={`variant-min-stock-${index}`}
+                                    type="number"
+                                    min="0"
+                                    value={variant.minimumStockLevel}
+                                    onChange={(e) => {
+                                      const newVariants = [...variants];
+                                      newVariants[index].minimumStockLevel = parseInt(e.target.value) || 0;
+                                      setVariants(newVariants);
+                                    }}
+                                    className="mt-1"
+                                    disabled={loading}
+                                  />
+                                </div>
+                                
+                                <div>
+                                  <Label htmlFor={`variant-purchase-${index}`} className="text-sm font-medium text-gray-700">
+                                    Inkoopprijs
+                                  </Label>
+                                  <Input
+                                    id={`variant-purchase-${index}`}
                     type="number"
                     step="0.01"
                     min="0"
-                    {...form.register('purchasePrice', { required: true, min: 0 })}
-                    className="py-3 px-3 text-base"
+                                    value={variant.purchasePrice}
+                                    onChange={(e) => {
+                                      const newVariants = [...variants];
+                                      newVariants[index].purchasePrice = parseFloat(e.target.value) || 0;
+                                      setVariants(newVariants);
+                                    }}
+                                    className="mt-1"
+                                    disabled={loading}
                   />
                 </div>
+                                
                 <div>
-                  <Label htmlFor="salePrice">Verkoopprijs</Label>
+                                  <Label htmlFor={`variant-sale-${index}`} className="text-sm font-medium text-gray-700">
+                                    Verkoopprijs
+                                  </Label>
                   <Input
-                    id="salePrice"
+                                    id={`variant-sale-${index}`}
                     type="number"
                     step="0.01"
                     min="0"
-                    {...form.register('salePrice', { required: true, min: 0 })}
-                    className="py-3 px-3 text-base"
+                                    value={variant.salePrice}
+                                    onChange={(e) => {
+                                      const newVariants = [...variants];
+                                      newVariants[index].salePrice = parseFloat(e.target.value) || 0;
+                                      setVariants(newVariants);
+                                    }}
+                                    className="mt-1"
+                                    disabled={loading}
                   />
                 </div>
               </div>
-
-              {/* Afbeelding upload veld */}
-              <div className="flex flex-col gap-2">
-                <Label>Productfoto</Label>
-                <Input type="file" accept="image/*" onChange={handleImageChange} disabled={loading} className="py-2" />
-                {imagePreview && (
-                  <img src={imagePreview} alt="Preview" className="mt-2 w-24 h-24 max-w-full object-cover rounded border mx-auto" />
+                            </div>
+                          ))}
+                          
+                          <Button
+                            type="button"
+                            variant="outline"
+                            onClick={() => {
+                              setVariants([...variants, {
+                                variantName: '',
+                                quantityInStock: 0,
+                                minimumStockLevel: 0,
+                                purchasePrice: 0,
+                                salePrice: 0,
+                                sku: '',
+                                barcode: '',
+                                location: ''
+                              }]);
+                            }}
+                            className="w-full border-dashed border-2 border-gray-300 hover:border-gray-400"
+                            disabled={loading}
+                          >
+                            <Plus className="w-4 h-4 mr-2" />
+                            Variant toevoegen
+                          </Button>
+                        </div>
+                      </div>
                 )}
               </div>
+                )}
             </div>
 
             <div className={`${isMobile ? 'p-4 border-t bg-gray-50' : 'pt-4'}`}>
@@ -745,7 +1214,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                   disabled={loading} 
                   className={isMobile ? 'w-full' : 'w-full sm:w-auto'}
                 >
-                  {loading ? 'Toevoegen...' : 'Product Toevoegen'}
+                  {loading ? 'Toevoegen...' : (hasVariants ? 'Product met Varianten Toevoegen' : 'Product Toevoegen')}
                 </Button>
               </div>
             </div>

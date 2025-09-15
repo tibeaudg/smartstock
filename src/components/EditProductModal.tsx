@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Plus, Minus } from 'lucide-react';
+// Icons niet nodig in deze modal
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { useQueryClient } from '@tanstack/react-query';
@@ -20,6 +20,8 @@ interface Product {
   status: string | null;
   branch_id?: string; // Added branch_id as optional
   image_url?: string | null; // <-- toegevoegd
+  is_variant?: boolean;
+  variant_name?: string | null;
 }
 
 interface EditProductModalProps {
@@ -39,8 +41,7 @@ export const EditProductModal = ({
 }: EditProductModalProps) => {
   const [quantity, setQuantity] = useState<string>('');
   const [loading, setLoading] = useState(false);
-  const [productImage, setProductImage] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(product.image_url || null);
+  // Geen geavanceerde opties in deze modal; enkel quantity aanpassen
   const queryClient = useQueryClient();
   
   // Gebruik de page refresh hook
@@ -89,7 +90,7 @@ export const EditProductModal = ({
         .from('stock_transactions')
         .insert({
           product_id: product.id,
-          product_name: product.name,
+          product_name: product.is_variant && product.variant_name ? `${product.name} - ${product.variant_name}` : product.name,
           transaction_type: actionType === 'in' ? 'incoming' : 'outgoing',
           quantity: numericQuantity,
           unit_price: product.unit_price,
@@ -97,7 +98,9 @@ export const EditProductModal = ({
           notes: `Voorraad ${actionType === 'in' ? 'toegevoegd' : 'verwijderd'} via voorraad beheer`,
           user_id: user.id, // Behoud user_id voor backward compatibility
           created_by: user.id, // Nieuwe kolom voor relaties
-          branch_id: product.branch_id // Add this if you have branch information
+          branch_id: product.branch_id, // Add this if you have branch information
+          variant_id: product.is_variant ? product.id : null,
+          variant_name: product.is_variant ? product.variant_name : null
         })
         .select()
         .single();
@@ -137,60 +140,7 @@ export const EditProductModal = ({
     }
   };
 
-  // Afhandeling voor image preview
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] || null;
-    setProductImage(file);
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => setImagePreview(reader.result as string);
-      reader.readAsDataURL(file);
-    } else {
-      setImagePreview(product.image_url || null);
-    }
-  };
-
-  // Product info update handler
-  const handleProductInfoUpdate = async (data: any) => {
-    setLoading(true);
-    let imageUrl = product.image_url;
-    if (productImage) {
-      const fileExt = productImage.name.split('.').pop();
-      const fileName = `${Date.now()}_${Math.random().toString(36).substring(2, 8)}.${fileExt}`;
-      const { error: uploadError } = await supabase.storage
-        .from('product-images')
-        .upload(fileName, productImage, { upsert: false });
-      if (uploadError) {
-        toast.error('Fout bij uploaden van afbeelding');
-        setLoading(false);
-        return;
-      }
-      // Gebruik het SUPABASE_URL direct uit de client config
-      const SUPABASE_URL = "https://sszuxnqhbxauvershuys.supabase.co";
-      imageUrl = `${SUPABASE_URL}/storage/v1/object/public/product-images/${fileName}`;
-    }
-    const { error: updateError } = await supabase
-      .from('products')
-      .update({
-        name: data.name,
-        description: data.description,
-        quantity_in_stock: data.quantity_in_stock,
-        minimum_stock_level: data.minimum_stock_level,
-        unit_price: data.unit_price,
-        image_url: imageUrl,
-        updated_at: new Date().toISOString(),
-      })
-      .eq('id', product.id);
-    if (updateError) {
-      toast.error('Fout bij het bijwerken van product info');
-      setLoading(false);
-      return;
-    }
-    toast.success('Productinformatie bijgewerkt!');
-    onProductUpdated();
-    onClose();
-    setLoading(false);
-  };
+  // Geen geavanceerde info/afbeeldingsbewerking in deze modal
 
   useEffect(() => {
     if (isOpen) {
@@ -206,25 +156,38 @@ export const EditProductModal = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-sm w-sm max-h-[90vh] overflow-y-auto mx-auto px-4 sm:px-8">
+      <DialogContent className="max-w-md w-full max-h-[90vh] overflow-y-auto mx-auto px-4 sm:px-8">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <span className={actionColor}>{actionTitle}: {product.name}</span>
           </DialogTitle>
         </DialogHeader>
 
-        <div className="py-4">
-          <div className="grid gap-2">
-            <Label htmlFor="quantity">Aantal</Label>
-            <Input
-              id="quantity"
-              type="number"
-              value={quantity}
-              onChange={(e) => setQuantity(e.target.value)}
-              placeholder="Voer aantal in"
-              min="1"
-            />
+        <div className="py-4 space-y-6">
+          
+          {/* Voorraad Bewerking Sectie */}
+          <div className={`border rounded-lg p-4 ${actionType === 'in' ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}`}>
+            <h3 className={`text-lg font-semibold mb-4 flex items-center ${actionType === 'in' ? 'text-green-800' : 'text-red-800'}`}>
+              <div className={`w-3 h-3 rounded-full mr-2 ${actionType === 'in' ? 'bg-green-500' : 'bg-red-500'}`}></div>
+              Voorraad {actionType === 'in' ? 'Toevoegen' : 'Verwijderen'}
+            </h3>
+            <div className="grid gap-2">
+              <Label htmlFor="quantity" className={`font-medium ${actionType === 'in' ? 'text-green-700' : 'text-red-700'}`}>
+                Aantal
+              </Label>
+              <Input
+                id="quantity"
+                type="number"
+                value={quantity}
+                onChange={(e) => setQuantity(e.target.value)}
+                placeholder="Voer aantal in"
+                min="1"
+                className={`py-3 px-3 text-base ${actionType === 'in' ? 'border-green-200 focus:border-green-500' : 'border-red-200 focus:border-red-500'}`}
+              />
+            </div>
           </div>
+
+          {/* Geavanceerde Opties niet nodig voor toevoegen/uithalen */}
         </div>
 
         <DialogFooter>

@@ -27,6 +27,8 @@ export const useStockMovements = () => {
         id,
         product_id,
         product_name,
+        variant_id,
+        variant_name,
         transaction_type,
         quantity,
         unit_price,

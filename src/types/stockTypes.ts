@@ -11,6 +11,14 @@ export type Product = {
   sale_price: number;
   status: string | null;
   image_url?: string | null;
+  // Variants support
+  is_variant?: boolean;
+  parent_product_id?: string | null;
+  variant_name?: string | null;
+  variant_attributes?: Record<string, unknown> | null;
+  variant_sku?: string | null;
+  variant_barcode?: string | null;
+  branch_id?: string | null;
 };
 
 export type StockTransaction = {
@@ -26,6 +34,8 @@ export type StockTransaction = {
   notes: string | null;
   branch_id: string;
   created_by: string;
+  variant_id?: string | null;
+  variant_name?: string | null;
   // Gebruikersinfo
   first_name?: string | null;
   last_name?: string | null;
