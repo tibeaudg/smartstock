@@ -18,6 +18,7 @@ import { Helmet } from 'react-helmet-async';
 import { logger } from '../lib/logger';
 import { useForm } from 'react-hook-form';
 import { FloatingChatButton } from './FloatingChatButton';
+import { useWebsiteTracking } from '@/hooks/useWebsiteTracking';
 
 // Een herbruikbare component voor fade-in animaties bij het scrollen
 const FadeInWhenVisible = ({ children }) => {
@@ -197,6 +198,9 @@ export const HomePage = () => {
   
   // Gebruik de page refresh hook
   usePageRefresh();
+  
+  // Gebruik website tracking
+  useWebsiteTracking();
 
   // Cookie consent & exit-intent state
   const [showCookieBanner, setShowCookieBanner] = useState<boolean>(() => {
@@ -632,13 +636,7 @@ export const HomePage = () => {
         
         <div className="relative z-10 max-w-7xl mx-auto px-4 py-12 md:py-24">
           <div className="text-center">
-            {/* Badge */}
-            <FadeInWhenVisible>
-              <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-medium mb-6">
-                <Sparkles className="h-4 w-4" />
-                <span>32+ Vlaamse KMO's gebruiken stockflow dagelijks</span>
-              </div>
-            </FadeInWhenVisible>
+
 
             {/* Main headline */}
             <FadeInWhenVisible>
@@ -679,9 +677,10 @@ export const HomePage = () => {
                 <Button 
                   data-analytics-id="hero-start" 
                   size="lg" 
-                  className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 py-4 rounded-xl font-semibold hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl text-lg w-full sm:w-auto group"
+                  className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 py-4 rounded-xl font-semibold hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl text-lg w-full sm:w-auto group relative overflow-hidden"
                   onClick={handleLoginClick}
                 >
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
                   <Rocket className="h-5 w-5 mr-2 group-hover:animate-bounce" />
                   Start Nu Gratis!
                   <ArrowRight className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" />
@@ -698,6 +697,8 @@ export const HomePage = () => {
                 </Button>
               </div>
             </FadeInWhenVisible>
+
+
 
             {/* Trust indicators */}
             <FadeInWhenVisible>
@@ -1439,9 +1440,10 @@ export const HomePage = () => {
               <Button 
                 data-analytics-id="final-start" 
                 size="lg" 
-                className="bg-white text-blue-600 px-8 py-4 rounded-xl font-bold hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-2xl text-lg w-full sm:w-auto group"
+                className="bg-white text-blue-600 px-8 py-4 rounded-xl font-bold hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-2xl text-lg w-full sm:w-auto group relative overflow-hidden"
                 onClick={handleLoginClick}
               >
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-100/30 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
                 <Rocket className="h-5 w-5 mr-2 group-hover:animate-bounce" />
                 Start Nu Gratis!
                 <ArrowRight className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" />
@@ -1492,6 +1494,23 @@ export const HomePage = () => {
                 Start vandaag en krijg <strong>gratis onboarding support</strong> ter waarde van €200. 
                 Deze aanbieding is geldig voor de eerste 50 nieuwe gebruikers deze maand.
               </p>
+            </div>
+          </FadeInWhenVisible>
+
+          {/* Social Proof Numbers */}
+          <FadeInWhenVisible>
+            <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-3xl mx-auto">
+              {[
+                { number: "32+", label: "Actieve KMO's" },
+                { number: "€3.200", label: "Gemiddeld bespaard/jaar" },
+                { number: "9 uur", label: "Tijd bespaard/week" },
+                { number: "4.8/5", label: "Klanttevredenheid" }
+              ].map((stat, index) => (
+                <div key={index} className="text-center">
+                  <div className="text-2xl md:text-3xl font-bold text-white mb-1">{stat.number}</div>
+                  <div className="text-sm text-white/70">{stat.label}</div>
+                </div>
+              ))}
             </div>
           </FadeInWhenVisible>
         </div>

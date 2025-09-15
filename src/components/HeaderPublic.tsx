@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Package, X } from 'lucide-react';
 import { NotificationButton } from './NotificationButton';
 import { useNotifications } from '../hooks/useNotifications';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
 interface HeaderProps {
@@ -18,6 +18,7 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButton
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
+  const navigate = useNavigate();
 
   const [showNotifications, setShowNotifications] = useState(false);
   const { notifications, loading, unreadCount, markAllAsRead } = useNotifications();
@@ -38,9 +39,11 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButton
   }, []);
 
   const handleLoginClick = () => {
-    if (onLoginClick) {
-      onLoginClick();
-    }
+    navigate('/auth?mode=login');
+  };
+
+  const handleRegisterClick = () => {
+    navigate('/auth?mode=register');
   };
 
 
@@ -75,8 +78,11 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButton
                 )}
                 {!hideAuthButtons && (
                   <>
-                    <Button size="sm" onClick={handleLoginClick} className="text-sm">
-                      Aanmelden
+                    <Button size="sm" variant="outline" onClick={handleLoginClick} className="text-sm">
+                      Inloggen
+                    </Button>
+                    <Button size="sm" onClick={handleRegisterClick} className="text-sm">
+                      Registreren
                     </Button>
                   </>
                 )}
@@ -153,7 +159,6 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButton
               {/* Mobile Auth Buttons */}
               {!hideAuthButtons && (
                 <div className="space-y-3">
-
                   <Button 
                     variant="outline" 
                     className="w-full border border-blue-600" 
@@ -161,17 +166,12 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButton
                   >
                     Inloggen
                   </Button>
-
-
-
                   <Button 
                     className="w-full" 
-                    onClick={() => { handleLoginClick(); setMobileMenuOpen(false); }}
+                    onClick={() => { handleRegisterClick(); setMobileMenuOpen(false); }}
                   >
-                    Probeer Gratis
+                    Registreren
                   </Button>
-
-
                 </div>
               )}
             </div>

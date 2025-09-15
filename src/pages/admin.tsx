@@ -14,6 +14,7 @@ import { AdminNotificationManager } from '@/components/AdminNotificationManager'
 import { AdminChatList } from '@/components/AdminChatList';
 import AdminCMS from '../components/AdminCMS';
 import { AuthConversionAnalytics } from '@/components/analytics/AuthConversionAnalytics';
+import { WebsiteAnalytics } from '@/components/analytics/WebsiteAnalytics';
 import { useNavigate } from 'react-router-dom';
 
 // Gebruikersbeheer types
@@ -196,7 +197,7 @@ export default function AdminPage() {
   const { user, userProfile } = useAuth();
   const { isMobile } = useMobile();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<'users' | 'features' | 'chats' | 'notifications' | 'blogcms' | 'bloganalytics' | 'conversionanalytics'>('users');
+  const [activeTab, setActiveTab] = useState<'users' | 'features' | 'chats' | 'notifications' | 'blogcms' | 'bloganalytics' | 'conversionanalytics' | 'websiteanalytics'>('users');
   const [selectedUser, setSelectedUser] = useState<UserProfile | null>(null);
   const [companyTypes, setCompanyTypes] = useState<Record<string, { type: string; custom_type: string | null }>>({});
   
@@ -269,13 +270,14 @@ export default function AdminPage() {
     mutationFn: ({ id, blocked }: { id: string; blocked: boolean }) => blockUser(id, blocked),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['userProfiles'] }),
   });
-  const sidebarNavItems: { id: 'users' | 'features' | 'chats' | 'notifications' | 'blogcms' | 'bloganalytics' | 'conversionanalytics'; label: string }[] = [
+  const sidebarNavItems: { id: 'users' | 'features' | 'chats' | 'notifications' | 'blogcms' | 'bloganalytics' | 'conversionanalytics' | 'websiteanalytics'; label: string }[] = [
   { id: 'users', label: 'Gebruikersbeheer' },
   { id: 'features', label: 'Module Management' },
   { id: 'chats', label: 'Chats' },
   { id: 'notifications', label: 'Meldingen' },
   { id: 'blogcms', label: 'Blogpost CMS' },
   { id: 'conversionanalytics', label: 'Conversie Analytics' },
+  { id: 'websiteanalytics', label: 'Website Analytics' },
 ];
 
   // Real-time updates voor admin data
@@ -388,6 +390,9 @@ export default function AdminPage() {
             )}
             {activeTab === 'conversionanalytics' && (
               <AuthConversionAnalytics />
+            )}
+            {activeTab === 'websiteanalytics' && (
+              <WebsiteAnalytics />
             )}
             {activeTab === 'notifications' && (
               <AdminNotificationManager />
