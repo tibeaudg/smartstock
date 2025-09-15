@@ -312,56 +312,56 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
 
       if (!hasVariants) {
         // Enkel hoofdproduct aanmaken (zonder varianten)
-      const productData = {
-        name: data.name,
-        description: data.description || null,
-        quantity_in_stock: data.quantityInStock,
-        minimum_stock_level: data.minimumStockLevel,
+        const productData = {
+          name: data.name,
+          description: data.description || null,
+          quantity_in_stock: data.quantityInStock,
+          minimum_stock_level: data.minimumStockLevel,
           unit_price: data.purchasePrice,
-        purchase_price: data.purchasePrice,
-        sale_price: data.salePrice,
-        branch_id: activeBranch.branch_id,
-        image_url: imageUrl,
+          purchase_price: data.purchasePrice,
+          sale_price: data.salePrice,
+          branch_id: activeBranch.branch_id,
+          image_url: imageUrl,
           user_id: user.id || (user?.id ?? ''),
-        supplier_id: supplierId,
-        category_id: categoryId,
-        location: data.location.trim() || null,
+          supplier_id: supplierId,
+          category_id: categoryId,
+          location: data.location.trim() || null,
           is_variant: false,
           parent_product_id: null,
           variant_name: null,
-      };
-      const { data: insertedProduct, error: productError } = await supabase
-        .from('products')
-        .insert(productData)
-        .select()
-        .single();
-      if (productError) {
-        console.error('Error adding product:', productError);
-        toast.error(`Fout bij het toevoegen van product: ${productError.message}`);
-        return;
-      }
-      // Direct na toevoegen: forceer refresh van productCount
-      queryClient.invalidateQueries({ queryKey: ['productCount', activeBranch.branch_id, user.id] });
+        };
+        const { data: insertedProduct, error: productError } = await supabase
+          .from('products')
+          .insert(productData)
+          .select()
+          .single();
+        if (productError) {
+          console.error('Error adding product:', productError);
+          toast.error(`Fout bij het toevoegen van product: ${productError.message}`);
+          return;
+        }
+        // Direct na toevoegen: forceer refresh van productCount
+        queryClient.invalidateQueries({ queryKey: ['productCount', activeBranch.branch_id, user.id] });
         // Initiele transactie
-      const stockTransactionData = {
-        product_id: insertedProduct.id,
-        product_name: data.name,
-        transaction_type: 'incoming' as const,
-        quantity: data.quantityInStock || 0,
-        unit_price: data.purchasePrice,
+        const stockTransactionData = {
+          product_id: insertedProduct.id,
+          product_name: data.name,
+          transaction_type: 'incoming' as const,
+          quantity: data.quantityInStock || 0,
+          unit_price: data.purchasePrice,
           user_id: user.id,
           created_by: user.id,
-        branch_id: activeBranch.branch_id,
-        reference_number: 'INITIAL_STOCK',
-        notes: 'Nieuw product toegevoegd'
-      };
-      const { error: transactionError } = await supabase
-        .from('stock_transactions')
-        .insert(stockTransactionData);
-      if (transactionError) {
-        console.error('Error creating initial stock transaction:', transactionError);
-        toast.error(`Product aangemaakt maar voorraad transactie mislukt: ${transactionError.message}`);
-      } else {
+          branch_id: activeBranch.branch_id,
+          reference_number: 'INITIAL_STOCK',
+          notes: 'Nieuw product toegevoegd'
+        };
+        const { error: transactionError } = await supabase
+          .from('stock_transactions')
+          .insert(stockTransactionData);
+        if (transactionError) {
+          console.error('Error creating initial stock transaction:', transactionError);
+          toast.error(`Product aangemaakt maar voorraad transactie mislukt: ${transactionError.message}`);
+        } else {
           queryClient.invalidateQueries({ queryKey: ['stockTransactions'] });
         }
       } else {
@@ -646,40 +646,6 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
               )}
             />
 
-                        {/* Variant Toggle */}
-                        <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                          <div className="flex items-center justify-between">
-                            <div>
-                              <h4 className="text-sm font-medium text-gray-700">Heeft varianten?</h4>
-                              <p className="text-xs text-gray-500 mt-1">
-                                Schakel dit in om meerdere varianten van dit product toe te voegen (bijv. verschillende kleuren, maten)
-                              </p>
-                            </div>
-                <Switch
-                  checked={hasVariants}
-                  onCheckedChange={(checked) => {
-                    setHasVariants(checked);
-                    if (checked && variants.length === 0) {
-                      // Voeg standaard een variant toe wanneer ingeschakeld
-                      setVariants([{
-                        variantName: '',
-                        quantityInStock: 0,
-                        minimumStockLevel: 0,
-                        purchasePrice: 0,
-                        salePrice: 0,
-                        sku: '',
-                        barcode: '',
-                        location: ''
-                      }]);
-                    } else if (!checked) {
-                      // Reset variants wanneer uitgeschakeld
-                      setVariants([]);
-                    }
-                  }}
-                  disabled={loading}
-                />
-                          </div>
-                        </div>
 
             <FormField
               control={form.control}
@@ -988,214 +954,252 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                       </div>
                     </div>
 
-                    {/* Variant Sectie */}
-                    {hasVariants && (
-                      <div className="bg-white border border-gray-200 rounded-lg p-4">
-                        <h4 className="text-md font-semibold text-gray-700 mb-3 flex items-center">
-                          <div className="w-2 h-2 bg-purple-500 rounded-full mr-2"></div>
-                          Product Varianten
-                        </h4>
-                        <div className="space-y-4">
-                          {variants.map((variant, index) => (
-                            <div key={index} className="border border-gray-200 rounded-lg p-4 bg-gray-50">
-                              <div className="flex items-center justify-between mb-3">
-                                <h5 className="text-sm font-medium text-gray-700">Variant {index + 1}</h5>
-                                {variants.length > 1 && (
-                                  <Button
-                                    type="button"
-                                    variant="outline"
-                                    size="sm"
-                                    onClick={() => {
-                                      const newVariants = variants.filter((_, i) => i !== index);
-                                      setVariants(newVariants);
-                                    }}
-                                    className="text-red-600 hover:text-red-700"
-                                  >
-                                    Verwijder
-                                  </Button>
-                                )}
-                              </div>
-                              
-                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                                  <Label htmlFor={`variant-name-${index}`} className="text-sm font-medium text-gray-700">
-                                    Variant naam *
-                                  </Label>
-                  <Input
-                                    id={`variant-name-${index}`}
-                                    value={variant.variantName}
-                                    onChange={(e) => {
-                                      const newVariants = [...variants];
-                                      newVariants[index].variantName = e.target.value;
-                                      setVariants(newVariants);
-                                    }}
-                                    placeholder="bijv. Geel, Groen, Maat M"
-                                    className="mt-1"
-                                    disabled={loading}
-                                  />
-                                </div>
-                                
-                                <div>
-                                  <Label htmlFor={`variant-sku-${index}`} className="text-sm font-medium text-gray-700">
-                                    SKU
-                                  </Label>
-                                  <Input
-                                    id={`variant-sku-${index}`}
-                                    value={variant.sku}
-                                    onChange={(e) => {
-                                      const newVariants = [...variants];
-                                      newVariants[index].sku = e.target.value;
-                                      setVariants(newVariants);
-                                    }}
-                                    placeholder="Variant SKU"
-                                    className="mt-1"
-                                    disabled={loading}
-                                  />
-                                </div>
-                                
-                                <div>
-                                  <Label htmlFor={`variant-barcode-${index}`} className="text-sm font-medium text-gray-700">
-                                    Barcode
-                                  </Label>
-                                  <Input
-                                    id={`variant-barcode-${index}`}
-                                    value={variant.barcode}
-                                    onChange={(e) => {
-                                      const newVariants = [...variants];
-                                      newVariants[index].barcode = e.target.value;
-                                      setVariants(newVariants);
-                                    }}
-                                    placeholder="Variant barcode"
-                                    className="mt-1"
-                                    disabled={loading}
-                                  />
-                                </div>
-                                
-                                <div>
-                                  <Label htmlFor={`variant-location-${index}`} className="text-sm font-medium text-gray-700">
-                                    Locatie
-                                  </Label>
-                                  <Input
-                                    id={`variant-location-${index}`}
-                                    value={variant.location}
-                                    onChange={(e) => {
-                                      const newVariants = [...variants];
-                                      newVariants[index].location = e.target.value;
-                                      setVariants(newVariants);
-                                    }}
-                                    placeholder="bijv. A1, Rek 3"
-                                    className="mt-1"
-                                    disabled={loading}
-                                  />
-                                </div>
-                                
-                                <div>
-                                  <Label htmlFor={`variant-stock-${index}`} className="text-sm font-medium text-gray-700">
-                                    Voorraad *
-                                  </Label>
-                                  <Input
-                                    id={`variant-stock-${index}`}
-                                    type="number"
-                                    min="0"
-                                    value={variant.quantityInStock}
-                                    onChange={(e) => {
-                                      const newVariants = [...variants];
-                                      newVariants[index].quantityInStock = parseInt(e.target.value) || 0;
-                                      setVariants(newVariants);
-                                    }}
-                                    className="mt-1"
-                                    disabled={loading}
-                                  />
-                                </div>
-                                
-                                <div>
-                                  <Label htmlFor={`variant-min-stock-${index}`} className="text-sm font-medium text-gray-700">
-                                    Minimum voorraad
-                                  </Label>
-                                  <Input
-                                    id={`variant-min-stock-${index}`}
-                                    type="number"
-                                    min="0"
-                                    value={variant.minimumStockLevel}
-                                    onChange={(e) => {
-                                      const newVariants = [...variants];
-                                      newVariants[index].minimumStockLevel = parseInt(e.target.value) || 0;
-                                      setVariants(newVariants);
-                                    }}
-                                    className="mt-1"
-                                    disabled={loading}
-                                  />
-                                </div>
-                                
-                                <div>
-                                  <Label htmlFor={`variant-purchase-${index}`} className="text-sm font-medium text-gray-700">
-                                    Inkoopprijs
-                                  </Label>
-                                  <Input
-                                    id={`variant-purchase-${index}`}
-                    type="number"
-                    step="0.01"
-                    min="0"
-                                    value={variant.purchasePrice}
-                                    onChange={(e) => {
-                                      const newVariants = [...variants];
-                                      newVariants[index].purchasePrice = parseFloat(e.target.value) || 0;
-                                      setVariants(newVariants);
-                                    }}
-                                    className="mt-1"
-                                    disabled={loading}
-                  />
-                </div>
-                                
-                <div>
-                                  <Label htmlFor={`variant-sale-${index}`} className="text-sm font-medium text-gray-700">
-                                    Verkoopprijs
-                                  </Label>
-                  <Input
-                                    id={`variant-sale-${index}`}
-                    type="number"
-                    step="0.01"
-                    min="0"
-                                    value={variant.salePrice}
-                                    onChange={(e) => {
-                                      const newVariants = [...variants];
-                                      newVariants[index].salePrice = parseFloat(e.target.value) || 0;
-                                      setVariants(newVariants);
-                                    }}
-                                    className="mt-1"
-                                    disabled={loading}
+              </div>
+                )}
+            </div>
+
+            {/* Variant Toggle - Helemaal onderaan */}
+            <div className="space-y-4">
+              <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-700">Heeft varianten?</h4>
+                    <p className="text-xs text-gray-500 mt-1">
+                      Schakel dit in om meerdere varianten van dit product toe te voegen (bijv. verschillende kleuren, maten)
+                    </p>
+                  </div>
+                  <Switch
+                    checked={hasVariants}
+                    onCheckedChange={(checked) => {
+                      setHasVariants(checked);
+                      if (checked && variants.length === 0) {
+                        // Voeg standaard een variant toe wanneer ingeschakeld
+                        setVariants([{
+                          variantName: '',
+                          quantityInStock: 0,
+                          minimumStockLevel: 0,
+                          purchasePrice: 0,
+                          salePrice: 0,
+                          sku: '',
+                          barcode: '',
+                          location: ''
+                        }]);
+                      } else if (!checked) {
+                        // Reset variants wanneer uitgeschakeld
+                        setVariants([]);
+                      }
+                    }}
+                    disabled={loading}
                   />
                 </div>
               </div>
-                            </div>
-                          ))}
+
+              {/* Variant Sectie */}
+              {hasVariants && (
+                <div className="bg-white border border-gray-200 rounded-lg p-4">
+                  <h4 className="text-md font-semibold text-gray-700 mb-3 flex items-center">
+                    <div className="w-2 h-2 bg-purple-500 rounded-full mr-2"></div>
+                    Product Varianten
+                  </h4>
+                  <div className="space-y-4">
+                    {variants.map((variant, index) => (
+                      <div key={index} className="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                        <div className="flex items-center justify-between mb-3">
+                          <h5 className="text-sm font-medium text-gray-700">Variant {index + 1}</h5>
+                          {variants.length > 1 && (
+                            <Button
+                              type="button"
+                              variant="outline"
+                              size="sm"
+                              onClick={() => {
+                                const newVariants = variants.filter((_, i) => i !== index);
+                                setVariants(newVariants);
+                              }}
+                              className="text-red-600 hover:text-red-700"
+                            >
+                              Verwijder
+                            </Button>
+                          )}
+                        </div>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <Label htmlFor={`variant-name-${index}`} className="text-sm font-medium text-gray-700">
+                              Variant naam *
+                            </Label>
+                      <Input 
+                              id={`variant-name-${index}`}
+                              value={variant.variantName}
+                              onChange={(e) => {
+                                const newVariants = [...variants];
+                                newVariants[index].variantName = e.target.value;
+                                setVariants(newVariants);
+                              }}
+                              placeholder="bijv. Geel, Groen, Maat M"
+                              className="mt-1"
+                              disabled={loading}
+                            />
+                          </div>
                           
-                          <Button
-                            type="button"
-                            variant="outline"
-                            onClick={() => {
-                              setVariants([...variants, {
-                                variantName: '',
-                                quantityInStock: 0,
-                                minimumStockLevel: 0,
-                                purchasePrice: 0,
-                                salePrice: 0,
-                                sku: '',
-                                barcode: '',
-                                location: ''
-                              }]);
-                            }}
-                            className="w-full border-dashed border-2 border-gray-300 hover:border-gray-400"
-                            disabled={loading}
-                          >
-                            <Plus className="w-4 h-4 mr-2" />
-                            Variant toevoegen
-                          </Button>
+                          <div>
+                            <Label htmlFor={`variant-sku-${index}`} className="text-sm font-medium text-gray-700">
+                              SKU
+                            </Label>
+                            <Input
+                              id={`variant-sku-${index}`}
+                              value={variant.sku}
+                              onChange={(e) => {
+                                const newVariants = [...variants];
+                                newVariants[index].sku = e.target.value;
+                                setVariants(newVariants);
+                              }}
+                              placeholder="Variant SKU"
+                              className="mt-1"
+                              disabled={loading}
+                            />
+                          </div>
+                          
+                          <div>
+                            <Label htmlFor={`variant-barcode-${index}`} className="text-sm font-medium text-gray-700">
+                              Barcode
+                            </Label>
+                            <Input
+                              id={`variant-barcode-${index}`}
+                              value={variant.barcode}
+                              onChange={(e) => {
+                                const newVariants = [...variants];
+                                newVariants[index].barcode = e.target.value;
+                                setVariants(newVariants);
+                              }}
+                              placeholder="Variant barcode"
+                              className="mt-1"
+                              disabled={loading}
+                            />
+                          </div>
+                          
+                          <div>
+                            <Label htmlFor={`variant-location-${index}`} className="text-sm font-medium text-gray-700">
+                              Locatie
+                            </Label>
+                            <Input
+                              id={`variant-location-${index}`}
+                              value={variant.location}
+                              onChange={(e) => {
+                                const newVariants = [...variants];
+                                newVariants[index].location = e.target.value;
+                                setVariants(newVariants);
+                              }}
+                              placeholder="bijv. A1, Rek 3"
+                              className="mt-1"
+                              disabled={loading}
+                            />
+                          </div>
+                          
+                          <div>
+                            <Label htmlFor={`variant-stock-${index}`} className="text-sm font-medium text-gray-700">
+                              Voorraad *
+                            </Label>
+                            <Input
+                              id={`variant-stock-${index}`}
+                        type="number" 
+                        min="0"
+                              value={variant.quantityInStock}
+                              onChange={(e) => {
+                                const newVariants = [...variants];
+                                newVariants[index].quantityInStock = parseInt(e.target.value) || 0;
+                                setVariants(newVariants);
+                              }}
+                              className="mt-1"
+                        disabled={loading}
+                            />
+                          </div>
+                          
+                          <div>
+                            <Label htmlFor={`variant-min-stock-${index}`} className="text-sm font-medium text-gray-700">
+                              Minimum voorraad
+                            </Label>
+                            <Input
+                              id={`variant-min-stock-${index}`}
+                              type="number"
+                              min="0"
+                              value={variant.minimumStockLevel}
+                              onChange={(e) => {
+                                const newVariants = [...variants];
+                                newVariants[index].minimumStockLevel = parseInt(e.target.value) || 0;
+                                setVariants(newVariants);
+                              }}
+                              className="mt-1"
+                              disabled={loading}
+                            />
+                          </div>
+                          
+                          <div>
+                            <Label htmlFor={`variant-purchase-${index}`} className="text-sm font-medium text-gray-700">
+                              Inkoopprijs
+                            </Label>
+                            <Input
+                              id={`variant-purchase-${index}`}
+                              type="number"
+                              step="0.01"
+                              min="0"
+                              value={variant.purchasePrice}
+                              onChange={(e) => {
+                                const newVariants = [...variants];
+                                newVariants[index].purchasePrice = parseFloat(e.target.value) || 0;
+                                setVariants(newVariants);
+                              }}
+                              className="mt-1"
+                              disabled={loading}
+                            />
+                          </div>
+                          
+                          <div>
+                            <Label htmlFor={`variant-sale-${index}`} className="text-sm font-medium text-gray-700">
+                              Verkoopprijs
+                            </Label>
+                      <Input 
+                              id={`variant-sale-${index}`}
+                        type="number" 
+                        step="0.01"
+                        min="0"
+                              value={variant.salePrice}
+                              onChange={(e) => {
+                                const newVariants = [...variants];
+                                newVariants[index].salePrice = parseFloat(e.target.value) || 0;
+                                setVariants(newVariants);
+                              }}
+                              className="mt-1"
+                        disabled={loading}
+                            />
+                          </div>
                         </div>
                       </div>
-                )}
+                    ))}
+                    
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => {
+                        setVariants([...variants, {
+                          variantName: '',
+                          quantityInStock: 0,
+                          minimumStockLevel: 0,
+                          purchasePrice: 0,
+                          salePrice: 0,
+                          sku: '',
+                          barcode: '',
+                          location: ''
+                        }]);
+                      }}
+                      className="w-full border-dashed border-2 border-gray-300 hover:border-gray-400"
+                      disabled={loading}
+                    >
+                      <Plus className="w-4 h-4 mr-2" />
+                      Variant toevoegen
+                    </Button>
               </div>
-                )}
+                </div>
+              )}
             </div>
 
             <div className={`${isMobile ? 'p-4 border-t bg-gray-50' : 'pt-4'}`}>
