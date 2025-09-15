@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { CalendarIcon, MousePointer, Eye, Users, TrendingUp, BarChart3, AlertTriangle, CheckCircle } from 'lucide-react';
-import { format, subDays, startOfMonth, endOfMonth } from 'date-fns';
+import { Badge } from '@/components/ui/badge';
+import { CalendarIcon, MousePointer, Eye, Users, TrendingUp, BarChart3, AlertTriangle, CheckCircle, RefreshCw, Clock, Target, Zap, Globe } from 'lucide-react';
+import { format, subDays, startOfMonth, endOfMonth, differenceInDays } from 'date-fns';
 import { cn } from '@/lib/utils';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell, ScatterChart, Scatter } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell, ScatterChart, Scatter, AreaChart, Area } from 'recharts';
 import { supabase } from '@/integrations/supabase/client';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8', '#82CA9D', '#FFC658'];
@@ -54,14 +55,22 @@ export const WebsiteAnalytics = () => {
   const [clickAnalytics, setClickAnalytics] = useState<ClickAnalytics[]>([]);
   const [abandonmentAnalytics, setAbandonmentAnalytics] = useState<AbandonmentAnalytics[]>([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
   const [dateRange, setDateRange] = useState<{ from: Date; to: Date }>({
     from: subDays(new Date(), 30),
     to: new Date()
   });
   const [showCalendar, setShowCalendar] = useState(false);
+  const [autoRefresh, setAutoRefresh] = useState(true);
 
-  const fetchAnalytics = async () => {
-    setLoading(true);
+  const fetchAnalytics = useCallback(async (isRefresh = false) => {
+    if (isRefresh) {
+      setRefreshing(true);
+    } else {
+      setLoading(true);
+    }
+    
     try {
       // Fetch all events for detailed analysis (excluding localhost)
       const { data: eventsData, error: eventsError } = await supabase
@@ -101,13 +110,15 @@ export const WebsiteAnalytics = () => {
       // Calculate abandonment analytics from events
       const abandonmentStats = calculateAbandonmentAnalytics(eventsData || []);
       setAbandonmentAnalytics(abandonmentStats);
+      setLastUpdated(new Date());
 
     } catch (error) {
       console.error('Error fetching website analytics:', error);
     } finally {
       setLoading(false);
+      setRefreshing(false);
     }
-  };
+  }, [dateRange.from, dateRange.to]);
 
   const calculatePageAnalytics = (events: WebsiteEvent[]): PageAnalytics[] => {
     const pageMap = new Map<string, {
@@ -260,7 +271,42 @@ export const WebsiteAnalytics = () => {
 
   useEffect(() => {
     fetchAnalytics();
-  }, [dateRange]);
+  }, [fetchAnalytics]);
+
+  // Auto-refresh every 30 seconds
+  useEffect(() => {
+    if (!autoRefresh) return;
+    
+    const interval = setInterval(() => {
+      fetchAnalytics(true);
+    }, 30000);
+
+    return () => clearInterval(interval);
+  }, [autoRefresh, fetchAnalytics]);
+
+  // Real-time subscription to website events
+  useEffect(() => {
+    const channel = supabase
+      .channel('website-analytics')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'website_events',
+        },
+        () => {
+          if (autoRefresh) {
+            fetchAnalytics(true);
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [autoRefresh, fetchAnalytics]);
 
   // Prepare data for charts
   const dailyEvents = events.reduce((acc, event) => {
@@ -297,6 +343,41 @@ export const WebsiteAnalytics = () => {
     conversion_rate: click.conversion_rate
   }));
 
+  // Calculate additional insights
+  const totalPageViews = events.filter(e => e.event_type === 'page_view').length;
+  const totalClicks = events.filter(e => e.event_type === 'click').length;
+  const totalExits = events.filter(e => e.event_type === 'page_exit').length;
+  const uniqueVisitors = new Set(events.map(e => e.session_id)).size;
+  
+  const daysInRange = differenceInDays(dateRange.to, dateRange.from) + 1;
+  const avgPageViewsPerDay = (totalPageViews / daysInRange).toFixed(1);
+  const avgClicksPerDay = (totalClicks / daysInRange).toFixed(1);
+  const clickThroughRate = totalPageViews > 0 ? ((totalClicks / totalPageViews) * 100).toFixed(1) : '0.0';
+  const exitRate = totalPageViews > 0 ? ((totalExits / totalPageViews) * 100).toFixed(1) : '0.0';
+
+  // Calculate trends (comparing first half vs second half of period)
+  const midPoint = Math.floor(dailyEventsData.length / 2);
+  const firstHalf = dailyEventsData.slice(0, midPoint);
+  const secondHalf = dailyEventsData.slice(midPoint);
+
+  const firstHalfAvg = firstHalf.reduce((acc, day) => ({
+    pageViews: acc.pageViews + (day.page_views || 0),
+    clicks: acc.clicks + (day.clicks || 0),
+  }), { pageViews: 0, clicks: 0 });
+
+  const secondHalfAvg = secondHalf.reduce((acc, day) => ({
+    pageViews: acc.pageViews + (day.page_views || 0),
+    clicks: acc.clicks + (day.clicks || 0),
+  }), { pageViews: 0, clicks: 0 });
+
+  const pageViewsTrend = firstHalf.length > 0 && secondHalf.length > 0 
+    ? ((secondHalfAvg.pageViews / secondHalf.length) - (firstHalfAvg.pageViews / firstHalf.length)) / (firstHalfAvg.pageViews / firstHalf.length) * 100
+    : 0;
+
+  const clicksTrend = firstHalf.length > 0 && secondHalf.length > 0 
+    ? ((secondHalfAvg.clicks / secondHalf.length) - (firstHalfAvg.clicks / firstHalf.length)) / (firstHalfAvg.clicks / firstHalf.length) * 100
+    : 0;
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -310,16 +391,30 @@ export const WebsiteAnalytics = () => {
 
   return (
     <div className="space-y-6">
-      {/* Date Range Selector */}
+      {/* Header with Controls */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <BarChart3 className="h-5 w-5" />
-            Website Analytics
-          </CardTitle>
-          <CardDescription>
-            Bekijk website gedrag, klikpatronen en afhakers voor de geselecteerde periode
-          </CardDescription>
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle className="flex items-center gap-2">
+                <BarChart3 className="h-5 w-5" />
+                Website Analytics
+                {refreshing && <RefreshCw className="h-4 w-4 animate-spin text-blue-600" />}
+              </CardTitle>
+              <CardDescription>
+                Realtime website gedrag, klikpatronen en afhaker analyse
+              </CardDescription>
+            </div>
+            <div className="flex items-center gap-2">
+              <Badge variant={autoRefresh ? "default" : "secondary"} className="flex items-center gap-1">
+                <div className={cn("w-2 h-2 rounded-full", autoRefresh ? "bg-green-500 animate-pulse" : "bg-gray-400")} />
+                {autoRefresh ? "Live" : "Paused"}
+              </Badge>
+              <span className="text-xs text-gray-500">
+                Laatst bijgewerkt: {format(lastUpdated, "HH:mm:ss")}
+              </span>
+            </div>
+          </div>
         </CardHeader>
         <CardContent>
           <div className="flex items-center gap-4">
@@ -363,24 +458,42 @@ export const WebsiteAnalytics = () => {
                 />
               </PopoverContent>
             </Popover>
-            <Button onClick={fetchAnalytics} variant="outline">
+            <Button 
+              onClick={() => fetchAnalytics(true)} 
+              variant="outline"
+              disabled={refreshing}
+            >
+              <RefreshCw className={cn("h-4 w-4 mr-2", refreshing && "animate-spin")} />
               Vernieuwen
+            </Button>
+            <Button 
+              onClick={() => setAutoRefresh(!autoRefresh)}
+              variant={autoRefresh ? "default" : "outline"}
+              size="sm"
+            >
+              {autoRefresh ? "Pause" : "Resume"}
             </Button>
           </div>
         </CardContent>
       </Card>
 
-      {/* Summary Cards */}
+      {/* Key Metrics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
           <CardContent className="p-6">
-            <div className="flex items-center">
-              <Eye className="h-8 w-8 text-blue-600" />
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Paginaweergaven</p>
-                <p className="text-2xl font-bold">
-                  {events.filter(e => e.event_type === 'page_view').length.toLocaleString()}
-                </p>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <Eye className="h-8 w-8 text-blue-600" />
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600">Paginaweergaven</p>
+                  <p className="text-2xl font-bold">{totalPageViews.toLocaleString()}</p>
+                  <p className="text-xs text-gray-500">{avgPageViewsPerDay} per dag</p>
+                </div>
+              </div>
+              <div className="text-right">
+                <Badge variant={pageViewsTrend > 0 ? "default" : pageViewsTrend < 0 ? "destructive" : "secondary"}>
+                  {pageViewsTrend > 0 ? "↗" : pageViewsTrend < 0 ? "↘" : "→"} {Math.abs(pageViewsTrend).toFixed(1)}%
+                </Badge>
               </div>
             </div>
           </CardContent>
@@ -392,9 +505,28 @@ export const WebsiteAnalytics = () => {
               <Users className="h-8 w-8 text-green-600" />
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Unieke Bezoekers</p>
-                <p className="text-2xl font-bold">
-                  {new Set(events.map(e => e.session_id)).size.toLocaleString()}
-                </p>
+                <p className="text-2xl font-bold">{uniqueVisitors.toLocaleString()}</p>
+                <p className="text-xs text-gray-500">Gemiddeld {Math.round(uniqueVisitors / daysInRange)} per dag</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <MousePointer className="h-8 w-8 text-purple-600" />
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600">Totaal Klikken</p>
+                  <p className="text-2xl font-bold">{totalClicks.toLocaleString()}</p>
+                  <p className="text-xs text-gray-500">{avgClicksPerDay} per dag</p>
+                </div>
+              </div>
+              <div className="text-right">
+                <Badge variant={clicksTrend > 0 ? "default" : clicksTrend < 0 ? "destructive" : "secondary"}>
+                  {clicksTrend > 0 ? "↗" : clicksTrend < 0 ? "↘" : "→"} {Math.abs(clicksTrend).toFixed(1)}%
+                </Badge>
               </div>
             </div>
           </CardContent>
@@ -403,26 +535,57 @@ export const WebsiteAnalytics = () => {
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center">
-              <MousePointer className="h-8 w-8 text-purple-600" />
+              <Target className="h-8 w-8 text-orange-600" />
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Totaal Klikken</p>
-                <p className="text-2xl font-bold">
-                  {events.filter(e => e.event_type === 'click').length.toLocaleString()}
-                </p>
+                <p className="text-sm font-medium text-gray-600">Click-Through Rate</p>
+                <p className="text-2xl font-bold">{clickThroughRate}%</p>
+                <p className="text-xs text-gray-500">{totalClicks} van {totalPageViews} weergaven</p>
               </div>
             </div>
           </CardContent>
         </Card>
+      </div>
 
+      {/* Performance Metrics */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center">
               <AlertTriangle className="h-8 w-8 text-red-600" />
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Pagina Verlaten</p>
+                <p className="text-sm font-medium text-gray-600">Exit Rate</p>
+                <p className="text-2xl font-bold">{exitRate}%</p>
+                <p className="text-xs text-gray-500">{totalExits} van {totalPageViews} weergaven</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center">
+              <Clock className="h-8 w-8 text-blue-600" />
+              <div className="ml-4">
+                <p className="text-sm font-medium text-gray-600">Gem. Tijd op Pagina</p>
                 <p className="text-2xl font-bold">
-                  {events.filter(e => e.event_type === 'page_exit').length.toLocaleString()}
+                  {pageAnalytics.length > 0 
+                    ? Math.round(pageAnalytics.reduce((acc, page) => acc + page.avg_time_on_page, 0) / pageAnalytics.length)
+                    : 0}s
                 </p>
+                <p className="text-xs text-gray-500">Over alle pagina's</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center">
+              <Globe className="h-8 w-8 text-green-600" />
+              <div className="ml-4">
+                <p className="text-sm font-medium text-gray-600">Actieve Pagina's</p>
+                <p className="text-2xl font-bold">{pageAnalytics.length}</p>
+                <p className="text-xs text-gray-500">Met tracking data</p>
               </div>
             </div>
           </CardContent>
@@ -432,23 +595,26 @@ export const WebsiteAnalytics = () => {
       {/* Daily Activity Chart */}
       <Card>
         <CardHeader>
-          <CardTitle>Dagelijkse Activiteit</CardTitle>
+          <CardTitle className="flex items-center gap-2">
+            <TrendingUp className="h-5 w-5" />
+            Dagelijkse Activiteit
+          </CardTitle>
           <CardDescription>
             Overzicht van paginaweergaven, klikken en registraties per dag
           </CardDescription>
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={dailyEventsData}>
+            <AreaChart data={dailyEventsData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="date" />
               <YAxis />
               <Tooltip />
-              <Line type="monotone" dataKey="page_views" stroke="#8884d8" strokeWidth={2} name="Paginaweergaven" />
-              <Line type="monotone" dataKey="clicks" stroke="#82ca9d" strokeWidth={2} name="Klikken" />
-              <Line type="monotone" dataKey="registrations" stroke="#ffc658" strokeWidth={2} name="Registraties" />
-              <Line type="monotone" dataKey="exits" stroke="#ff7300" strokeWidth={2} name="Pagina Verlaten" />
-            </LineChart>
+              <Area type="monotone" dataKey="page_views" stackId="1" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} name="Paginaweergaven" />
+              <Area type="monotone" dataKey="clicks" stackId="1" stroke="#82ca9d" fill="#82ca9d" fillOpacity={0.6} name="Klikken" />
+              <Area type="monotone" dataKey="registrations" stackId="1" stroke="#ffc658" fill="#ffc658" fillOpacity={0.6} name="Registraties" />
+              <Area type="monotone" dataKey="exits" stackId="1" stroke="#ff7300" fill="#ff7300" fillOpacity={0.6} name="Pagina Verlaten" />
+            </AreaChart>
           </ResponsiveContainer>
         </CardContent>
       </Card>
@@ -570,6 +736,143 @@ export const WebsiteAnalytics = () => {
                 ))}
               </tbody>
             </table>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Insights & Recommendations */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Zap className="h-5 w-5" />
+            Inzichten & Aanbevelingen
+          </CardTitle>
+          <CardDescription>
+            Automatische analyse van je website gedrag data
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            {/* Click-Through Rate Analysis */}
+            <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+              <div className="flex items-start gap-3">
+                <div className="p-2 bg-blue-100 rounded-full">
+                  <Target className="h-5 w-5 text-blue-600" />
+                </div>
+                <div>
+                  <h4 className="font-semibold text-blue-900">Click-Through Rate Analyse</h4>
+                  <p className="text-sm text-blue-700 mt-1">
+                    Je CTR is <strong>{clickThroughRate}%</strong>. 
+                    {parseFloat(clickThroughRate) < 2 ? 
+                      " Dit is lager dan de industrie standaard (2-5%). Focus op het verbeteren van je CTA buttons en content." :
+                      parseFloat(clickThroughRate) < 5 ?
+                      " Dit is binnen het normale bereik. Er is ruimte voor verbetering." :
+                      " Uitstekend! Je CTR is boven het industrie gemiddelde."
+                    }
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Exit Rate Analysis */}
+            <div className="p-4 bg-red-50 rounded-lg border border-red-200">
+              <div className="flex items-start gap-3">
+                <div className="p-2 bg-red-100 rounded-full">
+                  <AlertTriangle className="h-5 w-5 text-red-600" />
+                </div>
+                <div>
+                  <h4 className="font-semibold text-red-900">Exit Rate Analyse</h4>
+                  <p className="text-sm text-red-700 mt-1">
+                    Je exit rate is <strong>{exitRate}%</strong>. 
+                    {parseFloat(exitRate) > 70 ? 
+                      " Dit is hoog en suggereert dat bezoekers snel weggaan. Verbeter je content en gebruikerservaring." :
+                      parseFloat(exitRate) > 50 ?
+                      " Redelijk, maar er is ruimte voor verbetering in het vasthouden van bezoekers." :
+                      " Goed! Bezoekers blijven langer op je site."
+                    }
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Traffic Analysis */}
+            <div className="p-4 bg-green-50 rounded-lg border border-green-200">
+              <div className="flex items-start gap-3">
+                <div className="p-2 bg-green-100 rounded-full">
+                  <TrendingUp className="h-5 w-5 text-green-600" />
+                </div>
+                <div>
+                  <h4 className="font-semibold text-green-900">Traffic Trends</h4>
+                  <p className="text-sm text-green-700 mt-1">
+                    Gemiddeld {avgPageViewsPerDay} paginaweergaven per dag. 
+                    {pageViewsTrend > 0 ? 
+                      ` Traffic is met ${Math.abs(pageViewsTrend).toFixed(1)}% gestegen.` :
+                      pageViewsTrend < 0 ?
+                      ` Traffic is met ${Math.abs(pageViewsTrend).toFixed(1)}% gedaald.` :
+                      " Traffic blijft stabiel."
+                    }
+                    {clicksTrend > 0 ? 
+                      ` Klikken zijn met ${Math.abs(clicksTrend).toFixed(1)}% gestegen.` :
+                      clicksTrend < 0 ?
+                      ` Klikken zijn met ${Math.abs(clicksTrend).toFixed(1)}% gedaald.` :
+                      " Klikken blijven stabiel."
+                    }
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Top Performing Elements */}
+            {topClicksData.length > 0 && (
+              <div className="p-4 bg-purple-50 rounded-lg border border-purple-200">
+                <div className="flex items-start gap-3">
+                  <div className="p-2 bg-purple-100 rounded-full">
+                    <MousePointer className="h-5 w-5 text-purple-600" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-purple-900">Top Presterende Elementen</h4>
+                    <p className="text-sm text-purple-700 mt-1">
+                      Je best presterende element is <strong>"{topClicksData[0]?.element}"</strong> met {topClicksData[0]?.clicks} klikken.
+                      {topClicksData[0]?.conversion_rate > 10 ? 
+                        " Dit element heeft een uitstekende conversie rate!" :
+                        topClicksData[0]?.conversion_rate > 5 ?
+                        " Dit element presteert redelijk goed." :
+                        " Overweeg om dit element te optimaliseren voor betere conversie."
+                      }
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Recommendations */}
+            <div className="p-4 bg-orange-50 rounded-lg border border-orange-200">
+              <div className="flex items-start gap-3">
+                <div className="p-2 bg-orange-100 rounded-full">
+                  <Zap className="h-5 w-5 text-orange-600" />
+                </div>
+                <div>
+                  <h4 className="font-semibold text-orange-900">Aanbevelingen</h4>
+                  <ul className="text-sm text-orange-700 mt-1 space-y-1">
+                    {parseFloat(clickThroughRate) < 2 && (
+                      <li>• Maak je CTA buttons prominenter en gebruik actiegerichte tekst</li>
+                    )}
+                    {parseFloat(exitRate) > 70 && (
+                      <li>• Verbeter je content kwaliteit en voeg meer waarde toe</li>
+                    )}
+                    {pageViewsTrend < -10 && (
+                      <li>• Overweeg meer marketing inspanningen om traffic te verhogen</li>
+                    )}
+                    {abandonmentAnalytics.length > 0 && abandonmentAnalytics[0].abandonment_rate > 70 && (
+                      <li>• Focus op het verbeteren van de pagina met hoogste afhaker percentage</li>
+                    )}
+                    <li>• Implementeer A/B testing voor verschillende elementen</li>
+                    <li>• Voeg meer interactieve elementen toe om engagement te verhogen</li>
+                    <li>• Optimaliseer je pagina's voor snellere laadtijden</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>

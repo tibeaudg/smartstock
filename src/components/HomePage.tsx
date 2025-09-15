@@ -682,7 +682,7 @@ export const HomePage = () => {
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
                   <Rocket className="h-5 w-5 mr-2 group-hover:animate-bounce" />
-                  Start Nu Gratis!
+                  Probeer Gratis Zonder Verplichtingen
                   <ArrowRight className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" />
                 </Button>
                 <Button 
@@ -1091,7 +1091,7 @@ export const HomePage = () => {
                   onClick={handleLoginClick}
                 >
                   <Rocket className="h-6 w-6 mr-3 group-hover:animate-bounce" />
-                  Start Nu Gratis!
+                  Probeer Gratis Zonder Verplichtingen
                   <ArrowRight className="h-6 w-6 ml-3 group-hover:translate-x-1 transition-transform" />
                 </Button>
                 
@@ -1445,7 +1445,7 @@ export const HomePage = () => {
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-100/30 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
                 <Rocket className="h-5 w-5 mr-2 group-hover:animate-bounce" />
-                Start Nu Gratis!
+                Probeer Gratis Zonder Verplichtingen
                 <ArrowRight className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
               <Button 
