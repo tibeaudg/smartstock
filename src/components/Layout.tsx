@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Sidebar } from './Sidebar';
 import { Header } from './ui/Header';
 import { useMobile } from '@/hooks/use-mobile';
-import { UserProfile } from '@/hooks/useAuth';
+import { UserProfile, useAuth } from '@/hooks/useAuth';
 import { BranchSelector } from './BranchSelector';
 import { NotificationButton } from './NotificationButton';
 import { useNotifications } from '../hooks/useNotifications';
@@ -20,6 +20,7 @@ interface LayoutProps {
 
 export const Layout = ({ children, currentTab, onTabChange, userRole, userProfile, variant = 'default' }: LayoutProps) => {
   const { isMobile } = useMobile();
+  const { user } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(!isMobile); // Start closed on mobile, open on desktop
 
   const handleTabChange = (tab: string) => {
@@ -71,6 +72,28 @@ export const Layout = ({ children, currentTab, onTabChange, userRole, userProfil
           </div>
         </main>
       </div>
+
+      {/* Notification Overlay */}
+      {showNotifications && user && (
+        <div className="fixed top-20 right-4 z-[100] bg-white border border-gray-200 rounded-lg shadow-xl p-4 w-80 max-h-[60vh] overflow-y-auto">
+          <h4 className="font-semibold mb-2">Meldingen</h4>
+          {notificationsLoading ? (
+            <div className="text-gray-500 text-sm">Laden...</div>
+          ) : notifications.length === 0 ? (
+            <div className="text-gray-700 text-sm">Geen meldingen.</div>
+          ) : (
+            <ul className="divide-y divide-gray-200">
+              {notifications.map((n) => (
+                <li key={n.id} className={`py-2 ${!n.read ? 'bg-blue-50' : ''}`}>
+                  <div className="font-medium text-gray-900 text-sm">{n.title}</div>
+                  <div className="text-gray-700 text-xs mb-1">{n.message}</div>
+                  <div className="text-gray-400 text-xs">{new Date(n.created_at).toLocaleString()}</div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
     </div>
   );
 };
