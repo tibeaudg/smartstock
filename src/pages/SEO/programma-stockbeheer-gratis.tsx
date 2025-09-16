@@ -11,7 +11,7 @@ export default function ProgrammaStockbeheerGratis() {
   const faqData = [
     {
       question: "Is het programma stockbeheer gratis echt gratis?",
-      answer: "Ja, ons programma stockbeheer gratis is volledig gratis voor Vlaamse KMO's. Je kunt tot 30 producten beheren zonder enige kosten. Geen verborgen kosten, geen verplichtingen, geen creditcard vereist. Perfect voor starters en kleine bedrijven die willen beginnen met professioneel stockbeheer."
+      answer: "Ja, ons programma stockbeheer gratis is volledig gratis voor KMO's. Je kunt tot 30 producten beheren zonder enige kosten. Geen verborgen kosten, geen verplichtingen, geen creditcard vereist. Perfect voor starters en kleine bedrijven die willen beginnen met professioneel stockbeheer."
     },
     {
       question: "Welke functies heeft het programma stockbeheer gratis?",
@@ -35,7 +35,7 @@ export default function ProgrammaStockbeheerGratis() {
     {
       icon: Gift,
       title: "100% Gratis",
-      description: "Geen verborgen kosten, geen limieten op gebruikers. Volledig gratis programma stockbeheer voor Vlaamse KMO's."
+      description: "Geen verborgen kosten, geen limieten op gebruikers. Volledig gratis programma stockbeheer voor KMO's."
     },
     {
       icon: BarChart3,
@@ -100,7 +100,7 @@ export default function ProgrammaStockbeheerGratis() {
     <SeoPageLayout title="Programma Stockbeheer Gratis - Professioneel Stockbeheer">
       <SEO
         title="Programma Stockbeheer Gratis | Professioneel Stockbeheer | stockflow"
-        description="Ontdek het beste programma stockbeheer gratis voor Vlaamse KMO's. Professioneel stockbeheer met real-time rapportages, automatische bestellingen en 100% gratis. Start vandaag!"
+        description="Ontdek het beste programma stockbeheer gratis voor KMO's. Professioneel stockbeheer met real-time rapportages, automatische bestellingen en 100% gratis. Start vandaag!"
         keywords="programma stockbeheer gratis, stockbeheer programma gratis, gratis programma stockbeheer, programma stockbeheer gratis download, programma stockbeheer gratis KMO, programma stockbeheer gratis belgië, programma stockbeheer gratis vlaanderen, programma stockbeheer gratis horeca, programma stockbeheer gratis webshop, programma stockbeheer gratis detailhandel, programma stockbeheer gratis starters, programma stockbeheer gratis kleine bedrijven, programma stockbeheer gratis stockflow"
         url="https://www.stockflow.be/programma-stockbeheer-gratis"
       />
@@ -193,7 +193,7 @@ export default function ProgrammaStockbeheerGratis() {
                 <span className="text-purple-600">Voordelen</span> van ons programma stockbeheer gratis
               </h2>
               <p className="text-lg text-gray-700 mb-8">
-                Ons programma stockbeheer gratis is specifiek ontwikkeld voor Vlaamse KMO's. 
+                Ons programma stockbeheer gratis is specifiek ontwikkeld voor KMO's. 
                 Ontdek waarom honderden bedrijven al kiezen voor ons programma stockbeheer gratis.
               </p>
               
@@ -304,7 +304,7 @@ export default function ProgrammaStockbeheerGratis() {
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-8">
-            Waarom kiezen <span className="text-purple-600">32+ Vlaamse KMO's</span> voor ons programma stockbeheer gratis?
+            Waarom kiezen <span className="text-purple-600">32+ KMO's</span> voor ons programma stockbeheer gratis?
           </h2>
           
           <div className="grid md:grid-cols-3 gap-8 mb-12">
@@ -380,7 +380,7 @@ export default function ProgrammaStockbeheerGratis() {
             Start Vandaag Met Ons Programma Stockbeheer Gratis
           </h2>
           <p className="text-xl mb-8 opacity-90">
-            Sluit je aan bij honderden Vlaamse KMO's die al profiteren van ons programma stockbeheer gratis. 
+            Sluit je aan bij honderden KMO's die al profiteren van ons programma stockbeheer gratis. 
             Geen verborgen kosten, geen verplichtingen.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -453,14 +453,14 @@ export default function ProgrammaStockbeheerGratis() {
             className="h-10 md:h-12 mx-auto mb-6"
           />
           <p className="text-gray-400 text-base md:text-lg mb-8 leading-relaxed max-w-2xl mx-auto">
-            Het beste programma stockbeheer gratis voor Vlaamse KMO's. 
+            Het beste programma stockbeheer gratis voor KMO's. 
             Professioneel, efficiënt en 100% gratis.
           </p>
 
           <div className="border-t border-gray-700 pt-6">
             <p className="text-gray-500 text-xs md:text-sm">
               &copy; {new Date().getFullYear()} stockflow. Alle rechten voorbehouden.
-              Programma stockbeheer gratis voor Vlaamse KMO's.
+              Programma stockbeheer gratis voor KMO's.
             </p>
           </div>
         </div>
@@ -486,7 +486,7 @@ export default function ProgrammaStockbeheerGratis() {
         "@context": "https://schema.org",
         "@type": "SoftwareApplication",
         "name": "stockflow - Programma Stockbeheer Gratis",
-        "description": "Het beste programma stockbeheer gratis voor Vlaamse KMO's. Professioneel stockbeheer met real-time rapportages, automatische bestellingen en 100% gratis.",
+        "description": "Het beste programma stockbeheer gratis voor KMO's. Professioneel stockbeheer met real-time rapportages, automatische bestellingen en 100% gratis.",
         "applicationCategory": "BusinessApplication",
         "operatingSystem": "Web Browser",
         "offers": {

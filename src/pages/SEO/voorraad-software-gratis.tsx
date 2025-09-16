@@ -11,7 +11,7 @@ export default function VoorraadSoftwareGratis() {
   const faqData = [
     {
       question: "Is voorraad software gratis echt gratis?",
-      answer: "Ja, onze voorraad software gratis is volledig gratis voor Vlaamse KMO's. Je kunt tot 30 producten beheren zonder enige kosten. Geen verborgen kosten, geen verplichtingen, geen creditcard vereist. Perfect voor starters en kleine bedrijven die willen beginnen met professioneel voorraadbeheer."
+      answer: "Ja, onze voorraad software gratis is volledig gratis voor KMO's. Je kunt tot 30 producten beheren zonder enige kosten. Geen verborgen kosten, geen verplichtingen, geen creditcard vereist. Perfect voor starters en kleine bedrijven die willen beginnen met professioneel voorraadbeheer."
     },
     {
       question: "Welke functies heeft voorraad software gratis?",
@@ -35,7 +35,7 @@ export default function VoorraadSoftwareGratis() {
     {
       icon: Gift,
       title: "100% Gratis",
-      description: "Geen verborgen kosten, geen limieten op gebruikers. Volledig gratis voorraad software voor Vlaamse KMO's."
+      description: "Geen verborgen kosten, geen limieten op gebruikers. Volledig gratis voorraad software voor KMO's."
     },
     {
       icon: Package,
@@ -100,7 +100,7 @@ export default function VoorraadSoftwareGratis() {
     <SeoPageLayout title="Voorraad Software Gratis - Professioneel Voorraadbeheer">
       <SEO
         title="Voorraad Software Gratis | Professioneel Voorraadbeheer | stockflow"
-        description="Ontdek de beste voorraad software gratis voor Vlaamse KMO's. Professioneel voorraadbeheer met real-time rapportages, automatische bestellingen en 100% gratis. Start vandaag!"
+        description="Ontdek de beste voorraad software gratis voor KMO's. Professioneel voorraadbeheer met real-time rapportages, automatische bestellingen en 100% gratis. Start vandaag!"
         keywords="voorraad software gratis, gratis voorraad software, voorraad software gratis download, voorraad software gratis KMO, voorraad software gratis belgië, voorraad software gratis vlaanderen, voorraad software gratis horeca, voorraad software gratis webshop, voorraad software gratis detailhandel, voorraad software gratis starters, voorraad software gratis kleine bedrijven, voorraad software gratis stockflow"
         url="https://www.stockflow.be/voorraad-software-gratis"
       />
@@ -193,7 +193,7 @@ export default function VoorraadSoftwareGratis() {
                 <span className="text-teal-600">Voordelen</span> van onze voorraad software gratis
               </h2>
               <p className="text-lg text-gray-700 mb-8">
-                Onze voorraad software gratis is specifiek ontwikkeld voor Vlaamse KMO's. 
+                Onze voorraad software gratis is specifiek ontwikkeld voor KMO's. 
                 Ontdek waarom honderden bedrijven al kiezen voor onze voorraad software gratis.
               </p>
               
@@ -304,7 +304,7 @@ export default function VoorraadSoftwareGratis() {
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-8">
-            Waarom kiezen <span className="text-teal-600">32+ Vlaamse KMO's</span> voor onze voorraad software gratis?
+            Waarom kiezen <span className="text-teal-600">32+ KMO's</span> voor onze voorraad software gratis?
           </h2>
           
           <div className="grid md:grid-cols-3 gap-8 mb-12">
@@ -380,7 +380,7 @@ export default function VoorraadSoftwareGratis() {
             Start Vandaag Met Onze Voorraad Software Gratis
           </h2>
           <p className="text-xl mb-8 opacity-90">
-            Sluit je aan bij honderden Vlaamse KMO's die al profiteren van onze voorraad software gratis. 
+            Sluit je aan bij honderden KMO's die al profiteren van onze voorraad software gratis. 
             Geen verborgen kosten, geen verplichtingen.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -453,14 +453,14 @@ export default function VoorraadSoftwareGratis() {
             className="h-10 md:h-12 mx-auto mb-6"
           />
           <p className="text-gray-400 text-base md:text-lg mb-8 leading-relaxed max-w-2xl mx-auto">
-            De beste voorraad software gratis voor Vlaamse KMO's. 
+            De beste voorraad software gratis voor KMO's. 
             Professioneel, efficiënt en 100% gratis.
           </p>
 
           <div className="border-t border-gray-700 pt-6">
             <p className="text-gray-500 text-xs md:text-sm">
               &copy; {new Date().getFullYear()} stockflow. Alle rechten voorbehouden.
-              Voorraad software gratis voor Vlaamse KMO's.
+              Voorraad software gratis voor KMO's.
             </p>
           </div>
         </div>
@@ -486,7 +486,7 @@ export default function VoorraadSoftwareGratis() {
         "@context": "https://schema.org",
         "@type": "SoftwareApplication",
         "name": "stockflow - Voorraad Software Gratis",
-        "description": "De beste voorraad software gratis voor Vlaamse KMO's. Professioneel voorraadbeheer met real-time rapportages, automatische bestellingen en 100% gratis.",
+        "description": "De beste voorraad software gratis voor KMO's. Professioneel voorraadbeheer met real-time rapportages, automatische bestellingen en 100% gratis.",
         "applicationCategory": "BusinessApplication",
         "operatingSystem": "Web Browser",
         "offers": {

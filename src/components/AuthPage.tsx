@@ -86,7 +86,7 @@ export const AuthPage = () => {
           if (isTrackingReady) {
             await trackError(error.message, 'login_attempt');
           }
-          toast.error(error?.message === 'Invalid login credentials' ? 'Ongeldig e-mailadres of wachtwoord.' : error?.message || 'Inloggen mislukt.');
+          toast.error(error?.message === 'Invalid login credentials' ? t('auth.errors.invalidCredentials') : error?.message || t('auth.errors.loginFailed'));
           return;
         }
 
@@ -105,14 +105,14 @@ export const AuthPage = () => {
           if (isTrackingReady) {
             await trackFormAbandonment('password_mismatch');
           }
-          toast.error('Wachtwoorden komen niet overeen.');
+          toast.error(t('auth.errors.passwordMismatch'));
           return;
         }
         if (password.length < 8) { // Aangeraden: 8 tekens
           if (isTrackingReady) {
             await trackFormAbandonment('password_too_short');
           }
-          toast.error('Wachtwoord moet minimaal 8 tekens zijn.');
+          toast.error(t('auth.errors.passwordTooShort'));
           return;
         }
 
@@ -123,7 +123,7 @@ export const AuthPage = () => {
           if (isTrackingReady) {
             await trackError(error.message, 'registration_started');
           }
-          toast.error(error.message.includes('User already registered') ? 'Er bestaat al een account met dit e-mailadres.' : error.message);
+          toast.error(error.message.includes('User already registered') ? t('auth.errors.userExists') : error.message);
           return;
         }
 
@@ -132,7 +132,7 @@ export const AuthPage = () => {
           await trackRegistrationCompleted();
         }
 
-        toast.success('Account aangemaakt!', { description: 'Controleer je inbox om je e-mailadres te bevestigen.' });
+        toast.success(t('auth.success.accountCreated'), { description: t('auth.success.checkEmail') });
         setMode('login');
         clearForm();
 
@@ -145,12 +145,12 @@ export const AuthPage = () => {
           return;
         }
 
-        toast.success('Reset-instructies verzonden!', { description: `Als er een account bestaat voor ${email}, is er een e-mail verzonden.` });
+        toast.success(t('auth.success.resetSent'), { description: t('auth.success.resetDescription', { email }) });
         setMode('login');
       }
     } catch (err: any) {
       console.error('Onverwachte Auth fout:', err);
-      toast.error(err.message || 'Er is een onbekende fout opgetreden.');
+      toast.error(err.message || t('auth.errors.unknownError'));
     } finally {
       setIsSubmitting(false);
     }
@@ -176,12 +176,12 @@ export const AuthPage = () => {
                 <span className="text-2xl font-bold text-gray-900">stockflow</span>
               </div>
               <h1 className="text-3xl font-bold text-gray-900 mb-4">
-                {mode === 'register' ? 'Start je Gratis Account' : 'Welkom Terug'}
+                {mode === 'register' ? t('auth.title.register') : t('auth.title.login')}
               </h1>
               <p className="text-lg text-gray-600 mb-8">
                 {mode === 'register' 
-                  ? 'Sluit je aan bij 32+ Vlaamse KMO\'s die al profiteren van gratis voorraadbeheer'
-                  : 'Log in om toegang te krijgen tot je voorraadbeheer dashboard'
+                  ? t('auth.subtitle.register')
+                  : t('auth.subtitle.login')
                 }
               </p>
             </div>
@@ -190,10 +190,10 @@ export const AuthPage = () => {
               <div className="space-y-6">
                 <div className="grid grid-cols-1 gap-4">
                   {[
-                    { icon: <CheckCircle className="h-5 w-5 text-green-600" />, text: "100% gratis voor Vlaamse KMO's" },
-                    { icon: <Zap className="h-5 w-5 text-blue-600" />, text: "Direct aan de slag binnen 2 minuten" },
-                    { icon: <Shield className="h-5 w-5 text-purple-600" />, text: "Veilig en GDPR-compliant" },
-                    { icon: <Users className="h-5 w-5 text-orange-600" />, text: "Nederlandse support" }
+                    { icon: <CheckCircle className="h-5 w-5 text-green-600" />, text: t('auth.benefits.free') },
+                    { icon: <Zap className="h-5 w-5 text-blue-600" />, text: t('auth.benefits.quickStart') },
+                    { icon: <Shield className="h-5 w-5 text-purple-600" />, text: t('auth.benefits.secure') },
+                    { icon: <Users className="h-5 w-5 text-orange-600" />, text: t('auth.benefits.support') }
                   ].map((benefit, index) => (
                     <div key={index} className="flex items-center gap-3 p-3 bg-white rounded-lg shadow-sm">
                       {benefit.icon}
@@ -205,13 +205,13 @@ export const AuthPage = () => {
                 <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6 border border-blue-100">
                   <div className="flex items-center gap-3 mb-3">
                     <Star className="h-5 w-5 text-yellow-500 fill-current" />
-                    <span className="font-semibold text-gray-900">Wat klanten zeggen</span>
+                    <span className="font-semibold text-gray-900">{t('auth.testimonial.title')}</span>
                   </div>
                   <p className="text-gray-700 italic mb-3">
-                    "Dankzij stockflow heb ik eindelijk een helder overzicht van mijn voorraad. De automatische bestelmeldingen zijn een lifesaver!"
+                    {t('auth.testimonial.quote')}
                   </p>
                   <div className="text-sm text-gray-600">
-                    - Laura Peeters, De Koffieboetiek Gent
+                    {t('auth.testimonial.author')}
                   </div>
                 </div>
               </div>

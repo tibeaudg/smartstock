@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/hooks/useAuth';
+import { useTranslation } from 'react-i18next';
 
 interface PricingTier {
   id: string;
@@ -111,6 +112,7 @@ export default function PricingPage() {
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly');
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleSelectPlan = (tierId: string) => {
     if (!user) {
@@ -130,8 +132,8 @@ export default function PricingPage() {
   };
 
   const getLimitText = (value: number | null, type: string) => {
-    if (value === null) return 'Onbeperkt';
-    if (value === 0) return 'Niet inbegrepen';
+    if (value === null) return t('pricing.unlimited');
+    if (value === 0) return t('pricing.notIncluded');
     return `${value} ${type}`;
   };
 
@@ -141,16 +143,16 @@ export default function PricingPage() {
         {/* Header */}
         <div className="text-center mb-16">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Kies je perfecte plan
+            {t('pricing.title')}
           </h1>
           <p className="text-xl text-gray-600 mb-8">
-            Start gratis en upgrade wanneer je groeit
+            {t('pricing.subtitle')}
           </p>
           
           {/* Billing Toggle */}
           <div className="flex items-center justify-center space-x-4 mb-8">
             <span className={`text-sm font-medium ${billingCycle === 'monthly' ? 'text-gray-900' : 'text-gray-500'}`}>
-              Maandelijks
+              {t('pricing.monthly')}
             </span>
             <button
               onClick={() => setBillingCycle(billingCycle === 'monthly' ? 'yearly' : 'monthly')}
@@ -163,11 +165,11 @@ export default function PricingPage() {
               />
             </button>
             <span className={`text-sm font-medium ${billingCycle === 'yearly' ? 'text-gray-900' : 'text-gray-500'}`}>
-              Jaarlijks
+              {t('pricing.yearly')}
             </span>
             {billingCycle === 'yearly' && (
               <Badge variant="secondary" className="ml-2">
-                Bespaar 17%
+                {t('pricing.save')}
               </Badge>
             )}
           </div>

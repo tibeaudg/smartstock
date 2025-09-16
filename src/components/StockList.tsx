@@ -806,7 +806,7 @@ export const StockList = () => {
       
       if (error) throw error;
       
-      toast.success(`${selectedProductIds.length} product(en) verwijderd`);
+      toast.success(t('stock.success.productsDeleted', { count: selectedProductIds.length }));
       setSelectedProductIds([]);
       setSelectAll(false);
       refetch();

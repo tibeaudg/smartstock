@@ -11,7 +11,7 @@ export default function GratisVoorraadbeheerApp() {
   const faqData = [
     {
       question: "Is de gratis voorraadbeheer app echt gratis?",
-      answer: "Ja, onze gratis voorraadbeheer app is volledig gratis voor Vlaamse KMO's. Je kunt tot 30 producten beheren zonder enige kosten. Geen verborgen kosten, geen verplichtingen, geen creditcard vereist."
+      answer: "Ja, onze gratis voorraadbeheer app is volledig gratis voor KMO's. Je kunt tot 30 producten beheren zonder enige kosten. Geen verborgen kosten, geen verplichtingen, geen creditcard vereist."
     },
     {
       question: "Welke functies heeft de gratis voorraadbeheer app?",
@@ -35,7 +35,7 @@ export default function GratisVoorraadbeheerApp() {
     {
       icon: Gift,
       title: "100% Gratis",
-      description: "Geen verborgen kosten, geen limieten op gebruikers. Volledig gratis voorraadbeheer app voor Vlaamse KMO's."
+      description: "Geen verborgen kosten, geen limieten op gebruikers. Volledig gratis voorraadbeheer app voor KMO's."
     },
     {
       icon: Smartphone,
@@ -79,7 +79,7 @@ export default function GratisVoorraadbeheerApp() {
     <SeoPageLayout title="Gratis Voorraadbeheer App - Mobiel Voorraadbeheer">
       <SEO
         title="Gratis Voorraadbeheer App | Mobiel Voorraadbeheer | stockflow"
-        description="Ontdek de beste gratis voorraadbeheer app voor Vlaamse KMO's. Mobiel voorraadbeheer met barcode scanning, real-time synchronisatie en 100% gratis. Start vandaag!"
+        description="Ontdek de beste gratis voorraadbeheer app voor KMO's. Mobiel voorraadbeheer met barcode scanning, real-time synchronisatie en 100% gratis. Start vandaag!"
         keywords="gratis voorraadbeheer app, voorraadbeheer app gratis, gratis voorraadbeheer app download, gratis voorraadbeheer app android, gratis voorraadbeheer app iphone, gratis voorraadbeheer app tablet, gratis voorraadbeheer app barcode, gratis voorraadbeheer app offline, gratis voorraadbeheer app KMO, gratis voorraadbeheer app horeca, gratis voorraadbeheer app webshop, gratis voorraadbeheer app belgië, gratis voorraadbeheer app vlaanderen, gratis voorraadbeheer app stockflow"
         url="https://www.stockflow.be/gratis-voorraadbeheer-app"
       />
@@ -91,7 +91,7 @@ export default function GratisVoorraadbeheerApp() {
             <div>
               <h1 className="text-4xl md:text-5xl font-bold mb-6">
                 <span className="block">Gratis Voorraadbeheer App</span>
-                <span className="block text-green-100">voor Vlaamse KMO's</span>
+                <span className="block text-green-100">voor KMO's</span>
               </h1>
               <p className="text-xl mb-8 leading-relaxed">
                 De enige gratis voorraadbeheer app die specifiek ontwikkeld is voor Vlaamse bedrijven. 
@@ -172,7 +172,7 @@ export default function GratisVoorraadbeheerApp() {
                 <span className="text-green-600">Voordelen</span> van onze gratis voorraadbeheer app
               </h2>
               <p className="text-lg text-gray-700 mb-8">
-                Onze gratis voorraadbeheer app is specifiek ontwikkeld voor Vlaamse KMO's. 
+                Onze gratis voorraadbeheer app is specifiek ontwikkeld voor KMO's. 
                 Ontdek waarom honderden bedrijven al kiezen voor onze gratis voorraadbeheer app.
               </p>
               
@@ -262,7 +262,7 @@ export default function GratisVoorraadbeheerApp() {
       <section className="py-16 px-4 bg-gray-50">
         <div className="max-w-6xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-8">
-            Waarom kiezen <span className="text-green-600">3200+ Vlaamse KMO's</span> voor onze gratis voorraadbeheer app?
+            Waarom kiezen <span className="text-green-600">3200+ KMO's</span> voor onze gratis voorraadbeheer app?
           </h2>
           
           <div className="grid md:grid-cols-3 gap-8 mb-12">
@@ -338,7 +338,7 @@ export default function GratisVoorraadbeheerApp() {
             Start Vandaag Met Onze Gratis Voorraadbeheer App
           </h2>
           <p className="text-xl mb-8 opacity-90">
-            Sluit je aan bij honderden Vlaamse KMO's die al profiteren van onze gratis voorraadbeheer app. 
+            Sluit je aan bij honderden KMO's die al profiteren van onze gratis voorraadbeheer app. 
             Geen verborgen kosten, geen verplichtingen.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -411,14 +411,14 @@ export default function GratisVoorraadbeheerApp() {
             className="h-10 md:h-12 mx-auto mb-6"
           />
           <p className="text-gray-400 text-base md:text-lg mb-8 leading-relaxed max-w-2xl mx-auto">
-            De beste gratis voorraadbeheer app voor Vlaamse KMO's. 
+            De beste gratis voorraadbeheer app voor KMO's. 
             Mobiel, efficiënt en 100% gratis.
           </p>
 
           <div className="border-t border-gray-700 pt-6">
             <p className="text-gray-500 text-xs md:text-sm">
               &copy; {new Date().getFullYear()} stockflow. Alle rechten voorbehouden.
-              Gratis voorraadbeheer app voor Vlaamse KMO's.
+              Gratis voorraadbeheer app voor KMO's.
             </p>
           </div>
         </div>
@@ -444,7 +444,7 @@ export default function GratisVoorraadbeheerApp() {
         "@context": "https://schema.org",
         "@type": "SoftwareApplication",
         "name": "stockflow - Gratis Voorraadbeheer App",
-        "description": "De beste gratis voorraadbeheer app voor Vlaamse KMO's. Mobiel voorraadbeheer met barcode scanning, real-time synchronisatie en 100% gratis.",
+        "description": "De beste gratis voorraadbeheer app voor KMO's. Mobiel voorraadbeheer met barcode scanning, real-time synchronisatie en 100% gratis.",
         "applicationCategory": "BusinessApplication",
         "operatingSystem": "Web Browser",
         "offers": {

@@ -212,7 +212,7 @@ export default function VoorraadbeheerSoftware() {
              Start Vandaag Met Stockbeheer
            </h2>
            <p className="text-lg md:text-xl mb-6 md:mb-8 opacity-90">
-             Sluit je aan bij honderden Vlaamse KMO's die al profiteren van professionele Stockbeheer zonder kosten.
+             Sluit je aan bij honderden KMO's die al profiteren van professionele Stockbeheer zonder kosten.
            </p>
           <div className="flex flex-col md:flex-row gap-4 justify-center">
             <Link
@@ -255,14 +255,14 @@ export default function VoorraadbeheerSoftware() {
              className="h-10 md:h-12 mx-auto mb-6"
            />
                      <p className="text-gray-400 text-base md:text-lg mb-8 leading-relaxed max-w-2xl mx-auto">
-             De beste Stockbeheer voor Vlaamse KMO's. 
+             De beste Stockbeheer voor KMO's. 
              Eenvoudig, veilig en zonder verborgen kosten.
            </p>
 
           <div className="border-t border-gray-700 pt-6">
                          <p className="text-gray-500 text-xs md:text-sm">
                &copy; {new Date().getFullYear()} stockflow. Alle rechten voorbehouden. 
-               Stockbeheer voor Vlaamse KMO's.
+               Stockbeheer voor KMO's.
              </p>
           </div>
         </div>

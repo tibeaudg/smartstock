@@ -162,7 +162,7 @@
     "items": [
       {
         "question": "Is stockflow echt 100% gratis voor KMO's in Vlaanderen?",
-        "answer": "Ja, stockflow is volledig gratis voor Vlaamse KMO's. Geen verborgen kosten, geen limieten op gebruikers of producten. Wij geloven dat elk bedrijf toegang moet hebben tot professioneel voorraadbeheer."
+        "answer": "Ja, stockflow is volledig gratis voor KMO's. Geen verborgen kosten, geen limieten op gebruikers of producten. Wij geloven dat elk bedrijf toegang moet hebben tot professioneel voorraadbeheer."
       },
       {
         "question": "Hoe werkt het gratis voorraadbeheer programma?",
@@ -178,25 +178,25 @@
       },
       {
         "question": "Hoe verschilt stockflow van andere voorraadbeheer software?",
-        "answer": "Stockflow is specifiek ontwikkeld voor Vlaamse KMO's, volledig gratis, en biedt alle essentiële functies zonder complexiteit. Geen dure licenties of verborgen kosten zoals bij Odoo of Exact."
+        "answer": "Stockflow is specifiek ontwikkeld voor KMO's, volledig gratis, en biedt alle essentiële functies zonder complexiteit. Geen dure licenties of verborgen kosten zoals bij Odoo of Exact."
       }
     ]
   },
   "benefits": {
     "title": "Waarom KMO's in Vlaanderen Kiezen voor stockflow",
-    "subtitle": "Het beste gratis voorraadbeheer programma, specifiek ontwikkeld voor Vlaamse bedrijven",
+    "subtitle": "Het beste gratis voorraadbeheer programma, specifiek ontwikkeld voor bedrijven",
     "items": [
       {
         "title": "100% Gratis Voor Altijd",
-        "description": "Geen verborgen kosten, geen limieten. Volledig gratis voorraadbeheer voor Vlaamse KMO's."
+        "description": "Geen verborgen kosten, geen limieten. Volledig gratis voorraadbeheer voor KMO's."
       },
       {
         "title": "Direct Aan de Slag",
         "description": "Geen complexe setup of training nodig. Begin binnen 5 minuten met je voorraadbeheer."
       },
       {
-        "title": "Specifiek voor Vlaamse KMO's",
-        "description": "Ontwikkeld met de behoeften van Vlaamse bedrijven in gedachten. Nederlandse support en lokale expertise."
+        "title": "Specifiek voor KMO's",
+        "description": "Ontwikkeld met de behoeften van bedrijven in gedachten. Professionele support en lokale expertise."
       }
     ]
   },
@@ -207,7 +207,7 @@
     "items": [
       {
         "title": "Krachtig voorraadbeheer voor KMO's",
-        "description": "Beheer je producten, locaties en voorraden centraal. Automatiseer bestellingen en voorkom tekorten. Specifiek ontwikkeld voor Vlaamse bedrijven.",
+        "description": "Beheer je producten, locaties en voorraden centraal. Automatiseer bestellingen en voorkom tekorten. Specifiek ontwikkeld voor bedrijven.",
         "features": [
           "Centraal productbeheer",
           "Automatische bestelmeldingen",
@@ -364,14 +364,14 @@
     }
   },
   "testimonials": {
-    "title": "Vlaamse KMO's Vertellen Over hun Succes",
-    "subtitle": "Ontdek hoe Vlaamse bedrijven hun voorraadbeheer hebben getransformeerd en duizenden euro's besparen.",
+    "title": "KMO's Vertellen Over hun Succes",
+    "subtitle": "Ontdek hoe bedrijven hun voorraadbeheer hebben getransformeerd en duizenden euro's besparen.",
     "rating": "4.8/5 Sterren van Tevreden Klanten",
     "items": [
       {
         "name": "Laura Peeters",
         "role": "Eigenaar, De Koffieboetiek - Gent",
-        "quote": "Dankzij stockflow heb ik eindelijk een helder overzicht van mijn voorraad. De automatische bestelmeldingen zijn een lifesaver! Als Vlaamse KMO is het gratis plan perfect voor ons.",
+        "quote": "Dankzij stockflow heb ik eindelijk een helder overzicht van mijn voorraad. De automatische bestelmeldingen zijn een lifesaver! Als KMO is het gratis plan perfect voor ons.",
         "company": "De Koffieboetiek",
         "location": "Gent",
         "industry": "Horeca",
@@ -391,7 +391,7 @@
       {
         "name": "Anke Willems",
         "role": "Manager, Creatief Atelier - Brugge",
-        "quote": "Als klein bedrijf is het gratis plan perfect voor ons. We kunnen nu veel efficiënter onze materialen beheren. Een absolute aanrader voor elke Vlaamse KMO!",
+        "quote": "Als klein bedrijf is het gratis plan perfect voor ons. We kunnen nu veel efficiënter onze materialen beheren. Een absolute aanrader voor elke KMO!",
         "company": "Creatief Atelier",
         "location": "Brugge",
         "industry": "Creatief",
@@ -401,7 +401,7 @@
     ],
     "stats": {
       "title": "Gemiddelde Resultaten van Onze Klanten",
-      "subtitle": "Vlaamse KMO's die stockflow gebruiken zien significante verbeteringen",
+      "subtitle": "KMO's die stockflow gebruiken zien significante verbeteringen",
       "items": [
         {
           "value": "9 uur",
@@ -421,7 +421,7 @@
   "video": {
     "title": "Hoe Werkt",
     "subtitle": "Stockflow?",
-    "description": "Ontdek hoe eenvoudig voorraadbeheer kan zijn met stockflow. Bekijk hoe Vlaamse KMO's hun voorraad beheren in minder dan 3 minuten.",
+    "description": "Ontdek hoe eenvoudig voorraadbeheer kan zijn met stockflow. Bekijk hoe KMO's hun voorraad beheren in minder dan 3 minuten.",
     "benefits": [
       {
         "title": "3 minuten",
@@ -456,11 +456,11 @@
   },
   "finalCta": {
     "title": "Klaar om je Voorraadbeheer te Transformeren?",
-    "subtitle": "Sluit je aan bij honderden Vlaamse KMO's die al profiteren van professioneel voorraadbeheer zonder kosten. Start vandaag nog en zie direct resultaat.",
+    "subtitle": "Sluit je aan bij honderden KMO's die al profiteren van professioneel voorraadbeheer zonder kosten. Start vandaag nog en zie direct resultaat.",
     "benefits": [
       "Start binnen 2 minuten",
       "100% veilig en gratis",
-      "Nederlandse support"
+      "Professionele support"
     ],
     "urgency": {
       "title": "Beperkte Tijd",

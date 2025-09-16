@@ -15,7 +15,7 @@ export default function StockbeheerApp() {
     },
     {
       question: "Is de stockbeheer app gratis?",
-      answer: "Ja, onze stockbeheer app is volledig gratis voor Vlaamse KMO's. Je kunt tot 30 producten gratis beheren zonder verborgen kosten. Geen verborgen kosten, geen limieten op gebruikers of producten. Perfect om te testen of een stockbeheer app iets voor jou is."
+      answer: "Ja, onze stockbeheer app is volledig gratis voor KMO's. Je kunt tot 30 producten gratis beheren zonder verborgen kosten. Geen verborgen kosten, geen limieten op gebruikers of producten. Perfect om te testen of een stockbeheer app iets voor jou is."
     },
     {
       question: "Werkt de stockbeheer app offline?",
@@ -195,7 +195,7 @@ export default function StockbeheerApp() {
                 <span className="text-orange-600">Voordelen</span> van onze stockbeheer app
               </h2>
               <p className="text-lg text-gray-700 mb-8">
-                Onze stockbeheer app is specifiek ontwikkeld voor Vlaamse KMO's. 
+                Onze stockbeheer app is specifiek ontwikkeld voor KMO's. 
                 Ontdek waarom honderden bedrijven al kiezen voor onze stockbeheer app.
               </p>
               
@@ -309,7 +309,7 @@ export default function StockbeheerApp() {
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-8">
-            Waarom kiezen <span className="text-orange-600">32+ Vlaamse KMO's</span> voor onze stockbeheer app?
+            Waarom kiezen <span className="text-orange-600">32+ KMO's</span> voor onze stockbeheer app?
           </h2>
           
           <div className="grid md:grid-cols-3 gap-8 mb-12">
@@ -385,7 +385,7 @@ export default function StockbeheerApp() {
             Start Vandaag Met Onze Stockbeheer App
           </h2>
           <p className="text-xl mb-8 opacity-90">
-            Sluit je aan bij honderden Vlaamse KMO's die al profiteren van onze stockbeheer app. 
+            Sluit je aan bij honderden KMO's die al profiteren van onze stockbeheer app. 
             Geen verborgen kosten, geen verplichtingen.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -458,14 +458,14 @@ export default function StockbeheerApp() {
             className="h-10 md:h-12 mx-auto mb-6"
           />
           <p className="text-gray-400 text-base md:text-lg mb-8 leading-relaxed max-w-2xl mx-auto">
-            De beste stockbeheer app voor Vlaamse KMO's. 
+            De beste stockbeheer app voor KMO's. 
             Mobiel, efficiënt en gebruiksvriendelijk.
           </p>
 
           <div className="border-t border-gray-700 pt-6">
             <p className="text-gray-500 text-xs md:text-sm">
               &copy; {new Date().getFullYear()} stockflow. Alle rechten voorbehouden.
-              Stockbeheer app voor Vlaamse KMO's.
+              Stockbeheer app voor KMO's.
             </p>
           </div>
         </div>
@@ -491,7 +491,7 @@ export default function StockbeheerApp() {
         "@context": "https://schema.org",
         "@type": "SoftwareApplication",
         "name": "stockflow - Stockbeheer App",
-        "description": "De beste stockbeheer app voor Vlaamse KMO's. Mobiel stockbeheer met barcode scanning, real-time synchronisatie en gratis starten.",
+        "description": "De beste stockbeheer app voor KMO's. Mobiel stockbeheer met barcode scanning, real-time synchronisatie en gratis starten.",
         "applicationCategory": "BusinessApplication",
         "operatingSystem": "Web Browser",
         "offers": {

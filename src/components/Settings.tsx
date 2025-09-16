@@ -22,6 +22,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useLocation, useNavigate, Outlet, useMatch } from 'react-router-dom';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { useMobile } from '@/hooks/use-mobile';
+import { useTranslation } from 'react-i18next';
 import {
   Building2,
   User,
@@ -32,6 +33,7 @@ import {
 } from 'lucide-react';
 
 export const Settings = () => {
+  const { t } = useTranslation();
   const { userProfile } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
@@ -63,15 +65,15 @@ export const Settings = () => {
 
   // Define menu items
   const menuItems = [
-    { id: 'profile', label: 'Profiel', icon: <User className="w-4 h-4" /> },
-    { id: 'branches', label: 'Filialen', icon: <Building2 className="w-4 h-4" /> },
-    { id: 'invoices', label: 'Facturen', icon: <Banknote className="w-4 h-4" /> },
+    { id: 'profile', label: t('settings.menu.profile'), icon: <User className="w-4 h-4" /> },
+    { id: 'branches', label: t('settings.menu.branches'), icon: <Building2 className="w-4 h-4" /> },
+    { id: 'invoices', label: t('settings.menu.invoices'), icon: <Banknote className="w-4 h-4" /> },
     ...(isAdmin
       ? [
-          { id: 'users', label: 'Gebruikers', icon: <Users className="w-4 h-4" /> },
+          { id: 'users', label: t('settings.menu.users'), icon: <Users className="w-4 h-4" /> },
         ]
       : []),
-    ...(isBlocked ? [{ id: 'invoicing', label: 'Facturatie', icon: <Banknote className="w-4 h-4" /> }] : []),
+    ...(isBlocked ? [{ id: 'invoicing', label: t('settings.menu.invoicing'), icon: <Banknote className="w-4 h-4" /> }] : []),
   ];
 
   if (isBlocked) {

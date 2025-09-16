@@ -95,7 +95,7 @@ export const EditProductModal = ({
           quantity: numericQuantity,
           unit_price: product.unit_price,
           reference_number: `STOCK_${actionType?.toUpperCase()}_${Date.now()}`,
-          notes: `Voorraad ${actionType === 'in' ? 'toegevoegd' : 'verwijderd'} via voorraad beheer`,
+          notes: t('stock.notes.stockAdjustment', { action: actionType === 'in' ? t('stock.actions.added') : t('stock.actions.removed') }),
           user_id: user.id, // Behoud user_id voor backward compatibility
           created_by: user.id, // Nieuwe kolom voor relaties
           branch_id: product.branch_id, // Add this if you have branch information
@@ -124,7 +124,7 @@ export const EditProductModal = ({
         throw new Error(`Fout bij het bijwerken van de voorraad: ${updateError.message}`);
       }
 
-      toast.success(`Voorraad succesvol ${actionType === 'in' ? 'toegevoegd' : 'verwijderd'}`);
+      toast.success(t('stock.success.stockUpdated', { action: actionType === 'in' ? t('stock.actions.added') : t('stock.actions.removed') }));
       onProductUpdated();
       // Invalideer relevante queries zodat data automatisch wordt gerefetched
       queryClient.invalidateQueries({ queryKey: ['products'] });

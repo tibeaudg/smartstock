@@ -17,6 +17,7 @@ import { Info } from 'lucide-react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useMobile } from '@/hooks/use-mobile';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
+import { useTranslation } from 'react-i18next';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Switch } from '@/components/ui/switch';
@@ -43,6 +44,7 @@ interface FormData {
 }
 
 export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductModalProps) => {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const { activeBranch, loading: branchLoading } = useBranches();
   const queryClient = useQueryClient();
@@ -199,13 +201,13 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
     }
 
     if (branchLoading) {
-      toast.error('Filialen worden nog geladen, probeer het opnieuw.');
+      toast.error(t('products.errors.branchesLoading'));
       return;
     }
 
     if (!activeBranch) {
       console.error('No active branch selected');
-      toast.error('Geen actief filiaal geselecteerd. Selecteer een filiaal en probeer het opnieuw.');
+      toast.error(t('products.errors.noActiveBranch'));
       return;
     }
 
@@ -213,14 +215,14 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
     if (hasVariants) {
       const validVariants = variants.filter(v => v.variantName.trim());
       if (validVariants.length === 0) {
-        toast.error('Voeg minimaal één variant toe');
+        toast.error(t('products.errors.addVariant'));
         return;
       }
       
       // Controleer of alle varianten verplichte velden hebben
       for (const variant of validVariants) {
         if (!variant.variantName.trim()) {
-          toast.error('Alle varianten moeten een naam hebben');
+          toast.error(t('products.errors.variantNameRequired'));
           return;
         }
         // Prijzen zijn niet verplicht

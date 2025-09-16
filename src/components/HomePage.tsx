@@ -304,24 +304,24 @@ export const HomePage = () => {
     // Fallback data
     return [
       {
-        question: "Is stockflow echt 100% gratis voor KMO's in Vlaanderen?",
-        answer: "Ja, stockflow is volledig gratis voor Vlaamse KMO's. Geen verborgen kosten, geen limieten op gebruikers of producten. Wij geloven dat elk bedrijf toegang moet hebben tot professioneel voorraadbeheer."
+        question: t('faq.fallback.items.0.question'),
+        answer: t('faq.fallback.items.0.answer')
       },
       {
-        question: "Hoe werkt het gratis voorraadbeheer programma?",
-        answer: "Registreer je gratis account, voeg je producten toe, en begin direct met het beheren van je voorraad. Ons voorraadbeheersysteem is intuïtief en vereist geen technische kennis."
+        question: t('faq.fallback.items.1.question'),
+        answer: t('faq.fallback.items.1.answer')
       },
       {
-        question: "Kan ik stockflow gebruiken op mijn mobiele telefoon?",
-        answer: "Absoluut! Onze voorraadbeheer app werkt perfect op alle apparaten - smartphone, tablet en desktop. Altijd en overal toegang tot je voorraadgegevens."
+        question: t('faq.fallback.items.2.question'),
+        answer: t('faq.fallback.items.2.answer')
       },
       {
-        question: "Is mijn data veilig in de cloud?",
-        answer: "Ja, wij nemen de veiligheid van jouw data zeer serieus. Dagelijkse back-ups, SSL-versleuteling en GDPR-compliance zorgen ervoor dat jouw voorraadgegevens altijd veilig zijn."
+        question: t('faq.fallback.items.3.question'),
+        answer: t('faq.fallback.items.3.answer')
       },
       {
-        question: "Hoe verschilt stockflow van andere voorraadbeheer software?",
-        answer: "Stockflow is specifiek ontwikkeld voor Vlaamse KMO's, volledig gratis, en biedt alle essentiële functies zonder complexiteit. Geen dure licenties of verborgen kosten zoals bij Odoo of Exact."
+        question: t('faq.fallback.items.4.question'),
+        answer: t('faq.fallback.items.4.answer')
       }
     ];
   })();
@@ -329,23 +329,23 @@ export const HomePage = () => {
   const features = [
     {
       icon: TrendingUp,
-      title: 'Optimaliseer je Cashflow',
-      description: 'Voorkom overbodige voorraad en dode stock. Krijg precies inzicht in wat je nodig hebt, wanneer je het nodig hebt.',
+      title: t('homepage.features.optimize.title'),
+      description: t('homepage.features.optimize.description'),
     },
     {
       icon: Zap,
-      title: 'Bespaar Tijd en Verminder Fouten',
-      description: 'Automatiseer bestellingen en minimaliseer handmatige tellingen. Focus op groei, niet op administratie.',
+      title: t('homepage.features.saveTime.title'),
+      description: t('homepage.features.saveTime.description'),
     },
     {
       icon: Users,
-      title: 'Naadloze Teamsamenwerking',
-      description: 'Werk efficiënt samen met je team dankzij duidelijke gebruikersrollen en realtime data-updates.',
+      title: t('homepage.features.teamwork.title'),
+      description: t('homepage.features.teamwork.description'),
     },
     {
       icon: Shield,
-      title: 'Veilig en Altijd Beschikbaar',
-      description: 'Jouw data is veilig in de cloud. Altijd en overal toegankelijk, met dagelijkse back-ups.',
+      title: t('homepage.features.secure.title'),
+      description: t('homepage.features.secure.description'),
     },
   ];
   
@@ -365,40 +365,40 @@ export const HomePage = () => {
     // Fallback data
     return [
       {
-        name: 'Laura Peeters',
-        role: 'Eigenaar, De Koffieboetiek - Gent',
-        quote: 'Dankzij stockflow heb ik eindelijk een helder overzicht van mijn voorraad. De automatische bestelmeldingen zijn een lifesaver! Als Vlaamse KMO is het gratis plan perfect voor ons.',
+        name: t('testimonials.fallback.items.0.name'),
+        role: t('testimonials.fallback.items.0.role'),
+        quote: t('testimonials.fallback.items.0.quote'),
         avatar: '/Laura.png',
         rating: 5,
-        company: 'De Koffieboetiek',
-        location: 'Gent',
-        industry: 'Horeca',
-        savings: '€2.400/jaar bespaard',
-        timeSaved: '8 uur/week'
+        company: t('testimonials.fallback.items.0.company'),
+        location: t('testimonials.fallback.items.0.location'),
+        industry: t('testimonials.fallback.items.0.industry'),
+        savings: t('testimonials.fallback.items.0.savings'),
+        timeSaved: t('testimonials.fallback.items.0.timeSaved')
       },
       {
-        name: 'Tom De Wit',
-        role: 'Zaakvoerder, TechOnderdelen BV - Antwerpen',
-        quote: 'De overstap naar stockflow was de beste beslissing voor ons magazijnbeheer. Het is intuïtief, snel en het team is enorm behulpzaam. Eindelijk een voorraadbeheer programma dat echt werkt.',
+        name: t('testimonials.fallback.items.1.name'),
+        role: t('testimonials.fallback.items.1.role'),
+        quote: t('testimonials.fallback.items.1.quote'),
         avatar: '/jan.png',
         rating: 5,
-        company: 'TechOnderdelen BV',
-        location: 'Antwerpen',
-        industry: 'Technologie',
-        savings: '€5.200/jaar bespaard',
-        timeSaved: '12 uur/week'
+        company: t('testimonials.fallback.items.1.company'),
+        location: t('testimonials.fallback.items.1.location'),
+        industry: t('testimonials.fallback.items.1.industry'),
+        savings: t('testimonials.fallback.items.1.savings'),
+        timeSaved: t('testimonials.fallback.items.1.timeSaved')
       },
       {
-        name: 'Anke Willems',
-        role: 'Manager, Creatief Atelier - Brugge',
-        quote: 'Als klein bedrijf is het gratis plan perfect voor ons. We kunnen nu veel efficiënter onze materialen beheren. Een absolute aanrader voor elke Vlaamse KMO!',
+        name: t('testimonials.fallback.items.2.name'),
+        role: t('testimonials.fallback.items.2.role'),
+        quote: t('testimonials.fallback.items.2.quote'),
         avatar: '/placeholder.svg',
         rating: 5,
-        company: 'Creatief Atelier',
-        location: 'Brugge',
-        industry: 'Creatief',
-        savings: '€1.800/jaar bespaard',
-        timeSaved: '6 uur/week'
+        company: t('testimonials.fallback.items.2.company'),
+        location: t('testimonials.fallback.items.2.location'),
+        industry: t('testimonials.fallback.items.2.industry'),
+        savings: t('testimonials.fallback.items.2.savings'),
+        timeSaved: t('testimonials.fallback.items.2.timeSaved')
       }
     ];
   })();
@@ -421,18 +421,18 @@ export const HomePage = () => {
     return [
       {
         icon: <Euro className="h-8 w-8" />,
-        title: "100% Gratis Voor Altijd",
-        description: "Geen verborgen kosten, geen limieten. Volledig gratis voorraadbeheer voor Vlaamse KMO's."
+        title: t('benefits.fallback.items.0.title'),
+        description: t('benefits.fallback.items.0.description')
       },
       {
         icon: <Clock className="h-8 w-8" />,
-        title: "Direct Aan de Slag",
-        description: "Geen complexe setup of training nodig. Begin binnen 5 minuten met je voorraadbeheer."
+        title: t('benefits.fallback.items.1.title'),
+        description: t('benefits.fallback.items.1.description')
       },
       {
         icon: <Target className="h-8 w-8" />,
-        title: "Specifiek voor Vlaamse KMO's",
-        description: "Ontwikkeld met de behoeften van Vlaamse bedrijven in gedachten. Nederlandse support en lokale expertise."
+        title: t('benefits.fallback.items.2.title'),
+        description: t('benefits.fallback.items.2.description')
       }
     ];
   })();
@@ -441,23 +441,23 @@ export const HomePage = () => {
   const usps = [
     {
       icon: <Package className="h-8 w-8" />,
-      title: "Eenvoudig plannen",
-      desc: "Plan en publiceer voorraadupdates in seconden.",
+      title: t('homepage.usps.0.title'),
+      desc: t('homepage.usps.0.desc'),
     },
     {
       icon: <BarChart3 className="h-8 w-8" />,
-      title: "Realtime inzicht", 
-      desc: "Direct overzicht van je voorraad en prestaties.",
+      title: t('homepage.usps.1.title'), 
+      desc: t('homepage.usps.1.desc'),
     },
     {
       icon: <Users className="h-8 w-8" />,
-      title: "Samenwerken",
-      desc: "Werk moeiteloos samen met je team.",
+      title: t('homepage.usps.2.title'),
+      desc: t('homepage.usps.2.desc'),
     },
     {
       icon: <Shield className="h-8 w-8" />,
-      title: "Veilig & betrouwbaar",
-      desc: "Jouw data is altijd veilig en beschermd.",
+      title: t('homepage.usps.3.title'),
+      desc: t('homepage.usps.3.desc'),
     },
   ];
   // --- EINDE USP DATA ---
@@ -481,40 +481,25 @@ export const HomePage = () => {
     return [
       {
         icon: <BarChart3 className="h-12 w-12 text-blue-600" />,
-        title: "Geavanceerde Analytics",
-        description: "AI-gedreven inzichten, voorspellingen en real-time dashboards voor optimale besluitvorming.",
-        features: [
-          "AI-voorspellingen voor voorraadbehoeften",
-          "Real-time dashboards en rapporten",
-          "Custom export naar Excel/PDF",
-          "API toegang voor integraties"
-        ],
+        title: t('modules.fallback.items.0.title'),
+        description: t('modules.fallback.items.0.description'),
+        features: t('modules.fallback.items.0.features', { returnObjects: true }),
         tier: "groei",
         image: "/placeholder.svg"
       },
       {
         icon: <Scan className="h-12 w-12 text-green-600" />,
-        title: "Barcode Scanner",
-        description: "Scan producten direct in en uit met je smartphone. Perfect voor snelle voorraadupdates.",
-        features: [
-          "Mobiele barcode scanning",
-          "Automatische productherkenning",
-          "Bulk import/export",
-          "Offline synchronisatie"
-        ],
+        title: t('modules.fallback.items.1.title'),
+        description: t('modules.fallback.items.1.description'),
+        features: t('modules.fallback.items.1.features', { returnObjects: true }),
         tier: "groei",
         image: "/placeholder.svg"
       },
       {
         icon: <Truck className="h-12 w-12 text-purple-600" />,
-        title: "Leveringsbonnen Beheer",
-        description: "Volledig beheer van inkomende en uitgaande leveringsbonnen met automatische updates.",
-        features: [
-          "PDF upload en verwerking",
-          "Automatische voorraad updates",
-          "Custom leveringsbon templates",
-          "Bulk import/export functionaliteit"
-        ],
+        title: t('modules.fallback.items.2.title'),
+        description: t('modules.fallback.items.2.description'),
+        features: t('modules.fallback.items.2.features', { returnObjects: true }),
         tier: "groei",
         image: "/placeholder.svg"
       }
@@ -526,20 +511,20 @@ export const HomePage = () => {
   const capabilities = [
     {
       icon: <Users className="h-12 w-12" />,
-      title: "Samenwerking",
-      desc: "Werk efficiënt samen met je team.",
+      title: t('homepage.capabilities.0.title'),
+      desc: t('homepage.capabilities.0.desc'),
       learnMore: "#",
     },
     {
       icon: <BarChart3 className="h-12 w-12" />,
-      title: "Rapportages",
-      desc: "Krijg inzicht in trends en prestaties.",
+      title: t('homepage.capabilities.1.title'),
+      desc: t('homepage.capabilities.1.desc'),
       learnMore: "#",
     },
     {
       icon: <Shield className="h-12 w-12" />,
-      title: "Veiligheid",
-      desc: "Jouw data is veilig in de cloud.",
+      title: t('homepage.capabilities.2.title'),
+      desc: t('homepage.capabilities.2.desc'),
       learnMore: "#",
     },
   ];
@@ -563,42 +548,27 @@ export const HomePage = () => {
     // Fallback data
     return [
       {
-        title: "Krachtig voorraadbeheer voor KMO's",
-        desc: "Beheer je producten, locaties en voorraden centraal. Automatiseer bestellingen en voorkom tekorten. Specifiek ontwikkeld voor Vlaamse bedrijven.",
+        title: t('features.fallback.items.0.title'),
+        desc: t('features.fallback.items.0.desc'),
         img: "/optimized/image.png",
         reverse: false,
-        features: [
-          "Centraal productbeheer",
-          "Automatische bestelmeldingen", 
-          "Multi-locatie ondersteuning",
-          "Real-time voorraad updates"
-        ],
+        features: t('features.fallback.items.0.features', { returnObjects: true }),
         icon: <Package className="h-12 w-12 text-blue-600" />
       },
       {
-        title: "Slimme rapportages en inzichten",
-        desc: "Genereer rapporten en krijg inzicht in trends, zodat je altijd de juiste beslissingen neemt voor je voorraadbeheer.",
+        title: t('features.fallback.items.1.title'),
+        desc: t('features.fallback.items.1.desc'),
         img: "/optimized/analytics.png",
         reverse: true,
-        features: [
-          "AI-gedreven voorspellingen",
-          "Custom dashboards",
-          "Export naar Excel/PDF",
-          "Trend analyse"
-        ],
+        features: t('features.fallback.items.1.features', { returnObjects: true }),
         icon: <BarChart3 className="h-12 w-12 text-green-600" />
       },
       {
-        title: "Mobiel & desktop voorraadbeheer",
-        desc: "Altijd en overal toegang tot je voorraad, op elk apparaat. Perfect voor ondernemers die onderweg zijn.",
+        title: t('features.fallback.items.2.title'),
+        desc: t('features.fallback.items.2.desc'),
         img: "/optimized/mobile.png",
         reverse: false,
-        features: [
-          "Responsive design",
-          "Offline synchronisatie",
-          "Barcode scanning",
-          "Push notificaties"
-        ],
+        features: t('features.fallback.items.2.features', { returnObjects: true }),
         icon: <Smartphone className="h-12 w-12 text-purple-600" />
       }
     ];
@@ -633,8 +603,8 @@ export const HomePage = () => {
     {
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
-      "name": "stockflow - Gratis Voorraadbeheer",
-      "description": "Gratis voorraadbeheer programma voor Vlaamse KMO's. Eenvoudig, veilig en zonder verborgen kosten.",
+      "name": t('structuredData.softwareName'),
+      "description": t('structuredData.softwareDescription'),
       "applicationCategory": "BusinessApplication",
       "operatingSystem": "Web Browser",
       "offers": {
@@ -667,8 +637,8 @@ export const HomePage = () => {
     {
       "@context": "https://schema.org",
       "@type": "VideoObject",
-      "name": "Introductievideo Stockflow",
-      "description": "Uitleg over hoe stockflow werkt voor Vlaamse KMO's.",
+      "name": t('structuredData.videoName'),
+      "description": t('structuredData.videoDescription'),
       "thumbnailUrl": ["https://www.stockflow.be/Inventory-Management.png"],
       "uploadDate": "2024-01-01",
       "contentUrl": "https://www.stockflow.be/intro_vid.mp4",
@@ -808,11 +778,7 @@ export const HomePage = () => {
                     console.warn('Translation error for accessibility.trust:', error);
                   }
                   // Fallback data
-                  return [
-                    "Geen creditcard vereist",
-                    "Direct toegang", 
-                    "GDPR-compliant"
-                  ].map((trust, index) => (
+                  return (t('accessibility.trust', { returnObjects: true }) as string[]).map((trust, index) => (
                     <div key={index} className="flex items-center gap-2">
                       {index === 0 ? <CheckCircle className="h-4 w-4 text-green-600" /> : 
                        index === 1 ? <Zap className="h-4 w-4 text-blue-600" /> :
@@ -1064,7 +1030,7 @@ export const HomePage = () => {
                 <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                   <div className="bg-gradient-to-r from-blue-500 to-blue-900 text-white px-4 py-2 rounded-full text-sm font-semibold flex items-center gap-2">
                     <Star className="h-4 w-4" />
-                    Meest Populair
+                    {t('pricing.mostPopular')}
                   </div>
                 </div>
                 
@@ -1248,7 +1214,7 @@ export const HomePage = () => {
             <FadeInWhenVisible>
               <div className="inline-flex items-center gap-2 bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-medium mb-6">
                 <Award className="h-4 w-4" />
-                <span>Alle Features Inbegrepen</span>
+                <span>{t('badges.features')}</span>
               </div>
             </FadeInWhenVisible>
             <FadeInWhenVisible>
@@ -1312,7 +1278,7 @@ export const HomePage = () => {
                       onClick={handleLoginClick}
                     >
                       <Rocket className="h-4 w-4 mr-2" />
-                      Probeer Nu Gratis
+                      {t('buttons.tryNowFree')}
                     </Button>
                   </FadeInWhenVisible>
                 </div>
@@ -1353,7 +1319,7 @@ export const HomePage = () => {
             <FadeInWhenVisible>
               <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-medium mb-6">
                 <Play className="h-4 w-4" />
-                <span>Zie stockflow in Actie</span>
+                <span>{t('badges.video')}</span>
               </div>
             </FadeInWhenVisible>
             <FadeInWhenVisible>
@@ -1383,26 +1349,49 @@ export const HomePage = () => {
                     onPlay={() => logger.info('Video play', { id: 'intro-video' })}
                   >
                     <source src="/intro_vid.mp4" type="video/mp4" />
-                    Je browser ondersteunt deze video niet.
+                    {t('video.fallback')}
                   </video>
                 </div>
               </div>
               
               {/* Video benefits */}
               <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-                {[
-                  { icon: <Clock className="h-6 w-6 text-blue-600" />, title: "3 minuten", desc: "Om je eerste producten toe te voegen" },
-                  { icon: <Zap className="h-6 w-6 text-green-600" />, title: "Direct resultaat", desc: "Zie meteen je voorraad overzicht" },
-                  { icon: <Users className="h-6 w-6 text-purple-600" />, title: "Team klaar", desc: "Nodig je team uit en begin samen" }
-                ].map((benefit, index) => (
-                  <div key={index} className="text-center p-6 bg-white rounded-xl shadow-lg border border-gray-100">
-                    <div className="inline-flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full mb-4">
-                      {benefit.icon}
+                {(() => {
+                  try {
+                    const benefits = t('videoBenefits', { returnObjects: true });
+                    if (Array.isArray(benefits)) {
+                      return benefits.map((benefit, index) => (
+                        <div key={index} className="text-center p-6 bg-white rounded-xl shadow-lg border border-gray-100">
+                          <div className="inline-flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full mb-4">
+                            {index === 0 ? <Clock className="h-6 w-6 text-blue-600" /> : 
+                             index === 1 ? <Zap className="h-6 w-6 text-green-600" /> :
+                             <Users className="h-6 w-6 text-purple-600" />}
+                          </div>
+                          <h3 className="font-bold text-gray-900 mb-2">{benefit.title}</h3>
+                          <p className="text-sm text-gray-600">{benefit.description}</p>
+                        </div>
+                      ));
+                    }
+                  } catch (error) {
+                    console.warn('Translation error for videoBenefits:', error);
+                  }
+                  // Fallback data
+                  return [
+                    { title: "3 minutes", description: "To add your first products" },
+                    { title: "Immediate results", description: "See your inventory overview immediately" },
+                    { title: "Team ready", description: "Invite your team and start together" }
+                  ].map((benefit, index) => (
+                    <div key={index} className="text-center p-6 bg-white rounded-xl shadow-lg border border-gray-100">
+                      <div className="inline-flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full mb-4">
+                        {index === 0 ? <Clock className="h-6 w-6 text-blue-600" /> : 
+                         index === 1 ? <Zap className="h-6 w-6 text-green-600" /> :
+                         <Users className="h-6 w-6 text-purple-600" />}
+                      </div>
+                      <h3 className="font-bold text-gray-900 mb-2">{benefit.title}</h3>
+                      <p className="text-sm text-gray-600">{benefit.description}</p>
                     </div>
-                    <h3 className="font-bold text-gray-900 mb-2">{benefit.title}</h3>
-                    <p className="text-sm text-gray-600">{benefit.desc}</p>
-                  </div>
-                ))}
+                  ));
+                })()}
               </div>
             </div>
           </FadeInWhenVisible>
@@ -1432,14 +1421,36 @@ export const HomePage = () => {
                 
                 
                 <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-600">
-                  {(t('video.cta.features', { returnObjects: true }) as string[]).map((feature, index) => (
-                    <div key={index} className="flex items-center gap-2">
-                      {index === 0 ? <CheckCircle className="h-4 w-4 text-green-600" /> : 
-                       index === 1 ? <Zap className="h-4 w-4 text-blue-600" /> :
-                       <Shield className="h-4 w-4 text-green-600" />}
-                      <span>{feature}</span>
-                    </div>
-                  ))}
+                  {(() => {
+                    try {
+                      const features = t('video.cta.features', { returnObjects: true });
+                      if (Array.isArray(features)) {
+                        return features.map((feature, index) => (
+                          <div key={index} className="flex items-center gap-2">
+                            {index === 0 ? <CheckCircle className="h-4 w-4 text-green-600" /> : 
+                             index === 1 ? <Zap className="h-4 w-4 text-blue-600" /> :
+                             <Shield className="h-4 w-4 text-green-600" />}
+                            <span>{feature}</span>
+                          </div>
+                        ));
+                      }
+                    } catch (error) {
+                      console.warn('Translation error for video.cta.features:', error);
+                    }
+                    // Fallback data
+                    return [
+                      "No credit card required",
+                      "Direct access", 
+                      "100% safe"
+                    ].map((feature, index) => (
+                      <div key={index} className="flex items-center gap-2">
+                        {index === 0 ? <CheckCircle className="h-4 w-4 text-green-600" /> : 
+                         index === 1 ? <Zap className="h-4 w-4 text-blue-600" /> :
+                         <Shield className="h-4 w-4 text-green-600" />}
+                        <span>{feature}</span>
+                      </div>
+                    ));
+                  })()}
                 </div>
               </div>
             </div>
@@ -1494,20 +1505,20 @@ export const HomePage = () => {
             <FadeInWhenVisible>
               <div className="inline-flex items-center gap-2 bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full text-sm font-medium mb-6">
                 <Star className="h-4 w-4" />
-                <span>4.8/5 Sterren van Tevreden Klanten</span>
+                <span>{t('badges.testimonials')}</span>
               </div>
             </FadeInWhenVisible>
             <FadeInWhenVisible>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
-                <span className="block text-gray-900">Vlaamse KMO's Vertellen</span>
+                <span className="block text-gray-900">{t('testimonials.sectionTitle')}</span>
                 <span className="block bg-gradient-to-r from-blue-500 to-blue-900 bg-clip-text text-transparent">
-                  Over hun Succes
+                  {t('testimonials.sectionSubtitle')}
                 </span>
               </h2>
             </FadeInWhenVisible>
             <FadeInWhenVisible>
               <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                Ontdek hoe Vlaamse bedrijven hun voorraadbeheer hebben getransformeerd en duizenden euro's besparen.
+                {t('testimonials.sectionDescription')}
               </p>
             </FadeInWhenVisible>
           </div>
@@ -1609,36 +1620,6 @@ export const HomePage = () => {
               )}
             />
           </div>
-
-          {/* Social proof stats */}
-          <FadeInWhenVisible>
-            <div className="bg-white rounded-2xl justify-center items-center shadow-lg p-8 md:p-12 border border-gray-100">
-              <div className="text-center mb-8">
-                <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
-                  Gemiddelde Resultaten van Onze Klanten
-                </h3>
-                <p className="text-gray-600">
-                  Vlaamse KMO's die stockflow gebruiken zien significante verbeteringen
-                </p>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {[
-                  { icon: <Clock className="h-8 w-8 text-blue-600" />, value: '9 uur', label: 'Tijd bespaard per week' },
-                  { icon: <TrendingUp className="h-8 w-8 text-purple-600" />, value: '23%', label: 'Verhoogde efficiëntie' },
-                  { icon: <Shield className="h-8 w-8 text-orange-600" />, value: '99.9%', label: 'Uptime garantie' }
-                ].map((stat, index) => (
-                  <div key={index} className="text-center">
-                    <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-100 rounded-2xl mb-4">
-                      {stat.icon}
-                    </div>
-                    <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">{stat.value}</div>
-                    <div className="text-sm text-gray-600">{stat.label}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </FadeInWhenVisible>
         </div>
       </section>
 
@@ -1713,16 +1694,40 @@ export const HomePage = () => {
           {/* Value proposition */}
           <FadeInWhenVisible>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 max-w-4xl mx-auto">
-              {(t('finalCta.benefits', { returnObjects: true }) as string[]).map((benefit, index) => (
-                <div key={index} className="flex items-center justify-center gap-3 text-white/90">
-                  <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
-                    {index === 0 ? <Zap className="h-6 w-6" /> : 
-                     index === 1 ? <Shield className="h-6 w-6" /> :
-                     <Users className="h-6 w-6" />}
+              {(() => {
+                try {
+                  const benefits = t('finalCta.benefits', { returnObjects: true });
+                  if (Array.isArray(benefits)) {
+                    return benefits.map((benefit, index) => (
+                      <div key={index} className="flex items-center justify-center gap-3 text-white/90">
+                        <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+                          {index === 0 ? <Zap className="h-6 w-6" /> : 
+                           index === 1 ? <Shield className="h-6 w-6" /> :
+                           <Users className="h-6 w-6" />}
+                        </div>
+                        <span className="font-medium">{benefit}</span>
+                      </div>
+                    ));
+                  }
+                } catch (error) {
+                  console.warn('Translation error for finalCta.benefits:', error);
+                }
+                // Fallback data
+                return [
+                  "Start within 2 minutes",
+                  "100% safe and free",
+                  "Professional support"
+                ].map((benefit, index) => (
+                  <div key={index} className="flex items-center justify-center gap-3 text-white/90">
+                    <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+                      {index === 0 ? <Zap className="h-6 w-6" /> : 
+                       index === 1 ? <Shield className="h-6 w-6" /> :
+                       <Users className="h-6 w-6" />}
+                    </div>
+                    <span className="font-medium">{benefit}</span>
                   </div>
-                  <span className="font-medium">{benefit}</span>
-                </div>
-              ))}
+                ));
+              })()}
             </div>
           </FadeInWhenVisible>
 
@@ -1756,15 +1761,39 @@ export const HomePage = () => {
           {/* Trust indicators */}
           <FadeInWhenVisible>
             <div className="flex flex-wrap justify-center gap-6 text-sm text-white/80 mb-8">
-              {(t('accessibility.trust', { returnObjects: true }) as string[]).map((trust, index) => (
-                <div key={index} className="flex items-center gap-2">
-                  {index === 0 ? <CheckCircle className="h-4 w-4" /> : 
-                   index === 1 ? <Clock className="h-4 w-4" /> :
-                   index === 2 ? <Shield className="h-4 w-4" /> :
-                   <Globe className="h-4 w-4" />}
-                  <span>{trust}</span>
-                </div>
-              ))}
+              {(() => {
+                try {
+                  const trust = t('accessibility.trust', { returnObjects: true });
+                  if (Array.isArray(trust)) {
+                    return trust.map((trustItem, index) => (
+                      <div key={index} className="flex items-center gap-2">
+                        {index === 0 ? <CheckCircle className="h-4 w-4" /> : 
+                         index === 1 ? <Clock className="h-4 w-4" /> :
+                         index === 2 ? <Shield className="h-4 w-4" /> :
+                         <Globe className="h-4 w-4" />}
+                        <span>{trustItem}</span>
+                      </div>
+                    ));
+                  }
+                } catch (error) {
+                  console.warn('Translation error for accessibility.trust:', error);
+                }
+                // Fallback data
+                return [
+                  "No credit card required",
+                  "Direct access",
+                  "GDPR-compliant",
+                  "100% safe"
+                ].map((trustItem, index) => (
+                  <div key={index} className="flex items-center gap-2">
+                    {index === 0 ? <CheckCircle className="h-4 w-4" /> : 
+                     index === 1 ? <Clock className="h-4 w-4" /> :
+                     index === 2 ? <Shield className="h-4 w-4" /> :
+                     <Globe className="h-4 w-4" />}
+                    <span>{trustItem}</span>
+                  </div>
+                ));
+              })()}
             </div>
           </FadeInWhenVisible>
 
@@ -1784,12 +1813,32 @@ export const HomePage = () => {
           {/* Social Proof Numbers */}
           <FadeInWhenVisible>
             <div className="mt-12 grid grid-cols-2 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
-              {(t('finalCta.stats', { returnObjects: true }) as any[]).map((stat, index) => (
-                <div key={index} className="text-center">
-                  <div className="text-2xl md:text-3xl font-bold text-white mb-1">{stat.number}</div>
-                  <div className="text-sm text-white/70">{stat.label}</div>
-                </div>
-              ))}
+              {(() => {
+                try {
+                  const stats = t('finalCta.stats', { returnObjects: true });
+                  if (Array.isArray(stats)) {
+                    return stats.map((stat, index) => (
+                      <div key={index} className="text-center">
+                        <div className="text-2xl md:text-3xl font-bold text-white mb-1">{stat.number}</div>
+                        <div className="text-sm text-white/70">{stat.label}</div>
+                      </div>
+                    ));
+                  }
+                } catch (error) {
+                  console.warn('Translation error for finalCta.stats:', error);
+                }
+                // Fallback data
+                return [
+                  { number: "32+", label: "Active SMEs" },
+                  { number: "9 hours", label: "Time saved/week" },
+                  { number: "4.8/5", label: "Customer satisfaction" }
+                ].map((stat, index) => (
+                  <div key={index} className="text-center">
+                    <div className="text-2xl md:text-3xl font-bold text-white mb-1">{stat.number}</div>
+                    <div className="text-sm text-white/70">{stat.label}</div>
+                  </div>
+                ));
+              })()}
             </div>
           </FadeInWhenVisible>
         </div>

@@ -6,6 +6,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useBranches, BranchProvider } from '@/hooks/useBranches';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { UnreadMessagesProvider } from '@/hooks/UnreadMessagesContext';
+import { useTranslation } from 'react-i18next';
 
 function isLocalStorageAvailable() {
   try {
@@ -20,6 +21,7 @@ function isLocalStorageAvailable() {
 }
 
 const AppContent: React.FC = () => {
+  const { t } = useTranslation();
   const { userProfile, loading } = useAuth();
   const { hasNoBranches } = useBranches();
   const location = useLocation();
@@ -42,19 +44,19 @@ const AppContent: React.FC = () => {
   if (!isLocalStorageAvailable()) {
     return (
       <div style={{ padding: 32, textAlign: 'center', color: '#b91c1c', background: '#fef2f2', minHeight: '100vh' }}>
-        <h1 style={{ fontSize: 28, marginBottom: 16 }}>Opslag niet beschikbaar</h1>
+        <h1 style={{ fontSize: 28, marginBottom: 16 }}>{t('app.storageUnavailable')}</h1>
         <p style={{ marginBottom: 16 }}>
-          De applicatie kan geen gegevens opslaan in je browser. Dit kan komen door:
+          {t('app.storageUnavailableDescription')}
           <ul style={{ textAlign: 'left', maxWidth: 400, margin: '16px auto' }}>
-            <li>Private/incognito modus</li>
-            <li>Uitgeschakelde cookies of opslag</li>
-            <li>Strenge privacy-instellingen</li>
-            <li>Een in-app browser (zoals Facebook/Instagram)</li>
+            <li>{t('app.storageReasons.private')}</li>
+            <li>{t('app.storageReasons.cookies')}</li>
+            <li>{t('app.storageReasons.privacy')}</li>
+            <li>{t('app.storageReasons.inApp')}</li>
           </ul>
           <br />
-          Schakel deze instellingen uit of gebruik een andere browser om SmartStock te gebruiken.
+          {t('app.storageSolution')}
         </p>
-        <button onClick={() => window.location.reload()} style={{ background: '#2563eb', color: 'white', padding: '10px 24px', borderRadius: 6, fontSize: 16, border: 'none' }}>Opnieuw proberen</button>
+        <button onClick={() => window.location.reload()} style={{ background: '#2563eb', color: 'white', padding: '10px 24px', borderRadius: 6, fontSize: 16, border: 'none' }}>{t('app.tryAgain')}</button>
       </div>
     );
   }

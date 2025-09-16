@@ -76,13 +76,61 @@
       "mobile": {
         "title": "Mobile Ready",
         "description": "Manage your stock from anywhere with our mobile app"
+      },
+      "optimize": {
+        "title": "Optimize Your Cashflow",
+        "description": "Prevent excess inventory and dead stock. Get precise insight into what you need, when you need it."
+      },
+      "saveTime": {
+        "title": "Save Time and Reduce Errors",
+        "description": "Automate orders and minimize manual counts. Focus on growth, not administration."
+      },
+      "teamwork": {
+        "title": "Seamless Team Collaboration",
+        "description": "Work efficiently with your team thanks to clear user roles and real-time data updates."
+      },
+      "secure": {
+        "title": "Safe and Always Available",
+        "description": "Your data is safe in the cloud. Always and everywhere accessible, with daily backups."
       }
     },
     "cta": {
       "title": "Ready to Transform Your Stock Management?",
       "description": "Join thousands of businesses already using StockFlow",
       "button": "Start Free Trial"
-    }
+    },
+    "usps": [
+      {
+        "title": "Easy Planning",
+        "desc": "Plan and publish inventory updates in seconds."
+      },
+      {
+        "title": "Real-time Insight",
+        "desc": "Direct overview of your inventory and performance."
+      },
+      {
+        "title": "Collaboration",
+        "desc": "Work seamlessly with your team."
+      },
+      {
+        "title": "Safe & Reliable",
+        "desc": "Your data is always safe and protected."
+      }
+    ],
+    "capabilities": [
+      {
+        "title": "Collaboration",
+        "desc": "Work efficiently with your team."
+      },
+      {
+        "title": "Reporting",
+        "desc": "Get insight into trends and performance."
+      },
+      {
+        "title": "Security",
+        "desc": "Your data is safe in the cloud."
+      }
+    ]
   },
   "auth": {
     "login": {
@@ -100,6 +148,39 @@
       "confirmPassword": "Confirm Password",
       "hasAccount": "Already have an account?",
       "signIn": "Sign In"
+    },
+    "benefits": {
+      "free": "100% free for SMEs",
+      "quickStart": "Get started in 2 minutes",
+      "secure": "Safe and GDPR-compliant",
+      "support": "Professional support"
+    },
+    "testimonial": {
+      "title": "What customers say",
+      "quote": "Thanks to StockFlow I finally have a clear overview of my inventory. The automatic reorder notifications are a lifesaver!",
+      "author": "- Laura Peeters, De Koffieboetiek Gent"
+    },
+    "title": {
+      "login": "Welcome Back",
+      "register": "Start Your Free Account"
+    },
+    "subtitle": {
+      "login": "Log in to access your inventory management dashboard",
+      "register": "Join 32+ SMEs that already benefit from free inventory management"
+    },
+    "errors": {
+      "invalidCredentials": "Invalid email address or password",
+      "loginFailed": "Login failed",
+      "userExists": "An account with this email address already exists",
+      "unknownError": "An unknown error occurred",
+      "passwordMismatch": "Passwords do not match",
+      "passwordTooShort": "Password must be at least 8 characters long"
+    },
+    "success": {
+      "accountCreated": "Account created!",
+      "checkEmail": "Check your inbox to confirm your email address",
+      "resetSent": "Reset instructions sent!",
+      "resetDescription": "If an account exists for {{email}}, an email has been sent"
     }
   },
   "dashboard": {
@@ -108,7 +189,18 @@
     "recentMovements": "Recent Stock Movements",
     "lowStock": "Low Stock Alert",
     "totalProducts": "Total Products",
-    "totalValue": "Total Value"
+    "totalValue": "Total Value",
+    "addedToday": "Added Today",
+    "sentToday": "Sent Today",
+    "lowStockAlerts": "Low Stock Alerts",
+    "stockMovements": "Stock Movements",
+    "thisWeek": "This Week",
+    "thisMonth": "This Month",
+    "thisQuarter": "This Quarter",
+    "thisYear": "This Year",
+    "all": "All",
+    "incoming": "Incoming",
+    "outgoing": "Outgoing"
   },
   "products": {
     "title": "Products",
@@ -120,7 +212,13 @@
     "price": "Price",
     "quantity": "Quantity",
     "category": "Category",
-    "description": "Description"
+    "description": "Description",
+    "errors": {
+      "branchesLoading": "Branches are still loading, please try again",
+      "noActiveBranch": "No active branch selected. Select a branch and try again",
+      "addVariant": "Add at least one variant",
+      "variantNameRequired": "All variants must have a name"
+    }
   },
   "stock": {
     "title": "Stock Management",
@@ -129,7 +227,18 @@
     "removeStock": "Remove Stock",
     "adjustStock": "Adjust Stock",
     "reason": "Reason",
-    "notes": "Notes"
+    "notes": "Notes",
+    "success": {
+      "productsDeleted": "{{count}} product(s) deleted",
+      "stockUpdated": "Stock successfully {{action}}"
+    },
+    "actions": {
+      "added": "added",
+      "removed": "removed"
+    },
+    "notes": {
+      "stockAdjustment": "Stock {{action}} via inventory management"
+    }
   },
   "settings": {
     "title": "Settings",
@@ -137,7 +246,14 @@
     "branches": "Branch Management",
     "users": "User Management",
     "modules": "Module Management",
-    "billing": "Billing & Invoicing"
+    "billing": "Billing & Invoicing",
+    "menu": {
+      "profile": "Profile",
+      "branches": "Branches",
+      "invoices": "Invoices",
+      "users": "Users",
+      "invoicing": "Invoicing"
+    }
   },
   "chat": {
     "title": "Ask your question",
@@ -166,7 +282,7 @@
     "items": [
       {
         "question": "Is StockFlow really 100% free for SMEs in Flanders?",
-        "answer": "Yes, StockFlow is completely free for Flemish SMEs. No hidden costs, no limits on users or products. We believe every business should have access to professional inventory management."
+        "answer": "Yes, StockFlow is completely free for SMEs. No hidden costs, no limits on users or products. We believe every business should have access to professional inventory management."
       },
       {
         "question": "How does the free inventory management program work?",
@@ -182,27 +298,67 @@
       },
       {
         "question": "How does StockFlow differ from other inventory management software?",
-        "answer": "StockFlow is specifically developed for Flemish SMEs, completely free, and offers all essential functions without complexity. No expensive licenses or hidden costs like with Odoo or Exact."
+        "answer": "StockFlow is specifically developed for SMEs, completely free, and offers all essential functions without complexity. No expensive licenses or hidden costs like with Odoo or Exact."
       }
-    ]
+    ],
+    "fallback": {
+      "items": [
+        {
+          "question": "Is StockFlow really 100% free for SMEs in Flanders?",
+          "answer": "Yes, StockFlow is completely free for SMEs. No hidden costs, no limits on users or products. We believe every business should have access to professional inventory management."
+        },
+        {
+          "question": "How does the free inventory management program work?",
+          "answer": "Register your free account, add your products, and start managing your inventory immediately. Our inventory management system is intuitive and requires no technical knowledge."
+        },
+        {
+          "question": "Can I use StockFlow on my mobile phone?",
+          "answer": "Absolutely! Our inventory management app works perfectly on all devices - smartphone, tablet and desktop. Always and everywhere access to your inventory data."
+        },
+        {
+          "question": "Is my data safe in the cloud?",
+          "answer": "Yes, we take the security of your data very seriously. Daily backups, SSL encryption and GDPR compliance ensure that your inventory data is always safe."
+        },
+        {
+          "question": "How does StockFlow differ from other inventory management software?",
+          "answer": "StockFlow is specifically developed for SMEs, completely free, and offers all essential functions without complexity. No expensive licenses or hidden costs like with Odoo or Exact."
+        }
+      ]
+    }
   },
   "benefits": {
-    "title": "Why Flemish SMEs Choose StockFlow",
-    "subtitle": "The best free inventory management program, specifically developed for Flemish businesses",
+    "title": "Why SMEs Choose StockFlow",
+    "subtitle": "The best free inventory management program, specifically developed for businesses",
     "items": [
       {
         "title": "100% Free Forever",
-        "description": "No hidden costs, no limits. Completely free inventory management for Flemish SMEs."
+        "description": "No hidden costs, no limits. Completely free inventory management for SMEs."
       },
       {
         "title": "Get Started Immediately",
         "description": "No complex setup or training required. Start your inventory management within 5 minutes."
       },
       {
-        "title": "Specifically for Flemish SMEs",
-        "description": "Developed with the needs of Flemish businesses in mind. Dutch support and local expertise."
+        "title": "Specifically for SMEs",
+        "description": "Developed with the needs of businesses in mind. Professional support and local expertise."
       }
-    ]
+    ],
+    "fallback": {
+      "items": [
+        {
+          "title": "100% Free Forever",
+          "description": "No hidden costs, no limits. Completely free inventory management for SMEs."
+        },
+        {
+          "title": "Get Started Immediately",
+          "description": "No complex setup or training required. Start your inventory management within 5 minutes."
+        },
+        {
+          "title": "Specifically for SMEs",
+          "description": "Developed with the needs of businesses in mind. Professional support and local expertise."
+        }
+      ]
+    }
   },
   "features": {
     "title": "Everything you need",
@@ -211,7 +367,7 @@
     "items": [
       {
         "title": "Powerful inventory management for SMEs",
-        "description": "Manage your products, locations and inventory centrally. Automate orders and prevent shortages. Specifically developed for Flemish businesses.",
+        "description": "Manage your products, locations and inventory centrally. Automate orders and prevent shortages. Specifically developed for businesses.",
         "features": [
           "Central product management",
           "Automatic order notifications",
@@ -239,7 +395,41 @@
           "Push notifications"
         ]
       }
-    ]
+    ],
+    "fallback": {
+      "items": [
+        {
+          "title": "Powerful inventory management for SMEs",
+          "desc": "Manage your products, locations and inventory centrally. Automate orders and prevent shortages. Specifically developed for businesses.",
+          "features": [
+            "Central product management",
+            "Automatic order notifications",
+            "Multi-location support",
+            "Real-time inventory updates"
+          ]
+        },
+        {
+          "title": "Smart reporting and insights",
+          "desc": "Generate reports and gain insight into trends, so you always make the right decisions for your inventory management.",
+          "features": [
+            "AI-driven predictions",
+            "Custom dashboards",
+            "Export to Excel/PDF",
+            "Trend analysis"
+          ]
+        },
+        {
+          "title": "Mobile & desktop inventory management",
+          "desc": "Always and everywhere access to your inventory, on any device. Perfect for entrepreneurs on the go.",
+          "features": [
+            "Responsive design",
+            "Offline synchronization",
+            "Barcode scanning",
+            "Push notifications"
+          ]
+        }
+      ]
+    }
   },
   "modules": {
     "title": "New Modules Available",
@@ -277,6 +467,40 @@
         ]
       }
     ],
+    "fallback": {
+      "items": [
+        {
+          "title": "Advanced Analytics",
+          "description": "AI-driven insights, predictions and real-time dashboards for optimal decision making.",
+          "features": [
+            "AI predictions for inventory needs",
+            "Real-time dashboards and reports",
+            "Custom export to Excel/PDF",
+            "API access for integrations"
+          ]
+        },
+        {
+          "title": "Barcode Scanner",
+          "description": "Scan products directly in and out with your smartphone. Perfect for quick inventory updates.",
+          "features": [
+            "Mobile barcode scanning",
+            "Automatic product recognition",
+            "Bulk import/export",
+            "Offline synchronization"
+          ]
+        },
+        {
+          "title": "Delivery Notes Management",
+          "description": "Complete management of incoming and outgoing delivery notes with automatic updates.",
+          "features": [
+            "PDF upload and processing",
+            "Automatic inventory updates",
+            "Custom delivery note templates",
+            "Bulk import/export functionality"
+          ]
+        }
+      ]
+    },
     "cta": {
       "title": "Ready to Optimize Your Inventory Management?",
       "description": "Start free and add modules when you need them. No long-term contracts, no hidden costs.",
@@ -377,14 +601,14 @@
     }
   },
   "testimonials": {
-    "title": "Flemish SMEs Tell About Their Success",
-    "subtitle": "Discover how Flemish businesses have transformed their inventory management and save thousands of euros.",
+    "title": "SMEs Tell About Their Success",
+    "subtitle": "Discover how businesses have transformed their inventory management and save thousands of euros.",
     "rating": "4.8/5 Stars from Satisfied Customers",
     "items": [
       {
         "name": "Laura Peeters",
         "role": "Owner, De Koffieboetiek - Ghent",
-        "quote": "Thanks to StockFlow I finally have a clear overview of my inventory. The automatic order notifications are a lifesaver! As a Flemish SME, the free plan is perfect for us.",
+        "quote": "Thanks to StockFlow I finally have a clear overview of my inventory. The automatic order notifications are a lifesaver! As an SME, the free plan is perfect for us.",
         "company": "De Koffieboetiek",
         "location": "Ghent",
         "industry": "Hospitality",
@@ -404,7 +628,7 @@
       {
         "name": "Anke Willems",
         "role": "Manager, Creatief Atelier - Bruges",
-        "quote": "As a small business, the free plan is perfect for us. We can now manage our materials much more efficiently. An absolute recommendation for every Flemish SME!",
+        "quote": "As a small business, the free plan is perfect for us. We can now manage our materials much more efficiently. An absolute recommendation for every SME!",
         "company": "Creatief Atelier",
         "location": "Bruges",
         "industry": "Creative",
@@ -412,9 +636,43 @@
         "timeSaved": "6 hours/week"
       }
     ],
+    "fallback": {
+      "items": [
+        {
+          "name": "Laura Peeters",
+          "role": "Owner, De Koffieboetiek - Ghent",
+          "quote": "Thanks to StockFlow I finally have a clear overview of my inventory. The automatic order notifications are a lifesaver! As an SME, the free plan is perfect for us.",
+          "company": "De Koffieboetiek",
+          "location": "Ghent",
+          "industry": "Hospitality",
+          "savings": "€2,400/year saved",
+          "timeSaved": "8 hours/week"
+        },
+        {
+          "name": "Tom De Wit",
+          "role": "Manager, TechOnderdelen BV - Antwerp",
+          "quote": "The switch to StockFlow was the best decision for our warehouse management. It's intuitive, fast and the team is very helpful. Finally an inventory management program that really works.",
+          "company": "TechOnderdelen BV",
+          "location": "Antwerp",
+          "industry": "Technology",
+          "savings": "€5,200/year saved",
+          "timeSaved": "12 hours/week"
+        },
+        {
+          "name": "Anke Willems",
+          "role": "Manager, Creatief Atelier - Bruges",
+          "quote": "As a small business, the free plan is perfect for us. We can now manage our materials much more efficiently. An absolute recommendation for every SME!",
+          "company": "Creatief Atelier",
+          "location": "Bruges",
+          "industry": "Creative",
+          "savings": "€1,800/year saved",
+          "timeSaved": "6 hours/week"
+        }
+      ]
+    },
     "stats": {
       "title": "Average Results of Our Customers",
-      "subtitle": "Flemish SMEs using StockFlow see significant improvements",
+      "subtitle": "SMEs using StockFlow see significant improvements",
       "items": [
         {
           "value": "9 hours",
@@ -434,7 +692,7 @@
   "video": {
     "title": "How Does",
     "subtitle": "StockFlow Work?",
-    "description": "Discover how easy inventory management can be with StockFlow. See how Flemish SMEs manage their inventory in less than 3 minutes.",
+    "description": "Discover how easy inventory management can be with StockFlow. See how SMEs manage their inventory in less than 3 minutes.",
     "benefits": [
       {
         "title": "3 minutes",
@@ -451,7 +709,7 @@
     ],
     "cta": {
       "title": "Ready to Start?",
-      "description": "Join 32+ Flemish SMEs that already benefit from free inventory management",
+      "description": "Join 32+ SMEs that already benefit from free inventory management",
       "button": "Start Now Free - No Obligations",
       "features": [
         "No credit card required",
@@ -460,6 +718,20 @@
       ]
     }
   },
+  "videoBenefits": [
+    {
+      "title": "3 minutes",
+      "description": "To add your first products"
+    },
+    {
+      "title": "Immediate results",
+      "description": "See your inventory overview immediately"
+    },
+    {
+      "title": "Team ready",
+      "description": "Invite your team and start together"
+    }
+  ],
   "contact": {
     "title": "Questions? Contact us",
     "subtitle": "We usually respond within 1 business day.",
@@ -478,14 +750,14 @@
     }
   },
   "finalCta": {
-    "banner": "32+ Flemish SMEs have already started",
+    "banner": "32+ SMEs have already started",
     "title": "Ready to Transform Your",
     "titleHighlight": "Inventory Management?",
-    "subtitle": "Join hundreds of Flemish SMEs already benefiting from professional inventory management without costs. Start today and see immediate results.",
+    "subtitle": "Join hundreds of SMEs already benefiting from professional inventory management without costs. Start today and see immediate results.",
     "benefits": [
       "Start within 2 minutes",
       "100% safe and free",
-      "Dutch support"
+      "Professional support"
     ],
     "button": "Start Now Free - No Obligations",
     "demoButton": "View Demo",
@@ -525,6 +797,18 @@
       "100% safe"
     ]
   },
+  "app": {
+    "storageUnavailable": "Storage Not Available",
+    "storageUnavailableDescription": "The application cannot store data in your browser. This can be caused by:",
+    "storageReasons": {
+      "private": "Private/incognito mode",
+      "cookies": "Disabled cookies or storage",
+      "privacy": "Strict privacy settings",
+      "inApp": "An in-app browser (like Facebook/Instagram)"
+    },
+    "storageSolution": "Disable these settings or use a different browser to use StockFlow.",
+    "tryAgain": "Try Again"
+  },
   "alerts": {
     "contactSuccess": "Thank you! We will contact you soon.",
     "contactError": "Sending failed. Please try again.",
@@ -539,7 +823,72 @@
     "cookieDecline": "Decline"
   },
   "footer": {
-    "tagline": "The best free inventory management program for Flemish SMEs. Simple, safe and without hidden costs.",
-    "copyright": "Free inventory management for Flemish SMEs."
+    "tagline": "The best free inventory management program for SMEs. Simple, safe and without hidden costs.",
+    "copyright": "Free inventory management for SMEs."
+  },
+  "badges": {
+    "modules": "New Modules Available",
+    "pricing": "Transparent Pricing",
+    "features": "All Features Included",
+    "video": "See StockFlow in Action",
+    "testimonials": "4.8/5 Stars from Satisfied Customers"
+  },
+  "buttons": {
+    "tryNowFree": "Try Now Free",
+    "startNowFree": "Start Now Free - No Obligations"
+  },
+  "video": {
+    "fallback": "Your browser does not support this video."
+  },
+  "testimonials": {
+    "sectionTitle": "SMEs Tell",
+    "sectionSubtitle": "About Their Success",
+    "sectionDescription": "Discover how businesses have transformed their inventory management and save thousands of euros.",
+    "statsTitle": "Average Results of Our Customers",
+    "statsSubtitle": "SMEs using StockFlow see significant improvements",
+    "statsItems": [
+      {
+        "value": "9 hours",
+        "label": "Time saved per week"
+      },
+      {
+        "value": "23%",
+        "label": "Increased efficiency"
+      },
+      {
+        "value": "99.9%",
+        "label": "Uptime guarantee"
+      }
+    ]
+  },
+  "videoBenefits": [
+    {
+      "title": "3 minutes",
+      "description": "To add your first products"
+    },
+    {
+      "title": "Immediate results",
+      "description": "See your inventory overview immediately"
+    },
+    {
+      "title": "Team ready",
+      "description": "Invite your team and start together"
+    }
+  ],
+  "pricing": {
+    "mostPopular": "Most Popular",
+    "unlimited": "Unlimited",
+    "notIncluded": "Not included",
+    "title": "Choose Your Perfect Plan",
+    "subtitle": "Start free and upgrade when you grow",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "save": "Save 17%"
+  },
+  "structuredData": {
+    "softwareName": "StockFlow - Free Inventory Management",
+    "softwareDescription": "Free inventory management program for SMEs. Simple, safe and without hidden costs.",
+    "videoName": "StockFlow Introduction Video",
+    "videoDescription": "Explanation of how StockFlow works for SMEs."
   }
 }
