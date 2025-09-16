@@ -671,10 +671,11 @@ export const HomePage = () => {
               </div>
             </FadeInWhenVisible>
 
-            {/* CTA Buttons */}
+            {/* CTA Buttons - Clean & Focused */}
             <FadeInWhenVisible>
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
                 <Button 
+                  id="hero-cta-primary"
                   data-analytics-id="hero-start" 
                   size="lg" 
                   className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 py-4 rounded-xl font-semibold hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl text-lg w-full sm:w-auto group relative overflow-hidden"
@@ -682,10 +683,11 @@ export const HomePage = () => {
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
                   <Rocket className="h-5 w-5 mr-2 group-hover:animate-bounce" />
-                  Probeer Gratis Zonder Verplichtingen
+                  Start Nu Gratis - Geen Verplichtingen
                   <ArrowRight className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" />
                 </Button>
                 <Button 
+                  id="hero-cta-secondary"
                   data-analytics-id="hero-how-it-works" 
                   size="lg" 
                   variant="outline" 
@@ -1086,14 +1088,17 @@ export const HomePage = () => {
                 </p>
                 
                 <Button 
+                  id="video-cta-primary"
+                  data-analytics-id="video-cta-primary"
                   size="lg" 
                   className="bg-gradient-to-r from-blue-500 to-blue-900 text-white px-12 py-6 rounded-2xl font-bold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-2xl text-xl w-full sm:w-auto group mb-6"
                   onClick={handleLoginClick}
                 >
                   <Rocket className="h-6 w-6 mr-3 group-hover:animate-bounce" />
-                  Probeer Gratis Zonder Verplichtingen
+                  Start Nu Gratis - Geen Verplichtingen
                   <ArrowRight className="h-6 w-6 ml-3 group-hover:translate-x-1 transition-transform" />
                 </Button>
+                
                 
                 <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-600">
                   <div className="flex items-center gap-2">
@@ -1138,7 +1143,15 @@ export const HomePage = () => {
             <p className="text-gray-600 mb-4">Geen creditcard vereist. Zie in 2 minuten hoe je voorraadbeheer eenvoudiger wordt.</p>
             <div className="flex gap-2">
               <Button className="bg-blue-600 text-white hover:bg-blue-700 flex-1" onClick={() => { setShowExitIntent(false); handleLoginClick(); }}>Start nu gratis</Button>
-              <Button variant="outline" className="flex-1" onClick={() => setShowExitIntent(false)}>Nee bedankt</Button>
+              <Button variant="outline" className="flex-1" onClick={() => {
+                // Track exit intent decline
+                logger.info('Exit intent declined', { 
+                  id: 'exit-intent-decline',
+                  popup_type: 'exit_intent',
+                  action: 'declined'
+                });
+                setShowExitIntent(false);
+              }}>Nee bedankt</Button>
             </div>
           </div>
         </div>
@@ -1445,7 +1458,7 @@ export const HomePage = () => {
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-100/30 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
                 <Rocket className="h-5 w-5 mr-2 group-hover:animate-bounce" />
-                Probeer Gratis Zonder Verplichtingen
+                Start Nu Gratis - Geen Verplichtingen
                 <ArrowRight className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
               <Button 

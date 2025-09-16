@@ -354,20 +354,36 @@ export const WebsiteAnalytics = () => {
   const registrationCompleted = events.filter(e => e.event_type === 'registration_completed').length;
   const registrationRate = registrationStarted > 0 ? ((registrationCompleted / registrationStarted) * 100).toFixed(1) : '0.0';
   
-  // CTA button analytics
+  // CTA button analytics - Uitgebreide detectie
   const ctaClicks = events.filter(e => 
     e.event_type === 'click' && 
     (e.element_text?.toLowerCase().includes('registreer') || 
      e.element_text?.toLowerCase().includes('start nu gratis') ||
      e.element_text?.toLowerCase().includes('gratis starten') ||
+     e.element_text?.toLowerCase().includes('probeer gratis') ||
+     e.element_text?.toLowerCase().includes('start gratis') ||
+     e.element_text?.toLowerCase().includes('begin vandaag') ||
+     e.element_text?.toLowerCase().includes('ontdek stockflow') ||
+     e.element_text?.toLowerCase().includes('start vandaag') ||
+     e.element_text?.toLowerCase().includes('gratis zonder verplichtingen') ||
      e.element_id?.includes('register') ||
-     e.element_id?.includes('signup'))
+     e.element_id?.includes('signup') ||
+     e.element_id?.includes('cta') ||
+     e.element_id?.includes('start-now') ||
+     e.element_id?.includes('login') ||
+     e.element_id?.includes('auth'))
   ).length;
   
   // Email confirmation tracking
   const emailConfirmationsSent = events.filter(e => e.event_type === 'email_confirmation_sent').length;
   const emailConfirmationsOpened = events.filter(e => e.event_type === 'email_confirmation_opened').length;
   const emailConfirmationRate = emailConfirmationsSent > 0 ? ((emailConfirmationsOpened / emailConfirmationsSent) * 100).toFixed(1) : '0.0';
+  
+  // Exit intent tracking
+  const exitIntentDeclines = events.filter(e => 
+    e.event_type === 'click' && 
+    e.element_id === 'exit-intent-decline'
+  ).length;
   
   const daysInRange = differenceInDays(dateRange.to, dateRange.from) + 1;
   const avgPageViewsPerDay = (totalPageViews / daysInRange).toFixed(1);
@@ -533,7 +549,7 @@ export const WebsiteAnalytics = () => {
           </div>
           
           {/* Email Confirmation Tracking */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="text-center p-4 bg-gray-50 rounded-lg">
               <div className="text-2xl font-bold text-gray-600">{emailConfirmationsSent}</div>
               <div className="text-sm text-gray-600">Bevestigingsmails Verzonden</div>
@@ -545,6 +561,11 @@ export const WebsiteAnalytics = () => {
             <div className="text-center p-4 bg-teal-50 rounded-lg">
               <div className="text-2xl font-bold text-teal-600">{emailConfirmationRate}%</div>
               <div className="text-sm text-gray-600">Open Rate</div>
+            </div>
+            <div className="text-center p-4 bg-red-50 rounded-lg">
+              <div className="text-2xl font-bold text-red-600">{exitIntentDeclines}</div>
+              <div className="text-sm text-gray-600">Exit Intent "Nee Bedankt"</div>
+              <div className="text-xs text-gray-500">Bezoekers die popup weigeren</div>
             </div>
           </div>
         </CardContent>
@@ -963,6 +984,37 @@ export const WebsiteAnalytics = () => {
                       </span>
                     </div>
                   ))}
+              </div>
+            </div>
+
+            {/* Exit Intent Decline Analysis */}
+            <div className="border rounded-lg p-4 bg-red-50">
+              <h4 className="font-semibold text-red-900 mb-3">Exit Intent "Nee Bedankt" Analyse</h4>
+              <div className="space-y-2">
+                {events
+                  .filter(e => 
+                    e.event_type === 'click' && 
+                    e.element_id === 'exit-intent-decline'
+                  )
+                  .slice(0, 10)
+                  .map((event, index) => (
+                    <div key={index} className="bg-white p-2 rounded border text-sm">
+                      <strong>Exit Intent Popup Geweigerd</strong>
+                      <br />
+                      <span className="text-gray-500">
+                        Pagina: {event.page_url.replace('https://www.stockflow.be', '').replace('/', '') || 'Home'}
+                      </span>
+                      <br />
+                      <span className="text-gray-500">
+                        {new Date(event.created_at).toLocaleString('nl-NL')}
+                      </span>
+                    </div>
+                  ))}
+                {exitIntentDeclines === 0 && (
+                  <div className="text-sm text-gray-500 italic">
+                    Nog geen exit intent decline events geregistreerd
+                  </div>
+                )}
               </div>
             </div>
           </div>

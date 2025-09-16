@@ -296,6 +296,19 @@ export const useWebsiteTracking = () => {
     };
   }, [trackTimeOnPage]);
 
+  // Setup periodic time tracking (every 30 seconds)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const timeSpent = Date.now() - pageStartTime.current;
+      if (timeSpent > 5000) { // Only track if user has been on page for more than 5 seconds
+        trackTimeOnPage(timeSpent);
+        pageStartTime.current = Date.now(); // Reset timer
+      }
+    }, 30000); // Every 30 seconds
+
+    return () => clearInterval(interval);
+  }, [trackTimeOnPage]);
+
   // Setup beforeunload tracking
   useEffect(() => {
     const handleBeforeUnload = () => {
