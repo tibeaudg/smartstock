@@ -510,8 +510,9 @@
     }
   },
   "testimonials": {
-    "title": "SMEs Tell About Their Success",
-    "subtitle": "Discover how businesses have transformed their inventory management and save thousands of euros.",
+    "sectionTitle": "SMEs Tell About Their Success",
+    "sectionSubtitle": "What our customers say",
+    "sectionDescription": "Discover how businesses have transformed their inventory management and save thousands of euros.",
     "rating": "4.8/5 Stars from Satisfied Customers",
     "savingsLabel": "Costs saved",
     "timeSavedLabel": "Time saved",
