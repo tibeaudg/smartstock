@@ -309,7 +309,7 @@ export default function BoekhoudprogrammaMetVoorraadbeheer() {
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-8">
-            Waarom kiezen <span className="text-emerald-600">32+ Vlaamse KMO's</span> voor een boekhoudprogramma met voorraadbeheer?
+            Waarom kiezen <span className="text-emerald-600">3200+ Vlaamse KMO's</span> voor een boekhoudprogramma met voorraadbeheer?
           </h2>
           
           <div className="grid md:grid-cols-3 gap-8 mb-12">

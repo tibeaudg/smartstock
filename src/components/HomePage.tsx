@@ -709,17 +709,7 @@ export const HomePage = () => {
         hideNotifications={true}
       />
 
-      {/* SOCIAL PROOF HEADER */}
-      <div className="bg-blue-50 border border-blue-100 text-blue-900 text-sm md:text-base py-2 md:py-3">
-        <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-center gap-2 md:gap-3">
-          <div className="flex">
-            {[...Array(5)].map((_, i) => (
-              <Star key={i} className="h-4 w-4 text-yellow-400 fill-current" />
-            ))}
-          </div>
-          <span><strong>32+</strong> {t('socialProof.users')}</span>
-        </div>
-      </div>
+
 
       {/* HERO SECTION - Geoptimaliseerd voor conversie */}
       <section className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-blue-50">
@@ -821,7 +811,6 @@ export const HomePage = () => {
                   return [
                     "Geen creditcard vereist",
                     "Direct toegang", 
-                    "Nederlandse support",
                     "GDPR-compliant"
                   ].map((trust, index) => (
                     <div key={index} className="flex items-center gap-2">
@@ -867,8 +856,8 @@ export const HomePage = () => {
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8 divide-x-0 md:divide-x md:divide-dashed md:divide-gray-200">
             {[
               { icon: Users, value: '32+', label: t('socialProof.users') },
-              { icon: Clock, value: '17k+', label: 'uren bespaard' },
-              { icon: Package, value: '500k+', label: 'productbewegingen' },
+              { icon: Clock, value: '17k+', label: t('stats.hoursSaved') },
+              { icon: Package, value: '500k+', label: t('stats.productMovements') },
             ].map((s, i) => (
               <div key={i} className="flex flex-col items-center text-center md:px-6">
                 <s.icon className="h-6 w-6 sm:h-8 sm:w-8 text-gray-400 mb-2 sm:mb-3" />
@@ -912,10 +901,6 @@ export const HomePage = () => {
                 <div className={`relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-2 ${feature.tier === 'groei' ? 'border-blue-500 ring-4 ring-blue-100' : 'border-gray-100'}`}>
                   {feature.tier === 'groei' && (
                     <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                      <div className="bg-gradient-to-r from-blue-500 to-blue-900 text-white px-4 py-2 rounded-full text-sm font-semibold flex items-center gap-2">
-                        <Crown className="h-4 w-4" />
-                        Meest Populair
-                      </div>
                     </div>
                   )}
                   
@@ -1027,57 +1012,47 @@ export const HomePage = () => {
                     <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-100 rounded-full mb-4">
                       <Package className="h-8 w-8 text-gray-600" />
                     </div>
-                    <h3 className="text-2xl font-bold text-gray-900 mb-2">Basis</h3>
-                    <p className="text-gray-600 mb-6">Perfect voor kleine bedrijven</p>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2">{t('pricing.plans.basic.name')}</h3>
+                    <p className="text-gray-600 mb-6">{t('pricing.plans.basic.description')}</p>
                     <div className="mb-6">
-                      <div className="text-4xl font-bold text-gray-900">Gratis</div>
-                      <div className="text-sm text-gray-500">Voor altijd</div>
+                      <div className="text-4xl font-bold text-gray-900">{t('pricing.plans.basic.price')}</div>
+                      <div className="text-sm text-gray-500">{t('pricing.plans.basic.period')}</div>
                     </div>
                   </div>
 
                   <div className="space-y-4 mb-8">
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600">Producten</span>
-                      <span className="font-medium">50</span>
+                      <span className="text-gray-600">{t('pricing.limits.products')}</span>
+                      <span className="font-medium">{t('pricing.plans.basic.limits.products')}</span>
                     </div>
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600">Orders/maand</span>
-                      <span className="font-medium">100</span>
+                      <span className="text-gray-600">{t('pricing.limits.orders')}</span>
+                      <span className="font-medium">{t('pricing.plans.basic.limits.orders')}</span>
                     </div>
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600">Gebruikers</span>
-                      <span className="font-medium">2</span>
+                      <span className="text-gray-600">{t('pricing.limits.users')}</span>
+                      <span className="font-medium">{t('pricing.plans.basic.limits.users')}</span>
                     </div>
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600">Vestigingen</span>
-                      <span className="font-medium">1</span>
+                      <span className="text-gray-600">{t('pricing.limits.branches')}</span>
+                      <span className="font-medium">{t('pricing.plans.basic.limits.branches')}</span>
                     </div>
                   </div>
 
                   <ul className="space-y-3 mb-8">
-                    <li className="flex items-center gap-3">
-                      <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
-                      <span className="text-gray-700">Basis voorraadbeheer</span>
-                    </li>
-                    <li className="flex items-center gap-3">
-                      <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
-                      <span className="text-gray-700">Eenvoudige rapporten</span>
-                    </li>
-                    <li className="flex items-center gap-3">
-                      <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
-                      <span className="text-gray-700">Email support</span>
-                    </li>
-                    <li className="flex items-center gap-3">
-                      <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
-                      <span className="text-gray-700">Mobiele app</span>
-                    </li>
+                    {(t('pricing.plans.basic.features', { returnObjects: true }) as string[]).map((feature, index) => (
+                      <li key={index} className="flex items-center gap-3">
+                        <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
+                        <span className="text-gray-700">{feature}</span>
+                      </li>
+                    ))}
                   </ul>
 
                   <Button 
                     className="w-full bg-gray-900 hover:bg-gray-800"
                     onClick={handleLoginClick}
                   >
-                    Start Gratis
+                    {t('pricing.plans.basic.startButton')}
                   </Button>
                 </div>
               </div>
@@ -1098,61 +1073,47 @@ export const HomePage = () => {
                     <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
                       <Zap className="h-8 w-8 text-blue-600" />
                     </div>
-                    <h3 className="text-2xl font-bold text-gray-900 mb-2">Groei</h3>
-                    <p className="text-gray-600 mb-6">Ideaal voor groeiende bedrijven</p>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2">{t('pricing.plans.growth.name')}</h3>
+                    <p className="text-gray-600 mb-6">{t('pricing.plans.growth.description')}</p>
                     <div className="mb-6">
-                      <div className="text-4xl font-bold text-gray-900">€29.99</div>
-                      <div className="text-sm text-gray-500">per maand</div>
+                      <div className="text-4xl font-bold text-gray-900">{t('pricing.plans.growth.price')}</div>
+                      <div className="text-sm text-gray-500">{t('pricing.plans.growth.period')}</div>
                     </div>
                   </div>
 
                   <div className="space-y-4 mb-8">
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600">Producten</span>
-                      <span className="font-medium">500</span>
+                      <span className="text-gray-600">{t('pricing.limits.products')}</span>
+                      <span className="font-medium">{t('pricing.plans.growth.limits.products')}</span>
                     </div>
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600">Orders/maand</span>
-                      <span className="font-medium">1000</span>
+                      <span className="text-gray-600">{t('pricing.limits.orders')}</span>
+                      <span className="font-medium">{t('pricing.plans.growth.limits.orders')}</span>
                     </div>
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600">Gebruikers</span>
-                      <span className="font-medium">10</span>
+                      <span className="text-gray-600">{t('pricing.limits.users')}</span>
+                      <span className="font-medium">{t('pricing.plans.growth.limits.users')}</span>
                     </div>
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600">Vestigingen</span>
-                      <span className="font-medium">5</span>
+                      <span className="text-gray-600">{t('pricing.limits.branches')}</span>
+                      <span className="font-medium">{t('pricing.plans.growth.limits.branches')}</span>
                     </div>
                   </div>
 
                   <ul className="space-y-3 mb-8">
-                    <li className="flex items-center gap-3">
-                      <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
-                      <span className="text-gray-700">Alle Basis features</span>
-                    </li>
-                    <li className="flex items-center gap-3">
-                      <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
-                      <span className="text-gray-700">Geavanceerde analytics</span>
-                    </li>
-                    <li className="flex items-center gap-3">
-                      <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
-                      <span className="text-gray-700">Barcode scanner</span>
-                    </li>
-                    <li className="flex items-center gap-3">
-                      <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
-                      <span className="text-gray-700">API toegang</span>
-                    </li>
-                    <li className="flex items-center gap-3">
-                      <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
-                      <span className="text-gray-700">Priority support</span>
-                    </li>
+                    {(t('pricing.plans.growth.features', { returnObjects: true }) as string[]).map((feature, index) => (
+                      <li key={index} className="flex items-center gap-3">
+                        <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
+                        <span className="text-gray-700">{feature}</span>
+                      </li>
+                    ))}
                   </ul>
 
                   <Button 
                     className="w-full bg-blue-600 hover:bg-blue-700"
                     onClick={handlePricingClick}
                   >
-                    Start 14-dagen Trial
+                    {t('pricing.plans.growth.startButton')}
                   </Button>
                 </div>
               </div>
@@ -1166,61 +1127,47 @@ export const HomePage = () => {
                     <div className="inline-flex items-center justify-center w-16 h-16 bg-purple-100 rounded-full mb-4">
                       <Crown className="h-8 w-8 text-purple-600" />
                     </div>
-                    <h3 className="text-2xl font-bold text-gray-900 mb-2">Premium</h3>
-                    <p className="text-gray-600 mb-6">Voor grote bedrijven</p>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2">{t('pricing.plans.premium.name')}</h3>
+                    <p className="text-gray-600 mb-6">{t('pricing.plans.premium.description')}</p>
                     <div className="mb-6">
-                      <div className="text-4xl font-bold text-gray-900">€79.99</div>
-                      <div className="text-sm text-gray-500">per maand</div>
+                      <div className="text-4xl font-bold text-gray-900">{t('pricing.plans.premium.price')}</div>
+                      <div className="text-sm text-gray-500">{t('pricing.plans.premium.period')}</div>
                     </div>
                   </div>
 
                   <div className="space-y-4 mb-8">
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600">Producten</span>
-                      <span className="font-medium text-green-600">Onbeperkt</span>
+                      <span className="text-gray-600">{t('pricing.limits.products')}</span>
+                      <span className="font-medium text-green-600">{t('pricing.plans.premium.limits.products')}</span>
                     </div>
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600">Orders/maand</span>
-                      <span className="font-medium text-green-600">Onbeperkt</span>
+                      <span className="text-gray-600">{t('pricing.limits.orders')}</span>
+                      <span className="font-medium text-green-600">{t('pricing.plans.premium.limits.orders')}</span>
                     </div>
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600">Gebruikers</span>
-                      <span className="font-medium text-green-600">Onbeperkt</span>
+                      <span className="text-gray-600">{t('pricing.limits.users')}</span>
+                      <span className="font-medium text-green-600">{t('pricing.plans.premium.limits.users')}</span>
                     </div>
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600">Vestigingen</span>
-                      <span className="font-medium text-green-600">Onbeperkt</span>
+                      <span className="text-gray-600">{t('pricing.limits.branches')}</span>
+                      <span className="font-medium text-green-600">{t('pricing.plans.premium.limits.branches')}</span>
                     </div>
                   </div>
 
                   <ul className="space-y-3 mb-8">
-                    <li className="flex items-center gap-3">
-                      <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
-                      <span className="text-gray-700">Alle Groei features</span>
-                    </li>
-                    <li className="flex items-center gap-3">
-                      <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
-                      <span className="text-gray-700">Dedicated support</span>
-                    </li>
-                    <li className="flex items-center gap-3">
-                      <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
-                      <span className="text-gray-700">Custom onboarding</span>
-                    </li>
-                    <li className="flex items-center gap-3">
-                      <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
-                      <span className="text-gray-700">SLA garantie</span>
-                    </li>
-                    <li className="flex items-center gap-3">
-                      <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
-                      <span className="text-gray-700">White-label opties</span>
-                    </li>
+                    {(t('pricing.plans.premium.features', { returnObjects: true }) as string[]).map((feature, index) => (
+                      <li key={index} className="flex items-center gap-3">
+                        <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
+                        <span className="text-gray-700">{feature}</span>
+                      </li>
+                    ))}
                   </ul>
 
                   <Button 
                     className="w-full bg-purple-600 hover:bg-purple-700"
                     onClick={handlePricingClick}
                   >
-                    Start 14-dagen Trial
+                    {t('pricing.plans.premium.startButton')}
                   </Button>
                 </div>
               </div>
@@ -1233,34 +1180,21 @@ export const HomePage = () => {
               <div className="max-w-4xl mx-auto">
                 <div className="flex items-center justify-center mb-4">
                   <Clock className="h-8 w-8 text-blue-600 mr-3" />
-                  <h3 className="text-2xl font-bold text-gray-900">14-dagen gratis trial</h3>
+                  <h3 className="text-2xl font-bold text-gray-900">{t('pricing.trial.title')}</h3>
                 </div>
                 <p className="text-gray-600 mb-6">
-                  Probeer alle premium features 14 dagen gratis. Geen creditcard vereist, 
-                  annuleer op elk moment.
+                  {t('pricing.trial.description')}
                 </p>
                 <div className="grid md:grid-cols-3 gap-6 text-left">
-                  <div className="flex items-start">
-                    <CheckCircle className="h-5 w-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
-                    <div>
-                      <h4 className="font-semibold text-gray-900">Geen verplichtingen</h4>
-                      <p className="text-sm text-gray-600">Annuleer op elk moment zonder kosten</p>
+                  {(t('pricing.trial.benefits', { returnObjects: true }) as any[]).map((benefit, index) => (
+                    <div key={index} className="flex items-start">
+                      <CheckCircle className="h-5 w-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
+                      <div>
+                        <h4 className="font-semibold text-gray-900">{benefit.title}</h4>
+                        <p className="text-sm text-gray-600">{benefit.description}</p>
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex items-start">
-                    <CheckCircle className="h-5 w-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
-                    <div>
-                      <h4 className="font-semibold text-gray-900">Volledige toegang</h4>
-                      <p className="text-sm text-gray-600">Alle features en limieten van je gekozen plan</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start">
-                    <CheckCircle className="h-5 w-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
-                    <div>
-                      <h4 className="font-semibold text-gray-900">Direct starten</h4>
-                      <p className="text-sm text-gray-600">Begin direct met je voorraadbeheer</p>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -1478,10 +1412,10 @@ export const HomePage = () => {
             <div className="text-center mt-16">
               <div className="bg-white rounded-2xl shadow-2xl p-8 md:p-12 border border-gray-100 max-w-2xl mx-auto">
                 <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
-                  Klaar om te Starten?
+                  {t('video.cta.title')}
                 </h3>
                 <p className="text-gray-600 mb-8 text-lg">
-                  Sluit je aan bij 32+ Vlaamse KMO's die al profiteren van gratis voorraadbeheer
+                  {t('video.cta.description')}
                 </p>
                 
                 <Button 
@@ -1492,24 +1426,20 @@ export const HomePage = () => {
                   onClick={handleLoginClick}
                 >
                   <Rocket className="h-6 w-6 mr-3 group-hover:animate-bounce" />
-                  Start Nu Gratis - Geen Verplichtingen
+                  {t('video.cta.button')}
                   <ArrowRight className="h-6 w-6 ml-3 group-hover:translate-x-1 transition-transform" />
                 </Button>
                 
                 
                 <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-600">
-                  <div className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-600" />
-                    <span>Geen creditcard vereist</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Zap className="h-4 w-4 text-blue-600" />
-                    <span>Direct toegang</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Shield className="h-4 w-4 text-green-600" />
-                    <span>100% veilig</span>
-                  </div>
+                  {(t('video.cta.features', { returnObjects: true }) as string[]).map((feature, index) => (
+                    <div key={index} className="flex items-center gap-2">
+                      {index === 0 ? <CheckCircle className="h-4 w-4 text-green-600" /> : 
+                       index === 1 ? <Zap className="h-4 w-4 text-blue-600" /> :
+                       <Shield className="h-4 w-4 text-green-600" />}
+                      <span>{feature}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -1718,30 +1648,30 @@ export const HomePage = () => {
       <section id="contact-section" className="bg-gray-50 py-12 md:py-20">
         <div className="max-w-4xl mx-auto px-4">
           <div className="text-center mb-8 md:mb-12">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 px-4">Vragen? Neem contact op</h2>
-            <p className="text-sm sm:text-base md:text-lg text-gray-600 px-4">We antwoorden meestal binnen 1 werkdag.</p>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 px-4">{t('contact.title')}</h2>
+            <p className="text-sm sm:text-base md:text-lg text-gray-600 px-4">{t('contact.subtitle')}</p>
           </div>
           <form onSubmit={handleSubmit(onSubmitContact)} className="bg-white rounded-lg shadow-md p-6 space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Naam</label>
-                <Input {...register('name', { required: true, minLength: 2 })} placeholder="Jouw naam" />
-                {errors.name && <p className="text-xs text-red-600 mt-1">Gelieve je naam in te vullen.</p>}
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t('contact.form.name')}</label>
+                <Input {...register('name', { required: true, minLength: 2 })} placeholder={t('contact.form.namePlaceholder')} />
+                {errors.name && <p className="text-xs text-red-600 mt-1">{t('contact.form.nameError')}</p>}
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">E-mail</label>
-                <Input type="email" {...register('email', { required: true, pattern: /.+@.+\..+/ })} placeholder="jij@bedrijf.be" />
-                {errors.email && <p className="text-xs text-red-600 mt-1">Geef een geldig e-mailadres op.</p>}
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t('contact.form.email')}</label>
+                <Input type="email" {...register('email', { required: true, pattern: /.+@.+\..+/ })} placeholder={t('contact.form.emailPlaceholder')} />
+                {errors.email && <p className="text-xs text-red-600 mt-1">{t('contact.form.emailError')}</p>}
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Je vraag</label>
-              <Textarea rows={5} {...register('message', { required: true, minLength: 10 })} placeholder="Stel hier je vraag..." />
-              {errors.message && <p className="text-xs text-red-600 mt-1">Gelieve je vraag te beschrijven.</p>}
+              <label className="block text-sm font-medium text-gray-700 mb-1">{t('contact.form.message')}</label>
+              <Textarea rows={5} {...register('message', { required: true, minLength: 10 })} placeholder={t('contact.form.messagePlaceholder')} />
+              {errors.message && <p className="text-xs text-red-600 mt-1">{t('contact.form.messageError')}</p>}
             </div>
             <div className="flex justify-end">
               <Button type="submit" disabled={isSubmitting} className="bg-blue-600 text-white hover:bg-blue-700">
-                {isSubmitting ? 'Verzenden...' : 'Verzenden'}
+                {isSubmitting ? t('contact.form.submitting') : t('contact.form.submit')}
               </Button>
             </div>
           </form>
@@ -1761,40 +1691,36 @@ export const HomePage = () => {
           <FadeInWhenVisible>
             <div className="inline-flex items-center gap-2 bg-white/20 text-white px-4 py-2 rounded-full text-sm font-medium mb-8">
               <Rocket className="h-4 w-4" />
-              <span>32+ Vlaamse KMO's zijn al gestart</span>
+              <span>{t('finalCta.banner')}</span>
             </div>
           </FadeInWhenVisible>
 
           <FadeInWhenVisible>
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-white leading-tight">
-              <span className="block">Klaar om je Voorraadbeheer</span>
+              <span className="block">{t('finalCta.title')}</span>
               <span className="block bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent">
-                te Transformeren?
+                {t('finalCta.titleHighlight')}
               </span>
             </h2>
           </FadeInWhenVisible>
 
           <FadeInWhenVisible>
             <p className="text-lg sm:text-xl md:text-2xl mb-8 text-white/90 max-w-4xl mx-auto leading-relaxed">
-              Sluit je aan bij honderden Vlaamse KMO's die al profiteren van professioneel voorraadbeheer zonder kosten. 
-              <br className="hidden sm:block" />
-              Start vandaag nog en zie direct resultaat.
+              {t('finalCta.subtitle')}
             </p>
           </FadeInWhenVisible>
 
           {/* Value proposition */}
           <FadeInWhenVisible>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 max-w-4xl mx-auto">
-              {[
-                { icon: <Zap className="h-6 w-6" />, text: "Start binnen 2 minuten" },
-                { icon: <Shield className="h-6 w-6" />, text: "100% veilig en gratis" },
-                { icon: <Users className="h-6 w-6" />, text: "Nederlandse support" }
-              ].map((item, index) => (
+              {(t('finalCta.benefits', { returnObjects: true }) as string[]).map((benefit, index) => (
                 <div key={index} className="flex items-center justify-center gap-3 text-white/90">
                   <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
-                    {item.icon}
+                    {index === 0 ? <Zap className="h-6 w-6" /> : 
+                     index === 1 ? <Shield className="h-6 w-6" /> :
+                     <Users className="h-6 w-6" />}
                   </div>
-                  <span className="font-medium">{item.text}</span>
+                  <span className="font-medium">{benefit}</span>
                 </div>
               ))}
             </div>
@@ -1810,9 +1736,9 @@ export const HomePage = () => {
                 onClick={handleLoginClick}
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-100/30 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
-                <Rocket className="h-5 w-5 mr-2 group-hover:animate-bounce" />
-                Start Nu Gratis - Geen Verplichtingen
-                <ArrowRight className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                  <Rocket className="h-5 w-5 mr-2 group-hover:animate-bounce" />
+                  {t('finalCta.button')}
+                  <ArrowRight className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
               <Button 
                 data-analytics-id="final-demo" 
@@ -1822,7 +1748,7 @@ export const HomePage = () => {
                 onClick={handleHowItWorksClick}
               >
                 <Play className="h-5 w-5 mr-2" />
-                Bekijk Demo
+                {t('finalCta.demoButton')}
               </Button>
             </div>
           </FadeInWhenVisible>
@@ -1830,22 +1756,15 @@ export const HomePage = () => {
           {/* Trust indicators */}
           <FadeInWhenVisible>
             <div className="flex flex-wrap justify-center gap-6 text-sm text-white/80 mb-8">
-              <div className="flex items-center gap-2">
-                <CheckCircle className="h-4 w-4" />
-                <span>Geen creditcard vereist</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4" />
-                <span>Direct toegang</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Shield className="h-4 w-4" />
-                <span>GDPR-compliant</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Globe className="h-4 w-4" />
-                <span>Nederlandse support</span>
-              </div>
+              {(t('accessibility.trust', { returnObjects: true }) as string[]).map((trust, index) => (
+                <div key={index} className="flex items-center gap-2">
+                  {index === 0 ? <CheckCircle className="h-4 w-4" /> : 
+                   index === 1 ? <Clock className="h-4 w-4" /> :
+                   index === 2 ? <Shield className="h-4 w-4" /> :
+                   <Globe className="h-4 w-4" />}
+                  <span>{trust}</span>
+                </div>
+              ))}
             </div>
           </FadeInWhenVisible>
 
@@ -1854,11 +1773,10 @@ export const HomePage = () => {
             <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 max-w-2xl mx-auto border border-white/20">
               <div className="flex items-center justify-center gap-3 mb-3">
                 <Timer className="h-5 w-5 text-yellow-300" />
-                <span className="text-yellow-300 font-semibold">Beperkte Tijd</span>
+                <span className="text-yellow-300 font-semibold">{t('finalCta.urgency.title')}</span>
               </div>
               <p className="text-white/90 text-sm">
-                Start vandaag en krijg <strong>gratis onboarding support</strong> ter waarde van €200. 
-                Deze aanbieding is geldig voor de eerste 50 nieuwe gebruikers deze maand.
+                {t('finalCta.urgency.description')}
               </p>
             </div>
           </FadeInWhenVisible>
@@ -1866,11 +1784,7 @@ export const HomePage = () => {
           {/* Social Proof Numbers */}
           <FadeInWhenVisible>
             <div className="mt-12 grid grid-cols-2 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
-              {[
-                { number: "32+", label: "Actieve KMO's" },
-                { number: "9 uur", label: "Tijd bespaard/week" },
-                { number: "4.8/5", label: "Klanttevredenheid" }
-              ].map((stat, index) => (
+              {(t('finalCta.stats', { returnObjects: true }) as any[]).map((stat, index) => (
                 <div key={index} className="text-center">
                   <div className="text-2xl md:text-3xl font-bold text-white mb-1">{stat.number}</div>
                   <div className="text-sm text-white/70">{stat.label}</div>
@@ -1892,14 +1806,13 @@ export const HomePage = () => {
       className="h-10 md:h-12 mx-auto mb-6"
     />
     <p className="text-gray-400 text-base md:text-lg mb-8 leading-relaxed max-w-2xl mx-auto">
-      Het beste gratis voorraadbeheerprogramma voor Vlaamse KMO's. 
-      Eenvoudig, veilig en zonder verborgen kosten.
+      {t('footer.tagline')}
     </p>
 
     <div className="border-t border-gray-700 pt-6">
       <p className="text-gray-500 text-xs md:text-sm">
-        &copy; {new Date().getFullYear()} stockflow. Alle rechten voorbehouden. 
-        Gratis voorraadbeheer voor Vlaamse KMO's.
+        &copy; {new Date().getFullYear()} stockflow. All rights reserved. 
+        {t('footer.copyright')}
       </p>
     </div>
   </div>

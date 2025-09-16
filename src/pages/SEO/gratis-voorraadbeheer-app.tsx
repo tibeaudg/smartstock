@@ -262,7 +262,7 @@ export default function GratisVoorraadbeheerApp() {
       <section className="py-16 px-4 bg-gray-50">
         <div className="max-w-6xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-8">
-            Waarom kiezen <span className="text-green-600">32+ Vlaamse KMO's</span> voor onze gratis voorraadbeheer app?
+            Waarom kiezen <span className="text-green-600">3200+ Vlaamse KMO's</span> voor onze gratis voorraadbeheer app?
           </h2>
           
           <div className="grid md:grid-cols-3 gap-8 mb-12">
