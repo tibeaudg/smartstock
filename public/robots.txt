@@ -1,16 +1,19 @@
-User-agent: Googlebot
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-
-User-agent: Twitterbot
-Allow: /
-
-User-agent: facebookexternalhit
-Allow: /
-
 User-agent: *
 Allow: /
 
+# International sitemaps
 Sitemap: https://www.stockflow.be/sitemap.xml
+Sitemap: https://www.stockflow.be/sitemap-index.xml
+
+# Language-specific sitemaps
+Sitemap: https://www.stockflow.be/sitemap.xml
+Sitemap: https://www.stockflow.be/de/sitemap.xml
+Sitemap: https://www.stockflow.be/fr/sitemap.xml
+Sitemap: https://www.stockflow.be/es/sitemap.xml
+Sitemap: https://www.stockflow.be/it/sitemap.xml
+Sitemap: https://www.stockflow.be/pl/sitemap.xml
+Sitemap: https://www.stockflow.be/hu/sitemap.xml
+Sitemap: https://www.stockflow.be/sv/sitemap.xml
+Sitemap: https://www.stockflow.be/th/sitemap.xml
+Sitemap: https://www.stockflow.be/si/sitemap.xml
+Sitemap: https://www.stockflow.be/ro/sitemap.xml
