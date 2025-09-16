@@ -99,7 +99,7 @@ const FloatingChat: React.FC = () => {
 };
 
 // Carousel component voor mobiele weergave (met ARIA en swipe)
-const MobileCarousel = ({ items, renderItem }) => {
+const MobileCarousel = ({ items, renderItem, t }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const touchStartX = useRef<number | null>(null);
   const touchEndX = useRef<number | null>(null);
@@ -140,7 +140,7 @@ const MobileCarousel = ({ items, renderItem }) => {
       className="relative"
       role="region"
       aria-roledescription="carousel"
-      aria-label="Testimonials en voordelen carousel"
+      aria-label={t('accessibility.carousel.label')}
       aria-live="polite"
       tabIndex={0}
       onKeyDown={onKeyDown}
@@ -151,7 +151,7 @@ const MobileCarousel = ({ items, renderItem }) => {
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
         >
           {items.map((item, index) => (
-            <div key={index} className="w-full flex-shrink-0 px-4" aria-label={`Slide ${index + 1} van ${items.length}`}>
+            <div key={index} className="w-full flex-shrink-0 px-4" aria-label={`${t('accessibility.carousel.slide')} ${index + 1} ${t('accessibility.carousel.of')} ${items.length}`}>
               {renderItem(item, index)}
             </div>
           ))}
@@ -159,7 +159,7 @@ const MobileCarousel = ({ items, renderItem }) => {
       </div>
       
       {/* Navigation dots */}
-      <div className="flex justify-center mt-4 space-x-2" role="tablist" aria-label="Carrousel navigatie">
+      <div className="flex justify-center mt-4 space-x-2" role="tablist" aria-label={t('accessibility.carousel.navigation')}>
         {items.map((_, index) => (
           <button
             key={index}
@@ -169,7 +169,7 @@ const MobileCarousel = ({ items, renderItem }) => {
             }`}
             role="tab"
             aria-selected={index === currentIndex}
-            aria-label={`Ga naar slide ${index + 1}`}
+            aria-label={`${t('accessibility.carousel.goTo')} ${index + 1}`}
           />
         ))}
       </div>
@@ -180,14 +180,14 @@ const MobileCarousel = ({ items, renderItem }) => {
           <button
             onClick={prevSlide}
             className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 shadow-lg"
-            aria-label="Vorige slide"
+            aria-label={t('accessibility.carousel.previous')}
           >
             <ChevronLeft className="h-4 w-4 text-gray-600" />
           </button>
           <button
             onClick={nextSlide}
             className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 shadow-lg"
-            aria-label="Volgende slide"
+            aria-label={t('accessibility.carousel.next')}
           >
             <ChevronRight className="h-4 w-4 text-gray-600" />
           </button>
@@ -273,9 +273,9 @@ export const HomePage = () => {
       if (!res.ok) throw new Error('Failed to send');
       reset();
       logger.info('Contact message sent', { email: values.email });
-      alert('Bedankt! We nemen spoedig contact op.');
+      alert(t('alerts.contactSuccess'));
     } catch (e) {
-      alert('Verzenden mislukt. Probeer opnieuw.');
+      alert(t('alerts.contactError'));
     }
   };
 
@@ -292,28 +292,39 @@ export const HomePage = () => {
   };
 
   // FAQ sectie data
-  const faqData = [
-    {
-      question: "Is stockflow echt 100% gratis voor KMO's in Vlaanderen?",
-      answer: "Ja, stockflow is volledig gratis voor Vlaamse KMO's. Geen verborgen kosten, geen limieten op gebruikers of producten. Wij geloven dat elk bedrijf toegang moet hebben tot professioneel voorraadbeheer."
-    },
-    {
-      question: "Hoe werkt het gratis voorraadbeheer programma?",
-      answer: "Registreer je gratis account, voeg je producten toe, en begin direct met het beheren van je voorraad. Ons voorraadbeheersysteem is intuïtief en vereist geen technische kennis."
-    },
-    {
-      question: "Kan ik stockflow gebruiken op mijn mobiele telefoon?",
-      answer: "Absoluut! Onze voorraadbeheer app werkt perfect op alle apparaten - smartphone, tablet en desktop. Altijd en overal toegang tot je voorraadgegevens."
-    },
-    {
-      question: "Is mijn data veilig in de cloud?",
-      answer: "Ja, wij nemen de veiligheid van jouw data zeer serieus. Dagelijkse back-ups, SSL-versleuteling en GDPR-compliance zorgen ervoor dat jouw voorraadgegevens altijd veilig zijn."
-    },
-    {
-      question: "Hoe verschilt stockflow van andere voorraadbeheer software?",
-      answer: "Stockflow is specifiek ontwikkeld voor Vlaamse KMO's, volledig gratis, en biedt alle essentiële functies zonder complexiteit. Geen dure licenties of verborgen kosten zoals bij Odoo of Exact."
+  const faqData = (() => {
+    try {
+      const items = t('faq.items', { returnObjects: true });
+      if (Array.isArray(items)) {
+        return items;
+      }
+    } catch (error) {
+      console.warn('Translation error for faq.items:', error);
     }
-  ];
+    // Fallback data
+    return [
+      {
+        question: "Is stockflow echt 100% gratis voor KMO's in Vlaanderen?",
+        answer: "Ja, stockflow is volledig gratis voor Vlaamse KMO's. Geen verborgen kosten, geen limieten op gebruikers of producten. Wij geloven dat elk bedrijf toegang moet hebben tot professioneel voorraadbeheer."
+      },
+      {
+        question: "Hoe werkt het gratis voorraadbeheer programma?",
+        answer: "Registreer je gratis account, voeg je producten toe, en begin direct met het beheren van je voorraad. Ons voorraadbeheersysteem is intuïtief en vereist geen technische kennis."
+      },
+      {
+        question: "Kan ik stockflow gebruiken op mijn mobiele telefoon?",
+        answer: "Absoluut! Onze voorraadbeheer app werkt perfect op alle apparaten - smartphone, tablet en desktop. Altijd en overal toegang tot je voorraadgegevens."
+      },
+      {
+        question: "Is mijn data veilig in de cloud?",
+        answer: "Ja, wij nemen de veiligheid van jouw data zeer serieus. Dagelijkse back-ups, SSL-versleuteling en GDPR-compliance zorgen ervoor dat jouw voorraadgegevens altijd veilig zijn."
+      },
+      {
+        question: "Hoe verschilt stockflow van andere voorraadbeheer software?",
+        answer: "Stockflow is specifiek ontwikkeld voor Vlaamse KMO's, volledig gratis, en biedt alle essentiële functies zonder complexiteit. Geen dure licenties of verborgen kosten zoals bij Odoo of Exact."
+      }
+    ];
+  })();
 
   const features = [
     {
@@ -338,63 +349,93 @@ export const HomePage = () => {
     },
   ];
   
-  const testimonials = [
-    {
-      name: 'Laura Peeters',
-      role: 'Eigenaar, De Koffieboetiek - Gent',
-      quote: 'Dankzij stockflow heb ik eindelijk een helder overzicht van mijn voorraad. De automatische bestelmeldingen zijn een lifesaver! Als Vlaamse KMO is het gratis plan perfect voor ons.',
-      avatar: '/Laura.png',
-      rating: 5,
-      company: 'De Koffieboetiek',
-      location: 'Gent',
-      industry: 'Horeca',
-      savings: '€2.400/jaar bespaard',
-      timeSaved: '8 uur/week'
-    },
-    {
-      name: 'Tom De Wit',
-      role: 'Zaakvoerder, TechOnderdelen BV - Antwerpen',
-      quote: 'De overstap naar stockflow was de beste beslissing voor ons magazijnbeheer. Het is intuïtief, snel en het team is enorm behulpzaam. Eindelijk een voorraadbeheer programma dat echt werkt.',
-      avatar: '/jan.png',
-      rating: 5,
-      company: 'TechOnderdelen BV',
-      location: 'Antwerpen',
-      industry: 'Technologie',
-      savings: '€5.200/jaar bespaard',
-      timeSaved: '12 uur/week'
-    },
-     {
-      name: 'Anke Willems',
-      role: 'Manager, Creatief Atelier - Brugge',
-      quote: 'Als klein bedrijf is het gratis plan perfect voor ons. We kunnen nu veel efficiënter onze materialen beheren. Een absolute aanrader voor elke Vlaamse KMO!',
-      avatar: '/placeholder.svg',
-      rating: 5,
-      company: 'Creatief Atelier',
-      location: 'Brugge',
-      industry: 'Creatief',
-      savings: '€1.800/jaar bespaard',
-      timeSaved: '6 uur/week'
-    },
-  ];
+  const testimonials = (() => {
+    try {
+      const items = t('testimonials.items', { returnObjects: true });
+      if (Array.isArray(items)) {
+        return items.map((testimonial, index) => ({
+          ...testimonial,
+          avatar: index === 0 ? '/Laura.png' : index === 1 ? '/jan.png' : '/placeholder.svg',
+          rating: 5
+        }));
+      }
+    } catch (error) {
+      console.warn('Translation error for testimonials.items:', error);
+    }
+    // Fallback data
+    return [
+      {
+        name: 'Laura Peeters',
+        role: 'Eigenaar, De Koffieboetiek - Gent',
+        quote: 'Dankzij stockflow heb ik eindelijk een helder overzicht van mijn voorraad. De automatische bestelmeldingen zijn een lifesaver! Als Vlaamse KMO is het gratis plan perfect voor ons.',
+        avatar: '/Laura.png',
+        rating: 5,
+        company: 'De Koffieboetiek',
+        location: 'Gent',
+        industry: 'Horeca',
+        savings: '€2.400/jaar bespaard',
+        timeSaved: '8 uur/week'
+      },
+      {
+        name: 'Tom De Wit',
+        role: 'Zaakvoerder, TechOnderdelen BV - Antwerpen',
+        quote: 'De overstap naar stockflow was de beste beslissing voor ons magazijnbeheer. Het is intuïtief, snel en het team is enorm behulpzaam. Eindelijk een voorraadbeheer programma dat echt werkt.',
+        avatar: '/jan.png',
+        rating: 5,
+        company: 'TechOnderdelen BV',
+        location: 'Antwerpen',
+        industry: 'Technologie',
+        savings: '€5.200/jaar bespaard',
+        timeSaved: '12 uur/week'
+      },
+      {
+        name: 'Anke Willems',
+        role: 'Manager, Creatief Atelier - Brugge',
+        quote: 'Als klein bedrijf is het gratis plan perfect voor ons. We kunnen nu veel efficiënter onze materialen beheren. Een absolute aanrader voor elke Vlaamse KMO!',
+        avatar: '/placeholder.svg',
+        rating: 5,
+        company: 'Creatief Atelier',
+        location: 'Brugge',
+        industry: 'Creatief',
+        savings: '€1.800/jaar bespaard',
+        timeSaved: '6 uur/week'
+      }
+    ];
+  })();
 
   // Voordelen sectie
-  const benefits = [
-    {
-      icon: <Euro className="h-8 w-8" />,
-      title: "100% Gratis Voor Altijd",
-      description: "Geen verborgen kosten, geen limieten. Volledig gratis voorraadbeheer voor Vlaamse KMO's."
-    },
-    {
-      icon: <Clock className="h-8 w-8" />,
-      title: "Direct Aan de Slag",
-      description: "Geen complexe setup of training nodig. Begin binnen 5 minuten met je voorraadbeheer."
-    },
-    {
-      icon: <Target className="h-8 w-8" />,
-      title: "Specifiek voor Vlaamse KMO's",
-      description: "Ontwikkeld met de behoeften van Vlaamse bedrijven in gedachten. Nederlandse support en lokale expertise."
+  const benefits = (() => {
+    try {
+      const items = t('benefits.items', { returnObjects: true });
+      if (Array.isArray(items)) {
+        return items.map((benefit, index) => ({
+          icon: index === 0 ? <Euro className="h-8 w-8" /> : index === 1 ? <Clock className="h-8 w-8" /> : <Target className="h-8 w-8" />,
+          title: benefit.title,
+          description: benefit.description
+        }));
+      }
+    } catch (error) {
+      console.warn('Translation error for benefits.items:', error);
     }
-  ];
+    // Fallback data
+    return [
+      {
+        icon: <Euro className="h-8 w-8" />,
+        title: "100% Gratis Voor Altijd",
+        description: "Geen verborgen kosten, geen limieten. Volledig gratis voorraadbeheer voor Vlaamse KMO's."
+      },
+      {
+        icon: <Clock className="h-8 w-8" />,
+        title: "Direct Aan de Slag",
+        description: "Geen complexe setup of training nodig. Begin binnen 5 minuten met je voorraadbeheer."
+      },
+      {
+        icon: <Target className="h-8 w-8" />,
+        title: "Specifiek voor Vlaamse KMO's",
+        description: "Ontwikkeld met de behoeften van Vlaamse bedrijven in gedachten. Nederlandse support en lokale expertise."
+      }
+    ];
+  })();
 
   // --- BEGIN USP DATA ---
   const usps = [
@@ -422,47 +463,63 @@ export const HomePage = () => {
   // --- EINDE USP DATA ---
 
   // --- BEGIN SUBSCRIPTION FEATURES DATA ---
-  const subscriptionFeatures = [
-    {
-      icon: <BarChart3 className="h-12 w-12 text-blue-600" />,
-      title: "Geavanceerde Analytics",
-      description: "AI-gedreven inzichten, voorspellingen en real-time dashboards voor optimale besluitvorming.",
-      features: [
-        "AI-voorspellingen voor voorraadbehoeften",
-        "Real-time dashboards en rapporten",
-        "Custom export naar Excel/PDF",
-        "API toegang voor integraties"
-      ],
-      tier: "groei",
-      image: "/placeholder.svg"
-    },
-    {
-      icon: <Scan className="h-12 w-12 text-green-600" />,
-      title: "Barcode Scanner",
-      description: "Scan producten direct in en uit met je smartphone. Perfect voor snelle voorraadupdates.",
-      features: [
-        "Mobiele barcode scanning",
-        "Automatische productherkenning",
-        "Bulk import/export",
-        "Offline synchronisatie"
-      ],
-      tier: "groei",
-      image: "/placeholder.svg"
-    },
-    {
-      icon: <Truck className="h-12 w-12 text-purple-600" />,
-      title: "Leveringsbonnen Beheer",
-      description: "Volledig beheer van inkomende en uitgaande leveringsbonnen met automatische updates.",
-      features: [
-        "PDF upload en verwerking",
-        "Automatische voorraad updates",
-        "Custom leveringsbon templates",
-        "Bulk import/export functionaliteit"
-      ],
-      tier: "groei",
-      image: "/placeholder.svg"
+  const subscriptionFeatures = (() => {
+    try {
+      const items = t('modules.items', { returnObjects: true });
+      if (Array.isArray(items)) {
+        return items.map((feature, index) => ({
+          ...feature,
+          icon: index === 0 ? <BarChart3 className="h-12 w-12 text-blue-600" /> : index === 1 ? <Scan className="h-12 w-12 text-green-600" /> : <Truck className="h-12 w-12 text-purple-600" />,
+          tier: "groei",
+          image: "/placeholder.svg"
+        }));
+      }
+    } catch (error) {
+      console.warn('Translation error for modules.items:', error);
     }
-  ];
+    // Fallback data
+    return [
+      {
+        icon: <BarChart3 className="h-12 w-12 text-blue-600" />,
+        title: "Geavanceerde Analytics",
+        description: "AI-gedreven inzichten, voorspellingen en real-time dashboards voor optimale besluitvorming.",
+        features: [
+          "AI-voorspellingen voor voorraadbehoeften",
+          "Real-time dashboards en rapporten",
+          "Custom export naar Excel/PDF",
+          "API toegang voor integraties"
+        ],
+        tier: "groei",
+        image: "/placeholder.svg"
+      },
+      {
+        icon: <Scan className="h-12 w-12 text-green-600" />,
+        title: "Barcode Scanner",
+        description: "Scan producten direct in en uit met je smartphone. Perfect voor snelle voorraadupdates.",
+        features: [
+          "Mobiele barcode scanning",
+          "Automatische productherkenning",
+          "Bulk import/export",
+          "Offline synchronisatie"
+        ],
+        tier: "groei",
+        image: "/placeholder.svg"
+      },
+      {
+        icon: <Truck className="h-12 w-12 text-purple-600" />,
+        title: "Leveringsbonnen Beheer",
+        description: "Volledig beheer van inkomende en uitgaande leveringsbonnen met automatische updates.",
+        features: [
+          "PDF upload en verwerking",
+          "Automatische voorraad updates",
+          "Custom leveringsbon templates",
+          "Bulk import/export functionaliteit"
+        ],
+        tier: "groei",
+        image: "/placeholder.svg"
+      }
+    ];
+  })();
   // --- EINDE SUBSCRIPTION FEATURES DATA ---
 
   // --- BEGIN CAPABILITIES DATA ---
@@ -489,47 +546,63 @@ export const HomePage = () => {
   // --- EINDE CAPABILITIES DATA ---
 
   // --- BEGIN FEATURE DATA ---
-  const landingFeatures = [
-    {
-      title: "Krachtig voorraadbeheer voor KMO's",
-      desc: "Beheer je producten, locaties en voorraden centraal. Automatiseer bestellingen en voorkom tekorten. Specifiek ontwikkeld voor Vlaamse bedrijven.",
-      img: "/optimized/image.png",
-      reverse: false,
-      features: [
-        "Centraal productbeheer",
-        "Automatische bestelmeldingen", 
-        "Multi-locatie ondersteuning",
-        "Real-time voorraad updates"
-      ],
-      icon: <Package className="h-12 w-12 text-blue-600" />
-    },
-    {
-      title: "Slimme rapportages en inzichten",
-      desc: "Genereer rapporten en krijg inzicht in trends, zodat je altijd de juiste beslissingen neemt voor je voorraadbeheer.",
-      img: "/optimized/analytics.png",
-      reverse: true,
-      features: [
-        "AI-gedreven voorspellingen",
-        "Custom dashboards",
-        "Export naar Excel/PDF",
-        "Trend analyse"
-      ],
-      icon: <BarChart3 className="h-12 w-12 text-green-600" />
-    },
-    {
-      title: "Mobiel & desktop voorraadbeheer",
-      desc: "Altijd en overal toegang tot je voorraad, op elk apparaat. Perfect voor ondernemers die onderweg zijn.",
-      img: "/optimized/mobile.png",
-      reverse: false,
-      features: [
-        "Responsive design",
-        "Offline synchronisatie",
-        "Barcode scanning",
-        "Push notificaties"
-      ],
-      icon: <Smartphone className="h-12 w-12 text-purple-600" />
-    },
-  ];
+  const landingFeatures = (() => {
+    try {
+      const items = t('features.items', { returnObjects: true });
+      if (Array.isArray(items)) {
+        return items.map((feature, index) => ({
+          ...feature,
+          img: index === 0 ? "/optimized/image.png" : index === 1 ? "/optimized/analytics.png" : "/optimized/mobile.png",
+          reverse: index === 1,
+          icon: index === 0 ? <Package className="h-12 w-12 text-blue-600" /> : index === 1 ? <BarChart3 className="h-12 w-12 text-green-600" /> : <Smartphone className="h-12 w-12 text-purple-600" />
+        }));
+      }
+    } catch (error) {
+      console.warn('Translation error for features.items:', error);
+    }
+    // Fallback data
+    return [
+      {
+        title: "Krachtig voorraadbeheer voor KMO's",
+        desc: "Beheer je producten, locaties en voorraden centraal. Automatiseer bestellingen en voorkom tekorten. Specifiek ontwikkeld voor Vlaamse bedrijven.",
+        img: "/optimized/image.png",
+        reverse: false,
+        features: [
+          "Centraal productbeheer",
+          "Automatische bestelmeldingen", 
+          "Multi-locatie ondersteuning",
+          "Real-time voorraad updates"
+        ],
+        icon: <Package className="h-12 w-12 text-blue-600" />
+      },
+      {
+        title: "Slimme rapportages en inzichten",
+        desc: "Genereer rapporten en krijg inzicht in trends, zodat je altijd de juiste beslissingen neemt voor je voorraadbeheer.",
+        img: "/optimized/analytics.png",
+        reverse: true,
+        features: [
+          "AI-gedreven voorspellingen",
+          "Custom dashboards",
+          "Export naar Excel/PDF",
+          "Trend analyse"
+        ],
+        icon: <BarChart3 className="h-12 w-12 text-green-600" />
+      },
+      {
+        title: "Mobiel & desktop voorraadbeheer",
+        desc: "Altijd en overal toegang tot je voorraad, op elk apparaat. Perfect voor ondernemers die onderweg zijn.",
+        img: "/optimized/mobile.png",
+        reverse: false,
+        features: [
+          "Responsive design",
+          "Offline synchronisatie",
+          "Barcode scanning",
+          "Push notificaties"
+        ],
+        icon: <Smartphone className="h-12 w-12 text-purple-600" />
+      }
+    ];
+  })();
   // --- EINDE FEATURE DATA ---
 
   // Lead capture state
@@ -584,7 +657,7 @@ export const HomePage = () => {
       "@context": "https://schema.org",
       "@type": "FAQPage",
       "mainEntity": [
-        ...faqData.map((f) => ({
+        ...(faqData as any[]).map((f) => ({
           "@type": "Question",
           "name": f.question,
           "acceptedAnswer": { "@type": "Answer", "text": f.answer }
@@ -665,10 +738,10 @@ export const HomePage = () => {
             <FadeInWhenVisible>
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
                 <span className="block text-gray-900">{t('homepage.title')}</span>
-                <span className="block bg-gradient-to-r from-blue-500 to-blue-900 bg-clip-text text-transparent">
-                  {t('homepage.subtitle')}
-                </span>
+
               </h1>
+
+              
             </FadeInWhenVisible>
 
             {/* Subheadline */}
@@ -676,7 +749,6 @@ export const HomePage = () => {
               <p className="text-lg sm:text-xl md:text-2xl text-gray-600 mb-8 max-w-4xl mx-auto leading-relaxed">
                 {t('homepage.subtitle')}
                 <br className="hidden sm:block" />
-                {t('homepage.subtitle')}
               </p>
             </FadeInWhenVisible>
 
@@ -728,22 +800,39 @@ export const HomePage = () => {
             {/* Trust indicators */}
             <FadeInWhenVisible>
               <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-600 mb-8">
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-green-600" />
-                  <span>Geen creditcard vereist</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Zap className="h-4 w-4 text-blue-600" />
-                  <span>Direct toegang</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Globe className="h-4 w-4 text-purple-600" />
-                  <span>Nederlandse support</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Shield className="h-4 w-4 text-green-600" />
-                  <span>GDPR-compliant</span>
-                </div>
+                {(() => {
+                  try {
+                    const items = t('accessibility.trust', { returnObjects: true });
+                    if (Array.isArray(items)) {
+                      return items.map((trust, index) => (
+                        <div key={index} className="flex items-center gap-2">
+                          {index === 0 ? <CheckCircle className="h-4 w-4 text-green-600" /> : 
+                           index === 1 ? <Zap className="h-4 w-4 text-blue-600" /> :
+                           index === 2 ? <Globe className="h-4 w-4 text-purple-600" /> :
+                           <Shield className="h-4 w-4 text-green-600" />}
+                          <span>{trust}</span>
+                        </div>
+                      ));
+                    }
+                  } catch (error) {
+                    console.warn('Translation error for accessibility.trust:', error);
+                  }
+                  // Fallback data
+                  return [
+                    "Geen creditcard vereist",
+                    "Direct toegang", 
+                    "Nederlandse support",
+                    "GDPR-compliant"
+                  ].map((trust, index) => (
+                    <div key={index} className="flex items-center gap-2">
+                      {index === 0 ? <CheckCircle className="h-4 w-4 text-green-600" /> : 
+                       index === 1 ? <Zap className="h-4 w-4 text-blue-600" /> :
+                       index === 2 ? <Globe className="h-4 w-4 text-purple-600" /> :
+                       <Shield className="h-4 w-4 text-green-600" />}
+                      <span>{trust}</span>
+                    </div>
+                  ));
+                })()}
               </div>
             </FadeInWhenVisible>
 
@@ -777,7 +866,7 @@ export const HomePage = () => {
         <div className="max-w-6xl mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8 divide-x-0 md:divide-x md:divide-dashed md:divide-gray-200">
             {[
-              { icon: Users, value: '32+', label: "zelfstandigen & KMO's" },
+              { icon: Users, value: '32+', label: t('socialProof.users') },
               { icon: Clock, value: '17k+', label: 'uren bespaard' },
               { icon: Package, value: '500k+', label: 'productbewegingen' },
             ].map((s, i) => (
@@ -798,21 +887,20 @@ export const HomePage = () => {
             <FadeInWhenVisible>
               <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-medium mb-6">
                 <Sparkles className="h-4 w-4" />
-                <span>Nieuwe Modules Beschikbaar</span>
+                <span>{t('modules.title')}</span>
               </div>
             </FadeInWhenVisible>
             <FadeInWhenVisible>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
-                <span className="block text-gray-900">Uitbreid je Voorraadbeheer</span>
+                <span className="block text-gray-900">{t('modules.title')}</span>
                 <span className="block bg-gradient-to-r from-blue-500 to-blue-900 bg-clip-text text-transparent">
-                  met Krachtige Modules
+                  {t('modules.subtitle')}
                 </span>
               </h2>
             </FadeInWhenVisible>
             <FadeInWhenVisible>
               <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                Start gratis en voeg modules toe wanneer je ze nodig hebt. 
-                Elke module is ontworpen om je voorraadbeheer naar het volgende niveau te tillen.
+                {t('modules.description')}
               </p>
             </FadeInWhenVisible>
           </div>
@@ -866,11 +954,10 @@ export const HomePage = () => {
             <div className="text-center bg-white rounded-2xl shadow-lg p-8 md:p-12 border border-gray-100">
               <div className="max-w-3xl mx-auto">
                 <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
-                  Klaar om je Voorraadbeheer te Optimaliseren?
+                  {t('modules.cta.title')}
                 </h3>
                 <p className="text-lg text-gray-600 mb-8">
-                  Start gratis en voeg modules toe wanneer je ze nodig hebt. 
-                  Geen langetermijncontracten, geen verborgen kosten.
+                  {t('modules.cta.description')}
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Button 
@@ -879,7 +966,7 @@ export const HomePage = () => {
                     onClick={handleLoginClick}
                   >
                     <Rocket className="h-5 w-5 mr-2" />
-                    Start Gratis Account
+                    {t('modules.cta.startButton')}
                   </Button>
                   <Button 
                     size="lg" 
@@ -887,7 +974,7 @@ export const HomePage = () => {
                     className="border-2 border-blue-300 text-blue-700 px-8 py-4 rounded-xl font-semibold hover:bg-blue-50 transition-all duration-300"
                     onClick={handlePricingClick}
                   >
-                    Bekijk Prijzen
+                    {t('modules.cta.pricingButton')}
                   </Button>
                   <Button 
                     size="lg" 
@@ -896,7 +983,7 @@ export const HomePage = () => {
                     onClick={() => scrollToSection('contact-section')}
                   >
                     <MessageCircle className="h-5 w-5 mr-2" />
-                    Vraag Demo Aan
+                    {t('modules.cta.demoButton')}
                   </Button>
                 </div>
               </div>
@@ -912,21 +999,20 @@ export const HomePage = () => {
             <FadeInWhenVisible>
               <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-medium mb-6">
                 <Euro className="h-4 w-4" />
-                <span>Transparante Prijzen</span>
+                <span>{t('pricing.badge')}</span>
               </div>
             </FadeInWhenVisible>
             <FadeInWhenVisible>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
-                <span className="block text-gray-900">Kies je Perfecte Plan</span>
+                <span className="block text-gray-900">{t('pricing.title')}</span>
                 <span className="block bg-gradient-to-r from-blue-500 to-blue-900 bg-clip-text text-transparent">
-                  Start Gratis, Groei Wanneer Je Wilt
+                  {t('pricing.subtitle')}
                 </span>
               </h2>
             </FadeInWhenVisible>
             <FadeInWhenVisible>
               <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                Geen verborgen kosten, geen langetermijncontracten. 
-                Start gratis en upgrade wanneer je bedrijf groeit.
+                {t('pricing.description')}
               </p>
             </FadeInWhenVisible>
           </div>
@@ -1186,8 +1272,8 @@ export const HomePage = () => {
       <section id="benefits-section" className="bg-gray-50 py-12 md:py-16">
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-8 md:mb-12">
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 px-4">Waarom KMO's in Vlaanderen Kiezen voor stockflow</h2>
-            <p className="text-sm sm:text-base md:text-lg text-gray-600 px-4">Het beste gratis voorraadbeheer programma, specifiek ontwikkeld voor Vlaamse bedrijven</p>
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 px-4">{t('benefits.title')}</h2>
+            <p className="text-sm sm:text-base md:text-lg text-gray-600 px-4">{t('benefits.subtitle')}</p>
           </div>
           
           {/* Desktop Grid */}
@@ -1207,6 +1293,7 @@ export const HomePage = () => {
           <div className="md:hidden">
             <MobileCarousel 
               items={benefits}
+              t={t}
               renderItem={(benefit, index) => (
                 <div className="bg-white p-6 rounded-lg shadow-md text-center">
                   <div className="text-blue-600 mb-4 flex justify-center">{benefit.icon}</div>
@@ -1232,15 +1319,15 @@ export const HomePage = () => {
             </FadeInWhenVisible>
             <FadeInWhenVisible>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
-                <span className="block text-gray-900">Alles wat je nodig hebt</span>
+                <span className="block text-gray-900">{t('features.title')}</span>
                 <span className="block bg-gradient-to-r from-blue-500 to-blue-900 bg-clip-text text-transparent">
-                  voor Perfect Voorraadbeheer
+                  {t('features.subtitle')}
                 </span>
               </h2>
             </FadeInWhenVisible>
             <FadeInWhenVisible>
               <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                Van basis voorraadbeheer tot geavanceerde analytics - stockflow heeft alles wat je KMO nodig heeft om te groeien.
+                {t('features.description')}
               </p>
             </FadeInWhenVisible>
           </div>
@@ -1337,16 +1424,15 @@ export const HomePage = () => {
             </FadeInWhenVisible>
             <FadeInWhenVisible>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
-                <span className="block text-gray-900">Hoe Werkt</span>
+                <span className="block text-gray-900">{t('video.title')}</span>
                 <span className="block bg-gradient-to-r from-blue-500 to-blue-900 bg-clip-text text-transparent">
-                  Stockflow?
+                  {t('video.subtitle')}
                 </span>
               </h2>
             </FadeInWhenVisible>
             <FadeInWhenVisible>
               <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                Ontdek hoe eenvoudig voorraadbeheer kan zijn met stockflow. 
-                Bekijk hoe Vlaamse KMO's hun voorraad beheren in minder dan 3 minuten.
+                {t('video.description')}
               </p>
             </FadeInWhenVisible>
           </div>
@@ -1436,11 +1522,11 @@ export const HomePage = () => {
         <div className="fixed inset-x-0 bottom-0 z-50">
           <div className="mx-auto max-w-6xl m-4 rounded-lg bg-white shadow-xl border border-gray-200 p-4 flex flex-col md:flex-row items-start md:items-center gap-3">
             <p className="text-sm text-gray-700">
-              We gebruiken cookies om je ervaring te verbeteren en anonieme statistieken te verzamelen. Door te accepteren ga je akkoord met ons gebruik van cookies.
+              {t('alerts.cookieConsent')}
             </p>
             <div className="flex gap-2 ml-auto">
-              <Button variant="outline" className="border-gray-300" onClick={() => setShowCookieBanner(false)}>Weiger</Button>
-              <Button className="bg-blue-600 text-white hover:bg-blue-700" onClick={acceptCookies}>Accepteer</Button>
+              <Button variant="outline" className="border-gray-300" onClick={() => setShowCookieBanner(false)}>{t('alerts.cookieDecline')}</Button>
+              <Button className="bg-blue-600 text-white hover:bg-blue-700" onClick={acceptCookies}>{t('alerts.cookieAccept')}</Button>
             </div>
           </div>
         </div>
@@ -1448,12 +1534,12 @@ export const HomePage = () => {
 
       {/* EXIT-INTENT POPUP */}
       {showExitIntent && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" role="dialog" aria-modal="true" aria-label="Blijf op de hoogte popup">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" role="dialog" aria-modal="true" aria-label={t('alerts.exitIntent.title')}>
           <div className="bg-white rounded-lg shadow-2xl max-w-md w-full p-6 mx-4">
-            <h3 className="text-xl font-bold mb-2">Nog twijfels? Probeer stockflow gratis</h3>
-            <p className="text-gray-600 mb-4">Geen creditcard vereist. Zie in 2 minuten hoe je voorraadbeheer eenvoudiger wordt.</p>
+            <h3 className="text-xl font-bold mb-2">{t('alerts.exitIntent.title')}</h3>
+            <p className="text-gray-600 mb-4">{t('alerts.exitIntent.description')}</p>
             <div className="flex gap-2">
-              <Button className="bg-blue-600 text-white hover:bg-blue-700 flex-1" onClick={() => { setShowExitIntent(false); handleLoginClick(); }}>Start nu gratis</Button>
+              <Button className="bg-blue-600 text-white hover:bg-blue-700 flex-1" onClick={() => { setShowExitIntent(false); handleLoginClick(); }}>{t('alerts.exitIntent.start')}</Button>
               <Button variant="outline" className="flex-1" onClick={() => {
                 // Track exit intent decline
                 logger.info('Exit intent declined', { 
@@ -1462,7 +1548,7 @@ export const HomePage = () => {
                   action: 'declined'
                 });
                 setShowExitIntent(false);
-              }}>Nee bedankt</Button>
+              }}>{t('alerts.exitIntent.decline')}</Button>
             </div>
           </div>
         </div>
@@ -1555,35 +1641,36 @@ export const HomePage = () => {
           <div className="md:hidden mb-16">
             <MobileCarousel 
               items={testimonials}
-              renderItem={(t) => (
+              t={t}
+              renderItem={(testimonial) => (
                 <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
                   <div className="p-6">
                     <div className="flex items-center gap-4 mb-4">
                       <OptimizedImage 
                         className="h-12 w-12 rounded-full object-cover border-2 border-blue-100" 
-                        src={t.avatar} 
-                        alt={`${t.name} - ${t.role}`} 
+                        src={testimonial.avatar} 
+                        alt={`${testimonial.name} - ${testimonial.role}`} 
                       />
                       <div className="flex-1">
-                        <div className="font-bold text-gray-900">{t.name}</div>
-                        <div className="text-sm text-gray-500">{t.role}</div>
-                        <div className="text-xs text-blue-600 font-medium">{t.company}</div>
+                        <div className="font-bold text-gray-900">{testimonial.name}</div>
+                        <div className="text-sm text-gray-500">{testimonial.role}</div>
+                        <div className="text-xs text-blue-600 font-medium">{testimonial.company}</div>
                       </div>
                     </div>
                     <div className="flex mb-4">
-                      {[...Array(t.rating)].map((_, i) => (
+                      {[...Array(testimonial.rating)].map((_, i) => (
                         <Star key={i} className="h-4 w-4 text-yellow-400 fill-current" />
                       ))}
                     </div>
-                    <p className="text-gray-700 leading-relaxed mb-6 text-sm">"{t.quote}"</p>
+                    <p className="text-gray-700 leading-relaxed mb-6 text-sm">"{testimonial.quote}"</p>
                     
                     <div className="grid grid-cols-2 gap-4 pt-4 border-t border-gray-100">
                       <div className="text-center">
-                        <div className="text-lg font-bold text-green-600">{t.savings}</div>
+                        <div className="text-lg font-bold text-green-600">{testimonial.savings}</div>
                         <div className="text-xs text-gray-500">Bespaard</div>
                       </div>
                       <div className="text-center">
-                        <div className="text-lg font-bold text-blue-600">{t.timeSaved}</div>
+                        <div className="text-lg font-bold text-blue-600">{testimonial.timeSaved}</div>
                         <div className="text-xs text-gray-500">Tijd bespaard</div>
                       </div>
                     </div>

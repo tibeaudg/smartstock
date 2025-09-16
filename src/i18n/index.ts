@@ -4,6 +4,7 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 
 // Import translation files
 import en from './locales/en.json';
+import nl from './locales/nl.json';
 import hu from './locales/hu.json';
 import sv from './locales/sv.json';
 import th from './locales/th.json';
@@ -18,6 +19,7 @@ import { detectUserLanguage } from '../utils/languageDetection';
 
 const resources = {
   en: { translation: en },
+  nl: { translation: nl },
   hu: { translation: hu },
   sv: { translation: sv },
   th: { translation: th },
@@ -30,15 +32,13 @@ const resources = {
   pl: { translation: pl },
 };
 
-// Detect the user's preferred language
-const detectedLanguage = detectUserLanguage();
-
+// Initialize i18n with default language, then detect and change if needed
 i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
     resources,
-    lng: detectedLanguage,
+    lng: 'en', // Default to English
     fallbackLng: 'en',
     debug: process.env.NODE_ENV === 'development',
     
@@ -51,5 +51,12 @@ i18n
       escapeValue: false, // React already does escaping
     },
   });
+
+// Detect and change language after initialization
+detectUserLanguage().then((detectedLanguage) => {
+  if (detectedLanguage !== 'en') {
+    i18n.changeLanguage(detectedLanguage);
+  }
+});
 
 export default i18n;

@@ -1,0 +1,515 @@
+{
+  "common": {
+    "loading": "Laden...",
+    "save": "Opslaan",
+    "cancel": "Annuleren",
+    "delete": "Verwijderen",
+    "edit": "Bewerken",
+    "add": "Toevoegen",
+    "search": "Zoeken",
+    "filter": "Filteren",
+    "close": "Sluiten",
+    "submit": "Verzenden",
+    "back": "Terug",
+    "next": "Volgende",
+    "previous": "Vorige",
+    "confirm": "Bevestigen",
+    "yes": "Ja",
+    "no": "Nee",
+    "language": "Taal"
+  },
+  "navigation": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "products": "Producten",
+    "stock": "Voorraad",
+    "movements": "Bewegingen",
+    "settings": "Instellingen",
+    "profile": "Profiel",
+    "logout": "Uitloggen",
+    "login": "Inloggen",
+    "register": "Registreren",
+    "features": "Functies",
+    "pricing": "Prijzen",
+    "reviews": "Reviews",
+    "faq": "FAQ",
+    "contact": "Contact",
+    "menu": "Menu",
+    "categories": "Categorieën",
+    "suppliers": "Leveranciers",
+    "deliveryNotes": "Leveringsbonnen",
+    "scanner": "Scanner",
+    "modules": "Modules",
+    "admin": "Admin",
+    "analytics": "Analytics",
+    "billing": "Facturering",
+    "branches": "Vestigingen",
+    "users": "Gebruikers",
+    "subscription": "Abonnement",
+    "overview": "Overzicht",
+    "predictions": "AI Voorspellingen",
+    "reports": "Aangepaste Rapporten",
+    "export": "Data Exporteren",
+    "api": "API Toegang",
+    "filtering": "Geavanceerd Filteren",
+    "support": "Ondersteuning"
+  },
+  "homepage": {
+    "title": "StockFlow - Slim Voorraadbeheer",
+    "subtitle": "Stroomlijn je voorraad met ons intelligente voorraadbeheersysteem",
+    "getStarted": "Start Nu",
+    "learnMore": "Meer Informatie",
+    "features": {
+      "title": "Waarom Kiezen voor StockFlow?",
+      "realTime": {
+        "title": "Real-time Tracking",
+        "description": "Monitor je voorraad in real-time met directe updates"
+      },
+      "barcode": {
+        "title": "Barcode Scanning",
+        "description": "Snelle en nauwkeurige productidentificatie"
+      },
+      "analytics": {
+        "title": "Geavanceerde Analytics",
+        "description": "Krijg inzicht in je voorraadpatronen en trends"
+      },
+      "mobile": {
+        "title": "Mobiel Klaar",
+        "description": "Beheer je voorraad overal met onze mobiele app"
+      }
+    },
+    "cta": {
+      "title": "Klaar om je Voorraadbeheer te Transformeren?",
+      "description": "Sluit je aan bij duizenden bedrijven die al StockFlow gebruiken",
+      "button": "Start Gratis Trial"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Inloggen",
+      "email": "E-mail",
+      "password": "Wachtwoord",
+      "forgotPassword": "Wachtwoord Vergeten?",
+      "noAccount": "Nog geen account?",
+      "signUp": "Registreren"
+    },
+    "register": {
+      "title": "Account Aanmaken",
+      "email": "E-mail",
+      "password": "Wachtwoord",
+      "confirmPassword": "Wachtwoord Bevestigen",
+      "hasAccount": "Al een account?",
+      "signIn": "Inloggen"
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "overview": "Overzicht",
+    "recentMovements": "Recente Voorraadbewegingen",
+    "lowStock": "Lage Voorraad Waarschuwing",
+    "totalProducts": "Totaal Producten",
+    "totalValue": "Totale Waarde"
+  },
+  "products": {
+    "title": "Producten",
+    "addProduct": "Product Toevoegen",
+    "editProduct": "Product Bewerken",
+    "productName": "Productnaam",
+    "sku": "SKU",
+    "barcode": "Barcode",
+    "price": "Prijs",
+    "quantity": "Hoeveelheid",
+    "category": "Categorie",
+    "description": "Beschrijving"
+  },
+  "stock": {
+    "title": "Voorraadbeheer",
+    "currentStock": "Huidige Voorraad",
+    "addStock": "Voorraad Toevoegen",
+    "removeStock": "Voorraad Verwijderen",
+    "adjustStock": "Voorraad Aanpassen",
+    "reason": "Reden",
+    "notes": "Notities"
+  },
+  "settings": {
+    "title": "Instellingen",
+    "profile": "Profiel Instellingen",
+    "branches": "Vestiging Beheer",
+    "users": "Gebruiker Beheer",
+    "modules": "Module Beheer",
+    "billing": "Facturering & Facturen"
+  },
+  "chat": {
+    "title": "Stel je vraag",
+    "email": "E-mail",
+    "message": "Je vraag",
+    "emailPlaceholder": "jouw@bedrijf.be",
+    "messagePlaceholder": "Schrijf hier je vraag...",
+    "emailError": "Geldig e-mailadres vereist.",
+    "messageError": "Voer je vraag in.",
+    "cancel": "Annuleren",
+    "submit": "Verzenden",
+    "submitting": "Verzenden...",
+    "success": "Bedankt! We reageren snel via e-mail.",
+    "error": "Verzenden mislukt. Probeer opnieuw."
+  },
+  "socialProof": {
+    "rating": "4.8/5 gebaseerd op reviews",
+    "users": "32+ actieve gebruikers"
+  },
+  "faq": {
+    "title": "Veelgestelde Vragen",
+    "items": [
+      {
+        "question": "Is stockflow echt 100% gratis voor KMO's in Vlaanderen?",
+        "answer": "Ja, stockflow is volledig gratis voor Vlaamse KMO's. Geen verborgen kosten, geen limieten op gebruikers of producten. Wij geloven dat elk bedrijf toegang moet hebben tot professioneel voorraadbeheer."
+      },
+      {
+        "question": "Hoe werkt het gratis voorraadbeheer programma?",
+        "answer": "Registreer je gratis account, voeg je producten toe, en begin direct met het beheren van je voorraad. Ons voorraadbeheersysteem is intuïtief en vereist geen technische kennis."
+      },
+      {
+        "question": "Kan ik stockflow gebruiken op mijn mobiele telefoon?",
+        "answer": "Absoluut! Onze voorraadbeheer app werkt perfect op alle apparaten - smartphone, tablet en desktop. Altijd en overal toegang tot je voorraadgegevens."
+      },
+      {
+        "question": "Is mijn data veilig in de cloud?",
+        "answer": "Ja, wij nemen de veiligheid van jouw data zeer serieus. Dagelijkse back-ups, SSL-versleuteling en GDPR-compliance zorgen ervoor dat jouw voorraadgegevens altijd veilig zijn."
+      },
+      {
+        "question": "Hoe verschilt stockflow van andere voorraadbeheer software?",
+        "answer": "Stockflow is specifiek ontwikkeld voor Vlaamse KMO's, volledig gratis, en biedt alle essentiële functies zonder complexiteit. Geen dure licenties of verborgen kosten zoals bij Odoo of Exact."
+      }
+    ]
+  },
+  "benefits": {
+    "title": "Waarom KMO's in Vlaanderen Kiezen voor stockflow",
+    "subtitle": "Het beste gratis voorraadbeheer programma, specifiek ontwikkeld voor Vlaamse bedrijven",
+    "items": [
+      {
+        "title": "100% Gratis Voor Altijd",
+        "description": "Geen verborgen kosten, geen limieten. Volledig gratis voorraadbeheer voor Vlaamse KMO's."
+      },
+      {
+        "title": "Direct Aan de Slag",
+        "description": "Geen complexe setup of training nodig. Begin binnen 5 minuten met je voorraadbeheer."
+      },
+      {
+        "title": "Specifiek voor Vlaamse KMO's",
+        "description": "Ontwikkeld met de behoeften van Vlaamse bedrijven in gedachten. Nederlandse support en lokale expertise."
+      }
+    ]
+  },
+  "features": {
+    "title": "Alles wat je nodig hebt",
+    "subtitle": "voor Perfect Voorraadbeheer",
+    "description": "Van basis voorraadbeheer tot geavanceerde analytics - stockflow heeft alles wat je KMO nodig heeft om te groeien.",
+    "items": [
+      {
+        "title": "Krachtig voorraadbeheer voor KMO's",
+        "description": "Beheer je producten, locaties en voorraden centraal. Automatiseer bestellingen en voorkom tekorten. Specifiek ontwikkeld voor Vlaamse bedrijven.",
+        "features": [
+          "Centraal productbeheer",
+          "Automatische bestelmeldingen",
+          "Multi-locatie ondersteuning",
+          "Real-time voorraad updates"
+        ]
+      },
+      {
+        "title": "Slimme rapportages en inzichten",
+        "description": "Genereer rapporten en krijg inzicht in trends, zodat je altijd de juiste beslissingen neemt voor je voorraadbeheer.",
+        "features": [
+          "AI-gedreven voorspellingen",
+          "Custom dashboards",
+          "Export naar Excel/PDF",
+          "Trend analyse"
+        ]
+      },
+      {
+        "title": "Mobiel & desktop voorraadbeheer",
+        "description": "Altijd en overal toegang tot je voorraad, op elk apparaat. Perfect voor ondernemers die onderweg zijn.",
+        "features": [
+          "Responsive design",
+          "Offline synchronisatie",
+          "Barcode scanning",
+          "Push notificaties"
+        ]
+      }
+    ]
+  },
+  "modules": {
+    "title": "Nieuwe Modules Beschikbaar",
+    "subtitle": "met Krachtige Modules",
+    "description": "Start gratis en voeg modules toe wanneer je ze nodig hebt. Elke module is ontworpen om je voorraadbeheer naar het volgende niveau te tillen.",
+    "items": [
+      {
+        "title": "Geavanceerde Analytics",
+        "description": "AI-gedreven inzichten, voorspellingen en real-time dashboards voor optimale besluitvorming.",
+        "features": [
+          "AI-voorspellingen voor voorraadbehoeften",
+          "Real-time dashboards en rapporten",
+          "Custom export naar Excel/PDF",
+          "API toegang voor integraties"
+        ]
+      },
+      {
+        "title": "Barcode Scanner",
+        "description": "Scan producten direct in en uit met je smartphone. Perfect voor snelle voorraadupdates.",
+        "features": [
+          "Mobiele barcode scanning",
+          "Automatische productherkenning",
+          "Bulk import/export",
+          "Offline synchronisatie"
+        ]
+      },
+      {
+        "title": "Leveringsbonnen Beheer",
+        "description": "Volledig beheer van inkomende en uitgaande leveringsbonnen met automatische updates.",
+        "features": [
+          "PDF upload en verwerking",
+          "Automatische voorraad updates",
+          "Custom leveringsbon templates",
+          "Bulk import/export functionaliteit"
+        ]
+      }
+    ],
+    "cta": {
+      "title": "Klaar om je Voorraadbeheer te Optimaliseren?",
+      "description": "Start gratis en voeg modules toe wanneer je ze nodig hebt. Geen langetermijncontracten, geen verborgen kosten.",
+      "startButton": "Start Gratis Account",
+      "pricingButton": "Bekijk Prijzen",
+      "demoButton": "Vraag Demo Aan"
+    }
+  },
+  "pricing": {
+    "badge": "Transparante Prijzen",
+    "title": "Kies je Perfecte Plan",
+    "subtitle": "Start Gratis, Groei Wanneer Je Wilt",
+    "description": "Geen verborgen kosten, geen langetermijncontracten. Start gratis en upgrade wanneer je bedrijf groeit.",
+    "plans": {
+      "basic": {
+        "name": "Basis",
+        "description": "Perfect voor kleine bedrijven",
+        "price": "Gratis",
+        "period": "Voor altijd",
+        "features": [
+          "Basis voorraadbeheer",
+          "Eenvoudige rapporten",
+          "Email support",
+          "Mobiele app"
+        ],
+        "limits": {
+          "products": "50",
+          "orders": "100",
+          "users": "2",
+          "branches": "1"
+        }
+      },
+      "growth": {
+        "name": "Groei",
+        "description": "Ideaal voor groeiende bedrijven",
+        "price": "€29.99",
+        "period": "per maand",
+        "features": [
+          "Alle Basis features",
+          "Geavanceerde analytics",
+          "Barcode scanner",
+          "API toegang",
+          "Priority support"
+        ],
+        "limits": {
+          "products": "500",
+          "orders": "1000",
+          "users": "10",
+          "branches": "5"
+        }
+      },
+      "premium": {
+        "name": "Premium",
+        "description": "Voor grote bedrijven",
+        "price": "€79.99",
+        "period": "per maand",
+        "features": [
+          "Alle Groei features",
+          "Dedicated support",
+          "Custom onboarding",
+          "SLA garantie",
+          "White-label opties"
+        ],
+        "limits": {
+          "products": "Onbeperkt",
+          "orders": "Onbeperkt",
+          "users": "Onbeperkt",
+          "branches": "Onbeperkt"
+        }
+      }
+    },
+    "trial": {
+      "title": "14-dagen gratis trial",
+      "description": "Probeer alle premium features 14 dagen gratis. Geen creditcard vereist, annuleer op elk moment.",
+      "benefits": [
+        {
+          "title": "Geen verplichtingen",
+          "description": "Annuleer op elk moment zonder kosten"
+        },
+        {
+          "title": "Volledige toegang",
+          "description": "Alle features en limieten van je gekozen plan"
+        },
+        {
+          "title": "Direct starten",
+          "description": "Begin direct met je voorraadbeheer"
+        }
+      ]
+    }
+  },
+  "testimonials": {
+    "title": "Vlaamse KMO's Vertellen Over hun Succes",
+    "subtitle": "Ontdek hoe Vlaamse bedrijven hun voorraadbeheer hebben getransformeerd en duizenden euro's besparen.",
+    "rating": "4.8/5 Sterren van Tevreden Klanten",
+    "items": [
+      {
+        "name": "Laura Peeters",
+        "role": "Eigenaar, De Koffieboetiek - Gent",
+        "quote": "Dankzij stockflow heb ik eindelijk een helder overzicht van mijn voorraad. De automatische bestelmeldingen zijn een lifesaver! Als Vlaamse KMO is het gratis plan perfect voor ons.",
+        "company": "De Koffieboetiek",
+        "location": "Gent",
+        "industry": "Horeca",
+        "savings": "€2.400/jaar bespaard",
+        "timeSaved": "8 uur/week"
+      },
+      {
+        "name": "Tom De Wit",
+        "role": "Zaakvoerder, TechOnderdelen BV - Antwerpen",
+        "quote": "De overstap naar stockflow was de beste beslissing voor ons magazijnbeheer. Het is intuïtief, snel en het team is enorm behulpzaam. Eindelijk een voorraadbeheer programma dat echt werkt.",
+        "company": "TechOnderdelen BV",
+        "location": "Antwerpen",
+        "industry": "Technologie",
+        "savings": "€5.200/jaar bespaard",
+        "timeSaved": "12 uur/week"
+      },
+      {
+        "name": "Anke Willems",
+        "role": "Manager, Creatief Atelier - Brugge",
+        "quote": "Als klein bedrijf is het gratis plan perfect voor ons. We kunnen nu veel efficiënter onze materialen beheren. Een absolute aanrader voor elke Vlaamse KMO!",
+        "company": "Creatief Atelier",
+        "location": "Brugge",
+        "industry": "Creatief",
+        "savings": "€1.800/jaar bespaard",
+        "timeSaved": "6 uur/week"
+      }
+    ],
+    "stats": {
+      "title": "Gemiddelde Resultaten van Onze Klanten",
+      "subtitle": "Vlaamse KMO's die stockflow gebruiken zien significante verbeteringen",
+      "items": [
+        {
+          "value": "9 uur",
+          "label": "Tijd bespaard per week"
+        },
+        {
+          "value": "23%",
+          "label": "Verhoogde efficiëntie"
+        },
+        {
+          "value": "99.9%",
+          "label": "Uptime garantie"
+        }
+      ]
+    }
+  },
+  "video": {
+    "title": "Hoe Werkt",
+    "subtitle": "Stockflow?",
+    "description": "Ontdek hoe eenvoudig voorraadbeheer kan zijn met stockflow. Bekijk hoe Vlaamse KMO's hun voorraad beheren in minder dan 3 minuten.",
+    "benefits": [
+      {
+        "title": "3 minuten",
+        "description": "Om je eerste producten toe te voegen"
+      },
+      {
+        "title": "Direct resultaat",
+        "description": "Zie meteen je voorraad overzicht"
+      },
+      {
+        "title": "Team klaar",
+        "description": "Nodig je team uit en begin samen"
+      }
+    ]
+  },
+  "contact": {
+    "title": "Vragen? Neem contact op",
+    "subtitle": "We antwoorden meestal binnen 1 werkdag.",
+    "form": {
+      "name": "Naam",
+      "email": "E-mail",
+      "message": "Je vraag",
+      "namePlaceholder": "Jouw naam",
+      "emailPlaceholder": "jij@bedrijf.be",
+      "messagePlaceholder": "Stel hier je vraag...",
+      "nameError": "Gelieve je naam in te vullen.",
+      "emailError": "Geef een geldig e-mailadres op.",
+      "messageError": "Gelieve je vraag te beschrijven.",
+      "submit": "Verzenden",
+      "submitting": "Verzenden..."
+    }
+  },
+  "finalCta": {
+    "title": "Klaar om je Voorraadbeheer te Transformeren?",
+    "subtitle": "Sluit je aan bij honderden Vlaamse KMO's die al profiteren van professioneel voorraadbeheer zonder kosten. Start vandaag nog en zie direct resultaat.",
+    "benefits": [
+      "Start binnen 2 minuten",
+      "100% veilig en gratis",
+      "Nederlandse support"
+    ],
+    "urgency": {
+      "title": "Beperkte Tijd",
+      "description": "Start vandaag en krijg gratis onboarding support ter waarde van €200. Deze aanbieding is geldig voor de eerste 50 nieuwe gebruikers deze maand."
+    },
+    "stats": [
+      {
+        "number": "32+",
+        "label": "Actieve KMO's"
+      },
+      {
+        "number": "9 uur",
+        "label": "Tijd bespaard/week"
+      },
+      {
+        "number": "4.8/5",
+        "label": "Klanttevredenheid"
+      }
+    ]
+  },
+  "accessibility": {
+    "carousel": {
+      "label": "Testimonials en voordelen carousel",
+      "navigation": "Carrousel navigatie",
+      "slide": "Slide",
+      "of": "van",
+      "previous": "Vorige slide",
+      "next": "Volgende slide",
+      "goTo": "Ga naar slide"
+    },
+    "trust": [
+      "Geen creditcard vereist",
+      "Direct toegang",
+      "Nederlandse support",
+      "GDPR-compliant",
+      "100% veilig"
+    ]
+  },
+  "alerts": {
+    "contactSuccess": "Bedankt! We nemen spoedig contact op.",
+    "contactError": "Verzenden mislukt. Probeer opnieuw.",
+    "exitIntent": {
+      "title": "Nog twijfels? Probeer stockflow gratis",
+      "description": "Geen creditcard vereist. Zie in 2 minuten hoe je voorraadbeheer eenvoudiger wordt.",
+      "start": "Start nu gratis",
+      "decline": "Nee bedankt"
+    },
+    "cookieConsent": "We gebruiken cookies om je ervaring te verbeteren en anonieme statistieken te verzamelen. Door te accepteren ga je akkoord met ons gebruik van cookies.",
+    "cookieAccept": "Accepteer",
+    "cookieDecline": "Weiger"
+  }
+}

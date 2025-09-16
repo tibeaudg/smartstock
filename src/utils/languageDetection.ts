@@ -1,5 +1,9 @@
 // Country to language mapping
 const countryLanguageMap: Record<string, string> = {
+  // Belgium (Dutch/Flemish)
+  'BE': 'nl',
+  // Netherlands
+  'NL': 'nl',
   // Hungary
   'HU': 'hu',
   // Sweden
@@ -15,6 +19,9 @@ const countryLanguageMap: Record<string, string> = {
 
 // Browser language to our supported languages mapping
 const browserLanguageMap: Record<string, string> = {
+  'nl': 'nl',
+  'nl-BE': 'nl',
+  'nl-NL': 'nl',
   'hu': 'hu',
   'hu-HU': 'hu',
   'sv': 'sv',
@@ -46,17 +53,24 @@ const browserLanguageMap: Record<string, string> = {
   'en-GB': 'en',
 };
 
-export const detectUserLanguage = (): string => {
+export const detectUserLanguage = async (): Promise<string> => {
   // First, check if user has a saved language preference
   const savedLanguage = localStorage.getItem('preferred-language');
-  if (savedLanguage && ['en', 'hu', 'sv', 'th', 'si', 'ro', 'de', 'fr', 'es', 'it', 'pl'].includes(savedLanguage)) {
+  if (savedLanguage && ['en', 'nl', 'hu', 'sv', 'th', 'si', 'ro', 'de', 'fr', 'es', 'it', 'pl'].includes(savedLanguage)) {
     return savedLanguage;
   }
 
   // Try to detect from geolocation (if available)
   try {
-    // This would require a geolocation API call in a real implementation
-    // For now, we'll use browser language detection
+    // Use a free geolocation API to detect country
+    const response = await fetch('https://ipapi.co/json/');
+    if (response.ok) {
+      const data = await response.json();
+      const countryCode = data.country_code;
+      if (countryCode && countryLanguageMap[countryCode]) {
+        return countryLanguageMap[countryCode];
+      }
+    }
   } catch (error) {
     console.log('Geolocation detection not available');
   }
@@ -88,6 +102,7 @@ export const saveLanguagePreference = (language: string): void => {
 
 export const getSupportedLanguages = () => [
   { code: 'en', name: 'English', nativeName: 'English' },
+  { code: 'nl', name: 'Dutch', nativeName: 'Nederlands' },
   { code: 'de', name: 'German', nativeName: 'Deutsch' },
   { code: 'fr', name: 'French', nativeName: 'Français' },
   { code: 'es', name: 'Spanish', nativeName: 'Español' },
