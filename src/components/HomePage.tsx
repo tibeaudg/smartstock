@@ -19,6 +19,8 @@ import { logger } from '../lib/logger';
 import { useForm } from 'react-hook-form';
 import { FloatingChatButton } from './FloatingChatButton';
 import { useWebsiteTracking } from '@/hooks/useWebsiteTracking';
+import { useTranslation } from 'react-i18next';
+import { LanguageSwitcher } from './LanguageSwitcher';
 
 // Een herbruikbare component voor fade-in animaties bij het scrollen
 const FadeInWhenVisible = ({ children }) => {
@@ -40,6 +42,7 @@ const FadeInWhenVisible = ({ children }) => {
 
 // Floating chat inline component
 const FloatingChat: React.FC = () => {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<{ email: string; message: string }>({
     defaultValues: { email: '', message: '' }
@@ -55,9 +58,9 @@ const FloatingChat: React.FC = () => {
       if (!res.ok) throw new Error('failed');
       reset();
       setOpen(false);
-      alert('Bedankt! We reageren snel via e-mail.');
+      alert(t('chat.success'));
     } catch (e) {
-      alert('Versturen mislukt. Probeer opnieuw.');
+      alert(t('chat.error'));
     }
   };
 
@@ -68,23 +71,23 @@ const FloatingChat: React.FC = () => {
         <div className="fixed inset-0 z-50 bg-black/40 flex items-end md:items-center justify-center" onClick={() => setOpen(false)}>
           <div className="bg-white w-full md:max-w-md md:rounded-xl shadow-2xl p-6 md:m-0 m-0 rounded-t-xl" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold">Stel je vraag</h3>
+              <h3 className="text-lg font-semibold">{t('chat.title')}</h3>
               <button className="text-gray-500 hover:text-gray-700" onClick={() => setOpen(false)}>×</button>
             </div>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">E-mail</label>
-                <Input type="email" {...register('email', { required: true, pattern: /.+@.+\..+/ })} placeholder="jij@bedrijf.be" />
-                {errors.email && <p className="text-xs text-red-600 mt-1">Geldig e-mailadres vereist.</p>}
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t('chat.email')}</label>
+                <Input type="email" {...register('email', { required: true, pattern: /.+@.+\..+/ })} placeholder={t('chat.emailPlaceholder')} />
+                {errors.email && <p className="text-xs text-red-600 mt-1">{t('chat.emailError')}</p>}
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Je vraag</label>
-                <Textarea rows={4} {...register('message', { required: true, minLength: 5 })} placeholder="Schrijf hier je vraag..." />
-                {errors.message && <p className="text-xs text-red-600 mt-1">Gelieve je vraag in te geven.</p>}
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t('chat.message')}</label>
+                <Textarea rows={4} {...register('message', { required: true, minLength: 5 })} placeholder={t('chat.messagePlaceholder')} />
+                {errors.message && <p className="text-xs text-red-600 mt-1">{t('chat.messageError')}</p>}
               </div>
               <div className="flex justify-end gap-2">
-                <Button type="button" variant="outline" onClick={() => setOpen(false)}>Annuleren</Button>
-                <Button type="submit" disabled={isSubmitting} className="bg-blue-600 text-white hover:bg-blue-700">{isSubmitting ? 'Verzenden...' : 'Verzenden'}</Button>
+                <Button type="button" variant="outline" onClick={() => setOpen(false)}>{t('chat.cancel')}</Button>
+                <Button type="submit" disabled={isSubmitting} className="bg-blue-600 text-white hover:bg-blue-700">{isSubmitting ? t('chat.submitting') : t('chat.submit')}</Button>
               </div>
             </form>
           </div>
@@ -195,6 +198,7 @@ const MobileCarousel = ({ items, renderItem }) => {
 
 export const HomePage = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   
   // Gebruik de page refresh hook
   usePageRefresh();
@@ -222,6 +226,11 @@ export const HomePage = () => {
   const handleLoginClick = () => {
     logger.info('CTA click', { id: 'start-now' });
     navigate('/auth');
+  };
+
+  const handlePricingClick = () => {
+    logger.info('CTA click', { id: 'pricing' });
+    navigate('/pricing');
   };
 
   const handleHowItWorksClick = () => {
@@ -600,10 +609,18 @@ export const HomePage = () => {
         <link rel="preload" as="image" href="/logo.png" />
       </Helmet>
       <SEO
-        title="Gratis Voorraadbeheer voor KMO's in Vlaanderen | stockflow"
-        description="Ontdek het beste gratis voorraadbeheer programma voor Vlaamse KMO's. Eenvoudig, gratis en slim voorraadbeheer zonder verborgen kosten. Start vandaag nog!"
-        keywords="software voorraadbeheer, magazijn software, gratis voorraadbeheer, voorraadbeheer programma, voorraadbeheersysteem, stockbeheer software, voorraadbeheer software, voorraadbeheer KMO, voorraadbeheer Vlaanderen, voorraadbeheer Gent, gratis stockbeheer, voorraad app, magazijnbeheer, software magazijnbeheer, software stockbeheer, voorraadbeheer app, gratis voorraadbeheer app, gratis voorraadbeheer software, programma stockbeheer gratis, stockbeheer app, magazijnbeheer software gratis, voorraad software gratis, boekhoudprogramma met voorraadbeheer, voorraadbeheer app gratis, gratis voorraadbeheer app download, gratis voorraadbeheer software download, programma stockbeheer gratis download, stockbeheer app gratis, magazijnbeheer software gratis download, voorraad software gratis download, boekhoudprogramma voorraadbeheer gratis"
+        title={t('homepage.title')}
+        description={t('homepage.subtitle')}
+        keywords="warehouse management system, WMS, inventory management, stock control, warehouse software, inventory tracking, warehouse automation, stock management software, warehouse operations, inventory control system, warehouse management, WMS software, inventory management system, stock tracking, warehouse automation, supply chain management, logistics software, warehouse optimization, inventory control, stock management, warehouse efficiency, inventory tracking software, warehouse management solution, stock control system, warehouse operations management, inventory management software, warehouse management platform, stock tracking system, warehouse management tools, inventory management tools, warehouse software solution, stock management platform, warehouse management software, inventory control software, warehouse management system software, WMS platform, warehouse management tools, inventory tracking platform, stock management tools, warehouse optimization software, supply chain software, logistics management, warehouse efficiency software, inventory management platform, stock control software, warehouse operations software, inventory tracking tools, warehouse management solution software, stock management system, warehouse automation software, inventory control platform, warehouse management software solution, WMS software solution, warehouse management platform software, stock tracking platform, warehouse management tools software, inventory management tools software, warehouse software platform, stock management platform software, warehouse management software platform, inventory control software platform, warehouse management system platform, WMS platform software, warehouse management tools platform, inventory tracking platform software, stock management tools platform, warehouse optimization platform, supply chain platform, logistics platform, warehouse efficiency platform, inventory management platform software, stock control platform software, warehouse operations platform software, inventory tracking platform tools, warehouse management solution platform, stock management system platform, warehouse automation platform software, inventory control platform software, warehouse management software platform solution, WMS software platform solution, warehouse management platform solution, stock tracking platform solution, warehouse management tools platform solution, inventory management tools platform solution, warehouse software platform solution, stock management platform solution, warehouse management software platform solution, inventory control software platform solution, warehouse management system platform solution, WMS platform solution, warehouse management tools platform solution, inventory tracking platform solution, stock management tools platform solution, warehouse optimization platform solution, supply chain platform solution, logistics platform solution, warehouse efficiency platform solution, inventory management platform solution, stock control platform solution, warehouse operations platform solution, inventory tracking platform solution, warehouse management solution platform solution, stock management system platform solution, warehouse automation platform solution, inventory control platform solution, warehouse management software platform solution, WMS software platform solution, warehouse management platform solution, stock tracking platform solution, warehouse management tools platform solution, inventory management tools platform solution, warehouse software platform solution, stock management platform solution, warehouse management software platform solution, inventory control software platform solution, warehouse management system platform solution, WMS platform solution, warehouse management tools platform solution, inventory tracking platform solution, stock management tools platform solution, warehouse optimization platform solution, supply chain platform solution, logistics platform solution, warehouse efficiency platform solution, inventory management platform solution, stock control platform solution, warehouse operations platform solution, inventory tracking platform solution, warehouse management solution platform solution, stock management system platform solution, warehouse automation platform solution, inventory control platform solution"
         url="https://www.stockflow.be/"
+        hreflang={[
+          { lang: 'en', url: 'https://www.stockflow.be/' },
+          { lang: 'hu', url: 'https://www.stockflow.be/hu/' },
+          { lang: 'sv', url: 'https://www.stockflow.be/sv/' },
+          { lang: 'th', url: 'https://www.stockflow.be/th/' },
+          { lang: 'si', url: 'https://www.stockflow.be/si/' },
+          { lang: 'ro', url: 'https://www.stockflow.be/ro/' }
+        ]}
         structuredData={structuredData}
       />
       <Header 
@@ -621,7 +638,7 @@ export const HomePage = () => {
               <Star key={i} className="h-4 w-4 text-yellow-400 fill-current" />
             ))}
           </div>
-          <span><strong>32+</strong> zelfstandigen en KMO's gebruiken stockflow dagelijks</span>
+          <span><strong>32+</strong> {t('socialProof.users')}</span>
         </div>
       </div>
 
@@ -641,9 +658,9 @@ export const HomePage = () => {
             {/* Main headline */}
             <FadeInWhenVisible>
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-                <span className="block text-gray-900">Gratis Voorraadbeheer</span>
+                <span className="block text-gray-900">{t('homepage.title')}</span>
                 <span className="block bg-gradient-to-r from-blue-500 to-blue-900 bg-clip-text text-transparent">
-                  voor KMO's in Vlaanderen
+                  {t('homepage.subtitle')}
                 </span>
               </h1>
             </FadeInWhenVisible>
@@ -651,9 +668,9 @@ export const HomePage = () => {
             {/* Subheadline */}
             <FadeInWhenVisible>
               <p className="text-lg sm:text-xl md:text-2xl text-gray-600 mb-8 max-w-4xl mx-auto leading-relaxed">
-                Het enige voorraadbeheer programma dat <strong>100% gratis</strong> is voor Vlaamse KMO's. 
+                {t('homepage.subtitle')}
                 <br className="hidden sm:block" />
-                Geen verborgen kosten, geen limieten, direct aan de slag.
+                {t('homepage.subtitle')}
               </p>
             </FadeInWhenVisible>
 
@@ -665,9 +682,9 @@ export const HomePage = () => {
                     <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
                   ))}
                 </div>
-                <span className="text-gray-600 font-medium">4.8/5 gebaseerd op 15+ reviews</span>
+                <span className="text-gray-600 font-medium">{t('socialProof.rating')}</span>
                 <div className="h-4 w-px bg-gray-300"></div>
-                <span className="text-gray-600">32+ actieve gebruikers</span>
+                <span className="text-gray-600">{t('socialProof.users')}</span>
               </div>
             </FadeInWhenVisible>
 
@@ -683,7 +700,7 @@ export const HomePage = () => {
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
                   <Rocket className="h-5 w-5 mr-2 group-hover:animate-bounce" />
-                  Start Nu Gratis - Geen Verplichtingen
+                  {t('homepage.getStarted')}
                   <ArrowRight className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" />
                 </Button>
                 <Button 
@@ -695,7 +712,7 @@ export const HomePage = () => {
                   onClick={handleHowItWorksClick}
                 >
                   <Play className="h-5 w-5 mr-2" />
-                  Bekijk Demo
+                  {t('homepage.learnMore')}
                 </Button>
               </div>
             </FadeInWhenVisible>
@@ -858,12 +875,297 @@ export const HomePage = () => {
                   <Button 
                     size="lg" 
                     variant="outline" 
+                    className="border-2 border-blue-300 text-blue-700 px-8 py-4 rounded-xl font-semibold hover:bg-blue-50 transition-all duration-300"
+                    onClick={handlePricingClick}
+                  >
+                    Bekijk Prijzen
+                  </Button>
+                  <Button 
+                    size="lg" 
+                    variant="outline" 
                     className="border-2 border-gray-300 text-gray-700 px-8 py-4 rounded-xl font-semibold hover:bg-gray-50 transition-all duration-300"
                     onClick={() => scrollToSection('contact-section')}
                   >
                     <MessageCircle className="h-5 w-5 mr-2" />
                     Vraag Demo Aan
                   </Button>
+                </div>
+              </div>
+            </div>
+          </FadeInWhenVisible>
+        </div>
+      </section>
+
+      {/* PRICING SECTIE */}
+      <section id="pricing-section" className="py-16 md:py-24 bg-gradient-to-br from-gray-50 to-blue-50">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="text-center mb-16">
+            <FadeInWhenVisible>
+              <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-medium mb-6">
+                <Euro className="h-4 w-4" />
+                <span>Transparante Prijzen</span>
+              </div>
+            </FadeInWhenVisible>
+            <FadeInWhenVisible>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
+                <span className="block text-gray-900">Kies je Perfecte Plan</span>
+                <span className="block bg-gradient-to-r from-blue-500 to-blue-900 bg-clip-text text-transparent">
+                  Start Gratis, Groei Wanneer Je Wilt
+                </span>
+              </h2>
+            </FadeInWhenVisible>
+            <FadeInWhenVisible>
+              <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                Geen verborgen kosten, geen langetermijncontracten. 
+                Start gratis en upgrade wanneer je bedrijf groeit.
+              </p>
+            </FadeInWhenVisible>
+          </div>
+
+          {/* Pricing Cards */}
+          <div className="grid md:grid-cols-3 gap-8 mb-16">
+            {/* Basis Plan */}
+            <FadeInWhenVisible>
+              <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-gray-200">
+                <div className="p-8">
+                  <div className="text-center mb-8">
+                    <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-100 rounded-full mb-4">
+                      <Package className="h-8 w-8 text-gray-600" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2">Basis</h3>
+                    <p className="text-gray-600 mb-6">Perfect voor kleine bedrijven</p>
+                    <div className="mb-6">
+                      <div className="text-4xl font-bold text-gray-900">Gratis</div>
+                      <div className="text-sm text-gray-500">Voor altijd</div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4 mb-8">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-gray-600">Producten</span>
+                      <span className="font-medium">50</span>
+                    </div>
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-gray-600">Orders/maand</span>
+                      <span className="font-medium">100</span>
+                    </div>
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-gray-600">Gebruikers</span>
+                      <span className="font-medium">2</span>
+                    </div>
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-gray-600">Vestigingen</span>
+                      <span className="font-medium">1</span>
+                    </div>
+                  </div>
+
+                  <ul className="space-y-3 mb-8">
+                    <li className="flex items-center gap-3">
+                      <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
+                      <span className="text-gray-700">Basis voorraadbeheer</span>
+                    </li>
+                    <li className="flex items-center gap-3">
+                      <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
+                      <span className="text-gray-700">Eenvoudige rapporten</span>
+                    </li>
+                    <li className="flex items-center gap-3">
+                      <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
+                      <span className="text-gray-700">Email support</span>
+                    </li>
+                    <li className="flex items-center gap-3">
+                      <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
+                      <span className="text-gray-700">Mobiele app</span>
+                    </li>
+                  </ul>
+
+                  <Button 
+                    className="w-full bg-gray-900 hover:bg-gray-800"
+                    onClick={handleLoginClick}
+                  >
+                    Start Gratis
+                  </Button>
+                </div>
+              </div>
+            </FadeInWhenVisible>
+
+            {/* Groei Plan */}
+            <FadeInWhenVisible>
+              <div className="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-blue-500 ring-4 ring-blue-100 relative">
+                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                  <div className="bg-gradient-to-r from-blue-500 to-blue-900 text-white px-4 py-2 rounded-full text-sm font-semibold flex items-center gap-2">
+                    <Star className="h-4 w-4" />
+                    Meest Populair
+                  </div>
+                </div>
+                
+                <div className="p-8">
+                  <div className="text-center mb-8">
+                    <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
+                      <Zap className="h-8 w-8 text-blue-600" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2">Groei</h3>
+                    <p className="text-gray-600 mb-6">Ideaal voor groeiende bedrijven</p>
+                    <div className="mb-6">
+                      <div className="text-4xl font-bold text-gray-900">€29.99</div>
+                      <div className="text-sm text-gray-500">per maand</div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4 mb-8">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-gray-600">Producten</span>
+                      <span className="font-medium">500</span>
+                    </div>
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-gray-600">Orders/maand</span>
+                      <span className="font-medium">1000</span>
+                    </div>
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-gray-600">Gebruikers</span>
+                      <span className="font-medium">10</span>
+                    </div>
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-gray-600">Vestigingen</span>
+                      <span className="font-medium">5</span>
+                    </div>
+                  </div>
+
+                  <ul className="space-y-3 mb-8">
+                    <li className="flex items-center gap-3">
+                      <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
+                      <span className="text-gray-700">Alle Basis features</span>
+                    </li>
+                    <li className="flex items-center gap-3">
+                      <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
+                      <span className="text-gray-700">Geavanceerde analytics</span>
+                    </li>
+                    <li className="flex items-center gap-3">
+                      <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
+                      <span className="text-gray-700">Barcode scanner</span>
+                    </li>
+                    <li className="flex items-center gap-3">
+                      <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
+                      <span className="text-gray-700">API toegang</span>
+                    </li>
+                    <li className="flex items-center gap-3">
+                      <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
+                      <span className="text-gray-700">Priority support</span>
+                    </li>
+                  </ul>
+
+                  <Button 
+                    className="w-full bg-blue-600 hover:bg-blue-700"
+                    onClick={handlePricingClick}
+                  >
+                    Start 14-dagen Trial
+                  </Button>
+                </div>
+              </div>
+            </FadeInWhenVisible>
+
+            {/* Premium Plan */}
+            <FadeInWhenVisible>
+              <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-purple-200">
+                <div className="p-8">
+                  <div className="text-center mb-8">
+                    <div className="inline-flex items-center justify-center w-16 h-16 bg-purple-100 rounded-full mb-4">
+                      <Crown className="h-8 w-8 text-purple-600" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2">Premium</h3>
+                    <p className="text-gray-600 mb-6">Voor grote bedrijven</p>
+                    <div className="mb-6">
+                      <div className="text-4xl font-bold text-gray-900">€79.99</div>
+                      <div className="text-sm text-gray-500">per maand</div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4 mb-8">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-gray-600">Producten</span>
+                      <span className="font-medium text-green-600">Onbeperkt</span>
+                    </div>
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-gray-600">Orders/maand</span>
+                      <span className="font-medium text-green-600">Onbeperkt</span>
+                    </div>
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-gray-600">Gebruikers</span>
+                      <span className="font-medium text-green-600">Onbeperkt</span>
+                    </div>
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-gray-600">Vestigingen</span>
+                      <span className="font-medium text-green-600">Onbeperkt</span>
+                    </div>
+                  </div>
+
+                  <ul className="space-y-3 mb-8">
+                    <li className="flex items-center gap-3">
+                      <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
+                      <span className="text-gray-700">Alle Groei features</span>
+                    </li>
+                    <li className="flex items-center gap-3">
+                      <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
+                      <span className="text-gray-700">Dedicated support</span>
+                    </li>
+                    <li className="flex items-center gap-3">
+                      <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
+                      <span className="text-gray-700">Custom onboarding</span>
+                    </li>
+                    <li className="flex items-center gap-3">
+                      <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
+                      <span className="text-gray-700">SLA garantie</span>
+                    </li>
+                    <li className="flex items-center gap-3">
+                      <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
+                      <span className="text-gray-700">White-label opties</span>
+                    </li>
+                  </ul>
+
+                  <Button 
+                    className="w-full bg-purple-600 hover:bg-purple-700"
+                    onClick={handlePricingClick}
+                  >
+                    Start 14-dagen Trial
+                  </Button>
+                </div>
+              </div>
+            </FadeInWhenVisible>
+          </div>
+
+          {/* Trial Info */}
+          <FadeInWhenVisible>
+            <div className="text-center bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
+              <div className="max-w-4xl mx-auto">
+                <div className="flex items-center justify-center mb-4">
+                  <Clock className="h-8 w-8 text-blue-600 mr-3" />
+                  <h3 className="text-2xl font-bold text-gray-900">14-dagen gratis trial</h3>
+                </div>
+                <p className="text-gray-600 mb-6">
+                  Probeer alle premium features 14 dagen gratis. Geen creditcard vereist, 
+                  annuleer op elk moment.
+                </p>
+                <div className="grid md:grid-cols-3 gap-6 text-left">
+                  <div className="flex items-start">
+                    <CheckCircle className="h-5 w-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <h4 className="font-semibold text-gray-900">Geen verplichtingen</h4>
+                      <p className="text-sm text-gray-600">Annuleer op elk moment zonder kosten</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start">
+                    <CheckCircle className="h-5 w-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <h4 className="font-semibold text-gray-900">Volledige toegang</h4>
+                      <p className="text-sm text-gray-600">Alle features en limieten van je gekozen plan</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start">
+                    <CheckCircle className="h-5 w-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <h4 className="font-semibold text-gray-900">Direct starten</h4>
+                      <p className="text-sm text-gray-600">Begin direct met je voorraadbeheer</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1284,7 +1586,7 @@ export const HomePage = () => {
 
           {/* Social proof stats */}
           <FadeInWhenVisible>
-            <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12 border border-gray-100">
+            <div className="bg-white rounded-2xl justify-center items-center shadow-lg p-8 md:p-12 border border-gray-100">
               <div className="text-center mb-8">
                 <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
                   Gemiddelde Resultaten van Onze Klanten
@@ -1294,9 +1596,8 @@ export const HomePage = () => {
                 </p>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {[
-                  { icon: <Euro className="h-8 w-8 text-green-600" />, value: '€3.200', label: 'Gemiddeld bespaard per jaar' },
                   { icon: <Clock className="h-8 w-8 text-blue-600" />, value: '9 uur', label: 'Tijd bespaard per week' },
                   { icon: <TrendingUp className="h-8 w-8 text-purple-600" />, value: '23%', label: 'Verhoogde efficiëntie' },
                   { icon: <Shield className="h-8 w-8 text-orange-600" />, value: '99.9%', label: 'Uptime garantie' }
@@ -1512,10 +1813,9 @@ export const HomePage = () => {
 
           {/* Social Proof Numbers */}
           <FadeInWhenVisible>
-            <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-3xl mx-auto">
+            <div className="mt-12 grid grid-cols-2 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
               {[
                 { number: "32+", label: "Actieve KMO's" },
-                { number: "€3.200", label: "Gemiddeld bespaard/jaar" },
                 { number: "9 uur", label: "Tijd bespaard/week" },
                 { number: "4.8/5", label: "Klanttevredenheid" }
               ].map((stat, index) => (

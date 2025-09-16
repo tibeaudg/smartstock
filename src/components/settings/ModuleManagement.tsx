@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { toast } from '@/hooks/use-toast';
-import { Loader2, CreditCard, Eye, Calendar, Star, TrendingUp, Settings, ShoppingCart, BarChart3, Package, Zap, Check, X, Clock, Euro, TestTube, Receipt, DollarSign, CalendarDays, Users, Building2 } from 'lucide-react';
+import { Loader2, CreditCard, Eye, Calendar, Star, TrendingUp, Settings, ShoppingCart, BarChart3, Package, Zap, Check, X, Clock, Euro, TestTube, Receipt, DollarSign, CalendarDays, Users, Building2, Crown } from 'lucide-react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { ModuleCheckout } from '@/components/payments/ModuleCheckout';
 import { TestCheckout } from '@/components/payments/TestCheckout';
@@ -14,6 +14,8 @@ import { EdgeFunctionTest } from '@/components/payments/EdgeFunctionTest';
 import { EnvironmentTest } from '@/components/payments/EnvironmentTest';
 import { DirectFunctionTest } from '@/components/payments/DirectFunctionTest';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useSubscription } from '@/hooks/useSubscription';
+import { UpgradePrompt } from '@/components/UpgradePrompt';
 
 // Module interface
 interface Module {

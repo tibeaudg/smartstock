@@ -1,0 +1,142 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "search": "Search",
+    "filter": "Filter",
+    "close": "Close",
+    "submit": "Submit",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "confirm": "Confirm",
+    "yes": "Yes",
+    "no": "No",
+    "language": "Language"
+  },
+  "navigation": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "products": "Products",
+    "stock": "Stock",
+    "movements": "Movements",
+    "settings": "Settings",
+    "profile": "Profile",
+    "logout": "Logout",
+    "login": "Login",
+    "register": "Register",
+    "features": "Features",
+    "pricing": "Pricing",
+    "reviews": "Reviews",
+    "faq": "FAQ",
+    "contact": "Contact",
+    "menu": "Menu"
+  },
+  "homepage": {
+    "title": "StockFlow - Smart Stock Management",
+    "subtitle": "Streamline your inventory with our intelligent stock management system",
+    "getStarted": "Get Started",
+    "learnMore": "Learn More",
+    "features": {
+      "title": "Why Choose StockFlow?",
+      "realTime": {
+        "title": "Real-time Tracking",
+        "description": "Monitor your inventory in real-time with instant updates"
+      },
+      "barcode": {
+        "title": "Barcode Scanning",
+        "description": "Quick and accurate product identification"
+      },
+      "analytics": {
+        "title": "Advanced Analytics",
+        "description": "Get insights into your stock patterns and trends"
+      },
+      "mobile": {
+        "title": "Mobile Ready",
+        "description": "Manage your stock from anywhere with our mobile app"
+      }
+    },
+    "cta": {
+      "title": "Ready to Transform Your Stock Management?",
+      "description": "Join thousands of businesses already using StockFlow",
+      "button": "Start Free Trial"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Sign In",
+      "email": "Email",
+      "password": "Password",
+      "forgotPassword": "Forgot Password?",
+      "noAccount": "Don't have an account?",
+      "signUp": "Sign Up"
+    },
+    "register": {
+      "title": "Create Account",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "hasAccount": "Already have an account?",
+      "signIn": "Sign In"
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "overview": "Overview",
+    "recentMovements": "Recent Stock Movements",
+    "lowStock": "Low Stock Alert",
+    "totalProducts": "Total Products",
+    "totalValue": "Total Value"
+  },
+  "products": {
+    "title": "Products",
+    "addProduct": "Add Product",
+    "editProduct": "Edit Product",
+    "productName": "Product Name",
+    "sku": "SKU",
+    "barcode": "Barcode",
+    "price": "Price",
+    "quantity": "Quantity",
+    "category": "Category",
+    "description": "Description"
+  },
+  "stock": {
+    "title": "Stock Management",
+    "currentStock": "Current Stock",
+    "addStock": "Add Stock",
+    "removeStock": "Remove Stock",
+    "adjustStock": "Adjust Stock",
+    "reason": "Reason",
+    "notes": "Notes"
+  },
+  "settings": {
+    "title": "Settings",
+    "profile": "Profile Settings",
+    "branches": "Branch Management",
+    "users": "User Management",
+    "modules": "Module Management",
+    "billing": "Billing & Invoicing"
+  },
+  "chat": {
+    "title": "Ask your question",
+    "email": "Email",
+    "message": "Your question",
+    "emailPlaceholder": "your@company.com",
+    "messagePlaceholder": "Write your question here...",
+    "emailError": "Valid email address required.",
+    "messageError": "Please enter your question.",
+    "cancel": "Cancel",
+    "submit": "Send",
+    "submitting": "Sending...",
+    "success": "Thank you! We respond quickly via email.",
+    "error": "Sending failed. Please try again."
+  },
+  "socialProof": {
+    "rating": "4.8/5 based on reviews",
+    "users": "32+ active users"
+  }
+}

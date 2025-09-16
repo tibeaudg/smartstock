@@ -1,0 +1,142 @@
+{
+  "common": {
+    "loading": "Caricamento...",
+    "save": "Salva",
+    "cancel": "Annulla",
+    "delete": "Elimina",
+    "edit": "Modifica",
+    "add": "Aggiungi",
+    "search": "Cerca",
+    "filter": "Filtra",
+    "close": "Chiudi",
+    "submit": "Invia",
+    "back": "Indietro",
+    "next": "Avanti",
+    "previous": "Precedente",
+    "confirm": "Conferma",
+    "yes": "Sì",
+    "no": "No",
+    "language": "Lingua"
+  },
+  "navigation": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "products": "Prodotti",
+    "stock": "Magazzino",
+    "movements": "Movimenti",
+    "settings": "Impostazioni",
+    "profile": "Profilo",
+    "logout": "Disconnetti",
+    "login": "Accedi",
+    "register": "Registrati",
+    "features": "Funzionalità",
+    "pricing": "Prezzi",
+    "reviews": "Recensioni",
+    "faq": "FAQ",
+    "contact": "Contatto",
+    "menu": "Menu"
+  },
+  "homepage": {
+    "title": "StockFlow - Gestione Intelligente del Magazzino",
+    "subtitle": "Ottimizza il tuo inventario con il nostro sistema intelligente di gestione magazzino",
+    "getStarted": "Inizia",
+    "learnMore": "Scopri di più",
+    "features": {
+      "title": "Perché scegliere StockFlow?",
+      "realTime": {
+        "title": "Tracciamento in tempo reale",
+        "description": "Monitora il tuo inventario in tempo reale con aggiornamenti istantanei"
+      },
+      "barcode": {
+        "title": "Scansione codici a barre",
+        "description": "Identificazione rapida e precisa dei prodotti"
+      },
+      "analytics": {
+        "title": "Analisi avanzate",
+        "description": "Ottieni insights sui tuoi pattern e trend di magazzino"
+      },
+      "mobile": {
+        "title": "Pronto per mobile",
+        "description": "Gestisci il tuo magazzino da ovunque con la nostra app mobile"
+      }
+    },
+    "cta": {
+      "title": "Pronto a trasformare la tua gestione magazzino?",
+      "description": "Unisciti a migliaia di aziende che già usano StockFlow",
+      "button": "Inizia prova gratuita"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Accedi",
+      "email": "Email",
+      "password": "Password",
+      "forgotPassword": "Password dimenticata?",
+      "noAccount": "Non hai un account?",
+      "signUp": "Registrati"
+    },
+    "register": {
+      "title": "Crea account",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Conferma password",
+      "hasAccount": "Hai già un account?",
+      "signIn": "Accedi"
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "overview": "Panoramica",
+    "recentMovements": "Movimenti magazzino recenti",
+    "lowStock": "Avviso scorte basse",
+    "totalProducts": "Totale prodotti",
+    "totalValue": "Valore totale"
+  },
+  "products": {
+    "title": "Prodotti",
+    "addProduct": "Aggiungi prodotto",
+    "editProduct": "Modifica prodotto",
+    "productName": "Nome prodotto",
+    "sku": "SKU",
+    "barcode": "Codice a barre",
+    "price": "Prezzo",
+    "quantity": "Quantità",
+    "category": "Categoria",
+    "description": "Descrizione"
+  },
+  "stock": {
+    "title": "Gestione magazzino",
+    "currentStock": "Scorte attuali",
+    "addStock": "Aggiungi scorte",
+    "removeStock": "Rimuovi scorte",
+    "adjustStock": "Regola scorte",
+    "reason": "Motivo",
+    "notes": "Note"
+  },
+  "settings": {
+    "title": "Impostazioni",
+    "profile": "Impostazioni profilo",
+    "branches": "Gestione filiali",
+    "users": "Gestione utenti",
+    "modules": "Gestione moduli",
+    "billing": "Fatturazione e fatture"
+  },
+  "chat": {
+    "title": "Fai la tua domanda",
+    "email": "Email",
+    "message": "La tua domanda",
+    "emailPlaceholder": "tua@azienda.it",
+    "messagePlaceholder": "Scrivi la tua domanda qui...",
+    "emailError": "Indirizzo email valido richiesto.",
+    "messageError": "Inserisci la tua domanda.",
+    "cancel": "Annulla",
+    "submit": "Invia",
+    "submitting": "Invio...",
+    "success": "Grazie! Rispondiamo rapidamente via email.",
+    "error": "Invio fallito. Riprova."
+  },
+  "socialProof": {
+    "rating": "4.8/5 basato su recensioni",
+    "users": "32+ utenti attivi"
+  }
+}

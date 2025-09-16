@@ -5,6 +5,8 @@ import { NotificationButton } from './NotificationButton';
 import { useNotifications } from '../hooks/useNotifications';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { LanguageSwitcher } from './LanguageSwitcher';
+import { useTranslation } from 'react-i18next';
 
 interface HeaderProps {
   onLoginClick?: () => void;
@@ -15,6 +17,7 @@ interface HeaderProps {
 }
 
 export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButtons, hideNotifications }: HeaderProps) => {
+  const { t } = useTranslation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -64,10 +67,11 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButton
             </div>
             {onNavigate && (
               <nav className="hidden lg:flex items-center gap-6 text-sm">
-                <button className="text-gray-700 hover:text-blue-700" onClick={() => onNavigate('features-section')}>Features</button>
-                <button className="text-gray-700 hover:text-blue-700" onClick={() => onNavigate('testimonials-section')}>Reviews</button>
-                <button className="text-gray-700 hover:text-blue-700" onClick={() => onNavigate('faq-section')}>FAQ</button>
-                <button className="text-gray-700 hover:text-blue-700" onClick={() => onNavigate('contact-section')}>Contact</button>
+                <button className="text-gray-700 hover:text-blue-700" onClick={() => onNavigate('features-section')}>{t('navigation.features', 'Features')}</button>
+                 <button className="text-gray-700 hover:text-blue-700" onClick={() => onNavigate('pricing-section')}>{t('navigation.pricing', 'Prijzen')}</button>
+                <button className="text-gray-700 hover:text-blue-700" onClick={() => onNavigate('testimonials-section')}>{t('navigation.reviews', 'Reviews')}</button>
+                <button className="text-gray-700 hover:text-blue-700" onClick={() => onNavigate('faq-section')}>{t('navigation.faq', 'FAQ')}</button>
+                <button className="text-gray-700 hover:text-blue-700" onClick={() => onNavigate('contact-section')}>{t('navigation.contact', 'Contact')}</button>
               </nav>
             )}
 
@@ -76,13 +80,14 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButton
                 {!hideNotifications && (
                   <NotificationButton unreadCount={unreadCount} onClick={handleNotificationClick} />
                 )}
+                <LanguageSwitcher />
                 {!hideAuthButtons && (
                   <>
                     <Button size="sm" variant="outline" onClick={handleLoginClick} className="text-sm">
-                      Inloggen
+                      {t('navigation.login')}
                     </Button>
                     <Button size="sm" onClick={handleRegisterClick} className="text-sm">
-                      Registreren
+                      {t('navigation.register')}
                     </Button>
                   </>
                 )}
@@ -118,7 +123,7 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButton
 
             {/* Mobile Menu Header with Notification Button */}
             <div className="flex items-center justify-between p-6 border-b border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-900">Menu</h3>
+              <h3 className="text-lg font-semibold text-gray-900">{t('navigation.menu', 'Menu')}</h3>
               <div className="flex items-center space-x-2">
                   {!hideNotifications && (
                     <NotificationButton unreadCount={unreadCount} onClick={handleNotificationClick} />
@@ -156,6 +161,50 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButton
             {/* Mobile Navigation Items */}
             <div className="flex-1 overflow-y-auto p-6 bg-gray-100">
 
+              {/* Language Switcher */}
+              <div className="mb-4">
+                <LanguageSwitcher />
+              </div>
+
+              {/* Mobile Navigation Links */}
+              {onNavigate && (
+                <div className="mb-6">
+                  <h4 className="text-sm font-semibold text-gray-900 mb-3">Navigatie</h4>
+                  <div className="space-y-2">
+                    <button 
+                      className="block w-full text-left text-gray-700 hover:text-blue-700 py-2" 
+                      onClick={() => { onNavigate('features-section'); setMobileMenuOpen(false); }}
+                    >
+                      {t('navigation.features', 'Features')}
+                    </button>
+                     <button 
+                       className="block w-full text-left text-gray-700 hover:text-blue-700 py-2" 
+                       onClick={() => { onNavigate('pricing-section'); setMobileMenuOpen(false); }}
+                     >
+                       {t('navigation.pricing', 'Prijzen')}
+                     </button>
+                    <button 
+                      className="block w-full text-left text-gray-700 hover:text-blue-700 py-2" 
+                      onClick={() => { onNavigate('testimonials-section'); setMobileMenuOpen(false); }}
+                    >
+                      {t('navigation.reviews', 'Reviews')}
+                    </button>
+                    <button 
+                      className="block w-full text-left text-gray-700 hover:text-blue-700 py-2" 
+                      onClick={() => { onNavigate('faq-section'); setMobileMenuOpen(false); }}
+                    >
+                      {t('navigation.faq', 'FAQ')}
+                    </button>
+                    <button 
+                      className="block w-full text-left text-gray-700 hover:text-blue-700 py-2" 
+                      onClick={() => { onNavigate('contact-section'); setMobileMenuOpen(false); }}
+                    >
+                      {t('navigation.contact', 'Contact')}
+                    </button>
+                  </div>
+                </div>
+              )}
+
               {/* Mobile Auth Buttons */}
               {!hideAuthButtons && (
                 <div className="space-y-3">
@@ -164,13 +213,13 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButton
                     className="w-full border border-blue-600" 
                     onClick={() => { handleLoginClick(); setMobileMenuOpen(false); }}
                   >
-                    Inloggen
+                    {t('navigation.login')}
                   </Button>
                   <Button 
                     className="w-full" 
                     onClick={() => { handleRegisterClick(); setMobileMenuOpen(false); }}
                   >
-                    Registreren
+                    {t('navigation.register')}
                   </Button>
                 </div>
               )}

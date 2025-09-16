@@ -1,0 +1,142 @@
+{
+  "common": {
+    "loading": "Chargement...",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "add": "Ajouter",
+    "search": "Rechercher",
+    "filter": "Filtrer",
+    "close": "Fermer",
+    "submit": "Envoyer",
+    "back": "Retour",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "confirm": "Confirmer",
+    "yes": "Oui",
+    "no": "Non",
+    "language": "Langue"
+  },
+  "navigation": {
+    "home": "Accueil",
+    "dashboard": "Tableau de bord",
+    "products": "Produits",
+    "stock": "Stock",
+    "movements": "Mouvements",
+    "settings": "Paramètres",
+    "profile": "Profil",
+    "logout": "Déconnexion",
+    "login": "Connexion",
+    "register": "S'inscrire",
+    "features": "Fonctionnalités",
+    "pricing": "Tarifs",
+    "reviews": "Avis",
+    "faq": "FAQ",
+    "contact": "Contact",
+    "menu": "Menu"
+  },
+  "homepage": {
+    "title": "StockFlow - Gestion Intelligente des Stocks",
+    "subtitle": "Optimisez votre inventaire avec notre système de gestion de stock intelligent",
+    "getStarted": "Commencer",
+    "learnMore": "En savoir plus",
+    "features": {
+      "title": "Pourquoi choisir StockFlow ?",
+      "realTime": {
+        "title": "Suivi en temps réel",
+        "description": "Surveillez votre inventaire en temps réel avec des mises à jour instantanées"
+      },
+      "barcode": {
+        "title": "Scan de codes-barres",
+        "description": "Identification rapide et précise des produits"
+      },
+      "analytics": {
+        "title": "Analyses avancées",
+        "description": "Obtenez des insights sur vos modèles et tendances de stock"
+      },
+      "mobile": {
+        "title": "Prêt pour mobile",
+        "description": "Gérez votre stock de n'importe où avec notre application mobile"
+      }
+    },
+    "cta": {
+      "title": "Prêt à transformer votre gestion de stock ?",
+      "description": "Rejoignez des milliers d'entreprises qui utilisent déjà StockFlow",
+      "button": "Commencer l'essai gratuit"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Se connecter",
+      "email": "E-mail",
+      "password": "Mot de passe",
+      "forgotPassword": "Mot de passe oublié ?",
+      "noAccount": "Pas de compte ?",
+      "signUp": "S'inscrire"
+    },
+    "register": {
+      "title": "Créer un compte",
+      "email": "E-mail",
+      "password": "Mot de passe",
+      "confirmPassword": "Confirmer le mot de passe",
+      "hasAccount": "Déjà un compte ?",
+      "signIn": "Se connecter"
+    }
+  },
+  "dashboard": {
+    "title": "Tableau de bord",
+    "overview": "Aperçu",
+    "recentMovements": "Mouvements de stock récents",
+    "lowStock": "Alerte stock faible",
+    "totalProducts": "Total produits",
+    "totalValue": "Valeur totale"
+  },
+  "products": {
+    "title": "Produits",
+    "addProduct": "Ajouter un produit",
+    "editProduct": "Modifier le produit",
+    "productName": "Nom du produit",
+    "sku": "SKU",
+    "barcode": "Code-barres",
+    "price": "Prix",
+    "quantity": "Quantité",
+    "category": "Catégorie",
+    "description": "Description"
+  },
+  "stock": {
+    "title": "Gestion des stocks",
+    "currentStock": "Stock actuel",
+    "addStock": "Ajouter du stock",
+    "removeStock": "Retirer du stock",
+    "adjustStock": "Ajuster le stock",
+    "reason": "Raison",
+    "notes": "Notes"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "profile": "Paramètres du profil",
+    "branches": "Gestion des succursales",
+    "users": "Gestion des utilisateurs",
+    "modules": "Gestion des modules",
+    "billing": "Facturation et factures"
+  },
+  "chat": {
+    "title": "Posez votre question",
+    "email": "E-mail",
+    "message": "Votre question",
+    "emailPlaceholder": "votre@entreprise.fr",
+    "messagePlaceholder": "Écrivez votre question ici...",
+    "emailError": "Adresse e-mail valide requise.",
+    "messageError": "Veuillez saisir votre question.",
+    "cancel": "Annuler",
+    "submit": "Envoyer",
+    "submitting": "Envoi...",
+    "success": "Merci ! Nous répondons rapidement par e-mail.",
+    "error": "L'envoi a échoué. Veuillez réessayer."
+  },
+  "socialProof": {
+    "rating": "4.8/5 basé sur les avis",
+    "users": "32+ utilisateurs actifs"
+  }
+}

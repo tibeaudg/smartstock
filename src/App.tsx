@@ -71,6 +71,9 @@ import { PaymentTestPage } from './pages/PaymentTest';
 import { DeliveryNotesManagement } from './components/delivery-notes/DeliveryNotesManagement';
 import { IncomingDeliveryNotes } from './components/delivery-notes/IncomingDeliveryNotes';
 import { OutgoingDeliveryNotes } from './components/delivery-notes/OutgoingDeliveryNotes';
+import PricingPage from './pages/pricing';
+import CheckoutPage from './pages/checkout';
+import { SubscriptionManagement } from './components/settings/SubscriptionManagement';
 
 
 // ErrorBoundary component
@@ -264,6 +267,8 @@ export default function App() {
                   {/* Openbare routes */}
                   <Route path="/" element={<HomePage />} />
                   <Route path="/auth" element={<AuthRoute />} />
+                  <Route path="/pricing" element={<PricingPage />} />
+                  <Route path="/checkout" element={<CheckoutPage />} />
                   <Route path="/voorraadbeheer-tips" element={<VoorraadbeheerTips />} />
                   <Route path="/voorraadbeheer-software-vergelijken" element={<VoorraadbeheerSoftwareVergelijken />} />
                   <Route path="/voorraadbeheer-webshop" element={<VoorraadbeheerWebshop />} />
@@ -327,6 +332,7 @@ export default function App() {
                       <Route path="branches" element={<BranchManagement />} />
                       <Route path="users" element={<UserManagement />} />
                       <Route path="modules" element={<ModuleManagement />} />
+                      <Route path="subscription" element={<SubscriptionManagement />} />
                       <Route path="invoices" element={<InvoiceList />} />
                       <Route path="license" element={<LicenseOverview />} />
                       <Route path="invoicing" element={<InvoicingOverview />} />

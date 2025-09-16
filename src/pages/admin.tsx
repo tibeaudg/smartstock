@@ -40,33 +40,21 @@ interface UserStats {
   statsLastUpdated?: string;
 }
 
-// Plan informatie voor prijsberekening
+// Plan informatie voor prijsberekening (nieuwe subscription tiers)
 const plans = {
-  'free': { price: 0, limit: 50 },
-  'starter': { price: 9.99, limit: 200 },
-  'professional': { price: 19.99, limit: 1000 },
-  'enterprise': { price: 49.99, limit: 10000 }
+  'basis': { price: 0, limit: 50, displayName: 'Basis' },
+  'groei': { price: 29.99, limit: 500, displayName: 'Groei' },
+  'premium': { price: 79.99, limit: null, displayName: 'Premium' }
 };
 
-// Simuleer de prijsberekening voor een gebruiker
+// Simuleer de prijsberekening voor een gebruiker (nieuwe subscription model)
 function calculateUserLicenseCost(planId: string | null, stats: Omit<UserStats, 'userId' | 'licenseCost' | 'statsLastUpdated'>): number {
-  const plan = plans[planId as keyof typeof plans] || plans.free;
+  const plan = plans[planId as keyof typeof plans] || plans.basis;
   let price = plan.price;
   
-  // Extra gebruikers boven 1
-  if (stats.linkedUserCount > 1) {
-    price += (stats.linkedUserCount - 1) * 1; // €1 per extra gebruiker
-  }
-  
-  // Extra filialen boven 1 (eerste gratis)
-  if (stats.branchCount > 1) {
-    price += (stats.branchCount - 1) * 2; // €2 per extra filiaal
-  }
-  
-  // Alleen bij enterprise extra producten aanrekenen
-  if (planId === 'enterprise' && stats.productCount > plan.limit) {
-    price += (stats.productCount - plan.limit) * 0.01;
-  }
+  // In het nieuwe model zijn alle limieten inbegrepen in de tier prijs
+  // Geen extra kosten voor gebruikers, filialen of producten
+  // Premium plan heeft onbeperkte limieten
   
   return price;
 }

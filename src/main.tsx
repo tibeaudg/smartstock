@@ -9,6 +9,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { setupPersistedQueryClient } from './persistQueryClient';
 import { HelmetProvider } from 'react-helmet-async';
 import { ErrorBoundary } from './components/ErrorBoundary';
+import './i18n';
+import { detectUserLanguage } from './utils/languageDetection';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
