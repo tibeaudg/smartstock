@@ -17,7 +17,7 @@ export const StripeProvider: React.FC<StripeProviderProps> = ({ children }) => {
 
   return (
     <StripeContext.Provider value={{ stripe }}>
-      <Elements stripe={stripe}>
+      <Elements stripe={stripe} options={{ locale: 'en' }}>
         {children}
       </Elements>
     </StripeContext.Provider>

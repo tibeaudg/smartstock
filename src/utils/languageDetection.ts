@@ -4,16 +4,6 @@ const countryLanguageMap: Record<string, string> = {
   'BE': 'nl',
   // Netherlands
   'NL': 'nl',
-  // Hungary
-  'HU': 'hu',
-  // Sweden
-  'SE': 'sv',
-  // Thailand
-  'TH': 'th',
-  // Sri Lanka
-  'LK': 'si',
-  // Romania
-  'RO': 'ro',
   // Default to English for other countries
 };
 
@@ -22,32 +12,6 @@ const browserLanguageMap: Record<string, string> = {
   'nl': 'nl',
   'nl-BE': 'nl',
   'nl-NL': 'nl',
-  'hu': 'hu',
-  'hu-HU': 'hu',
-  'sv': 'sv',
-  'sv-SE': 'sv',
-  'th': 'th',
-  'th-TH': 'th',
-  'si': 'si',
-  'si-LK': 'si',
-  'ro': 'ro',
-  'ro-RO': 'ro',
-  'de': 'de',
-  'de-DE': 'de',
-  'de-AT': 'de',
-  'de-CH': 'de',
-  'fr': 'fr',
-  'fr-FR': 'fr',
-  'fr-BE': 'fr',
-  'fr-CH': 'fr',
-  'es': 'es',
-  'es-ES': 'es',
-  'es-MX': 'es',
-  'it': 'it',
-  'it-IT': 'it',
-  'it-CH': 'it',
-  'pl': 'pl',
-  'pl-PL': 'pl',
   'en': 'en',
   'en-US': 'en',
   'en-GB': 'en',
@@ -55,9 +19,13 @@ const browserLanguageMap: Record<string, string> = {
 
 export const detectUserLanguage = async (): Promise<string> => {
   // First, check if user has a saved language preference
-  const savedLanguage = localStorage.getItem('preferred-language');
-  if (savedLanguage && ['en', 'nl', 'hu', 'sv', 'th', 'si', 'ro', 'de', 'fr', 'es', 'it', 'pl'].includes(savedLanguage)) {
-    return savedLanguage;
+  try {
+    const savedLanguage = localStorage.getItem('preferred-language');
+    if (savedLanguage && ['en', 'nl'].includes(savedLanguage)) {
+      return savedLanguage;
+    }
+  } catch (error) {
+    console.warn('Could not access localStorage for language preference:', error);
   }
 
   // Try to detect from geolocation (if available)
@@ -97,20 +65,14 @@ export const detectUserLanguage = async (): Promise<string> => {
 };
 
 export const saveLanguagePreference = (language: string): void => {
-  localStorage.setItem('preferred-language', language);
+  try {
+    localStorage.setItem('preferred-language', language);
+  } catch (error) {
+    console.warn('Could not save language preference to localStorage:', error);
+  }
 };
 
 export const getSupportedLanguages = () => [
   { code: 'en', name: 'English', nativeName: 'English' },
   { code: 'nl', name: 'Dutch', nativeName: 'Nederlands' },
-  { code: 'de', name: 'German', nativeName: 'Deutsch' },
-  { code: 'fr', name: 'French', nativeName: 'Français' },
-  { code: 'es', name: 'Spanish', nativeName: 'Español' },
-  { code: 'it', name: 'Italian', nativeName: 'Italiano' },
-  { code: 'pl', name: 'Polish', nativeName: 'Polski' },
-  { code: 'hu', name: 'Hungarian', nativeName: 'Magyar' },
-  { code: 'sv', name: 'Swedish', nativeName: 'Svenska' },
-  { code: 'th', name: 'Thai', nativeName: 'ไทย' },
-  { code: 'si', name: 'Sinhala', nativeName: 'සිංහල' },
-  { code: 'ro', name: 'Romanian', nativeName: 'Română' },
 ];

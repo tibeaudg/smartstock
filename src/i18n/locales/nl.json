@@ -298,6 +298,7 @@
           "Email support",
           "Mobiele app"
         ],
+        "startButton": "Start Gratis",
         "limits": {
           "products": "50",
           "orders": "100",
@@ -317,6 +318,7 @@
           "API toegang",
           "Priority support"
         ],
+        "startButton": "Start 14-dagen Trial",
         "limits": {
           "products": "500",
           "orders": "1000",
@@ -336,6 +338,7 @@
           "SLA garantie",
           "White-label opties"
         ],
+        "startButton": "Start 14-dagen Trial",
         "limits": {
           "products": "Onbeperkt",
           "orders": "Onbeperkt",
@@ -361,7 +364,14 @@
           "description": "Begin direct met je voorraadbeheer"
         }
       ]
-    }
+    },
+    "limits": {
+      "products": "Producten",
+      "orders": "Bestellingen/maand",
+      "users": "Gebruikers",
+      "branches": "Vestigingen"
+    },
+    "mostPopular": "Meest Populair"
   },
   "testimonials": {
     "title": "KMO's Vertellen Over hun Succes",

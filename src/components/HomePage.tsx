@@ -199,7 +199,30 @@ const MobileCarousel = ({ items, renderItem, t }) => {
 
 export const HomePage = () => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, ready } = useTranslation();
+
+  // Show loading state if translations are not ready
+  if (!ready) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4" />
+          <p className="text-gray-600 text-lg">Loading translations...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Helper function to safely get translation arrays
+  const getTranslationArray = (key: string, fallback: any[] = []): any[] => {
+    try {
+      const result = t(key, { returnObjects: true });
+      return Array.isArray(result) ? result : fallback;
+    } catch (error) {
+      console.warn(`Translation error for ${key}:`, error);
+      return fallback;
+    }
+  };
   
   // Gebruik de page refresh hook
   usePageRefresh();
@@ -483,7 +506,7 @@ export const HomePage = () => {
         icon: <BarChart3 className="h-12 w-12 text-blue-600" />,
         title: t('modules.fallback.items.0.title'),
         description: t('modules.fallback.items.0.description'),
-        features: t('modules.fallback.items.0.features', { returnObjects: true }),
+        features: getTranslationArray('modules.fallback.items.0.features'),
         tier: "groei",
         image: "/placeholder.svg"
       },
@@ -491,7 +514,7 @@ export const HomePage = () => {
         icon: <Scan className="h-12 w-12 text-green-600" />,
         title: t('modules.fallback.items.1.title'),
         description: t('modules.fallback.items.1.description'),
-        features: t('modules.fallback.items.1.features', { returnObjects: true }),
+        features: getTranslationArray('modules.fallback.items.1.features'),
         tier: "groei",
         image: "/placeholder.svg"
       },
@@ -499,7 +522,7 @@ export const HomePage = () => {
         icon: <Truck className="h-12 w-12 text-purple-600" />,
         title: t('modules.fallback.items.2.title'),
         description: t('modules.fallback.items.2.description'),
-        features: t('modules.fallback.items.2.features', { returnObjects: true }),
+        features: getTranslationArray('modules.fallback.items.2.features'),
         tier: "groei",
         image: "/placeholder.svg"
       }
@@ -552,7 +575,7 @@ export const HomePage = () => {
         desc: t('features.fallback.items.0.desc'),
         img: "/optimized/image.png",
         reverse: false,
-        features: t('features.fallback.items.0.features', { returnObjects: true }),
+        features: getTranslationArray('features.fallback.items.0.features'),
         icon: <Package className="h-12 w-12 text-blue-600" />
       },
       {
@@ -560,7 +583,7 @@ export const HomePage = () => {
         desc: t('features.fallback.items.1.desc'),
         img: "/optimized/analytics.png",
         reverse: true,
-        features: t('features.fallback.items.1.features', { returnObjects: true }),
+        features: getTranslationArray('features.fallback.items.1.features'),
         icon: <BarChart3 className="h-12 w-12 text-green-600" />
       },
       {
@@ -568,7 +591,7 @@ export const HomePage = () => {
         desc: t('features.fallback.items.2.desc'),
         img: "/optimized/mobile.png",
         reverse: false,
-        features: t('features.fallback.items.2.features', { returnObjects: true }),
+        features: getTranslationArray('features.fallback.items.2.features'),
         icon: <Smartphone className="h-12 w-12 text-purple-600" />
       }
     ];
@@ -778,7 +801,7 @@ export const HomePage = () => {
                     console.warn('Translation error for accessibility.trust:', error);
                   }
                   // Fallback data
-                  return (t('accessibility.trust', { returnObjects: true }) as string[]).map((trust, index) => (
+                  return getTranslationArray('accessibility.trust').map((trust, index) => (
                     <div key={index} className="flex items-center gap-2">
                       {index === 0 ? <CheckCircle className="h-4 w-4 text-green-600" /> : 
                        index === 1 ? <Zap className="h-4 w-4 text-blue-600" /> :
@@ -900,46 +923,7 @@ export const HomePage = () => {
             ))}
           </div>
 
-          {/* CTA voor modules */}
-          <FadeInWhenVisible>
-            <div className="text-center bg-white rounded-2xl shadow-lg p-8 md:p-12 border border-gray-100">
-              <div className="max-w-3xl mx-auto">
-                <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
-                  {t('modules.cta.title')}
-                </h3>
-                <p className="text-lg text-gray-600 mb-8">
-                  {t('modules.cta.description')}
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Button 
-                    size="lg" 
-                    className="bg-gradient-to-r from-blue-600 to-blue-600 text-white px-8 py-4 rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg"
-                    onClick={handleLoginClick}
-                  >
-                    <Rocket className="h-5 w-5 mr-2" />
-                    {t('modules.cta.startButton')}
-                  </Button>
-                  <Button 
-                    size="lg" 
-                    variant="outline" 
-                    className="border-2 border-blue-300 text-blue-700 px-8 py-4 rounded-xl font-semibold hover:bg-blue-50 transition-all duration-300"
-                    onClick={handlePricingClick}
-                  >
-                    {t('modules.cta.pricingButton')}
-                  </Button>
-                  <Button 
-                    size="lg" 
-                    variant="outline" 
-                    className="border-2 border-gray-300 text-gray-700 px-8 py-4 rounded-xl font-semibold hover:bg-gray-50 transition-all duration-300"
-                    onClick={() => scrollToSection('contact-section')}
-                  >
-                    <MessageCircle className="h-5 w-5 mr-2" />
-                    {t('modules.cta.demoButton')}
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </FadeInWhenVisible>
+
         </div>
       </section>
 
@@ -1006,7 +990,7 @@ export const HomePage = () => {
                   </div>
 
                   <ul className="space-y-3 mb-8">
-                    {(t('pricing.plans.basic.features', { returnObjects: true }) as string[]).map((feature, index) => (
+                    {getTranslationArray('pricing.plans.basic.features').map((feature, index) => (
                       <li key={index} className="flex items-center gap-3">
                         <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
                         <span className="text-gray-700">{feature}</span>
@@ -1067,7 +1051,7 @@ export const HomePage = () => {
                   </div>
 
                   <ul className="space-y-3 mb-8">
-                    {(t('pricing.plans.growth.features', { returnObjects: true }) as string[]).map((feature, index) => (
+                    {getTranslationArray('pricing.plans.growth.features').map((feature, index) => (
                       <li key={index} className="flex items-center gap-3">
                         <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
                         <span className="text-gray-700">{feature}</span>
@@ -1121,7 +1105,7 @@ export const HomePage = () => {
                   </div>
 
                   <ul className="space-y-3 mb-8">
-                    {(t('pricing.plans.premium.features', { returnObjects: true }) as string[]).map((feature, index) => (
+                    {getTranslationArray('pricing.plans.premium.features').map((feature, index) => (
                       <li key={index} className="flex items-center gap-3">
                         <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
                         <span className="text-gray-700">{feature}</span>
@@ -1152,7 +1136,7 @@ export const HomePage = () => {
                   {t('pricing.trial.description')}
                 </p>
                 <div className="grid md:grid-cols-3 gap-6 text-left">
-                  {(t('pricing.trial.benefits', { returnObjects: true }) as any[]).map((benefit, index) => (
+                  {getTranslationArray('pricing.trial.benefits').map((benefit, index) => (
                     <div key={index} className="flex items-start">
                       <CheckCircle className="h-5 w-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
                       <div>
@@ -1168,43 +1152,7 @@ export const HomePage = () => {
         </div>
       </section>
 
-      {/* VOORDELEN SECTIE - Compact op mobiel */}
-      <section id="benefits-section" className="bg-gray-50 py-12 md:py-16">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="text-center mb-8 md:mb-12">
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 px-4">{t('benefits.title')}</h2>
-            <p className="text-sm sm:text-base md:text-lg text-gray-600 px-4">{t('benefits.subtitle')}</p>
-          </div>
-          
-          {/* Desktop Grid */}
-          <div className="hidden md:grid md:grid-cols-3 gap-8">
-            {benefits.map((benefit, index) => (
-              <FadeInWhenVisible key={index}>
-                <div className="bg-white p-6 rounded-lg shadow-md text-center">
-                  <div className="text-blue-600 mb-4 flex justify-center">{benefit.icon}</div>
-                  <h3 className="text-xl font-bold mb-3">{benefit.title}</h3>
-                  <p className="text-gray-600">{benefit.description}</p>
-                </div>
-              </FadeInWhenVisible>
-            ))}
-          </div>
 
-          {/* Mobile Carousel */}
-          <div className="md:hidden">
-            <MobileCarousel 
-              items={benefits}
-              t={t}
-              renderItem={(benefit, index) => (
-                <div className="bg-white p-6 rounded-lg shadow-md text-center">
-                  <div className="text-blue-600 mb-4 flex justify-center">{benefit.icon}</div>
-                  <h3 className="text-lg font-bold mb-3">{benefit.title}</h3>
-                  <p className="text-gray-600 text-sm">{benefit.description}</p>
-                </div>
-              )}
-            />
-          </div>
-        </div>
-      </section>
 
 
       {/* FEATURES - Enhanced with animations */}
@@ -1392,66 +1340,6 @@ export const HomePage = () => {
                     </div>
                   ));
                 })()}
-              </div>
-            </div>
-          </FadeInWhenVisible>
-
-          {/* CTA after video - Enhanced */}
-          <FadeInWhenVisible>
-            <div className="text-center mt-16">
-              <div className="bg-white rounded-2xl shadow-2xl p-8 md:p-12 border border-gray-100 max-w-2xl mx-auto">
-                <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
-                  {t('video.cta.title')}
-                </h3>
-                <p className="text-gray-600 mb-8 text-lg">
-                  {t('video.cta.description')}
-                </p>
-                
-                <Button 
-                  id="video-cta-primary"
-                  data-analytics-id="video-cta-primary"
-                  size="lg" 
-                  className="bg-gradient-to-r from-blue-500 to-blue-900 text-white px-12 py-6 rounded-2xl font-bold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-2xl text-xl w-full sm:w-auto group mb-6"
-                  onClick={handleLoginClick}
-                >
-                  <Rocket className="h-6 w-6 mr-3 group-hover:animate-bounce" />
-                  {t('video.cta.button')}
-                  <ArrowRight className="h-6 w-6 ml-3 group-hover:translate-x-1 transition-transform" />
-                </Button>
-                
-                
-                <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-600">
-                  {(() => {
-                    try {
-                      const features = t('video.cta.features', { returnObjects: true });
-                      if (Array.isArray(features)) {
-                        return features.map((feature, index) => (
-                          <div key={index} className="flex items-center gap-2">
-                            {index === 0 ? <CheckCircle className="h-4 w-4 text-green-600" /> : 
-                             index === 1 ? <Zap className="h-4 w-4 text-blue-600" /> :
-                             <Shield className="h-4 w-4 text-green-600" />}
-                            <span>{feature}</span>
-                          </div>
-                        ));
-                      }
-                    } catch (error) {
-                      console.warn('Translation error for video.cta.features:', error);
-                    }
-                    // Fallback data
-                    return [
-                      "No credit card required",
-                      "Direct access", 
-                      "100% safe"
-                    ].map((feature, index) => (
-                      <div key={index} className="flex items-center gap-2">
-                        {index === 0 ? <CheckCircle className="h-4 w-4 text-green-600" /> : 
-                         index === 1 ? <Zap className="h-4 w-4 text-blue-600" /> :
-                         <Shield className="h-4 w-4 text-green-600" />}
-                        <span>{feature}</span>
-                      </div>
-                    ));
-                  })()}
-                </div>
               </div>
             </div>
           </FadeInWhenVisible>

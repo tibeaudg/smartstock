@@ -859,7 +859,41 @@
         "value": "99.9%",
         "label": "Uptime guarantee"
       }
-    ]
+    ],
+    "fallback": {
+      "items": [
+        {
+          "name": "Laura Peeters",
+          "role": "Owner, De Koffieboetiek - Ghent",
+          "quote": "Thanks to StockFlow I finally have a clear overview of my inventory. The automatic order notifications are a lifesaver! As an SME, the free plan is perfect for us.",
+          "company": "De Koffieboetiek",
+          "location": "Ghent",
+          "industry": "Hospitality",
+          "savings": "€2,400/year saved",
+          "timeSaved": "8 hours/week"
+        },
+        {
+          "name": "Tom De Wit",
+          "role": "Managing Director, TechParts BV - Antwerp",
+          "quote": "The barcode scanner feature has revolutionized our warehouse operations. We can now process orders 3x faster. The ROI was visible within the first month.",
+          "company": "TechParts BV",
+          "location": "Antwerp",
+          "industry": "Technology",
+          "savings": "€5,200/year saved",
+          "timeSaved": "12 hours/week"
+        },
+        {
+          "name": "Sarah Van Der Berg",
+          "role": "Operations Manager, GreenTech Solutions - Brussels",
+          "quote": "The analytics dashboard gives us insights we never had before. We can now predict demand and optimize our inventory levels perfectly.",
+          "company": "GreenTech Solutions",
+          "location": "Brussels",
+          "industry": "Sustainability",
+          "savings": "€3,800/year saved",
+          "timeSaved": "6 hours/week"
+        }
+      ]
+    }
   },
   "videoBenefits": [
     {
