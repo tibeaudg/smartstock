@@ -349,6 +349,26 @@ export const WebsiteAnalytics = () => {
   const totalExits = events.filter(e => e.event_type === 'page_exit').length;
   const uniqueVisitors = new Set(events.map(e => e.session_id)).size;
   
+  // Registration funnel analytics
+  const registrationStarted = events.filter(e => e.event_type === 'registration_started').length;
+  const registrationCompleted = events.filter(e => e.event_type === 'registration_completed').length;
+  const registrationRate = registrationStarted > 0 ? ((registrationCompleted / registrationStarted) * 100).toFixed(1) : '0.0';
+  
+  // CTA button analytics
+  const ctaClicks = events.filter(e => 
+    e.event_type === 'click' && 
+    (e.element_text?.toLowerCase().includes('registreer') || 
+     e.element_text?.toLowerCase().includes('start nu gratis') ||
+     e.element_text?.toLowerCase().includes('gratis starten') ||
+     e.element_id?.includes('register') ||
+     e.element_id?.includes('signup'))
+  ).length;
+  
+  // Email confirmation tracking
+  const emailConfirmationsSent = events.filter(e => e.event_type === 'email_confirmation_sent').length;
+  const emailConfirmationsOpened = events.filter(e => e.event_type === 'email_confirmation_opened').length;
+  const emailConfirmationRate = emailConfirmationsSent > 0 ? ((emailConfirmationsOpened / emailConfirmationsSent) * 100).toFixed(1) : '0.0';
+  
   const daysInRange = differenceInDays(dateRange.to, dateRange.from) + 1;
   const avgPageViewsPerDay = (totalPageViews / daysInRange).toFixed(1);
   const avgClicksPerDay = (totalClicks / daysInRange).toFixed(1);
@@ -477,6 +497,59 @@ export const WebsiteAnalytics = () => {
         </CardContent>
       </Card>
 
+      {/* Registration Funnel Analytics */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Target className="h-5 w-5" />
+            Registratie Funnel
+          </CardTitle>
+          <CardDescription>
+            Overzicht van het registratieproces van start tot finish
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <div className="text-center p-4 bg-blue-50 rounded-lg">
+              <div className="text-2xl font-bold text-blue-600">{ctaClicks}</div>
+              <div className="text-sm text-gray-600">CTA Klikken</div>
+              <div className="text-xs text-gray-500">"Registreer" & "Start Nu Gratis"</div>
+            </div>
+            <div className="text-center p-4 bg-green-50 rounded-lg">
+              <div className="text-2xl font-bold text-green-600">{registrationStarted}</div>
+              <div className="text-sm text-gray-600">Registratie Gestart</div>
+              <div className="text-xs text-gray-500">Formulier geopend</div>
+            </div>
+            <div className="text-center p-4 bg-purple-50 rounded-lg">
+              <div className="text-2xl font-bold text-purple-600">{registrationCompleted}</div>
+              <div className="text-sm text-gray-600">Registratie Voltooid</div>
+              <div className="text-xs text-gray-500">Account aangemaakt</div>
+            </div>
+            <div className="text-center p-4 bg-orange-50 rounded-lg">
+              <div className="text-2xl font-bold text-orange-600">{registrationRate}%</div>
+              <div className="text-sm text-gray-600">Conversie Rate</div>
+              <div className="text-xs text-gray-500">Gestart → Voltooid</div>
+            </div>
+          </div>
+          
+          {/* Email Confirmation Tracking */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="text-center p-4 bg-gray-50 rounded-lg">
+              <div className="text-2xl font-bold text-gray-600">{emailConfirmationsSent}</div>
+              <div className="text-sm text-gray-600">Bevestigingsmails Verzonden</div>
+            </div>
+            <div className="text-center p-4 bg-indigo-50 rounded-lg">
+              <div className="text-2xl font-bold text-indigo-600">{emailConfirmationsOpened}</div>
+              <div className="text-sm text-gray-600">E-mails Geopend</div>
+            </div>
+            <div className="text-center p-4 bg-teal-50 rounded-lg">
+              <div className="text-2xl font-bold text-teal-600">{emailConfirmationRate}%</div>
+              <div className="text-sm text-gray-600">Open Rate</div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Key Metrics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
@@ -592,6 +665,116 @@ export const WebsiteAnalytics = () => {
         </Card>
       </div>
 
+      {/* Conversion Funnel Chart */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Target className="h-5 w-5" />
+            Conversie Funnel
+          </CardTitle>
+          <CardDescription>
+            Visuele weergave van het registratieproces van bezoeker tot klant
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            {/* Funnel Steps */}
+            <div className="space-y-3">
+              <div className="flex items-center justify-between p-4 bg-blue-50 rounded-lg border-2 border-blue-200">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">1</div>
+                  <div>
+                    <div className="font-semibold text-blue-900">Website Bezoekers</div>
+                    <div className="text-sm text-blue-700">Totaal aantal unieke bezoekers</div>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <div className="text-2xl font-bold text-blue-600">{uniqueVisitors}</div>
+                  <div className="text-sm text-blue-600">100%</div>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between p-4 bg-green-50 rounded-lg border-2 border-green-200">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center text-sm font-bold">2</div>
+                  <div>
+                    <div className="font-semibold text-green-900">CTA Klikken</div>
+                    <div className="text-sm text-green-700">Klikken op "Registreer" of "Start Nu Gratis"</div>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <div className="text-2xl font-bold text-green-600">{ctaClicks}</div>
+                  <div className="text-sm text-green-600">
+                    {uniqueVisitors > 0 ? ((ctaClicks / uniqueVisitors) * 100).toFixed(1) : '0.0'}%
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between p-4 bg-purple-50 rounded-lg border-2 border-purple-200">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center text-sm font-bold">3</div>
+                  <div>
+                    <div className="font-semibold text-purple-900">Registratie Gestart</div>
+                    <div className="text-sm text-purple-700">Formulier geopend en ingevuld</div>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <div className="text-2xl font-bold text-purple-600">{registrationStarted}</div>
+                  <div className="text-sm text-purple-600">
+                    {ctaClicks > 0 ? ((registrationStarted / ctaClicks) * 100).toFixed(1) : '0.0'}%
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between p-4 bg-orange-50 rounded-lg border-2 border-orange-200">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-orange-600 text-white rounded-full flex items-center justify-center text-sm font-bold">4</div>
+                  <div>
+                    <div className="font-semibold text-orange-900">Registratie Voltooid</div>
+                    <div className="text-sm text-orange-700">Account succesvol aangemaakt</div>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <div className="text-2xl font-bold text-orange-600">{registrationCompleted}</div>
+                  <div className="text-sm text-orange-600">
+                    {registrationStarted > 0 ? ((registrationCompleted / registrationStarted) * 100).toFixed(1) : '0.0'}%
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between p-4 bg-teal-50 rounded-lg border-2 border-teal-200">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-teal-600 text-white rounded-full flex items-center justify-center text-sm font-bold">5</div>
+                  <div>
+                    <div className="font-semibold text-teal-900">E-mail Bevestigd</div>
+                    <div className="text-sm text-teal-700">E-mail bevestiging geopend</div>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <div className="text-2xl font-bold text-teal-600">{emailConfirmationsOpened}</div>
+                  <div className="text-sm text-teal-600">
+                    {emailConfirmationsSent > 0 ? ((emailConfirmationsOpened / emailConfirmationsSent) * 100).toFixed(1) : '0.0'}%
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Overall Conversion Rate */}
+            <div className="mt-6 p-4 bg-gray-50 rounded-lg border">
+              <div className="text-center">
+                <div className="text-sm text-gray-600 mb-2">Totale Conversie Rate</div>
+                <div className="text-3xl font-bold text-gray-800">
+                  {uniqueVisitors > 0 ? ((registrationCompleted / uniqueVisitors) * 100).toFixed(2) : '0.00'}%
+                </div>
+                <div className="text-sm text-gray-600">
+                  Van {uniqueVisitors} bezoekers naar {registrationCompleted} klanten
+                </div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Daily Activity Chart */}
       <Card>
         <CardHeader>
@@ -662,36 +845,126 @@ export const WebsiteAnalytics = () => {
         </Card>
       </div>
 
-      {/* Abandonment Analysis */}
+      {/* Detailed Exit Point Analysis */}
       <Card>
         <CardHeader>
-          <CardTitle>Afhaker Analyse</CardTitle>
+          <CardTitle className="flex items-center gap-2">
+            <AlertTriangle className="h-5 w-5" />
+            Gedetailleerde Exit Point Analyse
+          </CardTitle>
           <CardDescription>
-            Pagina's met hoogste afhaker percentages en veelvoorkomende exit punten
+            Exact waar bezoekers weggaan en waarom ze het registratieproces verlaten
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="space-y-4">
-            {abandonmentAnalytics.slice(0, 5).map((page, index) => (
-              <div key={index} className="border rounded-lg p-4">
-                <div className="flex justify-between items-start mb-2">
-                  <h4 className="font-semibold text-sm">
-                    {page.page_url.replace('https://www.stockflow.be', '').replace('/', '') || 'Home'}
-                  </h4>
-                  <span className={`px-2 py-1 rounded text-xs ${
-                    page.abandonment_rate > 70 ? 'bg-red-100 text-red-800' :
-                    page.abandonment_rate > 50 ? 'bg-yellow-100 text-yellow-800' :
-                    'bg-green-100 text-green-800'
-                  }`}>
-                    {page.abandonment_rate.toFixed(1)}% afhakers
-                  </span>
+          <div className="space-y-6">
+            {/* Registration Form Abandonment */}
+            <div className="border rounded-lg p-4 bg-red-50">
+              <h4 className="font-semibold text-red-900 mb-3">Registratie Formulier Afhakers</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <p className="text-sm text-red-700 mb-2">Form abandonment events:</p>
+                  <div className="space-y-1">
+                    {events
+                      .filter(e => e.event_type === 'form_abandonment')
+                      .slice(0, 5)
+                      .map((event, index) => (
+                        <div key={index} className="text-xs bg-white p-2 rounded border">
+                          <strong>{event.element_text}</strong>
+                          <br />
+                          <span className="text-gray-500">
+                            {new Date(event.created_at).toLocaleString('nl-NL')}
+                          </span>
+                        </div>
+                      ))}
+                  </div>
                 </div>
-                <div className="text-sm text-gray-600">
-                  <p>Veelvoorkomende exit punten: {page.common_exit_points.join(', ') || 'Geen data'}</p>
-                  <p>Gemiddelde tijd voor verlaten: {page.avg_time_before_exit.toFixed(0)} seconden</p>
+                <div>
+                  <p className="text-sm text-red-700 mb-2">Veelvoorkomende redenen:</p>
+                  <div className="space-y-1">
+                    {events
+                      .filter(e => e.event_type === 'form_abandonment')
+                      .reduce((acc, event) => {
+                        const reason = event.metadata?.reason || 'Unknown';
+                        acc[reason] = (acc[reason] || 0) + 1;
+                        return acc;
+                      }, {} as Record<string, number>)
+                      ? Object.entries(
+                          events
+                            .filter(e => e.event_type === 'form_abandonment')
+                            .reduce((acc, event) => {
+                              const reason = event.metadata?.reason || 'Unknown';
+                              acc[reason] = (acc[reason] || 0) + 1;
+                              return acc;
+                            }, {} as Record<string, number>)
+                        )
+                        .sort(([,a], [,b]) => b - a)
+                        .slice(0, 3)
+                        .map(([reason, count]) => (
+                          <div key={reason} className="text-xs bg-white p-2 rounded border">
+                            <strong>{reason}:</strong> {count}x
+                          </div>
+                        ))
+                      : <div className="text-xs text-gray-500">Geen data beschikbaar</div>}
+                  </div>
                 </div>
               </div>
-            ))}
+            </div>
+
+            {/* Page Exit Analysis */}
+            <div className="border rounded-lg p-4 bg-yellow-50">
+              <h4 className="font-semibold text-yellow-900 mb-3">Pagina Exit Punten</h4>
+              <div className="space-y-3">
+                {abandonmentAnalytics.slice(0, 5).map((page, index) => (
+                  <div key={index} className="bg-white p-3 rounded border">
+                    <div className="flex justify-between items-start mb-2">
+                      <h5 className="font-medium text-sm">
+                        {page.page_url.replace('https://www.stockflow.be', '').replace('/', '') || 'Home'}
+                      </h5>
+                      <span className={`px-2 py-1 rounded text-xs ${
+                        page.abandonment_rate > 70 ? 'bg-red-100 text-red-800' :
+                        page.abandonment_rate > 50 ? 'bg-yellow-100 text-yellow-800' :
+                        'bg-green-100 text-green-800'
+                      }`}>
+                        {page.abandonment_rate.toFixed(1)}% afhakers
+                      </span>
+                    </div>
+                    <div className="text-sm text-gray-600">
+                      <p>Exit punten: {page.common_exit_points.join(', ') || 'Geen data'}</p>
+                      <p>Gem. tijd voor verlaten: {page.avg_time_before_exit.toFixed(0)}s</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* CTA Button Performance */}
+            <div className="border rounded-lg p-4 bg-blue-50">
+              <h4 className="font-semibold text-blue-900 mb-3">CTA Button Performance</h4>
+              <div className="space-y-2">
+                {events
+                  .filter(e => 
+                    e.event_type === 'click' && 
+                    (e.element_text?.toLowerCase().includes('registreer') || 
+                     e.element_text?.toLowerCase().includes('start nu gratis') ||
+                     e.element_text?.toLowerCase().includes('gratis starten'))
+                  )
+                  .slice(0, 10)
+                  .map((event, index) => (
+                    <div key={index} className="bg-white p-2 rounded border text-sm">
+                      <strong>{event.element_text}</strong>
+                      <br />
+                      <span className="text-gray-500">
+                        Pagina: {event.page_url.replace('https://www.stockflow.be', '').replace('/', '') || 'Home'}
+                      </span>
+                      <br />
+                      <span className="text-gray-500">
+                        {new Date(event.created_at).toLocaleString('nl-NL')}
+                      </span>
+                    </div>
+                  ))}
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>
@@ -845,15 +1118,48 @@ export const WebsiteAnalytics = () => {
               </div>
             )}
 
-            {/* Recommendations */}
+            {/* Registration Process Recommendations */}
             <div className="p-4 bg-orange-50 rounded-lg border border-orange-200">
               <div className="flex items-start gap-3">
                 <div className="p-2 bg-orange-100 rounded-full">
                   <Zap className="h-5 w-5 text-orange-600" />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-orange-900">Aanbevelingen</h4>
+                  <h4 className="font-semibold text-orange-900">Registratie Proces Aanbevelingen</h4>
                   <ul className="text-sm text-orange-700 mt-1 space-y-1">
+                    {parseFloat(registrationRate) < 50 && (
+                      <li>• <strong>Hoog afhaker percentage:</strong> Vereenvoudig je registratieformulier en verminder het aantal verplichte velden</li>
+                    )}
+                    {ctaClicks > 0 && (ctaClicks / uniqueVisitors) < 0.05 && (
+                      <li>• <strong>Lage CTA conversie:</strong> Maak je "Registreer" en "Start Nu Gratis" buttons prominenter en gebruik sterkere call-to-action tekst</li>
+                    )}
+                    {parseFloat(emailConfirmationRate) < 30 && (
+                      <li>• <strong>Lage e-mail open rate:</strong> Verbeter je e-mail subject lines en voeg meer waarde toe aan bevestigingsmails</li>
+                    )}
+                    {events.filter(e => e.event_type === 'form_abandonment').length > 0 && (
+                      <li>• <strong>Form abandonment:</strong> Voeg progress indicators toe en maak het formulier in stappen</li>
+                    )}
+                    {parseFloat(registrationRate) > 80 && (
+                      <li>• <strong>Uitstekende conversie!</strong> Overweeg om je succesvolle registratieproces te optimaliseren voor nog betere resultaten</li>
+                    )}
+                    <li>• Implementeer real-time form validation om gebruikers te helpen</li>
+                    <li>• Voeg social proof toe (aantal gebruikers, testimonials) bij registratie</li>
+                    <li>• Test verschillende formulier layouts en veldvolgordes</li>
+                    <li>• Overweeg single-page registratie vs. multi-step proces</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            {/* General Website Recommendations */}
+            <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+              <div className="flex items-start gap-3">
+                <div className="p-2 bg-blue-100 rounded-full">
+                  <Globe className="h-5 w-5 text-blue-600" />
+                </div>
+                <div>
+                  <h4 className="font-semibold text-blue-900">Algemene Website Aanbevelingen</h4>
+                  <ul className="text-sm text-blue-700 mt-1 space-y-1">
                     {parseFloat(clickThroughRate) < 2 && (
                       <li>• Maak je CTA buttons prominenter en gebruik actiegerichte tekst</li>
                     )}
