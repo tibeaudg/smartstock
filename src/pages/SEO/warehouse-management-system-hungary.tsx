@@ -94,7 +94,7 @@ export default function WarehouseManagementSystemHungary() {
               </div>
               <span className="text-gray-600 font-medium">4.8/5 értékelés alapján</span>
               <div className="h-4 w-px bg-gray-300"></div>
-              <span className="text-gray-600">32+ aktív felhasználó</span>
+              <span className="text-gray-600">3200+ aktív felhasználó</span>
             </div>
           </div>
         </div>

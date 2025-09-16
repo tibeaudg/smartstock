@@ -838,7 +838,7 @@ export const HomePage = () => {
         <div className="max-w-6xl mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8 divide-x-0 md:divide-x md:divide-dashed md:divide-gray-200">
             {[
-              { icon: Users, value: '32+', label: t('socialProof.users') },
+              { icon: Users, value: '3200+', label: t('socialProof.users') },
               { icon: Clock, value: '17k+', label: t('stats.hoursSaved') },
               { icon: Package, value: '500k+', label: t('stats.productMovements') },
             ].map((s, i) => (
@@ -893,9 +893,6 @@ export const HomePage = () => {
                         {feature.icon}
                       </div>
                       <div className="text-right">
-                        <Badge variant="secondary" className="bg-blue-100 text-blue-800">
-                          {feature.tier === 'groei' ? 'Groei Plan' : 'Premium Plan'}
-                        </Badge>
                       </div>
                     </div>
 
@@ -1490,11 +1487,11 @@ export const HomePage = () => {
                     <div className="grid grid-cols-2 gap-4 pt-4 border-t border-gray-100">
                       <div className="text-center">
                         <div className="text-lg font-bold text-green-600">{testimonial.savings}</div>
-                        <div className="text-xs text-gray-500">Bespaard</div>
+                        <div className="text-xs text-gray-500">{t('testimonials.savingsLabel')}</div>
                       </div>
                       <div className="text-center">
                         <div className="text-lg font-bold text-blue-600">{testimonial.timeSaved}</div>
-                        <div className="text-xs text-gray-500">Tijd bespaard</div>
+                        <div className="text-xs text-gray-500">{t('testimonials.timeSavedLabel')}</div>
                       </div>
                     </div>
                   </div>
@@ -1711,7 +1708,7 @@ export const HomePage = () => {
                 }
                 // Fallback data
                 return [
-                  { number: "32+", label: "Active SMEs" },
+                  { number: "3200+", label: "Active SMEs" },
                   { number: "9 hours", label: "Time saved/week" },
                   { number: "4.8/5", label: "Customer satisfaction" }
                 ].map((stat, index) => (

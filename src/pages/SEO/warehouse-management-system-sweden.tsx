@@ -94,7 +94,7 @@ export default function WarehouseManagementSystemSweden() {
               </div>
               <span className="text-gray-600 font-medium">4.8/5 baserat på recensioner</span>
               <div className="h-4 w-px bg-gray-300"></div>
-              <span className="text-gray-600">32+ aktiva användare</span>
+              <span className="text-gray-600">3200+ aktiva användare</span>
             </div>
           </div>
         </div>

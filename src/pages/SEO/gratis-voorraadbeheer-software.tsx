@@ -369,7 +369,7 @@ export default function GratisVoorraadbeheerSoftware() {
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-8">
-            Waarom kiezen <span className="text-blue-600">32+ KMO's</span> voor onze gratis voorraadbeheer software?
+            Waarom kiezen <span className="text-blue-600">3200+ KMO's</span> voor onze gratis voorraadbeheer software?
           </h2>
           
           <div className="grid md:grid-cols-3 gap-8 mb-12">

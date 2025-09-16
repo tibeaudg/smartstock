@@ -166,7 +166,7 @@
     },
     "subtitle": {
       "login": "Log in to access your inventory management dashboard",
-      "register": "Join 32+ SMEs that already benefit from free inventory management"
+      "register": "Join 3200+ SMEs that already benefit from free inventory management"
     },
     "errors": {
       "invalidCredentials": "Invalid email address or password",
@@ -271,7 +271,7 @@
   },
   "socialProof": {
     "rating": "4.8/5 based on reviews",
-    "users": "active users"
+    "users": "3200+ active users"
   },
   "stats": {
     "hoursSaved": "hours saved",
@@ -513,6 +513,8 @@
     "title": "SMEs Tell About Their Success",
     "subtitle": "Discover how businesses have transformed their inventory management and save thousands of euros.",
     "rating": "4.8/5 Stars from Satisfied Customers",
+    "savingsLabel": "Costs saved",
+    "timeSavedLabel": "Time saved",
     "items": [
       {
         "name": "Laura Peeters",
@@ -618,7 +620,7 @@
     ],
     "cta": {
       "title": "Ready to Start?",
-      "description": "Join 32+ SMEs that already benefit from free inventory management",
+      "description": "Join 3200+ SMEs that already benefit from free inventory management",
       "button": "Start Now Free - No Obligations",
       "features": [
         "No credit card required",
@@ -660,7 +662,7 @@
     }
   },
   "finalCta": {
-    "banner": "32+ SMEs have already started",
+    "banner": "3200+ SMEs have already started",
     "title": "Ready to Transform Your",
     "titleHighlight": "Inventory Management?",
     "subtitle": "Join hundreds of SMEs already benefiting from professional inventory management without costs. Start today and see immediate results.",
@@ -677,7 +679,7 @@
     },
     "stats": [
       {
-        "number": "32+",
+        "number": "3200+",
         "label": "Active SMEs"
       },
       {
