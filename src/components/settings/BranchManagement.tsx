@@ -279,38 +279,6 @@ export const BranchManagement = () => {
 
   return (
     <div className="space-y-6">
-      {/* Pricing Information Card */}
-      <Card className="border-purple-200 bg-purple-50">
-        <CardContent className="space-y-6 p-6">
-          {pricingLoading ? (
-            <div className="flex items-center justify-center py-4">
-              <Loader2 className="w-6 h-6 animate-spin text-purple-600" />
-              <span className="ml-2 text-purple-600">Kosten berekenen...</span>
-            </div>
-          ) : (
-            <div className="space-y-4">
-
-              {/* Extra Filialen */}
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <Building2 className="w-6 h-6 text-purple-600" />
-                  <div>
-                    <h3 className="font-semibold text-purple-800 text-lg">Extra Filialen</h3>
-                    <p className="text-sm text-purple-600">€5 per extra filiaal/maand</p>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <div className="text-3xl font-bold text-purple-600">
-                    €{pricingInfo?.branchCost || 0}
-                  </div>
-                  <div className="text-sm text-gray-500">{pricingInfo?.extraBranches || 0} van {pricingInfo?.totalBranches || 0} totaal</div>
-                </div>
-              </div>
-
-            </div>
-          )}
-        </CardContent>
-      </Card>
 
       <div>
         <h1 className="text-3xl font-bold text-gray-900">Filialen Beheer</h1>
