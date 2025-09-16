@@ -236,7 +236,7 @@
       "added": "added",
       "removed": "removed"
     },
-    "notes": {
+    "stockNotes": {
       "stockAdjustment": "Stock {{action}} via inventory management"
     }
   },
@@ -509,97 +509,6 @@
       "demoButton": "Request Demo"
     }
   },
-  "pricing": {
-    "badge": "Transparent Pricing",
-    "title": "Choose your Perfect Plan",
-    "subtitle": "Start Free, Grow When You Want",
-    "description": "No hidden costs, no long-term contracts. Start free and upgrade when your business grows.",
-    "plans": {
-      "basic": {
-        "name": "Basic",
-        "description": "Perfect for small businesses",
-        "price": "Free",
-        "period": "Forever",
-        "features": [
-          "Basic inventory management",
-          "Simple reports",
-          "Email support",
-          "Mobile app"
-        ],
-        "startButton": "Start Free",
-        "limits": {
-          "products": "50",
-          "orders": "100",
-          "users": "2",
-          "branches": "1"
-        }
-      },
-      "growth": {
-        "name": "Growth",
-        "description": "Ideal for growing businesses",
-        "price": "€29.99",
-        "period": "per month",
-        "features": [
-          "All Basic features",
-          "Advanced analytics",
-          "Barcode scanner",
-          "API access",
-          "Priority support"
-        ],
-        "startButton": "Start 14-day Trial",
-        "limits": {
-          "products": "500",
-          "orders": "1000",
-          "users": "10",
-          "branches": "5"
-        }
-      },
-      "premium": {
-        "name": "Premium",
-        "description": "For large businesses",
-        "price": "€79.99",
-        "period": "per month",
-        "features": [
-          "All Growth features",
-          "Dedicated support",
-          "Custom onboarding",
-          "SLA guarantee",
-          "White-label options"
-        ],
-        "startButton": "Start 14-day Trial",
-        "limits": {
-          "products": "Unlimited",
-          "orders": "Unlimited",
-          "users": "Unlimited",
-          "branches": "Unlimited"
-        }
-      }
-    },
-    "trial": {
-      "title": "14-day free trial",
-      "description": "Try all premium features 14 days for free. No credit card required, cancel at any time.",
-      "benefits": [
-        {
-          "title": "No obligations",
-          "description": "Cancel at any time without cost"
-        },
-        {
-          "title": "Full access",
-          "description": "All features and limits of your chosen plan"
-        },
-        {
-          "title": "Start immediately",
-          "description": "Start immediately with your inventory management"
-        }
-      ]
-    },
-    "limits": {
-      "products": "Products",
-      "orders": "Orders/month",
-      "users": "Users",
-      "branches": "Branches"
-    }
-  },
   "testimonials": {
     "title": "SMEs Tell About Their Success",
     "subtitle": "Discover how businesses have transformed their inventory management and save thousands of euros.",
@@ -716,7 +625,8 @@
         "Direct access",
         "100% safe"
       ]
-    }
+    },
+    "fallback": "Your browser does not support this video."
   },
   "videoBenefits": [
     {
@@ -837,87 +747,102 @@
     "tryNowFree": "Try Now Free",
     "startNowFree": "Start Now Free - No Obligations"
   },
-  "video": {
-    "fallback": "Your browser does not support this video."
-  },
-  "testimonials": {
-    "sectionTitle": "SMEs Tell",
-    "sectionSubtitle": "About Their Success",
-    "sectionDescription": "Discover how businesses have transformed their inventory management and save thousands of euros.",
-    "statsTitle": "Average Results of Our Customers",
-    "statsSubtitle": "SMEs using StockFlow see significant improvements",
-    "statsItems": [
-      {
-        "value": "9 hours",
-        "label": "Time saved per week"
-      },
-      {
-        "value": "23%",
-        "label": "Increased efficiency"
-      },
-      {
-        "value": "99.9%",
-        "label": "Uptime guarantee"
-      }
-    ],
-    "fallback": {
-      "items": [
-        {
-          "name": "Laura Peeters",
-          "role": "Owner, De Koffieboetiek - Ghent",
-          "quote": "Thanks to StockFlow I finally have a clear overview of my inventory. The automatic order notifications are a lifesaver! As an SME, the free plan is perfect for us.",
-          "company": "De Koffieboetiek",
-          "location": "Ghent",
-          "industry": "Hospitality",
-          "savings": "€2,400/year saved",
-          "timeSaved": "8 hours/week"
-        },
-        {
-          "name": "Tom De Wit",
-          "role": "Managing Director, TechParts BV - Antwerp",
-          "quote": "The barcode scanner feature has revolutionized our warehouse operations. We can now process orders 3x faster. The ROI was visible within the first month.",
-          "company": "TechParts BV",
-          "location": "Antwerp",
-          "industry": "Technology",
-          "savings": "€5,200/year saved",
-          "timeSaved": "12 hours/week"
-        },
-        {
-          "name": "Sarah Van Der Berg",
-          "role": "Operations Manager, GreenTech Solutions - Brussels",
-          "quote": "The analytics dashboard gives us insights we never had before. We can now predict demand and optimize our inventory levels perfectly.",
-          "company": "GreenTech Solutions",
-          "location": "Brussels",
-          "industry": "Sustainability",
-          "savings": "€3,800/year saved",
-          "timeSaved": "6 hours/week"
-        }
-      ]
-    }
-  },
-  "videoBenefits": [
-    {
-      "title": "3 minutes",
-      "description": "To add your first products"
-    },
-    {
-      "title": "Immediate results",
-      "description": "See your inventory overview immediately"
-    },
-    {
-      "title": "Team ready",
-      "description": "Invite your team and start together"
-    }
-  ],
   "pricing": {
+    "badge": "Transparent Pricing",
+    "title": "Choose Your Perfect Plan",
+    "subtitle": "Start Free, Grow When You Want",
+    "description": "No hidden costs, no long-term contracts. Start free and upgrade when your business grows.",
     "mostPopular": "Most Popular",
     "unlimited": "Unlimited",
     "notIncluded": "Not included",
-    "title": "Choose Your Perfect Plan",
-    "subtitle": "Start free and upgrade when you grow",
     "monthly": "Monthly",
     "yearly": "Yearly",
-    "save": "Save 17%"
+    "save": "Save 17%",
+    "plans": {
+      "basic": {
+        "name": "Basic",
+        "description": "Perfect for small businesses",
+        "price": "Free",
+        "period": "Forever",
+        "features": [
+          "Basic inventory management",
+          "Simple reports",
+          "Email support",
+          "Mobile app"
+        ],
+        "startButton": "Start Free",
+        "limits": {
+          "products": "50",
+          "orders": "100",
+          "users": "2",
+          "branches": "1"
+        }
+      },
+      "growth": {
+        "name": "Growth",
+        "description": "Ideal for growing businesses",
+        "price": "€29.99",
+        "period": "per month",
+        "features": [
+          "All Basic features",
+          "Advanced analytics",
+          "Barcode scanner",
+          "API access",
+          "Priority support"
+        ],
+        "startButton": "Start 14-day Trial",
+        "limits": {
+          "products": "500",
+          "orders": "1000",
+          "users": "10",
+          "branches": "5"
+        }
+      },
+      "premium": {
+        "name": "Premium",
+        "description": "For large businesses",
+        "price": "€79.99",
+        "period": "per month",
+        "features": [
+          "All Growth features",
+          "Dedicated support",
+          "Custom onboarding",
+          "SLA guarantee",
+          "White-label options"
+        ],
+        "startButton": "Start 14-day Trial",
+        "limits": {
+          "products": "Unlimited",
+          "orders": "Unlimited",
+          "users": "Unlimited",
+          "branches": "Unlimited"
+        }
+      }
+    },
+    "trial": {
+      "title": "14-day free trial",
+      "description": "Try all premium features 14 days for free. No credit card required, cancel at any time.",
+      "benefits": [
+        {
+          "title": "No obligations",
+          "description": "Cancel at any time without cost"
+        },
+        {
+          "title": "Full access",
+          "description": "All features and limits of your chosen plan"
+        },
+        {
+          "title": "Start immediately",
+          "description": "Start immediately with your inventory management"
+        }
+      ]
+    },
+    "limits": {
+      "products": "Products",
+      "orders": "Orders/month",
+      "users": "Users",
+      "branches": "Branches"
+    }
   },
   "structuredData": {
     "softwareName": "StockFlow - Free Inventory Management",

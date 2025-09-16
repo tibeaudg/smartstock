@@ -12,48 +12,27 @@ const resources = {
   nl: { translation: nl },
 };
 
-// Initialize i18n with a simple, reliable configuration
+// Initialize i18n with minimal configuration for reliability
 i18n
   .use(initReactI18next)
   .init({
     resources,
     lng: 'en', // Default to English
     fallbackLng: 'en',
-    debug: process.env.NODE_ENV === 'development',
+    debug: true, // Enable debug to see what's happening
     
     interpolation: {
       escapeValue: false, // React already does escaping
     },
-
-    // Ensure proper loading of resources
-    load: 'languageOnly',
-    
-    // Add fallback for missing translations
-    fallbackLng: {
-      'en': ['en'],
-      'nl': ['nl', 'en'],
-      'default': ['en']
-    },
-    
-    // Add error handling for language changes
-    missingKeyHandler: (lng, ns, key) => {
-      console.warn(`Missing translation key: ${key} for language: ${lng}`);
-    },
+  })
+  .then(() => {
+    console.log('i18n initialized successfully');
+    console.log('Current language:', i18n.language);
+    console.log('Available languages:', i18n.languages);
+    console.log('Resources loaded:', Object.keys(resources));
+  })
+  .catch((error) => {
+    console.error('i18n initialization failed:', error);
   });
-
-// Initialize language detection after i18n is ready
-i18n.on('initialized', () => {
-  detectUserLanguage()
-    .then((detectedLanguage) => {
-      if (detectedLanguage && detectedLanguage !== i18n.language) {
-        i18n.changeLanguage(detectedLanguage);
-      }
-    })
-    .catch((error) => {
-      console.error('Error detecting or changing language:', error);
-      // Fallback to English if detection fails
-      i18n.changeLanguage('en');
-    });
-});
 
 export default i18n;

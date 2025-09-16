@@ -21,6 +21,7 @@ import { useForm } from 'react-hook-form';
 import { FloatingChatButton } from './FloatingChatButton';
 import { useWebsiteTracking } from '@/hooks/useWebsiteTracking';
 import { useTranslation } from 'react-i18next';
+import i18n from '../i18n';
 import { LanguageSwitcher } from './LanguageSwitcher';
 
 // Een herbruikbare component voor fade-in animaties bij het scrollen
@@ -199,19 +200,12 @@ const MobileCarousel = ({ items, renderItem, t }) => {
 
 export const HomePage = () => {
   const navigate = useNavigate();
-  const { t, ready } = useTranslation();
+  const { t } = useTranslation();
 
-  // Show loading state if translations are not ready
-  if (!ready) {
-    return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4" />
-          <p className="text-gray-600 text-lg">Loading translations...</p>
-        </div>
-      </div>
-    );
-  }
+  // Debug: Test if translations are working
+  console.log('HomePage - Current language:', i18n.language);
+  console.log('HomePage - Test translation:', t('pricing.plans.basic.name'));
+  console.log('HomePage - i18n ready:', i18n.isInitialized);
 
   // Helper function to safely get translation arrays
   const getTranslationArray = (key: string, fallback: any[] = []): any[] => {
