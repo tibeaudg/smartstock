@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
-import { useModuleAccess } from '@/hooks/useModuleAccess';
 import { useDeliveryNotesStats } from '@/hooks/useDeliveryNotesStats';
-import { ModuleFeatureGate } from '@/components/ModuleFeatureGate';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -25,7 +23,6 @@ import { OutgoingDeliveryNotes } from './OutgoingDeliveryNotes';
 
 export const DeliveryNotesManagement: React.FC = () => {
   const { user } = useAuth();
-  const { data: access, isLoading } = useModuleAccess('delivery-notes');
   const { data: stats, isLoading: statsLoading } = useDeliveryNotesStats();
   const navigate = useNavigate();
   const location = useLocation();

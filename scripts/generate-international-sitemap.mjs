@@ -13,7 +13,7 @@ const OUTPUT_SITEMAP = path.join(repoRoot, 'public', 'sitemap.xml');
 const OUTPUT_SITEMAP_INDEX = path.join(repoRoot, 'public', 'sitemap-index.xml');
 
 // Supported languages
-const SUPPORTED_LANGUAGES = ['en', 'hu', 'sv', 'th', 'si', 'ro'];
+const SUPPORTED_LANGUAGES = ['en', 'de', 'fr', 'es', 'it', 'pl', 'hu', 'sv', 'th', 'si', 'ro'];
 
 function readSeoRoutes() {
   try {

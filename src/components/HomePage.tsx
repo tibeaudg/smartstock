@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { Badge } from '@/components/ui/badge';
 import { 
   Package, BarChart3, Users, Shield, Check, TrendingUp, Zap, Star, Clock, Euro, Target, 
   ChevronLeft, ChevronRight, Scan, Truck, ArrowRight, Play, Award, Globe, Smartphone, 
@@ -420,8 +421,8 @@ export const HomePage = () => {
   ];
   // --- EINDE USP DATA ---
 
-  // --- BEGIN MODULES DATA ---
-  const modules = [
+  // --- BEGIN SUBSCRIPTION FEATURES DATA ---
+  const subscriptionFeatures = [
     {
       icon: <BarChart3 className="h-12 w-12 text-blue-600" />,
       title: "Geavanceerde Analytics",
@@ -432,7 +433,7 @@ export const HomePage = () => {
         "Custom export naar Excel/PDF",
         "API toegang voor integraties"
       ],
-      popular: false,
+      tier: "groei",
       image: "/placeholder.svg"
     },
     {
@@ -445,7 +446,7 @@ export const HomePage = () => {
         "Bulk import/export",
         "Offline synchronisatie"
       ],
-      popular: true,
+      tier: "groei",
       image: "/placeholder.svg"
     },
     {
@@ -458,11 +459,11 @@ export const HomePage = () => {
         "Custom leveringsbon templates",
         "Bulk import/export functionaliteit"
       ],
-      popular: false,
+      tier: "groei",
       image: "/placeholder.svg"
     }
   ];
-  // --- EINDE MODULES DATA ---
+  // --- EINDE SUBSCRIPTION FEATURES DATA ---
 
   // --- BEGIN CAPABILITIES DATA ---
   const capabilities = [
@@ -615,6 +616,11 @@ export const HomePage = () => {
         url="https://www.stockflow.be/"
         hreflang={[
           { lang: 'en', url: 'https://www.stockflow.be/' },
+          { lang: 'de', url: 'https://www.stockflow.be/de/' },
+          { lang: 'fr', url: 'https://www.stockflow.be/fr/' },
+          { lang: 'es', url: 'https://www.stockflow.be/es/' },
+          { lang: 'it', url: 'https://www.stockflow.be/it/' },
+          { lang: 'pl', url: 'https://www.stockflow.be/pl/' },
           { lang: 'hu', url: 'https://www.stockflow.be/hu/' },
           { lang: 'sv', url: 'https://www.stockflow.be/sv/' },
           { lang: 'th', url: 'https://www.stockflow.be/th/' },
@@ -811,12 +817,12 @@ export const HomePage = () => {
             </FadeInWhenVisible>
           </div>
 
-          {/* Modules Grid */}
+          {/* Subscription Features Grid */}
           <div className="grid md:grid-cols-3 gap-8 mb-16">
-            {modules.map((module, index) => (
+            {subscriptionFeatures.map((feature, index) => (
               <FadeInWhenVisible key={index}>
-                <div className={`relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-2 ${module.popular ? 'border-blue-500 ring-4 ring-blue-100' : 'border-gray-100'}`}>
-                  {module.popular && (
+                <div className={`relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-2 ${feature.tier === 'groei' ? 'border-blue-500 ring-4 ring-blue-100' : 'border-gray-100'}`}>
+                  {feature.tier === 'groei' && (
                     <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                       <div className="bg-gradient-to-r from-blue-500 to-blue-900 text-white px-4 py-2 rounded-full text-sm font-semibold flex items-center gap-2">
                         <Crown className="h-4 w-4" />
@@ -828,20 +834,23 @@ export const HomePage = () => {
                   <div className="p-8">
                     <div className="flex items-center justify-between mb-6">
                       <div className="p-3 bg-gray-50 rounded-xl">
-                        {module.icon}
+                        {feature.icon}
                       </div>
                       <div className="text-right">
+                        <Badge variant="secondary" className="bg-blue-100 text-blue-800">
+                          {feature.tier === 'groei' ? 'Groei Plan' : 'Premium Plan'}
+                        </Badge>
                       </div>
                     </div>
 
-                    <h3 className="text-xl font-bold text-gray-900 mb-3">{module.title}</h3>
-                    <p className="text-gray-600 mb-6 leading-relaxed">{module.description}</p>
+                    <h3 className="text-xl font-bold text-gray-900 mb-3">{feature.title}</h3>
+                    <p className="text-gray-600 mb-6 leading-relaxed">{feature.description}</p>
 
                     <div className="space-y-3 mb-8">
-                      {module.features.map((feature, featureIndex) => (
+                      {feature.features.map((featureItem, featureIndex) => (
                         <div key={featureIndex} className="flex items-center gap-3">
                           <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
-                          <span className="text-gray-700">{feature}</span>
+                          <span className="text-gray-700">{featureItem}</span>
                         </div>
                       ))}
                     </div>
@@ -1616,51 +1625,7 @@ export const HomePage = () => {
         </div>
       </section>
 
-      {/* FAQ SECTIE - Compact op mobiel */}
-      <section id="faq-section" className="py-12 md:py-20">
-        <div className="max-w-4xl mx-auto px-4">
-          <div className="text-center mb-8 md:mb-16">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 px-4">
-              <span className="block">Veelgestelde Vragen Over</span>
-              <span className="block text-blue-600">Gratis Voorraadbeheer</span>
-            </h2>
-            <p className="text-sm sm:text-base md:text-lg text-gray-600 px-4">Alles wat je moet weten over stockflow voor Vlaamse KMO's</p>
-          </div>
-          
-          {/* Desktop FAQ */}
-          <div className="md:space-y-6">
-            {faqData.map((faq, index) => (
-              <FadeInWhenVisible key={index}>
-                <Card className="shadow-md">
-                  <CardHeader>
-                    <CardTitle className="text-lg">{faq.question}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-600">{faq.answer}</p>
-                  </CardContent>
-                </Card>
-              </FadeInWhenVisible>
-            ))}
-          </div>
 
-          {/* Mobile FAQ Carousel */}
-          <div className="md:hidden">
-            <MobileCarousel 
-              items={faqData}
-              renderItem={(faq, index) => (
-                <Card className="shadow-md">
-                  <CardHeader className="pb-3">
-                    <CardTitle className="text-base">{faq.question}</CardTitle>
-                  </CardHeader>
-                  <CardContent className="pt-0">
-                    <p className="text-gray-600 text-sm">{faq.answer}</p>
-                  </CardContent>
-                </Card>
-              )}
-            />
-          </div>
-        </div>
-      </section>
 
       {/* CONTACT SECTIE */}
       <section id="contact-section" className="bg-gray-50 py-12 md:py-20">

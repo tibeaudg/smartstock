@@ -15,7 +15,6 @@ import { Settings } from "./components/Settings";
 import { ProfileSettings } from "./components/settings/ProfileSettings";
 import { BranchManagement } from "./components/settings/BranchManagement";
 import { UserManagement } from "./components/settings/UserManagement";
-import { ModuleManagement } from "./components/settings/ModuleManagement";
 import { LicenseOverview } from "./components/settings/LicenseOverview";
 import { InvoicingOverview } from "./components/settings/InvoicingOverview";
 import { InvoiceList } from "./components/payments/InvoiceList";
@@ -74,6 +73,7 @@ import { OutgoingDeliveryNotes } from './components/delivery-notes/OutgoingDeliv
 import PricingPage from './pages/pricing';
 import CheckoutPage from './pages/checkout';
 import { SubscriptionManagement } from './components/settings/SubscriptionManagement';
+import { AdminSubscriptionManagement } from './components/admin/SubscriptionManagement';
 
 
 // ErrorBoundary component
@@ -331,7 +331,6 @@ export default function App() {
                       <Route path="profile" element={<ProfileSettings />} />
                       <Route path="branches" element={<BranchManagement />} />
                       <Route path="users" element={<UserManagement />} />
-                      <Route path="modules" element={<ModuleManagement />} />
                       <Route path="subscription" element={<SubscriptionManagement />} />
                       <Route path="invoices" element={<InvoiceList />} />
                       <Route path="license" element={<LicenseOverview />} />
@@ -363,6 +362,7 @@ export default function App() {
                       <Route path="chat" element={<AdminChatList />} />
                       <Route path="seo" element={<SEO />} />
                       <Route path="payment-test" element={<PaymentTestPage />} />
+                      <Route path="subscriptions" element={<AdminSubscriptionManagement />} />
                       <Route path="user/:id" element={<AdminUserDetailPage />} />
                     </Route>
                   </Route>

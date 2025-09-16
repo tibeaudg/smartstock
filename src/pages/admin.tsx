@@ -9,12 +9,12 @@ import { useAuth } from '@/hooks/useAuth';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { useMobile } from '@/hooks/use-mobile';
 import SEO from '../components/SEO';
-import { AdminModuleManagement } from '@/pages/admin/ModuleManagement';
 import { AdminNotificationManager } from '@/components/AdminNotificationManager';
 import { AdminChatList } from '@/components/AdminChatList';
 import AdminCMS from '../components/AdminCMS';
 import { AuthConversionAnalytics } from '@/components/analytics/AuthConversionAnalytics';
 import { WebsiteAnalytics } from '@/components/analytics/WebsiteAnalytics';
+import { AdminSubscriptionManagement } from '@/components/admin/SubscriptionManagement';
 import { useNavigate } from 'react-router-dom';
 
 // Gebruikersbeheer types
@@ -608,9 +608,7 @@ export default function AdminPage() {
                 </CardContent>
               </Card>
             )}
-            {activeTab === 'features' && (
-              <AdminModuleManagement />
-            )}
+
 
             {activeTab === 'chats' && (
               <AdminChatList />

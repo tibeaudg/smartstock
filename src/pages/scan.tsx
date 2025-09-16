@@ -10,7 +10,6 @@ import { CameraDebugInfo } from '@/components/CameraDebugInfo';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
 import { useMobile } from '@/hooks/use-mobile';
-import { useModuleAccess } from '@/hooks/useModuleAccess';
 import { useScannerSettings } from '@/hooks/useScannerSettings';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -44,8 +43,6 @@ export default function ScanPage() {
   // Check if user is owner (using is_owner field from profiles table)
   const isOwner = userProfile && userProfile.is_owner === true && !userProfile.blocked;
   
-  // Check module access for barcode scanner
-  const { data: scannerAccess, isLoading: scannerAccessLoading, error: scannerAccessError } = useModuleAccess('scanning');
   
   // Get scanner settings
   const { settings: scannerSettings, onScanSuccess } = useScannerSettings();

@@ -27,6 +27,7 @@ import {
   Activity
 } 
 from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { BranchSelector } from './BranchSelector';
 import { SupportModal } from './SupportModal';
 import React, { useState } from 'react';
@@ -37,7 +38,7 @@ import { useNavigate, NavLink, useLocation } from 'react-router-dom';
 import { useMobile } from '@/hooks/use-mobile';
 import { useUnreadMessages } from '@/hooks/UnreadMessagesContext';
 import { useProductCount } from '@/hooks/useDashboardData';
-import { useModuleAccess, useAllModuleAccess } from '@/hooks/useModuleAccess';
+import { useSubscription } from '@/hooks/useSubscription';
 
 interface SidebarProps {
   currentTab: string;
@@ -62,6 +63,7 @@ interface MenuItem {
 }
 
 export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProps) => {
+  const { t } = useTranslation();
   const { productCount, isLoading } = useProductCount();
   const { isMobile } = useMobile();
   const { signOut } = useAuth();
@@ -70,13 +72,13 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
   const { unreadCount: unreadMessages, resetUnreadCount } = useUnreadMessages();
   const [openSubmenus, setOpenSubmenus] = useState<Record<string, boolean>>({});
   
-  // Check if user has access to modules
-  const { data: allModuleAccess } = useAllModuleAccess();
+  // Check subscription-based feature access
+  const { canUseFeature, currentTier } = useSubscription();
   
-  // Extract specific module access
-  const deliveryNotesAccess = allModuleAccess?.['delivery-notes'];
-  const scanningAccess = allModuleAccess?.['scanning'];
-  const advancedAnalyticsAccess = allModuleAccess?.['advanced-analytics'];
+  // Check specific feature access based on subscription tier
+  const hasDeliveryNotes = canUseFeature('delivery-notes');
+  const hasScanner = canUseFeature('scanner');
+  const hasAnalytics = canUseFeature('analytics');
 
   // If blocked, only show settings/invoicing
   const isBlocked = userProfile?.blocked;
@@ -103,81 +105,82 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
   };
   
   const settingsSubItems = [
-    { id: 'profile', label: 'Profiel', path: '/dashboard/settings/profile' },
-    { id: 'branches', label: 'Filialen', path: '/dashboard/settings/branches' },
-    { id: 'users', label: 'Gebruikers', path: '/dashboard/settings/users' },
-    { id: 'subscription', label: 'Abonnement', path: '/dashboard/settings/subscription' },
+    { id: 'profile', label: t('navigation.profile'), path: '/dashboard/settings/profile' },
+    { id: 'branches', label: t('navigation.branches'), path: '/dashboard/settings/branches' },
+    { id: 'users', label: t('navigation.users'), path: '/dashboard/settings/users' },
+    { id: 'subscription', label: t('navigation.subscription'), path: '/dashboard/settings/subscription' },
   ];
 
   const adminSubItems = [
-    { id: 'overview', label: 'Overzicht', path: '/admin' },
+    { id: 'overview', label: t('navigation.overview'), path: '/admin' },
   ];
 
   const analyticsSubItems = [
-    { id: 'dashboard', label: 'Dashboard', path: '/dashboard/analytics' },
-    { id: 'predictions', label: 'AI Voorspellingen', path: '/dashboard/analytics/predictions' },
-    { id: 'reports', label: 'Custom Rapporten', path: '/dashboard/analytics/reports' },
-    { id: 'export', label: 'Export Data', path: '/dashboard/analytics/export' },
-    { id: 'api', label: 'API Toegang', path: '/dashboard/analytics/api' },
-    { id: 'filtering', label: 'Advanced Filtering', path: '/dashboard/analytics/filtering' },
+    { id: 'dashboard', label: t('navigation.dashboard'), path: '/dashboard/analytics' },
+    { id: 'predictions', label: t('navigation.predictions'), path: '/dashboard/analytics/predictions' },
+    { id: 'reports', label: t('navigation.reports'), path: '/dashboard/analytics/reports' },
+    { id: 'export', label: t('navigation.export'), path: '/dashboard/analytics/export' },
+    { id: 'api', label: t('navigation.api'), path: '/dashboard/analytics/api' },
+    { id: 'filtering', label: t('navigation.filtering'), path: '/dashboard/analytics/filtering' },
   ];
 
   const menuItems = isBlocked
     ? [
         { 
           id: 'settings', 
-          label: 'Instellingen', 
+          label: t('navigation.settings'), 
           icon: Settings, 
           path: '/dashboard/settings',
-          subItems: [{ id: 'invoicing', label: 'Facturatie', path: '/dashboard/settings/invoicing' }]
+          subItems: [{ id: 'invoicing', label: t('navigation.billing'), path: '/dashboard/settings/invoicing' }]
         },
       ]
     : [
-        { id: 'dashboard', label: 'Dashboard', icon: BarChart3, path: '/dashboard', end: true },
+        { id: 'dashboard', label: t('navigation.dashboard'), icon: BarChart3, path: '/dashboard', end: true },
 
         { 
           id: 'stock', 
-          label: 'Producten', 
+          label: t('navigation.products'), 
           icon: Package, 
           path: '/dashboard/stock',
           subItems: [
-            { id: 'products', label: 'Producten', path: '/dashboard/stock' },
-            { id: 'categories', label: 'Categorieën', path: '/dashboard/categories' },
-            { id: 'suppliers', label: 'Leveranciers', path: '/dashboard/suppliers' }
+            { id: 'products', label: t('navigation.products'), path: '/dashboard/stock' },
+            { id: 'categories', label: t('navigation.categories'), path: '/dashboard/categories' },
+            { id: 'suppliers', label: t('navigation.suppliers'), path: '/dashboard/suppliers' }
           ]
         },
-        { id: 'transactions', label: 'Bewegingen', icon: ShoppingCart, path: '/dashboard/transactions' },
-        ...(deliveryNotesAccess?.hasAccess ? [{
+        { id: 'transactions', label: t('navigation.movements'), icon: ShoppingCart, path: '/dashboard/transactions' },
+        ...(hasDeliveryNotes ? [{
           id: 'delivery-notes',
-          label: 'Leveringsbonnen',
+          label: t('navigation.deliveryNotes'),
           icon: Truck,
           path: '/dashboard/delivery-notes'
+        }] : []),
+        ...(hasAnalytics ? [{
+          id: 'analytics',
+          label: 'Geavanceerde Analytics',
+          icon: TrendingUp,
+          path: '/dashboard/analytics',
+          subItems: analyticsSubItems
         }] : []),
 
         { 
           id: 'settings', 
-          label: 'Instellingen', 
+          label: t('navigation.settings'), 
           icon: Settings, 
           path: '/dashboard/settings',
           subItems: settingsSubItems
         },
-        ...(scanningAccess?.hasAccess ? [{
+        ...(hasScanner ? [{
           id: 'scanner',
-          label: 'Scanner',
+          label: t('navigation.scanner'),
           icon: Scan,
           path: '/dashboard/scan'
         }] : []),
-        { 
-          id: 'modules', 
-          label: 'Modules', 
-          icon: FileText, 
-          path: '/dashboard/settings/modules'
-        },
         ...(isOwner
           ? [
               { 
                 id: 'admin', 
-                label: 'Admin', 
+                label: t('navigation.admin'), 
                 icon: Users, 
                 path: '/admin',
                 subItems: adminSubItems
@@ -351,7 +354,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
                 </div>
                 {isOpen && (
                   <>
-                    <span className="font-medium ml-3 flex-1 text-left">Support</span>
+                    <span className="font-medium ml-3 flex-1 text-left">{t('navigation.support')}</span>
                     {unreadMessages > 0 && (
                       <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full mr-2">
                         {unreadMessages}
@@ -382,7 +385,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
               >
                 <LogOut className="w-5 h-5 flex-shrink-0" />
                 {isOpen && (
-                  <span className="font-medium ml-3 flex-1 text-left">Afmelden</span>
+                  <span className="font-medium ml-3 flex-1 text-left">{t('navigation.logout')}</span>
                 )}
               </Button>
             </div>

@@ -11,7 +11,8 @@ import {
   TestTube,
   Settings,
   Users,
-  BarChart3
+  BarChart3,
+  Crown
 } from 'lucide-react';
 
 export const Admin = () => {
@@ -23,6 +24,7 @@ export const Admin = () => {
     { id: 'notifications', label: 'Notificaties', icon: Bell, path: '/admin/notifications' },
     { id: 'chat', label: 'Chat', icon: MessageSquare, path: '/admin/chat' },
     { id: 'seo', label: 'SEO', icon: Search, path: '/admin/seo' },
+    { id: 'subscriptions', label: 'Abonnementen', icon: Crown, path: '/admin/subscriptions' },
     { id: 'payment-test', label: 'Payment Test', icon: TestTube, path: '/admin/payment-test' },
   ];
 
