@@ -670,8 +670,8 @@ export const HomePage = () => {
         <link rel="preload" as="image" href="/logo.png" />
       </Helmet>
       <SEO
-        title={t('homepage.title')}
-        description={t('homepage.subtitle')}
+        title={`${t('homepage.title')} - ${t('homepage.subtitle')} | StockFlow`}
+        description={t('homepage.description')}
         keywords="warehouse management system, WMS, inventory management, stock control, warehouse software, inventory tracking, warehouse automation, stock management software, warehouse operations, inventory control system, warehouse management, WMS software, inventory management system, stock tracking, warehouse automation, supply chain management, logistics software, warehouse optimization, inventory control, stock management, warehouse efficiency, inventory tracking software, warehouse management solution, stock control system, warehouse operations management, inventory management software, warehouse management platform, stock tracking system, warehouse management tools, inventory management tools, warehouse software solution, stock management platform, warehouse management software, inventory control software, warehouse management system software, WMS platform, warehouse management tools, inventory tracking platform, stock management tools, warehouse optimization software, supply chain software, logistics management, warehouse efficiency software, inventory management platform, stock control software, warehouse operations software, inventory tracking tools, warehouse management solution software, stock management system, warehouse automation software, inventory control platform, warehouse management software solution, WMS software solution, warehouse management platform software, stock tracking platform, warehouse management tools software, inventory management tools software, warehouse software platform, stock management platform software, warehouse management software platform, inventory control software platform, warehouse management system platform, WMS platform software, warehouse management tools platform, inventory tracking platform software, stock management tools platform, warehouse optimization platform, supply chain platform, logistics platform, warehouse efficiency platform, inventory management platform software, stock control platform software, warehouse operations platform software, inventory tracking platform tools, warehouse management solution platform, stock management system platform, warehouse automation platform software, inventory control platform software, warehouse management software platform solution, WMS software platform solution, warehouse management platform solution, stock tracking platform solution, warehouse management tools platform solution, inventory management tools platform solution, warehouse software platform solution, stock management platform solution, warehouse management software platform solution, inventory control software platform solution, warehouse management system platform solution, WMS platform solution, warehouse management tools platform solution, inventory tracking platform solution, stock management tools platform solution, warehouse optimization platform solution, supply chain platform solution, logistics platform solution, warehouse efficiency platform solution, inventory management platform solution, stock control platform solution, warehouse operations platform solution, inventory tracking platform solution, warehouse management solution platform solution, stock management system platform solution, warehouse automation platform solution, inventory control platform solution, warehouse management software platform solution, WMS software platform solution, warehouse management platform solution, stock tracking platform solution, warehouse management tools platform solution, inventory management tools platform solution, warehouse software platform solution, stock management platform solution, warehouse management software platform solution, inventory control software platform solution, warehouse management system platform solution, WMS platform solution, warehouse management tools platform solution, inventory tracking platform solution, stock management tools platform solution, warehouse optimization platform solution, supply chain platform solution, logistics platform solution, warehouse efficiency platform solution, inventory management platform solution, stock control platform solution, warehouse operations platform solution, inventory tracking platform solution, warehouse management solution platform solution, stock management system platform solution, warehouse automation platform solution, inventory control platform solution"
         url="https://www.stockflow.be/"
         hreflang={[
@@ -711,20 +711,20 @@ export const HomePage = () => {
           <div className="text-center">
 
 
-            {/* Main headline */}
+            {/* Main headline - SEO optimized H1 */}
             <FadeInWhenVisible>
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
                 <span className="block text-gray-900">{t('homepage.title')}</span>
-
+                <span className="block text-blue-600 text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold mt-2">
+                  {t('homepage.subtitle')}
+                </span>
               </h1>
-
-              
             </FadeInWhenVisible>
 
             {/* Subheadline */}
             <FadeInWhenVisible>
               <p className="text-lg sm:text-xl md:text-2xl text-gray-600 mb-8 max-w-4xl mx-auto leading-relaxed">
-                {t('homepage.subtitle')}
+                {t('homepage.description')}
                 <br className="hidden sm:block" />
               </p>
             </FadeInWhenVisible>
@@ -769,6 +769,30 @@ export const HomePage = () => {
                   <Play className="h-5 w-5 mr-2" />
                   {t('homepage.learnMore')}
                 </Button>
+              </div>
+            </FadeInWhenVisible>
+
+            {/* Internal navigation links for SEO */}
+            <FadeInWhenVisible>
+              <div className="flex flex-wrap justify-center gap-4 text-sm mb-8">
+                <Link to="#modules-section" className="text-blue-600 hover:text-blue-800 underline">
+                  {t('navigation.modules')}
+                </Link>
+                <Link to="#features-section" className="text-blue-600 hover:text-blue-800 underline">
+                  {t('navigation.features')}
+                </Link>
+                <Link to="#pricing-section" className="text-blue-600 hover:text-blue-800 underline">
+                  {t('navigation.pricing')}
+                </Link>
+                <Link to="#testimonials-section" className="text-blue-600 hover:text-blue-800 underline">
+                  {t('navigation.testimonials')}
+                </Link>
+                <Link to="#video-section" className="text-blue-600 hover:text-blue-800 underline">
+                  {t('navigation.demo')}
+                </Link>
+                <Link to="#contact-section" className="text-blue-600 hover:text-blue-800 underline">
+                  {t('navigation.contact')}
+                </Link>
               </div>
             </FadeInWhenVisible>
 
@@ -898,6 +922,13 @@ export const HomePage = () => {
 
                     <h3 className="text-xl font-bold text-gray-900 mb-3">{feature.title}</h3>
                     <p className="text-gray-600 mb-6 leading-relaxed">{feature.description}</p>
+                    
+                    {/* Internal link to features section */}
+                    <div className="mb-4">
+                      <Link to="#features-section" className="text-blue-600 hover:text-blue-800 text-sm underline">
+                        {t('navigation.learnMoreFeatures')}
+                      </Link>
+                    </div>
 
                     <div className="space-y-3 mb-8">
                       {feature.features.map((featureItem, featureIndex) => (
@@ -1727,17 +1758,74 @@ export const HomePage = () => {
 
 
 <footer className="bg-gray-900 text-gray-200 py-12 md:py-16">
-  <div className="max-w-4xl mx-auto px-6 text-center">
-    <OptimizedImage
-      src="/logo.png"
-      alt="stockflow"
-      className="h-10 md:h-12 mx-auto mb-6"
-    />
-    <p className="text-gray-400 text-base md:text-lg mb-8 leading-relaxed max-w-2xl mx-auto">
-      {t('footer.tagline')}
-    </p>
+  <div className="max-w-6xl mx-auto px-6">
+    <div className="grid md:grid-cols-4 gap-8 mb-8">
+      {/* Company Info */}
+      <div className="md:col-span-2">
+        <OptimizedImage
+          src="/logo.png"
+          alt="stockflow"
+          className="h-10 md:h-12 mb-6"
+        />
+        <p className="text-gray-400 text-base md:text-lg mb-6 leading-relaxed">
+          {t('footer.tagline')}
+        </p>
+        <div className="flex flex-wrap gap-4 text-sm">
+          <Link to="#modules-section" className="text-gray-400 hover:text-white underline">
+            {t('navigation.modules')}
+          </Link>
+          <Link to="#features-section" className="text-gray-400 hover:text-white underline">
+            {t('navigation.features')}
+          </Link>
+          <Link to="#pricing-section" className="text-gray-400 hover:text-white underline">
+            {t('navigation.pricing')}
+          </Link>
+          <Link to="#testimonials-section" className="text-gray-400 hover:text-white underline">
+            {t('navigation.testimonials')}
+          </Link>
+        </div>
+      </div>
+      
+      {/* Quick Links */}
+      <div>
+        <h3 className="text-lg font-semibold mb-4">{t('footer.quickLinks')}</h3>
+        <div className="space-y-2">
+          <Link to="#video-section" className="block text-gray-400 hover:text-white underline">
+            {t('navigation.demo')}
+          </Link>
+          <Link to="#contact-section" className="block text-gray-400 hover:text-white underline">
+            {t('navigation.contact')}
+          </Link>
+          <Link to="/auth" className="block text-gray-400 hover:text-white underline">
+            {t('navigation.login')}
+          </Link>
+          <Link to="/pricing" className="block text-gray-400 hover:text-white underline">
+            {t('navigation.pricing')}
+          </Link>
+        </div>
+      </div>
+      
+      {/* Resources */}
+      <div>
+        <h3 className="text-lg font-semibold mb-4">{t('footer.resources')}</h3>
+        <div className="space-y-2">
+          <Link to="#features-section" className="block text-gray-400 hover:text-white underline">
+            {t('footer.features')}
+          </Link>
+          <Link to="#testimonials-section" className="block text-gray-400 hover:text-white underline">
+            {t('footer.caseStudies')}
+          </Link>
+          <Link to="#contact-section" className="block text-gray-400 hover:text-white underline">
+            {t('footer.support')}
+          </Link>
+          <Link to="/auth" className="block text-gray-400 hover:text-white underline">
+            {t('footer.getStarted')}
+          </Link>
+        </div>
+      </div>
+    </div>
 
-    <div className="border-t border-gray-700 pt-6">
+    <div className="border-t border-gray-700 pt-6 text-center">
       <p className="text-gray-500 text-xs md:text-sm">
         &copy; {new Date().getFullYear()} stockflow. All rights reserved. 
         {t('footer.copyright')}

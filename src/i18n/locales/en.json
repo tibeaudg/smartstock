@@ -56,7 +56,8 @@
   },
   "homepage": {
     "title": "StockFlow - Smart Stock Management",
-    "subtitle": "Streamline your inventory with our intelligent stock management system",
+    "subtitle": "Streamline your inventory",
+    "description": "StockFlow is a free inventory management system for SMEs. It helps you manage your inventory, track your stock levels, and optimize your cashflow.",
     "getStarted": "Get Started",
     "learnMore": "Learn More",
     "features": {
