@@ -21,6 +21,7 @@ import { useForm } from 'react-hook-form';
 import { FloatingChatButton } from './FloatingChatButton';
 import { useWebsiteTracking } from '@/hooks/useWebsiteTracking';
 import SocialShare from './SocialShare';
+import { useTranslation } from 'react-i18next';
 
 // Een herbruikbare component voor fade-in animaties bij het scrollen
 const FadeInWhenVisible = ({ children }) => {
@@ -197,6 +198,7 @@ const MobileCarousel = ({ items, renderItem, t }) => {
 
 export const HomePage = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   
   // Gebruik de page refresh hook
   usePageRefresh();
@@ -397,138 +399,136 @@ export const HomePage = () => {
   const usps = [
     {
       icon: <Package className="h-8 w-8" />,
-      title: t('homepage.usps.0.title'),
-      desc: t('homepage.usps.0.desc'),
+      title: "Easy Stock Management",
+      desc: "Track your inventory with our intuitive interface designed for small businesses.",
     },
     {
       icon: <BarChart3 className="h-8 w-8" />,
-      title: t('homepage.usps.1.title'), 
-      desc: t('homepage.usps.1.desc'),
+      title: "Real-time Analytics", 
+      desc: "Get insights into your stock levels, sales trends, and business performance.",
     },
     {
       icon: <Users className="h-8 w-8" />,
-      title: t('homepage.usps.2.title'),
-      desc: t('homepage.usps.2.desc'),
+      title: "Team Collaboration",
+      desc: "Work together with your team on inventory management and order processing.",
     },
     {
       icon: <Shield className="h-8 w-8" />,
-      title: t('homepage.usps.3.title'),
-      desc: t('homepage.usps.3.desc'),
+      title: "Secure & Reliable",
+      desc: "Your data is protected with enterprise-grade security and 99.9% uptime.",
     },
   ];
   // --- EINDE USP DATA ---
 
   // --- BEGIN SUBSCRIPTION FEATURES DATA ---
-  const subscriptionFeatures = (() => {
-    try {
-      const items = t('modules.items', { returnObjects: true });
-      if (Array.isArray(items)) {
-        return items.map((feature, index) => ({
-          ...feature,
-          icon: index === 0 ? <BarChart3 className="h-12 w-12 text-blue-600" /> : index === 1 ? <Scan className="h-12 w-12 text-green-600" /> : <Truck className="h-12 w-12 text-purple-600" />,
-          tier: "groei",
-          image: "/placeholder.svg"
-        }));
-      }
-    } catch (error) {
-      console.warn('Translation error for modules.items:', error);
+  const subscriptionFeatures = [
+    {
+      icon: <BarChart3 className="h-12 w-12 text-blue-600" />,
+      title: "Analytics & Reporting",
+      description: "Comprehensive insights into your inventory performance and business metrics.",
+      features: [
+        "Real-time stock reports",
+        "Sales analytics dashboard",
+        "Performance metrics",
+        "Custom report builder"
+      ],
+      tier: "growth",
+      image: "/placeholder.svg"
+    },
+    {
+      icon: <Scan className="h-12 w-12 text-green-600" />,
+      title: "Barcode Scanning",
+      description: "Quick and accurate inventory tracking with mobile barcode scanning.",
+      features: [
+        "Mobile barcode scanner",
+        "Batch scanning support",
+        "Custom barcode generation",
+        "Offline scanning capability"
+      ],
+      tier: "growth",
+      image: "/placeholder.svg"
+    },
+    {
+      icon: <Truck className="h-12 w-12 text-purple-600" />,
+      title: "Delivery Management",
+      description: "Streamline your delivery process with integrated delivery note management.",
+      features: [
+        "Incoming delivery notes",
+        "Outgoing delivery tracking",
+        "Supplier management",
+        "Delivery scheduling"
+      ],
+      tier: "growth",
+      image: "/placeholder.svg"
     }
-    // Fallback data
-    return [
-      {
-        icon: <BarChart3 className="h-12 w-12 text-blue-600" />,
-        title: t('modules.fallback.items.0.title'),
-        description: t('modules.fallback.items.0.description'),
-        features: getTranslationArray('modules.fallback.items.0.features'),
-        tier: "groei",
-        image: "/placeholder.svg"
-      },
-      {
-        icon: <Scan className="h-12 w-12 text-green-600" />,
-        title: t('modules.fallback.items.1.title'),
-        description: t('modules.fallback.items.1.description'),
-        features: getTranslationArray('modules.fallback.items.1.features'),
-        tier: "groei",
-        image: "/placeholder.svg"
-      },
-      {
-        icon: <Truck className="h-12 w-12 text-purple-600" />,
-        title: t('modules.fallback.items.2.title'),
-        description: t('modules.fallback.items.2.description'),
-        features: getTranslationArray('modules.fallback.items.2.features'),
-        tier: "groei",
-        image: "/placeholder.svg"
-      }
-    ];
-  })();
+  ];
   // --- EINDE SUBSCRIPTION FEATURES DATA ---
 
   // --- BEGIN CAPABILITIES DATA ---
   const capabilities = [
     {
       icon: <Users className="h-12 w-12" />,
-      title: t('homepage.capabilities.0.title'),
-      desc: t('homepage.capabilities.0.desc'),
+      title: "Team Collaboration",
+      desc: "Work together with your team on inventory management and order processing.",
       learnMore: "#",
     },
     {
       icon: <BarChart3 className="h-12 w-12" />,
-      title: t('homepage.capabilities.1.title'),
-      desc: t('homepage.capabilities.1.desc'),
+      title: "Advanced Analytics",
+      desc: "Get detailed insights into your inventory performance and business metrics.",
       learnMore: "#",
     },
     {
       icon: <Shield className="h-12 w-12" />,
-      title: t('homepage.capabilities.2.title'),
-      desc: t('homepage.capabilities.2.desc'),
+      title: "Secure Platform",
+      desc: "Enterprise-grade security with 99.9% uptime guarantee for your business data.",
       learnMore: "#",
     },
   ];
   // --- EINDE CAPABILITIES DATA ---
 
   // --- BEGIN FEATURE DATA ---
-  const landingFeatures = (() => {
-    try {
-      const items = t('features.items', { returnObjects: true });
-      if (Array.isArray(items)) {
-        return items.map((feature, index) => ({
-          ...feature,
-          img: index === 0 ? "/optimized/image.png" : index === 1 ? "/optimized/analytics.png" : "/optimized/mobile.png",
-          reverse: index === 1,
-          icon: index === 0 ? <Package className="h-12 w-12 text-blue-600" /> : index === 1 ? <BarChart3 className="h-12 w-12 text-green-600" /> : <Smartphone className="h-12 w-12 text-purple-600" />
-        }));
-      }
-    } catch (error) {
-      console.warn('Translation error for features.items:', error);
+  const landingFeatures = [
+    {
+      title: "Smart Inventory Management",
+      desc: "Take control of your stock with our intuitive inventory management system designed for growing businesses.",
+      img: "/optimized/image.png",
+      reverse: false,
+      features: [
+        "Real-time stock tracking",
+        "Automated low stock alerts",
+        "Multi-location support",
+        "Barcode scanning integration"
+      ],
+      icon: <Package className="h-12 w-12 text-blue-600" />
+    },
+    {
+      title: "Advanced Analytics Dashboard",
+      desc: "Make data-driven decisions with comprehensive analytics and reporting tools for your inventory performance.",
+      img: "/optimized/analytics.png",
+      reverse: true,
+      features: [
+        "Sales performance metrics",
+        "Inventory turnover analysis",
+        "Profit margin tracking",
+        "Custom report generation"
+      ],
+      icon: <BarChart3 className="h-12 w-12 text-green-600" />
+    },
+    {
+      title: "Mobile-First Experience",
+      desc: "Manage your inventory on the go with our mobile-optimized interface that works seamlessly across all devices.",
+      img: "/optimized/mobile.png",
+      reverse: false,
+      features: [
+        "Mobile barcode scanning",
+        "Offline functionality",
+        "Push notifications",
+        "Touch-friendly interface"
+      ],
+      icon: <Smartphone className="h-12 w-12 text-purple-600" />
     }
-    // Fallback data
-    return [
-      {
-        title: t('features.fallback.items.0.title'),
-        desc: t('features.fallback.items.0.desc'),
-        img: "/optimized/image.png",
-        reverse: false,
-        features: getTranslationArray('features.fallback.items.0.features'),
-        icon: <Package className="h-12 w-12 text-blue-600" />
-      },
-      {
-        title: t('features.fallback.items.1.title'),
-        desc: t('features.fallback.items.1.desc'),
-        img: "/optimized/analytics.png",
-        reverse: true,
-        features: getTranslationArray('features.fallback.items.1.features'),
-        icon: <BarChart3 className="h-12 w-12 text-green-600" />
-      },
-      {
-        title: t('features.fallback.items.2.title'),
-        desc: t('features.fallback.items.2.desc'),
-        img: "/optimized/mobile.png",
-        reverse: false,
-        features: getTranslationArray('features.fallback.items.2.features'),
-        icon: <Smartphone className="h-12 w-12 text-purple-600" />
-      }
-    ];
-  })();
+  ];
   // --- EINDE FEATURE DATA ---
 
   // Lead capture state
@@ -595,8 +595,8 @@ export const HomePage = () => {
     {
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
-      "name": t('structuredData.softwareName'),
-      "description": t('structuredData.softwareDescription'),
+      "name": "StockFlow - Smart Inventory Management",
+      "description": "Professional inventory management software for growing businesses. Track stock levels, manage suppliers, and grow your business with our powerful yet simple platform.",
       "applicationCategory": "BusinessApplication",
       "operatingSystem": "Web Browser",
       "browserRequirements": "Requires JavaScript. Requires HTML5.",
@@ -647,8 +647,8 @@ export const HomePage = () => {
     {
       "@context": "https://schema.org",
       "@type": "WebPage",
-      "name": t('homepage.title'),
-      "description": t('homepage.description'),
+      "name": "Smart Inventory Management",
+      "description": "Track stock levels, manage suppliers, and grow your business with our powerful yet simple inventory management platform.",
       "url": "https://www.stockflow.be/",
       "mainEntity": {
         "@type": "SoftwareApplication",
@@ -694,8 +694,8 @@ export const HomePage = () => {
     {
       "@context": "https://schema.org",
       "@type": "VideoObject",
-      "name": t('structuredData.videoName'),
-      "description": t('structuredData.videoDescription'),
+      "name": "StockFlow Inventory Management Demo",
+      "description": "Watch how StockFlow helps businesses manage their inventory efficiently with real-time tracking and analytics.",
       "thumbnailUrl": ["https://www.stockflow.be/Inventory-Management.png"],
       "uploadDate": "2024-01-01",
       "contentUrl": "https://www.stockflow.be/intro_vid.mp4",
@@ -920,8 +920,8 @@ export const HomePage = () => {
         `}</script>
       </Helmet>
       <SEO
-        title={`${t('homepage.title')} - ${t('homepage.subtitle')} | StockFlow`}
-        description={t('homepage.description')}
+        title="Smart Inventory Management - For Growing Businesses | StockFlow"
+        description="Track stock levels, manage suppliers, and grow your business with our powerful yet simple inventory management platform."
         keywords="free inventory management software, stock management software, inventory tracking software, warehouse management system, WMS software, stock control software, inventory management system, warehouse software, stock tracking, inventory control, warehouse management, stock management, inventory tracking, warehouse automation, stock management software, warehouse operations, inventory control system, warehouse management software, WMS platform, stock management platform, inventory management platform, warehouse management solution, stock control system, warehouse operations management, inventory management software, warehouse management platform, stock tracking system, warehouse management tools, inventory management tools, warehouse software solution, stock management platform, warehouse management software, inventory control software, warehouse management system software, WMS platform, warehouse management tools, inventory tracking platform, stock management tools, warehouse optimization software, supply chain software, logistics management, warehouse efficiency software, inventory management platform, stock control software, warehouse operations software, inventory tracking tools, warehouse management solution software, stock management system, warehouse automation software, inventory control platform, warehouse management software solution, WMS software solution, warehouse management platform software, stock tracking platform, warehouse management tools software, inventory management tools software, warehouse software platform, stock management platform software, warehouse management software platform, inventory control software platform, warehouse management system platform, WMS platform software, warehouse management tools platform, inventory tracking platform software, stock management tools platform, warehouse optimization platform, supply chain platform, logistics platform, warehouse efficiency platform, inventory management platform software, stock control platform software, warehouse operations platform software, inventory tracking platform tools, warehouse management solution platform, stock management system platform, warehouse automation platform software, inventory control platform software, warehouse management software platform solution, WMS software platform solution, warehouse management platform solution, stock tracking platform solution, warehouse management tools platform solution, inventory management tools platform solution, warehouse software platform solution, stock management platform solution, warehouse management software platform solution, inventory control software platform solution, warehouse management system platform solution, WMS platform solution, warehouse management tools platform solution, inventory tracking platform solution, stock management tools platform solution, warehouse optimization platform solution, supply chain platform solution, logistics platform solution, warehouse efficiency platform solution, inventory management platform solution, stock control platform solution, warehouse operations platform solution, inventory tracking platform solution, warehouse management solution platform solution, stock management system platform solution, warehouse automation platform solution, inventory control platform solution"
         url="https://www.stockflow.be/"
         hreflang={[
@@ -964,9 +964,9 @@ export const HomePage = () => {
             {/* Main headline - SEO optimized H1 */}
             <FadeInWhenVisible>
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-                <span className="block text-gray-900">{t('homepage.title')}</span>
+                <span className="block text-gray-900">Smart Inventory Management</span>
                 <span className="block text-blue-600 text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold mt-2">
-                  {t('homepage.subtitle')}
+                  For Growing Businesses
                 </span>
               </h1>
             </FadeInWhenVisible>
@@ -974,7 +974,7 @@ export const HomePage = () => {
             {/* Subheadline */}
             <FadeInWhenVisible>
               <p className="text-lg sm:text-xl md:text-2xl text-gray-600 mb-8 max-w-4xl mx-auto leading-relaxed">
-                {t('homepage.description')}
+                Track stock levels, manage suppliers, and grow your business with our powerful yet simple inventory management platform.
                 <br className="hidden sm:block" />
               </p>
             </FadeInWhenVisible>
@@ -987,9 +987,9 @@ export const HomePage = () => {
                     <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
                   ))}
                 </div>
-                <span className="text-gray-600 font-medium">{t('socialProof.rating')}</span>
+                <span className="text-gray-600 font-medium">4.9/5 rating</span>
                 <div className="h-4 w-px bg-gray-300"></div>
-                <span className="text-gray-600">{t('socialProof.users')}</span>
+                <span className="text-gray-600">3200+ happy users</span>
               </div>
             </FadeInWhenVisible>
 
@@ -1005,7 +1005,7 @@ export const HomePage = () => {
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
                   <Rocket className="h-5 w-5 mr-2 group-hover:animate-bounce" />
-                  {t('homepage.getStarted')}
+                  Get Started Free
                   <ArrowRight className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" />
                 </Button>
                 <Button 
@@ -1017,7 +1017,7 @@ export const HomePage = () => {
                   onClick={handleHowItWorksClick}
                 >
                   <Play className="h-5 w-5 mr-2" />
-                  {t('homepage.learnMore')}
+                  Learn More
                 </Button>
               </div>
             </FadeInWhenVisible>
@@ -1029,37 +1029,37 @@ export const HomePage = () => {
                   onClick={() => scrollToSection('modules-section')} 
                   className="text-blue-600 hover:text-blue-800 underline cursor-pointer"
                 >
-                  {t('navigation.modules')}
+                  Modules
                 </button>
                 <button 
                   onClick={() => scrollToSection('features-section')} 
                   className="text-blue-600 hover:text-blue-800 underline cursor-pointer"
                 >
-                  {t('navigation.features')}
+                  Features
                 </button>
                 <button 
                   onClick={() => scrollToSection('pricing-section')} 
                   className="text-blue-600 hover:text-blue-800 underline cursor-pointer"
                 >
-                  {t('navigation.pricing')}
+                  Pricing
                 </button>
                 <button 
                   onClick={() => scrollToSection('testimonials-section')} 
                   className="text-blue-600 hover:text-blue-800 underline cursor-pointer"
                 >
-                  {t('navigation.testimonials')}
+                  Testimonials
                 </button>
                 <button 
                   onClick={() => scrollToSection('video-section')} 
                   className="text-blue-600 hover:text-blue-800 underline cursor-pointer"
                 >
-                  {t('navigation.demo')}
+                  Demo
                 </button>
                 <button 
                   onClick={() => scrollToSection('contact-section')} 
                   className="text-blue-600 hover:text-blue-800 underline cursor-pointer"
                 >
-                  {t('navigation.contact')}
+                  Contact
                 </button>
               </div>
             </FadeInWhenVisible>
@@ -1071,7 +1071,12 @@ export const HomePage = () => {
               <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-600 mb-8">
                 {(() => {
                   try {
-                    const items = t('accessibility.trust', { returnObjects: true });
+                    const items = [
+                      'GDPR Compliant',
+                      'Fast & Reliable', 
+                      'Global Infrastructure',
+                      'Secure Data'
+                    ];
                     if (Array.isArray(items)) {
                       return items.map((trust, index) => (
                         <div key={index} className="flex items-center gap-2">
@@ -1087,7 +1092,12 @@ export const HomePage = () => {
                     console.warn('Translation error for accessibility.trust:', error);
                   }
                   // Fallback data
-                  return getTranslationArray('accessibility.trust').map((trust, index) => (
+                  return [
+                    'GDPR Compliant',
+                    'Fast & Reliable',
+                    'Global Infrastructure',
+                    'Secure Data'
+                  ].map((trust, index) => (
                     <div key={index} className="flex items-center gap-2">
                       {index === 0 ? <CheckCircle className="h-4 w-4 text-green-600" /> : 
                        index === 1 ? <Zap className="h-4 w-4 text-blue-600" /> :
@@ -1142,9 +1152,9 @@ export const HomePage = () => {
         <div className="max-w-6xl mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8 divide-x-0 md:divide-x md:divide-dashed md:divide-gray-200">
             {[
-              { icon: Users, value: '3200+', label: t('socialProof.users') },
-              { icon: Clock, value: '17k+', label: t('stats.hoursSaved') },
-              { icon: Package, value: '500k+', label: t('stats.productMovements') },
+              { icon: Users, value: '3200+', label: 'Happy Users' },
+              { icon: Clock, value: '17k+', label: 'Hours Saved' },
+              { icon: Package, value: '500k+', label: 'Product Movements' },
             ].map((s, i) => (
               <div key={i} className="flex flex-col items-center text-center md:px-6">
                 <s.icon className="h-6 w-6 sm:h-8 sm:w-8 text-gray-400 mb-2 sm:mb-3" />
@@ -1163,20 +1173,20 @@ export const HomePage = () => {
             <FadeInWhenVisible>
               <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-medium mb-6">
                 <Sparkles className="h-4 w-4" />
-                <span>{t('modules.title')}</span>
+                <span>Modules</span>
               </div>
             </FadeInWhenVisible>
             <FadeInWhenVisible>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
-                <span className="block text-gray-900">{t('modules.title')}</span>
+                <span className="block text-gray-900">Modules</span>
                 <span className="block bg-gradient-to-r from-blue-500 to-blue-900 bg-clip-text text-transparent">
-                  {t('modules.subtitle')}
+                  For Every Business Need
                 </span>
               </h2>
             </FadeInWhenVisible>
             <FadeInWhenVisible>
               <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                {t('modules.description')}
+                Comprehensive inventory management modules designed to streamline your business operations and boost productivity.
               </p>
             </FadeInWhenVisible>
           </div>
@@ -1209,7 +1219,7 @@ export const HomePage = () => {
                         onClick={() => scrollToSection('features-section')} 
                         className="text-blue-600 hover:text-blue-800 text-sm underline cursor-pointer"
                       >
-                        {t('navigation.learnMoreFeatures')}
+                        Learn More About Features
                       </button>
                     </div>
 
@@ -1239,20 +1249,20 @@ export const HomePage = () => {
             <FadeInWhenVisible>
               <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-medium mb-6">
                 <Euro className="h-4 w-4" />
-                <span>{t('pricing.badge')}</span>
+                <span>Transparent Pricing</span>
               </div>
             </FadeInWhenVisible>
             <FadeInWhenVisible>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
-                <span className="block text-gray-900">{t('pricing.title')}</span>
+                <span className="block text-gray-900">Simple Pricing</span>
                 <span className="block bg-gradient-to-r from-blue-500 to-blue-900 bg-clip-text text-transparent">
-                  {t('pricing.subtitle')}
+                  For Every Business Size
                 </span>
               </h2>
             </FadeInWhenVisible>
             <FadeInWhenVisible>
               <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                {t('pricing.description')}
+                Choose the perfect plan for your business. Start free and upgrade as you grow.
               </p>
             </FadeInWhenVisible>
           </div>
@@ -1267,35 +1277,40 @@ export const HomePage = () => {
                     <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-100 rounded-full mb-4">
                       <Package className="h-8 w-8 text-gray-600" />
                     </div>
-                    <h3 className="text-2xl font-bold text-gray-900 mb-2">{t('pricing.plans.basic.name')}</h3>
-                    <p className="text-gray-600 mb-6">{t('pricing.plans.basic.description')}</p>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2">Basic</h3>
+                    <p className="text-gray-600 mb-6">Perfect for small businesses starting out</p>
                     <div className="mb-6">
-                      <div className="text-4xl font-bold text-gray-900">{t('pricing.plans.basic.price')}</div>
-                      <div className="text-sm text-gray-500">{t('pricing.plans.basic.period')}</div>
+                      <div className="text-4xl font-bold text-gray-900">€0</div>
+                      <div className="text-sm text-gray-500">per month</div>
                     </div>
                   </div>
 
                   <div className="space-y-4 mb-8">
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600">{t('pricing.limits.products')}</span>
-                      <span className="font-medium">{t('pricing.plans.basic.limits.products')}</span>
+                      <span className="text-gray-600">Products</span>
+                      <span className="font-medium">100</span>
                     </div>
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600">{t('pricing.limits.orders')}</span>
-                      <span className="font-medium">{t('pricing.plans.basic.limits.orders')}</span>
+                      <span className="text-gray-600">Orders</span>
+                      <span className="font-medium">50</span>
                     </div>
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600">{t('pricing.limits.users')}</span>
-                      <span className="font-medium">{t('pricing.plans.basic.limits.users')}</span>
+                      <span className="text-gray-600">Users</span>
+                      <span className="font-medium">2</span>
                     </div>
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600">{t('pricing.limits.branches')}</span>
-                      <span className="font-medium">{t('pricing.plans.basic.limits.branches')}</span>
+                      <span className="text-gray-600">Branches</span>
+                      <span className="font-medium">1</span>
                     </div>
                   </div>
 
                   <ul className="space-y-3 mb-8">
-                    {getTranslationArray('pricing.plans.basic.features').map((feature, index) => (
+                    {[
+                      'Up to 100 products',
+                      'Basic inventory tracking',
+                      'Email support',
+                      'Mobile app access'
+                    ].map((feature, index) => (
                       <li key={index} className="flex items-center gap-3">
                         <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
                         <span className="text-gray-700">{feature}</span>
@@ -1307,7 +1322,7 @@ export const HomePage = () => {
                     className="w-full bg-gray-900 hover:bg-gray-800"
                     onClick={handleLoginClick}
                   >
-                    {t('pricing.plans.basic.startButton')}
+                    Get Started Free
                   </Button>
                 </div>
               </div>
@@ -1319,7 +1334,7 @@ export const HomePage = () => {
                 <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                   <div className="bg-gradient-to-r from-blue-500 to-blue-900 text-white px-4 py-2 rounded-full text-sm font-semibold flex items-center gap-2">
                     <Star className="h-4 w-4" />
-                    {t('pricing.mostPopular')}
+                    Most Popular
                   </div>
                 </div>
                 
@@ -1328,35 +1343,40 @@ export const HomePage = () => {
                     <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
                       <Zap className="h-8 w-8 text-blue-600" />
                     </div>
-                    <h3 className="text-2xl font-bold text-gray-900 mb-2">{t('pricing.plans.growth.name')}</h3>
-                    <p className="text-gray-600 mb-6">{t('pricing.plans.growth.description')}</p>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2">Growth</h3>
+                    <p className="text-gray-600 mb-6">Ideal for growing businesses</p>
                     <div className="mb-6">
-                      <div className="text-4xl font-bold text-gray-900">{t('pricing.plans.growth.price')}</div>
-                      <div className="text-sm text-gray-500">{t('pricing.plans.growth.period')}</div>
+                      <div className="text-4xl font-bold text-gray-900">€29</div>
+                      <div className="text-sm text-gray-500">per month</div>
                     </div>
                   </div>
 
                   <div className="space-y-4 mb-8">
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600">{t('pricing.limits.products')}</span>
-                      <span className="font-medium">{t('pricing.plans.growth.limits.products')}</span>
+                      <span className="text-gray-600">Products</span>
+                      <span className="font-medium">1000</span>
                     </div>
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600">{t('pricing.limits.orders')}</span>
-                      <span className="font-medium">{t('pricing.plans.growth.limits.orders')}</span>
+                      <span className="text-gray-600">Orders</span>
+                      <span className="font-medium">500</span>
                     </div>
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600">{t('pricing.limits.users')}</span>
-                      <span className="font-medium">{t('pricing.plans.growth.limits.users')}</span>
+                      <span className="text-gray-600">Users</span>
+                      <span className="font-medium">10</span>
                     </div>
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600">{t('pricing.limits.branches')}</span>
-                      <span className="font-medium">{t('pricing.plans.growth.limits.branches')}</span>
+                      <span className="text-gray-600">Branches</span>
+                      <span className="font-medium">5</span>
                     </div>
                   </div>
 
                   <ul className="space-y-3 mb-8">
-                    {getTranslationArray('pricing.plans.growth.features').map((feature, index) => (
+                    {[
+                      'Up to 1000 products',
+                      'Advanced analytics',
+                      'Priority support',
+                      'Custom reports'
+                    ].map((feature, index) => (
                       <li key={index} className="flex items-center gap-3">
                         <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
                         <span className="text-gray-700">{feature}</span>
@@ -1368,7 +1388,7 @@ export const HomePage = () => {
                     className="w-full bg-blue-600 hover:bg-blue-700"
                     onClick={handlePricingClick}
                   >
-                    {t('pricing.plans.growth.startButton')}
+                    Start 14 day free trial
                   </Button>
                 </div>
               </div>
@@ -1382,35 +1402,40 @@ export const HomePage = () => {
                     <div className="inline-flex items-center justify-center w-16 h-16 bg-purple-100 rounded-full mb-4">
                       <Crown className="h-8 w-8 text-purple-600" />
                     </div>
-                    <h3 className="text-2xl font-bold text-gray-900 mb-2">{t('pricing.plans.premium.name')}</h3>
-                    <p className="text-gray-600 mb-6">{t('pricing.plans.premium.description')}</p>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2">Premium</h3>
+                    <p className="text-gray-600 mb-6">For large enterprises</p>
                     <div className="mb-6">
-                      <div className="text-4xl font-bold text-gray-900">{t('pricing.plans.premium.price')}</div>
-                      <div className="text-sm text-gray-500">{t('pricing.plans.premium.period')}</div>
+                      <div className="text-4xl font-bold text-gray-900">€99</div>
+                      <div className="text-sm text-gray-500">per month</div>
                     </div>
                   </div>
 
                   <div className="space-y-4 mb-8">
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600">{t('pricing.limits.products')}</span>
-                      <span className="font-medium text-green-600">{t('pricing.plans.premium.limits.products')}</span>
+                      <span className="text-gray-600">Products</span>
+                      <span className="font-medium text-green-600">Unlimited</span>
                     </div>
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600">{t('pricing.limits.orders')}</span>
-                      <span className="font-medium text-green-600">{t('pricing.plans.premium.limits.orders')}</span>
+                      <span className="text-gray-600">Orders</span>
+                      <span className="font-medium text-green-600">Unlimited</span>
                     </div>
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600">{t('pricing.limits.users')}</span>
-                      <span className="font-medium text-green-600">{t('pricing.plans.premium.limits.users')}</span>
+                      <span className="text-gray-600">Users</span>
+                      <span className="font-medium text-green-600">Unlimited</span>
                     </div>
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600">{t('pricing.limits.branches')}</span>
-                      <span className="font-medium text-green-600">{t('pricing.plans.premium.limits.branches')}</span>
+                      <span className="text-gray-600">Branches</span>
+                      <span className="font-medium text-green-600">Unlimited</span>
                     </div>
                   </div>
 
                   <ul className="space-y-3 mb-8">
-                    {getTranslationArray('pricing.plans.premium.features').map((feature, index) => (
+                    {[
+                      'Unlimited products',
+                      'Dedicated support',
+                      'Custom integrations',
+                      'Advanced security'
+                    ].map((feature, index) => (
                       <li key={index} className="flex items-center gap-3">
                         <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
                         <span className="text-gray-700">{feature}</span>
@@ -1422,7 +1447,7 @@ export const HomePage = () => {
                     className="w-full bg-purple-600 hover:bg-purple-700"
                     onClick={handlePricingClick}
                   >
-                    {t('pricing.plans.premium.startButton')}
+                    Start 14 day free trial
                   </Button>
                 </div>
               </div>
@@ -1435,18 +1460,21 @@ export const HomePage = () => {
               <div className="max-w-4xl mx-auto">
                 <div className="flex items-center justify-center mb-4">
                   <Clock className="h-8 w-8 text-blue-600 mr-3" />
-                  <h3 className="text-2xl font-bold text-gray-900">{t('pricing.trial.title')}</h3>
+                  <h3 className="text-2xl font-bold text-gray-900">Free Trial</h3>
                 </div>
                 <p className="text-gray-600 mb-6">
-                  {t('pricing.trial.description')}
+                  Try all features free for 14 days. No credit card required.
                 </p>
-                <div className="grid md:grid-cols-3 gap-6 text-left">
-                  {getTranslationArray('pricing.trial.benefits').map((benefit, index) => (
-                    <div key={index} className="flex items-start">
+                <div className="grid md:grid-cols-3 gap-6 text-center">
+                  {[
+                    'Full access to all features',
+                    'No credit card required',
+                    'Cancel anytime',
+                  ].map((benefit, index) => (
+                    <div key={index} className="flex items-center justify-center">
                       <CheckCircle className="h-5 w-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
                       <div>
-                        <h4 className="font-semibold text-gray-900">{benefit.title}</h4>
-                        <p className="text-sm text-gray-600">{benefit.description}</p>
+                        <h4 className="font-semibold text-gray-900">{benefit}</h4>
                       </div>
                     </div>
                   ))}
@@ -1467,20 +1495,20 @@ export const HomePage = () => {
             <FadeInWhenVisible>
               <div className="inline-flex items-center gap-2 bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-medium mb-6">
                 <Award className="h-4 w-4" />
-                <span>{t('badges.features')}</span>
+                <span>Features</span>
               </div>
             </FadeInWhenVisible>
             <FadeInWhenVisible>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
-                <span className="block text-gray-900">{t('features.title')}</span>
+                <span className="block text-gray-900">Features</span>
                 <span className="block bg-gradient-to-r from-blue-500 to-blue-900 bg-clip-text text-transparent">
-                  {t('features.subtitle')}
+                  Everything You Need
                 </span>
               </h2>
             </FadeInWhenVisible>
             <FadeInWhenVisible>
               <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                {t('features.description')}
+                Powerful inventory management features that help you stay organized, save time, and grow your business.
               </p>
             </FadeInWhenVisible>
           </div>
@@ -1531,7 +1559,7 @@ export const HomePage = () => {
                       onClick={handleLoginClick}
                     >
                       <Rocket className="h-4 w-4 mr-2" />
-                      {t('buttons.tryNowFree')}
+                      Try Now Free
                     </Button>
                   </FadeInWhenVisible>
                 </div>
@@ -1579,20 +1607,20 @@ export const HomePage = () => {
             <FadeInWhenVisible>
               <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-medium mb-6">
                 <Play className="h-4 w-4" />
-                <span>{t('badges.video')}</span>
+                <span>Demo</span>
               </div>
             </FadeInWhenVisible>
             <FadeInWhenVisible>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
-                <span className="block text-gray-900">{t('video.title')}</span>
+                <span className="block text-gray-900">See It In Action</span>
                 <span className="block bg-gradient-to-r from-blue-500 to-blue-900 bg-clip-text text-transparent">
-                  {t('video.subtitle')}
+                  Watch Our Demo
                 </span>
               </h2>
             </FadeInWhenVisible>
             <FadeInWhenVisible>
               <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                {t('video.description')}
+                Discover how easy it is to manage your inventory with our intuitive platform. Watch our demo and see the difference.
               </p>
             </FadeInWhenVisible>
           </div>
@@ -1609,7 +1637,7 @@ export const HomePage = () => {
                     onPlay={() => logger.info('Video play', { id: 'intro-video' })}
                   >
                     <source src="/intro_vid.mp4" type="video/mp4" />
-                    {t('video.fallback')}
+                    Video not available
                   </video>
                 </div>
               </div>
@@ -1618,7 +1646,11 @@ export const HomePage = () => {
               <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
                 {(() => {
                   try {
-                    const benefits = t('videoBenefits', { returnObjects: true });
+                    const benefits = [
+                      { title: "3 minutes", description: "To add your first products" },
+                      { title: "Immediate results", description: "See your inventory overview right away" },
+                      { title: "Team ready", description: "Invite your team and start working together" }
+                    ];
                     if (Array.isArray(benefits)) {
                       return benefits.map((benefit, index) => (
                         <div key={index} className="text-center p-6 bg-white rounded-xl shadow-lg border border-gray-100">
@@ -1636,11 +1668,11 @@ export const HomePage = () => {
                     console.warn('Translation error for videoBenefits:', error);
                   }
                   // Fallback data
-                  return getTranslationArray('fallback.videoBenefits', [
-                    { title: "3 minuten", description: "Om je eerste producten toe te voegen" },
-                    { title: "Direct resultaat", description: "Zie meteen je voorraad overzicht" },
-                    { title: "Team klaar", description: "Nodig je team uit en begin samen" }
-                  ]).map((benefit, index) => (
+                  return [
+                    { title: "3 minutes", description: "To add your first products" },
+                    { title: "Immediate results", description: "See your inventory overview right away" },
+                    { title: "Team ready", description: "Invite your team and start working together" }
+                  ].map((benefit, index) => (
                     <div key={index} className="text-center p-6 bg-white rounded-xl shadow-lg border border-gray-100">
                       <div className="inline-flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full mb-4">
                         {index === 0 ? <Clock className="h-6 w-6 text-blue-600" /> : 
@@ -1663,11 +1695,11 @@ export const HomePage = () => {
         <div className="fixed inset-x-0 bottom-0 z-50">
           <div className="mx-auto max-w-6xl m-4 rounded-lg bg-white shadow-xl border border-gray-200 p-4 flex flex-col md:flex-row items-start md:items-center gap-3">
             <p className="text-sm text-gray-700">
-              {t('alerts.cookieConsent')}
+              We use cookies to improve your experience on our website
             </p>
             <div className="flex gap-2 ml-auto">
-              <Button variant="outline" className="border-gray-300" onClick={() => setShowCookieBanner(false)}>{t('alerts.cookieDecline')}</Button>
-              <Button className="bg-blue-600 text-white hover:bg-blue-700" onClick={acceptCookies}>{t('alerts.cookieAccept')}</Button>
+              <Button variant="outline" className="border-gray-300" onClick={() => setShowCookieBanner(false)}>Decline</Button>
+              <Button className="bg-blue-600 text-white hover:bg-blue-700" onClick={acceptCookies}>Accept</Button>
             </div>
           </div>
         </div>
@@ -1712,15 +1744,17 @@ export const HomePage = () => {
             </FadeInWhenVisible>
             <FadeInWhenVisible>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
-                <span className="block text-gray-900">{t('testimonials.sectionTitle')}</span>
+                <span className="block text-gray-900">Users Tell About Their Success </span>
                 <span className="block bg-gradient-to-r from-blue-500 to-blue-900 bg-clip-text text-transparent">
-                  {t('testimonials.sectionSubtitle')}
+                What our customers say
                 </span>
               </h2>
             </FadeInWhenVisible>
             <FadeInWhenVisible>
               <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                {t('testimonials.sectionDescription')}
+              Discover how businesses have transformed their inventory management and save thousands of euros.
+
+
               </p>
             </FadeInWhenVisible>
           </div>
@@ -1847,30 +1881,30 @@ export const HomePage = () => {
       <section id="contact-section" className="bg-gray-50 py-12 md:py-20">
         <div className="max-w-4xl mx-auto px-4">
           <div className="text-center mb-8 md:mb-12">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 px-4">{t('contact.title')}</h2>
-            <p className="text-sm sm:text-base md:text-lg text-gray-600 px-4">{t('contact.subtitle')}</p>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 px-4">Questions? Contact us</h2>
+            <p className="text-sm sm:text-base md:text-lg text-gray-600 px-4">We usually respond within 1 hour.</p>
           </div>
           <form onSubmit={handleSubmit(onSubmitContact)} className="bg-white rounded-lg shadow-md p-6 space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">{t('contact.form.name')}</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
                 <Input {...register('name', { required: true, minLength: 2 })} placeholder={t('contact.form.namePlaceholder')} />
-                {errors.name && <p className="text-xs text-red-600 mt-1">{t('contact.form.nameError')}</p>}
+                {errors.name && <p className="text-xs text-red-600 mt-1">Name is required</p>}
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">{t('contact.form.email')}</label>
-                <Input type="email" {...register('email', { required: true, pattern: /.+@.+\..+/ })} placeholder={t('contact.form.emailPlaceholder')} />
-                {errors.email && <p className="text-xs text-red-600 mt-1">{t('contact.form.emailError')}</p>}
+                <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                  <Input type="email" {...register('email', { required: true, pattern: /.+@.+\..+/ })} placeholder="your@company.com" />
+                {errors.email && <p className="text-xs text-red-600 mt-1">Email is required</p>}
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">{t('contact.form.message')}</label>
-              <Textarea rows={5} {...register('message', { required: true, minLength: 10 })} placeholder={t('contact.form.messagePlaceholder')} />
+              <label className="block text-sm font-medium text-gray-700 mb-1">Message</label>
+              <Textarea rows={5} {...register('message', { required: true, minLength: 10 })} placeholder="Write your message here..." />
               {errors.message && <p className="text-xs text-red-600 mt-1">{t('contact.form.messageError')}</p>}
             </div>
             <div className="flex justify-end">
               <Button type="submit" disabled={isSubmitting} className="bg-blue-600 text-white hover:bg-blue-700">
-                {isSubmitting ? t('contact.form.submitting') : t('contact.form.submit')}
+                {isSubmitting ? 'Sending...' : 'Send'}
               </Button>
             </div>
           </form>
@@ -1890,22 +1924,22 @@ export const HomePage = () => {
           <FadeInWhenVisible>
             <div className="inline-flex items-center gap-2 bg-white/20 text-white px-4 py-2 rounded-full text-sm font-medium mb-8">
               <Rocket className="h-4 w-4" />
-              <span>{t('finalCta.banner')}</span>
+              <span>Start your free trial</span>
             </div>
           </FadeInWhenVisible>
 
           <FadeInWhenVisible>
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-white leading-tight">
-              <span className="block">{t('finalCta.title')}</span>
+              <span className="block">Start your free trial</span>
               <span className="block bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent">
-                {t('finalCta.titleHighlight')}
+                No credit card required
               </span>
             </h2>
           </FadeInWhenVisible>
 
           <FadeInWhenVisible>
             <p className="text-lg sm:text-xl md:text-2xl mb-8 text-white/90 max-w-4xl mx-auto leading-relaxed">
-              {t('finalCta.subtitle')}
+              Start your free trial and see how StockFlow can help your business.
             </p>
           </FadeInWhenVisible>
 
@@ -1914,7 +1948,11 @@ export const HomePage = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 max-w-4xl mx-auto">
               {(() => {
                 try {
-                  const benefits = t('finalCta.benefits', { returnObjects: true });
+                  const benefits = [
+                    "Start within 2 minutes",
+                    "100% safe and free",
+                    "Professional support"
+                  ];
                   if (Array.isArray(benefits)) {
                     return benefits.map((benefit, index) => (
                       <div key={index} className="flex items-center justify-center gap-3 text-white/90">
@@ -1928,14 +1966,14 @@ export const HomePage = () => {
                     ));
                   }
                 } catch (error) {
-                  console.warn('Translation error for finalCta.benefits:', error);
+                  console.warn('Translation error for benefits:', error);
                 }
                 // Fallback data
-                return getTranslationArray('fallback.finalCtaBenefits', [
-                  "Start binnen 2 minuten",
-                  "100% veilig en gratis",
-                  "Professionele support"
-                ]).map((benefit, index) => (
+                return [
+                  "Start within 2 minutes",
+                  "100% safe and free",
+                  "Professional support"
+                ].map((benefit, index) => (
                   <div key={index} className="flex items-center justify-center gap-3 text-white/90">
                     <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
                       {index === 0 ? <Zap className="h-6 w-6" /> : 
@@ -1960,7 +1998,7 @@ export const HomePage = () => {
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-100/30 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
                   <Rocket className="h-5 w-5 mr-2 group-hover:animate-bounce" />
-                  {t('finalCta.button')}
+                    Start your free trial
                   <ArrowRight className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
               <Button 
@@ -1971,7 +2009,7 @@ export const HomePage = () => {
                 onClick={handleHowItWorksClick}
               >
                 <Play className="h-5 w-5 mr-2" />
-                {t('finalCta.demoButton')}
+                Demo
               </Button>
             </div>
           </FadeInWhenVisible>
@@ -1981,7 +2019,12 @@ export const HomePage = () => {
             <div className="flex flex-wrap justify-center gap-6 text-sm text-white/80 mb-8">
               {(() => {
                 try {
-                  const trust = t('accessibility.trust', { returnObjects: true });
+                  const trust = [
+                    "No credit card required",
+                    "Instant access",
+                    "GDPR-compliant",
+                    "100% secure"
+                  ];
                   if (Array.isArray(trust)) {
                     return trust.map((trustItem, index) => (
                       <div key={index} className="flex items-center gap-2">
@@ -1994,15 +2037,15 @@ export const HomePage = () => {
                     ));
                   }
                 } catch (error) {
-                  console.warn('Translation error for accessibility.trust:', error);
+                  console.warn('Translation error for trust:', error);
                 }
                 // Fallback data
-                return getTranslationArray('fallback.trustIndicators', [
-                  "Geen creditcard vereist",
-                  "Direct toegang",
+                return [
+                  "No credit card required",
+                  "Instant access",
                   "GDPR-compliant",
-                  "100% veilig"
-                ]).map((trustItem, index) => (
+                  "100% secure"
+                ].map((trustItem, index) => (
                   <div key={index} className="flex items-center gap-2">
                     {index === 0 ? <CheckCircle className="h-4 w-4" /> : 
                      index === 1 ? <Clock className="h-4 w-4" /> :
@@ -2020,10 +2063,10 @@ export const HomePage = () => {
             <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 max-w-2xl mx-auto border border-white/20">
               <div className="flex items-center justify-center gap-3 mb-3">
                 <Timer className="h-5 w-5 text-yellow-300" />
-                <span className="text-yellow-300 font-semibold">{t('finalCta.urgency.title')}</span>
+                <span className="text-yellow-300 font-semibold">Get started today and save hours every week with our inventory management system</span>
               </div>
               <p className="text-white/90 text-sm">
-                {t('finalCta.urgency.description')}
+                Get started today and save hours every week with our inventory management system
               </p>
             </div>
           </FadeInWhenVisible>
@@ -2033,7 +2076,11 @@ export const HomePage = () => {
             <div className="mt-12 grid grid-cols-2 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
               {(() => {
                 try {
-                  const stats = t('finalCta.stats', { returnObjects: true });
+                  const stats = [
+                    { number: "3200+", label: "Active SMEs" },
+                    { number: "9 hours", label: "Time saved/week" },
+                    { number: "4.8/5", label: "Customer satisfaction" }
+                  ];
                   if (Array.isArray(stats)) {
                     return stats.map((stat, index) => (
                       <div key={index} className="text-center">
@@ -2043,14 +2090,14 @@ export const HomePage = () => {
                     ));
                   }
                 } catch (error) {
-                  console.warn('Translation error for finalCta.stats:', error);
+                    console.warn('Translation error for stats:', error);
                 }
                 // Fallback data
-                return getTranslationArray('fallback.stats', [
-                  { number: "3200+", label: "Actieve KMO's" },
-                  { number: "9 uur", label: "Tijd bespaard/week" },
-                  { number: "4.8/5", label: "Klanttevredenheid" }
-                ]).map((stat, index) => (
+                return [
+                  { number: "3200+", label: "Active SMEs" },
+                  { number: "9 hours", label: "Time saved/week" },
+                  { number: "4.8/5", label: "Customer satisfaction" }
+                ].map((stat, index) => (
                   <div key={index} className="text-center">
                     <div className="text-2xl md:text-3xl font-bold text-white mb-1">{stat.number}</div>
                     <div className="text-sm text-white/70">{stat.label}</div>
@@ -2084,12 +2131,12 @@ export const HomePage = () => {
           }}
         />
         <p className="text-gray-400 text-base md:text-lg mb-6 leading-relaxed">
-          {t('footer.tagline')}
+          Smart inventory management for growing businesses
         </p>
         
         {/* Social Media Follow Buttons */}
         <div className="mb-6">
-          <h4 className="text-white font-semibold mb-3">{t('footer.followUs', 'Follow Us')}</h4>
+          <h4 className="text-white font-semibold mb-3">Follow Us</h4>
           <div className="flex gap-3">
             <a 
               href="https://www.facebook.com/profile.php?id=61578067034898"
@@ -2135,78 +2182,78 @@ export const HomePage = () => {
             onClick={() => scrollToSection('modules-section')} 
             className="text-gray-400 hover:text-white underline cursor-pointer"
           >
-            {t('navigation.modules')}
+            Modules
           </button>
           <button 
             onClick={() => scrollToSection('features-section')} 
             className="text-gray-400 hover:text-white underline cursor-pointer"
           >
-            {t('navigation.features')}
+            Features
           </button>
           <button 
             onClick={() => scrollToSection('pricing-section')} 
             className="text-gray-400 hover:text-white underline cursor-pointer"
           >
-            {t('navigation.pricing')}
+            Pricing
           </button>
           <button 
             onClick={() => scrollToSection('testimonials-section')} 
             className="text-gray-400 hover:text-white underline cursor-pointer"
           >
-            {t('navigation.testimonials')}
+            Testimonials
           </button>
         </div>
       </div>
       
       {/* Quick Links */}
       <div>
-        <h3 className="text-lg font-semibold mb-4">{t('footer.quickLinks')}</h3>
+        <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
         <div className="space-y-2">
           <button 
             onClick={() => scrollToSection('video-section')} 
             className="block text-gray-400 hover:text-white underline cursor-pointer"
           >
-            {t('navigation.demo')}
+            Demo
           </button>
           <button 
             onClick={() => scrollToSection('contact-section')} 
             className="block text-gray-400 hover:text-white underline cursor-pointer"
           >
-            {t('navigation.contact')}
+            Contact
           </button>
           <Link to="/auth" className="block text-gray-400 hover:text-white underline">
-            {t('navigation.login')}
+            Login
           </Link>
           <Link to="/pricing" className="block text-gray-400 hover:text-white underline">
-            {t('navigation.pricing')}
+            Pricing
           </Link>
         </div>
       </div>
       
       {/* Resources */}
       <div>
-        <h3 className="text-lg font-semibold mb-4">{t('footer.resources')}</h3>
+        <h3 className="text-lg font-semibold mb-4">Resources</h3>
         <div className="space-y-2">
           <button 
             onClick={() => scrollToSection('features-section')} 
             className="block text-gray-400 hover:text-white underline cursor-pointer"
           >
-            {t('footer.features')}
+            Features
           </button>
           <button 
             onClick={() => scrollToSection('testimonials-section')} 
             className="block text-gray-400 hover:text-white underline cursor-pointer"
           >
-            {t('footer.caseStudies')}
+            Case Studies
           </button>
           <button 
             onClick={() => scrollToSection('contact-section')} 
             className="block text-gray-400 hover:text-white underline cursor-pointer"
           >
-            {t('footer.support')}
+              Support
           </button>
           <Link to="/auth" className="block text-gray-400 hover:text-white underline">
-            {t('footer.getStarted')}
+            Get Started
           </Link>
         </div>
       </div>

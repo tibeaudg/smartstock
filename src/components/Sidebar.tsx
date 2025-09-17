@@ -27,7 +27,6 @@ import {
   Activity
 } 
 from 'lucide-react';
-import { useTranslation } from 'react-i18next';
 import { BranchSelector } from './BranchSelector';
 import { SupportModal } from './SupportModal';
 import React, { useState } from 'react';
@@ -63,7 +62,6 @@ interface MenuItem {
 }
 
 export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProps) => {
-  const { t } = useTranslation();
   const { productCount, isLoading } = useProductCount();
   const { isMobile } = useMobile();
   const { signOut } = useAuth();
@@ -105,59 +103,59 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
   };
   
   const settingsSubItems = [
-    { id: 'profile', label: t('navigation.profile'), path: '/dashboard/settings/profile' },
-    { id: 'branches', label: t('navigation.branches'), path: '/dashboard/settings/branches' },
-    { id: 'users', label: t('navigation.users'), path: '/dashboard/settings/users' },
-    { id: 'subscription', label: t('navigation.subscription'), path: '/dashboard/settings/subscription' },
+    { id: 'profile', label: 'Profile', path: '/dashboard/settings/profile' },
+    { id: 'branches', label: 'Branches', path: '/dashboard/settings/branches' },
+    { id: 'users', label: 'Users', path: '/dashboard/settings/users' },
+    { id: 'subscription', label: 'Subscription', path: '/dashboard/settings/subscription' },
   ];
 
   const adminSubItems = [
-    { id: 'overview', label: t('navigation.overview'), path: '/admin' },
+    { id: 'overview', label: 'Overview', path: '/admin' },
   ];
 
   const analyticsSubItems = [
-    { id: 'dashboard', label: t('navigation.dashboard'), path: '/dashboard/analytics' },
-    { id: 'predictions', label: t('navigation.predictions'), path: '/dashboard/analytics/predictions' },
-    { id: 'reports', label: t('navigation.reports'), path: '/dashboard/analytics/reports' },
-    { id: 'export', label: t('navigation.export'), path: '/dashboard/analytics/export' },
-    { id: 'api', label: t('navigation.api'), path: '/dashboard/analytics/api' },
-    { id: 'filtering', label: t('navigation.filtering'), path: '/dashboard/analytics/filtering' },
+    { id: 'dashboard', label: 'Dashboard', path: '/dashboard/analytics' },
+    { id: 'predictions', label: 'Predictions', path: '/dashboard/analytics/predictions' },
+    { id: 'reports', label: 'Reports', path: '/dashboard/analytics/reports' },
+    { id: 'export', label: 'Export', path: '/dashboard/analytics/export' },
+    { id: 'api', label: 'API', path: '/dashboard/analytics/api' },
+    { id: 'filtering', label: 'Filtering', path: '/dashboard/analytics/filtering' },
   ];
 
   const menuItems = isBlocked
     ? [
         { 
           id: 'settings', 
-          label: t('navigation.settings'), 
+          label: 'Settings', 
           icon: Settings, 
           path: '/dashboard/settings',
-          subItems: [{ id: 'invoicing', label: t('navigation.billing'), path: '/dashboard/settings/invoicing' }]
+          subItems: [{ id: 'invoicing', label: 'Billing', path: '/dashboard/settings/invoicing' }]
         },
       ]
     : [
-        { id: 'dashboard', label: t('navigation.dashboard'), icon: BarChart3, path: '/dashboard', end: true },
+        { id: 'dashboard', label: 'Dashboard', icon: BarChart3, path: '/dashboard', end: true },
 
         { 
           id: 'stock', 
-          label: t('navigation.products'), 
+          label: 'Products', 
           icon: Package, 
           path: '/dashboard/stock',
           subItems: [
-            { id: 'products', label: t('navigation.products'), path: '/dashboard/stock' },
-            { id: 'categories', label: t('navigation.categories'), path: '/dashboard/categories' },
-            { id: 'suppliers', label: t('navigation.suppliers'), path: '/dashboard/suppliers' }
+            { id: 'products', label: 'Products', path: '/dashboard/stock' },
+            { id: 'categories', label: 'Categories', path: '/dashboard/categories' },
+            { id: 'suppliers', label: 'Suppliers', path: '/dashboard/suppliers' }
           ]
         },
-        { id: 'transactions', label: t('navigation.movements'), icon: ShoppingCart, path: '/dashboard/transactions' },
+        { id: 'transactions', label: 'Movements', icon: ShoppingCart, path: '/dashboard/transactions' },
         ...(hasDeliveryNotes ? [{
           id: 'delivery-notes',
-          label: t('navigation.deliveryNotes'),
+          label: 'Delivery Notes',
           icon: Truck,
           path: '/dashboard/delivery-notes'
         }] : []),
         ...(hasAnalytics ? [{
           id: 'analytics',
-          label: 'Geavanceerde Analytics',
+          label: 'Advanced Analytics',
           icon: TrendingUp,
           path: '/dashboard/analytics',
           subItems: analyticsSubItems
@@ -165,14 +163,14 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
 
         { 
           id: 'settings', 
-          label: t('navigation.settings'), 
+          label: 'Settings', 
           icon: Settings, 
           path: '/dashboard/settings',
           subItems: settingsSubItems
         },
         ...(hasScanner ? [{
           id: 'scanner',
-          label: t('navigation.scanner'),
+          label: 'Scanner',
           icon: Scan,
           path: '/dashboard/scan'
         }] : []),
@@ -180,7 +178,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
           ? [
               { 
                 id: 'admin', 
-                label: t('navigation.admin'), 
+                label: 'Admin', 
                 icon: Users, 
                 path: '/admin',
                 subItems: adminSubItems
@@ -354,7 +352,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
                 </div>
                 {isOpen && (
                   <>
-                    <span className="font-medium ml-3 flex-1 text-left">{t('navigation.support')}</span>
+                    <span className="font-medium ml-3 flex-1 text-left">Support</span>
                     {unreadMessages > 0 && (
                       <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full mr-2">
                         {unreadMessages}
@@ -381,11 +379,11 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
                   focus:ring-2 focus:ring-red-500 focus:ring-offset-2
                   ${isOpen ? '' : 'justify-center'}
                 `}
-                aria-label="Afmelden"
+                aria-label="Sign out"
               >
                 <LogOut className="w-5 h-5 flex-shrink-0" />
                 {isOpen && (
-                  <span className="font-medium ml-3 flex-1 text-left">{t('navigation.logout')}</span>
+                  <span className="font-medium ml-3 flex-1 text-left">Logout</span>
                 )}
               </Button>
             </div>

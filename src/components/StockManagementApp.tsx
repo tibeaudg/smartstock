@@ -6,7 +6,6 @@ import { useAuth } from '@/hooks/useAuth';
 import { useBranches, BranchProvider } from '@/hooks/useBranches';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { UnreadMessagesProvider } from '@/hooks/UnreadMessagesContext';
-import { useTranslation } from 'react-i18next';
 
 function isLocalStorageAvailable() {
   try {
@@ -21,7 +20,6 @@ function isLocalStorageAvailable() {
 }
 
 const AppContent: React.FC = () => {
-  const { t } = useTranslation();
   const { userProfile, loading } = useAuth();
   const { hasNoBranches } = useBranches();
   const location = useLocation();
@@ -44,19 +42,19 @@ const AppContent: React.FC = () => {
   if (!isLocalStorageAvailable()) {
     return (
       <div style={{ padding: 32, textAlign: 'center', color: '#b91c1c', background: '#fef2f2', minHeight: '100vh' }}>
-        <h1 style={{ fontSize: 28, marginBottom: 16 }}>{t('app.storageUnavailable')}</h1>
+        <h1 style={{ fontSize: 28, marginBottom: 16 }}>Local Storage Unavailable</h1>
         <p style={{ marginBottom: 16 }}>
-          {t('app.storageUnavailableDescription')}
+          This application requires local storage to function properly. This might be due to:
           <ul style={{ textAlign: 'left', maxWidth: 400, margin: '16px auto' }}>
-            <li>{t('app.storageReasons.private')}</li>
-            <li>{t('app.storageReasons.cookies')}</li>
-            <li>{t('app.storageReasons.privacy')}</li>
-            <li>{t('app.storageReasons.inApp')}</li>
+            <li>Private browsing mode</li>
+            <li>Cookies disabled</li>
+            <li>Privacy settings</li>
+            <li>In-app browser restrictions</li>
           </ul>
           <br />
-          {t('app.storageSolution')}
+          Please enable local storage or use a different browser and try again.
         </p>
-        <button onClick={() => window.location.reload()} style={{ background: '#2563eb', color: 'white', padding: '10px 24px', borderRadius: 6, fontSize: 16, border: 'none' }}>{t('app.tryAgain')}</button>
+        <button onClick={() => window.location.reload()} style={{ background: '#2563eb', color: 'white', padding: '10px 24px', borderRadius: 6, fontSize: 16, border: 'none' }}>Try Again</button>
       </div>
     );
   }

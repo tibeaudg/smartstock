@@ -419,7 +419,7 @@ export const WebsiteAnalytics = () => {
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Website analytics laden...</p>
+          <p className="text-gray-600">Loading website analytics...</p>
         </div>
       </div>
     );
@@ -438,7 +438,7 @@ export const WebsiteAnalytics = () => {
                 {refreshing && <RefreshCw className="h-4 w-4 animate-spin text-blue-600" />}
               </CardTitle>
               <CardDescription>
-                Realtime website gedrag, klikpatronen en afhaker analyse
+                Real-time website behavior, click patterns and abandonment analysis
               </CardDescription>
             </div>
             <div className="flex items-center gap-2">
@@ -528,18 +528,18 @@ export const WebsiteAnalytics = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
             <div className="text-center p-4 bg-blue-50 rounded-lg">
               <div className="text-2xl font-bold text-blue-600">{ctaClicks}</div>
-              <div className="text-sm text-gray-600">CTA Klikken</div>
-              <div className="text-xs text-gray-500">"Registreer" & "Start Nu Gratis"</div>
+              <div className="text-sm text-gray-600">CTA Clicks</div>
+              <div className="text-xs text-gray-500">"Register" & "Start Free Now"</div>
             </div>
             <div className="text-center p-4 bg-green-50 rounded-lg">
               <div className="text-2xl font-bold text-green-600">{registrationStarted}</div>
-              <div className="text-sm text-gray-600">Registratie Gestart</div>
-              <div className="text-xs text-gray-500">Formulier geopend</div>
+              <div className="text-sm text-gray-600">Registration Started</div>
+              <div className="text-xs text-gray-500">Form opened</div>
             </div>
             <div className="text-center p-4 bg-purple-50 rounded-lg">
               <div className="text-2xl font-bold text-purple-600">{registrationCompleted}</div>
-              <div className="text-sm text-gray-600">Registratie Voltooid</div>
-              <div className="text-xs text-gray-500">Account aangemaakt</div>
+              <div className="text-sm text-gray-600">Registration Completed</div>
+              <div className="text-xs text-gray-500">Account created</div>
             </div>
             <div className="text-center p-4 bg-orange-50 rounded-lg">
               <div className="text-2xl font-bold text-orange-600">{registrationRate}%</div>
@@ -612,7 +612,7 @@ export const WebsiteAnalytics = () => {
               <div className="flex items-center">
                 <MousePointer className="h-8 w-8 text-purple-600" />
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Totaal Klikken</p>
+                  <p className="text-sm font-medium text-gray-600">Total Clicks</p>
                   <p className="text-2xl font-bold">{totalClicks.toLocaleString()}</p>
                   <p className="text-xs text-gray-500">{avgClicksPerDay} per dag</p>
                 </div>
@@ -719,8 +719,8 @@ export const WebsiteAnalytics = () => {
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center text-sm font-bold">2</div>
                   <div>
-                    <div className="font-semibold text-green-900">CTA Klikken</div>
-                    <div className="text-sm text-green-700">Klikken op "Registreer" of "Start Nu Gratis"</div>
+                    <div className="font-semibold text-green-900">CTA Clicks</div>
+                    <div className="text-sm text-green-700">Clicks op "Registreer" of "Start Nu Gratis"</div>
                   </div>
                 </div>
                 <div className="text-right">
@@ -735,8 +735,8 @@ export const WebsiteAnalytics = () => {
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center text-sm font-bold">3</div>
                   <div>
-                    <div className="font-semibold text-purple-900">Registratie Gestart</div>
-                    <div className="text-sm text-purple-700">Formulier geopend en ingevuld</div>
+                    <div className="font-semibold text-purple-900">Registration Started</div>
+                    <div className="text-sm text-purple-700">Form opened en ingevuld</div>
                   </div>
                 </div>
                 <div className="text-right">
@@ -751,7 +751,7 @@ export const WebsiteAnalytics = () => {
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 bg-orange-600 text-white rounded-full flex items-center justify-center text-sm font-bold">4</div>
                   <div>
-                    <div className="font-semibold text-orange-900">Registratie Voltooid</div>
+                    <div className="font-semibold text-orange-900">Registration Completed</div>
                     <div className="text-sm text-orange-700">Account succesvol aangemaakt</div>
                   </div>
                 </div>
@@ -815,7 +815,7 @@ export const WebsiteAnalytics = () => {
               <YAxis />
               <Tooltip />
               <Area type="monotone" dataKey="page_views" stackId="1" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} name="Paginaweergaven" />
-              <Area type="monotone" dataKey="clicks" stackId="1" stroke="#82ca9d" fill="#82ca9d" fillOpacity={0.6} name="Klikken" />
+              <Area type="monotone" dataKey="clicks" stackId="1" stroke="#82ca9d" fill="#82ca9d" fillOpacity={0.6} name="Clicks" />
               <Area type="monotone" dataKey="registrations" stackId="1" stroke="#ffc658" fill="#ffc658" fillOpacity={0.6} name="Registraties" />
               <Area type="monotone" dataKey="exits" stackId="1" stroke="#ff7300" fill="#ff7300" fillOpacity={0.6} name="Pagina Verlaten" />
             </AreaChart>
@@ -859,7 +859,7 @@ export const WebsiteAnalytics = () => {
                 <XAxis type="number" />
                 <YAxis dataKey="element" type="category" width={100} />
                 <Tooltip />
-                <Bar dataKey="clicks" fill="#82ca9d" name="Klikken" />
+                <Bar dataKey="clicks" fill="#82ca9d" name="Clicks" />
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
@@ -947,7 +947,7 @@ export const WebsiteAnalytics = () => {
                         page.abandonment_rate > 50 ? 'bg-yellow-100 text-yellow-800' :
                         'bg-green-100 text-green-800'
                       }`}>
-                        {page.abandonment_rate.toFixed(1)}% afhakers
+                        {page.abandonment_rate.toFixed(1)}% abandonment
                       </span>
                     </div>
                     <div className="text-sm text-gray-600">
@@ -1036,7 +1036,7 @@ export const WebsiteAnalytics = () => {
                 <tr className="border-b">
                   <th className="text-left py-2">Element</th>
                   <th className="text-left py-2">Pagina</th>
-                  <th className="text-right py-2">Klikken</th>
+                  <th className="text-right py-2">Clicks</th>
                   <th className="text-right py-2">Conversie Rate</th>
                 </tr>
               </thead>
@@ -1137,10 +1137,10 @@ export const WebsiteAnalytics = () => {
                       " Traffic blijft stabiel."
                     }
                     {clicksTrend > 0 ? 
-                      ` Klikken zijn met ${Math.abs(clicksTrend).toFixed(1)}% gestegen.` :
+                      ` Clicks zijn met ${Math.abs(clicksTrend).toFixed(1)}% gestegen.` :
                       clicksTrend < 0 ?
-                      ` Klikken zijn met ${Math.abs(clicksTrend).toFixed(1)}% gedaald.` :
-                      " Klikken blijven stabiel."
+                      ` Clicks zijn met ${Math.abs(clicksTrend).toFixed(1)}% gedaald.` :
+                      " Clicks blijven stabiel."
                     }
                   </p>
                 </div>

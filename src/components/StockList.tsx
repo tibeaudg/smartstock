@@ -41,18 +41,19 @@ import { VariantSelectionModal } from './VariantSelectionModal';
 import { useMobile } from '@/hooks/use-mobile';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { toast } from 'sonner';
+import { useTranslation } from 'react-i18next';
 
 const getStockStatus = (quantity: number, minLevel: number) => {
-  if (quantity === 0) return 'Op';
-  if (quantity <= minLevel) return 'Laag';
+  if (quantity === 0) return 'Out of Stock';
+  if (quantity <= minLevel) return 'Low Stock';
   return 'In Stock';
 };
 
 const getStockStatusVariant = (status: string) => {
   switch (status) {
     case 'In Stock': return 'success';
-    case 'Laag': return 'warning';
-    case 'Op': return 'destructive';
+    case 'Low Stock': return 'warning';
+    case 'Out of Stock': return 'destructive';
     default: return 'destructive';
   }
 };
@@ -164,6 +165,7 @@ const fetchProducts = async (branchId: string) => {
 
 export const StockList = () => {
   const { user, userProfile } = useAuth();
+  const { t } = useTranslation();
   const { activeBranch } = useBranches();
   const queryClient = useQueryClient();
   const { isMobile } = useMobile();

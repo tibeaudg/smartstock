@@ -95,7 +95,7 @@ export const EditProductModal = ({
           quantity: numericQuantity,
           unit_price: product.unit_price,
           reference_number: `STOCK_${actionType?.toUpperCase()}_${Date.now()}`,
-          notes: t('stock.notes.stockAdjustment', { action: actionType === 'in' ? t('stock.actions.added') : t('stock.actions.removed') }),
+          notes: `Stock ${actionType === 'in' ? 'added' : 'removed'} via product edit`,
           user_id: user.id, // Behoud user_id voor backward compatibility
           created_by: user.id, // Nieuwe kolom voor relaties
           branch_id: product.branch_id, // Add this if you have branch information
@@ -124,7 +124,7 @@ export const EditProductModal = ({
         throw new Error(`Fout bij het bijwerken van de voorraad: ${updateError.message}`);
       }
 
-      toast.success(t('stock.success.stockUpdated', { action: actionType === 'in' ? t('stock.actions.added') : t('stock.actions.removed') }));
+      toast.success(`Voorraad succesvol ${actionType === 'in' ? 'toegevoegd' : 'verwijderd'}`);
       onProductUpdated();
       // Invalideer relevante queries zodat data automatisch wordt gerefetched
       queryClient.invalidateQueries({ queryKey: ['products'] });
@@ -151,7 +151,7 @@ export const EditProductModal = ({
   if (!isOpen) return null;
 
   // Add this to show the action type
-  const actionTitle = actionType === 'in' ? 'Toevoegen' : 'Uithalen';
+  const actionTitle = actionType === 'in' ? 'Add Stock' : 'Remove Stock';
   const actionColor = actionType === 'in' ? 'text-green-600' : 'text-red-600';
 
   return (

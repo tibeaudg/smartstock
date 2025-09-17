@@ -586,49 +586,8 @@
     <xhtml:link rel="alternate" hreflang="ro" href="https://www.stockflow.be/ro/voorraadbeheer-webshop" />
   </url>
   <url>
-    <loc>https://www.stockflow.be/warehouse-management-system-hungary</loc>
-    <lastmod>2025-09-17T07:13:25.235Z</lastmod>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.stockflow.be/warehouse-management-system-hungary" />
-    <xhtml:link rel="alternate" hreflang="de" href="https://www.stockflow.be/de/warehouse-management-system-hungary" />
-    <xhtml:link rel="alternate" hreflang="fr" href="https://www.stockflow.be/fr/warehouse-management-system-hungary" />
-    <xhtml:link rel="alternate" hreflang="es" href="https://www.stockflow.be/es/warehouse-management-system-hungary" />
-    <xhtml:link rel="alternate" hreflang="it" href="https://www.stockflow.be/it/warehouse-management-system-hungary" />
-    <xhtml:link rel="alternate" hreflang="pl" href="https://www.stockflow.be/pl/warehouse-management-system-hungary" />
-    <xhtml:link rel="alternate" hreflang="hu" href="https://www.stockflow.be/hu/warehouse-management-system-hungary" />
-    <xhtml:link rel="alternate" hreflang="sv" href="https://www.stockflow.be/sv/warehouse-management-system-hungary" />
-    <xhtml:link rel="alternate" hreflang="th" href="https://www.stockflow.be/th/warehouse-management-system-hungary" />
-    <xhtml:link rel="alternate" hreflang="si" href="https://www.stockflow.be/si/warehouse-management-system-hungary" />
-    <xhtml:link rel="alternate" hreflang="ro" href="https://www.stockflow.be/ro/warehouse-management-system-hungary" />
-  </url>
-  <url>
-    <loc>https://www.stockflow.be/warehouse-management-system-sweden</loc>
-    <lastmod>2025-09-17T07:13:25.235Z</lastmod>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.stockflow.be/warehouse-management-system-sweden" />
-    <xhtml:link rel="alternate" hreflang="de" href="https://www.stockflow.be/de/warehouse-management-system-sweden" />
-    <xhtml:link rel="alternate" hreflang="fr" href="https://www.stockflow.be/fr/warehouse-management-system-sweden" />
-    <xhtml:link rel="alternate" hreflang="es" href="https://www.stockflow.be/es/warehouse-management-system-sweden" />
-    <xhtml:link rel="alternate" hreflang="it" href="https://www.stockflow.be/it/warehouse-management-system-sweden" />
-    <xhtml:link rel="alternate" hreflang="pl" href="https://www.stockflow.be/pl/warehouse-management-system-sweden" />
-    <xhtml:link rel="alternate" hreflang="hu" href="https://www.stockflow.be/hu/warehouse-management-system-sweden" />
-    <xhtml:link rel="alternate" hreflang="sv" href="https://www.stockflow.be/sv/warehouse-management-system-sweden" />
-    <xhtml:link rel="alternate" hreflang="th" href="https://www.stockflow.be/th/warehouse-management-system-sweden" />
-    <xhtml:link rel="alternate" hreflang="si" href="https://www.stockflow.be/si/warehouse-management-system-sweden" />
-    <xhtml:link rel="alternate" hreflang="ro" href="https://www.stockflow.be/ro/warehouse-management-system-sweden" />
-  </url>
-  <url>
-    <loc>https://www.stockflow.be/wms-software-thailand</loc>
-    <lastmod>2025-09-17T07:13:25.235Z</lastmod>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.stockflow.be/wms-software-thailand" />
-    <xhtml:link rel="alternate" hreflang="de" href="https://www.stockflow.be/de/wms-software-thailand" />
-    <xhtml:link rel="alternate" hreflang="fr" href="https://www.stockflow.be/fr/wms-software-thailand" />
-    <xhtml:link rel="alternate" hreflang="es" href="https://www.stockflow.be/es/wms-software-thailand" />
-    <xhtml:link rel="alternate" hreflang="it" href="https://www.stockflow.be/it/wms-software-thailand" />
-    <xhtml:link rel="alternate" hreflang="pl" href="https://www.stockflow.be/pl/wms-software-thailand" />
-    <xhtml:link rel="alternate" hreflang="hu" href="https://www.stockflow.be/hu/wms-software-thailand" />
-    <xhtml:link rel="alternate" hreflang="sv" href="https://www.stockflow.be/sv/wms-software-thailand" />
-    <xhtml:link rel="alternate" hreflang="th" href="https://www.stockflow.be/th/wms-software-thailand" />
-    <xhtml:link rel="alternate" hreflang="si" href="https://www.stockflow.be/si/wms-software-thailand" />
-    <xhtml:link rel="alternate" hreflang="ro" href="https://www.stockflow.be/ro/wms-software-thailand" />
+    <loc>https://www.stockflow.be/warehouse-management-system</loc>
+    <lastmod>2025-01-20T12:00:00.000Z</lastmod>
   </url>
   <url>
     <loc>https://www.stockflow.be/blog/voorraadbeheer-tips</loc>
