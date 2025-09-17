@@ -16,6 +16,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { ChatModal } from './ChatModal';
 import { useAuth } from '@/hooks/useAuth';
+import { useSubscription } from '@/hooks/useSubscription';
 import { toast } from 'sonner';
 
 interface SupportModalProps {
@@ -44,23 +45,26 @@ export const SupportModal: React.FC<SupportModalProps> = ({
   const [chatOpen, setChatOpen] = useState(false);
   const [phoneOpen, setPhoneOpen] = useState(false);
   const { userProfile } = useAuth();
+  const { currentTier } = useSubscription();
 
-  // Check if user is premium (has a paid plan)
-  const isPremium = userProfile?.selected_plan && userProfile.selected_plan !== 'free';
+  // Check plan access based on current tier
+  const isGrowthOrPremium = currentTier?.name === 'groei' || currentTier?.name === 'premium';
+  const isPremiumOnly = currentTier?.name === 'premium';
 
   const supportOptions: SupportOption[] = [
     {
       id: 'chat',
-      title: 'Chat met ons',
-      description: 'Direct contact met ons support team',
+      title: 'Chat with us',
+      description: 'Direct contact with our support team via chat',
       icon: MessageCircle,
       action: () => setChatOpen(true),
-      color: 'bg-blue-500'
+      color: 'bg-blue-500',
+      disabled: !isGrowthOrPremium
     },
     {
       id: 'videos',
       title: 'Instructievideo\'s',
-      description: 'Leer hoe je StockFlow optimaal gebruikt',
+      description: 'Learn how to use StockFlow optimally',
       icon: Play,
       action: () => {
         // Open instructievideo's pagina of modal
@@ -70,8 +74,8 @@ export const SupportModal: React.FC<SupportModalProps> = ({
     },
     {
       id: 'faq',
-      title: 'Veelgestelde vragen',
-      description: 'Vind snel antwoorden op veelgestelde vragen',
+      title: 'Frequently asked questions',
+      description: 'Find answers to frequently asked questions',
       icon: HelpCircle,
       action: () => {
         // Open FAQ pagina of modal
@@ -81,16 +85,17 @@ export const SupportModal: React.FC<SupportModalProps> = ({
     },
     {
       id: 'phone',
-      title: 'Bel ons',
-      description: 'Direct telefonisch contact met ons support team',
+      title: 'Call us',
+      description: 'Direct phone contact with our support team',
       icon: Phone,
       action: () => setPhoneOpen(true),
-      color: 'bg-orange-500'
+      color: 'bg-orange-500',
+      disabled: !isPremiumOnly
     },
     {
       id: 'email',
-      title: 'E-mail support',
-      description: 'inf@stockflow.be',
+      title: 'Email support',
+      description: 'info@stockflow.be', // TODO: Change to support@stockflow.be
       icon: Mail,
       action: () => {
         window.open('mailto:info@stockflow.be');
@@ -99,8 +104,8 @@ export const SupportModal: React.FC<SupportModalProps> = ({
     },
     {
       id: 'docs',
-      title: 'Documentatie',
-      description: 'Uitgebreide handleiding en API docs',
+      title: 'Documentation',
+      description: 'Extensive documentation and API documentation',
       icon: FileText,
       action: () => {
         window.open('/documentation', '_blank');
@@ -146,7 +151,7 @@ export const SupportModal: React.FC<SupportModalProps> = ({
           style={{ left: '50%', transform: 'translate(-50%, -50%)', width: '600px' }}
           onClick={(e) => e.stopPropagation()}
         >
-        <SupportContent onClose={onClose} supportOptions={supportOptions} isPremium={isPremium} />
+        <SupportContent onClose={onClose} supportOptions={supportOptions} isGrowthOrPremium={isGrowthOrPremium} isPremiumOnly={isPremiumOnly} />
       </div>
 
       {/* Mobile Position */}
@@ -154,12 +159,12 @@ export const SupportModal: React.FC<SupportModalProps> = ({
         className="absolute inset-x-4 top-1/2 -translate-y-1/2 md:hidden"
         onClick={(e) => e.stopPropagation()}
       >
-        <SupportContent onClose={onClose} supportOptions={supportOptions} isPremium={isPremium} />
+        <SupportContent onClose={onClose} supportOptions={supportOptions} isGrowthOrPremium={isGrowthOrPremium} isPremiumOnly={isPremiumOnly} />
         </div>
       </div>
 
-      {/* Chat Modal */}
-      {chatOpen && (
+      {/* Chat Modal - Only show for Growth and Premium users */}
+      {chatOpen && isGrowthOrPremium && (
         <ChatModal 
           open={chatOpen} 
           onClose={() => setChatOpen(false)} 
@@ -168,8 +173,8 @@ export const SupportModal: React.FC<SupportModalProps> = ({
         />
       )}
 
-      {/* Phone Modal */}
-      {phoneOpen && (
+      {/* Phone Modal - Only show for Premium users */}
+      {phoneOpen && isPremiumOnly && (
         <PhoneModal 
           open={phoneOpen} 
           onClose={() => setPhoneOpen(false)} 
@@ -183,10 +188,11 @@ export const SupportModal: React.FC<SupportModalProps> = ({
 interface SupportContentProps {
   onClose: () => void;
   supportOptions: SupportOption[];
-  isPremium: boolean;
+  isGrowthOrPremium: boolean;
+  isPremiumOnly: boolean;
 }
 
-const SupportContent: React.FC<SupportContentProps> = ({ onClose, supportOptions, isPremium }) => {
+const SupportContent: React.FC<SupportContentProps> = ({ onClose, supportOptions, isGrowthOrPremium, isPremiumOnly }) => {
   return (
     <div className="bg-white rounded-xl shadow-2xl w-full max-w-2xl mx-auto flex flex-col max-h-[700px] overflow-hidden">
       {/* Header */}
@@ -197,9 +203,9 @@ const SupportContent: React.FC<SupportContentProps> = ({ onClose, supportOptions
           </div>
           <div className="flex flex-col">
             <h2 className="text-xl font-bold text-gray-800">
-              Support & Hulp
+              Support & Help
             </h2>
-            <p className="text-sm text-gray-600">Hoe kunnen we je helpen?</p>
+            <p className="text-sm text-gray-600">How can we help you?</p>
           </div>
         </div>
         <Button
@@ -207,7 +213,7 @@ const SupportContent: React.FC<SupportContentProps> = ({ onClose, supportOptions
           size="sm"
           onClick={onClose}
           className="h-10 w-10 p-0 rounded-full hover:bg-gray-200 transition-colors"
-          aria-label="Support modal sluiten"
+              aria-label="Support modal close"
         >
           <X className="w-5 h-5" />
         </Button>
@@ -232,7 +238,7 @@ const SupportContent: React.FC<SupportContentProps> = ({ onClose, supportOptions
                       : 'border-gray-200 hover:border-gray-300 hover:shadow-md bg-white hover:bg-gray-50'
                     }
                   `}
-                  title={isDisabled ? 'Premium functie - Upgrade vereist' : undefined}
+                  title={isDisabled ? 'Premium feature - Upgrade required' : undefined}
                 >
                   <div className="flex items-start gap-4">
                     <div className={`
@@ -252,7 +258,7 @@ const SupportContent: React.FC<SupportContentProps> = ({ onClose, supportOptions
                         {option.title}
                         {isDisabled && (
                           <span className="ml-2 text-xs bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">
-                            Premium
+                            {option.id === 'chat' ? 'Growth+' : 'Premium'}
                           </span>
                         )}
                       </h3>
@@ -276,7 +282,7 @@ const SupportContent: React.FC<SupportContentProps> = ({ onClose, supportOptions
                 {/* Tooltip for disabled options */}
                 {isDisabled && (
                   <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap">
-                    Premium functie - Klik om te upgraden
+                    {option.id === 'chat' ? 'Growth+ plan required' : 'Premium plan required'} - Upgrade to access
                     <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
                   </div>
                 )}
@@ -288,12 +294,12 @@ const SupportContent: React.FC<SupportContentProps> = ({ onClose, supportOptions
 
         {/* Additional Info */}
         <div className="mt-8 p-4 bg-gray-50 rounded-lg">
-          <h4 className="font-semibold text-gray-900 mb-2">Snelle tips</h4>
+          <h4 className="font-semibold text-gray-900 mb-2">Quick tips</h4>
           <ul className="text-sm text-gray-600 space-y-1">
-            <li>• Gebruik de zoekfunctie om snel producten te vinden</li>
-            <li>• Scan barcodes voor snelle voorraadupdates</li>
-            <li>• Bekijk je dashboard voor een overzicht van je voorraad</li>
-            <li>• Stel notificaties in om op de hoogte te blijven</li>
+            <li>• Use the search function to find products quickly</li>
+            <li>• Scan barcodes for quick inventory updates</li>
+            <li>• View your dashboard for an overview of your inventory</li>
+            <li>• Set notifications to stay updated</li>
           </ul>
         </div>
       </div>
@@ -324,10 +330,10 @@ const PhoneModal: React.FC<PhoneModalProps> = ({
     try {
       await navigator.clipboard.writeText(phoneNumber);
       setCopied(true);
-      toast.success('Telefoonnummer gekopieerd!');
+      toast.success('Phone number copied!');
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
-      toast.error('Kon telefoonnummer niet kopiëren');
+      toast.error('Could not copy phone number');
     }
   };
 
@@ -422,9 +428,9 @@ const PhoneContent: React.FC<PhoneContentProps> = ({
           </div>
           <div className="flex flex-col">
             <h2 className="text-xl font-bold text-gray-800">
-              Telefoon Support
+              Phone Support
             </h2>
-            <p className="text-sm text-gray-600">Direct telefonisch contact</p>
+            <p className="text-sm text-gray-600">Direct phone contact</p>
           </div>
         </div>
         <Button
@@ -432,7 +438,7 @@ const PhoneContent: React.FC<PhoneContentProps> = ({
           size="sm"
           onClick={onClose}
           className="h-10 w-10 p-0 rounded-full hover:bg-gray-200 transition-colors"
-          aria-label="Phone modal sluiten"
+            aria-label="Phone modal close"
         >
           <X className="w-5 h-5" />
         </Button>
@@ -446,10 +452,10 @@ const PhoneContent: React.FC<PhoneContentProps> = ({
               {phoneNumber}
             </h3>
             <p className="text-gray-600">
-              Maandag - Vrijdag: 9:00 - 17:00
+              Monday - Friday: 9:00 - 17:00
             </p>
             <p className="text-sm text-gray-500 mt-1">
-              Support voor al je vragen
+              Support for all your questions
             </p>
           </div>
 
@@ -459,7 +465,7 @@ const PhoneContent: React.FC<PhoneContentProps> = ({
               className="w-full bg-orange-600 hover:bg-orange-700 text-white py-3 text-lg font-semibold"
             >
               <Phone className="w-5 h-5 mr-2" />
-              Bel Nu
+                Call Now
             </Button>
             
             <Button
@@ -470,12 +476,12 @@ const PhoneContent: React.FC<PhoneContentProps> = ({
               {copied ? (
                 <>
                   <Check className="w-4 h-4 mr-2 text-green-600" />
-                  Gekopieerd!
+                  Copied!
                 </>
               ) : (
                 <>
                   <Copy className="w-4 h-4 mr-2" />
-                  Kopieer Nummer
+                  Copy Number
                 </>
               )}
             </Button>
@@ -484,8 +490,8 @@ const PhoneContent: React.FC<PhoneContentProps> = ({
           <div className="mt-6 p-4 bg-blue-50 rounded-lg">
             <h4 className="font-semibold text-blue-900 mb-2">Support Team</h4>
             <p className="text-sm text-blue-700">
-              Ons support team staat klaar om je te helpen met al je vragen over StockFlow. 
-              We zorgen voor snelle en professionele ondersteuning.
+              Our support team is ready to help you with all your questions about StockFlow. 
+              We provide quick and professional support.
             </p>
           </div>
         </div>
