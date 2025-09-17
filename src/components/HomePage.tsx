@@ -20,9 +20,6 @@ import { logger } from '../lib/logger';
 import { useForm } from 'react-hook-form';
 import { FloatingChatButton } from './FloatingChatButton';
 import { useWebsiteTracking } from '@/hooks/useWebsiteTracking';
-import { useTranslation } from 'react-i18next';
-import i18n from '../i18n';
-import { LanguageSwitcher } from './LanguageSwitcher';
 import SocialShare from './SocialShare';
 
 // Een herbruikbare component voor fade-in animaties bij het scrollen
@@ -45,7 +42,6 @@ const FadeInWhenVisible = ({ children }) => {
 
 // Floating chat inline component
 const FloatingChat: React.FC = () => {
-  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<{ email: string; message: string }>({
     defaultValues: { email: '', message: '' }
@@ -61,9 +57,9 @@ const FloatingChat: React.FC = () => {
       if (!res.ok) throw new Error('failed');
       reset();
       setOpen(false);
-      alert(t('chat.success'));
+      alert('Thank you! We respond quickly via email.');
     } catch (e) {
-      alert(t('chat.error'));
+      alert('Sending failed. Please try again.');
     }
   };
 
@@ -74,23 +70,23 @@ const FloatingChat: React.FC = () => {
         <div className="fixed inset-0 z-50 bg-black/40 flex items-end md:items-center justify-center" onClick={() => setOpen(false)}>
           <div className="bg-white w-full md:max-w-md md:rounded-xl shadow-2xl p-6 md:m-0 m-0 rounded-t-xl" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold">{t('chat.title')}</h3>
+              <h3 className="text-lg font-semibold">Ask your question</h3>
               <button className="text-gray-500 hover:text-gray-700" onClick={() => setOpen(false)}>×</button>
             </div>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">{t('chat.email')}</label>
-                <Input type="email" {...register('email', { required: true, pattern: /.+@.+\..+/ })} placeholder={t('chat.emailPlaceholder')} />
-                {errors.email && <p className="text-xs text-red-600 mt-1">{t('chat.emailError')}</p>}
+                <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                <Input type="email" {...register('email', { required: true, pattern: /.+@.+\..+/ })} placeholder="your@company.com" />
+                {errors.email && <p className="text-xs text-red-600 mt-1">Valid email address required.</p>}
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">{t('chat.message')}</label>
-                <Textarea rows={4} {...register('message', { required: true, minLength: 5 })} placeholder={t('chat.messagePlaceholder')} />
-                {errors.message && <p className="text-xs text-red-600 mt-1">{t('chat.messageError')}</p>}
+                <label className="block text-sm font-medium text-gray-700 mb-1">Your question</label>
+                <Textarea rows={4} {...register('message', { required: true, minLength: 5 })} placeholder="Write your question here..." />
+                {errors.message && <p className="text-xs text-red-600 mt-1">Please enter your question.</p>}
               </div>
               <div className="flex justify-end gap-2">
-                <Button type="button" variant="outline" onClick={() => setOpen(false)}>{t('chat.cancel')}</Button>
-                <Button type="submit" disabled={isSubmitting} className="bg-blue-600 text-white hover:bg-blue-700">{isSubmitting ? t('chat.submitting') : t('chat.submit')}</Button>
+                <Button type="button" variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
+                <Button type="submit" disabled={isSubmitting} className="bg-blue-600 text-white hover:bg-blue-700">{isSubmitting ? 'Sending...' : 'Send'}</Button>
               </div>
             </form>
           </div>
@@ -142,7 +138,7 @@ const MobileCarousel = ({ items, renderItem, t }) => {
       className="relative"
       role="region"
       aria-roledescription="carousel"
-      aria-label={t('accessibility.carousel.label')}
+      aria-label="Testimonials and benefits carousel"
       aria-live="polite"
       tabIndex={0}
       onKeyDown={onKeyDown}
@@ -153,7 +149,7 @@ const MobileCarousel = ({ items, renderItem, t }) => {
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
         >
           {items.map((item, index) => (
-            <div key={index} className="w-full flex-shrink-0 px-4" aria-label={`${t('accessibility.carousel.slide')} ${index + 1} ${t('accessibility.carousel.of')} ${items.length}`}>
+            <div key={index} className="w-full flex-shrink-0 px-4" aria-label={`Slide ${index + 1} of ${items.length}`}>
               {renderItem(item, index)}
             </div>
           ))}
@@ -161,7 +157,7 @@ const MobileCarousel = ({ items, renderItem, t }) => {
       </div>
       
       {/* Navigation dots */}
-      <div className="flex justify-center mt-4 space-x-2" role="tablist" aria-label={t('accessibility.carousel.navigation')}>
+      <div className="flex justify-center mt-4 space-x-2" role="tablist" aria-label="Carousel navigation">
         {items.map((_, index) => (
           <button
             key={index}
@@ -171,7 +167,7 @@ const MobileCarousel = ({ items, renderItem, t }) => {
             }`}
             role="tab"
             aria-selected={index === currentIndex}
-            aria-label={`${t('accessibility.carousel.goTo')} ${index + 1}`}
+            aria-label={`Go to slide ${index + 1}`}
           />
         ))}
       </div>
@@ -182,14 +178,14 @@ const MobileCarousel = ({ items, renderItem, t }) => {
           <button
             onClick={prevSlide}
             className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 shadow-lg"
-            aria-label={t('accessibility.carousel.previous')}
+            aria-label="Previous slide"
           >
             <ChevronLeft className="h-4 w-4 text-gray-600" />
           </button>
           <button
             onClick={nextSlide}
             className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 shadow-lg"
-            aria-label={t('accessibility.carousel.next')}
+            aria-label="Next slide"
           >
             <ChevronRight className="h-4 w-4 text-gray-600" />
           </button>
@@ -201,23 +197,6 @@ const MobileCarousel = ({ items, renderItem, t }) => {
 
 export const HomePage = () => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
-
-  // Debug: Test if translations are working
-  console.log('HomePage - Current language:', i18n.language);
-  console.log('HomePage - Test translation:', t('pricing.plans.basic.name'));
-  console.log('HomePage - i18n ready:', i18n.isInitialized);
-
-  // Helper function to safely get translation arrays
-  const getTranslationArray = (key: string, fallback: any[] = []): any[] => {
-    try {
-      const result = t(key, { returnObjects: true });
-      return Array.isArray(result) ? result : fallback;
-    } catch (error) {
-      console.warn(`Translation error for ${key}:`, error);
-      return fallback;
-    }
-  };
   
   // Gebruik de page refresh hook
   usePageRefresh();
@@ -291,9 +270,9 @@ export const HomePage = () => {
       if (!res.ok) throw new Error('Failed to send');
       reset();
       logger.info('Contact message sent', { email: values.email });
-      alert(t('alerts.contactSuccess'));
+      alert('Thank you! We will contact you soon.');
     } catch (e) {
-      alert(t('alerts.contactError'));
+      alert('Sending failed. Please try again.');
     }
   };
 
@@ -309,151 +288,110 @@ export const HomePage = () => {
     }
   };
 
-  // FAQ sectie data
-  const faqData = (() => {
-    try {
-      const items = t('faq.items', { returnObjects: true });
-      if (Array.isArray(items)) {
-        return items;
-      }
-    } catch (error) {
-      console.warn('Translation error for faq.items:', error);
+  // FAQ section data
+  const faqData = [
+    {
+      question: "Is StockFlow really 100% free for SMEs in Flanders?",
+      answer: "Yes, StockFlow is completely free for SMEs. No hidden costs, no limits on users or products. We believe every business should have access to professional inventory management."
+    },
+    {
+      question: "How does the free inventory management program work?",
+      answer: "Register your free account, add your products, and start managing your inventory immediately. Our inventory management system is intuitive and requires no technical knowledge."
+    },
+    {
+      question: "Can I use StockFlow on my mobile phone?",
+      answer: "Absolutely! Our inventory management app works perfectly on all devices - smartphone, tablet and desktop. Always and everywhere access to your inventory data."
+    },
+    {
+      question: "Is my data safe in the cloud?",
+      answer: "Yes, we take the security of your data very seriously. Daily backups, SSL encryption and GDPR compliance ensure that your inventory data is always safe."
+    },
+    {
+      question: "How does StockFlow differ from other inventory management software?",
+      answer: "StockFlow is specifically developed for SMEs, completely free, and offers all essential functions without complexity. No expensive licenses or hidden costs like with Odoo or Exact."
     }
-    // Fallback data
-    return [
-      {
-        question: t('faq.fallback.items.0.question'),
-        answer: t('faq.fallback.items.0.answer')
-      },
-      {
-        question: t('faq.fallback.items.1.question'),
-        answer: t('faq.fallback.items.1.answer')
-      },
-      {
-        question: t('faq.fallback.items.2.question'),
-        answer: t('faq.fallback.items.2.answer')
-      },
-      {
-        question: t('faq.fallback.items.3.question'),
-        answer: t('faq.fallback.items.3.answer')
-      },
-      {
-        question: t('faq.fallback.items.4.question'),
-        answer: t('faq.fallback.items.4.answer')
-      }
-    ];
-  })();
+  ];
 
   const features = [
     {
       icon: TrendingUp,
-      title: t('homepage.features.optimize.title'),
-      description: t('homepage.features.optimize.description'),
+      title: "Optimize Your Cashflow",
+      description: "Prevent excess inventory and dead stock. Get precise insight into what you need, when you need it.",
     },
     {
       icon: Zap,
-      title: t('homepage.features.saveTime.title'),
-      description: t('homepage.features.saveTime.description'),
+      title: "Save Time and Reduce Errors",
+      description: "Automate orders and minimize manual counts. Focus on growth, not administration.",
     },
     {
       icon: Users,
-      title: t('homepage.features.teamwork.title'),
-      description: t('homepage.features.teamwork.description'),
+      title: "Seamless Team Collaboration",
+      description: "Work efficiently with your team thanks to clear user roles and real-time data updates.",
     },
     {
       icon: Shield,
-      title: t('homepage.features.secure.title'),
-      description: t('homepage.features.secure.description'),
+      title: "Safe and Always Available",
+      description: "Your data is safe in the cloud. Always and everywhere accessible, with daily backups.",
     },
   ];
   
-  const testimonials = (() => {
-    try {
-      const items = t('testimonials.items', { returnObjects: true });
-      if (Array.isArray(items)) {
-        return items.map((testimonial, index) => ({
-          ...testimonial,
-          avatar: index === 0 ? '/Laura.png' : index === 1 ? '/jan.png' : '/placeholder.svg',
-          rating: 5
-        }));
-      }
-    } catch (error) {
-      console.warn('Translation error for testimonials.items:', error);
+  const testimonials = [
+    {
+      name: "Laura Peeters",
+      role: "Owner, De Koffieboetiek - Ghent",
+      quote: "Thanks to StockFlow I finally have a clear overview of my inventory. The automatic order notifications are a lifesaver! As an SME, the free plan is perfect for us.",
+      avatar: '/Laura.png',
+      rating: 5,
+      company: "De Koffieboetiek",
+      location: "Ghent",
+      industry: "Hospitality",
+      savings: "€2,400/year saved",
+      timeSaved: "8 hours/week"
+    },
+    {
+      name: "Tom De Wit",
+      role: "Manager, TechOnderdelen BV - Antwerp",
+      quote: "The switch to StockFlow was the best decision for our warehouse management. It's intuitive, fast and the team is very helpful. Finally an inventory management program that really works.",
+      avatar: '/jan.png',
+      rating: 5,
+      company: "TechOnderdelen BV",
+      location: "Antwerp",
+      industry: "Technology",
+      savings: "€5,200/year saved",
+      timeSaved: "12 hours/week"
+    },
+    {
+      name: "Anke Willems",
+      role: "Manager, Creatief Atelier - Bruges",
+      quote: "As a small business, the free plan is perfect for us. We can now manage our materials much more efficiently. An absolute recommendation for every SME!",
+      avatar: '/placeholder.svg',
+      rating: 5,
+      company: "Creatief Atelier",
+      location: "Bruges",
+      industry: "Creative",
+      savings: "€1,800/year saved",
+      timeSaved: "6 hours/week"
     }
-    // Fallback data
-    return [
-      {
-        name: t('testimonials.fallback.items.0.name'),
-        role: t('testimonials.fallback.items.0.role'),
-        quote: t('testimonials.fallback.items.0.quote'),
-        avatar: '/Laura.png',
-        rating: 5,
-        company: t('testimonials.fallback.items.0.company'),
-        location: t('testimonials.fallback.items.0.location'),
-        industry: t('testimonials.fallback.items.0.industry'),
-        savings: t('testimonials.fallback.items.0.savings'),
-        timeSaved: t('testimonials.fallback.items.0.timeSaved')
-      },
-      {
-        name: t('testimonials.fallback.items.1.name'),
-        role: t('testimonials.fallback.items.1.role'),
-        quote: t('testimonials.fallback.items.1.quote'),
-        avatar: '/jan.png',
-        rating: 5,
-        company: t('testimonials.fallback.items.1.company'),
-        location: t('testimonials.fallback.items.1.location'),
-        industry: t('testimonials.fallback.items.1.industry'),
-        savings: t('testimonials.fallback.items.1.savings'),
-        timeSaved: t('testimonials.fallback.items.1.timeSaved')
-      },
-      {
-        name: t('testimonials.fallback.items.2.name'),
-        role: t('testimonials.fallback.items.2.role'),
-        quote: t('testimonials.fallback.items.2.quote'),
-        avatar: '/placeholder.svg',
-        rating: 5,
-        company: t('testimonials.fallback.items.2.company'),
-        location: t('testimonials.fallback.items.2.location'),
-        industry: t('testimonials.fallback.items.2.industry'),
-        savings: t('testimonials.fallback.items.2.savings'),
-        timeSaved: t('testimonials.fallback.items.2.timeSaved')
-      }
-    ];
-  })();
+  ];
 
-  // Voordelen sectie
-  const benefits = (() => {
-    try {
-      const items = t('benefits.items', { returnObjects: true });
-      if (Array.isArray(items)) {
-        return items.map((benefit, index) => ({
-          icon: index === 0 ? <Euro className="h-8 w-8" /> : index === 1 ? <Clock className="h-8 w-8" /> : <Target className="h-8 w-8" />,
-          title: benefit.title,
-          description: benefit.description
-        }));
-      }
-    } catch (error) {
-      console.warn('Translation error for benefits.items:', error);
+  // Benefits section
+  const benefits = [
+    {
+      icon: <Euro className="h-8 w-8" />,
+      title: "100% Free Forever",
+      description: "No hidden costs, no limits. Completely free inventory management for SMEs."
+    },
+    {
+      icon: <Clock className="h-8 w-8" />,
+      title: "Get Started Immediately",
+      description: "No complex setup or training required. Start your inventory management within 5 minutes."
+    },
+    {
+      icon: <Target className="h-8 w-8" />,
+      title: "Specifically for SMEs",
+      description: "Developed with the needs of businesses in mind. Professional support and local expertise."
     }
-    // Fallback data
-    return [
-      {
-        icon: <Euro className="h-8 w-8" />,
-        title: t('benefits.fallback.items.0.title'),
-        description: t('benefits.fallback.items.0.description')
-      },
-      {
-        icon: <Clock className="h-8 w-8" />,
-        title: t('benefits.fallback.items.1.title'),
-        description: t('benefits.fallback.items.1.description')
-      },
-      {
-        icon: <Target className="h-8 w-8" />,
-        title: t('benefits.fallback.items.2.title'),
-        description: t('benefits.fallback.items.2.description')
-      }
-    ];
-  })();
+  ];
 
   // --- BEGIN USP DATA ---
   const usps = [

@@ -9,8 +9,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { setupPersistedQueryClient } from './persistQueryClient';
 import { HelmetProvider } from 'react-helmet-async';
 import { ErrorBoundary } from './components/ErrorBoundary';
-import './i18n';
-import { detectUserLanguage } from './utils/languageDetection';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
@@ -24,7 +22,7 @@ const LoadingFallback = () => (
   <div className="min-h-screen bg-gray-100 flex items-center justify-center">
     <div className="text-center">
       <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4" />
-      <p className="text-gray-600 text-lg">Applicatie laden...</p>
+      <p className="text-gray-600 text-lg">Loading application...</p>
     </div>
   </div>
 );
@@ -36,16 +34,16 @@ const ConnectionErrorUI = () => (
         <svg className="mx-auto h-12 w-12 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M18.364 5.636a9 9 0 010 12.728m-12.728 0a9 9 0 010-12.728m12.728 0L5.636 18.364m0-12.728L18.364 5.636" />
         </svg>
-        <h1 className="text-2xl font-bold text-gray-800 mt-4">Verbindingsfout</h1>
+        <h1 className="text-2xl font-bold text-gray-800 mt-4">Connection Error</h1>
         <p className="text-gray-600 mt-2">
-          Kan geen verbinding maken met de server. Controleer je internetverbinding en probeer het opnieuw.
+          Cannot connect to the server. Check your internet connection and try again.
         </p>
         <div className="mt-6">
             <button
                 onClick={() => window.location.reload()}
                 className="bg-blue-600 text-white px-5 py-2 rounded-lg font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors"
             >
-                Opnieuw proberen
+                Try Again
             </button>
         </div>
     </div>
@@ -59,7 +57,7 @@ async function init() {
     const isConnected = await checkSupabaseConnection();
 
     if (!isConnected) {
-      throw new Error('Kon geen verbinding maken met Supabase');
+      throw new Error('Could not connect to Supabase');
     }
 
     // De root wordt hier aangemaakt en de app wordt gerenderd
@@ -82,7 +80,7 @@ async function init() {
     );
     root.render(AppTree);
   } catch (error) {
-    console.error('Initialisatie van de app is mislukt:', error);
+    console.error('App initialization failed:', error);
 
     // Render de fout-UI bij een verbindingsfout
     root = createRoot(rootElement);

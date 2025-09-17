@@ -10,7 +10,6 @@ import {
   Copy,
   Check
 } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
 
 interface SocialShareProps {
   url?: string;
@@ -31,7 +30,6 @@ export const SocialShare: React.FC<SocialShareProps> = ({
   showLabels = true,
   variant = 'default'
 }) => {
-  const { t } = useTranslation();
   const [copied, setCopied] = React.useState(false);
 
   const shareData = {
@@ -168,7 +166,7 @@ export const SocialShare: React.FC<SocialShareProps> = ({
       <div className="flex items-center gap-2">
         <Share2 className="h-5 w-5 text-gray-600" />
         <h3 className="text-lg font-semibold text-gray-900">
-          {t('socialShare.title', 'Share this page')}
+          Share this page
         </h3>
       </div>
       
@@ -188,7 +186,7 @@ export const SocialShare: React.FC<SocialShareProps> = ({
       </div>
       
       <div className="text-xs text-gray-500 text-center">
-        {t('socialShare.helpText', 'Help others discover StockFlow by sharing this page')}
+        Help others discover StockFlow by sharing this page
       </div>
     </div>
   );

@@ -11,7 +11,6 @@ import {
   TrendingUp, Package, BarChart3, Settings, Mail, Phone,
   ExternalLink, ChevronRight, AlertCircle
 } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
 
 const SUGGESTIES = [
   { label: "Home", path: "/", icon: Home, category: "main" },
@@ -41,7 +40,6 @@ const NotFound = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const { t } = useTranslation();
   
   // Gebruik de page refresh hook
   usePageRefresh();
@@ -187,10 +185,10 @@ const NotFound = () => {
           </div>
           <h1 className="text-6xl font-bold text-gray-900 mb-4">404</h1>
           <h2 className="text-2xl font-semibold text-gray-700 mb-4">
-            {t('404.title', 'Page Not Found')}
+            Page Not Found
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
-            {t('404.description', 'The page you\'re looking for doesn\'t exist. But don\'t worry, we\'ll help you find what you need!')}
+            The page you're looking for doesn't exist. But don't worry, we'll help you find what you need!
           </p>
         </div>
 
@@ -199,21 +197,21 @@ const NotFound = () => {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Search className="h-5 w-5" />
-              {t('404.search.title', 'Search for what you need')}
+              Search for what you need
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex gap-4 mb-4">
               <Input
                 type="text"
-                placeholder={t('404.search.placeholder', 'Search pages...')}
+                placeholder="Search pages..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="flex-1"
               />
               <Button onClick={() => navigate("/")} className="px-6">
                 <Home className="h-4 w-4 mr-2" />
-                {t('404.search.home', 'Go Home')}
+                Go Home
               </Button>
             </div>
             
@@ -224,21 +222,21 @@ const NotFound = () => {
                 size="sm"
                 onClick={() => setSelectedCategory("all")}
               >
-                {t('404.categories.all', 'All')}
+                All
               </Button>
               <Button
                 variant={selectedCategory === "main" ? "default" : "outline"}
                 size="sm"
                 onClick={() => setSelectedCategory("main")}
               >
-                {t('404.categories.main', 'Main Pages')}
+                Main Pages
               </Button>
               <Button
                 variant={selectedCategory === "seo" ? "default" : "outline"}
                 size="sm"
                 onClick={() => setSelectedCategory("seo")}
               >
-                {t('404.categories.guides', 'Guides')}
+                Guides
               </Button>
             </div>
           </CardContent>
@@ -250,7 +248,7 @@ const NotFound = () => {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Home className="h-5 w-5" />
-                {t('404.quickActions.main', 'Main Pages')}
+                Main Pages
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -277,7 +275,7 @@ const NotFound = () => {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <BookOpen className="h-5 w-5" />
-                {t('404.quickActions.guides', 'Helpful Guides')}
+                Helpful Guides
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -306,7 +304,7 @@ const NotFound = () => {
           <Card className="mb-8">
             <CardHeader>
               <CardTitle>
-                {t('404.results.title', 'Search Results')} ({filteredSuggestions.length})
+                Search Results ({filteredSuggestions.length})
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -329,7 +327,7 @@ const NotFound = () => {
                 </div>
               ) : (
                 <p className="text-gray-500 text-center py-4">
-                  {t('404.results.noResults', 'No results found. Try a different search term.')}
+                  No results found. Try a different search term.
                 </p>
               )}
             </CardContent>
@@ -341,7 +339,7 @@ const NotFound = () => {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <HelpCircle className="h-5 w-5" />
-              {t('404.contact.title', 'Still can\'t find what you\'re looking for?')}
+              Still can't find what you're looking for?
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -349,10 +347,10 @@ const NotFound = () => {
               <div>
                 <h3 className="font-semibold mb-3 flex items-center gap-2">
                   <Mail className="h-4 w-4" />
-                  {t('404.contact.email', 'Email Support')}
+                  Email Support
                 </h3>
                 <p className="text-sm text-gray-600 mb-2">
-                  {t('404.contact.emailDescription', 'Get help from our support team')}
+                  Get help from our support team
                 </p>
                 <a 
                   href="mailto:info@stockflow.be" 
@@ -364,10 +362,10 @@ const NotFound = () => {
               <div>
                 <h3 className="font-semibold mb-3 flex items-center gap-2">
                   <Phone className="h-4 w-4" />
-                  {t('404.contact.phone', 'Phone Support')}
+                  Phone Support
                 </h3>
                 <p className="text-sm text-gray-600 mb-2">
-                  {t('404.contact.phoneDescription', 'Call us for immediate assistance')}
+                  Call us for immediate assistance
                 </p>
                 <a 
                   href="tel:+32123456789" 
@@ -383,7 +381,7 @@ const NotFound = () => {
         {/* Footer */}
         <div className="text-center mt-8 text-sm text-gray-500">
           <p>
-            {t('404.footer.error', 'Error: Page not found')} ({location.pathname})
+            Error: Page not found ({location.pathname})
           </p>
         </div>
       </div>
