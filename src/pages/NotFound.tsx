@@ -18,15 +18,15 @@ const SUGGESTIES = [
   { label: "Features", path: "/#features-section", icon: Package, category: "main" },
   { label: "Demo", path: "/#video-section", icon: BarChart3, category: "main" },
   { label: "Contact", path: "/#contact-section", icon: Mail, category: "main" },
-  { label: "Voorraadbeheer tips", path: "/voorraadbeheer-tips", icon: BookOpen, category: "seo" },
-  { label: "Software vergelijken", path: "/voorraadbeheer-software-vergelijken", icon: Settings, category: "seo" },
-  { label: "Voorraadbeheer webshop", path: "/voorraadbeheer-webshop", icon: Package, category: "seo" },
-  { label: "Fouten voorkomen", path: "/voorraadbeheer-fouten-voorkomen", icon: AlertCircle, category: "seo" },
-  { label: "Automatiseren", path: "/voorraadbeheer-automatiseren", icon: TrendingUp, category: "seo" },
-  { label: "Voorraadbeheer horeca", path: "/voorraadbeheer-horeca", icon: Users, category: "seo" },
+  { label: "Inventory management tips", path: "/voorraadbeheer-tips", icon: BookOpen, category: "seo" },
+  { label: "Compare software", path: "/voorraadbeheer-software-vergelijken", icon: Settings, category: "seo" },
+  { label: "Inventory management webshop", path: "/voorraadbeheer-webshop", icon: Package, category: "seo" },
+  { label: "Prevent errors", path: "/voorraadbeheer-fouten-voorkomen", icon: AlertCircle, category: "seo" },
+  { label: "Automation", path: "/voorraadbeheer-automatiseren", icon: TrendingUp, category: "seo" },
+  { label: "Inventory management hospitality", path: "/voorraadbeheer-horeca", icon: Users, category: "seo" },
   { label: "Excel vs. software", path: "/voorraadbeheer-excel-vs-software", icon: BarChart3, category: "seo" },
-  { label: "Voorraadbeheer voor starters", path: "/voorraadbeheer-voor-starters", icon: HelpCircle, category: "seo" },
-  { label: "Mobiel voorraadbeheer", path: "/mobiel-voorraadbeheer", icon: Package, category: "seo" },
+  { label: "Inventory management for starters", path: "/voorraadbeheer-voor-starters", icon: HelpCircle, category: "seo" },
+  { label: "Mobile inventory management", path: "/mobiel-voorraadbeheer", icon: Package, category: "seo" },
 ];
 
 const SOCIALS = [
@@ -41,7 +41,7 @@ const NotFound = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   
-  // Gebruik de page refresh hook
+  // Use the page refresh hook
   usePageRefresh();
 
   useEffect(() => {

@@ -24,7 +24,7 @@ const AppContent: React.FC = () => {
   const { hasNoBranches } = useBranches();
   const location = useLocation();
   
-  // Gebruik de page refresh hook
+  // Use the page refresh hook
   usePageRefresh();
 
   // Show loading state while auth is being determined

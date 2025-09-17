@@ -44,7 +44,7 @@ export const EditProductModal = ({
   // Geen geavanceerde opties in deze modal; enkel quantity aanpassen
   const queryClient = useQueryClient();
   
-  // Gebruik de page refresh hook
+  // Use the page refresh hook
   usePageRefresh();
 
   const form = useForm({

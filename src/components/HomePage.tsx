@@ -23,7 +23,7 @@ import { useWebsiteTracking } from '@/hooks/useWebsiteTracking';
 import SocialShare from './SocialShare';
 import { useTranslation } from 'react-i18next';
 
-// Een herbruikbare component voor fade-in animaties bij het scrollen
+// A reusable component for fade-in animations when scrolling
 const FadeInWhenVisible = ({ children }) => {
   return (
     <motion.div
@@ -97,7 +97,7 @@ const FloatingChat: React.FC = () => {
   );
 };
 
-// Carousel component voor mobiele weergave (met ARIA en swipe)
+// Carousel component for mobile display (with ARIA and swipe)
 const MobileCarousel = ({ items, renderItem, t }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const touchStartX = useRef<number | null>(null);
@@ -200,10 +200,10 @@ export const HomePage = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   
-  // Gebruik de page refresh hook
+  // Use the page refresh hook
   usePageRefresh();
   
-  // Gebruik website tracking
+  // Use website tracking
   useWebsiteTracking();
 
   // Cookie consent & exit-intent state
@@ -1739,7 +1739,7 @@ export const HomePage = () => {
             <FadeInWhenVisible>
               <div className="inline-flex items-center gap-2 bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full text-sm font-medium mb-6">
                 <Star className="h-4 w-4" />
-                <span>{t('badges.testimonials')}</span>
+                <span> Testimonials</span>
               </div>
             </FadeInWhenVisible>
             <FadeInWhenVisible>
@@ -1801,11 +1801,11 @@ export const HomePage = () => {
                     <div className="grid grid-cols-2 gap-4 pt-4 border-t border-gray-100">
                       <div className="text-center">
                         <div className="text-lg font-bold text-green-600">{t.savings}</div>
-                        <div className="text-xs text-gray-500">Kosten bespaard</div>
+                        <div className="text-xs text-gray-500">Costs saved</div>
                       </div>
                       <div className="text-center">
                         <div className="text-lg font-bold text-blue-600">{t.timeSaved}</div>
-                        <div className="text-xs text-gray-500">Tijd bespaard</div>
+                        <div className="text-xs text-gray-500">Time saved</div>
                       </div>
                     </div>
                   </div>
@@ -1888,19 +1888,19 @@ export const HomePage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
-                <Input {...register('name', { required: true, minLength: 2 })} placeholder={t('contact.form.namePlaceholder')} />
+                <Input {...register('name', { required: true, minLength: 2 })} placeholder="Your name" />
                 {errors.name && <p className="text-xs text-red-600 mt-1">Name is required</p>}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                  <Input type="email" {...register('email', { required: true, pattern: /.+@.+\..+/ })} placeholder="your@company.com" />
+                  <Input type="email" {...register('email', { required: true, pattern: /.+@.+\..+/ })} placeholder="your@email.com" />
                 {errors.email && <p className="text-xs text-red-600 mt-1">Email is required</p>}
               </div>
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Message</label>
               <Textarea rows={5} {...register('message', { required: true, minLength: 10 })} placeholder="Write your message here..." />
-              {errors.message && <p className="text-xs text-red-600 mt-1">{t('contact.form.messageError')}</p>}
+              {errors.message && <p className="text-xs text-red-600 mt-1">Message is required</p>}
             </div>
             <div className="flex justify-end">
               <Button type="submit" disabled={isSubmitting} className="bg-blue-600 text-white hover:bg-blue-700">
@@ -2281,7 +2281,6 @@ export const HomePage = () => {
     <div className="border-t border-gray-700 pt-6 text-center">
       <p className="text-gray-500 text-xs md:text-sm">
         &copy; {new Date().getFullYear()} stockflow. All rights reserved. 
-        {t('footer.copyright')}
       </p>
     </div>
   </div>

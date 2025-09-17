@@ -43,10 +43,10 @@ export const AuthPage = () => {
     navigate('/');
   };
   
-  // Gebruik de page refresh hook
+  // Use the page refresh hook
   usePageRefresh();
   
-  // Gebruik website tracking
+  // Use website tracking
   useWebsiteTracking();
 
 
@@ -400,11 +400,11 @@ export const AuthPage = () => {
                         )}
                         {mode === 'register' && (
                           <>
-                            Start Gratis Account
+                            Start Free Account
                             <ArrowRight className="ml-2 h-4 w-4" />
                           </>
                         )}
-                        {mode === 'reset' && 'Verzend reset-instructies'}
+                        {mode === 'reset' && 'Send reset instructions'}
                       </>
                     )}
                   </Button>

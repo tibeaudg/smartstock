@@ -52,23 +52,23 @@ export const UpgradePrompt: React.FC<UpgradePromptProps> = ({
   const getFeatureDescription = () => {
     switch (feature) {
       case 'products':
-        return `Je hebt ${currentLimit} van de ${maxLimit} producten gebruikt. Upgrade voor meer producten.`;
+        return `You have used ${currentLimit} of ${maxLimit} products. Upgrade for more products.`;
       case 'users':
-        return `Je hebt ${currentLimit} van de ${maxLimit} gebruikers gebruikt. Upgrade voor meer teamleden.`;
+        return `You have used ${currentLimit} of ${maxLimit} users. Upgrade for more team members.`;
       case 'branches':
-        return `Je hebt ${currentLimit} van de ${maxLimit} vestigingen gebruikt. Upgrade voor meer locaties.`;
+        return `You have used ${currentLimit} of ${maxLimit} branches. Upgrade for more locations.`;
       case 'orders':
-        return `Je hebt ${currentLimit} van de ${maxLimit} orders deze maand gebruikt. Upgrade voor meer orders.`;
+        return `You have used ${currentLimit} of ${maxLimit} orders this month. Upgrade for more orders.`;
       case 'analytics':
-        return 'Geavanceerde analytics zijn alleen beschikbaar in hogere plannen.';
+        return 'Advanced analytics are only available in higher plans.';
       case 'scanner':
-        return 'Barcode scanner is alleen beschikbaar in hogere plannen.';
+        return 'Barcode scanner is only available in higher plans.';
       case 'delivery-notes':
-        return 'Leveringsbonnen beheer is alleen beschikbaar in hogere plannen.';
+        return 'Delivery notes management is only available in higher plans.';
       case 'api':
-        return 'API toegang is alleen beschikbaar in hogere plannen.';
+        return 'API access is only available in higher plans.';
       default:
-        return `${feature} is alleen beschikbaar in hogere plannen.`;
+        return `${feature} is only available in higher plans.`;
     }
   };
 
@@ -253,23 +253,23 @@ export const TierUpgradeCard: React.FC<{
   const getFeatureDescription = () => {
     switch (feature) {
       case 'products':
-        return 'Meer producten en geavanceerde productbeheer features.';
+        return 'More products and advanced product management features.';
       case 'users':
-        return 'Meer teamleden en geavanceerde gebruikersbeheer.';
+        return 'More team members and advanced user management.';
       case 'branches':
-        return 'Meer vestigingen en geavanceerde locatiebeheer.';
+        return 'More branches and advanced location management.';
       case 'orders':
-        return 'Meer orders per maand en geavanceerde orderbeheer.';
+        return 'More orders per month and advanced order management.';
       case 'analytics':
-        return 'Geavanceerde analytics zijn alleen beschikbaar in hogere plannen.';
+        return 'Advanced analytics are only available in higher plans.';
       case 'scanner':
-        return 'Barcode scanner is alleen beschikbaar in hogere plannen.';
+        return 'Barcode scanner is only available in higher plans.';
       case 'delivery-notes':
-        return 'Leveringsbonnen beheer is alleen beschikbaar in hogere plannen.';
+        return 'Delivery notes management is only available in higher plans.';
       case 'api':
-        return 'API toegang is alleen beschikbaar in hogere plannen.';
+        return 'API access is only available in higher plans.';
       default:
-        return `${feature || 'Premium features'} zijn alleen beschikbaar in hogere plannen.`;
+        return `${feature || 'Premium features'} are only available in higher plans.`;
     }
   };
 

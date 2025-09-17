@@ -50,13 +50,13 @@ export const FeatureGate: React.FC<FeatureGateProps> = ({
   const getFeatureTitle = () => {
     switch (feature) {
       case 'analytics':
-        return 'Geavanceerde Analytics';
+        return 'Advanced Analytics';
       case 'scanner':
         return 'Barcode Scanner';
       case 'delivery-notes':
-        return 'Leveringsbonnen Beheer';
+        return 'Delivery Notes Management';
       case 'api':
-        return 'API Toegang';
+        return 'API Access';
       default:
         return 'Premium Feature';
     }

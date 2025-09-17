@@ -198,21 +198,21 @@ export const LicenseOverview = () => {
     );
   }
 
-  // De JSX-weergave blijft ongewijzigd.
+  // The JSX display remains unchanged.
   return (
     <div className="space-y-8">
       {/* Upgrade Dialog */}
       <AlertDialog open={showUpgradeDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Automatische upgrade naar hoger abonnement</AlertDialogTitle>
+            <AlertDialogTitle>Automatic upgrade to higher subscription</AlertDialogTitle>
             <AlertDialogDescription>
-              Uw aantal producten overschrijdt de limiet van uw huidige abonnement. U wordt automatisch overgezet naar het eerstvolgende abonnement met voldoende capaciteit. U kunt niet weigeren, maar dient wel te bevestigen dat u dit heeft gezien.
+              Your number of products exceeds the limit of your current subscription. You will be automatically transferred to the next subscription with sufficient capacity. You cannot refuse, but you must confirm that you have seen this.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogAction onClick={() => { setShowUpgradeDialog(false); setAcceptedUpgrade(true); }} autoFocus>
-              Accepteren
+              Accept
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

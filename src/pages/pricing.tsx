@@ -30,8 +30,8 @@ const pricingTiers: PricingTier[] = [
   {
     id: 'basis',
     name: 'basis',
-    displayName: 'Basis',
-    description: 'Perfect voor kleine bedrijven die beginnen met voorraadbeheer',
+    displayName: 'Basic',
+    description: 'Perfect for small businesses starting with inventory management',
     priceMonthly: 0,
     priceYearly: 0,
     yearlyDiscount: 0,
@@ -40,11 +40,11 @@ const pricingTiers: PricingTier[] = [
     maxUsers: 2,
     maxBranches: 1,
     features: [
-      'Basis voorraadbeheer',
-      'Producten toevoegen/bewerken',
-      'Eenvoudige rapporten',
+      'Basic inventory management',
+      'Add/edit products',
+      'Simple reports',
       'Email support',
-      'Mobiele app toegang'
+      'Mobile app access'
     ],
     isPopular: false,
     isEnterprise: false,
@@ -54,8 +54,8 @@ const pricingTiers: PricingTier[] = [
   {
     id: 'groei',
     name: 'groei',
-    displayName: 'Groei',
-    description: 'Ideaal voor groeiende bedrijven met meer behoeften',
+    displayName: 'Growth',
+    description: 'Ideal for growing businesses with more needs',
     priceMonthly: 29.99,
     priceYearly: 299.99,
     yearlyDiscount: 16.67,
@@ -64,13 +64,13 @@ const pricingTiers: PricingTier[] = [
     maxUsers: 10,
     maxBranches: 5,
     features: [
-      'Alle Basis features',
-      'Geavanceerde analytics',
+      'All Basic features',
+      'Advanced analytics',
       'Barcode scanner',
-      'Leveringsbonnen beheer',
-      'API toegang',
+      'Delivery notes management',
+      'API access',
       'Priority support',
-      'Custom rapporten',
+      'Custom reports',
       'Bulk import/export'
     ],
     isPopular: true,
@@ -82,7 +82,7 @@ const pricingTiers: PricingTier[] = [
     id: 'premium',
     name: 'premium',
     displayName: 'Premium',
-    description: 'Voor grote bedrijven die alles nodig hebben',
+    description: 'For large companies that need everything',
     priceMonthly: 79.99,
     priceYearly: 799.99,
     yearlyDiscount: 16.67,
@@ -91,15 +91,15 @@ const pricingTiers: PricingTier[] = [
     maxUsers: null,
     maxBranches: null,
     features: [
-      'Alle Groei features',
-      'Onbeperkte producten',
-      'Onbeperkte orders',
-      'Onbeperkte gebruikers',
-      'Onbeperkte branches',
+      'All Growth features',
+      'Unlimited products',
+      'Unlimited orders',
+      'Unlimited users',
+      'Unlimited branches',
       'Dedicated support',
       'Custom onboarding',
-      'SLA garantie',
-      'White-label opties'
+      'SLA guarantee',
+      'White-label options'
     ],
     isPopular: false,
     isEnterprise: true,
@@ -201,7 +201,7 @@ export default function PricingPage() {
                 </CardDescription>
                 <div className="mt-4">
                   <div className="text-4xl font-bold text-gray-900">
-                    {tier.priceMonthly === 0 ? 'Gratis' : formatPrice(billingCycle === 'monthly' ? tier.priceMonthly : tier.priceYearly)}
+                    {tier.priceMonthly === 0 ? 'Free' : formatPrice(billingCycle === 'monthly' ? tier.priceMonthly : tier.priceYearly)}
                   </div>
                   {tier.priceMonthly > 0 && (
                     <div className="text-sm text-gray-500">
@@ -267,7 +267,7 @@ export default function PricingPage() {
                 <h3 className="text-2xl font-bold text-gray-900">14-day free trial</h3>
             </div>
             <p className="text-gray-600 mb-6">
-              Probeer alle premium features 14 days free. No credit card required, 
+              Try all premium features 14 days free. No credit card required, 
               cancel anytime.
             </p>
             <div className="grid md:grid-cols-3 gap-6 text-left">
@@ -289,7 +289,7 @@ export default function PricingPage() {
                 <Check className="h-5 w-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
                 <div>
                   <h4 className="font-semibold text-gray-900">Direct start</h4>
-                  <p className="text-sm text-gray-600">Begin direct with your inventory management</p>
+                  <p className="text-sm text-gray-600">Start directly with your inventory management</p>
                 </div>
               </div>
             </div>

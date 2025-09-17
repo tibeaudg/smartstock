@@ -37,7 +37,7 @@ export const Settings = () => {
   const navigate = useNavigate();
   const { isMobile } = useMobile();
   
-  // Gebruik de page refresh hook
+  // Use the page refresh hook
   usePageRefresh();
 
   // Get current path to determine active submenu
