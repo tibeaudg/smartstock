@@ -22,7 +22,7 @@ import {
 import { useSubscription } from '@/hooks/useSubscription';
 import { useNavigate } from 'react-router-dom';
 import { UsageLimits } from '@/components/UsageLimits';
-import { UpgradePrompt } from '@/components/UpgradePrompt';
+import { UpgradePrompt, UpgradeOptions, AllUpgradeOptions, TierUpgradeCard } from '@/components/UpgradePrompt';
 
 export const SubscriptionManagement = () => {
   const { user } = useAuth();
@@ -292,26 +292,41 @@ export const SubscriptionManagement = () => {
         </Card>
       )}
 
-      {/* Upgrade Prompts for Basic Plan */}
+      {/* Upgrade Prompts */}
       {(() => {
         const tier = currentTier || pricingTiers.find(t => t.name === 'basic');
-        return tier?.name === 'basic' && (
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-gray-900">
-            Upgrade for more features
-          </h3>
-          
-          <div className="grid md:grid-cols-2 gap-4">
-            <UpgradePrompt 
-              feature="analytics"
-              showCloseButton={false}
-            />
-            <UpgradePrompt 
-              feature="scanner"
-              showCloseButton={false}
-            />
+        const isBasic = tier?.name === 'basic';
+        const isGrowth = tier?.name === 'growth';
+        
+        if (!isBasic && !isGrowth) return null;
+        
+        return (
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-gray-900">
+              Upgrade for more features
+            </h3>
+            
+            {isBasic ? (
+              <div className="grid md:grid-cols-2 gap-4">
+                <TierUpgradeCard 
+                  tier={pricingTiers.find(t => t.name === 'growth')!}
+                  feature="analytics"
+                  showCloseButton={false}
+                />
+                <TierUpgradeCard 
+                  tier={pricingTiers.find(t => t.name === 'premium')!}
+                  feature="scanner"
+                  showCloseButton={false}
+                />
+              </div>
+            ) : (
+              <UpgradeOptions 
+                feature="premium"
+                showAllOptions={false}
+                showCloseButton={false}
+              />
+            )}
           </div>
-        </div>
         );
       })()}
 

@@ -28,10 +28,10 @@ interface PricingTier {
 
 const pricingTiers: PricingTier[] = [
   {
-    id: 'basic',
-    name: 'basic',
-    displayName: 'Basic',
-    description: 'Perfect for small businesses that are just starting with inventory management',
+    id: 'basis',
+    name: 'basis',
+    displayName: 'Basis',
+    description: 'Perfect voor kleine bedrijven die beginnen met voorraadbeheer',
     priceMonthly: 0,
     priceYearly: 0,
     yearlyDiscount: 0,
@@ -40,11 +40,11 @@ const pricingTiers: PricingTier[] = [
     maxUsers: 2,
     maxBranches: 1,
     features: [
-      'Basic inventory management',
-      'Add/edit products',
-      'Simple reports',
+      'Basis voorraadbeheer',
+      'Producten toevoegen/bewerken',
+      'Eenvoudige rapporten',
       'Email support',
-      'Mobile app access'
+      'Mobiele app toegang'
     ],
     isPopular: false,
     isEnterprise: false,
@@ -52,10 +52,10 @@ const pricingTiers: PricingTier[] = [
     color: 'text-gray-600'
   },
   {
-    id: 'growth',
-    name: 'growth',
-    displayName: 'Growth',
-    description: 'Ideal for growing businesses with more needs',
+    id: 'groei',
+    name: 'groei',
+    displayName: 'Groei',
+    description: 'Ideaal voor groeiende bedrijven met meer behoeften',
     priceMonthly: 29.99,
     priceYearly: 299.99,
     yearlyDiscount: 16.67,
@@ -64,11 +64,13 @@ const pricingTiers: PricingTier[] = [
     maxUsers: 10,
     maxBranches: 5,
     features: [
-      'All Basic features',
-      'Advanced analytics',
+      'Alle Basis features',
+      'Geavanceerde analytics',
       'Barcode scanner',
+      'Leveringsbonnen beheer',
+      'API toegang',
       'Priority support',
-      'Custom reports',
+      'Custom rapporten',
       'Bulk import/export'
     ],
     isPopular: true,
@@ -80,7 +82,7 @@ const pricingTiers: PricingTier[] = [
     id: 'premium',
     name: 'premium',
     displayName: 'Premium',
-    description: 'For large businesses that need everything',
+    description: 'Voor grote bedrijven die alles nodig hebben',
     priceMonthly: 79.99,
     priceYearly: 799.99,
     yearlyDiscount: 16.67,
@@ -89,11 +91,15 @@ const pricingTiers: PricingTier[] = [
     maxUsers: null,
     maxBranches: null,
     features: [
-      'All Growth features',
-      'Unlimited products',
-      'Delivery notes management',
+      'Alle Groei features',
+      'Onbeperkte producten',
+      'Onbeperkte orders',
+      'Onbeperkte gebruikers',
+      'Onbeperkte branches',
       'Dedicated support',
       'Custom onboarding',
+      'SLA garantie',
+      'White-label opties'
     ],
     isPopular: false,
     isEnterprise: true,

@@ -76,11 +76,11 @@ export const Layout = ({ children, currentTab, onTabChange, userRole, userProfil
       {/* Notification Overlay */}
       {showNotifications && user && (
         <div className="fixed top-20 right-4 z-[100] bg-white border border-gray-200 rounded-lg shadow-xl p-4 w-80 max-h-[60vh] overflow-y-auto">
-          <h4 className="font-semibold mb-2">Meldingen</h4>
+          <h4 className="font-semibold mb-2">Notifications</h4>
           {notificationsLoading ? (
-            <div className="text-gray-500 text-sm">Laden...</div>
+            <div className="text-gray-500 text-sm">Loading...</div>
           ) : notifications.length === 0 ? (
-            <div className="text-gray-700 text-sm">Geen meldingen.</div>
+            <div className="text-gray-700 text-sm">No notifications.</div>
           ) : (
             <ul className="divide-y divide-gray-200">
               {notifications.map((n) => (
