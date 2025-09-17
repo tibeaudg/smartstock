@@ -14,6 +14,7 @@ import { cn } from '@/lib/utils';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { useAuthConversionTracking } from '@/hooks/useAuthConversionTracking';
 import { useWebsiteTracking } from '@/hooks/useWebsiteTracking';
+import { useTranslation } from 'react-i18next';
 
 export const AuthPage = () => {
   const [mode, setMode] = useState<'login' | 'register' | 'reset'>('login');
@@ -23,10 +24,43 @@ export const AuthPage = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [currentLanguage, setCurrentLanguage] = useState('en');
 
   const { signIn, signUp, resetPassword } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const { t, i18n } = useTranslation();
+  
+  // Force language and track changes
+  useEffect(() => {
+    console.log('AuthPage - FORCING ENGLISH LANGUAGE');
+    i18n.changeLanguage('en');
+    localStorage.setItem('preferred-language', 'en');
+    setCurrentLanguage('en');
+  }, []);
+
+  // Listen for language changes
+  useEffect(() => {
+    const handleLanguageChange = (lng: string) => {
+      console.log('AuthPage - Language changed to:', lng);
+      setCurrentLanguage(lng);
+    };
+
+    i18n.on('languageChanged', handleLanguageChange);
+    return () => i18n.off('languageChanged', handleLanguageChange);
+  }, [i18n]);
+
+  // Debug: Test translation keys
+  console.log('AuthPage - Current language:', i18n.language);
+  console.log('AuthPage - Login title:', t('auth.title.login'));
+  console.log('AuthPage - Register title:', t('auth.title.register'));
+  console.log('AuthPage - Login subtitle:', t('auth.subtitle.login'));
+
+  // Fallback translations if keys don't work
+  const getTranslation = (key: string, fallback: string) => {
+    const translation = t(key);
+    return translation !== key ? translation : fallback;
+  };
 
   // Check URL parameters for initial mode
   useEffect(() => {
@@ -86,7 +120,7 @@ export const AuthPage = () => {
           if (isTrackingReady) {
             await trackError(error.message, 'login_attempt');
           }
-          toast.error(error?.message === 'Invalid login credentials' ? t('auth.errors.invalidCredentials') : error?.message || t('auth.errors.loginFailed'));
+          toast.error(error?.message === 'Invalid login credentials' ? getTranslation('auth.errors.invalidCredentials', 'Invalid email address or password') : error?.message || getTranslation('auth.errors.loginFailed', 'Login failed'));
           return;
         }
 
@@ -105,14 +139,14 @@ export const AuthPage = () => {
           if (isTrackingReady) {
             await trackFormAbandonment('password_mismatch');
           }
-          toast.error(t('auth.errors.passwordMismatch'));
+          toast.error(getTranslation('auth.errors.passwordMismatch', 'Passwords do not match'));
           return;
         }
         if (password.length < 8) { // Aangeraden: 8 tekens
           if (isTrackingReady) {
             await trackFormAbandonment('password_too_short');
           }
-          toast.error(t('auth.errors.passwordTooShort'));
+          toast.error(getTranslation('auth.errors.passwordTooShort', 'Password must be at least 8 characters long'));
           return;
         }
 
@@ -123,7 +157,7 @@ export const AuthPage = () => {
           if (isTrackingReady) {
             await trackError(error.message, 'registration_started');
           }
-          toast.error(error.message.includes('User already registered') ? t('auth.errors.userExists') : error.message);
+          toast.error(error.message.includes('User already registered') ? getTranslation('auth.errors.userExists', 'An account with this email address already exists') : error.message);
           return;
         }
 
@@ -132,7 +166,7 @@ export const AuthPage = () => {
           await trackRegistrationCompleted();
         }
 
-        toast.success(t('auth.success.accountCreated'), { description: t('auth.success.checkEmail') });
+        toast.success(getTranslation('auth.success.accountCreated', 'Account created!'), { description: getTranslation('auth.success.checkEmail', 'Check your inbox to confirm your email address') });
         setMode('login');
         clearForm();
 
@@ -145,12 +179,12 @@ export const AuthPage = () => {
           return;
         }
 
-        toast.success(t('auth.success.resetSent'), { description: t('auth.success.resetDescription', { email }) });
+        toast.success(getTranslation('auth.success.resetSent', 'Reset instructions sent!'), { description: getTranslation('auth.success.resetDescription', `If an account exists for ${email}, an email has been sent`) });
         setMode('login');
       }
     } catch (err: any) {
       console.error('Onverwachte Auth fout:', err);
-      toast.error(err.message || t('auth.errors.unknownError'));
+      toast.error(err.message || getTranslation('auth.errors.unknownError', 'An unknown error occurred'));
     } finally {
       setIsSubmitting(false);
     }
@@ -176,12 +210,15 @@ export const AuthPage = () => {
                 <span className="text-2xl font-bold text-gray-900">stockflow</span>
               </div>
               <h1 className="text-3xl font-bold text-gray-900 mb-4">
-                {mode === 'register' ? t('auth.title.register') : t('auth.title.login')}
+                {mode === 'register' 
+                  ? getTranslation('auth.title.register', 'Start Your Free Account')
+                  : getTranslation('auth.title.login', 'Welcome Back')
+                }
               </h1>
               <p className="text-lg text-gray-600 mb-8">
                 {mode === 'register' 
-                  ? t('auth.subtitle.register')
-                  : t('auth.subtitle.login')
+                  ? getTranslation('auth.subtitle.register', 'Join 3200+ SMEs that already benefit from free inventory management')
+                  : getTranslation('auth.subtitle.login', 'Log in to access your inventory management dashboard')
                 }
               </p>
             </div>
@@ -190,10 +227,10 @@ export const AuthPage = () => {
               <div className="space-y-6">
                 <div className="grid grid-cols-1 gap-4">
                   {[
-                    { icon: <CheckCircle className="h-5 w-5 text-green-600" />, text: t('auth.benefits.free') },
-                    { icon: <Zap className="h-5 w-5 text-blue-600" />, text: t('auth.benefits.quickStart') },
-                    { icon: <Shield className="h-5 w-5 text-purple-600" />, text: t('auth.benefits.secure') },
-                    { icon: <Users className="h-5 w-5 text-orange-600" />, text: t('auth.benefits.support') }
+                    { icon: <CheckCircle className="h-5 w-5 text-green-600" />, text: getTranslation('auth.benefits.free', '100% free for SMEs') },
+                    { icon: <Zap className="h-5 w-5 text-blue-600" />, text: getTranslation('auth.benefits.quickStart', 'Get started in 2 minutes') },
+                    { icon: <Shield className="h-5 w-5 text-purple-600" />, text: getTranslation('auth.benefits.secure', 'Safe and GDPR-compliant') },
+                    { icon: <Users className="h-5 w-5 text-orange-600" />, text: getTranslation('auth.benefits.support', 'Professional support') }
                   ].map((benefit, index) => (
                     <div key={index} className="flex items-center gap-3 p-3 bg-white rounded-lg shadow-sm">
                       {benefit.icon}
@@ -205,13 +242,13 @@ export const AuthPage = () => {
                 <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6 border border-blue-100">
                   <div className="flex items-center gap-3 mb-3">
                     <Star className="h-5 w-5 text-yellow-500 fill-current" />
-                    <span className="font-semibold text-gray-900">{t('auth.testimonial.title')}</span>
+                    <span className="font-semibold text-gray-900">{getTranslation('auth.testimonial.title', 'What customers say')}</span>
                   </div>
                   <p className="text-gray-700 italic mb-3">
-                    {t('auth.testimonial.quote')}
+                    {getTranslation('auth.testimonial.quote', 'Thanks to StockFlow I finally have a clear overview of my inventory. The automatic reorder notifications are a lifesaver!')}
                   </p>
                   <div className="text-sm text-gray-600">
-                    {t('auth.testimonial.author')}
+                    {getTranslation('auth.testimonial.author', '- Laura Peeters, De Koffieboetiek Gent')}
                   </div>
                 </div>
               </div>

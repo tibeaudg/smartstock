@@ -100,6 +100,39 @@
       "confirmPassword": "Wachtwoord Bevestigen",
       "hasAccount": "Al een account?",
       "signIn": "Inloggen"
+    },
+    "benefits": {
+      "free": "100% Gratis",
+      "quickStart": "Direct aan de slag",
+      "secure": "Veilig en betrouwbaar",
+      "support": "Nederlandse support"
+    },
+    "testimonial": {
+      "title": "Wat klanten zeggen",
+      "quote": "Stockflow heeft ons voorraadbeheer volledig getransformeerd. Eindelijk overzicht!",
+      "author": "- Jan van der Berg, Horeca Direct"
+    },
+    "title": {
+      "login": "Welkom terug",
+      "register": "Start Gratis"
+    },
+    "subtitle": {
+      "login": "Log in op je account om verder te gaan",
+      "register": "Maak een gratis account aan en begin direct met het beheren van je voorraad"
+    },
+    "errors": {
+      "invalidCredentials": "Ongeldige inloggegevens",
+      "loginFailed": "Inloggen mislukt",
+      "userExists": "Gebruiker bestaat al",
+      "unknownError": "Er is een onbekende fout opgetreden",
+      "passwordMismatch": "Wachtwoorden komen niet overeen",
+      "passwordTooShort": "Wachtwoord moet minimaal 8 tekens lang zijn"
+    },
+    "success": {
+      "accountCreated": "Account aangemaakt!",
+      "checkEmail": "Controleer je e-mail voor verificatie",
+      "resetSent": "Reset e-mail verzonden!",
+      "resetDescription": "Controleer je inbox op {{email}}"
     }
   },
   "dashboard": {

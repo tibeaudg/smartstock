@@ -100,6 +100,39 @@
       "confirmPassword": "Bekräfta lösenord",
       "hasAccount": "Har du redan ett konto?",
       "signIn": "Logga in"
+    },
+    "benefits": {
+      "free": "100% gratis för små och medelstora företag",
+      "quickStart": "Kom igång på 2 minuter",
+      "secure": "Säkert och GDPR-kompatibelt",
+      "support": "Professionell support"
+    },
+    "testimonial": {
+      "title": "Vad kunder säger",
+      "quote": "Tack vare StockFlow har jag äntligen en tydlig överblick över mitt lager. De automatiska återbeställningsnotifieringarna är livräddande!",
+      "author": "- Laura Peeters, De Koffieboetiek Gent"
+    },
+    "title": {
+      "login": "Välkommen tillbaka",
+      "register": "Starta ditt gratis konto"
+    },
+    "subtitle": {
+      "login": "Logga in för att komma åt din lagerhanteringsinstrumentpanel",
+      "register": "Gå med 3200+ små och medelstora företag som redan drar nytta av gratis lagerhantering"
+    },
+    "errors": {
+      "invalidCredentials": "Ogiltig e-postadress eller lösenord",
+      "loginFailed": "Inloggning misslyckades",
+      "userExists": "Ett konto med denna e-postadress finns redan",
+      "unknownError": "Ett okänt fel uppstod",
+      "passwordMismatch": "Lösenorden matchar inte",
+      "passwordTooShort": "Lösenordet måste vara minst 8 tecken långt"
+    },
+    "success": {
+      "accountCreated": "Konto skapat!",
+      "checkEmail": "Kontrollera din inkorg för att bekräfta din e-postadress",
+      "resetSent": "Återställningsinstruktioner skickade!",
+      "resetDescription": "Om ett konto finns för {{email}} har ett e-postmeddelande skickats"
     }
   },
   "dashboard": {

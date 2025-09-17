@@ -21,7 +21,7 @@ export const detectUserLanguage = async (): Promise<string> => {
   // First, check if user has a saved language preference
   try {
     const savedLanguage = localStorage.getItem('preferred-language');
-    if (savedLanguage && ['en', 'nl'].includes(savedLanguage)) {
+    if (savedLanguage && ['en', 'nl', 'hu', 'ro', 'sv'].includes(savedLanguage)) {
       return savedLanguage;
     }
   } catch (error) {
@@ -75,4 +75,7 @@ export const saveLanguagePreference = (language: string): void => {
 export const getSupportedLanguages = () => [
   { code: 'en', name: 'English', nativeName: 'English' },
   { code: 'nl', name: 'Dutch', nativeName: 'Nederlands' },
+  { code: 'hu', name: 'Hungarian', nativeName: 'Magyar' },
+  { code: 'ro', name: 'Romanian', nativeName: 'Română' },
+  { code: 'sv', name: 'Swedish', nativeName: 'Svenska' },
 ];

@@ -100,6 +100,39 @@
       "confirmPassword": "Confirmă parola",
       "hasAccount": "Ai deja cont?",
       "signIn": "Conectare"
+    },
+    "benefits": {
+      "free": "100% gratuit pentru IMM-uri",
+      "quickStart": "Începe în 2 minute",
+      "secure": "Sigur și conform GDPR",
+      "support": "Suport profesional"
+    },
+    "testimonial": {
+      "title": "Ce spun clienții",
+      "quote": "Datorită StockFlow am în sfârșit o imagine clară asupra inventarului meu. Notificările automate de re-comandă sunt salvatoare de viață!",
+      "author": "- Laura Peeters, De Koffieboetiek Gent"
+    },
+    "title": {
+      "login": "Bine ai revenit",
+      "register": "Începe contul tău gratuit"
+    },
+    "subtitle": {
+      "login": "Conectează-te pentru a accesa panoul de gestionare a inventarului",
+      "register": "Alătură-te celor 3200+ IMM-uri care beneficiază deja de gestionarea gratuită a inventarului"
+    },
+    "errors": {
+      "invalidCredentials": "Adresă de email sau parolă invalidă",
+      "loginFailed": "Conectarea a eșuat",
+      "userExists": "Există deja un cont cu această adresă de email",
+      "unknownError": "A apărut o eroare necunoscută",
+      "passwordMismatch": "Parolele nu se potrivesc",
+      "passwordTooShort": "Parola trebuie să aibă cel puțin 8 caractere"
+    },
+    "success": {
+      "accountCreated": "Cont creat!",
+      "checkEmail": "Verifică-ți inbox-ul pentru a confirma adresa de email",
+      "resetSent": "Instrucțiunile de reset au fost trimise!",
+      "resetDescription": "Dacă există un cont pentru {{email}}, a fost trimis un email"
     }
   },
   "dashboard": {

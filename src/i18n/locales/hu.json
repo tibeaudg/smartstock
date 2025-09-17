@@ -100,6 +100,39 @@
       "confirmPassword": "Jelszó megerősítése",
       "hasAccount": "Már van fiókja?",
       "signIn": "Bejelentkezés"
+    },
+    "benefits": {
+      "free": "100% ingyenes",
+      "quickStart": "Kezdés 2 perc alatt",
+      "secure": "Biztonságos és GDPR-kompatibilis",
+      "support": "Professzionális támogatás"
+    },
+    "testimonial": {
+      "title": "Mit mondanak az ügyfelek",
+      "quote": "A StockFlow-nak köszönhetően végre áttekintést kaptam a készletemről. Az automatikus újrarendelési értesítések életmentőek!",
+      "author": "- Laura Peeters, De Koffieboetiek Gent"
+    },
+    "title": {
+      "login": "Üdvözöljük vissza",
+      "register": "Indítsa el ingyenes fiókját"
+    },
+    "subtitle": {
+      "login": "Jelentkezzen be a készletkezelő irányítópultjához",
+      "register": "Csatlakozzon a 3200+ KKV-hoz, amelyek már élvezik az ingyenes készletkezelés előnyeit"
+    },
+    "errors": {
+      "invalidCredentials": "Érvénytelen e-mail cím vagy jelszó",
+      "loginFailed": "Bejelentkezés sikertelen",
+      "userExists": "Már létezik fiók ezzel az e-mail címmel",
+      "unknownError": "Ismeretlen hiba történt",
+      "passwordMismatch": "A jelszavak nem egyeznek",
+      "passwordTooShort": "A jelszónak legalább 8 karakter hosszúnak kell lennie"
+    },
+    "success": {
+      "accountCreated": "Fiók létrehozva!",
+      "checkEmail": "Ellenőrizze a postaládáját az e-mail cím megerősítéséhez",
+      "resetSent": "Reset utasítások elküldve!",
+      "resetDescription": "Ha létezik fiók a {{email}} címen, e-mailt küldtünk"
     }
   },
   "dashboard": {
