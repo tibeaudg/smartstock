@@ -828,26 +828,44 @@ export const HomePage = () => {
   return (
     <div className="bg-white text-gray-900 font-sans">
       <Helmet>
-        {/* Critical resource preloading for LCP optimization */}
+        {/* Non-render-blocking resource optimization */}
+        
+        {/* Critical images preload with high priority */}
         <link rel="preload" as="image" href="/optimized/desktop.png" />
         <link rel="preload" as="image" href="/logo.png" />
         <link rel="preload" as="image" href="/Inventory-Management.png" />
+        
+        {/* Font preloading with display swap to prevent render blocking */}
         <link rel="preload" as="font" href="/fonts/inter-var.woff2" type="font/woff2" crossOrigin="anonymous" />
         <link rel="preload" as="font" href="/fonts/inter-var.woff" type="font/woff" crossOrigin="anonymous" />
-        <link rel="preload" as="style" href="/index.css" />
-        <link rel="preload" as="script" href="/assets/index.js" />
         
-        {/* DNS prefetch for external resources */}
+        {/* DNS prefetch for external resources - non-blocking */}
         <link rel="dns-prefetch" href="//fonts.googleapis.com" />
         <link rel="dns-prefetch" href="//cdnjs.cloudflare.com" />
+        <link rel="dns-prefetch" href="//www.google-analytics.com" />
+        <link rel="dns-prefetch" href="//www.googletagmanager.com" />
         
-        {/* Preconnect to critical origins */}
+        {/* Preconnect to critical origins - non-blocking */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         
-        {/* Critical CSS inline for LCP optimization */}
+        {/* Non-render-blocking CSS loading */}
+        <link rel="preload" as="style" href="/index.css" onLoad={() => {}} />
+        <noscript>
+          {`<link rel="stylesheet" href="/index.css" />`}
+        </noscript>
+        
+        {/* Non-render-blocking JavaScript loading */}
+        {/* Note: JavaScript files are handled by Vite bundler automatically */}
+        
+        {/* Critical CSS inline for above-the-fold content - prevents render blocking */}
         <style>{`
-          /* Critical above-the-fold styles */
+          /* Critical above-the-fold styles - inline to prevent render blocking */
+          * { box-sizing: border-box; }
+          html { font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif; }
+          body { margin: 0; padding: 0; background-color: #ffffff; color: #111827; }
+          
+          /* Hero section critical styles */
           .bg-white { background-color: #ffffff; }
           .text-gray-900 { color: #111827; }
           .font-sans { font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif; }
@@ -865,7 +883,6 @@ export const HomePage = () => {
           .mb-6 { margin-bottom: 1.5rem; }
           .leading-tight { line-height: 1.25; }
           .block { display: block; }
-          .text-gray-900 { color: #111827; }
           .text-blue-600 { color: #2563eb; }
           .text-2xl { font-size: 1.5rem; line-height: 2rem; }
           .sm\\:text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
@@ -873,7 +890,92 @@ export const HomePage = () => {
           .lg\\:text-5xl { font-size: 3rem; line-height: 1; }
           .font-semibold { font-weight: 600; }
           .mt-2 { margin-top: 0.5rem; }
+          
+          /* Button critical styles */
+          .bg-gradient-to-r { background-image: linear-gradient(to right, var(--tw-gradient-stops)); }
+          .from-blue-600 { --tw-gradient-from: #2563eb; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(37, 99, 235, 0)); }
+          .to-blue-700 { --tw-gradient-to: #1d4ed8; }
+          .text-white { color: #ffffff; }
+          .px-8 { padding-left: 2rem; padding-right: 2rem; }
+          .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+          .rounded-xl { border-radius: 0.75rem; }
+          .font-semibold { font-weight: 600; }
+          .hover\\:from-blue-700:hover { --tw-gradient-from: #1d4ed8; }
+          .hover\\:to-blue-800:hover { --tw-gradient-to: #1e40af; }
+          .transition-all { transition-property: all; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+          .duration-300 { transition-duration: 300ms; }
+          .transform { transform: translateX(var(--tw-translate-x, 0)) translateY(var(--tw-translate-y, 0)) rotate(var(--tw-rotate, 0)) skewX(var(--tw-skew-x, 0)) skewY(var(--tw-skew-y, 0)) scaleX(var(--tw-scale-x, 1)) scaleY(var(--tw-scale-y, 1)); }
+          .hover\\:scale-105:hover { --tw-scale-x: 1.05; --tw-scale-y: 1.05; }
+          .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+          .hover\\:shadow-xl:hover { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+          .text-lg { font-size: 1.125rem; line-height: 1.75rem; }
+          .w-full { width: 100%; }
+          .sm\\:w-auto { width: auto; }
+          
+          /* Flexbox critical styles */
+          .flex { display: flex; }
+          .flex-col { flex-direction: column; }
+          .sm\\:flex-row { flex-direction: row; }
+          .gap-4 { gap: 1rem; }
+          .justify-center { justify-content: center; }
+          .items-center { align-items: center; }
+          
+          /* Grid critical styles */
+          .grid { display: grid; }
+          .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+          .md\\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+          .gap-6 { gap: 1.5rem; }
+          
+          /* Responsive utilities */
+          @media (min-width: 640px) {
+            .sm\\:text-5xl { font-size: 3rem; line-height: 1; }
+            .sm\\:text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
+            .sm\\:flex-row { flex-direction: row; }
+            .sm\\:w-auto { width: auto; }
+            .sm\\:block { display: block; }
+          }
+          
+          @media (min-width: 768px) {
+            .md\\:text-6xl { font-size: 3.75rem; line-height: 1; }
+            .md\\:text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
+            .md\\:py-24 { padding-top: 6rem; padding-bottom: 6rem; }
+            .md\\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+          }
+          
+          @media (min-width: 1024px) {
+            .lg\\:text-7xl { font-size: 4.5rem; line-height: 1; }
+            .lg\\:text-5xl { font-size: 3rem; line-height: 1; }
+          }
+          
+          /* Loading states to prevent layout shift */
+          .loading { opacity: 0.7; }
+          .loaded { opacity: 1; transition: opacity 0.3s ease-in-out; }
         `}</style>
+        
+        {/* Non-render-blocking JavaScript loading strategy */}
+        <script>{`
+          // Load non-critical CSS asynchronously
+          function loadCSS(href) {
+            var link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = href;
+            link.media = 'print';
+            link.onload = function() { this.media = 'all'; };
+            document.head.appendChild(link);
+          }
+          
+          // Load CSS after page load
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+              loadCSS('/index.css');
+            });
+          } else {
+            loadCSS('/index.css');
+          }
+          
+          // Vite handles JavaScript bundling automatically
+          // No manual JavaScript loading needed
+        `}</script>
       </Helmet>
       <SEO
         title={`${t('homepage.title')} - ${t('homepage.subtitle')} | StockFlow`}
@@ -1066,10 +1168,13 @@ export const HomePage = () => {
                       src="/optimized/desktop.png" 
                       alt="Stockflow Dashboard Screenshot - Professional inventory management system for SMEs"
                       loading="eager"
-                      fetchPriority="high"
+                      decoding="async"
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
                       width={1200}
                       height={800}
+                      onLoad={(e) => {
+                        e.currentTarget.classList.add('loaded');
+                      }}
                       onError={(e) => {
                         e.currentTarget.src = '/Inventory-Management.png';
                       }}
@@ -1497,6 +1602,11 @@ export const HomePage = () => {
                           src={feature.img}
                           alt={`${feature.title} - Voorraadbeheer voor KMO's`}
                           className="rounded-xl w-full h-64 sm:h-80 object-contain"
+                          loading="lazy"
+                          decoding="async"
+                          onLoad={(e) => {
+                            e.currentTarget.classList.add('loaded');
+                          }}
                           onError={(e) => {
                             e.currentTarget.src = '/placeholder.svg';
                           }}
@@ -1682,6 +1792,11 @@ export const HomePage = () => {
                         className="h-12 w-12 rounded-full object-cover border-2 border-blue-100" 
                         src={t.avatar} 
                         alt={`${t.name} - ${t.role}`}
+                        loading="lazy"
+                        decoding="async"
+                        onLoad={(e) => {
+                          e.currentTarget.classList.add('loaded');
+                        }}
                         onError={(e) => {
                           e.currentTarget.src = '/placeholder.svg';
                         }}
@@ -1741,6 +1856,11 @@ export const HomePage = () => {
                         className="h-12 w-12 rounded-full object-cover border-2 border-blue-100" 
                         src={testimonial.avatar} 
                         alt={`${testimonial.name} - ${testimonial.role}`}
+                        loading="lazy"
+                        decoding="async"
+                        onLoad={(e) => {
+                          e.currentTarget.classList.add('loaded');
+                        }}
                         onError={(e) => {
                           e.currentTarget.src = '/placeholder.svg';
                         }}
@@ -2009,6 +2129,11 @@ export const HomePage = () => {
           src="/logo.png"
           alt="stockflow"
           className="h-10 md:h-12 mb-6"
+          loading="lazy"
+          decoding="async"
+          onLoad={(e) => {
+            e.currentTarget.classList.add('loaded');
+          }}
           onError={(e) => {
             e.currentTarget.src = '/placeholder.svg';
           }}
