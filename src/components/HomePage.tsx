@@ -899,17 +899,18 @@ export const HomePage = () => {
               <div className="relative max-w-5xl mx-auto">
                 <div className="bg-white rounded-2xl shadow-2xl p-8 border border-gray-100">
                   <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl overflow-hidden">
-                    <OptimizedImage 
+                    <img 
                       className="w-full h-auto object-cover" 
-                      src="optimized/desktop.png" 
+                      src="/optimized/desktop.png" 
                       alt="Stockflow Dashboard Screenshot - Professional inventory management system for SMEs"
-                      priority={true}
                       loading="eager"
-                      fetchpriority="high"
+                      fetchPriority="high"
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
                       width={1200}
                       height={800}
-                      useModernFormats={true}
+                      onError={(e) => {
+                        e.currentTarget.src = '/Inventory-Management.png';
+                      }}
                     />
                   </div>
                 </div>
@@ -1330,11 +1331,13 @@ export const HomePage = () => {
                   <FadeInWhenVisible>
                     <div className="relative">
                       <div className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-2xl p-8 shadow-lg border border-gray-100">
-                        <OptimizedImage
+                        <img
                           src={feature.img}
                           alt={`${feature.title} - Voorraadbeheer voor KMO's`}
                           className="rounded-xl w-full h-64 sm:h-80 object-contain"
-                          useModernFormats={false}
+                          onError={(e) => {
+                            e.currentTarget.src = '/placeholder.svg';
+                          }}
                         />
                       </div>
                       
@@ -1513,10 +1516,13 @@ export const HomePage = () => {
                   {/* Header with avatar and rating */}
                   <div className="p-6 border-b border-gray-100">
                     <div className="flex items-center gap-4 mb-4">
-                      <OptimizedImage 
+                      <img 
                         className="h-12 w-12 rounded-full object-cover border-2 border-blue-100" 
                         src={t.avatar} 
-                        alt={`${t.name} - ${t.role}`} 
+                        alt={`${t.name} - ${t.role}`}
+                        onError={(e) => {
+                          e.currentTarget.src = '/placeholder.svg';
+                        }}
                       />
                       <div className="flex-1">
                         <div className="font-bold text-gray-900">{t.name}</div>
@@ -1569,10 +1575,13 @@ export const HomePage = () => {
                 <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
                   <div className="p-6">
                     <div className="flex items-center gap-4 mb-4">
-                      <OptimizedImage 
+                      <img 
                         className="h-12 w-12 rounded-full object-cover border-2 border-blue-100" 
                         src={testimonial.avatar} 
-                        alt={`${testimonial.name} - ${testimonial.role}`} 
+                        alt={`${testimonial.name} - ${testimonial.role}`}
+                        onError={(e) => {
+                          e.currentTarget.src = '/placeholder.svg';
+                        }}
                       />
                       <div className="flex-1">
                         <div className="font-bold text-gray-900">{testimonial.name}</div>
@@ -1834,10 +1843,13 @@ export const HomePage = () => {
     <div className="grid md:grid-cols-4 gap-8 mb-8">
       {/* Company Info */}
       <div className="md:col-span-2">
-        <OptimizedImage
+        <img
           src="/logo.png"
           alt="stockflow"
           className="h-10 md:h-12 mb-6"
+          onError={(e) => {
+            e.currentTarget.src = '/placeholder.svg';
+          }}
         />
         <p className="text-gray-400 text-base md:text-lg mb-6 leading-relaxed">
           {t('footer.tagline')}
