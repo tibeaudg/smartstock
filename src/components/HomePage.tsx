@@ -666,8 +666,52 @@ export const HomePage = () => {
   return (
     <div className="bg-white text-gray-900 font-sans">
       <Helmet>
-        <link rel="preload" as="image" href="/Inventory-Management.png" />
+        {/* Critical resource preloading for LCP optimization */}
+        <link rel="preload" as="image" href="/optimized/desktop.png" />
         <link rel="preload" as="image" href="/logo.png" />
+        <link rel="preload" as="image" href="/Inventory-Management.png" />
+        <link rel="preload" as="font" href="/fonts/inter-var.woff2" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" as="font" href="/fonts/inter-var.woff" type="font/woff" crossOrigin="anonymous" />
+        <link rel="preload" as="style" href="/index.css" />
+        <link rel="preload" as="script" href="/assets/index.js" />
+        
+        {/* DNS prefetch for external resources */}
+        <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+        <link rel="dns-prefetch" href="//cdnjs.cloudflare.com" />
+        
+        {/* Preconnect to critical origins */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        
+        {/* Critical CSS inline for LCP optimization */}
+        <style>{`
+          /* Critical above-the-fold styles */
+          .bg-white { background-color: #ffffff; }
+          .text-gray-900 { color: #111827; }
+          .font-sans { font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif; }
+          .max-w-7xl { max-width: 80rem; }
+          .mx-auto { margin-left: auto; margin-right: auto; }
+          .px-4 { padding-left: 1rem; padding-right: 1rem; }
+          .py-12 { padding-top: 3rem; padding-bottom: 3rem; }
+          .md\\:py-24 { padding-top: 6rem; padding-bottom: 6rem; }
+          .text-center { text-align: center; }
+          .text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
+          .sm\\:text-5xl { font-size: 3rem; line-height: 1; }
+          .md\\:text-6xl { font-size: 3.75rem; line-height: 1; }
+          .lg\\:text-7xl { font-size: 4.5rem; line-height: 1; }
+          .font-bold { font-weight: 700; }
+          .mb-6 { margin-bottom: 1.5rem; }
+          .leading-tight { line-height: 1.25; }
+          .block { display: block; }
+          .text-gray-900 { color: #111827; }
+          .text-blue-600 { color: #2563eb; }
+          .text-2xl { font-size: 1.5rem; line-height: 2rem; }
+          .sm\\:text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
+          .md\\:text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
+          .lg\\:text-5xl { font-size: 3rem; line-height: 1; }
+          .font-semibold { font-weight: 600; }
+          .mt-2 { margin-top: 0.5rem; }
+        `}</style>
       </Helmet>
       <SEO
         title={`${t('homepage.title')} - ${t('homepage.subtitle')} | StockFlow`}
@@ -775,24 +819,42 @@ export const HomePage = () => {
             {/* Internal navigation links for SEO */}
             <FadeInWhenVisible>
               <div className="flex flex-wrap justify-center gap-4 text-sm mb-8">
-                <Link to="#modules-section" className="text-blue-600 hover:text-blue-800 underline">
+                <button 
+                  onClick={() => scrollToSection('modules-section')} 
+                  className="text-blue-600 hover:text-blue-800 underline cursor-pointer"
+                >
                   {t('navigation.modules')}
-                </Link>
-                <Link to="#features-section" className="text-blue-600 hover:text-blue-800 underline">
+                </button>
+                <button 
+                  onClick={() => scrollToSection('features-section')} 
+                  className="text-blue-600 hover:text-blue-800 underline cursor-pointer"
+                >
                   {t('navigation.features')}
-                </Link>
-                <Link to="#pricing-section" className="text-blue-600 hover:text-blue-800 underline">
+                </button>
+                <button 
+                  onClick={() => scrollToSection('pricing-section')} 
+                  className="text-blue-600 hover:text-blue-800 underline cursor-pointer"
+                >
                   {t('navigation.pricing')}
-                </Link>
-                <Link to="#testimonials-section" className="text-blue-600 hover:text-blue-800 underline">
+                </button>
+                <button 
+                  onClick={() => scrollToSection('testimonials-section')} 
+                  className="text-blue-600 hover:text-blue-800 underline cursor-pointer"
+                >
                   {t('navigation.testimonials')}
-                </Link>
-                <Link to="#video-section" className="text-blue-600 hover:text-blue-800 underline">
+                </button>
+                <button 
+                  onClick={() => scrollToSection('video-section')} 
+                  className="text-blue-600 hover:text-blue-800 underline cursor-pointer"
+                >
                   {t('navigation.demo')}
-                </Link>
-                <Link to="#contact-section" className="text-blue-600 hover:text-blue-800 underline">
+                </button>
+                <button 
+                  onClick={() => scrollToSection('contact-section')} 
+                  className="text-blue-600 hover:text-blue-800 underline cursor-pointer"
+                >
                   {t('navigation.contact')}
-                </Link>
+                </button>
               </div>
             </FadeInWhenVisible>
 
@@ -832,7 +894,7 @@ export const HomePage = () => {
               </div>
             </FadeInWhenVisible>
 
-            {/* Hero image/demo */}
+            {/* Hero image/demo - LCP optimized */}
             <FadeInWhenVisible>
               <div className="relative max-w-5xl mx-auto">
                 <div className="bg-white rounded-2xl shadow-2xl p-8 border border-gray-100">
@@ -840,7 +902,14 @@ export const HomePage = () => {
                     <OptimizedImage 
                       className="w-full h-auto object-cover" 
                       src="optimized/desktop.png" 
-                      alt="Stockflow Dashboard Screenshot" 
+                      alt="Stockflow Dashboard Screenshot - Professional inventory management system for SMEs"
+                      priority={true}
+                      loading="eager"
+                      fetchpriority="high"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
+                      width={1200}
+                      height={800}
+                      useModernFormats={true}
                     />
                   </div>
                 </div>
@@ -925,9 +994,12 @@ export const HomePage = () => {
                     
                     {/* Internal link to features section */}
                     <div className="mb-4">
-                      <Link to="#features-section" className="text-blue-600 hover:text-blue-800 text-sm underline">
+                      <button 
+                        onClick={() => scrollToSection('features-section')} 
+                        className="text-blue-600 hover:text-blue-800 text-sm underline cursor-pointer"
+                      >
                         {t('navigation.learnMoreFeatures')}
-                      </Link>
+                      </button>
                     </div>
 
                     <div className="space-y-3 mb-8">
@@ -1771,18 +1843,30 @@ export const HomePage = () => {
           {t('footer.tagline')}
         </p>
         <div className="flex flex-wrap gap-4 text-sm">
-          <Link to="#modules-section" className="text-gray-400 hover:text-white underline">
+          <button 
+            onClick={() => scrollToSection('modules-section')} 
+            className="text-gray-400 hover:text-white underline cursor-pointer"
+          >
             {t('navigation.modules')}
-          </Link>
-          <Link to="#features-section" className="text-gray-400 hover:text-white underline">
+          </button>
+          <button 
+            onClick={() => scrollToSection('features-section')} 
+            className="text-gray-400 hover:text-white underline cursor-pointer"
+          >
             {t('navigation.features')}
-          </Link>
-          <Link to="#pricing-section" className="text-gray-400 hover:text-white underline">
+          </button>
+          <button 
+            onClick={() => scrollToSection('pricing-section')} 
+            className="text-gray-400 hover:text-white underline cursor-pointer"
+          >
             {t('navigation.pricing')}
-          </Link>
-          <Link to="#testimonials-section" className="text-gray-400 hover:text-white underline">
+          </button>
+          <button 
+            onClick={() => scrollToSection('testimonials-section')} 
+            className="text-gray-400 hover:text-white underline cursor-pointer"
+          >
             {t('navigation.testimonials')}
-          </Link>
+          </button>
         </div>
       </div>
       
@@ -1790,12 +1874,18 @@ export const HomePage = () => {
       <div>
         <h3 className="text-lg font-semibold mb-4">{t('footer.quickLinks')}</h3>
         <div className="space-y-2">
-          <Link to="#video-section" className="block text-gray-400 hover:text-white underline">
+          <button 
+            onClick={() => scrollToSection('video-section')} 
+            className="block text-gray-400 hover:text-white underline cursor-pointer"
+          >
             {t('navigation.demo')}
-          </Link>
-          <Link to="#contact-section" className="block text-gray-400 hover:text-white underline">
+          </button>
+          <button 
+            onClick={() => scrollToSection('contact-section')} 
+            className="block text-gray-400 hover:text-white underline cursor-pointer"
+          >
             {t('navigation.contact')}
-          </Link>
+          </button>
           <Link to="/auth" className="block text-gray-400 hover:text-white underline">
             {t('navigation.login')}
           </Link>
@@ -1809,15 +1899,24 @@ export const HomePage = () => {
       <div>
         <h3 className="text-lg font-semibold mb-4">{t('footer.resources')}</h3>
         <div className="space-y-2">
-          <Link to="#features-section" className="block text-gray-400 hover:text-white underline">
+          <button 
+            onClick={() => scrollToSection('features-section')} 
+            className="block text-gray-400 hover:text-white underline cursor-pointer"
+          >
             {t('footer.features')}
-          </Link>
-          <Link to="#testimonials-section" className="block text-gray-400 hover:text-white underline">
+          </button>
+          <button 
+            onClick={() => scrollToSection('testimonials-section')} 
+            className="block text-gray-400 hover:text-white underline cursor-pointer"
+          >
             {t('footer.caseStudies')}
-          </Link>
-          <Link to="#contact-section" className="block text-gray-400 hover:text-white underline">
+          </button>
+          <button 
+            onClick={() => scrollToSection('contact-section')} 
+            className="block text-gray-400 hover:text-white underline cursor-pointer"
+          >
             {t('footer.support')}
-          </Link>
+          </button>
           <Link to="/auth" className="block text-gray-400 hover:text-white underline">
             {t('footer.getStarted')}
           </Link>

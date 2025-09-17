@@ -49,6 +49,9 @@
     "overview": "Overview",
     "predictions": "AI Predictions",
     "reports": "Custom Reports",
+    "testimonials": "Testimonials",
+    "demo": "Demo",
+    "learnMoreFeatures": "Learn more about features",
     "export": "Export Data",
     "api": "API Access",
     "filtering": "Advanced Filtering",
@@ -738,7 +741,13 @@
   },
   "footer": {
     "tagline": "The best free inventory management program for SMEs. Simple, safe and without hidden costs.",
-    "copyright": "Free inventory management for SMEs."
+    "copyright": "Free inventory management for SMEs.",
+    "quickLinks": "Quick Links",
+    "resources": "Resources",
+    "features": "Features",
+    "caseStudies": "Case Studies",
+    "support": "Support",
+    "getStarted": "Get Started"
   },
   "badges": {
     "modules": "New Modules Available",

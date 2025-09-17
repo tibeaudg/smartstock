@@ -9,6 +9,8 @@ interface OptimizedImageProps {
   loading?: 'lazy' | 'eager';
   priority?: boolean;
   useModernFormats?: boolean;
+  fetchpriority?: 'high' | 'low' | 'auto';
+  sizes?: string;
 }
 
 export const OptimizedImage: React.FC<OptimizedImageProps> = ({
@@ -19,7 +21,9 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
   height,
   loading = 'lazy',
   priority = false,
-  useModernFormats = false
+  useModernFormats = false,
+  fetchpriority = 'auto',
+  sizes
 }) => {
   // Generate optimized image paths
   const getOptimizedSrc = (originalSrc: string, format: string) => {
@@ -49,6 +53,8 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
           height={height}
           loading={priority ? 'eager' : loading}
           decoding={priority ? 'sync' : 'async'}
+          fetchPriority={fetchpriority}
+          sizes={sizes}
           style={
             width || height
               ? {
@@ -71,6 +77,8 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
       height={height}
       loading={priority ? 'eager' : loading}
       decoding={priority ? 'sync' : 'async'}
+      fetchPriority={fetchpriority}
+      sizes={sizes}
       style={
         width || height
           ? {
