@@ -51,22 +51,49 @@ export const SEO: React.FC<SEOProps> = ({
       <meta name="geo.position" content="50.8503;4.3517" />
       <meta name="ICBM" content="50.8503, 4.3517" />
       
-      {/* Open Graph */}
+      {/* Enhanced Open Graph for better social sharing */}
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
       <meta property="og:image" content={image} />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta property="og:image:alt" content="StockFlow - Free Inventory Management Software for SMEs" />
       <meta property="og:url" content={url} />
       <meta property="og:type" content="website" />
       <meta property="og:locale" content={currentLang} />
       <meta property="og:site_name" content="StockFlow" />
+      <meta property="og:updated_time" content={new Date().toISOString()} />
       
-      {/* Twitter */}
+      {/* Business-specific Open Graph */}
+      <meta property="business:contact_data:street_address" content="Belgium" />
+      <meta property="business:contact_data:locality" content="Belgium" />
+      <meta property="business:contact_data:region" content="Belgium" />
+      <meta property="business:contact_data:postal_code" content="1000" />
+      <meta property="business:contact_data:country_name" content="Belgium" />
+      
+      {/* Enhanced Twitter Cards */}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={image} />
-      <meta name="twitter:site" content="@stockflow" />
-      <meta name="twitter:creator" content="@stockflow" />
+      <meta name="twitter:image:alt" content="StockFlow - Free Inventory Management Software for SMEs" />
+      <meta name="twitter:site" content="@stockflowapp" />
+      <meta name="twitter:creator" content="@stockflowapp" />
+      <meta name="twitter:domain" content="stockflow.be" />
+      
+      {/* LinkedIn specific */}
+      <meta property="linkedin:owner" content="stockflow" />
+      
+      {/* Facebook specific */}
+      <meta property="fb:app_id" content="123456789" />
+      <meta property="fb:admins" content="stockflow" />
+      
+      {/* Additional social media meta tags */}
+      <meta name="pinterest-rich-pin" content="true" />
+      <meta property="article:author" content="StockFlow" />
+      <meta property="article:publisher" content="https://www.facebook.com/stockflowapp" />
+      <meta property="article:section" content="Business Software" />
+      <meta property="article:tag" content="inventory management, stock control, warehouse management" />
       
       {/* Canonical */}
       <link rel="canonical" href={url} />

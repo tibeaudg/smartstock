@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { 
   Package, BarChart3, Users, Shield, Check, TrendingUp, Zap, Star, Clock, Euro, Target, 
   ChevronLeft, ChevronRight, Scan, Truck, ArrowRight, Play, Award, Globe, Smartphone, 
-  CheckCircle, MessageCircle, Rocket, Crown, Sparkles, Timer 
+  CheckCircle, MessageCircle, Rocket, Crown, Sparkles, Timer, Facebook, Twitter, Linkedin, Instagram
 } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
 import SEO from './SEO';
@@ -23,6 +23,7 @@ import { useWebsiteTracking } from '@/hooks/useWebsiteTracking';
 import { useTranslation } from 'react-i18next';
 import i18n from '../i18n';
 import { LanguageSwitcher } from './LanguageSwitcher';
+import SocialShare from './SocialShare';
 
 // Een herbruikbare component voor fade-in animaties bij het scrollen
 const FadeInWhenVisible = ({ children }) => {
@@ -641,7 +642,10 @@ export const HomePage = () => {
       "sameAs": [
         "https://www.linkedin.com/company/stockflow",
         "https://www.facebook.com/stockflowapp",
-        "https://twitter.com/stockflowapp"
+        "https://twitter.com/stockflowapp",
+        "https://www.instagram.com/stockflowapp",
+        "https://www.youtube.com/channel/stockflow",
+        "https://github.com/stockflow"
       ],
       "address": {
         "@type": "PostalAddress",
@@ -1193,6 +1197,7 @@ export const HomePage = () => {
           </div>
         </div>
       </section>
+
 
       {/* KENGETALLEN / SOCIAL PROOF STRIP */}
       <section id="stats-section" className="bg-white py-8 md:py-12">
@@ -1754,6 +1759,8 @@ export const HomePage = () => {
 
       {/* FLOATING CHAT BUTTON + INLINE POPUP */}
       <FloatingChat />
+      
+ 
 
       {/* TESTIMONIALS - Enhanced with metrics */}
       <section id="testimonials-section" className="py-16 md:py-24 bg-gradient-to-br from-blue-50 to-purple-50">
@@ -2141,6 +2148,50 @@ export const HomePage = () => {
         <p className="text-gray-400 text-base md:text-lg mb-6 leading-relaxed">
           {t('footer.tagline')}
         </p>
+        
+        {/* Social Media Follow Buttons */}
+        <div className="mb-6">
+          <h4 className="text-white font-semibold mb-3">{t('footer.followUs', 'Follow Us')}</h4>
+          <div className="flex gap-3">
+            <a 
+              href="https://www.facebook.com/profile.php?id=61578067034898"
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-lg transition-colors"
+              aria-label="Follow us on Facebook"
+            >
+              <Facebook className="h-5 w-5" />
+            </a>
+            <a 
+              href="https://twitter.com/stockflow" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="bg-sky-500 hover:bg-sky-600 text-white p-2 rounded-lg transition-colors"
+              aria-label="Follow us on Twitter"
+            >
+              <Twitter className="h-5 w-5" />
+            </a>
+            <a 
+              href="https://www.linkedin.com/stockflow" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="bg-blue-700 hover:bg-blue-800 text-white p-2 rounded-lg transition-colors"
+              aria-label="Follow us on LinkedIn"
+            >
+              <Linkedin className="h-5 w-5" />
+            </a>
+            <a 
+              href="https://www.instagram.com/stockflowbe"
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="bg-pink-600 hover:bg-pink-700 text-white p-2 rounded-lg transition-colors"
+              aria-label="Follow us on Instagram"
+            >
+              <Instagram className="h-5 w-5" />
+            </a>
+          </div>
+        </div>
+        
         <div className="flex flex-wrap gap-4 text-sm">
           <button 
             onClick={() => scrollToSection('modules-section')} 

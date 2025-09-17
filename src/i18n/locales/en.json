@@ -787,6 +787,27 @@
     "videoName": "StockFlow Demo - Inventory Management Software",
     "videoDescription": "See how StockFlow helps SMEs manage their inventory efficiently with real-time tracking, barcode scanning, and automated reporting."
   },
+  "socialShare": {
+    "title": "Share this page",
+    "helpText": "Help others discover StockFlow by sharing this page",
+    "sectionTitle": "Help Others Discover StockFlow",
+    "sectionDescription": "Share StockFlow with your network and help other SMEs improve their inventory management"
+  },
+  "socialMentions": {
+    "badge": "Social Media Buzz",
+    "title": "What People Are Saying",
+    "subtitle": "On Social Media",
+    "description": "See how StockFlow is helping SMEs across social media platforms",
+    "cta": {
+      "title": "Join the Conversation",
+      "description": "Share your StockFlow experience and help other SMEs discover better inventory management",
+      "tweet": "Share on Twitter",
+      "linkedin": "Share on LinkedIn"
+    }
+  },
+  "footer": {
+    "followUs": "Follow Us"
+  },
   "badges": {
     "modules": "New Modules Available",
     "pricing": "Transparent Pricing",
