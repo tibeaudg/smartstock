@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/hooks/useAuth';
+import { useSubscription } from '@/hooks/useSubscription';
 import { useTranslation } from 'react-i18next';
 
 interface PricingTier {
@@ -26,91 +27,38 @@ interface PricingTier {
   color: string;
 }
 
-const pricingTiers: PricingTier[] = [
-  {
-    id: 'basis',
-    name: 'basis',
-    displayName: 'Basic',
-    description: 'Perfect for small businesses starting with inventory management',
-    priceMonthly: 0,
-    priceYearly: 0,
-    yearlyDiscount: 0,
-    maxProducts: 50,
-    maxOrders: 100,
-    maxUsers: 2,
-    maxBranches: 1,
-    features: [
-      'Basic inventory management',
-      'Add/edit products',
-      'Simple reports',
-      'Email support',
-      'Mobile app access'
-    ],
-    isPopular: false,
-    isEnterprise: false,
-    icon: <Package className="h-8 w-8" />,
-    color: 'text-gray-600'
-  },
-  {
-    id: 'groei',
-    name: 'groei',
-    displayName: 'Growth',
-    description: 'Ideal for growing businesses with more needs',
-    priceMonthly: 29.99,
-    priceYearly: 299.99,
-    yearlyDiscount: 16.67,
-    maxProducts: 500,
-    maxOrders: 1000,
-    maxUsers: 10,
-    maxBranches: 5,
-    features: [
-      'All Basic features',
-      'Advanced analytics',
-      'Barcode scanner',
-      'Delivery notes management',
-      'API access',
-      'Priority support',
-      'Custom reports',
-      'Bulk import/export'
-    ],
-    isPopular: true,
-    isEnterprise: false,
-    icon: <Zap className="h-8 w-8" />,
-    color: 'text-blue-600'
-  },
-  {
-    id: 'premium',
-    name: 'premium',
-    displayName: 'Premium',
-    description: 'For large companies that need everything',
-    priceMonthly: 79.99,
-    priceYearly: 799.99,
-    yearlyDiscount: 16.67,
-    maxProducts: null,
-    maxOrders: null,
-    maxUsers: null,
-    maxBranches: null,
-    features: [
-      'All Growth features',
-      'Unlimited products',
-      'Unlimited orders',
-      'Unlimited users',
-      'Unlimited branches',
-      'Dedicated support',
-      'Custom onboarding',
-      'SLA guarantee',
-      'White-label options'
-    ],
-    isPopular: false,
-    isEnterprise: true,
-    icon: <Crown className="h-8 w-8" />,
-    color: 'text-purple-600'
+// Helper function to get tier icon
+const getTierIcon = (tierName: string) => {
+  switch (tierName) {
+    case 'basic':
+      return <Package className="h-8 w-8" />;
+    case 'growth':
+      return <Zap className="h-8 w-8" />;
+    case 'premium':
+      return <Crown className="h-8 w-8" />;
+    default:
+      return <Package className="h-8 w-8" />;
   }
-];
+};
+
+// Helper function to get tier color
+const getTierColor = (tierName: string) => {
+  switch (tierName) {
+    case 'basic':
+      return 'text-gray-600';
+    case 'growth':
+      return 'text-blue-600';
+    case 'premium':
+      return 'text-purple-600';
+    default:
+      return 'text-gray-600';
+  }
+};
 
 export default function PricingPage() {
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly');
   const { user } = useAuth();
+  const { pricingTiers, isLoading } = useSubscription();
   const navigate = useNavigate();
   const { t } = useTranslation();
 
@@ -136,6 +84,18 @@ export default function PricingPage() {
     if (value === 0) return 'Not included';
     return `${value} ${type}`;
   };
+
+  // Show loading state
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading pricing plans...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
@@ -180,9 +140,9 @@ export default function PricingPage() {
           {pricingTiers.map((tier) => (
             <Card 
               key={tier.id} 
-              className={`relative ${tier.isPopular ? 'ring-2 ring-blue-500 shadow-xl scale-105' : 'shadow-lg'}`}
+              className={`relative ${tier.is_popular ? 'ring-2 ring-blue-500 shadow-xl scale-105' : 'shadow-lg'}`}
             >
-              {tier.isPopular && (
+              {tier.is_popular && (
                 <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                   <Badge className="bg-blue-500 text-white px-4 py-1">
                     <Star className="h-3 w-3 mr-1" />
@@ -192,18 +152,18 @@ export default function PricingPage() {
               )}
 
               <CardHeader className="text-center pb-4">
-                <div className={`mx-auto mb-4 ${tier.color}`}>
-                  {tier.icon}
+                <div className={`mx-auto mb-4 ${getTierColor(tier.name)}`}>
+                  {getTierIcon(tier.name)}
                 </div>
-                <CardTitle className="text-2xl font-bold">{tier.displayName}</CardTitle>
+                <CardTitle className="text-2xl font-bold">{tier.display_name}</CardTitle>
                 <CardDescription className="text-gray-600">
                   {tier.description}
                 </CardDescription>
                 <div className="mt-4">
                   <div className="text-4xl font-bold text-gray-900">
-                    {tier.priceMonthly === 0 ? 'Free' : formatPrice(billingCycle === 'monthly' ? tier.priceMonthly : tier.priceYearly)}
+                    {tier.price_monthly === 0 ? 'Free' : formatPrice(billingCycle === 'monthly' ? tier.price_monthly : tier.price_yearly)}
                   </div>
-                  {tier.priceMonthly > 0 && (
+                  {tier.price_monthly > 0 && (
                     <div className="text-sm text-gray-500">
                       {billingCycle === 'yearly' ? 'per year' : 'per month'}
                     </div>
@@ -216,19 +176,19 @@ export default function PricingPage() {
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-gray-600">Products</span>
-                    <span className="text-sm font-medium">{getLimitText(tier.maxProducts, 'products')}</span>
+                    <span className="text-sm font-medium">{getLimitText(tier.max_products, 'products')}</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-gray-600">Orders per month</span>
-                    <span className="text-sm font-medium">{getLimitText(tier.maxOrders, 'orders')}</span>
+                    <span className="text-sm font-medium">{getLimitText(tier.max_orders_per_month, 'orders')}</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-gray-600">Users</span>
-                    <span className="text-sm font-medium">{getLimitText(tier.maxUsers, 'users')}</span>
+                    <span className="text-sm font-medium">{getLimitText(tier.max_users, 'users')}</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-gray-600">Branches</span>
-                      <span className="text-sm font-medium">{getLimitText(tier.maxBranches, 'branches')}</span>
+                      <span className="text-sm font-medium">{getLimitText(tier.max_branches, 'branches')}</span>
                   </div>
                 </div>
 
@@ -248,11 +208,10 @@ export default function PricingPage() {
 
               <CardFooter>
                 <Button 
-                  className={`w-full ${tier.isPopular ? 'bg-blue-600 hover:bg-blue-700' : tier.isEnterprise ? 'bg-purple-600 hover:bg-purple-700' : 'bg-gray-900 hover:bg-gray-800'}`}
-                  onClick={() => handleSelectPlan(tier.id)}
+                  className={`w-full ${tier.is_popular ? 'bg-blue-600 hover:bg-blue-700' : tier.is_enterprise ? 'bg-purple-600 hover:bg-purple-700' : 'bg-gray-900 hover:bg-gray-800'}`}
+                  onClick={() => handleSelectPlan(tier.name)}
                 >
-                  {tier.priceMonthly === 0 ? 'Start free' : 'Start 14-day trial'}
-                  <ArrowRight className="h-4 w-4 ml-2" />
+                  {tier.price_monthly === 0 ? 'Current plan' : 'Start 14-day trial'}
                 </Button>
               </CardFooter>
             </Card>

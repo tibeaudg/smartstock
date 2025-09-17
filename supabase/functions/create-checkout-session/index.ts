@@ -38,11 +38,11 @@ serve(async (req) => {
       });
     }
 
-    // Get tier details from database
+    // Get tier details from database by name
     const { data: tier, error: tierError } = await supabase
       .from('pricing_tiers')
       .select('*')
-      .eq('id', tierId)
+      .eq('name', tierId)
       .maybeSingle();
 
     if (tierError || !tier) {
@@ -166,14 +166,14 @@ serve(async (req) => {
       success_url: successUrl,
       cancel_url: cancelUrl,
       metadata: {
-        tierId: tierId,
+        tierId: tier.id,
         userId: userId,
         billingCycle: billingCycle
       },
       subscription_data: {
         trial_period_days: 14, // 14-day free trial
         metadata: {
-          tierId: tierId,
+          tierId: tier.id,
           userId: userId,
           billingCycle: billingCycle
         }

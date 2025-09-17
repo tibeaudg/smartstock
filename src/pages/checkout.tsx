@@ -52,7 +52,7 @@ export default function CheckoutPage() {
     
     setIsProcessing(true);
     try {
-      await startTrial({ tierId: selectedTier.id, billingCycle });
+      await startTrial({ tierId: selectedTier.name, billingCycle });
       navigate('/dashboard?trial=started');
     } catch (error) {
       console.error('Error starting trial:', error);
@@ -68,14 +68,17 @@ export default function CheckoutPage() {
     setIsProcessing(true);
     try {
       // Create subscription checkout session using Supabase Edge Function
-      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/create-checkout-session`, {
+      const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || "https://sszuxnqhbxauvershuys.supabase.co";
+      const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNzenV4bnFoYnhhdXZlcnNodXlzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk4OTEyODYsImV4cCI6MjA2NTQ2NzI4Nn0.-jvEJ1uUwdcJKZ1JbgOtD6jr-e0FoeepPrj8rpSFviQ";
+      
+      const response = await fetch(`${SUPABASE_URL}/functions/v1/create-checkout-session`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
         },
         body: JSON.stringify({
-          tierId: selectedTier.id,
+          tierId: selectedTier.name,
           billingCycle,
           userId: user.id,
           successUrl: `${window.location.origin}/dashboard?subscription=success`,

@@ -126,9 +126,21 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session, 
     endDate.setMonth(endDate.getMonth() + 1);
   }
 
+  // Get the actual tier ID from the database by name
+  const { data: tier, error: tierError } = await supabase
+    .from('pricing_tiers')
+    .select('id')
+    .eq('name', tierId)
+    .maybeSingle();
+
+  if (tierError || !tier) {
+    console.error('Tier not found in webhook:', tierError);
+    throw new Error('Tier not found');
+  }
+
   const subscriptionData = {
     user_id: userId,
-    tier_id: tierId,
+    tier_id: tier.id,
     stripe_subscription_id: subscription,
     status: 'active',
     billing_cycle: billingCycle,
@@ -155,7 +167,7 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session, 
     .from('usage_tracking')
     .upsert({
       user_id: userId,
-      tier_id: tierId,
+      tier_id: tier.id,
       current_products: 0,
       current_users: 1, // User themselves
       current_branches: 1, // Default branch
@@ -169,7 +181,7 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session, 
     console.error('Error creating usage tracking record:', usageError);
   }
 
-  console.log(`Subscription created successfully for user ${userId}, tier ${tierId}`);
+  console.log(`Subscription created successfully for user ${userId}, tier ${tier.id}`);
 }
 
 async function handleInvoicePaymentSucceeded(invoice: Stripe.Invoice, supabase: any) {

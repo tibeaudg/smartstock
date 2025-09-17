@@ -240,7 +240,7 @@ export const useSubscription = () => {
   };
 
   const getCurrentTier = () => {
-    return currentSubscription?.tier || pricingTiers.find(tier => tier.name === 'basis');
+    return currentSubscription?.tier || pricingTiers.find(tier => tier.name === 'basic');
   };
 
   const canUseFeature = (featureName: string) => {
