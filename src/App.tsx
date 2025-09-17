@@ -26,7 +26,6 @@ import AdminNotificationsPage from './pages/AdminNotificationsPage';
 import SEO from './components/SEO';
 import PreloadResources from './components/PreloadResources';
 import { Admin } from './components/Admin';
-import AdminCMS from './components/AdminCMS';
 import { AdminChatList } from './components/AdminChatList';
 import { AnalyticsDashboard } from './components/analytics/AnalyticsDashboard';
 import { AIPredictions } from './components/analytics/AIPredictions';
@@ -383,7 +382,6 @@ export default function App() {
                     }
                   >
                     <Route element={<Admin />}>
-                      <Route path="cms" element={<AdminCMS />} />
                       <Route path="notifications" element={<AdminNotificationsPage />} />
                       <Route path="chat" element={<AdminChatList />} />
                       <Route path="seo" element={<SEO />} />

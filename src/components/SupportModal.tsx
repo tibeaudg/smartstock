@@ -48,7 +48,7 @@ export const SupportModal: React.FC<SupportModalProps> = ({
   const { currentTier } = useSubscription();
 
   // Check plan access based on current tier
-  const isGrowthOrPremium = currentTier?.name === 'groei' || currentTier?.name === 'premium';
+  const isGrowthOrPremium = currentTier?.name === 'growth' || currentTier?.name === 'premium';
   const isPremiumOnly = currentTier?.name === 'premium';
 
   const supportOptions: SupportOption[] = [

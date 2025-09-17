@@ -25,13 +25,13 @@ export const UpgradePrompt: React.FC<UpgradePromptProps> = ({
   const navigate = useNavigate();
 
   const getUpgradeTier = () => {
-    if (currentTier?.name === 'basis') {
-      return pricingTiers.find(tier => tier.name === 'groei');
+    if (currentTier?.name === 'basic') {
+      return pricingTiers.find(tier => tier.name === 'growth');
     }
-    if (currentTier?.name === 'groei') {
+    if (currentTier?.name === 'growth') {
       return pricingTiers.find(tier => tier.name === 'premium');
     }
-    return pricingTiers.find(tier => tier.name === 'groei');
+    return pricingTiers.find(tier => tier.name === 'growth');
   };
 
   const upgradeTier = getUpgradeTier();
@@ -62,7 +62,7 @@ export const UpgradePrompt: React.FC<UpgradePromptProps> = ({
 
   const getTierIcon = () => {
     switch (upgradeTier.name) {
-      case 'groei':
+      case 'growth':
         return <Zap className="h-6 w-6 text-blue-600" />;
       case 'premium':
         return <Crown className="h-6 w-6 text-purple-600" />;
@@ -73,7 +73,7 @@ export const UpgradePrompt: React.FC<UpgradePromptProps> = ({
 
   const getTierColor = () => {
     switch (upgradeTier.name) {
-      case 'groei':
+      case 'growth':
         return 'border-blue-200 bg-blue-50';
       case 'premium':
         return 'border-purple-200 bg-purple-50';
@@ -150,7 +150,7 @@ export const UpgradePrompt: React.FC<UpgradePromptProps> = ({
             <Button 
               onClick={handleUpgrade}
               className={`${
-                upgradeTier.name === 'groei' 
+                upgradeTier.name === 'growth' 
                   ? 'bg-blue-600 hover:bg-blue-700' 
                   : 'bg-purple-600 hover:bg-purple-700'
               }`}
@@ -181,7 +181,7 @@ export const CompactUpgradePrompt: React.FC<{
   const { currentTier, pricingTiers } = useSubscription();
   const navigate = useNavigate();
 
-  const upgradeTier = pricingTiers.find(tier => tier.name === 'groei');
+  const upgradeTier = pricingTiers.find(tier => tier.name === 'growth');
   if (!upgradeTier) return null;
 
   const handleUpgrade = () => {

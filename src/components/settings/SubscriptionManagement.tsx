@@ -34,8 +34,12 @@ export const SubscriptionManagement = () => {
     isTrialActive, 
     isSubscriptionActive,
     cancelSubscription,
-    isCancelling
+    isCancelling,
+    pricingTiers,
+    isLoading,
+    error
   } = useSubscription();
+
 
   const [showUpgradePrompt, setShowUpgradePrompt] = useState(false);
 
@@ -62,10 +66,11 @@ export const SubscriptionManagement = () => {
   };
 
   const getTierIcon = () => {
-    switch (currentTier?.name) {
-      case 'basis':
+    const tier = currentTier || pricingTiers.find(t => t.name === 'basic');
+    switch (tier?.name) {
+      case 'basic':
         return <Package className="h-6 w-6 text-gray-600" />;
-      case 'groei':
+      case 'growth':
         return <Zap className="h-6 w-6 text-blue-600" />;
       case 'premium':
         return <Crown className="h-6 w-6 text-purple-600" />;
@@ -75,10 +80,11 @@ export const SubscriptionManagement = () => {
   };
 
   const getTierColor = () => {
-    switch (currentTier?.name) {
-      case 'basis':
+    const tier = currentTier || pricingTiers.find(t => t.name === 'basic');
+    switch (tier?.name) {
+      case 'basic':
         return 'border-gray-200 bg-gray-50';
-      case 'groei':
+      case 'growth':
         return 'border-blue-200 bg-blue-50';
       case 'premium':
         return 'border-purple-200 bg-purple-50';
@@ -109,6 +115,38 @@ export const SubscriptionManagement = () => {
     return new Date(currentSubscription.end_date).toLocaleDateString('nl-NL');
   };
 
+  // Show loading state if data is still loading
+  if (isLoading) {
+    return (
+      <div className="space-y-6">
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center justify-center">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+              <span className="ml-2 text-gray-600">Loading subscription data...</span>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  // Show error state if there's an error
+  if (error) {
+    return (
+      <div className="space-y-6">
+        <Card className="border-red-200 bg-red-50">
+          <CardContent className="p-6">
+            <div className="text-red-600">
+              <h3 className="font-semibold">Error loading subscription data</h3>
+              <p className="text-sm mt-1">{error.message}</p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       {/* Current Plan */}
@@ -118,8 +156,8 @@ export const SubscriptionManagement = () => {
             <div className="flex items-center space-x-3">
               {getTierIcon()}
               <div>
-                <CardTitle className="text-xl">{currentTier?.display_name} Plan</CardTitle>
-                <CardDescription>{currentTier?.description}</CardDescription>
+                <CardTitle className="text-xl">{(currentTier || pricingTiers.find(t => t.name === 'basic'))?.display_name} Plan</CardTitle>
+                <CardDescription>{(currentTier || pricingTiers.find(t => t.name === 'basic'))?.description}</CardDescription>
               </div>
             </div>
             {getStatusBadge()}
@@ -131,11 +169,16 @@ export const SubscriptionManagement = () => {
           <div className="flex items-center justify-between">
             <div>
               <div className="text-2xl font-bold text-gray-900">
-                {currentTier?.price_monthly === 0 ? 'Free' : formatPrice(currentTier?.price_monthly || 0)}
+                {(() => {
+                  const tier = currentTier || pricingTiers.find(t => t.name === 'basic');
+                  return tier?.price_monthly === 0 ? 'Free' : formatPrice(tier?.price_monthly || 0);
+                })()}
               </div>
               <div className="text-sm text-gray-500">
-                {currentTier?.price_monthly === 0 ? 'Forever free' : 'per month'}
-                <CardTitle className="text-xl">{currentTier?.display_name} plan</CardTitle>
+                {(() => {
+                  const tier = currentTier || pricingTiers.find(t => t.name === 'basic');
+                  return tier?.price_monthly === 0 ? 'Forever free' : 'per month';
+                })()}
               </div>
             </div>
             
@@ -143,11 +186,9 @@ export const SubscriptionManagement = () => {
               <div className="text-right">
                 <div className="text-sm text-gray-600">
                   {currentSubscription.billing_cycle === 'monthly' ? 'Monthly' : 'Yearly'}
-                  <CardTitle className="text-xl">{currentTier?.display_name} plan</CardTitle>
                 </div>
                 {getNextBillingDate() && (
                   <div className="text-sm text-gray-500">
-                    <CardTitle className="text-xl">{currentTier?.display_name} plan</CardTitle>
                     Next payment: {getNextBillingDate()}
                   </div>
                 )}
@@ -159,38 +200,49 @@ export const SubscriptionManagement = () => {
           <div className="space-y-3">
             <h4 className="font-medium text-gray-900">Included features:</h4>
             <div className="grid grid-cols-2 gap-2">
-              {currentTier?.features.slice(0, 6).map((feature, index) => (
-                <div key={index} className="flex items-center text-sm">
-                  <Check className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
-                  <span className="text-gray-600">{feature}</span>
-                </div>
-              ))}
-              {currentTier?.features.length > 6 && (
-                <div className="text-sm text-gray-500 col-span-2">
-                <CardTitle className="text-xl">{currentTier?.display_name} plan</CardTitle>
-                  +{currentTier.features.length - 6} more features
-                </div>
-              )}
+              {(() => {
+                const tier = currentTier || pricingTiers.find(t => t.name === 'basic');
+                const features = tier?.features || [];
+                return features.slice(0, 6).map((feature, index) => (
+                  <div key={index} className="flex items-center text-sm">
+                    <Check className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
+                    <span className="text-gray-600">{feature}</span>
+                  </div>
+                ));
+              })()}
+              {(() => {
+                const tier = currentTier || pricingTiers.find(t => t.name === 'basic');
+                const features = tier?.features || [];
+                return features.length > 6 && (
+                  <div className="text-sm text-gray-500 col-span-2">
+                    +{features.length - 6} more features
+                  </div>
+                );
+              })()}
             </div>
           </div>
 
           {/* Action Buttons */}
           <div className="flex space-x-3">
-            {currentTier?.name === 'basis' && (
-              <Button onClick={handleUpgrade} className="bg-blue-600 hover:bg-blue-700">
-                <CardTitle className="text-xl">{currentTier?.display_name} plan</CardTitle>
-                    Upgrade to Growth
-                <ArrowRight className="h-4 w-4 ml-2" />
-              </Button>
-            )}
+            {(() => {
+              const tier = currentTier || pricingTiers.find(t => t.name === 'basic');
+              return tier?.name === 'basic' && (
+                <Button onClick={handleUpgrade} className="bg-blue-600 hover:bg-blue-700">
+                      Upgrade to Growth
+                  <ArrowRight className="h-4 w-4 ml-2" />
+                </Button>
+              );
+            })()}
             
-            {currentTier?.name === 'groei' && (
-              <Button onClick={handleUpgrade} variant="outline">
-                  <CardTitle className="text-xl">{currentTier?.display_name} plan</CardTitle>
-                    Upgrade to Premium
-                <Crown className="h-4 w-4 ml-2" />
-              </Button>
-            )}
+            {(() => {
+              const tier = currentTier || pricingTiers.find(t => t.name === 'basic');
+              return tier?.name === 'growth' && (
+                <Button onClick={handleUpgrade} variant="outline">
+                      Upgrade to Premium
+                  <Crown className="h-4 w-4 ml-2" />
+                </Button>
+              );
+            })()}
             
             {isSubscriptionActive && (
               <Button 
@@ -199,7 +251,6 @@ export const SubscriptionManagement = () => {
                 disabled={isCancelling}
                 className="text-red-600 border-red-200 hover:bg-red-50"
               >
-                <CardTitle className="text-xl">{currentTier?.display_name} plan</CardTitle>
                       {isCancelling ? 'Cancelling...' : 'Cancel subscription'}
               </Button>
             )}
@@ -242,7 +293,9 @@ export const SubscriptionManagement = () => {
       )}
 
       {/* Upgrade Prompts for Basic Plan */}
-      {currentTier?.name === 'basis' && (
+      {(() => {
+        const tier = currentTier || pricingTiers.find(t => t.name === 'basic');
+        return tier?.name === 'basic' && (
         <div className="space-y-4">
           <h3 className="text-lg font-semibold text-gray-900">
             Upgrade for more features
@@ -259,7 +312,8 @@ export const SubscriptionManagement = () => {
             />
           </div>
         </div>
-      )}
+        );
+      })()}
 
       {/* Billing History */}
       {currentSubscription && (

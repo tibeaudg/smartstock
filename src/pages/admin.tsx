@@ -11,7 +11,6 @@ import { useMobile } from '@/hooks/use-mobile';
 import SEO from '../components/SEO';
 import { AdminNotificationManager } from '@/components/AdminNotificationManager';
 import { AdminChatList } from '@/components/AdminChatList';
-import AdminCMS from '../components/AdminCMS';
 import { AuthConversionAnalytics } from '@/components/analytics/AuthConversionAnalytics';
 import { WebsiteAnalytics } from '@/components/analytics/WebsiteAnalytics';
 import { AdminSubscriptionManagement } from '@/components/admin/SubscriptionManagement';
@@ -42,14 +41,14 @@ interface UserStats {
 
 // Plan informatie voor prijsberekening (nieuwe subscription tiers)
 const plans = {
-  'basis': { price: 0, limit: 50, displayName: 'Basis' },
-  'groei': { price: 29.99, limit: 500, displayName: 'Groei' },
+  'basic': { price: 0, limit: 50, displayName: 'Basic' },
+  'growth': { price: 29.99, limit: 500, displayName: 'Growth' },
   'premium': { price: 79.99, limit: null, displayName: 'Premium' }
 };
 
 // Simuleer de prijsberekening voor een gebruiker (nieuwe subscription model)
 function calculateUserLicenseCost(planId: string | null, stats: Omit<UserStats, 'userId' | 'licenseCost' | 'statsLastUpdated'>): number {
-  const plan = plans[planId as keyof typeof plans] || plans.basis;
+  const plan = plans[planId as keyof typeof plans] || plans.basic;
   let price = plan.price;
   
   // In het nieuwe model zijn alle limieten inbegrepen in de tier prijs
@@ -260,10 +259,8 @@ export default function AdminPage() {
   });
   const sidebarNavItems: { id: 'users' | 'features' | 'chats' | 'notifications' | 'blogcms' | 'bloganalytics' | 'conversionanalytics' | 'websiteanalytics'; label: string }[] = [
   { id: 'users', label: 'Gebruikersbeheer' },
-  { id: 'features', label: 'Module Management' },
   { id: 'chats', label: 'Chats' },
   { id: 'notifications', label: 'Meldingen' },
-  { id: 'blogcms', label: 'Blogpost CMS' },
   { id: 'conversionanalytics', label: 'Conversie Analytics' },
   { id: 'websiteanalytics', label: 'Website Analytics' },
 ];
@@ -362,20 +359,6 @@ export default function AdminPage() {
 
           {/* Main content area */}
           <div className="w-full flex-1 px-2 sm:px-4 md:px-6 space-y-6 mt-6 mb-24">
-            {activeTab === 'blogcms' && (
-              <Card>
-                <CardHeader>
-                  <CardTitle>Blogpost CMS</CardTitle>
-                  <CardDescription>Beheer en optimaliseer blogposts voor SEO.</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  {/* Blogpost CMS UI */}
-                  <React.Suspense fallback={<div>Loading CMS...</div>}>
-                    <AdminCMS />
-                  </React.Suspense>
-                </CardContent>
-              </Card>
-            )}
             {activeTab === 'conversionanalytics' && (
               <AuthConversionAnalytics />
             )}

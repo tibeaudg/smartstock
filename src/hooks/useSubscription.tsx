@@ -84,9 +84,9 @@ export const useSubscription = () => {
         `)
         .eq('user_id', user.id)
         .eq('status', 'active')
-        .single();
+        .maybeSingle();
 
-      if (error && error.code !== 'PGRST116') throw error;
+      if (error) throw error;
       return data || null;
     },
     enabled: !!user,
@@ -107,9 +107,9 @@ export const useSubscription = () => {
         .from('usage_tracking')
         .select('*')
         .eq('user_id', user.id)
-        .single();
+        .maybeSingle();
 
-      if (error && error.code !== 'PGRST116') throw error;
+      if (error) throw error;
       return data || null;
     },
     enabled: !!user,
@@ -240,7 +240,7 @@ export const useSubscription = () => {
   };
 
   const getCurrentTier = () => {
-    return currentSubscription?.tier || pricingTiers.find(tier => tier.name === 'basis');
+    return currentSubscription?.tier || pricingTiers.find(tier => tier.name === 'basic');
   };
 
   const canUseFeature = (featureName: string) => {

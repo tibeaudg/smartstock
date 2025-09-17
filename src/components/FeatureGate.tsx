@@ -10,7 +10,7 @@ interface FeatureGateProps {
   children: React.ReactNode;
   fallback?: React.ReactNode;
   showUpgradePrompt?: boolean;
-  requiredTier?: 'groei' | 'premium';
+  requiredTier?: 'growth' | 'premium';
 }
 
 export const FeatureGate: React.FC<FeatureGateProps> = ({
@@ -130,7 +130,7 @@ export const useFeatureAccess = () => {
 
   const getFeatureStatus = (feature: string) => {
     const hasAccess = canUseFeature(feature);
-    const isPremium = currentTier?.name !== 'basis';
+    const isPremium = currentTier?.name !== 'basic';
     
     return {
       hasAccess,
