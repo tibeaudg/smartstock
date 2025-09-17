@@ -30,7 +30,7 @@ export const UsageLimits: React.FC<UsageLimitsProps> = ({
     {
       type: 'products' as const,
       icon: <Package className="h-4 w-4" />,
-      label: 'Producten',
+      label: 'Products',
       current: usageTracking.current_products,
       max: currentTier.max_products,
       color: 'text-blue-600'
@@ -38,7 +38,7 @@ export const UsageLimits: React.FC<UsageLimitsProps> = ({
     {
       type: 'users' as const,
       icon: <Users className="h-4 w-4" />,
-      label: 'Gebruikers',
+      label: 'Users',
       current: usageTracking.current_users,
       max: currentTier.max_users,
       color: 'text-green-600'
@@ -46,7 +46,7 @@ export const UsageLimits: React.FC<UsageLimitsProps> = ({
     {
       type: 'branches' as const,
       icon: <Building className="h-4 w-4" />,
-      label: 'Vestigingen',
+      label: 'Branches',
       current: usageTracking.current_branches,
       max: currentTier.max_branches,
       color: 'text-purple-600'
@@ -54,7 +54,7 @@ export const UsageLimits: React.FC<UsageLimitsProps> = ({
     {
       type: 'orders' as const,
       icon: <ShoppingCart className="h-4 w-4" />,
-      label: 'Orders deze maand',
+      label: 'Orders this month',
       current: usageTracking.orders_this_month,
       max: currentTier.max_orders,
       color: 'text-orange-600'
@@ -74,19 +74,19 @@ export const UsageLimits: React.FC<UsageLimitsProps> = ({
 
   const getStatusBadge = () => {
     if (isTrialActive) {
-      return <Badge variant="secondary" className="bg-blue-100 text-blue-800">Trial actief</Badge>;
+      return <Badge variant="secondary" className="bg-blue-100 text-blue-800">Trial Active</Badge>;
     }
     if (isSubscriptionActive) {
-      return <Badge variant="secondary" className="bg-green-100 text-green-800">Actief</Badge>;
+      return <Badge variant="secondary" className="bg-green-100 text-green-800">Active</Badge>;
     }
-    return <Badge variant="outline" className="bg-gray-100 text-gray-800">Basis plan</Badge>;
+    return <Badge variant="outline" className="bg-gray-100 text-gray-800">Basic Plan</Badge>;
   };
 
   if (compact) {
     return (
       <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <h3 className="font-semibold text-sm text-gray-900">Gebruik</h3>
+          <h3 className="font-semibold text-sm text-gray-900">Usage</h3>
           {getStatusBadge()}
         </div>
         
@@ -136,7 +136,7 @@ export const UsageLimits: React.FC<UsageLimitsProps> = ({
       <CardHeader>
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle className="text-lg">Gebruik & Limieten</CardTitle>
+            <CardTitle className="text-lg">Usage & Limits</CardTitle>
             <CardDescription>
               Huidige {currentTier.display_name} plan
             </CardDescription>
@@ -160,7 +160,7 @@ export const UsageLimits: React.FC<UsageLimitsProps> = ({
                   <div>
                     <h4 className="font-medium text-gray-900">{limit.label}</h4>
                     <p className="text-sm text-gray-500">
-                      {limit.current} van {limit.max || 'onbeperkt'} gebruikt
+                      {limit.current} of {limit.max || 'unlimited'} used
                     </p>
                   </div>
                 </div>
@@ -168,13 +168,13 @@ export const UsageLimits: React.FC<UsageLimitsProps> = ({
                 {isOverLimit && (
                   <Badge variant="destructive" className="bg-red-100 text-red-800">
                     <AlertTriangle className="h-3 w-3 mr-1" />
-                    Limiet bereikt
+                    Limit reached
                   </Badge>
                 )}
                 {isNearLimit && !isOverLimit && (
                   <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">
                     <AlertTriangle className="h-3 w-3 mr-1" />
-                    Bijna vol
+                    Almost full
                   </Badge>
                 )}
               </div>
@@ -186,9 +186,9 @@ export const UsageLimits: React.FC<UsageLimitsProps> = ({
                     className="h-2"
                   />
                   <div className="flex justify-between text-xs text-gray-500">
-                    <span>{percentage.toFixed(0)}% gebruikt</span>
+                      <span>{percentage.toFixed(0)}% used</span>
                     {remaining !== null && (
-                      <span>{remaining} over</span>
+                      <span>{remaining} remaining</span>
                     )}
                   </div>
                 </div>
@@ -214,12 +214,12 @@ export const UsageLimits: React.FC<UsageLimitsProps> = ({
               <TrendingUp className="h-5 w-5 text-blue-600 mt-0.5" />
               <div>
                 <h4 className="font-medium text-blue-900">
-                  {isTrialActive ? 'Gratis trial actief' : 'Premium plan actief'}
+                  {isTrialActive ? 'Free trial active' : 'Premium plan active'}
                 </h4>
                 <p className="text-sm text-blue-700 mt-1">
                   {isTrialActive 
-                    ? 'Je trial loopt nog. Upgrade naar een betaald plan om je limieten te verhogen.'
-                    : 'Je hebt toegang tot alle premium features en hogere limieten.'
+                    ? 'Your trial is still active. Upgrade to a paid plan to increase your limits.'
+                    : 'You have access to all premium features and higher limits.'
                   }
                 </p>
               </div>

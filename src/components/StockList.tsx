@@ -570,8 +570,8 @@ export const StockList = () => {
       // Stock status filter
       const matchesStockStatus = stockStatusFilter === 'all' || 
         (stockStatusFilter === 'in-stock' && stockStatus === 'In Stock') ||
-        (stockStatusFilter === 'low-stock' && stockStatus === 'Laag') ||
-        (stockStatusFilter === 'out-of-stock' && stockStatus === 'Op');
+        (stockStatusFilter === 'low-stock' && stockStatus === 'Low Stock') ||
+        (stockStatusFilter === 'out-of-stock' && stockStatus === 'Out of Stock');
 
       // Price range filter
       const matchesMinPrice = minPriceFilter === '' || product.unit_price >= parseFloat(minPriceFilter);
@@ -814,7 +814,7 @@ export const StockList = () => {
       refetch();
     } catch (error) {
       console.error('Error deleting products:', error);
-      toast.error('Fout bij verwijderen van producten');
+      toast.error('Error deleting products');
     }
   };
 
@@ -882,12 +882,12 @@ export const StockList = () => {
       <div className="flex items-center justify-center py-20">
         <div className="text-center max-w-md">
           <div className="text-red-500 text-6xl mb-4">⚠️</div>
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">Fout bij laden van producten</h2>
+          <h2 className="text-xl font-semibold text-gray-900 mb-2">Error loading products</h2>
           <p className="text-gray-600 mb-4">
             Er is een probleem opgetreden bij het ophalen van de productgegevens.
           </p>
           <Button onClick={() => refetch()} variant="outline">
-            Opnieuw proberen
+            Try again
           </Button>
         </div>
       </div>
@@ -898,8 +898,8 @@ export const StockList = () => {
     return (
       <div className="flex items-center justify-center py-20">
         <div className="text-center">
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">Geen filiaal geselecteerd</h2>
-          <p className="text-gray-600">Selecteer een filiaal om producten te bekijken.</p>
+          <h2 className="text-xl font-semibold text-gray-900 mb-2">No branch selected</h2>
+          <p className="text-gray-600">Select a branch to view products.</p>
         </div>
       </div>
     );
@@ -919,12 +919,12 @@ export const StockList = () => {
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" className="w-full h-10 text-sm">
                     <Settings className="w-4 h-4 mr-2" />
-                    Kolommen Beheren
+                    Manage Columns
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">
                   <DropdownMenuItem disabled className="font-semibold">
-                    Kolom Zichtbaarheid
+                    Column Visibility
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuCheckboxItem
@@ -943,13 +943,13 @@ export const StockList = () => {
                     checked={columnVisibility.current}
                     onCheckedChange={() => toggleColumnVisibility('current')}
                   >
-                    Huidig Stock
+                    Current Stock
                   </DropdownMenuCheckboxItem>
                   <DropdownMenuCheckboxItem
                     checked={columnVisibility.minimum}
                     onCheckedChange={() => toggleColumnVisibility('minimum')}
                   >
-                    Minimum Stock
+                    Minimum Stock Level
                   </DropdownMenuCheckboxItem>
                   <DropdownMenuCheckboxItem
                     checked={columnVisibility.category}
@@ -961,19 +961,19 @@ export const StockList = () => {
                     checked={columnVisibility.supplier}
                     onCheckedChange={() => toggleColumnVisibility('supplier')}
                   >
-                    Leverancier
+                    Supplier
                   </DropdownMenuCheckboxItem>
                   <DropdownMenuCheckboxItem
                     checked={columnVisibility.purchasePrice}
                     onCheckedChange={() => toggleColumnVisibility('purchasePrice')}
                   >
-                    Aankoopprijs
+                    Purchase Price
                   </DropdownMenuCheckboxItem>
                   <DropdownMenuCheckboxItem
                     checked={columnVisibility.salePrice}
                     onCheckedChange={() => toggleColumnVisibility('salePrice')}
                   >
-                    Verkoopprijs
+                    Sale Price
                   </DropdownMenuCheckboxItem>
                   <DropdownMenuCheckboxItem
                     checked={columnVisibility.status}
@@ -988,7 +988,7 @@ export const StockList = () => {
                 className="w-full h-10 bg-blue-700 hover:bg-blue-700/80 text-white"
               >
                 <Plus className="w-5 h-5 mr-2" />
-                Nieuw Product Toevoegen
+                Add New Product
               </Button>
             </div>
 
@@ -1005,38 +1005,38 @@ export const StockList = () => {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className="text-sm font-medium text-blue-900">
-                      Gefilterd op:
+                      Filtered on:
                     </span>
                     {categoryFilter && categoryFilter !== 'all' && categoryFilter !== '' && (
                       <Badge variant="secondary" className="bg-blue-100 text-blue-800">
-                        Categorie: {categoryFilterName || 'Gefilterd'}
+                        Category: {categoryFilterName || 'Filtered'}
                       </Badge>
                     )}
                     {supplierFilter && supplierFilter !== 'all' && supplierFilter !== '' && (
                       <Badge variant="secondary" className="bg-blue-100 text-blue-800">
-                        Leverancier: {supplierFilterName || 'Gefilterd'}
+                        Supplier: {supplierFilterName || 'Filtered'}
                       </Badge>
                     )}
                     {searchTerm && searchTerm !== '' && (
                       <Badge variant="secondary" className="bg-blue-100 text-blue-800">
-                        Zoekterm: "{searchTerm}"
+                        Search term: "{searchTerm}"
                       </Badge>
                     )}
                     {stockStatusFilter && stockStatusFilter !== 'all' && (
                       <Badge variant="secondary" className="bg-blue-100 text-blue-800">
                         Status: {stockStatusFilter === 'in-stock' ? 'In Stock' : 
-                                stockStatusFilter === 'low-stock' ? 'Laag' : 
-                                stockStatusFilter === 'out-of-stock' ? 'Op' : stockStatusFilter}
+                                stockStatusFilter === 'low-stock' ? 'Low Stock' : 
+                                stockStatusFilter === 'out-of-stock' ? 'Out of Stock' : stockStatusFilter}
                       </Badge>
                     )}
                     {(minPriceFilter && minPriceFilter !== '') || (maxPriceFilter && maxPriceFilter !== '') && (
                       <Badge variant="secondary" className="bg-blue-100 text-blue-800">
-                        Prijs: {minPriceFilter && `€${minPriceFilter}`}{minPriceFilter && maxPriceFilter && ' - '}{maxPriceFilter && `€${maxPriceFilter}`}
+                        Price: {minPriceFilter && `€${minPriceFilter}`}{minPriceFilter && maxPriceFilter && ' - '}{maxPriceFilter && `€${maxPriceFilter}`}
                       </Badge>
                     )}
                     {(minStockFilter && minStockFilter !== '') || (maxStockFilter && maxStockFilter !== '') && (
                       <Badge variant="secondary" className="bg-blue-100 text-blue-800">
-                        Stock: {minStockFilter && minStockFilter}{minStockFilter && maxStockFilter && ' - '}{maxStockFilter && maxStockFilter}
+                        Stock Level: {minStockFilter && minStockFilter}{minStockFilter && maxStockFilter && ' - '}{maxStockFilter && maxStockFilter}
                       </Badge>
                     )}
                   </div>
@@ -1047,7 +1047,7 @@ export const StockList = () => {
                     className="text-blue-700 border-blue-300 hover:bg-blue-100"
                   >
                     <X className="w-4 h-4 mr-1" />
-                    Filters wissen
+                    Clear Filters
                   </Button>
                 </div>
               </div>
@@ -1088,22 +1088,22 @@ export const StockList = () => {
                       <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Locatie</th>
                     )}
                     {columnVisibility.current && (
-                      <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Huidig</th>
+                      <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Current</th>
                     )}
                     {columnVisibility.minimum && (
                       <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Min.</th>
                     )}
                     {columnVisibility.category && (
-                      <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Categorie</th>
+                        <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Category</th>
                     )}
                     {columnVisibility.supplier && (
-                      <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Leverancier</th>
+                      <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Supplier</th>
                     )}
                     {columnVisibility.purchasePrice && (
-                      <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Aankoop</th>
+                      <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Purchase Price</th>
                     )}
                     {columnVisibility.salePrice && (
-                      <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Verkoop</th>
+                      <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Sale Price</th>
                     )}
                     {columnVisibility.status && (
                       <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Status</th>
@@ -1114,7 +1114,7 @@ export const StockList = () => {
                   {grouped.parents.length === 0 ? (
                     <tr>
                       <td colSpan={Object.values(columnVisibility).filter(Boolean).length} className="px-2 py-4 text-center text-gray-500">
-                        {productsTyped.length === 0 ? 'Geen producten gevonden voor dit filiaal.' : 'Geen producten voldoen aan je filters.'}
+                        {productsTyped.length === 0 ? 'No products found for this branch.' : 'No products meet your filters.'}
                       </td>
                     </tr>
                   ) : (
@@ -1135,7 +1135,7 @@ export const StockList = () => {
                                     <button
                                       className="p-1 rounded border hover:bg-gray-50"
                                       onClick={(e) => { e.stopPropagation(); toggleExpand(parent.id); }}
-                                      aria-label={expandedParents[parent.id] ? 'Inklappen' : 'Uitklappen'}
+                                      aria-label={expandedParents[parent.id] ? 'Collapse' : 'Expand'}
                                     >
                                       {expandedParents[parent.id] ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
                                     </button>
@@ -1147,7 +1147,7 @@ export const StockList = () => {
                                     className="w-10 h-10 object-cover rounded border"
                                   />
                                 ) : (
-                                  <div className="w-10 h-10 bg-gray-200 rounded border flex items-center justify-center text-[10px] text-gray-400">Geen</div>
+                                  <div className="w-10 h-10 bg-gray-200 rounded border flex items-center justify-center text-[10px] text-gray-400">No</div>
                                 )}
                                 <div>
                                     <div className="font-medium text-gray-900 truncate max-w-[80px]">{parent.name}</div>
@@ -1155,7 +1155,7 @@ export const StockList = () => {
                                       <div className="text-[10px] text-gray-500 truncate max-w-[80px]">{parent.description}</div>
                                     )}
                                     {hasChildren && (
-                                      <div className="text-[10px] text-gray-500">{grouped.children[parent.id].length} varianten</div>
+                                      <div className="text-[10px] text-gray-500">{grouped.children[parent.id].length} variants</div>
                                   )}
                                 </div>
                               </div>
@@ -1231,7 +1231,7 @@ export const StockList = () => {
                                             className="w-8 h-8 object-cover rounded border"
                                           />
                                         ) : (
-                                          <div className="w-8 h-8 bg-gray-200 rounded border flex items-center justify-center text-[10px] text-gray-400">Geen</div>
+                                          <div className="w-8 h-8 bg-gray-200 rounded border flex items-center justify-center text-[10px] text-gray-400">No</div>
                                         )}
                                         <div>
                                           <div className="flex items-center gap-2 font-medium text-gray-900 truncate max-w-[80px]">
@@ -1313,14 +1313,14 @@ export const StockList = () => {
             <div className="text-center">
               <Tag className="w-12 h-12 text-gray-400 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-gray-900 mb-2">
-                Categorieën Beheren
+                Manage Categories
               </h3>
               <p className="text-base text-gray-600 mb-4">
-                Beheer uw productcategorieën voor betere organisatie van uw voorraad
+                Manage your product categories for better organization of your stock
               </p>
               <Button onClick={() => navigate('/dashboard/categories')}>
                 <Tag className="w-4 h-4 mr-2" />
-                Naar Categorieën
+                To Categories
               </Button>
             </div>
           </div>
@@ -1332,14 +1332,14 @@ export const StockList = () => {
             <div className="text-center">
               <Truck className="w-12 h-12 text-gray-400 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-gray-900 mb-2">
-                Leveranciers Beheren
+                  Manage Suppliers
               </h3>
               <p className="text-base text-gray-600 mb-4">
-                Beheer uw leveranciers voor betere organisatie van uw inkoop en voorraad
+                Manage your suppliers for better organization of your purchases and stock
               </p>
               <Button onClick={() => navigate('/dashboard/suppliers')}>
                 <Truck className="w-4 h-4 mr-2" />
-                Naar Leveranciers
+                To Suppliers
               </Button>
             </div>
           </div>
@@ -1361,7 +1361,7 @@ export const StockList = () => {
           isOpen={isImagePreviewOpen}
           onClose={() => setIsImagePreviewOpen(false)}
           imageUrl={previewImageUrl}
-          alt="Productfoto preview"
+          alt="Product photo preview"
         />
         {selectedProduct && (
           <EditProductStockModal
@@ -1480,7 +1480,7 @@ export const StockList = () => {
         <div className="flex gap-2">
           {isAdmin && selectedProductIds.length > 0 && (
             <Button variant="destructive" onClick={handleBulkDelete}>
-              Verwijder geselecteerde ({selectedProductIds.length})
+              Delete selected ({selectedProductIds.length})
             </Button>
           )}
         </div>
@@ -1489,12 +1489,12 @@ export const StockList = () => {
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="flex items-center gap-2">
                 <Settings className="w-4 h-4" />
-                Kolommen
+                Columns
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">
               <DropdownMenuItem disabled className="font-semibold">
-                Kolom Zichtbaarheid
+                Column Visibility
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuCheckboxItem
@@ -1513,37 +1513,37 @@ export const StockList = () => {
                 checked={columnVisibility.current}
                 onCheckedChange={() => toggleColumnVisibility('current')}
               >
-                Huidig Stock
+                Current Stock
               </DropdownMenuCheckboxItem>
               <DropdownMenuCheckboxItem
                 checked={columnVisibility.minimum}
                 onCheckedChange={() => toggleColumnVisibility('minimum')}
               >
-                Minimum Stock
+                Minimum Stock Level
               </DropdownMenuCheckboxItem>
               <DropdownMenuCheckboxItem
                 checked={columnVisibility.category}
                 onCheckedChange={() => toggleColumnVisibility('category')}
               >
-                Categorie
+                Category
               </DropdownMenuCheckboxItem>
               <DropdownMenuCheckboxItem
                 checked={columnVisibility.supplier}
                 onCheckedChange={() => toggleColumnVisibility('supplier')}
               >
-                Leverancier
+                Supplier
               </DropdownMenuCheckboxItem>
               <DropdownMenuCheckboxItem
                 checked={columnVisibility.purchasePrice}
                 onCheckedChange={() => toggleColumnVisibility('purchasePrice')}
               >
-                Aankoopprijs
+                Purchase Price
               </DropdownMenuCheckboxItem>
               <DropdownMenuCheckboxItem
                 checked={columnVisibility.salePrice}
                 onCheckedChange={() => toggleColumnVisibility('salePrice')}
               >
-                Verkoopprijs
+                Sale Price
               </DropdownMenuCheckboxItem>
               <DropdownMenuCheckboxItem
                 checked={columnVisibility.status}
@@ -1555,13 +1555,13 @@ export const StockList = () => {
                 checked={columnVisibility.actions}
                 onCheckedChange={() => toggleColumnVisibility('actions')}
               >
-                Acties
+                Actions
               </DropdownMenuCheckboxItem>
             </DropdownMenuContent>
           </DropdownMenu>
           <Button onClick={() => setIsAddModalOpen(true)} className="flex items-center gap-2">
             <Plus className="w-4 h-4" />
-            Nieuw Product Toevoegen
+            Add New Product
           </Button>
         </div>
       </div>
@@ -1579,38 +1579,38 @@ export const StockList = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <span className="text-sm font-medium text-blue-900">
-                Gefilterd op:
+                Filtered on:
               </span>
               {categoryFilter && categoryFilter !== 'all' && categoryFilter !== '' && (
                 <Badge variant="secondary" className="bg-blue-100 text-blue-800">
-                  Categorie: {categoryFilterName || 'Gefilterd'}
+                  Category: {categoryFilterName || 'Filtered'}
                 </Badge>
               )}
               {supplierFilter && supplierFilter !== 'all' && supplierFilter !== '' && (
                 <Badge variant="secondary" className="bg-blue-100 text-blue-800">
-                  Leverancier: {supplierFilterName || 'Gefilterd'}
+                  Supplier: {supplierFilterName || 'Filtered'}
                 </Badge>
               )}
               {searchTerm && searchTerm !== '' && (
                 <Badge variant="secondary" className="bg-blue-100 text-blue-800">
-                  Zoekterm: "{searchTerm}"
+                  Search term: "{searchTerm}"
                 </Badge>
               )}
               {stockStatusFilter && stockStatusFilter !== 'all' && (
                 <Badge variant="secondary" className="bg-blue-100 text-blue-800">
                   Status: {stockStatusFilter === 'in-stock' ? 'In Stock' : 
-                          stockStatusFilter === 'low-stock' ? 'Laag' : 
-                          stockStatusFilter === 'out-of-stock' ? 'Op' : stockStatusFilter}
+                          stockStatusFilter === 'low-stock' ? 'Low Stock' : 
+                          stockStatusFilter === 'out-of-stock' ? 'Out of Stock' : stockStatusFilter}
                 </Badge>
               )}
               {(minPriceFilter && minPriceFilter !== '') || (maxPriceFilter && maxPriceFilter !== '') && (
                 <Badge variant="secondary" className="bg-blue-100 text-blue-800">
-                  Prijs: {minPriceFilter && `€${minPriceFilter}`}{minPriceFilter && maxPriceFilter && ' - '}{maxPriceFilter && `€${maxPriceFilter}`}
+                  Price: {minPriceFilter && `€${minPriceFilter}`}{minPriceFilter && maxPriceFilter && ' - '}{maxPriceFilter && `€${maxPriceFilter}`}
                 </Badge>
               )}
               {(minStockFilter && minStockFilter !== '') || (maxStockFilter && maxStockFilter !== '') && (
                 <Badge variant="secondary" className="bg-blue-100 text-blue-800">
-                  Stock: {minStockFilter && minStockFilter}{minStockFilter && maxStockFilter && ' - '}{maxStockFilter && maxStockFilter}
+              Stock Level     : {minStockFilter && minStockFilter}{minStockFilter && maxStockFilter && ' - '}{maxStockFilter && maxStockFilter}
                 </Badge>
               )}
             </div>
@@ -1718,12 +1718,12 @@ export const StockList = () => {
                 )}
                 {columnVisibility.purchasePrice && (
                   <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Aankoopprijs
+                    Purchase Price
                   </th>
                 )}
                 {columnVisibility.salePrice && (
                   <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Verkoopprijs
+                    Sale Price
                   </th>
                 )}
                 {columnVisibility.status && (
@@ -1733,9 +1733,9 @@ export const StockList = () => {
                 )}
                 {columnVisibility.actions && (
                   <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Acties
+                    Actions
                   </th>
-                )}
+                )}    
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
@@ -1777,7 +1777,7 @@ export const StockList = () => {
                                 <button
                                   className="p-1 rounded border hover:bg-gray-50"
                                   onClick={(e) => { e.stopPropagation(); toggleExpand(parent.id); }}
-                                  aria-label={expandedParents[parent.id] ? 'Inklappen' : 'Uitklappen'}
+                                  aria-label={expandedParents[parent.id] ? 'Collapse' : 'Expand'}
                                 >
                                   {expandedParents[parent.id] ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
                                 </button>
@@ -1790,7 +1790,7 @@ export const StockList = () => {
                                   onClick={e => { e.stopPropagation(); setPreviewImageUrl(parent.image_url!); setIsImagePreviewOpen(true); }}
                               />
                             ) : (
-                              <div className="w-16 h-16 bg-gray-200 rounded border flex items-center justify-center text-xs text-gray-400">Geen Foto</div>
+                              <div className="w-16 h-16 bg-gray-200 rounded border flex items-center justify-center text-xs text-gray-400">No Photo</div>
                             )}
                             <div>
                                 <div className="text-sm font-medium text-gray-900">{parent.name}</div>
@@ -1800,7 +1800,7 @@ export const StockList = () => {
                                 </div>
                               )}
                                 {hasChildren && (
-                                  <div className="text-[11px] text-gray-500">{grouped.children[parent.id].length} varianten</div>
+                                    <div className="text-[11px] text-gray-500">{grouped.children[parent.id].length} variants</div>
                                 )}
                             </div>
                           </div>
@@ -1903,7 +1903,7 @@ export const StockList = () => {
                                         onClick={e => { e.stopPropagation(); setPreviewImageUrl(child.image_url!); setIsImagePreviewOpen(true); }}
                                       />
                                     ) : (
-                                      <div className="w-12 h-12 bg-gray-200 rounded border flex items-center justify-center text-[10px] text-gray-400">Geen Foto</div>
+                                      <div className="w-12 h-12 bg-gray-200 rounded border flex items-center justify-center text-[10px] text-gray-400">No Photo</div>
                                     )}
                                     <div>
                                       <div className="flex items-center gap-2 text-sm text-gray-900">

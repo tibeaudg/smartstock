@@ -49,13 +49,13 @@ export const SubscriptionManagement = () => {
     try {
       await cancelSubscription();
       toast({
-        title: 'Abonnement geannuleerd',
-        description: 'Je abonnement is geannuleerd. Je kunt tot het einde van je betaalperiode blijven gebruiken.',
+        title: 'Subscription cancelled',
+        description: 'Your subscription has been cancelled. You can still use it until the end of your billing period.',
       });
     } catch (error) {
       toast({
-        title: 'Fout bij annuleren',
-        description: 'Er is een fout opgetreden bij het annuleren van je abonnement.',
+        title: 'Error cancelling subscription',
+        description: 'An error occurred while cancelling your subscription.',
         variant: 'destructive',
       });
     }
@@ -89,12 +89,12 @@ export const SubscriptionManagement = () => {
 
   const getStatusBadge = () => {
     if (isTrialActive) {
-      return <Badge className="bg-blue-100 text-blue-800">Trial actief</Badge>;
+      return <Badge className="bg-blue-100 text-blue-800">Trial Active</Badge>;
     }
     if (isSubscriptionActive) {
-      return <Badge className="bg-green-100 text-green-800">Actief</Badge>;
+      return <Badge className="bg-green-100 text-green-800">Active</Badge>;
     }
-    return <Badge variant="outline" className="bg-gray-100 text-gray-800">Basis plan</Badge>;
+    return <Badge className="bg-gray-100 text-gray-800">Basic plan</Badge>;
   };
 
   const formatPrice = (price: number) => {
@@ -131,21 +131,24 @@ export const SubscriptionManagement = () => {
           <div className="flex items-center justify-between">
             <div>
               <div className="text-2xl font-bold text-gray-900">
-                {currentTier?.price_monthly === 0 ? 'Gratis' : formatPrice(currentTier?.price_monthly || 0)}
+                {currentTier?.price_monthly === 0 ? 'Free' : formatPrice(currentTier?.price_monthly || 0)}
               </div>
               <div className="text-sm text-gray-500">
-                {currentTier?.price_monthly === 0 ? 'Voor altijd gratis' : 'per maand'}
+                {currentTier?.price_monthly === 0 ? 'Forever free' : 'per month'}
+                <CardTitle className="text-xl">{currentTier?.display_name} plan</CardTitle>
               </div>
             </div>
             
             {currentSubscription && (
               <div className="text-right">
                 <div className="text-sm text-gray-600">
-                  {currentSubscription.billing_cycle === 'monthly' ? 'Maandelijks' : 'Jaarlijks'}
+                  {currentSubscription.billing_cycle === 'monthly' ? 'Monthly' : 'Yearly'}
+                  <CardTitle className="text-xl">{currentTier?.display_name} plan</CardTitle>
                 </div>
                 {getNextBillingDate() && (
                   <div className="text-sm text-gray-500">
-                    Volgende betaling: {getNextBillingDate()}
+                    <CardTitle className="text-xl">{currentTier?.display_name} plan</CardTitle>
+                    Next payment: {getNextBillingDate()}
                   </div>
                 )}
               </div>
@@ -154,7 +157,7 @@ export const SubscriptionManagement = () => {
 
           {/* Features */}
           <div className="space-y-3">
-            <h4 className="font-medium text-gray-900">Inbegrepen features:</h4>
+            <h4 className="font-medium text-gray-900">Included features:</h4>
             <div className="grid grid-cols-2 gap-2">
               {currentTier?.features.slice(0, 6).map((feature, index) => (
                 <div key={index} className="flex items-center text-sm">
@@ -164,7 +167,8 @@ export const SubscriptionManagement = () => {
               ))}
               {currentTier?.features.length > 6 && (
                 <div className="text-sm text-gray-500 col-span-2">
-                  +{currentTier.features.length - 6} meer features
+                <CardTitle className="text-xl">{currentTier?.display_name} plan</CardTitle>
+                  +{currentTier.features.length - 6} more features
                 </div>
               )}
             </div>
@@ -174,14 +178,16 @@ export const SubscriptionManagement = () => {
           <div className="flex space-x-3">
             {currentTier?.name === 'basis' && (
               <Button onClick={handleUpgrade} className="bg-blue-600 hover:bg-blue-700">
-                Upgrade naar Groei
+                <CardTitle className="text-xl">{currentTier?.display_name} plan</CardTitle>
+                    Upgrade to Growth
                 <ArrowRight className="h-4 w-4 ml-2" />
               </Button>
             )}
             
             {currentTier?.name === 'groei' && (
               <Button onClick={handleUpgrade} variant="outline">
-                Upgrade naar Premium
+                  <CardTitle className="text-xl">{currentTier?.display_name} plan</CardTitle>
+                    Upgrade to Premium
                 <Crown className="h-4 w-4 ml-2" />
               </Button>
             )}
@@ -193,7 +199,8 @@ export const SubscriptionManagement = () => {
                 disabled={isCancelling}
                 className="text-red-600 border-red-200 hover:bg-red-50"
               >
-                {isCancelling ? 'Annuleren...' : 'Abonnement annuleren'}
+                <CardTitle className="text-xl">{currentTier?.display_name} plan</CardTitle>
+                      {isCancelling ? 'Cancelling...' : 'Cancel subscription'}
               </Button>
             )}
           </div>
@@ -211,12 +218,12 @@ export const SubscriptionManagement = () => {
               <Clock className="h-5 w-5 text-blue-600 mt-0.5" />
               <div>
                 <h4 className="font-medium text-blue-900">
-                  {isTrialActive ? 'Gratis trial actief' : 'Premium plan actief'}
+                  {isTrialActive ? 'Free trial active' : 'Premium plan active'}
                 </h4>
                 <p className="text-sm text-blue-700 mt-1">
                   {isTrialActive 
-                    ? 'Je trial loopt nog. Upgrade naar een betaald plan om je limieten te verhogen.'
-                    : 'Je hebt toegang tot alle premium features en hogere limieten.'
+                    ? 'Your trial is still active. Upgrade to a paid plan to increase your limits.'
+                    : 'You have access to all premium features and higher limits.'
                   }
                 </p>
                 {isTrialActive && (
@@ -225,7 +232,7 @@ export const SubscriptionManagement = () => {
                     size="sm" 
                     className="mt-3 bg-blue-600 hover:bg-blue-700"
                   >
-                    Nu upgraden
+                    Upgrade now
                   </Button>
                 )}
               </div>
@@ -238,7 +245,7 @@ export const SubscriptionManagement = () => {
       {currentTier?.name === 'basis' && (
         <div className="space-y-4">
           <h3 className="text-lg font-semibold text-gray-900">
-            Upgrade voor meer mogelijkheden
+            Upgrade for more features
           </h3>
           
           <div className="grid md:grid-cols-2 gap-4">
@@ -258,15 +265,15 @@ export const SubscriptionManagement = () => {
       {currentSubscription && (
         <Card>
           <CardHeader>
-            <CardTitle>Facturatie geschiedenis</CardTitle>
+            <CardTitle>Billing history</CardTitle>
             <CardDescription>
-              Bekijk je vorige betalingen en downloads facturen
+              View your previous payments and downloads invoices
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="text-center py-8 text-gray-500">
               <Calendar className="h-12 w-12 mx-auto mb-4 text-gray-300" />
-              <p>Facturatie geschiedenis wordt binnenkort toegevoegd</p>
+              <p>Billing history will be added soon</p>
             </div>
           </CardContent>
         </Card>

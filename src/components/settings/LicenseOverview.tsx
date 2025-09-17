@@ -88,15 +88,15 @@ export const LicenseOverview = () => {
     // Return mock data for now
     const mockLicenseData: LicenseData = {
       activePlanId: 'free',
-      planName: 'Gratis Plan',
-      planFeatures: ['Basis voorraadbeheer', 'Tot 100 producten'],
+      planName: 'Free Plan',
+      planFeatures: ['Basic inventory management', 'Up to 100 products'],
       usage: {
-        products: 0,
-        maxProducts: 100,
-        percentage: 0
+        user_count: 0,
+        branch_count: 0,
+        total_products: 0
       },
       isUpgradeAvailable: true,
-      upgradeMessage: 'Upgrade naar een hoger plan voor meer functionaliteiten'
+      upgradeMessage: 'Upgrade to a higher plan for more features'
     };
     
     return mockLicenseData;
@@ -115,12 +115,13 @@ export const LicenseOverview = () => {
     refetchOnWindowFocus: true,
     refetchOnMount: true,
     staleTime: 1000 * 60 * 2,
-    onError: (error) => {
+    onError: (error: Error) => {
       console.error('License overview fetch error:', error);
     },
   });
   React.useEffect(() => {
     if (data && user) {
+      console.log('[LicenseOverview] user.id:', user.id, 'total_products:', data.usage?.total_products, 'data:', data);
       console.log('[LicenseOverview] user.id:', user.id, 'total_products:', data.usage?.total_products, 'data:', data);
     }
   }, [data, user]);
@@ -166,11 +167,11 @@ export const LicenseOverview = () => {
         throw updateError;
       }
 
-      toast({ title: 'Plan gewijzigd', description: `U heeft het ${planId}-plan geselecteerd.` });
+      toast({ title: 'Plan changed', description: `You have selected the ${planId}-plan.` });
       await refetch();
 
     } catch (err) {
-      toast({ title: 'Fout bij opslaan', description: 'Kon het geselecteerde plan niet opslaan.', variant: 'destructive' });
+      toast({ title: 'Error saving plan', description: 'Could not save the selected plan.', variant: 'destructive' });
       console.error('[LicenseOverview] Exception during plan update:', err);
     } finally {
       setIsUpdatingPlanId(null);
@@ -178,7 +179,7 @@ export const LicenseOverview = () => {
   };
 
   // Bepaal of er een automatische upgrade is gebeurd
-  const selectedPlanId = data?.activePlanId; // Dit is nu altijd het automatisch gekozen plan
+  const selectedPlanId = data?.activePlanId; // This is now always the automatically chosen plan
   const userSelectedPlan = data?.availablePlans.find(p => p.id === data?.license?.license_type?.toLowerCase());
   const isAutoUpgrade = userSelectedPlan && selectedPlanId && userSelectedPlan.id !== selectedPlanId;
 
@@ -192,7 +193,7 @@ export const LicenseOverview = () => {
     return (
       <div className="flex flex-col items-center justify-center min-h-[300px]">
         <Loader2 className="w-10 h-10 animate-spin text-blue-600 mb-4" />
-        <span className="text-blue-700 font-medium">Laden van licentiegegevens...</span>
+        <span className="text-blue-700 font-medium">Loading license data...</span>
       </div>
     );
   }
@@ -218,7 +219,7 @@ export const LicenseOverview = () => {
       </AlertDialog>
       <Card>
         <CardHeader>
-          <CardTitle>Huidig Overzicht</CardTitle>
+          <CardTitle>Current Overview</CardTitle>
           <CardDescription>Uw huidige licentiestatus en verbruik.</CardDescription>
         </CardHeader>
         <CardContent>
@@ -227,11 +228,11 @@ export const LicenseOverview = () => {
               <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                 <tr>
                   <th className="px-6 py-3">Sinds</th>
-                  <th className="px-6 py-3">Licentie</th>
+                          <th className="px-6 py-3">License</th>
                   <th className="px-6 py-3 text-center">Filialen</th>
                   <th className="px-6 py-3 text-center">Gebruikers</th>
-                  <th className="px-6 py-3 text-center">€/Maand</th>
-                  <th className="px-6 py-3 text-center">Producten</th>
+                  <th className="px-6 py-3 text-center">€/Month</th>
+                  <th className="px-6 py-3 text-center">Products</th>
                   <th className="px-6 py-3 text-center">Status</th>
                 </tr>
               </thead>

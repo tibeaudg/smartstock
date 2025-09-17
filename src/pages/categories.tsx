@@ -332,10 +332,10 @@ export default function CategoriesPage() {
         {/* Header */}
         <div className={`${isMobile ? 'mb-6' : 'mb-8'}`}>
           <h1 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-gray-900 mb-2`}>
-            Categorieën Beheren
+            Manage Categories
           </h1>
           <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600`}>
-            Beheer uw productcategorieën voor betere organisatie van uw voorraad
+            Manage your product categories for better organization of your stock
           </p>
         </div>
 
@@ -346,7 +346,7 @@ export default function CategoriesPage() {
             className={`flex items-center gap-2 ${isMobile ? 'w-full' : ''}`}
           >
             <Plus className="w-4 h-4" />
-            Nieuwe Categorie
+            New Category
           </Button>
         </div>
 
@@ -357,7 +357,7 @@ export default function CategoriesPage() {
               <CardContent className={`${isMobile ? 'p-6' : 'p-8'}`}>
                 <div className="text-center">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                  <p className="text-gray-600">Categorieën laden...</p>
+                  <p className="text-gray-600">Categories loading...</p>
                 </div>
               </CardContent>
             </Card>
@@ -367,17 +367,17 @@ export default function CategoriesPage() {
                 <div className="text-center">
                   <Package className={`${isMobile ? 'w-10 h-10' : 'w-12 h-12'} text-gray-400 mx-auto mb-4`} />
                   <h3 className={`${isMobile ? 'text-base' : 'text-lg'} font-medium text-gray-900 mb-2`}>
-                    Geen categorieën
+                    No categories
                   </h3>
                   <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600 mb-4`}>
-                    U heeft nog geen categorieën aangemaakt. Maak uw eerste categorie aan om te beginnen.
+                    You have no categories yet. Create your first category to get started.
                   </p>
                   <Button 
                     onClick={() => setShowAddModal(true)}
                     className={isMobile ? 'w-full' : ''}
                   >
                     <Plus className="w-4 h-4 mr-2" />
-                    Eerste Categorie
+                    First Category
                   </Button>
                 </div>
               </CardContent>
@@ -420,7 +420,7 @@ export default function CategoriesPage() {
                         className={isMobile ? 'px-2 py-1' : ''}
                       >
                         <Edit className="w-4 h-4" />
-                        {!isMobile && <span className="ml-1">Bewerken</span>}
+                        {!isMobile && <span className="ml-1">Edit</span>}
                       </Button>
                       <Button
                         variant="outline"
@@ -432,7 +432,7 @@ export default function CategoriesPage() {
                         className={`${isMobile ? 'px-2 py-1' : ''} text-red-600 hover:text-red-700 hover:bg-red-50`}
                       >
                         <Trash2 className="w-4 h-4" />
-                        {!isMobile && <span className="ml-1">Verwijderen</span>}
+                        {!isMobile && <span className="ml-1">Delete</span>}
                       </Button>
                     </div>
                   </div>
@@ -447,35 +447,35 @@ export default function CategoriesPage() {
       <Dialog open={showAddModal} onOpenChange={setShowAddModal}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Nieuwe Categorie Toevoegen</DialogTitle>
+            <DialogTitle>Add New Category</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
             <div>
-              <Label htmlFor="name">Categorie Naam *</Label>
+              <Label htmlFor="name">Category Name *</Label>
               <Input
                 id="name"
                 value={formData.name}
                 onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                placeholder="Bijv. Elektronica, Voeding"
+                placeholder="Bijv. Electronics, Food"
               />
             </div>
             <div>
-              <Label htmlFor="description">Beschrijving</Label>
+              <Label htmlFor="description">Description</Label>
               <Textarea
                 id="description"
                 value={formData.description}
                 onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-                placeholder="Optionele beschrijving van de categorie"
+                placeholder="Optional description of the category"
                 rows={3}
               />
             </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowAddModal(false)}>
-              Annuleren
+              Cancel
             </Button>
             <Button onClick={handleAddCategory}>
-              Categorie Toevoegen
+              Add Category
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -485,35 +485,35 @@ export default function CategoriesPage() {
       <Dialog open={showEditModal} onOpenChange={setShowEditModal}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Categorie Bewerken</DialogTitle>
+            <DialogTitle>Edit Category</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
             <div>
-              <Label htmlFor="edit-name">Categorie Naam *</Label>
+              <Label htmlFor="edit-name">Category Name *</Label>
               <Input
                 id="edit-name"
                 value={formData.name}
                 onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                placeholder="Bijv. Elektronica, Voeding"
+                placeholder="Bijv. Electronics, Food"
               />
             </div>
             <div>
-              <Label htmlFor="edit-description">Beschrijving</Label>
+              <Label htmlFor="edit-description">Description</Label>
               <Textarea
                 id="edit-description"
                 value={formData.description}
                 onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-                placeholder="Optionele beschrijving van de categorie"
+                placeholder="Optional description of the category"
                 rows={3}
               />
             </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowEditModal(false)}>
-              Annuleren
+              Cancel
             </Button>
             <Button onClick={handleEditCategory}>
-              Wijzigingen Opslaan
+              Save Changes
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -523,27 +523,28 @@ export default function CategoriesPage() {
       <Dialog open={showDeleteModal} onOpenChange={setShowDeleteModal}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Categorie Verwijderen</DialogTitle>
+            <DialogTitle>Delete Category</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
             <p className="text-gray-600">
-              Weet u zeker dat u de categorie "{selectedCategory?.name}" wilt verwijderen? 
-              Deze actie kan niet ongedaan worden gemaakt.
+              Are you sure you want to delete the category "{selectedCategory?.name}"? 
+              This action cannot be undone.
             </p>
             <p className="text-sm text-gray-500">
-              Let op: Categorieën die in gebruik zijn door producten kunnen niet worden verwijderd.
+              Let op: Categories that are in use by products cannot be deleted.
+              Categories that are in use by products cannot be deleted.
             </p>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowDeleteModal(false)}>
-              Annuleren
+              Cancel
             </Button>
             <Button 
               variant="destructive" 
               onClick={handleDeleteCategory}
               className="bg-red-600 hover:bg-red-700"
             >
-              Verwijderen
+              Delete
             </Button>
           </DialogFooter>
         </DialogContent>

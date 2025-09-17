@@ -80,7 +80,7 @@ export const StockMovements = () => {
           <div className="relative">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder="Zoek producten"
+              placeholder="Search products"
               className="pl-8"
               value={filters.searchQuery}
               onChange={(e) => setFilters(prev => ({ ...prev, searchQuery: e.target.value }))}
@@ -96,7 +96,7 @@ export const StockMovements = () => {
                 <SelectValue placeholder="Type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">Alle Types</SelectItem>
+                <SelectItem value="all">All Types</SelectItem>
                 <SelectItem value="incoming">In</SelectItem>
                 <SelectItem value="outgoing">Out</SelectItem>
               </SelectContent>
@@ -106,14 +106,14 @@ export const StockMovements = () => {
               onValueChange={(value) => setFilters(prev => ({ ...prev, dateRange: value as 'all' | 'today' | 'week' | 'month' | 'custom' }))}
             >
               <SelectTrigger className="flex-1">
-                <SelectValue placeholder="Datum" />
+                <SelectValue placeholder="Date" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">Alle</SelectItem>
-                <SelectItem value="today">Vandaag</SelectItem>
-                <SelectItem value="week">7 Dagen</SelectItem>
-                <SelectItem value="month">30 Dagen</SelectItem>
-                <SelectItem value="custom">Aangepast</SelectItem>
+                <SelectItem value="all">All</SelectItem>
+                <SelectItem value="today">Today</SelectItem>
+                <SelectItem value="week">7 Days</SelectItem>
+                <SelectItem value="month">30 Days</SelectItem>
+                <SelectItem value="custom">Custom</SelectItem>
               </SelectContent>
             </Select>
             {/* Toevoegen button next to filters */}
@@ -131,7 +131,7 @@ export const StockMovements = () => {
                   !filters.startDate && "text-muted-foreground"
                 )}>
                   <CalendarIcon className="mr-2 h-4 w-4" />
-                  {filters.startDate ? format(filters.startDate, "PP") : "Start date"}
+                  {filters.startDate ? format(filters.startDate, "PP") : "Start Date"}
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0" align="start">
@@ -150,7 +150,7 @@ export const StockMovements = () => {
                   !filters.endDate && "text-muted-foreground"
                 )}>
                   <CalendarIcon className="mr-2 h-4 w-4" />
-                  {filters.endDate ? format(filters.endDate, "PP") : "End date"}
+                  {filters.endDate ? format(filters.endDate, "PP") : "End Date"}
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0" align="start">
@@ -173,25 +173,25 @@ export const StockMovements = () => {
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           <Card>
             <CardContent className="p-3 sm:p-4">
-              <p className="text-xs sm:text-sm font-medium text-muted-foreground">Totaal In</p>
+              <p className="text-xs sm:text-sm font-medium text-muted-foreground">Total In</p>
               <p className="text-lg sm:text-xl lg:text-2xl font-bold text-green-600">{stats.totalIncoming}</p>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-3 sm:p-4">
-              <p className="text-xs sm:text-sm font-medium text-muted-foreground">Totaal Uit</p>
+              <p className="text-xs sm:text-sm font-medium text-muted-foreground">Total Out</p>
               <p className="text-lg sm:text-xl lg:text-2xl font-bold text-red-600">{stats.totalOutgoing}</p>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-3 sm:p-4">
-              <p className="text-xs sm:text-sm font-medium text-muted-foreground">Bewegingen</p>
+              <p className="text-xs sm:text-sm font-medium text-muted-foreground">Movements</p>
               <p className="text-lg sm:text-xl lg:text-2xl font-bold">{stats.transactionCount}</p>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-3 sm:p-4">
-              <p className="text-xs sm:text-sm font-medium text-muted-foreground">Huidige Waarde Stock</p>
+              <p className="text-xs sm:text-sm font-medium text-muted-foreground">Current Stock Value</p>
               <p className="text-lg sm:text-xl lg:text-2xl font-bold">€{stats.totalValue.toFixed(2)}</p>
             </CardContent>
           </Card>
@@ -206,14 +206,14 @@ export const StockMovements = () => {
            <table className={`${isMobile ? "w-full" : "min-w-full"} divide-y divide-gray-200`}>
                          <thead className="bg-gray-50">
                <tr>
-                 <th className={`${isMobile ? "px-2 py-2" : "px-4 py-2"} text-left text-xs font-medium text-gray-500 uppercase tracking-wider ${isMobile ? "w-1/2" : ""}`}>Product</th>
-                 <th className={`${isMobile ? "px-1 py-2" : "px-4 py-2"} text-left text-xs font-medium text-gray-500 uppercase tracking-wider ${isMobile ? "w-1/6" : ""}`}>Gebruiker</th>
+                <th className={`${isMobile ? "px-2 py-2" : "px-4 py-2"} text-left text-xs font-medium text-gray-500 uppercase tracking-wider ${isMobile ? "w-1/2" : ""}`}>Product</th>
+                 <th className={`${isMobile ? "px-1 py-2" : "px-4 py-2"} text-left text-xs font-medium text-gray-500 uppercase tracking-wider ${isMobile ? "w-1/6" : ""}`}>User</th>
                  <th className={`${isMobile ? "px-1 py-2" : "px-4 py-2"} text-center text-xs font-medium text-gray-500 uppercase tracking-wider ${isMobile ? "w-1/6" : ""}`}>Type</th>
-                 <th className={`${isMobile ? "px-2 py-2" : "px-4 py-2"} text-right text-xs font-medium text-gray-500 uppercase tracking-wider ${isMobile ? "w-1/6" : ""}`}>Aantal</th>
+                 <th className={`${isMobile ? "px-2 py-2" : "px-4 py-2"} text-right text-xs font-medium text-gray-500 uppercase tracking-wider ${isMobile ? "w-1/6" : ""}`}>Quantity</th>
                  {!isMobile && (
                    <>
-                     <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Eenheidsprijs</th>
-                     <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Totaal</th>
+                     <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Unit Price</th>
+                     <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
                    </>
                  )}
                </tr>
@@ -233,19 +233,19 @@ export const StockMovements = () => {
                      </div>
                    </td>
                    <td className={`${isMobile ? "px-1 py-2" : "px-4 py-2"} text-sm`}>
-                     <div className="break-words">{transaction.first_name || 'Onbekend'}</div>
+                     <div className="break-words">{transaction.first_name || 'Unknown'}</div>
                    </td>
                    <td className={`${isMobile ? "px-1 py-2" : "px-4 py-2"} text-center`}>
                      <Badge
                        variant={transaction.transaction_type === 'incoming' ? 'success' : 'destructive'}
                        className={`${transaction.transaction_type === 'incoming' ? 'success' : ''} ${isMobile ? 'text-xs px-1 py-0' : ''}`}
                      >
-                       {transaction.transaction_type === 'incoming' ? 'In' : 'Uit'}
+                       {transaction.transaction_type === 'incoming' ? 'In' : 'Out'}
                      </Badge>
                    </td>
                    <td className={`${isMobile ? "px-2 py-2" : "px-4 py-2"} text-right text-sm font-medium`}>
                      {transaction.transaction_type === 'outgoing' ? (
-                       <span className="text-red-600">- {transaction.quantity}</span>
+                      <span className="text-red-600">- {transaction.quantity}</span>
                      ) : (
                        <span className="text-green-600">+ {transaction.quantity}</span>
                      )}
