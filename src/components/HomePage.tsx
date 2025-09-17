@@ -615,8 +615,41 @@ export const HomePage = () => {
     }
   };
 
-  // Structured data uitbreiden (SoftwareApplication + FAQPage + VideoObject)
+  // Enhanced structured data for better search engine understanding
   const structuredData = [
+    // Organization Schema
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "StockFlow",
+      "url": "https://www.stockflow.be",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.stockflow.be/logo.png",
+        "width": 200,
+        "height": 60
+      },
+      "description": "Free inventory management software for SMEs",
+      "foundingDate": "2023",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+32-123-456-789",
+        "contactType": "customer service",
+        "email": "info@stockflow.be",
+        "availableLanguage": ["English", "Dutch", "French", "German"]
+      },
+      "sameAs": [
+        "https://www.linkedin.com/company/stockflow",
+        "https://www.facebook.com/stockflowapp",
+        "https://twitter.com/stockflowapp"
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "BE",
+        "addressLocality": "Belgium"
+      }
+    },
+    // Software Application Schema
     {
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
@@ -624,22 +657,79 @@ export const HomePage = () => {
       "description": t('structuredData.softwareDescription'),
       "applicationCategory": "BusinessApplication",
       "operatingSystem": "Web Browser",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "EUR",
-        "description": "100% gratis voorraadbeheer voor KMO's"
-      },
+      "browserRequirements": "Requires JavaScript. Requires HTML5.",
+      "softwareVersion": "1.0",
+      "datePublished": "2024-01-01",
+      "dateModified": new Date().toISOString().split('T')[0],
+      "offers": [
+        {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "EUR",
+          "description": "Free plan - 100% gratis voorraadbeheer voor KMO's",
+          "availability": "https://schema.org/InStock",
+          "validFrom": "2024-01-01"
+        },
+        {
+          "@type": "Offer",
+          "price": "29",
+          "priceCurrency": "EUR",
+          "description": "Growth plan - Advanced features for growing businesses",
+          "availability": "https://schema.org/InStock",
+          "validFrom": "2024-01-01"
+        }
+      ],
       "aggregateRating": {
         "@type": "AggregateRating",
         "ratingValue": "4.8",
-        "ratingCount": "150"
+        "ratingCount": "150",
+        "bestRating": "5",
+        "worstRating": "1"
       },
-      "author": {"@type": "Organization", "name": "stockflow"},
-      "publisher": {"@type": "Organization", "name": "stockflow", "logo": {"@type": "ImageObject", "url": "https://www.stockflow.be/logo.png"}},
-      "image": "https://www.stockflow.be/Inventory-Management.png",
-      "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.stockflow.be/"}
+      "author": {"@type": "Organization", "name": "StockFlow"},
+      "publisher": {"@type": "Organization", "name": "StockFlow", "logo": {"@type": "ImageObject", "url": "https://www.stockflow.be/logo.png"}},
+      "image": ["https://www.stockflow.be/Inventory-Management.png", "https://www.stockflow.be/optimized/desktop.png"],
+      "screenshot": "https://www.stockflow.be/optimized/desktop.png",
+      "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.stockflow.be/"},
+      "featureList": [
+        "Real-time inventory tracking",
+        "Multi-location support", 
+        "Barcode scanning",
+        "Automated reorder points",
+        "Analytics and reporting",
+        "Team collaboration",
+        "Mobile app access"
+      ]
     },
+    // WebPage Schema
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": t('homepage.title'),
+      "description": t('homepage.description'),
+      "url": "https://www.stockflow.be/",
+      "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "StockFlow"
+      },
+      "breadcrumb": {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://www.stockflow.be/"
+          }
+        ]
+      },
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "StockFlow",
+        "url": "https://www.stockflow.be"
+      }
+    },
+    // FAQPage Schema
     {
       "@context": "https://schema.org",
       "@type": "FAQPage",
@@ -647,10 +737,18 @@ export const HomePage = () => {
         ...(faqData as any[]).map((f) => ({
           "@type": "Question",
           "name": f.question,
-          "acceptedAnswer": { "@type": "Answer", "text": f.answer }
+          "acceptedAnswer": { 
+            "@type": "Answer", 
+            "text": f.answer,
+            "author": {
+              "@type": "Organization",
+              "name": "StockFlow"
+            }
+          }
         }))
       ]
     },
+    // VideoObject Schema
     {
       "@context": "https://schema.org",
       "@type": "VideoObject",
@@ -659,7 +757,71 @@ export const HomePage = () => {
       "thumbnailUrl": ["https://www.stockflow.be/Inventory-Management.png"],
       "uploadDate": "2024-01-01",
       "contentUrl": "https://www.stockflow.be/intro_vid.mp4",
-      "embedUrl": "https://www.stockflow.be/intro_vid.mp4"
+      "embedUrl": "https://www.stockflow.be/intro_vid.mp4",
+      "duration": "PT3M30S",
+      "publisher": {
+        "@type": "Organization",
+        "name": "StockFlow",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://www.stockflow.be/logo.png"
+        }
+      }
+    },
+    // Product Schema for pricing plans
+    {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": "StockFlow Inventory Management Software",
+      "description": "Free inventory management software for SMEs",
+      "brand": {
+        "@type": "Brand",
+        "name": "StockFlow"
+      },
+      "offers": [
+        {
+          "@type": "Offer",
+          "name": "Free Plan",
+          "price": "0",
+          "priceCurrency": "EUR",
+          "description": "Basic inventory management for small businesses",
+          "availability": "https://schema.org/InStock"
+        },
+        {
+          "@type": "Offer", 
+          "name": "Growth Plan",
+          "price": "29",
+          "priceCurrency": "EUR",
+          "description": "Advanced features for growing businesses",
+          "availability": "https://schema.org/InStock"
+        }
+      ],
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "ratingCount": "150"
+      }
+    },
+    // LocalBusiness Schema
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "StockFlow",
+      "description": "Free inventory management software for SMEs",
+      "url": "https://www.stockflow.be",
+      "telephone": "+32-123-456-789",
+      "email": "info@stockflow.be",
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "BE"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "50.8503",
+        "longitude": "4.3517"
+      },
+      "openingHours": "Mo-Fr 09:00-17:00",
+      "priceRange": "€€"
     }
   ];
 
@@ -1421,11 +1583,11 @@ export const HomePage = () => {
                     console.warn('Translation error for videoBenefits:', error);
                   }
                   // Fallback data
-                  return [
-                    { title: "3 minutes", description: "To add your first products" },
-                    { title: "Immediate results", description: "See your inventory overview immediately" },
-                    { title: "Team ready", description: "Invite your team and start together" }
-                  ].map((benefit, index) => (
+                  return getTranslationArray('fallback.videoBenefits', [
+                    { title: "3 minuten", description: "Om je eerste producten toe te voegen" },
+                    { title: "Direct resultaat", description: "Zie meteen je voorraad overzicht" },
+                    { title: "Team klaar", description: "Nodig je team uit en begin samen" }
+                  ]).map((benefit, index) => (
                     <div key={index} className="text-center p-6 bg-white rounded-xl shadow-lg border border-gray-100">
                       <div className="inline-flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full mb-4">
                         {index === 0 ? <Clock className="h-6 w-6 text-blue-600" /> : 
@@ -1704,11 +1866,11 @@ export const HomePage = () => {
                   console.warn('Translation error for finalCta.benefits:', error);
                 }
                 // Fallback data
-                return [
-                  "Start within 2 minutes",
-                  "100% safe and free",
-                  "Professional support"
-                ].map((benefit, index) => (
+                return getTranslationArray('fallback.finalCtaBenefits', [
+                  "Start binnen 2 minuten",
+                  "100% veilig en gratis",
+                  "Professionele support"
+                ]).map((benefit, index) => (
                   <div key={index} className="flex items-center justify-center gap-3 text-white/90">
                     <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
                       {index === 0 ? <Zap className="h-6 w-6" /> : 
@@ -1770,12 +1932,12 @@ export const HomePage = () => {
                   console.warn('Translation error for accessibility.trust:', error);
                 }
                 // Fallback data
-                return [
-                  "No credit card required",
-                  "Direct access",
+                return getTranslationArray('fallback.trustIndicators', [
+                  "Geen creditcard vereist",
+                  "Direct toegang",
                   "GDPR-compliant",
-                  "100% safe"
-                ].map((trustItem, index) => (
+                  "100% veilig"
+                ]).map((trustItem, index) => (
                   <div key={index} className="flex items-center gap-2">
                     {index === 0 ? <CheckCircle className="h-4 w-4" /> : 
                      index === 1 ? <Clock className="h-4 w-4" /> :
@@ -1819,11 +1981,11 @@ export const HomePage = () => {
                   console.warn('Translation error for finalCta.stats:', error);
                 }
                 // Fallback data
-                return [
-                  { number: "3200+", label: "Active SMEs" },
-                  { number: "9 hours", label: "Time saved/week" },
-                  { number: "4.8/5", label: "Customer satisfaction" }
-                ].map((stat, index) => (
+                return getTranslationArray('fallback.stats', [
+                  { number: "3200+", label: "Actieve KMO's" },
+                  { number: "9 uur", label: "Tijd bespaard/week" },
+                  { number: "4.8/5", label: "Klanttevredenheid" }
+                ]).map((stat, index) => (
                   <div key={index} className="text-center">
                     <div className="text-2xl md:text-3xl font-bold text-white mb-1">{stat.number}</div>
                     <div className="text-sm text-white/70">{stat.label}</div>

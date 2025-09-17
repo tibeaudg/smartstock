@@ -520,5 +520,52 @@
     "cookieConsent": "We gebruiken cookies om je ervaring te verbeteren en anonieme statistieken te verzamelen. Door te accepteren ga je akkoord met ons gebruik van cookies.",
     "cookieAccept": "Accepteer",
     "cookieDecline": "Weiger"
+  },
+  "structuredData": {
+    "softwareName": "StockFlow - Voorraadbeheer Software",
+    "softwareDescription": "Professioneel voorraadbeheer systeem voor KMO's in Vlaanderen",
+    "videoName": "Hoe werkt StockFlow voorraadbeheer?",
+    "videoDescription": "Ontdek hoe eenvoudig voorraadbeheer kan zijn met StockFlow"
+  },
+  "fallback": {
+    "videoBenefits": [
+      {
+        "title": "3 minuten",
+        "description": "Om je eerste producten toe te voegen"
+      },
+      {
+        "title": "Direct resultaat",
+        "description": "Zie meteen je voorraad overzicht"
+      },
+      {
+        "title": "Team klaar",
+        "description": "Nodig je team uit en begin samen"
+      }
+    ],
+    "finalCtaBenefits": [
+      "Start binnen 2 minuten",
+      "100% veilig en gratis",
+      "Professionele support"
+    ],
+    "trustIndicators": [
+      "Geen creditcard vereist",
+      "Direct toegang",
+      "GDPR-compliant",
+      "100% veilig"
+    ],
+    "stats": [
+      {
+        "number": "3200+",
+        "label": "Actieve KMO's"
+      },
+      {
+        "number": "9 uur",
+        "label": "Tijd bespaard/week"
+      },
+      {
+        "number": "4.8/5",
+        "label": "Klanttevredenheid"
+      }
+    ]
   }
 }

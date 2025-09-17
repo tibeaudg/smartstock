@@ -749,6 +749,44 @@
     "support": "Support",
     "getStarted": "Get Started"
   },
+  "404": {
+    "title": "Page Not Found",
+    "description": "The page you're looking for doesn't exist. But don't worry, we'll help you find what you need!",
+    "search": {
+      "title": "Search for what you need",
+      "placeholder": "Search pages...",
+      "home": "Go Home"
+    },
+    "categories": {
+      "all": "All",
+      "main": "Main Pages",
+      "guides": "Guides"
+    },
+    "quickActions": {
+      "main": "Main Pages",
+      "guides": "Helpful Guides"
+    },
+    "results": {
+      "title": "Search Results",
+      "noResults": "No results found. Try a different search term."
+    },
+    "contact": {
+      "title": "Still can't find what you're looking for?",
+      "email": "Email Support",
+      "emailDescription": "Get help from our support team",
+      "phone": "Phone Support",
+      "phoneDescription": "Call us for immediate assistance"
+    },
+    "footer": {
+      "error": "Error: Page not found"
+    }
+  },
+  "structuredData": {
+    "softwareName": "StockFlow - Smart Stock Management",
+    "softwareDescription": "Free inventory management software for SMEs. Track stock levels, manage inventory, and optimize your business operations with our comprehensive solution.",
+    "videoName": "StockFlow Demo - Inventory Management Software",
+    "videoDescription": "See how StockFlow helps SMEs manage their inventory efficiently with real-time tracking, barcode scanning, and automated reporting."
+  },
   "badges": {
     "modules": "New Modules Available",
     "pricing": "Transparent Pricing",
@@ -856,11 +894,5 @@
       "users": "Users",
       "branches": "Branches"
     }
-  },
-  "structuredData": {
-    "softwareName": "StockFlow - Free Inventory Management",
-    "softwareDescription": "Free inventory management program for SMEs. Simple, safe and without hidden costs.",
-    "videoName": "StockFlow Introduction Video",
-    "videoDescription": "Explanation of how StockFlow works for SMEs."
   }
 }
