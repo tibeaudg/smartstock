@@ -567,5 +567,16 @@
         "label": "Klanttevredenheid"
       }
     ]
+  },
+  "footer": {
+    "tagline": "Het beste gratis voorraadbeheer programma voor KMO's. Eenvoudig, veilig en zonder verborgen kosten.",
+    "followUs": "Volg Ons",
+    "copyright": "Gratis voorraadbeheer voor KMO's.",
+    "quickLinks": "Snelle Links",
+    "resources": "Bronnen",
+    "features": "Functies",
+    "caseStudies": "Case Studies",
+    "support": "Ondersteuning",
+    "getStarted": "Aan de Slag"
   }
 }

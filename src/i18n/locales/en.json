@@ -741,6 +741,7 @@
   },
   "footer": {
     "tagline": "The best free inventory management program for SMEs. Simple, safe and without hidden costs.",
+    "followUs": "Follow Us",
     "copyright": "Free inventory management for SMEs.",
     "quickLinks": "Quick Links",
     "resources": "Resources",
@@ -804,9 +805,6 @@
       "tweet": "Share on Twitter",
       "linkedin": "Share on LinkedIn"
     }
-  },
-  "footer": {
-    "followUs": "Follow Us"
   },
   "badges": {
     "modules": "New Modules Available",

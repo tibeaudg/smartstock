@@ -138,5 +138,16 @@
     "users": "Felhasználókezelés",
     "modules": "Modulkezelés",
     "billing": "Számlázás és számla"
+  },
+  "footer": {
+    "tagline": "A legjobb ingyenes készletkezelő program KKV-k számára. Egyszerű, biztonságos és rejtett költségek nélkül.",
+    "followUs": "Kövess Minket",
+    "copyright": "Ingyenes készletkezelés KKV-k számára.",
+    "quickLinks": "Gyors Linkek",
+    "resources": "Erőforrások",
+    "features": "Funkciók",
+    "caseStudies": "Esettanulmányok",
+    "support": "Támogatás",
+    "getStarted": "Kezdés"
   }
 }

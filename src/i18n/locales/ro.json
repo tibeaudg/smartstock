@@ -138,5 +138,16 @@
     "users": "Gestionarea utilizatorilor",
     "modules": "Gestionarea modulelor",
     "billing": "Facturare și facturi"
+  },
+  "footer": {
+    "tagline": "Cel mai bun program gratuit de gestionare a stocurilor pentru IMM-uri. Simplu, sigur și fără costuri ascunse.",
+    "followUs": "Urmărește-ne",
+    "copyright": "Gestionare gratuită a stocurilor pentru IMM-uri.",
+    "quickLinks": "Link-uri Rapide",
+    "resources": "Resurse",
+    "features": "Funcționalități",
+    "caseStudies": "Studii de Caz",
+    "support": "Suport",
+    "getStarted": "Începe"
   }
 }

@@ -2272,6 +2272,25 @@ export const HomePage = () => {
           </Link>
         </div>
       </div>
+      
+      {/* Legal & Company Links */}
+      <div>
+        <h3 className="text-lg font-semibold mb-4">Legal & Company</h3>
+        <div className="space-y-2">
+          <Link to="/privacy-policy" className="block text-gray-400 hover:text-white underline">
+            Privacy Policy
+          </Link>
+          <Link to="/terms-conditions" className="block text-gray-400 hover:text-white underline">
+            Terms & Conditions
+          </Link>
+          <Link to="/about" className="block text-gray-400 hover:text-white underline">
+            About
+          </Link>
+          <Link to="/contact" className="block text-gray-400 hover:text-white underline">
+            Contact
+          </Link>
+        </div>
+      </div>
     </div>
 
     <div className="border-t border-gray-700 pt-6 text-center">

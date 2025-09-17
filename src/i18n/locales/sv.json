@@ -138,5 +138,16 @@
     "users": "Användarhantering",
     "modules": "Modulhantering",
     "billing": "Fakturering och räkningar"
+  },
+  "footer": {
+    "tagline": "Det bästa gratis lagerhanteringsprogrammet för SME. Enkelt, säkert och utan dolda kostnader.",
+    "followUs": "Följ Oss",
+    "copyright": "Gratis lagerhantering för SME.",
+    "quickLinks": "Snabb Länkar",
+    "resources": "Resurser",
+    "features": "Funktioner",
+    "caseStudies": "Fallstudier",
+    "support": "Support",
+    "getStarted": "Kom Igång"
   }
 }
