@@ -28,9 +28,9 @@ interface PricingTier {
 
 const pricingTiers: PricingTier[] = [
   {
-    id: 'basis',
-    name: 'basis',
-    displayName: 'Basis',
+    id: 'basic',
+    name: 'basic',
+    displayName: 'Basic',
     description: 'Perfect for small businesses that are just starting with inventory management',
     priceMonthly: 0,
     priceYearly: 0,
@@ -40,7 +40,7 @@ const pricingTiers: PricingTier[] = [
     maxUsers: 2,
     maxBranches: 1,
     features: [
-      'Basis inventory management',
+      'Basic inventory management',
       'Add/edit products',
       'Simple reports',
       'Email support',
@@ -52,9 +52,9 @@ const pricingTiers: PricingTier[] = [
     color: 'text-gray-600'
   },
   {
-    id: 'groei',
-    name: 'groei',
-    displayName: 'Groei',
+    id: 'growth',
+    name: 'growth',
+    displayName: 'Growth',
     description: 'Ideal for growing businesses with more needs',
     priceMonthly: 29.99,
     priceYearly: 299.99,
@@ -67,8 +67,6 @@ const pricingTiers: PricingTier[] = [
       'All Basic features',
       'Advanced analytics',
       'Barcode scanner',
-      'Delivery notes management',
-      'API access',
       'Priority support',
       'Custom reports',
       'Bulk import/export'
@@ -92,14 +90,10 @@ const pricingTiers: PricingTier[] = [
     maxBranches: null,
     features: [
       'All Growth features',
-      'Onbeperkte producten',
-      'Onbeperkte orders',
-      'Unlimited users',
-      'Unlimited branches',
+      'Unlimited products',
+      'Delivery notes management',
       'Dedicated support',
       'Custom onboarding',
-      'SLA guarantee',
-      'White-label opties'
     ],
     isPopular: false,
     isEnterprise: true,
@@ -132,8 +126,8 @@ export default function PricingPage() {
   };
 
   const getLimitText = (value: number | null, type: string) => {
-    if (value === null) return t('pricing.unlimited');
-    if (value === 0) return t('pricing.notIncluded');
+    if (value === null) return 'Unlimited';
+    if (value === 0) return 'Not included';
     return `${value} ${type}`;
   };
 
@@ -143,16 +137,16 @@ export default function PricingPage() {
         {/* Header */}
         <div className="text-center mb-16">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            {t('pricing.title')}
+              Pricing
           </h1>
           <p className="text-xl text-gray-600 mb-8">
-            {t('pricing.subtitle')}
+            Choose the plan that best suits your needs
           </p>
           
           {/* Billing Toggle */}
           <div className="flex items-center justify-center space-x-4 mb-8">
             <span className={`text-sm font-medium ${billingCycle === 'monthly' ? 'text-gray-900' : 'text-gray-500'}`}>
-              {t('pricing.monthly')}
+              Monthly
             </span>
             <button
               onClick={() => setBillingCycle(billingCycle === 'monthly' ? 'yearly' : 'monthly')}
@@ -165,11 +159,11 @@ export default function PricingPage() {
               />
             </button>
             <span className={`text-sm font-medium ${billingCycle === 'yearly' ? 'text-gray-900' : 'text-gray-500'}`}>
-              {t('pricing.yearly')}
+              Yearly
             </span>
             {billingCycle === 'yearly' && (
               <Badge variant="secondary" className="ml-2">
-                {t('pricing.save')}
+                Save
               </Badge>
             )}
           </div>
@@ -187,15 +181,6 @@ export default function PricingPage() {
                   <Badge className="bg-blue-500 text-white px-4 py-1">
                     <Star className="h-3 w-3 mr-1" />
                     Most popular
-                  </Badge>
-                </div>
-              )}
-              
-              {tier.isEnterprise && (
-                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                  <Badge className="bg-purple-500 text-white px-4 py-1">
-                    <Crown className="h-3 w-3 mr-1" />
-                    Enterprise plan
                   </Badge>
                 </div>
               )}
