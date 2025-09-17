@@ -957,66 +957,89 @@ export const HomePage = () => {
           <div className="absolute top-40 left-1/2 w-80 h-80 bg-pink-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse" style={{animationDelay: '4s'}}></div>
         </div>
         
-        <div className="relative z-10 max-w-7xl mx-auto px-4 py-12 md:py-24">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-16 lg:py-24">
           <div className="text-center">
+            {/* Mobile outline container */}
+            <div className="sm:hidden ">
 
 
-            {/* Main headline - SEO optimized H1 */}
-            <FadeInWhenVisible>
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-                <span className="block text-gray-900">Smart Inventory Management</span>
-                <span className="block text-blue-600 text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold mt-2">
-                  For Growing Businesses
-                </span>
-              </h1>
-            </FadeInWhenVisible>
+              {/* Main headline - SEO optimized H1 */}
+              <FadeInWhenVisible>
+                <h1 className="text-4xl font-bold mb-4 leading-tight">
+                  <span className="block text-gray-900">Smart Inventory Management</span>
+                  <span className="block text-blue-600 text-2xl font-semibold mt-1">
+                    For Growing Businesses
+                  </span>
+                </h1>
+              </FadeInWhenVisible>
 
-            {/* Subheadline */}
-            <FadeInWhenVisible>
-              <p className="text-lg sm:text-xl md:text-2xl text-gray-600 mb-8 max-w-4xl mx-auto leading-relaxed">
-                Track stock levels, manage suppliers, and grow your business with our powerful yet simple inventory management platform.
-                <br className="hidden sm:block" />
-              </p>
-            </FadeInWhenVisible>
+              {/* Subheadline */}
+              <FadeInWhenVisible>
+                <p className="text-xs text-gray-600 mb-6 max-w-4xl mx-auto leading-relaxed">
+                  Track stock levels, manage suppliers, and grow your business with our powerful yet simple inventory management platform.
+                </p>
+              </FadeInWhenVisible>
+            </div>
+
+            {/* Desktop content */}
+            <div className="hidden sm:block">
+              {/* Main headline - SEO optimized H1 */}
+              <FadeInWhenVisible>
+                <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 sm:mb-6 leading-tight px-2">
+                  <span className="block text-gray-900">Smart Inventory Management</span>
+                  <span className="block text-blue-600 text-xl xs:text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold mt-1 sm:mt-2">
+                    For Growing Businesses
+                  </span>
+                </h1>
+              </FadeInWhenVisible>
+
+              {/* Subheadline */}
+              <FadeInWhenVisible>
+                <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 mb-6 sm:mb-8 max-w-4xl mx-auto leading-relaxed px-4">
+                  Track stock levels, manage suppliers, and grow your business with our powerful yet simple inventory management platform.
+                  <br className="hidden sm:block" />
+                </p>
+              </FadeInWhenVisible>
+            </div>
 
             {/* Social proof */}
             <FadeInWhenVisible>
-              <div className="flex items-center justify-center gap-3 mb-8">
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 mb-6 sm:mb-8 px-4">
                 <div className="flex">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
+                    <Star key={i} className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-400 fill-current" />
                   ))}
                 </div>
-                <span className="text-gray-600 font-medium">4.9/5 rating</span>
-                <div className="h-4 w-px bg-gray-300"></div>
-                <span className="text-gray-600">3200+ happy users</span>
+                <span className="text-sm sm:text-base text-gray-600 font-medium">4.9/5 rating</span>
+                <div className="hidden sm:block h-4 w-px bg-gray-300"></div>
+                <span className="text-sm sm:text-base text-gray-600">3200+ happy users</span>
               </div>
             </FadeInWhenVisible>
 
             {/* CTA Buttons - Clean & Focused */}
             <FadeInWhenVisible>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+              <div className="flex flex-col gap-3 justify-center mb-6 sm:mb-8 px-4">
                 <Button 
                   id="hero-cta-primary"
                   data-analytics-id="hero-start" 
                   size="lg" 
-                  className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 py-4 rounded-xl font-semibold hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl text-lg w-full sm:w-auto group relative overflow-hidden"
+                  className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl text-base sm:text-lg w-full group relative overflow-hidden"
                   onClick={handleLoginClick}
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
-                  <Rocket className="h-5 w-5 mr-2 group-hover:animate-bounce" />
+                  <Rocket className="h-4 w-4 sm:h-5 sm:w-5 mr-2 group-hover:animate-bounce" />
                   Get Started Free
-                  <ArrowRight className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 ml-2 group-hover:translate-x-1 transition-transform" />
                 </Button>
                 <Button 
                   id="hero-cta-secondary"
                   data-analytics-id="hero-how-it-works" 
                   size="lg" 
                   variant="outline" 
-                  className="border-2 border-blue-600 text-blue-600 px-8 py-4 rounded-xl font-semibold hover:bg-blue-50 transition-all duration-300 text-lg w-full sm:w-auto group"
+                  className="border-2 border-blue-600 text-blue-600 px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold hover:bg-blue-50 transition-all duration-300 text-base sm:text-lg w-full group"
                   onClick={handleHowItWorksClick}
                 >
-                  <Play className="h-5 w-5 mr-2" />
+                  <Play className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
                   Learn More
                 </Button>
               </div>
@@ -1024,40 +1047,40 @@ export const HomePage = () => {
 
             {/* Internal navigation links for SEO */}
             <FadeInWhenVisible>
-              <div className="flex flex-wrap justify-center gap-4 text-sm mb-8">
+              <div className="flex flex-wrap justify-center gap-2 sm:gap-4 text-xs sm:text-sm mb-6 sm:mb-8 px-4">
                 <button 
                   onClick={() => scrollToSection('modules-section')} 
-                  className="text-blue-600 hover:text-blue-800 underline cursor-pointer"
+                  className="text-blue-600 hover:text-blue-800 underline cursor-pointer px-2 py-1"
                 >
                   Modules
                 </button>
                 <button 
                   onClick={() => scrollToSection('features-section')} 
-                  className="text-blue-600 hover:text-blue-800 underline cursor-pointer"
+                  className="text-blue-600 hover:text-blue-800 underline cursor-pointer px-2 py-1"
                 >
                   Features
                 </button>
                 <button 
                   onClick={() => scrollToSection('pricing-section')} 
-                  className="text-blue-600 hover:text-blue-800 underline cursor-pointer"
+                  className="text-blue-600 hover:text-blue-800 underline cursor-pointer px-2 py-1"
                 >
                   Pricing
                 </button>
                 <button 
                   onClick={() => scrollToSection('testimonials-section')} 
-                  className="text-blue-600 hover:text-blue-800 underline cursor-pointer"
+                  className="text-blue-600 hover:text-blue-800 underline cursor-pointer px-2 py-1"
                 >
                   Testimonials
                 </button>
                 <button 
                   onClick={() => scrollToSection('video-section')} 
-                  className="text-blue-600 hover:text-blue-800 underline cursor-pointer"
+                  className="text-blue-600 hover:text-blue-800 underline cursor-pointer px-2 py-1"
                 >
                   Demo
                 </button>
                 <button 
                   onClick={() => scrollToSection('contact-section')} 
-                  className="text-blue-600 hover:text-blue-800 underline cursor-pointer"
+                  className="text-blue-600 hover:text-blue-800 underline cursor-pointer px-2 py-1"
                 >
                   Contact
                 </button>
@@ -1068,7 +1091,7 @@ export const HomePage = () => {
 
             {/* Trust indicators */}
             <FadeInWhenVisible>
-              <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-600 mb-8">
+              <div className="flex flex-wrap justify-center gap-3 sm:gap-6 text-xs sm:text-sm text-gray-600 mb-6 sm:mb-8 px-4">
                 {(() => {
                   try {
                     const items = [
@@ -1112,9 +1135,9 @@ export const HomePage = () => {
 
             {/* Hero image/demo - LCP optimized */}
             <FadeInWhenVisible>
-              <div className="relative max-w-5xl mx-auto">
-                <div className="bg-white rounded-2xl shadow-2xl p-8 border border-gray-100">
-                  <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl overflow-hidden">
+              <div className="relative max-w-5xl mx-auto px-4">
+                <div className="bg-white rounded-xl sm:rounded-2xl shadow-2xl p-4 sm:p-6 lg:p-8 border border-gray-100">
+                  <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-lg sm:rounded-xl overflow-hidden">
                     <img 
                       className="w-full h-auto object-cover" 
                       src="/optimized/desktop.png" 
@@ -1134,11 +1157,11 @@ export const HomePage = () => {
                   </div>
                 </div>
                 {/* Floating elements */}
-                <div className="absolute -top-4 -right-4 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center animate-bounce">
-                  <Check className="h-4 w-4 text-white" />
+                <div className="absolute -top-2 -right-2 sm:-top-4 sm:-right-4 w-6 h-6 sm:w-8 sm:h-8 bg-green-500 rounded-full flex items-center justify-center animate-bounce">
+                  <Check className="h-3 w-3 sm:h-4 sm:w-4 text-white" />
                 </div>
-                <div className="absolute -bottom-4 -left-4 w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center animate-pulse">
-                  <TrendingUp className="h-4 w-4 text-white" />
+                <div className="absolute -bottom-2 -left-2 sm:-bottom-4 sm:-left-4 w-6 h-6 sm:w-8 sm:h-8 bg-blue-500 rounded-full flex items-center justify-center animate-pulse">
+                  <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4 text-white" />
                 </div>
               </div>
             </FadeInWhenVisible>
@@ -1148,18 +1171,18 @@ export const HomePage = () => {
 
 
       {/* KENGETALLEN / SOCIAL PROOF STRIP */}
-      <section id="stats-section" className="bg-white py-8 md:py-12">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8 divide-x-0 md:divide-x md:divide-dashed md:divide-gray-200">
+      <section id="stats-section" className="bg-white py-6 sm:py-8 md:py-12">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6 lg:gap-8 divide-x-0 md:divide-x md:divide-dashed md:divide-gray-200">
             {[
               { icon: Users, value: '3200+', label: 'Happy Users' },
               { icon: Clock, value: '17k+', label: 'Hours Saved' },
               { icon: Package, value: '500k+', label: 'Product Movements' },
             ].map((s, i) => (
-              <div key={i} className="flex flex-col items-center text-center md:px-6">
-                <s.icon className="h-6 w-6 sm:h-8 sm:w-8 text-gray-400 mb-2 sm:mb-3" />
-                <div className="text-xl sm:text-2xl md:text-3xl lg:text-5xl font-extrabold tracking-tight text-blue-700">{s.value}</div>
-                <div className="mt-1 sm:mt-2 text-xs sm:text-sm md:text-base text-gray-700 font-medium text-center leading-tight">{s.label}</div>
+              <div key={i} className="flex flex-col items-center text-center md:px-4 lg:px-6">
+                <s.icon className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8 text-gray-400 mb-1 sm:mb-2 md:mb-3" />
+                <div className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-5xl font-extrabold tracking-tight text-blue-700">{s.value}</div>
+                <div className="mt-1 text-xs sm:text-sm md:text-base text-gray-700 font-medium text-center leading-tight">{s.label}</div>
               </div>
             ))}
           </div>
@@ -1167,17 +1190,17 @@ export const HomePage = () => {
       </section>
 
       {/* MODULES SECTIE - Nieuwe features */}
-      <section id="modules-section" className="py-16 md:py-24 bg-gradient-to-br from-gray-50 to-blue-50">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-16">
+      <section id="modules-section" className="py-12 sm:py-16 md:py-24 bg-gradient-to-br from-gray-50 to-blue-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-12 sm:mb-16">
             <FadeInWhenVisible>
-              <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-medium mb-6">
-                <Sparkles className="h-4 w-4" />
+              <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-800 px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6">
+                <Sparkles className="h-3 w-3 sm:h-4 sm:w-4" />
                 <span>Modules</span>
               </div>
             </FadeInWhenVisible>
             <FadeInWhenVisible>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 px-4">
                 <span className="block text-gray-900">Modules</span>
                 <span className="block bg-gradient-to-r from-blue-500 to-blue-900 bg-clip-text text-transparent">
                   For Every Business Need
@@ -1185,14 +1208,14 @@ export const HomePage = () => {
               </h2>
             </FadeInWhenVisible>
             <FadeInWhenVisible>
-              <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-4">
                 Comprehensive inventory management modules designed to streamline your business operations and boost productivity.
               </p>
             </FadeInWhenVisible>
           </div>
 
           {/* Subscription Features Grid */}
-          <div className="grid md:grid-cols-3 gap-8 mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-12 sm:mb-16">
             {subscriptionFeatures.map((feature, index) => (
               <FadeInWhenVisible key={index}>
                 <div className={`relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-2 ${feature.tier === 'groei' ? 'border-blue-500 ring-4 ring-blue-100' : 'border-gray-100'}`}>
@@ -1201,33 +1224,33 @@ export const HomePage = () => {
                     </div>
                   )}
                   
-                  <div className="p-8">
-                    <div className="flex items-center justify-between mb-6">
-                      <div className="p-3 bg-gray-50 rounded-xl">
+                  <div className="p-4 sm:p-6 lg:p-8">
+                    <div className="flex items-center justify-between mb-4 sm:mb-6">
+                      <div className="p-2 sm:p-3 bg-gray-50 rounded-xl">
                         {feature.icon}
                       </div>
                       <div className="text-right">
                       </div>
                     </div>
 
-                    <h3 className="text-xl font-bold text-gray-900 mb-3">{feature.title}</h3>
-                    <p className="text-gray-600 mb-6 leading-relaxed">{feature.description}</p>
+                    <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 sm:mb-3">{feature.title}</h3>
+                    <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6 leading-relaxed">{feature.description}</p>
                     
                     {/* Internal link to features section */}
-                    <div className="mb-4">
+                    <div className="mb-3 sm:mb-4">
                       <button 
                         onClick={() => scrollToSection('features-section')} 
-                        className="text-blue-600 hover:text-blue-800 text-sm underline cursor-pointer"
+                        className="text-blue-600 hover:text-blue-800 text-xs sm:text-sm underline cursor-pointer"
                       >
                         Learn More About Features
                       </button>
                     </div>
 
-                    <div className="space-y-3 mb-8">
+                    <div className="space-y-2 sm:space-y-3 mb-6 sm:mb-8">
                       {feature.features.map((featureItem, featureIndex) => (
-                        <div key={featureIndex} className="flex items-center gap-3">
-                          <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
-                          <span className="text-gray-700">{featureItem}</span>
+                        <div key={featureIndex} className="flex items-center gap-2 sm:gap-3">
+                          <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-600 flex-shrink-0" />
+                          <span className="text-sm sm:text-base text-gray-700">{featureItem}</span>
                         </div>
                       ))}
                     </div>
@@ -1243,17 +1266,17 @@ export const HomePage = () => {
       </section>
 
       {/* PRICING SECTIE */}
-      <section id="pricing-section" className="py-16 md:py-24 bg-gradient-to-br from-gray-50 to-blue-50">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-16">
+      <section id="pricing-section" className="py-12 sm:py-16 md:py-24 bg-gradient-to-br from-gray-50 to-blue-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-12 sm:mb-16">
             <FadeInWhenVisible>
-              <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-medium mb-6">
-                <Euro className="h-4 w-4" />
+              <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-800 px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6">
+                <Euro className="h-3 w-3 sm:h-4 sm:w-4" />
                 <span>Transparent Pricing</span>
               </div>
             </FadeInWhenVisible>
             <FadeInWhenVisible>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 px-4">
                 <span className="block text-gray-900">Simple Pricing</span>
                 <span className="block bg-gradient-to-r from-blue-500 to-blue-900 bg-clip-text text-transparent">
                   For Every Business Size
@@ -1261,65 +1284,65 @@ export const HomePage = () => {
               </h2>
             </FadeInWhenVisible>
             <FadeInWhenVisible>
-              <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-4">
                 Choose the perfect plan for your business. Start free and upgrade as you grow.
               </p>
             </FadeInWhenVisible>
           </div>
 
           {/* Pricing Cards */}
-          <div className="grid md:grid-cols-3 gap-8 mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-12 sm:mb-16">
             {/* Basis Plan */}
             <FadeInWhenVisible>
-              <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-gray-200">
-                <div className="p-8">
-                  <div className="text-center mb-8">
-                    <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-100 rounded-full mb-4">
-                      <Package className="h-8 w-8 text-gray-600" />
+              <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-gray-200">
+                <div className="p-4 sm:p-6 lg:p-8">
+                  <div className="text-center mb-6 sm:mb-8">
+                    <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-gray-100 rounded-full mb-3 sm:mb-4">
+                      <Package className="h-6 w-6 sm:h-8 sm:w-8 text-gray-600" />
                     </div>
-                    <h3 className="text-2xl font-bold text-gray-900 mb-2">Basic</h3>
-                    <p className="text-gray-600 mb-6">Perfect for small businesses starting out</p>
-                    <div className="mb-6">
-                      <div className="text-4xl font-bold text-gray-900">€0</div>
-                      <div className="text-sm text-gray-500">per month</div>
+                    <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Basic</h3>
+                    <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6">Perfect for small businesses starting out</p>
+                    <div className="mb-4 sm:mb-6">
+                      <div className="text-3xl sm:text-4xl font-bold text-gray-900">€0</div>
+                      <div className="text-xs sm:text-sm text-gray-500">per month</div>
                     </div>
                   </div>
 
-                  <div className="space-y-4 mb-8">
-                    <div className="flex items-center justify-between text-sm">
+                  <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
+                    <div className="flex items-center justify-between text-xs sm:text-sm">
                       <span className="text-gray-600">Products</span>
                       <span className="font-medium">100</span>
                     </div>
-                    <div className="flex items-center justify-between text-sm">
+                    <div className="flex items-center justify-between text-xs sm:text-sm">
                       <span className="text-gray-600">Orders</span>
                       <span className="font-medium">50</span>
                     </div>
-                    <div className="flex items-center justify-between text-sm">
+                    <div className="flex items-center justify-between text-xs sm:text-sm">
                       <span className="text-gray-600">Users</span>
                       <span className="font-medium">2</span>
                     </div>
-                    <div className="flex items-center justify-between text-sm">
+                    <div className="flex items-center justify-between text-xs sm:text-sm">
                       <span className="text-gray-600">Branches</span>
                       <span className="font-medium">1</span>
                     </div>
                   </div>
 
-                  <ul className="space-y-3 mb-8">
+                  <ul className="space-y-2 sm:space-y-3 mb-6 sm:mb-8">
                     {[
                       'Up to 100 products',
                       'Basic inventory tracking',
                       'Email support',
                       'Mobile app access'
                     ].map((feature, index) => (
-                      <li key={index} className="flex items-center gap-3">
-                        <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
-                        <span className="text-gray-700">{feature}</span>
+                      <li key={index} className="flex items-center gap-2 sm:gap-3">
+                        <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-600 flex-shrink-0" />
+                        <span className="text-sm sm:text-base text-gray-700">{feature}</span>
                       </li>
                     ))}
                   </ul>
 
                   <Button 
-                    className="w-full bg-gray-900 hover:bg-gray-800"
+                    className="w-full bg-gray-900 hover:bg-gray-800 text-sm sm:text-base py-2 sm:py-3"
                     onClick={handleLoginClick}
                   >
                     Get Started Free
@@ -1330,62 +1353,62 @@ export const HomePage = () => {
 
             {/* Groei Plan */}
             <FadeInWhenVisible>
-              <div className="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-blue-500 ring-4 ring-blue-100 relative">
-                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                  <div className="bg-gradient-to-r from-blue-500 to-blue-900 text-white px-4 py-2 rounded-full text-sm font-semibold flex items-center gap-2">
-                    <Star className="h-4 w-4" />
+              <div className="bg-white rounded-xl sm:rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-blue-500 ring-2 sm:ring-4 ring-blue-100 relative">
+                <div className="absolute -top-3 sm:-top-4 left-1/2 transform -translate-x-1/2">
+                  <div className="bg-gradient-to-r from-blue-500 to-blue-900 text-white px-3 sm:px-4 py-1 sm:py-2 rounded-full text-xs sm:text-sm font-semibold flex items-center gap-1 sm:gap-2">
+                    <Star className="h-3 w-3 sm:h-4 sm:w-4" />
                     Most Popular
                   </div>
                 </div>
                 
-                <div className="p-8">
-                  <div className="text-center mb-8">
-                    <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
-                      <Zap className="h-8 w-8 text-blue-600" />
+                <div className="p-4 sm:p-6 lg:p-8">
+                  <div className="text-center mb-6 sm:mb-8">
+                    <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-blue-100 rounded-full mb-3 sm:mb-4">
+                      <Zap className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600" />
                     </div>
-                    <h3 className="text-2xl font-bold text-gray-900 mb-2">Growth</h3>
-                    <p className="text-gray-600 mb-6">Ideal for growing businesses</p>
-                    <div className="mb-6">
-                      <div className="text-4xl font-bold text-gray-900">€29</div>
-                      <div className="text-sm text-gray-500">per month</div>
+                    <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Growth</h3>
+                    <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6">Ideal for growing businesses</p>
+                    <div className="mb-4 sm:mb-6">
+                      <div className="text-3xl sm:text-4xl font-bold text-gray-900">€29</div>
+                      <div className="text-xs sm:text-sm text-gray-500">per month</div>
                     </div>
                   </div>
 
-                  <div className="space-y-4 mb-8">
-                    <div className="flex items-center justify-between text-sm">
+                  <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
+                    <div className="flex items-center justify-between text-xs sm:text-sm">
                       <span className="text-gray-600">Products</span>
                       <span className="font-medium">1000</span>
                     </div>
-                    <div className="flex items-center justify-between text-sm">
+                    <div className="flex items-center justify-between text-xs sm:text-sm">
                       <span className="text-gray-600">Orders</span>
                       <span className="font-medium">500</span>
                     </div>
-                    <div className="flex items-center justify-between text-sm">
+                    <div className="flex items-center justify-between text-xs sm:text-sm">
                       <span className="text-gray-600">Users</span>
                       <span className="font-medium">10</span>
                     </div>
-                    <div className="flex items-center justify-between text-sm">
+                    <div className="flex items-center justify-between text-xs sm:text-sm">
                       <span className="text-gray-600">Branches</span>
                       <span className="font-medium">5</span>
                     </div>
                   </div>
 
-                  <ul className="space-y-3 mb-8">
+                  <ul className="space-y-2 sm:space-y-3 mb-6 sm:mb-8">
                     {[
                       'Up to 1000 products',
                       'Advanced analytics',
                       'Priority support',
                       'Custom reports'
                     ].map((feature, index) => (
-                      <li key={index} className="flex items-center gap-3">
-                        <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
-                        <span className="text-gray-700">{feature}</span>
+                      <li key={index} className="flex items-center gap-2 sm:gap-3">
+                        <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-600 flex-shrink-0" />
+                        <span className="text-sm sm:text-base text-gray-700">{feature}</span>
                       </li>
                     ))}
                   </ul>
 
                   <Button 
-                    className="w-full bg-blue-600 hover:bg-blue-700"
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-sm sm:text-base py-2 sm:py-3"
                     onClick={handlePricingClick}
                   >
                     Start 14 day free trial
@@ -1396,55 +1419,55 @@ export const HomePage = () => {
 
             {/* Premium Plan */}
             <FadeInWhenVisible>
-              <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-purple-200">
-                <div className="p-8">
-                  <div className="text-center mb-8">
-                    <div className="inline-flex items-center justify-center w-16 h-16 bg-purple-100 rounded-full mb-4">
-                      <Crown className="h-8 w-8 text-purple-600" />
+              <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-purple-200">
+                <div className="p-4 sm:p-6 lg:p-8">
+                  <div className="text-center mb-6 sm:mb-8">
+                    <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-purple-100 rounded-full mb-3 sm:mb-4">
+                      <Crown className="h-6 w-6 sm:h-8 sm:w-8 text-purple-600" />
                     </div>
-                    <h3 className="text-2xl font-bold text-gray-900 mb-2">Premium</h3>
-                    <p className="text-gray-600 mb-6">For large enterprises</p>
-                    <div className="mb-6">
-                      <div className="text-4xl font-bold text-gray-900">€99</div>
-                      <div className="text-sm text-gray-500">per month</div>
+                    <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Premium</h3>
+                    <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6">For large enterprises</p>
+                    <div className="mb-4 sm:mb-6">
+                      <div className="text-3xl sm:text-4xl font-bold text-gray-900">€99</div>
+                      <div className="text-xs sm:text-sm text-gray-500">per month</div>
                     </div>
                   </div>
 
-                  <div className="space-y-4 mb-8">
-                    <div className="flex items-center justify-between text-sm">
+                  <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
+                    <div className="flex items-center justify-between text-xs sm:text-sm">
                       <span className="text-gray-600">Products</span>
                       <span className="font-medium text-green-600">Unlimited</span>
                     </div>
-                    <div className="flex items-center justify-between text-sm">
+                    <div className="flex items-center justify-between text-xs sm:text-sm">
                       <span className="text-gray-600">Orders</span>
                       <span className="font-medium text-green-600">Unlimited</span>
                     </div>
-                    <div className="flex items-center justify-between text-sm">
+                    <div className="flex items-center justify-between text-xs sm:text-sm">
                       <span className="text-gray-600">Users</span>
                       <span className="font-medium text-green-600">Unlimited</span>
                     </div>
-                    <div className="flex items-center justify-between text-sm">
+                    <div className="flex items-center justify-between text-xs sm:text-sm">
                       <span className="text-gray-600">Branches</span>
                       <span className="font-medium text-green-600">Unlimited</span>
                     </div>
                   </div>
 
-                  <ul className="space-y-3 mb-8">
+                  <ul className="space-y-2 sm:space-y-3 mb-6 sm:mb-8">
                     {[
                       'Unlimited products',
                       'Dedicated support',
                       'Custom integrations',
                       'Advanced security'
                     ].map((feature, index) => (
-                      <li key={index} className="flex items-center gap-3">
-                        <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
-                        <span className="text-gray-700">{feature}</span>
+                      <li key={index} className="flex items-center gap-2 sm:gap-3">
+                        <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-600 flex-shrink-0" />
+                        <span className="text-sm sm:text-base text-gray-700">{feature}</span>
                       </li>
                     ))}
                   </ul>
 
                   <Button 
-                    className="w-full bg-purple-600 hover:bg-purple-700"
+                    className="w-full bg-purple-600 hover:bg-purple-700 text-sm sm:text-base py-2 sm:py-3"
                     onClick={handlePricingClick}
                   >
                     Start 14 day free trial
@@ -1456,25 +1479,25 @@ export const HomePage = () => {
 
           {/* Trial Info */}
           <FadeInWhenVisible>
-            <div className="text-center bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
+            <div className="text-center bg-white rounded-xl sm:rounded-2xl shadow-lg p-4 sm:p-6 lg:p-8 border border-gray-100">
               <div className="max-w-4xl mx-auto">
-                <div className="flex items-center justify-center mb-4">
-                  <Clock className="h-8 w-8 text-blue-600 mr-3" />
-                  <h3 className="text-2xl font-bold text-gray-900">Free Trial</h3>
+                <div className="flex items-center justify-center mb-3 sm:mb-4">
+                  <Clock className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600 mr-2 sm:mr-3" />
+                  <h3 className="text-xl sm:text-2xl font-bold text-gray-900">Free Trial</h3>
                 </div>
-                <p className="text-gray-600 mb-6">
+                <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6 px-4">
                   Try all features free for 14 days. No credit card required.
                 </p>
-                <div className="grid md:grid-cols-3 gap-6 text-center">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 text-center">
                   {[
                     'Full access to all features',
                     'No credit card required',
                     'Cancel anytime',
                   ].map((benefit, index) => (
                     <div key={index} className="flex items-center justify-center">
-                      <CheckCircle className="h-5 w-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
+                      <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-500 mr-2 sm:mr-3 mt-0.5 flex-shrink-0" />
                       <div>
-                        <h4 className="font-semibold text-gray-900">{benefit}</h4>
+                        <h4 className="text-sm sm:text-base font-semibold text-gray-900">{benefit}</h4>
                       </div>
                     </div>
                   ))}
@@ -1489,17 +1512,17 @@ export const HomePage = () => {
 
 
       {/* FEATURES - Enhanced with animations */}
-      <section id="features-section" className="py-16 md:py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-16">
+      <section id="features-section" className="py-12 sm:py-16 md:py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-12 sm:mb-16">
             <FadeInWhenVisible>
-              <div className="inline-flex items-center gap-2 bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-medium mb-6">
-                <Award className="h-4 w-4" />
+              <div className="inline-flex items-center gap-2 bg-green-100 text-green-800 px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6">
+                <Award className="h-3 w-3 sm:h-4 sm:w-4" />
                 <span>Features</span>
               </div>
             </FadeInWhenVisible>
             <FadeInWhenVisible>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 px-4">
                 <span className="block text-gray-900">Features</span>
                 <span className="block bg-gradient-to-r from-blue-500 to-blue-900 bg-clip-text text-transparent">
                   Everything You Need
@@ -1507,7 +1530,7 @@ export const HomePage = () => {
               </h2>
             </FadeInWhenVisible>
             <FadeInWhenVisible>
-              <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-4">
                 Powerful inventory management features that help you stay organized, save time, and grow your business.
               </p>
             </FadeInWhenVisible>
@@ -1516,63 +1539,65 @@ export const HomePage = () => {
           {landingFeatures.map((feature, idx) => (
             <div
               key={feature.title}
-              className={`mb-16 md:mb-24 ${
+              className={`mb-12 sm:mb-16 md:mb-24 ${
                 feature.reverse ? 'md:flex-row-reverse' : 'md:flex-row'
               } flex flex-col items-center`}
             >
-              <div className="grid md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
+              <div className="grid md:grid-cols-2 gap-8 sm:gap-12 items-center max-w-6xl mx-auto">
                 {/* Content */}
                 <div className={`text-center md:text-left ${feature.reverse ? 'md:order-2' : 'md:order-1'}`}>
                   <FadeInWhenVisible>
-                    <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-100 rounded-2xl mb-6">
+                    <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-gray-100 rounded-xl sm:rounded-2xl mb-4 sm:mb-6">
                       {feature.icon}
                     </div>
                   </FadeInWhenVisible>
                   <FadeInWhenVisible>
-                    <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 text-gray-900">
+                    <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6 text-gray-900 px-4">
                       {feature.title}
                     </h3>
                   </FadeInWhenVisible>
                   <FadeInWhenVisible>
-                    <p className="text-lg text-gray-600 mb-8 leading-relaxed">
+                    <p className="text-base sm:text-lg text-gray-600 mb-6 sm:mb-8 leading-relaxed px-4">
                       {feature.desc}
                     </p>
                   </FadeInWhenVisible>
                   
                   {/* Feature list */}
                   <FadeInWhenVisible>
-                    <div className="space-y-4 mb-8">
+                    <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-8 px-4">
                       {feature.features.map((feat, featIdx) => (
-                        <div key={featIdx} className="flex items-center gap-3">
-                          <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                        <div key={featIdx} className="flex items-center gap-2 sm:gap-3">
+                          <div className="w-5 h-5 sm:w-6 sm:h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
                             <Check className="h-3 w-3 text-green-600" />
                           </div>
-                          <span className="text-gray-700 font-medium">{feat}</span>
+                          <span className="text-sm sm:text-base text-gray-700 font-medium">{feat}</span>
                         </div>
                       ))}
                     </div>
                   </FadeInWhenVisible>
 
                   <FadeInWhenVisible>
-                    <Button 
-                      className="bg-gradient-to-r from-blue-500 to-blue-900 text-white px-6 py-3 rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg"
-                      onClick={handleLoginClick}
-                    >
-                      <Rocket className="h-4 w-4 mr-2" />
-                      Try Now Free
-                    </Button>
+                    <div className="px-4">
+                      <Button 
+                        className="bg-gradient-to-r from-blue-500 to-blue-900 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg text-sm sm:text-base w-full sm:w-auto"
+                        onClick={handleLoginClick}
+                      >
+                        <Rocket className="h-3 w-3 sm:h-4 sm:w-4 mr-2" />
+                        Try Now Free
+                      </Button>
+                    </div>
                   </FadeInWhenVisible>
                 </div>
 
                 {/* Image */}
-                <div className={`${feature.reverse ? 'md:order-1' : 'md:order-2'}`}>
+                <div className={`${feature.reverse ? 'md:order-1' : 'md:order-2'} px-4`}>
                   <FadeInWhenVisible>
                     <div className="relative">
-                      <div className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-2xl p-8 shadow-lg border border-gray-100">
+                      <div className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 shadow-lg border border-gray-100">
                         <img
                           src={feature.img}
                           alt={`${feature.title} - Voorraadbeheer voor KMO's`}
-                          className="rounded-xl w-full h-64 sm:h-80 object-contain"
+                          className="rounded-lg sm:rounded-xl w-full h-48 sm:h-64 md:h-80 object-contain"
                           loading="lazy"
                           decoding="async"
                           onLoad={(e) => {
@@ -1585,11 +1610,11 @@ export const HomePage = () => {
                       </div>
                       
                       {/* Floating elements */}
-                      <div className="absolute -top-4 -right-4 w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center animate-bounce">
-                        <TrendingUp className="h-6 w-6 text-white" />
+                      <div className="absolute -top-2 -right-2 sm:-top-4 sm:-right-4 w-8 h-8 sm:w-12 sm:h-12 bg-blue-500 rounded-full flex items-center justify-center animate-bounce">
+                        <TrendingUp className="h-4 w-4 sm:h-6 sm:w-6 text-white" />
                       </div>
-                      <div className="absolute -bottom-4 -left-4 w-12 h-12 bg-green-500 rounded-full flex items-center justify-center animate-pulse">
-                        <CheckCircle className="h-6 w-6 text-white" />
+                      <div className="absolute -bottom-2 -left-2 sm:-bottom-4 sm:-left-4 w-8 h-8 sm:w-12 sm:h-12 bg-green-500 rounded-full flex items-center justify-center animate-pulse">
+                        <CheckCircle className="h-4 w-4 sm:h-6 sm:w-6 text-white" />
                       </div>
                     </div>
                   </FadeInWhenVisible>
@@ -1601,17 +1626,17 @@ export const HomePage = () => {
       </section>
 
       {/* VIDEO SECTION - Enhanced with better presentation */}
-      <section id="video-section" className="py-16 md:py-24 bg-gradient-to-br from-gray-50 to-blue-50">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="text-center mb-12">
+      <section id="video-section" className="py-12 sm:py-16 md:py-24 bg-gradient-to-br from-gray-50 to-blue-50">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-8 sm:mb-12">
             <FadeInWhenVisible>
-              <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-medium mb-6">
-                <Play className="h-4 w-4" />
+              <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-800 px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6">
+                <Play className="h-3 w-3 sm:h-4 sm:w-4" />
                 <span>Demo</span>
               </div>
             </FadeInWhenVisible>
             <FadeInWhenVisible>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 px-4">
                 <span className="block text-gray-900">See It In Action</span>
                 <span className="block bg-gradient-to-r from-blue-500 to-blue-900 bg-clip-text text-transparent">
                   Watch Our Demo
@@ -1619,15 +1644,15 @@ export const HomePage = () => {
               </h2>
             </FadeInWhenVisible>
             <FadeInWhenVisible>
-              <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-4">
                 Discover how easy it is to manage your inventory with our intuitive platform. Watch our demo and see the difference.
               </p>
             </FadeInWhenVisible>
           </div>
 
           <FadeInWhenVisible>
-            <div className="relative max-w-4xl mx-auto">
-              <div className="bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-100">
+            <div className="relative max-w-4xl mx-auto px-4">
+              <div className="bg-white rounded-xl sm:rounded-2xl shadow-2xl overflow-hidden border border-gray-100">
                 <div className="aspect-video bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center">
                   <video 
                     controls 
@@ -1643,7 +1668,7 @@ export const HomePage = () => {
               </div>
               
               {/* Video benefits */}
-              <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="mt-6 sm:mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
                 {(() => {
                   try {
                     const benefits = [
@@ -1733,17 +1758,17 @@ export const HomePage = () => {
  
 
       {/* TESTIMONIALS - Enhanced with metrics */}
-      <section id="testimonials-section" className="py-16 md:py-24 bg-gradient-to-br from-blue-50 to-purple-50">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-16">
+      <section id="testimonials-section" className="py-12 sm:py-16 md:py-24 bg-gradient-to-br from-blue-50 to-purple-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-12 sm:mb-16">
             <FadeInWhenVisible>
-              <div className="inline-flex items-center gap-2 bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full text-sm font-medium mb-6">
-                <Star className="h-4 w-4" />
+              <div className="inline-flex items-center gap-2 bg-yellow-100 text-yellow-800 px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6">
+                <Star className="h-3 w-3 sm:h-4 sm:w-4" />
                 <span> Testimonials</span>
               </div>
             </FadeInWhenVisible>
             <FadeInWhenVisible>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 px-4">
                 <span className="block text-gray-900">Users Tell About Their Success </span>
                 <span className="block bg-gradient-to-r from-blue-500 to-blue-900 bg-clip-text text-transparent">
                 What our customers say
@@ -1751,7 +1776,7 @@ export const HomePage = () => {
               </h2>
             </FadeInWhenVisible>
             <FadeInWhenVisible>
-              <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-4">
               Discover how businesses have transformed their inventory management and save thousands of euros.
 
 
@@ -1760,12 +1785,12 @@ export const HomePage = () => {
           </div>
           
           {/* Desktop Grid */}
-          <div className="hidden md:grid md:grid-cols-3 gap-8 mb-16">
+          <div className="hidden md:grid md:grid-cols-3 gap-6 sm:gap-8 mb-12 sm:mb-16">
             {testimonials.map((t, index) => (
               <FadeInWhenVisible key={t.name}>
-                <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 overflow-hidden">
+                <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 overflow-hidden">
                   {/* Header with avatar and rating */}
-                  <div className="p-6 border-b border-gray-100">
+                  <div className="p-4 sm:p-6 border-b border-gray-100">
                     <div className="flex items-center gap-4 mb-4">
                       <img 
                         className="h-12 w-12 rounded-full object-cover border-2 border-blue-100" 
@@ -1878,32 +1903,32 @@ export const HomePage = () => {
 
 
       {/* CONTACT SECTIE */}
-      <section id="contact-section" className="bg-gray-50 py-12 md:py-20">
-        <div className="max-w-4xl mx-auto px-4">
-          <div className="text-center mb-8 md:mb-12">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 px-4">Questions? Contact us</h2>
+      <section id="contact-section" className="bg-gray-50 py-8 sm:py-12 md:py-20">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-6 sm:mb-8 md:mb-12">
+            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-2 px-4">Questions? Contact us</h2>
             <p className="text-sm sm:text-base md:text-lg text-gray-600 px-4">We usually respond within 1 hour.</p>
           </div>
-          <form onSubmit={handleSubmit(onSubmitContact)} className="bg-white rounded-lg shadow-md p-6 space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <form onSubmit={handleSubmit(onSubmitContact)} className="bg-white rounded-lg shadow-md p-4 sm:p-6 space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
-                <Input {...register('name', { required: true, minLength: 2 })} placeholder="Your name" />
+                <Input {...register('name', { required: true, minLength: 2 })} placeholder="Your name" className="text-sm sm:text-base" />
                 {errors.name && <p className="text-xs text-red-600 mt-1">Name is required</p>}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                  <Input type="email" {...register('email', { required: true, pattern: /.+@.+\..+/ })} placeholder="your@email.com" />
+                  <Input type="email" {...register('email', { required: true, pattern: /.+@.+\..+/ })} placeholder="your@email.com" className="text-sm sm:text-base" />
                 {errors.email && <p className="text-xs text-red-600 mt-1">Email is required</p>}
               </div>
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Message</label>
-              <Textarea rows={5} {...register('message', { required: true, minLength: 10 })} placeholder="Write your message here..." />
+              <Textarea rows={4} {...register('message', { required: true, minLength: 10 })} placeholder="Write your message here..." className="text-sm sm:text-base" />
               {errors.message && <p className="text-xs text-red-600 mt-1">Message is required</p>}
             </div>
             <div className="flex justify-end">
-              <Button type="submit" disabled={isSubmitting} className="bg-blue-600 text-white hover:bg-blue-700">
+              <Button type="submit" disabled={isSubmitting} className="bg-blue-600 text-white hover:bg-blue-700 text-sm sm:text-base py-2 sm:py-3 px-4 sm:px-6">
                 {isSubmitting ? 'Sending...' : 'Send'}
               </Button>
             </div>
@@ -1912,7 +1937,7 @@ export const HomePage = () => {
       </section>
 
       {/* FINAL CTA - Enhanced for maximum conversion */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-blue-500 to-blue-900 py-16 md:py-24">
+      <section className="relative overflow-hidden bg-gradient-to-br from-blue-500 to-blue-900 py-12 sm:py-16 md:py-24">
         {/* Animated background elements */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -top-40 -right-40 w-80 h-80 bg-white/10 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse"></div>
@@ -1920,16 +1945,16 @@ export const HomePage = () => {
           <div className="absolute top-40 left-1/2 w-80 h-80 bg-white/10 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse" style={{animationDelay: '4s'}}></div>
         </div>
         
-        <div className="relative z-10 max-w-6xl mx-auto text-center px-4">
+        <div className="relative z-10 max-w-6xl mx-auto text-center px-4 sm:px-6">
           <FadeInWhenVisible>
-            <div className="inline-flex items-center gap-2 bg-white/20 text-white px-4 py-2 rounded-full text-sm font-medium mb-8">
-              <Rocket className="h-4 w-4" />
+            <div className="inline-flex items-center gap-2 bg-white/20 text-white px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium mb-6 sm:mb-8">
+              <Rocket className="h-3 w-3 sm:h-4 sm:w-4" />
               <span>Start your free trial</span>
             </div>
           </FadeInWhenVisible>
 
           <FadeInWhenVisible>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-white leading-tight">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 sm:mb-6 text-white leading-tight px-4">
               <span className="block">Start your free trial</span>
               <span className="block bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent">
                 No credit card required
@@ -1938,14 +1963,14 @@ export const HomePage = () => {
           </FadeInWhenVisible>
 
           <FadeInWhenVisible>
-            <p className="text-lg sm:text-xl md:text-2xl mb-8 text-white/90 max-w-4xl mx-auto leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 sm:mb-8 text-white/90 max-w-4xl mx-auto leading-relaxed px-4">
               Start your free trial and see how StockFlow can help your business.
             </p>
           </FadeInWhenVisible>
 
           {/* Value proposition */}
           <FadeInWhenVisible>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-12 max-w-4xl mx-auto">
               {(() => {
                 try {
                   const benefits = [
@@ -1989,26 +2014,26 @@ export const HomePage = () => {
 
           {/* CTA Buttons */}
           <FadeInWhenVisible>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-6 sm:mb-8 px-4">
               <Button 
                 data-analytics-id="final-start" 
                 size="lg" 
-                className="bg-white text-blue-600 px-8 py-4 rounded-xl font-bold hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-2xl text-lg w-full sm:w-auto group relative overflow-hidden"
+                className="bg-white text-blue-600 px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-2xl text-sm sm:text-lg w-full sm:w-auto group relative overflow-hidden"
                 onClick={handleLoginClick}
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-100/30 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
-                  <Rocket className="h-5 w-5 mr-2 group-hover:animate-bounce" />
+                  <Rocket className="h-4 w-4 sm:h-5 sm:w-5 mr-2 group-hover:animate-bounce" />
                     Start your free trial
-                  <ArrowRight className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
               <Button 
                 data-analytics-id="final-demo" 
                 size="lg" 
                 variant="outline" 
-                className="border-2 bg-gradient-to-r from-blue-500 to-blue-900 border-white text-white px-8 py-4 rounded-xl font-bold hover:bg-white hover:text-blue-600 transition-all duration-300 text-lg w-full sm:w-auto group"
+                className="border-2 bg-gradient-to-r from-blue-500 to-blue-900 border-white text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold hover:bg-white hover:text-blue-600 transition-all duration-300 text-sm sm:text-lg w-full sm:w-auto group"
                 onClick={handleHowItWorksClick}
               >
-                <Play className="h-5 w-5 mr-2" />
+                <Play className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
                 Demo
               </Button>
             </div>
@@ -2016,7 +2041,7 @@ export const HomePage = () => {
 
           {/* Trust indicators */}
           <FadeInWhenVisible>
-            <div className="flex flex-wrap justify-center gap-6 text-sm text-white/80 mb-8">
+            <div className="flex flex-wrap justify-center gap-3 sm:gap-6 text-xs sm:text-sm text-white/80 mb-6 sm:mb-8 px-4">
               {(() => {
                 try {
                   const trust = [
@@ -2027,11 +2052,11 @@ export const HomePage = () => {
                   ];
                   if (Array.isArray(trust)) {
                     return trust.map((trustItem, index) => (
-                      <div key={index} className="flex items-center gap-2">
-                        {index === 0 ? <CheckCircle className="h-4 w-4" /> : 
-                         index === 1 ? <Clock className="h-4 w-4" /> :
-                         index === 2 ? <Shield className="h-4 w-4" /> :
-                         <Globe className="h-4 w-4" />}
+                      <div key={index} className="flex items-center gap-1 sm:gap-2">
+                        {index === 0 ? <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4" /> : 
+                         index === 1 ? <Clock className="h-3 w-3 sm:h-4 sm:w-4" /> :
+                         index === 2 ? <Shield className="h-3 w-3 sm:h-4 sm:w-4" /> :
+                         <Globe className="h-3 w-3 sm:h-4 sm:w-4" />}
                         <span>{trustItem}</span>
                       </div>
                     ));
@@ -2046,11 +2071,11 @@ export const HomePage = () => {
                   "GDPR-compliant",
                   "100% secure"
                 ].map((trustItem, index) => (
-                  <div key={index} className="flex items-center gap-2">
-                    {index === 0 ? <CheckCircle className="h-4 w-4" /> : 
-                     index === 1 ? <Clock className="h-4 w-4" /> :
-                     index === 2 ? <Shield className="h-4 w-4" /> :
-                     <Globe className="h-4 w-4" />}
+                  <div key={index} className="flex items-center gap-1 sm:gap-2">
+                    {index === 0 ? <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4" /> : 
+                     index === 1 ? <Clock className="h-3 w-3 sm:h-4 sm:w-4" /> :
+                     index === 2 ? <Shield className="h-3 w-3 sm:h-4 sm:w-4" /> :
+                     <Globe className="h-3 w-3 sm:h-4 sm:w-4" />}
                     <span>{trustItem}</span>
                   </div>
                 ));
@@ -2060,12 +2085,12 @@ export const HomePage = () => {
 
           {/* Urgency element */}
           <FadeInWhenVisible>
-            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 max-w-2xl mx-auto border border-white/20">
-              <div className="flex items-center justify-center gap-3 mb-3">
-                <Timer className="h-5 w-5 text-yellow-300" />
-                <span className="text-yellow-300 font-semibold">Get started today and save hours every week with our inventory management system</span>
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 max-w-2xl mx-auto border border-white/20">
+              <div className="flex items-center justify-center gap-2 sm:gap-3 mb-2 sm:mb-3">
+                <Timer className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-300" />
+                <span className="text-yellow-300 font-semibold text-sm sm:text-base">Get started today and save hours every week with our inventory management system</span>
               </div>
-              <p className="text-white/90 text-sm">
+              <p className="text-white/90 text-xs sm:text-sm">
                 Get started today and save hours every week with our inventory management system
               </p>
             </div>
@@ -2073,7 +2098,7 @@ export const HomePage = () => {
 
           {/* Social Proof Numbers */}
           <FadeInWhenVisible>
-            <div className="mt-12 grid grid-cols-2 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
+            <div className="mt-8 sm:mt-12 grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 max-w-3xl mx-auto">
               {(() => {
                 try {
                   const stats = [
@@ -2084,8 +2109,8 @@ export const HomePage = () => {
                   if (Array.isArray(stats)) {
                     return stats.map((stat, index) => (
                       <div key={index} className="text-center">
-                        <div className="text-2xl md:text-3xl font-bold text-white mb-1">{stat.number}</div>
-                        <div className="text-sm text-white/70">{stat.label}</div>
+                        <div className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-white mb-1">{stat.number}</div>
+                        <div className="text-xs sm:text-sm text-white/70">{stat.label}</div>
                       </div>
                     ));
                   }
@@ -2099,8 +2124,8 @@ export const HomePage = () => {
                   { number: "4.8/5", label: "Customer satisfaction" }
                 ].map((stat, index) => (
                   <div key={index} className="text-center">
-                    <div className="text-2xl md:text-3xl font-bold text-white mb-1">{stat.number}</div>
-                    <div className="text-sm text-white/70">{stat.label}</div>
+                    <div className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-white mb-1">{stat.number}</div>
+                    <div className="text-xs sm:text-sm text-white/70">{stat.label}</div>
                   </div>
                 ));
               })()}

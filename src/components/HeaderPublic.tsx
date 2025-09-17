@@ -89,24 +89,22 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButton
                 )}
               </div>
 
-            {/* Mobile Menu Button - Only show on mobile when auth buttons are hidden */}
-            {hideAuthButtons && (
-              <div className="flex md:hidden items-center">
-                <button
-                  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                  className="p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
-                  aria-label="Menu"
-                >
-                  {mobileMenuOpen ? (
-                    <X className="h-6 w-6 text-gray-700" />
-                  ) : (
-                    <svg className="h-6 w-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
-                  )}
-                </button>
-              </div>
-            )}
+            {/* Mobile Menu Button - Always show on mobile */}
+            <div className="flex md:hidden items-center">
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+                aria-label="Menu"
+              >
+                {mobileMenuOpen ? (
+                  <X className="h-6 w-6 text-gray-700" />
+                ) : (
+                  <svg className="h-6 w-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                  </svg>
+                )}
+              </button>
+            </div>
           </div>
         </div>
       </header>
