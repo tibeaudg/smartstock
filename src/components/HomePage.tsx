@@ -1022,10 +1022,10 @@ export const HomePage = () => {
                   id="hero-cta-primary"
                   data-analytics-id="hero-start" 
                   size="lg" 
-                  className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl text-base sm:text-lg w-full group relative overflow-hidden"
+                  className="max-w-md justify-center mx-auto bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl text-base sm:text-lg w-full group relative overflow-hidden"
                   onClick={handleLoginClick}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+                  <div className=" absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
                   <Rocket className="h-4 w-4 sm:h-5 sm:w-5 mr-2 group-hover:animate-bounce" />
                   Get Started Free
                   <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 ml-2 group-hover:translate-x-1 transition-transform" />
@@ -1035,7 +1035,7 @@ export const HomePage = () => {
                   data-analytics-id="hero-how-it-works" 
                   size="lg" 
                   variant="outline" 
-                  className="border-2 border-blue-600 text-blue-600 px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold hover:bg-blue-50 transition-all duration-300 text-base sm:text-lg w-full group"
+                  className="max-w-md justify-center mx-auto border-2 border-blue-600 text-blue-600 px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold hover:bg-blue-50 transition-all duration-300 text-base sm:text-lg w-full group"
                   onClick={handleHowItWorksClick}
                 >
                   <Play className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
