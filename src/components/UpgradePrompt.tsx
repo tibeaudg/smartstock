@@ -153,10 +153,10 @@ export const UpgradePrompt: React.FC<UpgradePromptProps> = ({
             <div>
               <div className="text-2xl font-bold text-gray-900">
                 €{upgradeTier.price_monthly.toFixed(2)}
-                <span className="text-sm font-normal text-gray-500">/maand</span>
+                <span className="text-sm font-normal text-gray-500">/month</span>
               </div>
               <div className="text-sm text-gray-500">
-                of €{upgradeTier.price_yearly.toFixed(2)}/jaar (bespaar {upgradeTier.yearly_discount_percentage}%)
+                or €{upgradeTier.price_yearly.toFixed(2)}/year (save {upgradeTier.yearly_discount_percentage}%)
               </div>
             </div>
             <Button 
@@ -176,7 +176,7 @@ export const UpgradePrompt: React.FC<UpgradePromptProps> = ({
           <div className="bg-white rounded-lg p-3 border">
             <div className="flex items-center text-sm text-gray-600">
               <Star className="h-4 w-4 text-yellow-500 mr-2" />
-              <span>14-dagen gratis trial • Geen creditcard vereist</span>
+              <span>14-day free trial • No credit card required</span>
             </div>
           </div>
         </div>
@@ -354,10 +354,10 @@ export const TierUpgradeCard: React.FC<{
             <div>
               <div className="text-2xl font-bold text-gray-900">
                 €{tier.price_monthly.toFixed(2)}
-                <span className="text-sm font-normal text-gray-500">/maand</span>
+                <span className="text-sm font-normal text-gray-500">/month</span>
               </div>
               <div className="text-sm text-gray-500">
-                of €{tier.price_yearly.toFixed(2)}/jaar (bespaar {tier.yearly_discount_percentage}%)
+                or €{tier.price_yearly.toFixed(2)}/year (save {tier.yearly_discount_percentage}%)
               </div>
             </div>
             <Button 
@@ -377,7 +377,7 @@ export const TierUpgradeCard: React.FC<{
           <div className="bg-white rounded-lg p-3 border">
             <div className="flex items-center text-sm text-gray-600">
               <Star className="h-4 w-4 text-yellow-500 mr-2" />
-              <span>14-dagen gratis trial • Geen creditcard vereist</span>
+              <span>14-day free trial • No credit card required</span>
             </div>
           </div>
         </div>
