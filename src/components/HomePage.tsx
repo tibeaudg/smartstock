@@ -8,7 +8,8 @@ import { Badge } from '@/components/ui/badge';
 import { 
   Package, BarChart3, Users, Shield, Check, TrendingUp, Zap, Star, Clock, Euro, Target, 
   ChevronLeft, ChevronRight, Scan, Truck, ArrowRight, Play, Award, Globe, Smartphone, 
-  CheckCircle, MessageCircle, Rocket, Crown, Sparkles, Timer, Facebook, Twitter, Linkedin, Instagram
+  CheckCircle, MessageCircle, Rocket, Crown, Sparkles, Timer, Facebook, Twitter, Linkedin, Instagram,
+  Repeat
 } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
 import SEO from './SEO';
@@ -21,7 +22,6 @@ import { useForm } from 'react-hook-form';
 import { FloatingChatButton } from './FloatingChatButton';
 import { useWebsiteTracking } from '@/hooks/useWebsiteTracking';
 import SocialShare from './SocialShare';
-import { useTranslation } from 'react-i18next';
 
 // A reusable component for fade-in animations when scrolling
 const FadeInWhenVisible = ({ children }) => {
@@ -98,7 +98,7 @@ const FloatingChat: React.FC = () => {
 };
 
 // Carousel component for mobile display (with ARIA and swipe)
-const MobileCarousel = ({ items, renderItem, t }) => {
+const MobileCarousel = ({ items, renderItem }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const touchStartX = useRef<number | null>(null);
   const touchEndX = useRef<number | null>(null);
@@ -198,7 +198,6 @@ const MobileCarousel = ({ items, renderItem, t }) => {
 
 export const HomePage = () => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
   
   // Use the page refresh hook
   usePageRefresh();
@@ -458,7 +457,7 @@ export const HomePage = () => {
         "Supplier management",
         "Delivery scheduling"
       ],
-      tier: "growth",
+      tier: "premium",
       image: "/placeholder.svg"
     }
   ];
@@ -1508,8 +1507,172 @@ export const HomePage = () => {
         </div>
       </section>
 
+      {/* TIER-SPECIFIC FEATURES SECTIE */}
+      <section className="py-12 sm:py-16 md:py-24 bg-gradient-to-br from-blue-50 to-indigo-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-12 sm:mb-16">
+            <FadeInWhenVisible>
+              <div className="inline-flex items-center gap-2 bg-indigo-100 text-indigo-800 px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6">
+                <Zap className="h-3 w-3 sm:h-4 sm:w-4" />
+                <span>Premium Features</span>
+              </div>
+            </FadeInWhenVisible>
+            <FadeInWhenVisible>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 px-4">
+                <span className="block text-gray-900">Unlock Advanced Features</span>
+                <span className="block bg-gradient-to-r from-indigo-500 to-purple-600 bg-clip-text text-transparent">
+                  With Growth & Premium Plans
+                </span>
+              </h2>
+            </FadeInWhenVisible>
+            <FadeInWhenVisible>
+              <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-4">
+                Upgrade your plan to access powerful features that will transform your inventory management.
+              </p>
+            </FadeInWhenVisible>
+          </div>
 
+          {/* Feature Comparison */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 mb-12 sm:mb-16">
+            {/* Growth Plan Features */}
+            <FadeInWhenVisible>
+              <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-blue-200">
+                <div className="p-6 sm:p-8">
+                  <div className="flex items-center mb-6">
+                    <div className="p-3 bg-blue-100 rounded-xl mr-4">
+                      <Zap className="h-8 w-8 text-blue-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-bold text-gray-900">Growth Plan</h3>
+                      <p className="text-gray-600">€29.99/month</p>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-4 mb-6">
+                    <div className="flex items-center gap-3">
+                      <Scan className="h-5 w-5 text-green-600" />
+                      <div>
+                        <h4 className="font-semibold text-gray-900">Barcode Scanner</h4>
+                        <p className="text-sm text-gray-600">Scan products directly with your smartphone</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <BarChart3 className="h-5 w-5 text-green-600" />
+                      <div>
+                        <h4 className="font-semibold text-gray-900">Advanced Analytics</h4>
+                        <p className="text-sm text-gray-600">AI-driven insights and predictions</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <Users className="h-5 w-5 text-green-600" />
+                      <div>
+                        <h4 className="font-semibold text-gray-900">Team Collaboration</h4>
+                        <p className="text-sm text-gray-600">Up to 10 users and 5 branches</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-blue-50 rounded-lg p-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Star className="h-4 w-4 text-blue-600" />
+                      <span className="font-semibold text-blue-900">Most Popular</span>
+                    </div>
+                    <p className="text-sm text-blue-700">Perfect for growing businesses</p>
+                  </div>
+                </div>
+              </div>
+            </FadeInWhenVisible>
 
+            {/* Premium Plan Features */}
+            <FadeInWhenVisible>
+              <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-purple-200">
+                <div className="p-6 sm:p-8">
+                  <div className="flex items-center mb-6">
+                    <div className="p-3 bg-purple-100 rounded-xl mr-4">
+                      <Crown className="h-8 w-8 text-purple-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-bold text-gray-900">Premium Plan</h3>
+                      <p className="text-gray-600">€79.99/month</p>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-4 mb-6">
+                    <div className="flex items-center gap-3">
+                      <Truck className="h-5 w-5 text-green-600" />
+                      <div>
+                        <h4 className="font-semibold text-gray-900">Delivery Management</h4>
+                        <p className="text-sm text-gray-600">Complete delivery notes management system</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <Scan className="h-5 w-5 text-green-600" />
+                      <div>
+                        <h4 className="font-semibold text-gray-900">Barcode Scanner</h4>
+                        <p className="text-sm text-gray-600">All Growth features included</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <Repeat className="h-5 w-5 text-green-600" />
+                      <div>
+                        <h4 className="font-semibold text-gray-900">Unlimited Everything</h4>
+                        <p className="text-sm text-gray-600">Products, users, branches, and orders</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-purple-50 rounded-lg p-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Crown className="h-4 w-4 text-purple-600" />
+                      <span className="font-semibold text-purple-900">Enterprise Ready</span>
+                    </div>
+                    <p className="text-sm text-purple-700">For large companies that need everything</p>
+                  </div>
+                </div>
+              </div>
+            </FadeInWhenVisible>
+          </div>
+
+          {/* Feature Highlights */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+            <FadeInWhenVisible>
+              <div className="bg-white rounded-xl shadow-lg p-6 sm:p-8 border border-gray-100">
+                <div className="flex items-center mb-4">
+                  <div className="p-2 bg-green-100 rounded-lg mr-3">
+                    <Scan className="h-6 w-6 text-green-600" />
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900">Barcode Scanner</h3>
+                </div>
+                <p className="text-gray-600 mb-4">
+                  Available in Growth and Premium plans. Scan products directly with your smartphone for instant inventory updates.
+                </p>
+                <div className="flex items-center gap-2 text-sm text-blue-600">
+                  <span className="font-semibold">Growth Plan</span>
+                  <span>•</span>
+                  <span>Premium Plan</span>
+                </div>
+              </div>
+            </FadeInWhenVisible>
+
+            <FadeInWhenVisible>
+              <div className="bg-white rounded-xl shadow-lg p-6 sm:p-8 border border-gray-100">
+                <div className="flex items-center mb-4">
+                  <div className="p-2 bg-purple-100 rounded-lg mr-3">
+                    <Truck className="h-6 w-6 text-purple-600" />
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900">Delivery Management</h3>
+                </div>
+                <p className="text-gray-600 mb-4">
+                  Available only in Premium plan. Complete delivery notes management with supplier integration and automated stock updates.
+                </p>
+                <div className="flex items-center gap-2 text-sm text-purple-600">
+                  <span className="font-semibold">Premium Plan Only</span>
+                </div>
+              </div>
+            </FadeInWhenVisible>
+          </div>
+        </div>
+      </section>
 
       {/* FEATURES - Enhanced with animations */}
       <section id="features-section" className="py-12 sm:py-16 md:py-24 bg-white">
@@ -1732,12 +1895,12 @@ export const HomePage = () => {
 
       {/* EXIT-INTENT POPUP */}
       {showExitIntent && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" role="dialog" aria-modal="true" aria-label={t('alerts.exitIntent.title')}>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" role="dialog" aria-modal="true" aria-label="Wait a moment!">
           <div className="bg-white rounded-lg shadow-2xl max-w-md w-full p-6 mx-4">
-            <h3 className="text-xl font-bold mb-2">{t('alerts.exitIntent.title')}</h3>
-            <p className="text-gray-600 mb-4">{t('alerts.exitIntent.description')}</p>
+            <h3 className="text-xl font-bold mb-2">Wait a moment!</h3>
+            <p className="text-gray-600 mb-4">Before you leave, would you like to try us for free? Start today with inventory management!</p>
             <div className="flex gap-2">
-              <Button className="bg-blue-600 text-white hover:bg-blue-700 flex-1" onClick={() => { setShowExitIntent(false); handleLoginClick(); }}>{t('alerts.exitIntent.start')}</Button>
+              <Button className="bg-blue-600 text-white hover:bg-blue-700 flex-1" onClick={() => { setShowExitIntent(false); handleLoginClick(); }}>Start Now</Button>
               <Button variant="outline" className="flex-1" onClick={() => {
                 // Track exit intent decline
                 logger.info('Exit intent declined', { 
@@ -1746,7 +1909,7 @@ export const HomePage = () => {
                   action: 'declined'
                 });
                 setShowExitIntent(false);
-              }}>{t('alerts.exitIntent.decline')}</Button>
+              }}>No Thanks</Button>
             </div>
           </div>
         </div>
@@ -1851,7 +2014,6 @@ export const HomePage = () => {
           <div className="md:hidden mb-16">
             <MobileCarousel 
               items={testimonials}
-              t={t}
               renderItem={(testimonial) => (
                 <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
                   <div className="p-6">
@@ -1885,11 +2047,11 @@ export const HomePage = () => {
                     <div className="grid grid-cols-2 gap-4 pt-4 border-t border-gray-100">
                       <div className="text-center">
                         <div className="text-lg font-bold text-green-600">{testimonial.savings}</div>
-                        <div className="text-xs text-gray-500">{t('testimonials.savingsLabel')}</div>
+                        <div className="text-xs text-gray-500">Saved per month</div>
                       </div>
                       <div className="text-center">
                         <div className="text-lg font-bold text-blue-600">{testimonial.timeSaved}</div>
-                        <div className="text-xs text-gray-500">{t('testimonials.timeSavedLabel')}</div>
+                        <div className="text-xs text-gray-500">Hours saved per week</div>
                       </div>
                     </div>
                   </div>

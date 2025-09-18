@@ -47,6 +47,7 @@ import MobielVoorraadbeheer from './pages/SEO/mobiel-voorraadbeheer';
 import GratisStockbeheer from './pages/SEO/gratis-stockbeheer';
 import Voorraadbeheer from './pages/SEO/voorraadbeheer';
 import ScanPage from './pages/scan';
+import SubscriptionTestPage from './pages/subscription-test';
 import React, { useState } from 'react';
 import VoorraadbeheerSoftware from "./pages/SEO/voorraadbeheer-software";
 import Stockbeheer from "./pages/SEO/stockbeheer";
@@ -336,6 +337,7 @@ export default function App() {
                   >
                     <Route index element={<Dashboard userRole="staff" />} />
                     <Route path="scan" element={<ScanPage />} />
+                    <Route path="subscription-test" element={<SubscriptionTestPage />} />
                     <Route path="stock" element={<StockList />} />
                     <Route path="categories" element={<CategoriesPage />} />
                     <Route path="suppliers" element={<SuppliersPage />} />
