@@ -1046,7 +1046,7 @@ export const HomePage = () => {
 
             {/* Internal navigation links for SEO */}
             <FadeInWhenVisible>
-              <div className="flex flex-wrap justify-center gap-2 sm:gap-4 text-xs sm:text-sm mb-6 sm:mb-8 px-4">
+              <div className="hidden flex-wrap justify-center gap-2 sm:gap-4 text-xs sm:text-sm mb-6 sm:mb-8 px-4">
                 <button 
                   onClick={() => scrollToSection('modules-section')} 
                   className="text-blue-600 hover:text-blue-800 underline cursor-pointer px-2 py-1"

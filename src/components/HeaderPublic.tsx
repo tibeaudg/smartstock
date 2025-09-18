@@ -63,7 +63,7 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButton
               </Link>
             </div>
             {onNavigate && (
-              <nav className="hidden lg:flex items-center gap-6 text-sm">
+              <nav className="hidden sm:flex items-center gap-6 text-sm">
                 <button className="text-gray-700 hover:text-blue-700" onClick={() => onNavigate('features-section')}>Features</button>
                  <button className="text-gray-700 hover:text-blue-700" onClick={() => onNavigate('pricing-section')}>Pricing</button>
                 <button className="text-gray-700 hover:text-blue-700" onClick={() => onNavigate('testimonials-section')}>Reviews</button>
@@ -89,8 +89,8 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButton
                 )}
               </div>
 
-            {/* Mobile Menu Button - Always show on mobile */}
-            <div className="flex md:hidden items-center">
+            {/* Mobile Menu Button - Only visible on mobile */}
+            <div className="!block sm:!hidden">
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className="p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
@@ -111,7 +111,7 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButton
 
       {/* Mobile Menu Overlay */}
       {mobileMenuOpen && (
-        <div className="md:hidden fixed inset-0 bg-black bg-opacity-50 z-50" onClick={() => setMobileMenuOpen(false)}>
+        <div className="!block sm:!hidden fixed inset-0 bg-black bg-opacity-50 z-50" onClick={() => setMobileMenuOpen(false)}>
           <div 
             className="absolute top-0 right-0 w-full max-w-sm h-full bg-white shadow-xl flex flex-col"
             onClick={e => e.stopPropagation()}
