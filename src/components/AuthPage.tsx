@@ -326,6 +326,21 @@ export const AuthPage = () => {
                     variant="outline"
                     className="w-full h-12 text-base font-medium border-gray-300 hover:bg-gray-50"
                     disabled={isSubmitting}
+                    onClick={async () => {
+                      setIsSubmitting(true);
+                      try {
+                        const { error } = await signInWithGoogle();
+                        if (error) {
+                          toast.error(error.message || 'Google sign-in failed');
+                        }
+                        // If successful, user will be redirected to Google and then back to dashboard
+                      } catch (err: any) {
+                        console.error('Google sign-in error:', err);
+                        toast.error('An unexpected error occurred during Google sign-in');
+                      } finally {
+                        setIsSubmitting(false);
+                      }
+                    }}
                   >
                     <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
                       <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
