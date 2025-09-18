@@ -25,7 +25,7 @@ export const AuthPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentLanguage, setCurrentLanguage] = useState('en');
 
-  const { signIn, signUp, resetPassword } = useAuth();
+  const { signIn, signUp, resetPassword, signInWithGoogle } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -158,7 +158,7 @@ export const AuthPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-100 flex flex-col">
+    <div className="min-h-screen bg-white flex flex-col">
       <Header 
         onLoginClick={handleLoginClick}
         onNavigate={undefined}
@@ -166,141 +166,27 @@ export const AuthPage = () => {
         hideAuthButtons={true}
         hideNotifications={true}
       />
-      <div className="flex-1 flex items-center justify-center p-4 sm:p-6">
-        <div className="w-full max-w-6xl mx-auto grid lg:grid-cols-2 gap-8 items-center">
-          
-          {/* Left side - Benefits/Features */}
-          <div className="hidden lg:block space-y-8">
-            <div className="text-center lg:text-left">
-              <div className="flex items-center justify-center lg:justify-start mb-4">
-                <Package className="h-8 w-8 text-blue-600 mr-3" />
-                <span className="text-2xl font-bold text-gray-900">stockflow</span>
-              </div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-4">
-                {mode === 'register' 
-                  ? 'Start Your Free Account'
-                  : 'Welcome Back'
-                }
-              </h1>
-              <p className="text-lg text-gray-600 mb-8">
-                {mode === 'register' 
-                  ? 'Join 3200+ SMEs that already benefit from free inventory management'
-                  : 'Log in to access your inventory management dashboard'
-                }
-              </p>
-            </div>
+      <div className="flex-1 flex">
+        {/* Left side - Auth Form */}
+        <div className="w-full lg:w-2/5 bg-white flex items-center justify-center p-8">
+          <div className="w-full max-w-md">
 
-            {mode === 'register' && (
-              <div className="space-y-6">
-                <div className="grid grid-cols-1 gap-4">
-                  {[
-                    { icon: <CheckCircle className="h-5 w-5 text-green-600" />, text: '100% free for SMEs' },
-                    { icon: <Zap className="h-5 w-5 text-blue-600" />, text: 'Get started in 2 minutes' },
-                    { icon: <Shield className="h-5 w-5 text-purple-600" />, text: 'Safe and GDPR-compliant' },
-                    { icon: <Users className="h-5 w-5 text-orange-600" />, text: 'Professional support' }
-                  ].map((benefit, index) => (
-                    <div key={index} className="flex items-center gap-3 p-3 bg-white rounded-lg shadow-sm">
-                      {benefit.icon}
-                      <span className="text-gray-700 font-medium">{benefit.text}</span>
-                    </div>
-                  ))}
-                </div>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+              {mode === 'register' 
+                ? 'Start Your Free Account'
+                : 'Welcome Back'
+              }
+            </h1>
+            <p className="text-lg text-gray-600 mb-8">
+              {mode === 'register' 
+                ? 'Join 3200+ SMEs that already benefit from free inventory management'
+                : 'Log in to access your inventory management dashboard'
+              }
+            </p>
 
-                <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6 border border-blue-100">
-                  <div className="flex items-center gap-3 mb-3">
-                    <Star className="h-5 w-5 text-yellow-500 fill-current" />
-                    <span className="font-semibold text-gray-900">What customers say</span>
-                  </div>
-                  <p className="text-gray-700 italic mb-3">
-                    Thanks to StockFlow I finally have a clear overview of my inventory. The automatic reorder notifications are a lifesaver!
-                  </p>
-                  <div className="text-sm text-gray-600">
-                    - Laura Peeters, De Koffieboetiek Gent
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {mode === 'login' && (
-              <div className="space-y-6">
-                <div className="grid grid-cols-1 gap-4">
-                  {[
-                    { icon: <Package className="h-5 w-5 text-blue-600" />, text: "Manage your inventory centrally" },
-                    { icon: <Zap className="h-5 w-5 text-green-600" />, text: "Automatic order notifications" },
-                    { icon: <Users className="h-5 w-5 text-purple-600" />, text: "Collaborate with your team" },
-                    { icon: <Shield className="h-5 w-5 text-orange-600" />, text: "Safe in the cloud" }
-                  ].map((feature, index) => (
-                    <div key={index} className="flex items-center gap-3 p-3 bg-white rounded-lg shadow-sm">
-                      {feature.icon}
-                      <span className="text-gray-700 font-medium">{feature.text}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Right side - Auth Form */}
-          <div className="w-full max-w-md mx-auto lg:max-w-none">
-            <Card className="shadow-2xl border-0 bg-white/95 backdrop-blur-sm">
-              <CardHeader className="pb-4 sm:pb-6 text-center">
-                <div className="flex items-center justify-center mb-4 lg:hidden">
-                  <Package className="h-6 w-6 text-blue-600 mr-2" />
-                  <span className="text-xl font-bold text-gray-900">stockflow</span>
-                </div>
-                
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                  {mode === 'register' ? 'Start Free' : 'Sign In'}
-                </h2>
-                <p className="text-gray-600 text-sm">
-                  {mode === 'register' 
-                    ? 'No credit card required • Direct access'
-                    : 'Welcome back to your inventory management'
-                  }
-                </p>
-
-                {/* Switcher */}
-                <div className="flex justify-center mt-6">
-                  <div className="flex w-full max-w-xs rounded-lg border border-gray-300 bg-gray-50 p-1">
-                    <button
-                      className={cn(
-                        'flex-1 px-3 py-2.5 text-sm font-medium rounded-md transition-all duration-200',
-                        mode === 'login'
-                          ? 'bg-white text-blue-600 shadow-sm border border-gray-200'
-                          : 'text-gray-600 hover:text-gray-800'
-                      )}
-                      onClick={() => { setMode('login'); clearForm(); }}
-                      disabled={isSubmitting || mode === 'login'}
-                      type="button"
-                    >
-                      Sign In
-                    </button>
-                    <button
-                      className={cn(
-                        'flex-1 px-3 py-2.5 text-sm font-medium rounded-md transition-all duration-200',
-                        mode === 'register'
-                          ? 'bg-white text-blue-600 shadow-sm border border-gray-200'
-                          : 'text-gray-600 hover:text-gray-800'
-                      )}
-                      onClick={async () => { 
-                        setMode('register'); 
-                        clearForm(); 
-                        // Track when user switches to registration mode
-                        if (isTrackingReady) {
-                          await trackRegistrationStarted();
-                        }
-                      }}
-                      disabled={isSubmitting || mode === 'register'}
-                      type="button"
-                    >
-                      Register
-                    </button>
-                  </div>
-                </div>
-              </CardHeader>
-
-              <CardContent className="px-6 sm:px-8">
-                <form onSubmit={handleSubmit} className="space-y-5">
+            <Card className="shadow-none border-0 bg-transparent">
+              <CardContent className="p-0">
+                <form onSubmit={handleSubmit} className="space-y-6">
                   {mode === 'register' && (
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
@@ -382,59 +268,187 @@ export const AuthPage = () => {
                       />
                     </div>
                   )}
+
+                  {/* Remember me and Forgot password */}
+                  {mode === 'login' && (
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center">
+                        <input
+                          id="remember-me"
+                          name="remember-me"
+                          type="checkbox"
+                          className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                        />
+                        <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
+                          Remember me
+                        </label>
+                      </div>
+                      <button 
+                        type="button" 
+                        onClick={() => { setMode('reset'); clearForm(); }} 
+                        className="text-sm text-blue-600 hover:text-blue-700 hover:underline transition-colors" 
+                        disabled={isSubmitting}
+                      >
+                        Forgot password?
+                      </button>
+                    </div>
+                  )}
                   
                   <Button 
                     type="submit" 
-                    className="w-full h-12 text-base font-semibold mt-6 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-[1.02] shadow-lg" 
+                    className="w-full h-12 text-base font-semibold bg-black hover:bg-gray-800 transition-all duration-300" 
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? (
                       <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Please wait...</>
                     ) : (
                       <>
-                        {mode === 'login' && (
-                          <>
-                            Sign In
-                            <ArrowRight className="ml-2 h-4 w-4" />
-                          </>
-                        )}
-                        {mode === 'register' && (
-                          <>
-                            Start Free Account
-                            <ArrowRight className="ml-2 h-4 w-4" />
-                          </>
-                        )}
+                        {mode === 'login' && 'Log In'}
+                        {mode === 'register' && 'Start Free Account'}
                         {mode === 'reset' && 'Send reset instructions'}
                       </>
                     )}
                   </Button>
-                </form>
-              </CardContent>
 
-              <CardFooter className="flex flex-col space-y-3 pt-4 pb-6 px-6 sm:px-8">
-                {mode === 'login' && (
-                  <button 
-                    type="button" 
-                    onClick={() => { setMode('reset'); clearForm(); }} 
-                    className="text-sm text-blue-600 hover:text-blue-700 hover:underline transition-colors" 
+                  {/* Or divider */}
+                  <div className="relative">
+                    <div className="absolute inset-0 flex items-center">
+                      <div className="w-full border-t border-gray-300" />
+                    </div>
+                    <div className="relative flex justify-center text-sm">
+                      <span className="px-2 bg-white text-gray-500">Or</span>
+                    </div>
+                  </div>
+
+                  {/* Google Sign In */}
+                  <Button 
+                    type="button"
+                    variant="outline"
+                    className="w-full h-12 text-base font-medium border-gray-300 hover:bg-gray-50"
                     disabled={isSubmitting}
                   >
-                    Forgot Password?
-                  </button>
-                )}
-                
-                {mode === 'register' && (
+                    <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
+                      <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                      <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                      <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                      <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                    </svg>
+                    Sign In with Google
+                  </Button>
+
+                  {/* Mode switcher */}
                   <div className="text-center">
-                    <p className="text-xs text-gray-500">
-                      By registering you agree to our{' '}
-                      <a href="#" className="text-blue-600 hover:underline">Terms of Service</a>
-                      {' '}and{' '}
-                      <a href="#" className="text-blue-600 hover:underline">Privacy Policy</a>
-                    </p>
+                    {mode === 'login' ? (
+                      <p className="text-sm text-gray-600">
+                        Don't have an account?{' '}
+                        <button
+                          type="button"
+                          onClick={async () => { 
+                            setMode('register'); 
+                            clearForm(); 
+                            if (isTrackingReady) {
+                              await trackRegistrationStarted();
+                            }
+                          }}
+                          className="text-blue-600 hover:text-blue-700 hover:underline font-medium"
+                          disabled={isSubmitting}
+                        >
+                          Sign Up
+                        </button>
+                      </p>
+                    ) : (
+                      <p className="text-sm text-gray-600">
+                        Already have an account?{' '}
+                        <button
+                          type="button"
+                          onClick={() => { setMode('login'); clearForm(); }}
+                          className="text-blue-600 hover:text-blue-700 hover:underline font-medium"
+                          disabled={isSubmitting}
+                        >
+                          Sign In
+                        </button>
+                      </p>
+                    )}
                   </div>
-                )}
-              </CardFooter>
+
+                  {mode === 'register' && (
+                    <div className="text-center">
+                      <p className="text-xs text-gray-500">
+                        By registering you agree to our{' '}
+                        <a href="#" className="text-blue-600 hover:underline">Terms of Service</a>
+                        {' '}and{' '}
+                        <a href="#" className="text-blue-600 hover:underline">Privacy Policy</a>
+                      </p>
+                    </div>
+                  )}
+                </form>
+              </CardContent>
             </Card>
+
+            {/* Footer links */}
+            <div className="mt-8 text-center">
+              <div className="flex justify-center space-x-4 text-sm text-gray-500">
+                <a href="#" className="hover:text-gray-700">Help</a>
+                <span>/</span>
+                <a href="#" className="hover:text-gray-700">Terms</a>
+                <span>/</span>
+                <a href="#" className="hover:text-gray-700">Privacy</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Right side - Features/Benefits */}
+        <div className="hidden lg:flex lg:w-3/5 bg-gradient-to-br from-blue-50 via-white to-indigo-100 items-center justify-center p-8">
+          <div className="w-full max-w-lg">
+            {mode === 'register' && (
+              <div className="space-y-8">
+                <div className="grid grid-cols-1 gap-4">
+                  {[
+                    { icon: <CheckCircle className="h-5 w-5 text-green-600" />, text: '100% free for SMEs' },
+                    { icon: <Zap className="h-5 w-5 text-blue-600" />, text: 'Get started in 2 minutes' },
+                    { icon: <Shield className="h-5 w-5 text-purple-600" />, text: 'Safe and GDPR-compliant' },
+                    { icon: <Users className="h-5 w-5 text-orange-600" />, text: 'Professional support' }
+                  ].map((benefit, index) => (
+                    <div key={index} className="flex items-center gap-3 p-4 bg-white rounded-lg shadow-sm">
+                      {benefit.icon}
+                      <span className="text-gray-700 font-medium">{benefit.text}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6 border border-blue-100">
+                  <div className="flex items-center gap-3 mb-3">
+                    <Star className="h-5 w-5 text-yellow-500 fill-current" />
+                    <span className="font-semibold text-gray-900">What customers say</span>
+                  </div>
+                  <p className="text-gray-700 italic mb-3">
+                    Thanks to StockFlow I finally have a clear overview of my inventory. The automatic reorder notifications are a lifesaver!
+                  </p>
+                  <div className="text-sm text-gray-600">
+                    - Laura Peeters, De Koffieboetiek Gent
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {mode === 'login' && (
+              <div className="space-y-8">
+                <div className="grid grid-cols-1 gap-4">
+                  {[
+                    { icon: <Package className="h-5 w-5 text-blue-600" />, text: "Manage your inventory centrally" },
+                    { icon: <Zap className="h-5 w-5 text-green-600" />, text: "Automatic order notifications" },
+                    { icon: <Users className="h-5 w-5 text-purple-600" />, text: "Collaborate with your team" },
+                    { icon: <Shield className="h-5 w-5 text-orange-600" />, text: "Safe in the cloud" }
+                  ].map((feature, index) => (
+                    <div key={index} className="flex items-center gap-3 p-4 bg-white rounded-lg shadow-sm">
+                      {feature.icon}
+                      <span className="text-gray-700 font-medium">{feature.text}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

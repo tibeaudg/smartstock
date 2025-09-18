@@ -25,6 +25,7 @@ interface AuthContextType {
     lastName: string,
     role?: 'admin' | 'staff'
   ) => Promise<{ error: AuthError | null }>;
+  signInWithGoogle: () => Promise<{ error: AuthError | null }>;
   resetPassword: (email: string) => Promise<{ error: AuthError | null }>;
   signOut: () => Promise<void>;
 }
@@ -122,7 +123,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     initializeAuth();
 
     const { data: listener } = supabase.auth.onAuthStateChange(
-      async (_event, newSession) => {
+      async (event, newSession) => {
         if (cancelled.current) return;
 
         setSession(newSession);
@@ -130,7 +131,42 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
         if (newSession?.user) {
           const profile = await fetchUserProfile(newSession.user.id);
-          if (!cancelled.current) setUserProfile(profile);
+          
+          // If no profile exists and this is a sign-in event, create one
+          if (!profile && event === 'SIGNED_IN' && newSession.user) {
+            try {
+              // Extract name from user metadata (Google provides this)
+              const firstName = newSession.user.user_metadata?.full_name?.split(' ')[0] || 
+                               newSession.user.user_metadata?.given_name || 
+                               newSession.user.user_metadata?.name?.split(' ')[0] || '';
+              const lastName = newSession.user.user_metadata?.full_name?.split(' ').slice(1).join(' ') || 
+                              newSession.user.user_metadata?.family_name || 
+                              newSession.user.user_metadata?.name?.split(' ').slice(1).join(' ') || '';
+
+              // Create profile for Google user
+              const { error: profileError } = await supabase.from('profiles').upsert({
+                id: newSession.user.id,
+                email: newSession.user.email || '',
+                first_name: firstName,
+                last_name: lastName,
+                role: 'admin',
+                is_owner: false,
+                updated_at: new Date().toISOString(),
+              }, { onConflict: 'id' });
+
+              if (profileError) {
+                console.error('Error creating profile for Google user:', profileError);
+              } else {
+                // Fetch the newly created profile
+                const newProfile = await fetchUserProfile(newSession.user.id);
+                if (!cancelled.current) setUserProfile(newProfile);
+              }
+            } catch (error) {
+              console.error('Error handling Google sign-in profile creation:', error);
+            }
+          } else {
+            if (!cancelled.current) setUserProfile(profile);
+          }
         } else {
           setUserProfile(null);
         }
@@ -248,6 +284,32 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
 
+  const signInWithGoogle = async () => {
+    setLoading(true);
+    try {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/dashboard`,
+        },
+      });
+      
+      if (error) {
+        console.error('Google sign-in error:', error.message);
+        return { error };
+      }
+
+      // If successful, the user will be redirected to Google
+      // and then back to our app with the session
+      return { error: null };
+    } catch (error: any) {
+      console.error('Exception during Google sign-in:', error);
+      return { error };
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const resetPassword = async (email: string) => {
     setLoading(true);
     try {
@@ -290,6 +352,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         loading,
         signIn,
         signUp,
+        signInWithGoogle,
         resetPassword,
         signOut,
       }}

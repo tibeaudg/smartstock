@@ -211,30 +211,12 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
         })) || [];
 
         if (transformedData.length === 0) {
-          console.log('No branches found via direct query, creating default branch...');
-          const defaultBranch = await createDefaultBranch(user.id);
-          if (defaultBranch) {
-            if (!cancelled?.current) {
-              setBranches([defaultBranch]);
-              setActiveBranchState(defaultBranch);
-              setBranchIdToStorage(defaultBranch.branch_id);
-              setHasNoBranches(false);
-            }
-          } else {
-            // Als alles faalt, maak een lokale fallback branch
-            console.log('Creating local fallback branch...');
-            const fallbackBranch = {
-              branch_id: 'fallback-' + user.id,
-              branch_name: 'Hoofdvestiging',
-              is_main: true,
-              user_role: 'admin'
-            };
-            if (!cancelled?.current) {
-              setBranches([fallbackBranch]);
-              setActiveBranchState(fallbackBranch);
-              setBranchIdToStorage(fallbackBranch.branch_id);
-              setHasNoBranches(false);
-            }
+          console.log('No branches found via direct query, user needs to create first branch...');
+          if (!cancelled?.current) {
+            setBranches([]);
+            setActiveBranchState(null);
+            setBranchIdToStorage(null);
+            setHasNoBranches(true);
           }
         } else {
           if (!cancelled?.current) {
@@ -255,18 +237,13 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
         setBranches(data);
         setHasNoBranches(data.length === 0);
         
-        // Als er geen branches zijn, maak automatisch een standaard branch aan
+        // Als er geen branches zijn, gebruiker moet eerst een branch aanmaken
         if (data.length === 0) {
-          console.log('No branches found, creating default branch...');
-          const defaultBranch = await createDefaultBranch(user.id);
-          if (defaultBranch) {
-            setBranches([defaultBranch]);
-            setActiveBranchState(defaultBranch);
-            setBranchIdToStorage(defaultBranch.branch_id);
-            setHasNoBranches(false);
-          } else {
-            setHasNoBranches(true);
-          }
+          console.log('No branches found, user needs to create first branch...');
+          setBranches([]);
+          setActiveBranchState(null);
+          setBranchIdToStorage(null);
+          setHasNoBranches(true);
         } else {
           // Probeer branch uit localStorage te herstellen
           const storedId = getBranchIdFromStorage();
@@ -298,24 +275,24 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const cancelled = { current: false };
     const initBranches = async () => {
-      // if (authLoading) return;
-      // if (user) {
-      await fetchBranches(cancelled);
-      // } else {
-      //   if (!cancelled.current) {
-      //     setBranches([]);
-      //     setActiveBranchState(null);
-      //     setHasNoBranches(false);
-      //     setLoading(false);
-      //     setBranchIdToStorage(null);
-      //   }
-      // }
+      if (authLoading) return;
+      if (user) {
+        await fetchBranches(cancelled);
+      } else {
+        if (!cancelled.current) {
+          setBranches([]);
+          setActiveBranchState(null);
+          setHasNoBranches(false);
+          setLoading(false);
+          setBranchIdToStorage(null);
+        }
+      }
     };
     initBranches();
     return () => {
       cancelled.current = true;
     };
-  }, [/* user, authLoading */]);
+  }, [user, authLoading]);
 
   // Real-time updates voor branches
   useEffect(() => {

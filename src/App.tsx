@@ -19,6 +19,8 @@ import { LicenseOverview } from "./components/settings/LicenseOverview";
 import { InvoicingOverview } from "./components/settings/InvoicingOverview";
 import { InvoiceList } from "./components/payments/InvoiceList";
 import { useAuth, AuthProvider } from "./hooks/useAuth";
+import { useBranches, BranchProvider } from "./hooks/useBranches";
+import { FirstBranchSetup } from "./components/FirstBranchSetup";
 import { Suspense } from "react";
 import { ContentWrapper } from "./ContentWrapper";
 import AdminUserDetailPage from './pages/AdminUserDetailPage';
@@ -158,19 +160,23 @@ const LoadingScreen = () => (
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading, userProfile } = useAuth();
+  const { branches, hasNoBranches, loading: branchesLoading } = useBranches();
   const location = useLocation();
 
   // Debug: log auth state and location
   console.debug('[ProtectedRoute] user:', user);
   console.debug('[ProtectedRoute] userProfile:', userProfile);
   console.debug('[ProtectedRoute] loading:', loading);
+  console.debug('[ProtectedRoute] branches:', branches);
+  console.debug('[ProtectedRoute] hasNoBranches:', hasNoBranches);
+  console.debug('[ProtectedRoute] branchesLoading:', branchesLoading);
   console.debug('[ProtectedRoute] location:', location.pathname);
 
   if (location.pathname === '/reset-password') {
     return <>{children}</>;
   }
   
-  if (loading) {
+  if (loading || branchesLoading) {
     console.debug('[ProtectedRoute] Loading...');
     return <LoadingScreen />;
   }
@@ -178,6 +184,12 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   if (!user || !userProfile) {
     console.debug('[ProtectedRoute] Not authenticated, redirecting to /auth');
     return <Navigate to="/auth" state={{ from: location }} replace />;
+  }
+
+  // Check if user has no branches and needs to create their first branch
+  if (hasNoBranches && branches.length === 0) {
+    console.debug('[ProtectedRoute] No branches found, showing FirstBranchSetup');
+    return <FirstBranchSetup />;
   }
 
   // BLOCKED USER HANDLING
@@ -270,12 +282,13 @@ export default function App() {
       />
       {/* QueryClientProvider wordt nu beheerd in main.tsx */}
         <AuthProvider>
-          <StripeProvider>
-            <TooltipProvider>
-            <Toaster />
-            <Sonner />
-            <BrowserRouter>
-              <ContentWrapper>
+          <BranchProvider>
+            <StripeProvider>
+              <TooltipProvider>
+              <Toaster />
+              <Sonner />
+              <BrowserRouter>
+                <ContentWrapper>
                 <Routes>
                   {/* Openbare routes */}
                   <Route path="/" element={<HomePage />} />
@@ -400,6 +413,7 @@ export default function App() {
             </BrowserRouter>
             </TooltipProvider>
           </StripeProvider>
+          </BranchProvider>
         </AuthProvider>
     </ErrorBoundary>
   );
