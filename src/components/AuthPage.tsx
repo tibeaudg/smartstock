@@ -166,18 +166,18 @@ export const AuthPage = () => {
         hideAuthButtons={true}
         hideNotifications={true}
       />
-      <div className="flex-1 flex">
+      <div className="flex-1 flex flex-col lg:flex-row">
         {/* Left side - Auth Form */}
-        <div className="w-full lg:w-2/5 bg-white flex items-center justify-center p-8">
+        <div className="w-full lg:w-1/2 xl:w-2/5 bg-white flex items-center justify-center p-4 sm:p-6 lg:p-8">
           <div className="w-full max-w-md">
 
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
               {mode === 'register' 
                 ? 'Start Your Free Account'
                 : 'Welcome Back'
               }
             </h1>
-            <p className="text-lg text-gray-600 mb-8">
+            <p className="text-base sm:text-lg text-gray-600 mb-6 sm:mb-8">
               {mode === 'register' 
                 ? 'Join 3200+ SMEs that already benefit from free inventory management'
                 : 'Log in to access your inventory management dashboard'
@@ -186,7 +186,7 @@ export const AuthPage = () => {
 
             <Card className="shadow-none border-0 bg-transparent">
               <CardContent className="p-0">
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
                   {mode === 'register' && (
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
@@ -198,7 +198,7 @@ export const AuthPage = () => {
                           onChange={(e) => setFirstName(e.target.value)} 
                           required 
                           disabled={isSubmitting}
-                          className="mt-1 h-11 border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                          className="mt-1 h-10 sm:h-11 border-gray-300 focus:border-blue-500 focus:ring-blue-500"
                           placeholder="Your first name"
                         />
                       </div>
@@ -211,7 +211,7 @@ export const AuthPage = () => {
                           onChange={(e) => setLastName(e.target.value)} 
                           required 
                           disabled={isSubmitting}
-                          className="mt-1 h-11 border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                          className="mt-1 h-10 sm:h-11 border-gray-300 focus:border-blue-500 focus:ring-blue-500"
                           placeholder="Your last name"
                         />
                       </div>
@@ -296,7 +296,7 @@ export const AuthPage = () => {
                   
                   <Button 
                     type="submit" 
-                    className="w-full h-12 text-base font-semibold bg-black hover:bg-gray-800 transition-all duration-300" 
+                    className="w-full h-10 sm:h-12 text-sm sm:text-base font-semibold bg-black hover:bg-gray-800 transition-all duration-300" 
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? (
@@ -324,7 +324,7 @@ export const AuthPage = () => {
                   <Button 
                     type="button"
                     variant="outline"
-                    className="w-full h-12 text-base font-medium border-gray-300 hover:bg-gray-50"
+                    className="w-full h-10 sm:h-12 text-sm sm:text-base font-medium border-gray-300 hover:bg-gray-50"
                     disabled={isSubmitting}
                     onClick={async () => {
                       setIsSubmitting(true);
@@ -401,8 +401,8 @@ export const AuthPage = () => {
             </Card>
 
             {/* Footer links */}
-            <div className="mt-8 text-center">
-              <div className="flex justify-center space-x-4 text-sm text-gray-500">
+            <div className="mt-6 sm:mt-8 text-center">
+              <div className="flex justify-center space-x-4 text-xs sm:text-sm text-gray-500">
                 <a href="#" className="hover:text-gray-700">Help</a>
                 <span>/</span>
                 <a href="#" className="hover:text-gray-700">Terms</a>
@@ -413,57 +413,14 @@ export const AuthPage = () => {
           </div>
         </div>
 
-        {/* Right side - Features/Benefits */}
-        <div className="hidden lg:flex lg:w-3/5 bg-gradient-to-br from-blue-50 via-white to-indigo-100 items-center justify-center p-8">
-          <div className="w-full max-w-lg">
-            {mode === 'register' && (
-              <div className="space-y-8">
-                <div className="grid grid-cols-1 gap-4">
-                  {[
-                    { icon: <CheckCircle className="h-5 w-5 text-green-600" />, text: '100% free for SMEs' },
-                    { icon: <Zap className="h-5 w-5 text-blue-600" />, text: 'Get started in 2 minutes' },
-                    { icon: <Shield className="h-5 w-5 text-purple-600" />, text: 'Safe and GDPR-compliant' },
-                    { icon: <Users className="h-5 w-5 text-orange-600" />, text: 'Professional support' }
-                  ].map((benefit, index) => (
-                    <div key={index} className="flex items-center gap-3 p-4 bg-white rounded-lg shadow-sm">
-                      {benefit.icon}
-                      <span className="text-gray-700 font-medium">{benefit.text}</span>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6 border border-blue-100">
-                  <div className="flex items-center gap-3 mb-3">
-                    <Star className="h-5 w-5 text-yellow-500 fill-current" />
-                    <span className="font-semibold text-gray-900">What customers say</span>
-                  </div>
-                  <p className="text-gray-700 italic mb-3">
-                    Thanks to StockFlow I finally have a clear overview of my inventory. The automatic reorder notifications are a lifesaver!
-                  </p>
-                  <div className="text-sm text-gray-600">
-                    - Laura Peeters, De Koffieboetiek Gent
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {mode === 'login' && (
-              <div className="space-y-8">
-                <div className="grid grid-cols-1 gap-4">
-                  {[
-                    { icon: <Package className="h-5 w-5 text-blue-600" />, text: "Manage your inventory centrally" },
-                    { icon: <Zap className="h-5 w-5 text-green-600" />, text: "Automatic order notifications" },
-                    { icon: <Users className="h-5 w-5 text-purple-600" />, text: "Collaborate with your team" },
-                    { icon: <Shield className="h-5 w-5 text-orange-600" />, text: "Safe in the cloud" }
-                  ].map((feature, index) => (
-                    <div key={index} className="flex items-center gap-3 p-4 bg-white rounded-lg shadow-sm">
-                      {feature.icon}
-                      <span className="text-gray-700 font-medium">{feature.text}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
+        {/* Right side - Image */}
+        <div className="hidden lg:flex lg:w-1/2 xl:w-3/5 bg-gradient-to-br from-blue-50 via-white to-indigo-100 items-center justify-center p-2">
+          <div className="w-full h-full flex items-center justify-center">
+            <img 
+              src="/image.png" 
+              alt="StockFlow Dashboard Preview" 
+              className="w-full h-full object-cover rounded-lg shadow-lg"
+            />
           </div>
         </div>
       </div>

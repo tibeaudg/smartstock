@@ -130,6 +130,17 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         setUser(newSession?.user ?? null);
 
         if (newSession?.user) {
+          // Update last_login for any sign-in event
+          if (event === 'SIGNED_IN') {
+            try {
+              await supabase.from('profiles').update({ 
+                last_login: new Date().toISOString() 
+              }).eq('id', newSession.user.id);
+            } catch (error) {
+              console.error('Error updating last_login:', error);
+            }
+          }
+          
           const profile = await fetchUserProfile(newSession.user.id);
           
           // If no profile exists and this is a sign-in event, create one
@@ -152,6 +163,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
                 role: 'admin',
                 is_owner: false,
                 updated_at: new Date().toISOString(),
+                last_login: new Date().toISOString(),
               }, { onConflict: 'id' });
 
               if (profileError) {
