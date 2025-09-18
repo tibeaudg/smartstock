@@ -94,7 +94,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-6">
         <Card className="bg-white hover:shadow-lg transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 sm:pb-3">
-            <CardTitle className="text-sm sm:text-base font-semibold text-gray-700">Totale Waarde</CardTitle>
+            <CardTitle className="text-sm sm:text-base font-semibold text-gray-700">Totale Stock Value</CardTitle>
             <Euro className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600" />
           </CardHeader>
           <CardContent className="pt-0">
@@ -106,7 +106,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
 
         <Card className="bg-white hover:shadow-lg transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 sm:pb-3">
-            <CardTitle className="text-sm sm:text-base font-semibold text-gray-700">Aantal Producten</CardTitle>
+            <CardTitle className="text-sm sm:text-base font-semibold text-gray-700">Total Products</CardTitle>
             <Package className="h-5 w-5 sm:h-6 sm:w-6 text-purple-600" />
           </CardHeader>
           <CardContent className="pt-0">
@@ -116,7 +116,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
 
         <Card className="bg-white hover:shadow-lg transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 sm:pb-3">
-            <CardTitle className="text-sm sm:text-base font-semibold text-gray-700">Vandaag Toegevoegd</CardTitle>
+            <CardTitle className="text-sm sm:text-base font-semibold text-gray-700">Added Today</CardTitle>
             <TrendingUp className="h-5 w-5 sm:h-6 sm:w-6 text-green-600" />
           </CardHeader>
           <CardContent className="pt-0">
@@ -128,7 +128,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
 
         <Card className="bg-white hover:shadow-lg transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 sm:pb-3">
-            <CardTitle className="text-sm sm:text-base font-semibold text-gray-700">Vandaag Verzonden</CardTitle>
+            <CardTitle className="text-sm sm:text-base font-semibold text-gray-700">Sent Today</CardTitle>
             <TrendingDown className="h-5 w-5 sm:h-6 sm:w-6 text-red-600" />
           </CardHeader>
           <CardContent className="pt-0">
@@ -140,7 +140,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
 
         <Card className="bg-white hover:shadow-lg transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 sm:pb-3">
-            <CardTitle className="text-sm sm:text-base font-semibold text-gray-700">Lage Stock Meldingen</CardTitle>
+            <CardTitle className="text-sm sm:text-base font-semibold text-gray-700">Low Stock Alerts</CardTitle>
             <AlertTriangle className="h-5 w-5 sm:h-6 sm:w-6 text-yellow-600" />
           </CardHeader>
           <CardContent className="pt-0">
@@ -154,17 +154,17 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
       {/* Stock Movement Chart */}
       <div className="bg-white rounded-lg shadow p-4 sm:p-6 mt-4 sm:mt-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-2">
-          <h2 className="text-lg sm:text-xl font-semibold text-gray-800">Stockbewegingen</h2>
+          <h2 className="text-lg sm:text-xl font-semibold text-gray-800">Stock Movements</h2>
           <select
             className="border rounded px-3 py-2 text-sm w-full sm:w-fit"
             value={chartRangeType}
             onChange={e => setChartRangeType(e.target.value as any)}
           >
-            <option value="week">Deze week</option>
-            <option value="month">Deze maand</option>
-            <option value="quarter">Dit kwartaal</option>
-            <option value="year">Dit jaar</option>
-            <option value="all">Alles</option>
+            <option value="week">This Week</option>
+            <option value="month">This Month</option>
+            <option value="quarter">This Quarter</option>
+            <option value="year">This Year</option>
+            <option value="all">All Time</option>
           </select>
         </div>
         <ResponsiveContainer width="100%" height={isMobile ? 250 : 300}>
@@ -173,8 +173,8 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
             <XAxis dataKey="date" fontSize={isMobile ? 10 : 12} />
             <YAxis fontSize={isMobile ? 10 : 12} />
             <Tooltip />
-            <Bar dataKey="incoming" fill="#4ade80" name="Inkomend" />
-            <Bar dataKey="outgoing" fill="#f87171" name="Uitgaand" />
+            <Bar dataKey="incoming" fill="#4ade80" name="Incoming" />
+            <Bar dataKey="outgoing" fill="#f87171" name="Outgoing" />
           </BarChart>
         </ResponsiveContainer>
       </div>

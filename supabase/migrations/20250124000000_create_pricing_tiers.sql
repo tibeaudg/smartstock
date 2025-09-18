@@ -52,9 +52,9 @@ CREATE TABLE IF NOT EXISTS usage_tracking (
 -- Insert pricing tiers
 INSERT INTO pricing_tiers (name, display_name, description, price_monthly, price_yearly, yearly_discount_percentage, max_products, max_orders_per_month, max_users, max_branches, features, is_popular, is_enterprise) VALUES
 (
-  'basis',
-  'Basis',
-  'Perfect voor kleine bedrijven die beginnen met voorraadbeheer',
+  'basic',
+  'Basic',
+  'Perfect for small businesses starting with inventory management',
   0.00,
   0.00,
   0.00,
@@ -62,14 +62,14 @@ INSERT INTO pricing_tiers (name, display_name, description, price_monthly, price
   100,
   2,
   1,
-  '["Basis voorraadbeheer", "Producten toevoegen/bewerken", "Eenvoudige rapporten", "Email support", "Mobiele app toegang"]'::jsonb,
+  '["Basic inventory management", "Add/edit products", "Simple reports", "Email support", "Mobile app access"]'::jsonb,
   false,
   false
 ),
 (
-  'groei',
-  'Groei',
-  'Ideaal voor groeiende bedrijven met meer behoeften',
+  'growth',
+  'Growth',
+  'Ideal for growing businesses with more needs',
   29.99,
   299.99,
   16.67,
@@ -77,14 +77,14 @@ INSERT INTO pricing_tiers (name, display_name, description, price_monthly, price
   1000,
   10,
   5,
-  '["Alle Basis features", "Geavanceerde analytics", "Barcode scanner", "Leveringsbonnen beheer", "API toegang", "Priority support", "Custom rapporten", "Bulk import/export"]'::jsonb,
+  '["All Basic features", "Advanced analytics", "Barcode scanner", "Delivery notes management", "API access", "Priority support", "Custom reports", "Bulk import/export"]'::jsonb,
   true,
   false
 ),
 (
   'premium',
   'Premium',
-  'Voor grote bedrijven die alles nodig hebben',
+  'For large companies that need everything',
   79.99,
   799.99,
   16.67,
@@ -92,7 +92,7 @@ INSERT INTO pricing_tiers (name, display_name, description, price_monthly, price
   NULL,
   NULL,
   NULL,
-  '["Alle Groei features", "Onbeperkte producten", "Onbeperkte orders", "Onbeperkte gebruikers", "Onbeperkte branches", "Dedicated support", "Custom onboarding", "SLA garantie", "White-label opties"]'::jsonb,
+  '["All Growth features", "Unlimited products", "Unlimited orders", "Unlimited users", "Unlimited branches", "Dedicated support", "Custom onboarding", "SLA guarantee", "White-label options"]'::jsonb,
   false,
   true
 );

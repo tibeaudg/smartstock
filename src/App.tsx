@@ -26,7 +26,6 @@ import AdminNotificationsPage from './pages/AdminNotificationsPage';
 import SEO from './components/SEO';
 import PreloadResources from './components/PreloadResources';
 import { Admin } from './components/Admin';
-import AdminCMS from './components/AdminCMS';
 import { AdminChatList } from './components/AdminChatList';
 import { AnalyticsDashboard } from './components/analytics/AnalyticsDashboard';
 import { AIPredictions } from './components/analytics/AIPredictions';
@@ -63,6 +62,19 @@ import StockbeheerApp from "./pages/SEO/stockbeheer-app";
 import MagazijnbeheerSoftwareGratis from "./pages/SEO/magazijnbeheer-software-gratis";
 import VoorraadSoftwareGratis from "./pages/SEO/voorraad-software-gratis";
 import BoekhoudprogrammaMetVoorraadbeheer from "./pages/SEO/boekhoudprogramma-met-voorraadbeheer";
+import OnlineInventoryManagement from "./pages/SEO/online-inventory-management";
+import OnlineInventorySoftware from "./pages/SEO/online-inventory-software";
+import BestOnlineInventorySoftware from "./pages/SEO/best-online-inventory-software";
+import BestOnlineInventorySystem from "./pages/SEO/best-online-inventory-system";
+import AppVoorraadbeheerThuis from "./pages/SEO/app-voorraadbeheer-thuis";
+import VoorraadbeheerApp from "./pages/SEO/voorraadbeheer-app";
+import VoorraadbeheerExcelTemplateGratis from "./pages/SEO/voorraadbeheer-excel-template-gratis";
+import VoorraadbeheerExcelZelfMaken from "./pages/SEO/voorraadbeheer-excel-zelf-maken";
+import WarehouseManagementSystem from "./pages/SEO/warehouse-management-system";
+import AboutPage from "./pages/SEO/about";
+import PrivacyPolicyPage from "./pages/SEO/privacy-policy";
+import TermsConditionsPage from "./pages/SEO/terms-conditions";
+import ContactPage from "./pages/SEO/contact";
 import CategoriesPage from './pages/categories';
 import SuppliersPage from './pages/suppliers';
 import AdminPage from './pages/admin';
@@ -299,6 +311,19 @@ export default function App() {
                   <Route path="/magazijnbeheer-software-gratis" element={<MagazijnbeheerSoftwareGratis />} />
                   <Route path="/voorraad-software-gratis" element={<VoorraadSoftwareGratis />} />
                   <Route path="/boekhoudprogramma-met-voorraadbeheer" element={<BoekhoudprogrammaMetVoorraadbeheer />} />
+                  <Route path="/online-inventory-management" element={<OnlineInventoryManagement />} />
+                  <Route path="/online-inventory-software" element={<OnlineInventorySoftware />} />
+                  <Route path="/best-online-inventory-software" element={<BestOnlineInventorySoftware />} />
+                  <Route path="/best-online-inventory-system" element={<BestOnlineInventorySystem />} />
+                  <Route path="/app-voorraadbeheer-thuis" element={<AppVoorraadbeheerThuis />} />
+                  <Route path="/voorraadbeheer-app" element={<VoorraadbeheerApp />} />
+                  <Route path="/voorraadbeheer-excel-template-gratis" element={<VoorraadbeheerExcelTemplateGratis />} />
+                  <Route path="/voorraadbeheer-excel-zelf-maken" element={<VoorraadbeheerExcelZelfMaken />} />
+                  <Route path="/warehouse-management-system" element={<WarehouseManagementSystem />} />
+                  <Route path="/about" element={<AboutPage />} />
+                  <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+                  <Route path="/terms-conditions" element={<TermsConditionsPage />} />
+                  <Route path="/contact" element={<ContactPage />} />
 
                   {/* Beschermde dashboard routes */}
                   <Route
@@ -357,7 +382,6 @@ export default function App() {
                     }
                   >
                     <Route element={<Admin />}>
-                      <Route path="cms" element={<AdminCMS />} />
                       <Route path="notifications" element={<AdminNotificationsPage />} />
                       <Route path="chat" element={<AdminChatList />} />
                       <Route path="seo" element={<SEO />} />

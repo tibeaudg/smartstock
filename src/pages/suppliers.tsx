@@ -341,10 +341,10 @@ export default function SuppliersPage() {
         {/* Header */}
         <div className={`${isMobile ? 'mb-6' : 'mb-8'}`}>
           <h1 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-gray-900 mb-2`}>
-            Leveranciers Beheren
+            Manage Suppliers
           </h1>
           <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600`}>
-            Beheer uw leveranciers voor betere organisatie van uw inkoop en voorraad
+            Manage your suppliers for better organization of your purchases and stock
           </p>
         </div>
 
@@ -355,7 +355,7 @@ export default function SuppliersPage() {
             className={`flex items-center gap-2 ${isMobile ? 'w-full' : ''}`}
           >
             <Plus className="w-4 h-4" />
-            Nieuwe Leverancier
+            New Supplier
           </Button>
         </div>
 
@@ -366,7 +366,7 @@ export default function SuppliersPage() {
               <CardContent className={`${isMobile ? 'p-6' : 'p-8'}`}>
                 <div className="text-center">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                  <p className="text-gray-600">Leveranciers laden...</p>
+                  <p className="text-gray-600">Suppliers loading...</p>
                 </div>
               </CardContent>
             </Card>
@@ -376,17 +376,17 @@ export default function SuppliersPage() {
                 <div className="text-center">
                   <Truck className={`${isMobile ? 'w-10 h-10' : 'w-12 h-12'} text-gray-400 mx-auto mb-4`} />
                   <h3 className={`${isMobile ? 'text-base' : 'text-lg'} font-medium text-gray-900 mb-2`}>
-                    Geen leveranciers
+                    No suppliers
                   </h3>
                   <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600 mb-4`}>
-                    U heeft nog geen leveranciers aangemaakt. Maak uw eerste leverancier aan om te beginnen.
+                    You have no suppliers yet. Create your first supplier to get started.
                   </p>
                   <Button 
                     onClick={() => setShowAddModal(true)}
                     className={isMobile ? 'w-full' : ''}
                   >
                     <Plus className="w-4 h-4 mr-2" />
-                    Eerste Leverancier
+                    First Supplier
                   </Button>
                 </div>
               </CardContent>
@@ -444,7 +444,7 @@ export default function SuppliersPage() {
                         className={isMobile ? 'px-2 py-1' : ''}
                       >
                         <Edit className="w-4 h-4" />
-                        {!isMobile && <span className="ml-1">Bewerken</span>}
+                        {!isMobile && <span className="ml-1">Edit</span>}
                       </Button>
                       <Button
                         variant="outline"
@@ -456,7 +456,7 @@ export default function SuppliersPage() {
                         className={`${isMobile ? 'px-2 py-1' : ''} text-red-600 hover:text-red-700 hover:bg-red-50`}
                       >
                         <Trash2 className="w-4 h-4" />
-                        {!isMobile && <span className="ml-1">Verwijderen</span>}
+                        {!isMobile && <span className="ml-1">Delete</span>}
                       </Button>
                     </div>
                   </div>
@@ -471,30 +471,30 @@ export default function SuppliersPage() {
       <Dialog open={showAddModal} onOpenChange={setShowAddModal}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Nieuwe Leverancier Toevoegen</DialogTitle>
+            <DialogTitle>Add New Supplier</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
             <div>
-              <Label htmlFor="name">Leverancier Naam *</Label>
+              <Label htmlFor="name">Supplier Name *</Label>
               <Input
                 id="name"
                 value={formData.name}
                 onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                placeholder="Naam van de leverancier"
+                    placeholder="Name of the supplier"
               />
             </div>
             <div>
-              <Label htmlFor="email">E-mail</Label>
+              <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
                 type="email"
                 value={formData.email}
                 onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                placeholder="email@leverancier.nl"
+                placeholder="email@supplier.nl"
               />
             </div>
             <div>
-              <Label htmlFor="phone">Telefoon</Label>
+              <Label htmlFor="phone">Phone</Label>
               <Input
                 id="phone"
                 type="tel"
@@ -504,22 +504,22 @@ export default function SuppliersPage() {
               />
             </div>
             <div>
-              <Label htmlFor="address">Adres</Label>
+              <Label htmlFor="address">Address</Label>
               <Textarea
                 id="address"
                 value={formData.address}
                 onChange={(e) => setFormData(prev => ({ ...prev, address: e.target.value }))}
-                placeholder="Straat, huisnummer, postcode en plaats"
+                placeholder="Street, house number, postal code and city"
                 rows={3}
               />
             </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowAddModal(false)}>
-              Annuleren
+              Cancel
             </Button>
             <Button onClick={handleAddSupplier}>
-              Leverancier Toevoegen
+              Add Supplier
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -529,30 +529,30 @@ export default function SuppliersPage() {
       <Dialog open={showEditModal} onOpenChange={setShowEditModal}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Leverancier Bewerken</DialogTitle>
+            <DialogTitle>Edit Supplier</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
             <div>
-              <Label htmlFor="edit-name">Leverancier Naam *</Label>
+              <Label htmlFor="edit-name">Supplier Name *</Label>
               <Input
                 id="edit-name"
                 value={formData.name}
                 onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                placeholder="Naam van de leverancier"
+                placeholder="Name of the supplier"
               />
             </div>
             <div>
-              <Label htmlFor="edit-email">E-mail</Label>
+              <Label htmlFor="edit-email">Email</Label>
               <Input
                 id="edit-email"
                 type="email"
                 value={formData.email}
                 onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                placeholder="email@leverancier.nl"
+                  placeholder="email@supplier.nl"
               />
             </div>
             <div>
-              <Label htmlFor="edit-phone">Telefoon</Label>
+              <Label htmlFor="edit-phone">Phone</Label>
               <Input
                 id="edit-phone"
                 type="tel"
@@ -562,22 +562,22 @@ export default function SuppliersPage() {
               />
             </div>
             <div>
-              <Label htmlFor="edit-address">Adres</Label>
+              <Label htmlFor="edit-address">Address</Label>
               <Textarea
                 id="edit-address"
                 value={formData.address}
                 onChange={(e) => setFormData(prev => ({ ...prev, address: e.target.value }))}
-                placeholder="Straat, huisnummer, postcode en plaats"
+                placeholder="Street, house number, postal code and city"
                 rows={3}
               />
             </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowEditModal(false)}>
-              Annuleren
+              Cancel
             </Button>
             <Button onClick={handleEditSupplier}>
-              Wijzigingen Opslaan
+              Save Changes
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -587,27 +587,28 @@ export default function SuppliersPage() {
       <Dialog open={showDeleteModal} onOpenChange={setShowDeleteModal}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Leverancier Verwijderen</DialogTitle>
+            <DialogTitle>Delete Supplier</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
             <p className="text-gray-600">
-              Weet u zeker dat u de leverancier "{selectedSupplier?.name}" wilt verwijderen? 
-              Deze actie kan niet ongedaan worden gemaakt.
+              Are you sure you want to delete the supplier "{selectedSupplier?.name}"? 
+              This action cannot be undone.
             </p>
             <p className="text-sm text-gray-500">
-              Let op: Leveranciers die in gebruik zijn door producten kunnen niet worden verwijderd.
+              Let op: Suppliers that are in use by products cannot be deleted.
+              Suppliers that are in use by products cannot be deleted.
             </p>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowDeleteModal(false)}>
-              Annuleren
+              Cancel
             </Button>
             <Button 
               variant="destructive" 
               onClick={handleDeleteSupplier}
               className="bg-red-600 hover:bg-red-700"
             >
-              Verwijderen
+              Delete
             </Button>
           </DialogFooter>
         </DialogContent>

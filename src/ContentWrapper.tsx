@@ -8,8 +8,8 @@ import { useAuth } from './hooks/useAuth';
 const getPageTitle = (pathname: string) => {
   // Don't show header for dashboard pages as they use Layout component
   if (pathname.startsWith('/dashboard') || pathname.startsWith('/admin')) return '';
-  if (pathname.startsWith('/admin/notifications')) return 'Meldingen';
-  if (pathname.startsWith('/admin/user')) return 'Gebruiker';
+    if (pathname.startsWith('/admin/notifications')) return 'Notifications';
+  if (pathname.startsWith('/admin/user')) return 'User';
   if (pathname.startsWith('/admin')) return 'Admin';
   if (pathname === '/') return '';
   return '';
@@ -36,11 +36,11 @@ export const ContentWrapper: React.FC<{ children: React.ReactNode }> = ({ childr
       {/* Notification Overlay (internal pages only) */}
       {title && user && showNotifications && (
         <div className="fixed top-20 right-4 z-[100] bg-white border border-gray-200 rounded-lg shadow-xl p-4 w-80 max-h-[60vh] overflow-y-auto">
-          <h4 className="font-semibold mb-2">Meldingen</h4>
+          <h4 className="font-semibold mb-2">Notifications</h4>
           {loading ? (
-            <div className="text-gray-500 text-sm">Laden...</div>
+            <div className="text-gray-500 text-sm">Loading...</div>
           ) : notifications.length === 0 ? (
-            <div className="text-gray-700 text-sm">Geen meldingen.</div>
+            <div className="text-gray-700 text-sm">No notifications.</div>
           ) : (
             <ul className="divide-y divide-gray-200">
               {notifications.map((n) => (

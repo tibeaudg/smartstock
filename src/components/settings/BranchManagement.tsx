@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
 import { supabase } from '@/integrations/supabase/client';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -44,6 +44,7 @@ interface PricingInfo {
 export const BranchManagement = () => {
   const { user } = useAuth();
   const { refreshBranches } = useBranches();
+  const queryClient = useQueryClient();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [editingBranch, setEditingBranch] = useState<UserBranch | null>(null);
@@ -141,7 +142,7 @@ export const BranchManagement = () => {
 
   // Delete branch
   const deleteBranch = async (branchId: string) => {
-    const confirmed = window.confirm('Weet je zeker dat je dit filiaal wilt verwijderen?');
+    const confirmed = window.confirm('Are you sure you want to delete this branch?');
     if (!confirmed || !user) return;
 
     const { error } = await supabase
@@ -150,9 +151,9 @@ export const BranchManagement = () => {
       .eq('id', branchId)
 
     if (error) {
-      console.error('Fout bij verwijderen:', error);
+      console.error('Error deleting branch:', error);
     } else {
-      toast({ title: 'Verwijderd', description: 'Filiaal succesvol verwijderd.' });
+      toast({ title: 'Deleted', description: 'Branch successfully deleted.' });
       refetch();
       // Refresh pricing info
       queryClient.invalidateQueries({ queryKey: ['pricingInfo', user.id] });
@@ -180,7 +181,7 @@ export const BranchManagement = () => {
 
         if (error) throw error;
 
-        toast({ title: 'Bijgewerkt', description: 'Filiaal succesvol bijgewerkt.' });
+          toast({ title: 'Updated', description: 'Branch successfully updated.' });
       } else {
         // Create new
         const { data: newBranch, error: branchError } = await supabase
@@ -209,12 +210,12 @@ export const BranchManagement = () => {
 
         if (userError) {
           toast({
-            title: 'Waarschuwing',
-            description: 'Filiaal aangemaakt, maar koppelen aan gebruiker mislukt.',
+            title: 'Warning',
+            description: 'Branch created, but linking to user failed.',
             variant: 'destructive',
           });
         } else {
-          toast({ title: 'Aangemaakt', description: 'Nieuw filiaal succesvol toegevoegd.' });
+          toast({ title: 'Created', description: 'New branch successfully added.' });
         }
       }
 
@@ -227,8 +228,8 @@ export const BranchManagement = () => {
     } catch (error) {
       console.error(error);
       toast({
-        title: 'Fout',
-        description: 'Er is een fout opgetreden tijdens het opslaan.',
+        title: 'Error',
+        description: 'An error occurred while saving.',
         variant: 'destructive',
       });
     } finally {
@@ -244,8 +245,8 @@ export const BranchManagement = () => {
       .single();
 
     if (error) {
-      console.error('Fout bij ophalen filiaal:', error);
-      toast({ title: 'Fout', description: 'Kon gegevens niet ophalen.', variant: 'destructive' });
+      console.error('Error fetching branch:', error);
+      toast({ title: 'Error', description: 'Could not fetch data.', variant: 'destructive' });
       return;
     }
 
@@ -268,10 +269,10 @@ export const BranchManagement = () => {
   if (error) {
     return (
       <div className="text-center py-8">
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">Er is een fout opgetreden</h3>
-        <p className="text-gray-600 mb-4">Kon de filialen niet laden. Probeer het later opnieuw.</p>
+        <h3 className="text-lg font-semibold text-gray-900 mb-2">An error occurred</h3>
+        <p className="text-gray-600 mb-4">Could not load branches. Please try again later.</p>
         <Button onClick={() => refetch()}>
-          Opnieuw Proberen
+          Try Again
         </Button>
       </div>
     );
@@ -281,8 +282,8 @@ export const BranchManagement = () => {
     <div className="space-y-6">
 
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Filialen Beheer</h1>
-        <p className="text-gray-600 mt-2">Beheer je filialen en pas de namen aan zoals je wilt.</p>
+        <h1 className="text-3xl font-bold text-gray-900">Manage Branches</h1>
+        <p className="text-gray-600 mt-2">Manage your branches and adjust the names as you wish.</p>
       </div>
       
       <div className="flex justify-between items-center">
@@ -290,23 +291,23 @@ export const BranchManagement = () => {
           <DialogTrigger asChild>
             <Button onClick={handleCreateNew}>
               <Plus className="w-4 h-4 mr-2" />
-              Nieuw Filiaal
+              New Branch
             </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>{editingBranch ? 'Filiaal Bewerken' : 'Nieuw Filiaal'}</DialogTitle>
+              <DialogTitle>{editingBranch ? 'Edit Branch' : 'New Branch'}</DialogTitle>
               <DialogDescription>
                 {editingBranch
-                  ? 'Pas de gegevens van dit filiaal aan.'
-                  : 'Voer de gegevens van het nieuwe filiaal in.'}
+                  ? 'Adjust the data of this branch.'
+                  : 'Enter the data of the new branch.'}
               </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               {['name'].map((field) => (
                 <div className="space-y-2" key={field}>
                   <Label htmlFor={field}>
-                    {field === 'name' ? 'Filiaal Naam *' : field.charAt(0).toUpperCase() + field.slice(1)}
+                    {field === 'name' ? 'Branch Name *' : field.charAt(0).toUpperCase() + field.slice(1)}
                   </Label>
                   <Input
                     id={field}
@@ -317,10 +318,10 @@ export const BranchManagement = () => {
 
                         : field === 'phone'
                         ? '+31 6 12345678'
-                        : 'filiaal@bedrijf.nl'
+                        : 'branch@company.nl'
                     }
                     {...register(field as keyof BranchFormData, {
-                      required: field === 'name' ? 'Naam is verplicht' : false,
+                      required: field === 'name' ? 'Name is required' : false,
                     })}
                   />
                   {errors[field as keyof BranchFormData] && (
@@ -332,11 +333,11 @@ export const BranchManagement = () => {
               ))}
               <div className="flex justify-end space-x-2">
                 <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
-                  Annuleren
+                  Cancel
                 </Button>
                 <Button type="submit" disabled={isSaving}>
                   {isSaving && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-                  {editingBranch ? 'Bijwerken' : 'Aanmaken'}
+                  {editingBranch ? 'Update' : 'Create'}
                 </Button>
               </div>
             </form>
@@ -355,7 +356,7 @@ export const BranchManagement = () => {
                 </div>
                 {branch.is_main && (
                   <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
-                    Hoofdvestiging
+                      Main Branch
                   </span>
                 )}
               </CardTitle>
@@ -363,16 +364,16 @@ export const BranchManagement = () => {
             <CardContent className="space-y-3">
               <div className="flex items-center gap-2 text-sm text-gray-600">
                 <Users className="w-4 h-4" />
-                <span>{branch.user_count} gebruikers</span>
+                <span>{branch.user_count} users</span>
               </div>
               <div className="flex items-center gap-2 text-sm text-gray-600">
                 <Calendar className="w-4 h-4" />
-                <span>{new Date(branch.created_at).toLocaleDateString('nl-NL')}</span>
+                <span>{new Date(branch.created_at).toLocaleDateString('en-US')}</span>
               </div>
               <div className="flex gap-2">
                 <Button onClick={() => handleEditBranch(branch)} size="sm" variant="outline" className="w-full">
                   <Edit className="w-4 h-4 mr-2" />
-                  Bewerken
+                  Edit
                 </Button>
                   <Button
                     onClick={() => deleteBranch(branch.branch_id)}
@@ -381,7 +382,7 @@ export const BranchManagement = () => {
                     className="w-full"
                     disabled={branch.is_main}
                   >
-                    Verwijderen
+                    Delete
                   </Button>
 
               </div>
@@ -393,18 +394,18 @@ export const BranchManagement = () => {
       {userBranches.length === 0 && (isLoading || isFetching) ? (
         <div className="flex flex-col items-center justify-center py-8">
           <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
-          <span className="mt-2 text-gray-600">Filialen laden...</span>
+          <span className="mt-2 text-gray-600">Loading branches...</span>
         </div>
       ) : (
         userBranches.length === 0 && (
           <Card>
             <CardContent className="text-center py-8">
               <Building2 className="w-12 h-12 mx-auto text-gray-400 mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Geen filialen gevonden</h3>
-              <p className="text-gray-600 mb-4">Begin met het aanmaken van uw eerste filiaal.</p>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">No branches found</h3>
+              <p className="text-gray-600 mb-4">Begin with creating your first branch.</p>
               <Button onClick={handleCreateNew}>
                 <Plus className="w-4 h-4 mr-2" />
-                Eerste Filiaal Aanmaken
+                Create First Branch
               </Button>
             </CardContent>
           </Card>

@@ -6,10 +6,15 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000
 
 let stripePromise: Promise<Stripe | null>;
 
-// Initialize Stripe
+// Initialize Stripe with error handling
 export const getStripe = () => {
   if (!stripePromise) {
-    stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY);
+    if (!STRIPE_PUBLISHABLE_KEY) {
+      console.warn('Stripe publishable key not configured. Stripe functionality will be disabled.');
+      stripePromise = Promise.resolve(null);
+    } else {
+      stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY);
+    }
   }
   return stripePromise;
 };

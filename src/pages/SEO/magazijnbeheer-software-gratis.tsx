@@ -11,7 +11,7 @@ export default function MagazijnbeheerSoftwareGratis() {
   const faqData = [
     {
       question: "Is magazijnbeheer software gratis echt gratis?",
-      answer: "Ja, onze magazijnbeheer software gratis is volledig gratis voor Vlaamse KMO's. Je kunt tot 30 producten beheren zonder enige kosten. Geen verborgen kosten, geen verplichtingen, geen creditcard vereist. Perfect voor starters en kleine bedrijven die willen beginnen met professioneel magazijnbeheer."
+      answer: "Ja, onze magazijnbeheer software gratis is volledig gratis voor KMO's. Je kunt tot 30 producten beheren zonder enige kosten. Geen verborgen kosten, geen verplichtingen, geen creditcard vereist. Perfect voor starters en kleine bedrijven die willen beginnen met professioneel magazijnbeheer."
     },
     {
       question: "Welke functies heeft magazijnbeheer software gratis?",
@@ -35,7 +35,7 @@ export default function MagazijnbeheerSoftwareGratis() {
     {
       icon: Gift,
       title: "100% Gratis",
-      description: "Geen verborgen kosten, geen limieten op gebruikers. Volledig gratis magazijnbeheer software voor Vlaamse KMO's."
+      description: "Geen verborgen kosten, geen limieten op gebruikers. Volledig gratis magazijnbeheer software voor KMO's."
     },
     {
       icon: Warehouse,
@@ -122,7 +122,7 @@ export default function MagazijnbeheerSoftwareGratis() {
     <SeoPageLayout title="Magazijnbeheer Software Gratis - Professioneel Magazijnbeheer">
       <SEO
         title="Magazijnbeheer Software Gratis | Professioneel Magazijnbeheer | stockflow"
-        description="Ontdek de beste magazijnbeheer software gratis voor Vlaamse KMO's. Professioneel magazijnbeheer met real-time rapportages, locatiebeheer en 100% gratis. Start vandaag!"
+        description="Ontdek de beste magazijnbeheer software gratis voor KMO's. Professioneel magazijnbeheer met real-time rapportages, locatiebeheer en 100% gratis. Start vandaag!"
         keywords="magazijnbeheer software gratis, gratis magazijnbeheer software, magazijnbeheer software gratis download, magazijnbeheer software gratis KMO, magazijnbeheer software gratis belgië, magazijnbeheer software gratis vlaanderen, magazijnbeheer software gratis horeca, magazijnbeheer software gratis webshop, magazijnbeheer software gratis detailhandel, magazijnbeheer software gratis starters, magazijnbeheer software gratis kleine bedrijven, magazijnbeheer software gratis stockflow"
         url="https://www.stockflow.be/magazijnbeheer-software-gratis"
       />
@@ -215,7 +215,7 @@ export default function MagazijnbeheerSoftwareGratis() {
                 <span className="text-indigo-600">Voordelen</span> van onze magazijnbeheer software gratis
               </h2>
               <p className="text-lg text-gray-700 mb-8">
-                Onze magazijnbeheer software gratis is specifiek ontwikkeld voor Vlaamse KMO's. 
+                Onze magazijnbeheer software gratis is specifiek ontwikkeld voor KMO's. 
                 Ontdek waarom honderden bedrijven al kiezen voor onze magazijnbeheer software gratis.
               </p>
               
@@ -369,7 +369,7 @@ export default function MagazijnbeheerSoftwareGratis() {
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-8">
-            Waarom kiezen <span className="text-indigo-600">32+ Vlaamse KMO's</span> voor onze magazijnbeheer software gratis?
+            Waarom kiezen <span className="text-indigo-600">3200+ KMO's</span> voor onze magazijnbeheer software gratis?
           </h2>
           
           <div className="grid md:grid-cols-3 gap-8 mb-12">
@@ -445,7 +445,7 @@ export default function MagazijnbeheerSoftwareGratis() {
             Start Vandaag Met Onze Magazijnbeheer Software Gratis
           </h2>
           <p className="text-xl mb-8 opacity-90">
-            Sluit je aan bij honderden Vlaamse KMO's die al profiteren van onze magazijnbeheer software gratis. 
+            Sluit je aan bij honderden KMO's die al profiteren van onze magazijnbeheer software gratis. 
             Geen verborgen kosten, geen verplichtingen.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -518,14 +518,14 @@ export default function MagazijnbeheerSoftwareGratis() {
             className="h-10 md:h-12 mx-auto mb-6"
           />
           <p className="text-gray-400 text-base md:text-lg mb-8 leading-relaxed max-w-2xl mx-auto">
-            De beste magazijnbeheer software gratis voor Vlaamse KMO's. 
+            De beste magazijnbeheer software gratis voor KMO's. 
             Professioneel, efficiënt en 100% gratis.
           </p>
 
           <div className="border-t border-gray-700 pt-6">
             <p className="text-gray-500 text-xs md:text-sm">
               &copy; {new Date().getFullYear()} stockflow. Alle rechten voorbehouden.
-              Magazijnbeheer software gratis voor Vlaamse KMO's.
+              Magazijnbeheer software gratis voor KMO's.
             </p>
           </div>
         </div>
@@ -551,7 +551,7 @@ export default function MagazijnbeheerSoftwareGratis() {
         "@context": "https://schema.org",
         "@type": "SoftwareApplication",
         "name": "stockflow - Magazijnbeheer Software Gratis",
-        "description": "De beste magazijnbeheer software gratis voor Vlaamse KMO's. Professioneel magazijnbeheer met real-time rapportages, locatiebeheer en 100% gratis.",
+        "description": "De beste magazijnbeheer software gratis voor KMO's. Professioneel magazijnbeheer met real-time rapportages, locatiebeheer en 100% gratis.",
         "applicationCategory": "BusinessApplication",
         "operatingSystem": "Web Browser",
         "offers": {

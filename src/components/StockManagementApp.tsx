@@ -24,7 +24,7 @@ const AppContent: React.FC = () => {
   const { hasNoBranches } = useBranches();
   const location = useLocation();
   
-  // Gebruik de page refresh hook
+  // Use the page refresh hook
   usePageRefresh();
 
   // Show loading state while auth is being determined
@@ -42,19 +42,19 @@ const AppContent: React.FC = () => {
   if (!isLocalStorageAvailable()) {
     return (
       <div style={{ padding: 32, textAlign: 'center', color: '#b91c1c', background: '#fef2f2', minHeight: '100vh' }}>
-        <h1 style={{ fontSize: 28, marginBottom: 16 }}>Opslag niet beschikbaar</h1>
+        <h1 style={{ fontSize: 28, marginBottom: 16 }}>Local Storage Unavailable</h1>
         <p style={{ marginBottom: 16 }}>
-          De applicatie kan geen gegevens opslaan in je browser. Dit kan komen door:
+          This application requires local storage to function properly. This might be due to:
           <ul style={{ textAlign: 'left', maxWidth: 400, margin: '16px auto' }}>
-            <li>Private/incognito modus</li>
-            <li>Uitgeschakelde cookies of opslag</li>
-            <li>Strenge privacy-instellingen</li>
-            <li>Een in-app browser (zoals Facebook/Instagram)</li>
+            <li>Private browsing mode</li>
+            <li>Cookies disabled</li>
+            <li>Privacy settings</li>
+            <li>In-app browser restrictions</li>
           </ul>
           <br />
-          Schakel deze instellingen uit of gebruik een andere browser om SmartStock te gebruiken.
+          Please enable local storage or use a different browser and try again.
         </p>
-        <button onClick={() => window.location.reload()} style={{ background: '#2563eb', color: 'white', padding: '10px 24px', borderRadius: 6, fontSize: 16, border: 'none' }}>Opnieuw proberen</button>
+        <button onClick={() => window.location.reload()} style={{ background: '#2563eb', color: 'white', padding: '10px 24px', borderRadius: 6, fontSize: 16, border: 'none' }}>Try Again</button>
       </div>
     );
   }

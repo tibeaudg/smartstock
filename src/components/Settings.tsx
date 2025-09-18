@@ -37,7 +37,7 @@ export const Settings = () => {
   const navigate = useNavigate();
   const { isMobile } = useMobile();
   
-  // Gebruik de page refresh hook
+  // Use the page refresh hook
   usePageRefresh();
 
   // Get current path to determine active submenu
@@ -63,15 +63,15 @@ export const Settings = () => {
 
   // Define menu items
   const menuItems = [
-    { id: 'profile', label: 'Profiel', icon: <User className="w-4 h-4" /> },
-    { id: 'branches', label: 'Filialen', icon: <Building2 className="w-4 h-4" /> },
-    { id: 'invoices', label: 'Facturen', icon: <Banknote className="w-4 h-4" /> },
+    { id: 'profile', label: 'Profile', icon: <User className="w-4 h-4" /> },
+    { id: 'branches', label: 'Branches', icon: <Building2 className="w-4 h-4" /> },
+    { id: 'invoices', label: 'Invoices', icon: <Banknote className="w-4 h-4" /> },
     ...(isAdmin
       ? [
-          { id: 'users', label: 'Gebruikers', icon: <Users className="w-4 h-4" /> },
+          { id: 'users', label: 'Users', icon: <Users className="w-4 h-4" /> },
         ]
       : []),
-    ...(isBlocked ? [{ id: 'invoicing', label: 'Facturatie', icon: <Banknote className="w-4 h-4" /> }] : []),
+    ...(isBlocked ? [{ id: 'invoicing', label: 'Invoicing', icon: <Banknote className="w-4 h-4" /> }] : []),
   ];
 
   if (isBlocked) {

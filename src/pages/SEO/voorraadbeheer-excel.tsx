@@ -301,7 +301,7 @@ export default function VoorraadbeheerExcel() {
           <div className="border-t border-gray-700 pt-6">
             <p className="text-gray-500 text-xs md:text-sm">
               &copy; {new Date().getFullYear()} stockflow. Alle rechten voorbehouden.
-              Voorraadbeheer software voor Vlaamse KMO's.
+              Voorraadbeheer software voor KMO's.
             </p>
           </div>
         </div>

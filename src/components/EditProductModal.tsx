@@ -44,7 +44,7 @@ export const EditProductModal = ({
   // Geen geavanceerde opties in deze modal; enkel quantity aanpassen
   const queryClient = useQueryClient();
   
-  // Gebruik de page refresh hook
+  // Use the page refresh hook
   usePageRefresh();
 
   const form = useForm({
@@ -95,7 +95,7 @@ export const EditProductModal = ({
           quantity: numericQuantity,
           unit_price: product.unit_price,
           reference_number: `STOCK_${actionType?.toUpperCase()}_${Date.now()}`,
-          notes: `Voorraad ${actionType === 'in' ? 'toegevoegd' : 'verwijderd'} via voorraad beheer`,
+          notes: `Stock ${actionType === 'in' ? 'added' : 'removed'} via product edit`,
           user_id: user.id, // Behoud user_id voor backward compatibility
           created_by: user.id, // Nieuwe kolom voor relaties
           branch_id: product.branch_id, // Add this if you have branch information
@@ -151,7 +151,7 @@ export const EditProductModal = ({
   if (!isOpen) return null;
 
   // Add this to show the action type
-  const actionTitle = actionType === 'in' ? 'Toevoegen' : 'Uithalen';
+  const actionTitle = actionType === 'in' ? 'Add Stock' : 'Remove Stock';
   const actionColor = actionType === 'in' ? 'text-green-600' : 'text-red-600';
 
   return (

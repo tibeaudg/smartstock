@@ -73,7 +73,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
     location?: string;
   }>>([]);
   
-  // Gebruik de page refresh hook
+  // Use the page refresh hook
   usePageRefresh();
 
   const form = useForm<FormData>({
@@ -199,13 +199,13 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
     }
 
     if (branchLoading) {
-      toast.error('Filialen worden nog geladen, probeer het opnieuw.');
+      toast.error('Branches are still loading, please try again');
       return;
     }
 
     if (!activeBranch) {
       console.error('No active branch selected');
-      toast.error('Geen actief filiaal geselecteerd. Selecteer een filiaal en probeer het opnieuw.');
+      toast.error('No active branch selected. Select a branch and try again');
       return;
     }
 
@@ -213,14 +213,14 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
     if (hasVariants) {
       const validVariants = variants.filter(v => v.variantName.trim());
       if (validVariants.length === 0) {
-        toast.error('Voeg minimaal één variant toe');
+        toast.error('Add at least one variant');
         return;
       }
       
       // Controleer of alle varianten verplichte velden hebben
       for (const variant of validVariants) {
         if (!variant.variantName.trim()) {
-          toast.error('Alle varianten moeten een naam hebben');
+          toast.error('All variants must have a name');
           return;
         }
         // Prijzen zijn niet verplicht
@@ -1238,9 +1238,9 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
 
       {/* 2. 'text-center' toegevoegd om de tekst te centreren */}
       <div className="text-center">
-        <div className="font-bold text-blue-700 text-lg mb-2">Abonnement automatisch geüpgraded</div>
+        <div className="font-bold text-blue-700 text-lg mb-2">Subscription automatically upgraded</div>
         <div className="text-blue-900 text-sm">
-          Uw aantal producten overschrijdt de limiet van uw huidige abonnement. U wordt automatisch overgezet naar een hoger abonnement. Klik op 'Accepteren' om uw nieuwe licentie te bekijken.
+          Your number of products exceeds the limit of your current subscription. You will be automatically transferred to a higher subscription. Click 'Accept' to view your new license.
         </div>
       </div>
 
@@ -1254,7 +1254,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
         }}
         autoFocus
       >
-        Accepteren
+        Accept
       </button>
 
     </div>

@@ -22,7 +22,7 @@ import {
 import { useSubscription } from '@/hooks/useSubscription';
 import { useNavigate } from 'react-router-dom';
 import { UsageLimits } from '@/components/UsageLimits';
-import { UpgradePrompt } from '@/components/UpgradePrompt';
+import { UpgradePrompt, UpgradeOptions, AllUpgradeOptions, TierUpgradeCard } from '@/components/UpgradePrompt';
 
 export const SubscriptionManagement = () => {
   const { user } = useAuth();
@@ -34,8 +34,12 @@ export const SubscriptionManagement = () => {
     isTrialActive, 
     isSubscriptionActive,
     cancelSubscription,
-    isCancelling
+    isCancelling,
+    pricingTiers,
+    isLoading,
+    error
   } = useSubscription();
+
 
   const [showUpgradePrompt, setShowUpgradePrompt] = useState(false);
 
@@ -49,23 +53,24 @@ export const SubscriptionManagement = () => {
     try {
       await cancelSubscription();
       toast({
-        title: 'Abonnement geannuleerd',
-        description: 'Je abonnement is geannuleerd. Je kunt tot het einde van je betaalperiode blijven gebruiken.',
+        title: 'Subscription cancelled',
+        description: 'Your subscription has been cancelled. You can still use it until the end of your billing period.',
       });
     } catch (error) {
       toast({
-        title: 'Fout bij annuleren',
-        description: 'Er is een fout opgetreden bij het annuleren van je abonnement.',
+        title: 'Error cancelling subscription',
+        description: 'An error occurred while cancelling your subscription.',
         variant: 'destructive',
       });
     }
   };
 
   const getTierIcon = () => {
-    switch (currentTier?.name) {
-      case 'basis':
+    const tier = currentTier || pricingTiers.find(t => t.name === 'basic');
+    switch (tier?.name) {
+      case 'basic':
         return <Package className="h-6 w-6 text-gray-600" />;
-      case 'groei':
+      case 'growth':
         return <Zap className="h-6 w-6 text-blue-600" />;
       case 'premium':
         return <Crown className="h-6 w-6 text-purple-600" />;
@@ -75,10 +80,11 @@ export const SubscriptionManagement = () => {
   };
 
   const getTierColor = () => {
-    switch (currentTier?.name) {
-      case 'basis':
+    const tier = currentTier || pricingTiers.find(t => t.name === 'basic');
+    switch (tier?.name) {
+      case 'basic':
         return 'border-gray-200 bg-gray-50';
-      case 'groei':
+      case 'growth':
         return 'border-blue-200 bg-blue-50';
       case 'premium':
         return 'border-purple-200 bg-purple-50';
@@ -89,12 +95,12 @@ export const SubscriptionManagement = () => {
 
   const getStatusBadge = () => {
     if (isTrialActive) {
-      return <Badge className="bg-blue-100 text-blue-800">Trial actief</Badge>;
+      return <Badge className="bg-blue-100 text-blue-800">Trial Active</Badge>;
     }
     if (isSubscriptionActive) {
-      return <Badge className="bg-green-100 text-green-800">Actief</Badge>;
+      return <Badge className="bg-green-100 text-green-800">Active</Badge>;
     }
-    return <Badge variant="outline" className="bg-gray-100 text-gray-800">Basis plan</Badge>;
+    return <Badge className="bg-gray-100 text-gray-800">Basic plan</Badge>;
   };
 
   const formatPrice = (price: number) => {
@@ -109,6 +115,38 @@ export const SubscriptionManagement = () => {
     return new Date(currentSubscription.end_date).toLocaleDateString('nl-NL');
   };
 
+  // Show loading state if data is still loading
+  if (isLoading) {
+    return (
+      <div className="space-y-6">
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center justify-center">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+              <span className="ml-2 text-gray-600">Loading subscription data...</span>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  // Show error state if there's an error
+  if (error) {
+    return (
+      <div className="space-y-6">
+        <Card className="border-red-200 bg-red-50">
+          <CardContent className="p-6">
+            <div className="text-red-600">
+              <h3 className="font-semibold">Error loading subscription data</h3>
+              <p className="text-sm mt-1">{error.message}</p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       {/* Current Plan */}
@@ -118,8 +156,8 @@ export const SubscriptionManagement = () => {
             <div className="flex items-center space-x-3">
               {getTierIcon()}
               <div>
-                <CardTitle className="text-xl">{currentTier?.display_name} Plan</CardTitle>
-                <CardDescription>{currentTier?.description}</CardDescription>
+                <CardTitle className="text-xl">{(currentTier || pricingTiers.find(t => t.name === 'basic'))?.display_name} Plan</CardTitle>
+                <CardDescription>{(currentTier || pricingTiers.find(t => t.name === 'basic'))?.description}</CardDescription>
               </div>
             </div>
             {getStatusBadge()}
@@ -131,21 +169,27 @@ export const SubscriptionManagement = () => {
           <div className="flex items-center justify-between">
             <div>
               <div className="text-2xl font-bold text-gray-900">
-                {currentTier?.price_monthly === 0 ? 'Gratis' : formatPrice(currentTier?.price_monthly || 0)}
+                {(() => {
+                  const tier = currentTier || pricingTiers.find(t => t.name === 'basic');
+                  return tier?.price_monthly === 0 ? 'Free' : formatPrice(tier?.price_monthly || 0);
+                })()}
               </div>
               <div className="text-sm text-gray-500">
-                {currentTier?.price_monthly === 0 ? 'Voor altijd gratis' : 'per maand'}
+                {(() => {
+                  const tier = currentTier || pricingTiers.find(t => t.name === 'basic');
+                  return tier?.price_monthly === 0 ? 'Forever free' : 'per month';
+                })()}
               </div>
             </div>
             
             {currentSubscription && (
               <div className="text-right">
                 <div className="text-sm text-gray-600">
-                  {currentSubscription.billing_cycle === 'monthly' ? 'Maandelijks' : 'Jaarlijks'}
+                  {currentSubscription.billing_cycle === 'monthly' ? 'Monthly' : 'Yearly'}
                 </div>
                 {getNextBillingDate() && (
                   <div className="text-sm text-gray-500">
-                    Volgende betaling: {getNextBillingDate()}
+                    Next payment: {getNextBillingDate()}
                   </div>
                 )}
               </div>
@@ -154,37 +198,51 @@ export const SubscriptionManagement = () => {
 
           {/* Features */}
           <div className="space-y-3">
-            <h4 className="font-medium text-gray-900">Inbegrepen features:</h4>
+            <h4 className="font-medium text-gray-900">Included features:</h4>
             <div className="grid grid-cols-2 gap-2">
-              {currentTier?.features.slice(0, 6).map((feature, index) => (
-                <div key={index} className="flex items-center text-sm">
-                  <Check className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
-                  <span className="text-gray-600">{feature}</span>
-                </div>
-              ))}
-              {currentTier?.features.length > 6 && (
-                <div className="text-sm text-gray-500 col-span-2">
-                  +{currentTier.features.length - 6} meer features
-                </div>
-              )}
+              {(() => {
+                const tier = currentTier || pricingTiers.find(t => t.name === 'basic');
+                const features = tier?.features || [];
+                return features.slice(0, 6).map((feature, index) => (
+                  <div key={index} className="flex items-center text-sm">
+                    <Check className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
+                    <span className="text-gray-600">{feature}</span>
+                  </div>
+                ));
+              })()}
+              {(() => {
+                const tier = currentTier || pricingTiers.find(t => t.name === 'basic');
+                const features = tier?.features || [];
+                return features.length > 6 && (
+                  <div className="text-sm text-gray-500 col-span-2">
+                    +{features.length - 6} more features
+                  </div>
+                );
+              })()}
             </div>
           </div>
 
           {/* Action Buttons */}
           <div className="flex space-x-3">
-            {currentTier?.name === 'basis' && (
-              <Button onClick={handleUpgrade} className="bg-blue-600 hover:bg-blue-700">
-                Upgrade naar Groei
-                <ArrowRight className="h-4 w-4 ml-2" />
-              </Button>
-            )}
+            {(() => {
+              const tier = currentTier || pricingTiers.find(t => t.name === 'basic');
+              return tier?.name === 'basic' && (
+                <Button onClick={handleUpgrade} className="bg-blue-600 hover:bg-blue-700">
+                      Upgrade to Growth
+                  <ArrowRight className="h-4 w-4 ml-2" />
+                </Button>
+              );
+            })()}
             
-            {currentTier?.name === 'groei' && (
-              <Button onClick={handleUpgrade} variant="outline">
-                Upgrade naar Premium
-                <Crown className="h-4 w-4 ml-2" />
-              </Button>
-            )}
+            {(() => {
+              const tier = currentTier || pricingTiers.find(t => t.name === 'basic');
+              return tier?.name === 'growth' && (
+                <Button onClick={handleUpgrade} variant="outline">
+                      Upgrade to Premium
+                  <Crown className="h-4 w-4 ml-2" />
+                </Button>
+              );
+            })()}
             
             {isSubscriptionActive && (
               <Button 
@@ -193,7 +251,7 @@ export const SubscriptionManagement = () => {
                 disabled={isCancelling}
                 className="text-red-600 border-red-200 hover:bg-red-50"
               >
-                {isCancelling ? 'Annuleren...' : 'Abonnement annuleren'}
+                      {isCancelling ? 'Cancelling...' : 'Cancel subscription'}
               </Button>
             )}
           </div>
@@ -211,12 +269,12 @@ export const SubscriptionManagement = () => {
               <Clock className="h-5 w-5 text-blue-600 mt-0.5" />
               <div>
                 <h4 className="font-medium text-blue-900">
-                  {isTrialActive ? 'Gratis trial actief' : 'Premium plan actief'}
+                  {isTrialActive ? 'Free trial active' : 'Premium plan active'}
                 </h4>
                 <p className="text-sm text-blue-700 mt-1">
                   {isTrialActive 
-                    ? 'Je trial loopt nog. Upgrade naar een betaald plan om je limieten te verhogen.'
-                    : 'Je hebt toegang tot alle premium features en hogere limieten.'
+                    ? 'Your trial is still active. Upgrade to a paid plan to increase your limits.'
+                    : 'You have access to all premium features and higher limits.'
                   }
                 </p>
                 {isTrialActive && (
@@ -225,7 +283,7 @@ export const SubscriptionManagement = () => {
                     size="sm" 
                     className="mt-3 bg-blue-600 hover:bg-blue-700"
                   >
-                    Nu upgraden
+                    Upgrade now
                   </Button>
                 )}
               </div>
@@ -234,39 +292,57 @@ export const SubscriptionManagement = () => {
         </Card>
       )}
 
-      {/* Upgrade Prompts for Basic Plan */}
-      {currentTier?.name === 'basis' && (
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-gray-900">
-            Upgrade voor meer mogelijkheden
-          </h3>
-          
-          <div className="grid md:grid-cols-2 gap-4">
-            <UpgradePrompt 
-              feature="analytics"
-              showCloseButton={false}
-            />
-            <UpgradePrompt 
-              feature="scanner"
-              showCloseButton={false}
-            />
+      {/* Upgrade Prompts */}
+      {(() => {
+        const tier = currentTier || pricingTiers.find(t => t.name === 'basic');
+        const isBasic = tier?.name === 'basic';
+        const isGrowth = tier?.name === 'growth';
+        
+        if (!isBasic && !isGrowth) return null;
+        
+        return (
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-gray-900">
+              Upgrade for more features
+            </h3>
+            
+            {isBasic ? (
+              <div className="grid md:grid-cols-2 gap-4">
+                <TierUpgradeCard 
+                  tier={pricingTiers.find(t => t.name === 'growth')!}
+                  feature="analytics"
+                  showCloseButton={false}
+                />
+                <TierUpgradeCard 
+                  tier={pricingTiers.find(t => t.name === 'premium')!}
+                  feature="scanner"
+                  showCloseButton={false}
+                />
+              </div>
+            ) : (
+              <UpgradeOptions 
+                feature="premium"
+                showAllOptions={false}
+                showCloseButton={false}
+              />
+            )}
           </div>
-        </div>
-      )}
+        );
+      })()}
 
       {/* Billing History */}
       {currentSubscription && (
         <Card>
           <CardHeader>
-            <CardTitle>Facturatie geschiedenis</CardTitle>
+            <CardTitle>Billing history</CardTitle>
             <CardDescription>
-              Bekijk je vorige betalingen en downloads facturen
+              View your previous payments and downloads invoices
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="text-center py-8 text-gray-500">
               <Calendar className="h-12 w-12 mx-auto mb-4 text-gray-300" />
-              <p>Facturatie geschiedenis wordt binnenkort toegevoegd</p>
+              <p>Billing history will be added soon</p>
             </div>
           </CardContent>
         </Card>

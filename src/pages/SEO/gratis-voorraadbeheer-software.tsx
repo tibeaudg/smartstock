@@ -11,7 +11,7 @@ export default function GratisVoorraadbeheerSoftware() {
   const faqData = [
     {
       question: "Is gratis voorraadbeheer software echt gratis?",
-      answer: "Ja, onze gratis voorraadbeheer software is volledig gratis voor Vlaamse KMO's. Je kunt tot 30 producten beheren zonder enige kosten. Geen verborgen kosten, geen verplichtingen, geen creditcard vereist. Perfect voor starters en kleine bedrijven."
+      answer: "Ja, onze gratis voorraadbeheer software is volledig gratis voor KMO's. Je kunt tot 30 producten beheren zonder enige kosten. Geen verborgen kosten, geen verplichtingen, geen creditcard vereist. Perfect voor starters en kleine bedrijven."
     },
     {
       question: "Welke functies heeft gratis voorraadbeheer software?",
@@ -35,7 +35,7 @@ export default function GratisVoorraadbeheerSoftware() {
     {
       icon: Gift,
       title: "100% Gratis",
-      description: "Geen verborgen kosten, geen limieten op gebruikers. Volledig gratis voorraadbeheer software voor Vlaamse KMO's."
+      description: "Geen verborgen kosten, geen limieten op gebruikers. Volledig gratis voorraadbeheer software voor KMO's."
     },
     {
       icon: BarChart3,
@@ -122,7 +122,7 @@ export default function GratisVoorraadbeheerSoftware() {
     <SeoPageLayout title="Gratis Voorraadbeheer Software - Professioneel Voorraadbeheer">
       <SEO
         title="Gratis Voorraadbeheer Software | Professioneel Voorraadbeheer | stockflow"
-        description="Ontdek de beste gratis voorraadbeheer software voor Vlaamse KMO's. Professioneel voorraadbeheer met real-time rapportages, automatische bestellingen en 100% gratis. Start vandaag!"
+        description="Ontdek de beste gratis voorraadbeheer software voor KMO's. Professioneel voorraadbeheer met real-time rapportages, automatische bestellingen en 100% gratis. Start vandaag!"
         keywords="gratis voorraadbeheer software, voorraadbeheer software gratis, gratis voorraadbeheer software download, gratis voorraadbeheer software KMO, gratis voorraadbeheer software belgië, gratis voorraadbeheer software vlaanderen, gratis voorraadbeheer software horeca, gratis voorraadbeheer software webshop, gratis voorraadbeheer software detailhandel, gratis voorraadbeheer software starters, gratis voorraadbeheer software kleine bedrijven, gratis voorraadbeheer software stockflow"
         url="https://www.stockflow.be/gratis-voorraadbeheer-software"
       />
@@ -215,7 +215,7 @@ export default function GratisVoorraadbeheerSoftware() {
                 <span className="text-blue-600">Voordelen</span> van onze gratis voorraadbeheer software
               </h2>
               <p className="text-lg text-gray-700 mb-8">
-                Onze gratis voorraadbeheer software is specifiek ontwikkeld voor Vlaamse KMO's. 
+                Onze gratis voorraadbeheer software is specifiek ontwikkeld voor KMO's. 
                 Ontdek waarom honderden bedrijven al kiezen voor onze gratis voorraadbeheer software.
               </p>
               
@@ -369,7 +369,7 @@ export default function GratisVoorraadbeheerSoftware() {
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-8">
-            Waarom kiezen <span className="text-blue-600">32+ Vlaamse KMO's</span> voor onze gratis voorraadbeheer software?
+            Waarom kiezen <span className="text-blue-600">3200+ KMO's</span> voor onze gratis voorraadbeheer software?
           </h2>
           
           <div className="grid md:grid-cols-3 gap-8 mb-12">
@@ -445,7 +445,7 @@ export default function GratisVoorraadbeheerSoftware() {
             Start Vandaag Met Onze Gratis Voorraadbeheer Software
           </h2>
           <p className="text-xl mb-8 opacity-90">
-            Sluit je aan bij honderden Vlaamse KMO's die al profiteren van onze gratis voorraadbeheer software. 
+            Sluit je aan bij honderden KMO's die al profiteren van onze gratis voorraadbeheer software. 
             Geen verborgen kosten, geen verplichtingen.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -518,14 +518,14 @@ export default function GratisVoorraadbeheerSoftware() {
             className="h-10 md:h-12 mx-auto mb-6"
           />
           <p className="text-gray-400 text-base md:text-lg mb-8 leading-relaxed max-w-2xl mx-auto">
-            De beste gratis voorraadbeheer software voor Vlaamse KMO's. 
+            De beste gratis voorraadbeheer software voor KMO's. 
             Professioneel, efficiënt en 100% gratis.
           </p>
 
           <div className="border-t border-gray-700 pt-6">
             <p className="text-gray-500 text-xs md:text-sm">
               &copy; {new Date().getFullYear()} stockflow. Alle rechten voorbehouden.
-              Gratis voorraadbeheer software voor Vlaamse KMO's.
+              Gratis voorraadbeheer software voor KMO's.
             </p>
           </div>
         </div>
@@ -551,7 +551,7 @@ export default function GratisVoorraadbeheerSoftware() {
         "@context": "https://schema.org",
         "@type": "SoftwareApplication",
         "name": "stockflow - Gratis Voorraadbeheer Software",
-        "description": "De beste gratis voorraadbeheer software voor Vlaamse KMO's. Professioneel voorraadbeheer met real-time rapportages, automatische bestellingen en 100% gratis.",
+        "description": "De beste gratis voorraadbeheer software voor KMO's. Professioneel voorraadbeheer met real-time rapportages, automatische bestellingen en 100% gratis.",
         "applicationCategory": "BusinessApplication",
         "operatingSystem": "Web Browser",
         "offers": {

@@ -211,7 +211,7 @@ export default function VoorraadbeheerTips() {
              Start Vandaag Met Deze Voorraadbeheer Tips
            </h2>
            <p className="text-lg md:text-xl mb-6 md:mb-8 opacity-90">
-             Sluit je aan bij honderden Vlaamse KMO's die al profiteren van deze praktische voorraadbeheer tips. Begin vandaag nog met het optimaliseren van je voorraadbeheer.
+             Sluit je aan bij honderden KMO's die al profiteren van deze praktische voorraadbeheer tips. Begin vandaag nog met het optimaliseren van je voorraadbeheer.
            </p>
           <div className="flex flex-col md:flex-row gap-4 justify-center">
             <Link
@@ -253,14 +253,14 @@ export default function VoorraadbeheerTips() {
             className="h-10 md:h-12 mx-auto mb-6"
           />
                      <p className="text-gray-400 text-base md:text-lg mb-8 leading-relaxed max-w-2xl mx-auto">
-             Praktische voorraadbeheer tips voor Vlaamse KMO's.
+             Praktische voorraadbeheer tips voor KMO's.
              Direct toepasbaar en bewezen effectief.
            </p>
 
           <div className="border-t border-gray-700 pt-6">
             <p className="text-gray-500 text-xs md:text-sm">
               &copy; {new Date().getFullYear()} stockflow. Alle rechten voorbehouden.
-              Voorraadbeheer tips voor Vlaamse KMO's.
+              Voorraadbeheer tips voor KMO's.
             </p>
           </div>
         </div>

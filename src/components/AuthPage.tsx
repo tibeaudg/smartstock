@@ -23,6 +23,7 @@ export const AuthPage = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [currentLanguage, setCurrentLanguage] = useState('en');
 
   const { signIn, signUp, resetPassword } = useAuth();
   const navigate = useNavigate();
@@ -42,10 +43,10 @@ export const AuthPage = () => {
     navigate('/');
   };
   
-  // Gebruik de page refresh hook
+  // Use the page refresh hook
   usePageRefresh();
   
-  // Gebruik website tracking
+  // Use website tracking
   useWebsiteTracking();
 
 
@@ -86,7 +87,7 @@ export const AuthPage = () => {
           if (isTrackingReady) {
             await trackError(error.message, 'login_attempt');
           }
-          toast.error(error?.message === 'Invalid login credentials' ? 'Ongeldig e-mailadres of wachtwoord.' : error?.message || 'Inloggen mislukt.');
+          toast.error(error?.message === 'Invalid login credentials' ? 'Invalid email address or password' : error?.message || 'Login failed');
           return;
         }
 
@@ -105,14 +106,14 @@ export const AuthPage = () => {
           if (isTrackingReady) {
             await trackFormAbandonment('password_mismatch');
           }
-          toast.error('Wachtwoorden komen niet overeen.');
+          toast.error('Passwords do not match');
           return;
         }
         if (password.length < 8) { // Aangeraden: 8 tekens
           if (isTrackingReady) {
             await trackFormAbandonment('password_too_short');
           }
-          toast.error('Wachtwoord moet minimaal 8 tekens zijn.');
+          toast.error('Password must be at least 8 characters long');
           return;
         }
 
@@ -123,7 +124,7 @@ export const AuthPage = () => {
           if (isTrackingReady) {
             await trackError(error.message, 'registration_started');
           }
-          toast.error(error.message.includes('User already registered') ? 'Er bestaat al een account met dit e-mailadres.' : error.message);
+          toast.error(error.message.includes('User already registered') ? 'An account with this email address already exists' : error.message);
           return;
         }
 
@@ -132,7 +133,7 @@ export const AuthPage = () => {
           await trackRegistrationCompleted();
         }
 
-        toast.success('Account aangemaakt!', { description: 'Controleer je inbox om je e-mailadres te bevestigen.' });
+        toast.success('Account created!', { description: 'Check your inbox to confirm your email address' });
         setMode('login');
         clearForm();
 
@@ -145,12 +146,12 @@ export const AuthPage = () => {
           return;
         }
 
-        toast.success('Reset-instructies verzonden!', { description: `Als er een account bestaat voor ${email}, is er een e-mail verzonden.` });
+        toast.success('Reset instructions sent!', { description: `If an account exists for ${email}, an email has been sent` });
         setMode('login');
       }
     } catch (err: any) {
       console.error('Onverwachte Auth fout:', err);
-      toast.error(err.message || 'Er is een onbekende fout opgetreden.');
+      toast.error(err.message || 'An unknown error occurred');
     } finally {
       setIsSubmitting(false);
     }
@@ -176,12 +177,15 @@ export const AuthPage = () => {
                 <span className="text-2xl font-bold text-gray-900">stockflow</span>
               </div>
               <h1 className="text-3xl font-bold text-gray-900 mb-4">
-                {mode === 'register' ? 'Start je Gratis Account' : 'Welkom Terug'}
+                {mode === 'register' 
+                  ? 'Start Your Free Account'
+                  : 'Welcome Back'
+                }
               </h1>
               <p className="text-lg text-gray-600 mb-8">
                 {mode === 'register' 
-                  ? 'Sluit je aan bij 32+ Vlaamse KMO\'s die al profiteren van gratis voorraadbeheer'
-                  : 'Log in om toegang te krijgen tot je voorraadbeheer dashboard'
+                  ? 'Join 3200+ SMEs that already benefit from free inventory management'
+                  : 'Log in to access your inventory management dashboard'
                 }
               </p>
             </div>
@@ -190,10 +194,10 @@ export const AuthPage = () => {
               <div className="space-y-6">
                 <div className="grid grid-cols-1 gap-4">
                   {[
-                    { icon: <CheckCircle className="h-5 w-5 text-green-600" />, text: "100% gratis voor Vlaamse KMO's" },
-                    { icon: <Zap className="h-5 w-5 text-blue-600" />, text: "Direct aan de slag binnen 2 minuten" },
-                    { icon: <Shield className="h-5 w-5 text-purple-600" />, text: "Veilig en GDPR-compliant" },
-                    { icon: <Users className="h-5 w-5 text-orange-600" />, text: "Nederlandse support" }
+                    { icon: <CheckCircle className="h-5 w-5 text-green-600" />, text: '100% free for SMEs' },
+                    { icon: <Zap className="h-5 w-5 text-blue-600" />, text: 'Get started in 2 minutes' },
+                    { icon: <Shield className="h-5 w-5 text-purple-600" />, text: 'Safe and GDPR-compliant' },
+                    { icon: <Users className="h-5 w-5 text-orange-600" />, text: 'Professional support' }
                   ].map((benefit, index) => (
                     <div key={index} className="flex items-center gap-3 p-3 bg-white rounded-lg shadow-sm">
                       {benefit.icon}
@@ -205,10 +209,10 @@ export const AuthPage = () => {
                 <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6 border border-blue-100">
                   <div className="flex items-center gap-3 mb-3">
                     <Star className="h-5 w-5 text-yellow-500 fill-current" />
-                    <span className="font-semibold text-gray-900">Wat klanten zeggen</span>
+                    <span className="font-semibold text-gray-900">What customers say</span>
                   </div>
                   <p className="text-gray-700 italic mb-3">
-                    "Dankzij stockflow heb ik eindelijk een helder overzicht van mijn voorraad. De automatische bestelmeldingen zijn een lifesaver!"
+                    Thanks to StockFlow I finally have a clear overview of my inventory. The automatic reorder notifications are a lifesaver!
                   </p>
                   <div className="text-sm text-gray-600">
                     - Laura Peeters, De Koffieboetiek Gent
@@ -221,10 +225,10 @@ export const AuthPage = () => {
               <div className="space-y-6">
                 <div className="grid grid-cols-1 gap-4">
                   {[
-                    { icon: <Package className="h-5 w-5 text-blue-600" />, text: "Beheer je voorraad centraal" },
-                    { icon: <Zap className="h-5 w-5 text-green-600" />, text: "Automatische bestelmeldingen" },
-                    { icon: <Users className="h-5 w-5 text-purple-600" />, text: "Samenwerken met je team" },
-                    { icon: <Shield className="h-5 w-5 text-orange-600" />, text: "Veilig in de cloud" }
+                    { icon: <Package className="h-5 w-5 text-blue-600" />, text: "Manage your inventory centrally" },
+                    { icon: <Zap className="h-5 w-5 text-green-600" />, text: "Automatic order notifications" },
+                    { icon: <Users className="h-5 w-5 text-purple-600" />, text: "Collaborate with your team" },
+                    { icon: <Shield className="h-5 w-5 text-orange-600" />, text: "Safe in the cloud" }
                   ].map((feature, index) => (
                     <div key={index} className="flex items-center gap-3 p-3 bg-white rounded-lg shadow-sm">
                       {feature.icon}
@@ -246,12 +250,12 @@ export const AuthPage = () => {
                 </div>
                 
                 <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                  {mode === 'register' ? 'Start Gratis' : 'Inloggen'}
+                  {mode === 'register' ? 'Start Free' : 'Sign In'}
                 </h2>
                 <p className="text-gray-600 text-sm">
                   {mode === 'register' 
-                    ? 'Geen creditcard vereist • Direct toegang'
-                    : 'Welkom terug bij je voorraadbeheer'
+                    ? 'No credit card required • Direct access'
+                    : 'Welcome back to your inventory management'
                   }
                 </p>
 
@@ -269,7 +273,7 @@ export const AuthPage = () => {
                       disabled={isSubmitting || mode === 'login'}
                       type="button"
                     >
-                      Inloggen
+                      Sign In
                     </button>
                     <button
                       className={cn(
@@ -289,7 +293,7 @@ export const AuthPage = () => {
                       disabled={isSubmitting || mode === 'register'}
                       type="button"
                     >
-                      Registreren
+                      Register
                     </button>
                   </div>
                 </div>
@@ -300,7 +304,7 @@ export const AuthPage = () => {
                   {mode === 'register' && (
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
-                        <Label htmlFor="firstName" className="text-sm font-medium text-gray-700">Voornaam</Label>
+                        <Label htmlFor="firstName" className="text-sm font-medium text-gray-700">First Name</Label>
                         <Input 
                           id="firstName" 
                           type="text" 
@@ -309,11 +313,11 @@ export const AuthPage = () => {
                           required 
                           disabled={isSubmitting}
                           className="mt-1 h-11 border-gray-300 focus:border-blue-500 focus:ring-blue-500"
-                          placeholder="Je voornaam"
+                          placeholder="Your first name"
                         />
                       </div>
                       <div>
-                        <Label htmlFor="lastName" className="text-sm font-medium text-gray-700">Achternaam</Label>
+                        <Label htmlFor="lastName" className="text-sm font-medium text-gray-700">Last Name</Label>
                         <Input 
                           id="lastName" 
                           type="text" 
@@ -322,14 +326,14 @@ export const AuthPage = () => {
                           required 
                           disabled={isSubmitting}
                           className="mt-1 h-11 border-gray-300 focus:border-blue-500 focus:ring-blue-500"
-                          placeholder="Je achternaam"
+                          placeholder="Your last name"
                         />
                       </div>
                     </div>
                   )}
 
                   <div>
-                    <Label htmlFor="email" className="text-sm font-medium text-gray-700">E-mailadres</Label>
+                    <Label htmlFor="email" className="text-sm font-medium text-gray-700">Email Address</Label>
                     <Input 
                       id="email" 
                       type="email" 
@@ -338,13 +342,13 @@ export const AuthPage = () => {
                       required 
                       disabled={isSubmitting}
                       className="mt-1 h-11 border-gray-300 focus:border-blue-500 focus:ring-blue-500"
-                      placeholder="jij@bedrijf.be"
+                      placeholder="you@company.com"
                     />
                   </div>
 
                   {mode !== 'reset' && (
                     <div>
-                      <Label htmlFor="password" className="text-sm font-medium text-gray-700">Wachtwoord</Label>
+                      <Label htmlFor="password" className="text-sm font-medium text-gray-700">Password</Label>
                       <Input 
                         id="password" 
                         type="password" 
@@ -353,11 +357,11 @@ export const AuthPage = () => {
                         required 
                         disabled={isSubmitting}
                         className="mt-1 h-11 border-gray-300 focus:border-blue-500 focus:ring-blue-500"
-                        placeholder={mode === 'register' ? "Minimaal 8 tekens" : "Je wachtwoord"}
+                        placeholder={mode === 'register' ? "At least 8 characters" : "Your password"}
                       />
                       {mode === 'register' && (
                         <p className="text-xs text-gray-500 mt-1">
-                          Minimaal 8 tekens voor veiligheid
+                          At least 8 characters for security
                         </p>
                       )}
                     </div>
@@ -365,7 +369,7 @@ export const AuthPage = () => {
 
                   {mode === 'register' && (
                     <div>
-                      <Label htmlFor="confirmPassword" className="text-sm font-medium text-gray-700">Bevestig wachtwoord</Label>
+                      <Label htmlFor="confirmPassword" className="text-sm font-medium text-gray-700">Confirm Password</Label>
                       <Input 
                         id="confirmPassword" 
                         type="password" 
@@ -374,7 +378,7 @@ export const AuthPage = () => {
                         required 
                         disabled={isSubmitting}
                         className="mt-1 h-11 border-gray-300 focus:border-blue-500 focus:ring-blue-500"
-                        placeholder="Herhaal je wachtwoord"
+                        placeholder="Repeat your password"
                       />
                     </div>
                   )}
@@ -385,22 +389,22 @@ export const AuthPage = () => {
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? (
-                      <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Even geduld...</>
+                      <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Please wait...</>
                     ) : (
                       <>
                         {mode === 'login' && (
                           <>
-                            Inloggen
+                            Sign In
                             <ArrowRight className="ml-2 h-4 w-4" />
                           </>
                         )}
                         {mode === 'register' && (
                           <>
-                            Start Gratis Account
+                            Start Free Account
                             <ArrowRight className="ml-2 h-4 w-4" />
                           </>
                         )}
-                        {mode === 'reset' && 'Verzend reset-instructies'}
+                        {mode === 'reset' && 'Send reset instructions'}
                       </>
                     )}
                   </Button>
@@ -415,17 +419,17 @@ export const AuthPage = () => {
                     className="text-sm text-blue-600 hover:text-blue-700 hover:underline transition-colors" 
                     disabled={isSubmitting}
                   >
-                    Wachtwoord vergeten?
+                    Forgot Password?
                   </button>
                 )}
                 
                 {mode === 'register' && (
                   <div className="text-center">
                     <p className="text-xs text-gray-500">
-                      Door te registreren ga je akkoord met onze{' '}
-                      <a href="#" className="text-blue-600 hover:underline">Algemene Voorwaarden</a>
-                      {' '}en{' '}
-                      <a href="#" className="text-blue-600 hover:underline">Privacybeleid</a>
+                      By registering you agree to our{' '}
+                      <a href="#" className="text-blue-600 hover:underline">Terms of Service</a>
+                      {' '}and{' '}
+                      <a href="#" className="text-blue-600 hover:underline">Privacy Policy</a>
                     </p>
                   </div>
                 )}

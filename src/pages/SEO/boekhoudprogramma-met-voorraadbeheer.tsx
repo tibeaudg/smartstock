@@ -102,7 +102,7 @@ export default function BoekhoudprogrammaMetVoorraadbeheer() {
     <SeoPageLayout title="Boekhoudprogramma met Voorraadbeheer - Geïntegreerd Systeem">
       <SEO
         title="Boekhoudprogramma met Voorraadbeheer | Geïntegreerd Systeem | stockflow"
-        description="Ontdek het beste boekhoudprogramma met voorraadbeheer voor Vlaamse KMO's. Geïntegreerd systeem dat boekhouding en voorraadbeheer combineert. Start vandaag!"
+        description="Ontdek het beste boekhoudprogramma met voorraadbeheer voor KMO's. Geïntegreerd systeem dat boekhouding en voorraadbeheer combineert. Start vandaag!"
         keywords="boekhoudprogramma met voorraadbeheer, boekhouding voorraadbeheer, geïntegreerd boekhoudsysteem, boekhoudprogramma voorraad, boekhouding stockbeheer, boekhoudprogramma KMO, boekhouding kleine bedrijven, boekhoudprogramma belgië, boekhouding vlaanderen, boekhoudprogramma horeca, boekhouding webshop, boekhoudprogramma detailhandel, boekhouding starters, boekhoudprogramma stockflow"
         url="https://www.stockflow.be/boekhoudprogramma-met-voorraadbeheer"
       />
@@ -195,7 +195,7 @@ export default function BoekhoudprogrammaMetVoorraadbeheer() {
                 <span className="text-emerald-600">Voordelen</span> van een boekhoudprogramma met voorraadbeheer
               </h2>
               <p className="text-lg text-gray-700 mb-8">
-                Een boekhoudprogramma met voorraadbeheer is specifiek ontwikkeld voor Vlaamse KMO's. 
+                Een boekhoudprogramma met voorraadbeheer is specifiek ontwikkeld voor KMO's. 
                 Ontdek waarom honderden bedrijven al kiezen voor een geïntegreerd systeem.
               </p>
               
@@ -309,7 +309,7 @@ export default function BoekhoudprogrammaMetVoorraadbeheer() {
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-8">
-            Waarom kiezen <span className="text-emerald-600">3200+ Vlaamse KMO's</span> voor een boekhoudprogramma met voorraadbeheer?
+            Waarom kiezen <span className="text-emerald-600">3200+ KMO's</span> voor een boekhoudprogramma met voorraadbeheer?
           </h2>
           
           <div className="grid md:grid-cols-3 gap-8 mb-12">
@@ -385,7 +385,7 @@ export default function BoekhoudprogrammaMetVoorraadbeheer() {
             Start Vandaag Met Een Boekhoudprogramma met Voorraadbeheer
           </h2>
           <p className="text-xl mb-8 opacity-90">
-            Sluit je aan bij honderden Vlaamse KMO's die al profiteren van een geïntegreerd systeem. 
+            Sluit je aan bij honderden KMO's die al profiteren van een geïntegreerd systeem. 
             Geen dubbele administratie meer, alles in één platform.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -458,14 +458,14 @@ export default function BoekhoudprogrammaMetVoorraadbeheer() {
             className="h-10 md:h-12 mx-auto mb-6"
           />
           <p className="text-gray-400 text-base md:text-lg mb-8 leading-relaxed max-w-2xl mx-auto">
-            Het beste boekhoudprogramma met voorraadbeheer voor Vlaamse KMO's. 
+            Het beste boekhoudprogramma met voorraadbeheer voor KMO's. 
             Geïntegreerd, efficiënt en professioneel.
           </p>
 
           <div className="border-t border-gray-700 pt-6">
             <p className="text-gray-500 text-xs md:text-sm">
               &copy; {new Date().getFullYear()} stockflow. Alle rechten voorbehouden.
-              Boekhoudprogramma met voorraadbeheer voor Vlaamse KMO's.
+              Boekhoudprogramma met voorraadbeheer voor KMO's.
             </p>
           </div>
         </div>
@@ -491,7 +491,7 @@ export default function BoekhoudprogrammaMetVoorraadbeheer() {
         "@context": "https://schema.org",
         "@type": "SoftwareApplication",
         "name": "stockflow - Boekhoudprogramma met Voorraadbeheer",
-        "description": "Het beste boekhoudprogramma met voorraadbeheer voor Vlaamse KMO's. Geïntegreerd systeem dat boekhouding en voorraadbeheer combineert voor maximale efficiëntie.",
+        "description": "Het beste boekhoudprogramma met voorraadbeheer voor KMO's. Geïntegreerd systeem dat boekhouding en voorraadbeheer combineert voor maximale efficiëntie.",
         "applicationCategory": "BusinessApplication",
         "operatingSystem": "Web Browser",
         "offers": {

@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/hooks/useAuth';
+import { useSubscription } from '@/hooks/useSubscription';
+import { useTranslation } from 'react-i18next';
 
 interface PricingTier {
   id: string;
@@ -25,92 +27,40 @@ interface PricingTier {
   color: string;
 }
 
-const pricingTiers: PricingTier[] = [
-  {
-    id: 'basis',
-    name: 'basis',
-    displayName: 'Basis',
-    description: 'Perfect voor kleine bedrijven die beginnen met voorraadbeheer',
-    priceMonthly: 0,
-    priceYearly: 0,
-    yearlyDiscount: 0,
-    maxProducts: 50,
-    maxOrders: 100,
-    maxUsers: 2,
-    maxBranches: 1,
-    features: [
-      'Basis voorraadbeheer',
-      'Producten toevoegen/bewerken',
-      'Eenvoudige rapporten',
-      'Email support',
-      'Mobiele app toegang'
-    ],
-    isPopular: false,
-    isEnterprise: false,
-    icon: <Package className="h-8 w-8" />,
-    color: 'text-gray-600'
-  },
-  {
-    id: 'groei',
-    name: 'groei',
-    displayName: 'Groei',
-    description: 'Ideaal voor groeiende bedrijven met meer behoeften',
-    priceMonthly: 29.99,
-    priceYearly: 299.99,
-    yearlyDiscount: 16.67,
-    maxProducts: 500,
-    maxOrders: 1000,
-    maxUsers: 10,
-    maxBranches: 5,
-    features: [
-      'Alle Basis features',
-      'Geavanceerde analytics',
-      'Barcode scanner',
-      'Leveringsbonnen beheer',
-      'API toegang',
-      'Priority support',
-      'Custom rapporten',
-      'Bulk import/export'
-    ],
-    isPopular: true,
-    isEnterprise: false,
-    icon: <Zap className="h-8 w-8" />,
-    color: 'text-blue-600'
-  },
-  {
-    id: 'premium',
-    name: 'premium',
-    displayName: 'Premium',
-    description: 'Voor grote bedrijven die alles nodig hebben',
-    priceMonthly: 79.99,
-    priceYearly: 799.99,
-    yearlyDiscount: 16.67,
-    maxProducts: null,
-    maxOrders: null,
-    maxUsers: null,
-    maxBranches: null,
-    features: [
-      'Alle Groei features',
-      'Onbeperkte producten',
-      'Onbeperkte orders',
-      'Onbeperkte gebruikers',
-      'Onbeperkte branches',
-      'Dedicated support',
-      'Custom onboarding',
-      'SLA garantie',
-      'White-label opties'
-    ],
-    isPopular: false,
-    isEnterprise: true,
-    icon: <Crown className="h-8 w-8" />,
-    color: 'text-purple-600'
+// Helper function to get tier icon
+const getTierIcon = (tierName: string) => {
+  switch (tierName) {
+    case 'basic':
+      return <Package className="h-8 w-8" />;
+    case 'growth':
+      return <Zap className="h-8 w-8" />;
+    case 'premium':
+      return <Crown className="h-8 w-8" />;
+    default:
+      return <Package className="h-8 w-8" />;
   }
-];
+};
+
+// Helper function to get tier color
+const getTierColor = (tierName: string) => {
+  switch (tierName) {
+    case 'basic':
+      return 'text-gray-600';
+    case 'growth':
+      return 'text-blue-600';
+    case 'premium':
+      return 'text-purple-600';
+    default:
+      return 'text-gray-600';
+  }
+};
 
 export default function PricingPage() {
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly');
   const { user } = useAuth();
+  const { pricingTiers, isLoading } = useSubscription();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleSelectPlan = (tierId: string) => {
     if (!user) {
@@ -130,10 +80,22 @@ export default function PricingPage() {
   };
 
   const getLimitText = (value: number | null, type: string) => {
-    if (value === null) return 'Onbeperkt';
-    if (value === 0) return 'Niet inbegrepen';
+    if (value === null) return 'Unlimited';
+    if (value === 0) return 'Not included';
     return `${value} ${type}`;
   };
+
+  // Show loading state
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading pricing plans...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
@@ -141,16 +103,16 @@ export default function PricingPage() {
         {/* Header */}
         <div className="text-center mb-16">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Kies je perfecte plan
+              Pricing
           </h1>
           <p className="text-xl text-gray-600 mb-8">
-            Start gratis en upgrade wanneer je groeit
+            Choose the plan that best suits your needs
           </p>
           
           {/* Billing Toggle */}
           <div className="flex items-center justify-center space-x-4 mb-8">
             <span className={`text-sm font-medium ${billingCycle === 'monthly' ? 'text-gray-900' : 'text-gray-500'}`}>
-              Maandelijks
+              Monthly
             </span>
             <button
               onClick={() => setBillingCycle(billingCycle === 'monthly' ? 'yearly' : 'monthly')}
@@ -163,11 +125,11 @@ export default function PricingPage() {
               />
             </button>
             <span className={`text-sm font-medium ${billingCycle === 'yearly' ? 'text-gray-900' : 'text-gray-500'}`}>
-              Jaarlijks
+              Yearly
             </span>
             {billingCycle === 'yearly' && (
               <Badge variant="secondary" className="ml-2">
-                Bespaar 17%
+                Save
               </Badge>
             )}
           </div>
@@ -178,41 +140,32 @@ export default function PricingPage() {
           {pricingTiers.map((tier) => (
             <Card 
               key={tier.id} 
-              className={`relative ${tier.isPopular ? 'ring-2 ring-blue-500 shadow-xl scale-105' : 'shadow-lg'}`}
+              className={`relative ${tier.is_popular ? 'ring-2 ring-blue-500 shadow-xl scale-105' : 'shadow-lg'}`}
             >
-              {tier.isPopular && (
+              {tier.is_popular && (
                 <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                   <Badge className="bg-blue-500 text-white px-4 py-1">
                     <Star className="h-3 w-3 mr-1" />
-                    Meest populair
-                  </Badge>
-                </div>
-              )}
-              
-              {tier.isEnterprise && (
-                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                  <Badge className="bg-purple-500 text-white px-4 py-1">
-                    <Crown className="h-3 w-3 mr-1" />
-                    Enterprise
+                    Most popular
                   </Badge>
                 </div>
               )}
 
               <CardHeader className="text-center pb-4">
-                <div className={`mx-auto mb-4 ${tier.color}`}>
-                  {tier.icon}
+                <div className={`mx-auto mb-4 ${getTierColor(tier.name)}`}>
+                  {getTierIcon(tier.name)}
                 </div>
-                <CardTitle className="text-2xl font-bold">{tier.displayName}</CardTitle>
+                <CardTitle className="text-2xl font-bold">{tier.display_name}</CardTitle>
                 <CardDescription className="text-gray-600">
                   {tier.description}
                 </CardDescription>
                 <div className="mt-4">
                   <div className="text-4xl font-bold text-gray-900">
-                    {tier.priceMonthly === 0 ? 'Gratis' : formatPrice(billingCycle === 'monthly' ? tier.priceMonthly : tier.priceYearly)}
+                    {tier.price_monthly === 0 ? 'Free' : formatPrice(billingCycle === 'monthly' ? tier.price_monthly : tier.price_yearly)}
                   </div>
-                  {tier.priceMonthly > 0 && (
+                  {tier.price_monthly > 0 && (
                     <div className="text-sm text-gray-500">
-                      {billingCycle === 'yearly' ? 'per jaar' : 'per maand'}
+                      {billingCycle === 'yearly' ? 'per year' : 'per month'}
                     </div>
                   )}
                 </div>
@@ -222,26 +175,26 @@ export default function PricingPage() {
                 {/* Limits */}
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600">Producten</span>
-                    <span className="text-sm font-medium">{getLimitText(tier.maxProducts, 'producten')}</span>
+                    <span className="text-sm text-gray-600">Products</span>
+                    <span className="text-sm font-medium">{getLimitText(tier.max_products, 'products')}</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600">Orders per maand</span>
-                    <span className="text-sm font-medium">{getLimitText(tier.maxOrders, 'orders')}</span>
+                    <span className="text-sm text-gray-600">Orders per month</span>
+                    <span className="text-sm font-medium">{getLimitText(tier.max_orders_per_month, 'orders')}</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600">Gebruikers</span>
-                    <span className="text-sm font-medium">{getLimitText(tier.maxUsers, 'gebruikers')}</span>
+                    <span className="text-sm text-gray-600">Users</span>
+                    <span className="text-sm font-medium">{getLimitText(tier.max_users, 'users')}</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600">Vestigingen</span>
-                    <span className="text-sm font-medium">{getLimitText(tier.maxBranches, 'vestigingen')}</span>
+                    <span className="text-sm text-gray-600">Branches</span>
+                      <span className="text-sm font-medium">{getLimitText(tier.max_branches, 'branches')}</span>
                   </div>
                 </div>
 
                 {/* Features */}
                 <div className="space-y-3">
-                  <h4 className="font-semibold text-gray-900">Inbegrepen:</h4>
+                  <h4 className="font-semibold text-gray-900">Included:</h4>
                   <ul className="space-y-2">
                     {tier.features.map((feature, index) => (
                       <li key={index} className="flex items-start">
@@ -255,11 +208,10 @@ export default function PricingPage() {
 
               <CardFooter>
                 <Button 
-                  className={`w-full ${tier.isPopular ? 'bg-blue-600 hover:bg-blue-700' : tier.isEnterprise ? 'bg-purple-600 hover:bg-purple-700' : 'bg-gray-900 hover:bg-gray-800'}`}
-                  onClick={() => handleSelectPlan(tier.id)}
+                  className={`w-full ${tier.is_popular ? 'bg-blue-600 hover:bg-blue-700' : tier.is_enterprise ? 'bg-purple-600 hover:bg-purple-700' : 'bg-gray-900 hover:bg-gray-800'}`}
+                  onClick={() => handleSelectPlan(tier.name)}
                 >
-                  {tier.priceMonthly === 0 ? 'Start gratis' : 'Start 14-dagen trial'}
-                  <ArrowRight className="h-4 w-4 ml-2" />
+                  {tier.price_monthly === 0 ? 'Current plan' : 'Start 14-day trial'}
                 </Button>
               </CardFooter>
             </Card>
@@ -271,32 +223,32 @@ export default function PricingPage() {
           <div className="bg-white rounded-lg shadow-lg p-8 max-w-4xl mx-auto">
             <div className="flex items-center justify-center mb-4">
               <Clock className="h-8 w-8 text-blue-600 mr-3" />
-              <h3 className="text-2xl font-bold text-gray-900">14-dagen gratis trial</h3>
+                <h3 className="text-2xl font-bold text-gray-900">14-day free trial</h3>
             </div>
             <p className="text-gray-600 mb-6">
-              Probeer alle premium features 14 dagen gratis. Geen creditcard vereist, 
-              annuleer op elk moment.
+              Try all premium features 14 days free. No credit card required, 
+              cancel anytime.
             </p>
             <div className="grid md:grid-cols-3 gap-6 text-left">
               <div className="flex items-start">
                 <Check className="h-5 w-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
                 <div>
-                  <h4 className="font-semibold text-gray-900">Geen verplichtingen</h4>
-                  <p className="text-sm text-gray-600">Annuleer op elk moment zonder kosten</p>
+                  <h4 className="font-semibold text-gray-900">No obligations</h4>
+                  <p className="text-sm text-gray-600">Cancel anytime without any costs</p>
                 </div>
               </div>
               <div className="flex items-start">
                 <Check className="h-5 w-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
                 <div>
-                  <h4 className="font-semibold text-gray-900">Volledige toegang</h4>
-                  <p className="text-sm text-gray-600">Alle features en limieten van je gekozen plan</p>
+                  <h4 className="font-semibold text-gray-900">Full access</h4>
+                  <p className="text-sm text-gray-600">All features and limits of your chosen plan</p>
                 </div>
               </div>
               <div className="flex items-start">
                 <Check className="h-5 w-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
                 <div>
-                  <h4 className="font-semibold text-gray-900">Direct starten</h4>
-                  <p className="text-sm text-gray-600">Begin direct met je voorraadbeheer</p>
+                  <h4 className="font-semibold text-gray-900">Direct start</h4>
+                  <p className="text-sm text-gray-600">Start directly with your inventory management</p>
                 </div>
               </div>
             </div>
@@ -306,31 +258,31 @@ export default function PricingPage() {
         {/* FAQ Section */}
         <div className="mt-16">
           <h3 className="text-2xl font-bold text-center text-gray-900 mb-8">
-            Veelgestelde vragen
+            Frequently asked questions
           </h3>
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <div>
-              <h4 className="font-semibold text-gray-900 mb-2">Kan ik van plan wisselen?</h4>
+              <h4 className="font-semibold text-gray-900 mb-2">Can I change plans?</h4>
               <p className="text-gray-600 text-sm">
-                Ja, je kunt op elk moment upgraden of downgraden. Wijzigingen worden direct doorgevoerd.
+                Yes, you can upgrade or downgrade at any time. Changes are made immediately.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold text-gray-900 mb-2">Wat gebeurt er na mijn trial?</h4>
+                <h4 className="font-semibold text-gray-900 mb-2">What happens after my trial?</h4>
               <p className="text-gray-600 text-sm">
-                Na 14 dagen wordt je account automatisch overgezet naar het Basis plan, tenzij je een betaald plan kiest.
+                After 14 days, your account will be automatically upgraded to the Basic plan, unless you choose a paid plan.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold text-gray-900 mb-2">Is er een setup fee?</h4>
+              <h4 className="font-semibold text-gray-900 mb-2">Is there a setup fee?</h4>
               <p className="text-gray-600 text-sm">
-                Nee, er zijn geen verborgen kosten of setup fees. Je betaalt alleen de maandelijkse of jaarlijkse prijs.
+                No, there are no hidden costs or setup fees. You only pay the monthly or yearly price.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold text-gray-900 mb-2">Krijg ik support?</h4>
+              <h4 className="font-semibold text-gray-900 mb-2">Do I get support?</h4>
               <p className="text-gray-600 text-sm">
-                Ja, alle plannen bevatten email support. Premium plannen krijgen priority support en dedicated account managers.
+                Yes, all plans contain email support. Premium plans get priority support and dedicated account managers.
               </p>
             </div>
           </div>

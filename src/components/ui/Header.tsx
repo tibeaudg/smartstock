@@ -9,8 +9,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LanguageSwitcher } from '../LanguageSwitcher';
-import { useTranslation } from 'react-i18next';
 
 import { Button } from '@/components/ui/button';
 
@@ -23,7 +21,6 @@ interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({ title, unreadCount = 0, onNotificationClick, sidebarOpen, onSidebarToggle }) => {
-  const { t } = useTranslation();
   const navigate = useNavigate();
   const { signOut, user } = useAuth();
   return (
@@ -59,18 +56,17 @@ export const Header: React.FC<HeaderProps> = ({ title, unreadCount = 0, onNotifi
           {user && (
             <NotificationButton unreadCount={unreadCount} onClick={onNotificationClick} />
           )}
-          <LanguageSwitcher />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48">
               <DropdownMenuItem onClick={() => navigate('/dashboard/settings/profile')}>
                 <User className="mr-2 h-4 w-4" />
-                <span>{t('navigation.profile')}</span>
+                <span>Profile</span>
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => navigate('/dashboard/settings')}>
                 <Settings className="mr-2 h-4 w-4" />
-                <span>{t('navigation.settings')}</span>
+                <span>Settings</span>
               </DropdownMenuItem>
               <DropdownMenuItem onClick={async () => {
                 try {
@@ -81,7 +77,7 @@ export const Header: React.FC<HeaderProps> = ({ title, unreadCount = 0, onNotifi
                 }
               }}>
                 <LogOut className="mr-2 h-4 w-4" />
-                <span>{t('navigation.logout')}</span>
+                <span>Logout</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -119,7 +115,6 @@ export const Header: React.FC<HeaderProps> = ({ title, unreadCount = 0, onNotifi
             {user && (
               <NotificationButton unreadCount={unreadCount} onClick={onNotificationClick} />
             )}
-            <LanguageSwitcher />
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
 
@@ -127,11 +122,11 @@ export const Header: React.FC<HeaderProps> = ({ title, unreadCount = 0, onNotifi
               <DropdownMenuContent align="end" className="w-48">
                 <DropdownMenuItem onClick={() => navigate('/dashboard/settings/profile')}>
                   <User className="mr-2 h-4 w-4" />
-                  <span>{t('navigation.profile')}</span>
+                  <span>Profile</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => navigate('/dashboard/settings')}>
                   <Settings className="mr-2 h-4 w-4" />
-                  <span>{t('navigation.settings')}</span>
+                  <span>Settings</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={async () => {
                   try {
@@ -142,7 +137,7 @@ export const Header: React.FC<HeaderProps> = ({ title, unreadCount = 0, onNotifi
                   }
                 }}>
                   <LogOut className="mr-2 h-4 w-4" />
-                  <span>{t('navigation.logout')}</span>
+                  <span>Logout</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

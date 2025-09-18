@@ -32,11 +32,11 @@ export const BranchSelector = () => {
           
           // Show toast notification
           toast.success(
-            `Gewisseld naar ${branch.branch_name}`, 
+            `Switched to ${branch.branch_name}`, 
             {
               description: previousBranch 
-                ? `Je bent overgeschakeld van ${previousBranch}`
-                : 'Je hebt een filiaal geselecteerd',
+                ? `You have switched to ${previousBranch}`
+                : 'You have selected a branch',
               duration: 3000,
             }
           );
@@ -68,7 +68,7 @@ export const BranchSelector = () => {
   if (!branches || !Array.isArray(branches)) {
     return (
       <div style={{ color: '#b91c1c', background: '#fef2f2', padding: 24, borderRadius: 8, marginBottom: 24 }}>
-        <b>Fout:</b> Filialen konden niet worden geladen. Probeer de pagina te verversen of neem contact op met de beheerder.
+        <b>Error:</b> Branches could not be loaded. Please refresh the page or contact the administrator.
       </div>
     );
   }
@@ -78,14 +78,14 @@ export const BranchSelector = () => {
       <div className="space-y-2">
         <div className="flex items-center space-x-2 text-xs text-gray-500 uppercase tracking-wide font-medium">
           <Building2 className="h-3 w-3" />
-          <span>Actief Filiaal</span>
+          <span>Active Branch</span>
         </div>
         <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg border border-blue-200">
           <div className="flex items-center space-x-3">
             <Building2 className="h-5 w-5 text-blue-600" />
             <div className="flex flex-col">
-              <span className="text-sm font-medium text-blue-900">Standaard filiaal wordt aangemaakt...</span>
-              <span className="text-xs text-blue-700">Even geduld, we maken je eerste filiaal aan</span>
+              <span className="text-sm font-medium text-blue-900">Default branch is being created...</span>
+              <span className="text-xs text-blue-700">Please wait, we are creating your first branch</span>
             </div>
           </div>
         </div>
@@ -98,7 +98,7 @@ export const BranchSelector = () => {
       <div className="space-y-2">
         <div className="flex items-center space-x-2 text-xs text-gray-500 uppercase tracking-wide font-medium">
           <Building2 className="h-3 w-3" />
-          <span>Actief Filiaal</span>
+          <span>Active Branch</span>
         </div>
         
         <Select
@@ -114,11 +114,11 @@ export const BranchSelector = () => {
               <div className="flex items-center justify-between w-full">
                 <div className="flex items-center space-x-2">
                   <span className="font-medium text-sm">
-                    {isSwitching ? "Wisselen..." : activeBranch?.branch_name || 'Selecteer filiaal'}
+                    {isSwitching ? "Switching..." : activeBranch?.branch_name || 'Select Branch'}
                   </span>
                   {activeBranch?.is_main && (
                     <Badge className="text-xs bg-blue-100 text-blue-700 border border-blue-700">
-                      Hoofdvestiging
+                      Main
                     </Badge>
                   )}
                 </div>
@@ -132,7 +132,7 @@ export const BranchSelector = () => {
                   <span>{branch.branch_name}</span>
                   {branch.is_main && (
                     <Badge className="text-xs bg-blue-100 text-blue-700 border border-blue-700">
-                      Hoofdvestiging
+                      Main
                     </Badge>
                   )}
                 </div>
@@ -151,7 +151,7 @@ export const BranchSelector = () => {
                 className="w-full flex items-center justify-center gap-2 text-blue-600 hover:bg-blue-50 h-8"
               >
                 <Plus className="h-3 w-3" />
-                Filiaal toevoegen
+                Add Branch
               </Button>
             </div>
           </SelectContent>

@@ -169,7 +169,7 @@ export const UserManagement = () => {
           filter: `branch_id=eq.${selectedBranchId}`,
         },
         () => {
-          console.log('Branch user wijziging gedetecteerd, refresh gebruikers...');
+          console.log('Branch user change detected, refresh users...');
           queryClient.invalidateQueries({ queryKey: ['branchUsers', selectedBranchId] });
           queryClient.invalidateQueries({ queryKey: ['pricingInfo', user.id] });
         }
@@ -182,7 +182,7 @@ export const UserManagement = () => {
           table: 'profiles',
         },
         () => {
-          console.log('Profile wijziging gedetecteerd, refresh gebruikers...');
+          console.log('Profile change detected, refresh users...');
           queryClient.invalidateQueries({ queryKey: ['branchUsers', selectedBranchId] });
           queryClient.invalidateQueries({ queryKey: ['pricingInfo', user.id] });
         }
@@ -211,11 +211,11 @@ export const UserManagement = () => {
 
     if (error) {
       console.error("Error inviting user:", error);
-      toast({ title: "Fout", description: error.message || "Kon gebruiker niet uitnodigen", variant: "destructive" });
+      toast({ title: "Error", description: error.message || "Could not invite user", variant: "destructive" });
       return;
     }
 
-    toast({ title: "Uitnodiging verzonden", description: `${inviteEmail} is uitgenodigd.` });
+    toast({ title: "Invitation sent", description: `${inviteEmail} is invited.` });
     setInviteEmail('');
     setInviteRole("staff");
     refetch();
@@ -224,7 +224,7 @@ export const UserManagement = () => {
 
   const handleRemoveUser = async (userIdToRemove: string) => {
     if (userIdToRemove === user?.id) {
-      toast({ title: "Actie niet toegestaan", description: "U kunt uzelf niet verwijderen.", variant: "destructive" });
+      toast({ title: "Action not allowed", description: "You cannot delete yourself.", variant: "destructive" });
       return;
     }
     
@@ -236,15 +236,15 @@ export const UserManagement = () => {
 
     if (error) {
       console.error("Error removing user:", error);
-      toast({ title: "Fout", description: "Kon de gebruiker niet verwijderen.", variant: "destructive" });
+      toast({ title: "Error", description: "Could not delete the user.", variant: "destructive" });
     } else {
-      toast({ title: "Gebruiker verwijderd", description: "De gebruiker is verwijderd uit dit filiaal." });
+      toast({ title: "User deleted", description: "The user has been deleted from this branch." });
       refetch();
       queryClient.invalidateQueries({ queryKey: ['pricingInfo', user.id] });
     }
   };
 
-  // Haal filialen op voor een specifieke gebruiker
+  // Fetch branches for a specific user
   const fetchUserBranches = async (userId: string) => {
     const { data, error } = await supabase
       .from('branch_users')
@@ -254,20 +254,20 @@ export const UserManagement = () => {
     return (data || []).map((b: any) => b.branch_id);
   };
 
-  // Open modal en laad huidige filialen
+  // Open modal and load current branches
   const handleOpenManageBranches = async (user: DisplayUser) => {
     setManageBranchesUser(user);
     const userBranchIds = await fetchUserBranches(user.userId);
     setUserBranches(userBranchIds);
   };
 
-  // Sla toegewezen filialen op
+  // Save assigned branches
   const handleSaveBranches = async () => {
     if (!manageBranchesUser) return;
     setSavingBranches(true);
-    // Verwijder alle bestaande branch_users voor deze gebruiker
+    // Delete all existing branch_users for this user
     await supabase.from('branch_users').delete().eq('user_id', manageBranchesUser.userId);
-    // Voeg nieuwe branch_users toe
+    // Add new branch_users
     const inserts = userBranches.map(branch_id => ({
       user_id: manageBranchesUser.userId,
       branch_id,
@@ -282,85 +282,58 @@ export const UserManagement = () => {
     queryClient.invalidateQueries({ queryKey: ['pricingInfo', user.id] });
   };
 
-  // Volledig verwijderen van gebruiker (branch_users, profiles, auth)
+  // Completely delete user (branch_users, profiles, auth)
   const handleDeleteUserCompletely = async (userIdToRemove: string) => {
     setDeletingUserId(userIdToRemove);
-    // 1. Verwijder uit branch_users
+    // 1. Delete from branch_users
     await supabase.from('branch_users').delete().eq('user_id', userIdToRemove);
-    // 2. Verwijder uit profiles
+    // 2. Delete from profiles
     await supabase.from('profiles').delete().eq('id', userIdToRemove);
-    // 3. Verwijder uit auth (alleen mogelijk als je service role key gebruikt, anders via edge function)
+              // 3. Delete from auth (only possible if you use service role key, otherwise via edge function)
     // await supabase.auth.admin.deleteUser(userIdToRemove); // Vereist elevated privileges
     // Alternatief: roep een edge function aan die dit doet
     await supabase.functions.invoke('delete-user', { body: { user_id: userIdToRemove } });
     setDeletingUserId(null);
-    toast({ title: 'Gebruiker verwijderd', description: 'Het account is volledig verwijderd.' });
+      toast({ title: 'User deleted', description: 'The account has been completely deleted.' });
     refetch();
     queryClient.invalidateQueries({ queryKey: ['pricingInfo', user.id] });
   };
 
   return (
     <div className="space-y-6">
-      {/* Pricing Information Card */}
-      <Card className="border-blue-200 bg-blue-50">
-        <CardContent className="p-6">
-          {pricingLoading ? (
-            <div className="flex items-center justify-center py-4">
-              <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
-              <span className="ml-2 text-blue-600">Kosten berekenen...</span>
-            </div>
-          ) : (
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <Users className="w-6 h-6 text-blue-600" />
-                <div>
-                  <h3 className="font-semibold text-blue-800 text-lg">Extra Gebruikers</h3>
-                  <p className="text-sm text-blue-600">€2 per extra gebruiker/maand</p>
-                </div>
-              </div>
-              <div className="text-right">
-                <div className="text-3xl font-bold text-blue-600">
-                  €{pricingInfo?.userCost || 0}
-                </div>
-                <div className="text-sm text-gray-500">{pricingInfo?.extraUsers || 0} van {pricingInfo?.totalUsers || 0} totaal</div>
-              </div>
-            </div>
-          )}
-        </CardContent>
-      </Card>
 
-      {/* Check of branches beschikbaar is */}
+      {/* Check if branches are available */}
       {(!branches || !Array.isArray(branches)) ? (
         <div style={{ color: '#b91c1c', background: '#fef2f2', padding: 24, borderRadius: 8, marginBottom: 24 }}>
-          <b>Fout:</b> Filialen konden niet worden geladen. Probeer de pagina te verversen of neem contact op met de beheerder.
+          <b>Error:</b> Branches could not be loaded. Please refresh the page or contact the administrator.
         </div>
       ) : (
         <>
           <Card>
             <CardHeader>
-              <CardTitle>Gebruiker uitnodigen</CardTitle>
-              <CardDescription>Voeg een nieuwe of bestaande gebruiker toe aan een filiaal.</CardDescription>
+              <CardTitle>Invite User</CardTitle>
+              <CardDescription>Add a new or existing user to a branch.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid gap-4 md:grid-cols-3">
                 <div>
                   <Label htmlFor="email">Email</Label>
-                  <Input id="email" value={inviteEmail} onChange={e => setInviteEmail(e.target.value)} placeholder="gebruiker@email.com" />
+                  <Input id="email" value={inviteEmail} onChange={e => setInviteEmail(e.target.value)} placeholder="user@email.com" />
                 </div>
                 <div>
-                  <Label>Rol</Label>
+                  <Label>Role</Label>
                   <Select value={inviteRole} onValueChange={setInviteRole}>
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="staff">Medewerker</SelectItem>
-                      <SelectItem value="admin">Beheerder</SelectItem>
+                      <SelectItem value="staff">Staff</SelectItem>
+                      <SelectItem value="admin">Admin</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div>
-                  <Label>Filiaal</Label>
+                  <Label>Branch</Label>
                   <Select value={selectedBranchId} onValueChange={setSelectedBranchId} disabled={branches.length === 0}>
-                    <SelectTrigger><SelectValue placeholder="Selecteer een filiaal" /></SelectTrigger>
+                    <SelectTrigger><SelectValue placeholder="Select a branch" /></SelectTrigger>
                     <SelectContent>
                       {branches.map(branch => (
                         <SelectItem key={branch.branch_id} value={branch.branch_id}>{branch.branch_name}</SelectItem>
@@ -371,25 +344,25 @@ export const UserManagement = () => {
               </div>
               <Button type="button" onClick={handleInviteUser} disabled={inviting || !inviteEmail || !selectedBranchId}>
                 {inviting && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-                {inviting ? 'Uitnodigen...' : 'Verstuur Uitnodiging'}
+                {inviting ? 'Inviting...' : 'Send Invitation'}
               </Button>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader>
-              <CardTitle>Gebruikers in Filiaal</CardTitle>
-              <CardDescription>Overzicht van gebruikers in het geselecteerde filiaal.</CardDescription>
+              <CardTitle>Users in Branch</CardTitle>
+              <CardDescription>Overview of users in the selected branch.</CardDescription>
             </CardHeader>
             <CardContent>
               {users.length === 0 && (loading || isFetching) ? (
                 <Card>
                   <CardHeader>
-                    <CardTitle>Gebruikers laden...</CardTitle>
+                    <CardTitle>Loading users...</CardTitle>
                   </CardHeader>
                   <CardContent className="flex flex-col items-center justify-center py-12">
                     <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
-                    <span className="mt-2 text-gray-600">Gebruikers worden geladen...</span>
+                    <span className="mt-2 text-gray-600">Users are loading...</span>
                   </CardContent>
                 </Card>
               ) : (
@@ -401,32 +374,32 @@ export const UserManagement = () => {
                         <p className="text-sm text-gray-500 capitalize">{u.role}</p>
                       </div>
                       <div className="flex gap-2">
-                        {/* Verberg 'Filialen beheren' knop voor admin zelf */}
+                        {/* Hide 'Manage Branches' button for admin himself */}
                         {!(u.userId === user?.id && u.role === 'admin') && (
                           <Button variant="outline" size="sm" onClick={() => handleOpenManageBranches(u)}>
-                            Filialen beheren
+                              Manage Branches
                           </Button>
                         )}
                         {u.userId !== user?.id && (
                           <Button variant="destructive" size="sm" onClick={() => handleDeleteUserCompletely(u.userId)} disabled={deletingUserId === u.userId}>
-                            {deletingUserId === u.userId ? 'Verwijderen...' : 'Verwijder'}
+                            {deletingUserId === u.userId ? 'Deleting...' : 'Delete'}
                           </Button>
                         )}
                       </div>
                     </li>
                   )) : (
-                    <div className="text-center text-gray-500 py-4">Geen gebruikers gevonden in dit filiaal.</div>
+                    <div className="text-center text-gray-500 py-4">No users found in this branch.</div>
                   )}
                 </ul>
               )}
             </CardContent>
           </Card>
 
-          {/* Modal voor filialen beheren */}
+          {/* Modal for managing branches */}
           <Dialog open={!!manageBranchesUser} onOpenChange={open => !open && setManageBranchesUser(null)}>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>Filialen beheren voor {manageBranchesUser?.email}</DialogTitle>
+                <DialogTitle>Manage Branches for {manageBranchesUser?.email}</DialogTitle>
               </DialogHeader>
               <div className="space-y-2">
                 {branches.map(branch => (
@@ -448,7 +421,7 @@ export const UserManagement = () => {
               </div>
               <DialogFooter>
                 <Button onClick={handleSaveBranches} disabled={savingBranches}>
-                  {savingBranches ? 'Opslaan...' : 'Opslaan'}
+                  {savingBranches ? 'Saving...' : 'Save'}
                 </Button>
               </DialogFooter>
             </DialogContent>

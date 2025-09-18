@@ -15,21 +15,21 @@ import { useNavigate } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
-// Schema voor profiel-data validatie
+// Schema for profile data validation
 const profileSchema = z.object({
-  firstName: z.string().min(1, 'Voornaam is verplicht'),
-  lastName: z.string().min(1, 'Achternaam is verplicht'),
-  email: z.string().email('Ongeldig emailadres'),
+      firstName: z.string().min(1, 'First name is required'),
+  lastName: z.string().min(1, 'Last name is required'),
+  email: z.string().email('Invalid email address'),
 });
 type ProfileFormData = z.infer<typeof profileSchema>;
 
-// Schema voor wachtwoord-data validatie
+// Schema for password data validation
 const passwordSchema = z.object({
-  newPassword: z.string().min(8, 'Wachtwoord moet minimaal 8 tekens zijn.'),
+  newPassword: z.string().min(8, 'Password must be at least 8 characters long.'),
   confirmPassword: z.string(),
 }).refine((data) => data.newPassword === data.confirmPassword, {
-  message: "Wachtwoorden komen niet overeen",
-  path: ["confirmPassword"], // Foutmelding wordt getoond bij het 'confirmPassword' veld
+  message: "Passwords do not match",
+  path: ["confirmPassword"], // Error message is shown when the 'confirmPassword' field is not filled in
 });
 type PasswordFormData = z.infer<typeof passwordSchema>;
 
@@ -42,13 +42,13 @@ export const ProfileSettings = () => {
   const [isProfileSuccess, setIsProfileSuccess] = useState(false);
   const [isPasswordLoading, setIsPasswordLoading] = useState(false);
   
-  // Bepaal of de gebruiker al een wachtwoord heeft ingesteld.
+  // Check if the user has a password set.
   const hasPassword = useMemo(() => 
     user?.identities?.some(id => id.provider === 'password'),
     [user]
   );
 
-  // React Hook Form voor profielgegevens
+  // React Hook Form for profile data
   const {
     register: registerProfile,
     handleSubmit: handleProfileSubmit,
@@ -62,7 +62,7 @@ export const ProfileSettings = () => {
     },
   });
   
-  // Aparte React Hook Form instance voor het wachtwoord
+  // Separate React Hook Form instance for the password
   const {
     register: registerPassword,
     handleSubmit: handlePasswordSubmit,
@@ -83,12 +83,12 @@ export const ProfileSettings = () => {
         }).eq('id', user.id);
 
         if (error) throw error;
-        toast.success('Profiel succesvol bijgewerkt.');
+        toast.success('Profile successfully updated.');
         setIsProfileSuccess(true);
         setTimeout(() => setIsProfileSuccess(false), 1500);
     } catch (error: any) {
-        console.error('Profiel bijwerken fout:', error);
-        toast.error('Fout bij bijwerken profiel', { description: error.message });
+          console.error('Profile update error:', error);
+        toast.error('Error updating profile', { description: error.message });
     } finally {
         setIsProfileLoading(false);
     }
@@ -102,27 +102,27 @@ const onPasswordSubmit: SubmitHandler<PasswordFormData> = async (data) => {
         });
         if (error) throw error;
 
-        // Gebruik een korte timeout zodat de session update kan voltooien en React state kan updaten
+        // Use a short timeout so the session update can complete and React state can update
         setTimeout(() => {
-            toast.success('Wachtwoord succesvol bijgewerkt!');
+            toast.success('Password successfully updated!');
             resetPasswordForm();
             setIsPasswordLoading(false);
         }, 200);
         return;
     } catch (error: any) {
-        console.error('Wachtwoord wijzigen fout:', error);
-        toast.error('Fout bij wijzigen wachtwoord', { description: error?.message || 'Onbekende fout' });
+        console.error('Password update error:', error);
+        toast.error('Error updating password', { description: error?.message || 'Unknown error' });
         setIsPasswordLoading(false);
     }
 };
   
-  // VEILIGHEIDSFIX: Accountverwijdering moet via een Edge Function.
+  // SECURITY FIX: Account deletion must be handled via an Edge Function.
   const handleDeleteAccount = () => {
-      toast.info('Account verwijderen', {
-          description: 'Deze actie moet via een beveiligde server-functie worden afgehandeld. Implementatie is vereist.',
+      toast.info('Delete Account', {
+          description: 'This action must be handled via a secure server-function. Implementation is required.',
           action: { label: 'Ok', onClick: () => {} },
       });
-      // De oude, ONVEILIGE code is verwijderd.
+      // The old, INSECURE code is removed.
       // Voorbeeld aanroep naar een Edge Function:
       // await supabase.functions.invoke('delete-user-account');
   };
@@ -142,27 +142,27 @@ const onPasswordSubmit: SubmitHandler<PasswordFormData> = async (data) => {
         {/* Persoonlijke Informatie */}
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center space-x-2"><User className="w-4 h-4" /><span>Persoonlijke Informatie</span></CardTitle>
-            <CardDescription>Bijwerken van uw naam en contactinformatie.</CardDescription>
+            <CardTitle className="flex items-center space-x-2"><User className="w-4 h-4" /><span>Personal Information</span></CardTitle>
+            <CardDescription>Update your name and contact information.</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleProfileSubmit(onProfileSubmit)} className="space-y-4">
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="firstName">Voornaam</Label>
-                  <Input id="firstName" {...registerProfile('firstName')} placeholder="Uw voornaam" />
+                  <Label htmlFor="firstName">First Name</Label>
+                  <Input id="firstName" {...registerProfile('firstName')} placeholder="Your first name" />
                   {profileErrors.firstName && <p className="text-sm text-red-600">{profileErrors.firstName.message}</p>}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="lastName">Achternaam</Label>
-                  <Input id="lastName" {...registerProfile('lastName')} placeholder="Uw achternaam" />
+                  <Label htmlFor="lastName">Last Name</Label>
+                  <Input id="lastName" {...registerProfile('lastName')} placeholder="Your last name" />
                   {profileErrors.lastName && <p className="text-sm text-red-600">{profileErrors.lastName.message}</p>}
                 </div>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
-                <Input id="email" type="email" {...registerProfile('email')} placeholder="uw@email.com" disabled />
-                 <p className="text-xs text-gray-500">E-mail kan momenteel niet gewijzigd worden.</p>
+                <Input id="email" type="email" {...registerProfile('email')} placeholder="your@email.com" disabled />
+                 <p className="text-xs text-gray-500">Email can currently not be changed.</p>
                 {profileErrors.email && <p className="text-sm text-red-600">{profileErrors.email.message}</p>}
               </div>
               <Button type="submit" disabled={isProfileLoading || isProfileSuccess}>
@@ -171,7 +171,7 @@ const onPasswordSubmit: SubmitHandler<PasswordFormData> = async (data) => {
                 ) : isProfileSuccess ? (
                   <CheckCircle className="w-4 h-4 mr-2 text-green-500 animate-pulse" />
                 ) : null}
-                Profiel Bijwerken
+                Update Profile
               </Button>
             </form>
           </CardContent>
@@ -180,25 +180,25 @@ const onPasswordSubmit: SubmitHandler<PasswordFormData> = async (data) => {
         {/* Beveiliging */}
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center space-x-2"><Key className="w-4 h-4" /><span>Beveiliging</span></CardTitle>
-            <CardDescription>{hasPassword ? 'Wijzig hier uw wachtwoord.' : 'Stel een wachtwoord in om uw account te beveiligen.'}</CardDescription>
+            <CardTitle className="flex items-center space-x-2"><Key className="w-4 h-4" /><span>Security</span></CardTitle>
+            <CardDescription>{hasPassword ? 'Change your password here.' : 'Set a password to secure your account.'}</CardDescription>
           </CardHeader>
           <CardContent>
 
             <form onSubmit={handlePasswordSubmit(onPasswordSubmit)} className="space-y-4">
                <div className="space-y-2">
-                  <Label htmlFor="newPassword">Nieuw wachtwoord</Label>
+                  <Label htmlFor="newPassword">New Password</Label>
                   <Input id="newPassword" type="password" {...registerPassword('newPassword')} placeholder="••••••••" />
                   {passwordErrors.newPassword && <p className="text-sm text-red-600">{passwordErrors.newPassword.message}</p>}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="confirmPassword">Bevestig wachtwoord</Label>
+                  <Label htmlFor="confirmPassword">Confirm Password</Label>
                   <Input id="confirmPassword" type="password" {...registerPassword('confirmPassword')} placeholder="••••••••" />
                   {passwordErrors.confirmPassword && <p className="text-sm text-red-600">{passwordErrors.confirmPassword.message}</p>}
                 </div>
                   <Button type="submit" disabled={isPasswordLoading}>
                       {isPasswordLoading && <Check className=" w-4 h-4 mr-2 animate-pulse" />}
-                      {hasPassword ? 'Wachtwoord Wijzigen' : 'Wachtwoord Wijzigen'}
+                      {hasPassword ? 'Change Password' : 'Change Password'}
                   </Button>
             </form>
           </CardContent>
@@ -212,10 +212,10 @@ const onPasswordSubmit: SubmitHandler<PasswordFormData> = async (data) => {
           <CardHeader>
             <CardTitle className="flex items-center space-x-2 text-red-700">
               <LogOut className="w-4 h-4" />
-              <span>Afmelden</span>
+              <span>Logout</span>
             </CardTitle>
             <CardDescription className="text-red-600">
-              Meld u af van uw account
+              Log out of your account
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -225,7 +225,7 @@ const onPasswordSubmit: SubmitHandler<PasswordFormData> = async (data) => {
               className="w-full"
             >
               <LogOut className="w-4 h-4 mr-2" />
-              Afmelden
+              Logout
             </Button>
           </CardContent>
         </Card>
