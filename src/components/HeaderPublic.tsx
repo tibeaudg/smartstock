@@ -161,14 +161,7 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButton
               {/* Mobile Navigation Links */}
               {onNavigate && (
                 <div className="mb-6">
-                  <h4 className="text-sm font-semibold text-gray-900 mb-3">Navigation</h4>
                   <div className="space-y-2">
-                    <button 
-                      className="block w-full text-left text-gray-700 hover:text-blue-700 py-2" 
-                      onClick={() => { onNavigate('features-section'); setMobileMenuOpen(false); }}
-                    >
-                      Features
-                    </button>
                      <Link 
                        to="/pricing"
                        className="block w-full text-left text-gray-700 hover:text-blue-700 py-2" 
@@ -176,18 +169,6 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButton
                      >
                        Pricing
                      </Link>
-                    <button 
-                      className="block w-full text-left text-gray-700 hover:text-blue-700 py-2" 
-                      onClick={() => { onNavigate('testimonials-section'); setMobileMenuOpen(false); }}
-                    >
-                      Reviews
-                    </button>
-                    <button 
-                      className="block w-full text-left text-gray-700 hover:text-blue-700 py-2" 
-                      onClick={() => { onNavigate('faq-section'); setMobileMenuOpen(false); }}
-                    >
-                      FAQ
-                    </button>
                     <Link 
                       to="/contact"
                       className="block w-full text-left text-gray-700 hover:text-blue-700 py-2" 

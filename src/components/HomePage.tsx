@@ -926,12 +926,12 @@ export const HomePage = () => {
 
               {/* Main headline - SEO optimized H1 - Mobiel geoptimaliseerd */}
               <FadeInWhenVisible>
-                <h1 className="text-3xl font-bold mb-4 leading-tight">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 leading-tight">
                   <span className="block text-gray-900">Smart Inventory Management</span>
-                  <span className="block text-blue-600 text-xl font-semibold mt-1">
+                  <span className="block text-blue-600 text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold mt-1">
                     For Growing Businesses
                   </span>
-                </h1>
+                </h2>
               </FadeInWhenVisible>
 
               {/* Subheadline - Mobiel geoptimaliseerd */}
@@ -946,9 +946,9 @@ export const HomePage = () => {
             <div className="hidden sm:block">
               {/* Main headline - SEO optimized H1 */}
               <FadeInWhenVisible>
-                <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 sm:mb-6 leading-tight px-2">
+                <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 leading-tight px-2">
                   <span className="block text-gray-900">Smart Inventory Management</span>
-                  <span className="block text-blue-600 text-xl xs:text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold mt-1 sm:mt-2">
+                  <span className="block text-blue-600 text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold mt-1 sm:mt-2">
                     For Growing Businesses
                   </span>
                 </h1>
@@ -965,13 +965,15 @@ export const HomePage = () => {
 
             {/* Social proof */}
             <FadeInWhenVisible>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 mb-6 sm:mb-8 px-4">
-                <div className="flex">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-400 fill-current" />
-                  ))}
+              <div className="flex flex-col items-center justify-center gap-2 sm:gap-3 mb-6 sm:mb-8 px-4">
+                <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3">
+                  <div className="flex">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-400 fill-current" />
+                    ))}
+                  </div>
+                  <span className="text-sm sm:text-base text-gray-600 font-medium">4.9/5 rating</span>
                 </div>
-                <span className="text-sm sm:text-base text-gray-600 font-medium">4.9/5 rating</span>
                 <div className="hidden sm:block h-4 w-px bg-gray-300"></div>
                 <span className="text-sm sm:text-base text-gray-600">3200+ happy users</span>
               </div>
@@ -991,17 +993,6 @@ export const HomePage = () => {
                   <Rocket className="h-5 w-5 sm:h-5 sm:w-5 mr-2 group-hover:animate-bounce" />
                   Get Started Free
                   <ArrowRight className="h-5 w-5 sm:h-5 sm:w-5 ml-2 group-hover:translate-x-1 transition-transform" />
-                </Button>
-                <Button 
-                  id="hero-cta-secondary"
-                  data-analytics-id="hero-how-it-works" 
-                  size="lg" 
-                  variant="outline" 
-                  className="max-w-md justify-center mx-auto border-2 border-blue-600 text-blue-600 px-6 sm:px-8 py-4 sm:py-4 rounded-xl font-semibold hover:bg-blue-50 transition-all duration-300 text-lg sm:text-lg w-full group h-12 sm:h-14"
-                  onClick={handleHowItWorksClick}
-                >
-                  <Play className="h-5 w-5 sm:h-5 sm:w-5 mr-2" />
-                  Learn More
                 </Button>
               </div>
             </FadeInWhenVisible>
@@ -1218,17 +1209,7 @@ export const HomePage = () => {
                     </div>
                   </FadeInWhenVisible>
 
-                  <FadeInWhenVisible>
-                    <div className="px-4">
-                      <Button 
-                        className="bg-gradient-to-r from-blue-500 to-blue-900 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg text-sm sm:text-base w-full sm:w-auto"
-                        onClick={handleLoginClick}
-                      >
-                        <Rocket className="h-3 w-3 sm:h-4 sm:w-4 mr-2" />
-                        Get Started Free
-                      </Button>
-                    </div>
-                  </FadeInWhenVisible>
+
                 </div>
 
                 {/* Image */}
@@ -1357,49 +1338,7 @@ export const HomePage = () => {
                 </div>
               </div>
               
-              {/* Video benefits */}
-              <div className="mt-6 sm:mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
-                {(() => {
-                  try {
-                    const benefits = [
-                      { title: "3 minutes", description: "To add your first products" },
-                      { title: "Immediate results", description: "See your inventory overview right away" },
-                      { title: "Team ready", description: "Invite your team and start working together" }
-                    ];
-                    if (Array.isArray(benefits)) {
-                      return benefits.map((benefit, index) => (
-                        <div key={index} className="text-center p-6 bg-white rounded-xl shadow-lg border border-gray-100">
-                          <div className="inline-flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full mb-4">
-                            {index === 0 ? <Clock className="h-6 w-6 text-blue-600" /> : 
-                             index === 1 ? <Zap className="h-6 w-6 text-green-600" /> :
-                             <Users className="h-6 w-6 text-purple-600" />}
-                          </div>
-                          <h3 className="font-bold text-gray-900 mb-2">{benefit.title}</h3>
-                          <p className="text-sm text-gray-600">{benefit.description}</p>
-                        </div>
-                      ));
-                    }
-                  } catch (error) {
-                    console.warn('Translation error for videoBenefits:', error);
-                  }
-                  // Fallback data
-                  return [
-                    { title: "3 minutes", description: "To add your first products" },
-                    { title: "Immediate results", description: "See your inventory overview right away" },
-                    { title: "Team ready", description: "Invite your team and start working together" }
-                  ].map((benefit, index) => (
-                    <div key={index} className="text-center p-6 bg-white rounded-xl shadow-lg border border-gray-100">
-                      <div className="inline-flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full mb-4">
-                        {index === 0 ? <Clock className="h-6 w-6 text-blue-600" /> : 
-                         index === 1 ? <Zap className="h-6 w-6 text-green-600" /> :
-                         <Users className="h-6 w-6 text-purple-600" />}
-                      </div>
-                      <h3 className="font-bold text-gray-900 mb-2">{benefit.title}</h3>
-                      <p className="text-sm text-gray-600">{benefit.description}</p>
-                    </div>
-                  ));
-                })()}
-              </div>
+
             </div>
           </FadeInWhenVisible>
         </div>
@@ -1662,16 +1601,6 @@ export const HomePage = () => {
                   <Rocket className="h-4 w-4 sm:h-5 sm:w-5 mr-2 group-hover:animate-bounce" />
                     Get Started Free
                   <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 ml-2 group-hover:translate-x-1 transition-transform" />
-              </Button>
-              <Button 
-                data-analytics-id="final-demo" 
-                size="lg" 
-                variant="outline" 
-                className="border-2 bg-gradient-to-r from-blue-500 to-blue-900 border-white text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold hover:bg-white hover:text-blue-600 transition-all duration-300 text-sm sm:text-lg w-full sm:w-auto group"
-                onClick={handleHowItWorksClick}
-              >
-                <Play className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
-                Demo
               </Button>
             </div>
           </FadeInWhenVisible>
