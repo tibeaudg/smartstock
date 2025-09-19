@@ -670,7 +670,18 @@ export const HomePage = () => {
   ];
 
   return (
-    <div className="bg-white text-gray-900 font-sans">
+    <div className="bg-white text-gray-900 font-sans" style={{
+      /* 
+      CUSTOM HEADER SIZES - Adjust these values to change header font sizes
+      Values are in rem units (1rem = 16px typically)
+      Example: '10rem' = 160px, '8rem' = 128px, '6rem' = 96px
+      */
+      '--hero-header-size': '10rem',        // "Smart Inventory Management" - Hero section
+      '--features-header-size': '8rem',     // "Features - Everything You Need"  
+      '--demo-header-size': '8rem',         // "See It In Action - Watch Our Demo"
+      '--testimonials-header-size': '8rem', // "Users Tell About Their Success"
+      '--cta-header-size': '10rem'          // "Get Started Free" - Final CTA
+    } as React.CSSProperties}>
       <Helmet>
         {/* Non-render-blocking resource optimization */}
         
@@ -708,6 +719,20 @@ export const HomePage = () => {
           * { box-sizing: border-box; }
           html { font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif; }
           body { margin: 0; padding: 0; background-color: #ffffff; color: #111827; }
+          
+          /* Custom Header Font Sizes - Adjust these values to change header sizes */
+          /* Format: clamp(minimum_mobile, responsive_scaling, maximum_desktop) */
+          .hero-header { font-size: clamp(2.5rem, 5vw, var(--hero-header-size, 8rem)) !important; }
+          
+          /* Mobile-specific adjustments for hero section */
+          @media (max-width: 767px) {
+            .hero-header { font-size: 3rem !important; }
+            .hero-subtitle { font-size: 1.125rem !important; }
+          }
+          .features-header { font-size: clamp(2rem, 4vw, var(--features-header-size, 6rem)) !important; }
+          .demo-header { font-size: clamp(2rem, 4vw, var(--demo-header-size, 8rem)) !important; }
+          .testimonials-header { font-size: clamp(2rem, 4vw, var(--testimonials-header-size, 8rem)) !important; }
+          .cta-header { font-size: clamp(2rem, 4vw, var(--cta-header-size, 8rem)) !important; }
           
           /* Hero section critical styles */
           .bg-white { background-color: #ffffff; }
@@ -883,9 +908,9 @@ export const HomePage = () => {
 
               {/* Main headline - SEO optimized H1 - Mobiel geoptimaliseerd */}
               <FadeInWhenVisible>
-                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 leading-tight">
+                <h2 className="hero-header font-bold mb-4 leading-tight">
                   <span className="block text-gray-900">Smart Inventory Management</span>
-                  <span className="block text-blue-600 text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold mt-1">
+                  <span className="block text-blue-600 text-xl sm:text-2xl md:text-3xl lg:text-5xl xl:text-6xl font-semibold mt-1 hero-subtitle">
                     For Growing Businesses
                   </span>
                 </h2>
@@ -903,9 +928,9 @@ export const HomePage = () => {
             <div className="hidden sm:block">
               {/* Main headline - SEO optimized H1 */}
               <FadeInWhenVisible>
-                <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 leading-tight px-2">
+                <h1 className="hero-header font-bold mb-4 sm:mb-6 leading-tight px-2">
                   <span className="block text-gray-900">Smart Inventory Management</span>
-                  <span className="block text-blue-600 text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold mt-1 sm:mt-2">
+                  <span className="block text-blue-600 text-xl sm:text-2xl md:text-3xl lg:text-5xl xl:text-6xl font-semibold mt-1 sm:mt-2 hero-subtitle">
                     For Growing Businesses
                   </span>
                 </h1>
@@ -1036,7 +1061,7 @@ export const HomePage = () => {
               </div>
             </FadeInWhenVisible>
             <FadeInWhenVisible>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 px-4">
+              <h2 className="features-header font-bold mb-4 sm:mb-6 px-4">
                 <span className="block text-gray-900">Features</span>
                 <span className="block bg-gradient-to-r from-blue-500 to-blue-900 bg-clip-text text-transparent">
                   Everything You Need
@@ -1209,7 +1234,7 @@ export const HomePage = () => {
               </div>
             </FadeInWhenVisible>
             <FadeInWhenVisible>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 px-4">
+              <h2 className="demo-header font-bold mb-4 sm:mb-6 px-4">
                 <span className="block text-gray-900">See It In Action</span>
                 <span className="block bg-gradient-to-r from-blue-500 to-blue-900 bg-clip-text text-transparent">
                   Watch Our Demo
@@ -1293,7 +1318,7 @@ export const HomePage = () => {
               </div>
             </FadeInWhenVisible>
             <FadeInWhenVisible>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 px-4">
+              <h2 className="testimonials-header font-bold mb-4 sm:mb-6 px-4">
                 <span className="block text-gray-900">Users Tell About Their Success </span>
                 <span className="block bg-gradient-to-r from-blue-500 to-blue-900 bg-clip-text text-transparent">
                 What our customers say
@@ -1466,7 +1491,7 @@ export const HomePage = () => {
           </FadeInWhenVisible>
 
           <FadeInWhenVisible>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 sm:mb-6 text-white leading-tight px-4">
+            <h2 className="cta-header font-bold mb-4 sm:mb-6 text-white leading-tight px-4">
               <span className="block">Get Started Free</span>
               <span className="block bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent">
                 No credit card required
