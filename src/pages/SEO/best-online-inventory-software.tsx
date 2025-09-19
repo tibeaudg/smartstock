@@ -251,7 +251,7 @@ export default function BestOnlineInventorySoftware() {
           <div className="flex flex-col md:flex-row gap-4 justify-center">
             <Link
               to="/auth"
-              className="bg-blue-600 text-white px-6 md:px-8 py-3 md:py-4 rounded-lg font-semibold shadow-lg hover:bg-blue-700 transition text-base md:text-lg"
+              className="bg-blue-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold shadow-lg hover:bg-blue-700 transition text-sm sm:text-base min-h-[48px] w-full sm:w-auto max-w-xs sm:max-w-none"
             >
               Start Free Trial
             </Link>

@@ -54,13 +54,13 @@ export default function WarehouseManagementSystem() {
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link 
                   to="/auth" 
-                  className="inline-flex items-center justify-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
+                  className="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors text-sm sm:text-base min-h-[48px] w-full sm:w-auto"
                 >
                   Start Free Trial
                 </Link>
                 <Link 
                   to="/features" 
-                  className="inline-flex items-center justify-center px-6 py-3 border border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition-colors"
+                  className="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 border border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition-colors text-sm sm:text-base min-h-[48px] w-full sm:w-auto"
                 >
                   Learn More
                 </Link>
@@ -222,7 +222,7 @@ export default function WarehouseManagementSystem() {
               </p>
               <Link 
                 to="/auth" 
-                className="inline-flex items-center justify-center w-full px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
+                className="inline-flex items-center justify-center w-full px-6 sm:px-8 py-3 sm:py-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors text-sm sm:text-base min-h-[48px]"
               >
                 Start Free Trial
               </Link>
@@ -266,13 +266,13 @@ export default function WarehouseManagementSystem() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link 
               to="/auth" 
-              className="inline-flex items-center justify-center px-8 py-3 bg-white text-blue-600 font-semibold rounded-lg hover:bg-gray-100 transition-colors"
+              className="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 bg-white text-blue-600 font-semibold rounded-lg hover:bg-gray-100 transition-colors text-sm sm:text-base min-h-[48px] w-full sm:w-auto"
             >
               Start Free Trial
             </Link>
             <Link 
               to="/contact" 
-              className="inline-flex items-center justify-center px-8 py-3 border-2 border-white text-white font-semibold rounded-lg hover:bg-white hover:text-blue-600 transition-colors"
+              className="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 border-2 border-white text-white font-semibold rounded-lg hover:bg-white hover:text-blue-600 transition-colors text-sm sm:text-base min-h-[48px] w-full sm:w-auto"
             >
               Contact Sales
             </Link>

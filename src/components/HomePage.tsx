@@ -1136,13 +1136,14 @@ export const HomePage = () => {
             <Button 
               data-analytics-id="stats-cta" 
               size="lg" 
-              className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-3 rounded-xl font-bold hover:from-orange-700 hover:to-red-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl group relative overflow-hidden"
+              className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl group relative overflow-hidden text-sm sm:text-base min-h-[48px] w-full sm:w-auto max-w-xs sm:max-w-none"
               onClick={handleLoginClick}
             >
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
-              <Rocket className="h-4 w-4 mr-2 group-hover:animate-bounce" />
-              Get Started Free
-              <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
+              <Rocket className="h-4 w-4 sm:h-5 sm:w-5 mr-2 group-hover:animate-bounce" />
+              <span className="hidden sm:inline">Get Started Free</span>
+              <span className="sm:hidden">Start Free</span>
+              <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 ml-2 group-hover:translate-x-1 transition-transform" />
             </Button>
           </FadeInWhenVisible>
         </div>
@@ -1250,13 +1251,14 @@ export const HomePage = () => {
             <Button 
               data-analytics-id="stats-cta" 
               size="lg" 
-              className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-3 rounded-xl font-bold hover:from-orange-700 hover:to-red-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl group relative overflow-hidden"
+              className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl group relative overflow-hidden text-sm sm:text-base min-h-[48px] w-full sm:w-auto max-w-xs sm:max-w-none"
               onClick={handleLoginClick}
             >
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
-              <Rocket className="h-4 w-4 mr-2 group-hover:animate-bounce" />
-              Get Started Free
-              <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
+              <Rocket className="h-4 w-4 sm:h-5 sm:w-5 mr-2 group-hover:animate-bounce" />
+              <span className="hidden sm:inline">Get Started Free</span>
+              <span className="sm:hidden">Start Free</span>
+              <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 ml-2 group-hover:translate-x-1 transition-transform" />
             </Button>
           </FadeInWhenVisible>
         </div>
@@ -1429,13 +1431,14 @@ export const HomePage = () => {
             <Button 
               data-analytics-id="stats-cta" 
               size="lg" 
-              className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-3 rounded-xl font-bold hover:from-orange-700 hover:to-red-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl group relative overflow-hidden"
+              className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl group relative overflow-hidden text-sm sm:text-base min-h-[48px] w-full sm:w-auto max-w-xs sm:max-w-none"
               onClick={handleLoginClick}
             >
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
-              <Rocket className="h-4 w-4 mr-2 group-hover:animate-bounce" />
-              Get Started Free
-              <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
+              <Rocket className="h-4 w-4 sm:h-5 sm:w-5 mr-2 group-hover:animate-bounce" />
+              <span className="hidden sm:inline">Get Started Free</span>
+              <span className="sm:hidden">Start Free</span>
+              <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 ml-2 group-hover:translate-x-1 transition-transform" />
             </Button>
           </FadeInWhenVisible>
         </div>

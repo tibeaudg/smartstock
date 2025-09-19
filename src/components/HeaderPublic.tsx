@@ -79,7 +79,7 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButton
                     <Button size="sm" variant="outline" onClick={handleLoginClick} className="text-sm">
                       Login
                     </Button>
-                    <Button size="sm" onClick={handleRegisterClick} className="text-sm">
+                    <Button size="sm" onClick={handleRegisterClick} className="text-sm bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold min-h-[40px]">
                       Get Started Free
                     </Button>
                   </>
@@ -191,7 +191,7 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButton
                     Login
                   </Button>
                   <Button 
-                    className="w-full" 
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg min-h-[48px] text-base" 
                     onClick={() => { handleRegisterClick(); setMobileMenuOpen(false); }}
                   >
                     Get Started Free
