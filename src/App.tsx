@@ -77,7 +77,7 @@ import WarehouseManagementSystem from "./pages/SEO/warehouse-management-system";
 import AboutPage from "./pages/SEO/about";
 import PrivacyPolicyPage from "./pages/SEO/privacy-policy";
 import TermsConditionsPage from "./pages/SEO/terms-conditions";
-import ContactPage from "./pages/SEO/contact";
+import SEOContactPage from "./pages/SEO/contact";
 import CategoriesPage from './pages/categories';
 import SuppliersPage from './pages/suppliers';
 import AdminPage from './pages/admin';
@@ -87,6 +87,7 @@ import { IncomingDeliveryNotes } from './components/delivery-notes/IncomingDeliv
 import { OutgoingDeliveryNotes } from './components/delivery-notes/OutgoingDeliveryNotes';
 import PricingPage from './pages/pricing';
 import CheckoutPage from './pages/checkout';
+import ContactPage from './pages/contact';
 import { SubscriptionManagement } from './components/settings/SubscriptionManagement';
 import { AdminSubscriptionManagement } from './components/admin/SubscriptionManagement';
 
@@ -294,6 +295,7 @@ export default function App() {
                   <Route path="/" element={<HomePage />} />
                   <Route path="/auth" element={<AuthRoute />} />
                   <Route path="/pricing" element={<PricingPage />} />
+                  <Route path="/contact" element={<SEOContactPage />} />
                   <Route path="/checkout" element={<CheckoutPage />} />
                   <Route path="/voorraadbeheer-tips" element={<VoorraadbeheerTips />} />
                   <Route path="/voorraadbeheer-software-vergelijken" element={<VoorraadbeheerSoftwareVergelijken />} />
@@ -337,7 +339,6 @@ export default function App() {
                   <Route path="/about" element={<AboutPage />} />
                   <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
                   <Route path="/terms-conditions" element={<TermsConditionsPage />} />
-                  <Route path="/contact" element={<ContactPage />} />
 
                   {/* Beschermde dashboard routes */}
                   <Route

@@ -213,14 +213,7 @@ export const HomePage = () => {
       return true;
     }
   });
-  const [showExitIntent, setShowExitIntent] = useState<boolean>(false);
-  const [hasShownExitIntent, setHasShownExitIntent] = useState<boolean>(() => {
-    try {
-      return sessionStorage.getItem('exit_intent_shown') === 'true';
-    } catch {
-      return false;
-    }
-  });
+  // Exit-intent popup state removed
 
   const handleLoginClick = () => {
     logger.info('CTA click', { id: 'start-now' });
@@ -237,45 +230,14 @@ export const HomePage = () => {
     scrollToSection('video-section');
   };
 
-  // Exit-intent listener
-  React.useEffect(() => {
-    if (hasShownExitIntent) return;
-    const onMouseLeave = (e: MouseEvent) => {
-      if (e.clientY <= 0) {
-        setShowExitIntent(true);
-        setHasShownExitIntent(true);
-        try { sessionStorage.setItem('exit_intent_shown', 'true'); } catch {}
-      }
-    };
-    document.addEventListener('mouseout', onMouseLeave);
-    return () => document.removeEventListener('mouseout', onMouseLeave);
-  }, [hasShownExitIntent]);
+  // Exit-intent popup removed
 
   const acceptCookies = () => {
     try { localStorage.setItem('cookie_consent', 'accepted'); } catch {}
     setShowCookieBanner(false);
   };
 
-  // Contact form logic
-  type ContactFormValues = { name: string; email: string; message: string };
-  const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<ContactFormValues>({
-    defaultValues: { name: '', email: '', message: '' }
-  });
-  const onSubmitContact = async (values: ContactFormValues) => {
-    try {
-      const res = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(values)
-      });
-      if (!res.ok) throw new Error('Failed to send');
-      reset();
-      logger.info('Contact message sent', { email: values.email });
-      alert('Thank you! We will contact you soon.');
-    } catch (e) {
-      alert('Sending failed. Please try again.');
-    }
-  };
+  // Contact form logic removed - now on separate /contact page
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -962,19 +924,19 @@ export const HomePage = () => {
             <div className="sm:hidden ">
 
 
-              {/* Main headline - SEO optimized H1 */}
+              {/* Main headline - SEO optimized H1 - Mobiel geoptimaliseerd */}
               <FadeInWhenVisible>
-                <h1 className="text-4xl font-bold mb-4 leading-tight">
+                <h1 className="text-3xl font-bold mb-4 leading-tight">
                   <span className="block text-gray-900">Smart Inventory Management</span>
-                  <span className="block text-blue-600 text-2xl font-semibold mt-1">
+                  <span className="block text-blue-600 text-xl font-semibold mt-1">
                     For Growing Businesses
                   </span>
                 </h1>
               </FadeInWhenVisible>
 
-              {/* Subheadline */}
+              {/* Subheadline - Mobiel geoptimaliseerd */}
               <FadeInWhenVisible>
-                <p className="text-xs text-gray-600 mb-6 max-w-4xl mx-auto leading-relaxed">
+                <p className="text-sm text-gray-600 mb-8 max-w-4xl mx-auto leading-relaxed">
                   Track stock levels, manage suppliers, and grow your business with our powerful yet simple inventory management platform.
                 </p>
               </FadeInWhenVisible>
@@ -1015,30 +977,30 @@ export const HomePage = () => {
               </div>
             </FadeInWhenVisible>
 
-            {/* CTA Buttons - Clean & Focused */}
+            {/* CTA Buttons - Mobiel geoptimaliseerd */}
             <FadeInWhenVisible>
-              <div className="flex flex-col gap-3 justify-center mb-6 sm:mb-8 px-4">
+              <div className="flex flex-col gap-4 justify-center mb-8 sm:mb-8 px-4">
                 <Button 
                   id="hero-cta-primary"
                   data-analytics-id="hero-start" 
                   size="lg" 
-                  className="max-w-md justify-center mx-auto bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl text-base sm:text-lg w-full group relative overflow-hidden"
+                  className="max-w-md justify-center mx-auto bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 sm:px-8 py-4 sm:py-4 rounded-xl font-semibold hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl text-lg sm:text-lg w-full group relative overflow-hidden h-14 sm:h-14"
                   onClick={handleLoginClick}
                 >
                   <div className=" absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
-                  <Rocket className="h-4 w-4 sm:h-5 sm:w-5 mr-2 group-hover:animate-bounce" />
+                  <Rocket className="h-5 w-5 sm:h-5 sm:w-5 mr-2 group-hover:animate-bounce" />
                   Get Started Free
-                  <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="h-5 w-5 sm:h-5 sm:w-5 ml-2 group-hover:translate-x-1 transition-transform" />
                 </Button>
                 <Button 
                   id="hero-cta-secondary"
                   data-analytics-id="hero-how-it-works" 
                   size="lg" 
                   variant="outline" 
-                  className="max-w-md justify-center mx-auto border-2 border-blue-600 text-blue-600 px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold hover:bg-blue-50 transition-all duration-300 text-base sm:text-lg w-full group"
+                  className="max-w-md justify-center mx-auto border-2 border-blue-600 text-blue-600 px-6 sm:px-8 py-4 sm:py-4 rounded-xl font-semibold hover:bg-blue-50 transition-all duration-300 text-lg sm:text-lg w-full group h-12 sm:h-14"
                   onClick={handleHowItWorksClick}
                 >
-                  <Play className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
+                  <Play className="h-5 w-5 sm:h-5 sm:w-5 mr-2" />
                   Learn More
                 </Button>
               </div>
@@ -1188,494 +1150,11 @@ export const HomePage = () => {
         </div>
       </section>
 
-      {/* MODULES SECTIE - Nieuwe features */}
-      <section id="modules-section" className="py-12 sm:py-16 md:py-24 bg-gradient-to-br from-gray-50 to-blue-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-12 sm:mb-16">
-            <FadeInWhenVisible>
-              <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-800 px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6">
-                <Sparkles className="h-3 w-3 sm:h-4 sm:w-4" />
-                <span>Modules</span>
-              </div>
-            </FadeInWhenVisible>
-            <FadeInWhenVisible>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 px-4">
-                <span className="block text-gray-900">Modules</span>
-                <span className="block bg-gradient-to-r from-blue-500 to-blue-900 bg-clip-text text-transparent">
-                  For Every Business Need
-                </span>
-              </h2>
-            </FadeInWhenVisible>
-            <FadeInWhenVisible>
-              <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-4">
-                Comprehensive inventory management modules designed to streamline your business operations and boost productivity.
-              </p>
-            </FadeInWhenVisible>
-          </div>
-
-          {/* Subscription Features Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-12 sm:mb-16">
-            {subscriptionFeatures.map((feature, index) => (
-              <FadeInWhenVisible key={index}>
-                <div className={`relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-2 ${feature.tier === 'groei' ? 'border-blue-500 ring-4 ring-blue-100' : 'border-gray-100'}`}>
-                  {feature.tier === 'groei' && (
-                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    </div>
-                  )}
-                  
-                  <div className="p-4 sm:p-6 lg:p-8">
-                    <div className="flex items-center justify-between mb-4 sm:mb-6">
-                      <div className="p-2 sm:p-3 bg-gray-50 rounded-xl">
-                        {feature.icon}
-                      </div>
-                      <div className="text-right">
-                      </div>
-                    </div>
-
-                    <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 sm:mb-3">{feature.title}</h3>
-                    <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6 leading-relaxed">{feature.description}</p>
-                    
-                    {/* Internal link to features section */}
-                    <div className="mb-3 sm:mb-4">
-                      <button 
-                        onClick={() => scrollToSection('features-section')} 
-                        className="text-blue-600 hover:text-blue-800 text-xs sm:text-sm underline cursor-pointer"
-                      >
-                        Learn More About Features
-                      </button>
-                    </div>
-
-                    <div className="space-y-2 sm:space-y-3 mb-6 sm:mb-8">
-                      {feature.features.map((featureItem, featureIndex) => (
-                        <div key={featureIndex} className="flex items-center gap-2 sm:gap-3">
-                          <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-600 flex-shrink-0" />
-                          <span className="text-sm sm:text-base text-gray-700">{featureItem}</span>
-                        </div>
-                      ))}
-                    </div>
-
-                  </div>
-                </div>
-              </FadeInWhenVisible>
-            ))}
-          </div>
 
 
-        </div>
-      </section>
-
-      {/* PRICING SECTIE */}
-      <section id="pricing-section" className="py-12 sm:py-16 md:py-24 bg-gradient-to-br from-gray-50 to-blue-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-12 sm:mb-16">
-            <FadeInWhenVisible>
-              <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-800 px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6">
-                <Euro className="h-3 w-3 sm:h-4 sm:w-4" />
-                <span>Transparent Pricing</span>
-              </div>
-            </FadeInWhenVisible>
-            <FadeInWhenVisible>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 px-4">
-                <span className="block text-gray-900">Simple Pricing</span>
-                <span className="block bg-gradient-to-r from-blue-500 to-blue-900 bg-clip-text text-transparent">
-                  For Every Business Size
-                </span>
-              </h2>
-            </FadeInWhenVisible>
-            <FadeInWhenVisible>
-              <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-4">
-                Choose the perfect plan for your business. Start free and upgrade as you grow.
-              </p>
-            </FadeInWhenVisible>
-          </div>
-
-          {/* Pricing Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-12 sm:mb-16">
-            {/* Basis Plan */}
-            <FadeInWhenVisible>
-              <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-gray-200">
-                <div className="p-4 sm:p-6 lg:p-8">
-                  <div className="text-center mb-6 sm:mb-8">
-                    <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-gray-100 rounded-full mb-3 sm:mb-4">
-                      <Package className="h-6 w-6 sm:h-8 sm:w-8 text-gray-600" />
-                    </div>
-                    <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Basic</h3>
-                    <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6">Perfect for small businesses starting out</p>
-                    <div className="mb-4 sm:mb-6">
-                      <div className="text-3xl sm:text-4xl font-bold text-gray-900">€0</div>
-                      <div className="text-xs sm:text-sm text-gray-500">per month</div>
-                    </div>
-                  </div>
-
-                  <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
-                    <div className="flex items-center justify-between text-xs sm:text-sm">
-                      <span className="text-gray-600">Products</span>
-                      <span className="font-medium">100</span>
-                    </div>
-                    <div className="flex items-center justify-between text-xs sm:text-sm">
-                      <span className="text-gray-600">Orders</span>
-                      <span className="font-medium">50</span>
-                    </div>
-                    <div className="flex items-center justify-between text-xs sm:text-sm">
-                      <span className="text-gray-600">Users</span>
-                      <span className="font-medium">2</span>
-                    </div>
-                    <div className="flex items-center justify-between text-xs sm:text-sm">
-                      <span className="text-gray-600">Branches</span>
-                      <span className="font-medium">1</span>
-                    </div>
-                  </div>
-
-                  <ul className="space-y-2 sm:space-y-3 mb-6 sm:mb-8">
-                    {[
-                      'Up to 100 products',
-                      'Basic inventory tracking',
-                      'Email support',
-                      'Mobile app access'
-                    ].map((feature, index) => (
-                      <li key={index} className="flex items-center gap-2 sm:gap-3">
-                        <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-600 flex-shrink-0" />
-                        <span className="text-sm sm:text-base text-gray-700">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-
-                  <Button 
-                    className="w-full bg-gray-900 hover:bg-gray-800 text-sm sm:text-base py-2 sm:py-3"
-                    onClick={handleLoginClick}
-                  >
-                    Get Started Free
-                  </Button>
-                </div>
-              </div>
-            </FadeInWhenVisible>
-
-            {/* Groei Plan */}
-            <FadeInWhenVisible>
-              <div className="bg-white rounded-xl sm:rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-blue-500 ring-2 sm:ring-4 ring-blue-100 relative">
-                <div className="absolute -top-3 sm:-top-4 left-1/2 transform -translate-x-1/2">
-                  <div className="bg-gradient-to-r from-blue-500 to-blue-900 text-white px-3 sm:px-4 py-1 sm:py-2 rounded-full text-xs sm:text-sm font-semibold flex items-center gap-1 sm:gap-2">
-                    <Star className="h-3 w-3 sm:h-4 sm:w-4" />
-                    Most Popular
-                  </div>
-                </div>
-                
-                <div className="p-4 sm:p-6 lg:p-8">
-                  <div className="text-center mb-6 sm:mb-8">
-                    <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-blue-100 rounded-full mb-3 sm:mb-4">
-                      <Zap className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600" />
-                    </div>
-                    <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Growth</h3>
-                    <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6">Ideal for growing businesses</p>
-                    <div className="mb-4 sm:mb-6">
-                      <div className="text-3xl sm:text-4xl font-bold text-gray-900">€29</div>
-                      <div className="text-xs sm:text-sm text-gray-500">per month</div>
-                    </div>
-                  </div>
-
-                  <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
-                    <div className="flex items-center justify-between text-xs sm:text-sm">
-                      <span className="text-gray-600">Products</span>
-                      <span className="font-medium">1000</span>
-                    </div>
-                    <div className="flex items-center justify-between text-xs sm:text-sm">
-                      <span className="text-gray-600">Orders</span>
-                      <span className="font-medium">500</span>
-                    </div>
-                    <div className="flex items-center justify-between text-xs sm:text-sm">
-                      <span className="text-gray-600">Users</span>
-                      <span className="font-medium">10</span>
-                    </div>
-                    <div className="flex items-center justify-between text-xs sm:text-sm">
-                      <span className="text-gray-600">Branches</span>
-                      <span className="font-medium">5</span>
-                    </div>
-                  </div>
-
-                  <ul className="space-y-2 sm:space-y-3 mb-6 sm:mb-8">
-                    {[
-                      'Up to 1000 products',
-                      'Advanced analytics',
-                      'Priority support',
-                      'Custom reports'
-                    ].map((feature, index) => (
-                      <li key={index} className="flex items-center gap-2 sm:gap-3">
-                        <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-600 flex-shrink-0" />
-                        <span className="text-sm sm:text-base text-gray-700">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-
-                  <Button 
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-sm sm:text-base py-2 sm:py-3"
-                    onClick={handlePricingClick}
-                  >
-                    Start 14 day free trial
-                  </Button>
-                </div>
-              </div>
-            </FadeInWhenVisible>
-
-            {/* Premium Plan */}
-            <FadeInWhenVisible>
-              <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-purple-200">
-                <div className="p-4 sm:p-6 lg:p-8">
-                  <div className="text-center mb-6 sm:mb-8">
-                    <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-purple-100 rounded-full mb-3 sm:mb-4">
-                      <Crown className="h-6 w-6 sm:h-8 sm:w-8 text-purple-600" />
-                    </div>
-                    <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Premium</h3>
-                    <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6">For large enterprises</p>
-                    <div className="mb-4 sm:mb-6">
-                      <div className="text-3xl sm:text-4xl font-bold text-gray-900">€99</div>
-                      <div className="text-xs sm:text-sm text-gray-500">per month</div>
-                    </div>
-                  </div>
-
-                  <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
-                    <div className="flex items-center justify-between text-xs sm:text-sm">
-                      <span className="text-gray-600">Products</span>
-                      <span className="font-medium text-green-600">Unlimited</span>
-                    </div>
-                    <div className="flex items-center justify-between text-xs sm:text-sm">
-                      <span className="text-gray-600">Orders</span>
-                      <span className="font-medium text-green-600">Unlimited</span>
-                    </div>
-                    <div className="flex items-center justify-between text-xs sm:text-sm">
-                      <span className="text-gray-600">Users</span>
-                      <span className="font-medium text-green-600">Unlimited</span>
-                    </div>
-                    <div className="flex items-center justify-between text-xs sm:text-sm">
-                      <span className="text-gray-600">Branches</span>
-                      <span className="font-medium text-green-600">Unlimited</span>
-                    </div>
-                  </div>
-
-                  <ul className="space-y-2 sm:space-y-3 mb-6 sm:mb-8">
-                    {[
-                      'Unlimited products',
-                      'Dedicated support',
-                      'Custom integrations',
-                      'Advanced security'
-                    ].map((feature, index) => (
-                      <li key={index} className="flex items-center gap-2 sm:gap-3">
-                        <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-600 flex-shrink-0" />
-                        <span className="text-sm sm:text-base text-gray-700">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-
-                  <Button 
-                    className="w-full bg-purple-600 hover:bg-purple-700 text-sm sm:text-base py-2 sm:py-3"
-                    onClick={handlePricingClick}
-                  >
-                    Start 14 day free trial
-                  </Button>
-                </div>
-              </div>
-            </FadeInWhenVisible>
-          </div>
-
-          {/* Trial Info */}
-          <FadeInWhenVisible>
-            <div className="text-center bg-white rounded-xl sm:rounded-2xl shadow-lg p-4 sm:p-6 lg:p-8 border border-gray-100">
-              <div className="max-w-4xl mx-auto">
-                <div className="flex items-center justify-center mb-3 sm:mb-4">
-                  <Clock className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600 mr-2 sm:mr-3" />
-                  <h3 className="text-xl sm:text-2xl font-bold text-gray-900">Free Trial</h3>
-                </div>
-                <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6 px-4">
-                  Try all features free for 14 days. No credit card required.
-                </p>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 text-center">
-                  {[
-                    'Full access to all features',
-                    'No credit card required',
-                    'Cancel anytime',
-                  ].map((benefit, index) => (
-                    <div key={index} className="flex items-center justify-center">
-                      <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-500 mr-2 sm:mr-3 mt-0.5 flex-shrink-0" />
-                      <div>
-                        <h4 className="text-sm sm:text-base font-semibold text-gray-900">{benefit}</h4>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </FadeInWhenVisible>
-        </div>
-      </section>
-
-      {/* TIER-SPECIFIC FEATURES SECTIE */}
-      <section className="py-12 sm:py-16 md:py-24 bg-gradient-to-br from-blue-50 to-indigo-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-12 sm:mb-16">
-            <FadeInWhenVisible>
-              <div className="inline-flex items-center gap-2 bg-indigo-100 text-indigo-800 px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6">
-                <Zap className="h-3 w-3 sm:h-4 sm:w-4" />
-                <span>Premium Features</span>
-              </div>
-            </FadeInWhenVisible>
-            <FadeInWhenVisible>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 px-4">
-                <span className="block text-gray-900">Unlock Advanced Features</span>
-                <span className="block bg-gradient-to-r from-indigo-500 to-purple-600 bg-clip-text text-transparent">
-                  With Growth & Premium Plans
-                </span>
-              </h2>
-            </FadeInWhenVisible>
-            <FadeInWhenVisible>
-              <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-4">
-                Upgrade your plan to access powerful features that will transform your inventory management.
-              </p>
-            </FadeInWhenVisible>
-          </div>
-
-          {/* Feature Comparison */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 mb-12 sm:mb-16">
-            {/* Growth Plan Features */}
-            <FadeInWhenVisible>
-              <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-blue-200">
-                <div className="p-6 sm:p-8">
-                  <div className="flex items-center mb-6">
-                    <div className="p-3 bg-blue-100 rounded-xl mr-4">
-                      <Zap className="h-8 w-8 text-blue-600" />
-                    </div>
-                    <div>
-                      <h3 className="text-2xl font-bold text-gray-900">Growth Plan</h3>
-                      <p className="text-gray-600">€29.99/month</p>
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-4 mb-6">
-                    <div className="flex items-center gap-3">
-                      <Scan className="h-5 w-5 text-green-600" />
-                      <div>
-                        <h4 className="font-semibold text-gray-900">Barcode Scanner</h4>
-                        <p className="text-sm text-gray-600">Scan products directly with your smartphone</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <BarChart3 className="h-5 w-5 text-green-600" />
-                      <div>
-                        <h4 className="font-semibold text-gray-900">Advanced Analytics</h4>
-                        <p className="text-sm text-gray-600">AI-driven insights and predictions</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <Users className="h-5 w-5 text-green-600" />
-                      <div>
-                        <h4 className="font-semibold text-gray-900">Team Collaboration</h4>
-                        <p className="text-sm text-gray-600">Up to 10 users and 5 branches</p>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="bg-blue-50 rounded-lg p-4">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Star className="h-4 w-4 text-blue-600" />
-                      <span className="font-semibold text-blue-900">Most Popular</span>
-                    </div>
-                    <p className="text-sm text-blue-700">Perfect for growing businesses</p>
-                  </div>
-                </div>
-              </div>
-            </FadeInWhenVisible>
-
-            {/* Premium Plan Features */}
-            <FadeInWhenVisible>
-              <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-purple-200">
-                <div className="p-6 sm:p-8">
-                  <div className="flex items-center mb-6">
-                    <div className="p-3 bg-purple-100 rounded-xl mr-4">
-                      <Crown className="h-8 w-8 text-purple-600" />
-                    </div>
-                    <div>
-                      <h3 className="text-2xl font-bold text-gray-900">Premium Plan</h3>
-                      <p className="text-gray-600">€79.99/month</p>
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-4 mb-6">
-                    <div className="flex items-center gap-3">
-                      <Truck className="h-5 w-5 text-green-600" />
-                      <div>
-                        <h4 className="font-semibold text-gray-900">Delivery Management</h4>
-                        <p className="text-sm text-gray-600">Complete delivery notes management system</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <Scan className="h-5 w-5 text-green-600" />
-                      <div>
-                        <h4 className="font-semibold text-gray-900">Barcode Scanner</h4>
-                        <p className="text-sm text-gray-600">All Growth features included</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <Repeat className="h-5 w-5 text-green-600" />
-                      <div>
-                        <h4 className="font-semibold text-gray-900">Unlimited Everything</h4>
-                        <p className="text-sm text-gray-600">Products, users, branches, and orders</p>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="bg-purple-50 rounded-lg p-4">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Crown className="h-4 w-4 text-purple-600" />
-                      <span className="font-semibold text-purple-900">Enterprise Ready</span>
-                    </div>
-                    <p className="text-sm text-purple-700">For large companies that need everything</p>
-                  </div>
-                </div>
-              </div>
-            </FadeInWhenVisible>
-          </div>
-
-          {/* Feature Highlights */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
-            <FadeInWhenVisible>
-              <div className="bg-white rounded-xl shadow-lg p-6 sm:p-8 border border-gray-100">
-                <div className="flex items-center mb-4">
-                  <div className="p-2 bg-green-100 rounded-lg mr-3">
-                    <Scan className="h-6 w-6 text-green-600" />
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900">Barcode Scanner</h3>
-                </div>
-                <p className="text-gray-600 mb-4">
-                  Available in Growth and Premium plans. Scan products directly with your smartphone for instant inventory updates.
-                </p>
-                <div className="flex items-center gap-2 text-sm text-blue-600">
-                  <span className="font-semibold">Growth Plan</span>
-                  <span>•</span>
-                  <span>Premium Plan</span>
-                </div>
-              </div>
-            </FadeInWhenVisible>
-
-            <FadeInWhenVisible>
-              <div className="bg-white rounded-xl shadow-lg p-6 sm:p-8 border border-gray-100">
-                <div className="flex items-center mb-4">
-                  <div className="p-2 bg-purple-100 rounded-lg mr-3">
-                    <Truck className="h-6 w-6 text-purple-600" />
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900">Delivery Management</h3>
-                </div>
-                <p className="text-gray-600 mb-4">
-                  Available only in Premium plan. Complete delivery notes management with supplier integration and automated stock updates.
-                </p>
-                <div className="flex items-center gap-2 text-sm text-purple-600">
-                  <span className="font-semibold">Premium Plan Only</span>
-                </div>
-              </div>
-            </FadeInWhenVisible>
-          </div>
-        </div>
-      </section>
 
       {/* FEATURES - Enhanced with animations */}
-      <section id="features-section" className="py-12 sm:py-16 md:py-24 bg-white">
+      <section id="features-section" className="py-12 sm:py-16 md:py-24 bg-gradient-to-br from-gray-50 to-blue-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-12 sm:mb-16">
             <FadeInWhenVisible>
@@ -1746,7 +1225,7 @@ export const HomePage = () => {
                         onClick={handleLoginClick}
                       >
                         <Rocket className="h-3 w-3 sm:h-4 sm:w-4 mr-2" />
-                        Try Now Free
+                        Get Started Free
                       </Button>
                     </div>
                   </FadeInWhenVisible>
@@ -1787,6 +1266,54 @@ export const HomePage = () => {
           ))}
         </div>
       </section>
+
+      
+      {/* FEATURES SECTIE - Everything You Need */}
+      <section id="features-section" className="py-12 sm:py-16 md:py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+
+          {/* Subscription Features Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-12 sm:mb-16">
+            {subscriptionFeatures.map((feature, index) => (
+              <FadeInWhenVisible key={index}>
+                <div className={`relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-2 ${feature.tier === 'groei' ? 'border-blue-500 ring-4 ring-blue-100' : 'border-gray-100'}`}>
+                  {feature.tier === 'groei' && (
+                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                    </div>
+                  )}
+                  
+                  <div className="p-4 sm:p-6 lg:p-8">
+                    <div className="flex items-center justify-between mb-4 sm:mb-6">
+                      <div className="p-2 sm:p-3 bg-gray-50 rounded-xl">
+                        {feature.icon}
+                      </div>
+                      <div className="text-right">
+                      </div>
+                    </div>
+
+                    <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 sm:mb-3">{feature.title}</h3>
+                    <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6 leading-relaxed">{feature.description}</p>
+
+                    <div className="space-y-2 sm:space-y-3 mb-6 sm:mb-8">
+                      {feature.features.map((featureItem, featureIndex) => (
+                        <div key={featureIndex} className="flex items-center gap-2 sm:gap-3">
+                          <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-600 flex-shrink-0" />
+                          <span className="text-sm sm:text-base text-gray-700">{featureItem}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                  </div>
+                </div>
+              </FadeInWhenVisible>
+            ))}
+          </div>
+
+
+        </div>
+      </section>
+
+
 
       {/* VIDEO SECTION - Enhanced with better presentation */}
       <section id="video-section" className="py-12 sm:py-16 md:py-24 bg-gradient-to-br from-gray-50 to-blue-50">
@@ -1893,27 +1420,7 @@ export const HomePage = () => {
         </div>
       )}
 
-      {/* EXIT-INTENT POPUP */}
-      {showExitIntent && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" role="dialog" aria-modal="true" aria-label="Wait a moment!">
-          <div className="bg-white rounded-lg shadow-2xl max-w-md w-full p-6 mx-4">
-            <h3 className="text-xl font-bold mb-2">Wait a moment!</h3>
-            <p className="text-gray-600 mb-4">Before you leave, would you like to try us for free? Start today with inventory management!</p>
-            <div className="flex gap-2">
-              <Button className="bg-blue-600 text-white hover:bg-blue-700 flex-1" onClick={() => { setShowExitIntent(false); handleLoginClick(); }}>Start Now</Button>
-              <Button variant="outline" className="flex-1" onClick={() => {
-                // Track exit intent decline
-                logger.info('Exit intent declined', { 
-                  id: 'exit-intent-decline',
-                  popup_type: 'exit_intent',
-                  action: 'declined'
-                });
-                setShowExitIntent(false);
-              }}>No Thanks</Button>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Exit-intent popup removed */}
 
       {/* FLOATING CHAT BUTTON + INLINE POPUP */}
       <FloatingChat />
@@ -1921,7 +1428,7 @@ export const HomePage = () => {
  
 
       {/* TESTIMONIALS - Enhanced with metrics */}
-      <section id="testimonials-section" className="py-12 sm:py-16 md:py-24 bg-gradient-to-br from-blue-50 to-purple-50">
+      <section id="testimonials-section" className="py-12 sm:py-16 md:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-12 sm:mb-16">
             <FadeInWhenVisible>
@@ -2064,39 +1571,7 @@ export const HomePage = () => {
 
 
 
-      {/* CONTACT SECTIE */}
-      <section id="contact-section" className="bg-gray-50 py-8 sm:py-12 md:py-20">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-6 sm:mb-8 md:mb-12">
-            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-2 px-4">Questions? Contact us</h2>
-            <p className="text-sm sm:text-base md:text-lg text-gray-600 px-4">We usually respond within 1 hour.</p>
-          </div>
-          <form onSubmit={handleSubmit(onSubmitContact)} className="bg-white rounded-lg shadow-md p-4 sm:p-6 space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
-                <Input {...register('name', { required: true, minLength: 2 })} placeholder="Your name" className="text-sm sm:text-base" />
-                {errors.name && <p className="text-xs text-red-600 mt-1">Name is required</p>}
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                  <Input type="email" {...register('email', { required: true, pattern: /.+@.+\..+/ })} placeholder="your@email.com" className="text-sm sm:text-base" />
-                {errors.email && <p className="text-xs text-red-600 mt-1">Email is required</p>}
-              </div>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Message</label>
-              <Textarea rows={4} {...register('message', { required: true, minLength: 10 })} placeholder="Write your message here..." className="text-sm sm:text-base" />
-              {errors.message && <p className="text-xs text-red-600 mt-1">Message is required</p>}
-            </div>
-            <div className="flex justify-end">
-              <Button type="submit" disabled={isSubmitting} className="bg-blue-600 text-white hover:bg-blue-700 text-sm sm:text-base py-2 sm:py-3 px-4 sm:px-6">
-                {isSubmitting ? 'Sending...' : 'Send'}
-              </Button>
-            </div>
-          </form>
-        </div>
-      </section>
+      {/* Contact section removed - now on separate /contact page */}
 
       {/* FINAL CTA - Enhanced for maximum conversion */}
       <section className="relative overflow-hidden bg-gradient-to-br from-blue-500 to-blue-900 py-12 sm:py-16 md:py-24">
@@ -2111,13 +1586,13 @@ export const HomePage = () => {
           <FadeInWhenVisible>
             <div className="inline-flex items-center gap-2 bg-white/20 text-white px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium mb-6 sm:mb-8">
               <Rocket className="h-3 w-3 sm:h-4 sm:w-4" />
-              <span>Start your free trial</span>
+              <span>Get Started Free</span>
             </div>
           </FadeInWhenVisible>
 
           <FadeInWhenVisible>
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 sm:mb-6 text-white leading-tight px-4">
-              <span className="block">Start your free trial</span>
+              <span className="block">Get Started Free</span>
               <span className="block bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent">
                 No credit card required
               </span>
@@ -2126,7 +1601,7 @@ export const HomePage = () => {
 
           <FadeInWhenVisible>
             <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 sm:mb-8 text-white/90 max-w-4xl mx-auto leading-relaxed px-4">
-              Start your free trial and see how StockFlow can help your business.
+              Get Started Free and see how StockFlow can help your business.
             </p>
           </FadeInWhenVisible>
 
@@ -2185,7 +1660,7 @@ export const HomePage = () => {
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-100/30 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
                   <Rocket className="h-4 w-4 sm:h-5 sm:w-5 mr-2 group-hover:animate-bounce" />
-                    Start your free trial
+                    Get Started Free
                   <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
               <Button 

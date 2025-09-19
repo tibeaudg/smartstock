@@ -64,11 +64,8 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButton
             </div>
             {onNavigate && (
               <nav className="hidden sm:flex items-center gap-6 text-sm">
-                <button className="text-gray-700 hover:text-blue-700" onClick={() => onNavigate('features-section')}>Features</button>
-                 <button className="text-gray-700 hover:text-blue-700" onClick={() => onNavigate('pricing-section')}>Pricing</button>
-                <button className="text-gray-700 hover:text-blue-700" onClick={() => onNavigate('testimonials-section')}>Reviews</button>
-                <button className="text-gray-700 hover:text-blue-700" onClick={() => onNavigate('faq-section')}>FAQ</button>
-                <button className="text-gray-700 hover:text-blue-700" onClick={() => onNavigate('contact-section')}>Contact</button>
+                <Link to="/pricing" className="text-gray-700 hover:text-blue-700">Pricing</Link>
+                <Link to="/contact" className="text-gray-700 hover:text-blue-700">Contact</Link>
               </nav>
             )}
 
@@ -83,7 +80,7 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButton
                       Login
                     </Button>
                     <Button size="sm" onClick={handleRegisterClick} className="text-sm">
-                      Register
+                      Get Started Free
                     </Button>
                   </>
                 )}
@@ -172,12 +169,13 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButton
                     >
                       Features
                     </button>
-                     <button 
+                     <Link 
+                       to="/pricing"
                        className="block w-full text-left text-gray-700 hover:text-blue-700 py-2" 
-                       onClick={() => { onNavigate('pricing-section'); setMobileMenuOpen(false); }}
+                       onClick={() => setMobileMenuOpen(false)}
                      >
                        Pricing
-                     </button>
+                     </Link>
                     <button 
                       className="block w-full text-left text-gray-700 hover:text-blue-700 py-2" 
                       onClick={() => { onNavigate('testimonials-section'); setMobileMenuOpen(false); }}
@@ -190,12 +188,13 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButton
                     >
                       FAQ
                     </button>
-                    <button 
+                    <Link 
+                      to="/contact"
                       className="block w-full text-left text-gray-700 hover:text-blue-700 py-2" 
-                      onClick={() => { onNavigate('contact-section'); setMobileMenuOpen(false); }}
+                      onClick={() => setMobileMenuOpen(false)}
                     >
                       Contact
-                    </button>
+                    </Link>
                   </div>
                 </div>
               )}
@@ -214,7 +213,7 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButton
                     className="w-full" 
                     onClick={() => { handleRegisterClick(); setMobileMenuOpen(false); }}
                   >
-                    Register
+                    Get Started Free
                   </Button>
                 </div>
               )}

@@ -246,7 +246,7 @@ export default function BestOnlineInventorySoftware() {
             Experience the Best Online Inventory Software Today
           </h2>
           <p className="text-lg md:text-xl mb-6 md:mb-8 opacity-90">
-            Join thousands of businesses already using stockflow as their preferred online inventory software solution. Start your free trial and discover why we're considered among the best.
+            Join thousands of businesses already using stockflow as their preferred online inventory software solution. Get Started Free and discover why we're considered among the best.
           </p>
           <div className="flex flex-col md:flex-row gap-4 justify-center">
             <Link

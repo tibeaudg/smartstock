@@ -138,7 +138,7 @@ export default function CheckoutPage() {
               Back to pricing
             </Button>
             <h1 className="text-3xl font-bold text-gray-900">
-              Start your free trial
+              Get Started Free
             </h1>
             <p className="text-gray-600 mt-2">
               start immediately with your {selectedTier.display_name} plan - 14 days completly free, no payment information required

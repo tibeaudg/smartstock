@@ -34,7 +34,7 @@ export default function OnlineInventorySoftware() {
     <SeoPageLayout title="Online Inventory Software">
       <SEO
         title="Best Online Inventory Software 2024 | Real-time Stock Management | stockflow"
-        description="Discover the best online inventory software for your business. Real-time tracking, automated alerts, and seamless integration. Start your free trial today with stockflow."
+        description="Discover the best online inventory software for your business. Real-time tracking, automated alerts, and seamless integration. Get Started Free today with stockflow."
         keywords="online inventory software, inventory management software, stock management software, cloud inventory software, inventory tracking software, warehouse management software, inventory control software, stock control software, real-time inventory software, cloud-based inventory management, stockflow"
         url="https://www.stockflow.be/online-inventory-software"
       />
@@ -236,7 +236,7 @@ export default function OnlineInventorySoftware() {
       <section className="bg-white text-black py-12 md:py-20">
         <div className="max-w-4xl mx-auto text-center px-4">
           <h2 className="text-3xl md:text-4xl font-bold mb-4 md:mb-6">
-            Start Your Free Trial of Online Inventory Software Today
+            Get Started Free of Online Inventory Software Today
           </h2>
           <p className="text-lg md:text-xl mb-6 md:mb-8 opacity-90">
             Experience the power of modern online inventory software. Join thousands of businesses already using stockflow for their inventory management needs.
@@ -314,7 +314,7 @@ export default function OnlineInventorySoftware() {
         "@context": "https://schema.org",
         "@type": "Article",
         "headline": "Best Online Inventory Software 2024 | Real-time Stock Management",
-        "description": "Discover the best online inventory software for your business. Real-time tracking, automated alerts, and seamless integration. Start your free trial today with stockflow.",
+        "description": "Discover the best online inventory software for your business. Real-time tracking, automated alerts, and seamless integration. Get Started Free today with stockflow.",
         "image": "https://www.stockflow.be/optimized/Inventory-Management.png",
         "author": {
           "@type": "Organization",

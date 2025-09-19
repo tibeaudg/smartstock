@@ -16,7 +16,12 @@ const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({ children }) => {
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
-      <Header onLoginClick={handleLoginClick} hideAuthButtons={false} hideNotifications />
+      <Header 
+        onLoginClick={handleLoginClick} 
+        onNavigate={() => {}} 
+        hideAuthButtons={false} 
+        hideNotifications 
+      />
       <main className="w-full">
         {children}
       </main>

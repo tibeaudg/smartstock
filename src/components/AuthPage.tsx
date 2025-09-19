@@ -187,36 +187,7 @@ export const AuthPage = () => {
             <Card className="shadow-none border-0 bg-transparent">
               <CardContent className="p-0">
                 <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
-                  {mode === 'register' && (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div>
-                        <Label htmlFor="firstName" className="text-sm font-medium text-gray-700">First Name</Label>
-                        <Input 
-                          id="firstName" 
-                          type="text" 
-                          value={firstName} 
-                          onChange={(e) => setFirstName(e.target.value)} 
-                          required 
-                          disabled={isSubmitting}
-                          className="mt-1 h-10 sm:h-11 border-gray-300 focus:border-blue-500 focus:ring-blue-500"
-                          placeholder="Your first name"
-                        />
-                      </div>
-                      <div>
-                        <Label htmlFor="lastName" className="text-sm font-medium text-gray-700">Last Name</Label>
-                        <Input 
-                          id="lastName" 
-                          type="text" 
-                          value={lastName} 
-                          onChange={(e) => setLastName(e.target.value)} 
-                          required 
-                          disabled={isSubmitting}
-                          className="mt-1 h-10 sm:h-11 border-gray-300 focus:border-blue-500 focus:ring-blue-500"
-                          placeholder="Your last name"
-                        />
-                      </div>
-                    </div>
-                  )}
+                  {/* Simplified: only email and password for registration */}
 
                   <div>
                     <Label htmlFor="email" className="text-sm font-medium text-gray-700">Email Address</Label>
@@ -227,7 +198,7 @@ export const AuthPage = () => {
                       onChange={(e) => setEmail(e.target.value)} 
                       required 
                       disabled={isSubmitting}
-                      className="mt-1 h-11 border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                      className="mt-1 h-12 sm:h-14 text-base border-gray-300 focus:border-blue-500 focus:ring-blue-500"
                       placeholder="you@company.com"
                     />
                   </div>
@@ -242,7 +213,7 @@ export const AuthPage = () => {
                         onChange={(e) => setPassword(e.target.value)} 
                         required 
                         disabled={isSubmitting}
-                        className="mt-1 h-11 border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                        className="mt-1 h-12 sm:h-14 text-base border-gray-300 focus:border-blue-500 focus:ring-blue-500"
                         placeholder={mode === 'register' ? "At least 8 characters" : "Your password"}
                       />
                       {mode === 'register' && (
@@ -253,21 +224,7 @@ export const AuthPage = () => {
                     </div>
                   )}
 
-                  {mode === 'register' && (
-                    <div>
-                      <Label htmlFor="confirmPassword" className="text-sm font-medium text-gray-700">Confirm Password</Label>
-                      <Input 
-                        id="confirmPassword" 
-                        type="password" 
-                        value={confirmPassword} 
-                        onChange={(e) => setConfirmPassword(e.target.value)} 
-                        required 
-                        disabled={isSubmitting}
-                        className="mt-1 h-11 border-gray-300 focus:border-blue-500 focus:ring-blue-500"
-                        placeholder="Repeat your password"
-                      />
-                    </div>
-                  )}
+                  {/* Simplified: no confirm password field */}
 
                   {/* Remember me and Forgot password */}
                   {mode === 'login' && (
@@ -296,7 +253,7 @@ export const AuthPage = () => {
                   
                   <Button 
                     type="submit" 
-                    className="w-full h-10 sm:h-12 text-sm sm:text-base font-semibold bg-black hover:bg-gray-800 transition-all duration-300" 
+                    className="w-full h-12 sm:h-14 text-base font-semibold bg-black hover:bg-gray-800 transition-all duration-300" 
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? (
@@ -324,7 +281,7 @@ export const AuthPage = () => {
                   <Button 
                     type="button"
                     variant="outline"
-                    className="w-full h-10 sm:h-12 text-sm sm:text-base font-medium border-gray-300 hover:bg-gray-50"
+                    className="w-full h-12 sm:h-14 text-base font-medium border-gray-300 hover:bg-gray-50"
                     disabled={isSubmitting}
                     onClick={async () => {
                       setIsSubmitting(true);

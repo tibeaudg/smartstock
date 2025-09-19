@@ -261,7 +261,7 @@ export default function WarehouseManagementSystem() {
             Ready to Transform Your Warehouse Management?
           </h2>
           <p className="text-xl text-blue-100 mb-8">
-            Start your free trial today and see how StockFlow can streamline your warehouse operations.
+            Get Started Free today and see how StockFlow can streamline your warehouse operations.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link 
