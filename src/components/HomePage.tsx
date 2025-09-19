@@ -2,13 +2,11 @@ import React, { useState, useRef } from 'react';
 import { Header } from './HeaderPublic';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { 
   Package, BarChart3, Users, Shield, Check, TrendingUp, Zap, Star, Clock, Euro, Target, 
   ChevronLeft, ChevronRight, Scan, Truck, ArrowRight, Play, Award, Globe, Smartphone, 
-  CheckCircle, MessageCircle, Rocket, Crown, Sparkles, Timer, Facebook, Twitter, Linkedin, Instagram,
+  CheckCircle, Rocket, Crown, Sparkles, Timer, Facebook, Twitter, Linkedin, Instagram,
   Repeat
 } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
@@ -18,8 +16,6 @@ import { usePageRefresh } from '@/hooks/usePageRefresh';
 import OptimizedImage from '@/components/OptimizedImage';
 import { Helmet } from 'react-helmet-async';
 import { logger } from '../lib/logger';
-import { useForm } from 'react-hook-form';
-import { FloatingChatButton } from './FloatingChatButton';
 import { useWebsiteTracking } from '@/hooks/useWebsiteTracking';
 import SocialShare from './SocialShare';
 
@@ -41,61 +37,6 @@ const FadeInWhenVisible = ({ children }) => {
   );
 };
 
-// Floating chat inline component
-const FloatingChat: React.FC = () => {
-  const [open, setOpen] = useState(false);
-  const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<{ email: string; message: string }>({
-    defaultValues: { email: '', message: '' }
-  });
-
-  const onSubmit = async (values: { email: string; message: string }) => {
-    try {
-      const res = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: 'Website chat', email: values.email, message: values.message })
-      });
-      if (!res.ok) throw new Error('failed');
-      reset();
-      setOpen(false);
-      alert('Thank you! We respond quickly via email.');
-    } catch (e) {
-      alert('Sending failed. Please try again.');
-    }
-  };
-
-  return (
-    <>
-      <FloatingChatButton onClick={() => setOpen(true)} />
-      {open && (
-        <div className="fixed inset-0 z-50 bg-black/40 flex items-end md:items-center justify-center" onClick={() => setOpen(false)}>
-          <div className="bg-white w-full md:max-w-md md:rounded-xl shadow-2xl p-6 md:m-0 m-0 rounded-t-xl" onClick={(e) => e.stopPropagation()}>
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold">Ask your question</h3>
-              <button className="text-gray-500 hover:text-gray-700" onClick={() => setOpen(false)}>×</button>
-            </div>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                <Input type="email" {...register('email', { required: true, pattern: /.+@.+\..+/ })} placeholder="your@company.com" />
-                {errors.email && <p className="text-xs text-red-600 mt-1">Valid email address required.</p>}
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Your question</label>
-                <Textarea rows={4} {...register('message', { required: true, minLength: 5 })} placeholder="Write your question here..." />
-                {errors.message && <p className="text-xs text-red-600 mt-1">Please enter your question.</p>}
-              </div>
-              <div className="flex justify-end gap-2">
-                <Button type="button" variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
-                <Button type="submit" disabled={isSubmitting} className="bg-blue-600 text-white hover:bg-blue-700">{isSubmitting ? 'Sending...' : 'Send'}</Button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-    </>
-  );
-};
 
 // Carousel component for mobile display (with ARIA and swipe)
 const MobileCarousel = ({ items, renderItem }) => {
@@ -907,7 +848,23 @@ export const HomePage = () => {
         hideNotifications={true}
       />
 
-
+      {/* SUBHEADER - Rating & Social Proof */}
+      <div className="bg-gradient-to-r from-purple-50 to-blue-50 border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8">
+            <div className="flex items-center gap-2">
+              <div className="flex">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="h-4 w-4 text-yellow-400 fill-current" />
+                ))}
+              </div>
+              <span className="text-sm font-semibold text-gray-700">4.9/5 rating</span>
+            </div>
+            <div className="hidden sm:block h-4 w-px bg-gray-300"></div>
+            <span className="text-sm font-medium text-gray-600">3200+ happy users</span>
+          </div>
+        </div>
+      </div>
 
       {/* HERO SECTION - Geoptimaliseerd voor conversie */}
       <section className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-blue-50">
@@ -962,82 +919,6 @@ export const HomePage = () => {
                 </p>
               </FadeInWhenVisible>
             </div>
-
-            {/* Social proof */}
-            <FadeInWhenVisible>
-              <div className="flex flex-col items-center justify-center gap-2 sm:gap-3 mb-6 sm:mb-8 px-4">
-                <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3">
-                  <div className="flex">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-400 fill-current" />
-                    ))}
-                  </div>
-                  <span className="text-sm sm:text-base text-gray-600 font-medium">4.9/5 rating</span>
-                </div>
-                <div className="hidden sm:block h-4 w-px bg-gray-300"></div>
-                <span className="text-sm sm:text-base text-gray-600">3200+ happy users</span>
-              </div>
-            </FadeInWhenVisible>
-
-            {/* CTA Buttons - Mobiel geoptimaliseerd */}
-            <FadeInWhenVisible>
-              <div className="flex flex-col gap-4 justify-center mb-8 sm:mb-8 px-4">
-                <Button 
-                  id="hero-cta-primary"
-                  data-analytics-id="hero-start" 
-                  size="lg" 
-                  className="max-w-md justify-center mx-auto bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 sm:px-8 py-4 sm:py-4 rounded-xl font-semibold hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl text-lg sm:text-lg w-full group relative overflow-hidden h-14 sm:h-14"
-                  onClick={handleLoginClick}
-                >
-                  <div className=" absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
-                  <Rocket className="h-5 w-5 sm:h-5 sm:w-5 mr-2 group-hover:animate-bounce" />
-                  Get Started Free
-                  <ArrowRight className="h-5 w-5 sm:h-5 sm:w-5 ml-2 group-hover:translate-x-1 transition-transform" />
-                </Button>
-              </div>
-            </FadeInWhenVisible>
-
-            {/* Internal navigation links for SEO */}
-            <FadeInWhenVisible>
-              <div className="hidden flex-wrap justify-center gap-2 sm:gap-4 text-xs sm:text-sm mb-6 sm:mb-8 px-4">
-                <button 
-                  onClick={() => scrollToSection('modules-section')} 
-                  className="text-blue-600 hover:text-blue-800 underline cursor-pointer px-2 py-1"
-                >
-                  Modules
-                </button>
-                <button 
-                  onClick={() => scrollToSection('features-section')} 
-                  className="text-blue-600 hover:text-blue-800 underline cursor-pointer px-2 py-1"
-                >
-                  Features
-                </button>
-                <button 
-                  onClick={() => scrollToSection('pricing-section')} 
-                  className="text-blue-600 hover:text-blue-800 underline cursor-pointer px-2 py-1"
-                >
-                  Pricing
-                </button>
-                <button 
-                  onClick={() => scrollToSection('testimonials-section')} 
-                  className="text-blue-600 hover:text-blue-800 underline cursor-pointer px-2 py-1"
-                >
-                  Testimonials
-                </button>
-                <button 
-                  onClick={() => scrollToSection('video-section')} 
-                  className="text-blue-600 hover:text-blue-800 underline cursor-pointer px-2 py-1"
-                >
-                  Demo
-                </button>
-                <button 
-                  onClick={() => scrollToSection('contact-section')} 
-                  className="text-blue-600 hover:text-blue-800 underline cursor-pointer px-2 py-1"
-                >
-                  Contact
-                </button>
-              </div>
-            </FadeInWhenVisible>
 
 
 
@@ -1248,6 +1129,26 @@ export const HomePage = () => {
         </div>
       </section>
 
+      {/* CTA SECTION - After Stats */}
+      <section className="py-8 sm:py-12 bg-gradient-to-br from-gray-50 to-blue-50">
+        <div className="max-w-4xl mx-auto text-center px-4 sm:px-6">
+          <FadeInWhenVisible>
+            <Button 
+              data-analytics-id="stats-cta" 
+              size="lg" 
+              className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-3 rounded-xl font-bold hover:from-orange-700 hover:to-red-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl group relative overflow-hidden"
+              onClick={handleLoginClick}
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+              <Rocket className="h-4 w-4 mr-2 group-hover:animate-bounce" />
+              Get Started Free
+              <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
+            </Button>
+          </FadeInWhenVisible>
+        </div>
+      </section>
+
+
       
       {/* FEATURES SECTIE - Everything You Need */}
       <section id="features-section" className="py-12 sm:py-16 md:py-24 bg-white">
@@ -1341,6 +1242,26 @@ export const HomePage = () => {
 
             </div>
           </FadeInWhenVisible>
+
+      {/* CTA SECTION - After Stats */}
+      <section className="py-8 sm:py-12 bg-gradient-to-br from-gray-50 to-blue-50">
+        <div className="max-w-4xl mx-auto text-center px-4 sm:px-6">
+          <FadeInWhenVisible>
+            <Button 
+              data-analytics-id="stats-cta" 
+              size="lg" 
+              className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-3 rounded-xl font-bold hover:from-orange-700 hover:to-red-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl group relative overflow-hidden"
+              onClick={handleLoginClick}
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+              <Rocket className="h-4 w-4 mr-2 group-hover:animate-bounce" />
+              Get Started Free
+              <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
+            </Button>
+          </FadeInWhenVisible>
+        </div>
+      </section>
+
         </div>
       </section>
 
@@ -1358,13 +1279,6 @@ export const HomePage = () => {
           </div>
         </div>
       )}
-
-      {/* Exit-intent popup removed */}
-
-      {/* FLOATING CHAT BUTTON + INLINE POPUP */}
-      <FloatingChat />
-      
- 
 
       {/* TESTIMONIALS - Enhanced with metrics */}
       <section id="testimonials-section" className="py-12 sm:py-16 md:py-24 bg-white">
@@ -1505,6 +1419,25 @@ export const HomePage = () => {
               )}
             />
           </div>
+        </div>
+      </section>
+
+      {/* CTA SECTION - After Stats */}
+      <section className="py-8 sm:py-12 bg-white">
+        <div className="max-w-4xl mx-auto text-center px-4 sm:px-6">
+          <FadeInWhenVisible>
+            <Button 
+              data-analytics-id="stats-cta" 
+              size="lg" 
+              className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-3 rounded-xl font-bold hover:from-orange-700 hover:to-red-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl group relative overflow-hidden"
+              onClick={handleLoginClick}
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+              <Rocket className="h-4 w-4 mr-2 group-hover:animate-bounce" />
+              Get Started Free
+              <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
+            </Button>
+          </FadeInWhenVisible>
         </div>
       </section>
 
