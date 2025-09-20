@@ -59,24 +59,12 @@ const FadeInWhenVisible = ({ children, delay = 0 }) => {
     return () => observer.disconnect();
   }, [delay]);
 
-// A reusable component for fade-in animations when scrolling
-const FadeInWhenVisible = ({ children }) => {
   return (
-    <motion.div
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.3 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-      variants={{
-        visible: { opacity: 1, y: 0 },
-        hidden: { opacity: 0, y: 20 }
-      }}
-    >
+    <div ref={ref} className={isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}>
       {children}
-    </motion.div>
+    </div>
   );
 };
-
 
 // Carousel component for mobile display (with ARIA and swipe)
 const MobileCarousel = ({ items, renderItem }) => {
