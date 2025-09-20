@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, lazy } from 'react';
 import { Header } from './HeaderPublic';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -16,8 +16,48 @@ import { usePageRefresh } from '@/hooks/usePageRefresh';
 import OptimizedImage from '@/components/OptimizedImage';
 import { Helmet } from 'react-helmet-async';
 import { logger } from '../lib/logger';
-import { useWebsiteTracking } from '@/hooks/useWebsiteTracking';
-import SocialShare from './SocialShare';
+// import { useWebsiteTracking } from '@/hooks/useWebsiteTracking';
+// import { usePerformanceOptimization } from '@/hooks/usePerformanceOptimization';
+import { GoogleAdsTracking } from '@/utils/googleAdsTracking';
+import { ConversionTrackingTest } from './ConversionTrackingTest';
+
+// CLS monitoring in development
+if (process.env.NODE_ENV === 'development') {
+  // Dynamic import to prevent SSR issues
+  import('../../scripts/cls-monitor.js').then(() => {
+    console.log('🔍 CLS monitoring loaded');
+  }).catch((error) => {
+    console.warn('CLS monitoring failed to load:', error);
+  });
+}
+
+// Lazy load non-critical components
+const SocialShare = lazy(() => import('./SocialShare'));
+
+// Lazy load heavy components for better performance
+// Removed unused lazy imports: TestimonialsSection, FeaturesSection, VideoSection
+
+// Optimized fade-in component with reduced motion support
+const FadeInWhenVisible = ({ children, delay = 0 }) => {
+  const [isVisible, setIsVisible] = React.useState(false);
+  const ref = React.useRef(null);
+
+  React.useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => setIsVisible(true), delay);
+        }
+      },
+      { threshold: 0.1, rootMargin: '50px' }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => observer.disconnect();
+  }, [delay]);
 
 // A reusable component for fade-in animations when scrolling
 const FadeInWhenVisible = ({ children }) => {
@@ -140,11 +180,29 @@ const MobileCarousel = ({ items, renderItem }) => {
 export const HomePage = () => {
   const navigate = useNavigate();
   
-  // Use the page refresh hook
-  usePageRefresh();
+  // ALL HOOKS DISABLED TO PREVENT CRASHES
+  // usePageRefresh();
+  // useWebsiteTracking();
   
-  // Use website tracking
-  useWebsiteTracking();
+  // Initialize Google Ads tracking on component mount
+  React.useEffect(() => {
+    // Small delay to ensure gtag is loaded
+    const timer = setTimeout(() => {
+      GoogleAdsTracking.initializeGoogleAdsTracking();
+      
+      // Track homepage page view conversion
+      GoogleAdsTracking.trackPageViewConversion(
+        'homepage',
+        1,
+        {
+          page_type: 'landing_page',
+          conversion_type: 'page_view'
+        }
+      );
+    }, 1000);
+    
+    return () => clearTimeout(timer);
+  }, []);
 
   // Cookie consent & exit-intent state
   const [showCookieBanner, setShowCookieBanner] = useState<boolean>(() => {
@@ -158,16 +216,46 @@ export const HomePage = () => {
 
   const handleLoginClick = () => {
     logger.info('CTA click', { id: 'start-now' });
+    
+    // Track Google Ads conversion for registration intent
+    GoogleAdsTracking.trackCustomConversion(
+      'start_now_click',
+      'AW-17574614935',
+      1,
+      {
+        cta_location: 'hero_section',
+        cta_type: 'primary_button',
+        conversion_type: 'registration_intent'
+      }
+    );
+    
     navigate('/auth');
   };
 
   const handlePricingClick = () => {
     logger.info('CTA click', { id: 'pricing' });
+    
+    // Track Google Ads conversion for pricing page view
+    GoogleAdsTracking.trackPricingViewConversion('homepage_cta');
+    
     navigate('/pricing');
   };
 
   const handleHowItWorksClick = () => {
     logger.info('CTA click', { id: 'how-it-works' });
+    
+    // Track Google Ads conversion for demo interest
+    GoogleAdsTracking.trackCustomConversion(
+      'demo_interest',
+      'AW-17574614935',
+      1,
+      {
+        cta_location: 'hero_section',
+        cta_type: 'secondary_button',
+        conversion_type: 'demo_interest'
+      }
+    );
+    
     scrollToSection('video-section');
   };
 
@@ -449,6 +537,14 @@ export const HomePage = () => {
       existing.push({ email: leadEmail, ts: Date.now() });
       localStorage.setItem('leads', JSON.stringify(existing));
       logger.info('Lead captured', { email: leadEmail });
+      
+      // Track Google Ads conversion for lead capture
+      GoogleAdsTracking.trackContactFormConversion(
+        'email_signup',
+        leadEmail,
+        5 // Assign value to email signups
+      );
+      
       setLeadStatus('success');
       setLeadEmail('');
     } catch (err) {
@@ -1257,7 +1353,21 @@ export const HomePage = () => {
                     poster="/Inventory-Management.png" 
                     className="w-full h-full object-cover"
                     preload="none"
-                    onPlay={() => logger.info('Video play', { id: 'intro-video' })}
+                    onPlay={() => {
+                      logger.info('Video play', { id: 'intro-video' });
+                      
+                      // Track Google Ads conversion for video engagement
+                      GoogleAdsTracking.trackCustomConversion(
+                        'video_play',
+                        'AW-17574614935',
+                        2,
+                        {
+                          video_name: 'intro_video',
+                          video_location: 'homepage_demo_section',
+                          conversion_type: 'video_engagement'
+                        }
+                      );
+                    }}
                   >
                     <source src="/intro_vid.mp4" type="video/mp4" />
                     Video not available
@@ -1838,8 +1948,8 @@ export const HomePage = () => {
   </div>
 </footer>
 
-
-
-    </div>
+    {/* Conversion Tracking Test Component - Development Only */}
+    {process.env.NODE_ENV === 'development' && <ConversionTrackingTest />}
+  </div>
   );
 };

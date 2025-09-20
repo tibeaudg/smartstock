@@ -14,6 +14,7 @@ import { cn } from '@/lib/utils';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { useAuthConversionTracking } from '@/hooks/useAuthConversionTracking';
 import { useWebsiteTracking } from '@/hooks/useWebsiteTracking';
+import { GoogleAdsTracking } from '@/utils/googleAdsTracking';
 
 export const AuthPage = () => {
   const [mode, setMode] = useState<'login' | 'register' | 'reset'>('login');
@@ -95,6 +96,13 @@ export const AuthPage = () => {
         if (isTrackingReady) {
           await trackLoginSuccess();
         }
+        
+        // Track Google Ads login conversion
+        GoogleAdsTracking.trackLoginConversion(
+          undefined, // userId will be available after login
+          email,
+          10 // Higher value for successful login
+        );
 
       } else if (mode === 'register') {
         // Track registration started
@@ -132,6 +140,13 @@ export const AuthPage = () => {
         if (isTrackingReady) {
           await trackRegistrationCompleted();
         }
+        
+        // Track Google Ads registration conversion
+        GoogleAdsTracking.trackRegistrationConversion(
+          undefined, // userId will be available after registration
+          email,
+          15 // Highest value for registration completion
+        );
 
         toast.success('Account created!', { description: 'Check your inbox to confirm your email address' });
         setMode('login');
@@ -289,6 +304,17 @@ export const AuthPage = () => {
                         const { error } = await signInWithGoogle();
                         if (error) {
                           toast.error(error.message || 'Google sign-in failed');
+                        } else {
+                          // Track Google sign-in conversion (successful redirect to Google)
+                          GoogleAdsTracking.trackCustomConversion(
+                            'google_signin_initiated',
+                            'AW-17574614935',
+                            8,
+                            {
+                              signin_method: 'google',
+                              conversion_type: 'oauth_signin'
+                            }
+                          );
                         }
                         // If successful, user will be redirected to Google and then back to dashboard
                       } catch (err: any) {
