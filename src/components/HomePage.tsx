@@ -1017,7 +1017,7 @@ export const HomePage = () => {
 
       {/* Hero Section - Optimized for Mobile */}
       <section 
-        className="relative py-8 sm:py-12 md:py-16 lg:py-20 xl:py-24 px-4 bg-gradient-to-br from-blue-500 to-blue-900 min-h-screen flex items-center"
+        className="relative py-2 sm:py-12 md:py-16 lg:py-20 xl:py-24 px-4 bg-gradient-to-br from-blue-500 to-blue-900 min-h-screen flex items-center"
       >
         <div className="absolute inset-0 bg-black bg-opacity-20"></div>
         
@@ -1030,17 +1030,17 @@ export const HomePage = () => {
                 Trusted by 500+ businesses
               </div>
               
-              <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-4 xs:mb-6 sm:mb-8 lg:mb-10 leading-tight">
-                <span className="block">StockFlow</span>
-                <span className="block">Inventory Management</span>
-                <span className="block text-blue-300 mt-1 xs:mt-2 lg:mt-4">for growing businesses</span>
+              <h1 className="font-bold mb-3 xs:mb-4 sm:mb-8 lg:mb-10 leading-tight">
+                <span className="block md:text-xl lg:text-5xl xl:text-7xl">StockFlow</span>
+                <span className="block md:text-xl lg:text-5xl xl:text-7xl">Inventory Management</span>
+                <span className="block md:text-xl lg:text-5xl xl:text-5xl text-blue-300">for growing businesses</span>
               </h1>
               
-              <p className="text-base xs:text-lg sm:text-xl md:text-xl lg:text-xl xl:text-xl text-blue-100 mb-6 xs:mb-8 sm:mb-10 lg:mb-12 leading-relaxed max-w-3xl mx-auto lg:mx-0">
+              <p className="text-sm xs:text-base sm:text-xl md:text-xl lg:text-xl xl:text-xl text-blue-100 mb-4 xs:mb-6 sm:mb-10 lg:mb-12 leading-relaxed max-w-3xl mx-auto lg:mx-0">
                 The only inventory management software that makes <strong>100% automatic decisions</strong> for small businesses. Stop manual tracking, prevent stockouts, and grow your business.
               </p>
               
-              <div className="flex flex-col sm:flex-row gap-3 xs:gap-4 sm:gap-6 lg:gap-8 mb-6 xs:mb-8 sm:mb-10 lg:mb-12 max-w-3xl mx-auto lg:mx-0 justify-center">
+              <div className="flex flex-col sm:flex-row gap-3 xs:gap-4 sm:gap-6 lg:gap-8 mb-4 xs:mb-6 sm:mb-10 lg:mb-12 max-w-3xl mx-auto lg:mx-0 justify-center">
                 <Link
                   to="/auth"
                   className="bg-white text-blue-600 px-4 xs:px-6 sm:px-8 lg:px-12 xl:px-16 py-3 xs:py-4 sm:py-5 lg:py-6 xl:py-4 rounded-xl font-bold text-base xs:text-lg sm:text-xl lg:text-xl xl:text-md transition-all duration-300 transform hover:scale-105 shadow-2xl text-center flex items-center justify-center"
@@ -1056,7 +1056,7 @@ export const HomePage = () => {
               </div>
 
               {/* Live Inventory Dashboard - Mobile Version (Hidden on desktop) */}
-              <div className="lg:hidden relative mb-4 xs:mb-6 sm:mb-8 max-w-sm xs:max-w-md mx-auto">
+              <div className="lg:hidden relative mb-3 xs:mb-4 sm:mb-8 max-w-sm xs:max-w-md mx-auto">
                 <div className="relative bg-white rounded-2xl shadow-2xl p-2 xs:p-3 sm:p-4">
                   {/* Demo Interface Mockup */}
                   <div className="bg-gray-50 rounded-lg p-2 xs:p-2 sm:p-3 mb-2 xs:mb-3 sm:mb-4">
@@ -1089,10 +1089,6 @@ export const HomePage = () => {
                       <div className="text-black flex items-center justify-between p-1.5 xs:p-1.5 sm:p-2 bg-white rounded">
                         <span className="text-xs xs:text-xs sm:text-sm">💻 Laptop Charger</span>
                         <span className="text-xs bg-green-100 text-green-600 px-1.5 xs:px-1.5 sm:px-2 py-0.5 xs:py-0.5 sm:py-1 rounded">In Stock</span>
-                      </div>
-                      <div className="text-black flex items-center justify-between p-1.5 xs:p-1.5 sm:p-2 bg-white rounded">
-                        <span className="text-xs xs:text-xs sm:text-sm">🎧 Headphones</span>
-                        <span className="text-xs bg-red-100 text-red-600 px-1.5 xs:px-1.5 sm:px-2 py-0.5 xs:py-0.5 sm:py-1 rounded">Out</span>
                       </div>
                     </div>
                   </div>

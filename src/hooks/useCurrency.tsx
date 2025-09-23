@@ -1,72 +1,58 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, createContext, useContext, ReactNode } from 'react';
 
-export type Currency = 'EUR' | 'USD';
+type Currency = 'EUR' | 'USD';
 
-interface CurrencyContextType {
+interface CurrencyState {
   currency: Currency;
   setCurrency: (currency: Currency) => void;
   formatPrice: (price: number) => string;
-  convertPrice: (priceInEUR: number) => number;
 }
 
-const CurrencyContext = createContext<CurrencyContextType | undefined>(undefined);
+const CurrencyContext = createContext<CurrencyState | undefined>(undefined);
 
-// Static conversion rate: 1 EUR = 1.08 USD (approximate)
-const EUR_TO_USD_RATE = 1.08;
+interface CurrencyProviderProps {
+  children: ReactNode;
+}
 
-export const CurrencyProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [currency, setCurrency] = useState<Currency>('EUR');
+export const CurrencyProvider = ({ children }: CurrencyProviderProps) => {
+  // Initialize currency from localStorage or default to EUR
+  const [currency, setCurrencyState] = useState<Currency>(() => {
+    const saved = localStorage.getItem('currency');
+    return (saved as Currency) || 'EUR';
+  });
 
-  // Load currency preference from localStorage
+  // Save to localStorage whenever currency changes
   useEffect(() => {
-    const savedCurrency = localStorage.getItem('preferred-currency') as Currency;
-    if (savedCurrency && (savedCurrency === 'EUR' || savedCurrency === 'USD')) {
-      setCurrency(savedCurrency);
-    }
+    localStorage.setItem('currency', currency);
+  }, [currency]);
+
+  const setCurrency = useCallback((newCurrency: Currency) => {
+    setCurrencyState(newCurrency);
   }, []);
 
-  // Save currency preference to localStorage
-  const handleSetCurrency = (newCurrency: Currency) => {
-    setCurrency(newCurrency);
-    localStorage.setItem('preferred-currency', newCurrency);
-  };
-
-  const convertPrice = (priceInEUR: number): number => {
-    if (currency === 'USD') {
-      return priceInEUR * EUR_TO_USD_RATE;
-    }
-    return priceInEUR;
-  };
-
-  const formatPrice = (price: number): string => {
-    const convertedPrice = convertPrice(price);
+  const formatPrice = useCallback((price: number): string => {
+    const locale = currency === 'EUR' ? 'nl-NL' : 'en-US';
     
-    if (currency === 'USD') {
-      return new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD'
-      }).format(convertedPrice);
-    }
-    
-    return new Intl.NumberFormat('nl-NL', {
+    return new Intl.NumberFormat(locale, {
       style: 'currency',
-      currency: 'EUR'
-    }).format(convertedPrice);
+      currency: currency,
+    }).format(price);
+  }, [currency]);
+
+  const value: CurrencyState = {
+    currency,
+    setCurrency,
+    formatPrice,
   };
 
   return (
-    <CurrencyContext.Provider value={{
-      currency,
-      setCurrency: handleSetCurrency,
-      formatPrice,
-      convertPrice
-    }}>
+    <CurrencyContext.Provider value={value}>
       {children}
     </CurrencyContext.Provider>
   );
 };
 
-export const useCurrency = (): CurrencyContextType => {
+export const useCurrency = (): CurrencyState => {
   const context = useContext(CurrencyContext);
   if (context === undefined) {
     throw new Error('useCurrency must be used within a CurrencyProvider');

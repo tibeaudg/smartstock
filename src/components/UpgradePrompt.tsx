@@ -5,7 +5,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { useSubscription, PricingTier } from '@/hooks/useSubscription';
 import { useNavigate } from 'react-router-dom';
-import { useCurrency } from '@/hooks/useCurrency';
 
 interface UpgradePromptProps {
   feature: string;
@@ -23,7 +22,6 @@ export const UpgradePrompt: React.FC<UpgradePromptProps> = ({
   showCloseButton = true
 }) => {
   const { currentTier, pricingTiers } = useSubscription();
-  const { formatPrice } = useCurrency();
   const navigate = useNavigate();
 
   const getUpgradeTier = () => {
@@ -154,11 +152,11 @@ export const UpgradePrompt: React.FC<UpgradePromptProps> = ({
           <div className="flex items-center justify-between">
             <div>
               <div className="text-2xl font-bold text-gray-900">
-                {formatPrice(upgradeTier.price_monthly)}
+                €{upgradeTier.price_monthly.toFixed(2)}
                 <span className="text-sm font-normal text-gray-500">/month</span>
               </div>
               <div className="text-sm text-gray-500">
-                or {formatPrice(upgradeTier.price_yearly)}/year (save {upgradeTier.yearly_discount_percentage}%)
+                or €{upgradeTier.price_yearly.toFixed(2)}/year (save {upgradeTier.yearly_discount_percentage}%)
               </div>
             </div>
             <Button 
@@ -250,7 +248,6 @@ export const TierUpgradeCard: React.FC<{
   onClose, 
   showCloseButton = true 
 }) => {
-  const { formatPrice } = useCurrency();
   const navigate = useNavigate();
 
   const getFeatureDescription = () => {
@@ -356,11 +353,11 @@ export const TierUpgradeCard: React.FC<{
           <div className="flex items-center justify-between">
             <div>
               <div className="text-2xl font-bold text-gray-900">
-                {formatPrice(tier.price_monthly)}
+                €{tier.price_monthly.toFixed(2)}
                 <span className="text-sm font-normal text-gray-500">/month</span>
               </div>
               <div className="text-sm text-gray-500">
-                or {formatPrice(tier.price_yearly)}/year (save {tier.yearly_discount_percentage}%)
+                or €{tier.price_yearly.toFixed(2)}/year (save {tier.yearly_discount_percentage}%)
               </div>
             </div>
             <Button 

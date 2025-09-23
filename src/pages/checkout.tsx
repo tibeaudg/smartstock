@@ -7,15 +7,12 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { useSubscription } from '@/hooks/useSubscription';
 import { useAuth } from '@/hooks/useAuth';
-import { useCurrency } from '@/hooks/useCurrency';
-import { CurrencySwitcher } from '@/components/CurrencySwitcher';
 
 export default function CheckoutPage() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { user } = useAuth();
   const { pricingTiers, startTrial, isStartingTrial } = useSubscription();
-  const { formatPrice } = useCurrency();
   
   const tierParam = searchParams.get('tier');
   const cycleParam = searchParams.get('cycle') as 'monthly' | 'yearly';
@@ -106,6 +103,12 @@ export default function CheckoutPage() {
     }
   };
 
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat('nl-NL', {
+      style: 'currency',
+      currency: 'EUR'
+    }).format(price);
+  };
 
   const getPrice = () => {
     return billingCycle === 'monthly' ? selectedTier.price_monthly : selectedTier.price_yearly;
@@ -140,11 +143,6 @@ export default function CheckoutPage() {
             <p className="text-gray-600 mt-2">
               start immediately with your {selectedTier.display_name} plan - 14 days completly free, no payment information required
             </p>
-            
-            {/* Currency Switcher */}
-            <div className="flex justify-center mt-4">
-              <CurrencySwitcher variant="compact" />
-            </div>
           </div>
 
           <div className="grid lg:grid-cols-2 gap-8">

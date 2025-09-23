@@ -9,8 +9,6 @@ import { useSubscription } from '@/hooks/useSubscription';
 import { useTranslation } from 'react-i18next';
 import { Header } from '@/components/HeaderPublic';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
-import { useCurrency } from '@/hooks/useCurrency';
-import { CurrencySwitcher } from '@/components/CurrencySwitcher';
 
 interface PricingTier {
   id: string;
@@ -64,7 +62,6 @@ export default function PricingPage() {
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly');
   const { user } = useAuth();
   const { pricingTiers, isLoading } = useSubscription();
-  const { formatPrice } = useCurrency();
   const navigate = useNavigate();
   const { t } = useTranslation();
 
@@ -78,6 +75,12 @@ export default function PricingPage() {
     navigate(`/checkout?tier=${tierId}&cycle=${billingCycle}`);
   };
 
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat('nl-NL', {
+      style: 'currency',
+      currency: 'EUR'
+    }).format(price);
+  };
 
   const getLimitText = (value: number | null, type: string) => {
     if (value === null) return 'Unlimited';
@@ -114,11 +117,6 @@ export default function PricingPage() {
           <p className="text-xl text-gray-600 mb-8">
             Choose the plan that best suits your needs
           </p>
-          
-          {/* Currency Switcher */}
-          <div className="flex justify-center mb-8">
-            <CurrencySwitcher variant="compact" />
-          </div>
           
           {/* Billing Toggle */}
           <div className="flex items-center justify-center space-x-4 mb-8">
