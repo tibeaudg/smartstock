@@ -55,19 +55,26 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButton
           : 'bg-white/90 backdrop-blur-sm'
       }`}>
         <div className="w-full">
-          <div className="flex justify-between items-center h-16 px-4 md:px-8 border-b border-gray-200 shadow-sm">
+          <div className="flex justify-between items-center h-16 px-4 md:px-8">
+            {/* Logo - Left side */}
             <div className="flex items-center">
               <Link to="/" className="flex items-center group">
-                <Package className="h-8 w-8 text-blue-600 mr-3 group-hover:scale-110 transition-transform" />
+                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center mr-3 group-hover:scale-110 transition-transform">
+                  <Package className="h-5 w-5 text-white" />
+                </div>
                 <span className="text-xl md:text-2xl font-bold text-gray-900 group-hover:text-blue-700 transition-colors">stockflow</span>
               </Link>
             </div>
-            {onNavigate && (
-              <nav className="hidden sm:flex items-center gap-6 text-sm">
-                <Link to="/pricing" className="text-gray-700 hover:text-blue-700">Pricing</Link>
-                <Link to="/contact" className="text-gray-700 hover:text-blue-700">Contact</Link>
-              </nav>
-            )}
+
+            {/* Navigation and Action Buttons - Right side */}
+            <div className="flex items-center space-x-6">
+              {/* Navigation Links */}
+              {onNavigate && (
+                <nav className="hidden md:flex items-center gap-6 text-sm">
+                  <Link to="/pricing" className="text-gray-600 hover:text-blue-700 transition-colors font-medium">Pricing</Link>
+                  <Link to="/contact" className="text-gray-600 hover:text-blue-700 transition-colors font-medium">Contact</Link>
+                </nav>
+              )}
 
               {/* Desktop Notification Button */}
               <div className="hidden md:flex items-center space-x-3">
@@ -76,31 +83,41 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButton
                 )}
                 {!hideAuthButtons && (
                   <>
-                    <Button size="sm" variant="outline" onClick={handleLoginClick} className="text-sm">
+                    <Button 
+                      size="sm" 
+                      variant="outline" 
+                      onClick={handleLoginClick} 
+                      className="text-sm border-gray-300 hover:border-gray-400 text-gray-700 hover:text-gray-900"
+                    >
                       Login
                     </Button>
-                    <Button size="sm" onClick={handleRegisterClick} className="text-sm bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold min-h-[40px]">
+                    <Button 
+                      size="sm" 
+                      onClick={handleRegisterClick} 
+                      className="text-sm bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold min-h-[40px] shadow-sm hover:shadow-md transition-all"
+                    >
                       Get Started Free
                     </Button>
                   </>
                 )}
               </div>
 
-            {/* Mobile Menu Button - Only visible on mobile */}
-            <div className="!block sm:!hidden">
-              <button
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
-                aria-label="Menu"
-              >
-                {mobileMenuOpen ? (
-                  <X className="h-6 w-6 text-gray-700" />
-                ) : (
-                  <svg className="h-6 w-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                  </svg>
-                )}
-              </button>
+              {/* Mobile Menu Button */}
+              <div className="md:hidden">
+                <button
+                  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                  className="p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 hover:bg-gray-100 transition-colors"
+                  aria-label="Menu"
+                >
+                  {mobileMenuOpen ? (
+                    <X className="h-6 w-6 text-gray-700" />
+                  ) : (
+                    <svg className="h-6 w-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                  )}
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -108,26 +125,30 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButton
 
       {/* Mobile Menu Overlay */}
       {mobileMenuOpen && (
-        <div className="!block sm:!hidden fixed inset-0 bg-black bg-opacity-50 z-50" onClick={() => setMobileMenuOpen(false)}>
+        <div className="md:hidden fixed inset-0 bg-black bg-opacity-50 z-50" onClick={() => setMobileMenuOpen(false)}>
           <div 
             className="absolute top-0 right-0 w-full max-w-sm h-full bg-white shadow-xl flex flex-col"
             onClick={e => e.stopPropagation()}
           >
-
-            {/* Mobile Menu Header with Notification Button */}
-            <div className="flex items-center justify-between p-6 border-b border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-900">Menu</h3>
-              <div className="flex items-center space-x-2">
-                  {!hideNotifications && (
-                    <NotificationButton unreadCount={unreadCount} onClick={handleNotificationClick} />
-                  )}
-                  <button
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="p-2 rounded-md hover:bg-gray-100"
-                  >
-                    <X className="h-5 w-5 text-gray-600" />
-                  </button>
+            {/* Mobile Menu Header */}
+            <div className="flex items-center justify-between p-6 border-b border-gray-200 bg-white">
+              <div className="flex items-center">
+                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center mr-3">
+                  <Package className="h-5 w-5 text-white" />
                 </div>
+                <span className="text-lg font-bold text-gray-900">stockflow</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                {!hideNotifications && (
+                  <NotificationButton unreadCount={unreadCount} onClick={handleNotificationClick} />
+                )}
+                <button
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="p-2 rounded-md hover:bg-gray-100 transition-colors"
+                >
+                  <X className="h-5 w-5 text-gray-600" />
+                </button>
+              </div>
             </div>
       {/* Notification Overlay */}
       {showNotifications && (
@@ -152,26 +173,22 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButton
       )}
             
             {/* Mobile Navigation Items */}
-            <div className="flex-1 overflow-y-auto p-6 bg-gray-100">
-
-              {/* Language Switcher */}
-              <div className="mb-4">
-              </div>
-
+            <div className="flex-1 overflow-y-auto p-6 bg-white">
               {/* Mobile Navigation Links */}
               {onNavigate && (
-                <div className="mb-6">
-                  <div className="space-y-2">
-                     <Link 
-                       to="/pricing"
-                       className="block w-full text-left text-gray-700 hover:text-blue-700 py-2" 
-                       onClick={() => setMobileMenuOpen(false)}
-                     >
-                       Pricing
-                     </Link>
+                <div className="mb-8">
+                  <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">Navigation</h3>
+                  <div className="space-y-1">
+                    <Link 
+                      to="/pricing"
+                      className="block w-full text-left text-gray-700 hover:text-blue-700 py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors font-medium" 
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      Pricing
+                    </Link>
                     <Link 
                       to="/contact"
-                      className="block w-full text-left text-gray-700 hover:text-blue-700 py-2" 
+                      className="block w-full text-left text-gray-700 hover:text-blue-700 py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors font-medium" 
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       Contact
@@ -185,13 +202,13 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButton
                 <div className="space-y-3">
                   <Button 
                     variant="outline" 
-                    className="w-full border border-blue-600" 
+                    className="w-full border-gray-300 text-gray-700 hover:border-gray-400 hover:text-gray-900 py-3 rounded-lg font-medium" 
                     onClick={() => { handleLoginClick(); setMobileMenuOpen(false); }}
                   >
                     Login
                   </Button>
                   <Button 
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg min-h-[48px] text-base" 
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg shadow-sm hover:shadow-md transition-all" 
                     onClick={() => { handleRegisterClick(); setMobileMenuOpen(false); }}
                   >
                     Get Started Free

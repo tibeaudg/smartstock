@@ -1806,9 +1806,9 @@ export const HomePage = () => {
 
 <footer className="bg-gray-900 text-gray-200 py-12 md:py-16">
   <div className="max-w-6xl mx-auto px-6">
-    <div className="grid md:grid-cols-4 gap-8 mb-8">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
       {/* Company Info */}
-      <div className="md:col-span-2">
+      <div>
         <img
           src="/logo.png"
           alt="stockflow"
@@ -1869,32 +1869,6 @@ export const HomePage = () => {
           </div>
         </div>
         
-        <div className="flex flex-wrap gap-4 text-sm">
-          <button 
-            onClick={() => scrollToSection('modules-section')} 
-            className="text-gray-400 hover:text-white underline cursor-pointer"
-          >
-            Modules
-          </button>
-          <button 
-            onClick={() => scrollToSection('features-section')} 
-            className="text-gray-400 hover:text-white underline cursor-pointer"
-          >
-            Features
-          </button>
-          <button 
-            onClick={() => scrollToSection('pricing-section')} 
-            className="text-gray-400 hover:text-white underline cursor-pointer"
-          >
-            Pricing
-          </button>
-          <button 
-            onClick={() => scrollToSection('testimonials-section')} 
-            className="text-gray-400 hover:text-white underline cursor-pointer"
-          >
-            Testimonials
-          </button>
-        </div>
       </div>
       
       {/* Quick Links */}
