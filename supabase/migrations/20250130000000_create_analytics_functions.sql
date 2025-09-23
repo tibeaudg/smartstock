@@ -258,3 +258,253 @@ CREATE TRIGGER refresh_real_time_analytics_trigger
   AFTER INSERT ON website_events
   FOR EACH STATEMENT
   EXECUTE FUNCTION trigger_refresh_real_time_analytics();
+
+-- Create conversion funnel function
+CREATE OR REPLACE FUNCTION get_conversion_funnel()
+RETURNS TABLE (
+  step text,
+  visitors bigint,
+  conversions bigint,
+  conversion_rate numeric,
+  drop_off numeric
+) AS $$
+BEGIN
+  RETURN QUERY
+  WITH funnel_steps AS (
+    SELECT 
+      'Homepage Visit' as step_name,
+      COUNT(DISTINCT session_id) as visitor_count,
+      COUNT(DISTINCT CASE WHEN page_url = '/' THEN session_id END) as conversion_count
+    FROM website_events 
+    WHERE created_at > NOW() - INTERVAL '7 days'
+      AND page_url NOT LIKE '%localhost%'
+    
+    UNION ALL
+    
+    SELECT 
+      'Pricing View' as step_name,
+      COUNT(DISTINCT session_id) as visitor_count,
+      COUNT(DISTINCT CASE WHEN page_url = '/pricing' THEN session_id END) as conversion_count
+    FROM website_events 
+    WHERE created_at > NOW() - INTERVAL '7 days'
+      AND page_url NOT LIKE '%localhost%'
+    
+    UNION ALL
+    
+    SELECT 
+      'Auth Page Visit' as step_name,
+      COUNT(DISTINCT session_id) as visitor_count,
+      COUNT(DISTINCT CASE WHEN page_url = '/auth' THEN session_id END) as conversion_count
+    FROM website_events 
+    WHERE created_at > NOW() - INTERVAL '7 days'
+      AND page_url NOT LIKE '%localhost%'
+    
+    UNION ALL
+    
+    SELECT 
+      'Registration Started' as step_name,
+      COUNT(DISTINCT session_id) as visitor_count,
+      COUNT(DISTINCT CASE WHEN event_type = 'registration_started' THEN session_id END) as conversion_count
+    FROM website_events 
+    WHERE created_at > NOW() - INTERVAL '7 days'
+      AND page_url NOT LIKE '%localhost%'
+    
+    UNION ALL
+    
+    SELECT 
+      'Registration Completed' as step_name,
+      COUNT(DISTINCT session_id) as visitor_count,
+      COUNT(DISTINCT CASE WHEN event_type = 'registration_completed' THEN session_id END) as conversion_count
+    FROM website_events 
+    WHERE created_at > NOW() - INTERVAL '7 days'
+      AND page_url NOT LIKE '%localhost%'
+  )
+  SELECT 
+    step_name::text,
+    visitor_count::bigint,
+    conversion_count::bigint,
+    CASE 
+      WHEN visitor_count > 0 THEN ROUND((conversion_count::numeric / visitor_count * 100), 2)
+      ELSE 0 
+    END::numeric,
+    CASE 
+      WHEN visitor_count > 0 THEN ROUND(((visitor_count - conversion_count)::numeric / visitor_count * 100), 2)
+      ELSE 0 
+    END::numeric
+  FROM funnel_steps
+  ORDER BY visitor_count DESC;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Create heatmap data function
+CREATE OR REPLACE FUNCTION get_heatmap_data()
+RETURNS TABLE (
+  element text,
+  clicks bigint,
+  page text,
+  position_x numeric,
+  position_y numeric,
+  conversion_impact numeric
+) AS $$
+BEGIN
+  RETURN QUERY
+  WITH click_data AS (
+    SELECT 
+      COALESCE(element_id, element_text, 'Unknown Element') as element_name,
+      page_url,
+      COUNT(*) as click_count,
+      AVG(COALESCE((metadata->>'x')::numeric, 0)) as avg_x,
+      AVG(COALESCE((metadata->>'y')::numeric, 0)) as avg_y,
+      COUNT(DISTINCT CASE WHEN event_type = 'conversion' THEN session_id END) as conversions
+    FROM website_events 
+    WHERE created_at > NOW() - INTERVAL '7 days'
+      AND event_type = 'click'
+      AND page_url NOT LIKE '%localhost%'
+    GROUP BY element_name, page_url
+  )
+  SELECT 
+    element_name::text,
+    click_count::bigint,
+    page_url::text,
+    COALESCE(avg_x, 0)::numeric,
+    COALESCE(avg_y, 0)::numeric,
+    CASE 
+      WHEN click_count > 0 THEN ROUND((conversions::numeric / click_count * 100), 2)
+      ELSE 0 
+    END::numeric
+  FROM click_data
+  ORDER BY click_count DESC
+  LIMIT 20;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Create performance metrics function
+CREATE OR REPLACE FUNCTION get_performance_metrics()
+RETURNS TABLE (
+  page text,
+  load_time numeric,
+  bounce_rate numeric,
+  conversion_rate numeric,
+  core_web_vitals jsonb
+) AS $$
+BEGIN
+  RETURN QUERY
+  WITH performance_data AS (
+    SELECT 
+      page_url,
+      AVG(COALESCE((metadata->>'load_time')::numeric, 2.5)) as avg_load_time,
+      COUNT(DISTINCT session_id) as total_sessions,
+      COUNT(DISTINCT CASE WHEN event_type = 'page_exit' THEN session_id END) as bounce_count,
+      COUNT(DISTINCT CASE WHEN event_type = 'conversion' THEN session_id END) as conversion_count,
+      AVG(COALESCE((metadata->>'lcp')::numeric, 2.5)) as lcp,
+      AVG(COALESCE((metadata->>'fid')::numeric, 100)) as fid,
+      AVG(COALESCE((metadata->>'cls')::numeric, 0.1)) as cls
+    FROM website_events 
+    WHERE created_at > NOW() - INTERVAL '7 days'
+      AND page_url NOT LIKE '%localhost%'
+    GROUP BY page_url
+  )
+  SELECT 
+    page_url::text,
+    COALESCE(avg_load_time, 2.5)::numeric,
+    CASE 
+      WHEN total_sessions > 0 THEN ROUND((bounce_count::numeric / total_sessions * 100), 2)
+      ELSE 0 
+    END::numeric,
+    CASE 
+      WHEN total_sessions > 0 THEN ROUND((conversion_count::numeric / total_sessions * 100), 2)
+      ELSE 0 
+    END::numeric,
+    jsonb_build_object(
+      'lcp', COALESCE(lcp, 2.5),
+      'fid', COALESCE(fid, 100),
+      'cls', COALESCE(cls, 0.1)
+    )::jsonb
+  FROM performance_data
+  ORDER BY avg_load_time ASC;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Create user journeys function
+CREATE OR REPLACE FUNCTION get_user_journeys()
+RETURNS TABLE (
+  session_id text,
+  steps text[],
+  conversion_achieved boolean,
+  time_to_conversion numeric,
+  drop_off_point text
+) AS $$
+BEGIN
+  RETURN QUERY
+  WITH journey_data AS (
+    SELECT 
+      we.session_id,
+      ARRAY_AGG(DISTINCT we.page_url ORDER BY we.created_at) as page_steps,
+      COUNT(DISTINCT CASE WHEN we.event_type = 'conversion' THEN we.session_id END) > 0 as has_conversion,
+      EXTRACT(EPOCH FROM (MAX(we.created_at) - MIN(we.created_at))) / 60 as session_duration,
+      CASE 
+        WHEN COUNT(DISTINCT CASE WHEN we.event_type = 'conversion' THEN we.session_id END) = 0 
+        THEN (SELECT page_url FROM website_events we2 WHERE we2.session_id = we.session_id ORDER BY we2.created_at DESC LIMIT 1)
+        ELSE NULL
+      END as last_page
+    FROM website_events we
+    WHERE we.created_at > NOW() - INTERVAL '7 days'
+      AND we.page_url NOT LIKE '%localhost%'
+    GROUP BY we.session_id
+  )
+  SELECT 
+    session_id::text,
+    page_steps::text[],
+    has_conversion::boolean,
+    COALESCE(session_duration, 0)::numeric,
+    last_page::text
+  FROM journey_data
+  ORDER BY session_duration DESC
+  LIMIT 50;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Create A/B test results function
+CREATE OR REPLACE FUNCTION get_ab_test_results()
+RETURNS TABLE (
+  test_name text,
+  variant_a jsonb,
+  variant_b jsonb,
+  significance numeric,
+  winner text
+) AS $$
+BEGIN
+  RETURN QUERY
+  WITH ab_test_data AS (
+    SELECT 
+      'Homepage CTA Test' as test_name,
+      COUNT(DISTINCT CASE WHEN COALESCE(metadata->>'variant', 'A') = 'A' THEN session_id END) as a_visitors,
+      COUNT(DISTINCT CASE WHEN COALESCE(metadata->>'variant', 'A') = 'A' AND event_type = 'conversion' THEN session_id END) as a_conversions,
+      COUNT(DISTINCT CASE WHEN COALESCE(metadata->>'variant', 'B') = 'B' THEN session_id END) as b_visitors,
+      COUNT(DISTINCT CASE WHEN COALESCE(metadata->>'variant', 'B') = 'B' AND event_type = 'conversion' THEN session_id END) as b_conversions
+    FROM website_events 
+    WHERE created_at > NOW() - INTERVAL '7 days'
+      AND page_url = '/'
+      AND page_url NOT LIKE '%localhost%'
+  )
+  SELECT 
+    test_name::text,
+    jsonb_build_object(
+      'visitors', COALESCE(a_visitors, 0),
+      'conversions', COALESCE(a_conversions, 0),
+      'conversion_rate', CASE WHEN a_visitors > 0 THEN ROUND((a_conversions::numeric / a_visitors * 100), 2) ELSE 0 END
+    )::jsonb,
+    jsonb_build_object(
+      'visitors', COALESCE(b_visitors, 0),
+      'conversions', COALESCE(b_conversions, 0),
+      'conversion_rate', CASE WHEN b_visitors > 0 THEN ROUND((b_conversions::numeric / b_visitors * 100), 2) ELSE 0 END
+    )::jsonb,
+    95.0::numeric, -- Placeholder significance
+    CASE 
+      WHEN COALESCE(a_conversions::numeric / NULLIF(a_visitors, 0), 0) > COALESCE(b_conversions::numeric / NULLIF(b_visitors, 0), 0) 
+      THEN 'A'::text 
+      ELSE 'B'::text 
+    END::text
+  FROM ab_test_data;
+END;
+$$ LANGUAGE plpgsql;

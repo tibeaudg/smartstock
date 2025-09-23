@@ -1025,97 +1025,97 @@ export const HomePage = () => {
           <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-center">
             {/* Left Column - Text Content */}
             <div className="text-white order-1 sm:text-center lg:text-left">
-              <div className="inline-flex items-center px-3 sm:px-4 py-2 bg-blue-600/20 border border-blue-400/30 rounded-full text-blue-200 text-xs sm:text-sm font-medium mb-4 sm:mb-6">
+              <div className="inline-flex items-center px-3 xs:px-3 sm:px-4 py-2 bg-blue-600/20 border border-blue-400/30 rounded-full text-blue-200 text-xs xs:text-xs sm:text-sm font-medium mb-3 xs:mb-4 sm:mb-6">
                 <span className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
                 Trusted by 500+ businesses
               </div>
               
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-6 sm:mb-8 lg:mb-10 leading-tight">
+              <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-4 xs:mb-6 sm:mb-8 lg:mb-10 leading-tight">
                 <span className="block">StockFlow</span>
                 <span className="block">Inventory Management</span>
-                <span className="block text-blue-300 mt-2 lg:mt-4">for growing businesses</span>
+                <span className="block text-blue-300 mt-1 xs:mt-2 lg:mt-4">for growing businesses</span>
               </h1>
               
-              <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl text-blue-100 mb-8 sm:mb-10 lg:mb-12 leading-relaxed max-w-3xl mx-auto lg:mx-0">
+              <p className="text-base xs:text-lg sm:text-xl md:text-xl lg:text-xl xl:text-xl text-blue-100 mb-6 xs:mb-8 sm:mb-10 lg:mb-12 leading-relaxed max-w-3xl mx-auto lg:mx-0">
                 The only inventory management software that makes <strong>100% automatic decisions</strong> for small businesses. Stop manual tracking, prevent stockouts, and grow your business.
               </p>
               
-              <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 lg:gap-8 mb-8 sm:mb-10 lg:mb-12 max-w-3xl mx-auto lg:mx-0">
+              <div className="flex flex-col sm:flex-row gap-3 xs:gap-4 sm:gap-6 lg:gap-8 mb-6 xs:mb-8 sm:mb-10 lg:mb-12 max-w-3xl mx-auto lg:mx-0 justify-center">
                 <Link
                   to="/auth"
-                  className="bg-white text-blue-600 px-6 sm:px-8 lg:px-12 xl:px-16 py-4 sm:py-5 lg:py-6 xl:py-7 rounded-xl font-bold text-lg sm:text-xl lg:text-2xl xl:text-3xl transition-all duration-300 transform hover:scale-105 shadow-2xl text-center flex items-center justify-center"
+                  className="bg-white text-blue-600 px-4 xs:px-6 sm:px-8 lg:px-12 xl:px-16 py-3 xs:py-4 sm:py-5 lg:py-6 xl:py-4 rounded-xl font-bold text-base xs:text-lg sm:text-xl lg:text-xl xl:text-md transition-all duration-300 transform hover:scale-105 shadow-2xl text-center flex items-center justify-center"
                 >
                   Start Your Free Trial
                 </Link>
                 <Link
                   to="/demo"
-                  className="border-2 border-white text-white hover:bg-white hover:text-blue-900 px-6 sm:px-8 lg:px-12 xl:px-16 py-4 sm:py-5 lg:py-6 xl:py-7 rounded-xl font-bold text-lg sm:text-xl lg:text-2xl xl:text-3xl transition-all duration-300 text-center flex items-center justify-center"
+                  className="border-2 border-white text-white hover:bg-white hover:text-blue-900 px-4 xs:px-6 sm:px-8 lg:px-12 xl:px-16 py-3 xs:py-4 sm:py-5 lg:py-6 xl:py-4 rounded-xl font-bold text-base xs:text-lg sm:text-xl lg:text-xl xl:text-md transition-all duration-300 text-center flex items-center justify-center"
                 >
                   Watch 2-Min Demo
                 </Link>
               </div>
 
               {/* Live Inventory Dashboard - Mobile Version (Hidden on desktop) */}
-              <div className="lg:hidden relative mb-6 sm:mb-8 max-w-md mx-auto">
-                <div className="relative bg-white rounded-2xl shadow-2xl p-3 sm:p-4">
+              <div className="lg:hidden relative mb-4 xs:mb-6 sm:mb-8 max-w-sm xs:max-w-md mx-auto">
+                <div className="relative bg-white rounded-2xl shadow-2xl p-2 xs:p-3 sm:p-4">
                   {/* Demo Interface Mockup */}
-                  <div className="bg-gray-50 rounded-lg p-2 sm:p-3 mb-3 sm:mb-4">
-                    <div className="flex items-center justify-start mb-2 sm:mb-3">
-                      <h3 className="font-semibold text-gray-800 text-xs sm:text-sm">Live Inventory Dashboard</h3>
-                      <div className="flex space-x-1 sm:space-x-2 ml-auto">
-                        <div className="w-2 h-2 sm:w-3 sm:h-3 bg-red-400 rounded-full"></div>
-                        <div className="w-2 h-2 sm:w-3 sm:h-3 bg-yellow-400 rounded-full"></div>
-                        <div className="w-2 h-2 sm:w-3 sm:h-3 bg-green-400 rounded-full"></div>
+                  <div className="bg-gray-50 rounded-lg p-2 xs:p-2 sm:p-3 mb-2 xs:mb-3 sm:mb-4">
+                    <div className="flex items-center justify-start mb-2 xs:mb-2 sm:mb-3">
+                      <h3 className="font-semibold text-gray-800 text-xs xs:text-xs sm:text-sm">Live Dashboard</h3>
+                      <div className="flex space-x-1 xs:space-x-1 sm:space-x-2 ml-auto">
+                        <div className="w-2 h-2 xs:w-2 xs:h-2 sm:w-3 sm:h-3 bg-red-400 rounded-full"></div>
+                        <div className="w-2 h-2 xs:w-2 xs:h-2 sm:w-3 sm:h-3 bg-yellow-400 rounded-full"></div>
+                        <div className="w-2 h-2 xs:w-2 xs:h-2 sm:w-3 sm:h-3 bg-green-400 rounded-full"></div>
                       </div>
                     </div>
                     
                     {/* Mock Dashboard Content */}
-                    <div className="grid grid-cols-2 gap-2 sm:gap-3 mb-2 sm:mb-3">
-                      <div className="bg-green-100 p-2 sm:p-3 rounded-lg">
-                        <div className="text-green-600 font-bold text-sm sm:text-base">1,247</div>
-                        <div className="text-green-600 text-xs sm:text-sm">Products in Stock</div>
+                    <div className="grid grid-cols-2 gap-2 xs:gap-2 sm:gap-3 mb-2 xs:mb-2 sm:mb-3">
+                      <div className="bg-green-100 p-2 xs:p-2 sm:p-3 rounded-lg">
+                        <div className="text-green-600 font-bold text-xs xs:text-sm sm:text-base">1,247</div>
+                        <div className="text-green-600 text-xs xs:text-xs sm:text-sm">In Stock</div>
                       </div>
-                      <div className="bg-orange-100 p-2 sm:p-3 rounded-lg">
-                        <div className="text-orange-600 font-bold text-sm sm:text-base">23</div>
-                        <div className="text-orange-600 text-xs sm:text-sm">Low Stock Alert</div>
+                      <div className="bg-orange-100 p-2 xs:p-2 sm:p-3 rounded-lg">
+                        <div className="text-orange-600 font-bold text-xs xs:text-sm sm:text-base">23</div>
+                        <div className="text-orange-600 text-xs xs:text-xs sm:text-sm">Low Stock</div>
                       </div>
                     </div>
                     
-                    <div className="space-y-1 sm:space-y-2">
-                      <div className="text-black flex items-center justify-between p-1.5 sm:p-2 bg-white rounded">
-                        <span className="text-xs sm:text-sm">📱 Smartphone Case</span>
-                        <span className="text-xs bg-orange-100 text-orange-600 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded">Reorder</span>
+                    <div className="space-y-1 xs:space-y-1 sm:space-y-2">
+                      <div className="text-black flex items-center justify-between p-1.5 xs:p-1.5 sm:p-2 bg-white rounded">
+                        <span className="text-xs xs:text-xs sm:text-sm">📱 Smartphone Case</span>
+                        <span className="text-xs bg-orange-100 text-orange-600 px-1.5 xs:px-1.5 sm:px-2 py-0.5 xs:py-0.5 sm:py-1 rounded">Reorder</span>
                       </div>
-                      <div className="text-black flex items-center justify-between p-1.5 sm:p-2 bg-white rounded">
-                        <span className="text-xs sm:text-sm">💻 Laptop Charger</span>
-                        <span className="text-xs bg-green-100 text-green-600 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded">In Stock</span>
+                      <div className="text-black flex items-center justify-between p-1.5 xs:p-1.5 sm:p-2 bg-white rounded">
+                        <span className="text-xs xs:text-xs sm:text-sm">💻 Laptop Charger</span>
+                        <span className="text-xs bg-green-100 text-green-600 px-1.5 xs:px-1.5 sm:px-2 py-0.5 xs:py-0.5 sm:py-1 rounded">In Stock</span>
                       </div>
-                      <div className="text-black flex items-center justify-between p-1.5 sm:p-2 bg-white rounded">
-                        <span className="text-xs sm:text-sm">🎧 Wireless Headphones</span>
-                        <span className="text-xs bg-red-100 text-red-600 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded">Out of Stock</span>
+                      <div className="text-black flex items-center justify-between p-1.5 xs:p-1.5 sm:p-2 bg-white rounded">
+                        <span className="text-xs xs:text-xs sm:text-sm">🎧 Headphones</span>
+                        <span className="text-xs bg-red-100 text-red-600 px-1.5 xs:px-1.5 sm:px-2 py-0.5 xs:py-0.5 sm:py-1 rounded">Out</span>
                       </div>
                     </div>
                   </div>
                   
                   {/* Floating Success Badge */}
-                  <div className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 bg-green-500 text-white px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm font-semibold shadow-lg animate-bounce">
-                    ✓ Auto-Reorder Active
+                  <div className="absolute -top-1 -right-1 xs:-top-1 xs:-right-1 sm:-top-2 sm:-right-2 bg-green-500 text-white px-2 xs:px-2 sm:px-3 py-1 xs:py-1 sm:py-1.5 rounded-full text-xs xs:text-xs sm:text-sm font-semibold shadow-lg animate-bounce">
+                    ✓ Auto-Reorder
                   </div>
                 </div>
               </div>
               
-              <div className="flex flex-col sm:flex-row sm:flex-wrap items-center justify-center lg:justify-start gap-4 sm:gap-6 lg:gap-8 text-blue-200 max-w-3xl mx-auto lg:mx-0">
+              <div className="flex flex-col sm:flex-row sm:flex-wrap items-center justify-center lg:justify-start gap-3 xs:gap-4 sm:gap-6 lg:gap-8 text-blue-200 max-w-3xl mx-auto lg:mx-0">
                 <div className="flex items-center">
-                  <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 mr-3 text-green-400 flex-shrink-0" />
-                  <span className="text-base sm:text-lg lg:text-xl">No credit card required</span>
+                  <CheckCircle className="w-4 h-4 xs:w-5 xs:h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-4 mr-2 xs:mr-3 text-green-400 flex-shrink-0" />
+                  <span className="text-sm xs:text-base sm:text-lg lg:text-sm">No credit card required</span>
                 </div>
                 <div className="flex items-center">
-                  <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 mr-3 text-green-400 flex-shrink-0" />
-                  <span className="text-base sm:text-lg lg:text-xl">14-day free trial</span>
+                  <CheckCircle className="w-4 h-4 xs:w-5 xs:h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-4 mr-2 xs:mr-3 text-green-400 flex-shrink-0" />
+                  <span className="text-sm xs:text-base sm:text-lg lg:text-sm">14-day free trial</span>
                 </div>
                 <div className="flex items-center">
-                  <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 mr-3 text-green-400 flex-shrink-0" />
-                  <span className="text-base sm:text-lg lg:text-xl">Setup in 5 minutes</span>
+                  <CheckCircle className="w-4 h-4 xs:w-5 xs:h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-4 mr-2 xs:mr-3 text-green-400 flex-shrink-0" />
+                  <span className="text-sm xs:text-base sm:text-lg lg:text-sm">Setup in 5 minutes</span>
                 </div>
               </div>
             </div>
