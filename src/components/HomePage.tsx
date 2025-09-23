@@ -1489,7 +1489,7 @@ export const HomePage = () => {
               <h2 className="features-header font-bold mb-4 sm:mb-6 px-4">
                 <span className="block text-gray-900">For small and growing businesses</span>
                 <span className="block bg-gradient-to-r from-blue-500 to-blue-900 bg-clip-text text-transparent">
-                Smarter inventory management
+                Across Industries
                 </span>
               </h2>
             </FadeInWhenVisible>
