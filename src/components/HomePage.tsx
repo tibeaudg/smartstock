@@ -17,6 +17,7 @@ import { usePageRefresh } from '@/hooks/usePageRefresh';
 import OptimizedImage from '@/components/OptimizedImage';
 import { Helmet } from 'react-helmet-async';
 import { logger } from '../lib/logger';
+import { useCurrency } from '@/hooks/useCurrency';
 // import { useWebsiteTracking } from '@/hooks/useWebsiteTracking';
 // import { usePerformanceOptimization } from '@/hooks/usePerformanceOptimization';
 import { GoogleAdsTracking } from '@/utils/googleAdsTracking';
@@ -168,6 +169,7 @@ const MobileCarousel = ({ items, renderItem }) => {
 
 export const HomePage = () => {
   const navigate = useNavigate();
+  const { formatPrice } = useCurrency();
   
   // ALL HOOKS DISABLED TO PREVENT CRASHES
   // usePageRefresh();
@@ -353,7 +355,7 @@ export const HomePage = () => {
       company: "De Koffieboetiek",
       location: "Ghent",
       industry: "Hospitality",
-      savings: "€2,400/year saved",
+      savings: `${formatPrice(2400)}/year saved`,
       timeSaved: "8 hours/week"
     },
     {
@@ -365,7 +367,7 @@ export const HomePage = () => {
       company: "TechOnderdelen BV",
       location: "Antwerp",
       industry: "Technology",
-      savings: "€5,200/year saved",
+      savings: `${formatPrice(5200)}/year saved`,
       timeSaved: "12 hours/week"
     },
     {
@@ -377,7 +379,7 @@ export const HomePage = () => {
       company: "Creatief Atelier",
       location: "Bruges",
       industry: "Creative",
-      savings: "€1,800/year saved",
+      savings: `${formatPrice(1800)}/year saved`,
       timeSaved: "6 hours/week"
     }
   ];
@@ -1022,32 +1024,32 @@ export const HomePage = () => {
         <div className="relative max-w-7xl mx-auto w-full">
           <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-center">
             {/* Left Column - Text Content */}
-            <div className="text-white order-1 lg:order-1 text-center lg:text-left">
+            <div className="text-white order-1 sm:text-center lg:text-left">
               <div className="inline-flex items-center px-3 sm:px-4 py-2 bg-blue-600/20 border border-blue-400/30 rounded-full text-blue-200 text-xs sm:text-sm font-medium mb-4 sm:mb-6">
                 <span className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
                 Trusted by 500+ businesses
               </div>
               
-              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold mb-4 sm:mb-6 leading-tight">
-                <span className="block">StockFlow Inventory</span>
-                <span className="block">Management</span>
-                <span className="block text-blue-300 mt-2">for growing businesses</span>
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-6 sm:mb-8 lg:mb-10 leading-tight">
+                <span className="block">StockFlow</span>
+                <span className="block">Inventory Management</span>
+                <span className="block text-blue-300 mt-2 lg:mt-4">for growing businesses</span>
               </h1>
               
-              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-blue-100 mb-6 sm:mb-8 leading-relaxed max-w-2xl mx-auto lg:mx-0">
+              <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl text-blue-100 mb-8 sm:mb-10 lg:mb-12 leading-relaxed max-w-3xl mx-auto lg:mx-0">
                 The only inventory management software that makes <strong>100% automatic decisions</strong> for small businesses. Stop manual tracking, prevent stockouts, and grow your business.
               </p>
               
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6 sm:mb-8 max-w-lg mx-auto lg:mx-0">
+              <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 lg:gap-8 mb-8 sm:mb-10 lg:mb-12 max-w-3xl mx-auto lg:mx-0">
                 <Link
                   to="/auth"
-                  className="bg-white text-blue-600 px-4 sm:px-6 lg:px-8 xl:px-10 py-3 sm:py-4 lg:py-5 rounded-xl font-bold text-base sm:text-lg lg:text-xl transition-all duration-300 transform hover:scale-105 shadow-2xl text-center flex items-center justify-center"
+                  className="bg-white text-blue-600 px-6 sm:px-8 lg:px-12 xl:px-16 py-4 sm:py-5 lg:py-6 xl:py-7 rounded-xl font-bold text-lg sm:text-xl lg:text-2xl xl:text-3xl transition-all duration-300 transform hover:scale-105 shadow-2xl text-center flex items-center justify-center"
                 >
                   Start Your Free Trial
                 </Link>
                 <Link
                   to="/demo"
-                  className="border-2 border-white text-white hover:bg-white hover:text-blue-900 px-4 sm:px-6 lg:px-8 xl:px-10 py-3 sm:py-4 lg:py-5 rounded-xl font-bold text-base sm:text-lg lg:text-xl transition-all duration-300 text-center flex items-center justify-center"
+                  className="border-2 border-white text-white hover:bg-white hover:text-blue-900 px-6 sm:px-8 lg:px-12 xl:px-16 py-4 sm:py-5 lg:py-6 xl:py-7 rounded-xl font-bold text-lg sm:text-xl lg:text-2xl xl:text-3xl transition-all duration-300 text-center flex items-center justify-center"
                 >
                   Watch 2-Min Demo
                 </Link>
@@ -1058,9 +1060,9 @@ export const HomePage = () => {
                 <div className="relative bg-white rounded-2xl shadow-2xl p-3 sm:p-4">
                   {/* Demo Interface Mockup */}
                   <div className="bg-gray-50 rounded-lg p-2 sm:p-3 mb-3 sm:mb-4">
-                    <div className="flex items-center justify-between mb-2 sm:mb-3">
+                    <div className="flex items-center justify-start mb-2 sm:mb-3">
                       <h3 className="font-semibold text-gray-800 text-xs sm:text-sm">Live Inventory Dashboard</h3>
-                      <div className="flex space-x-1 sm:space-x-2">
+                      <div className="flex space-x-1 sm:space-x-2 ml-auto">
                         <div className="w-2 h-2 sm:w-3 sm:h-3 bg-red-400 rounded-full"></div>
                         <div className="w-2 h-2 sm:w-3 sm:h-3 bg-yellow-400 rounded-full"></div>
                         <div className="w-2 h-2 sm:w-3 sm:h-3 bg-green-400 rounded-full"></div>
@@ -1102,18 +1104,18 @@ export const HomePage = () => {
                 </div>
               </div>
               
-              <div className="flex flex-col sm:flex-row sm:flex-wrap items-center justify-center lg:justify-start gap-3 sm:gap-4 lg:gap-6 text-blue-200">
+              <div className="flex flex-col sm:flex-row sm:flex-wrap items-center justify-center lg:justify-start gap-4 sm:gap-6 lg:gap-8 text-blue-200 max-w-3xl mx-auto lg:mx-0">
                 <div className="flex items-center">
-                  <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-green-400 flex-shrink-0" />
-                  <span className="text-sm sm:text-base">No credit card required</span>
+                  <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 mr-3 text-green-400 flex-shrink-0" />
+                  <span className="text-base sm:text-lg lg:text-xl">No credit card required</span>
                 </div>
                 <div className="flex items-center">
-                  <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-green-400 flex-shrink-0" />
-                  <span className="text-sm sm:text-base">14-day free trial</span>
+                  <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 mr-3 text-green-400 flex-shrink-0" />
+                  <span className="text-base sm:text-lg lg:text-xl">14-day free trial</span>
                 </div>
                 <div className="flex items-center">
-                  <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-green-400 flex-shrink-0" />
-                  <span className="text-sm sm:text-base">Setup in 5 minutes</span>
+                  <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 mr-3 text-green-400 flex-shrink-0" />
+                  <span className="text-base sm:text-lg lg:text-xl">Setup in 5 minutes</span>
                 </div>
               </div>
             </div>
@@ -1123,9 +1125,9 @@ export const HomePage = () => {
               <div className="relative bg-white rounded-2xl shadow-2xl p-6 max-w-md mx-auto lg:max-w-none">
                 {/* Demo Interface Mockup */}
                 <div className="bg-gray-50 rounded-lg p-4 mb-4">
-                  <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center justify-start mb-4">
                     <h3 className="font-semibold text-gray-800 text-base">Live Inventory Dashboard</h3>
-                    <div className="flex space-x-2">
+                    <div className="flex space-x-2 ml-auto">
                       <div className="w-3 h-3 bg-red-400 rounded-full"></div>
                       <div className="w-3 h-3 bg-yellow-400 rounded-full"></div>
                       <div className="w-3 h-3 bg-green-400 rounded-full"></div>

@@ -12,6 +12,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { useDashboardData } from '@/hooks/useDashboardData';
 import { useMobile } from '@/hooks/use-mobile';
 import { useBranches } from '@/hooks/useBranches';
+import { useCurrency } from '@/hooks/useCurrency';
 
 
 interface DashboardProps {
@@ -20,6 +21,7 @@ interface DashboardProps {
 
 export const Dashboard = ({ userRole }: DashboardProps) => {
   const { notifications, loading: notificationsLoading, unreadCount, markAllAsRead } = useNotifications();
+  const { formatPrice } = useCurrency();
   const [showNotifications, setShowNotifications] = useState(false);
   const handleNotificationClick = () => {
     setShowNotifications((prev) => !prev);
@@ -99,7 +101,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
           </CardHeader>
           <CardContent className="pt-0">
             <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">
-              €{safeMetrics.totalValue.toLocaleString()}
+              {formatPrice(safeMetrics.totalValue)}
             </div>
           </CardContent>
         </Card>

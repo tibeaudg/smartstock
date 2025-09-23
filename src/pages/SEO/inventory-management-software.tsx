@@ -2,6 +2,7 @@ import SEO from '../../components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '../../components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
+import { useCurrency } from '@/hooks/useCurrency';
 import { 
   Smartphone, 
   BarChart3, 
@@ -22,6 +23,7 @@ import {
 export default function InventoryManagementSoftware() {
   // Gebruik de page refresh hook
   usePageRefresh();
+  const { formatPrice } = useCurrency();
   
   const faqData = [
     {
@@ -34,7 +36,7 @@ export default function InventoryManagementSoftware() {
     },
     {
       question: "How much does inventory management software cost?",
-      answer: "Inventory management software pricing varies, but StockFlow offers a free plan for small businesses with up to 30 products. Premium plans start at €29/month for advanced features. Most solutions offer free trials to test the software before committing."
+      answer: `Inventory management software pricing varies, but StockFlow offers a free plan for small businesses with up to 30 products. Premium plans start at ${formatPrice(29)}/month for advanced features. Most solutions offer free trials to test the software before committing.`
     },
     {
       question: "Can inventory management software integrate with other systems?",
@@ -292,7 +294,7 @@ export default function InventoryManagementSoftware() {
               <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Target className="w-8 h-8 text-blue-600" />
               </div>
-              <div className="text-3xl font-bold text-gray-900 mb-2">€2.3M</div>
+              <div className="text-3xl font-bold text-gray-900 mb-2">{formatPrice(2300000)}</div>
               <p className="text-gray-600">Cost Savings</p>
             </div>
             <div className="text-center">

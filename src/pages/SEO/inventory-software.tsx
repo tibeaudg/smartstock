@@ -2,6 +2,7 @@ import SEO from '../../components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '../../components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
+import { useCurrency } from '@/hooks/useCurrency';
 import { 
   Smartphone, 
   BarChart3, 
@@ -29,6 +30,7 @@ import {
 export default function InventorySoftware() {
   // Gebruik de page refresh hook
   usePageRefresh();
+  const { formatPrice } = useCurrency();
   
   const faqData = [
     {
@@ -41,7 +43,7 @@ export default function InventorySoftware() {
     },
     {
       question: "How much does inventory software cost?",
-      answer: "Inventory software pricing varies, but StockFlow offers a free plan for small businesses with up to 30 products. Premium plans start at €29/month for advanced features. Most solutions offer free trials to test the software before committing."
+      answer: `Inventory software pricing varies, but StockFlow offers a free plan for small businesses with up to 30 products. Premium plans start at ${formatPrice(29)}/month for advanced features. Most solutions offer free trials to test the software before committing.`
     },
     {
       question: "Can inventory software integrate with other systems?",
@@ -385,7 +387,7 @@ export default function InventorySoftware() {
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <div className="bg-white p-8 rounded-lg shadow-lg">
               <h3 className="text-2xl font-bold mb-4">Free Plan</h3>
-              <div className="text-4xl font-bold text-blue-600 mb-4">€0<span className="text-lg text-gray-500">/month</span></div>
+              <div className="text-4xl font-bold text-blue-600 mb-4">{formatPrice(0)}<span className="text-lg text-gray-500">/month</span></div>
               <ul className="space-y-3 mb-8">
                 <li className="flex items-center">
                   <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
@@ -417,7 +419,7 @@ export default function InventorySoftware() {
                 <h3 className="text-2xl font-bold">Growth Plan</h3>
                 <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold">Most Popular</span>
               </div>
-              <div className="text-4xl font-bold text-blue-600 mb-4">€29<span className="text-lg text-gray-500">/month</span></div>
+              <div className="text-4xl font-bold text-blue-600 mb-4">{formatPrice(29)}<span className="text-lg text-gray-500">/month</span></div>
               <ul className="space-y-3 mb-8">
                 <li className="flex items-center">
                   <CheckCircle className="w-5 h-5 text-green-500 mr-3" />

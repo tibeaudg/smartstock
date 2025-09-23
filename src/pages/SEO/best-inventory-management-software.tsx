@@ -2,6 +2,7 @@ import SEO from '../../components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '../../components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
+import { useCurrency } from '@/hooks/useCurrency';
 import { 
   Smartphone, 
   BarChart3, 
@@ -32,6 +33,7 @@ import {
 export default function BestInventoryManagementSoftware() {
   // Gebruik de page refresh hook
   usePageRefresh();
+  const { formatPrice } = useCurrency();
   
   const faqData = [
     {
@@ -186,7 +188,7 @@ export default function BestInventoryManagementSoftware() {
   const pricingPlans = [
     {
       name: "Free Plan",
-      price: "€0",
+      price: formatPrice(0),
       period: "/month",
       description: "Perfect for small businesses getting started",
       features: [
@@ -200,7 +202,7 @@ export default function BestInventoryManagementSoftware() {
     },
     {
       name: "Growth Plan",
-      price: "€29",
+      price: formatPrice(29),
       period: "/month",
       description: "Best for growing businesses",
       features: [
@@ -215,7 +217,7 @@ export default function BestInventoryManagementSoftware() {
     },
     {
       name: "Enterprise Plan",
-      price: "€99",
+      price: formatPrice(99),
       period: "/month",
       description: "For large businesses with complex needs",
       features: [

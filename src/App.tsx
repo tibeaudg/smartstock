@@ -21,6 +21,7 @@ import { InvoicingOverview } from "./components/settings/InvoicingOverview";
 import { InvoiceList } from "./components/payments/InvoiceList";
 import { useAuth, AuthProvider } from "./hooks/useAuth";
 import { useBranches, BranchProvider } from "./hooks/useBranches";
+import { CurrencyProvider } from "./hooks/useCurrency";
 import { FirstBranchSetup } from "./components/FirstBranchSetup";
 import { Suspense } from "react";
 import { ContentWrapper } from "./ContentWrapper";
@@ -51,7 +52,7 @@ import GratisStockbeheer from './pages/SEO/gratis-stockbeheer';
 import Voorraadbeheer from './pages/SEO/voorraadbeheer';
 import ScanPage from './pages/scan';
 import SubscriptionTestPage from './pages/subscription-test';
-import React, { useState } from 'react';
+import React from 'react';
 import VoorraadbeheerSoftware from "./pages/SEO/voorraadbeheer-software";
 import Stockbeheer from "./pages/SEO/stockbeheer";
 import SimpelStockbeheer from "./pages/SEO/simpelstockbeheer";
@@ -98,7 +99,6 @@ import { IncomingDeliveryNotes } from './components/delivery-notes/IncomingDeliv
 import { OutgoingDeliveryNotes } from './components/delivery-notes/OutgoingDeliveryNotes';
 import PricingPage from './pages/pricing';
 import CheckoutPage from './pages/checkout';
-import ContactPage from './pages/contact';
 import { SubscriptionManagement } from './components/settings/SubscriptionManagement';
 import { AdminSubscriptionManagement } from './components/admin/SubscriptionManagement';
 
@@ -295,7 +295,8 @@ export default function App() {
       {/* QueryClientProvider wordt nu beheerd in main.tsx */}
         <AuthProvider>
           <BranchProvider>
-            <StripeProvider>
+            <CurrencyProvider>
+              <StripeProvider>
               <TooltipProvider>
               <Toaster />
               <Sonner />
@@ -435,7 +436,8 @@ export default function App() {
               </ContentWrapper>
             </BrowserRouter>
             </TooltipProvider>
-          </StripeProvider>
+              </StripeProvider>
+            </CurrencyProvider>
           </BranchProvider>
         </AuthProvider>
     </ErrorBoundary>
