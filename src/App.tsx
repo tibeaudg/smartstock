@@ -78,6 +78,7 @@ import AboutPage from "./pages/SEO/about";
 import PrivacyPolicyPage from "./pages/SEO/privacy-policy";
 import TermsConditionsPage from "./pages/SEO/terms-conditions";
 import SEOContactPage from "./pages/SEO/contact";
+import InventoryManagementSoftware from "./pages/SEO/inventory-management-software";
 import CategoriesPage from './pages/categories';
 import SuppliersPage from './pages/suppliers';
 import AdminPage from './pages/admin';
@@ -336,6 +337,7 @@ export default function App() {
                   <Route path="/voorraadbeheer-excel-template-gratis" element={<VoorraadbeheerExcelTemplateGratis />} />
                   <Route path="/voorraadbeheer-excel-zelf-maken" element={<VoorraadbeheerExcelZelfMaken />} />
                   <Route path="/warehouse-management-system" element={<WarehouseManagementSystem />} />
+                  <Route path="/inventory-management-software" element={<InventoryManagementSoftware />} />
                   <Route path="/about" element={<AboutPage />} />
                   <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
                   <Route path="/terms-conditions" element={<TermsConditionsPage />} />
