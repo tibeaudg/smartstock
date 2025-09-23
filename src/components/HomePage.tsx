@@ -799,7 +799,8 @@ export const HomePage = () => {
         {/* Non-render-blocking resource optimization */}
         
         {/* Critical images preload with high priority */}
-        <link rel="preload" as="image" href="/optimized/desktop.png" />
+        <link rel="preload" as="image" href="/optimized/desktop.png" media="(min-width: 1024px)" />
+        <link rel="preload" as="image" href="/optimized/mobile.png" media="(max-width: 1023px)" />
         <link rel="preload" as="image" href="/logo.png" />
         <link rel="preload" as="image" href="/Inventory-Management.png" />
         
@@ -1072,15 +1073,15 @@ export const HomePage = () => {
                     </div>
                     
                     <div className="space-y-1 sm:space-y-2">
-                      <div className="flex items-center justify-between p-1.5 sm:p-2 bg-white rounded">
+                      <div className="text-black flex items-center justify-between p-1.5 sm:p-2 bg-white rounded">
                         <span className="text-xs sm:text-sm">📱 Smartphone Case</span>
                         <span className="text-xs bg-orange-100 text-orange-600 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded">Reorder</span>
                       </div>
-                      <div className="flex items-center justify-between p-1.5 sm:p-2 bg-white rounded">
+                      <div className="text-black flex items-center justify-between p-1.5 sm:p-2 bg-white rounded">
                         <span className="text-xs sm:text-sm">💻 Laptop Charger</span>
                         <span className="text-xs bg-green-100 text-green-600 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded">In Stock</span>
                       </div>
-                      <div className="flex items-center justify-between p-1.5 sm:p-2 bg-white rounded">
+                      <div className="text-black flex items-center justify-between p-1.5 sm:p-2 bg-white rounded">
                         <span className="text-xs sm:text-sm">🎧 Wireless Headphones</span>
                         <span className="text-xs bg-red-100 text-red-600 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded">Out of Stock</span>
                       </div>
@@ -1222,12 +1223,13 @@ export const HomePage = () => {
                   {/* Header with avatar and rating */}
                   <div className="p-4 sm:p-6 border-b border-gray-100">
                     <div className="flex items-center gap-4 mb-4">
-                      <img 
+                      <OptimizedImage 
                         className="h-12 w-12 rounded-full object-cover border-2 border-blue-100" 
                         src={t.avatar} 
                         alt={`${t.name} - ${t.role}`}
                         loading="lazy"
                         decoding="async"
+                        sizes="48px"
                         onLoad={(e) => {
                           e.currentTarget.classList.add('loaded');
                         }}
@@ -1285,12 +1287,13 @@ export const HomePage = () => {
                 <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
                   <div className="p-6">
                     <div className="flex items-center gap-4 mb-4">
-                      <img 
+                      <OptimizedImage 
                         className="h-12 w-12 rounded-full object-cover border-2 border-blue-100" 
                         src={testimonial.avatar} 
                         alt={`${testimonial.name} - ${testimonial.role}`}
                         loading="lazy"
                         decoding="async"
+                        sizes="48px"
                         onLoad={(e) => {
                           e.currentTarget.classList.add('loaded');
                         }}
@@ -1424,12 +1427,13 @@ export const HomePage = () => {
                   <FadeInWhenVisible>
                     <div className="relative">
                       <div className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 shadow-lg border border-gray-100">
-                        <img
+                        <OptimizedImage
                           src={feature.img}
                           alt={`${feature.title} - Voorraadbeheer voor KMO's`}
                           className="rounded-lg sm:rounded-xl w-full h-48 sm:h-64 md:h-80 object-contain"
                           loading="lazy"
                           decoding="async"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                           onLoad={(e) => {
                             e.currentTarget.classList.add('loaded');
                           }}
@@ -1884,12 +1888,13 @@ export const HomePage = () => {
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
       {/* Company Info */}
       <div>
-        <img
+        <OptimizedImage
           src="/logo.png"
           alt="stockflow"
           className="h-10 md:h-12 mb-6"
           loading="lazy"
           decoding="async"
+          sizes="(max-width: 768px) 40px, 48px"
           onLoad={(e) => {
             e.currentTarget.classList.add('loaded');
           }}
