@@ -7,7 +7,8 @@ import {
   Package, BarChart3, Users, Shield, Check, TrendingUp, Zap, Star, Clock, Euro, Target, 
   ChevronLeft, ChevronRight, Scan, Truck, ArrowRight, Play, Award, Globe, Smartphone, 
   CheckCircle, Rocket, Crown, Sparkles, Timer, Facebook, Twitter, Linkedin, Instagram,
-  Repeat
+  Repeat,
+  Camera
 } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
 import SEO from './SEO';
@@ -200,7 +201,34 @@ export const HomePage = () => {
       return true;
     }
   });
-  // Exit-intent popup state removed
+
+
+
+  const useCases = [
+    {
+      title: "E-commerce",
+      description: "Perfect for online stores managing multiple product lines and seasonal inventory fluctuations.",
+      icon: "🛒"
+    },
+    {
+      title: "Retail",
+      description: "Ideal for physical stores needing real-time inventory tracking and point-of-sale integration.",
+      icon: "🏪"
+    },
+    {
+      title: "Wholesale",
+      description: "Great for wholesale businesses managing large quantities and multiple suppliers.",
+      icon: "📦"
+    },
+    {
+      title: "Manufacturing",
+      description: "Essential for manufacturers tracking raw materials, work-in-progress, and finished goods.",
+      icon: "🏭"
+    }
+  ];
+
+
+
 
   const handleLoginClick = () => {
     logger.info('CTA click', { id: 'start-now' });
@@ -764,6 +792,7 @@ export const HomePage = () => {
       '--features-header-size': '8rem',     // "Features - Everything You Need"  
       '--demo-header-size': '8rem',         // "See It In Action - Watch Our Demo"
       '--testimonials-header-size': '8rem', // "Users Tell About Their Success"
+      '--use-cases-header-size': '8rem', // "Smarter inventory management for e-commerce, warehouses and physical stores"
       '--cta-header-size': '10rem'          // "Get Started Free" - Final CTA
     } as React.CSSProperties}>
       <Helmet>
@@ -816,6 +845,7 @@ export const HomePage = () => {
           .features-header { font-size: clamp(2rem, 4vw, var(--features-header-size, 6rem)) !important; }
           .demo-header { font-size: clamp(2rem, 4vw, var(--demo-header-size, 8rem)) !important; }
           .testimonials-header { font-size: clamp(2rem, 4vw, var(--testimonials-header-size, 8rem)) !important; }
+          .use-cases-header { font-size: clamp(2rem, 4vw, var(--use-cases-header-size, 8rem)) !important; }
           .cta-header { font-size: clamp(2rem, 4vw, var(--cta-header-size, 8rem)) !important; }
           
           /* Hero section critical styles */
@@ -975,138 +1005,113 @@ export const HomePage = () => {
         </div>
       </div>
 
-      {/* HERO SECTION - Geoptimaliseerd voor conversie */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-blue-50">
-        {/* Animated background elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse"></div>
-          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse" style={{animationDelay: '2s'}}></div>
-          <div className="absolute top-40 left-1/2 w-80 h-80 bg-pink-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse" style={{animationDelay: '4s'}}></div>
-        </div>
+      {/* Hero Section - Improved Above the Fold */}
+      <section 
+        className="relative py-16 sm:py-20 md:py-24 px-4 bg-gradient-to-br from-blue-500 to-blue-900"
+      >
+        <div className="absolute inset-0 bg-black bg-opacity-20"></div>
         
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-16 lg:py-24">
-          <div className="text-center">
-            {/* Mobile outline container */}
-            <div className="sm:hidden ">
-
-
-              {/* Main headline - SEO optimized H1 - Mobiel geoptimaliseerd */}
-              <FadeInWhenVisible>
-                <h2 className="hero-header font-bold mb-4 leading-tight">
-                  <span className="block text-gray-900">Smart Inventory Management</span>
-                  <span className="block text-blue-600 text-xl sm:text-2xl md:text-3xl lg:text-5xl xl:text-6xl font-semibold mt-1 hero-subtitle">
-                    For Growing Businesses
-                  </span>
-                </h2>
-              </FadeInWhenVisible>
-
-              {/* Subheadline - Mobiel geoptimaliseerd */}
-              <FadeInWhenVisible>
-                <p className="text-sm text-gray-600 mb-8 max-w-4xl mx-auto leading-relaxed">
-                  Track stock levels, manage suppliers, and grow your business with our powerful yet simple inventory management platform.
-                </p>
-              </FadeInWhenVisible>
-            </div>
-
-            {/* Desktop content */}
-            <div className="hidden sm:block">
-              {/* Main headline - SEO optimized H1 */}
-              <FadeInWhenVisible>
-                <h1 className="hero-header font-bold mb-4 sm:mb-6 leading-tight px-2">
-                  <span className="block text-gray-900">Smart Inventory Management</span>
-                  <span className="block text-blue-600 text-xl sm:text-2xl md:text-3xl lg:text-5xl xl:text-6xl font-semibold mt-1 sm:mt-2 hero-subtitle">
-                    For Growing Businesses
-                  </span>
-                </h1>
-              </FadeInWhenVisible>
-
-              {/* Subheadline */}
-              <FadeInWhenVisible>
-                <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 mb-6 sm:mb-8 max-w-4xl mx-auto leading-relaxed px-4">
-                  Track stock levels, manage suppliers, and grow your business with our powerful yet simple inventory management platform.
-                  <br className="hidden sm:block" />
-                </p>
-              </FadeInWhenVisible>
-            </div>
-
-
-
-            {/* Trust indicators */}
-            <FadeInWhenVisible>
-              <div className="flex flex-wrap justify-center gap-3 sm:gap-6 text-xs sm:text-sm text-gray-600 mb-6 sm:mb-8 px-4">
-                {(() => {
-                  try {
-                    const items = [
-                      'GDPR Compliant',
-                      'Fast & Reliable', 
-                      'Global Infrastructure',
-                      'Secure Data'
-                    ];
-                    if (Array.isArray(items)) {
-                      return items.map((trust, index) => (
-                        <div key={index} className="flex items-center gap-2">
-                          {index === 0 ? <CheckCircle className="h-4 w-4 text-green-600" /> : 
-                           index === 1 ? <Zap className="h-4 w-4 text-blue-600" /> :
-                           index === 2 ? <Globe className="h-4 w-4 text-purple-600" /> :
-                           <Shield className="h-4 w-4 text-green-600" />}
-                          <span>{trust}</span>
-                        </div>
-                      ));
-                    }
-                  } catch (error) {
-                    console.warn('Translation error for accessibility.trust:', error);
-                  }
-                  // Fallback data
-                  return [
-                    'GDPR Compliant',
-                    'Fast & Reliable',
-                    'Global Infrastructure',
-                    'Secure Data'
-                  ].map((trust, index) => (
-                    <div key={index} className="flex items-center gap-2">
-                      {index === 0 ? <CheckCircle className="h-4 w-4 text-green-600" /> : 
-                       index === 1 ? <Zap className="h-4 w-4 text-blue-600" /> :
-                       index === 2 ? <Globe className="h-4 w-4 text-purple-600" /> :
-                       <Shield className="h-4 w-4 text-green-600" />}
-                      <span>{trust}</span>
-                    </div>
-                  ));
-                })()}
+        <div className="relative max-w-7xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Left Column - Text Content */}
+            <div className="text-white">
+              <div className="inline-flex items-center px-4 py-2 bg-blue-600/20 border border-blue-400/30 rounded-full text-blue-200 text-sm font-medium mb-6">
+                <span className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
+                Trusted by 500+ businesses
               </div>
-            </FadeInWhenVisible>
-
-            {/* Hero image/demo - LCP optimized */}
-            <FadeInWhenVisible>
-              <div className="relative max-w-5xl mx-auto px-4">
-                <div className="bg-white rounded-xl sm:rounded-2xl shadow-2xl p-4 sm:p-6 lg:p-8 border border-gray-100">
-                  <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-lg sm:rounded-xl overflow-hidden">
-                    <img 
-                      className="w-full h-auto object-cover" 
-                      src="/optimized/desktop.png" 
-                      alt="Stockflow Dashboard Screenshot - Professional inventory management system for SMEs"
-                      loading="eager"
-                      decoding="async"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
-                      width={1200}
-                      height={800}
-                      onLoad={(e) => {
-                        e.currentTarget.classList.add('loaded');
-                      }}
-                      onError={(e) => {
-                        e.currentTarget.src = '/Inventory-Management.png';
-                      }}
-                    />
+              
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+                StockFlow Inventory Management<br />
+                <span className="text-blue-300">for growing businesses</span>
+              </h1>
+              
+              <p className="text-xl md:text-2xl text-blue-100 mb-8 leading-relaxed">
+                The only inventory management software that makes <strong>100% automatic decisions</strong> for small businesses. Stop manual tracking, prevent stockouts, and grow your business.
+              </p>
+              
+              <div className="flex flex-col sm:flex-row gap-4 mb-8">
+                <Link
+                  to="/auth"
+                  className="bg-white text-blue-600 px-10 py-5 rounded-xl font-bold text-xl transition-all duration-300 transform hover:scale-105 shadow-2xl text-center"
+                >
+                  Start Your Free Trial
+                </Link>
+                <Link
+                  to="/demo"
+                  className="border-2 border-white text-white hover:bg-white hover:text-blue-900 px-10 py-5 rounded-xl font-bold text-xl transition-all duration-300 text-center"
+                >
+                  Watch 2-Min Demo
+                </Link>
+              </div>
+              
+              <div className="flex flex-wrap items-center gap-6 text-blue-200">
+                <div className="flex items-center">
+                  <CheckCircle className="w-5 h-5 mr-2 text-green-400" />
+                  No credit card required
+                </div>
+                <div className="flex items-center">
+                  <CheckCircle className="w-5 h-5 mr-2 text-green-400" />
+                  14-day free trial
+                </div>
+                <div className="flex items-center">
+                  <CheckCircle className="w-5 h-5 mr-2 text-green-400" />
+                  Setup in 5 minutes
+                </div>
+              </div>
+            </div>
+            
+            {/* Right Column - Visual Demo */}
+            <div className="relative">
+              <div className="relative bg-white rounded-2xl shadow-2xl p-6">
+                {/* Demo Interface Mockup */}
+                <div className="bg-gray-50 rounded-lg p-4 mb-4">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="font-semibold text-gray-800">Live Inventory Dashboard</h3>
+                    <div className="flex space-x-2">
+                      <div className="w-3 h-3 bg-red-400 rounded-full"></div>
+                      <div className="w-3 h-3 bg-yellow-400 rounded-full"></div>
+                      <div className="w-3 h-3 bg-green-400 rounded-full"></div>
+                    </div>
+                  </div>
+                  
+                  {/* Mock Dashboard Content */}
+                  <div className="grid grid-cols-2 gap-4 mb-4">
+                    <div className="bg-green-100 p-3 rounded-lg">
+                      <div className="text-green-600 font-bold text-lg">1,247</div>
+                      <div className="text-green-600 text-sm">Products in Stock</div>
+                    </div>
+                    <div className="bg-orange-100 p-3 rounded-lg">
+                      <div className="text-orange-600 font-bold text-lg">23</div>
+                      <div className="text-orange-600 text-sm">Low Stock Alert</div>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between p-2 bg-white rounded">
+                      <span className="text-sm">📱 Smartphone Case</span>
+                      <span className="text-xs bg-orange-100 text-orange-600 px-2 py-1 rounded">Reorder</span>
+                    </div>
+                    <div className="flex items-center justify-between p-2 bg-white rounded">
+                      <span className="text-sm">💻 Laptop Charger</span>
+                      <span className="text-xs bg-green-100 text-green-600 px-2 py-1 rounded">In Stock</span>
+                    </div>
+                    <div className="flex items-center justify-between p-2 bg-white rounded">
+                      <span className="text-sm">🎧 Wireless Headphones</span>
+                      <span className="text-xs bg-red-100 text-red-600 px-2 py-1 rounded">Out of Stock</span>
+                    </div>
                   </div>
                 </div>
-                {/* Floating elements */}
-                <div className="absolute -top-2 -right-2 sm:-top-4 sm:-right-4 w-6 h-6 sm:w-8 sm:h-8 bg-green-500 rounded-full flex items-center justify-center animate-bounce">
-                  <Check className="h-3 w-3 sm:h-4 sm:w-4 text-white" />
-                </div>
-                <div className="absolute -bottom-2 -left-2 sm:-bottom-4 sm:-left-4 w-6 h-6 sm:w-8 sm:h-8 bg-blue-500 rounded-full flex items-center justify-center animate-pulse">
-                  <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4 text-white" />
+                
+                {/* Floating Success Badge */}
+                <div className="absolute -top-4 -right-4 bg-green-500 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg animate-bounce">
+                  ✓ Auto-Reorder Active
                 </div>
               </div>
-            </FadeInWhenVisible>
+              
+              {/* Background Decorative Elements */}
+              <div className="absolute -z-10 top-10 left-10 w-20 h-20 bg-blue-400/20 rounded-full blur-xl"></div>
+              <div className="absolute -z-10 bottom-10 right-10 w-32 h-32 bg-purple-400/20 rounded-full blur-xl"></div>
+            </div>
           </div>
         </div>
       </section>
@@ -1133,305 +1138,60 @@ export const HomePage = () => {
 
 
 
-
-      {/* FEATURES - Enhanced with animations */}
-      <section id="features-section" className="py-12 sm:py-16 md:py-24 bg-gradient-to-br from-gray-50 to-blue-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-12 sm:mb-16">
-            <FadeInWhenVisible>
+      {/* Enhanced Social Proof Section */}
+      <section className="bg-gradient-to-br from-gray-50 to-blue-50 py-16 px-4">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+          <FadeInWhenVisible>
               <div className="inline-flex items-center gap-2 bg-green-100 text-green-800 px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6">
                 <Award className="h-3 w-3 sm:h-4 sm:w-4" />
-                <span>Features</span>
+                <span>Trusted by Growing Businesses</span>
               </div>
             </FadeInWhenVisible>
             <FadeInWhenVisible>
               <h2 className="features-header font-bold mb-4 sm:mb-6 px-4">
-                <span className="block text-gray-900">Features</span>
+                <span className="block text-gray-900">Trusted by Growing Businesses</span>
                 <span className="block bg-gradient-to-r from-blue-500 to-blue-900 bg-clip-text text-transparent">
-                  Everything You Need
+                Across Industries
                 </span>
               </h2>
             </FadeInWhenVisible>
-            <FadeInWhenVisible>
-              <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-4">
-                Powerful inventory management features that help you stay organized, save time, and grow your business.
-              </p>
-            </FadeInWhenVisible>
-          </div>
-
-          {landingFeatures.map((feature, idx) => (
-            <div
-              key={feature.title}
-              className={`mb-12 sm:mb-16 md:mb-24 ${
-                feature.reverse ? 'md:flex-row-reverse' : 'md:flex-row'
-              } flex flex-col items-center`}
-            >
-              <div className="grid md:grid-cols-2 gap-8 sm:gap-12 items-center max-w-6xl mx-auto">
-                {/* Content */}
-                <div className={`text-center md:text-left ${feature.reverse ? 'md:order-2' : 'md:order-1'}`}>
-                  <FadeInWhenVisible>
-                    <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-gray-100 rounded-xl sm:rounded-2xl mb-4 sm:mb-6">
-                      {feature.icon}
-                    </div>
-                  </FadeInWhenVisible>
-                  <FadeInWhenVisible>
-                    <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6 text-gray-900 px-4">
-                      {feature.title}
-                    </h3>
-                  </FadeInWhenVisible>
-                  <FadeInWhenVisible>
-                    <p className="text-base sm:text-lg text-gray-600 mb-6 sm:mb-8 leading-relaxed px-4">
-                      {feature.desc}
-                    </p>
-                  </FadeInWhenVisible>
-                  
-                  {/* Feature list */}
-                  <FadeInWhenVisible>
-                    <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-8 px-4">
-                      {feature.features.map((feat, featIdx) => (
-                        <div key={featIdx} className="flex items-center gap-2 sm:gap-3">
-                          <div className="w-5 h-5 sm:w-6 sm:h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-                            <Check className="h-3 w-3 text-green-600" />
-                          </div>
-                          <span className="text-sm sm:text-base text-gray-700 font-medium">{feat}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </FadeInWhenVisible>
-
-
-                </div>
-
-                {/* Image */}
-                <div className={`${feature.reverse ? 'md:order-1' : 'md:order-2'} px-4`}>
-                  <FadeInWhenVisible>
-                    <div className="relative">
-                      <div className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 shadow-lg border border-gray-100">
-                        <img
-                          src={feature.img}
-                          alt={`${feature.title} - Voorraadbeheer voor KMO's`}
-                          className="rounded-lg sm:rounded-xl w-full h-48 sm:h-64 md:h-80 object-contain"
-                          loading="lazy"
-                          decoding="async"
-                          onLoad={(e) => {
-                            e.currentTarget.classList.add('loaded');
-                          }}
-                          onError={(e) => {
-                            e.currentTarget.src = '/placeholder.svg';
-                          }}
-                        />
-                      </div>
-                      
-                      {/* Floating elements */}
-                      <div className="absolute -top-2 -right-2 sm:-top-4 sm:-right-4 w-8 h-8 sm:w-12 sm:h-12 bg-blue-500 rounded-full flex items-center justify-center animate-bounce">
-                        <TrendingUp className="h-4 w-4 sm:h-6 sm:w-6 text-white" />
-                      </div>
-                      <div className="absolute -bottom-2 -left-2 sm:-bottom-4 sm:-left-4 w-8 h-8 sm:w-12 sm:h-12 bg-green-500 rounded-full flex items-center justify-center animate-pulse">
-                        <CheckCircle className="h-4 w-4 sm:h-6 sm:w-6 text-white" />
-                      </div>
-                    </div>
-                  </FadeInWhenVisible>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* CTA SECTION - After Stats */}
-      <section className="py-8 sm:py-12 bg-gradient-to-br from-gray-50 to-blue-50">
-        <div className="max-w-4xl mx-auto text-center px-4 sm:px-6">
-          <FadeInWhenVisible>
-            <Button 
-              data-analytics-id="stats-cta" 
-              size="lg" 
-              className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl group relative overflow-hidden text-sm sm:text-base min-h-[48px] w-full sm:w-auto max-w-xs sm:max-w-none"
-              onClick={handleLoginClick}
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
-              <Rocket className="h-4 w-4 sm:h-5 sm:w-5 mr-2 group-hover:animate-bounce" />
-              <span className="hidden sm:inline">Get Started Free</span>
-              <span className="sm:hidden">Start Free</span>
-              <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 ml-2 group-hover:translate-x-1 transition-transform" />
-            </Button>
-          </FadeInWhenVisible>
-        </div>
-      </section>
-
-
-      
-      {/* FEATURES SECTIE - Everything You Need */}
-      <section id="features-section" className="py-12 sm:py-16 md:py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-
-          {/* Subscription Features Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-12 sm:mb-16">
-            {subscriptionFeatures.map((feature, index) => (
-              <FadeInWhenVisible key={index}>
-                <div className={`relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-2 ${feature.tier === 'groei' ? 'border-blue-500 ring-4 ring-blue-100' : 'border-gray-100'}`}>
-                  {feature.tier === 'groei' && (
-                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    </div>
-                  )}
-                  
-                  <div className="p-4 sm:p-6 lg:p-8">
-                    <div className="flex items-center justify-between mb-4 sm:mb-6">
-                      <div className="p-2 sm:p-3 bg-gray-50 rounded-xl">
-                        {feature.icon}
-                      </div>
-                      <div className="text-right">
-                      </div>
-                    </div>
-
-                    <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 sm:mb-3">{feature.title}</h3>
-                    <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6 leading-relaxed">{feature.description}</p>
-
-                    <div className="space-y-2 sm:space-y-3 mb-6 sm:mb-8">
-                      {feature.features.map((featureItem, featureIndex) => (
-                        <div key={featureIndex} className="flex items-center gap-2 sm:gap-3">
-                          <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-600 flex-shrink-0" />
-                          <span className="text-sm sm:text-base text-gray-700">{featureItem}</span>
-                        </div>
-                      ))}
-                    </div>
-
-                  </div>
-                </div>
-              </FadeInWhenVisible>
-            ))}
-          </div>
-
-
-        </div>
-      </section>
-
-
-
-      {/* VIDEO SECTION - Enhanced with better presentation */}
-      <section id="video-section" className="py-12 sm:py-16 md:py-24 bg-gradient-to-br from-gray-50 to-blue-50">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-8 sm:mb-12">
-            <FadeInWhenVisible>
-              <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-800 px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6">
-                <Play className="h-3 w-3 sm:h-4 sm:w-4" />
-                <span>Demo</span>
-              </div>
-            </FadeInWhenVisible>
-            <FadeInWhenVisible>
-              <h2 className="demo-header font-bold mb-4 sm:mb-6 px-4">
-                <span className="block text-gray-900">See It In Action</span>
-                <span className="block bg-gradient-to-r from-blue-500 to-blue-900 bg-clip-text text-transparent">
-                  Watch Our Demo
-                </span>
-              </h2>
-            </FadeInWhenVisible>
-            <FadeInWhenVisible>
-              <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-4">
-                Discover how easy it is to manage your inventory with our intuitive platform. Watch our demo and see the difference.
-              </p>
-            </FadeInWhenVisible>
-          </div>
-
-          <FadeInWhenVisible>
-            <div className="relative max-w-4xl mx-auto px-4">
-              <div className="bg-white rounded-xl sm:rounded-2xl shadow-2xl overflow-hidden border border-gray-100">
-                <div className="aspect-video bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center">
-                  <video 
-                    controls 
-                    poster="/Inventory-Management.png" 
-                    className="w-full h-full object-cover"
-                    preload="none"
-                    onPlay={() => {
-                      logger.info('Video play', { id: 'intro-video' });
-                      
-                      // Track Google Ads conversion for video engagement
-                      GoogleAdsTracking.trackCustomConversion(
-                        'video_play',
-                        'AW-17574614935',
-                        2,
-                        {
-                          video_name: 'intro_video',
-                          video_location: 'homepage_demo_section',
-                          conversion_type: 'video_engagement'
-                        }
-                      );
-                    }}
-                  >
-                    <source src="/intro_vid.mp4" type="video/mp4" />
-                    Video not available
-                  </video>
-                </div>
-              </div>
-              
-
-            </div>
-          </FadeInWhenVisible>
-
-      {/* CTA SECTION - After Stats */}
-      <section className="py-8 sm:py-12 bg-gradient-to-br from-gray-50 to-blue-50">
-        <div className="max-w-4xl mx-auto text-center px-4 sm:px-6">
-          <FadeInWhenVisible>
-            <Button 
-              data-analytics-id="stats-cta" 
-              size="lg" 
-              className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl group relative overflow-hidden text-sm sm:text-base min-h-[48px] w-full sm:w-auto max-w-xs sm:max-w-none"
-              onClick={handleLoginClick}
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
-              <Rocket className="h-4 w-4 sm:h-5 sm:w-5 mr-2 group-hover:animate-bounce" />
-              <span className="hidden sm:inline">Get Started Free</span>
-              <span className="sm:hidden">Start Free</span>
-              <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 ml-2 group-hover:translate-x-1 transition-transform" />
-            </Button>
-          </FadeInWhenVisible>
-        </div>
-      </section>
-
-        </div>
-      </section>
-
-      {/* COOKIE CONSENT BANNER */}
-      {showCookieBanner && (
-        <div className="fixed inset-x-0 bottom-0 z-50">
-          <div className="mx-auto max-w-6xl m-4 rounded-lg bg-white shadow-xl border border-gray-200 p-4 flex flex-col md:flex-row items-start md:items-center gap-3">
-            <p className="text-sm text-gray-700">
-              We use cookies to improve your experience on our website
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              Join hundreds of small businesses that have transformed their inventory management and saved thousands of euros
             </p>
-            <div className="flex gap-2 ml-auto">
-              <Button variant="outline" className="border-gray-300" onClick={() => setShowCookieBanner(false)}>Decline</Button>
-              <Button className="bg-blue-600 text-white hover:bg-blue-700" onClick={acceptCookies}>Accept</Button>
+          </div>
+
+          {/* Trust Indicators */}
+          <div className="grid md:grid-cols-4 gap-8 mb-16">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <TrendingUp className="w-8 h-8 text-green-600" />
+              </div>
+              <div className="text-3xl font-bold text-gray-900 mb-2">500+</div>
+              <p className="text-gray-600">Active Businesses</p>
+            </div>
+            <div className="text-center">
+              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Target className="w-8 h-8 text-blue-600" />
+              </div>
+              <div className="text-3xl font-bold text-gray-900 mb-2">€2.3M</div>
+              <p className="text-gray-600">Cost Savings</p>
+            </div>
+            <div className="text-center">
+              <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Clock className="w-8 h-8 text-purple-600" />
+              </div>
+              <div className="text-3xl font-bold text-gray-900 mb-2">85%</div>
+              <p className="text-gray-600">Time Saved</p>
+            </div>
+            <div className="text-center">
+              <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Star className="w-8 h-8 text-orange-600" />
+              </div>
+              <div className="text-3xl font-bold text-gray-900 mb-2">4.9/5</div>
+              <p className="text-gray-600">Customer Rating</p>
             </div>
           </div>
-        </div>
-      )}
-
-      {/* TESTIMONIALS - Enhanced with metrics */}
-      <section id="testimonials-section" className="py-12 sm:py-16 md:py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-12 sm:mb-16">
-            <FadeInWhenVisible>
-              <div className="inline-flex items-center gap-2 bg-yellow-100 text-yellow-800 px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6">
-                <Star className="h-3 w-3 sm:h-4 sm:w-4" />
-                <span> Testimonials</span>
-              </div>
-            </FadeInWhenVisible>
-            <FadeInWhenVisible>
-              <h2 className="testimonials-header font-bold mb-4 sm:mb-6 px-4">
-                <span className="block text-gray-900">Users Tell About Their Success </span>
-                <span className="block bg-gradient-to-r from-blue-500 to-blue-900 bg-clip-text text-transparent">
-                What our customers say
-                </span>
-              </h2>
-            </FadeInWhenVisible>
-            <FadeInWhenVisible>
-              <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-4">
-              Discover how businesses have transformed their inventory management and save thousands of euros.
-
-
-              </p>
-            </FadeInWhenVisible>
-          </div>
-          
           {/* Desktop Grid */}
           <div className="hidden md:grid md:grid-cols-3 gap-6 sm:gap-8 mb-12 sm:mb-16">
             {testimonials.map((t, index) => (
@@ -1544,32 +1304,314 @@ export const HomePage = () => {
               )}
             />
           </div>
+
+          {/* Security Badges */}
+          <div className="mt-16 text-center">
+            <p className="text-gray-600 mb-6">Trusted and Secure</p>
+            <div className="flex flex-wrap justify-center items-center gap-8">
+              <div className="flex items-center space-x-2 text-gray-600">
+                <Shield className="w-6 h-6 text-green-600" />
+                <span className="font-medium">GDPR Compliant</span>
+              </div>
+              <div className="flex items-center space-x-2 text-gray-600">
+                <Shield className="w-6 h-6 text-blue-600" />
+                <span className="font-medium">SSL Encrypted</span>
+              </div>
+              <div className="flex items-center space-x-2 text-gray-600">
+                <Shield className="w-6 h-6 text-purple-600" />
+                <span className="font-medium">SOC 2 Certified</span>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* CTA SECTION - After Stats */}
-      <section className="py-8 sm:py-12 bg-white">
-        <div className="max-w-4xl mx-auto text-center px-4 sm:px-6">
-          <FadeInWhenVisible>
-            <Button 
-              data-analytics-id="stats-cta" 
-              size="lg" 
-              className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl group relative overflow-hidden text-sm sm:text-base min-h-[48px] w-full sm:w-auto max-w-xs sm:max-w-none"
-              onClick={handleLoginClick}
+      
+
+
+      {/* FEATURES - Enhanced with animations */}
+      <section id="features-section" className="py-12 sm:py-16 md:py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-12 sm:mb-16">
+            <FadeInWhenVisible>
+              <div className="inline-flex items-center gap-2 bg-green-100 text-green-800 px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6">
+                <Award className="h-3 w-3 sm:h-4 sm:w-4" />
+                <span>Features</span>
+              </div>
+            </FadeInWhenVisible>
+            <FadeInWhenVisible>
+              <h2 className="features-header font-bold mb-4 sm:mb-6 px-4">
+                <span className="block text-gray-900">How StockFlow Solves</span>
+                <span className="block bg-gradient-to-r from-blue-500 to-blue-900 bg-clip-text text-transparent">
+                Your Biggest Inventory Problems
+                </span>
+              </h2>
+            </FadeInWhenVisible>
+            <FadeInWhenVisible>
+              <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-4">
+                Powerful inventory management features that help you stay organized, save time, and grow your business.
+              </p>
+            </FadeInWhenVisible>
+          </div>
+
+          {landingFeatures.map((feature, idx) => (
+            <div
+              key={feature.title}
+              className={`mb-12 sm:mb-16 md:mb-24 ${
+                feature.reverse ? 'md:flex-row-reverse' : 'md:flex-row'
+              } flex flex-col items-center`}
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
-              <Rocket className="h-4 w-4 sm:h-5 sm:w-5 mr-2 group-hover:animate-bounce" />
-              <span className="hidden sm:inline">Get Started Free</span>
-              <span className="sm:hidden">Start Free</span>
-              <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 ml-2 group-hover:translate-x-1 transition-transform" />
-            </Button>
-          </FadeInWhenVisible>
+              <div className="grid md:grid-cols-2 gap-8 sm:gap-12 items-center max-w-6xl mx-auto">
+                {/* Content */}
+                <div className={`text-center md:text-left ${feature.reverse ? 'md:order-2' : 'md:order-1'}`}>
+                  <FadeInWhenVisible>
+                    <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-gray-100 rounded-xl sm:rounded-2xl mb-4 sm:mb-6">
+                      {feature.icon}
+                    </div>
+                  </FadeInWhenVisible>
+                  <FadeInWhenVisible>
+                    <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6 text-gray-900 px-4">
+                      {feature.title}
+                    </h3>
+                  </FadeInWhenVisible>
+                  <FadeInWhenVisible>
+                    <p className="text-base sm:text-lg text-gray-600 mb-6 sm:mb-8 leading-relaxed px-4">
+                      {feature.desc}
+                    </p>
+                  </FadeInWhenVisible>
+                  
+                  {/* Feature list */}
+                  <FadeInWhenVisible>
+                    <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-8 px-4">
+                      {feature.features.map((feat, featIdx) => (
+                        <div key={featIdx} className="flex items-center gap-2 sm:gap-3">
+                          <div className="w-5 h-5 sm:w-6 sm:h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                            <Check className="h-3 w-3 text-green-600" />
+                          </div>
+                          <span className="text-sm sm:text-base text-gray-700 font-medium">{feat}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </FadeInWhenVisible>
+
+
+                </div>
+
+                {/* Image */}
+                <div className={`${feature.reverse ? 'md:order-1' : 'md:order-2'} px-4`}>
+                  <FadeInWhenVisible>
+                    <div className="relative">
+                      <div className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 shadow-lg border border-gray-100">
+                        <img
+                          src={feature.img}
+                          alt={`${feature.title} - Voorraadbeheer voor KMO's`}
+                          className="rounded-lg sm:rounded-xl w-full h-48 sm:h-64 md:h-80 object-contain"
+                          loading="lazy"
+                          decoding="async"
+                          onLoad={(e) => {
+                            e.currentTarget.classList.add('loaded');
+                          }}
+                          onError={(e) => {
+                            e.currentTarget.src = '/placeholder.svg';
+                          }}
+                        />
+                      </div>
+                      
+                      {/* Floating elements */}
+                      <div className="absolute -top-2 -right-2 sm:-top-4 sm:-right-4 w-8 h-8 sm:w-12 sm:h-12 bg-blue-500 rounded-full flex items-center justify-center animate-bounce">
+                        <TrendingUp className="h-4 w-4 sm:h-6 sm:w-6 text-white" />
+                      </div>
+                      <div className="absolute -bottom-2 -left-2 sm:-bottom-4 sm:-left-4 w-8 h-8 sm:w-12 sm:h-12 bg-green-500 rounded-full flex items-center justify-center animate-pulse">
+                        <CheckCircle className="h-4 w-4 sm:h-6 sm:w-6 text-white" />
+                      </div>
+                    </div>
+                  </FadeInWhenVisible>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
 
+      
+      {/* FEATURES SECTIE - Everything You Need */}
+      <section id="features-section" className="py-12 sm:py-16 md:py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
 
-      {/* Contact section removed - now on separate /contact page */}
+          {/* Subscription Features Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-12 sm:mb-16">
+            {subscriptionFeatures.map((feature, index) => (
+              <FadeInWhenVisible key={index}>
+                <div className={`relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-2 ${feature.tier === 'groei' ? 'border-blue-500 ring-4 ring-blue-100' : 'border-gray-100'}`}>
+                  {feature.tier === 'groei' && (
+                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                    </div>
+                  )}
+                  
+                  <div className="p-4 sm:p-6 lg:p-8">
+                    <div className="flex items-center justify-between mb-4 sm:mb-6">
+                      <div className="p-2 sm:p-3 bg-gray-50 rounded-xl">
+                        {feature.icon}
+                      </div>
+                      <div className="text-right">
+                      </div>
+                    </div>
+
+                    <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 sm:mb-3">{feature.title}</h3>
+                    <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6 leading-relaxed">{feature.description}</p>
+
+                    <div className="space-y-2 sm:space-y-3 mb-6 sm:mb-8">
+                      {feature.features.map((featureItem, featureIndex) => (
+                        <div key={featureIndex} className="flex items-center gap-2 sm:gap-3">
+                          <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-600 flex-shrink-0" />
+                          <span className="text-sm sm:text-base text-gray-700">{featureItem}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                  </div>
+                </div>
+              </FadeInWhenVisible>
+            ))}
+          </div>
+
+
+        </div>
+      </section>
+
+
+            {/* Use Cases Section */}
+            <section className="py-16 px-4 bg-gray-50">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+          <FadeInWhenVisible>
+              <h2 className="features-header font-bold mb-4 sm:mb-6 px-4">
+                <span className="block text-gray-900">For small and growing businesses</span>
+                <span className="block bg-gradient-to-r from-blue-500 to-blue-900 bg-clip-text text-transparent">
+                Smarter inventory management
+                </span>
+              </h2>
+            </FadeInWhenVisible>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {useCases.map((useCase, index) => (
+              <div key={index} className="bg-white p-6 rounded-lg shadow-lg text-center">
+                <div className="text-4xl mb-4">{useCase.icon}</div>
+                <h3 className="text-xl font-semibold mb-3">{useCase.title}</h3>
+                <p className="text-gray-600">{useCase.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+
+      {/* Demo Section */}
+      <section className="py-20 px-4 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Left Side - Demo Content */}
+            <div>
+              <div className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium mb-6">
+                <Camera className="w-4 h-4 mr-2" />
+                Interactive Demo Available
+              </div>
+              
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                See StockFlow in Action
+              </h2>
+              
+              <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+                Watch our 2-minute demo and discover how StockFlow can transform your inventory management. See real features, real results, and real savings.
+              </p>
+              
+              <div className="space-y-4 mb-8">
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                  <span className="text-gray-700">Live inventory tracking demonstration</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                  <span className="text-gray-700">Barcode scanning in real-time</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                  <span className="text-gray-700">Automatic reorder point setup</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                  <span className="text-gray-700">Mobile app walkthrough</span>
+                </div>
+              </div>
+            </div>
+            
+            {/* Right Side - Demo Preview */}
+            <div className="relative">
+              <div className="bg-white rounded-2xl shadow-2xl p-6">
+                {/* Demo Video Placeholder */}
+                <div className="bg-gray-900 rounded-xl aspect-video mb-4 relative overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center">
+                    <div className="text-center text-white">
+
+                      <h3 className="text-xl font-bold mb-2 mt-32">Demo Video</h3>
+                      <p className="text-blue-100">2-minute walkthrough</p>
+                    </div>
+                  </div>
+                  
+                  {/* Play Button Overlay */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <Link
+                      to="/demo"
+                      className="w-20 h-20 bg-white bg-opacity-90 hover:bg-opacity-100 rounded-full flex items-center justify-center transition-all duration-300 transform hover:scale-110 shadow-2xl"
+                    >
+                      <div className="w-0 h-0 border-l-[12px] border-l-blue-600 border-y-[8px] border-y-transparent ml-1"></div>
+                    </Link>
+                  </div>
+                </div>
+                
+                {/* Demo Stats */}
+                <div className="grid grid-cols-3 gap-4">
+                  <div className="text-center p-3 bg-blue-50 rounded-lg">
+                    <div className="text-2xl font-bold text-blue-600">2min</div>
+                    <div className="text-sm text-gray-600">Duration</div>
+                  </div>
+                  <div className="text-center p-3 bg-green-50 rounded-lg">
+                    <div className="text-2xl font-bold text-green-600">100%</div>
+                    <div className="text-sm text-gray-600">Free</div>
+                  </div>
+                  <div className="text-center p-3 bg-purple-50 rounded-lg">
+                    <div className="text-2xl font-bold text-purple-600">Live</div>
+                    <div className="text-sm text-gray-600">Demo</div>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Floating Elements */}
+              <div className="absolute -top-4 -right-4 bg-green-500 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg animate-pulse">
+                ✓ No Signup Required
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* COOKIE CONSENT BANNER */}
+      {showCookieBanner && (
+        <div className="fixed inset-x-0 bottom-0 z-50">
+          <div className="mx-auto max-w-6xl m-4 rounded-lg bg-white shadow-xl border border-gray-200 p-4 flex flex-col md:flex-row items-start md:items-center gap-3">
+            <p className="text-sm text-gray-700">
+              We use cookies to improve your experience on our website
+            </p>
+            <div className="flex gap-2 ml-auto">
+              <Button variant="outline" className="border-gray-300" onClick={() => setShowCookieBanner(false)}>Decline</Button>
+              <Button className="bg-blue-600 text-white hover:bg-blue-700" onClick={acceptCookies}>Accept</Button>
+            </div>
+          </div>
+        </div>
+      )}
+
 
       {/* FINAL CTA - Enhanced for maximum conversion */}
       <section className="relative overflow-hidden bg-gradient-to-br from-blue-500 to-blue-900 py-12 sm:py-16 md:py-24">
@@ -1590,9 +1632,9 @@ export const HomePage = () => {
 
           <FadeInWhenVisible>
             <h2 className="cta-header font-bold mb-4 sm:mb-6 text-white leading-tight px-4">
-              <span className="block">Get Started Free</span>
+              <span className="block">Ready to Transform Your Inventory Management?</span>
               <span className="block bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent">
-                No credit card required
+                Start for free today
               </span>
             </h2>
           </FadeInWhenVisible>

@@ -48,37 +48,27 @@ export default function InventoryManagementSoftware() {
 
   const features = [
     {
-      icon: Smartphone,
-      title: "Never Run Out of Stock Again",
-      description: "Our mobile app automatically tracks inventory levels and sends instant alerts when stock runs low. Access real-time data from anywhere, anytime."
-    },
-    {
-      icon: Camera,
-      title: "Save 3+ Hours Per Day",
-      description: "Scan barcodes with your phone camera for instant inventory updates. No expensive hardware needed - just point, scan, and save time."
+      icon: TrendingUp,
+      title: "Optimize Your Cashflow",
+      description: "Prevent excess inventory and dead stock. Get precise insight into what you need, when you need it.",
     },
     {
       icon: Zap,
-      title: "Automatic Reordering",
-      description: "Stop manual purchasing decisions. StockFlow automatically calculates what, when, and how much to order based on real sales data and trends."
-    },
-    {
-      icon: TrendingUp,
-      title: "Increase Revenue by 30%",
-      description: "Optimize inventory levels to prevent stockouts while reducing excess stock. Turn your inventory into a profit-driving machine."
+      title: "Save Time and Reduce Errors",
+      description: "Automate orders and minimize manual counts. Focus on growth, not administration.",
     },
     {
       icon: Users,
-      title: "Team Collaboration Made Simple",
-      description: "Give your team instant access with role-based permissions. Everyone stays in sync with real-time updates and notifications."
+      title: "Seamless Team Collaboration",
+      description: "Work efficiently with your team thanks to clear user roles and real-time data updates.",
     },
     {
-      icon: BarChart3,
-      title: "Make Data-Driven Decisions",
-      description: "Get actionable insights with detailed reports on sales trends, seasonal patterns, and inventory performance. Know exactly what's working."
-    }
+      icon: Shield,
+      title: "Safe and Always Available",
+      description: "Your data is safe in the cloud. Always and everywhere accessible, with daily backups.",
+    },
   ];
-
+  
   const benefits = [
     "No hidden costs or commitments",
     "Start immediately, no installation required",
@@ -168,7 +158,7 @@ export default function InventoryManagementSoftware() {
 
       {/* Hero Section - Improved Above the Fold */}
       <section 
-        className="relative py-16 sm:py-20 md:py-24 px-4 bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900"
+        className="relative py-16 sm:py-20 md:py-24 px-4 bg-gradient-to-br from-blue-500 to-blue-900"
       >
         <div className="absolute inset-0 bg-black bg-opacity-20"></div>
         
@@ -182,8 +172,8 @@ export default function InventoryManagementSoftware() {
               </div>
               
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-                Manage Your Inventory with Ease.<br />
-                <span className="text-blue-300">Save Time and Money.</span>
+              StockFlow Inventory Management<br />
+              <span className="text-blue-300">for growing businesses</span>
               </h1>
               
               <p className="text-xl md:text-2xl text-blue-100 mb-8 leading-relaxed">
@@ -193,7 +183,7 @@ export default function InventoryManagementSoftware() {
               <div className="flex flex-col sm:flex-row gap-4 mb-8">
                 <Link
                   to="/auth"
-                  className="bg-orange-500 hover:bg-orange-600 text-white px-10 py-5 rounded-xl font-bold text-xl transition-all duration-300 transform hover:scale-105 shadow-2xl text-center"
+                  className="bg-white text-blue-600 px-10 py-5 rounded-xl font-bold text-xl transition-all duration-300 transform hover:scale-105 shadow-2xl text-center"
                 >
                   Start Your Free Trial
                 </Link>
@@ -511,7 +501,6 @@ export default function InventoryManagementSoftware() {
           </div>
         </div>
       </section>
-
       {/* Features Section with Visual Demo */}
       <section className="py-16 px-4 bg-gray-50">
         <div className="max-w-6xl mx-auto">
@@ -628,39 +617,17 @@ export default function InventoryManagementSoftware() {
         </div>
       </section>
 
-      {/* Process Section */}
-      <section className="py-16 px-4 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              This is what the route to automatic inventory decisions looks like
-            </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Other solutions work with static min/max settings and historical data. StockFlow puts your purchasing on autopilot by continuously optimizing demand forecasts, inventory levels and order moments.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {steps.map((step, index) => (
-              <div key={index} className="text-center">
-                <div className="w-16 h-16 bg-blue-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
-                  {step.step}
-                </div>
-                <h3 className="text-xl font-semibold mb-3">{step.title}</h3>
-                <p className="text-gray-600">{step.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Use Cases Section */}
       <section className="py-16 px-4 bg-gray-50">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Smarter inventory management for e-commerce, warehouses and physical stores
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900">
+              Smarter inventory management
             </h2>
+            <h3 className="text-xl md:text-2xl font-semibold mb-6 text-blue-600">
+              for e-commerce, warehouses and physical stores
+            </h3>
             <p className="text-lg text-gray-600">
               Discover how e-commerce inventory teams use StockFlow for strategic, automatic purchasing.
             </p>
@@ -678,36 +645,7 @@ export default function InventoryManagementSoftware() {
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section className="py-16 px-4 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Always make the right inventory decisions
-            </h2>
-            <p className="text-lg text-gray-600">
-              Maintain control over your supply chain. Know exactly what, when and where to purchase and always place the right orders for maximum revenue.
-            </p>
-          </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <div key={index} className="bg-gray-50 p-6 rounded-lg">
-                <div className="flex mb-4">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
-                  ))}
-                </div>
-                <p className="text-gray-700 mb-4">"{testimonial.content}"</p>
-                <div>
-                  <p className="font-semibold">{testimonial.name}</p>
-                  <p className="text-sm text-gray-600">{testimonial.role}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Security & Trust Section */}
       <section className="py-16 px-4 bg-gray-50">
@@ -741,6 +679,95 @@ export default function InventoryManagementSoftware() {
               <Shield className="w-12 h-12 text-orange-600 mx-auto mb-4" />
               <h3 className="text-lg font-semibold mb-2">SOC 2 Certified</h3>
               <p className="text-gray-600 text-sm">Enterprise-grade security and compliance standards</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Demo Section */}
+      <section className="py-20 px-4 bg-gradient-to-br from-gray-50 to-blue-50">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Left Side - Demo Content */}
+            <div>
+              <div className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium mb-6">
+                <Camera className="w-4 h-4 mr-2" />
+                Interactive Demo Available
+              </div>
+              
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                See StockFlow in Action
+              </h2>
+              
+              <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+                Watch our 2-minute demo and discover how StockFlow can transform your inventory management. See real features, real results, and real savings.
+              </p>
+              
+              <div className="space-y-4 mb-8">
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                  <span className="text-gray-700">Live inventory tracking demonstration</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                  <span className="text-gray-700">Barcode scanning in real-time</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                  <span className="text-gray-700">Automatic reorder point setup</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                  <span className="text-gray-700">Mobile app walkthrough</span>
+                </div>
+              </div>
+            </div>
+            
+            {/* Right Side - Demo Preview */}
+            <div className="relative">
+              <div className="bg-white rounded-2xl shadow-2xl p-6">
+                {/* Demo Video Placeholder */}
+                <div className="bg-gray-900 rounded-xl aspect-video mb-4 relative overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center">
+                    <div className="text-center text-white">
+
+                      <h3 className="text-xl font-bold mb-2 mt-32">Demo Video</h3>
+                      <p className="text-blue-100">2-minute walkthrough</p>
+                    </div>
+                  </div>
+                  
+                  {/* Play Button Overlay */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <Link
+                      to="/demo"
+                      className="w-20 h-20 bg-white bg-opacity-90 hover:bg-opacity-100 rounded-full flex items-center justify-center transition-all duration-300 transform hover:scale-110 shadow-2xl"
+                    >
+                      <div className="w-0 h-0 border-l-[12px] border-l-blue-600 border-y-[8px] border-y-transparent ml-1"></div>
+                    </Link>
+                  </div>
+                </div>
+                
+                {/* Demo Stats */}
+                <div className="grid grid-cols-3 gap-4">
+                  <div className="text-center p-3 bg-blue-50 rounded-lg">
+                    <div className="text-2xl font-bold text-blue-600">2min</div>
+                    <div className="text-sm text-gray-600">Duration</div>
+                  </div>
+                  <div className="text-center p-3 bg-green-50 rounded-lg">
+                    <div className="text-2xl font-bold text-green-600">100%</div>
+                    <div className="text-sm text-gray-600">Free</div>
+                  </div>
+                  <div className="text-center p-3 bg-purple-50 rounded-lg">
+                    <div className="text-2xl font-bold text-purple-600">Live</div>
+                    <div className="text-sm text-gray-600">Demo</div>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Floating Elements */}
+              <div className="absolute -top-4 -right-4 bg-green-500 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg animate-pulse">
+                ✓ No Signup Required
+              </div>
             </div>
           </div>
         </div>
