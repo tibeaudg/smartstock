@@ -1000,73 +1000,123 @@ export const HomePage = () => {
               <span className="text-sm font-semibold text-gray-700">4.9/5 rating</span>
             </div>
             <div className="hidden sm:block h-4 w-px bg-gray-300"></div>
-            <span className="text-sm font-medium text-gray-600">3200+ happy users</span>
+            <span className="text-sm font-medium text-gray-600">500+ happy users</span>
           </div>
         </div>
       </div>
 
-      {/* Hero Section - Improved Above the Fold */}
+      {/* Hero Section - Optimized for Mobile */}
       <section 
-        className="relative py-16 sm:py-20 md:py-24 px-4 bg-gradient-to-br from-blue-500 to-blue-900"
+        className="relative py-8 sm:py-12 md:py-16 lg:py-20 xl:py-24 px-4 bg-gradient-to-br from-blue-500 to-blue-900 min-h-screen flex items-center"
       >
         <div className="absolute inset-0 bg-black bg-opacity-20"></div>
         
-        <div className="relative max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="relative max-w-7xl mx-auto w-full">
+          <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-center">
             {/* Left Column - Text Content */}
-            <div className="text-white">
-              <div className="inline-flex items-center px-4 py-2 bg-blue-600/20 border border-blue-400/30 rounded-full text-blue-200 text-sm font-medium mb-6">
+            <div className="text-white order-1 lg:order-1 text-center lg:text-left">
+              <div className="inline-flex items-center px-3 sm:px-4 py-2 bg-blue-600/20 border border-blue-400/30 rounded-full text-blue-200 text-xs sm:text-sm font-medium mb-4 sm:mb-6">
                 <span className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
                 Trusted by 500+ businesses
               </div>
               
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-                StockFlow Inventory Management<br />
-                <span className="text-blue-300">for growing businesses</span>
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold mb-4 sm:mb-6 leading-tight">
+                <span className="block">StockFlow Inventory</span>
+                <span className="block">Management</span>
+                <span className="block text-blue-300 mt-2">for growing businesses</span>
               </h1>
               
-              <p className="text-xl md:text-2xl text-blue-100 mb-8 leading-relaxed">
+              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-blue-100 mb-6 sm:mb-8 leading-relaxed max-w-2xl mx-auto lg:mx-0">
                 The only inventory management software that makes <strong>100% automatic decisions</strong> for small businesses. Stop manual tracking, prevent stockouts, and grow your business.
               </p>
               
-              <div className="flex flex-col sm:flex-row gap-4 mb-8">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6 sm:mb-8 max-w-lg mx-auto lg:mx-0">
                 <Link
                   to="/auth"
-                  className="bg-white text-blue-600 px-10 py-5 rounded-xl font-bold text-xl transition-all duration-300 transform hover:scale-105 shadow-2xl text-center"
+                  className="bg-white text-blue-600 px-4 sm:px-6 lg:px-8 xl:px-10 py-3 sm:py-4 lg:py-5 rounded-xl font-bold text-base sm:text-lg lg:text-xl transition-all duration-300 transform hover:scale-105 shadow-2xl text-center flex items-center justify-center"
                 >
                   Start Your Free Trial
                 </Link>
                 <Link
                   to="/demo"
-                  className="border-2 border-white text-white hover:bg-white hover:text-blue-900 px-10 py-5 rounded-xl font-bold text-xl transition-all duration-300 text-center"
+                  className="border-2 border-white text-white hover:bg-white hover:text-blue-900 px-4 sm:px-6 lg:px-8 xl:px-10 py-3 sm:py-4 lg:py-5 rounded-xl font-bold text-base sm:text-lg lg:text-xl transition-all duration-300 text-center flex items-center justify-center"
                 >
                   Watch 2-Min Demo
                 </Link>
               </div>
+
+              {/* Live Inventory Dashboard - Mobile Version (Hidden on desktop) */}
+              <div className="lg:hidden relative mb-6 sm:mb-8 max-w-md mx-auto">
+                <div className="relative bg-white rounded-2xl shadow-2xl p-3 sm:p-4">
+                  {/* Demo Interface Mockup */}
+                  <div className="bg-gray-50 rounded-lg p-2 sm:p-3 mb-3 sm:mb-4">
+                    <div className="flex items-center justify-between mb-2 sm:mb-3">
+                      <h3 className="font-semibold text-gray-800 text-xs sm:text-sm">Live Inventory Dashboard</h3>
+                      <div className="flex space-x-1 sm:space-x-2">
+                        <div className="w-2 h-2 sm:w-3 sm:h-3 bg-red-400 rounded-full"></div>
+                        <div className="w-2 h-2 sm:w-3 sm:h-3 bg-yellow-400 rounded-full"></div>
+                        <div className="w-2 h-2 sm:w-3 sm:h-3 bg-green-400 rounded-full"></div>
+                      </div>
+                    </div>
+                    
+                    {/* Mock Dashboard Content */}
+                    <div className="grid grid-cols-2 gap-2 sm:gap-3 mb-2 sm:mb-3">
+                      <div className="bg-green-100 p-2 sm:p-3 rounded-lg">
+                        <div className="text-green-600 font-bold text-sm sm:text-base">1,247</div>
+                        <div className="text-green-600 text-xs sm:text-sm">Products in Stock</div>
+                      </div>
+                      <div className="bg-orange-100 p-2 sm:p-3 rounded-lg">
+                        <div className="text-orange-600 font-bold text-sm sm:text-base">23</div>
+                        <div className="text-orange-600 text-xs sm:text-sm">Low Stock Alert</div>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-1 sm:space-y-2">
+                      <div className="flex items-center justify-between p-1.5 sm:p-2 bg-white rounded">
+                        <span className="text-xs sm:text-sm">📱 Smartphone Case</span>
+                        <span className="text-xs bg-orange-100 text-orange-600 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded">Reorder</span>
+                      </div>
+                      <div className="flex items-center justify-between p-1.5 sm:p-2 bg-white rounded">
+                        <span className="text-xs sm:text-sm">💻 Laptop Charger</span>
+                        <span className="text-xs bg-green-100 text-green-600 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded">In Stock</span>
+                      </div>
+                      <div className="flex items-center justify-between p-1.5 sm:p-2 bg-white rounded">
+                        <span className="text-xs sm:text-sm">🎧 Wireless Headphones</span>
+                        <span className="text-xs bg-red-100 text-red-600 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded">Out of Stock</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Floating Success Badge */}
+                  <div className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 bg-green-500 text-white px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm font-semibold shadow-lg animate-bounce">
+                    ✓ Auto-Reorder Active
+                  </div>
+                </div>
+              </div>
               
-              <div className="flex flex-wrap items-center gap-6 text-blue-200">
+              <div className="flex flex-col sm:flex-row sm:flex-wrap items-center justify-center lg:justify-start gap-3 sm:gap-4 lg:gap-6 text-blue-200">
                 <div className="flex items-center">
-                  <CheckCircle className="w-5 h-5 mr-2 text-green-400" />
-                  No credit card required
+                  <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-green-400 flex-shrink-0" />
+                  <span className="text-sm sm:text-base">No credit card required</span>
                 </div>
                 <div className="flex items-center">
-                  <CheckCircle className="w-5 h-5 mr-2 text-green-400" />
-                  14-day free trial
+                  <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-green-400 flex-shrink-0" />
+                  <span className="text-sm sm:text-base">14-day free trial</span>
                 </div>
                 <div className="flex items-center">
-                  <CheckCircle className="w-5 h-5 mr-2 text-green-400" />
-                  Setup in 5 minutes
+                  <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-green-400 flex-shrink-0" />
+                  <span className="text-sm sm:text-base">Setup in 5 minutes</span>
                 </div>
               </div>
             </div>
             
-            {/* Right Column - Visual Demo */}
-            <div className="relative">
-              <div className="relative bg-white rounded-2xl shadow-2xl p-6">
+            {/* Right Column - Visual Demo (Desktop only) */}
+            <div className="hidden lg:block relative order-1 lg:order-2 mb-6 lg:mb-0">
+              <div className="relative bg-white rounded-2xl shadow-2xl p-6 max-w-md mx-auto lg:max-w-none">
                 {/* Demo Interface Mockup */}
                 <div className="bg-gray-50 rounded-lg p-4 mb-4">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="font-semibold text-gray-800">Live Inventory Dashboard</h3>
+                    <h3 className="font-semibold text-gray-800 text-base">Live Inventory Dashboard</h3>
                     <div className="flex space-x-2">
                       <div className="w-3 h-3 bg-red-400 rounded-full"></div>
                       <div className="w-3 h-3 bg-yellow-400 rounded-full"></div>
@@ -1108,9 +1158,9 @@ export const HomePage = () => {
                 </div>
               </div>
               
-              {/* Background Decorative Elements */}
-              <div className="absolute -z-10 top-10 left-10 w-20 h-20 bg-blue-400/20 rounded-full blur-xl"></div>
-              <div className="absolute -z-10 bottom-10 right-10 w-32 h-32 bg-purple-400/20 rounded-full blur-xl"></div>
+              {/* Background Decorative Elements - Hidden on mobile for better performance */}
+              <div className="hidden sm:block absolute -z-10 top-5 left-5 sm:top-10 sm:left-10 w-16 h-16 sm:w-20 sm:h-20 bg-blue-400/20 rounded-full blur-xl"></div>
+              <div className="hidden sm:block absolute -z-10 bottom-5 right-5 sm:bottom-10 sm:right-10 w-24 h-24 sm:w-32 sm:h-32 bg-purple-400/20 rounded-full blur-xl"></div>
             </div>
           </div>
         </div>
@@ -1120,15 +1170,15 @@ export const HomePage = () => {
       {/* KENGETALLEN / SOCIAL PROOF STRIP */}
       <section id="stats-section" className="bg-white py-6 sm:py-8 md:py-12">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6 lg:gap-8 divide-x-0 md:divide-x md:divide-dashed md:divide-gray-200">
+          <div className="grid grid-cols-3 gap-2 sm:gap-4 md:gap-6 lg:gap-8 divide-x divide-dashed divide-gray-200">
             {[
-              { icon: Users, value: '3200+', label: 'Happy Users' },
+              { icon: Users, value: '500+', label: 'Happy Users' },
               { icon: Clock, value: '17k+', label: 'Hours Saved' },
               { icon: Package, value: '500k+', label: 'Product Movements' },
             ].map((s, i) => (
-              <div key={i} className="flex flex-col items-center text-center md:px-4 lg:px-6">
-                <s.icon className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8 text-gray-400 mb-1 sm:mb-2 md:mb-3" />
-                <div className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-5xl font-extrabold tracking-tight text-blue-700">{s.value}</div>
+              <div key={i} className="flex flex-col items-center text-center px-2 sm:px-4 lg:px-6">
+                <s.icon className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 lg:h-8 lg:w-8 text-gray-400 mb-1 sm:mb-2 md:mb-3" />
+                <div className="text-sm sm:text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-extrabold tracking-tight text-blue-700">{s.value}</div>
                 <div className="mt-1 text-xs sm:text-sm md:text-base text-gray-700 font-medium text-center leading-tight">{s.label}</div>
               </div>
             ))}
@@ -1161,37 +1211,9 @@ export const HomePage = () => {
             </p>
           </div>
 
-          {/* Trust Indicators */}
-          <div className="grid md:grid-cols-4 gap-8 mb-16">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <TrendingUp className="w-8 h-8 text-green-600" />
-              </div>
-              <div className="text-3xl font-bold text-gray-900 mb-2">500+</div>
-              <p className="text-gray-600">Active Businesses</p>
-            </div>
-            <div className="text-center">
-              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Target className="w-8 h-8 text-blue-600" />
-              </div>
-              <div className="text-3xl font-bold text-gray-900 mb-2">€2.3M</div>
-              <p className="text-gray-600">Cost Savings</p>
-            </div>
-            <div className="text-center">
-              <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Clock className="w-8 h-8 text-purple-600" />
-              </div>
-              <div className="text-3xl font-bold text-gray-900 mb-2">85%</div>
-              <p className="text-gray-600">Time Saved</p>
-            </div>
-            <div className="text-center">
-              <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Star className="w-8 h-8 text-orange-600" />
-              </div>
-              <div className="text-3xl font-bold text-gray-900 mb-2">4.9/5</div>
-              <p className="text-gray-600">Customer Rating</p>
-            </div>
-          </div>
+
+
+          
           {/* Desktop Grid */}
           <div className="hidden md:grid md:grid-cols-3 gap-6 sm:gap-8 mb-12 sm:mb-16">
             {testimonials.map((t, index) => (
@@ -1439,8 +1461,8 @@ export const HomePage = () => {
       <section id="features-section" className="py-12 sm:py-16 md:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
 
-          {/* Subscription Features Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-12 sm:mb-16">
+          {/* Desktop Grid */}
+          <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-12 sm:mb-16">
             {subscriptionFeatures.map((feature, index) => (
               <FadeInWhenVisible key={index}>
                 <div className={`relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-2 ${feature.tier === 'groei' ? 'border-blue-500 ring-4 ring-blue-100' : 'border-gray-100'}`}>
@@ -1476,6 +1498,44 @@ export const HomePage = () => {
             ))}
           </div>
 
+          {/* Mobile Carousel */}
+          <div className="md:hidden mb-12 sm:mb-16">
+            <MobileCarousel 
+              items={subscriptionFeatures}
+              renderItem={(feature) => (
+                <div className={`relative bg-white rounded-2xl shadow-lg border-2 ${feature.tier === 'groei' ? 'border-blue-500 ring-4 ring-blue-100' : 'border-gray-100'} mx-2`}>
+                  {feature.tier === 'groei' && (
+                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                    </div>
+                  )}
+                  
+                  <div className="p-6">
+                    <div className="flex items-center justify-between mb-6">
+                      <div className="p-3 bg-gray-50 rounded-xl">
+                        {feature.icon}
+                      </div>
+                      <div className="text-right">
+                      </div>
+                    </div>
+
+                    <h3 className="text-xl font-bold text-gray-900 mb-3">{feature.title}</h3>
+                    <p className="text-base text-gray-600 mb-6 leading-relaxed">{feature.description}</p>
+
+                    <div className="space-y-3 mb-8">
+                      {feature.features.map((featureItem, featureIndex) => (
+                        <div key={featureIndex} className="flex items-center gap-3">
+                          <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
+                          <span className="text-base text-gray-700">{featureItem}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                  </div>
+                </div>
+              )}
+            />
+          </div>
+
 
         </div>
       </section>
@@ -1495,7 +1555,8 @@ export const HomePage = () => {
             </FadeInWhenVisible>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {/* Desktop Grid */}
+          <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {useCases.map((useCase, index) => (
               <div key={index} className="bg-white p-6 rounded-lg shadow-lg text-center">
                 <div className="text-4xl mb-4">{useCase.icon}</div>
@@ -1503,6 +1564,20 @@ export const HomePage = () => {
                 <p className="text-gray-600">{useCase.description}</p>
               </div>
             ))}
+          </div>
+
+          {/* Mobile Carousel */}
+          <div className="md:hidden">
+            <MobileCarousel 
+              items={useCases}
+              renderItem={(useCase) => (
+                <div className="bg-white p-6 rounded-lg shadow-lg text-center mx-2">
+                  <div className="text-4xl mb-4">{useCase.icon}</div>
+                  <h3 className="text-xl font-semibold mb-3">{useCase.title}</h3>
+                  <p className="text-gray-600">{useCase.description}</p>
+                </div>
+              )}
+            />
           </div>
         </div>
       </section>
@@ -1765,18 +1840,18 @@ export const HomePage = () => {
 
           {/* Social Proof Numbers */}
           <FadeInWhenVisible>
-            <div className="mt-8 sm:mt-12 grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 max-w-3xl mx-auto">
+            <div className="mt-8 sm:mt-12 grid grid-cols-3 gap-2 sm:gap-4 md:gap-6 max-w-3xl mx-auto">
               {(() => {
                 try {
                   const stats = [
-                    { number: "3200+", label: "Active SMEs" },
+                    { number: "500+", label: "Active SMEs" },
                     { number: "9 hours", label: "Time saved/week" },
                     { number: "4.8/5", label: "Customer satisfaction" }
                   ];
                   if (Array.isArray(stats)) {
                     return stats.map((stat, index) => (
                       <div key={index} className="text-center">
-                        <div className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-white mb-1">{stat.number}</div>
+                        <div className="text-sm sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold text-white mb-1">{stat.number}</div>
                         <div className="text-xs sm:text-sm text-white/70">{stat.label}</div>
                       </div>
                     ));
@@ -1786,12 +1861,12 @@ export const HomePage = () => {
                 }
                 // Fallback data
                 return [
-                  { number: "3200+", label: "Active SMEs" },
+                  { number: "500+", label: "Active SMEs" },
                   { number: "9 hours", label: "Time saved/week" },
                   { number: "4.8/5", label: "Customer satisfaction" }
                 ].map((stat, index) => (
                   <div key={index} className="text-center">
-                    <div className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-white mb-1">{stat.number}</div>
+                    <div className="text-sm sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold text-white mb-1">{stat.number}</div>
                     <div className="text-xs sm:text-sm text-white/70">{stat.label}</div>
                   </div>
                 ));

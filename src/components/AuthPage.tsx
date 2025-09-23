@@ -194,7 +194,7 @@ export const AuthPage = () => {
             </h1>
             <p className="text-base sm:text-lg text-gray-600 mb-6 sm:mb-8">
               {mode === 'register' 
-                ? 'Join 3200+ SMEs that already benefit from free inventory management'
+                ? 'Join 500+ SMEs that already benefit from free inventory management'
                 : 'Log in to access your inventory management dashboard'
               }
             </p>
