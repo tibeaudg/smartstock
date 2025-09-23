@@ -8,6 +8,7 @@ import { StockManagementApp } from "./components/StockManagementApp";
 import { HomePage } from "./components/HomePage";
 import { AuthPage } from "./components/AuthPage";
 import NotFound from "./pages/NotFound";
+import DemoPage from "./pages/demo";
 import { Dashboard } from "./components/Dashboard";
 import { StockList } from "./components/StockList";
 import { StockMovements } from "./components/StockMovements";
@@ -79,6 +80,15 @@ import PrivacyPolicyPage from "./pages/SEO/privacy-policy";
 import TermsConditionsPage from "./pages/SEO/terms-conditions";
 import SEOContactPage from "./pages/SEO/contact";
 import InventoryManagementSoftware from "./pages/SEO/inventory-management-software";
+import InventoryManagement from "./pages/SEO/inventory-management";
+import InventorySoftware from "./pages/SEO/inventory-software";
+import WarehouseSoftware from "./pages/SEO/warehouse-software";
+import InventoryTracker from "./pages/SEO/inventory-tracker";
+import BestInventoryManagementSoftware from "./pages/SEO/best-inventory-management-software";
+import InventorySoftwareForSmallBusiness from "./pages/SEO/inventory-software-for-small-business";
+import InventorySoftwareManagement from "./pages/SEO/inventory-software-management";
+import SoftwareForInventoryManagement from "./pages/SEO/software-for-inventory-management";
+import SoftwaresForInventoryManagement from "./pages/SEO/softwares-for-inventory-management";
 import CategoriesPage from './pages/categories';
 import SuppliersPage from './pages/suppliers';
 import AdminPage from './pages/admin';
@@ -294,6 +304,7 @@ export default function App() {
                 <Routes>
                   {/* Openbare routes */}
                   <Route path="/" element={<HomePage />} />
+                  <Route path="/demo" element={<DemoPage />} />
                   <Route path="/auth" element={<AuthRoute />} />
                   <Route path="/pricing" element={<PricingPage />} />
                   <Route path="/contact" element={<SEOContactPage />} />
@@ -338,6 +349,15 @@ export default function App() {
                   <Route path="/voorraadbeheer-excel-zelf-maken" element={<VoorraadbeheerExcelZelfMaken />} />
                   <Route path="/warehouse-management-system" element={<WarehouseManagementSystem />} />
                   <Route path="/inventory-management-software" element={<InventoryManagementSoftware />} />
+                  <Route path="/inventory-management" element={<InventoryManagement />} />
+                  <Route path="/inventory-software" element={<InventorySoftware />} />
+                  <Route path="/warehouse-software" element={<WarehouseSoftware />} />
+                  <Route path="/inventory-tracker" element={<InventoryTracker />} />
+                  <Route path="/best-inventory-management-software" element={<BestInventoryManagementSoftware />} />
+                  <Route path="/inventory-software-for-small-business" element={<InventorySoftwareForSmallBusiness />} />
+                  <Route path="/inventory-software-management" element={<InventorySoftwareManagement />} />
+                  <Route path="/software-for-inventory-management" element={<SoftwareForInventoryManagement />} />
+                  <Route path="/softwares-for-inventory-management" element={<SoftwaresForInventoryManagement />} />
                   <Route path="/about" element={<AboutPage />} />
                   <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
                   <Route path="/terms-conditions" element={<TermsConditionsPage />} />

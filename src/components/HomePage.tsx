@@ -1936,8 +1936,6 @@ export const HomePage = () => {
   </div>
 </footer>
 
-    {/* Conversion Tracking Test Component - Development Only */}
-    {process.env.NODE_ENV === 'development' && <ConversionTrackingTest />}
   </div>
   );
 };
