@@ -499,6 +499,7 @@ export const HomePage = () => {
       title: "Smart Inventory Management",
       desc: "Take control of your stock with our intuitive inventory management system designed for growing businesses.",
       img: "/optimized/image.png",
+      imgMobile: "/optimized/image-mobile.png",
       reverse: false,
       features: [
         "Real-time stock tracking",
@@ -512,6 +513,7 @@ export const HomePage = () => {
       title: "Advanced Analytics Dashboard",
       desc: "Make data-driven decisions with comprehensive analytics and reporting tools for your inventory performance.",
       img: "/optimized/analytics.png",
+      imgMobile: "/optimized/analytics-mobile.png",
       reverse: true,
       features: [
         "Sales performance metrics",
@@ -525,6 +527,7 @@ export const HomePage = () => {
       title: "Mobile-First Experience",
       desc: "Manage your inventory on the go with our mobile-optimized interface that works seamlessly across all devices.",
       img: "/optimized/mobile.png",
+      imgMobile: "/optimized/mobile-mobile.png",
       reverse: false,
       features: [
         "Mobile barcode scanning",
@@ -801,6 +804,10 @@ export const HomePage = () => {
         {/* Critical images preload with high priority */}
         <link rel="preload" as="image" href="/optimized/desktop.png" media="(min-width: 1024px)" />
         <link rel="preload" as="image" href="/optimized/mobile.png" media="(max-width: 1023px)" />
+        <link rel="preload" as="image" href="/optimized/image.png" media="(min-width: 1024px)" />
+        <link rel="preload" as="image" href="/optimized/image-mobile.png" media="(max-width: 1023px)" />
+        <link rel="preload" as="image" href="/optimized/analytics.png" media="(min-width: 1024px)" />
+        <link rel="preload" as="image" href="/optimized/analytics-mobile.png" media="(max-width: 1023px)" />
         <link rel="preload" as="image" href="/logo.png" />
         <link rel="preload" as="image" href="/Inventory-Management.png" />
         
@@ -1429,6 +1436,10 @@ export const HomePage = () => {
                       <div className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 shadow-lg border border-gray-100">
                         <OptimizedImage
                           src={feature.img}
+                          srcSet={`
+                            ${feature.imgMobile} 768w,
+                            ${feature.img} 1024w
+                          `}
                           alt={`${feature.title} - Voorraadbeheer voor KMO's`}
                           className="rounded-lg sm:rounded-xl w-full h-48 sm:h-64 md:h-80 object-contain"
                           loading="lazy"
