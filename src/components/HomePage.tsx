@@ -1237,7 +1237,6 @@ export const HomePage = () => {
                         src={t.avatar} 
                         alt={`${t.name} - ${t.role}`}
                         loading="lazy"
-                        decoding="async"
                         sizes="48px"
                         onLoad={(e) => {
                           e.currentTarget.classList.add('loaded');
