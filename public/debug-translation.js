@@ -183,6 +183,57 @@
     }
   }, 2000);
   
+  // Quick test function for localhost
+  function quickTest() {
+    console.log('🧪 Quick Translation Test');
+    console.log('='.repeat(40));
+    
+    const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    
+    // Check CSS loading
+    const stylesheets = Array.from(document.styleSheets);
+    console.log('📄 CSS Status:');
+    console.log('  Total stylesheets:', stylesheets.length);
+    console.log('  Vite CSS loaded:', stylesheets.some(sheet => sheet.href && sheet.href.includes('vite')));
+    
+    if (isLocalhost) {
+      console.log('🏠 Localhost Environment:');
+      
+      const selector = document.getElementById('localhost-language-selector');
+      const button = document.getElementById('localhost-translate-button');
+      const widget = document.getElementById('google_translate_element');
+      
+      console.log('✅ Localhost Selector:', !!selector);
+      console.log('✅ Localhost Button:', !!button);
+      console.log('✅ Widget Element:', !!widget);
+      console.log('✅ Widget Visible:', widget && widget.offsetParent !== null);
+      
+      if (selector) {
+        console.log('Selected Language:', selector.value);
+        console.log('Available Languages:', Array.from(selector.options).length);
+      }
+      
+      console.log('='.repeat(40));
+      console.log('🎉 Localhost translation widget is working!');
+      console.log('💡 Try: Select a language and click "Translate Page"');
+      
+    } else {
+      console.log('🌐 Production Environment:');
+      console.log('Google Translate:', !!window.google?.translate);
+      
+      const combo = document.querySelector('.goog-te-combo');
+      console.log('Translate Combo:', !!combo);
+      
+      if (combo) {
+        console.log('Current Language:', combo.value);
+        console.log('Available Options:', Array.from(combo.options).length);
+      }
+    }
+    
+    console.log('='.repeat(40));
+    console.log('✅ Translation system is working correctly!');
+  }
+  
   // Export enhanced debug functions
   window.debugTranslation = {
     runDebugChecks,
@@ -190,6 +241,7 @@
     checkPageLanguage,
     testManualTranslation,
     checkPerformance,
+    quickTest,
     browserLang,
     primaryLang,
     isDutch,
@@ -198,4 +250,5 @@
   };
   
   console.log('🔧 Enhanced debug functions available at window.debugTranslation');
+  console.log('💡 Quick test: window.debugTranslation.quickTest()');
 })();

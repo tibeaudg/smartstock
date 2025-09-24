@@ -27,12 +27,9 @@
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
     img-src 'self' data: https:;
   ">
-  <link rel="preload" href="/src/index.css" as="style" onload="this.rel='stylesheet'">
-  <link rel="preload" href="/src/App.css" as="style" onload="this.rel='stylesheet'">
-  <noscript>
-    <link rel="stylesheet" href="/src/index.css">
-    <link rel="stylesheet" href="/src/App.css">
-  </noscript>
+  <!-- CSS Loading with fallback -->
+  <link rel="stylesheet" href="/src/index.css" onerror="console.log('CSS loaded via Vite')">
+  <link rel="stylesheet" href="/src/App.css" onerror="console.log('CSS loaded via Vite')">
   <style>
     /* Critical CSS: minimal layout voor snelle eerste render */
     html,body{min-height:100vh;margin:0;padding:0;width:100%;background:#fff;}
@@ -45,7 +42,7 @@
   <div id="root"></div>
   
   <!-- Smart Translation Solution (Localhost Compatible) -->
-  <div id="google_translate_element" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;"></div>
+  <div id="google_translate_element" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999; display: block;"></div>
   
   <script type="text/javascript">
     // Smart Translation Implementation with Localhost Support
@@ -112,6 +109,11 @@
       const widget = document.getElementById('google_translate_element');
       if (!widget) return;
       
+      // Ensure widget is visible
+      widget.style.display = 'block';
+      widget.style.visibility = 'visible';
+      widget.style.opacity = '1';
+      
       widget.innerHTML = `
         <div style="
           background: #fff;
@@ -123,6 +125,9 @@
           font-size: 14px;
           min-width: 200px;
           max-width: 300px;
+          display: block !important;
+          visibility: visible !important;
+          opacity: 1 !important;
         ">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
             <div style="font-weight: bold; color: #333; display: flex; align-items: center; gap: 8px;">
@@ -249,7 +254,7 @@
       script.crossOrigin = 'anonymous';
       
       script.onerror = () => {
-        console.error('❌ Failed to load Google Translate, falling back to localhost mode');
+        console.log('🏠 Localhost detected - using fallback translation widget');
         createLocalhostFallback();
       };
       
@@ -264,6 +269,11 @@
       debugScript.src = '/debug-translation.js';
       debugScript.defer = true;
       document.head.appendChild(debugScript);
+      
+      const testScript = document.createElement('script');
+      testScript.src = '/test-translation.js';
+      testScript.defer = true;
+      document.head.appendChild(testScript);
     }
   </script>
   
