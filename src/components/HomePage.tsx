@@ -983,7 +983,7 @@ export const HomePage = () => {
         `}</script>
       </Helmet>
       <SEO
-        title="StockFlow - Stop Losing $2,400/Year to Stockouts |  SME Inventory Management"
+        title="StockFlow - Stop Losing Money to Stockouts |  SME Inventory Management"
         description="Never run out of stock again. StockFlow automatically tracks your inventory, alerts you when to reorder, and saves  SMEs $2,400+ per year. Built specifically for  small businesses."
         keywords="voorraadbeheer software, stockbeheer software, inventory management Belgium, voorraadbeheer gratis, stockbeheer gratis,  inventory software, SME inventory management, voorraadbeheer KMO, stockbeheer KMO, prevent stockouts, automatic reordering, inventory tracking Belgium, voorraadbeheer app, stockbeheer app,  business software, voorraadbeheer systeem, stockbeheer systeem, inventory management for small business, voorraadbeheer voor kleine bedrijven, stockbeheer voor kleine bedrijven,  ERP alternative, voorraadbeheer versus Excel, stockbeheer versus Excel, automatic inventory alerts, voorraadbeheer automatisering, stockbeheer automatisering,  inventory tracking, voorraadbeheer tracking, stockbeheer tracking, inventory management software Belgium, voorraadbeheer software België, stockbeheer software België, small business inventory, voorraadbeheer kleine onderneming, stockbeheer kleine onderneming,  business tools, voorraadbeheer tools, stockbeheer tools, inventory software for SMEs, voorraadbeheer software KMO, stockbeheer software KMO, prevent stockouts Belgium, voorraadbeheer stockouts voorkomen, stockbeheer stockouts voorkomen, automatic reorder points, voorraadbeheer automatisch bestellen, stockbeheer automatisch bestellen,  inventory management, voorraadbeheer België, stockbeheer België, SME inventory tracking, voorraadbeheer tracking KMO, stockbeheer tracking KMO, inventory alerts Belgium, voorraadbeheer waarschuwingen, stockbeheer waarschuwingen,  small business software, voorraadbeheer kleine bedrijven software, stockbeheer kleine bedrijven software"
         url="https://www.stockflow.be/"
@@ -1039,7 +1039,7 @@ export const HomePage = () => {
             <div className="text-white order-1 sm:text-center lg:text-left">
               <div className="inline-flex items-center px-3 xs:px-3 sm:px-4 py-2 bg-blue-600/20 border border-blue-400/30 rounded-full text-blue-200 text-xs xs:text-xs sm:text-sm font-medium mb-3 xs:mb-4 sm:mb-6">
                 <span className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
-                🇧🇪 Trusted by 500+  SMEs
+                Trusted by 500+ SMEs
               </div>
               
               <h1 className="font-bold mb-3 xs:mb-4 sm:mb-8 lg:mb-10 leading-tight">
@@ -1118,15 +1118,15 @@ export const HomePage = () => {
               <div className="flex flex-col sm:flex-row sm:flex-wrap items-center justify-center lg:justify-start gap-3 xs:gap-4 sm:gap-6 lg:gap-8 text-blue-200 max-w-3xl mx-auto lg:mx-0">
                 <div className="flex items-center">
                   <CheckCircle className="w-4 h-4 xs:w-5 xs:h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-4 mr-2 xs:mr-3 text-green-400 flex-shrink-0" />
-                  <span className="text-sm xs:text-base sm:text-lg lg:text-sm">✅ No credit card required</span>
+                  <span className="text-sm xs:text-base sm:text-lg lg:text-sm">No credit card required</span>
                 </div>
                 <div className="flex items-center">
                   <CheckCircle className="w-4 h-4 xs:w-5 xs:h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-4 mr-2 xs:mr-3 text-green-400 flex-shrink-0" />
-                  <span className="text-sm xs:text-base sm:text-lg lg:text-sm">💰 Save $2,400+ per year</span>
+                  <span className="text-sm xs:text-base sm:text-lg lg:text-sm">Save $2,400+ per year</span>
                 </div>
                 <div className="flex items-center">
                   <CheckCircle className="w-4 h-4 xs:w-5 xs:h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-4 mr-2 xs:mr-3 text-green-400 flex-shrink-0" />
-                  <span className="text-sm xs:text-base sm:text-lg lg:text-sm">🇧🇪 Built for  SMEs</span>
+                  <span className="text-sm xs:text-base sm:text-lg lg:text-sm">Built for  SMEs</span>
                 </div>
               </div>
             </div>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 
 <head>
     <!-- Google tag (gtag.js) -->
@@ -20,9 +20,9 @@
   <meta name="description" content="Ontdek hoe stockflow jou helpt bij het beheren van jouw voorraad, Efficiënt en Gratis. Probeer het nu!" />
   <meta http-equiv="Content-Security-Policy" content="
     default-src 'self';
-    connect-src 'self' https://sszuxnqhbxauvershuys.supabase.co wss://sszuxnqhbxauvershuys.supabase.co https://www.google-analytics.com https://www.google.com https://www.googletagmanager.com https://googleads.g.doubleclick.net https://www.googleadservices.com https://api.stripe.com https://checkout.stripe.com https://api.ipify.org;
-    script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://www.google.com https://js.stripe.com;
-    frame-src 'self' https://www.googletagmanager.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://www.google.com https://td.doubleclick.net https://checkout.stripe.com https://js.stripe.com;
+    connect-src 'self' https://sszuxnqhbxauvershuys.supabase.co wss://sszuxnqhbxauvershuys.supabase.co https://www.google-analytics.com https://www.google.com https://www.googletagmanager.com https://googleads.g.doubleclick.net https://www.googleadservices.com https://api.stripe.com https://checkout.stripe.com https://api.ipify.org https://translate.googleapis.com https://translate.google.com https://clients5.google.com;
+    script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://www.google.com https://js.stripe.com https://translate.googleapis.com https://translate.google.com https://cdn.gtranslate.net https://clients5.google.com;
+    frame-src 'self' https://www.googletagmanager.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://www.google.com https://td.doubleclick.net https://checkout.stripe.com https://js.stripe.com https://translate.googleapis.com https://translate.google.com https://clients5.google.com;
     font-src 'self' https://fonts.gstatic.com https://fonts.googleapis.com;
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
     img-src 'self' data: https:;
@@ -43,6 +43,120 @@
 <body>
   
   <div id="root"></div>
+  
+  <!-- Google Translate Widget -->
+  <div id="google_translate_element" style="position: fixed; bottom: 10px; right: 10px; z-index: 9999;"></div>
+  
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      console.log('🌐 Google Translate initializing...');
+      
+      try {
+        new google.translate.TranslateElement({
+          pageLanguage: 'nl',
+          includedLanguages: 'en,fr,de,es,it,pt,ru,ja,ko,zh,ar,hi,tr,pl,sv,da,no,fi,cs,hu,ro,bg,hr,sk,sl,et,lv,lt,mt,cy,ga,is,lb,eu,ca,gl,pt-BR,es-ES,fr-CA,en-US,en-GB,zh-CN,zh-TW',
+          layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+          autoDisplay: false
+        }, 'google_translate_element');
+        
+        console.log('✅ Google Translate initialized successfully');
+        
+        // Trigger auto-translation if needed
+        setTimeout(() => {
+          const browserLang = navigator.language || navigator.userLanguage;
+          const primaryLang = browserLang.split('-')[0];
+          const supportedLanguages = ['en', 'fr', 'de', 'es', 'it', 'pt', 'ru', 'ja', 'ko', 'zh', 'ar', 'hi', 'tr', 'pl', 'sv', 'da', 'no', 'fi', 'cs', 'hu', 'ro', 'bg', 'hr', 'sk', 'sl', 'et', 'lv', 'lt', 'mt', 'cy', 'ga', 'is', 'lb', 'eu', 'ca', 'gl'];
+          
+          if (primaryLang !== 'nl' && supportedLanguages.includes(primaryLang)) {
+            console.log('🔄 Auto-translating to:', primaryLang);
+            const selectElement = document.querySelector('.goog-te-combo');
+            if (selectElement) {
+              selectElement.value = primaryLang;
+              selectElement.dispatchEvent(new Event('change'));
+            }
+          }
+        }, 1000);
+        
+      } catch (error) {
+        console.error('❌ Google Translate initialization failed:', error);
+      }
+    }
+  </script>
+  
+  <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  
+  <!-- GTranslate Alternative (more features) -->
+  <script type="text/javascript" src="https://cdn.gtranslate.net/widgets/latest/float.js" defer></script>
+  <script type="text/javascript" src="/translation-config.js" defer></script>
+  
+  <!-- Custom Auto-Translate Service -->
+  <script type="text/javascript" src="/auto-translate.js" defer></script>
+  
+  <!-- Force Translation Script -->
+  <script type="text/javascript" src="/force-translation.js" defer></script>
+  
+  <!-- Simple Translation Solution -->
+  <script type="text/javascript" src="/simple-translate.js" defer></script>
+  
+  <!-- Test Translation Fix (Development only) -->
+  <script type="text/javascript">
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      const testScript = document.createElement('script');
+      testScript.src = '/test-translation-fix.js';
+      testScript.defer = true;
+      document.head.appendChild(testScript);
+    }
+  </script>
+  
+  <!-- Debug Translation (Development only) -->
+  <script type="text/javascript">
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      const debugScript = document.createElement('script');
+      debugScript.src = '/debug-translation.js';
+      debugScript.defer = true;
+      document.head.appendChild(debugScript);
+    }
+  </script>
+  
+  <!-- Translation Test Script (Development only) -->
+  <script type="text/javascript">
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      const testScript = document.createElement('script');
+      testScript.src = '/scripts/test-translation.js';
+      testScript.defer = true;
+      document.head.appendChild(testScript);
+    }
+  </script>
+  
+  <!-- Auto-detect language and translate -->
+  <script type="text/javascript">
+    // Auto-detect browser language and translate if not Dutch
+    document.addEventListener('DOMContentLoaded', function() {
+      const browserLang = navigator.language || navigator.userLanguage;
+      const supportedLanguages = ['en', 'fr', 'de', 'es', 'it', 'pt', 'ru', 'ja', 'ko', 'zh', 'ar', 'hi', 'tr', 'pl', 'sv', 'da', 'no', 'fi', 'cs', 'hu', 'ro', 'bg', 'hr', 'sk', 'sl', 'et', 'lv', 'lt', 'mt', 'cy', 'ga', 'is', 'lb', 'eu', 'ca', 'gl'];
+      
+      // Check if browser language is not Dutch and is supported
+      if (browserLang && !browserLang.startsWith('nl') && supportedLanguages.some(lang => browserLang.startsWith(lang))) {
+        console.log('🌐 Auto-translating to:', browserLang.split('-')[0]);
+        
+        // Wait for Google Translate to load
+        setTimeout(function() {
+          const selectElement = document.querySelector('.goog-te-combo');
+          if (selectElement) {
+            const targetLang = browserLang.split('-')[0];
+            console.log('🔄 Setting language to:', targetLang);
+            selectElement.value = targetLang;
+            selectElement.dispatchEvent(new Event('change'));
+          } else {
+            console.log('⚠️ Google Translate element not found');
+          }
+        }, 3000);
+      } else {
+        console.log('🇳🇱 Dutch browser detected or unsupported language, no auto-translation');
+      }
+    });
+  </script>
+  
   <script type="module" src="/src/main.tsx" defer></script>
 </body>
 
