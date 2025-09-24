@@ -1,17 +1,17 @@
-# 🌐 Automatische Vertaling Setup
+# 🌐 Geoptimaliseerde Automatische Vertaling
 
-Deze applicatie is nu uitgerust met automatische vertaling die werkt zonder code wijzigingen. De vertaling detecteert automatisch de browser taal en vertaalt de hele website.
+Deze applicatie is uitgerust met een geoptimaliseerde automatische vertaling die werkt zonder code wijzigingen. De vertaling is volledig gerefactored voor betere prestaties en betrouwbaarheid.
 
 ## ✨ Functionaliteiten
 
 - **Automatische taal detectie**: Detecteert de browser taal van bezoekers
 - **Geen code wijzigingen**: Werkt automatisch zonder aanpassingen aan bestaande code
-- **Meerdere providers**: Google Translate, GTranslate en custom service
+- **Geoptimaliseerde Google Translate**: Eén enkele, betrouwbare implementatie
 - **40+ talen ondersteund**: Engels, Frans, Duits, Spaans, Italiaans, Portugees, Russisch, Japans, Koreaans, Chinees, Arabisch, Hindi, Turks, Pools, Zweeds, Deens, Noors, Fins, Tsjechisch, Hongaars, Roemeens, Bulgaars, Kroatisch, Slowaaks, Sloveens, Ests, Lets, Litouws, Maltees, Welsh, Iers, IJslands, Luxemburgs, Baskisch, Catalaans, Galicisch en meer
 - **Floating widget**: Gebruikers kunnen handmatig van taal wisselen
-- **Verberg functionaliteit**: Gebruikers kunnen widget verbergen/tonen
 - **Rechtsonder positie**: Widget staat rechtsonder voor minder obstructie
-- **LocalStorage**: Verberg voorkeur wordt opgeslagen
+- **Betere prestaties**: Geoptimaliseerd voor snellere laadtijden
+- **Geen conflicten**: Verwijderd alle redundante scripts
 - **SEO vriendelijk**: Vertaalde pagina's worden geïndexeerd door zoekmachines
 
 ## 🚀 Hoe het werkt
@@ -97,9 +97,20 @@ const supportedLanguages = [
 
 ## 🧪 Testing
 
-### Development Testing
+### Localhost Development Testing
 ```javascript
-// Test in browser console
+// Test in browser console (localhost)
+window.debugTranslation.runDebugChecks();
+window.translationTest.runAllTests();
+
+// Test specifieke functionaliteit
+window.debugTranslation.checkGoogleTranslate();
+window.debugTranslation.testManualTranslation('en');
+```
+
+### Production Testing
+```javascript
+// Test in browser console (production)
 window.testTranslation.runAllTests();
 
 // Test specifieke functionaliteit
@@ -109,6 +120,14 @@ window.testTranslation.testAutoTranslate();
 ```
 
 ### Manual Testing
+
+#### Localhost Development
+1. **Widget verschijnt**: Rechtsonder met "Development Mode" label
+2. **Taal selecteren**: Dropdown met alle ondersteunde talen
+3. **Vertalen**: Klik op "Translate Page" → opent Google Translate in nieuwe tab
+4. **Browser taal**: Automatisch geselecteerd als niet Nederlands
+
+#### Production
 1. **Browser taal wijzigen**:
    - Chrome: Settings > Languages
    - Firefox: Preferences > General > Language
@@ -121,7 +140,7 @@ window.testTranslation.testAutoTranslate();
    - Spaans (es-ES)
 
 3. **Verificatie**:
-   - Widget verschijnt rechtsboven
+   - Widget verschijnt rechtsonder
    - Automatische vertaling bij niet-Nederlandse taal
    - Handmatige taal wisseling werkt
 
