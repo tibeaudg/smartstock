@@ -498,46 +498,58 @@ export const HomePage = () => {
   // --- BEGIN FEATURE DATA ---
   const landingFeatures = [
     {
-      title: "Smart Inventory Management",
-      desc: "Take control of your stock with our intuitive inventory management system designed for growing businesses.",
-      img: "/optimized/image.png",
-      imgMobile: "/optimized/image-mobile.png",
-      reverse: false,
-      features: [
-        "Real-time stock tracking",
-        "Automated low stock alerts",
-        "Multi-location support",
-        "Barcode scanning integration"
+      title: "Never Run Out of Stock Again",
+      subtitle: "Smart Inventory Management",
+      desc: "Stop losing sales to stockouts. StockFlow automatically tracks your inventory and alerts you when to reorder, so you never miss a sale.",
+      benefits: [
+        "Real-time stock tracking across all locations",
+        "Automated low stock alerts via email & SMS",
+        "Smart reorder suggestions based on sales patterns",
+        "Multi-location inventory management"
       ],
-      icon: <Package className="h-12 w-12 text-blue-600" />
+      icon: <Package className="h-8 w-8 text-white" />,
+      gradient: "from-blue-500 to-blue-700",
+      bgPattern: "bg-blue-50",
+      borderColor: "border-blue-200",
+      iconBg: "bg-blue-500",
+      stats: "Save $2,400+ annually",
+      cta: "See How It Works"
     },
     {
-      title: "Advanced Analytics Dashboard",
-      desc: "Make data-driven decisions with comprehensive analytics and reporting tools for your inventory performance.",
-      img: "/optimized/analytics.png",
-      imgMobile: "/optimized/analytics-mobile.png",
-      reverse: true,
-      features: [
-        "Sales performance metrics",
-        "Inventory turnover analysis",
-        "Profit margin tracking",
-        "Custom report generation"
+      title: "Make Data-Driven Decisions",
+      subtitle: "Advanced Analytics Dashboard",
+      desc: "Turn your inventory data into actionable insights. See exactly which products are your money-makers and optimize your stock levels for maximum profit.",
+      benefits: [
+        "Sales performance analytics in real-time",
+        "Inventory turnover analysis & insights",
+        "Profit margin tracking by product",
+        "Custom reports for better decision making"
       ],
-      icon: <BarChart3 className="h-12 w-12 text-green-600" />
+      icon: <BarChart3 className="h-8 w-8 text-white" />,
+      gradient: "from-green-500 to-green-700",
+      bgPattern: "bg-green-50",
+      borderColor: "border-green-200",
+      iconBg: "bg-green-500",
+      stats: "Increase profits by 15-25%",
+      cta: "View Analytics Demo"
     },
     {
-      title: "Mobile-First Experience",
-      desc: "Manage your inventory on the go with our mobile-optimized interface that works seamlessly across all devices.",
-      img: "/optimized/mobile.png",
-      imgMobile: "/optimized/mobile-mobile.png",
-      reverse: false,
-      features: [
-        "Mobile barcode scanning",
-        "Offline functionality",
-        "Push notifications",
-        "Touch-friendly interface"
+      title: "Manage Inventory Anywhere",
+      subtitle: "Mobile-First Experience",
+      desc: "Take your inventory management with you. Our mobile app lets you scan barcodes, update stock levels, and manage orders from anywhere.",
+      benefits: [
+        "Mobile barcode scanning for instant updates",
+        "Offline functionality - works without internet",
+        "Push notifications for low stock alerts",
+        "Touch-friendly interface for all skill levels"
       ],
-      icon: <Smartphone className="h-12 w-12 text-purple-600" />
+      icon: <Smartphone className="h-8 w-8 text-white" />,
+      gradient: "from-purple-500 to-purple-700",
+      bgPattern: "bg-purple-50",
+      borderColor: "border-purple-200",
+      iconBg: "bg-purple-500",
+      stats: "Save 8 hours per week",
+      cta: "Try Mobile App"
     }
   ];
   // --- EINDE FEATURE DATA ---
@@ -1360,89 +1372,108 @@ export const HomePage = () => {
             </FadeInWhenVisible>
             <FadeInWhenVisible>
               <h2 className="features-header font-bold mb-4 sm:mb-6 px-4">
-                <span className="block text-gray-900">Why 500+  SMEs</span>
+                <span className="block text-gray-900">How StockFlow Transforms</span>
                 <span className="block bg-gradient-to-r from-blue-500 to-blue-900 bg-clip-text text-transparent">
-                Choose StockFlow Over Excel & Complex ERP Systems
+                Your Inventory Management
                 </span>
               </h2>
             </FadeInWhenVisible>
             <FadeInWhenVisible>
               <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-4">
-                Stop losing money to stockouts and wasting time on manual inventory management. Here's exactly how StockFlow transforms your business.
+                Three powerful features that save you time, money, and stress. See exactly how StockFlow eliminates common inventory problems.
               </p>
             </FadeInWhenVisible>
           </div>
 
-          {landingFeatures.map((feature, idx) => (
-            <div
-              key={feature.title}
-              className={`mb-12 sm:mb-16 md:mb-24 ${
-                feature.reverse ? 'md:flex-row-reverse' : 'md:flex-row'
-              } flex flex-col items-center`}
-            >
-              <div className="grid md:grid-cols-2 gap-8 sm:gap-12 items-center max-w-6xl mx-auto">
-                {/* Content */}
-                <div className={`text-center md:text-left ${feature.reverse ? 'md:order-2' : 'md:order-1'}`}>
-                  <FadeInWhenVisible>
-                    <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-gray-100 rounded-xl sm:rounded-2xl mb-4 sm:mb-6">
-                      {feature.icon}
+          {/* Modern Features Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 sm:gap-12 max-w-7xl mx-auto">
+            {landingFeatures.map((feature, idx) => (
+              <FadeInWhenVisible key={idx} delay={idx * 200}>
+                <div className="group relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 overflow-hidden border border-gray-100">
+                  {/* Header with gradient background */}
+                  <div className={`relative bg-gradient-to-br ${feature.gradient} p-6 sm:p-8 text-white overflow-hidden`}>
+                    <div className="absolute inset-0 bg-black/10"></div>
+                    <div className="relative z-10">
+                      <div className={`inline-flex items-center justify-center w-12 h-12 ${feature.iconBg} rounded-xl mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                        {feature.icon}
+                      </div>
+                      <div className="inline-block px-3 py-1 bg-white/20 rounded-full text-sm font-medium mb-4">
+                        {feature.subtitle}
+                      </div>
+                      <h3 className="text-xl sm:text-2xl font-bold mb-3 leading-tight">
+                        {feature.title}
+                      </h3>
+                      <div className={`inline-flex items-center px-3 py-1 bg-white/20 rounded-full text-sm font-semibold`}>
+                        {feature.stats}
+                      </div>
                     </div>
-                  </FadeInWhenVisible>
-                  <FadeInWhenVisible>
-                    <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6 text-gray-900 px-4">
-                      {feature.title}
-                    </h3>
-                  </FadeInWhenVisible>
-                  <FadeInWhenVisible>
-                    <p className="text-base sm:text-lg text-gray-600 mb-6 sm:mb-8 leading-relaxed px-4">
+                    
+                    {/* Decorative elements */}
+                    <div className="absolute -top-4 -right-4 w-24 h-24 bg-white/10 rounded-full blur-xl"></div>
+                    <div className="absolute -bottom-8 -left-8 w-32 h-32 bg-white/5 rounded-full blur-2xl"></div>
+                  </div>
+
+                  {/* Content */}
+                  <div className="p-6 sm:p-8">
+                    <p className="text-gray-600 mb-6 leading-relaxed">
                       {feature.desc}
                     </p>
-                  </FadeInWhenVisible>
-                  
-                  {/* Feature list */}
-                  <FadeInWhenVisible>
-                    <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-8 px-4">
-                      {feature.features.map((feat, featIdx) => (
-                        <div key={featIdx} className="flex items-center gap-2 sm:gap-3">
-                          <div className="w-5 h-5 sm:w-6 sm:h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    
+                    {/* Benefits list */}
+                    <div className="space-y-3 mb-6">
+                      {feature.benefits.map((benefit, benefitIdx) => (
+                        <div key={benefitIdx} className="flex items-start gap-3">
+                          <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
                             <Check className="h-3 w-3 text-green-600" />
                           </div>
-                          <span className="text-sm sm:text-base text-gray-700 font-medium">{feat}</span>
+                          <span className="text-sm text-gray-700 font-medium leading-relaxed">{benefit}</span>
                         </div>
                       ))}
                     </div>
-                  </FadeInWhenVisible>
 
+                    {/* CTA Button */}
+                    <button 
+                      onClick={() => scrollToSection('demo-section')}
+                      className={`w-full bg-gradient-to-r ${feature.gradient} text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg group-hover:shadow-xl`}
+                    >
+                      {feature.cta} →
+                    </button>
+                  </div>
 
+                  {/* Hover effect overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-transparent to-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
                 </div>
+              </FadeInWhenVisible>
+            ))}
+          </div>
 
-                {/* Image */}
-                <div className={`${feature.reverse ? 'md:order-1' : 'md:order-2'} px-4`}>
-                  <FadeInWhenVisible>
-                    <div className="relative">
-                      <div className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 shadow-lg border border-gray-100">
-                        <OptimizedImage
-                          src={feature.img}
-                          alt={`${feature.title} - Voorraadbeheer voor KMO's`}
-                          className="rounded-lg sm:rounded-xl w-full h-48 sm:h-64 md:h-80 object-contain"
-                          loading="lazy"
-                          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        />
-                      </div>
-                      
-                      {/* Floating elements */}
-                      <div className="absolute -top-2 -right-2 sm:-top-4 sm:-right-4 w-8 h-8 sm:w-12 sm:h-12 bg-blue-500 rounded-full flex items-center justify-center animate-bounce">
-                        <TrendingUp className="h-4 w-4 sm:h-6 sm:w-6 text-white" />
-                      </div>
-                      <div className="absolute -bottom-2 -left-2 sm:-bottom-4 sm:-left-4 w-8 h-8 sm:w-12 sm:h-12 bg-green-500 rounded-full flex items-center justify-center animate-pulse">
-                        <CheckCircle className="h-4 w-4 sm:h-6 sm:w-6 text-white" />
-                      </div>
-                    </div>
-                  </FadeInWhenVisible>
+          {/* Additional conversion elements */}
+          <FadeInWhenVisible delay={600}>
+            <div className="mt-16 text-center">
+              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-50 to-green-50 border border-blue-200 rounded-full px-6 py-3 mb-6">
+                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                <span className="text-gray-700 font-semibold">All features included in your free trial</span>
+              </div>
+              <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-600">
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-green-500" />
+                  <span>No setup fees</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-green-500" />
+                  <span>Cancel anytime</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-green-500" />
+                  <span>24/7 support</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-green-500" />
+                  <span>Data export included</span>
                 </div>
               </div>
             </div>
-          ))}
+          </FadeInWhenVisible>
         </div>
       </section>
 
@@ -1575,7 +1606,7 @@ export const HomePage = () => {
 
 
       {/* Demo Section */}
-      <section className="py-20 px-4 bg-white">
+      <section id="demo-section" className="py-20 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Left Side - Demo Content */}
