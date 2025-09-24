@@ -41,162 +41,190 @@
   
   <div id="root"></div>
   
-  <!-- Production-Optimized Translation Solution -->
-  <div id="google_translate_element" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999; display: block;"></div>
-  
+  <!-- Simple Auto-Translation Solution -->
   <script type="text/javascript">
-    // Production-Optimized Translation Implementation
+    // Simple, reliable auto-translation implementation
     (function() {
       'use strict';
       
-      let translationInitialized = false;
-      let translationStartTime = performance.now();
+      // Detect browser language
+      const browserLang = navigator.language || navigator.userLanguage;
+      const primaryLang = browserLang.split('-')[0];
+      
+      // Supported languages
+      const supportedLanguages = ['en', 'fr', 'de', 'es', 'it', 'pt', 'ru', 'ja', 'ko', 'zh', 'ar', 'hi', 'tr', 'pl', 'sv', 'da', 'no', 'fi', 'cs', 'hu', 'ro', 'bg', 'hr', 'sk', 'sl', 'et', 'lv', 'lt', 'mt', 'cy', 'ga', 'is', 'lb', 'eu', 'ca', 'gl'];
+      
+      console.log('🌐 Browser Language:', browserLang);
+      console.log('🔤 Primary Language:', primaryLang);
+      
+      // Always show translation options for testing and accessibility
       const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-      const isProduction = !isLocalhost && window.location.protocol === 'https:';
       
-      // Performance tracking
-      function trackTranslationEvent(event, data = {}) {
-        if (typeof gtag !== 'undefined') {
-          gtag('event', event, {
-            event_category: 'Translation',
-            event_label: data.language || 'unknown',
-            value: data.performance || 0,
-            ...data
+      if (isLocalhost) {
+        console.log('🏠 Localhost detected, showing compact translation widget');
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => showCompactTranslationWidget(), 1000);
           });
+        } else {
+          setTimeout(() => showCompactTranslationWidget(), 1000);
         }
-        
-        // Console logging for development
-        if (isLocalhost) {
-          console.log(`📊 Translation Event: ${event}`, data);
-        }
-      }
-      
-      // Optimized Google Translate initialization
-      function googleTranslateElementInit() {
-        if (translationInitialized) return;
-        translationInitialized = true;
-        
-        const initTime = performance.now() - translationStartTime;
-        trackTranslationEvent('translation_init', { performance: Math.round(initTime) });
-        
-        try {
-          // Initialize Google Translate with optimized settings
-          new google.translate.TranslateElement({
-            pageLanguage: 'nl',
-            includedLanguages: 'en,fr,de,es,it,pt,ru,ja,ko,zh,ar,hi,tr,pl,sv,da,no,fi,cs,hu,ro,bg,hr,sk,sl,et,lv,lt,mt,cy,ga,is,lb,eu,ca,gl',
-            layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-            autoDisplay: false,
-            multilanguagePage: true
-          }, 'google_translate_element');
+      } else {
+        // Production: Auto-translate if not Dutch
+        if (primaryLang !== 'nl' && supportedLanguages.includes(primaryLang)) {
+          console.log('🔄 Auto-translating to:', primaryLang);
           
-          trackTranslationEvent('translation_loaded', { performance: Math.round(initTime) });
-          
-          // Auto-translate logic with performance optimization
-          if (isProduction) {
-            const browserLang = navigator.language || navigator.userLanguage;
-            const primaryLang = browserLang.split('-')[0];
-            const supportedLanguages = ['en', 'fr', 'de', 'es', 'it', 'pt', 'ru', 'ja', 'ko', 'zh', 'ar', 'hi', 'tr', 'pl', 'sv', 'da', 'no', 'fi', 'cs', 'hu', 'ro', 'bg', 'hr', 'sk', 'sl', 'et', 'lv', 'lt', 'mt', 'cy', 'ga', 'is', 'lb', 'eu', 'ca', 'gl'];
-            
-            // Auto-translate if not Dutch and supported
-            if (primaryLang !== 'nl' && supportedLanguages.includes(primaryLang)) {
-              trackTranslationEvent('auto_translate_triggered', { language: primaryLang });
-              
-              // Optimized element waiting with timeout
-              let attempts = 0;
-              const maxAttempts = 20; // 10 seconds max
-              
-              const waitForElement = () => {
-                attempts++;
-                const selectElement = document.querySelector('.goog-te-combo');
-                
-                if (selectElement && selectElement.options.length > 1) {
-                  selectElement.value = primaryLang;
-                  selectElement.dispatchEvent(new Event('change'));
-                  
-                  trackTranslationEvent('auto_translate_completed', { 
-                    language: primaryLang,
-                    performance: Math.round(performance.now() - translationStartTime)
-                  });
-                  
-                  // Update page metadata for SEO
-                  updatePageMetadata(primaryLang);
-                  
-                } else if (attempts < maxAttempts) {
-                  setTimeout(waitForElement, 500);
-                } else {
-                  trackTranslationEvent('auto_translate_failed', { language: primaryLang });
-                }
-              };
-              
-              setTimeout(waitForElement, 1000);
-            } else {
-              trackTranslationEvent('no_auto_translate', { reason: 'dutch_or_unsupported' });
-            }
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+              setTimeout(() => autoTranslate(primaryLang), 1000);
+            });
+          } else {
+            setTimeout(() => autoTranslate(primaryLang), 1000);
           }
-          
-        } catch (error) {
-          trackTranslationEvent('translation_error', { error: error.message });
-          console.error('❌ Google Translate initialization failed:', error);
+        } else {
+          console.log('🇳🇱 Dutch browser, showing compact translation widget');
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+              setTimeout(() => showCompactTranslationWidget(), 1000);
+            });
+          } else {
+            setTimeout(() => showCompactTranslationWidget(), 1000);
+          }
         }
       }
       
-      // SEO optimization for translated pages
-      function updatePageMetadata(language) {
-        if (!isProduction) return;
+      // Simple auto-translate function
+      function autoTranslate(targetLang) {
+        const currentUrl = window.location.href;
+        const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
         
-        const langNames = {
-          'en': 'English', 'fr': 'Français', 'de': 'Deutsch', 'es': 'Español',
-          'it': 'Italiano', 'pt': 'Português', 'ru': 'Русский', 'ja': '日本語',
-          'ko': '한국어', 'zh': '中文', 'ar': 'العربية', 'hi': 'हिन्दी'
-        };
-        
-        // Update HTML lang attribute
-        document.documentElement.lang = language;
-        
-        // Update meta description for SEO
-        const metaDescription = document.querySelector('meta[name="description"]');
-        if (metaDescription && langNames[language]) {
-          const originalDesc = metaDescription.content;
-          metaDescription.content = `[${langNames[language]}] ${originalDesc}`;
+        if (isLocalhost) {
+          console.log('🏠 Localhost detected, showing translation options');
+          showLocalhostTranslation(targetLang);
+        } else {
+          console.log('🌐 Production environment, redirecting to Google Translate');
+          
+          // Redirect to Google Translate
+          const translateUrl = `https://translate.google.com/translate?sl=auto&tl=${targetLang}&u=${encodeURIComponent(currentUrl)}`;
+          window.location.href = translateUrl;
         }
-        
-        trackTranslationEvent('seo_metadata_updated', { language });
       }
-    
-      // Show inline translation interface
-      function showInlineTranslation(language) {
-        console.log('🌐 Creating inline translation interface for:', language);
-        
-        // Create translation overlay
-        const overlay = document.createElement('div');
-        overlay.id = 'inline-translation-overlay';
-        overlay.innerHTML = `
+      
+      // Compact translation widget with small button first
+      function showCompactTranslationWidget() {
+        const widget = document.createElement('div');
+        widget.id = 'translation-widget';
+        widget.innerHTML = `
           <div style="
             position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            border-radius: 16px;
-            padding: 24px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            z-index: 10000;
-            max-width: 500px;
-            width: 90%;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
           ">
-            <div style="text-align: center; margin-bottom: 20px;">
-              <h3 style="margin: 0 0 8px 0; color: #1a1a1a; font-size: 20px;">
-                🌐 Translation Options
-              </h3>
-              <p style="margin: 0; color: #666; font-size: 14px;">
-                Choose how you'd like to translate this page to ${getLanguageName(language)}
-              </p>
-            </div>
+            <!-- Small translate button -->
+            <div id="translate-btn-small" style="
+              background: #4285f4;
+              color: white;
+              border: none;
+              border-radius: 50px;
+              padding: 12px 16px;
+              cursor: pointer;
+              box-shadow: 0 4px 12px rgba(66, 133, 244, 0.3);
+              font-size: 14px;
+              font-weight: 600;
+              display: flex;
+              align-items: center;
+              gap: 8px;
+              transition: all 0.2s ease;
+            ">🌐 Translate</div>
             
-            <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px;">
-              <button id="translate-google-btn" style="
-                padding: 12px 16px;
+            <!-- Full modal (hidden initially) -->
+            <div id="translate-modal" style="
+              display: none;
+              background: #fff;
+              border: 1px solid #ddd;
+              border-radius: 12px;
+              padding: 20px;
+              box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+              margin-top: 8px;
+              min-width: 280px;
+              max-width: 320px;
+            ">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <div style="font-weight: bold; color: #333; font-size: 16px;">
+                  🌐 Translate Page
+                </div>
+                <button id="close-modal" style="
+                  background: none;
+                  border: none;
+                  font-size: 20px;
+                  cursor: pointer;
+                  color: #666;
+                  padding: 0;
+                  width: 24px;
+                  height: 24px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  border-radius: 50%;
+                ">×</button>
+              </div>
+              
+              <div style="margin-bottom: 16px;">
+                <select id="language-select" style="
+                  width: 100%;
+                  padding: 10px;
+                  border: 2px solid #e1e5e9;
+                  border-radius: 8px;
+                  font-size: 14px;
+                  background: #fff;
+                  cursor: pointer;
+                ">
+                  <option value="nl">🇳🇱 Nederlands</option>
+                  <option value="en">🇺🇸 English</option>
+                  <option value="fr">🇫🇷 Français</option>
+                  <option value="de">🇩🇪 Deutsch</option>
+                  <option value="es">🇪🇸 Español</option>
+                  <option value="it">🇮🇹 Italiano</option>
+                  <option value="pt">🇵🇹 Português</option>
+                  <option value="ru">🇷🇺 Русский</option>
+                  <option value="ja">🇯🇵 日本語</option>
+                  <option value="ko">🇰🇷 한국어</option>
+                  <option value="zh">🇨🇳 中文</option>
+                  <option value="ar">🇸🇦 العربية</option>
+                  <option value="hi">🇮🇳 हिन्दी</option>
+                  <option value="tr">🇹🇷 Türkçe</option>
+                  <option value="pl">🇵🇱 Polski</option>
+                  <option value="sv">🇸🇪 Svenska</option>
+                  <option value="da">🇩🇰 Dansk</option>
+                  <option value="no">🇳🇴 Norsk</option>
+                  <option value="fi">🇫🇮 Suomi</option>
+                  <option value="cs">🇨🇿 Čeština</option>
+                  <option value="hu">🇭🇺 Magyar</option>
+                  <option value="ro">🇷🇴 Română</option>
+                  <option value="bg">🇧🇬 Български</option>
+                  <option value="hr">🇭🇷 Hrvatski</option>
+                  <option value="sk">🇸🇰 Slovenčina</option>
+                  <option value="sl">🇸🇮 Slovenščina</option>
+                  <option value="et">🇪🇪 Eesti</option>
+                  <option value="lv">🇱🇻 Latviešu</option>
+                  <option value="lt">🇱🇹 Lietuvių</option>
+                  <option value="mt">🇲🇹 Malti</option>
+                  <option value="cy">🇬🇧 Cymraeg</option>
+                  <option value="ga">🇮🇪 Gaeilge</option>
+                  <option value="is">🇮🇸 Íslenska</option>
+                  <option value="lb">🇱🇺 Lëtzebuergesch</option>
+                  <option value="eu">🇪🇸 Euskera</option>
+                  <option value="ca">🇪🇸 Català</option>
+                  <option value="gl">🇪🇸 Galego</option>
+                </select>
+              </div>
+              
+              <button id="translate-btn" style="
+                width: 100%;
+                padding: 12px;
                 background: #4285f4;
                 color: white;
                 border: none;
@@ -204,223 +232,110 @@
                 font-size: 14px;
                 font-weight: 600;
                 cursor: pointer;
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                justify-content: center;
-              ">
-                🔗 Open in Google Translate
-              </button>
+                transition: all 0.2s ease;
+              ">Translate Page</button>
               
-              <button id="translate-browser-btn" style="
-                padding: 12px 16px;
-                background: #34a853;
-                color: white;
-                border: none;
-                border-radius: 8px;
-                font-size: 14px;
-                font-weight: 600;
-                cursor: pointer;
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                justify-content: center;
+              <div style="
+                margin-top: 12px;
+                padding: 10px;
+                background: #f8f9fa;
+                border-radius: 6px;
+                font-size: 12px;
+                color: #666;
+                text-align: center;
+                line-height: 1.4;
               ">
-                🌐 Use Browser Translation
-              </button>
-              
-              <button id="translate-copy-btn" style="
-                padding: 12px 16px;
-                background: #6c757d;
-                color: white;
-                border: none;
-                border-radius: 8px;
-                font-size: 14px;
-                font-weight: 600;
-                cursor: pointer;
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                justify-content: center;
-              ">
-                📋 Copy URL for Translation
-              </button>
+                <strong>Translation Options</strong><br>
+                Opens Google Translate in new tab
+              </div>
             </div>
-            
-            <button id="close-translation-overlay" style="
-              position: absolute;
-              top: 12px;
-              right: 12px;
-              background: none;
-              border: none;
-              font-size: 20px;
-              cursor: pointer;
-              color: #666;
-              width: 32px;
-              height: 32px;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              border-radius: 50%;
-            ">×</button>
           </div>
         `;
         
-        document.body.appendChild(overlay);
+        document.body.appendChild(widget);
         
-        // Add event listeners
-        document.getElementById('translate-google-btn').addEventListener('click', () => {
-          const translateUrl = `https://translate.google.com/translate?sl=auto&tl=${language}&u=${encodeURIComponent(window.location.href)}`;
+        // Set default language based on browser
+        const select = document.getElementById('language-select');
+        const browserLang = navigator.language || navigator.userLanguage;
+        const primaryLang = browserLang.split('-')[0];
+        
+        if (primaryLang !== 'nl' && supportedLanguages.includes(primaryLang)) {
+          select.value = primaryLang;
+        } else {
+          select.value = 'en'; // Default to English for testing
+        }
+        
+        // Event listeners
+        const smallBtn = document.getElementById('translate-btn-small');
+        const modal = document.getElementById('translate-modal');
+        const closeBtn = document.getElementById('close-modal');
+        const translateBtn = document.getElementById('translate-btn');
+        
+        // Toggle modal
+        smallBtn.addEventListener('click', () => {
+          const isVisible = modal.style.display !== 'none';
+          modal.style.display = isVisible ? 'none' : 'block';
+          smallBtn.textContent = isVisible ? '🌐 Translate' : '✕ Close';
+        });
+        
+        // Close modal
+        closeBtn.addEventListener('click', () => {
+          modal.style.display = 'none';
+          smallBtn.textContent = '🌐 Translate';
+        });
+        
+        // Translate button
+        translateBtn.addEventListener('click', () => {
+          const selectedLang = select.value;
+          const translateUrl = `https://translate.google.com/translate?sl=auto&tl=${selectedLang}&u=${encodeURIComponent(window.location.href)}`;
           window.open(translateUrl, '_blank');
-          overlay.remove();
+          
+          // Close modal after translation
+          modal.style.display = 'none';
+          smallBtn.textContent = '🌐 Translate';
         });
         
-        document.getElementById('translate-browser-btn').addEventListener('click', () => {
-          // Try to use browser's built-in translation
-          if (window.navigator && window.navigator.language) {
-            alert('🌐 Browser translation: Right-click on the page and select "Translate to ${getLanguageName(language)}" or use your browser\'s translation feature.');
-          }
-          overlay.remove();
+        // Hover effects
+        smallBtn.addEventListener('mouseenter', () => {
+          smallBtn.style.transform = 'translateY(-2px)';
+          smallBtn.style.boxShadow = '0 6px 16px rgba(66, 133, 244, 0.4)';
         });
         
-        document.getElementById('translate-copy-btn').addEventListener('click', () => {
-          const translateUrl = `https://translate.google.com/translate?sl=auto&tl=${language}&u=${encodeURIComponent(window.location.href)}`;
-          navigator.clipboard.writeText(translateUrl).then(() => {
-            alert('✅ Translation URL copied to clipboard!');
-          });
-          overlay.remove();
-        });
-        
-        document.getElementById('close-translation-overlay').addEventListener('click', () => {
-          overlay.remove();
-        });
-        
-        // Close on background click
-        overlay.addEventListener('click', (e) => {
-          if (e.target === overlay) {
-            overlay.remove();
-          }
+        smallBtn.addEventListener('mouseleave', () => {
+          smallBtn.style.transform = 'translateY(0)';
+          smallBtn.style.boxShadow = '0 4px 12px rgba(66, 133, 244, 0.3)';
         });
       }
       
-      // Show translation help message
-      function showTranslationHelp(language) {
-        const helpDiv = document.createElement('div');
-        helpDiv.id = 'translation-help';
-        helpDiv.innerHTML = `
-          <div style="
-            position: fixed;
-            bottom: 80px;
-            right: 20px;
-            background: #f8f9fa;
-            border: 1px solid #e9ecef;
-            border-radius: 8px;
-            padding: 12px;
-            font-size: 12px;
-            color: #6c757d;
-            max-width: 250px;
-            z-index: 10001;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-          ">
-            <strong>💡 Translation Tip:</strong><br>
-            If Google Translate doesn't work, try:<br>
-            • Right-click → "Translate"<br>
-            • Use browser translation<br>
-            • Copy URL to translate manually
-            <button onclick="this.parentElement.parentElement.remove()" style="
-              position: absolute;
-              top: 4px;
-              right: 4px;
-              background: none;
-              border: none;
-              font-size: 14px;
-              cursor: pointer;
-              color: #999;
-            ">×</button>
-          </div>
-        `;
-        
-        document.body.appendChild(helpDiv);
-        
-        // Auto-remove after 10 seconds
-        setTimeout(() => {
-          if (helpDiv.parentElement) {
-            helpDiv.remove();
-          }
-        }, 10000);
-      }
-      
-      // Get language name from code
-      function getLanguageName(code) {
-        const names = {
-          'en': 'English', 'fr': 'Français', 'de': 'Deutsch', 'es': 'Español',
-          'it': 'Italiano', 'pt': 'Português', 'ru': 'Русский', 'ja': '日本語',
-          'ko': '한국어', 'zh': '中文', 'ar': 'العربية', 'hi': 'हिन्दी',
-          'tr': 'Türkçe', 'pl': 'Polski', 'sv': 'Svenska', 'da': 'Dansk',
-          'no': 'Norsk', 'fi': 'Suomi', 'cs': 'Čeština', 'hu': 'Magyar'
-        };
-        return names[code] || code.toUpperCase();
-      }
-      
-      // Enhanced localhost fallback with production-like features
-      function createLocalhostFallback() {
-        trackTranslationEvent('localhost_fallback_created');
-        
-        const widget = document.getElementById('google_translate_element');
-        if (!widget) return;
-        
-        // Ensure widget is visible with important overrides
-        widget.style.setProperty('display', 'block', 'important');
-        widget.style.setProperty('visibility', 'visible', 'important');
-        widget.style.setProperty('opacity', '1', 'important');
-        widget.style.setProperty('position', 'fixed', 'important');
-        widget.style.setProperty('bottom', '20px', 'important');
-        widget.style.setProperty('right', '20px', 'important');
-        widget.style.setProperty('z-index', '9999', 'important');
-        
+      // Localhost translation widget (legacy)
+      function showLocalhostTranslation(targetLang) {
+        const widget = document.createElement('div');
+        widget.id = 'translation-widget';
         widget.innerHTML = `
           <div style="
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
             background: #fff;
-            border: 1px solid #e1e5e9;
-            border-radius: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
             padding: 16px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.12);
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 9999;
+            font-family: Arial, sans-serif;
             font-size: 14px;
-            min-width: 240px;
-            max-width: 320px;
-            display: block !important;
-            visibility: visible !important;
-            opacity: 1 !important;
-            backdrop-filter: blur(10px);
+            max-width: 300px;
           ">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-              <div style="font-weight: 600; color: #1a1a1a; display: flex; align-items: center; gap: 8px; font-size: 15px;">
-                🌐 Translate Page
-              </div>
-              <div style="
-                background: linear-gradient(135deg, #4285f4, #34a853);
-                color: white;
-                padding: 4px 8px;
-                border-radius: 12px;
-                font-size: 10px;
-                font-weight: 600;
-                text-transform: uppercase;
-                letter-spacing: 0.5px;
-              ">DEV</div>
+            <div style="margin-bottom: 12px; font-weight: bold; color: #333;">
+              🌐 Translate Page
             </div>
-            
-            <div style="margin-bottom: 16px;">
-              <select id="localhost-language-selector" style="
+            <div style="margin-bottom: 12px;">
+              <select id="language-select" style="
                 width: 100%;
-                padding: 12px;
-                border: 2px solid #e1e5e9;
-                border-radius: 8px;
+                padding: 8px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
                 font-size: 14px;
-                background: #fff;
-                cursor: pointer;
-                transition: border-color 0.2s ease;
-                font-family: inherit;
               ">
                 <option value="nl">🇳🇱 Nederlands</option>
                 <option value="en">🇺🇸 English</option>
@@ -461,211 +376,84 @@
                 <option value="gl">🇪🇸 Galego</option>
               </select>
             </div>
-            
-            <div style="margin-bottom: 16px;">
-              <button id="localhost-translate-button" style="
-                width: 100%;
-                padding: 12px 16px;
-                background: linear-gradient(135deg, #4285f4, #34a853);
-                color: white;
-                border: none;
-                border-radius: 8px;
-                font-size: 14px;
-                font-weight: 600;
-                cursor: pointer;
-                transition: all 0.2s ease;
-                box-shadow: 0 4px 12px rgba(66, 133, 244, 0.3);
-                font-family: inherit;
-              ">Translate Page</button>
-            </div>
-            
+            <button id="translate-btn" style="
+              width: 100%;
+              padding: 10px;
+              background: #4285f4;
+              color: white;
+              border: none;
+              border-radius: 4px;
+              font-size: 14px;
+              font-weight: 600;
+              cursor: pointer;
+            ">Translate Page</button>
             <div style="
-              padding: 12px;
-              background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-              border-radius: 8px;
+              margin-top: 8px;
+              padding: 8px;
+              background: #f8f9fa;
+              border-radius: 4px;
               font-size: 12px;
-              color: #6c757d;
+              color: #666;
               text-align: center;
-              border-left: 4px solid #4285f4;
-              line-height: 1.4;
             ">
               <strong>Development Mode</strong><br>
-              <span style="font-size: 11px;">Translation opens in new tab for testing</span>
+              Translation opens in new tab
             </div>
           </div>
-          
-          <style>
-            #localhost-language-selector:focus {
-              border-color: #4285f4 !important;
-              outline: none;
-              box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.1) !important;
-            }
-            
-            #localhost-translate-button:hover {
-              transform: translateY(-1px);
-              box-shadow: 0 6px 16px rgba(66, 133, 244, 0.4) !important;
-            }
-            
-            #localhost-translate-button:active {
-              transform: translateY(0);
-            }
-          </style>
         `;
         
-        // Enhanced event listeners with analytics
-        const selector = document.getElementById('localhost-language-selector');
-        const button = document.getElementById('localhost-translate-button');
+        document.body.appendChild(widget);
         
-        if (selector && button) {
-          button.addEventListener('click', () => {
-            const selectedLang = selector.value;
-            trackTranslationEvent('manual_translate_clicked', { language: selectedLang });
-            
-            // Try multiple translation methods for better compatibility
-            const currentUrl = window.location.href;
-            const methods = [
-              // Method 1: Google Translate with different URL format
-              `https://translate.google.com/translate?sl=auto&tl=${selectedLang}&u=${encodeURIComponent(currentUrl)}`,
-              
-              // Method 2: Alternative Google Translate URL
-              `https://translate.google.com/?sl=auto&tl=${selectedLang}&text=${encodeURIComponent(currentUrl)}`,
-              
-              // Method 3: Browser-based translation (if supported)
-              null // Will be handled below
-            ];
-            
-            // Try browser translation first (if available)
-            if (selectedLang !== 'nl' && window.navigator && window.navigator.language) {
-              try {
-                // Check if browser supports translation
-                if (window.navigator.language !== selectedLang) {
-                  console.log('🌐 Attempting browser-based translation...');
-                  
-                  // Create a simple translation interface
-                  showInlineTranslation(selectedLang);
-                  return;
-                }
-              } catch (error) {
-                console.log('Browser translation not available, using Google Translate');
-              }
-            }
-            
-            // Fallback to Google Translate
-            const translateUrl = methods[0];
-            console.log('🔄 Opening Google Translate:', translateUrl);
-            window.open(translateUrl, '_blank');
-            
-            // Show helpful message
-            showTranslationHelp(selectedLang);
-          });
-          
-          // Set browser language as default if not Dutch
-          const browserLang = navigator.language || navigator.userLanguage;
-          const primaryLang = browserLang.split('-')[0];
-          const supportedLanguages = ['en', 'fr', 'de', 'es', 'it', 'pt', 'ru', 'ja', 'ko', 'zh', 'ar', 'hi', 'tr', 'pl', 'sv', 'da', 'no', 'fi', 'cs', 'hu', 'ro', 'bg', 'hr', 'sk', 'sl', 'et', 'lv', 'lt', 'mt', 'cy', 'ga', 'is', 'lb', 'eu', 'ca', 'gl'];
-          
-          if (primaryLang !== 'nl' && supportedLanguages.includes(primaryLang)) {
-            selector.value = primaryLang;
-            trackTranslationEvent('browser_language_detected', { language: primaryLang });
-          }
-        }
-      }
-    
-      // Production-optimized loading strategy
-      function initializeTranslation() {
-        if (isLocalhost) {
-          trackTranslationEvent('localhost_mode_initialized');
-          // Immediate loading for localhost to avoid timing issues
-          setTimeout(createLocalhostFallback, 100);
-        } else {
-          trackTranslationEvent('production_mode_initialized');
-          
-          // Load Google Translate script with performance optimization
-          const script = document.createElement('script');
-          script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-          script.async = true;
-          script.crossOrigin = 'anonymous';
-          script.defer = true;
-          
-          // Enhanced error handling
-          script.onerror = () => {
-            trackTranslationEvent('google_translate_load_failed', { reason: 'script_error' });
-            createLocalhostFallback();
-          };
-          
-          script.onload = () => {
-            trackTranslationEvent('google_translate_script_loaded');
-          };
-          
-          // Add script to head with priority
-          document.head.appendChild(script);
-          
-          // Fallback timeout with progressive enhancement
-          let fallbackTimeout = setTimeout(() => {
-            if (!window.google || !window.google.translate) {
-              trackTranslationEvent('google_translate_timeout_fallback');
-              createLocalhostFallback();
-            }
-          }, 8000); // Increased timeout for better reliability
-          
-          // Clear timeout if Google Translate loads successfully
-          const checkGoogleTranslate = setInterval(() => {
-            if (window.google && window.google.translate) {
-              clearTimeout(fallbackTimeout);
-              clearInterval(checkGoogleTranslate);
-            }
-          }, 100);
-        }
-      }
-      
-      // Initialize with performance tracking
-      const startTime = performance.now();
-      trackTranslationEvent('translation_system_start', { 
-        environment: isLocalhost ? 'localhost' : 'production',
-        protocol: window.location.protocol 
-      });
-      
-      // Start initialization
-      initializeTranslation();
-      
-      // Fallback check for localhost - ensure widget is created
-      if (isLocalhost) {
-        setTimeout(() => {
-          const widget = document.getElementById('google_translate_element');
-          const selector = document.getElementById('localhost-language-selector');
-          
-          if (!widget || !selector) {
-            console.log('🔄 Widget not found, retrying...');
-            createLocalhostFallback();
-          } else {
-            console.log('✅ Localhost widget confirmed working');
-          }
-        }, 2000);
-      }
-      
-      // Performance monitoring
-      setTimeout(() => {
-        const totalTime = performance.now() - startTime;
-        trackTranslationEvent('translation_system_ready', { 
-          total_load_time: Math.round(totalTime) 
+        // Set default language
+        const select = document.getElementById('language-select');
+        select.value = targetLang;
+        
+        // Add click event
+        document.getElementById('translate-btn').addEventListener('click', () => {
+          const selectedLang = select.value;
+          const translateUrl = `https://translate.google.com/translate?sl=auto&tl=${selectedLang}&u=${encodeURIComponent(window.location.href)}`;
+          window.open(translateUrl, '_blank');
         });
-      }, 1000);
+      }
       
-    })(); // End of IIFE
+    })();
   </script>
   
-  <!-- Development Debug Script (localhost only) -->
+  <!-- Simple Debug Script (localhost only) -->
   <script type="text/javascript">
     if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-      const debugScript = document.createElement('script');
-      debugScript.src = '/debug-translation.js';
-      debugScript.defer = true;
-      document.head.appendChild(debugScript);
+      // Simple debug function
+      window.debugTranslation = function() {
+        console.log('🧪 Translation Debug Info');
+        console.log('='.repeat(40));
+        console.log('Browser Language:', navigator.language);
+        console.log('Primary Language:', navigator.language.split('-')[0]);
+        console.log('Is Localhost:', true);
+        console.log('Translation Widget:', !!document.getElementById('translation-widget'));
+        console.log('Language Select:', !!document.getElementById('language-select'));
+        console.log('Translate Button:', !!document.getElementById('translate-btn'));
+        console.log('='.repeat(40));
+      };
       
-      const testScript = document.createElement('script');
-      testScript.src = '/test-translation.js';
-      testScript.defer = true;
-      document.head.appendChild(testScript);
+      // Manual widget test function
+      window.showTranslationWidget = function() {
+        console.log('🔧 Manually showing compact translation widget...');
+        
+        // Remove existing widget if any
+        const existing = document.getElementById('translation-widget');
+        if (existing) {
+          existing.remove();
+        }
+        
+        // Show compact widget
+        showCompactTranslationWidget();
+        
+        console.log('✅ Compact translation widget shown');
+      };
+      
+      console.log('🔧 Debug functions available:');
+      console.log('  - window.debugTranslation()');
+      console.log('  - window.showTranslationWidget()');
     }
   </script>
   
