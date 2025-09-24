@@ -1055,7 +1055,7 @@ export const HomePage = () => {
               <div className="flex flex-col sm:flex-row gap-3 xs:gap-4 sm:gap-6 lg:gap-8 mb-4 xs:mb-6 sm:mb-10 lg:mb-12 max-w-3xl mx-auto lg:mx-0 justify-center">
                 <Link
                   to="/auth"
-                  className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-6 xs:px-8 sm:px-10 lg:px-12 xl:px-16 py-4 xs:py-5 sm:py-6 lg:py-7 xl:py-5 rounded-xl font-bold text-lg xs:text-xl sm:text-2xl lg:text-2xl xl:text-lg transition-all duration-300 transform hover:scale-105 shadow-2xl text-center flex items-center justify-center relative overflow-hidden group"
+                  className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-4 xs:px-6 sm:px-10 lg:px-12 xl:px-16 py-3 xs:py-4 sm:py-6 lg:py-7 xl:py-5 rounded-xl font-bold text-sm xs:text-base sm:text-2xl lg:text-2xl xl:text-lg transition-all duration-300 transform hover:scale-105 shadow-2xl text-center flex items-center justify-center relative overflow-hidden group"
                 >
                   <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></span>
                   <span className="relative z-10 flex items-center">
@@ -1064,7 +1064,7 @@ export const HomePage = () => {
                 </Link>
                 <Link
                   to="/demo"
-                  className="border-2 border-white text-white hover:bg-white hover:text-blue-900 px-6 xs:px-8 sm:px-10 lg:px-12 xl:px-16 py-4 xs:py-5 sm:py-6 lg:py-7 xl:py-5 rounded-xl font-bold text-lg xs:text-xl sm:text-2xl lg:text-2xl xl:text-lg transition-all duration-300 text-center flex items-center justify-center"
+                  className="border-2 border-white text-white hover:bg-white hover:text-blue-900 px-4 xs:px-6 sm:px-10 lg:px-12 xl:px-16 py-3 xs:py-4 sm:py-6 lg:py-7 xl:py-5 rounded-xl font-bold text-sm xs:text-base sm:text-2xl lg:text-2xl xl:text-lg transition-all duration-300 text-center flex items-center justify-center"
                 >
                   ▶️ See How It Works (2 min)
                 </Link>
