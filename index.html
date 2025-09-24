@@ -20,9 +20,9 @@
   <meta name="description" content="Ontdek hoe stockflow jou helpt bij het beheren van jouw voorraad, Efficiënt en Gratis. Probeer het nu!" />
   <meta http-equiv="Content-Security-Policy" content="
     default-src 'self';
-    connect-src 'self' https://sszuxnqhbxauvershuys.supabase.co wss://sszuxnqhbxauvershuys.supabase.co https://www.google-analytics.com https://www.google.com https://www.googletagmanager.com https://googleads.g.doubleclick.net https://www.googleadservices.com https://api.stripe.com https://checkout.stripe.com https://api.ipify.org https://translate.googleapis.com https://translate.google.com https://clients5.google.com;
-    script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://www.google.com https://js.stripe.com https://translate.googleapis.com https://translate.google.com https://cdn.gtranslate.net https://clients5.google.com;
-    frame-src 'self' https://www.googletagmanager.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://www.google.com https://td.doubleclick.net https://checkout.stripe.com https://js.stripe.com https://translate.googleapis.com https://translate.google.com https://clients5.google.com;
+    connect-src 'self' https://sszuxnqhbxauvershuys.supabase.co wss://sszuxnqhbxauvershuys.supabase.co https://www.google-analytics.com https://www.google.com https://www.googletagmanager.com https://googleads.g.doubleclick.net https://www.googleadservices.com https://api.stripe.com https://checkout.stripe.com https://api.ipify.org https://translate.googleapis.com https://translate.google.com https://clients5.google.com *.google.com;
+    script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://www.google.com https://js.stripe.com https://translate.googleapis.com https://translate.google.com https://cdn.gtranslate.net https://clients5.google.com *.google.com;
+    frame-src 'self' https://www.googletagmanager.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://www.google.com https://td.doubleclick.net https://checkout.stripe.com https://js.stripe.com https://translate.googleapis.com https://translate.google.com https://clients5.google.com *.google.com;
     font-src 'self' https://fonts.gstatic.com https://fonts.googleapis.com;
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
     img-src 'self' data: https:;
@@ -254,11 +254,24 @@
       script.crossOrigin = 'anonymous';
       
       script.onerror = () => {
-        console.log('🏠 Localhost detected - using fallback translation widget');
+        console.log('⚠️ Google Translate blocked by CSP, using fallback translation widget');
         createLocalhostFallback();
       };
       
+      // Also check for CSP violations
+      script.onload = () => {
+        console.log('✅ Google Translate loaded successfully');
+      };
+      
       document.head.appendChild(script);
+      
+      // Fallback timeout in case CSP blocks the script silently
+      setTimeout(() => {
+        if (!window.google || !window.google.translate) {
+          console.log('⚠️ Google Translate failed to load, using fallback translation widget');
+          createLocalhostFallback();
+        }
+      }, 5000);
     }
   </script>
   
