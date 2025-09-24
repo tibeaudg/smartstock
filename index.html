@@ -41,423 +41,322 @@
   
   <div id="root"></div>
   
-  <!-- Simple Auto-Translation Solution -->
+  <!-- Translation Solution -->
   <script type="text/javascript">
-    // Simple, reliable auto-translation implementation
+    // Translation implementation - page stays English until user chooses language
     (function() {
       'use strict';
       
-      // Detect browser language
-      const browserLang = navigator.language || navigator.userLanguage;
-      const primaryLang = browserLang.split('-')[0];
-      
-      // Supported languages
-      const supportedLanguages = ['en', 'fr', 'de', 'es', 'it', 'pt', 'ru', 'ja', 'ko', 'zh', 'ar', 'hi', 'tr', 'pl', 'sv', 'da', 'no', 'fi', 'cs', 'hu', 'ro', 'bg', 'hr', 'sk', 'sl', 'et', 'lv', 'lt', 'mt', 'cy', 'ga', 'is', 'lb', 'eu', 'ca', 'gl'];
-      
-      console.log('🌐 Browser Language:', browserLang);
-      console.log('🔤 Primary Language:', primaryLang);
-      
-      // Always show translation options for testing and accessibility
+      // Detect environment
       const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+      const isProduction = !isLocalhost && window.location.protocol === 'https:';
       
-      if (isLocalhost) {
-        console.log('🏠 Localhost detected, showing compact translation widget');
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', () => {
-            setTimeout(() => showCompactTranslationWidget(), 1000);
-          });
-        } else {
-          setTimeout(() => showCompactTranslationWidget(), 1000);
-        }
+      console.log('🌐 Translation System Initialized');
+      console.log('🏠 Is Localhost:', isLocalhost);
+      console.log('🚀 Is Production:', isProduction);
+      console.log('📄 Page Language: English (default)');
+      
+      // Initialize translation system
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+          setTimeout(() => initializeTranslation(), 1000);
+        });
       } else {
-        // Production: Auto-translate if not Dutch
-        if (primaryLang !== 'nl' && supportedLanguages.includes(primaryLang)) {
-          console.log('🔄 Auto-translating to:', primaryLang);
-          
-          if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => {
-              setTimeout(() => autoTranslate(primaryLang), 1000);
-            });
-          } else {
-            setTimeout(() => autoTranslate(primaryLang), 1000);
-          }
-        } else {
-          console.log('🇳🇱 Dutch browser, showing compact translation widget');
-          if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => {
-              setTimeout(() => showCompactTranslationWidget(), 1000);
-            });
-          } else {
-            setTimeout(() => showCompactTranslationWidget(), 1000);
-          }
-        }
+        setTimeout(() => initializeTranslation(), 1000);
       }
       
-      // Simple auto-translate function
-      function autoTranslate(targetLang) {
-        const currentUrl = window.location.href;
-        const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+      // Initialize translation system
+      function initializeTranslation() {
+        console.log('🔧 Initializing translation system...');
         
-        if (isLocalhost) {
-          console.log('🏠 Localhost detected, showing translation options');
-          showLocalhostTranslation(targetLang);
+        if (isProduction) {
+          console.log('🚀 Loading Google Translate for production...');
+          loadGoogleTranslate();
         } else {
-          console.log('🌐 Production environment, redirecting to Google Translate');
-          
-          // Redirect to Google Translate
-          const translateUrl = `https://translate.google.com/translate?sl=auto&tl=${targetLang}&u=${encodeURIComponent(currentUrl)}`;
-          window.location.href = translateUrl;
+          console.log('🏠 Creating localhost translation widget...');
+          createLocalhostTranslationWidget();
         }
       }
       
-      // Compact translation widget with small button first
-      function showCompactTranslationWidget() {
-        const widget = document.createElement('div');
-        widget.id = 'translation-widget';
-        widget.innerHTML = `
-          <div style="
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 9999;
-            font-family: Arial, sans-serif;
-            font-size: 14px;
-          ">
-            <!-- Small translate button -->
-            <div id="translate-btn-small" style="
-              background: #4285f4;
-              color: white;
-              border: none;
-              border-radius: 50px;
-              padding: 12px 16px;
-              cursor: pointer;
-              box-shadow: 0 4px 12px rgba(66, 133, 244, 0.3);
-              font-size: 14px;
-              font-weight: 600;
-              display: flex;
-              align-items: center;
-              gap: 8px;
-              transition: all 0.2s ease;
-            ">🌐 Translate</div>
-            
-            <!-- Full modal (hidden initially) -->
-            <div id="translate-modal" style="
-              display: none;
-              background: #fff;
-              border: 1px solid #ddd;
-              border-radius: 12px;
-              padding: 20px;
-              box-shadow: 0 8px 32px rgba(0,0,0,0.15);
-              margin-top: 8px;
-              min-width: 280px;
-              max-width: 320px;
-            ">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                <div style="font-weight: bold; color: #333; font-size: 16px;">
-                  🌐 Translate Page
-                </div>
-                <button id="close-modal" style="
-                  background: none;
-                  border: none;
-                  font-size: 20px;
-                  cursor: pointer;
-                  color: #666;
-                  padding: 0;
-                  width: 24px;
-                  height: 24px;
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                  border-radius: 50%;
-                ">×</button>
-              </div>
-              
-              <div style="margin-bottom: 16px;">
-                <select id="language-select" style="
-                  width: 100%;
-                  padding: 10px;
-                  border: 2px solid #e1e5e9;
-                  border-radius: 8px;
-                  font-size: 14px;
-                  background: #fff;
-                  cursor: pointer;
-                ">
-                  <option value="nl">🇳🇱 Nederlands</option>
-                  <option value="en">🇺🇸 English</option>
-                  <option value="fr">🇫🇷 Français</option>
-                  <option value="de">🇩🇪 Deutsch</option>
-                  <option value="es">🇪🇸 Español</option>
-                  <option value="it">🇮🇹 Italiano</option>
-                  <option value="pt">🇵🇹 Português</option>
-                  <option value="ru">🇷🇺 Русский</option>
-                  <option value="ja">🇯🇵 日本語</option>
-                  <option value="ko">🇰🇷 한국어</option>
-                  <option value="zh">🇨🇳 中文</option>
-                  <option value="ar">🇸🇦 العربية</option>
-                  <option value="hi">🇮🇳 हिन्दी</option>
-                  <option value="tr">🇹🇷 Türkçe</option>
-                  <option value="pl">🇵🇱 Polski</option>
-                  <option value="sv">🇸🇪 Svenska</option>
-                  <option value="da">🇩🇰 Dansk</option>
-                  <option value="no">🇳🇴 Norsk</option>
-                  <option value="fi">🇫🇮 Suomi</option>
-                  <option value="cs">🇨🇿 Čeština</option>
-                  <option value="hu">🇭🇺 Magyar</option>
-                  <option value="ro">🇷🇴 Română</option>
-                  <option value="bg">🇧🇬 Български</option>
-                  <option value="hr">🇭🇷 Hrvatski</option>
-                  <option value="sk">🇸🇰 Slovenčina</option>
-                  <option value="sl">🇸🇮 Slovenščina</option>
-                  <option value="et">🇪🇪 Eesti</option>
-                  <option value="lv">🇱🇻 Latviešu</option>
-                  <option value="lt">🇱🇹 Lietuvių</option>
-                  <option value="mt">🇲🇹 Malti</option>
-                  <option value="cy">🇬🇧 Cymraeg</option>
-                  <option value="ga">🇮🇪 Gaeilge</option>
-                  <option value="is">🇮🇸 Íslenska</option>
-                  <option value="lb">🇱🇺 Lëtzebuergesch</option>
-                  <option value="eu">🇪🇸 Euskera</option>
-                  <option value="ca">🇪🇸 Català</option>
-                  <option value="gl">🇪🇸 Galego</option>
-                </select>
-              </div>
-              
-              <button id="translate-btn" style="
-                width: 100%;
-                padding: 12px;
-                background: #4285f4;
-                color: white;
-                border: none;
-                border-radius: 8px;
-                font-size: 14px;
-                font-weight: 600;
-                cursor: pointer;
-                transition: all 0.2s ease;
-              ">Translate Page</button>
-              
-              <div style="
-                margin-top: 12px;
-                padding: 10px;
-                background: #f8f9fa;
-                border-radius: 6px;
-                font-size: 12px;
-                color: #666;
-                text-align: center;
-                line-height: 1.4;
-              ">
-                <strong>Translation Options</strong><br>
-                Opens Google Translate in new tab
-              </div>
-            </div>
-          </div>
+      // Load Google Translate for production
+      function loadGoogleTranslate() {
+        console.log('📡 Loading Google Translate script...');
+        
+        // Create Google Translate element
+        const translateElement = document.createElement('div');
+        translateElement.id = 'google_translate_element';
+        translateElement.style.cssText = `
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          z-index: 9999;
+          background: white;
+          border: 2px solid #007bff;
+          border-radius: 8px;
+          padding: 10px;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+          font-family: Arial, sans-serif;
         `;
+        document.body.appendChild(translateElement);
+        
+        // Load Google Translate script
+        const script = document.createElement('script');
+        script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+        script.onload = () => {
+          console.log('✅ Google Translate script loaded successfully');
+        };
+        script.onerror = (error) => {
+          console.error('❌ Failed to load Google Translate:', error);
+          // Fallback to localhost widget
+          createLocalhostTranslationWidget();
+        };
+        
+        // Add timeout for silent failures
+        setTimeout(() => {
+          if (!window.google || !window.google.translate) {
+            console.error('⏰ Google Translate failed to load within timeout');
+            createLocalhostTranslationWidget();
+          }
+        }, 5000);
+        
+        document.head.appendChild(script);
+      }
+      
+      // Google Translate callback
+      window.googleTranslateElementInit = function() {
+        console.log('🔄 Google Translate initialized');
+        
+        new google.translate.TranslateElement({
+          pageLanguage: 'en',
+          includedLanguages: 'nl,fr,de,es,it,pt,ru,ja,ko,zh,ar,hi,tr,pl,sv,da,no,fi,cs,hu,ro,bg,hr,sk,sl,et,lv,lt,mt,cy,ga,is,lb,eu,ca,gl',
+          layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+          autoDisplay: false
+        }, 'google_translate_element');
+        
+        console.log('✅ Google Translate element created');
+        
+        // Add event listener for language changes
+        setTimeout(() => {
+          const select = document.querySelector('.goog-te-combo');
+          if (select) {
+            console.log('🎯 Found language selector, adding event listener');
+            select.addEventListener('change', handleLanguageChange);
+          } else {
+            console.error('❌ Language selector not found');
+          }
+        }, 1000);
+      };
+      
+      // Handle language change from Google Translate
+      function handleLanguageChange(event) {
+        const selectedLang = event.target.value;
+        console.log('🌍 Language changed to:', selectedLang);
+        
+        if (selectedLang && selectedLang !== 'en') {
+          console.log('🔄 Triggering browser translation to:', selectedLang);
+          triggerBrowserTranslation(selectedLang);
+        }
+      }
+      
         
         document.body.appendChild(widget);
         
-        // Set default language based on browser
-        const select = document.getElementById('language-select');
-        const browserLang = navigator.language || navigator.userLanguage;
-        const primaryLang = browserLang.split('-')[0];
-        
-        if (primaryLang !== 'nl' && supportedLanguages.includes(primaryLang)) {
-          select.value = primaryLang;
-        } else {
-          select.value = 'en'; // Default to English for testing
-        }
-        
-        // Event listeners
-        const smallBtn = document.getElementById('translate-btn-small');
-        const modal = document.getElementById('translate-modal');
-        const closeBtn = document.getElementById('close-modal');
+        // Add event listener
         const translateBtn = document.getElementById('translate-btn');
+        const languageSelect = document.getElementById('language-select');
         
-        // Toggle modal
-        smallBtn.addEventListener('click', () => {
-          const isVisible = modal.style.display !== 'none';
-          modal.style.display = isVisible ? 'none' : 'block';
-          smallBtn.textContent = isVisible ? '🌐 Translate' : '✕ Close';
-        });
-        
-        // Close modal
-        closeBtn.addEventListener('click', () => {
-          modal.style.display = 'none';
-          smallBtn.textContent = '🌐 Translate';
-        });
-        
-        // Translate button
         translateBtn.addEventListener('click', () => {
-          const selectedLang = select.value;
-          const translateUrl = `https://translate.google.com/translate?sl=auto&tl=${selectedLang}&u=${encodeURIComponent(window.location.href)}`;
-          window.open(translateUrl, '_blank');
+          const selectedLang = languageSelect.value;
+          console.log('🌍 Localhost: Language selected:', selectedLang);
           
-          // Close modal after translation
-          modal.style.display = 'none';
-          smallBtn.textContent = '🌐 Translate';
+          if (selectedLang !== 'en') {
+            console.log('🔄 Localhost: Triggering browser translation to:', selectedLang);
+            triggerBrowserTranslation(selectedLang);
+          } else {
+            console.log('📄 Localhost: English selected, no translation needed');
+          }
         });
         
-        // Hover effects
-        smallBtn.addEventListener('mouseenter', () => {
-          smallBtn.style.transform = 'translateY(-2px)';
-          smallBtn.style.boxShadow = '0 6px 16px rgba(66, 133, 244, 0.4)';
-        });
-        
-        smallBtn.addEventListener('mouseleave', () => {
-          smallBtn.style.transform = 'translateY(0)';
-          smallBtn.style.boxShadow = '0 4px 12px rgba(66, 133, 244, 0.3)';
-        });
+        console.log('✅ Localhost translation widget created');
       }
       
-      // Localhost translation widget (legacy)
-      function showLocalhostTranslation(targetLang) {
-        const widget = document.createElement('div');
-        widget.id = 'translation-widget';
-        widget.innerHTML = `
-          <div style="
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #fff;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 16px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            z-index: 9999;
-            font-family: Arial, sans-serif;
-            font-size: 14px;
-            max-width: 300px;
-          ">
-            <div style="margin-bottom: 12px; font-weight: bold; color: #333;">
-              🌐 Translate Page
-            </div>
-            <div style="margin-bottom: 12px;">
-              <select id="language-select" style="
-                width: 100%;
-                padding: 8px;
-                border: 1px solid #ddd;
-                border-radius: 4px;
-                font-size: 14px;
-              ">
-                <option value="nl">🇳🇱 Nederlands</option>
-                <option value="en">🇺🇸 English</option>
-                <option value="fr">🇫🇷 Français</option>
-                <option value="de">🇩🇪 Deutsch</option>
-                <option value="es">🇪🇸 Español</option>
-                <option value="it">🇮🇹 Italiano</option>
-                <option value="pt">🇵🇹 Português</option>
-                <option value="ru">🇷🇺 Русский</option>
-                <option value="ja">🇯🇵 日本語</option>
-                <option value="ko">🇰🇷 한국어</option>
-                <option value="zh">🇨🇳 中文</option>
-                <option value="ar">🇸🇦 العربية</option>
-                <option value="hi">🇮🇳 हिन्दी</option>
-                <option value="tr">🇹🇷 Türkçe</option>
-                <option value="pl">🇵🇱 Polski</option>
-                <option value="sv">🇸🇪 Svenska</option>
-                <option value="da">🇩🇰 Dansk</option>
-                <option value="no">🇳🇴 Norsk</option>
-                <option value="fi">🇫🇮 Suomi</option>
-                <option value="cs">🇨🇿 Čeština</option>
-                <option value="hu">🇭🇺 Magyar</option>
-                <option value="ro">🇷🇴 Română</option>
-                <option value="bg">🇧🇬 Български</option>
-                <option value="hr">🇭🇷 Hrvatski</option>
-                <option value="sk">🇸🇰 Slovenčina</option>
-                <option value="sl">🇸🇮 Slovenščina</option>
-                <option value="et">🇪🇪 Eesti</option>
-                <option value="lv">🇱🇻 Latviešu</option>
-                <option value="lt">🇱🇹 Lietuvių</option>
-                <option value="mt">🇲🇹 Malti</option>
-                <option value="cy">🇬🇧 Cymraeg</option>
-                <option value="ga">🇮🇪 Gaeilge</option>
-                <option value="is">🇮🇸 Íslenska</option>
-                <option value="lb">🇱🇺 Lëtzebuergesch</option>
-                <option value="eu">🇪🇸 Euskera</option>
-                <option value="ca">🇪🇸 Català</option>
-                <option value="gl">🇪🇸 Galego</option>
-              </select>
-            </div>
-            <button id="translate-btn" style="
-              width: 100%;
-              padding: 10px;
-              background: #4285f4;
-              color: white;
-              border: none;
-              border-radius: 4px;
-              font-size: 14px;
-              font-weight: 600;
-              cursor: pointer;
-            ">Translate Page</button>
-            <div style="
-              margin-top: 8px;
-              padding: 8px;
-              background: #f8f9fa;
-              border-radius: 4px;
-              font-size: 12px;
-              color: #666;
-              text-align: center;
-            ">
-              <strong>Development Mode</strong><br>
-              Translation opens in new tab
-            </div>
-          </div>
-        `;
+      // Trigger automatic browser translation
+      function triggerBrowserTranslation(targetLang) {
+        console.log('🌐 Starting automatic translation to:', targetLang);
         
-        document.body.appendChild(widget);
-        
-        // Set default language
-        const select = document.getElementById('language-select');
-        select.value = targetLang;
-        
-        // Add click event
-        document.getElementById('translate-btn').addEventListener('click', () => {
-          const selectedLang = select.value;
-          const translateUrl = `https://translate.google.com/translate?sl=auto&tl=${selectedLang}&u=${encodeURIComponent(window.location.href)}`;
-          window.open(translateUrl, '_blank');
-        });
+        // Method 1: Direct Google Translate injection and auto-trigger
+        console.log('🔧 Injecting Google Translate for automatic translation...');
+        injectAndTriggerGoogleTranslate(targetLang);
       }
+      
+      // Inject and automatically trigger Google Translate
+      function injectAndTriggerGoogleTranslate(targetLang) {
+        console.log('🔧 Setting up automatic Google Translate for:', targetLang);
+        
+        // Remove any existing Google Translate elements
+        const existingElements = document.querySelectorAll('[id*="google_translate"], .goog-te-banner-frame, .goog-te-menu-frame, .goog-te-gadget');
+        existingElements.forEach(el => el.remove());
+        
+        // Create invisible Google Translate element
+        const translateDiv = document.createElement('div');
+        translateDiv.id = 'google_translate_element_auto';
+        translateDiv.style.cssText = `
+          position: absolute !important;
+          top: -9999px !important;
+          left: -9999px !important;
+          width: 1px !important;
+          height: 1px !important;
+          opacity: 0 !important;
+          pointer-events: none !important;
+          z-index: -1 !important;
+        `;
+        document.body.appendChild(translateDiv);
+        
+        // Load Google Translate script
+        if (!window.google || !window.google.translate) {
+          console.log('📡 Loading Google Translate script...');
+          
+          const script = document.createElement('script');
+          script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInitAuto';
+          script.onload = () => {
+            console.log('✅ Google Translate script loaded');
+          };
+          script.onerror = () => {
+            console.error('❌ Failed to load Google Translate script');
+            // Fallback: redirect to Google Translate
+            redirectToGoogleTranslate(targetLang);
+          };
+          document.head.appendChild(script);
+          } else {
+          console.log('✅ Google Translate already loaded, initializing...');
+          setTimeout(() => {
+            autoTranslatePage(targetLang);
+          }, 1000);
+        }
+      }
+      
+      // Google Translate auto-initialization
+      window.googleTranslateElementInitAuto = function() {
+        console.log('🔄 Google Translate auto-initialization started');
+        
+        new google.translate.TranslateElement({
+          pageLanguage: 'en',
+          includedLanguages: 'nl,fr,de,es,it,pt,ru,ja,ko,zh,ar,hi,tr,pl,sv,da,no,fi,cs,hu,ro,bg,hr,sk,sl,et,lv,lt,mt,cy,ga,is,lb,eu,ca,gl',
+          layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+          autoDisplay: false,
+          multilanguagePage: false
+        }, 'google_translate_element_auto');
+        
+        // Wait for Google Translate to initialize and then auto-translate
+        setTimeout(() => {
+          console.log('⏰ Google Translate initialized, starting auto-translation...');
+          autoTranslatePage(targetLang);
+        }, 2000);
+      };
+      
+      // Auto-translate the page
+      function autoTranslatePage(targetLang) {
+        console.log('🚀 Auto-translating page to:', targetLang);
+        
+        // Try to find the Google Translate language selector
+        const select = document.querySelector('.goog-te-combo');
+        if (select) {
+          console.log('🎯 Found Google Translate selector, setting language to:', targetLang);
+          
+          // Set the target language
+          select.value = targetLang;
+          
+          // Trigger the change event to start translation
+          const changeEvent = new Event('change', { bubbles: true });
+          select.dispatchEvent(changeEvent);
+          
+          // Also try to click the translate button if it exists
+          setTimeout(() => {
+            const translateBtn = document.querySelector('.goog-te-menu-value span');
+            if (translateBtn) {
+              console.log('🎯 Clicking translate button');
+              translateBtn.click();
+            }
+          }, 500);
+          
+          console.log('✅ Auto-translation triggered for:', targetLang);
+          
+          // Hide the Google Translate banner after translation
+          setTimeout(() => {
+            hideGoogleTranslateBanner();
+        }, 3000);
+          
+      } else {
+          console.error('❌ Google Translate selector not found, using fallback');
+          redirectToGoogleTranslate(targetLang);
+        }
+      }
+      
+      // Hide Google Translate banner
+      function hideGoogleTranslateBanner() {
+        console.log('🔧 Hiding Google Translate banner...');
+        
+        // Hide the Google Translate banner
+        const banner = document.querySelector('.goog-te-banner-frame');
+        if (banner) {
+          banner.style.display = 'none';
+        }
+        
+        // Hide the Google Translate gadget
+        const gadget = document.querySelector('.goog-te-gadget');
+        if (gadget) {
+          gadget.style.display = 'none';
+        }
+        
+        console.log('✅ Google Translate banner hidden');
+      }
+      
+      // Fallback: redirect to Google Translate
+      function redirectToGoogleTranslate(targetLang) {
+        console.log('🔄 Fallback: redirecting to Google Translate for:', targetLang);
+        
+        const currentUrl = window.location.href;
+        const translateUrl = `https://translate.google.com/translate?sl=en&tl=${targetLang}&u=${encodeURIComponent(currentUrl)}`;
+        
+        console.log('🔗 Redirecting to:', translateUrl);
+        window.location.href = translateUrl;
+      }
+      
+      
+      // Manual translation trigger (for debugging)
+      window.translateTo = function(targetLang) {
+        console.log('🧪 Manual translation trigger to:', targetLang);
+        triggerBrowserTranslation(targetLang);
+      };
+      
+      // Debug function
+      window.debugTranslation = function() {
+        console.log('🔍 Auto-Translation Debug Info');
+        console.log('========================================');
+        console.log('Environment:', isLocalhost ? 'Localhost' : 'Production');
+        console.log('Google Translate loaded:', !!window.google?.translate);
+        console.log('Auto translate element:', !!document.getElementById('google_translate_element_auto'));
+        console.log('Language selector found:', !!document.querySelector('.goog-te-combo'));
+        console.log('Translation widget:', !!document.getElementById('translation-widget'));
+        console.log('Google Translate banner visible:', !!document.querySelector('.goog-te-banner-frame'));
+        console.log('========================================');
+      };
+      
+      // Test automatic translation
+      window.testAutoTranslation = function(targetLang = 'nl') {
+        console.log('🧪 Testing automatic translation to:', targetLang);
+        triggerBrowserTranslation(targetLang);
+      };
+      
+      // Show debug info
+      console.log('🔧 Automatic Translation System Ready');
+      console.log('  - window.debugTranslation()        // Check translation status');
+      console.log('  - window.translateTo("nl")         // Trigger automatic translation to Dutch');
+      console.log('  - window.testAutoTranslation("fr") // Test automatic translation to French');
       
     })();
   </script>
   
-  <!-- Simple Debug Script (localhost only) -->
-  <script type="text/javascript">
-    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-      // Simple debug function
-      window.debugTranslation = function() {
-        console.log('🧪 Translation Debug Info');
-        console.log('='.repeat(40));
-        console.log('Browser Language:', navigator.language);
-        console.log('Primary Language:', navigator.language.split('-')[0]);
-        console.log('Is Localhost:', true);
-        console.log('Translation Widget:', !!document.getElementById('translation-widget'));
-        console.log('Language Select:', !!document.getElementById('language-select'));
-        console.log('Translate Button:', !!document.getElementById('translate-btn'));
-        console.log('='.repeat(40));
-      };
-      
-      // Manual widget test function
-      window.showTranslationWidget = function() {
-        console.log('🔧 Manually showing compact translation widget...');
-        
-        // Remove existing widget if any
-        const existing = document.getElementById('translation-widget');
-        if (existing) {
-          existing.remove();
-        }
-        
-        // Show compact widget
-        showCompactTranslationWidget();
-        
-        console.log('✅ Compact translation widget shown');
-      };
-      
-      console.log('🔧 Debug functions available:');
-      console.log('  - window.debugTranslation()');
-      console.log('  - window.showTranslationWidget()');
-    }
-  </script>
-  
   <script type="module" src="/src/main.tsx" defer></script>
 </body>
-
 </html>
