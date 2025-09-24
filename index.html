@@ -163,6 +163,205 @@
         trackTranslationEvent('seo_metadata_updated', { language });
       }
     
+      // Show inline translation interface
+      function showInlineTranslation(language) {
+        console.log('🌐 Creating inline translation interface for:', language);
+        
+        // Create translation overlay
+        const overlay = document.createElement('div');
+        overlay.id = 'inline-translation-overlay';
+        overlay.innerHTML = `
+          <div style="
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            z-index: 10000;
+            max-width: 500px;
+            width: 90%;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+          ">
+            <div style="text-align: center; margin-bottom: 20px;">
+              <h3 style="margin: 0 0 8px 0; color: #1a1a1a; font-size: 20px;">
+                🌐 Translation Options
+              </h3>
+              <p style="margin: 0; color: #666; font-size: 14px;">
+                Choose how you'd like to translate this page to ${getLanguageName(language)}
+              </p>
+            </div>
+            
+            <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px;">
+              <button id="translate-google-btn" style="
+                padding: 12px 16px;
+                background: #4285f4;
+                color: white;
+                border: none;
+                border-radius: 8px;
+                font-size: 14px;
+                font-weight: 600;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                justify-content: center;
+              ">
+                🔗 Open in Google Translate
+              </button>
+              
+              <button id="translate-browser-btn" style="
+                padding: 12px 16px;
+                background: #34a853;
+                color: white;
+                border: none;
+                border-radius: 8px;
+                font-size: 14px;
+                font-weight: 600;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                justify-content: center;
+              ">
+                🌐 Use Browser Translation
+              </button>
+              
+              <button id="translate-copy-btn" style="
+                padding: 12px 16px;
+                background: #6c757d;
+                color: white;
+                border: none;
+                border-radius: 8px;
+                font-size: 14px;
+                font-weight: 600;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                justify-content: center;
+              ">
+                📋 Copy URL for Translation
+              </button>
+            </div>
+            
+            <button id="close-translation-overlay" style="
+              position: absolute;
+              top: 12px;
+              right: 12px;
+              background: none;
+              border: none;
+              font-size: 20px;
+              cursor: pointer;
+              color: #666;
+              width: 32px;
+              height: 32px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              border-radius: 50%;
+            ">×</button>
+          </div>
+        `;
+        
+        document.body.appendChild(overlay);
+        
+        // Add event listeners
+        document.getElementById('translate-google-btn').addEventListener('click', () => {
+          const translateUrl = `https://translate.google.com/translate?sl=auto&tl=${language}&u=${encodeURIComponent(window.location.href)}`;
+          window.open(translateUrl, '_blank');
+          overlay.remove();
+        });
+        
+        document.getElementById('translate-browser-btn').addEventListener('click', () => {
+          // Try to use browser's built-in translation
+          if (window.navigator && window.navigator.language) {
+            alert('🌐 Browser translation: Right-click on the page and select "Translate to ${getLanguageName(language)}" or use your browser\'s translation feature.');
+          }
+          overlay.remove();
+        });
+        
+        document.getElementById('translate-copy-btn').addEventListener('click', () => {
+          const translateUrl = `https://translate.google.com/translate?sl=auto&tl=${language}&u=${encodeURIComponent(window.location.href)}`;
+          navigator.clipboard.writeText(translateUrl).then(() => {
+            alert('✅ Translation URL copied to clipboard!');
+          });
+          overlay.remove();
+        });
+        
+        document.getElementById('close-translation-overlay').addEventListener('click', () => {
+          overlay.remove();
+        });
+        
+        // Close on background click
+        overlay.addEventListener('click', (e) => {
+          if (e.target === overlay) {
+            overlay.remove();
+          }
+        });
+      }
+      
+      // Show translation help message
+      function showTranslationHelp(language) {
+        const helpDiv = document.createElement('div');
+        helpDiv.id = 'translation-help';
+        helpDiv.innerHTML = `
+          <div style="
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 12px;
+            color: #6c757d;
+            max-width: 250px;
+            z-index: 10001;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+          ">
+            <strong>💡 Translation Tip:</strong><br>
+            If Google Translate doesn't work, try:<br>
+            • Right-click → "Translate"<br>
+            • Use browser translation<br>
+            • Copy URL to translate manually
+            <button onclick="this.parentElement.parentElement.remove()" style="
+              position: absolute;
+              top: 4px;
+              right: 4px;
+              background: none;
+              border: none;
+              font-size: 14px;
+              cursor: pointer;
+              color: #999;
+            ">×</button>
+          </div>
+        `;
+        
+        document.body.appendChild(helpDiv);
+        
+        // Auto-remove after 10 seconds
+        setTimeout(() => {
+          if (helpDiv.parentElement) {
+            helpDiv.remove();
+          }
+        }, 10000);
+      }
+      
+      // Get language name from code
+      function getLanguageName(code) {
+        const names = {
+          'en': 'English', 'fr': 'Français', 'de': 'Deutsch', 'es': 'Español',
+          'it': 'Italiano', 'pt': 'Português', 'ru': 'Русский', 'ja': '日本語',
+          'ko': '한국어', 'zh': '中文', 'ar': 'العربية', 'hi': 'हिन्दी',
+          'tr': 'Türkçe', 'pl': 'Polski', 'sv': 'Svenska', 'da': 'Dansk',
+          'no': 'Norsk', 'fi': 'Suomi', 'cs': 'Čeština', 'hu': 'Magyar'
+        };
+        return names[code] || code.toUpperCase();
+      }
+      
       // Enhanced localhost fallback with production-like features
       function createLocalhostFallback() {
         trackTranslationEvent('localhost_fallback_created');
@@ -170,10 +369,14 @@
         const widget = document.getElementById('google_translate_element');
         if (!widget) return;
         
-        // Ensure widget is visible
-        widget.style.display = 'block';
-        widget.style.visibility = 'visible';
-        widget.style.opacity = '1';
+        // Ensure widget is visible with important overrides
+        widget.style.setProperty('display', 'block', 'important');
+        widget.style.setProperty('visibility', 'visible', 'important');
+        widget.style.setProperty('opacity', '1', 'important');
+        widget.style.setProperty('position', 'fixed', 'important');
+        widget.style.setProperty('bottom', '20px', 'important');
+        widget.style.setProperty('right', '20px', 'important');
+        widget.style.setProperty('z-index', '9999', 'important');
         
         widget.innerHTML = `
           <div style="
@@ -318,8 +521,42 @@
             const selectedLang = selector.value;
             trackTranslationEvent('manual_translate_clicked', { language: selectedLang });
             
-            const translateUrl = `https://translate.google.com/translate?sl=nl&tl=${selectedLang}&u=${encodeURIComponent(window.location.href)}`;
+            // Try multiple translation methods for better compatibility
+            const currentUrl = window.location.href;
+            const methods = [
+              // Method 1: Google Translate with different URL format
+              `https://translate.google.com/translate?sl=auto&tl=${selectedLang}&u=${encodeURIComponent(currentUrl)}`,
+              
+              // Method 2: Alternative Google Translate URL
+              `https://translate.google.com/?sl=auto&tl=${selectedLang}&text=${encodeURIComponent(currentUrl)}`,
+              
+              // Method 3: Browser-based translation (if supported)
+              null // Will be handled below
+            ];
+            
+            // Try browser translation first (if available)
+            if (selectedLang !== 'nl' && window.navigator && window.navigator.language) {
+              try {
+                // Check if browser supports translation
+                if (window.navigator.language !== selectedLang) {
+                  console.log('🌐 Attempting browser-based translation...');
+                  
+                  // Create a simple translation interface
+                  showInlineTranslation(selectedLang);
+                  return;
+                }
+              } catch (error) {
+                console.log('Browser translation not available, using Google Translate');
+              }
+            }
+            
+            // Fallback to Google Translate
+            const translateUrl = methods[0];
+            console.log('🔄 Opening Google Translate:', translateUrl);
             window.open(translateUrl, '_blank');
+            
+            // Show helpful message
+            showTranslationHelp(selectedLang);
           });
           
           // Set browser language as default if not Dutch
@@ -338,7 +575,8 @@
       function initializeTranslation() {
         if (isLocalhost) {
           trackTranslationEvent('localhost_mode_initialized');
-          setTimeout(createLocalhostFallback, 500); // Faster loading for dev
+          // Immediate loading for localhost to avoid timing issues
+          setTimeout(createLocalhostFallback, 100);
         } else {
           trackTranslationEvent('production_mode_initialized');
           
@@ -389,6 +627,21 @@
       
       // Start initialization
       initializeTranslation();
+      
+      // Fallback check for localhost - ensure widget is created
+      if (isLocalhost) {
+        setTimeout(() => {
+          const widget = document.getElementById('google_translate_element');
+          const selector = document.getElementById('localhost-language-selector');
+          
+          if (!widget || !selector) {
+            console.log('🔄 Widget not found, retrying...');
+            createLocalhostFallback();
+          } else {
+            console.log('✅ Localhost widget confirmed working');
+          }
+        }, 2000);
+      }
       
       // Performance monitoring
       setTimeout(() => {

@@ -176,19 +176,25 @@
   
   // Auto-run checks with delay
   setTimeout(() => {
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', runDebugChecks);
-    } else {
-      runDebugChecks();
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', runDebugChecks);
+  } else {
+    runDebugChecks();
     }
   }, 2000);
   
-  // Quick test function for localhost
+  // Enhanced quick test function for localhost debugging
   function quickTest() {
-    console.log('🧪 Quick Translation Test');
-    console.log('='.repeat(40));
+    console.log('🧪 Enhanced Translation Test');
+    console.log('='.repeat(50));
     
     const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    
+    // Check environment
+    console.log('🌍 Environment Check:');
+    console.log('  Hostname:', window.location.hostname);
+    console.log('  Protocol:', window.location.protocol);
+    console.log('  Is Localhost:', isLocalhost);
     
     // Check CSS loading
     const stylesheets = Array.from(document.styleSheets);
@@ -196,42 +202,160 @@
     console.log('  Total stylesheets:', stylesheets.length);
     console.log('  Vite CSS loaded:', stylesheets.some(sheet => sheet.href && sheet.href.includes('vite')));
     
-    if (isLocalhost) {
-      console.log('🏠 Localhost Environment:');
-      
-      const selector = document.getElementById('localhost-language-selector');
-      const button = document.getElementById('localhost-translate-button');
-      const widget = document.getElementById('google_translate_element');
-      
-      console.log('✅ Localhost Selector:', !!selector);
-      console.log('✅ Localhost Button:', !!button);
-      console.log('✅ Widget Element:', !!widget);
-      console.log('✅ Widget Visible:', widget && widget.offsetParent !== null);
-      
-      if (selector) {
-        console.log('Selected Language:', selector.value);
-        console.log('Available Languages:', Array.from(selector.options).length);
-      }
-      
-      console.log('='.repeat(40));
-      console.log('🎉 Localhost translation widget is working!');
-      console.log('💡 Try: Select a language and click "Translate Page"');
-      
-    } else {
-      console.log('🌐 Production Environment:');
-      console.log('Google Translate:', !!window.google?.translate);
-      
-      const combo = document.querySelector('.goog-te-combo');
-      console.log('Translate Combo:', !!combo);
-      
-      if (combo) {
-        console.log('Current Language:', combo.value);
-        console.log('Available Options:', Array.from(combo.options).length);
-      }
+    // Check translation widget elements
+    console.log('🔍 Widget Elements:');
+    const widget = document.getElementById('google_translate_element');
+    const selector = document.getElementById('localhost-language-selector');
+    const button = document.getElementById('localhost-translate-button');
+    
+    console.log('  Widget Element:', !!widget);
+    console.log('  Widget Visible:', widget && widget.offsetParent !== null);
+    console.log('  Widget Content Length:', widget ? widget.innerHTML.length : 0);
+    console.log('  Selector Element:', !!selector);
+    console.log('  Button Element:', !!button);
+    
+    if (widget) {
+      console.log('  Widget Position:', widget.style.position);
+      console.log('  Widget Z-index:', widget.style.zIndex);
+      console.log('  Widget Display:', widget.style.display);
     }
     
-    console.log('='.repeat(40));
-    console.log('✅ Translation system is working correctly!');
+    if (selector) {
+      console.log('  Selected Language:', selector.value);
+      console.log('  Available Languages:', Array.from(selector.options).length);
+      console.log('  Selector Visible:', selector.offsetParent !== null);
+    }
+    
+    if (button) {
+      console.log('  Button Visible:', button.offsetParent !== null);
+      console.log('  Button Text:', button.textContent);
+    }
+    
+    // Test functionality
+    console.log('🧪 Functionality Test:');
+    if (button && selector) {
+      console.log('  Button Click Test: Click the button to test');
+      console.log('  Language Change Test: Change selector to test');
+      
+      // Add temporary test listener
+      const testListener = () => {
+        console.log('✅ Button click detected!');
+        console.log('Selected language:', selector.value);
+        console.log('Expected URL:', `https://translate.google.com/translate?sl=nl&tl=${selector.value}&u=${encodeURIComponent(window.location.href)}`);
+      };
+      
+      button.addEventListener('click', testListener);
+      console.log('  Test listener added (will be removed after first click)');
+      
+      // Remove listener after 30 seconds
+      setTimeout(() => {
+        button.removeEventListener('click', testListener);
+        console.log('  Test listener removed');
+      }, 30000);
+    }
+    
+    // Check for errors
+    console.log('❌ Error Check:');
+    const consoleErrors = [];
+    const originalError = console.error;
+    console.error = function(...args) {
+      consoleErrors.push(args.join(' '));
+      originalError.apply(console, args);
+    };
+    
+    setTimeout(() => {
+      console.error = originalError;
+      if (consoleErrors.length > 0) {
+        console.log('  Recent errors:', consoleErrors.slice(-3));
+      } else {
+        console.log('  No recent errors detected');
+      }
+    }, 1000);
+    
+    console.log('='.repeat(50));
+    console.log('🎯 Test completed - check results above');
+    console.log('💡 Try clicking the "Translate Page" button to test functionality');
+  }
+  
+  // Simple test function for immediate testing
+  function testTranslation() {
+    console.log('🚀 Testing Translation Functionality...');
+    
+    const button = document.getElementById('localhost-translate-button');
+    const selector = document.getElementById('localhost-language-selector');
+    
+    if (!button || !selector) {
+      console.error('❌ Translation elements not found!');
+      console.log('Button found:', !!button);
+      console.log('Selector found:', !!selector);
+      return;
+    }
+    
+    console.log('✅ Translation elements found');
+    console.log('Selected language:', selector.value);
+    
+    // Simulate button click
+    console.log('🔄 Simulating button click...');
+    button.click();
+    
+    // Also test with different language
+    if (selector.value === 'nl') {
+      console.log('🔄 Testing with English...');
+      selector.value = 'en';
+      selector.dispatchEvent(new Event('change'));
+      button.click();
+    }
+  }
+  
+  // Force widget visibility function
+  function forceWidgetVisibility() {
+    console.log('🔧 Forcing widget visibility...');
+    
+    const widget = document.getElementById('google_translate_element');
+    if (!widget) {
+      console.error('❌ Widget not found!');
+      return;
+    }
+    
+    // Force visibility with all possible CSS properties
+    const styles = {
+      'display': 'block',
+      'visibility': 'visible',
+      'opacity': '1',
+      'position': 'fixed',
+      'bottom': '20px',
+      'right': '20px',
+      'z-index': '9999',
+      'width': 'auto',
+      'height': 'auto',
+      'min-width': '240px',
+      'max-width': '320px'
+    };
+    
+    Object.entries(styles).forEach(([prop, value]) => {
+      widget.style.setProperty(prop, value, 'important');
+    });
+    
+    // Also check for parent elements that might be hidden
+    let parent = widget.parentElement;
+    while (parent && parent !== document.body) {
+      if (parent.style.display === 'none' || parent.style.visibility === 'hidden') {
+        console.log('🔧 Found hidden parent, making visible:', parent);
+        parent.style.setProperty('display', 'block', 'important');
+        parent.style.setProperty('visibility', 'visible', 'important');
+      }
+      parent = parent.parentElement;
+    }
+    
+    console.log('✅ Widget visibility forced');
+    console.log('Widget visible:', widget.offsetParent !== null);
+    console.log('Widget computed styles:', {
+      display: getComputedStyle(widget).display,
+      visibility: getComputedStyle(widget).visibility,
+      opacity: getComputedStyle(widget).opacity,
+      position: getComputedStyle(widget).position,
+      zIndex: getComputedStyle(widget).zIndex
+    });
   }
   
   // Export enhanced debug functions
@@ -242,6 +366,8 @@
     testManualTranslation,
     checkPerformance,
     quickTest,
+    testTranslation,
+    forceWidgetVisibility,
     browserLang,
     primaryLang,
     isDutch,
@@ -249,6 +375,12 @@
     shouldAutoTranslate
   };
   
+  // Also add simple test functions to global scope
+  window.testTranslation = testTranslation;
+  window.forceWidgetVisibility = forceWidgetVisibility;
+  
   console.log('🔧 Enhanced debug functions available at window.debugTranslation');
   console.log('💡 Quick test: window.debugTranslation.quickTest()');
+  console.log('🚀 Function test: window.testTranslation()');
+  console.log('🔧 Force visibility: window.forceWidgetVisibility()');
 })();
