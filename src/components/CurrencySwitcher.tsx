@@ -92,3 +92,4 @@ export const CurrencySwitcher: React.FC<CurrencySwitcherProps> = ({
   );
 };
 
+

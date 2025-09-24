@@ -325,23 +325,23 @@ export const HomePage = () => {
   const features = [
     {
       icon: TrendingUp,
-      title: "Optimize Your Cashflow",
-      description: "Prevent excess inventory and dead stock. Get precise insight into what you need, when you need it.",
+      title: "Stop Losing $2,400+ Per Year to Stockouts",
+      description: "Never run out of your best-selling products again. Get automatic alerts when stock runs low and reorder suggestions based on your sales patterns.",
     },
     {
       icon: Zap,
-      title: "Save Time and Reduce Errors",
-      description: "Automate orders and minimize manual counts. Focus on growth, not administration.",
+      title: "Save 8 Hours Every Week on Inventory Tasks",
+      description: "No more manual counting or Excel spreadsheets. StockFlow automates everything - from tracking to reordering - so you can focus on growing your business.",
     },
     {
       icon: Users,
-      title: "Seamless Team Collaboration",
-      description: "Work efficiently with your team thanks to clear user roles and real-time data updates.",
+      title: "Your Team Will Actually Use This System",
+      description: "Unlike complex ERP systems, StockFlow is designed for real people. Your staff will love the simple interface and mobile app.",
     },
     {
       icon: Shield,
-      title: "Safe and Always Available",
-      description: "Your data is safe in the cloud. Always and everywhere accessible, with daily backups.",
+      title: "Built for  Small Businesses",
+      description: "GDPR compliant, Dutch language support, and pricing in euros. We understand  business needs because we're  too.",
     },
   ];
   
@@ -782,7 +782,7 @@ export const HomePage = () => {
         "longitude": "4.3517"
       },
       "openingHours": "Mo-Fr 09:00-17:00",
-      "priceRange": "€€"
+      "priceRange": "$$"
     }
   ];
 
@@ -971,9 +971,9 @@ export const HomePage = () => {
         `}</script>
       </Helmet>
       <SEO
-        title="Smart Inventory Management - For Growing Businesses | StockFlow"
-        description="Track stock levels, manage suppliers, and grow your business with our powerful yet simple inventory management platform."
-        keywords="free inventory management software, stock management software, inventory tracking software, warehouse management system, WMS software, stock control software, inventory management system, warehouse software, stock tracking, inventory control, warehouse management, stock management, inventory tracking, warehouse automation, stock management software, warehouse operations, inventory control system, warehouse management software, WMS platform, stock management platform, inventory management platform, warehouse management solution, stock control system, warehouse operations management, inventory management software, warehouse management platform, stock tracking system, warehouse management tools, inventory management tools, warehouse software solution, stock management platform, warehouse management software, inventory control software, warehouse management system software, WMS platform, warehouse management tools, inventory tracking platform, stock management tools, warehouse optimization software, supply chain software, logistics management, warehouse efficiency software, inventory management platform, stock control software, warehouse operations software, inventory tracking tools, warehouse management solution software, stock management system, warehouse automation software, inventory control platform, warehouse management software solution, WMS software solution, warehouse management platform software, stock tracking platform, warehouse management tools software, inventory management tools software, warehouse software platform, stock management platform software, warehouse management software platform, inventory control software platform, warehouse management system platform, WMS platform software, warehouse management tools platform, inventory tracking platform software, stock management tools platform, warehouse optimization platform, supply chain platform, logistics platform, warehouse efficiency platform, inventory management platform software, stock control platform software, warehouse operations platform software, inventory tracking platform tools, warehouse management solution platform, stock management system platform, warehouse automation platform software, inventory control platform software, warehouse management software platform solution, WMS software platform solution, warehouse management platform solution, stock tracking platform solution, warehouse management tools platform solution, inventory management tools platform solution, warehouse software platform solution, stock management platform solution, warehouse management software platform solution, inventory control software platform solution, warehouse management system platform solution, WMS platform solution, warehouse management tools platform solution, inventory tracking platform solution, stock management tools platform solution, warehouse optimization platform solution, supply chain platform solution, logistics platform solution, warehouse efficiency platform solution, inventory management platform solution, stock control platform solution, warehouse operations platform solution, inventory tracking platform solution, warehouse management solution platform solution, stock management system platform solution, warehouse automation platform solution, inventory control platform solution"
+        title="StockFlow - Stop Losing $2,400/Year to Stockouts |  SME Inventory Management"
+        description="Never run out of stock again. StockFlow automatically tracks your inventory, alerts you when to reorder, and saves  SMEs $2,400+ per year. Built specifically for  small businesses."
+        keywords="voorraadbeheer software, stockbeheer software, inventory management Belgium, voorraadbeheer gratis, stockbeheer gratis,  inventory software, SME inventory management, voorraadbeheer KMO, stockbeheer KMO, prevent stockouts, automatic reordering, inventory tracking Belgium, voorraadbeheer app, stockbeheer app,  business software, voorraadbeheer systeem, stockbeheer systeem, inventory management for small business, voorraadbeheer voor kleine bedrijven, stockbeheer voor kleine bedrijven,  ERP alternative, voorraadbeheer versus Excel, stockbeheer versus Excel, automatic inventory alerts, voorraadbeheer automatisering, stockbeheer automatisering,  inventory tracking, voorraadbeheer tracking, stockbeheer tracking, inventory management software Belgium, voorraadbeheer software België, stockbeheer software België, small business inventory, voorraadbeheer kleine onderneming, stockbeheer kleine onderneming,  business tools, voorraadbeheer tools, stockbeheer tools, inventory software for SMEs, voorraadbeheer software KMO, stockbeheer software KMO, prevent stockouts Belgium, voorraadbeheer stockouts voorkomen, stockbeheer stockouts voorkomen, automatic reorder points, voorraadbeheer automatisch bestellen, stockbeheer automatisch bestellen,  inventory management, voorraadbeheer België, stockbeheer België, SME inventory tracking, voorraadbeheer tracking KMO, stockbeheer tracking KMO, inventory alerts Belgium, voorraadbeheer waarschuwingen, stockbeheer waarschuwingen,  small business software, voorraadbeheer kleine bedrijven software, stockbeheer kleine bedrijven software"
         url="https://www.stockflow.be/"
         hreflang={[
           { lang: 'en', url: 'https://www.stockflow.be/' },
@@ -1027,31 +1027,34 @@ export const HomePage = () => {
             <div className="text-white order-1 sm:text-center lg:text-left">
               <div className="inline-flex items-center px-3 xs:px-3 sm:px-4 py-2 bg-blue-600/20 border border-blue-400/30 rounded-full text-blue-200 text-xs xs:text-xs sm:text-sm font-medium mb-3 xs:mb-4 sm:mb-6">
                 <span className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
-                Trusted by 500+ businesses
+                🇧🇪 Trusted by 500+  SMEs
               </div>
               
               <h1 className="font-bold mb-3 xs:mb-4 sm:mb-8 lg:mb-10 leading-tight">
                 <span className="block md:text-xl lg:text-5xl xl:text-7xl">StockFlow</span>
-                <span className="block md:text-xl lg:text-5xl xl:text-7xl">Inventory Management</span>
-                <span className="block md:text-xl lg:text-5xl xl:text-5xl text-blue-300">for growing businesses</span>
+                <span className="block md:text-xl lg:text-5xl xl:text-7xl">Smart Inventory Management</span>
+                <span className="block md:text-xl lg:text-5xl xl:text-5xl text-blue-300">Made Simple for SMEs</span>
               </h1>
               
               <p className="text-sm xs:text-base sm:text-xl md:text-xl lg:text-xl xl:text-xl text-blue-100 mb-4 xs:mb-6 sm:mb-10 lg:mb-12 leading-relaxed max-w-3xl mx-auto lg:mx-0">
-                The only inventory management software that makes <strong>100% automatic decisions</strong> for small businesses. Stop manual tracking, prevent stockouts, and grow your business.
+                <strong>Never run out of stock again.</strong> StockFlow automatically tracks your inventory, alerts you when to reorder, and saves you <strong>$2,400+ per year</strong> in lost sales and manual work. Built specifically for  small businesses.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-3 xs:gap-4 sm:gap-6 lg:gap-8 mb-4 xs:mb-6 sm:mb-10 lg:mb-12 max-w-3xl mx-auto lg:mx-0 justify-center">
                 <Link
                   to="/auth"
-                  className="bg-white text-blue-600 px-4 xs:px-6 sm:px-8 lg:px-12 xl:px-16 py-3 xs:py-4 sm:py-5 lg:py-6 xl:py-4 rounded-xl font-bold text-base xs:text-lg sm:text-xl lg:text-xl xl:text-md transition-all duration-300 transform hover:scale-105 shadow-2xl text-center flex items-center justify-center"
+                  className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-6 xs:px-8 sm:px-10 lg:px-12 xl:px-16 py-4 xs:py-5 sm:py-6 lg:py-7 xl:py-5 rounded-xl font-bold text-lg xs:text-xl sm:text-2xl lg:text-2xl xl:text-lg transition-all duration-300 transform hover:scale-105 shadow-2xl text-center flex items-center justify-center relative overflow-hidden group"
                 >
-                  Start Your Free Trial
+                  <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></span>
+                  <span className="relative z-10 flex items-center">
+                    🚀 Start Free Today - No Credit Card
+                  </span>
                 </Link>
                 <Link
                   to="/demo"
-                  className="border-2 border-white text-white hover:bg-white hover:text-blue-900 px-4 xs:px-6 sm:px-8 lg:px-12 xl:px-16 py-3 xs:py-4 sm:py-5 lg:py-6 xl:py-4 rounded-xl font-bold text-base xs:text-lg sm:text-xl lg:text-xl xl:text-md transition-all duration-300 text-center flex items-center justify-center"
+                  className="border-2 border-white text-white hover:bg-white hover:text-blue-900 px-6 xs:px-8 sm:px-10 lg:px-12 xl:px-16 py-4 xs:py-5 sm:py-6 lg:py-7 xl:py-5 rounded-xl font-bold text-lg xs:text-xl sm:text-2xl lg:text-2xl xl:text-lg transition-all duration-300 text-center flex items-center justify-center"
                 >
-                  Watch 2-Min Demo
+                  ▶️ See How It Works (2 min)
                 </Link>
               </div>
 
@@ -1103,15 +1106,15 @@ export const HomePage = () => {
               <div className="flex flex-col sm:flex-row sm:flex-wrap items-center justify-center lg:justify-start gap-3 xs:gap-4 sm:gap-6 lg:gap-8 text-blue-200 max-w-3xl mx-auto lg:mx-0">
                 <div className="flex items-center">
                   <CheckCircle className="w-4 h-4 xs:w-5 xs:h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-4 mr-2 xs:mr-3 text-green-400 flex-shrink-0" />
-                  <span className="text-sm xs:text-base sm:text-lg lg:text-sm">No credit card required</span>
+                  <span className="text-sm xs:text-base sm:text-lg lg:text-sm">✅ No credit card required</span>
                 </div>
                 <div className="flex items-center">
                   <CheckCircle className="w-4 h-4 xs:w-5 xs:h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-4 mr-2 xs:mr-3 text-green-400 flex-shrink-0" />
-                  <span className="text-sm xs:text-base sm:text-lg lg:text-sm">14-day free trial</span>
+                  <span className="text-sm xs:text-base sm:text-lg lg:text-sm">💰 Save $2,400+ per year</span>
                 </div>
                 <div className="flex items-center">
                   <CheckCircle className="w-4 h-4 xs:w-5 xs:h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-4 mr-2 xs:mr-3 text-green-400 flex-shrink-0" />
-                  <span className="text-sm xs:text-base sm:text-lg lg:text-sm">Setup in 5 minutes</span>
+                  <span className="text-sm xs:text-base sm:text-lg lg:text-sm">🇧🇪 Built for  SMEs</span>
                 </div>
               </div>
             </div>
@@ -1234,12 +1237,6 @@ export const HomePage = () => {
                         alt={`${t.name} - ${t.role}`}
                         loading="lazy"
                         sizes="48px"
-                        onLoad={(e) => {
-                          e.currentTarget.classList.add('loaded');
-                        }}
-                        onError={(e) => {
-                          e.currentTarget.src = '/placeholder.svg';
-                        }}
                       />
                       <div className="flex-1">
                         <div className="font-bold text-gray-900">{t.name}</div>
@@ -1296,14 +1293,7 @@ export const HomePage = () => {
                         src={testimonial.avatar} 
                         alt={`${testimonial.name} - ${testimonial.role}`}
                         loading="lazy"
-                        decoding="async"
                         sizes="48px"
-                        onLoad={(e) => {
-                          e.currentTarget.classList.add('loaded');
-                        }}
-                        onError={(e) => {
-                          e.currentTarget.src = '/placeholder.svg';
-                        }}
                       />
                       <div className="flex-1">
                         <div className="font-bold text-gray-900">{testimonial.name}</div>
@@ -1370,15 +1360,15 @@ export const HomePage = () => {
             </FadeInWhenVisible>
             <FadeInWhenVisible>
               <h2 className="features-header font-bold mb-4 sm:mb-6 px-4">
-                <span className="block text-gray-900">How StockFlow Solves</span>
+                <span className="block text-gray-900">Why 500+  SMEs</span>
                 <span className="block bg-gradient-to-r from-blue-500 to-blue-900 bg-clip-text text-transparent">
-                Your Biggest Inventory Problems
+                Choose StockFlow Over Excel & Complex ERP Systems
                 </span>
               </h2>
             </FadeInWhenVisible>
             <FadeInWhenVisible>
               <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-4">
-                Powerful inventory management features that help you stay organized, save time, and grow your business.
+                Stop losing money to stockouts and wasting time on manual inventory management. Here's exactly how StockFlow transforms your business.
               </p>
             </FadeInWhenVisible>
           </div>
@@ -1433,21 +1423,10 @@ export const HomePage = () => {
                       <div className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 shadow-lg border border-gray-100">
                         <OptimizedImage
                           src={feature.img}
-                          srcSet={`
-                            ${feature.imgMobile} 768w,
-                            ${feature.img} 1024w
-                          `}
                           alt={`${feature.title} - Voorraadbeheer voor KMO's`}
                           className="rounded-lg sm:rounded-xl w-full h-48 sm:h-64 md:h-80 object-contain"
                           loading="lazy"
-                          decoding="async"
                           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                          onLoad={(e) => {
-                            e.currentTarget.classList.add('loaded');
-                          }}
-                          onError={(e) => {
-                            e.currentTarget.src = '/placeholder.svg';
-                          }}
                         />
                       </div>
                       
@@ -1719,16 +1698,16 @@ export const HomePage = () => {
 
           <FadeInWhenVisible>
             <h2 className="cta-header font-bold mb-4 sm:mb-6 text-white leading-tight px-4">
-              <span className="block">Ready to Transform Your Inventory Management?</span>
+              <span className="block">Ready to Stop Losing Money to Stockouts?</span>
               <span className="block bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent">
-                Start for free today
+                Join 500+  SMEs Using StockFlow
               </span>
             </h2>
           </FadeInWhenVisible>
 
           <FadeInWhenVisible>
             <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 sm:mb-8 text-white/90 max-w-4xl mx-auto leading-relaxed px-4">
-              Get Started Free and see how StockFlow can help your business.
+              Start your free account today and save $2,400+ per year in lost sales. No credit card required, setup in 5 minutes.
             </p>
           </FadeInWhenVisible>
 
@@ -1782,13 +1761,14 @@ export const HomePage = () => {
               <Button 
                 data-analytics-id="final-start" 
                 size="lg" 
-                className="bg-white text-blue-600 px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-2xl text-sm sm:text-lg w-full sm:w-auto group relative overflow-hidden"
+                className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-8 sm:px-10 py-4 sm:py-5 rounded-xl font-bold transition-all duration-300 transform hover:scale-105 shadow-2xl text-lg sm:text-xl w-full sm:w-auto group relative overflow-hidden"
                 onClick={handleLoginClick}
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-100/30 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
-                  <Rocket className="h-4 w-4 sm:h-5 sm:w-5 mr-2 group-hover:animate-bounce" />
-                    Get Started Free
-                  <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+                <span className="relative z-10 flex items-center justify-center">
+                  🚀 Start Free Today - Save $2,400/Year
+                  <ArrowRight className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                </span>
               </Button>
             </div>
           </FadeInWhenVisible>
@@ -1839,13 +1819,13 @@ export const HomePage = () => {
 
           {/* Urgency element */}
           <FadeInWhenVisible>
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 max-w-2xl mx-auto border border-white/20">
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 max-w-3xl mx-auto border border-white/20">
               <div className="flex items-center justify-center gap-2 sm:gap-3 mb-2 sm:mb-3">
                 <Timer className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-300" />
-                <span className="text-yellow-300 font-semibold text-sm sm:text-base">Get started today and save hours every week with our inventory management system</span>
+                <span className="text-yellow-300 font-semibold text-sm sm:text-base">⚡ Limited Time: Free Setup + $2,400 Annual Savings Guarantee</span>
               </div>
-              <p className="text-white/90 text-xs sm:text-sm">
-                Get started today and save hours every week with our inventory management system
+              <p className="text-white/90 text-xs sm:text-sm text-center">
+                Join 500+  SMEs who've already eliminated stockouts and saved thousands of euros. Start free today - no credit card required.
               </p>
             </div>
           </FadeInWhenVisible>
@@ -1901,14 +1881,7 @@ export const HomePage = () => {
           alt="stockflow"
           className="h-10 md:h-12 mb-6"
           loading="lazy"
-          decoding="async"
           sizes="(max-width: 768px) 40px, 48px"
-          onLoad={(e) => {
-            e.currentTarget.classList.add('loaded');
-          }}
-          onError={(e) => {
-            e.currentTarget.src = '/placeholder.svg';
-          }}
         />
         <p className="text-gray-400 text-base md:text-lg mb-6 leading-relaxed">
           Smart inventory management for growing businesses
