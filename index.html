@@ -25,9 +25,6 @@ s.parentNode.insertBefore(t,s)}(window, document,'script',
 fbq('init', '1788618995199125');
 fbq('track', 'PageView');
 </script>
-<noscript><img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=1788618995199125&ev=PageView&noscript=1"
-/></noscript>
 <!-- End Meta Pixel Code -->
 
   <meta charset="UTF-8" />
@@ -55,6 +52,10 @@ src="https://www.facebook.com/tr?id=1788618995199125&ev=PageView&noscript=1"
 </head>
 
 <body>
+  <!-- Meta Pixel Noscript -->
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=1788618995199125&ev=PageView&noscript=1"
+  /></noscript>
   
   <div id="root"></div>
   
@@ -175,6 +176,53 @@ src="https://www.facebook.com/tr?id=1788618995199125&ev=PageView&noscript=1"
         }
       }
       
+      // Create localhost translation widget
+      function createLocalhostTranslationWidget() {
+        console.log('🏠 Creating localhost translation widget...');
+        
+        const widget = document.createElement('div');
+        widget.id = 'translation-widget';
+        widget.style.cssText = `
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          z-index: 9999;
+          background: white;
+          border: 2px solid #007bff;
+          border-radius: 8px;
+          padding: 15px;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+          font-family: Arial, sans-serif;
+          min-width: 200px;
+        `;
+        
+        widget.innerHTML = `
+          <h3 style="margin: 0 0 10px 0; color: #007bff; font-size: 14px;">🌍 Choose Language</h3>
+          <select id="language-select" style="width: 100%; padding: 5px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 4px;">
+            <option value="en">English</option>
+            <option value="nl">Nederlands</option>
+            <option value="fr">Français</option>
+            <option value="de">Deutsch</option>
+            <option value="es">Español</option>
+            <option value="it">Italiano</option>
+            <option value="pt">Português</option>
+            <option value="ru">Русский</option>
+            <option value="ja">日本語</option>
+            <option value="ko">한국어</option>
+            <option value="zh">中文</option>
+            <option value="ar">العربية</option>
+            <option value="hi">हिन्दी</option>
+            <option value="tr">Türkçe</option>
+            <option value="pl">Polski</option>
+            <option value="sv">Svenska</option>
+            <option value="da">Dansk</option>
+            <option value="no">Norsk</option>
+            <option value="fi">Suomi</option>
+          </select>
+          <button id="translate-btn" style="width: 100%; padding: 8px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;">
+            Translate Page
+          </button>
+        `;
         
         document.body.appendChild(widget);
         
