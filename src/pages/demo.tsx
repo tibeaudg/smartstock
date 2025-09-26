@@ -80,8 +80,8 @@ const InstructionStep = ({
       </div>
       <div className="flex-1">
         <div className="flex items-center gap-2 mb-2">
-          <span className="text-sm font-medium text-gray-500">Stap {number}</span>
-          {isActive && <Badge variant="secondary" className="bg-blue-100 text-blue-800">Actief</Badge>}
+          <span className="text-sm font-medium text-gray-500">Step {number}</span>
+          {isActive && <Badge variant="secondary" className="bg-blue-100 text-blue-800">Active</Badge>}
         </div>
         <h3 className="text-lg font-semibold text-gray-900 mb-2">{title}</h3>
         <p className="text-gray-600 leading-relaxed">{description}</p>
@@ -154,32 +154,32 @@ export const DemoPage = () => {
   const instructionSteps = [
     {
       number: 1,
-      title: "Registreer je account",
-      description: "Maak een gratis account aan in minder dan 2 minuten. Geen creditcard vereist.",
+      title: "Register your account",
+      description: "Create a free account in less than 2 minutes. No credit card required.",
       icon: Users
     },
     {
       number: 2,
-      title: "Stel je eerste vestiging in",
-      description: "Configureer je bedrijfsgegevens en eerste vestiging voor je voorraadbeheer.",
+      title: "Set up your first location",
+      description: "Configure your business details and first location for your inventory management.",
       icon: Settings
     },
     {
       number: 3,
-      title: "Voeg je producten toe",
-      description: "Importeer je producten via Excel of voeg ze handmatig toe met onze intuïtieve interface.",
+      title: "Add your products",
+      description: "Import your products via Excel or add them manually with our intuitive interface.",
       icon: Package
     },
     {
       number: 4,
-      title: "Start met scannen",
-      description: "Gebruik je smartphone of scanner om voorraadmutaties bij te houden in real-time.",
+      title: "Start scanning",
+      description: "Use your smartphone or scanner to track inventory changes in real-time.",
       icon: Smartphone
     },
     {
       number: 5,
-      title: "Analyseer je data",
-      description: "Bekijk rapporten en inzichten om je voorraadbeheer te optimaliseren.",
+      title: "Analyze your data",
+      description: "View reports and insights to optimize your inventory management.",
       icon: BarChart3
     }
   ];
@@ -187,35 +187,35 @@ export const DemoPage = () => {
   const features = [
     {
       icon: Smartphone,
-      title: "Mobiel Voorraadbeheer",
-      description: "Beheer je voorraad overal met onze mobiele app. Scan barcodes, update voorraad en bekijk rapporten op je telefoon.",
+      title: "Mobile Inventory Management",
+      description: "Manage your inventory anywhere with our mobile app. Scan barcodes, update inventory and view reports on your phone.",
       benefits: [
-        "Barcode scanning met je telefoon",
-        "Offline werken mogelijk",
-        "Real-time synchronisatie",
-        "Intuïtieve mobiele interface"
+        "Barcode scanning with your phone",
+        "Offline work possible",
+        "Real-time synchronization",
+        "Intuitive mobile interface"
       ]
     },
     {
       icon: BarChart3,
-      title: "Geavanceerde Rapportage",
-      description: "Krijg inzicht in je voorraad met gedetailleerde rapporten en analytics. Maak betere beslissingen met data.",
+      title: "Advanced Reporting",
+      description: "Get insights into your inventory with detailed reports and analytics. Make better decisions with data.",
       benefits: [
-        "Real-time voorraadrapporten",
-        "Trend analyse en voorspellingen",
-        "Export naar Excel/PDF",
-        "Aangepaste dashboard widgets"
+        "Real-time inventory reports",
+        "Trend analysis and predictions",
+        "Export to Excel/PDF",
+        "Custom dashboard widgets"
       ]
     },
     {
       icon: Shield,
-      title: "Veilige Cloud Opslag",
-      description: "Je data wordt veilig opgeslagen in de cloud met automatische backups en enterprise-grade beveiliging.",
+      title: "Secure Cloud Storage",
+      description: "Your data is securely stored in the cloud with automatic backups and enterprise-grade security.",
       benefits: [
-        "Automatische dagelijkse backups",
-        "SSL encryptie voor alle data",
+        "Automatic daily backups",
+        "SSL encryption for all data",
         "GDPR compliant",
-        "99.9% uptime garantie"
+        "99.9% uptime guarantee"
       ]
     }
   ];
@@ -223,9 +223,9 @@ export const DemoPage = () => {
   return (
     <>
       <SEO 
-        title="Demo - StockFlow Voorraadbeheer Software"
-        description="Bekijk onze demo en ontdek hoe eenvoudig het is om je voorraad te beheren met StockFlow. Stap-voor-stap instructies en live demo video."
-        keywords="demo, voorraadbeheer demo, stockbeheer software demo, inventory management demo"
+        title="Demo - StockFlow Inventory Management Software"
+        description="Watch our demo and discover how easy it is to manage your inventory with StockFlow. Step-by-step instructions and live demo video."
+        keywords="demo, inventory management demo, stock management software demo, inventory management demo"
       />
       
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
@@ -241,14 +241,14 @@ export const DemoPage = () => {
                   <span>Live Demo</span>
                 </div>
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
-                  <span className="block text-gray-900">Ontdek StockFlow</span>
+                  <span className="block text-gray-900">Discover StockFlow</span>
                   <span className="block bg-gradient-to-r from-blue-500 to-blue-900 bg-clip-text text-transparent">
-                    In Actie
+                    In Action
                   </span>
                 </h1>
                 <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                  Zie hoe eenvoudig het is om je voorraad te beheren met onze intuïtieve software. 
-                  Bekijk de demo en volg onze stap-voor-stap instructies.
+                  See how easy it is to manage your inventory with our intuitive software. 
+                  Watch the demo and follow our step-by-step instructions.
                 </p>
               </div>
             </FadeInWhenVisible>
@@ -266,7 +266,7 @@ export const DemoPage = () => {
                       onPlay={handleVideoPlay}
                     >
                       <source src="/intro_vid.mp4" type="video/mp4" />
-                      Video niet beschikbaar
+                      Video not available
                     </video>
                   </div>
                 </div>
@@ -289,10 +289,10 @@ export const DemoPage = () => {
             <FadeInWhenVisible>
               <div className="text-center mb-12">
                 <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-                  Zo Begin Je
+                  How to Get Started
                 </h2>
                 <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                  Volg deze eenvoudige stappen om direct aan de slag te gaan met StockFlow
+                  Follow these simple steps to get started with StockFlow right away
                 </p>
               </div>
             </FadeInWhenVisible>
@@ -318,7 +318,7 @@ export const DemoPage = () => {
                   onClick={handleLoginClick}
                 >
                   <Zap className="h-5 w-5 mr-2" />
-                  Start Nu Gratis
+                  Start Free Now
                   <ArrowRight className="h-5 w-5 ml-2" />
                 </Button>
               </div>
@@ -332,10 +332,10 @@ export const DemoPage = () => {
             <FadeInWhenVisible>
               <div className="text-center mb-12">
                 <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-                  Belangrijkste Functionaliteiten
+                  Key Features
                 </h2>
                 <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                  Ontdek de krachtige features die StockFlow tot de beste voorraadbeheer software maken
+                  Discover the powerful features that make StockFlow the best inventory management software
                 </p>
               </div>
             </FadeInWhenVisible>
@@ -360,10 +360,10 @@ export const DemoPage = () => {
             <FadeInWhenVisible>
               <div className="text-center mb-12">
                 <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-                  Probeer Het Zelf
+                  Try It Yourself
                 </h2>
                 <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                  Start direct met een gratis account en ervaar de kracht van StockFlow
+                  Start immediately with a free account and experience the power of StockFlow
                 </p>
               </div>
             </FadeInWhenVisible>
@@ -376,8 +376,8 @@ export const DemoPage = () => {
                       <CheckCircle className="w-6 h-6 text-green-600" />
                     </div>
                     <div>
-                      <h3 className="text-xl font-semibold text-gray-900">Geen Setup Kosten</h3>
-                      <p className="text-gray-600">Start direct zonder verborgen kosten</p>
+                      <h3 className="text-xl font-semibold text-gray-900">No Setup Costs</h3>
+                      <p className="text-gray-600">Start immediately without hidden costs</p>
                     </div>
                   </div>
                   
@@ -386,8 +386,8 @@ export const DemoPage = () => {
                       <Clock className="w-6 h-6 text-blue-600" />
                     </div>
                     <div>
-                      <h3 className="text-xl font-semibold text-gray-900">5 Minuten Setup</h3>
-                      <p className="text-gray-600">Je bent binnen 5 minuten klaar om te beginnen</p>
+                      <h3 className="text-xl font-semibold text-gray-900">5 Minute Setup</h3>
+                      <p className="text-gray-600">You're ready to start within 5 minutes</p>
                     </div>
                   </div>
                   
@@ -396,8 +396,8 @@ export const DemoPage = () => {
                       <Star className="w-6 h-6 text-purple-600" />
                     </div>
                     <div>
-                      <h3 className="text-xl font-semibold text-gray-900">Gratis Proberen</h3>
-                      <p className="text-gray-600">Test alle features zonder verplichtingen</p>
+                      <h3 className="text-xl font-semibold text-gray-900">Try for Free</h3>
+                      <p className="text-gray-600">Test all features without obligations</p>
                     </div>
                   </div>
                 </div>
@@ -407,10 +407,10 @@ export const DemoPage = () => {
                 <Card className="p-8 bg-gradient-to-br from-blue-50 to-purple-50 border-2 border-blue-200">
                   <CardHeader className="text-center pb-4">
                     <CardTitle className="text-2xl font-bold text-gray-900">
-                      Start Je Gratis Account
+                      Start Your Free Account
                     </CardTitle>
                     <p className="text-gray-600">
-                      Geen creditcard vereist • Direct toegang
+                      No credit card required • Direct access
                     </p>
                   </CardHeader>
                   <CardContent className="space-y-4">
@@ -420,17 +420,17 @@ export const DemoPage = () => {
                       onClick={handleLoginClick}
                     >
                       <Zap className="h-5 w-5 mr-2" />
-                      Gratis Account Aanmaken
+                      Create Free Account
                     </Button>
                     
                     <div className="text-center">
                       <p className="text-sm text-gray-500">
-                        Al een account?{' '}
+                        Already have an account?{' '}
                         <button 
                           onClick={handleLoginClick}
                           className="text-blue-600 hover:text-blue-700 font-medium"
                         >
-                          Inloggen
+                          Login
                         </button>
                       </p>
                     </div>
@@ -446,10 +446,10 @@ export const DemoPage = () => {
           <div className="max-w-4xl mx-auto text-center px-4 sm:px-6">
             <FadeInWhenVisible>
               <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-                Klaar om te Beginnen?
+                Ready to Get Started?
               </h2>
               <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-                Sluit je aan bij honderden bedrijven die al hun voorraad beheren met StockFlow
+                Join hundreds of companies that already manage their inventory with StockFlow
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button
@@ -458,7 +458,7 @@ export const DemoPage = () => {
                   onClick={handleLoginClick}
                 >
                   <Target className="h-5 w-5 mr-2" />
-                  Start Gratis
+                  Start Free
                 </Button>
                 <Button
                   size="lg"
@@ -467,7 +467,7 @@ export const DemoPage = () => {
                   onClick={() => navigate('/contact')}
                 >
                   <ExternalLink className="h-5 w-5 mr-2" />
-                  Contact Opnemen
+                  Contact Us
                 </Button>
               </div>
             </FadeInWhenVisible>
