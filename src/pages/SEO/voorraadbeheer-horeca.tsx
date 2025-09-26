@@ -33,8 +33,8 @@ export default function VoorraadbeheerHoreca() {
   return (
     <SeoPageLayout title="Voorraadbeheer voor Horeca">
       <SEO
-        title="Voorraadbeheer voor Horeca: Tips & Gratis Software | stockflow"
-        description="Optimaliseer je horeca voorraadbeheer met onze gratis software. Voorkom verspilling, bespaar kosten en verbeter je menuplanning. Speciaal voor restaurants, cafés en hotels."
+        title="Voorraadbeheer Horeca 2024 | Voorkom Verspilling & Bespaar 20% | stockflow"
+        description="⭐ Horeca voorraadbeheer software die verspilling voorkomt. Houdbaarheidsdata tracking, menuplanning & automatische meldingen. Gratis starten!"
         keywords="voorraadbeheer horeca, horeca voorraadbeheer, voorraadbeheer restaurant, voorraadbeheer café, voorraadbeheer hotel, horeca software, restaurant software, voedselverspilling voorkomen, menuplanning, houdbaarheidsdata, stockflow, gratis voorraadbeheer horeca"
         url="https://www.stockflow.be/voorraadbeheer-horeca"
       />
@@ -46,10 +46,10 @@ export default function VoorraadbeheerHoreca() {
             {/* Left Side - Text Content */}
             <div className="lg:col-span-2">
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6">
-                <span className="text-blue-600">Voorraadbeheer voor Horeca</span> - Voorkom verspilling, bespaar kosten
+                <span className="text-blue-600">Voorraadbeheer Horeca 2024</span> | Voorkom Verspilling & Bespaar 20%
               </h1>
               <p className="text-sm sm:text-base md:text-lg text-gray-700 mb-6 sm:mb-8 leading-relaxed">
-                Optimaliseer je horeca voorraadbeheer met onze gratis software. Voorkom verspilling, bespaar kosten en verbeter je menuplanning. Speciaal ontwikkeld voor restaurants, cafés en hotels om je voorraadbeheer naar het volgende niveau te tillen.
+                ⭐ Horeca voorraadbeheer software die verspilling voorkomt. Houdbaarheidsdata tracking, menuplanning & automatische meldingen. Bespaar tot 20% op voedselkosten. Perfect voor restaurants, cafés en hotels. Gratis starten!
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link

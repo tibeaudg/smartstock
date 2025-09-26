@@ -40,6 +40,7 @@ import { AdvancedFiltering } from './components/analytics/AdvancedFiltering';
 import VoorraadbeheerTips from './pages/SEO/voorraadbeheer-tips';
 import VoorraadbeheerSoftwareVergelijken from './pages/SEO/voorraadbeheer-software-vergelijken';
 import VoorraadbeheerWebshop from './pages/SEO/voorraadbeheer-webshop';
+import VoorraadbeheerBakkerij from './pages/SEO/voorraadbeheer-bakkerij';
 import BlogListPage from './pages/blog';
 import BlogPostPage from './pages/blog/[slug]';
 import VoorraadbeheerFoutenVoorkomen from './pages/SEO/voorraadbeheer-fouten-voorkomen';
@@ -313,6 +314,7 @@ export default function App() {
                   <Route path="/voorraadbeheer-tips" element={<VoorraadbeheerTips />} />
                   <Route path="/voorraadbeheer-software-vergelijken" element={<VoorraadbeheerSoftwareVergelijken />} />
                   <Route path="/voorraadbeheer-webshop" element={<VoorraadbeheerWebshop />} />
+                  <Route path="/voorraadbeheer-bakkerij" element={<VoorraadbeheerBakkerij />} />
                   <Route path="/voorraadbeheer-fouten-voorkomen" element={<VoorraadbeheerFoutenVoorkomen />} />
                   <Route path="/voorraadbeheer-automatiseren" element={<VoorraadbeheerAutomatiseren />} />
                   <Route path="/voorraadbeheer-horeca" element={<VoorraadbeheerHoreca />} />
