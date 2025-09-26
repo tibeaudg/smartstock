@@ -76,9 +76,9 @@ export default function PricingPage() {
   };
 
   const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('nl-NL', {
+    return new Intl.NumberFormat('en-US', {
       style: 'currency',
-      currency: 'EUR'
+      currency: 'USD'
     }).format(price);
   };
 
@@ -115,7 +115,7 @@ export default function PricingPage() {
               Pricing
           </h1>
           <p className="text-xl text-gray-600 mb-8">
-            Choose the plan that best suits your needs
+            Choose the plan that best suits your business needs. All prices in USD.
           </p>
           
           {/* Billing Toggle */}
@@ -170,7 +170,7 @@ export default function PricingPage() {
                 </CardDescription>
                 <div className="mt-4">
                   <div className="text-4xl font-bold text-gray-900">
-                    {tier.price_monthly === 0 ? '€ 0' : formatPrice(billingCycle === 'monthly' ? tier.price_monthly : tier.price_yearly)}
+                    {tier.price_monthly === 0 ? '$0' : formatPrice(billingCycle === 'monthly' ? tier.price_monthly : tier.price_yearly)}
                   </div>
                   {tier.price_monthly > 0 && (
                     <div className="text-sm text-gray-500">
@@ -312,7 +312,7 @@ export default function PricingPage() {
                 decoding="async"
               />
               <p className="text-gray-400 text-base md:text-lg mb-6 leading-relaxed max-w-2xl">
-                The best free inventory management software for SMEs. 
+                The best inventory management software for businesses worldwide. 
                 Simple, secure and without hidden costs.
               </p>
               <div className="flex space-x-4">
