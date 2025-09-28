@@ -1533,7 +1533,7 @@ export const HomePage = () => {
               <img
                 src="/trusted.png"
                 alt="Trusted by businesses across Europe"
-                className="h-16 md:h-20 w-full object-contain"
+                className="h-24 md:h-32 w-full object-contain"
                 style={{ maxWidth: "200vw" }}
                 loading="lazy"
               />
@@ -1647,10 +1647,7 @@ export const HomePage = () => {
                         <div className="text-sm text-gray-600">{feature.impact}</div>
                       </div>
                       
-                      {/* Description */}
-                      <p className="text-gray-600 text-base md:text-lg leading-relaxed mb-6">
-                        {feature.detailedDescription}
-                      </p>
+
                       
                       {/* Feature Highlights */}
                       <div className="space-y-3 mb-6">
@@ -1802,15 +1799,6 @@ export const HomePage = () => {
                   we were tired of seeing complex, expensive solutions that didn't understand SME needs. 
                   We built StockFlow because we believe every business deserves simple, powerful inventory management.
                 </p>
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center">
-                    <span className="text-white font-bold text-lg">TG</span>
-                  </div>
-                  <div>
-                    <div className="font-semibold text-gray-800">Tibeau De Grauwe</div>
-                    <div className="text-sm text-gray-600">Founder & CEO</div>
-                  </div>
-                </div>
               </div>
               <div className="text-center">
                 <div className="inline-flex items-center justify-center w-24 h-24 bg-blue-100 rounded-full mb-4">
@@ -1857,21 +1845,7 @@ export const HomePage = () => {
               Real results from real customers.
             </p>
             
-            {/* Trust Indicators */}
-            <div className="flex justify-center items-center space-x-8 text-sm text-gray-600">
-              <div className="flex items-center">
-                <Star className="h-5 w-5 text-yellow-400 fill-current mr-1" />
-                <span>4.9/5 from 10,000+ reviews</span>
-              </div>
-              <div className="flex items-center">
-                <Shield className="h-5 w-5 text-green-500 mr-1" />
-                <span>GDPR Compliant</span>
-              </div>
-              <div className="flex items-center">
-                <Users className="h-5 w-5 text-blue-500 mr-1" />
-                <span>98% Customer Retention</span>
-              </div>
-            </div>
+
           </div>
 
           {/* Enhanced Testimonials Grid */}
