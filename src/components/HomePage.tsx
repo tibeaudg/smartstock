@@ -39,6 +39,7 @@ const SocialShare = lazy(() => import('./SocialShare'));
 // Removed unused lazy imports: TestimonialsSection, FeaturesSection, VideoSection
 
 // Enhanced animation components with different effects
+
   const FadeInWhenVisible = ({ children, delay = 0, direction = 'up' }) => {
   const [isVisible, setIsVisible] = React.useState(false);
   const ref = React.useRef(null);
@@ -544,38 +545,38 @@ export const HomePage = () => {
   
   const testimonials = [
     {
-      name: "Sophie Foster",
-      role: "Sales Director, A Place In the Garden",
-      quote: "StockFlow has transformed our business operations. We never miss a sale anymore, even when items are out of stock. Our online sales have increased significantly. The system is so user-friendly that our entire team could get started immediately.",
-      avatar: '/Laura.png',
-      rating: 5,
-      company: "A Place In the Garden",
-      location: "Belgium",
-      industry: "E-commerce",
-      savings: `${formatPrice(2400)}/year saved`,
-      timeSaved: "8 hours/week"
-    },
-    {
-      name: "Sławomir Tokarski",
-      role: "CEO, TTM",
-      quote: "With StockFlow our customers can pre-order products, allowing us to capture sales we would otherwise miss. Our revenue has seen a noticeable increase! The integration with our existing systems was seamless and the support is excellent.",
-      avatar: '/jan.png',
-      rating: 5,
-      company: "TTM",
-      location: "Belgium",
-      industry: "Manufacturing",
-      savings: `${formatPrice(5200)}/year saved`,
-      timeSaved: "12 hours/week"
-    },
-    {
       name: "Laura Peeters",
       role: "Owner, De Koffieboetiek - Ghent",
-      quote: "Thanks to StockFlow I finally have a clear overview of my inventory. The automatic order notifications are a lifesaver! As an SME, the free plan is perfect for us. We have been able to increase our sales and never have shortages anymore.",
+      quote: "Thanks to StockFlow I finally have a clear overview of my inventory. The automatic order notifications are a lifesaver! As an SME, the free plan is perfect for us.",
       avatar: '/Laura.png',
       rating: 5,
       company: "De Koffieboetiek",
       location: "Ghent",
       industry: "Hospitality",
+      savings: `${formatPrice(2400)}/year saved`,
+      timeSaved: "8 hours/week"
+    },
+    {
+      name: "Tom De Wit",
+      role: "Manager, TechOnderdelen BV - Antwerp",
+      quote: "The switch to StockFlow was the best decision for our warehouse management. It's intuitive, fast and the team is very helpful. Finally an inventory management program that really works.",
+      avatar: '/jan.png',
+      rating: 5,
+      company: "TechOnderdelen BV",
+      location: "Antwerp",
+      industry: "Technology",
+      savings: `${formatPrice(5200)}/year saved`,
+      timeSaved: "12 hours/week"
+    },
+    {
+      name: "Anke Willems",
+      role: "Manager, Creatief Atelier - Bruges",
+      quote: "As a small business, the free plan is perfect for us. We can now manage our materials much more efficiently. An absolute recommendation for every SME!",
+      avatar: '/Laura.png',
+      rating: 5,
+      company: "Creatief Atelier",
+      location: "Bruges",
+      industry: "Creative",
       savings: `${formatPrice(1800)}/year saved`,
       timeSaved: "6 hours/week"
     }
@@ -1184,64 +1185,16 @@ export const HomePage = () => {
         ]}
         structuredData={structuredData}
       />
-      {/* Navigation Bar - Sticky */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            {/* Logo */}
-            <div className="flex items-center flex-shrink-0">
-              <div className="w-8 h-8 bg-blue-600 rounded-3xl flex items-center justify-center mr-3">
-                <Package className="h-5 w-5 text-white" />
-              </div>
-              <span className="text-xl font-medium text-gray-900">stockflow</span>
-      </div>
 
-            {/* Right Side - Navigation Links and Action Buttons */}
-            <div className="flex items-center space-x-8">
-              {/* Navigation Links */}
-              <div className="hidden md:flex items-center space-x-6">
-                <Link
-                  to="/features"
-                  className="text-gray-600 hover:text-blue-600 font-medium transition-colors"
-                >
-                  Features
-                </Link>
-                <Link
-                  to="/pricing"
-                  className="text-gray-600 hover:text-blue-600 font-medium transition-colors"
-                >
-                  Pricing
-                </Link>
-                <Link
-                  to="/contact"
-                  className="text-gray-600 hover:text-blue-600 font-medium transition-colors"
-                >
-                  Contact
-                </Link>
-              </div>
-              
-              {/* Action Buttons */}
-              <div className="flex items-center space-x-4">
-                <Link
-                  to="/demo"
-                  className="border border-gray-300 text-gray-600 hover:bg-gray-50 px-4 py-2 rounded-3xl font-medium transition-colors"
-                >
-                  View Demo
-                </Link>
-                <Button
-                  onClick={handleLoginClick}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-3xl font-medium transition-colors shadow-md"
-                >
-                  Register/Login
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <Header 
+        onLoginClick={() => navigate('/auth?mode=login')}
+        onNavigate={() => {}}
+        simplifiedNav={false}
+        hideNotifications={true}
+      />
 
       {/* Hero Section with Video Below */}
-      <section className="relative bg-gradient-to-br from-slate-50 via-blue-50 to-blue-50 py-32 px-4 mt-16 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-slate-50 via-blue-50 to-blue-50 py-32 px-4 overflow-hidden">
         <div className="max-w-7xl mx-auto">
           {/* Text Content */}
           <div className="text-center mb-16">
@@ -1263,7 +1216,7 @@ export const HomePage = () => {
                 <div className="mb-8">
                   <Button
                     onClick={handleLoginClick}
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-lg font-medium rounded-full transform hover:scale-105 transition-all duration-300 shadow-lg"
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-12 py-6 text-xl font-semibold rounded-full transform hover:scale-110 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25 border border-blue-500/20"
                   >
                     Get Started →
                   </Button>
@@ -1328,7 +1281,7 @@ export const HomePage = () => {
               <div className="mt-8 text-center">
                 <Link
                   to="/demo"
-                  className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium transition-colors border border-blue-600 hover:border-blue-700 px-6 py-3 rounded-3xl"
+                  className="inline-flex items-center text-blue-600 hover:text-blue-700 font-semibold transition-all duration-300 border-2 border-blue-600 hover:border-blue-700 px-8 py-4 rounded-full shadow-lg hover:shadow-blue-500/25 transform hover:scale-105"
                 >
                   View Demo →
                 </Link>
@@ -1416,17 +1369,19 @@ export const HomePage = () => {
 
           {/* Call to Action */}
           <FadeInWhenVisible delay={600}>
-                      <div className="text-center">
-              <Button
-                onClick={handleLoginClick}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-12 py-4 text-xl font-semibold rounded-full transform hover:scale-105 transition-all duration-300 shadow-lg"
-              >
-                Get Started Free →
-              </Button>
-              <p className="text-sm text-gray-500 mt-4">
-                No credit card required • Setup in 5 minutes
+            <div className="text-center">
+              <div className="flex flex-col sm:flex-row justify-center gap-4 mb-6">
+                <Button
+                  onClick={() => navigate('/features')}
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-12 py-6 text-xl font-semibold rounded-full transform hover:scale-110 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25 border border-blue-500/20"
+                >
+                  Explore All Features →
+                </Button>
+              </div>
+              <p className="text-sm text-gray-500">
+                Discover all features
               </p>
-                      </div>
+            </div>
           </FadeInWhenVisible>
         </div>
       </section>
@@ -1467,32 +1422,61 @@ export const HomePage = () => {
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-4xl md:text-6xl font-light text-gray-800 mb-6">
-              Review Section
+              What Our Customers Say
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Users can sell your product better than you
+              See how StockFlow is helping businesses save money and grow
             </p>
                     </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
               <div key={index} className="bg-white rounded-3xl shadow-lg p-6 border border-gray-200">
+                {/* Rating Stars */}
                 <div className="flex items-center mb-4">
                   {[...Array(testimonial.rating)].map((_, i) => (
                     <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
-                      ))}
-                      </div>
-                <p className="text-gray-700 mb-4">"{testimonial.quote}"</p>
-                <div className="flex items-center">
-                  <div className="w-10 h-10 bg-gray-300 rounded-full mr-3"></div>
+                  ))}
+                </div>
+                
+                {/* Testimonial Quote */}
+                <p className="text-gray-700 mb-6 leading-relaxed">"{testimonial.quote}"</p>
+                
+                {/* Money Saved - Prominent Display */}
+                <div className="mb-6 p-4 bg-green-50 rounded-2xl border border-green-200">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-green-600 mb-1">
+                      {testimonial.savings}
+                    </div>
+                    <div className="text-sm text-green-700 font-medium">
+                      Costs saved
+                    </div>
+                  </div>
+                </div>
+                
+                {/* User Info */}
+                <div className="flex items-center mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full mr-4 flex items-center justify-center">
+                    <span className="text-white font-semibold text-lg">
+                      {testimonial.name.split(' ').map(n => n[0]).join('')}
+                    </span>
+                  </div>
                   <div>
-                    <div className="font-medium text-gray-900">{testimonial.name}</div>
-                    <div className="text-sm text-gray-600">{testimonial.location}</div>
-                      </div>
+                    <div className="font-semibold text-gray-900">{testimonial.name}</div>
+                    <div className="text-sm text-blue-600 hover:text-blue-800 cursor-pointer">
+                      {testimonial.role}
                     </div>
-                        </div>
-                      ))}
-                    </div>
+                  </div>
+                </div>
+                
+                {/* Industry Category */}
+                <div className="flex items-center">
+                  <div className="w-3 h-3 bg-blue-600 rounded-full mr-2"></div>
+                  <span className="text-sm text-gray-600">{testimonial.industry}</span>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -1607,7 +1591,7 @@ export const HomePage = () => {
           <div className="flex flex-col sm:flex-row justify-center gap-4 mb-4">
             <Button
               onClick={handleLoginClick}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-12 py-6 text-xl font-medium rounded-full shadow-lg transform hover:scale-105 transition-all duration-300"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-16 py-8 text-2xl font-bold rounded-full shadow-2xl hover:shadow-blue-500/25 transform hover:scale-110 transition-all duration-300 border border-blue-500/20"
             >
               Start Free Today
             </Button>

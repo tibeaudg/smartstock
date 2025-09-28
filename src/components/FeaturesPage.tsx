@@ -1,5 +1,5 @@
 import React from 'react';
-import { BarChart, Scan, Truck, CheckCircle, ArrowRight } from 'lucide-react';
+import { Package, BarChart, Scan, Truck, CheckCircle, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const FeaturesPage: React.FC = () => {
@@ -53,29 +53,29 @@ const FeaturesPage: React.FC = () => {
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
             <Link to="/" className="flex items-center flex-shrink-0">
-              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center mr-3">
-                <BarChart className="h-5 w-5 text-white" />
+              <div className="w-8 h-8 bg-indigo-600 rounded-3xl flex items-center justify-center mr-3">
+                <Package className="h-5 w-5 text-white" />
               </div>
-              <span className="text-xl font-bold text-gray-900">stockflow</span>
+              <span className="text-xl font-medium text-gray-900">stockflow</span>
             </Link>
             
             {/* Navigation Links */}
-            <div className="hidden md:flex items-center space-x-4">
+            <div className="hidden md:flex items-center space-x-6">
               <Link
                 to="/features"
-                className="text-blue-600 font-medium transition-colors border border-blue-600 px-4 py-2 rounded-lg"
+                className="text-gray-600 hover:text-indigo-600 font-medium transition-colors"
               >
                 Features
               </Link>
               <Link
                 to="/pricing"
-                className="text-gray-700 hover:text-blue-600 font-medium transition-colors border border-gray-300 hover:border-blue-600 px-4 py-2 rounded-lg"
+                className="text-gray-600 hover:text-indigo-600 font-medium transition-colors"
               >
                 Pricing
               </Link>
               <Link
                 to="/contact"
-                className="text-gray-700 hover:text-blue-600 font-medium transition-colors border border-gray-300 hover:border-blue-600 px-4 py-2 rounded-lg"
+                className="text-gray-600 hover:text-indigo-600 font-medium transition-colors"
               >
                 Contact
               </Link>
@@ -85,13 +85,13 @@ const FeaturesPage: React.FC = () => {
             <div className="flex items-center space-x-4">
               <Link
                 to="/demo"
-                className="border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg font-medium transition-colors"
+                className="border-2 border-indigo-600 text-indigo-600 hover:bg-indigo-600 hover:text-white px-8 py-3 rounded-3xl font-semibold transition-all duration-300 shadow-lg hover:shadow-indigo-500/25 transform hover:scale-105 h-12 flex items-center"
               >
                 View Demo
               </Link>
               <Link
                 to="/auth"
-                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors shadow-md"
+                className="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3 rounded-3xl font-semibold transition-all duration-300 shadow-lg hover:shadow-indigo-500/25 transform hover:scale-105 border border-indigo-500/20 h-12 flex items-center"
               >
                 Register/Login
               </Link>
@@ -101,9 +101,9 @@ const FeaturesPage: React.FC = () => {
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-24 pb-16 bg-gradient-to-br from-blue-50 to-indigo-100">
+      <section className="pt-24 pb-16 bg-gradient-to-br from-slate-50 via-blue-50 to-blue-50">
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
+          <h1 className="text-5xl md:text-7xl font-light text-gray-800 mb-6">
             Powerful Features for Your Business
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
@@ -112,7 +112,7 @@ const FeaturesPage: React.FC = () => {
           </p>
           <Link
             to="/auth"
-            className="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-lg font-semibold rounded-full transition-colors shadow-lg"
+            className="inline-flex items-center bg-indigo-600 hover:bg-indigo-700 text-white px-12 py-6 text-xl font-semibold rounded-full transform hover:scale-110 transition-all duration-300 shadow-2xl hover:shadow-indigo-500/25 border border-indigo-500/20"
           >
             Get Started Free →
           </Link>
@@ -123,10 +123,10 @@ const FeaturesPage: React.FC = () => {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-4xl md:text-6xl font-light text-gray-800 mb-6">
               Everything You Need to Manage Your Inventory
             </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               From real-time tracking to advanced analytics, StockFlow provides all the tools you need to optimize your inventory management.
             </p>
           </div>
@@ -170,10 +170,10 @@ const FeaturesPage: React.FC = () => {
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-4xl md:text-6xl font-light text-gray-800 mb-6">
               More Powerful Features
             </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               StockFlow offers a complete suite of inventory management tools designed for modern businesses.
             </p>
           </div>
@@ -202,29 +202,29 @@ const FeaturesPage: React.FC = () => {
       </section>
 
       {/* Call to Action */}
-      <section className="py-20 bg-gradient-to-br from-blue-600 to-indigo-700 text-white">
+      <section className="py-20 bg-gradient-to-br from-slate-50 via-blue-50 to-blue-50">
         <div className="max-w-4xl mx-auto text-center px-4">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+          <h2 className="text-5xl md:text-7xl font-light text-gray-800 mb-6">
             Ready to Transform Your Inventory Management?
           </h2>
-          <p className="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
             Join thousands of businesses who trust StockFlow to manage their inventory efficiently and profitably.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Link
               to="/auth"
-              className="inline-flex items-center bg-white text-blue-600 hover:bg-gray-100 px-8 py-4 text-lg font-semibold rounded-full transition-colors shadow-lg"
+              className="inline-flex items-center bg-indigo-600 hover:bg-indigo-700 text-white px-16 py-8 text-2xl font-bold rounded-full shadow-2xl hover:shadow-indigo-500/25 transform hover:scale-110 transition-all duration-300 border border-indigo-500/20"
             >
               Start Free Trial →
             </Link>
             <Link
               to="/demo"
-              className="inline-flex items-center border-2 border-white/50 text-white hover:bg-white/10 px-8 py-4 text-lg font-medium rounded-full transition-colors"
+              className="inline-flex items-center border-2 border-indigo-300 text-indigo-600 hover:bg-indigo-50 hover:border-indigo-400 px-8 py-4 text-lg font-semibold rounded-full transition-all duration-300 shadow-sm hover:shadow-md transform hover:scale-105"
             >
               Watch Demo
             </Link>
           </div>
-          <p className="text-sm text-blue-200 mt-6">
+          <p className="text-sm text-gray-500 mt-6">
             No credit card required • 14-day free trial • Cancel anytime
           </p>
         </div>
@@ -236,10 +236,10 @@ const FeaturesPage: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center mb-4">
-                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center mr-3">
-                  <BarChart className="h-5 w-5 text-white" />
+                <div className="w-8 h-8 bg-blue-600 rounded-3xl flex items-center justify-center mr-3">
+                  <Package className="h-5 w-5 text-white" />
                 </div>
-                <span className="text-xl font-bold">stockflow</span>
+                <span className="text-xl font-medium">stockflow</span>
               </div>
               <p className="text-gray-400 text-sm">
                 Built by inventory management experts in Belgium to solve the complex challenge of stockouts and overstocking that costs SMEs thousands of euros annually.

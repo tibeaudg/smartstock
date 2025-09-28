@@ -60,7 +60,7 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-blue-50">
       <Header 
         onLoginClick={() => navigate('/auth?mode=login')}
         onNavigate={() => {}}
@@ -68,23 +68,23 @@ export default function ContactPage() {
         hideNotifications={true}
       />
       {/* Hero Section */}
-      <section className="py-16 sm:py-20 md:py-24">
+      <section className="py-32">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
           <FadeInWhenVisible>
-            <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-medium mb-6">
+            <div className="inline-flex items-center gap-2 bg-indigo-100 text-indigo-800 px-4 py-2 rounded-full text-sm font-medium mb-6">
               <MessageCircle className="h-4 w-4" />
               <span>Get in Touch</span>
             </div>
           </FadeInWhenVisible>
           
           <FadeInWhenVisible>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 text-gray-900">
+            <h1 className="text-5xl md:text-7xl font-light mb-6 text-gray-800">
               Questions? Contact us
             </h1>
           </FadeInWhenVisible>
           
           <FadeInWhenVisible>
-            <p className="text-lg sm:text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
               We usually respond within 1 hour. Get in touch with our team for support, sales inquiries, or general questions.
             </p>
           </FadeInWhenVisible>
@@ -92,18 +92,18 @@ export default function ContactPage() {
       </section>
 
       {/* Contact Form Section */}
-      <section className="pb-16 sm:pb-20 md:pb-24">
+      <section className="py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Contact Information */}
             <div className="lg:col-span-1">
               <FadeInWhenVisible>
                 <div className="bg-white rounded-xl shadow-lg p-6 h-fit">
-                  <h3 className="text-xl font-bold text-gray-900 mb-6">Contact Information</h3>
+                  <h3 className="text-2xl font-semibold text-gray-900 mb-6">Contact Information</h3>
                   
                   <div className="space-y-4">
                     <div className="flex items-start gap-3">
-                      <Mail className="h-5 w-5 text-blue-600 mt-1" />
+                      <Mail className="h-5 w-5 text-indigo-600 mt-1" />
                       <div>
                         <p className="font-medium text-gray-900">Email</p>
                         <p className="text-gray-600">support@stockflow.be</p>
@@ -111,7 +111,7 @@ export default function ContactPage() {
                     </div>
                     
                     <div className="flex items-start gap-3">
-                      <Phone className="h-5 w-5 text-blue-600 mt-1" />
+                      <Phone className="h-5 w-5 text-indigo-600 mt-1" />
                       <div>
                         <p className="font-medium text-gray-900">Phone</p>
                         <p className="text-gray-600">+32 XXX XXX XXX</p>
@@ -119,7 +119,7 @@ export default function ContactPage() {
                     </div>
                     
                     <div className="flex items-start gap-3">
-                      <MapPin className="h-5 w-5 text-blue-600 mt-1" />
+                      <MapPin className="h-5 w-5 text-indigo-600 mt-1" />
                       <div>
                         <p className="font-medium text-gray-900">Address</p>
                         <p className="text-gray-600">Belgium</p>
@@ -127,8 +127,8 @@ export default function ContactPage() {
                     </div>
                   </div>
                   
-                  <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-                    <p className="text-sm text-blue-800">
+                  <div className="mt-6 p-4 bg-indigo-50 rounded-lg">
+                    <p className="text-sm text-indigo-800">
                       <strong>Response Time:</strong> We usually respond within 1 hour during business hours.
                     </p>
                   </div>
@@ -141,7 +141,7 @@ export default function ContactPage() {
               <FadeInWhenVisible>
                 <Card className="shadow-lg">
                   <CardContent className="p-6 sm:p-8">
-                    <h3 className="text-xl font-bold text-gray-900 mb-6">Send us a Message</h3>
+                    <h3 className="text-2xl font-semibold text-gray-900 mb-6">Send us a Message</h3>
                     
                     <form onSubmit={handleSubmit(onSubmitContact)} className="space-y-6">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -181,7 +181,7 @@ export default function ContactPage() {
                         <Button 
                           type="submit" 
                           disabled={isSubmitting} 
-                          className="bg-blue-600 text-white hover:bg-blue-700 h-12 px-8 text-base font-semibold"
+                          className="bg-indigo-600 hover:bg-indigo-700 text-white h-12 px-8 text-base font-semibold rounded-full transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-indigo-500/25 border border-indigo-500/20"
                         >
                           {isSubmitting ? 'Sending...' : 'Send Message'}
                         </Button>

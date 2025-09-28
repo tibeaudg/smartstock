@@ -111,7 +111,7 @@ export default function PricingPage() {
       <div className="container mx-auto px-4 py-16">
         {/* Header */}
         <div className="text-center mb-16">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+          <h1 className="text-5xl md:text-7xl font-light text-gray-800 mb-6">
               Pricing
           </h1>
           <p className="text-xl text-gray-600 mb-8">
@@ -164,7 +164,7 @@ export default function PricingPage() {
                 <div className={`mx-auto mb-4 ${getTierColor(tier.name)}`}>
                   {getTierIcon(tier.name)}
                 </div>
-                <CardTitle className="text-2xl font-bold">{tier.display_name}</CardTitle>
+                <CardTitle className="text-2xl font-semibold">{tier.display_name}</CardTitle>
                 <CardDescription className="text-gray-600">
                   {tier.description}
                 </CardDescription>
@@ -187,10 +187,7 @@ export default function PricingPage() {
                     <span className="text-sm text-gray-600">Products</span>
                     <span className="text-sm font-medium">{getLimitText(tier.max_products, 'products')}</span>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600">Orders per month</span>
-                    <span className="text-sm font-medium">{getLimitText(tier.max_orders_per_month, 'orders')}</span>
-                  </div>
+
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-gray-600">Users</span>
                     <span className="text-sm font-medium">{getLimitText(tier.max_users, 'users')}</span>
@@ -217,7 +214,7 @@ export default function PricingPage() {
 
               <CardFooter>
                 <Button 
-                  className={`w-full ${tier.is_popular ? 'bg-blue-600 hover:bg-blue-700' : tier.is_enterprise ? 'bg-purple-600 hover:bg-purple-700' : 'bg-gray-900 hover:bg-gray-800'}`}
+                  className="w-full rounded-full transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl }"
                   onClick={() => handleSelectPlan(tier.name)}
                 >
                   {tier.price_monthly === 0 ? 'Current plan' : 'Start 14-day trial'}
@@ -232,7 +229,7 @@ export default function PricingPage() {
           <div className="bg-white rounded-lg shadow-lg p-8 max-w-4xl mx-auto">
             <div className="flex items-center justify-center mb-4">
               <Clock className="h-8 w-8 text-blue-600 mr-3" />
-                <h3 className="text-2xl font-bold text-gray-900">14-day free trial</h3>
+                <h3 className="text-2xl font-semibold text-gray-900">14-day free trial</h3>
             </div>
             <p className="text-gray-600 mb-6">
               Try all premium features 14 days free. No credit card required, 
@@ -266,7 +263,7 @@ export default function PricingPage() {
 
         {/* FAQ Section */}
         <div className="mt-16">
-          <h3 className="text-2xl font-bold text-center text-gray-900 mb-8">
+          <h3 className="text-4xl md:text-6xl font-light text-center text-gray-800 mb-8">
             Frequently asked questions
           </h3>
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
