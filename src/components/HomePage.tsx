@@ -1529,32 +1529,14 @@ export const HomePage = () => {
           </FadeInWhenVisible>
           
           <SlideUpWhenVisible delay={200}>
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-8 items-center">
-              {trustCompanies.map((company, index) => (
-                <div 
-                  key={index}
-                  className="flex items-center justify-center opacity-60 hover:opacity-100 transition-opacity duration-300"
-                >
-                  <div className="relative">
-                    <img
-                      src={company.logo}
-                      alt={`${company.name} logo`}
-                      className="h-12 w-auto object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
-                      onError={(e) => {
-                        e.currentTarget.style.display = 'none';
-                        const nextElement = e.currentTarget.nextElementSibling as HTMLElement;
-                        if (nextElement) nextElement.style.display = 'flex';
-                      }}
-                    />
-                    <div 
-                      className="h-12 w-20 bg-gray-100 rounded flex items-center justify-center text-gray-400 text-xs font-medium"
-                      style={{display: 'none'}}
-                    >
-                      {company.name}
-                    </div>
-                  </div>
-                </div>
-              ))}
+            <div className="flex justify-center items-center w-full">
+              <img
+                src="/trusted.png"
+                alt="Trusted by businesses across Europe"
+                className="h-16 md:h-20 w-full object-contain"
+                style={{ maxWidth: "200vw" }}
+                loading="lazy"
+              />
             </div>
           </SlideUpWhenVisible>
           
@@ -1583,34 +1565,7 @@ export const HomePage = () => {
                 Real businesses save €2,400+ annually. See exactly how StockFlow prevents stockouts, 
                 reduces waste, and turns inventory management into profit.
               </p>
-              
-              {/* Key Benefits Preview */}
-              <div className="max-w-5xl mx-auto">
-                <Carousel
-                  itemsPerView={{
-                    mobile: 1,
-                    tablet: 2,
-                    desktop: 3
-                  }}
-                  showArrows={true}
-                  showDots={true}
-                  autoPlay={false}
-                  className="px-4"
-                >
-                  <div className="text-center p-4 md:p-6 bg-white rounded-2xl shadow-lg h-full">
-                    <div className="text-2xl md:text-3xl font-bold text-green-600 mb-2">€2,400+</div>
-                    <div className="text-xs md:text-sm text-gray-700">Average annual savings</div>
-                  </div>
-                  <div className="text-center p-4 md:p-6 bg-white rounded-2xl shadow-lg h-full">
-                    <div className="text-2xl md:text-3xl font-bold text-blue-600 mb-2">8hrs</div>
-                    <div className="text-xs md:text-sm text-gray-700">Weekly time saved</div>
-                  </div>
-                  <div className="text-center p-4 md:p-6 bg-white rounded-2xl shadow-lg h-full">
-                    <div className="text-2xl md:text-3xl font-bold text-purple-600 mb-2">95%</div>
-                    <div className="text-xs md:text-sm text-gray-700">Accuracy improvement</div>
-                  </div>
-                </Carousel>
-              </div>
+
             </div>
           </FadeInWhenVisible>
           
@@ -1759,37 +1714,9 @@ export const HomePage = () => {
           <FadeInWhenVisible delay={800}>
             <div className="p-6 md:p-8">
               
-              <div className="mb-6 md:mb-8">
-                <Carousel
-                  itemsPerView={{
-                    mobile: 1,
-                    tablet: 2,
-                    desktop: 3
-                  }}
-                  showArrows={true}
-                  showDots={true}
-                  autoPlay={false}
-                  className="px-4"
-                >
-                  <div className="text-center p-4 md:p-6 bg-green-50 rounded-2xl shadow-lg h-full">
-                    <Shield className="h-6 w-6 md:h-8 md:w-8 text-green-600 mx-auto mb-3" />
-                    <div className="font-semibold text-gray-800 mb-2 text-sm md:text-base">GDPR Compliant</div>
-                    <div className="text-xs md:text-sm text-gray-600">Full compliance with Belgian data protection laws</div>
-                  </div>
-                  <div className="text-center p-4 md:p-6 bg-blue-50 rounded-2xl shadow-lg h-full">
-                    <Globe className="h-6 w-6 md:h-8 md:w-8 text-blue-600 mx-auto mb-3" />
-                    <div className="font-semibold text-gray-800 mb-2 text-sm md:text-base">Multi-Language</div>
-                    <div className="text-xs md:text-sm text-gray-600">Dutch, French, German, and English support</div>
-                  </div>
-                  <div className="text-center p-4 md:p-6 bg-purple-50 rounded-2xl shadow-lg h-full">
-                    <Package className="h-6 w-6 md:h-8 md:w-8 text-purple-600 mx-auto mb-3" />
-                    <div className="font-semibold text-gray-800 mb-2 text-sm md:text-base">Local Integrations</div>
-                    <div className="text-xs md:text-sm text-gray-600">Works with Belgian accounting and POS systems</div>
-                  </div>
-                </Carousel>
-              </div>
+
               
-              <div className="text-center mt-8 md:mt-12">
+          <div className="text-center mt-8 md:mt-12">
             <Button
               onClick={handleLoginClick}
               className="bg-blue-600 hover:bg-blue-700 text-white px-8 md:px-12 py-4 md:py-6 text-lg md:text-xl font-semibold rounded-full transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25 border border-blue-500/20 w-full sm:w-auto"
@@ -1822,24 +1749,14 @@ export const HomePage = () => {
             </p>
             
             {/* Trust Statistics */}
-            <Carousel
-              itemsPerView={{
-                mobile: 2,
-                tablet: 4,
-                desktop: 4
-              }}
-              showArrows={false}
-              showDots={true}
-              autoPlay={false}
-              className="max-w-4xl mx-auto"
-            >
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
               {trustStats.map((stat, index) => (
                 <div key={index} className="text-center px-4">
                   <div className="text-3xl md:text-4xl font-bold text-blue-600 mb-2">{stat.number}</div>
                   <div className="text-sm text-gray-600">{stat.label}</div>
                 </div>
               ))}
-            </Carousel>
+            </div>
           </div>
 
           {/* Value-Focused Benefits */}
@@ -2030,33 +1947,6 @@ export const HomePage = () => {
           {/* Social Proof & Case Studies */}
           <div className="p-8 md:p-8">
             
-            {/* Case Study Highlights */}
-            <div className="mb-6 md:mb-8">
-              <Carousel
-                itemsPerView={{
-                  mobile: 1,
-                  tablet: 2,
-                  desktop: 3
-                }}
-                showArrows={true}
-                showDots={true}
-                autoPlay={false}
-                className="px-4"
-              >
-                <div className="text-center p-4 md:p-6 bg-blue-50 rounded-2xl h-full">
-                  <div className="text-2xl md:text-3xl font-bold text-blue-600 mb-2">€2M+</div>
-                  <div className="text-xs md:text-sm text-gray-700">Total inventory value managed</div>
-                </div>
-                <div className="text-center p-4 md:p-6 bg-green-50 rounded-2xl h-full">
-                  <div className="text-2xl md:text-3xl font-bold text-green-600 mb-2">95%</div>
-                  <div className="text-xs md:text-sm text-gray-700">Average accuracy improvement</div>
-                </div>
-                <div className="text-center p-4 md:p-6 bg-purple-50 rounded-2xl h-full">
-                  <div className="text-2xl md:text-3xl font-bold text-purple-600 mb-2">12hrs</div>
-                  <div className="text-xs md:text-sm text-gray-700">Average weekly time saved</div>
-                </div>
-              </Carousel>
-            </div>
 
             {/* CTA */}
             <div className="text-center">
