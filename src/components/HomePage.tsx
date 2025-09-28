@@ -38,9 +38,9 @@ const SocialShare = lazy(() => import('./SocialShare'));
 // Lazy load heavy components for better performance
 // Removed unused lazy imports: TestimonialsSection, FeaturesSection, VideoSection
 
-// Enhanced animation components with different effects
+// Enhanced animation components with consistent effects
 
-  const FadeInWhenVisible = ({ children, delay = 0, direction = 'up' }) => {
+  const FadeInWhenVisible = ({ children, delay = 0, direction = 'up', duration = 700 }) => {
   const [isVisible, setIsVisible] = React.useState(false);
   const ref = React.useRef(null);
 
@@ -84,7 +84,7 @@ const SocialShare = lazy(() => import('./SocialShare'));
   return (
       <div 
         ref={ref} 
-        className={`transition-all duration-700 ease-out ${
+        className={`transition-all duration-${duration} ease-out ${
           isVisible ? 'opacity-100' : 'opacity-0'
         } ${getTransform()}`}
       >
@@ -134,11 +134,57 @@ const SlideInWhenVisible = ({ children, delay = 0, direction = 'left' }) => {
   );
 };
 
-const ScaleInWhenVisible = ({ children, delay = 0 }) => {
+const ScaleInWhenVisible = ({ children, delay = 0, duration = 700 }) => {
   const [isVisible, setIsVisible] = React.useState(false);
   const ref = React.useRef(null);
 
   React.useEffect(() => {
+    const isMobile = window.innerWidth < 768;
+    if (isMobile) {
+      setIsVisible(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => setIsVisible(true), delay);
+        }
+      },
+      { threshold: 0.1, rootMargin: '50px' }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => observer.disconnect();
+  }, [delay]);
+
+  return (
+    <div 
+      ref={ref} 
+      className={`transition-all duration-${duration} ease-out ${
+        isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+      }`}
+    >
+      {children}
+    </div>
+  );
+};
+
+// New animation components for consistent effects
+const StaggerInWhenVisible = ({ children, delay = 0, staggerDelay = 100 }) => {
+  const [isVisible, setIsVisible] = React.useState(false);
+  const ref = React.useRef(null);
+
+  React.useEffect(() => {
+    const isMobile = window.innerWidth < 768;
+    if (isMobile) {
+      setIsVisible(true);
+      return;
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -159,7 +205,89 @@ const ScaleInWhenVisible = ({ children, delay = 0 }) => {
     <div 
       ref={ref} 
       className={`transition-all duration-700 ease-out ${
-        isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+      }`}
+      style={{ transitionDelay: `${staggerDelay}ms` }}
+    >
+      {children}
+    </div>
+  );
+};
+
+const BounceInWhenVisible = ({ children, delay = 0 }) => {
+  const [isVisible, setIsVisible] = React.useState(false);
+  const ref = React.useRef(null);
+
+  React.useEffect(() => {
+    const isMobile = window.innerWidth < 768;
+    if (isMobile) {
+      setIsVisible(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => setIsVisible(true), delay);
+        }
+      },
+      { threshold: 0.1, rootMargin: '50px' }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => observer.disconnect();
+  }, [delay]);
+
+  return (
+    <div 
+      ref={ref} 
+      className={`transition-all duration-1000 ease-out ${
+        isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-75'
+      }`}
+      style={{
+        transitionTimingFunction: isVisible ? 'cubic-bezier(0.68, -0.55, 0.265, 1.55)' : 'ease-out'
+      }}
+    >
+      {children}
+    </div>
+  );
+};
+
+const SlideUpWhenVisible = ({ children, delay = 0, duration = 800 }) => {
+  const [isVisible, setIsVisible] = React.useState(false);
+  const ref = React.useRef(null);
+
+  React.useEffect(() => {
+    const isMobile = window.innerWidth < 768;
+    if (isMobile) {
+      setIsVisible(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => setIsVisible(true), delay);
+        }
+      },
+      { threshold: 0.1, rootMargin: '50px' }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => observer.disconnect();
+  }, [delay]);
+
+  return (
+    <div 
+      ref={ref} 
+      className={`transition-all duration-${duration} ease-out ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
       }`}
     >
       {children}
@@ -493,33 +621,27 @@ export const HomePage = () => {
       title: "Never Miss Another Sale",
       benefit: "Stop losing €2,400+ annually to stockouts",
       impact: "Feel confident your bestsellers are always in stock",
-      description: "StockFlow's smart reorder system automatically tracks your inventory and alerts you before you run out. Never lose a sale to stockouts again.",
       detailedDescription: "Real-time stock tracking across all locations, automated low stock alerts via email & SMS, smart reorder suggestions based on sales patterns, multi-location inventory management.",
       category: "Smart Inventory Management",
       visual: "stockout-prevention",
-      cta: "Start Preventing Stockouts"
     },
     {
       icon: Users,
       title: "Turn Data Into Profit",
       benefit: "Increase profits by 15-25% with better decisions",
       impact: "Know exactly which products make you money",
-      description: "See which products are your real money-makers and optimize your stock levels for maximum profit. Make decisions based on data, not guesswork.",
       detailedDescription: "Sales performance analytics in real-time, inventory turnover analysis & insights, profit margin tracking by product, custom reports for better decision making.",
       category: "Advanced Analytics Dashboard",
       visual: "profit-optimization",
-      cta: "Boost Your Profits"
     },
     {
       icon: Zap,
       title: "Work From Anywhere",
       benefit: "Save 8 hours per week with mobile efficiency",
       impact: "Manage inventory without being tied to your desk",
-      description: "Scan barcodes, update stock levels, and manage orders from anywhere. Your inventory management travels with you, not the other way around.",
       detailedDescription: "Mobile barcode scanning for instant updates, offline functionality - works without internet, push notifications for low stock alerts, touch-friendly interface for all skill levels.",
       category: "Mobile-First Experience",
       visual: "mobile-efficiency",
-      cta: "Go Mobile Now"
     },
   ];
 
@@ -1301,20 +1423,20 @@ export const HomePage = () => {
           {/* Text Content */}
           <div className="text-center mb-16">
           
-              <FadeInWhenVisible delay={200}>
+              <BounceInWhenVisible delay={200}>
                 <h1 className="text-5xl md:text-7xl font-light text-gray-800 mb-8 leading-tight">
-                  <span className="block">One inventory platform</span>
-                  <span className="block">for any kind of business</span>
+                  <span className="block">Stop Losing Money</span>
+                  <span className="block text-blue-600">to Stockouts</span>
                 </h1>
-              </FadeInWhenVisible>
+              </BounceInWhenVisible>
               
-              <FadeInWhenVisible delay={400}>
+              <SlideUpWhenVisible delay={400}>
                 <p className="text-xl text-gray-600 mb-12 max-w-3xl mx-auto lg:mx-0 leading-relaxed">
-                  Plan and execute inventory management across retail, wholesale, manufacturing, and e-commerce with a unified, AI-first product suite.
+                  Never run out of stock again. StockFlow automatically tracks your inventory, alerts you when to reorder, and saves SMEs €2,400+ per year.
                 </p>
-              </FadeInWhenVisible>
+              </SlideUpWhenVisible>
               
-              <FadeInWhenVisible delay={600}>
+              <ScaleInWhenVisible delay={600}>
                 <div className="mb-8">
                   <Button
                     onClick={handleLoginClick}
@@ -1323,7 +1445,7 @@ export const HomePage = () => {
                     Get Started →
                   </Button>
                 </div>
-              </FadeInWhenVisible>
+              </ScaleInWhenVisible>
               
               <FadeInWhenVisible delay={800}>
                 <p className="text-sm text-gray-500">
@@ -1333,7 +1455,7 @@ export const HomePage = () => {
             </div>
             
           {/* Video Showcase Below */}
-          <FadeInWhenVisible delay={400}>
+          <SlideUpWhenVisible delay={1000}>
             <div className="relative max-w-5xl mx-auto">
               {/* Video Container */}
               <div className="relative bg-gray-900 rounded-2xl overflow-hidden shadow-2xl">
@@ -1389,7 +1511,7 @@ export const HomePage = () => {
                 </Link>
               </div>
             </div>
-          </FadeInWhenVisible>
+          </SlideUpWhenVisible>
         </div>
       </section>
 
@@ -1408,11 +1530,11 @@ export const HomePage = () => {
           <FadeInWhenVisible>
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-6xl font-light text-gray-800 mb-6">
-                Stop Losing Money to Inventory Problems
+                How StockFlow Saves You Money
               </h2>
               <p className="text-xl text-gray-600 max-w-4xl mx-auto mb-8">
-                Transform your inventory management from a cost center into a profit driver. 
-                See exactly how StockFlow helps businesses like yours save time, money, and stress.
+                Real businesses save €2,400+ annually. See exactly how StockFlow prevents stockouts, 
+                reduces waste, and turns inventory management into profit.
               </p>
               
               {/* Key Benefits Preview */}
@@ -1436,9 +1558,10 @@ export const HomePage = () => {
           {/* Top 3 Hero Features */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-20">
             {heroFeatures.map((feature, index) => (
-              <FadeInWhenVisible 
+              <StaggerInWhenVisible 
                 key={index} 
                 delay={index * 200}
+                staggerDelay={index * 100}
               >
                 <div className="bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden group">
                   {/* Hero Visual */}
@@ -1514,16 +1637,10 @@ export const HomePage = () => {
                       ))}
                     </div>
                     
-                    {/* CTA */}
-                    <Button
-                      onClick={() => navigate('/features')}
-                      className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-2xl font-semibold transition-all duration-300 shadow-lg hover:shadow-blue-500/25"
-                    >
-                      {feature.cta} →
-                    </Button>
+
                   </div>
                 </div>
-              </FadeInWhenVisible>
+              </StaggerInWhenVisible>
             ))}
           </div>
 
@@ -1532,17 +1649,18 @@ export const HomePage = () => {
             <div className="mb-16">
               <div className="text-center mb-12">
                 <h3 className="text-3xl md:text-4xl font-light text-gray-800 mb-4">
-                  Everything You Need, Nothing You Don't
+                  Built for Small Business Success
                 </h3>
                 <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                  Powerful features designed specifically for small and medium businesses. 
-                  No enterprise complexity, no unnecessary features.
+                  Everything you need to manage inventory like a pro. 
+                  No complexity, no unnecessary features, just results.
                 </p>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {secondaryFeatures.map((feature, index) => (
-                  <div key={index} className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 group">
+                  <StaggerInWhenVisible key={index} delay={index * 150} staggerDelay={index * 50}>
+                    <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 group">
                     <div className="text-center">
                       <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-2xl mb-4 group-hover:bg-blue-200 transition-colors">
                         <feature.icon className="h-8 w-8 text-blue-600" />
@@ -1551,7 +1669,8 @@ export const HomePage = () => {
                       <p className="text-sm text-blue-600 font-medium mb-3">{feature.benefit}</p>
                       <p className="text-sm text-gray-600">{feature.description}</p>
                     </div>
-                  </div>
+                    </div>
+                  </StaggerInWhenVisible>
                 ))}
               </div>
             </div>
@@ -1559,36 +1678,38 @@ export const HomePage = () => {
 
           {/* Technical Detail Section */}
           <FadeInWhenVisible delay={800}>
-            <div className="bg-white rounded-3xl p-8 md:p-12 shadow-xl">
-              <div className="text-center mb-8">
-                <h3 className="text-2xl md:text-3xl font-semibold text-gray-800 mb-4">
-                  Built for Belgian Businesses
-                </h3>
-                <p className="text-gray-600 max-w-3xl mx-auto">
-                  StockFlow is designed specifically for the Belgian market with local compliance, 
-                  multi-language support, and integrations that work with your existing systems.
-                </p>
-              </div>
+            <div className="p-8 md:p-8">
               
               <div className="grid md:grid-cols-3 gap-6 mb-8">
-                <div className="text-center p-6 bg-green-50 rounded-2xl">
+                <div className="text-center p-6 bg-green-50 rounded-2xl shadow-lg">
                   <Shield className="h-8 w-8 text-green-600 mx-auto mb-3" />
                   <div className="font-semibold text-gray-800 mb-2">GDPR Compliant</div>
                   <div className="text-sm text-gray-600">Full compliance with Belgian data protection laws</div>
                 </div>
-                <div className="text-center p-6 bg-blue-50 rounded-2xl">
+                <div className="text-center p-6 bg-blue-50 rounded-2xl shadow-lg">
                   <Globe className="h-8 w-8 text-blue-600 mx-auto mb-3" />
                   <div className="font-semibold text-gray-800 mb-2">Multi-Language</div>
                   <div className="text-sm text-gray-600">Dutch, French, German, and English support</div>
                 </div>
-                <div className="text-center p-6 bg-purple-50 rounded-2xl">
+                <div className="text-center p-6 bg-purple-50 rounded-2xl shadow-lg">
                   <Package className="h-8 w-8 text-purple-600 mx-auto mb-3" />
                   <div className="font-semibold text-gray-800 mb-2">Local Integrations</div>
                   <div className="text-sm text-gray-600">Works with Belgian accounting and POS systems</div>
                 </div>
               </div>
               
+              <div className="text-center mt-12">
+            <Button
+              onClick={handleLoginClick}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-12 py-6 text-xl font-semibold rounded-full transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25 border border-blue-500/20"
+            >
+              Get Started →
+            </Button>
+            <p className="text-sm text-gray-500 mt-3">
+              No credit card required, start in less than 2 minutes
+            </p>
 
+          </div>
             </div>
           </FadeInWhenVisible>
         </div>
@@ -1596,18 +1717,17 @@ export const HomePage = () => {
 
 
 
-      {/* Why Choose Us Section */}
       {/* Why Choose Us Section - Enhanced */}
       <section className="py-20 bg-gradient-to-br from-slate-50 to-blue-50">
         <div className="max-w-7xl mx-auto px-4">
           {/* Compelling Headline */}
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-6xl font-light text-gray-800 mb-6">
-              The Difference Is Clear
+              Why Choose StockFlow
             </h2>
             <p className="text-xl text-gray-600 max-w-4xl mx-auto mb-8">
-              We don't just manage inventory—we transform how small businesses operate. 
-              Our mission is to make inventory management transparent, affordable, and accessible for every SME.
+              Built specifically for small businesses. 
+              Simple, powerful, and designed to save you time and money from day one.
             </p>
             
             {/* Trust Statistics */}
@@ -1683,8 +1803,9 @@ export const HomePage = () => {
             >
               Get Started →
             </Button>
-            <p className="text-sm text-gray-500 mt-4">
-              Join 10,000+ businesses already using StockFlow • No credit card required • Setup in 5 minutes
+
+            <p className="text-sm text-gray-500 mt-2">
+              Join 10,000+ businesses already using StockFlow • Setup in 5 minutes
             </p>
           </div>
         </div>
@@ -1699,10 +1820,11 @@ export const HomePage = () => {
           {/* Compelling Headline */}
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-6xl font-light text-gray-800 mb-6">
-              Real Results, Real Customers
+              Real Customers, Real Savings
             </h2>
             <p className="text-xl text-gray-600 max-w-4xl mx-auto mb-8">
-              Don't just take our word for it. See the measurable impact StockFlow has had on businesses like yours.
+              See how businesses like yours save €2,400+ annually with StockFlow. 
+              Real results from real customers.
             </p>
             
             {/* Trust Indicators */}
@@ -1725,13 +1847,12 @@ export const HomePage = () => {
           {/* Enhanced Testimonials Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
             {testimonials.map((testimonial, index) => (
-              <motion.div 
+              <StaggerInWhenVisible 
                 key={index} 
-                className="bg-white rounded-3xl shadow-xl p-8 border border-gray-100 hover:shadow-2xl transition-all duration-300"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
+                delay={index * 200}
+                staggerDelay={index * 100}
               >
+                <div className="bg-white rounded-3xl shadow-xl p-8 border border-gray-100 hover:shadow-2xl transition-all duration-300">
                 {/* Rating Stars */}
                 <div className="flex items-center mb-6">
                   {[...Array(testimonial.rating)].map((_, i) => (
@@ -1740,32 +1861,8 @@ export const HomePage = () => {
                   <span className="ml-2 text-sm text-gray-600">Verified Customer</span>
                 </div>
                 
-                {/* Specific Results - Before/After */}
-                <div className="mb-6 p-4 bg-gradient-to-r from-red-50 to-green-50 rounded-2xl border border-gray-200">
-                  <div className="grid grid-cols-2 gap-4 text-sm">
-                    <div>
-                      <div className="font-semibold text-red-600 mb-1">Before StockFlow</div>
-                      <div className="text-gray-700">{testimonial.beforeAfter.before}</div>
-                    </div>
-                    <div>
-                      <div className="font-semibold text-green-600 mb-1">After StockFlow</div>
-                      <div className="text-gray-700">{testimonial.beforeAfter.after}</div>
-                    </div>
-                  </div>
-                </div>
-                
-                {/* Quantified Results */}
-                <div className="mb-6">
-                  <h4 className="font-semibold text-gray-800 mb-3">Measurable Impact:</h4>
-                  <div className="space-y-2">
-                    {testimonial.specificResults.map((result, i) => (
-                      <div key={i} className="flex items-center text-sm text-gray-700">
-                        <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
-                        <span>{result}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+
+
                 
                 {/* Testimonial Quote */}
                 <blockquote className="text-gray-700 mb-6 leading-relaxed italic">
@@ -1797,30 +1894,18 @@ export const HomePage = () => {
                 </div>
                 
                 {/* Industry & Savings */}
-                <div className="flex justify-between items-center pt-4 border-t border-gray-200">
-                  <div className="flex items-center">
-                    <div className="w-3 h-3 bg-blue-600 rounded-full mr-2"></div>
-                    <span className="text-sm text-gray-600">{testimonial.industry}</span>
-                  </div>
+                <div className="flex justify-center items-center pt-4 border-t border-gray-200">
                   <div className="text-right">
                     <div className="text-lg font-bold text-green-600">{testimonial.savings}</div>
-                    <div className="text-xs text-gray-500">{testimonial.timeSaved} saved</div>
                   </div>
                 </div>
-              </motion.div>
+                </div>
+              </StaggerInWhenVisible>
             ))}
           </div>
 
           {/* Social Proof & Case Studies */}
-          <div className="bg-white rounded-3xl p-8 md:p-12 shadow-xl">
-            <div className="text-center mb-8">
-              <h3 className="text-2xl md:text-3xl font-semibold text-gray-800 mb-4">
-                Join 10,000+ Businesses Already Saving with StockFlow
-              </h3>
-              <p className="text-gray-600 max-w-3xl mx-auto">
-                From small coffee shops to large distributors, businesses across Belgium are transforming their inventory management with measurable results.
-              </p>
-            </div>
+          <div className="p-8 md:p-8">
             
             {/* Case Study Highlights */}
             <div className="grid md:grid-cols-3 gap-6 mb-8">
@@ -1844,9 +1929,10 @@ export const HomePage = () => {
                 onClick={handleLoginClick}
                 className="bg-blue-600 hover:bg-blue-700 text-white px-12 py-6 text-xl font-semibold rounded-full transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25 border border-blue-500/20"
               >
-                Start Your Success Story →
+                Join 10,000+ Happy Customers →
               </Button>
-              <p className="text-sm text-gray-500 mt-4">
+
+              <p className="text-sm text-gray-500 mt-2">
                 Join thousands of businesses already saving time and money • Free forever plan available
               </p>
             </div>
@@ -1861,11 +1947,11 @@ export const HomePage = () => {
           <FadeInWhenVisible>
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-6xl font-light text-gray-800 mb-6">
-                Got Questions? We've Got Answers
+                Common Questions, Clear Answers
               </h2>
               <p className="text-xl text-gray-600 max-w-4xl mx-auto mb-8">
-                The most common questions from business owners just like you. 
-                Get the clarity you need to make the right decision for your business.
+                Everything you need to know about StockFlow. 
+                Get answers to the questions that matter most to your business.
               </p>
               
               {/* Trust Indicators */}
@@ -1889,9 +1975,10 @@ export const HomePage = () => {
           {/* FAQ Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-16">
             {faqData.map((faq, index) => (
-              <FadeInWhenVisible 
+              <StaggerInWhenVisible 
                 key={index} 
-                delay={index * 100}
+                delay={index * 150}
+                staggerDelay={index * 75}
               >
                 <div className="bg-white rounded-3xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
                   {/* FAQ Header */}
@@ -1943,13 +2030,13 @@ export const HomePage = () => {
                     </motion.div>
                   )}
                 </div>
-              </FadeInWhenVisible>
+              </StaggerInWhenVisible>
             ))}
           </div>
 
           {/* Still Have Questions CTA */}
           <FadeInWhenVisible delay={600}>
-            <div className="bg-white rounded-3xl p-8 md:p-12 shadow-xl text-center">
+            <div className="p-8 md:p-8 text-center">
               <h3 className="text-2xl md:text-3xl font-semibold text-gray-800 mb-4">
                 Still Have Questions?
               </h3>
@@ -2053,106 +2140,76 @@ export const HomePage = () => {
         </div>
         
         <div className="max-w-6xl mx-auto text-center px-4 relative z-10">
-          {/* Urgency and Scarcity */}
-          <FadeInWhenVisible>
-            <div className="mb-8">
-              <div className="inline-block bg-yellow-400 text-black px-6 py-3 rounded-full text-lg font-bold mb-6 shadow-lg">
-                ⚡ Limited Time: Free Forever Plan Available
-              </div>
-            </div>
-          </FadeInWhenVisible>
-
-          {/* Compelling Headline */}
-          <FadeInWhenVisible delay={200}>
-            <h2 className="text-4xl md:text-7xl font-bold text-white mb-8 leading-tight">
-              Stop Losing €2,400+ Annually to Inventory Problems
+          {/* Main Headline */}
+          <BounceInWhenVisible delay={200}>
+            <h2 className="text-6xl md:text-6xl font-bold text-white mb-6 leading-tight">
+              Ready to Stop Losing Money to Stockouts?
             </h2>
-            <p className="text-xl md:text-2xl text-blue-100 mb-12 max-w-4xl mx-auto leading-relaxed">
-              Join 10,000+ businesses already saving time and money with StockFlow. 
-              <span className="text-yellow-300 font-semibold"> No credit card required. Setup in 5 minutes.</span>
-            </p>
-          </FadeInWhenVisible>
+          </BounceInWhenVisible>
 
-          {/* Social Proof */}
-          <FadeInWhenVisible delay={400}>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 max-w-4xl mx-auto">
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-                <div className="text-3xl font-bold text-white mb-2">€2,400+</div>
-                <div className="text-blue-100 text-sm">Average annual savings</div>
-              </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-                <div className="text-3xl font-bold text-white mb-2">8hrs</div>
-                <div className="text-blue-100 text-sm">Weekly time saved</div>
-              </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-                <div className="text-3xl font-bold text-white mb-2">10,000+</div>
-                <div className="text-blue-100 text-sm">Happy customers</div>
-              </div>
-            </div>
-          </FadeInWhenVisible>
+
+          {/* Description */}
+          <SlideUpWhenVisible delay={400}>
+            <p className="text-xl md:text-2xl text-white mb-12 max-w-4xl mx-auto leading-relaxed">
+              Start your free account today and save €2,400+ per year in lost sales. 
+              <span className="text-yellow-300 font-semibold"> No credit card required, setup in 5 minutes.</span>
+            </p>
+          </SlideUpWhenVisible>
+
+
 
           {/* Primary CTA */}
-          <FadeInWhenVisible delay={600}>
+          <ScaleInWhenVisible delay={600}>
             <div className="mb-8">
               <Button
                 onClick={handleLoginClick}
-                className="bg-white text-blue-700 hover:bg-yellow-400 hover:text-blue-900 px-16 py-8 text-2xl font-bold rounded-full shadow-2xl hover:shadow-yellow-400/25 transform hover:scale-110 transition-all duration-300 border-4 border-yellow-400"
+                className="bg-white hover:bg-blue-600 text-blue-600 px-16 py-8 text-2xl font-bold rounded-full shadow-2xl hover:shadow-green-500/25 transform hover:scale-110 transition-all duration-300"
               >
-                🚀 Start Saving Money Today - FREE
+                Start Free Today - Save €2,400/Year →
               </Button>
             </div>
-          </FadeInWhenVisible>
+          </ScaleInWhenVisible>
 
           {/* Trust Indicators */}
-          <FadeInWhenVisible delay={800}>
-            <div className="flex flex-wrap justify-center items-center gap-8 text-blue-200 text-sm mb-8">
-              <div className="flex items-center">
-                <Shield className="h-5 w-5 text-green-400 mr-2" />
-                <span>100% GDPR Compliant</span>
+          <SlideUpWhenVisible delay={700}>
+            <div className="grid grid-cols-4 md:grid-cols-4 gap-6 mb-12 max-w-4xl mx-auto">
+              <div className="flex items-center justify-center text-white">
+                <CheckCircle className="h-6 w-6 text-green-400 mr-2" />
+                <span className="text-sm font-medium">No credit card required</span>
               </div>
-              <div className="flex items-center">
-                <Clock className="h-5 w-5 text-yellow-400 mr-2" />
-                <span>5-minute setup</span>
+              <div className="flex items-center justify-center text-white">
+                <Clock className="h-6 w-6 text-yellow-400 mr-2" />
+                <span className="text-sm font-medium">Instant access</span>
               </div>
-              <div className="flex items-center">
-                <Users className="h-5 w-5 text-blue-300 mr-2" />
-                <span>Human support</span>
+              <div className="flex items-center justify-center text-white">
+                <Shield className="h-6 w-6 text-green-400 mr-2" />
+                <span className="text-sm font-medium">GDPR-compliant</span>
               </div>
-              <div className="flex items-center">
-                <CheckCircle className="h-5 w-5 text-green-400 mr-2" />
-                <span>No credit card required</span>
+              <div className="flex items-center justify-center text-white">
+                <CheckCircle className="h-6 w-6 text-green-400 mr-2" />
+                <span className="text-sm font-medium">100% secure</span>
               </div>
             </div>
-          </FadeInWhenVisible>
+          </SlideUpWhenVisible>
 
-          {/* Risk Reversal */}
-          <FadeInWhenVisible delay={1000}>
-            <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-8 border border-white/20 max-w-4xl mx-auto">
-              <h3 className="text-2xl font-bold text-white mb-4">
-                💯 100% Risk-Free Guarantee
-              </h3>
-              <p className="text-blue-100 text-lg leading-relaxed">
-                Try StockFlow completely free for as long as you want. If you're not saving money within 30 days, 
-                we'll help you export your data and find a better solution. <span className="text-yellow-300 font-semibold">No questions asked.</span>
-              </p>
-            </div>
-          </FadeInWhenVisible>
 
-          {/* Secondary CTA */}
-          <FadeInWhenVisible delay={1200}>
-            <div className="mt-8">
-              <p className="text-blue-200 text-sm mb-4">
-                Want to see it in action first?
-              </p>
-              <Button
-                onClick={() => navigate('/demo')}
-                variant="outline"
-                className="border-2 border-white text-blue-600 hover:bg-white hover:text-blue-700 px-8 py-4 text-lg font-semibold rounded-2xl transition-all duration-300"
-              >
-                Watch 2-Minute Demo →
-              </Button>
+          {/* Statistics */}
+          <SlideUpWhenVisible delay={900}>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+              <div className="text-center">
+                <div className="text-4xl font-bold text-white mb-2">10,000+</div>
+                <div className="text-lg text-white">Active SMEs</div>
+              </div>
+              <div className="text-center">
+                <div className="text-4xl font-bold text-white mb-2">8hrs</div>
+                <div className="text-lg text-white">Time saved/week</div>
+              </div>
+              <div className="text-center">
+                <div className="text-4xl font-bold text-white mb-2">4.8/5</div>
+                <div className="text-lg text-white">Customer satisfaction</div>
+              </div>
             </div>
-          </FadeInWhenVisible>
+          </SlideUpWhenVisible>
         </div>
       </section>
 

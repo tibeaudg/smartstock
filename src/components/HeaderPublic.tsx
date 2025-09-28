@@ -59,10 +59,10 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButton
             {/* Logo - Left side */}
             <div className="flex items-center">
               <Link to="/" className="flex items-center group">
-                <div className="w-8 h-8 bg-indigo-600 rounded-3xl flex items-center justify-center mr-3 group-hover:scale-110 transition-transform">
+                <div className="w-8 h-8 bg-blue-600 rounded-3xl flex items-center justify-center mr-3 group-hover:scale-110 transition-transform">
                   <Package className="h-5 w-5 text-white" />
                 </div>
-                <span className="text-xl font-medium text-gray-900 group-hover:text-indigo-700 transition-colors">stockflow</span>
+                <span className="text-xl font-medium text-gray-900 group-hover:text-blue-700 transition-colors">stockflow</span>
               </Link>
             </div>
 
@@ -71,9 +71,9 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButton
               {/* Navigation Links */}
               {onNavigate && (
                 <nav className="hidden md:flex items-center gap-6 text-sm">
-                  <Link to="/features" className="text-gray-600 hover:text-indigo-600 transition-colors font-medium">Features</Link>
-                  <Link to="/pricing" className="text-gray-600 hover:text-indigo-600 transition-colors font-medium">Pricing</Link>
-                  <Link to="/contact" className="text-gray-600 hover:text-indigo-600 transition-colors font-medium">Contact</Link>
+                  <Link to="/features" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Features</Link>
+                  <Link to="/pricing" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Pricing</Link>
+                  <Link to="/contact" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Contact</Link>
                 </nav>
               )}
 
@@ -86,13 +86,13 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButton
                   <>
                     <Link
                       to="/demo"
-                      className="border-2 border-indigo-600 text-indigo-600 hover:bg-indigo-600 hover:text-white px-8 py-3 rounded-3xl font-semibold transition-all duration-300 shadow-lg hover:shadow-indigo-500/25 transform hover:scale-105 h-12 flex items-center justify-center"
+                      className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-4 py-3 rounded-3xl font-semibold transition-all duration-300 shadow-lg hover:shadow-blue-500/25 transform hover:scale-105 h-10 flex items-center justify-center"
                     >
                       View Demo
                     </Link>
                     <Button 
                       onClick={handleRegisterClick} 
-                      className="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3 rounded-3xl font-semibold transition-all duration-300 shadow-lg hover:shadow-indigo-500/25 transform hover:scale-105 border border-indigo-500/20 h-12 flex items-center justify-center"
+                      className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-3xl font-semibold transition-all duration-300 shadow-lg hover:shadow-blue-500/25 transform hover:scale-105 border border-blue-500/20 h-10 flex items-center justify-center"
                     >
                       Register/Login
                     </Button>
@@ -200,13 +200,13 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButton
                 <div className="space-y-3">
                   <Button 
                     variant="outline" 
-                    className="w-full border-2 border-indigo-600 text-indigo-600 hover:bg-indigo-600 hover:text-white py-3 rounded-3xl font-semibold h-12 flex items-center justify-center transition-all duration-300 shadow-lg hover:shadow-indigo-500/25" 
+                    className="w-full border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white py-3 rounded-3xl font-semibold h-12 flex items-center justify-center transition-all duration-300 shadow-lg hover:shadow-blue-500/25" 
                     onClick={() => { handleLoginClick(); setMobileMenuOpen(false); }}
                   >
                     View Demo
                   </Button>
                   <Button 
-                    className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-3xl h-12 flex items-center justify-center shadow-lg hover:shadow-indigo-500/25 transition-all duration-300 border border-indigo-500/20" 
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-3xl h-12 flex items-center justify-center shadow-lg hover:shadow-blue-500/25 transition-all duration-300 border border-blue-500/20" 
                     onClick={() => { handleRegisterClick(); setMobileMenuOpen(false); }}
                   >
                     Register/Login
