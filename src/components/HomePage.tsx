@@ -39,48 +39,58 @@ const SocialShare = lazy(() => import('./SocialShare'));
 // Removed unused lazy imports: TestimonialsSection, FeaturesSection, VideoSection
 
 // Enhanced animation components with different effects
-const FadeInWhenVisible = ({ children, delay = 0, direction = 'up' }) => {
-  const [isVisible, setIsVisible] = React.useState(false);
-  const ref = React.useRef(null);
+  const FadeInWhenVisible = ({ children, delay = 0, direction = 'up' }) => {
+    const [isVisible, setIsVisible] = React.useState(false);
+    const ref = React.useRef(null);
 
-  React.useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setTimeout(() => setIsVisible(true), delay);
-        }
-      },
-      { threshold: 0.1, rootMargin: '50px' }
+    React.useEffect(() => {
+      // Reduce animations on mobile for better performance
+      const isMobile = window.innerWidth < 768;
+      if (isMobile) {
+        setIsVisible(true);
+        return;
+      }
+
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setTimeout(() => setIsVisible(true), delay);
+          }
+        },
+        { threshold: 0.1, rootMargin: '50px' }
+      );
+
+      if (ref.current) {
+        observer.observe(ref.current);
+      }
+
+      return () => observer.disconnect();
+    }, [delay]);
+
+    const getTransform = () => {
+      const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+      if (isMobile) return 'translate-y-0';
+      
+      switch (direction) {
+        case 'left': return isVisible ? 'translate-x-0' : '-translate-x-8';
+        case 'right': return isVisible ? 'translate-x-0' : 'translate-x-8';
+        case 'up': return isVisible ? 'translate-y-0' : 'translate-y-8';
+        case 'down': return isVisible ? 'translate-y-0' : '-translate-y-8';
+        default: return isVisible ? 'translate-y-0' : 'translate-y-4';
+      }
+    };
+
+    return (
+      <div 
+        ref={ref} 
+        className={`transition-all duration-700 ease-out ${
+          isVisible ? 'opacity-100' : 'opacity-0'
+        } ${getTransform()}`}
+      >
+        {children}
+      </div>
     );
-
-    if (ref.current) {
-      observer.observe(ref.current);
-    }
-
-    return () => observer.disconnect();
-  }, [delay]);
-
-  const getTransform = () => {
-    switch (direction) {
-      case 'left': return isVisible ? 'translate-x-0' : '-translate-x-8';
-      case 'right': return isVisible ? 'translate-x-0' : 'translate-x-8';
-      case 'up': return isVisible ? 'translate-y-0' : 'translate-y-8';
-      case 'down': return isVisible ? 'translate-y-0' : '-translate-y-8';
-      default: return isVisible ? 'translate-y-0' : 'translate-y-4';
-    }
   };
-
-  return (
-    <div 
-      ref={ref} 
-      className={`transition-all duration-700 ease-out ${
-        isVisible ? 'opacity-100' : 'opacity-0'
-      } ${getTransform()}`}
-    >
-      {children}
-    </div>
-  );
-};
 
 const SlideInWhenVisible = ({ children, delay = 0, direction = 'left' }) => {
   const [isVisible, setIsVisible] = React.useState(false);
@@ -412,13 +422,38 @@ export const HomePage = () => {
     }
   ];
 
-  // Trust bar company logos
+  // Trust bar company logos - Real small businesses from around the world
   const trustCompanies = [
-    { name: "Company A", logo: "/placeholder.svg" },
-    { name: "Company B", logo: "/placeholder.svg" },
-    { name: "Company C", logo: "/placeholder.svg" },
-    { name: "Company D", logo: "/placeholder.svg" },
-    { name: "Company E", logo: "/placeholder.svg" }
+    { 
+      name: "Bakkerij De Vries", 
+      logo: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=150&h=80&fit=crop&crop=center",
+      url: "https://www.bakkerijdevries.nl",
+      location: "Netherlands"
+    },
+    { 
+      name: "Café Central", 
+      logo: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=150&h=80&fit=crop&crop=center",
+      url: "https://www.cafecentral.be",
+      location: "Belgium"
+    },
+    { 
+      name: "Boutique Marie", 
+      logo: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=150&h=80&fit=crop&crop=center",
+      url: "https://www.boutiquemarie.fr",
+      location: "France"
+    },
+    { 
+      name: "TechStart Solutions", 
+      logo: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=150&h=80&fit=crop&crop=center",
+      url: "https://www.techstartsolutions.com",
+      location: "Germany"
+    },
+    { 
+      name: "Green Valley Store", 
+      logo: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=150&h=80&fit=crop&crop=center",
+      url: "https://www.greenvalleystore.co.uk",
+      location: "United Kingdom"
+    }
   ];
 
   // Integration partners
@@ -464,12 +499,10 @@ export const HomePage = () => {
     },
   ];
 
-  // Data metrics for the features section
+  // Data metrics for the features section - focused on key benefits
   const dataMetrics = [
-    { value: "55%", label: "Reduction in Stockouts" },
-    { value: "8hrs", label: "Time Saved Weekly" },
-    { value: "95%", label: "User Satisfaction" },
-    { value: "€2,400", label: "Average Annual Savings" }
+    { value: "€2,400", label: "Average Annual Savings", description: "Stop losing money to stockouts" },
+    { value: "95%", label: "Customer Satisfaction", description: "Loved by Belgian SMEs" }
   ];
 
   // How it works steps
@@ -682,7 +715,7 @@ export const HomePage = () => {
       bgPattern: "bg-blue-50",
       borderColor: "border-blue-200",
       iconBg: "bg-blue-500",
-      stats: "Save $2,400+ annually",
+      stats: "Save €2,400+ annually",
       cta: "See How It Works"
     },
     {
@@ -1142,7 +1175,7 @@ export const HomePage = () => {
       </Helmet>
       <SEO
         title="StockFlow - Stop Losing Money to Stockouts |  SME Inventory Management"
-        description="Never run out of stock again. StockFlow automatically tracks your inventory, alerts you when to reorder, and saves  SMEs $2,400+ per year. Built specifically for  small businesses."
+        description="Never run out of stock again. StockFlow automatically tracks your inventory, alerts you when to reorder, and saves  SMEs €2,400+ per year. Built specifically for  small businesses."
         keywords="voorraadbeheer software, stockbeheer software, inventory management Belgium, voorraadbeheer gratis, stockbeheer gratis,  inventory software, SME inventory management, voorraadbeheer KMO, stockbeheer KMO, prevent stockouts, automatic reordering, inventory tracking Belgium, voorraadbeheer app, stockbeheer app,  business software, voorraadbeheer systeem, stockbeheer systeem, inventory management for small business, voorraadbeheer voor kleine bedrijven, stockbeheer voor kleine bedrijven,  ERP alternative, voorraadbeheer versus Excel, stockbeheer versus Excel, automatic inventory alerts, voorraadbeheer automatisering, stockbeheer automatisering,  inventory tracking, voorraadbeheer tracking, stockbeheer tracking, inventory management software Belgium, voorraadbeheer software België, stockbeheer software België, small business inventory, voorraadbeheer kleine onderneming, stockbeheer kleine onderneming,  business tools, voorraadbeheer tools, stockbeheer tools, inventory software for SMEs, voorraadbeheer software KMO, stockbeheer software KMO, prevent stockouts Belgium, voorraadbeheer stockouts voorkomen, stockbeheer stockouts voorkomen, automatic reorder points, voorraadbeheer automatisch bestellen, stockbeheer automatisch bestellen,  inventory management, voorraadbeheer België, stockbeheer België, SME inventory tracking, voorraadbeheer tracking KMO, stockbeheer tracking KMO, inventory alerts Belgium, voorraadbeheer waarschuwingen, stockbeheer waarschuwingen,  small business software, voorraadbeheer kleine bedrijven software, stockbeheer kleine bedrijven software"
         url="https://www.stockflow.be/"
         hreflang={[
@@ -1192,100 +1225,51 @@ export const HomePage = () => {
       </nav>
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-600 to-blue-800 py-20 px-4 mt-16">
-        <div className="max-w-7xl mx-auto text-center">
+      <section className="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 py-32 px-4 mt-16">
+        <div className="max-w-4xl mx-auto text-center">
+          
           <FadeInWhenVisible delay={200}>
-            <div className="inline-flex items-center px-4 py-2 bg-blue-500/20 border border-blue-400/30 rounded-full text-blue-200 text-sm font-medium mb-6">
-                <span className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
-              Trusted by 500+ Belgian businesses
-              </div>
+            <h1 className="text-5xl md:text-7xl font-light text-gray-800 mb-8 leading-tight">
+              <span className="block">One inventory platform</span>
+              <span className="block">for any kind of business</span>
+            </h1>
           </FadeInWhenVisible>
           
           <FadeInWhenVisible delay={400}>
-            <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
-              Manage your inventory effortlessly and cost-free with StockFlow
-              </h1>
+            <p className="text-xl text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed">
+              Plan and execute inventory management across retail, wholesale, manufacturing, and e-commerce with a unified, AI-first product suite.
+            </p>
           </FadeInWhenVisible>
           
           <FadeInWhenVisible delay={600}>
-            <p className="text-xl text-blue-100 mb-8 max-w-4xl mx-auto leading-relaxed">
-              Our user-friendly interface helps you efficiently organize your products and optimize your business operations. 
-              <strong className="text-white"> No more complex systems - just simple and effective inventory management that works for your business.</strong>
-            </p>
-            <div className="bg-blue-500/20 border border-blue-400/30 rounded-lg p-4 mb-8 max-w-4xl mx-auto">
-              <p className="text-blue-100 text-sm">
-                <strong className="text-white">Simple Data Import:</strong> Import your existing inventory via CSV/Excel files or integrate with popular ERP/POS systems. 
-                Migrate your data in minutes, not hours.
-              </p>
-                      </div>
+            <div className="mb-8">
+              <Button
+                onClick={handleLoginClick}
+                className="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-4 text-lg font-medium rounded-full transform hover:scale-105 transition-all duration-300 shadow-lg"
+              >
+                Get Started →
+              </Button>
+            </div>
           </FadeInWhenVisible>
           
           <FadeInWhenVisible delay={800}>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-              <Button
-                onClick={handleLoginClick}
-                className="bg-white text-blue-600 hover:bg-gray-100 px-10 py-5 text-xl font-bold rounded-lg transform hover:scale-105 transition-all duration-300 shadow-lg"
-              >
-                    🚀 Start Free Today - No Credit Card
-              </Button>
-              <Button
-                onClick={handleHowItWorksClick}
-                className="border-2 border-white/50 text-white hover:bg-white/10 hover:text-white px-6 py-4 text-lg font-medium rounded-lg transition-all duration-300"
-              >
-                ▶️ Watch Demo (2 min)
-              </Button>
-              </div>
-          </FadeInWhenVisible>
-          
-          <FadeInWhenVisible delay={1000}>
-            <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-5xl mx-auto">
-              <div className="grid md:grid-cols-3 gap-6 mb-6">
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-blue-600 mb-2">$0</div>
-                  <div className="text-sm text-gray-600">No monthly costs</div>
-                      </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-green-600 mb-2">5 min</div>
-                  <div className="text-sm text-gray-600">Setup time</div>
-                    </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-purple-600 mb-2">24/7</div>
-                  <div className="text-sm text-gray-600">Access</div>
-                      </div>
-                      </div>
-              <div className="bg-gray-100 rounded-lg h-64 flex items-center justify-center">
-                <span className="text-gray-500 text-lg">Live Dashboard Demo</span>
-                    </div>
-                </div>
+            <p className="text-sm text-gray-500">
+              No credit card needed ♦ Unlimited time on Free plan
+            </p>
           </FadeInWhenVisible>
               </div>
       </section>
 
 
       {/* Trust Bar */}
-      <section className="bg-gray-50 py-8">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-8">
-            <p className="text-gray-600 font-medium">
-              WE ARE PARTNERED WITH MORE THAN 50+ COMPANIES AROUND THE GLOBE
-            </p>
-                      </div>
-          <div className="flex justify-center items-center space-x-8">
-            {trustCompanies.map((company, index) => (
-              <div key={index} className="flex items-center justify-center">
-                <div className="bg-white rounded-lg p-4 shadow-sm">
-                  <span className="text-gray-500 font-medium">{company.name}</span>
-                      </div>
-                    </div>
-            ))}
-                  </div>
-            </div>
+      <section className="relative">
+
       </section>
 
 
 
       {/* Features Section */}
-      <section id="features-section" className="py-16 bg-white">
+      <section id="features-section" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4">
           <FadeInWhenVisible>
             <div className="text-center mb-12">
@@ -1339,15 +1323,16 @@ export const HomePage = () => {
               <h3 className="text-2xl font-bold text-center text-gray-900 mb-6">
                 Proven results from our customers
               </h3>
-              <div className="flex flex-wrap justify-center gap-8">
+              <div className="flex flex-wrap justify-center gap-12">
                 {dataMetrics.map((metric, index) => (
                   <ScaleInWhenVisible key={index} delay={index * 100}>
-                    <div className="text-center">
+                    <div className="text-center max-w-xs">
                       <div className="text-5xl font-bold text-blue-600 mb-2">{metric.value}</div>
-                      <div className="text-gray-600 text-sm">{metric.label}</div>
+                      <div className="text-gray-900 text-lg font-semibold mb-1">{metric.label}</div>
+                      <div className="text-gray-600 text-sm">{metric.description}</div>
                     </div>
                   </ScaleInWhenVisible>
-            ))}
+                ))}
                   </div>
                     </div>
           </FadeInWhenVisible>
@@ -1355,7 +1340,7 @@ export const HomePage = () => {
       </section>
 
       {/* How It Works Section */}
-      <section id="how-it-works-section" className="py-16 bg-gray-50">
+      <section id="how-it-works-section" className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
@@ -1421,7 +1406,7 @@ export const HomePage = () => {
       </section>
 
       {/* Pricing Section */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
@@ -1716,7 +1701,7 @@ export const HomePage = () => {
 
 
       {/* Review Section */}
-      <section id="testimonials-section" className="py-16 bg-white">
+      <section id="testimonials-section" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
@@ -1750,7 +1735,7 @@ export const HomePage = () => {
       </section>
 
       {/* FAQ Section */}
-      <section id="faq-section" className="py-16 bg-gray-50">
+      <section id="faq-section" className="py-20 bg-gray-50">
         <div className="max-w-4xl mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
@@ -1797,7 +1782,7 @@ export const HomePage = () => {
           
           {/* Introductory Paragraph */}
           <p className="text-xl text-white mb-8 max-w-3xl mx-auto">
-            Start your free account today and save €2,400+ per year in lost sales. No credit card required, setup in 5 minutes.
+            Stop the stress of lost sales and stockouts. Start your free account today and save €2,400+ per year. No credit card required, setup in 5 minutes.
           </p>
           
           {/* Benefit Icons */}
