@@ -102,6 +102,7 @@ import PricingPage from './pages/pricing';
 import CheckoutPage from './pages/checkout';
 import { SubscriptionManagement } from './components/settings/SubscriptionManagement';
 import { AdminSubscriptionManagement } from './components/admin/SubscriptionManagement';
+import FeaturesPage from './components/FeaturesPage';
 
 
 // ErrorBoundary component
@@ -306,6 +307,7 @@ export default function App() {
                 <Routes>
                   {/* Openbare routes */}
                   <Route path="/" element={<HomePage />} />
+                  <Route path="/features" element={<FeaturesPage />} />
                   <Route path="/demo" element={<DemoPage />} />
                   <Route path="/auth" element={<AuthRoute />} />
                   <Route path="/pricing" element={<PricingPage />} />

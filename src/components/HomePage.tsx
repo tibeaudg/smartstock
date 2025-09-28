@@ -469,33 +469,27 @@ export const HomePage = () => {
   const features = [
     {
       icon: TrendingUp,
-      title: "Easy Product Management",
-      description: "Add new products easily, edit existing items and keep your inventory up-to-date without hassle. Our user-friendly interface helps you efficiently organize your products and optimize your business operations.",
-      detailedDescription: "With StockFlow you can add new products in just a few clicks, edit existing items and track your inventory levels in real-time. No more complex systems - just simple and effective inventory management that works for your business.",
-    },
-    {
-      icon: Zap,
-      title: "Real-time Inventory Updates",
-      description: "Get instant insight into your inventory levels and prevent shortages or surpluses. Automatic updates ensure you're always aware of your current inventory status.",
-      detailedDescription: "Our real-time synchronization ensures all team members always see the most current inventory data. Automatic alerts prevent you from running out of stock and help you act proactively.",
+      title: "Never Run Out of Stock Again",
+      description: "Stop losing sales to stockouts. StockFlow automatically tracks your inventory and alerts you when to reorder, so you never miss a sale.",
+      detailedDescription: "Real-time stock tracking across all locations, automated low stock alerts via email & SMS, smart reorder suggestions based on sales patterns, multi-location inventory management.",
+      benefit: "Save €2,400+ annually",
+      category: "Smart Inventory Management"
     },
     {
       icon: Users,
-      title: "Reporting and Analytics",
-      description: "Generate detailed reports to analyze sales trends and make informed decisions. Insight into your inventory performance helps you grow your business.",
-      detailedDescription: "With comprehensive reporting and analytics tools you get deep insight into your inventory performance. Identify bestsellers, analyze seasonal patterns and make data-driven decisions that increase your revenue.",
+      title: "Make Data-Driven Decisions",
+      description: "Turn your inventory data into actionable insights. See exactly which products are your money-makers and optimize your stock levels for maximum profit.",
+      detailedDescription: "Sales performance analytics in real-time, inventory turnover analysis & insights, profit margin tracking by product, custom reports for better decision making.",
+      benefit: "Increase profits by 15-25%",
+      category: "Advanced Analytics Dashboard"
     },
     {
-      icon: Shield,
-      title: "Multi-Platform Integration",
-      description: "Synchronize your inventory across different sales channels for a seamless experience. From webshop to physical store - manage everything in one place.",
-      detailedDescription: "StockFlow integrates seamlessly with your existing systems and sales channels. Whether you sell online, work in a physical store or both - your inventory stays always synchronized and up-to-date.",
-    },
-    {
-      icon: ArrowRight,
-      title: "Simple Data Import",
-      description: "Import your existing inventory data via CSV/Excel files or integrate with popular ERP/POS systems. No data migration headaches - get started with your current data in minutes.",
-      detailedDescription: "Migrate from Excel, CSV files, or connect directly to your existing ERP/POS systems. Our import wizard guides you through the process, ensuring all your product data, stock levels, and supplier information transfers seamlessly.",
+      icon: Zap,
+      title: "Manage Inventory Anywhere",
+      description: "Take your inventory management with you. Our mobile app lets you scan barcodes, update stock levels, and manage orders from anywhere.",
+      detailedDescription: "Mobile barcode scanning for instant updates, offline functionality - works without internet, push notifications for low stock alerts, touch-friendly interface for all skill levels.",
+      benefit: "Save 8 hours per week",
+      category: "Mobile-First Experience"
     },
   ];
 
@@ -716,7 +710,6 @@ export const HomePage = () => {
       borderColor: "border-blue-200",
       iconBg: "bg-blue-500",
       stats: "Save €2,400+ annually",
-      cta: "See How It Works"
     },
     {
       title: "Make Data-Driven Decisions",
@@ -734,7 +727,6 @@ export const HomePage = () => {
       borderColor: "border-green-200",
       iconBg: "bg-green-500",
       stats: "Increase profits by 15-25%",
-      cta: "View Analytics Demo"
     },
     {
       title: "Manage Inventory Anywhere",
@@ -752,7 +744,6 @@ export const HomePage = () => {
       borderColor: "border-purple-200",
       iconBg: "bg-purple-500",
       stats: "Save 8 hours per week",
-      cta: "Try Mobile App"
     }
   ];
   // --- EINDE FEATURE DATA ---
@@ -1199,10 +1190,10 @@ export const HomePage = () => {
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
             <div className="flex items-center flex-shrink-0">
-              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center mr-3">
+              <div className="w-8 h-8 bg-blue-600 rounded-3xl flex items-center justify-center mr-3">
                 <Package className="h-5 w-5 text-white" />
               </div>
-              <span className="text-xl font-bold text-gray-900">stockflow</span>
+              <span className="text-xl font-medium text-gray-900">stockflow</span>
       </div>
 
             {/* Right Side - Navigation Links and Action Buttons */}
@@ -1210,14 +1201,20 @@ export const HomePage = () => {
               {/* Navigation Links */}
               <div className="hidden md:flex items-center space-x-6">
                 <Link
+                  to="/features"
+                  className="text-gray-600 hover:text-blue-600 font-medium transition-colors"
+                >
+                  Features
+                </Link>
+                <Link
                   to="/pricing"
-                  className="text-gray-700 hover:text-blue-600 font-medium transition-colors"
+                  className="text-gray-600 hover:text-blue-600 font-medium transition-colors"
                 >
                   Pricing
                 </Link>
                 <Link
                   to="/contact"
-                  className="text-gray-700 hover:text-blue-600 font-medium transition-colors"
+                  className="text-gray-600 hover:text-blue-600 font-medium transition-colors"
                 >
                   Contact
                 </Link>
@@ -1227,13 +1224,13 @@ export const HomePage = () => {
               <div className="flex items-center space-x-4">
                 <Link
                   to="/demo"
-                  className="border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg font-medium transition-colors"
+                  className="border border-gray-300 text-gray-600 hover:bg-gray-50 px-4 py-2 rounded-3xl font-medium transition-colors"
                 >
                   View Demo
                 </Link>
                 <Button
                   onClick={handleLoginClick}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors shadow-md"
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-3xl font-medium transition-colors shadow-md"
                 >
                   Register/Login
                 </Button>
@@ -1243,40 +1240,102 @@ export const HomePage = () => {
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 py-32 px-4 mt-16">
-        <div className="max-w-4xl mx-auto text-center">
+      {/* Hero Section with Video Below */}
+      <section className="relative bg-gradient-to-br from-slate-50 via-blue-50 to-blue-50 py-32 px-4 mt-16 overflow-hidden">
+        <div className="max-w-7xl mx-auto">
+          {/* Text Content */}
+          <div className="text-center mb-16">
           
-          <FadeInWhenVisible delay={200}>
-            <h1 className="text-5xl md:text-7xl font-light text-gray-800 mb-8 leading-tight">
-              <span className="block">One inventory platform</span>
-              <span className="block">for any kind of business</span>
-            </h1>
-          </FadeInWhenVisible>
-          
-          <FadeInWhenVisible delay={400}>
-            <p className="text-xl text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed">
-              Plan and execute inventory management across retail, wholesale, manufacturing, and e-commerce with a unified, AI-first product suite.
-            </p>
-          </FadeInWhenVisible>
-          
-          <FadeInWhenVisible delay={600}>
-            <div className="mb-8">
-              <Button
-                onClick={handleLoginClick}
-                className="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-4 text-lg font-medium rounded-full transform hover:scale-105 transition-all duration-300 shadow-lg"
-              >
-                Get Started →
-              </Button>
+              <FadeInWhenVisible delay={200}>
+                <h1 className="text-5xl md:text-7xl font-light text-gray-800 mb-8 leading-tight">
+                  <span className="block">One inventory platform</span>
+                  <span className="block">for any kind of business</span>
+                </h1>
+              </FadeInWhenVisible>
+              
+              <FadeInWhenVisible delay={400}>
+                <p className="text-xl text-gray-600 mb-12 max-w-3xl mx-auto lg:mx-0 leading-relaxed">
+                  Plan and execute inventory management across retail, wholesale, manufacturing, and e-commerce with a unified, AI-first product suite.
+                </p>
+              </FadeInWhenVisible>
+              
+              <FadeInWhenVisible delay={600}>
+                <div className="mb-8">
+                  <Button
+                    onClick={handleLoginClick}
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-lg font-medium rounded-full transform hover:scale-105 transition-all duration-300 shadow-lg"
+                  >
+                    Get Started →
+                  </Button>
                 </div>
+              </FadeInWhenVisible>
+              
+              <FadeInWhenVisible delay={800}>
+                <p className="text-sm text-gray-500">
+                  No credit card needed ♦ Unlimited time on Free plan
+                </p>
+              </FadeInWhenVisible>
+            </div>
+            
+          {/* Video Showcase Below */}
+          <FadeInWhenVisible delay={400}>
+            <div className="relative max-w-5xl mx-auto">
+              {/* Video Container */}
+              <div className="relative bg-gray-900 rounded-2xl overflow-hidden shadow-2xl">
+                <video
+                  className="w-full h-auto"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  poster="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=675&fit=crop&crop=center"
+                >
+                  <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4" />
+                  <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.webm" type="video/webm" />
+                  Your browser does not support the video tag.
+                </video>
+                
+                {/* Video Overlay Controls */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none"></div>
+                
+                {/* Play Button Overlay (for fallback) */}
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <div className="w-20 h-20 bg-white/90 rounded-full flex items-center justify-center shadow-lg">
+                    <svg className="w-8 h-8 text-gray-800 ml-1" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M8 5v14l11-7z"/>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Video Features */}
+              <div className="mt-6 flex flex-wrap justify-center gap-6 text-sm text-gray-500">
+                <div className="flex items-center">
+                  <div className="w-2 h-2 bg-green-600 rounded-full mr-2"></div>
+                  Real-time updates
+                </div>
+                <div className="flex items-center">
+                  <div className="w-2 h-2 bg-blue-600 rounded-full mr-2"></div>
+                  Mobile responsive
+                </div>
+                <div className="flex items-center">
+                  <div className="w-2 h-2 bg-purple-600 rounded-full mr-2"></div>
+                  Easy integration
+                </div>
+              </div>
+              
+              {/* View Demo Button */}
+              <div className="mt-8 text-center">
+                <Link
+                  to="/demo"
+                  className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium transition-colors border border-blue-600 hover:border-blue-700 px-6 py-3 rounded-3xl"
+                >
+                  View Demo →
+                </Link>
+              </div>
+            </div>
           </FadeInWhenVisible>
-          
-          <FadeInWhenVisible delay={800}>
-            <p className="text-sm text-gray-500">
-              No credit card needed ♦ Unlimited time on Free plan
-            </p>
-          </FadeInWhenVisible>
-                    </div>
+        </div>
       </section>
 
 
@@ -1292,7 +1351,7 @@ export const HomePage = () => {
         <div className="max-w-7xl mx-auto px-4">
           <FadeInWhenVisible>
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              <h2 className="text-4xl md:text-6xl font-light text-gray-800 mb-6">
                 Solutions for every business
               </h2>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -1310,12 +1369,22 @@ export const HomePage = () => {
               >
                 <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden group">
                   {/* Hero Image */}
-                  <div className="relative h-64 bg-gradient-to-br from-blue-500 to-purple-600 overflow-hidden">
+                  <div className={`relative h-64 overflow-hidden ${
+                    index === 0 ? 'bg-gradient-to-br from-blue-500 to-blue-600' :
+                    index === 1 ? 'bg-gradient-to-br from-green-500 to-green-600' :
+                    'bg-gradient-to-br from-purple-500 to-purple-600'
+                  }`}>
                     <div className="absolute inset-0 bg-black/20"></div>
                     <div className="absolute inset-0 flex items-center justify-center">
                       <div className="text-center text-white">
                         <feature.icon className="h-16 w-16 mx-auto mb-4 opacity-90" />
-                        <h3 className="text-2xl font-bold">{feature.title}</h3>
+                        <div className="inline-block bg-gray-600 text-white px-3 py-1 rounded-full text-sm mb-2">
+                          {feature.category}
+                        </div>
+                        <h3 className="text-2xl font-semibold mb-2">{feature.title}</h3>
+                        <div className="inline-block bg-white/20 text-white px-3 py-1 rounded-full text-sm">
+                          {feature.benefit}
+                        </div>
                       </div>
                     </div>
                     {/* Decorative elements */}
@@ -1326,24 +1395,19 @@ export const HomePage = () => {
                   {/* Content */}
                   <div className="p-8">
                     <p className="text-gray-600 text-lg leading-relaxed mb-6">
-                      {feature.description.split('.')[0]}.
+                      {feature.description}
                     </p>
                     
                     {/* Feature highlights */}
                     <div className="space-y-3 mb-8">
-                      <div className="flex items-center text-sm text-gray-500">
-                        <div className="w-2 h-2 bg-blue-500 rounded-full mr-3"></div>
-                        Real-time updates
-                      </div>
-                      <div className="flex items-center text-sm text-gray-500">
-                        <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
-                        Easy integration
-                      </div>
-                      <div className="flex items-center text-sm text-gray-500">
-                        <div className="w-2 h-2 bg-purple-500 rounded-full mr-3"></div>
-                        Mobile friendly
+                      {feature.detailedDescription.split(', ').map((item, itemIndex) => (
+                        <div key={itemIndex} className="flex items-center text-sm text-gray-500">
+                          <div className="w-2 h-2 rounded-full mr-3 bg-blue-600"></div>
+                          {item}
+                        </div>
+                      ))}
                     </div>
-                    </div>
+                
                   </div>
                 </div>
               </FadeInWhenVisible>
@@ -1355,7 +1419,7 @@ export const HomePage = () => {
                       <div className="text-center">
               <Button
                 onClick={handleLoginClick}
-                className="bg-indigo-600 hover:bg-indigo-700 text-white px-12 py-4 text-xl font-semibold rounded-full transform hover:scale-105 transition-all duration-300 shadow-lg"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-12 py-4 text-xl font-semibold rounded-full transform hover:scale-105 transition-all duration-300 shadow-lg"
               >
                 Get Started Free →
               </Button>
@@ -1367,54 +1431,16 @@ export const HomePage = () => {
         </div>
       </section>
 
-      {/* How It Works Section */}
-      <section id="how-it-works-section" className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              How It Works Section
-              </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Clarity converts. Break down the process into simple steps.
-            </p>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {howItWorksSteps.map((step, index) => (
-              <div key={index} className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
-                {/* Step Number Badge */}
-                <div className="flex justify-center mb-6">
-                  <div className="bg-blue-600 text-white rounded-full w-16 h-16 flex items-center justify-center text-2xl font-bold">
-                    {step.step}
-                      </div>
-                      </div>
-                
-                {/* Image Placeholder */}
-                <div className="mb-6">
-                  <div className="bg-gray-100 rounded-lg h-48 flex items-center justify-center">
-                    <span className="text-gray-500 text-sm">Step {step.step} Image</span>
-                      </div>
-                  </div>
-
-                  {/* Content */}
-                      <div className="text-center">
-                  <h3 className="text-xl font-semibold mb-3 text-gray-900">{step.title}</h3>
-                  <p className="text-gray-600 leading-relaxed">{step.description}</p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-      </section>
 
       {/* Why Choose Us Section */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-4xl md:text-6xl font-light text-gray-800 mb-6">
               Why Choose Us Section
               </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Make your strengths obvious.
             </p>
           </div>
@@ -1422,10 +1448,10 @@ export const HomePage = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {whyChooseUs.map((reason, index) => (
               <div key={index} className="text-center">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-lg mb-4">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-3xl mb-4">
                   {reason.icon}
               </div>
-                <h3 className="text-xl font-semibold mb-3">{reason.title}</h3>
+                <h3 className="text-xl font-medium mb-3 text-gray-900">{reason.title}</h3>
                 <p className="text-gray-600">{reason.description}</p>
                 </div>
             ))}
@@ -1440,17 +1466,17 @@ export const HomePage = () => {
       <section id="testimonials-section" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-4xl md:text-6xl font-light text-gray-800 mb-6">
               Review Section
-            </h1>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Users can sell your product better than you
             </p>
                     </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
-              <div key={index} className="bg-white rounded-lg shadow-lg p-6 border border-gray-200">
+              <div key={index} className="bg-white rounded-3xl shadow-lg p-6 border border-gray-200">
                 <div className="flex items-center mb-4">
                   {[...Array(testimonial.rating)].map((_, i) => (
                     <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
@@ -1460,8 +1486,8 @@ export const HomePage = () => {
                 <div className="flex items-center">
                   <div className="w-10 h-10 bg-gray-300 rounded-full mr-3"></div>
                   <div>
-                    <div className="font-semibold">{testimonial.name}</div>
-                    <div className="text-sm text-gray-500">{testimonial.location}</div>
+                    <div className="font-medium text-gray-900">{testimonial.name}</div>
+                    <div className="text-sm text-gray-600">{testimonial.location}</div>
                       </div>
                     </div>
                         </div>
@@ -1471,25 +1497,25 @@ export const HomePage = () => {
       </section>
 
       {/* FAQ Section */}
-      <section id="faq-section" className="py-20 bg-gray-50">
+      <section id="faq-section" className="py-20 bg-white">
         <div className="max-w-4xl mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-4xl md:text-6xl font-light text-gray-800 mb-6">
               FAQ Section
               </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Handle objections before they happen.
             </p>
           </div>
 
           <div className="space-y-4">
             {faqData.map((faq, index) => (
-              <div key={index} className="bg-white rounded-lg shadow-sm border border-gray-200">
+              <div key={index} className="bg-white rounded-3xl shadow-sm border border-gray-200">
                 <button
                   onClick={() => setOpenFAQ(openFAQ === index ? null : index)}
                   className="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-50"
                 >
-                  <span className="font-semibold">{faq.question}</span>
+                  <span className="font-medium text-gray-900">{faq.question}</span>
                   <span className="text-2xl">{openFAQ === index ? '−' : '+'}</span>
                 </button>
                 {openFAQ === index && (
@@ -1504,13 +1530,13 @@ export const HomePage = () => {
       </section>
 
       {/* Enterprise Security Section */}
-      <section className="py-20 bg-gradient-to-b from-white to-blue-50">
+      <section className="py-20 bg-white">
         <div className="max-w-4xl mx-auto text-center px-4">
           <FadeInWhenVisible>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+            <h2 className="text-4xl md:text-6xl font-light text-gray-800 mb-6">
               Enterprise-grade security
             </h2>
-            <p className="text-lg text-gray-600 mb-12 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-600 mb-12 max-w-2xl mx-auto">
               Keep your company's data secure and compliant with industry-leading security standards and certifications.
             </p>
           </FadeInWhenVisible>
@@ -1568,90 +1594,36 @@ export const HomePage = () => {
       </section>
 
       {/* Final CTA Section */}
-      <section className="py-16 bg-blue-600">
+      <section className="py-16 bg-gradient-to-br from-slate-50 via-blue-50 to-blue-50">
         <div className="max-w-4xl mx-auto text-center px-4">
           {/* Main Headline */}
-          <h2 className="text-7xl md:text-7xl font-bold text-white mb-4">
+          <h2 className="text-5xl md:text-7xl font-light text-gray-800 mb-16">
             Ready to Stop Losing Money to Stockouts?
               </h2>
-              
-          {/* Sub-headline */}
-          <h3 className="text-3xl md:text-4xl font-bold text-yellow-400 mb-6">
-            Join 500+ SMEs Using StockFlow
-          </h3>
-          
-          {/* Introductory Paragraph */}
-          <p className="text-xl text-white mb-8 max-w-3xl mx-auto">
-            Stop the stress of lost sales and stockouts. Start your free account today and save €2,400+ per year. No credit card required, setup in 5 minutes.
-          </p>
-          
+         
 
             
-          {/* Primary CTA Button */}
-          <div className="mb-8">
+          {/* Primary CTA Buttons */}
+          <div className="flex flex-col sm:flex-row justify-center gap-4 mb-4">
             <Button
               onClick={handleLoginClick}
-              className="bg-blue-900 hover:bg-white hover:text-blue-900 text-white px-12 py-6 text-2xl font-bold rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-12 py-6 text-xl font-medium rounded-full shadow-lg transform hover:scale-105 transition-all duration-300"
             >
               Start Free Today
             </Button>
-                  </div>
-                  
-          {/* Small Feature Text */}
-          <div className="flex flex-wrap justify-center gap-6 mb-8">
-            <div className="flex items-center text-white">
-              <CheckCircle className="h-5 w-5 mr-2" />
-              <span>No credit card required</span>
-                  </div>
-            <div className="flex items-center text-white">
-              <CheckCircle className="h-5 w-5 mr-2" />
-              <span>Instant access</span>
-                </div>
-            <div className="flex items-center text-white">
-              <CheckCircle className="h-5 w-5 mr-2" />
-              <span>GDPR-compliant</span>
-                  </div>
-            <div className="flex items-center text-white">
-              <CheckCircle className="h-5 w-5 mr-2" />
-              <span>100% secure</span>
-                  </div>
-                  </div>
-          
-          {/* Special Offer Banner */}
-          <div className="bg-blue-700 rounded-lg p-6 mb-8 max-w-2xl mx-auto">
-            <div className="flex items-center justify-center mb-3">
-              <Zap className="h-6 w-6 text-white mr-3" />
-              <span className="text-white text-xl font-bold">
-                Limited Time: Free Setup + €2,400 Annual Savings Guarantee
-              </span>
-                </div>
-            <p className="text-white text-lg">
-              Join 500+ SMEs who've already eliminated stockouts and saved thousands of euros. Start free today - no credit card required.
-            </p>
-              </div>
-              
-          {/* Key Statistics */}
-          <div className="flex flex-wrap justify-center gap-12">
-            <div className="text-center">
-              <div className="text-4xl font-bold text-white mb-2">500+</div>
-              <div className="text-white">Active SMEs</div>
-              </div>
-            <div className="text-center">
-              <div className="text-4xl font-bold text-white mb-2">9 hours</div>
-              <div className="text-white">Time saved/week</div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl font-bold text-white mb-2">4.8/5</div>
-              <div className="text-white">Customer satisfaction</div>
-            </div>
+
           </div>
+
+
+              
+
         </div>
       </section>
 
       {/* Cookie Consent Banner */}
       {showCookieBanner && (
         <div className="fixed inset-x-0 bottom-0 z-50">
-          <div className="mx-auto max-w-6xl m-4 rounded-lg bg-white shadow-xl border border-gray-200 p-4 flex flex-col md:flex-row items-start md:items-center gap-3">
+          <div className="mx-auto max-w-6xl m-4 rounded-3xl bg-white shadow-xl border border-gray-200 p-4 flex flex-col md:flex-row items-start md:items-center gap-3">
             <p className="text-sm text-gray-700">
               We use cookies to improve your experience on our website
             </p>
@@ -1683,7 +1655,7 @@ export const HomePage = () => {
             
             {/* Pages */}
             <div>
-              <h3 className="text-lg font-semibold mb-4">Pages</h3>
+              <h3 className="text-lg font-medium mb-4 text-gray-200">Pages</h3>
               <div className="space-y-2">
                 <button 
                   onClick={() => scrollToSection('features-section')} 
@@ -1714,7 +1686,7 @@ export const HomePage = () => {
             
             {/* Contact */}
             <div>
-              <h3 className="text-lg font-semibold mb-4">Contact</h3>
+              <h3 className="text-lg font-medium mb-4 text-gray-200">Contact</h3>
               <div className="space-y-2">
                 <Link to="/contact" className="block text-gray-400 hover:text-white">
                   Contact Us
@@ -1730,7 +1702,7 @@ export const HomePage = () => {
             
             {/* Socials */}
       <div>
-              <h3 className="text-lg font-semibold mb-4">Socials</h3>
+              <h3 className="text-lg font-medium mb-4 text-gray-200">Socials</h3>
               <div className="flex space-x-4">
             <a 
               href="https://www.facebook.com/profile.php?id=61578067034898"
