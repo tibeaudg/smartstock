@@ -40,10 +40,10 @@ const SocialShare = lazy(() => import('./SocialShare'));
 
 // Enhanced animation components with different effects
   const FadeInWhenVisible = ({ children, delay = 0, direction = 'up' }) => {
-    const [isVisible, setIsVisible] = React.useState(false);
-    const ref = React.useRef(null);
+  const [isVisible, setIsVisible] = React.useState(false);
+  const ref = React.useRef(null);
 
-    React.useEffect(() => {
+  React.useEffect(() => {
       // Reduce animations on mobile for better performance
       const isMobile = window.innerWidth < 768;
       if (isMobile) {
@@ -51,21 +51,21 @@ const SocialShare = lazy(() => import('./SocialShare'));
         return;
       }
 
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            setTimeout(() => setIsVisible(true), delay);
-          }
-        },
-        { threshold: 0.1, rootMargin: '50px' }
-      );
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => setIsVisible(true), delay);
+        }
+      },
+      { threshold: 0.1, rootMargin: '50px' }
+    );
 
-      if (ref.current) {
-        observer.observe(ref.current);
-      }
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
 
-      return () => observer.disconnect();
-    }, [delay]);
+    return () => observer.disconnect();
+  }, [delay]);
 
     const getTransform = () => {
       const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
@@ -80,7 +80,7 @@ const SocialShare = lazy(() => import('./SocialShare'));
       }
     };
 
-    return (
+  return (
       <div 
         ref={ref} 
         className={`transition-all duration-700 ease-out ${
@@ -1203,25 +1203,44 @@ export const HomePage = () => {
                 <Package className="h-5 w-5 text-white" />
               </div>
               <span className="text-xl font-bold text-gray-900">stockflow</span>
+      </div>
+
+            {/* Right Side - Navigation Links and Action Buttons */}
+            <div className="flex items-center space-x-8">
+              {/* Navigation Links */}
+              <div className="hidden md:flex items-center space-x-6">
+                <Link
+                  to="/pricing"
+                  className="text-gray-700 hover:text-blue-600 font-medium transition-colors"
+                >
+                  Pricing
+                </Link>
+                <Link
+                  to="/contact"
+                  className="text-gray-700 hover:text-blue-600 font-medium transition-colors"
+                >
+                  Contact
+                </Link>
+              </div>
+              
+              {/* Action Buttons */}
+              <div className="flex items-center space-x-4">
+                <Link
+                  to="/demo"
+                  className="border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg font-medium transition-colors"
+                >
+                  View Demo
+                </Link>
+                <Button
+                  onClick={handleLoginClick}
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors shadow-md"
+                >
+                  Register/Login
+                </Button>
+              </div>
             </div>
-            
-            {/* Action Buttons */}
-            <div className="flex items-center space-x-4">
-              <Link
-                to="/demo"
-                className="border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg font-medium transition-colors"
-              >
-                View Demo
-              </Link>
-              <Button
-                onClick={handleLoginClick}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors shadow-md"
-              >
-                Register/Login
-              </Button>
           </div>
         </div>
-      </div>
       </nav>
 
       {/* Hero Section */}
@@ -1249,7 +1268,7 @@ export const HomePage = () => {
               >
                 Get Started →
               </Button>
-            </div>
+                </div>
           </FadeInWhenVisible>
           
           <FadeInWhenVisible delay={800}>
@@ -1257,7 +1276,7 @@ export const HomePage = () => {
               No credit card needed ♦ Unlimited time on Free plan
             </p>
           </FadeInWhenVisible>
-              </div>
+                    </div>
       </section>
 
 
@@ -1272,71 +1291,80 @@ export const HomePage = () => {
       <section id="features-section" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4">
           <FadeInWhenVisible>
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                How StockFlow transforms your business operations
+            <div className="text-center mb-16">
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                Solutions for every business
               </h2>
-              <p className="text-lg text-gray-600 max-w-4xl mx-auto leading-relaxed">
-                Don't just list features. Sell outcomes. Our powerful tools help you optimize your inventory management, 
-                save costs and increase your revenue. Discover how thousands of Belgian businesses already benefit from StockFlow.
-              </p>
-                  </div>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                Powered by one platform.
+            </p>
+          </div>
           </FadeInWhenVisible>
           
-          {/* Features Grid - 2x2 Layout with Enhanced Animations */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-            {features.map((feature, index) => (
-              <SlideInWhenVisible 
+          {/* Optimized Features Grid - 3 Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+            {features.slice(0, 3).map((feature, index) => (
+              <FadeInWhenVisible 
                 key={index} 
-                delay={index * 200} 
-                direction={index % 2 === 0 ? 'left' : 'right'}
+                delay={index * 200}
               >
-                <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:border-blue-300 transition-all duration-300 hover:shadow-lg">
-                  {/* Feature Title */}
-                  <h3 className="text-xl font-semibold mb-4 text-gray-900">{feature.title}</h3>
-                  
-                  {/* Enhanced Description */}
-                  <div className="mb-6">
-                    <p className="text-gray-700 leading-relaxed mb-3">{feature.description}</p>
-                    <p className="text-sm text-gray-600 leading-relaxed">{feature.detailedDescription}</p>
-                </div>
-                
-                  {/* Image Placeholder */}
-                  <div className="bg-gray-100 rounded-lg h-48 flex items-center justify-center mb-4">
-                    <span className="text-gray-500 text-sm">Feature {index + 1} Image</span>
-              </div>
-              
-                  {/* Icon */}
-                  <div className="flex justify-center">
-                    <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-100 rounded-lg">
-                      <feature.icon className="h-6 w-6 text-blue-600" />
-                </div>
-                </div>
-                </div>
-              </SlideInWhenVisible>
-            ))}
-            </div>
-            
-          {/* Data Metrics - Horizontal Layout with Animations */}
-          <FadeInWhenVisible delay={800}>
-            <div className="bg-gradient-to-r from-blue-50 to-green-50 rounded-2xl p-8 mb-8">
-              <h3 className="text-2xl font-bold text-center text-gray-900 mb-6">
-                Proven results from our customers
-              </h3>
-              <div className="flex flex-wrap justify-center gap-12">
-                {dataMetrics.map((metric, index) => (
-                  <ScaleInWhenVisible key={index} delay={index * 100}>
-                    <div className="text-center max-w-xs">
-                      <div className="text-5xl font-bold text-blue-600 mb-2">{metric.value}</div>
-                      <div className="text-gray-900 text-lg font-semibold mb-1">{metric.label}</div>
-                      <div className="text-gray-600 text-sm">{metric.description}</div>
+                <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden group">
+                  {/* Hero Image */}
+                  <div className="relative h-64 bg-gradient-to-br from-blue-500 to-purple-600 overflow-hidden">
+                    <div className="absolute inset-0 bg-black/20"></div>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="text-center text-white">
+                        <feature.icon className="h-16 w-16 mx-auto mb-4 opacity-90" />
+                        <h3 className="text-2xl font-bold">{feature.title}</h3>
+                      </div>
                     </div>
-                  </ScaleInWhenVisible>
-                ))}
+                    {/* Decorative elements */}
+                    <div className="absolute top-4 right-4 w-8 h-8 bg-white/20 rounded-full"></div>
+                    <div className="absolute bottom-4 left-4 w-6 h-6 bg-white/20 rounded-full"></div>
                   </div>
+
+                  {/* Content */}
+                  <div className="p-8">
+                    <p className="text-gray-600 text-lg leading-relaxed mb-6">
+                      {feature.description.split('.')[0]}.
+                    </p>
+                    
+                    {/* Feature highlights */}
+                    <div className="space-y-3 mb-8">
+                      <div className="flex items-center text-sm text-gray-500">
+                        <div className="w-2 h-2 bg-blue-500 rounded-full mr-3"></div>
+                        Real-time updates
+                      </div>
+                      <div className="flex items-center text-sm text-gray-500">
+                        <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
+                        Easy integration
+                      </div>
+                      <div className="flex items-center text-sm text-gray-500">
+                        <div className="w-2 h-2 bg-purple-500 rounded-full mr-3"></div>
+                        Mobile friendly
                     </div>
+                    </div>
+                  </div>
+                </div>
+              </FadeInWhenVisible>
+            ))}
+          </div>
+
+          {/* Call to Action */}
+          <FadeInWhenVisible delay={600}>
+                      <div className="text-center">
+              <Button
+                onClick={handleLoginClick}
+                className="bg-indigo-600 hover:bg-indigo-700 text-white px-12 py-4 text-xl font-semibold rounded-full transform hover:scale-105 transition-all duration-300 shadow-lg"
+              >
+                Get Started Free →
+              </Button>
+              <p className="text-sm text-gray-500 mt-4">
+                No credit card required • Setup in 5 minutes
+              </p>
+                      </div>
           </FadeInWhenVisible>
-                    </div>
+        </div>
       </section>
 
       {/* How It Works Section */}
@@ -1349,8 +1377,8 @@ export const HomePage = () => {
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
               Clarity converts. Break down the process into simple steps.
             </p>
-                  </div>
-                  
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {howItWorksSteps.map((step, index) => (
               <div key={index} className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
@@ -1358,25 +1386,25 @@ export const HomePage = () => {
                 <div className="flex justify-center mb-6">
                   <div className="bg-blue-600 text-white rounded-full w-16 h-16 flex items-center justify-center text-2xl font-bold">
                     {step.step}
-                  </div>
-                </div>
+                      </div>
+                      </div>
                 
                 {/* Image Placeholder */}
                 <div className="mb-6">
                   <div className="bg-gray-100 rounded-lg h-48 flex items-center justify-center">
                     <span className="text-gray-500 text-sm">Step {step.step} Image</span>
-                </div>
-              </div>
-              
-                {/* Content */}
+                      </div>
+                  </div>
+
+                  {/* Content */}
                       <div className="text-center">
                   <h3 className="text-xl font-semibold mb-3 text-gray-900">{step.title}</h3>
                   <p className="text-gray-600 leading-relaxed">{step.description}</p>
-            </div>
-                      </div>
-            ))}
-          </div>
-        </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
       </section>
 
       {/* Why Choose Us Section */}
@@ -1389,316 +1417,24 @@ export const HomePage = () => {
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
               Make your strengths obvious.
             </p>
-                    </div>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {whyChooseUs.map((reason, index) => (
               <div key={index} className="text-center">
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-lg mb-4">
                   {reason.icon}
-                  </div>
+              </div>
                 <h3 className="text-xl font-semibold mb-3">{reason.title}</h3>
                 <p className="text-gray-600">{reason.description}</p>
-              </div>
+                </div>
             ))}
-          </div>
+                </div>
         </div>
       </section>
 
-      {/* Pricing Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Pricing
-              </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Choose the plan that best suits your business needs. All prices in USD.
-            </p>
-          </div>
 
-          {/* Billing Toggle */}
-          <div className="flex justify-center mb-12">
-            <div className="bg-gray-200 rounded-lg p-1 flex">
-              <button 
-                onClick={() => setIsYearly(false)}
-                className={`px-6 py-2 rounded-md font-medium transition-colors ${
-                  !isYearly 
-                    ? 'bg-gray-300 text-gray-700' 
-                    : 'text-gray-600 hover:bg-gray-100'
-                }`}
-              >
-                Monthly
-              </button>
-              <button 
-                onClick={() => setIsYearly(true)}
-                className={`px-6 py-2 rounded-md font-medium transition-colors ${
-                  isYearly 
-                    ? 'bg-gray-300 text-gray-700' 
-                    : 'text-gray-600 hover:bg-gray-100'
-                }`}
-              >
-                Yearly
-              </button>
-                      </div>
-                    </div>
-
-          {/* Pricing Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {/* Free / Basic Plan */}
-            <div className="bg-white rounded-lg shadow-lg p-6 border border-gray-200">
-              <div className="text-center mb-6">
-                <div className="inline-flex items-center justify-center w-12 h-12 bg-gray-100 rounded-lg mb-4">
-                  <Package className="h-6 w-6 text-gray-600" />
-                    </div>
-                <h3 className="text-xl font-semibold mb-2">Free / Basic</h3>
-                <p className="text-sm text-gray-500 mb-4">For micro users / businesses</p>
-                <div className="text-4xl font-bold text-gray-900 mb-1">$0</div>
-                  </div>
-
-              {/* Key Metrics */}
-              <div className="grid grid-cols-3 gap-4 mb-6 text-center">
-                <div>
-                  <div className="text-2xl font-bold text-gray-900">200</div>
-                  <div className="text-sm text-gray-500">products</div>
-                      </div>
-                <div>
-                  <div className="text-2xl font-bold text-gray-900">2</div>
-                  <div className="text-sm text-gray-500">users</div>
-                      </div>
-                <div>
-                  <div className="text-2xl font-bold text-gray-900">1</div>
-                  <div className="text-sm text-gray-500">branches</div>
-                    </div>
-                  </div>
-
-              <div className="space-y-3 mb-6">
-                <div className="flex items-center">
-                  <Check className="h-4 w-4 text-green-500 mr-3" />
-                  <span className="text-sm text-gray-600">Up to 200 items (SKUs)</span>
-                    </div>
-                <div className="flex items-center">
-                  <Check className="h-4 w-4 text-green-500 mr-3" />
-                  <span className="text-sm text-gray-600">Single user</span>
-                  </div>
-                <div className="flex items-center">
-                  <Check className="h-4 w-4 text-green-500 mr-3" />
-                  <span className="text-sm text-gray-600">Single location / warehouse</span>
-                </div>
-                <div className="flex items-center">
-                  <Check className="h-4 w-4 text-green-500 mr-3" />
-                  <span className="text-sm text-gray-600">Barcode/QR scanning, AI classification, search, import/export (CSV)</span>
-          </div>
-                <div className="flex items-center">
-                  <Check className="h-4 w-4 text-green-500 mr-3" />
-                  <span className="text-sm text-gray-600">Basic reporting (stock levels, alerts for low stock)</span>
-                      </div>
-                <div className="flex items-center">
-                  <Check className="h-4 w-4 text-green-500 mr-3" />
-                  <span className="text-sm text-gray-600">Email support, community help</span>
-                    </div>
-                    </div>
-
-              <Button 
-                onClick={handleLoginClick}
-                className="w-full bg-gray-600 hover:bg-gray-700 text-white"
-              >
-                Current plan
-              </Button>
-                      </div>
-
-            {/* Starter Plan - Most Popular */}
-            <div className="bg-white rounded-lg shadow-xl p-6 border-2 border-blue-500 relative">
-              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                <div className="bg-blue-500 text-white px-4 py-1 rounded-full text-sm font-medium flex items-center">
-                  <Star className="h-4 w-4 mr-1" />
-                  Most popular
-                      </div>
-                    </div>
-
-              <div className="text-center mb-6">
-                <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-100 rounded-lg mb-4">
-                  <Package className="h-6 w-6 text-blue-600" />
-                  </div>
-                <h3 className="text-xl font-semibold mb-2">Starter</h3>
-                <p className="text-sm text-gray-500 mb-4">For small SMEs</p>
-                <div className="text-4xl font-bold text-gray-900 mb-1">
-                  ${isYearly ? '15.99' : '19.99'}
-                      </div>
-                <div className="text-sm text-gray-500">
-                  {isYearly ? 'per month (billed yearly)' : 'per month'}
-                      </div>
-                {isYearly && (
-                  <div className="text-xs text-green-600 font-medium mt-1">
-                    Save 20% with yearly billing
-                </div>
-              )}
-          </div>
-
-              {/* Key Metrics */}
-              <div className="grid grid-cols-3 gap-4 mb-6 text-center">
-                <div>
-                  <div className="text-2xl font-bold text-gray-900">1000</div>
-                  <div className="text-sm text-gray-500">products</div>
-              </div>
-                <div>
-                  <div className="text-2xl font-bold text-gray-900">5</div>
-                  <div className="text-sm text-gray-500">users</div>
-              </div>
-                <div>
-                  <div className="text-2xl font-bold text-gray-900">3</div>
-                  <div className="text-sm text-gray-500">branches</div>
-              </div>
-            </div>
-
-              <div className="space-y-3 mb-6">
-                <div className="flex items-center">
-                  <Check className="h-4 w-4 text-green-500 mr-3" />
-                  <span className="text-sm text-gray-600">Up to 1,000 items</span>
-              </div>
-                <div className="flex items-center">
-                  <Check className="h-4 w-4 text-green-500 mr-3" />
-                  <span className="text-sm text-gray-600">Up to 5 users</span>
-          </div>
-                <div className="flex items-center">
-                  <Check className="h-4 w-4 text-green-500 mr-3" />
-                  <span className="text-sm text-gray-600">Up to 3 locations / warehouses</span>
-                      </div>
-                <div className="flex items-center">
-                  <Check className="h-4 w-4 text-green-500 mr-3" />
-                  <span className="text-sm text-gray-600">All features of Free, plus:</span>
-                      </div>
-                <div className="flex items-center">
-                  <Check className="h-4 w-4 text-green-500 mr-3" />
-                  <span className="text-sm text-gray-600">Batch/serial number tracking</span>
-                      </div>
-                <div className="flex items-center">
-                  <Check className="h-4 w-4 text-green-500 mr-3" />
-                  <span className="text-sm text-gray-600">Multiple warehouse transfer</span>
-                    </div>
-                <div className="flex items-center">
-                  <Check className="h-4 w-4 text-green-500 mr-3" />
-                  <span className="text-sm text-gray-600">More advanced reporting (trend, turnover, reorder suggestions)</span>
-                  </div>
-                <div className="flex items-center">
-                  <Check className="h-4 w-4 text-green-500 mr-3" />
-                  <span className="text-sm text-gray-600">Basic integrations (e-commerce platform, maybe accounting)</span>
-                          </div>
-                <div className="flex items-center">
-                  <Check className="h-4 w-4 text-green-500 mr-3" />
-                  <span className="text-sm text-gray-600">Priority email / chat support</span>
-                        </div>
-                    </div>
-
-              <Button 
-                onClick={handleLoginClick}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white"
-              >
-                Start 14-day trial
-              </Button>
-                  </div>
-
-            {/* Business Plan */}
-            <div className="bg-white rounded-lg shadow-lg p-6 border border-gray-200">
-              <div className="text-center mb-6">
-                <div className="inline-flex items-center justify-center w-12 h-12 bg-purple-100 rounded-lg mb-4">
-                  <Package className="h-6 w-6 text-purple-600" />
-                </div>
-                <h3 className="text-xl font-semibold mb-2">Business</h3>
-                <p className="text-sm text-gray-500 mb-4">For growing SMEs</p>
-                <div className="text-4xl font-bold text-gray-900 mb-1">
-                  ${isYearly ? '47.99' : '59.99'}
-          </div>
-                <div className="text-sm text-gray-500">
-                  {isYearly ? 'per month (billed yearly)' : 'per month'}
-              </div>
-                {isYearly && (
-                  <div className="text-xs text-green-600 font-medium mt-1">
-                    Save 20% with yearly billing
-                </div>
-                  )}
-                </div>
-
-              {/* Key Metrics */}
-              <div className="grid grid-cols-3 gap-4 mb-6 text-center">
-                <div>
-                  <div className="text-2xl font-bold text-gray-900">5000</div>
-                  <div className="text-sm text-gray-500">products</div>
-                </div>
-                <div>
-                  <div className="text-2xl font-bold text-gray-900">25</div>
-                  <div className="text-sm text-gray-500">users</div>
-                </div>
-                <div>
-                  <div className="text-2xl font-bold text-gray-900">15</div>
-                  <div className="text-sm text-gray-500">branches</div>
-              </div>
-            </div>
-
-              <div className="space-y-3 mb-6">
-                <div className="flex items-center">
-                  <Check className="h-4 w-4 text-green-500 mr-3" />
-                  <span className="text-sm text-gray-600">Unlimited SKUs</span>
-                    </div>
-                <div className="flex items-center">
-                  <Check className="h-4 w-4 text-green-500 mr-3" />
-                  <span className="text-sm text-gray-600">10+ users</span>
-                      </div>
-                <div className="flex items-center">
-                  <Check className="h-4 w-4 text-green-500 mr-3" />
-                  <span className="text-sm text-gray-600">Unlimited locations / warehouses</span>
-                      </div>
-                <div className="flex items-center">
-                  <Check className="h-4 w-4 text-green-500 mr-3" />
-                  <span className="text-sm text-gray-600">Predictive reordering / stock forecasting</span>
-                    </div>
-                <div className="flex items-center">
-                  <Check className="h-4 w-4 text-green-500 mr-3" />
-                  <span className="text-sm text-gray-600">API access / webhooks</span>
-                        </div>
-                <div className="flex items-center">
-                  <Check className="h-4 w-4 text-green-500 mr-3" />
-                  <span className="text-sm text-gray-600">More advanced analytics dashboards</span>
-                    </div>
-                    </div>
-
-              <Button 
-                onClick={handleLoginClick}
-                className="w-full bg-purple-600 hover:bg-purple-700 text-white"
-              >
-                Start 14-day trial
-              </Button>
-                  </div>
-          </div>
-
-          {/* 14-day Free Trial Section */}
-          <div className="mt-16 text-center">
-            <div className="flex items-center justify-center mb-4">
-              <Clock className="h-6 w-6 text-blue-600 mr-2" />
-              <h3 className="text-2xl font-bold text-gray-900">14-day free trial</h3>
-                    </div>
-            <p className="text-lg text-gray-600 mb-8">
-              Try all premium features 14 days free. No credit card required, cancel anytime.
-            </p>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-              <div className="flex items-center justify-center">
-                <Check className="h-5 w-5 text-green-500 mr-3" />
-                <span className="text-gray-700">No obligations: Cancel anytime without any costs</span>
-                      </div>
-              <div className="flex items-center justify-center">
-                <Check className="h-5 w-5 text-green-500 mr-3" />
-                <span className="text-gray-700">Full access: All features and limits of your chosen plan</span>
-                      </div>
-              <div className="flex items-center justify-center">
-                <Check className="h-5 w-5 text-green-500 mr-3" />
-                <span className="text-gray-700">Direct start: Start directly with your inventory management</span>
-                    </div>
-                </div>
-          </div>
-        </div>
-      </section>
-
+      
 
       {/* Review Section */}
       <section id="testimonials-section" className="py-20 bg-white">
@@ -1710,7 +1446,7 @@ export const HomePage = () => {
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
               Users can sell your product better than you
             </p>
-                        </div>
+                    </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
@@ -1719,18 +1455,18 @@ export const HomePage = () => {
                   {[...Array(testimonial.rating)].map((_, i) => (
                     <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
                       ))}
-                    </div>
+                      </div>
                 <p className="text-gray-700 mb-4">"{testimonial.quote}"</p>
                 <div className="flex items-center">
                   <div className="w-10 h-10 bg-gray-300 rounded-full mr-3"></div>
                   <div>
                     <div className="font-semibold">{testimonial.name}</div>
                     <div className="text-sm text-gray-500">{testimonial.location}</div>
-                  </div>
-                </div>
-          </div>
-            ))}
-          </div>
+                      </div>
+                    </div>
+                        </div>
+                      ))}
+                    </div>
         </div>
       </section>
 
@@ -1759,11 +1495,75 @@ export const HomePage = () => {
                 {openFAQ === index && (
                   <div className="px-6 pb-4">
                     <p className="text-gray-600">{faq.answer}</p>
-                </div>
-              )}
-                </div>
+                    </div>
+                  )}
+                      </div>
             ))}
+                      </div>
+                    </div>
+      </section>
+
+      {/* Enterprise Security Section */}
+      <section className="py-20 bg-gradient-to-b from-white to-blue-50">
+        <div className="max-w-4xl mx-auto text-center px-4">
+          <FadeInWhenVisible>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+              Enterprise-grade security
+            </h2>
+            <p className="text-lg text-gray-600 mb-12 max-w-2xl mx-auto">
+              Keep your company's data secure and compliant with industry-leading security standards and certifications.
+            </p>
+          </FadeInWhenVisible>
+          
+          {/* Security Certifications */}
+          <FadeInWhenVisible delay={200}>
+            <div className="flex flex-wrap justify-center items-center gap-8 mb-12">
+              {/* GDPR */}
+              <div className="flex flex-col items-center">
+                <div className="w-20 h-20 bg-white rounded-full shadow-lg flex items-center justify-center mb-3">
+                  <div className="text-center">
+                    <div className="text-xs font-bold text-gray-800">GDPR</div>
+                    <div className="text-xs text-gray-600">Compliant</div>
+                        </div>
+                </div>
+                <span className="text-sm text-gray-600">GDPR</span>
+                    </div>
+
+              {/* SOC 2 */}
+              <div className="flex flex-col items-center">
+                <div className="w-20 h-20 bg-white rounded-full shadow-lg flex items-center justify-center mb-3">
+                  <div className="text-center">
+                    <div className="text-xs font-bold text-gray-800">SOC 2</div>
+                    <div className="text-xs text-gray-600">Type II</div>
+                  </div>
+                </div>
+                <span className="text-sm text-gray-600">SOC 2</span>
           </div>
+
+              {/* ISO 27001 */}
+              <div className="flex flex-col items-center">
+                <div className="w-20 h-20 bg-white rounded-full shadow-lg flex items-center justify-center mb-3">
+                  <div className="text-center">
+                    <div className="text-xs font-bold text-gray-800">ISO</div>
+                    <div className="text-xs text-gray-600">27001</div>
+        </div>
+                </div>
+                <span className="text-sm text-gray-600">ISO 27001</span>
+          </div>
+
+              {/* HIPAA */}
+              <div className="flex flex-col items-center">
+                <div className="w-20 h-20 bg-white rounded-full shadow-lg flex items-center justify-center mb-3">
+                  <div className="text-center">
+                    <div className="text-xs font-bold text-gray-800">HIPAA</div>
+                    <div className="text-xs text-gray-600">Ready</div>
+              </div>
+          </div>
+                <span className="text-sm text-gray-600">HIPAA</span>
+                </div>
+          </div>
+          </FadeInWhenVisible>
+        
         </div>
       </section>
 
@@ -1771,7 +1571,7 @@ export const HomePage = () => {
       <section className="py-16 bg-blue-600">
         <div className="max-w-4xl mx-auto text-center px-4">
           {/* Main Headline */}
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+          <h2 className="text-7xl md:text-7xl font-bold text-white mb-4">
             Ready to Stop Losing Money to Stockouts?
               </h2>
               
@@ -1785,29 +1585,15 @@ export const HomePage = () => {
             Stop the stress of lost sales and stockouts. Start your free account today and save €2,400+ per year. No credit card required, setup in 5 minutes.
           </p>
           
-          {/* Benefit Icons */}
-          <div className="flex flex-wrap justify-center gap-8 mb-8">
-            <div className="flex items-center text-white">
-              <Zap className="h-6 w-6 mr-2" />
-              <span className="text-lg">Start within 2 minutes</span>
-                </div>
-            <div className="flex items-center text-white">
-              <Shield className="h-6 w-6 mr-2" />
-              <span className="text-lg">100% safe and free</span>
-                </div>
-            <div className="flex items-center text-white">
-              <Users className="h-6 w-6 mr-2" />
-              <span className="text-lg">Professional support</span>
-              </div>
-            </div>
+
             
           {/* Primary CTA Button */}
           <div className="mb-8">
             <Button
               onClick={handleLoginClick}
-              className="bg-green-500 hover:bg-green-600 text-white px-12 py-6 text-2xl font-bold rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300"
+              className="bg-blue-900 hover:bg-white hover:text-blue-900 text-white px-12 py-6 text-2xl font-bold rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300"
             >
-              🚀 Start Free Today - Save €2,400/Year →
+              Start Free Today
             </Button>
                   </div>
                   
