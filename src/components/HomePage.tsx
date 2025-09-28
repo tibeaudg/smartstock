@@ -3,6 +3,7 @@ import { Header } from './HeaderPublic';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import Carousel from './ui/carousel';
 import { 
   Package, BarChart3, Users, Shield, Check, TrendingUp, Zap, Star, Clock, Euro, Target, 
   ChevronLeft, ChevronRight, Scan, Truck, ArrowRight, Play, Award, Globe, Smartphone, 
@@ -1418,29 +1419,29 @@ export const HomePage = () => {
       />
 
       {/* Hero Section with Video Below */}
-      <section className="relative bg-gradient-to-br from-slate-50 via-blue-50 to-blue-50 py-32 px-4 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-slate-50 via-blue-50 to-blue-50 py-16 md:py-32 px-4 overflow-hidden">
         <div className="max-w-7xl mx-auto">
           {/* Text Content */}
-          <div className="text-center mb-16">
+          <div className="text-center mb-8 md:mb-16">
           
               <BounceInWhenVisible delay={200}>
-                <h1 className="text-5xl md:text-7xl font-light text-gray-800 mb-8 leading-tight">
+                <h1 className="text-3xl md:text-5xl lg:text-7xl font-light text-gray-800 mb-6 md:mb-8 leading-tight">
                   <span className="block">Stop Losing Money</span>
                   <span className="block text-blue-600">to Stockouts</span>
                 </h1>
               </BounceInWhenVisible>
               
               <SlideUpWhenVisible delay={400}>
-                <p className="text-xl text-gray-600 mb-12 max-w-3xl mx-auto lg:mx-0 leading-relaxed">
+                <p className="text-lg md:text-xl text-gray-600 mb-8 md:mb-12 max-w-3xl mx-auto lg:mx-0 leading-relaxed">
                   Never run out of stock again. StockFlow automatically tracks your inventory, alerts you when to reorder, and saves SMEs €2,400+ per year.
                 </p>
               </SlideUpWhenVisible>
               
               <ScaleInWhenVisible delay={600}>
-                <div className="mb-8">
+                <div className="mb-6 md:mb-8">
                   <Button
                     onClick={handleLoginClick}
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-12 py-6 text-xl font-semibold rounded-full transform hover:scale-110 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25 border border-blue-500/20"
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-8 md:px-12 py-4 md:py-6 text-lg md:text-xl font-semibold rounded-full transform hover:scale-110 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25 border border-blue-500/20 w-full sm:w-auto"
                   >
                     Get Started →
                   </Button>
@@ -1456,9 +1457,9 @@ export const HomePage = () => {
             
           {/* Video Showcase Below */}
           <SlideUpWhenVisible delay={1000}>
-            <div className="relative max-w-5xl mx-auto">
+            <div className="relative max-w-5xl mx-auto px-4">
               {/* Video Container */}
-              <div className="relative bg-gray-900 rounded-2xl overflow-hidden shadow-2xl">
+              <div className="relative bg-gray-900 rounded-xl md:rounded-2xl overflow-hidden shadow-2xl">
                 <video
                   className="w-full h-auto"
                   autoPlay
@@ -1477,8 +1478,8 @@ export const HomePage = () => {
                 
                 {/* Play Button Overlay (for fallback) */}
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <div className="w-20 h-20 bg-white/90 rounded-full flex items-center justify-center shadow-lg">
-                    <svg className="w-8 h-8 text-gray-800 ml-1" fill="currentColor" viewBox="0 0 24 24">
+                  <div className="w-16 h-16 md:w-20 md:h-20 bg-white/90 rounded-full flex items-center justify-center shadow-lg">
+                    <svg className="w-6 h-6 md:w-8 md:h-8 text-gray-800 ml-1" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M8 5v14l11-7z"/>
                     </svg>
                   </div>
@@ -1486,7 +1487,7 @@ export const HomePage = () => {
               </div>
               
               {/* Video Features */}
-              <div className="mt-6 flex flex-wrap justify-center gap-6 text-sm text-gray-500">
+              <div className="mt-4 md:mt-6 flex flex-wrap justify-center gap-4 md:gap-6 text-xs md:text-sm text-gray-500">
                 <div className="flex items-center">
                   <div className="w-2 h-2 bg-green-600 rounded-full mr-2"></div>
                   Real-time updates
@@ -1517,8 +1518,54 @@ export const HomePage = () => {
 
 
       {/* Trust Bar */}
-      <section className="relative">
-
+      <section className="py-12 bg-white border-b border-gray-100">
+        <div className="max-w-7xl mx-auto px-4">
+          <FadeInWhenVisible>
+            <div className="text-center mb-8">
+              <p className="text-sm text-gray-500 font-medium mb-6">
+                Trusted by 10,000+ businesses across Europe
+              </p>
+            </div>
+          </FadeInWhenVisible>
+          
+          <SlideUpWhenVisible delay={200}>
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-8 items-center">
+              {trustCompanies.map((company, index) => (
+                <div 
+                  key={index}
+                  className="flex items-center justify-center opacity-60 hover:opacity-100 transition-opacity duration-300"
+                >
+                  <div className="relative">
+                    <img
+                      src={company.logo}
+                      alt={`${company.name} logo`}
+                      className="h-12 w-auto object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
+                      onError={(e) => {
+                        e.currentTarget.style.display = 'none';
+                        const nextElement = e.currentTarget.nextElementSibling as HTMLElement;
+                        if (nextElement) nextElement.style.display = 'flex';
+                      }}
+                    />
+                    <div 
+                      className="h-12 w-20 bg-gray-100 rounded flex items-center justify-center text-gray-400 text-xs font-medium"
+                      style={{display: 'none'}}
+                    >
+                      {company.name}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </SlideUpWhenVisible>
+          
+          <FadeInWhenVisible delay={400}>
+            <div className="text-center mt-8">
+              <p className="text-xs text-gray-400">
+                From small coffee shops to large distributors
+              </p>
+            </div>
+          </FadeInWhenVisible>
+        </div>
       </section>
 
 
@@ -1538,110 +1585,132 @@ export const HomePage = () => {
               </p>
               
               {/* Key Benefits Preview */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-                <div className="text-center p-6 bg-white rounded-2xl shadow-lg">
-                  <div className="text-3xl font-bold text-green-600 mb-2">€2,400+</div>
-                  <div className="text-sm text-gray-700">Average annual savings</div>
-                </div>
-                <div className="text-center p-6 bg-white rounded-2xl shadow-lg">
-                  <div className="text-3xl font-bold text-blue-600 mb-2">8hrs</div>
-                  <div className="text-sm text-gray-700">Weekly time saved</div>
-                </div>
-                <div className="text-center p-6 bg-white rounded-2xl shadow-lg">
-                  <div className="text-3xl font-bold text-purple-600 mb-2">95%</div>
-                  <div className="text-sm text-gray-700">Accuracy improvement</div>
-                </div>
+              <div className="max-w-5xl mx-auto">
+                <Carousel
+                  itemsPerView={{
+                    mobile: 1,
+                    tablet: 2,
+                    desktop: 3
+                  }}
+                  showArrows={true}
+                  showDots={true}
+                  autoPlay={false}
+                  className="px-4"
+                >
+                  <div className="text-center p-4 md:p-6 bg-white rounded-2xl shadow-lg h-full">
+                    <div className="text-2xl md:text-3xl font-bold text-green-600 mb-2">€2,400+</div>
+                    <div className="text-xs md:text-sm text-gray-700">Average annual savings</div>
+                  </div>
+                  <div className="text-center p-4 md:p-6 bg-white rounded-2xl shadow-lg h-full">
+                    <div className="text-2xl md:text-3xl font-bold text-blue-600 mb-2">8hrs</div>
+                    <div className="text-xs md:text-sm text-gray-700">Weekly time saved</div>
+                  </div>
+                  <div className="text-center p-4 md:p-6 bg-white rounded-2xl shadow-lg h-full">
+                    <div className="text-2xl md:text-3xl font-bold text-purple-600 mb-2">95%</div>
+                    <div className="text-xs md:text-sm text-gray-700">Accuracy improvement</div>
+                  </div>
+                </Carousel>
               </div>
             </div>
           </FadeInWhenVisible>
           
           {/* Top 3 Hero Features */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-20">
-            {heroFeatures.map((feature, index) => (
-              <StaggerInWhenVisible 
-                key={index} 
-                delay={index * 200}
-                staggerDelay={index * 100}
-              >
-                <div className="bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden group">
-                  {/* Hero Visual */}
-                  <div className={`relative h-80 overflow-hidden ${
-                    index === 0 ? 'bg-gradient-to-br from-red-500 to-orange-500' :
-                    index === 1 ? 'bg-gradient-to-br from-green-500 to-emerald-500' :
-                    'bg-gradient-to-br from-blue-500 to-cyan-500'
-                  }`}>
-                    {/* Device Mockup */}
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="relative">
-                        {/* Laptop Mockup */}
-                        <div className="w-64 h-40 bg-gray-800 rounded-lg shadow-2xl transform rotate-3">
-                          <div className="w-full h-full bg-white rounded-t-lg p-4">
-                            <div className="h-2 bg-gray-200 rounded mb-2"></div>
-                            <div className="h-2 bg-gray-200 rounded mb-2 w-3/4"></div>
-                            <div className="h-2 bg-gray-200 rounded mb-2 w-1/2"></div>
-                            <div className="flex space-x-1 mt-4">
-                              <div className="w-8 h-8 bg-green-500 rounded"></div>
-                              <div className="w-8 h-8 bg-blue-500 rounded"></div>
-                              <div className="w-8 h-8 bg-purple-500 rounded"></div>
+          <div className="mb-20">
+            <Carousel
+              itemsPerView={{
+                mobile: 1,
+                tablet: 2,
+                desktop: 3
+              }}
+              showArrows={true}
+              showDots={true}
+              autoPlay={false}
+              className="px-4"
+            >
+              {heroFeatures.map((feature, index) => (
+                <StaggerInWhenVisible 
+                  key={index} 
+                  delay={index * 200}
+                  staggerDelay={index * 100}
+                >
+                  <div className="bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden group h-full">
+                    {/* Hero Visual */}
+                    <div className={`relative h-80 overflow-hidden ${
+                      index === 0 ? 'bg-gradient-to-br from-red-500 to-orange-500' :
+                      index === 1 ? 'bg-gradient-to-br from-green-500 to-emerald-500' :
+                      'bg-gradient-to-br from-blue-500 to-cyan-500'
+                    }`}>
+                      {/* Device Mockup */}
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="relative">
+                          {/* Laptop Mockup */}
+                          <div className="w-64 h-40 bg-gray-800 rounded-lg shadow-2xl transform rotate-3">
+                            <div className="w-full h-full bg-white rounded-t-lg p-4">
+                              <div className="h-2 bg-gray-200 rounded mb-2"></div>
+                              <div className="h-2 bg-gray-200 rounded mb-2 w-3/4"></div>
+                              <div className="h-2 bg-gray-200 rounded mb-2 w-1/2"></div>
+                              <div className="flex space-x-1 mt-4">
+                                <div className="w-8 h-8 bg-green-500 rounded"></div>
+                                <div className="w-8 h-8 bg-blue-500 rounded"></div>
+                                <div className="w-8 h-8 bg-purple-500 rounded"></div>
+                              </div>
+                            </div>
+                          </div>
+                          {/* Mobile Mockup */}
+                          <div className="absolute -bottom-4 -right-4 w-16 h-24 bg-gray-800 rounded-lg shadow-xl transform -rotate-12">
+                            <div className="w-full h-full bg-white rounded-t-lg p-2">
+                              <div className="h-1 bg-gray-200 rounded mb-1"></div>
+                              <div className="h-1 bg-gray-200 rounded mb-1 w-2/3"></div>
+                              <div className="w-4 h-4 bg-blue-500 rounded mt-2"></div>
                             </div>
                           </div>
                         </div>
-                        {/* Mobile Mockup */}
-                        <div className="absolute -bottom-4 -right-4 w-16 h-24 bg-gray-800 rounded-lg shadow-xl transform -rotate-12">
-                          <div className="w-full h-full bg-white rounded-t-lg p-2">
-                            <div className="h-1 bg-gray-200 rounded mb-1"></div>
-                            <div className="h-1 bg-gray-200 rounded mb-1 w-2/3"></div>
-                            <div className="w-4 h-4 bg-blue-500 rounded mt-2"></div>
-                          </div>
-                        </div>
+                      </div>
+                      
+                      {/* Floating Icons */}
+                      <div className="absolute top-4 right-4">
+                        <feature.icon className="h-8 w-8 text-white opacity-80" />
+                      </div>
+                      <div className="absolute bottom-4 left-4">
+                        <div className="w-6 h-6 bg-white/20 rounded-full"></div>
                       </div>
                     </div>
-                    
-                    {/* Floating Icons */}
-                    <div className="absolute top-4 right-4">
-                      <feature.icon className="h-8 w-8 text-white opacity-80" />
-                    </div>
-                    <div className="absolute bottom-4 left-4">
-                      <div className="w-6 h-6 bg-white/20 rounded-full"></div>
+
+                    {/* Content */}
+                    <div className="p-6 md:p-8">
+                      {/* Category Badge */}
+                      <div className="inline-block bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium mb-4">
+                        {feature.category}
+                      </div>
+                      
+                      {/* Benefit-Driven Headline */}
+                      <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3">{feature.title}</h3>
+                      
+                      {/* Benefit Statement */}
+                      <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-2xl p-4 mb-4 border border-green-200">
+                        <div className="text-base md:text-lg font-semibold text-green-700 mb-1">{feature.benefit}</div>
+                        <div className="text-sm text-gray-600">{feature.impact}</div>
+                      </div>
+                      
+                      {/* Description */}
+                      <p className="text-gray-600 text-base md:text-lg leading-relaxed mb-6">
+                        {feature.detailedDescription}
+                      </p>
+                      
+                      {/* Feature Highlights */}
+                      <div className="space-y-3 mb-6">
+                        {feature.detailedDescription.split(', ').slice(0, 3).map((item, itemIndex) => (
+                          <div key={itemIndex} className="flex items-center text-sm text-gray-600">
+                            <CheckCircle className="h-4 w-4 text-green-500 mr-3 flex-shrink-0" />
+                            {item}
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
-
-                  {/* Content */}
-                  <div className="p-8">
-                    {/* Category Badge */}
-                    <div className="inline-block bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium mb-4">
-                      {feature.category}
-                    </div>
-                    
-                    {/* Benefit-Driven Headline */}
-                    <h3 className="text-2xl font-bold text-gray-900 mb-3">{feature.title}</h3>
-                    
-                    {/* Benefit Statement */}
-                    <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-2xl p-4 mb-4 border border-green-200">
-                      <div className="text-lg font-semibold text-green-700 mb-1">{feature.benefit}</div>
-                      <div className="text-sm text-gray-600">{feature.impact}</div>
-                    </div>
-                    
-                    {/* Description */}
-                    <p className="text-gray-600 text-lg leading-relaxed mb-6">
-                      {feature.description}
-                    </p>
-                    
-                    {/* Feature Highlights */}
-                    <div className="space-y-3 mb-6">
-                      {feature.detailedDescription.split(', ').slice(0, 3).map((item, itemIndex) => (
-                        <div key={itemIndex} className="flex items-center text-sm text-gray-600">
-                          <CheckCircle className="h-4 w-4 text-green-500 mr-3 flex-shrink-0" />
-                          {item}
-                        </div>
-                      ))}
-                    </div>
-                    
-
-                  </div>
-                </div>
-              </StaggerInWhenVisible>
-            ))}
+                </StaggerInWhenVisible>
+              ))}
+            </Carousel>
           </div>
 
           {/* Mid-Page Detail Grid */}
@@ -1657,10 +1726,20 @@ export const HomePage = () => {
                 </p>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <Carousel
+                itemsPerView={{
+                  mobile: 1,
+                  tablet: 2,
+                  desktop: 4
+                }}
+                showArrows={true}
+                showDots={true}
+                autoPlay={false}
+                className="px-4"
+              >
                 {secondaryFeatures.map((feature, index) => (
                   <StaggerInWhenVisible key={index} delay={index * 150} staggerDelay={index * 50}>
-                    <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 group">
+                    <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 group h-full">
                     <div className="text-center">
                       <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-2xl mb-4 group-hover:bg-blue-200 transition-colors">
                         <feature.icon className="h-8 w-8 text-blue-600" />
@@ -1672,40 +1751,52 @@ export const HomePage = () => {
                     </div>
                   </StaggerInWhenVisible>
                 ))}
-              </div>
+              </Carousel>
             </div>
           </FadeInWhenVisible>
 
           {/* Technical Detail Section */}
           <FadeInWhenVisible delay={800}>
-            <div className="p-8 md:p-8">
+            <div className="p-6 md:p-8">
               
-              <div className="grid md:grid-cols-3 gap-6 mb-8">
-                <div className="text-center p-6 bg-green-50 rounded-2xl shadow-lg">
-                  <Shield className="h-8 w-8 text-green-600 mx-auto mb-3" />
-                  <div className="font-semibold text-gray-800 mb-2">GDPR Compliant</div>
-                  <div className="text-sm text-gray-600">Full compliance with Belgian data protection laws</div>
-                </div>
-                <div className="text-center p-6 bg-blue-50 rounded-2xl shadow-lg">
-                  <Globe className="h-8 w-8 text-blue-600 mx-auto mb-3" />
-                  <div className="font-semibold text-gray-800 mb-2">Multi-Language</div>
-                  <div className="text-sm text-gray-600">Dutch, French, German, and English support</div>
-                </div>
-                <div className="text-center p-6 bg-purple-50 rounded-2xl shadow-lg">
-                  <Package className="h-8 w-8 text-purple-600 mx-auto mb-3" />
-                  <div className="font-semibold text-gray-800 mb-2">Local Integrations</div>
-                  <div className="text-sm text-gray-600">Works with Belgian accounting and POS systems</div>
-                </div>
+              <div className="mb-6 md:mb-8">
+                <Carousel
+                  itemsPerView={{
+                    mobile: 1,
+                    tablet: 2,
+                    desktop: 3
+                  }}
+                  showArrows={true}
+                  showDots={true}
+                  autoPlay={false}
+                  className="px-4"
+                >
+                  <div className="text-center p-4 md:p-6 bg-green-50 rounded-2xl shadow-lg h-full">
+                    <Shield className="h-6 w-6 md:h-8 md:w-8 text-green-600 mx-auto mb-3" />
+                    <div className="font-semibold text-gray-800 mb-2 text-sm md:text-base">GDPR Compliant</div>
+                    <div className="text-xs md:text-sm text-gray-600">Full compliance with Belgian data protection laws</div>
+                  </div>
+                  <div className="text-center p-4 md:p-6 bg-blue-50 rounded-2xl shadow-lg h-full">
+                    <Globe className="h-6 w-6 md:h-8 md:w-8 text-blue-600 mx-auto mb-3" />
+                    <div className="font-semibold text-gray-800 mb-2 text-sm md:text-base">Multi-Language</div>
+                    <div className="text-xs md:text-sm text-gray-600">Dutch, French, German, and English support</div>
+                  </div>
+                  <div className="text-center p-4 md:p-6 bg-purple-50 rounded-2xl shadow-lg h-full">
+                    <Package className="h-6 w-6 md:h-8 md:w-8 text-purple-600 mx-auto mb-3" />
+                    <div className="font-semibold text-gray-800 mb-2 text-sm md:text-base">Local Integrations</div>
+                    <div className="text-xs md:text-sm text-gray-600">Works with Belgian accounting and POS systems</div>
+                  </div>
+                </Carousel>
               </div>
               
-              <div className="text-center mt-12">
+              <div className="text-center mt-8 md:mt-12">
             <Button
               onClick={handleLoginClick}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-12 py-6 text-xl font-semibold rounded-full transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25 border border-blue-500/20"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-8 md:px-12 py-4 md:py-6 text-lg md:text-xl font-semibold rounded-full transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25 border border-blue-500/20 w-full sm:w-auto"
             >
               Get Started →
             </Button>
-            <p className="text-sm text-gray-500 mt-3">
+            <p className="text-xs md:text-sm text-gray-500 mt-3">
               No credit card required, start in less than 2 minutes
             </p>
 
@@ -1731,33 +1822,55 @@ export const HomePage = () => {
             </p>
             
             {/* Trust Statistics */}
-            <div className="grid grid-cols-4 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
+            <Carousel
+              itemsPerView={{
+                mobile: 2,
+                tablet: 4,
+                desktop: 4
+              }}
+              showArrows={false}
+              showDots={true}
+              autoPlay={false}
+              className="max-w-4xl mx-auto"
+            >
               {trustStats.map((stat, index) => (
-                <div key={index} className="text-center">
+                <div key={index} className="text-center px-4">
                   <div className="text-3xl md:text-4xl font-bold text-blue-600 mb-2">{stat.number}</div>
                   <div className="text-sm text-gray-600">{stat.label}</div>
                 </div>
               ))}
-            </div>
+            </Carousel>
           </div>
 
           {/* Value-Focused Benefits */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-            {whyChooseUs.map((reason, index) => (
-              <motion.div 
-                key={index} 
-                className="text-center bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-              >
+          <div className="mb-16">
+            <Carousel
+              itemsPerView={{
+                mobile: 1,
+                tablet: 2,
+                desktop: 4
+              }}
+              showArrows={true}
+              showDots={true}
+              autoPlay={false}
+              className="px-4"
+            >
+              {whyChooseUs.map((reason, index) => (
+                <motion.div 
+                  key={index} 
+                  className="text-center bg-white rounded-2xl p-6 md:p-8 shadow-lg hover:shadow-xl transition-all duration-300 h-full"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                >
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-3xl mb-6">
                   {reason.icon}
                 </div>
                 <h3 className="text-xl font-semibold mb-4 text-gray-900">{reason.title}</h3>
                 <p className="text-gray-600 leading-relaxed">{reason.description}</p>
-              </motion.div>
-            ))}
+                </motion.div>
+              ))}
+            </Carousel>
           </div>
 
           {/* Human Connection - Founder Story */}
@@ -1845,91 +1958,113 @@ export const HomePage = () => {
           </div>
 
           {/* Enhanced Testimonials Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
-            {testimonials.map((testimonial, index) => (
-              <StaggerInWhenVisible 
-                key={index} 
-                delay={index * 200}
-                staggerDelay={index * 100}
-              >
-                <div className="bg-white rounded-3xl shadow-xl p-8 border border-gray-100 hover:shadow-2xl transition-all duration-300">
-                {/* Rating Stars */}
-                <div className="flex items-center mb-6">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
-                  ))}
-                  <span className="ml-2 text-sm text-gray-600">Verified Customer</span>
-                </div>
-                
-
-
-                
-                {/* Testimonial Quote */}
-                <blockquote className="text-gray-700 mb-6 leading-relaxed italic">
-                  "{testimonial.quote}"
-                </blockquote>
-                
-                {/* Enhanced User Info with Photo */}
-                <div className="flex items-center mb-4">
-                  <div className="w-16 h-16 rounded-full overflow-hidden mr-4 border-2 border-blue-200">
-                    <img 
-                      src={testimonial.avatar} 
-                      alt={testimonial.name}
-                      className="w-full h-full object-cover"
-                      onError={(e) => {
-                        e.currentTarget.style.display = 'none';
-                        const nextElement = e.currentTarget.nextElementSibling as HTMLElement;
-                        if (nextElement) nextElement.style.display = 'flex';
-                      }}
-                    />
-                    <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-semibold text-lg" style={{display: 'none'}}>
-                      {testimonial.name.split(' ').map(n => n[0]).join('')}
+          <div className="mb-16">
+            <Carousel
+              itemsPerView={{
+                mobile: 1,
+                tablet: 2,
+                desktop: 3
+              }}
+              showArrows={true}
+              showDots={true}
+              autoPlay={false}
+              className="px-4"
+            >
+              {testimonials.map((testimonial, index) => (
+                <StaggerInWhenVisible 
+                  key={index} 
+                  delay={index * 200}
+                  staggerDelay={index * 100}
+                >
+                  <div className="bg-white rounded-3xl shadow-xl p-6 md:p-8 border border-gray-100 hover:shadow-2xl transition-all duration-300 h-full">
+                  {/* Rating Stars */}
+                  <div className="flex items-center mb-6">
+                    {[...Array(testimonial.rating)].map((_, i) => (
+                      <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
+                    ))}
+                    <span className="ml-2 text-sm text-gray-600">Verified Customer</span>
+                  </div>
+                  
+                  {/* Testimonial Quote */}
+                  <blockquote className="text-gray-700 mb-6 leading-relaxed italic">
+                    "{testimonial.quote}"
+                  </blockquote>
+                  
+                  {/* Enhanced User Info with Photo */}
+                  <div className="flex items-center mb-4">
+                    <div className="w-16 h-16 rounded-full overflow-hidden mr-4 border-2 border-blue-200">
+                      <img 
+                        src={testimonial.avatar} 
+                        alt={testimonial.name}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          e.currentTarget.style.display = 'none';
+                          const nextElement = e.currentTarget.nextElementSibling as HTMLElement;
+                          if (nextElement) nextElement.style.display = 'flex';
+                        }}
+                      />
+                      <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-semibold text-lg" style={{display: 'none'}}>
+                        {testimonial.name.split(' ').map(n => n[0]).join('')}
+                      </div>
+                    </div>
+                    <div className="flex-1">
+                      <div className="font-semibold text-gray-900 text-lg">{testimonial.name}</div>
+                      <div className="text-blue-600 font-medium">{testimonial.title}</div>
+                      <div className="text-sm text-gray-600">{testimonial.company} • {testimonial.location}</div>
                     </div>
                   </div>
-                  <div className="flex-1">
-                    <div className="font-semibold text-gray-900 text-lg">{testimonial.name}</div>
-                    <div className="text-blue-600 font-medium">{testimonial.title}</div>
-                    <div className="text-sm text-gray-600">{testimonial.company} • {testimonial.location}</div>
+                  
+                  {/* Industry & Savings */}
+                  <div className="flex justify-center items-center pt-4 border-t border-gray-200">
+                    <div className="text-center">
+                      <div className="text-sm text-gray-600 mb-1">{testimonial.industry}</div>
+                      <div className="text-lg font-bold text-green-600">{testimonial.savings}</div>
+                    </div>
                   </div>
-                </div>
-                
-                {/* Industry & Savings */}
-                <div className="flex justify-center items-center pt-4 border-t border-gray-200">
-                  <div className="text-right">
-                    <div className="text-lg font-bold text-green-600">{testimonial.savings}</div>
                   </div>
-                </div>
-                </div>
-              </StaggerInWhenVisible>
-            ))}
+                </StaggerInWhenVisible>
+              ))}
+            </Carousel>
           </div>
 
           {/* Social Proof & Case Studies */}
           <div className="p-8 md:p-8">
             
             {/* Case Study Highlights */}
-            <div className="grid md:grid-cols-3 gap-6 mb-8">
-              <div className="text-center p-6 bg-blue-50 rounded-2xl">
-                <div className="text-3xl font-bold text-blue-600 mb-2">€2M+</div>
-                <div className="text-sm text-gray-700">Total inventory value managed</div>
-              </div>
-              <div className="text-center p-6 bg-green-50 rounded-2xl">
-                <div className="text-3xl font-bold text-green-600 mb-2">95%</div>
-                <div className="text-sm text-gray-700">Average accuracy improvement</div>
-              </div>
-              <div className="text-center p-6 bg-purple-50 rounded-2xl">
-                <div className="text-3xl font-bold text-purple-600 mb-2">12hrs</div>
-                <div className="text-sm text-gray-700">Average weekly time saved</div>
-              </div>
+            <div className="mb-6 md:mb-8">
+              <Carousel
+                itemsPerView={{
+                  mobile: 1,
+                  tablet: 2,
+                  desktop: 3
+                }}
+                showArrows={true}
+                showDots={true}
+                autoPlay={false}
+                className="px-4"
+              >
+                <div className="text-center p-4 md:p-6 bg-blue-50 rounded-2xl h-full">
+                  <div className="text-2xl md:text-3xl font-bold text-blue-600 mb-2">€2M+</div>
+                  <div className="text-xs md:text-sm text-gray-700">Total inventory value managed</div>
+                </div>
+                <div className="text-center p-4 md:p-6 bg-green-50 rounded-2xl h-full">
+                  <div className="text-2xl md:text-3xl font-bold text-green-600 mb-2">95%</div>
+                  <div className="text-xs md:text-sm text-gray-700">Average accuracy improvement</div>
+                </div>
+                <div className="text-center p-4 md:p-6 bg-purple-50 rounded-2xl h-full">
+                  <div className="text-2xl md:text-3xl font-bold text-purple-600 mb-2">12hrs</div>
+                  <div className="text-xs md:text-sm text-gray-700">Average weekly time saved</div>
+                </div>
+              </Carousel>
             </div>
 
             {/* CTA */}
             <div className="text-center">
               <Button
                 onClick={handleLoginClick}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-12 py-6 text-xl font-semibold rounded-full transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25 border border-blue-500/20"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-8 md:px-12 py-4 md:py-6 text-lg md:text-xl font-semibold rounded-full transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25 border border-blue-500/20 w-full sm:w-auto"
               >
-                Join 10,000+ Happy Customers →
+                Get Started →
               </Button>
 
               <p className="text-sm text-gray-500 mt-2">
@@ -1973,65 +2108,77 @@ export const HomePage = () => {
           </FadeInWhenVisible>
 
           {/* FAQ Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-16">
-            {faqData.map((faq, index) => (
-              <StaggerInWhenVisible 
-                key={index} 
-                delay={index * 150}
-                staggerDelay={index * 75}
-              >
-                <div className="bg-white rounded-3xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
-                  {/* FAQ Header */}
-                  <button
-                    onClick={() => setOpenFAQ(openFAQ === index ? null : index)}
-                    className="w-full p-6 text-left hover:bg-gray-50 transition-colors"
-                  >
-                    <div className="flex justify-between items-start">
-                      <div className="flex-1">
-                        {/* Category Badge */}
-                        <div className="inline-block bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium mb-3">
-                          {faq.category}
-                        </div>
-                        
-                        {/* Question */}
-                        <h3 className="text-lg font-semibold text-gray-900 mb-2 leading-relaxed">
-                          {faq.question}
-                        </h3>
-                        
-                        {/* Benefit Preview */}
-                        <div className="text-sm text-blue-600 font-medium">
-                          {faq.benefit}
-                        </div>
-                      </div>
-                      
-                      {/* Expand/Collapse Icon */}
-                      <div className="ml-4 flex-shrink-0">
-                        <div className={`w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center transition-transform duration-200 ${
-                          openFAQ === index ? 'rotate-180' : ''
-                        }`}>
-                          <ChevronRight className="h-5 w-5 text-blue-600" />
-                        </div>
-                      </div>
-                    </div>
-                  </button>
-                  
-                  {/* FAQ Answer */}
-                  {openFAQ === index && (
-                    <motion.div 
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: 'auto' }}
-                      exit={{ opacity: 0, height: 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="px-6 pb-6"
+          <div className="mb-16">
+            <Carousel
+              itemsPerView={{
+                mobile: 1,
+                tablet: 1,
+                desktop: 2
+              }}
+              showArrows={true}
+              showDots={true}
+              autoPlay={false}
+              className="px-4"
+            >
+              {faqData.map((faq, index) => (
+                <StaggerInWhenVisible 
+                  key={index} 
+                  delay={index * 150}
+                  staggerDelay={index * 75}
+                >
+                  <div className="bg-white rounded-3xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden h-full">
+                    {/* FAQ Header */}
+                    <button
+                      onClick={() => setOpenFAQ(openFAQ === index ? null : index)}
+                      className="w-full p-6 text-left hover:bg-gray-50 transition-colors"
                     >
-                      <div className="bg-gradient-to-r from-blue-50 to-green-50 rounded-2xl p-6 border border-blue-200">
-                        <p className="text-gray-700 leading-relaxed">{faq.answer}</p>
+                      <div className="flex justify-between items-start">
+                        <div className="flex-1">
+                          {/* Category Badge */}
+                          <div className="inline-block bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium mb-3">
+                            {faq.category}
+                          </div>
+                          
+                          {/* Question */}
+                          <h3 className="text-lg font-semibold text-gray-900 mb-2 leading-relaxed">
+                            {faq.question}
+                          </h3>
+                          
+                          {/* Benefit Preview */}
+                          <div className="text-sm text-blue-600 font-medium">
+                            {faq.benefit}
+                          </div>
+                        </div>
+                      
+                        {/* Expand/Collapse Icon */}
+                        <div className="ml-4 flex-shrink-0">
+                          <div className={`w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center transition-transform duration-200 ${
+                            openFAQ === index ? 'rotate-180' : ''
+                          }`}>
+                            <ChevronRight className="h-5 w-5 text-blue-600" />
+                          </div>
+                        </div>
                       </div>
-                    </motion.div>
-                  )}
-                </div>
-              </StaggerInWhenVisible>
-            ))}
+                    </button>
+                    
+                    {/* FAQ Answer */}
+                    {openFAQ === index && (
+                      <motion.div 
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="px-6 pb-6"
+                      >
+                        <div className="bg-gradient-to-r from-blue-50 to-green-50 rounded-2xl p-6 border border-blue-200">
+                          <p className="text-gray-700 leading-relaxed">{faq.answer}</p>
+                        </div>
+                      </motion.div>
+                    )}
+                  </div>
+                </StaggerInWhenVisible>
+              ))}
+            </Carousel>
           </div>
 
           {/* Still Have Questions CTA */}
@@ -2045,17 +2192,17 @@ export const HomePage = () => {
                 in under 5 minutes.
               </p>
               
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <div className="flex flex-col gap-4 justify-center max-w-sm mx-auto">
                 <Button
                   onClick={() => navigate('/contact')}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-lg font-semibold rounded-2xl transition-all duration-300 shadow-lg hover:shadow-blue-500/25"
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-lg font-semibold rounded-2xl transition-all duration-300 shadow-lg hover:shadow-blue-500/25 w-full"
                 >
                   Ask Your Question →
                 </Button>
                 <Button
                   onClick={() => navigate('/demo')}
                   variant="outline"
-                  className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-8 py-4 text-lg font-semibold rounded-2xl transition-all duration-300"
+                  className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-8 py-4 text-lg font-semibold rounded-2xl transition-all duration-300 w-full"
                 >
                   Watch Demo
                 </Button>
@@ -2066,71 +2213,72 @@ export const HomePage = () => {
       </section>
 
       {/* Enterprise Security Section */}
-      <section className="py-20 bg-white">
+      <section className="py-12 md:py-20 bg-white">
         <div className="max-w-4xl mx-auto text-center px-4">
           <FadeInWhenVisible>
-            <h2 className="text-4xl md:text-6xl font-light text-gray-800 mb-6">
+            <h2 className="text-3xl md:text-4xl lg:text-6xl font-light text-gray-800 mb-4 md:mb-6">
               Enterprise-grade security
             </h2>
-            <p className="text-xl text-gray-600 mb-12 max-w-2xl mx-auto">
+            <p className="text-lg md:text-xl text-gray-600 mb-8 md:mb-12 max-w-2xl mx-auto">
               Keep your company's data secure and compliant with industry-leading security standards and certifications.
             </p>
           </FadeInWhenVisible>
           
           {/* Security Certifications */}
           <FadeInWhenVisible delay={200}>
-            <div className="flex flex-wrap justify-center items-center gap-8 mb-12">
-              {/* GDPR */}
-              <div className="flex flex-col items-center">
-                <div className="w-20 h-20 bg-white rounded-full shadow-lg flex items-center justify-center mb-3">
-                  <div className="text-center">
-                    <div className="text-xs font-bold text-gray-800">GDPR</div>
-                    <div className="text-xs text-gray-600">Compliant</div>
-                        </div>
-                </div>
-                <span className="text-sm text-gray-600">GDPR</span>
+            <div className="mb-8 md:mb-12">
+              <div className="grid grid-cols-2 gap-6 max-w-2xl mx-auto">
+                {/* GDPR */}
+                <div className="flex flex-col items-center px-4">
+                  <div className="w-16 h-16 md:w-20 md:h-20 bg-white rounded-full shadow-lg flex items-center justify-center mb-3">
+                    <div className="text-center">
+                      <div className="text-xs font-bold text-gray-800">GDPR</div>
+                      <div className="text-xs text-gray-600">Compliant</div>
                     </div>
-
-              {/* SOC 2 */}
-              <div className="flex flex-col items-center">
-                <div className="w-20 h-20 bg-white rounded-full shadow-lg flex items-center justify-center mb-3">
-                  <div className="text-center">
-                    <div className="text-xs font-bold text-gray-800">SOC 2</div>
-                    <div className="text-xs text-gray-600">Type II</div>
                   </div>
+                  <span className="text-sm text-gray-600">GDPR</span>
                 </div>
-                <span className="text-sm text-gray-600">SOC 2</span>
-          </div>
 
-              {/* ISO 27001 */}
-              <div className="flex flex-col items-center">
-                <div className="w-20 h-20 bg-white rounded-full shadow-lg flex items-center justify-center mb-3">
-                  <div className="text-center">
-                    <div className="text-xs font-bold text-gray-800">ISO</div>
-                    <div className="text-xs text-gray-600">27001</div>
-        </div>
+                {/* SOC 2 */}
+                <div className="flex flex-col items-center px-4">
+                  <div className="w-16 h-16 md:w-20 md:h-20 bg-white rounded-full shadow-lg flex items-center justify-center mb-3">
+                    <div className="text-center">
+                      <div className="text-xs font-bold text-gray-800">SOC 2</div>
+                      <div className="text-xs text-gray-600">Type II</div>
+                    </div>
+                  </div>
+                  <span className="text-sm text-gray-600">SOC 2</span>
                 </div>
-                <span className="text-sm text-gray-600">ISO 27001</span>
-          </div>
 
-              {/* HIPAA */}
-              <div className="flex flex-col items-center">
-                <div className="w-20 h-20 bg-white rounded-full shadow-lg flex items-center justify-center mb-3">
-                  <div className="text-center">
-                    <div className="text-xs font-bold text-gray-800">HIPAA</div>
-                    <div className="text-xs text-gray-600">Ready</div>
+                {/* ISO 27001 */}
+                <div className="flex flex-col items-center px-4">
+                  <div className="w-16 h-16 md:w-20 md:h-20 bg-white rounded-full shadow-lg flex items-center justify-center mb-3">
+                    <div className="text-center">
+                      <div className="text-xs font-bold text-gray-800">ISO</div>
+                      <div className="text-xs text-gray-600">27001</div>
+                    </div>
+                  </div>
+                  <span className="text-sm text-gray-600">ISO 27001</span>
+                </div>
+
+                {/* HIPAA */}
+                <div className="flex flex-col items-center px-4">
+                  <div className="w-16 h-16 md:w-20 md:h-20 bg-white rounded-full shadow-lg flex items-center justify-center mb-3">
+                    <div className="text-center">
+                      <div className="text-xs font-bold text-gray-800">HIPAA</div>
+                      <div className="text-xs text-gray-600">Ready</div>
+                    </div>
+                  </div>
+                  <span className="text-sm text-gray-600">HIPAA</span>
+                </div>
               </div>
-          </div>
-                <span className="text-sm text-gray-600">HIPAA</span>
-                </div>
-          </div>
+            </div>
           </FadeInWhenVisible>
-        
         </div>
       </section>
 
       {/* Enhanced Final CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 relative overflow-hidden">
+      <section className="py-12 md:py-20 bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 relative overflow-hidden">
         {/* Background Elements */}
         <div className="absolute inset-0 bg-black/10"></div>
         <div className="absolute top-0 left-0 w-full h-full">
@@ -2142,71 +2290,67 @@ export const HomePage = () => {
         <div className="max-w-6xl mx-auto text-center px-4 relative z-10">
           {/* Main Headline */}
           <BounceInWhenVisible delay={200}>
-            <h2 className="text-6xl md:text-6xl font-bold text-white mb-6 leading-tight">
+            <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4 md:mb-6 leading-tight">
               Ready to Stop Losing Money to Stockouts?
             </h2>
           </BounceInWhenVisible>
 
-
           {/* Description */}
           <SlideUpWhenVisible delay={400}>
-            <p className="text-xl md:text-2xl text-white mb-12 max-w-4xl mx-auto leading-relaxed">
+            <p className="text-lg md:text-xl lg:text-2xl text-white mb-8 md:mb-12 max-w-4xl mx-auto leading-relaxed">
               Start your free account today and save €2,400+ per year in lost sales. 
               <span className="text-yellow-300 font-semibold"> No credit card required, setup in 5 minutes.</span>
             </p>
           </SlideUpWhenVisible>
 
-
-
           {/* Primary CTA */}
           <ScaleInWhenVisible delay={600}>
-            <div className="mb-8">
+            <div className="mb-6 md:mb-8">
               <Button
                 onClick={handleLoginClick}
-                className="bg-white hover:bg-blue-600 text-blue-600 px-16 py-8 text-2xl font-bold rounded-full shadow-2xl hover:shadow-green-500/25 transform hover:scale-110 transition-all duration-300"
+                className="bg-white hover:bg-blue-600 text-blue-600 px-8 md:px-16 py-4 md:py-8 text-lg md:text-2xl font-bold rounded-full shadow-2xl hover:shadow-green-500/25 transform hover:scale-110 transition-all duration-300 w-full sm:w-auto"
               >
-                Start Free Today - Save €2,400/Year →
+                Start Free Today →
               </Button>
             </div>
           </ScaleInWhenVisible>
 
           {/* Trust Indicators */}
           <SlideUpWhenVisible delay={700}>
-            <div className="grid grid-cols-4 md:grid-cols-4 gap-6 mb-12 max-w-4xl mx-auto">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-8 md:mb-12 max-w-4xl mx-auto">
               <div className="flex items-center justify-center text-white">
-                <CheckCircle className="h-6 w-6 text-green-400 mr-2" />
-                <span className="text-sm font-medium">No credit card required</span>
+                <CheckCircle className="h-5 w-5 md:h-6 md:w-6 text-green-400 mr-2" />
+                <span className="text-xs md:text-sm font-medium">No credit card required</span>
               </div>
               <div className="flex items-center justify-center text-white">
-                <Clock className="h-6 w-6 text-yellow-400 mr-2" />
-                <span className="text-sm font-medium">Instant access</span>
+                <Clock className="h-5 w-5 md:h-6 md:w-6 text-yellow-400 mr-2" />
+                <span className="text-xs md:text-sm font-medium">Instant access</span>
               </div>
               <div className="flex items-center justify-center text-white">
-                <Shield className="h-6 w-6 text-green-400 mr-2" />
-                <span className="text-sm font-medium">GDPR-compliant</span>
+                <Shield className="h-5 w-5 md:h-6 md:w-6 text-green-400 mr-2" />
+                <span className="text-xs md:text-sm font-medium">GDPR-compliant</span>
               </div>
               <div className="flex items-center justify-center text-white">
-                <CheckCircle className="h-6 w-6 text-green-400 mr-2" />
-                <span className="text-sm font-medium">100% secure</span>
+                <CheckCircle className="h-5 w-5 md:h-6 md:w-6 text-green-400 mr-2" />
+                <span className="text-xs md:text-sm font-medium">100% secure</span>
               </div>
             </div>
           </SlideUpWhenVisible>
 
-
           {/* Statistics */}
           <SlideUpWhenVisible delay={900}>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 max-w-4xl mx-auto">
               <div className="text-center">
-                <div className="text-4xl font-bold text-white mb-2">10,000+</div>
-                <div className="text-lg text-white">Active SMEs</div>
+                <div className="text-lg md:text-4xl font-bold text-white mb-2">10,000+</div>
+                <div className="text-sm md:text-lg text-white">Active SMEs</div>
               </div>
               <div className="text-center">
-                <div className="text-4xl font-bold text-white mb-2">8hrs</div>
-                <div className="text-lg text-white">Time saved/week</div>
+                <div className="text-lg md:text-4xl font-bold text-white mb-2">8hrs</div>
+                <div className="text-sm md:text-lg text-white">Time saved/week</div>
               </div>
               <div className="text-center">
-                <div className="text-4xl font-bold text-white mb-2">4.8/5</div>
-                <div className="text-lg text-white">Customer satisfaction</div>
+                <div className="text-lg md:text-4xl font-bold text-white mb-2">4.8/5</div>
+                <div className="text-sm md:text-lg text-white">Customer satisfaction</div>
               </div>
             </div>
           </SlideUpWhenVisible>
@@ -2216,13 +2360,13 @@ export const HomePage = () => {
       {/* Cookie Consent Banner */}
       {showCookieBanner && (
         <div className="fixed inset-x-0 bottom-0 z-50">
-          <div className="mx-auto max-w-6xl m-4 rounded-3xl bg-white shadow-xl border border-gray-200 p-4 flex flex-col md:flex-row items-start md:items-center gap-3">
-            <p className="text-sm text-gray-700">
+          <div className="mx-auto max-w-6xl m-2 md:m-4 rounded-2xl md:rounded-3xl bg-white shadow-xl border border-gray-200 p-4 flex flex-col md:flex-row items-start md:items-center gap-3">
+            <p className="text-xs md:text-sm text-gray-700">
               We use cookies to improve your experience on our website
             </p>
-            <div className="flex gap-2 ml-auto">
-              <Button variant="outline" className="border-gray-300" onClick={() => setShowCookieBanner(false)}>Decline</Button>
-              <Button className="bg-blue-600 text-white hover:bg-blue-700" onClick={acceptCookies}>Accept</Button>
+            <div className="flex gap-2 w-full md:w-auto md:ml-auto">
+              <Button variant="outline" className="border-gray-300 text-xs md:text-sm flex-1 md:flex-none" onClick={() => setShowCookieBanner(false)}>Decline</Button>
+              <Button className="bg-blue-600 text-white hover:bg-blue-700 text-xs md:text-sm flex-1 md:flex-none" onClick={acceptCookies}>Accept</Button>
             </div>
           </div>
         </div>
@@ -2232,9 +2376,9 @@ export const HomePage = () => {
 
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-gray-200 py-12">
+      <footer className="bg-gray-900 text-gray-200 py-8 md:py-12">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-8 mb-6 md:mb-8">
             {/* Company Logo */}
             <div className="flex items-center">
               <OptimizedImage
