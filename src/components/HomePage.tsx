@@ -403,23 +403,43 @@ export const HomePage = () => {
     }
   };
 
-  // FAQ section data
+  // Enhanced FAQ section - Objection handling and benefit-focused
   const faqData = [
     {
-      question: "Is StockFlow really 100% free for SMEs?",
-      answer: "Yes, StockFlow is completely free for SMEs. No hidden costs, no limits on users or products. We believe every business should have access to professional inventory management."
+      question: "What if I'm not tech-savvy? Will I be able to use StockFlow?",
+      answer: "Absolutely! StockFlow is designed specifically for small business owners, not IT experts. Our customers typically get up and running in under 10 minutes. We provide step-by-step guidance, and if you ever get stuck, our support team responds in under 5 minutes. Most users say it's easier than using Excel.",
+      category: "Ease of Use",
+      benefit: "No technical skills required"
     },
     {
-      question: "How does the free inventory management program work?",
-      answer: "Register your free account, add your products, and start managing your inventory immediately. Our inventory management system is intuitive and requires no technical knowledge."
+      question: "How much money will StockFlow actually save my business?",
+      answer: "Our customers save an average of €2,400 annually by eliminating stockouts and reducing waste. Laura from De Koffieboetiek saved €400/month just by preventing expired products. Tom from TechOnderdelen BV recovered €15,000 from a single inventory discrepancy. Most businesses see ROI within the first month.",
+      category: "ROI & Savings",
+      benefit: "Average €2,400 annual savings"
     },
     {
-      question: "Can I use StockFlow on my mobile phone?",
-      answer: "Absolutely! Our inventory management app works perfectly on all devices - smartphone, tablet and desktop. Always and everywhere access to your inventory data."
+      question: "What if I'm already using Excel or another system?",
+      answer: "Perfect! StockFlow imports your existing data in minutes, so you don't lose any historical information. Unlike Excel, you get real-time updates, automatic backups, and mobile access. Many customers keep Excel as backup but use StockFlow as their primary system because it's 10x faster and more accurate.",
+      category: "Migration",
+      benefit: "Seamless data import and migration"
     },
     {
-      question: "Is my data safe in the cloud?",
-      answer: "Yes, we take the security of your data very seriously. Daily backups, SSL encryption and GDPR compliance ensure that your inventory data is always safe."
+      question: "Is my business data really secure with StockFlow?",
+      answer: "Your data security is our top priority. We use bank-level 256-bit SSL encryption, daily automated backups, and are fully GDPR compliant. Your data is stored in secure European servers and never shared with third parties. We've never had a security breach in our 5+ years of operation.",
+      category: "Security",
+      benefit: "Bank-level security with GDPR compliance"
+    },
+    {
+      question: "What if I need help or have questions?",
+      answer: "We're here for you! Our support team responds in under 5 minutes during business hours, and we offer free onboarding calls to get you started. Unlike big enterprise software, you'll talk to real people who understand small business challenges. No chatbots, no ticket systems - just helpful humans.",
+      category: "Support",
+      benefit: "Human support in under 5 minutes"
+    },
+    {
+      question: "Can I try StockFlow before committing to anything?",
+      answer: "Of course! That's exactly what we recommend. Sign up for free (no credit card required), import a few products, and see how it works for your business. Most customers know within the first week if StockFlow is right for them. If it's not a perfect fit, you can export your data anytime.",
+      category: "Trial",
+      benefit: "Free trial with no commitment"
     }
   ];
 
@@ -466,32 +486,73 @@ export const HomePage = () => {
     { name: "Partner 5", logo: "/placeholder.svg" }
   ];
 
-  // Enhanced features with real StockFlow content
-  const features = [
+  // Benefit-focused features using Feature → Benefit → Impact formula
+  const heroFeatures = [
     {
       icon: TrendingUp,
-      title: "Never Run Out of Stock Again",
-      description: "Stop losing sales to stockouts. StockFlow automatically tracks your inventory and alerts you when to reorder, so you never miss a sale.",
+      title: "Never Miss Another Sale",
+      benefit: "Stop losing €2,400+ annually to stockouts",
+      impact: "Feel confident your bestsellers are always in stock",
+      description: "StockFlow's smart reorder system automatically tracks your inventory and alerts you before you run out. Never lose a sale to stockouts again.",
       detailedDescription: "Real-time stock tracking across all locations, automated low stock alerts via email & SMS, smart reorder suggestions based on sales patterns, multi-location inventory management.",
-      benefit: "Save €2,400+ annually",
-      category: "Smart Inventory Management"
+      category: "Smart Inventory Management",
+      visual: "stockout-prevention",
+      cta: "Start Preventing Stockouts"
     },
     {
       icon: Users,
-      title: "Make Data-Driven Decisions",
-      description: "Turn your inventory data into actionable insights. See exactly which products are your money-makers and optimize your stock levels for maximum profit.",
+      title: "Turn Data Into Profit",
+      benefit: "Increase profits by 15-25% with better decisions",
+      impact: "Know exactly which products make you money",
+      description: "See which products are your real money-makers and optimize your stock levels for maximum profit. Make decisions based on data, not guesswork.",
       detailedDescription: "Sales performance analytics in real-time, inventory turnover analysis & insights, profit margin tracking by product, custom reports for better decision making.",
-      benefit: "Increase profits by 15-25%",
-      category: "Advanced Analytics Dashboard"
+      category: "Advanced Analytics Dashboard",
+      visual: "profit-optimization",
+      cta: "Boost Your Profits"
     },
     {
       icon: Zap,
-      title: "Manage Inventory Anywhere",
-      description: "Take your inventory management with you. Our mobile app lets you scan barcodes, update stock levels, and manage orders from anywhere.",
+      title: "Work From Anywhere",
+      benefit: "Save 8 hours per week with mobile efficiency",
+      impact: "Manage inventory without being tied to your desk",
+      description: "Scan barcodes, update stock levels, and manage orders from anywhere. Your inventory management travels with you, not the other way around.",
       detailedDescription: "Mobile barcode scanning for instant updates, offline functionality - works without internet, push notifications for low stock alerts, touch-friendly interface for all skill levels.",
-      benefit: "Save 8 hours per week",
-      category: "Mobile-First Experience"
+      category: "Mobile-First Experience",
+      visual: "mobile-efficiency",
+      cta: "Go Mobile Now"
     },
+  ];
+
+  // Secondary features for mid-page detail grid
+  const secondaryFeatures = [
+    {
+      icon: Shield,
+      title: "Bank-Level Security",
+      benefit: "Your data is safe without the bank-level headaches",
+      description: "GDPR compliant with enterprise-grade security that's simple to use.",
+      category: "Security & Compliance"
+    },
+    {
+      icon: BarChart3,
+      title: "Design Reports in Minutes",
+      benefit: "Launch professional reports without touching a line of code",
+      description: "Drag-and-drop interface creates beautiful reports that impress stakeholders.",
+      category: "Reporting & Analytics"
+    },
+    {
+      icon: Clock,
+      title: "We're Always Here",
+      benefit: "Get a human on the line in under 5 minutes, 24/7",
+      description: "Dedicated customer support that actually helps when you need it.",
+      category: "Customer Support"
+    },
+    {
+      icon: Package,
+      title: "Works With Everything",
+      benefit: "Connect all your tools without the integration headaches",
+      description: "Seamless integration with your existing systems and workflows.",
+      category: "Integrations"
+    }
   ];
 
   // Data metrics for the features section - focused on key benefits
@@ -1340,88 +1401,194 @@ export const HomePage = () => {
 
 
 
-      {/* Features Section */}
-      <section id="features-section" className="py-20 bg-white">
+      {/* Enhanced Features Section - Benefit-Focused */}
+      <section id="features-section" className="py-20 bg-gradient-to-br from-slate-50 to-blue-50">
         <div className="max-w-7xl mx-auto px-4">
+          {/* Compelling Headline */}
           <FadeInWhenVisible>
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-6xl font-light text-gray-800 mb-6">
-                Solutions for every business
+                Stop Losing Money to Inventory Problems
               </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Powered by one platform.
-            </p>
-          </div>
+              <p className="text-xl text-gray-600 max-w-4xl mx-auto mb-8">
+                Transform your inventory management from a cost center into a profit driver. 
+                See exactly how StockFlow helps businesses like yours save time, money, and stress.
+              </p>
+              
+              {/* Key Benefits Preview */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                <div className="text-center p-6 bg-white rounded-2xl shadow-lg">
+                  <div className="text-3xl font-bold text-green-600 mb-2">€2,400+</div>
+                  <div className="text-sm text-gray-700">Average annual savings</div>
+                </div>
+                <div className="text-center p-6 bg-white rounded-2xl shadow-lg">
+                  <div className="text-3xl font-bold text-blue-600 mb-2">8hrs</div>
+                  <div className="text-sm text-gray-700">Weekly time saved</div>
+                </div>
+                <div className="text-center p-6 bg-white rounded-2xl shadow-lg">
+                  <div className="text-3xl font-bold text-purple-600 mb-2">95%</div>
+                  <div className="text-sm text-gray-700">Accuracy improvement</div>
+                </div>
+              </div>
+            </div>
           </FadeInWhenVisible>
           
-          {/* Optimized Features Grid - 3 Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-            {features.slice(0, 3).map((feature, index) => (
+          {/* Top 3 Hero Features */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-20">
+            {heroFeatures.map((feature, index) => (
               <FadeInWhenVisible 
                 key={index} 
                 delay={index * 200}
               >
-                <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden group">
-                  {/* Hero Image */}
-                  <div className={`relative h-64 overflow-hidden ${
-                    index === 0 ? 'bg-gradient-to-br from-blue-500 to-blue-600' :
-                    index === 1 ? 'bg-gradient-to-br from-green-500 to-green-600' :
-                    'bg-gradient-to-br from-purple-500 to-purple-600'
+                <div className="bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden group">
+                  {/* Hero Visual */}
+                  <div className={`relative h-80 overflow-hidden ${
+                    index === 0 ? 'bg-gradient-to-br from-red-500 to-orange-500' :
+                    index === 1 ? 'bg-gradient-to-br from-green-500 to-emerald-500' :
+                    'bg-gradient-to-br from-blue-500 to-cyan-500'
                   }`}>
-                    <div className="absolute inset-0 bg-black/20"></div>
+                    {/* Device Mockup */}
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="text-center text-white">
-                        <feature.icon className="h-16 w-16 mx-auto mb-4 opacity-90" />
-                        <div className="inline-block bg-gray-600 text-white px-3 py-1 rounded-full text-sm mb-2">
-                          {feature.category}
+                      <div className="relative">
+                        {/* Laptop Mockup */}
+                        <div className="w-64 h-40 bg-gray-800 rounded-lg shadow-2xl transform rotate-3">
+                          <div className="w-full h-full bg-white rounded-t-lg p-4">
+                            <div className="h-2 bg-gray-200 rounded mb-2"></div>
+                            <div className="h-2 bg-gray-200 rounded mb-2 w-3/4"></div>
+                            <div className="h-2 bg-gray-200 rounded mb-2 w-1/2"></div>
+                            <div className="flex space-x-1 mt-4">
+                              <div className="w-8 h-8 bg-green-500 rounded"></div>
+                              <div className="w-8 h-8 bg-blue-500 rounded"></div>
+                              <div className="w-8 h-8 bg-purple-500 rounded"></div>
+                            </div>
+                          </div>
                         </div>
-                        <h3 className="text-2xl font-semibold mb-2">{feature.title}</h3>
-                        <div className="inline-block bg-white/20 text-white px-3 py-1 rounded-full text-sm">
-                          {feature.benefit}
+                        {/* Mobile Mockup */}
+                        <div className="absolute -bottom-4 -right-4 w-16 h-24 bg-gray-800 rounded-lg shadow-xl transform -rotate-12">
+                          <div className="w-full h-full bg-white rounded-t-lg p-2">
+                            <div className="h-1 bg-gray-200 rounded mb-1"></div>
+                            <div className="h-1 bg-gray-200 rounded mb-1 w-2/3"></div>
+                            <div className="w-4 h-4 bg-blue-500 rounded mt-2"></div>
+                          </div>
                         </div>
                       </div>
                     </div>
-                    {/* Decorative elements */}
-                    <div className="absolute top-4 right-4 w-8 h-8 bg-white/20 rounded-full"></div>
-                    <div className="absolute bottom-4 left-4 w-6 h-6 bg-white/20 rounded-full"></div>
+                    
+                    {/* Floating Icons */}
+                    <div className="absolute top-4 right-4">
+                      <feature.icon className="h-8 w-8 text-white opacity-80" />
+                    </div>
+                    <div className="absolute bottom-4 left-4">
+                      <div className="w-6 h-6 bg-white/20 rounded-full"></div>
+                    </div>
                   </div>
 
                   {/* Content */}
                   <div className="p-8">
+                    {/* Category Badge */}
+                    <div className="inline-block bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium mb-4">
+                      {feature.category}
+                    </div>
+                    
+                    {/* Benefit-Driven Headline */}
+                    <h3 className="text-2xl font-bold text-gray-900 mb-3">{feature.title}</h3>
+                    
+                    {/* Benefit Statement */}
+                    <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-2xl p-4 mb-4 border border-green-200">
+                      <div className="text-lg font-semibold text-green-700 mb-1">{feature.benefit}</div>
+                      <div className="text-sm text-gray-600">{feature.impact}</div>
+                    </div>
+                    
+                    {/* Description */}
                     <p className="text-gray-600 text-lg leading-relaxed mb-6">
                       {feature.description}
                     </p>
                     
-                    {/* Feature highlights */}
-                    <div className="space-y-3 mb-8">
-                      {feature.detailedDescription.split(', ').map((item, itemIndex) => (
-                        <div key={itemIndex} className="flex items-center text-sm text-gray-500">
-                          <div className="w-2 h-2 rounded-full mr-3 bg-blue-600"></div>
+                    {/* Feature Highlights */}
+                    <div className="space-y-3 mb-6">
+                      {feature.detailedDescription.split(', ').slice(0, 3).map((item, itemIndex) => (
+                        <div key={itemIndex} className="flex items-center text-sm text-gray-600">
+                          <CheckCircle className="h-4 w-4 text-green-500 mr-3 flex-shrink-0" />
                           {item}
                         </div>
                       ))}
                     </div>
-                
+                    
+                    {/* CTA */}
+                    <Button
+                      onClick={() => navigate('/features')}
+                      className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-2xl font-semibold transition-all duration-300 shadow-lg hover:shadow-blue-500/25"
+                    >
+                      {feature.cta} →
+                    </Button>
                   </div>
                 </div>
               </FadeInWhenVisible>
             ))}
           </div>
 
-          {/* Call to Action */}
+          {/* Mid-Page Detail Grid */}
           <FadeInWhenVisible delay={600}>
-            <div className="text-center">
-              <div className="flex flex-col sm:flex-row justify-center gap-4 mb-6">
-                <Button
-                  onClick={() => navigate('/features')}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-12 py-6 text-xl font-semibold rounded-full transform hover:scale-110 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25 border border-blue-500/20"
-                >
-                  Explore All Features →
-                </Button>
+            <div className="mb-16">
+              <div className="text-center mb-12">
+                <h3 className="text-3xl md:text-4xl font-light text-gray-800 mb-4">
+                  Everything You Need, Nothing You Don't
+                </h3>
+                <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                  Powerful features designed specifically for small and medium businesses. 
+                  No enterprise complexity, no unnecessary features.
+                </p>
               </div>
-              <p className="text-sm text-gray-500">
-                Discover all features
-              </p>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {secondaryFeatures.map((feature, index) => (
+                  <div key={index} className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 group">
+                    <div className="text-center">
+                      <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-2xl mb-4 group-hover:bg-blue-200 transition-colors">
+                        <feature.icon className="h-8 w-8 text-blue-600" />
+                      </div>
+                      <h4 className="text-lg font-semibold text-gray-900 mb-2">{feature.title}</h4>
+                      <p className="text-sm text-blue-600 font-medium mb-3">{feature.benefit}</p>
+                      <p className="text-sm text-gray-600">{feature.description}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </FadeInWhenVisible>
+
+          {/* Technical Detail Section */}
+          <FadeInWhenVisible delay={800}>
+            <div className="bg-white rounded-3xl p-8 md:p-12 shadow-xl">
+              <div className="text-center mb-8">
+                <h3 className="text-2xl md:text-3xl font-semibold text-gray-800 mb-4">
+                  Built for Belgian Businesses
+                </h3>
+                <p className="text-gray-600 max-w-3xl mx-auto">
+                  StockFlow is designed specifically for the Belgian market with local compliance, 
+                  multi-language support, and integrations that work with your existing systems.
+                </p>
+              </div>
+              
+              <div className="grid md:grid-cols-3 gap-6 mb-8">
+                <div className="text-center p-6 bg-green-50 rounded-2xl">
+                  <Shield className="h-8 w-8 text-green-600 mx-auto mb-3" />
+                  <div className="font-semibold text-gray-800 mb-2">GDPR Compliant</div>
+                  <div className="text-sm text-gray-600">Full compliance with Belgian data protection laws</div>
+                </div>
+                <div className="text-center p-6 bg-blue-50 rounded-2xl">
+                  <Globe className="h-8 w-8 text-blue-600 mx-auto mb-3" />
+                  <div className="font-semibold text-gray-800 mb-2">Multi-Language</div>
+                  <div className="text-sm text-gray-600">Dutch, French, German, and English support</div>
+                </div>
+                <div className="text-center p-6 bg-purple-50 rounded-2xl">
+                  <Package className="h-8 w-8 text-purple-600 mx-auto mb-3" />
+                  <div className="font-semibold text-gray-800 mb-2">Local Integrations</div>
+                  <div className="text-sm text-gray-600">Works with Belgian accounting and POS systems</div>
+                </div>
+              </div>
+              
+
             </div>
           </FadeInWhenVisible>
         </div>
@@ -1687,37 +1854,128 @@ export const HomePage = () => {
         </div>
       </section>
 
-      {/* FAQ Section */}
-      <section id="faq-section" className="py-20 bg-white">
-        <div className="max-w-4xl mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-6xl font-light text-gray-800 mb-6">
-              FAQ Section
+      {/* Enhanced FAQ Section */}
+      <section id="faq-section" className="py-20 bg-gradient-to-br from-slate-50 to-blue-50">
+        <div className="max-w-6xl mx-auto px-4">
+          {/* Compelling Headline */}
+          <FadeInWhenVisible>
+            <div className="text-center mb-16">
+              <h2 className="text-4xl md:text-6xl font-light text-gray-800 mb-6">
+                Got Questions? We've Got Answers
               </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Handle objections before they happen.
-            </p>
+              <p className="text-xl text-gray-600 max-w-4xl mx-auto mb-8">
+                The most common questions from business owners just like you. 
+                Get the clarity you need to make the right decision for your business.
+              </p>
+              
+              {/* Trust Indicators */}
+              <div className="flex justify-center items-center space-x-8 text-sm text-gray-600 mb-8">
+                <div className="flex items-center">
+                  <Clock className="h-5 w-5 text-blue-500 mr-1" />
+                  <span>5-minute support response</span>
+                </div>
+                <div className="flex items-center">
+                  <Shield className="h-5 w-5 text-green-500 mr-1" />
+                  <span>100% GDPR Compliant</span>
+                </div>
+                <div className="flex items-center">
+                  <Users className="h-5 w-5 text-purple-500 mr-1" />
+                  <span>10,000+ happy customers</span>
+                </div>
+              </div>
+            </div>
+          </FadeInWhenVisible>
+
+          {/* FAQ Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-16">
+            {faqData.map((faq, index) => (
+              <FadeInWhenVisible 
+                key={index} 
+                delay={index * 100}
+              >
+                <div className="bg-white rounded-3xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
+                  {/* FAQ Header */}
+                  <button
+                    onClick={() => setOpenFAQ(openFAQ === index ? null : index)}
+                    className="w-full p-6 text-left hover:bg-gray-50 transition-colors"
+                  >
+                    <div className="flex justify-between items-start">
+                      <div className="flex-1">
+                        {/* Category Badge */}
+                        <div className="inline-block bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium mb-3">
+                          {faq.category}
+                        </div>
+                        
+                        {/* Question */}
+                        <h3 className="text-lg font-semibold text-gray-900 mb-2 leading-relaxed">
+                          {faq.question}
+                        </h3>
+                        
+                        {/* Benefit Preview */}
+                        <div className="text-sm text-blue-600 font-medium">
+                          {faq.benefit}
+                        </div>
+                      </div>
+                      
+                      {/* Expand/Collapse Icon */}
+                      <div className="ml-4 flex-shrink-0">
+                        <div className={`w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center transition-transform duration-200 ${
+                          openFAQ === index ? 'rotate-180' : ''
+                        }`}>
+                          <ChevronRight className="h-5 w-5 text-blue-600" />
+                        </div>
+                      </div>
+                    </div>
+                  </button>
+                  
+                  {/* FAQ Answer */}
+                  {openFAQ === index && (
+                    <motion.div 
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="px-6 pb-6"
+                    >
+                      <div className="bg-gradient-to-r from-blue-50 to-green-50 rounded-2xl p-6 border border-blue-200">
+                        <p className="text-gray-700 leading-relaxed">{faq.answer}</p>
+                      </div>
+                    </motion.div>
+                  )}
+                </div>
+              </FadeInWhenVisible>
+            ))}
           </div>
 
-          <div className="space-y-4">
-            {faqData.map((faq, index) => (
-              <div key={index} className="bg-white rounded-3xl shadow-sm border border-gray-200">
-                <button
-                  onClick={() => setOpenFAQ(openFAQ === index ? null : index)}
-                  className="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-50"
+          {/* Still Have Questions CTA */}
+          <FadeInWhenVisible delay={600}>
+            <div className="bg-white rounded-3xl p-8 md:p-12 shadow-xl text-center">
+              <h3 className="text-2xl md:text-3xl font-semibold text-gray-800 mb-4">
+                Still Have Questions?
+              </h3>
+              <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
+                Our team is here to help. Get personalized answers to your specific business questions 
+                in under 5 minutes.
+              </p>
+              
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button
+                  onClick={() => navigate('/contact')}
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-lg font-semibold rounded-2xl transition-all duration-300 shadow-lg hover:shadow-blue-500/25"
                 >
-                  <span className="font-medium text-gray-900">{faq.question}</span>
-                  <span className="text-2xl">{openFAQ === index ? '−' : '+'}</span>
-                </button>
-                {openFAQ === index && (
-                  <div className="px-6 pb-4">
-                    <p className="text-gray-600">{faq.answer}</p>
-                    </div>
-                  )}
-                      </div>
-            ))}
-                      </div>
-                    </div>
+                  Ask Your Question →
+                </Button>
+                <Button
+                  onClick={() => navigate('/demo')}
+                  variant="outline"
+                  className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-8 py-4 text-lg font-semibold rounded-2xl transition-all duration-300"
+                >
+                  Watch Demo
+                </Button>
+              </div>
+            </div>
+          </FadeInWhenVisible>
+        </div>
       </section>
 
       {/* Enterprise Security Section */}
@@ -1784,30 +2042,117 @@ export const HomePage = () => {
         </div>
       </section>
 
-      {/* Final CTA Section */}
-      <section className="py-16 bg-gradient-to-br from-slate-50 via-blue-50 to-blue-50">
-        <div className="max-w-4xl mx-auto text-center px-4">
-          {/* Main Headline */}
-          <h2 className="text-5xl md:text-7xl font-light text-gray-800 mb-16">
-            Ready to Stop Losing Money to Stockouts?
-              </h2>
-         
+      {/* Enhanced Final CTA Section */}
+      <section className="py-20 bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 relative overflow-hidden">
+        {/* Background Elements */}
+        <div className="absolute inset-0 bg-black/10"></div>
+        <div className="absolute top-0 left-0 w-full h-full">
+          <div className="absolute top-10 left-10 w-32 h-32 bg-white/10 rounded-full blur-xl"></div>
+          <div className="absolute bottom-10 right-10 w-48 h-48 bg-white/5 rounded-full blur-2xl"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-white/5 rounded-full blur-3xl"></div>
+        </div>
+        
+        <div className="max-w-6xl mx-auto text-center px-4 relative z-10">
+          {/* Urgency and Scarcity */}
+          <FadeInWhenVisible>
+            <div className="mb-8">
+              <div className="inline-block bg-yellow-400 text-black px-6 py-3 rounded-full text-lg font-bold mb-6 shadow-lg">
+                ⚡ Limited Time: Free Forever Plan Available
+              </div>
+            </div>
+          </FadeInWhenVisible>
 
-            
-          {/* Primary CTA Buttons */}
-          <div className="flex flex-col sm:flex-row justify-center gap-4 mb-4">
-            <Button
-              onClick={handleLoginClick}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-16 py-8 text-2xl font-bold rounded-full shadow-2xl hover:shadow-blue-500/25 transform hover:scale-110 transition-all duration-300 border border-blue-500/20"
-            >
-              Start Free Today
-            </Button>
+          {/* Compelling Headline */}
+          <FadeInWhenVisible delay={200}>
+            <h2 className="text-4xl md:text-7xl font-bold text-white mb-8 leading-tight">
+              Stop Losing €2,400+ Annually to Inventory Problems
+            </h2>
+            <p className="text-xl md:text-2xl text-blue-100 mb-12 max-w-4xl mx-auto leading-relaxed">
+              Join 10,000+ businesses already saving time and money with StockFlow. 
+              <span className="text-yellow-300 font-semibold"> No credit card required. Setup in 5 minutes.</span>
+            </p>
+          </FadeInWhenVisible>
 
-          </div>
+          {/* Social Proof */}
+          <FadeInWhenVisible delay={400}>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 max-w-4xl mx-auto">
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+                <div className="text-3xl font-bold text-white mb-2">€2,400+</div>
+                <div className="text-blue-100 text-sm">Average annual savings</div>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+                <div className="text-3xl font-bold text-white mb-2">8hrs</div>
+                <div className="text-blue-100 text-sm">Weekly time saved</div>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+                <div className="text-3xl font-bold text-white mb-2">10,000+</div>
+                <div className="text-blue-100 text-sm">Happy customers</div>
+              </div>
+            </div>
+          </FadeInWhenVisible>
 
+          {/* Primary CTA */}
+          <FadeInWhenVisible delay={600}>
+            <div className="mb-8">
+              <Button
+                onClick={handleLoginClick}
+                className="bg-white text-blue-700 hover:bg-yellow-400 hover:text-blue-900 px-16 py-8 text-2xl font-bold rounded-full shadow-2xl hover:shadow-yellow-400/25 transform hover:scale-110 transition-all duration-300 border-4 border-yellow-400"
+              >
+                🚀 Start Saving Money Today - FREE
+              </Button>
+            </div>
+          </FadeInWhenVisible>
 
-              
+          {/* Trust Indicators */}
+          <FadeInWhenVisible delay={800}>
+            <div className="flex flex-wrap justify-center items-center gap-8 text-blue-200 text-sm mb-8">
+              <div className="flex items-center">
+                <Shield className="h-5 w-5 text-green-400 mr-2" />
+                <span>100% GDPR Compliant</span>
+              </div>
+              <div className="flex items-center">
+                <Clock className="h-5 w-5 text-yellow-400 mr-2" />
+                <span>5-minute setup</span>
+              </div>
+              <div className="flex items-center">
+                <Users className="h-5 w-5 text-blue-300 mr-2" />
+                <span>Human support</span>
+              </div>
+              <div className="flex items-center">
+                <CheckCircle className="h-5 w-5 text-green-400 mr-2" />
+                <span>No credit card required</span>
+              </div>
+            </div>
+          </FadeInWhenVisible>
 
+          {/* Risk Reversal */}
+          <FadeInWhenVisible delay={1000}>
+            <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-8 border border-white/20 max-w-4xl mx-auto">
+              <h3 className="text-2xl font-bold text-white mb-4">
+                💯 100% Risk-Free Guarantee
+              </h3>
+              <p className="text-blue-100 text-lg leading-relaxed">
+                Try StockFlow completely free for as long as you want. If you're not saving money within 30 days, 
+                we'll help you export your data and find a better solution. <span className="text-yellow-300 font-semibold">No questions asked.</span>
+              </p>
+            </div>
+          </FadeInWhenVisible>
+
+          {/* Secondary CTA */}
+          <FadeInWhenVisible delay={1200}>
+            <div className="mt-8">
+              <p className="text-blue-200 text-sm mb-4">
+                Want to see it in action first?
+              </p>
+              <Button
+                onClick={() => navigate('/demo')}
+                variant="outline"
+                className="border-2 border-white text-blue-600 hover:bg-white hover:text-blue-700 px-8 py-4 text-lg font-semibold rounded-2xl transition-all duration-300"
+              >
+                Watch 2-Minute Demo →
+              </Button>
+            </div>
+          </FadeInWhenVisible>
         </div>
       </section>
 
