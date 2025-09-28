@@ -7,8 +7,7 @@ import {
   Package, BarChart3, Users, Shield, Check, TrendingUp, Zap, Star, Clock, Euro, Target, 
   ChevronLeft, ChevronRight, Scan, Truck, ArrowRight, Play, Award, Globe, Smartphone, 
   CheckCircle, Rocket, Crown, Sparkles, Timer, Facebook, Twitter, Linkedin, Instagram,
-  Repeat,
-  Camera
+  Repeat, Camera
 } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
 import SEO from './SEO';
@@ -39,8 +38,92 @@ const SocialShare = lazy(() => import('./SocialShare'));
 // Lazy load heavy components for better performance
 // Removed unused lazy imports: TestimonialsSection, FeaturesSection, VideoSection
 
-// Optimized fade-in component with reduced motion support
-const FadeInWhenVisible = ({ children, delay = 0 }) => {
+// Enhanced animation components with different effects
+const FadeInWhenVisible = ({ children, delay = 0, direction = 'up' }) => {
+  const [isVisible, setIsVisible] = React.useState(false);
+  const ref = React.useRef(null);
+
+  React.useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => setIsVisible(true), delay);
+        }
+      },
+      { threshold: 0.1, rootMargin: '50px' }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => observer.disconnect();
+  }, [delay]);
+
+  const getTransform = () => {
+    switch (direction) {
+      case 'left': return isVisible ? 'translate-x-0' : '-translate-x-8';
+      case 'right': return isVisible ? 'translate-x-0' : 'translate-x-8';
+      case 'up': return isVisible ? 'translate-y-0' : 'translate-y-8';
+      case 'down': return isVisible ? 'translate-y-0' : '-translate-y-8';
+      default: return isVisible ? 'translate-y-0' : 'translate-y-4';
+    }
+  };
+
+  return (
+    <div 
+      ref={ref} 
+      className={`transition-all duration-700 ease-out ${
+        isVisible ? 'opacity-100' : 'opacity-0'
+      } ${getTransform()}`}
+    >
+      {children}
+    </div>
+  );
+};
+
+const SlideInWhenVisible = ({ children, delay = 0, direction = 'left' }) => {
+  const [isVisible, setIsVisible] = React.useState(false);
+  const ref = React.useRef(null);
+
+  React.useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => setIsVisible(true), delay);
+        }
+      },
+      { threshold: 0.1, rootMargin: '50px' }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => observer.disconnect();
+  }, [delay]);
+
+  const getTransform = () => {
+    switch (direction) {
+      case 'left': return isVisible ? 'translate-x-0' : '-translate-x-12';
+      case 'right': return isVisible ? 'translate-x-0' : 'translate-x-12';
+      default: return isVisible ? 'translate-x-0' : '-translate-x-12';
+    }
+  };
+
+  return (
+    <div 
+      ref={ref} 
+      className={`transition-all duration-1000 ease-out ${
+        isVisible ? 'opacity-100' : 'opacity-0'
+      } ${getTransform()}`}
+    >
+      {children}
+    </div>
+  );
+};
+
+const ScaleInWhenVisible = ({ children, delay = 0 }) => {
   const [isVisible, setIsVisible] = React.useState(false);
   const ref = React.useRef(null);
 
@@ -62,7 +145,12 @@ const FadeInWhenVisible = ({ children, delay = 0 }) => {
   }, [delay]);
 
   return (
-    <div ref={ref} className={isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}>
+    <div 
+      ref={ref} 
+      className={`transition-all duration-700 ease-out ${
+        isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+      }`}
+    >
       {children}
     </div>
   );
@@ -204,6 +292,12 @@ export const HomePage = () => {
     }
   });
 
+  // FAQ accordion state
+  const [openFAQ, setOpenFAQ] = useState<number | null>(null);
+  
+  // Pricing toggle state
+  const [isYearly, setIsYearly] = useState(false);
+
 
 
   const useCases = [
@@ -301,7 +395,7 @@ export const HomePage = () => {
   // FAQ section data
   const faqData = [
     {
-      question: "Is StockFlow really 100% free for SMEs in Flanders?",
+      question: "Is StockFlow really 100% free for SMEs?",
       answer: "Yes, StockFlow is completely free for SMEs. No hidden costs, no limits on users or products. We believe every business should have access to professional inventory management."
     },
     {
@@ -315,70 +409,146 @@ export const HomePage = () => {
     {
       question: "Is my data safe in the cloud?",
       answer: "Yes, we take the security of your data very seriously. Daily backups, SSL encryption and GDPR compliance ensure that your inventory data is always safe."
-    },
-    {
-      question: "How does StockFlow differ from other inventory management software?",
-      answer: "StockFlow is specifically developed for SMEs, completely free, and offers all essential functions without complexity. No expensive licenses or hidden costs like with Odoo or Exact."
     }
   ];
 
+  // Trust bar company logos
+  const trustCompanies = [
+    { name: "Company A", logo: "/placeholder.svg" },
+    { name: "Company B", logo: "/placeholder.svg" },
+    { name: "Company C", logo: "/placeholder.svg" },
+    { name: "Company D", logo: "/placeholder.svg" },
+    { name: "Company E", logo: "/placeholder.svg" }
+  ];
+
+  // Integration partners
+  const integrationPartners = [
+    { name: "Partner 1", logo: "/placeholder.svg" },
+    { name: "Partner 2", logo: "/placeholder.svg" },
+    { name: "Partner 3", logo: "/placeholder.svg" },
+    { name: "Partner 4", logo: "/placeholder.svg" },
+    { name: "Partner 5", logo: "/placeholder.svg" }
+  ];
+
+  // Enhanced features with real StockFlow content
   const features = [
     {
       icon: TrendingUp,
-      title: "Stop Losing $2,400+ Per Year to Stockouts",
-      description: "Never run out of your best-selling products again. Get automatic alerts when stock runs low and reorder suggestions based on your sales patterns.",
+      title: "Easy Product Management",
+      description: "Add new products easily, edit existing items and keep your inventory up-to-date without hassle. Our user-friendly interface helps you efficiently organize your products and optimize your business operations.",
+      detailedDescription: "With StockFlow you can add new products in just a few clicks, edit existing items and track your inventory levels in real-time. No more complex systems - just simple and effective inventory management that works for your business.",
     },
     {
       icon: Zap,
-      title: "Save 8 Hours Every Week on Inventory Tasks",
-      description: "No more manual counting or Excel spreadsheets. StockFlow automates everything - from tracking to reordering - so you can focus on growing your business.",
+      title: "Real-time Inventory Updates",
+      description: "Get instant insight into your inventory levels and prevent shortages or surpluses. Automatic updates ensure you're always aware of your current inventory status.",
+      detailedDescription: "Our real-time synchronization ensures all team members always see the most current inventory data. Automatic alerts prevent you from running out of stock and help you act proactively.",
     },
     {
       icon: Users,
-      title: "Your Team Will Actually Use This System",
-      description: "Unlike complex ERP systems, StockFlow is designed for real people. Your staff will love the simple interface and mobile app.",
+      title: "Reporting and Analytics",
+      description: "Generate detailed reports to analyze sales trends and make informed decisions. Insight into your inventory performance helps you grow your business.",
+      detailedDescription: "With comprehensive reporting and analytics tools you get deep insight into your inventory performance. Identify bestsellers, analyze seasonal patterns and make data-driven decisions that increase your revenue.",
     },
     {
       icon: Shield,
-      title: "Built for  Small Businesses",
-      description: "GDPR compliant, Dutch language support, and pricing in euros. We understand  business needs because we're  too.",
+      title: "Multi-Platform Integration",
+      description: "Synchronize your inventory across different sales channels for a seamless experience. From webshop to physical store - manage everything in one place.",
+      detailedDescription: "StockFlow integrates seamlessly with your existing systems and sales channels. Whether you sell online, work in a physical store or both - your inventory stays always synchronized and up-to-date.",
     },
+    {
+      icon: ArrowRight,
+      title: "Simple Data Import",
+      description: "Import your existing inventory data via CSV/Excel files or integrate with popular ERP/POS systems. No data migration headaches - get started with your current data in minutes.",
+      detailedDescription: "Migrate from Excel, CSV files, or connect directly to your existing ERP/POS systems. Our import wizard guides you through the process, ensuring all your product data, stock levels, and supplier information transfers seamlessly.",
+    },
+  ];
+
+  // Data metrics for the features section
+  const dataMetrics = [
+    { value: "55%", label: "Reduction in Stockouts" },
+    { value: "8hrs", label: "Time Saved Weekly" },
+    { value: "95%", label: "User Satisfaction" },
+    { value: "€2,400", label: "Average Annual Savings" }
+  ];
+
+  // How it works steps
+  const howItWorksSteps = [
+    {
+      step: "1",
+      title: "Sign Up & Import Data",
+      description: "Create your free account and import your existing inventory via CSV/Excel or integrate with your current systems."
+    },
+    {
+      step: "2", 
+      title: "Track & Monitor",
+      description: "Monitor your inventory in real-time with automated alerts."
+    },
+    {
+      step: "3",
+      title: "Grow & Scale",
+      description: "Scale your business with advanced analytics and reporting."
+    }
+  ];
+
+  // Why choose us reasons
+  const whyChooseUs = [
+    {
+      icon: <Euro className="h-8 w-8" />,
+      title: "100% Free Forever",
+      description: "No hidden costs, no limits. Completely free for SMEs."
+    },
+    {
+      icon: <Clock className="h-8 w-8" />,
+      title: "Quick Setup",
+      description: "Get started in 5 minutes with our intuitive interface."
+    },
+    {
+      icon: <Target className="h-8 w-8" />,
+      title: "Built for SMEs",
+      description: "Designed specifically for small and medium businesses."
+    },
+    {
+      icon: <Shield className="h-8 w-8" />,
+      title: "Secure & Compliant",
+      description: "GDPR compliant with enterprise-grade security."
+    }
   ];
   
   const testimonials = [
     {
+      name: "Sophie Foster",
+      role: "Sales Director, A Place In the Garden",
+      quote: "StockFlow has transformed our business operations. We never miss a sale anymore, even when items are out of stock. Our online sales have increased significantly. The system is so user-friendly that our entire team could get started immediately.",
+      avatar: '/Laura.png',
+      rating: 5,
+      company: "A Place In the Garden",
+      location: "Belgium",
+      industry: "E-commerce",
+      savings: `${formatPrice(2400)}/year saved`,
+      timeSaved: "8 hours/week"
+    },
+    {
+      name: "Sławomir Tokarski",
+      role: "CEO, TTM",
+      quote: "With StockFlow our customers can pre-order products, allowing us to capture sales we would otherwise miss. Our revenue has seen a noticeable increase! The integration with our existing systems was seamless and the support is excellent.",
+      avatar: '/jan.png',
+      rating: 5,
+      company: "TTM",
+      location: "Belgium",
+      industry: "Manufacturing",
+      savings: `${formatPrice(5200)}/year saved`,
+      timeSaved: "12 hours/week"
+    },
+    {
       name: "Laura Peeters",
       role: "Owner, De Koffieboetiek - Ghent",
-      quote: "Thanks to StockFlow I finally have a clear overview of my inventory. The automatic order notifications are a lifesaver! As an SME, the free plan is perfect for us.",
+      quote: "Thanks to StockFlow I finally have a clear overview of my inventory. The automatic order notifications are a lifesaver! As an SME, the free plan is perfect for us. We have been able to increase our sales and never have shortages anymore.",
       avatar: '/Laura.png',
       rating: 5,
       company: "De Koffieboetiek",
       location: "Ghent",
       industry: "Hospitality",
-      savings: `${formatPrice(2400)}/year saved`,
-      timeSaved: "8 hours/week"
-    },
-    {
-      name: "Tom De Wit",
-      role: "Manager, TechOnderdelen BV - Antwerp",
-      quote: "The switch to StockFlow was the best decision for our warehouse management. It's intuitive, fast and the team is very helpful. Finally an inventory management program that really works.",
-      avatar: '/jan.png',
-      rating: 5,
-      company: "TechOnderdelen BV",
-      location: "Antwerp",
-      industry: "Technology",
-      savings: `${formatPrice(5200)}/year saved`,
-      timeSaved: "12 hours/week"
-    },
-    {
-      name: "Anke Willems",
-      role: "Manager, Creatief Atelier - Bruges",
-      quote: "As a small business, the free plan is perfect for us. We can now manage our materials much more efficiently. An absolute recommendation for every SME!",
-      avatar: '/placeholder.svg',
-      rating: 5,
-      company: "Creatief Atelier",
-      location: "Bruges",
-      industry: "Creative",
       savings: `${formatPrice(1800)}/year saved`,
       timeSaved: "6 hours/week"
     }
@@ -799,19 +969,7 @@ export const HomePage = () => {
   ];
 
   return (
-    <div className="bg-white text-gray-900 font-sans" style={{
-      /* 
-      CUSTOM HEADER SIZES - Adjust these values to change header font sizes
-      Values are in rem units (1rem = 16px typically)
-      Example: '10rem' = 160px, '8rem' = 128px, '6rem' = 96px
-      */
-      '--hero-header-size': '10rem',        // "Smart Inventory Management" - Hero section
-      '--features-header-size': '8rem',     // "Features - Everything You Need"  
-      '--demo-header-size': '8rem',         // "See It In Action - Watch Our Demo"
-      '--testimonials-header-size': '8rem', // "Users Tell About Their Success"
-      '--use-cases-header-size': '8rem', // "Smarter inventory management for e-commerce, warehouses and physical stores"
-      '--cta-header-size': '10rem'          // "Get Started Free" - Final CTA
-    } as React.CSSProperties}>
+    <div className="bg-white text-gray-900 font-sans">
       <Helmet>
         {/* Non-render-blocking resource optimization */}
         
@@ -1002,699 +1160,724 @@ export const HomePage = () => {
         ]}
         structuredData={structuredData}
       />
-      <Header 
-        onLoginClick={handleLoginClick}
-        onNavigate={scrollToSection}
-        simplifiedNav={false}
-        hideNotifications={true}
-      />
-
-      {/* SUBHEADER - Rating & Social Proof */}
-      <div className="bg-gradient-to-r from-purple-50 to-blue-50 border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8">
-            <div className="flex items-center gap-2">
-              <div className="flex">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="h-4 w-4 text-yellow-400 fill-current" />
-                ))}
+      {/* Navigation Bar - Sticky */}
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white shadow-sm border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            {/* Logo */}
+            <div className="flex items-center flex-shrink-0">
+              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center mr-3">
+                <Package className="h-5 w-5 text-white" />
               </div>
-              <span className="text-sm font-semibold text-gray-700">4.9/5 rating</span>
+              <span className="text-xl font-bold text-gray-900">stockflow</span>
             </div>
-            <div className="hidden sm:block h-4 w-px bg-gray-300"></div>
-            <span className="text-sm font-medium text-gray-600">500+ happy users</span>
+            
+            {/* Action Buttons */}
+            <div className="flex items-center space-x-4">
+              <Link
+                to="/demo"
+                className="border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg font-medium transition-colors"
+              >
+                View Demo
+              </Link>
+              <Button
+                onClick={handleLoginClick}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors shadow-md"
+              >
+                Register/Login
+              </Button>
           </div>
         </div>
       </div>
+      </nav>
 
-      {/* Hero Section - Optimized for Mobile */}
-      <section 
-        className="relative py-2 sm:py-12 md:py-16 lg:py-20 xl:py-24 px-4 bg-gradient-to-br from-blue-500 to-blue-900 min-h-screen flex items-center"
-      >
-        <div className="absolute inset-0 bg-black bg-opacity-20"></div>
-        
-        <div className="relative max-w-7xl mx-auto w-full">
-          <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-center">
-            {/* Left Column - Text Content */}
-            <div className="text-white order-1 sm:text-center lg:text-left">
-              <div className="inline-flex items-center px-3 xs:px-3 sm:px-4 py-2 bg-blue-600/20 border border-blue-400/30 rounded-full text-blue-200 text-xs xs:text-xs sm:text-sm font-medium mb-3 xs:mb-4 sm:mb-6">
+      {/* Hero Section */}
+      <section className="bg-gradient-to-br from-blue-600 to-blue-800 py-20 px-4 mt-16">
+        <div className="max-w-7xl mx-auto text-center">
+          <FadeInWhenVisible delay={200}>
+            <div className="inline-flex items-center px-4 py-2 bg-blue-500/20 border border-blue-400/30 rounded-full text-blue-200 text-sm font-medium mb-6">
                 <span className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
-                Trusted by 500+ SMEs
+              Trusted by 500+ Belgian businesses
               </div>
-              
-              <h1 className="font-bold mb-3 xs:mb-4 sm:mb-8 lg:mb-10 leading-tight">
-                <span className="block md:text-xl lg:text-5xl xl:text-7xl">StockFlow</span>
-                <span className="block md:text-xl lg:text-5xl xl:text-7xl">Smart Inventory Management</span>
-                <span className="block md:text-xl lg:text-5xl xl:text-5xl text-blue-300">Made Simple for SMEs</span>
+          </FadeInWhenVisible>
+          
+          <FadeInWhenVisible delay={400}>
+            <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
+              Manage your inventory effortlessly and cost-free with StockFlow
               </h1>
-              
-              <p className="text-sm xs:text-base sm:text-xl md:text-xl lg:text-xl xl:text-xl text-blue-100 mb-4 xs:mb-6 sm:mb-10 lg:mb-12 leading-relaxed max-w-3xl mx-auto lg:mx-0">
-                <strong>Never run out of stock again.</strong> StockFlow automatically tracks your inventory, alerts you when to reorder, and saves you <strong>$2,400+ per year</strong> in lost sales and manual work. Built specifically for  small businesses.
+          </FadeInWhenVisible>
+          
+          <FadeInWhenVisible delay={600}>
+            <p className="text-xl text-blue-100 mb-8 max-w-4xl mx-auto leading-relaxed">
+              Our user-friendly interface helps you efficiently organize your products and optimize your business operations. 
+              <strong className="text-white"> No more complex systems - just simple and effective inventory management that works for your business.</strong>
+            </p>
+            <div className="bg-blue-500/20 border border-blue-400/30 rounded-lg p-4 mb-8 max-w-4xl mx-auto">
+              <p className="text-blue-100 text-sm">
+                <strong className="text-white">Simple Data Import:</strong> Import your existing inventory via CSV/Excel files or integrate with popular ERP/POS systems. 
+                Migrate your data in minutes, not hours.
               </p>
-              
-              <div className="flex flex-col sm:flex-row gap-3 xs:gap-4 sm:gap-6 lg:gap-8 mb-4 xs:mb-6 sm:mb-10 lg:mb-12 max-w-3xl mx-auto lg:mx-0 justify-center">
-                <Link
-                  to="/auth"
-                  className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-4 xs:px-6 sm:px-10 lg:px-12 xl:px-16 py-3 xs:py-4 sm:py-6 lg:py-7 xl:py-5 rounded-xl font-bold text-sm xs:text-base sm:text-2xl lg:text-2xl xl:text-lg transition-all duration-300 transform hover:scale-105 shadow-2xl text-center flex items-center justify-center relative overflow-hidden group"
-                >
-                  <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></span>
-                  <span className="relative z-10 flex items-center">
+                      </div>
+          </FadeInWhenVisible>
+          
+          <FadeInWhenVisible delay={800}>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+              <Button
+                onClick={handleLoginClick}
+                className="bg-white text-blue-600 hover:bg-gray-100 px-10 py-5 text-xl font-bold rounded-lg transform hover:scale-105 transition-all duration-300 shadow-lg"
+              >
                     🚀 Start Free Today - No Credit Card
-                  </span>
-                </Link>
-                <Link
-                  to="/demo"
-                  className="border-2 border-white text-white hover:bg-white hover:text-blue-900 px-4 xs:px-6 sm:px-10 lg:px-12 xl:px-16 py-3 xs:py-4 sm:py-6 lg:py-7 xl:py-5 rounded-xl font-bold text-sm xs:text-base sm:text-2xl lg:text-2xl xl:text-lg transition-all duration-300 text-center flex items-center justify-center"
-                >
-                  ▶️ See How It Works (2 min)
-                </Link>
+              </Button>
+              <Button
+                onClick={handleHowItWorksClick}
+                className="border-2 border-white/50 text-white hover:bg-white/10 hover:text-white px-6 py-4 text-lg font-medium rounded-lg transition-all duration-300"
+              >
+                ▶️ Watch Demo (2 min)
+              </Button>
               </div>
-
-              {/* Live Inventory Dashboard - Mobile Version (Hidden on desktop) */}
-              <div className="lg:hidden relative mb-3 xs:mb-4 sm:mb-8 max-w-sm xs:max-w-md mx-auto">
-                <div className="relative bg-white rounded-2xl shadow-2xl p-2 xs:p-3 sm:p-4">
-                  {/* Demo Interface Mockup */}
-                  <div className="bg-gray-50 rounded-lg p-2 xs:p-2 sm:p-3 mb-2 xs:mb-3 sm:mb-4">
-                    <div className="flex items-center justify-start mb-2 xs:mb-2 sm:mb-3">
-                      <h3 className="font-semibold text-gray-800 text-xs xs:text-xs sm:text-sm">Live Dashboard</h3>
-                      <div className="flex space-x-1 xs:space-x-1 sm:space-x-2 ml-auto">
-                        <div className="w-2 h-2 xs:w-2 xs:h-2 sm:w-3 sm:h-3 bg-red-400 rounded-full"></div>
-                        <div className="w-2 h-2 xs:w-2 xs:h-2 sm:w-3 sm:h-3 bg-yellow-400 rounded-full"></div>
-                        <div className="w-2 h-2 xs:w-2 xs:h-2 sm:w-3 sm:h-3 bg-green-400 rounded-full"></div>
+          </FadeInWhenVisible>
+          
+          <FadeInWhenVisible delay={1000}>
+            <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-5xl mx-auto">
+              <div className="grid md:grid-cols-3 gap-6 mb-6">
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-blue-600 mb-2">$0</div>
+                  <div className="text-sm text-gray-600">No monthly costs</div>
                       </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-green-600 mb-2">5 min</div>
+                  <div className="text-sm text-gray-600">Setup time</div>
                     </div>
-                    
-                    {/* Mock Dashboard Content */}
-                    <div className="grid grid-cols-2 gap-2 xs:gap-2 sm:gap-3 mb-2 xs:mb-2 sm:mb-3">
-                      <div className="bg-green-100 p-2 xs:p-2 sm:p-3 rounded-lg">
-                        <div className="text-green-600 font-bold text-xs xs:text-sm sm:text-base">1,247</div>
-                        <div className="text-green-600 text-xs xs:text-xs sm:text-sm">In Stock</div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-purple-600 mb-2">24/7</div>
+                  <div className="text-sm text-gray-600">Access</div>
                       </div>
-                      <div className="bg-orange-100 p-2 xs:p-2 sm:p-3 rounded-lg">
-                        <div className="text-orange-600 font-bold text-xs xs:text-sm sm:text-base">23</div>
-                        <div className="text-orange-600 text-xs xs:text-xs sm:text-sm">Low Stock</div>
                       </div>
+              <div className="bg-gray-100 rounded-lg h-64 flex items-center justify-center">
+                <span className="text-gray-500 text-lg">Live Dashboard Demo</span>
                     </div>
-                    
-                    <div className="space-y-1 xs:space-y-1 sm:space-y-2">
-                      <div className="text-black flex items-center justify-between p-1.5 xs:p-1.5 sm:p-2 bg-white rounded">
-                        <span className="text-xs xs:text-xs sm:text-sm">📱 Smartphone Case</span>
-                        <span className="text-xs bg-orange-100 text-orange-600 px-1.5 xs:px-1.5 sm:px-2 py-0.5 xs:py-0.5 sm:py-1 rounded">Reorder</span>
-                      </div>
-                      <div className="text-black flex items-center justify-between p-1.5 xs:p-1.5 sm:p-2 bg-white rounded">
-                        <span className="text-xs xs:text-xs sm:text-sm">💻 Laptop Charger</span>
-                        <span className="text-xs bg-green-100 text-green-600 px-1.5 xs:px-1.5 sm:px-2 py-0.5 xs:py-0.5 sm:py-1 rounded">In Stock</span>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  {/* Floating Success Badge */}
-                  <div className="absolute -top-1 -right-1 xs:-top-1 xs:-right-1 sm:-top-2 sm:-right-2 bg-green-500 text-white px-2 xs:px-2 sm:px-3 py-1 xs:py-1 sm:py-1.5 rounded-full text-xs xs:text-xs sm:text-sm font-semibold shadow-lg animate-bounce">
-                    ✓ Auto-Reorder
-                  </div>
                 </div>
+          </FadeInWhenVisible>
+              </div>
+      </section>
+
+
+      {/* Trust Bar */}
+      <section className="bg-gray-50 py-8">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="text-center mb-8">
+            <p className="text-gray-600 font-medium">
+              WE ARE PARTNERED WITH MORE THAN 50+ COMPANIES AROUND THE GLOBE
+            </p>
+                      </div>
+          <div className="flex justify-center items-center space-x-8">
+            {trustCompanies.map((company, index) => (
+              <div key={index} className="flex items-center justify-center">
+                <div className="bg-white rounded-lg p-4 shadow-sm">
+                  <span className="text-gray-500 font-medium">{company.name}</span>
+                      </div>
+                    </div>
+            ))}
+                  </div>
+            </div>
+      </section>
+
+
+
+      {/* Features Section */}
+      <section id="features-section" className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4">
+          <FadeInWhenVisible>
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                How StockFlow transforms your business operations
+              </h2>
+              <p className="text-lg text-gray-600 max-w-4xl mx-auto leading-relaxed">
+                Don't just list features. Sell outcomes. Our powerful tools help you optimize your inventory management, 
+                save costs and increase your revenue. Discover how thousands of Belgian businesses already benefit from StockFlow.
+              </p>
+                  </div>
+          </FadeInWhenVisible>
+          
+          {/* Features Grid - 2x2 Layout with Enhanced Animations */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+            {features.map((feature, index) => (
+              <SlideInWhenVisible 
+                key={index} 
+                delay={index * 200} 
+                direction={index % 2 === 0 ? 'left' : 'right'}
+              >
+                <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:border-blue-300 transition-all duration-300 hover:shadow-lg">
+                  {/* Feature Title */}
+                  <h3 className="text-xl font-semibold mb-4 text-gray-900">{feature.title}</h3>
+                  
+                  {/* Enhanced Description */}
+                  <div className="mb-6">
+                    <p className="text-gray-700 leading-relaxed mb-3">{feature.description}</p>
+                    <p className="text-sm text-gray-600 leading-relaxed">{feature.detailedDescription}</p>
+                </div>
+                
+                  {/* Image Placeholder */}
+                  <div className="bg-gray-100 rounded-lg h-48 flex items-center justify-center mb-4">
+                    <span className="text-gray-500 text-sm">Feature {index + 1} Image</span>
               </div>
               
-              <div className="flex flex-col sm:flex-row sm:flex-wrap items-center justify-center lg:justify-start gap-3 xs:gap-4 sm:gap-6 lg:gap-8 text-blue-200 max-w-3xl mx-auto lg:mx-0">
-                <div className="flex items-center">
-                  <CheckCircle className="w-4 h-4 xs:w-5 xs:h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-4 mr-2 xs:mr-3 text-green-400 flex-shrink-0" />
-                  <span className="text-sm xs:text-base sm:text-lg lg:text-sm">No credit card required</span>
+                  {/* Icon */}
+                  <div className="flex justify-center">
+                    <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-100 rounded-lg">
+                      <feature.icon className="h-6 w-6 text-blue-600" />
                 </div>
-                <div className="flex items-center">
-                  <CheckCircle className="w-4 h-4 xs:w-5 xs:h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-4 mr-2 xs:mr-3 text-green-400 flex-shrink-0" />
-                  <span className="text-sm xs:text-base sm:text-lg lg:text-sm">Save $2,400+ per year</span>
                 </div>
-                <div className="flex items-center">
-                  <CheckCircle className="w-4 h-4 xs:w-5 xs:h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-4 mr-2 xs:mr-3 text-green-400 flex-shrink-0" />
-                  <span className="text-sm xs:text-base sm:text-lg lg:text-sm">Built for  SMEs</span>
                 </div>
-              </div>
+              </SlideInWhenVisible>
+            ))}
             </div>
             
-            {/* Right Column - Visual Demo (Desktop only) */}
-            <div className="hidden lg:block relative order-1 lg:order-2 mb-6 lg:mb-0">
-              <div className="relative bg-white rounded-2xl shadow-2xl p-6 max-w-md mx-auto lg:max-w-none">
-                {/* Demo Interface Mockup */}
-                <div className="bg-gray-50 rounded-lg p-4 mb-4">
-                  <div className="flex items-center justify-start mb-4">
-                    <h3 className="font-semibold text-gray-800 text-base">Live Inventory Dashboard</h3>
-                    <div className="flex space-x-2 ml-auto">
-                      <div className="w-3 h-3 bg-red-400 rounded-full"></div>
-                      <div className="w-3 h-3 bg-yellow-400 rounded-full"></div>
-                      <div className="w-3 h-3 bg-green-400 rounded-full"></div>
+          {/* Data Metrics - Horizontal Layout with Animations */}
+          <FadeInWhenVisible delay={800}>
+            <div className="bg-gradient-to-r from-blue-50 to-green-50 rounded-2xl p-8 mb-8">
+              <h3 className="text-2xl font-bold text-center text-gray-900 mb-6">
+                Proven results from our customers
+              </h3>
+              <div className="flex flex-wrap justify-center gap-8">
+                {dataMetrics.map((metric, index) => (
+                  <ScaleInWhenVisible key={index} delay={index * 100}>
+                    <div className="text-center">
+                      <div className="text-5xl font-bold text-blue-600 mb-2">{metric.value}</div>
+                      <div className="text-gray-600 text-sm">{metric.label}</div>
                     </div>
+                  </ScaleInWhenVisible>
+            ))}
+                  </div>
+                    </div>
+          </FadeInWhenVisible>
+                    </div>
+      </section>
+
+      {/* How It Works Section */}
+      <section id="how-it-works-section" className="py-16 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              How It Works Section
+              </h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              Clarity converts. Break down the process into simple steps.
+            </p>
                   </div>
                   
-                  {/* Mock Dashboard Content */}
-                  <div className="grid grid-cols-2 gap-4 mb-4">
-                    <div className="bg-green-100 p-3 rounded-lg">
-                      <div className="text-green-600 font-bold text-lg">1,247</div>
-                      <div className="text-green-600 text-sm">Products in Stock</div>
-                    </div>
-                    <div className="bg-orange-100 p-3 rounded-lg">
-                      <div className="text-orange-600 font-bold text-lg">23</div>
-                      <div className="text-orange-600 text-sm">Low Stock Alert</div>
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between p-2 bg-white rounded">
-                      <span className="text-sm">📱 Smartphone Case</span>
-                      <span className="text-xs bg-orange-100 text-orange-600 px-2 py-1 rounded">Reorder</span>
-                    </div>
-                    <div className="flex items-center justify-between p-2 bg-white rounded">
-                      <span className="text-sm">💻 Laptop Charger</span>
-                      <span className="text-xs bg-green-100 text-green-600 px-2 py-1 rounded">In Stock</span>
-                    </div>
-                    <div className="flex items-center justify-between p-2 bg-white rounded">
-                      <span className="text-sm">🎧 Wireless Headphones</span>
-                      <span className="text-xs bg-red-100 text-red-600 px-2 py-1 rounded">Out of Stock</span>
-                    </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {howItWorksSteps.map((step, index) => (
+              <div key={index} className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
+                {/* Step Number Badge */}
+                <div className="flex justify-center mb-6">
+                  <div className="bg-blue-600 text-white rounded-full w-16 h-16 flex items-center justify-center text-2xl font-bold">
+                    {step.step}
                   </div>
                 </div>
                 
-                {/* Floating Success Badge */}
-                <div className="absolute -top-4 -right-4 bg-green-500 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg animate-bounce">
-                  ✓ Auto-Reorder Active
+                {/* Image Placeholder */}
+                <div className="mb-6">
+                  <div className="bg-gray-100 rounded-lg h-48 flex items-center justify-center">
+                    <span className="text-gray-500 text-sm">Step {step.step} Image</span>
                 </div>
               </div>
               
-              {/* Background Decorative Elements - Hidden on mobile for better performance */}
-              <div className="hidden sm:block absolute -z-10 top-5 left-5 sm:top-10 sm:left-10 w-16 h-16 sm:w-20 sm:h-20 bg-blue-400/20 rounded-full blur-xl"></div>
-              <div className="hidden sm:block absolute -z-10 bottom-5 right-5 sm:bottom-10 sm:right-10 w-24 h-24 sm:w-32 sm:h-32 bg-purple-400/20 rounded-full blur-xl"></div>
+                {/* Content */}
+                      <div className="text-center">
+                  <h3 className="text-xl font-semibold mb-3 text-gray-900">{step.title}</h3>
+                  <p className="text-gray-600 leading-relaxed">{step.description}</p>
             </div>
+                      </div>
+            ))}
           </div>
         </div>
       </section>
 
+      {/* Why Choose Us Section */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Why Choose Us Section
+              </h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              Make your strengths obvious.
+            </p>
+                    </div>
 
-      {/* KENGETALLEN / SOCIAL PROOF STRIP */}
-      <section id="stats-section" className="bg-white py-6 sm:py-8 md:py-12">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-3 gap-2 sm:gap-4 md:gap-6 lg:gap-8 divide-x divide-dashed divide-gray-200">
-            {[
-              { icon: Users, value: '500+', label: 'Happy Users' },
-              { icon: Clock, value: '17k+', label: 'Hours Saved' },
-              { icon: Package, value: '500k+', label: 'Product Movements' },
-            ].map((s, i) => (
-              <div key={i} className="flex flex-col items-center text-center px-2 sm:px-4 lg:px-6">
-                <s.icon className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 lg:h-8 lg:w-8 text-gray-400 mb-1 sm:mb-2 md:mb-3" />
-                <div className="text-sm sm:text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-extrabold tracking-tight text-blue-700">{s.value}</div>
-                <div className="mt-1 text-xs sm:text-sm md:text-base text-gray-700 font-medium text-center leading-tight">{s.label}</div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {whyChooseUs.map((reason, index) => (
+              <div key={index} className="text-center">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-lg mb-4">
+                  {reason.icon}
+                  </div>
+                <h3 className="text-xl font-semibold mb-3">{reason.title}</h3>
+                <p className="text-gray-600">{reason.description}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-
-
-      {/* Enhanced Social Proof Section */}
-      <section className="bg-gradient-to-br from-gray-50 to-blue-50 py-16 px-4">
-        <div className="max-w-6xl mx-auto">
+      {/* Pricing Section */}
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
-          <FadeInWhenVisible>
-              <div className="inline-flex items-center gap-2 bg-green-100 text-green-800 px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6">
-                <Award className="h-3 w-3 sm:h-4 sm:w-4" />
-                <span>Trusted by Growing Businesses</span>
-              </div>
-            </FadeInWhenVisible>
-            <FadeInWhenVisible>
-              <h2 className="features-header font-bold mb-4 sm:mb-6 px-4">
-                <span className="block text-gray-900">Trusted by Growing Businesses</span>
-                <span className="block bg-gradient-to-r from-blue-500 to-blue-900 bg-clip-text text-transparent">
-                Across Industries
-                </span>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Pricing
               </h2>
-            </FadeInWhenVisible>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Join hundreds of small businesses that have transformed their inventory management and saved thousands of euros
+              Choose the plan that best suits your business needs. All prices in USD.
             </p>
           </div>
 
-
-
-          
-          {/* Desktop Grid */}
-          <div className="hidden md:grid md:grid-cols-3 gap-6 sm:gap-8 mb-12 sm:mb-16">
-            {testimonials.map((t, index) => (
-              <FadeInWhenVisible key={t.name}>
-                <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 overflow-hidden">
-                  {/* Header with avatar and rating */}
-                  <div className="p-4 sm:p-6 border-b border-gray-100">
-                    <div className="flex items-center gap-4 mb-4">
-                      <OptimizedImage 
-                        className="h-12 w-12 rounded-full object-cover border-2 border-blue-100" 
-                        src={t.avatar} 
-                        alt={`${t.name} - ${t.role}`}
-                        loading="lazy"
-                        sizes="48px"
-                      />
-                      <div className="flex-1">
-                        <div className="font-bold text-gray-900">{t.name}</div>
-                        <div className="text-sm text-gray-500">{t.role}</div>
-                        <div className="text-xs text-blue-600 font-medium">{t.company} • {t.location}</div>
+          {/* Billing Toggle */}
+          <div className="flex justify-center mb-12">
+            <div className="bg-gray-200 rounded-lg p-1 flex">
+              <button 
+                onClick={() => setIsYearly(false)}
+                className={`px-6 py-2 rounded-md font-medium transition-colors ${
+                  !isYearly 
+                    ? 'bg-gray-300 text-gray-700' 
+                    : 'text-gray-600 hover:bg-gray-100'
+                }`}
+              >
+                Monthly
+              </button>
+              <button 
+                onClick={() => setIsYearly(true)}
+                className={`px-6 py-2 rounded-md font-medium transition-colors ${
+                  isYearly 
+                    ? 'bg-gray-300 text-gray-700' 
+                    : 'text-gray-600 hover:bg-gray-100'
+                }`}
+              >
+                Yearly
+              </button>
                       </div>
                     </div>
-                    <div className="flex mb-2">
-                      {[...Array(t.rating)].map((_, i) => (
-                        <Star key={i} className="h-4 w-4 text-yellow-400 fill-current" />
-                      ))}
+
+          {/* Pricing Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {/* Free / Basic Plan */}
+            <div className="bg-white rounded-lg shadow-lg p-6 border border-gray-200">
+              <div className="text-center mb-6">
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-gray-100 rounded-lg mb-4">
+                  <Package className="h-6 w-6 text-gray-600" />
+                    </div>
+                <h3 className="text-xl font-semibold mb-2">Free / Basic</h3>
+                <p className="text-sm text-gray-500 mb-4">For micro users / businesses</p>
+                <div className="text-4xl font-bold text-gray-900 mb-1">$0</div>
+                  </div>
+
+              {/* Key Metrics */}
+              <div className="grid grid-cols-3 gap-4 mb-6 text-center">
+                <div>
+                  <div className="text-2xl font-bold text-gray-900">200</div>
+                  <div className="text-sm text-gray-500">products</div>
+                      </div>
+                <div>
+                  <div className="text-2xl font-bold text-gray-900">2</div>
+                  <div className="text-sm text-gray-500">users</div>
+                      </div>
+                <div>
+                  <div className="text-2xl font-bold text-gray-900">1</div>
+                  <div className="text-sm text-gray-500">branches</div>
                     </div>
                   </div>
 
-                  {/* Quote */}
-                  <div className="p-6">
-                    <p className="text-gray-700 leading-relaxed mb-6">"{t.quote}"</p>
-                    
-                    {/* Metrics */}
-                    <div className="grid grid-cols-2 gap-4 pt-4 border-t border-gray-100">
-                      <div className="text-center">
-                        <div className="text-lg font-bold text-green-600">{t.savings}</div>
-                        <div className="text-xs text-gray-500">Costs saved</div>
-                      </div>
-                      <div className="text-center">
-                        <div className="text-lg font-bold text-blue-600">{t.timeSaved}</div>
-                        <div className="text-xs text-gray-500">Time saved</div>
-                      </div>
+              <div className="space-y-3 mb-6">
+                <div className="flex items-center">
+                  <Check className="h-4 w-4 text-green-500 mr-3" />
+                  <span className="text-sm text-gray-600">Up to 200 items (SKUs)</span>
                     </div>
+                <div className="flex items-center">
+                  <Check className="h-4 w-4 text-green-500 mr-3" />
+                  <span className="text-sm text-gray-600">Single user</span>
                   </div>
-
-                  {/* Industry badge */}
-                  <div className="px-6 pb-4">
-                    <div className="inline-flex items-center gap-2 bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-xs font-medium">
-                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                      {t.industry}
-                    </div>
-                  </div>
+                <div className="flex items-center">
+                  <Check className="h-4 w-4 text-green-500 mr-3" />
+                  <span className="text-sm text-gray-600">Single location / warehouse</span>
                 </div>
-              </FadeInWhenVisible>
-            ))}
+                <div className="flex items-center">
+                  <Check className="h-4 w-4 text-green-500 mr-3" />
+                  <span className="text-sm text-gray-600">Barcode/QR scanning, AI classification, search, import/export (CSV)</span>
           </div>
+                <div className="flex items-center">
+                  <Check className="h-4 w-4 text-green-500 mr-3" />
+                  <span className="text-sm text-gray-600">Basic reporting (stock levels, alerts for low stock)</span>
+                      </div>
+                <div className="flex items-center">
+                  <Check className="h-4 w-4 text-green-500 mr-3" />
+                  <span className="text-sm text-gray-600">Email support, community help</span>
+                    </div>
+                    </div>
 
-          {/* Mobile Carousel */}
-          <div className="md:hidden mb-16">
-            <MobileCarousel 
-              items={testimonials}
-              renderItem={(testimonial) => (
-                <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-                  <div className="p-6">
-                    <div className="flex items-center gap-4 mb-4">
-                      <OptimizedImage 
-                        className="h-12 w-12 rounded-full object-cover border-2 border-blue-100" 
-                        src={testimonial.avatar} 
-                        alt={`${testimonial.name} - ${testimonial.role}`}
-                        loading="lazy"
-                        sizes="48px"
-                      />
-                      <div className="flex-1">
-                        <div className="font-bold text-gray-900">{testimonial.name}</div>
-                        <div className="text-sm text-gray-500">{testimonial.role}</div>
-                        <div className="text-xs text-blue-600 font-medium">{testimonial.company}</div>
+              <Button 
+                onClick={handleLoginClick}
+                className="w-full bg-gray-600 hover:bg-gray-700 text-white"
+              >
+                Current plan
+              </Button>
+                      </div>
+
+            {/* Starter Plan - Most Popular */}
+            <div className="bg-white rounded-lg shadow-xl p-6 border-2 border-blue-500 relative">
+              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                <div className="bg-blue-500 text-white px-4 py-1 rounded-full text-sm font-medium flex items-center">
+                  <Star className="h-4 w-4 mr-1" />
+                  Most popular
                       </div>
                     </div>
-                    <div className="flex mb-4">
-                      {[...Array(testimonial.rating)].map((_, i) => (
-                        <Star key={i} className="h-4 w-4 text-yellow-400 fill-current" />
-                      ))}
-                    </div>
-                    <p className="text-gray-700 leading-relaxed mb-6 text-sm">"{testimonial.quote}"</p>
-                    
-                    <div className="grid grid-cols-2 gap-4 pt-4 border-t border-gray-100">
-                      <div className="text-center">
-                        <div className="text-lg font-bold text-green-600">{testimonial.savings}</div>
-                        <div className="text-xs text-gray-500">Saved per month</div>
-                      </div>
-                      <div className="text-center">
-                        <div className="text-lg font-bold text-blue-600">{testimonial.timeSaved}</div>
-                        <div className="text-xs text-gray-500">Hours saved per week</div>
-                      </div>
-                    </div>
+
+              <div className="text-center mb-6">
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-100 rounded-lg mb-4">
+                  <Package className="h-6 w-6 text-blue-600" />
                   </div>
+                <h3 className="text-xl font-semibold mb-2">Starter</h3>
+                <p className="text-sm text-gray-500 mb-4">For small SMEs</p>
+                <div className="text-4xl font-bold text-gray-900 mb-1">
+                  ${isYearly ? '15.99' : '19.99'}
+                      </div>
+                <div className="text-sm text-gray-500">
+                  {isYearly ? 'per month (billed yearly)' : 'per month'}
+                      </div>
+                {isYearly && (
+                  <div className="text-xs text-green-600 font-medium mt-1">
+                    Save 20% with yearly billing
                 </div>
               )}
-            />
           </div>
 
-          {/* Security Badges */}
-          <div className="mt-16 text-center">
-            <p className="text-gray-600 mb-6">Trusted and Secure</p>
-            <div className="flex flex-wrap justify-center items-center gap-8">
-              <div className="flex items-center space-x-2 text-gray-600">
-                <Shield className="w-6 h-6 text-green-600" />
-                <span className="font-medium">GDPR Compliant</span>
+              {/* Key Metrics */}
+              <div className="grid grid-cols-3 gap-4 mb-6 text-center">
+                <div>
+                  <div className="text-2xl font-bold text-gray-900">1000</div>
+                  <div className="text-sm text-gray-500">products</div>
               </div>
-              <div className="flex items-center space-x-2 text-gray-600">
-                <Shield className="w-6 h-6 text-blue-600" />
-                <span className="font-medium">SSL Encrypted</span>
+                <div>
+                  <div className="text-2xl font-bold text-gray-900">5</div>
+                  <div className="text-sm text-gray-500">users</div>
               </div>
-              <div className="flex items-center space-x-2 text-gray-600">
-                <Shield className="w-6 h-6 text-purple-600" />
-                <span className="font-medium">SOC 2 Certified</span>
+                <div>
+                  <div className="text-2xl font-bold text-gray-900">3</div>
+                  <div className="text-sm text-gray-500">branches</div>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
 
-      
-
-
-      {/* FEATURES - Enhanced with animations */}
-      <section id="features-section" className="py-12 sm:py-16 md:py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-12 sm:mb-16">
-            <FadeInWhenVisible>
-              <div className="inline-flex items-center gap-2 bg-green-100 text-green-800 px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6">
-                <Award className="h-3 w-3 sm:h-4 sm:w-4" />
-                <span>Features</span>
+              <div className="space-y-3 mb-6">
+                <div className="flex items-center">
+                  <Check className="h-4 w-4 text-green-500 mr-3" />
+                  <span className="text-sm text-gray-600">Up to 1,000 items</span>
               </div>
-            </FadeInWhenVisible>
-            <FadeInWhenVisible>
-              <h2 className="features-header font-bold mb-4 sm:mb-6 px-4">
-                <span className="block text-gray-900">How StockFlow Transforms</span>
-                <span className="block bg-gradient-to-r from-blue-500 to-blue-900 bg-clip-text text-transparent">
-                Your Inventory Management
-                </span>
-              </h2>
-            </FadeInWhenVisible>
-            <FadeInWhenVisible>
-              <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-4">
-                Three powerful features that save you time, money, and stress. See exactly how StockFlow eliminates common inventory problems.
-              </p>
-            </FadeInWhenVisible>
+                <div className="flex items-center">
+                  <Check className="h-4 w-4 text-green-500 mr-3" />
+                  <span className="text-sm text-gray-600">Up to 5 users</span>
           </div>
-
-          {/* Modern Features Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 sm:gap-12 max-w-7xl mx-auto">
-            {landingFeatures.map((feature, idx) => (
-              <FadeInWhenVisible key={idx} delay={idx * 200}>
-                <div className="group relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 overflow-hidden border border-gray-100">
-                  {/* Header with gradient background */}
-                  <div className={`relative bg-gradient-to-br ${feature.gradient} p-6 sm:p-8 text-white overflow-hidden`}>
-                    <div className="absolute inset-0 bg-black/10"></div>
-                    <div className="relative z-10">
-                      <div className={`inline-flex items-center justify-center w-12 h-12 ${feature.iconBg} rounded-xl mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                        {feature.icon}
+                <div className="flex items-center">
+                  <Check className="h-4 w-4 text-green-500 mr-3" />
+                  <span className="text-sm text-gray-600">Up to 3 locations / warehouses</span>
                       </div>
-                      <div className="inline-block px-3 py-1 bg-white/20 rounded-full text-sm font-medium mb-4">
-                        {feature.subtitle}
+                <div className="flex items-center">
+                  <Check className="h-4 w-4 text-green-500 mr-3" />
+                  <span className="text-sm text-gray-600">All features of Free, plus:</span>
                       </div>
-                      <h3 className="text-xl sm:text-2xl font-bold mb-3 leading-tight">
-                        {feature.title}
-                      </h3>
-                      <div className={`inline-flex items-center px-3 py-1 bg-white/20 rounded-full text-sm font-semibold`}>
-                        {feature.stats}
+                <div className="flex items-center">
+                  <Check className="h-4 w-4 text-green-500 mr-3" />
+                  <span className="text-sm text-gray-600">Batch/serial number tracking</span>
                       </div>
+                <div className="flex items-center">
+                  <Check className="h-4 w-4 text-green-500 mr-3" />
+                  <span className="text-sm text-gray-600">Multiple warehouse transfer</span>
                     </div>
-                    
-                    {/* Decorative elements */}
-                    <div className="absolute -top-4 -right-4 w-24 h-24 bg-white/10 rounded-full blur-xl"></div>
-                    <div className="absolute -bottom-8 -left-8 w-32 h-32 bg-white/5 rounded-full blur-2xl"></div>
+                <div className="flex items-center">
+                  <Check className="h-4 w-4 text-green-500 mr-3" />
+                  <span className="text-sm text-gray-600">More advanced reporting (trend, turnover, reorder suggestions)</span>
                   </div>
-
-                  {/* Content */}
-                  <div className="p-6 sm:p-8">
-                    <p className="text-gray-600 mb-6 leading-relaxed">
-                      {feature.desc}
-                    </p>
-                    
-                    {/* Benefits list */}
-                    <div className="space-y-3 mb-6">
-                      {feature.benefits.map((benefit, benefitIdx) => (
-                        <div key={benefitIdx} className="flex items-start gap-3">
-                          <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <Check className="h-3 w-3 text-green-600" />
+                <div className="flex items-center">
+                  <Check className="h-4 w-4 text-green-500 mr-3" />
+                  <span className="text-sm text-gray-600">Basic integrations (e-commerce platform, maybe accounting)</span>
                           </div>
-                          <span className="text-sm text-gray-700 font-medium leading-relaxed">{benefit}</span>
+                <div className="flex items-center">
+                  <Check className="h-4 w-4 text-green-500 mr-3" />
+                  <span className="text-sm text-gray-600">Priority email / chat support</span>
                         </div>
-                      ))}
                     </div>
 
-                    {/* CTA Button */}
-                    <button 
-                      onClick={() => scrollToSection('demo-section')}
-                      className={`w-full bg-gradient-to-r ${feature.gradient} text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg group-hover:shadow-xl`}
-                    >
-                      {feature.cta} →
-                    </button>
+              <Button 
+                onClick={handleLoginClick}
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+              >
+                Start 14-day trial
+              </Button>
                   </div>
 
-                  {/* Hover effect overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-transparent to-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+            {/* Business Plan */}
+            <div className="bg-white rounded-lg shadow-lg p-6 border border-gray-200">
+              <div className="text-center mb-6">
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-purple-100 rounded-lg mb-4">
+                  <Package className="h-6 w-6 text-purple-600" />
                 </div>
-              </FadeInWhenVisible>
-            ))}
+                <h3 className="text-xl font-semibold mb-2">Business</h3>
+                <p className="text-sm text-gray-500 mb-4">For growing SMEs</p>
+                <div className="text-4xl font-bold text-gray-900 mb-1">
+                  ${isYearly ? '47.99' : '59.99'}
           </div>
-
-          {/* Additional conversion elements */}
-          <FadeInWhenVisible delay={600}>
-            <div className="mt-16 text-center">
-              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-50 to-green-50 border border-blue-200 rounded-full px-6 py-3 mb-6">
-                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                <span className="text-gray-700 font-semibold">All features included in your free trial</span>
+                <div className="text-sm text-gray-500">
+                  {isYearly ? 'per month (billed yearly)' : 'per month'}
               </div>
-              <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-600">
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-green-500" />
-                  <span>No setup fees</span>
+                {isYearly && (
+                  <div className="text-xs text-green-600 font-medium mt-1">
+                    Save 20% with yearly billing
                 </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-green-500" />
-                  <span>Cancel anytime</span>
+                  )}
                 </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-green-500" />
-                  <span>24/7 support</span>
+
+              {/* Key Metrics */}
+              <div className="grid grid-cols-3 gap-4 mb-6 text-center">
+                <div>
+                  <div className="text-2xl font-bold text-gray-900">5000</div>
+                  <div className="text-sm text-gray-500">products</div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-green-500" />
-                  <span>Data export included</span>
+                <div>
+                  <div className="text-2xl font-bold text-gray-900">25</div>
+                  <div className="text-sm text-gray-500">users</div>
                 </div>
+                <div>
+                  <div className="text-2xl font-bold text-gray-900">15</div>
+                  <div className="text-sm text-gray-500">branches</div>
               </div>
             </div>
-          </FadeInWhenVisible>
+
+              <div className="space-y-3 mb-6">
+                <div className="flex items-center">
+                  <Check className="h-4 w-4 text-green-500 mr-3" />
+                  <span className="text-sm text-gray-600">Unlimited SKUs</span>
+                    </div>
+                <div className="flex items-center">
+                  <Check className="h-4 w-4 text-green-500 mr-3" />
+                  <span className="text-sm text-gray-600">10+ users</span>
+                      </div>
+                <div className="flex items-center">
+                  <Check className="h-4 w-4 text-green-500 mr-3" />
+                  <span className="text-sm text-gray-600">Unlimited locations / warehouses</span>
+                      </div>
+                <div className="flex items-center">
+                  <Check className="h-4 w-4 text-green-500 mr-3" />
+                  <span className="text-sm text-gray-600">Predictive reordering / stock forecasting</span>
+                    </div>
+                <div className="flex items-center">
+                  <Check className="h-4 w-4 text-green-500 mr-3" />
+                  <span className="text-sm text-gray-600">API access / webhooks</span>
+                        </div>
+                <div className="flex items-center">
+                  <Check className="h-4 w-4 text-green-500 mr-3" />
+                  <span className="text-sm text-gray-600">More advanced analytics dashboards</span>
+                    </div>
+                    </div>
+
+              <Button 
+                onClick={handleLoginClick}
+                className="w-full bg-purple-600 hover:bg-purple-700 text-white"
+              >
+                Start 14-day trial
+              </Button>
+                  </div>
+          </div>
+
+          {/* 14-day Free Trial Section */}
+          <div className="mt-16 text-center">
+            <div className="flex items-center justify-center mb-4">
+              <Clock className="h-6 w-6 text-blue-600 mr-2" />
+              <h3 className="text-2xl font-bold text-gray-900">14-day free trial</h3>
+                    </div>
+            <p className="text-lg text-gray-600 mb-8">
+              Try all premium features 14 days free. No credit card required, cancel anytime.
+            </p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+              <div className="flex items-center justify-center">
+                <Check className="h-5 w-5 text-green-500 mr-3" />
+                <span className="text-gray-700">No obligations: Cancel anytime without any costs</span>
+                      </div>
+              <div className="flex items-center justify-center">
+                <Check className="h-5 w-5 text-green-500 mr-3" />
+                <span className="text-gray-700">Full access: All features and limits of your chosen plan</span>
+                      </div>
+              <div className="flex items-center justify-center">
+                <Check className="h-5 w-5 text-green-500 mr-3" />
+                <span className="text-gray-700">Direct start: Start directly with your inventory management</span>
+                    </div>
+                </div>
+          </div>
         </div>
       </section>
 
 
-      
-      {/* FEATURES SECTIE - Everything You Need */}
-      <section id="features-section" className="py-12 sm:py-16 md:py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-
-          {/* Desktop Grid */}
-          <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-12 sm:mb-16">
-            {subscriptionFeatures.map((feature, index) => (
-              <FadeInWhenVisible key={index}>
-                <div className={`relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-2 ${feature.tier === 'groei' ? 'border-blue-500 ring-4 ring-blue-100' : 'border-gray-100'}`}>
-                  {feature.tier === 'groei' && (
-                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    </div>
-                  )}
-                  
-                  <div className="p-4 sm:p-6 lg:p-8">
-                    <div className="flex items-center justify-between mb-4 sm:mb-6">
-                      <div className="p-2 sm:p-3 bg-gray-50 rounded-xl">
-                        {feature.icon}
-                      </div>
-                      <div className="text-right">
-                      </div>
-                    </div>
-
-                    <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 sm:mb-3">{feature.title}</h3>
-                    <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6 leading-relaxed">{feature.description}</p>
-
-                    <div className="space-y-2 sm:space-y-3 mb-6 sm:mb-8">
-                      {feature.features.map((featureItem, featureIndex) => (
-                        <div key={featureIndex} className="flex items-center gap-2 sm:gap-3">
-                          <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-600 flex-shrink-0" />
-                          <span className="text-sm sm:text-base text-gray-700">{featureItem}</span>
-                        </div>
-                      ))}
-                    </div>
-
-                  </div>
-                </div>
-              </FadeInWhenVisible>
-            ))}
-          </div>
-
-          {/* Mobile Carousel */}
-          <div className="md:hidden mb-12 sm:mb-16">
-            <MobileCarousel 
-              items={subscriptionFeatures}
-              renderItem={(feature) => (
-                <div className={`relative bg-white rounded-2xl shadow-lg border-2 ${feature.tier === 'groei' ? 'border-blue-500 ring-4 ring-blue-100' : 'border-gray-100'} mx-2`}>
-                  {feature.tier === 'groei' && (
-                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    </div>
-                  )}
-                  
-                  <div className="p-6">
-                    <div className="flex items-center justify-between mb-6">
-                      <div className="p-3 bg-gray-50 rounded-xl">
-                        {feature.icon}
-                      </div>
-                      <div className="text-right">
-                      </div>
-                    </div>
-
-                    <h3 className="text-xl font-bold text-gray-900 mb-3">{feature.title}</h3>
-                    <p className="text-base text-gray-600 mb-6 leading-relaxed">{feature.description}</p>
-
-                    <div className="space-y-3 mb-8">
-                      {feature.features.map((featureItem, featureIndex) => (
-                        <div key={featureIndex} className="flex items-center gap-3">
-                          <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
-                          <span className="text-base text-gray-700">{featureItem}</span>
-                        </div>
-                      ))}
-                    </div>
-
-                  </div>
-                </div>
-              )}
-            />
-          </div>
-
-
-        </div>
-      </section>
-
-
-            {/* Use Cases Section */}
-            <section className="py-16 px-4 bg-gray-50">
-        <div className="max-w-6xl mx-auto">
+      {/* Review Section */}
+      <section id="testimonials-section" className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
-          <FadeInWhenVisible>
-              <h2 className="features-header font-bold mb-4 sm:mb-6 px-4">
-                <span className="block text-gray-900">For small and growing businesses</span>
-                <span className="block bg-gradient-to-r from-blue-500 to-blue-900 bg-clip-text text-transparent">
-                Across Industries
-                </span>
-              </h2>
-            </FadeInWhenVisible>
-          </div>
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Review Section
+            </h1>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              Users can sell your product better than you
+            </p>
+                        </div>
 
-          {/* Desktop Grid */}
-          <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {useCases.map((useCase, index) => (
-              <div key={index} className="bg-white p-6 rounded-lg shadow-lg text-center">
-                <div className="text-4xl mb-4">{useCase.icon}</div>
-                <h3 className="text-xl font-semibold mb-3">{useCase.title}</h3>
-                <p className="text-gray-600">{useCase.description}</p>
-              </div>
-            ))}
-          </div>
-
-          {/* Mobile Carousel */}
-          <div className="md:hidden">
-            <MobileCarousel 
-              items={useCases}
-              renderItem={(useCase) => (
-                <div className="bg-white p-6 rounded-lg shadow-lg text-center mx-2">
-                  <div className="text-4xl mb-4">{useCase.icon}</div>
-                  <h3 className="text-xl font-semibold mb-3">{useCase.title}</h3>
-                  <p className="text-gray-600">{useCase.description}</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {testimonials.map((testimonial, index) => (
+              <div key={index} className="bg-white rounded-lg shadow-lg p-6 border border-gray-200">
+                <div className="flex items-center mb-4">
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
+                      ))}
+                    </div>
+                <p className="text-gray-700 mb-4">"{testimonial.quote}"</p>
+                <div className="flex items-center">
+                  <div className="w-10 h-10 bg-gray-300 rounded-full mr-3"></div>
+                  <div>
+                    <div className="font-semibold">{testimonial.name}</div>
+                    <div className="text-sm text-gray-500">{testimonial.location}</div>
+                  </div>
                 </div>
-              )}
-            />
+          </div>
+            ))}
           </div>
         </div>
       </section>
 
+      {/* FAQ Section */}
+      <section id="faq-section" className="py-16 bg-gray-50">
+        <div className="max-w-4xl mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              FAQ Section
+              </h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              Handle objections before they happen.
+            </p>
+          </div>
 
-      {/* Demo Section */}
-      <section id="demo-section" className="py-20 px-4 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            {/* Left Side - Demo Content */}
-            <div>
-              <div className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium mb-6">
-                <Camera className="w-4 h-4 mr-2" />
-                Interactive Demo Available
-              </div>
-              
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                See StockFlow in Action
+          <div className="space-y-4">
+            {faqData.map((faq, index) => (
+              <div key={index} className="bg-white rounded-lg shadow-sm border border-gray-200">
+                <button
+                  onClick={() => setOpenFAQ(openFAQ === index ? null : index)}
+                  className="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-50"
+                >
+                  <span className="font-semibold">{faq.question}</span>
+                  <span className="text-2xl">{openFAQ === index ? '−' : '+'}</span>
+                </button>
+                {openFAQ === index && (
+                  <div className="px-6 pb-4">
+                    <p className="text-gray-600">{faq.answer}</p>
+                </div>
+              )}
+                </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA Section */}
+      <section className="py-16 bg-blue-600">
+        <div className="max-w-4xl mx-auto text-center px-4">
+          {/* Main Headline */}
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+            Ready to Stop Losing Money to Stockouts?
               </h2>
               
-              <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-                Watch our 2-minute demo and discover how StockFlow can transform your inventory management. See real features, real results, and real savings.
-              </p>
-              
-              <div className="space-y-4 mb-8">
-                <div className="flex items-center space-x-3">
-                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-                  <span className="text-gray-700">Live inventory tracking demonstration</span>
+          {/* Sub-headline */}
+          <h3 className="text-3xl md:text-4xl font-bold text-yellow-400 mb-6">
+            Join 500+ SMEs Using StockFlow
+          </h3>
+          
+          {/* Introductory Paragraph */}
+          <p className="text-xl text-white mb-8 max-w-3xl mx-auto">
+            Start your free account today and save €2,400+ per year in lost sales. No credit card required, setup in 5 minutes.
+          </p>
+          
+          {/* Benefit Icons */}
+          <div className="flex flex-wrap justify-center gap-8 mb-8">
+            <div className="flex items-center text-white">
+              <Zap className="h-6 w-6 mr-2" />
+              <span className="text-lg">Start within 2 minutes</span>
                 </div>
-                <div className="flex items-center space-x-3">
-                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-                  <span className="text-gray-700">Barcode scanning in real-time</span>
+            <div className="flex items-center text-white">
+              <Shield className="h-6 w-6 mr-2" />
+              <span className="text-lg">100% safe and free</span>
                 </div>
-                <div className="flex items-center space-x-3">
-                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-                  <span className="text-gray-700">Automatic reorder point setup</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-                  <span className="text-gray-700">Mobile app walkthrough</span>
-                </div>
+            <div className="flex items-center text-white">
+              <Users className="h-6 w-6 mr-2" />
+              <span className="text-lg">Professional support</span>
               </div>
             </div>
             
-            {/* Right Side - Demo Preview */}
-            <div className="relative">
-              <div className="bg-white rounded-2xl shadow-2xl p-6">
-                {/* Demo Video Placeholder */}
-                <div className="bg-gray-900 rounded-xl aspect-video mb-4 relative overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center">
-                    <div className="text-center text-white">
-
-                      <h3 className="text-xl font-bold mb-2 mt-32">Demo Video</h3>
-                      <p className="text-blue-100">2-minute walkthrough</p>
-                    </div>
+          {/* Primary CTA Button */}
+          <div className="mb-8">
+            <Button
+              onClick={handleLoginClick}
+              className="bg-green-500 hover:bg-green-600 text-white px-12 py-6 text-2xl font-bold rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300"
+            >
+              🚀 Start Free Today - Save €2,400/Year →
+            </Button>
                   </div>
                   
-                  {/* Play Button Overlay */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <Link
-                      to="/demo"
-                      className="w-20 h-20 bg-white bg-opacity-90 hover:bg-opacity-100 rounded-full flex items-center justify-center transition-all duration-300 transform hover:scale-110 shadow-2xl"
-                    >
-                      <div className="w-0 h-0 border-l-[12px] border-l-blue-600 border-y-[8px] border-y-transparent ml-1"></div>
-                    </Link>
+          {/* Small Feature Text */}
+          <div className="flex flex-wrap justify-center gap-6 mb-8">
+            <div className="flex items-center text-white">
+              <CheckCircle className="h-5 w-5 mr-2" />
+              <span>No credit card required</span>
                   </div>
+            <div className="flex items-center text-white">
+              <CheckCircle className="h-5 w-5 mr-2" />
+              <span>Instant access</span>
                 </div>
-                
-                {/* Demo Stats */}
-                <div className="grid grid-cols-3 gap-4">
-                  <div className="text-center p-3 bg-blue-50 rounded-lg">
-                    <div className="text-2xl font-bold text-blue-600">2min</div>
-                    <div className="text-sm text-gray-600">Duration</div>
+            <div className="flex items-center text-white">
+              <CheckCircle className="h-5 w-5 mr-2" />
+              <span>GDPR-compliant</span>
                   </div>
-                  <div className="text-center p-3 bg-green-50 rounded-lg">
-                    <div className="text-2xl font-bold text-green-600">100%</div>
-                    <div className="text-sm text-gray-600">Free</div>
+            <div className="flex items-center text-white">
+              <CheckCircle className="h-5 w-5 mr-2" />
+              <span>100% secure</span>
                   </div>
-                  <div className="text-center p-3 bg-purple-50 rounded-lg">
-                    <div className="text-2xl font-bold text-purple-600">Live</div>
-                    <div className="text-sm text-gray-600">Demo</div>
                   </div>
+          
+          {/* Special Offer Banner */}
+          <div className="bg-blue-700 rounded-lg p-6 mb-8 max-w-2xl mx-auto">
+            <div className="flex items-center justify-center mb-3">
+              <Zap className="h-6 w-6 text-white mr-3" />
+              <span className="text-white text-xl font-bold">
+                Limited Time: Free Setup + €2,400 Annual Savings Guarantee
+              </span>
                 </div>
+            <p className="text-white text-lg">
+              Join 500+ SMEs who've already eliminated stockouts and saved thousands of euros. Start free today - no credit card required.
+            </p>
               </div>
               
-              {/* Floating Elements */}
-              <div className="absolute -top-4 -right-4 bg-green-500 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg animate-pulse">
-                ✓ No Signup Required
+          {/* Key Statistics */}
+          <div className="flex flex-wrap justify-center gap-12">
+            <div className="text-center">
+              <div className="text-4xl font-bold text-white mb-2">500+</div>
+              <div className="text-white">Active SMEs</div>
               </div>
+            <div className="text-center">
+              <div className="text-4xl font-bold text-white mb-2">9 hours</div>
+              <div className="text-white">Time saved/week</div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl font-bold text-white mb-2">4.8/5</div>
+              <div className="text-white">Customer satisfaction</div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* COOKIE CONSENT BANNER */}
+      {/* Cookie Consent Banner */}
       {showCookieBanner && (
         <div className="fixed inset-x-0 bottom-0 z-50">
           <div className="mx-auto max-w-6xl m-4 rounded-lg bg-white shadow-xl border border-gray-200 p-4 flex flex-col md:flex-row items-start md:items-center gap-3">
@@ -1710,224 +1893,79 @@ export const HomePage = () => {
       )}
 
 
-      {/* FINAL CTA - Enhanced for maximum conversion */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-blue-500 to-blue-900 py-12 sm:py-16 md:py-24">
-        {/* Animated background elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-40 -right-40 w-80 h-80 bg-white/10 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse"></div>
-          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-white/10 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse" style={{animationDelay: '2s'}}></div>
-          <div className="absolute top-40 left-1/2 w-80 h-80 bg-white/10 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse" style={{animationDelay: '4s'}}></div>
-        </div>
-        
-        <div className="relative z-10 max-w-6xl mx-auto text-center px-4 sm:px-6">
-          <FadeInWhenVisible>
-            <div className="inline-flex items-center gap-2 bg-white/20 text-white px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium mb-6 sm:mb-8">
-              <Rocket className="h-3 w-3 sm:h-4 sm:w-4" />
-              <span>Get Started Free</span>
-            </div>
-          </FadeInWhenVisible>
 
-          <FadeInWhenVisible>
-            <h2 className="cta-header font-bold mb-4 sm:mb-6 text-white leading-tight px-4">
-              <span className="block">Ready to Stop Losing Money to Stockouts?</span>
-              <span className="block bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent">
-                Join 500+  SMEs Using StockFlow
-              </span>
-            </h2>
-          </FadeInWhenVisible>
 
-          <FadeInWhenVisible>
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 sm:mb-8 text-white/90 max-w-4xl mx-auto leading-relaxed px-4">
-              Start your free account today and save $2,400+ per year in lost sales. No credit card required, setup in 5 minutes.
-            </p>
-          </FadeInWhenVisible>
-
-          {/* Value proposition */}
-          <FadeInWhenVisible>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-12 max-w-4xl mx-auto">
-              {(() => {
-                try {
-                  const benefits = [
-                    "Start within 2 minutes",
-                    "100% safe and free",
-                    "Professional support"
-                  ];
-                  if (Array.isArray(benefits)) {
-                    return benefits.map((benefit, index) => (
-                      <div key={index} className="flex items-center justify-center gap-3 text-white/90">
-                        <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
-                          {index === 0 ? <Zap className="h-6 w-6" /> : 
-                           index === 1 ? <Shield className="h-6 w-6" /> :
-                           <Users className="h-6 w-6" />}
+      {/* Footer */}
+      <footer className="bg-gray-900 text-gray-200 py-12">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+            {/* Company Logo */}
+            <div className="flex items-center">
+              <OptimizedImage
+                src="/logo.png"
+                alt="StockFlow"
+                className="h-8 w-auto"
+                loading="lazy"
+                sizes="32px"
+              />
                         </div>
-                        <span className="font-medium">{benefit}</span>
+            
+            {/* Pages */}
+            <div>
+              <h3 className="text-lg font-semibold mb-4">Pages</h3>
+              <div className="space-y-2">
+                <button 
+                  onClick={() => scrollToSection('features-section')} 
+                  className="block text-gray-400 hover:text-white"
+                >
+                  Features
+                </button>
+                <button 
+                  onClick={() => scrollToSection('how-it-works-section')} 
+                  className="block text-gray-400 hover:text-white"
+                >
+                  How It Works
+                </button>
+                <button 
+                  onClick={() => scrollToSection('testimonials-section')} 
+                  className="block text-gray-400 hover:text-white"
+                >
+                  Reviews
+                </button>
+                <button 
+                  onClick={() => scrollToSection('faq-section')} 
+                  className="block text-gray-400 hover:text-white"
+                >
+                  FAQs
+                </button>
+            </div>
                       </div>
-                    ));
-                  }
-                } catch (error) {
-                  console.warn('Translation error for benefits:', error);
-                }
-                // Fallback data
-                return [
-                  "Start within 2 minutes",
-                  "100% safe and free",
-                  "Professional support"
-                ].map((benefit, index) => (
-                  <div key={index} className="flex items-center justify-center gap-3 text-white/90">
-                    <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
-                      {index === 0 ? <Zap className="h-6 w-6" /> : 
-                       index === 1 ? <Shield className="h-6 w-6" /> :
-                       <Users className="h-6 w-6" />}
-                    </div>
-                    <span className="font-medium">{benefit}</span>
-                  </div>
-                ));
-              })()}
-            </div>
-          </FadeInWhenVisible>
-
-          {/* CTA Buttons */}
-          <FadeInWhenVisible>
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-6 sm:mb-8 px-4">
-              <Button 
-                data-analytics-id="final-start" 
-                size="lg" 
-                className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-8 sm:px-10 py-4 sm:py-5 rounded-xl font-bold transition-all duration-300 transform hover:scale-105 shadow-2xl text-lg sm:text-xl w-full sm:w-auto group relative overflow-hidden"
-                onClick={handleLoginClick}
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
-                <span className="relative z-10 flex items-center justify-center">
-                  🚀 Start Free Today - Save $2,400/Year
-                  <ArrowRight className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" />
-                </span>
-              </Button>
-            </div>
-          </FadeInWhenVisible>
-
-          {/* Trust indicators */}
-          <FadeInWhenVisible>
-            <div className="flex flex-wrap justify-center gap-3 sm:gap-6 text-xs sm:text-sm text-white/80 mb-6 sm:mb-8 px-4">
-              {(() => {
-                try {
-                  const trust = [
-                    "No credit card required",
-                    "Instant access",
-                    "GDPR-compliant",
-                    "100% secure"
-                  ];
-                  if (Array.isArray(trust)) {
-                    return trust.map((trustItem, index) => (
-                      <div key={index} className="flex items-center gap-1 sm:gap-2">
-                        {index === 0 ? <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4" /> : 
-                         index === 1 ? <Clock className="h-3 w-3 sm:h-4 sm:w-4" /> :
-                         index === 2 ? <Shield className="h-3 w-3 sm:h-4 sm:w-4" /> :
-                         <Globe className="h-3 w-3 sm:h-4 sm:w-4" />}
-                        <span>{trustItem}</span>
-                      </div>
-                    ));
-                  }
-                } catch (error) {
-                  console.warn('Translation error for trust:', error);
-                }
-                // Fallback data
-                return [
-                  "No credit card required",
-                  "Instant access",
-                  "GDPR-compliant",
-                  "100% secure"
-                ].map((trustItem, index) => (
-                  <div key={index} className="flex items-center gap-1 sm:gap-2">
-                    {index === 0 ? <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4" /> : 
-                     index === 1 ? <Clock className="h-3 w-3 sm:h-4 sm:w-4" /> :
-                     index === 2 ? <Shield className="h-3 w-3 sm:h-4 sm:w-4" /> :
-                     <Globe className="h-3 w-3 sm:h-4 sm:w-4" />}
-                    <span>{trustItem}</span>
-                  </div>
-                ));
-              })()}
-            </div>
-          </FadeInWhenVisible>
-
-          {/* Urgency element */}
-          <FadeInWhenVisible>
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 max-w-3xl mx-auto border border-white/20">
-              <div className="flex items-center justify-center gap-2 sm:gap-3 mb-2 sm:mb-3">
-                <Timer className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-300" />
-                <span className="text-yellow-300 font-semibold text-sm sm:text-base">⚡ Limited Time: Free Setup + $2,400 Annual Savings Guarantee</span>
+            
+            {/* Contact */}
+            <div>
+              <h3 className="text-lg font-semibold mb-4">Contact</h3>
+              <div className="space-y-2">
+                <Link to="/contact" className="block text-gray-400 hover:text-white">
+                  Contact Us
+                </Link>
+                <Link to="/support" className="block text-gray-400 hover:text-white">
+                  Support
+                </Link>
+                <Link to="/demo" className="block text-gray-400 hover:text-white">
+                  Demo
+                </Link>
               </div>
-              <p className="text-white/90 text-xs sm:text-sm text-center">
-                Join 500+  SMEs who've already eliminated stockouts and saved thousands of euros. Start free today - no credit card required.
-              </p>
             </div>
-          </FadeInWhenVisible>
-
-          {/* Social Proof Numbers */}
-          <FadeInWhenVisible>
-            <div className="mt-8 sm:mt-12 grid grid-cols-3 gap-2 sm:gap-4 md:gap-6 max-w-3xl mx-auto">
-              {(() => {
-                try {
-                  const stats = [
-                    { number: "500+", label: "Active SMEs" },
-                    { number: "9 hours", label: "Time saved/week" },
-                    { number: "4.8/5", label: "Customer satisfaction" }
-                  ];
-                  if (Array.isArray(stats)) {
-                    return stats.map((stat, index) => (
-                      <div key={index} className="text-center">
-                        <div className="text-sm sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold text-white mb-1">{stat.number}</div>
-                        <div className="text-xs sm:text-sm text-white/70">{stat.label}</div>
-                      </div>
-                    ));
-                  }
-                } catch (error) {
-                    console.warn('Translation error for stats:', error);
-                }
-                // Fallback data
-                return [
-                  { number: "500+", label: "Active SMEs" },
-                  { number: "9 hours", label: "Time saved/week" },
-                  { number: "4.8/5", label: "Customer satisfaction" }
-                ].map((stat, index) => (
-                  <div key={index} className="text-center">
-                    <div className="text-sm sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold text-white mb-1">{stat.number}</div>
-                    <div className="text-xs sm:text-sm text-white/70">{stat.label}</div>
-                  </div>
-                ));
-              })()}
-            </div>
-          </FadeInWhenVisible>
-        </div>
-      </section>
-
-
-
-
-<footer className="bg-gray-900 text-gray-200 py-12 md:py-16">
-  <div className="max-w-6xl mx-auto px-6">
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-      {/* Company Info */}
+            
+            {/* Socials */}
       <div>
-        <OptimizedImage
-          src="/logo.png"
-          alt="stockflow"
-          className="h-10 md:h-12 mb-6"
-          loading="lazy"
-          sizes="(max-width: 768px) 40px, 48px"
-        />
-        <p className="text-gray-400 text-base md:text-lg mb-6 leading-relaxed">
-          Smart inventory management for growing businesses
-        </p>
-        
-        {/* Social Media Follow Buttons */}
-        <div className="mb-6">
-          <h4 className="text-white font-semibold mb-3">Follow Us</h4>
-          <div className="flex gap-3">
+              <h3 className="text-lg font-semibold mb-4">Socials</h3>
+              <div className="flex space-x-4">
             <a 
               href="https://www.facebook.com/profile.php?id=61578067034898"
               target="_blank" 
               rel="noopener noreferrer"
-              className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-lg transition-colors"
-              aria-label="Follow us on Facebook"
+                  className="text-gray-400 hover:text-white"
             >
               <Facebook className="h-5 w-5" />
             </a>
@@ -1935,8 +1973,7 @@ export const HomePage = () => {
               href="https://twitter.com/stockflow" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="bg-sky-500 hover:bg-sky-600 text-white p-2 rounded-lg transition-colors"
-              aria-label="Follow us on Twitter"
+                  className="text-gray-400 hover:text-white"
             >
               <Twitter className="h-5 w-5" />
             </a>
@@ -1944,8 +1981,7 @@ export const HomePage = () => {
               href="https://www.linkedin.com/stockflow" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="bg-blue-700 hover:bg-blue-800 text-white p-2 rounded-lg transition-colors"
-              aria-label="Follow us on LinkedIn"
+                  className="text-gray-400 hover:text-white"
             >
               <Linkedin className="h-5 w-5" />
             </a>
@@ -1953,93 +1989,32 @@ export const HomePage = () => {
               href="https://www.instagram.com/stockflowbe"
               target="_blank" 
               rel="noopener noreferrer"
-              className="bg-pink-600 hover:bg-pink-700 text-white p-2 rounded-lg transition-colors"
-              aria-label="Follow us on Instagram"
+                  className="text-gray-400 hover:text-white"
             >
               <Instagram className="h-5 w-5" />
             </a>
           </div>
         </div>
-        
       </div>
       
-      {/* Quick Links */}
-      <div>
-        <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
-        <div className="space-y-2">
-          <button 
-            onClick={() => scrollToSection('video-section')} 
-            className="block text-gray-400 hover:text-white underline cursor-pointer"
-          >
-            Demo
-          </button>
-          <button 
-            onClick={() => scrollToSection('contact-section')} 
-            className="block text-gray-400 hover:text-white underline cursor-pointer"
-          >
-            Contact
-          </button>
-          <Link to="/auth" className="block text-gray-400 hover:text-white underline">
-            Login
-          </Link>
-          <Link to="/pricing" className="block text-gray-400 hover:text-white underline">
-            Pricing
-          </Link>
+          <div className="border-t border-gray-700 pt-6 text-center">
+            <div className="mb-4">
+              <p className="text-gray-400 text-sm italic">
+                Built by inventory management experts in Belgium to solve the complex challenge of 
+                stockouts and overstocking that costs SMEs thousands of euros annually.
+              </p>
         </div>
-      </div>
-      
-      {/* Resources */}
-      <div>
-        <h3 className="text-lg font-semibold mb-4">Resources</h3>
-        <div className="space-y-2">
-          <button 
-            onClick={() => scrollToSection('features-section')} 
-            className="block text-gray-400 hover:text-white underline cursor-pointer"
-          >
-            Features
-          </button>
-          <button 
-            onClick={() => scrollToSection('testimonials-section')} 
-            className="block text-gray-400 hover:text-white underline cursor-pointer"
-          >
-            Case Studies
-          </button>
-          <button 
-            onClick={() => scrollToSection('contact-section')} 
-            className="block text-gray-400 hover:text-white underline cursor-pointer"
-          >
-              Support
-          </button>
-          <Link to="/auth" className="block text-gray-400 hover:text-white underline">
-            Get Started
-          </Link>
-        </div>
-      </div>
-      
-      {/* Legal & Company Links */}
-      <div>
-        <h3 className="text-lg font-semibold mb-4">Legal & Company</h3>
-        <div className="space-y-2">
-          <Link to="/privacy-policy" className="block text-gray-400 hover:text-white underline">
+            <p className="text-gray-500 text-sm">
+              © 2025 StockFlow. All Rights Reserved.
+            </p>
+            <div className="flex justify-center space-x-6 mt-4">
+              <Link to="/privacy-policy" className="text-gray-500 hover:text-white text-sm">
             Privacy Policy
           </Link>
-          <Link to="/terms-conditions" className="block text-gray-400 hover:text-white underline">
+              <Link to="/terms-conditions" className="text-gray-500 hover:text-white text-sm">
             Terms & Conditions
           </Link>
-          <Link to="/about" className="block text-gray-400 hover:text-white underline">
-            About
-          </Link>
-          <Link to="/contact" className="block text-gray-400 hover:text-white underline">
-            Contact
-          </Link>
         </div>
-      </div>
-    </div>
-
-    <div className="border-t border-gray-700 pt-6 text-center">
-      <p className="text-gray-500 text-xs md:text-sm">
-        &copy; {new Date().getFullYear()} stockflow. All rights reserved. 
-      </p>
     </div>
   </div>
 </footer>
