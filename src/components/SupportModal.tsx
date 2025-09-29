@@ -62,17 +62,6 @@ export const SupportModal: React.FC<SupportModalProps> = ({
       disabled: !isGrowthOrPremium
     },
     {
-      id: 'videos',
-      title: 'Instructievideo\'s',
-      description: 'Learn how to use StockFlow optimally',
-      icon: Play,
-      action: () => {
-        // Open instructievideo's pagina of modal
-        window.open('/instructievideos', '_blank');
-      },
-      color: 'bg-green-500'
-    },
-    {
       id: 'faq',
       title: 'Frequently asked questions',
       description: 'Find answers to frequently asked questions',
@@ -101,16 +90,6 @@ export const SupportModal: React.FC<SupportModalProps> = ({
         window.open('mailto:info@stockflow.be');
       },
       color: 'bg-red-500'
-    },
-    {
-      id: 'docs',
-      title: 'Documentation',
-      description: 'Extensive documentation and API documentation',
-      icon: FileText,
-      action: () => {
-        window.open('/documentation', '_blank');
-      },
-      color: 'bg-indigo-500'
     }
   ];
 
@@ -296,7 +275,7 @@ const SupportContent: React.FC<SupportContentProps> = ({ onClose, supportOptions
         <div className="mt-8 p-4 bg-gray-50 rounded-lg">
           <h4 className="font-semibold text-gray-900 mb-2">Quick tips</h4>
           <ul className="text-sm text-gray-600 space-y-1">
-            <li>• Use the search function to find products quickly</li>
+              <li>• Use the search function to find products quickly</li>
             <li>• Scan barcodes for quick inventory updates</li>
             <li>• View your dashboard for an overview of your inventory</li>
             <li>• Set notifications to stay updated</li>
