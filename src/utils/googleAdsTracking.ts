@@ -81,7 +81,10 @@ export const trackGoogleAdsConversion = (
   eventName: string = 'conversion'
 ): void => {
   if (!isGoogleAdsAvailable()) {
-    console.warn('Google Ads tracking not available');
+    // Silently fail in production, only warn in development
+    if (process.env.NODE_ENV === 'development') {
+      console.warn('Google Ads tracking not available');
+    }
     return;
   }
 
@@ -94,17 +97,23 @@ export const trackGoogleAdsConversion = (
       ...(config.customParameters && { custom_parameters: config.customParameters }),
     };
 
-    // Fire the conversion event
+    // Fire the conversion event with error handling
     window.gtag('event', eventName, conversionEvent);
     
-    console.log('Google Ads conversion tracked:', {
-      eventName,
-      conversionId: config.conversionId,
-      conversionLabel: config.conversionLabel,
-      value: config.value,
-    });
+    // Only log in development
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Google Ads conversion tracked:', {
+        eventName,
+        conversionId: config.conversionId,
+        conversionLabel: config.conversionLabel,
+        value: config.value,
+      });
+    }
   } catch (error) {
-    console.error('Error tracking Google Ads conversion:', error);
+    // Silently fail in production, only log in development
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Error tracking Google Ads conversion:', error);
+    }
   }
 };
 
@@ -302,12 +311,17 @@ export const trackEnhancedConversion = (
  */
 export const initializeGoogleAdsTracking = (): void => {
   if (!isGoogleAdsAvailable()) {
-    console.warn('Google Ads tracking not available - gtag not loaded');
+    // Silently fail in production, only warn in development
+    if (process.env.NODE_ENV === 'development') {
+      console.warn('Google Ads tracking not available - gtag not loaded');
+    }
     return;
   }
 
-  // Track that the tracking system is working
-  console.log('Google Ads tracking initialized successfully');
+  // Only log in development
+  if (process.env.NODE_ENV === 'development') {
+    console.log('Google Ads tracking initialized successfully');
+  }
   
   // Optional: Track initial page load
   trackPageViewConversion('homepage_initial_load');

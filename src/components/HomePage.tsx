@@ -403,21 +403,28 @@ export const HomePage = () => {
   // usePageRefresh();
   // useWebsiteTracking();
   
-  // Initialize Google Ads tracking on component mount
+  // Initialize Google Ads tracking on component mount with error handling
   React.useEffect(() => {
     // Small delay to ensure gtag is loaded
     const timer = setTimeout(() => {
-      GoogleAdsTracking.initializeGoogleAdsTracking();
-      
-      // Track homepage page view conversion
-      GoogleAdsTracking.trackPageViewConversion(
-        'homepage',
-        1,
-        {
-          page_type: 'landing_page',
-          conversion_type: 'page_view'
+      try {
+        GoogleAdsTracking.initializeGoogleAdsTracking();
+        
+        // Track homepage page view conversion
+        GoogleAdsTracking.trackPageViewConversion(
+          'homepage',
+          1,
+          {
+            page_type: 'landing_page',
+            conversion_type: 'page_view'
+          }
+        );
+      } catch (error) {
+        // Silently fail in production, only log in development
+        if (process.env.NODE_ENV === 'development') {
+          console.warn('Google Ads tracking initialization failed:', error);
         }
-      );
+      }
     }, 1000);
     
     return () => clearTimeout(timer);
@@ -469,26 +476,40 @@ export const HomePage = () => {
   const handleLoginClick = () => {
     logger.info('CTA click', { id: 'start-now' });
     
-    // Track Google Ads conversion for registration intent
-    GoogleAdsTracking.trackCustomConversion(
-      'start_now_click',
-      'AW-17574614935',
-      1,
-      {
-        cta_location: 'hero_section',
-        cta_type: 'primary_button',
-        conversion_type: 'registration_intent'
+    // Track Google Ads conversion for registration intent with error handling
+    try {
+      GoogleAdsTracking.trackCustomConversion(
+        'start_now_click',
+        'AW-17574614935',
+        1,
+        {
+          cta_location: 'hero_section',
+          cta_type: 'primary_button',
+          conversion_type: 'registration_intent'
+        }
+      );
+    } catch (error) {
+      // Silently fail in production, only log in development
+      if (process.env.NODE_ENV === 'development') {
+        console.warn('Google Ads tracking failed:', error);
       }
-    );
+    }
     
-    navigate('/auth');
+    navigate('/pricing');
   };
 
   const handlePricingClick = () => {
     logger.info('CTA click', { id: 'pricing' });
     
-    // Track Google Ads conversion for pricing page view
-    GoogleAdsTracking.trackPricingViewConversion('homepage_cta');
+    // Track Google Ads conversion for pricing page view with error handling
+    try {
+      GoogleAdsTracking.trackPricingViewConversion('homepage_cta');
+    } catch (error) {
+      // Silently fail in production, only log in development
+      if (process.env.NODE_ENV === 'development') {
+        console.warn('Google Ads tracking failed:', error);
+      }
+    }
     
     navigate('/pricing');
   };
@@ -496,17 +517,24 @@ export const HomePage = () => {
   const handleHowItWorksClick = () => {
     logger.info('CTA click', { id: 'how-it-works' });
     
-    // Track Google Ads conversion for demo interest
-    GoogleAdsTracking.trackCustomConversion(
-      'demo_interest',
-      'AW-17574614935',
-      1,
-      {
-        cta_location: 'hero_section',
-        cta_type: 'secondary_button',
-        conversion_type: 'demo_interest'
+    // Track Google Ads conversion for demo interest with error handling
+    try {
+      GoogleAdsTracking.trackCustomConversion(
+        'demo_interest',
+        'AW-17574614935',
+        1,
+        {
+          cta_location: 'hero_section',
+          cta_type: 'secondary_button',
+          conversion_type: 'demo_interest'
+        }
+      );
+    } catch (error) {
+      // Silently fail in production, only log in development
+      if (process.env.NODE_ENV === 'development') {
+        console.warn('Google Ads tracking failed:', error);
       }
-    );
+    }
     
     scrollToSection('video-section');
   };
@@ -991,12 +1019,19 @@ export const HomePage = () => {
       localStorage.setItem('leads', JSON.stringify(existing));
       logger.info('Lead captured', { email: leadEmail });
       
-      // Track Google Ads conversion for lead capture
-      GoogleAdsTracking.trackContactFormConversion(
-        'email_signup',
-        leadEmail,
-        5 // Assign value to email signups
-      );
+      // Track Google Ads conversion for lead capture with error handling
+      try {
+        GoogleAdsTracking.trackContactFormConversion(
+          'email_signup',
+          leadEmail,
+          5 // Assign value to email signups
+        );
+      } catch (error) {
+        // Silently fail in production, only log in development
+        if (process.env.NODE_ENV === 'development') {
+          console.warn('Google Ads tracking failed:', error);
+        }
+      }
       
       setLeadStatus('success');
       setLeadEmail('');
@@ -1469,10 +1504,10 @@ export const HomePage = () => {
                   muted
                   loop
                   playsInline
-                  poster="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=675&fit=crop&crop=center"
+                  poster="/placeholder.svg"
                 >
-                  <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4" />
-                  <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.webm" type="video/webm" />
+                  <source src="/intro_vid.mp4" type="video/mp4" />
+                  <source src="/intro_vid.webm" type="video/webm" />
                   Your browser does not support the video tag.
                 </video>
                 
@@ -2180,7 +2215,7 @@ export const HomePage = () => {
 
           {/* Trust Indicators */}
           <SlideUpWhenVisible delay={700}>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-8 md:mb-12 max-w-4xl mx-auto">
+            <div className="grid grid-cols-4 md:grid-cols-4 gap-4 md:gap-6 mb-8 md:mb-12 max-w-4xl mx-auto">
               <div className="flex items-center justify-center text-white">
                 <CheckCircle className="h-5 w-5 md:h-6 md:w-6 text-green-400 mr-2" />
                 <span className="text-xs md:text-sm font-medium">No credit card required</span>

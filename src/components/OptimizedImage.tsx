@@ -53,7 +53,7 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
           height={height}
           loading={priority ? 'eager' : loading}
           decoding={priority ? 'sync' : 'async'}
-          fetchPriority={fetchpriority}
+          fetchpriority={fetchpriority}
           sizes={sizes}
           style={
             width || height
@@ -77,7 +77,7 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
       height={height}
       loading={priority ? 'eager' : loading}
       decoding={priority ? 'sync' : 'async'}
-      fetchPriority={fetchpriority}
+      fetchpriority={fetchpriority}
       sizes={sizes}
       style={
         width || height
