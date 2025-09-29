@@ -1585,40 +1585,50 @@ export const HomePage = () => {
           </FadeInWhenVisible>
           
           <SlideUpWhenVisible delay={200}>
-            <div className="grid grid-cols-4 xs:grid-cols-2 gap-4 md:gap-6 max-w-4xl mx-auto px-4">
+            <div className="grid gap-4 max-w-4xl mx-auto px-4 trust-grid">
+              <style jsx>{`
+                .trust-grid {
+                  grid-template-columns: repeat(2, 1fr);
+                }
+                @media (min-width: 1024px) {
+                  .trust-grid {
+                    grid-template-columns: repeat(4, 1fr) !important;
+                  }
+                }
+              `}</style>
               {/* Koffieboetiek */}
               <div className="flex flex-col items-center space-y-2 p-3 rounded-lg bg-white/50 backdrop-blur-sm border border-gray-200/50 hover:bg-white/80 transition-all duration-300">
-                <div className="w-12 h-12 md:w-14 md:h-14 bg-blue-100 rounded-full flex items-center justify-center shadow-sm">
-                  <span className="text-blue-600 font-bold text-sm md:text-base">KB</span>
+                <div className="w-12 h-12 lg:w-14 lg:h-14 bg-blue-100 rounded-full flex items-center justify-center shadow-sm">
+                  <span className="text-blue-600 font-bold text-sm lg:text-base">KB</span>
                 </div>
-                <span className="text-xs md:text-sm text-gray-700 font-medium text-center">Koffieboetiek</span>
+                <span className="text-xs lg:text-sm text-gray-700 font-medium text-center">Koffieboetiek</span>
                 <span className="text-xs text-gray-500 text-center">Coffee Shop</span>
               </div>
               
               {/* TechOnderdelen */}
               <div className="flex flex-col items-center space-y-2 p-3 rounded-lg bg-white/50 backdrop-blur-sm border border-gray-200/50 hover:bg-white/80 transition-all duration-300">
-                <div className="w-12 h-12 md:w-14 md:h-14 bg-green-100 rounded-full flex items-center justify-center shadow-sm">
-                  <span className="text-green-600 font-bold text-sm md:text-base">TB</span>
+                <div className="w-12 h-12 lg:w-14 lg:h-14 bg-green-100 rounded-full flex items-center justify-center shadow-sm">
+                  <span className="text-green-600 font-bold text-sm lg:text-base">TB</span>
                 </div>
-                <span className="text-xs md:text-sm text-gray-700 font-medium text-center">TechOnderdelen</span>
+                <span className="text-xs lg:text-sm text-gray-700 font-medium text-center">TechOnderdelen</span>
                 <span className="text-xs text-gray-500 text-center">Electronics</span>
               </div>
               
               {/* Creatief Atelier */}
               <div className="flex flex-col items-center space-y-2 p-3 rounded-lg bg-white/50 backdrop-blur-sm border border-gray-200/50 hover:bg-white/80 transition-all duration-300">
-                <div className="w-12 h-12 md:w-14 md:h-14 bg-purple-100 rounded-full flex items-center justify-center shadow-sm">
-                  <span className="text-purple-600 font-bold text-sm md:text-base">CA</span>
+                <div className="w-12 h-12 lg:w-14 lg:h-14 bg-purple-100 rounded-full flex items-center justify-center shadow-sm">
+                  <span className="text-purple-600 font-bold text-sm lg:text-base">CA</span>
                 </div>
-                <span className="text-xs md:text-sm text-gray-700 font-medium text-center">Creatief Atelier</span>
+                <span className="text-xs lg:text-sm text-gray-700 font-medium text-center">Creatief Atelier</span>
                 <span className="text-xs text-gray-500 text-center">Creative Studio</span>
               </div>
               
               {/* 500+ SMEs */}
               <div className="flex flex-col items-center space-y-2 p-3 rounded-lg bg-white/50 backdrop-blur-sm border border-gray-200/50 hover:bg-white/80 transition-all duration-300">
-                <div className="w-12 h-12 md:w-14 md:h-14 bg-orange-100 rounded-full flex items-center justify-center shadow-sm">
-                  <span className="text-orange-600 font-bold text-sm md:text-base">+</span>
+                <div className="w-12 h-12 lg:w-14 lg:h-14 bg-orange-100 rounded-full flex items-center justify-center shadow-sm">
+                  <span className="text-orange-600 font-bold text-sm lg:text-base">+</span>
                 </div>
-                <span className="text-xs md:text-sm text-gray-700 font-medium text-center">500+ SMEs</span>
+                <span className="text-xs lg:text-sm text-gray-700 font-medium text-center">500+ SMEs</span>
                 <span className="text-xs text-gray-500 text-center">Across Europe</span>
               </div>
             </div>
@@ -1830,7 +1840,17 @@ export const HomePage = () => {
             </p>
             
             {/* Trust Statistics */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+            <div className="grid gap-6 max-w-4xl mx-auto trust-stats-grid">
+              <style jsx>{`
+                .trust-stats-grid {
+                  grid-template-columns: repeat(2, 1fr);
+                }
+                @media (min-width: 1024px) {
+                  .trust-stats-grid {
+                    grid-template-columns: repeat(4, 1fr) !important;
+                  }
+                }
+              `}</style>
               {trustStats.map((stat, index) => (
                 <div key={index} className="text-center px-4">
                   <div className="text-3xl md:text-4xl font-bold text-blue-600 mb-2">{stat.number}</div>
@@ -2036,9 +2056,20 @@ export const HomePage = () => {
                 Everything you need to know about StockFlow. 
                 Get answers to the questions that matter most to your business.
               </p>
-              
+                      
               {/* Trust Indicators */}
               <div className="flex justify-center items-center space-x-8 text-sm text-gray-600 mb-8">
+              <style jsx>{`
+                .trust-grid {
+                  grid-template-columns: repeat(2, 1fr);
+                }
+                @media (min-width: 1024px) {
+                  .trust-grid {
+                    grid-template-columns: repeat(4, 1fr) !important;
+                  }
+                }
+              `}</style>
+
                 <div className="flex items-center">
                   <Clock className="h-5 w-5 text-blue-500 mr-1" />
                   <span>5-minute support response</span>
