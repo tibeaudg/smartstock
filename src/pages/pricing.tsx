@@ -217,7 +217,7 @@ export default function PricingPage() {
                   className="w-full rounded-full transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl }"
                   onClick={() => handleSelectPlan(tier.name)}
                 >
-                  {tier.price_monthly === 0 ? 'Current plan' : 'Start 14-day trial'}
+                  {tier.price_monthly === 0 ? 'Get Started' : 'Start 14-day trial'}
                 </Button>
               </CardFooter>
             </Card>

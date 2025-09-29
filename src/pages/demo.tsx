@@ -13,6 +13,7 @@ import SEO from '@/components/SEO';
 import { motion } from 'framer-motion';
 import { logger } from '../lib/logger';
 import { GoogleAdsTracking } from '@/utils/googleAdsTracking';
+import { SavingsCalculator } from '@/components/SavingsCalculator';
 
 // Fade-in animation component
 const FadeInWhenVisible = ({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) => {
@@ -283,6 +284,50 @@ export const DemoPage = () => {
           </div>
         </section>
 
+        {/* Interactive Savings Calculator - High-Converting Micro-Conversion */}
+        <section className="py-16 bg-gradient-to-br from-blue-50 to-indigo-100">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6">
+            <FadeInWhenVisible>
+              <div className="text-center mb-12">
+                <div className="inline-flex items-center gap-2 bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-medium mb-6">
+                  <TrendingUp className="h-4 w-4" />
+                  <span>Calculate Your Savings</span>
+                </div>
+                <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+                  See Your Potential Savings
+                </h2>
+                <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                  After watching the demo, calculate exactly how much StockFlow could save your business. 
+                  Get a personalized estimate in under 2 minutes.
+                </p>
+              </div>
+            </FadeInWhenVisible>
+
+            <FadeInWhenVisible delay={200}>
+              <SavingsCalculator 
+                onCalculate={(savings) => {
+                  // Track the micro-conversion from demo page
+                  try {
+                    GoogleAdsTracking.trackCustomConversion(
+                      'demo_savings_calculated',
+                      'AW-17574614935',
+                      savings,
+                      {
+                        currency: 'EUR',
+                        source: 'demo_page',
+                        conversion_type: 'demo_savings_calculated'
+                      }
+                    );
+                  } catch (error) {
+                    // Silently fail
+                  }
+                }}
+                className="max-w-4xl mx-auto"
+              />
+            </FadeInWhenVisible>
+          </div>
+        </section>
+
         {/* Step-by-Step Instructions */}
         <section className="py-16 bg-white">
           <div className="max-w-6xl mx-auto px-4 sm:px-6">
@@ -441,34 +486,65 @@ export const DemoPage = () => {
           </div>
         </section>
 
-        {/* Final CTA Section */}
-        <section className="py-16 bg-gradient-to-r from-blue-600 to-blue-800">
-          <div className="max-w-4xl mx-auto text-center px-4 sm:px-6">
+        {/* Final CTA Section - Enhanced with Value Props */}
+        <section className="py-20 bg-gradient-to-r from-blue-600 to-blue-800">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6">
             <FadeInWhenVisible>
-              <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-                Ready to Get Started?
-              </h2>
-              <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-                Join hundreds of companies that already manage their inventory with StockFlow
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <div className="text-center mb-12">
+                <h2 className="text-4xl sm:text-5xl font-bold text-white mb-6">
+                  Ready to Save €2,400+ Per Year?
+                </h2>
+                <p className="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
+                  Join hundreds of companies that already save thousands annually with StockFlow. 
+                  Start your free account today and see the difference in your first week.
+                </p>
+                
+                {/* Value Proposition Grid */}
+                <div className="grid md:grid-cols-3 gap-6 mb-12 max-w-4xl mx-auto">
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                    <div className="text-3xl font-bold text-white mb-2">€2,400+</div>
+                    <div className="text-blue-100 text-sm">Average Annual Savings</div>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                    <div className="text-3xl font-bold text-white mb-2">8 Hours</div>
+                    <div className="text-blue-100 text-sm">Saved Per Week</div>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                    <div className="text-3xl font-bold text-white mb-2">5 Min</div>
+                    <div className="text-blue-100 text-sm">Setup Time</div>
+                  </div>
+                </div>
+              </div>
+            </FadeInWhenVisible>
+
+            <FadeInWhenVisible delay={200}>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                 <Button
                   size="lg"
-                  className="bg-white text-blue-600 px-8 py-4 rounded-xl font-bold hover:bg-gray-50 transition-all duration-300 transform hover:scale-105 shadow-lg"
+                  className="bg-white text-blue-600 px-12 py-6 rounded-2xl font-bold hover:bg-gray-50 transition-all duration-300 transform hover:scale-105 shadow-2xl text-lg"
                   onClick={handleLoginClick}
                 >
-                  <Target className="h-5 w-5 mr-2" />
-                  Start Free
+                  <Zap className="h-6 w-6 mr-3" />
+                  Start Saving Today - Free
+                  <ArrowRight className="h-6 w-6 ml-3" />
                 </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="border-white text-white hover:bg-white hover:text-blue-600 px-8 py-4 rounded-xl font-bold transition-all duration-300"
-                  onClick={() => navigate('/contact')}
-                >
-                  <ExternalLink className="h-5 w-5 mr-2" />
-                  Contact Us
-                </Button>
+                <div className="text-center sm:text-left">
+                  <p className="text-blue-100 text-sm mb-1">No credit card required</p>
+                  <p className="text-blue-200 text-xs">Free forever plan available</p>
+                </div>
+              </div>
+            </FadeInWhenVisible>
+
+            <FadeInWhenVisible delay={400}>
+              <div className="text-center mt-12">
+                <p className="text-blue-200 text-sm mb-4">
+                  Trusted by 500+ businesses across Europe
+                </p>
+                <div className="flex justify-center items-center gap-8 opacity-80">
+                  <div className="text-white font-semibold">Koffieboetiek</div>
+                  <div className="text-white font-semibold">TechOnderdelen</div>
+                  <div className="text-white font-semibold">Creatief Atelier</div>
+                </div>
               </div>
             </FadeInWhenVisible>
           </div>

@@ -22,6 +22,7 @@ import { useCurrency } from '@/hooks/useCurrency';
 // import { usePerformanceOptimization } from '@/hooks/usePerformanceOptimization';
 import { GoogleAdsTracking } from '@/utils/googleAdsTracking';
 import { ConversionTrackingTest } from './ConversionTrackingTest';
+import { SavingsCalculator } from './SavingsCalculator';
 
 // CLS monitoring in development
 if (process.env.NODE_ENV === 'development') {
@@ -1650,7 +1651,44 @@ export const HomePage = () => {
         </div>
       </section>
 
-
+      {/* Interactive Savings Calculator - Micro-Conversion */}
+      <section className="py-20 bg-white">
+        <div className="max-w-4xl mx-auto px-4">
+          <FadeInWhenVisible>
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-5xl font-light text-gray-800 mb-4">
+                Calculate Your Savings
+              </h2>
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                See exactly how much StockFlow could save your business. 
+                Get a personalized calculation in under 2 minutes.
+              </p>
+            </div>
+          </FadeInWhenVisible>
+          
+          <SlideUpWhenVisible delay={200}>
+            <SavingsCalculator 
+              onCalculate={(savings) => {
+                // Track the micro-conversion
+                try {
+                  GoogleAdsTracking.trackCustomConversion(
+                    'savings_calculated',
+                    'AW-17574614935',
+                    savings,
+                    {
+                      currency: 'EUR',
+                      conversion_type: 'savings_calculated'
+                    }
+                  );
+                } catch (error) {
+                  // Silently fail
+                }
+              }}
+              className="max-w-4xl mx-auto"
+            />
+          </SlideUpWhenVisible>
+        </div>
+      </section>
 
       {/* Enhanced Features Section - Benefit-Focused */}
       <section id="features-section" className="py-20 bg-gradient-to-br from-slate-50 to-blue-50">
