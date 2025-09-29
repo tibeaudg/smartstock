@@ -2,6 +2,7 @@ import SEO from '../../components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '../../components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
+import { generateComprehensiveStructuredData } from '../../lib/structuredData';
 import { 
   Smartphone, 
   BarChart3, 
@@ -55,6 +56,40 @@ export default function WarehouseSoftware() {
       answer: "Absolutely! Warehouse software is beneficial for warehouses of all sizes. StockFlow offers scalable solutions that grow with your business, from small operations to large distribution centers."
     }
   ];
+
+  // Generate structured data
+  const structuredData = generateComprehensiveStructuredData('software', {
+    title: "Best Warehouse Software - Streamline Operations",
+    url: "https://www.stockflow.be/warehouse-software",
+    description: "Streamline your warehouse operations with the best warehouse software. Inventory tracking, shipping integration, picking optimization, and more.",
+    breadcrumbs: [
+      { name: "Home", url: "https://www.stockflow.be/", position: 1 },
+      { name: "Warehouse Software", url: "https://www.stockflow.be/warehouse-software", position: 2 }
+    ],
+    faqData: faqData,
+    softwareData: {
+      name: "StockFlow - Best Warehouse Software",
+      description: "Streamline your warehouse operations with the best warehouse software. Inventory tracking, shipping integration, picking optimization, and more.",
+      category: "BusinessApplication",
+      operatingSystem: "Web Browser",
+      price: "0",
+      currency: "EUR",
+      rating: {
+        value: "4.8",
+        count: "150"
+      },
+      features: [
+        "Warehouse layout management",
+        "Shipping integration",
+        "Receiving management",
+        "Picking optimization",
+        "Warehouse analytics",
+        "Team management"
+      ],
+      image: "https://www.stockflow.be/Inventory-Management.png",
+      url: "https://www.stockflow.be/warehouse-software"
+    }
+  });
 
   const features = [
     {
@@ -178,6 +213,7 @@ export default function WarehouseSoftware() {
         description="Streamline your warehouse operations with the best warehouse software. Inventory tracking, shipping integration, picking optimization, and more. Start free trial today!"
         keywords="warehouse software, warehouse management software, warehouse management system, WMS software, warehouse operations software, warehouse tracking software, warehouse inventory software, warehouse automation software, warehouse optimization software, warehouse management solution, warehouse software for small business, best warehouse software, warehouse software comparison, warehouse software features, warehouse software pricing, warehouse software demo, warehouse software trial, warehouse software reviews"
         url="https://www.stockflow.be/warehouse-software"
+        structuredData={structuredData}
       />
 
       {/* Hero Section with Background */}
@@ -491,69 +527,6 @@ export default function WarehouseSoftware() {
         </div>
       </footer>
 
-      {/* Schema.org Structured Data */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-          ${faqData.map(faq => `{
-            "@type": "Question",
-            "name": "${faq.question}",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "${faq.answer}"
-            }
-          }`).join(',')}
-        ]
-      }`}} />
-
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
-        "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        "name": "StockFlow - Best Warehouse Software",
-        "description": "Streamline your warehouse operations with the best warehouse software. Inventory tracking, shipping integration, picking optimization, and more.",
-        "applicationCategory": "BusinessApplication",
-        "operatingSystem": "Web Browser",
-        "offers": {
-          "@type": "Offer",
-          "price": "0",
-          "priceCurrency": "EUR",
-          "description": "Free plan - Basic warehouse management",
-          "availability": "https://schema.org/InStock"
-        },
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "4.8",
-          "ratingCount": "150",
-          "bestRating": "5",
-          "worstRating": "1"
-        },
-        "author": {
-          "@type": "Organization",
-          "name": "StockFlow"
-        },
-        "publisher": {
-          "@type": "Organization",
-          "name": "StockFlow",
-          "logo": {
-            "@type": "ImageObject",
-            "url": "https://www.stockflow.be/logo.png"
-          }
-        },
-        "image": "https://www.stockflow.be/Inventory-Management.png",
-        "mainEntityOfPage": {
-          "@type": "WebPage",
-          "@id": "https://www.stockflow.be/warehouse-software"
-        },
-        "featureList": [
-          "Warehouse layout management",
-          "Shipping integration",
-          "Receiving management",
-          "Picking optimization",
-          "Warehouse analytics",
-          "Team management"
-        ]
-      }`}} />
     </SeoPageLayout>
   );
 }

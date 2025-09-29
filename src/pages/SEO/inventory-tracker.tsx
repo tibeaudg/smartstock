@@ -2,6 +2,7 @@ import SEO from '../../components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '../../components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
+import { generateComprehensiveStructuredData } from '../../lib/structuredData';
 import { 
   Smartphone, 
   BarChart3, 
@@ -55,6 +56,40 @@ export default function InventoryTracker() {
       answer: "Absolutely! Inventory trackers are especially beneficial for small businesses as they help automate manual processes, reduce errors, and provide insights that were previously only available to large enterprises. StockFlow offers affordable solutions for businesses of all sizes."
     }
   ];
+
+  // Generate structured data
+  const structuredData = generateComprehensiveStructuredData('software', {
+    title: "Best Inventory Tracker - Real-time Stock Management",
+    url: "https://www.stockflow.be/inventory-tracker",
+    description: "Track your inventory in real-time with the best inventory tracker. Barcode scanning, movement tracking, and automated alerts.",
+    breadcrumbs: [
+      { name: "Home", url: "https://www.stockflow.be/", position: 1 },
+      { name: "Inventory Tracker", url: "https://www.stockflow.be/inventory-tracker", position: 2 }
+    ],
+    faqData: faqData,
+    softwareData: {
+      name: "StockFlow - Best Inventory Tracker",
+      description: "Track your inventory in real-time with the best inventory tracker. Barcode scanning, movement tracking, and automated alerts.",
+      category: "BusinessApplication",
+      operatingSystem: "Web Browser",
+      price: "0",
+      currency: "EUR",
+      rating: {
+        value: "4.8",
+        count: "150"
+      },
+      features: [
+        "Real-time tracking",
+        "Barcode scanning",
+        "Movement history",
+        "Analytics dashboard",
+        "Location tracking",
+        "Automated alerts"
+      ],
+      image: "https://www.stockflow.be/Inventory-Management.png",
+      url: "https://www.stockflow.be/inventory-tracker"
+    }
+  });
 
   const features = [
     {
@@ -178,6 +213,7 @@ export default function InventoryTracker() {
         description="Track your inventory in real-time with the best inventory tracker. Barcode scanning, movement tracking, and automated alerts. Start free trial today!"
         keywords="inventory tracker, stock tracker, inventory tracking, stock tracking, inventory monitoring, stock monitoring, inventory tracking software, stock tracking software, inventory tracking app, stock tracking app, real-time inventory tracking, inventory movement tracking, stock movement tracking, inventory tracking system, stock tracking system, inventory tracker app, stock tracker app, inventory tracking tool, stock tracking tool, inventory tracking solution, stock tracking solution"
         url="https://www.stockflow.be/inventory-tracker"
+        structuredData={structuredData}
       />
 
       {/* Hero Section with Background */}
@@ -491,69 +527,6 @@ export default function InventoryTracker() {
         </div>
       </footer>
 
-      {/* Schema.org Structured Data */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-          ${faqData.map(faq => `{
-            "@type": "Question",
-            "name": "${faq.question}",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "${faq.answer}"
-            }
-          }`).join(',')}
-        ]
-      }`}} />
-
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
-        "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        "name": "StockFlow - Best Inventory Tracker",
-        "description": "Track your inventory in real-time with the best inventory tracker. Barcode scanning, movement tracking, and automated alerts.",
-        "applicationCategory": "BusinessApplication",
-        "operatingSystem": "Web Browser",
-        "offers": {
-          "@type": "Offer",
-          "price": "0",
-          "priceCurrency": "EUR",
-          "description": "Free plan - Basic inventory tracking",
-          "availability": "https://schema.org/InStock"
-        },
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "4.8",
-          "ratingCount": "150",
-          "bestRating": "5",
-          "worstRating": "1"
-        },
-        "author": {
-          "@type": "Organization",
-          "name": "StockFlow"
-        },
-        "publisher": {
-          "@type": "Organization",
-          "name": "StockFlow",
-          "logo": {
-            "@type": "ImageObject",
-            "url": "https://www.stockflow.be/logo.png"
-          }
-        },
-        "image": "https://www.stockflow.be/Inventory-Management.png",
-        "mainEntityOfPage": {
-          "@type": "WebPage",
-          "@id": "https://www.stockflow.be/inventory-tracker"
-        },
-        "featureList": [
-          "Real-time tracking",
-          "Barcode scanning",
-          "Movement history",
-          "Analytics dashboard",
-          "Location tracking",
-          "Automated alerts"
-        ]
-      }`}} />
     </SeoPageLayout>
   );
 }

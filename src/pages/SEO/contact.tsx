@@ -30,31 +30,143 @@ export default function Contact() {
     // You can integrate with your contact API here
   };
 
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "ContactPage",
-    "name": "Contact StockFlow",
-    "description": "Get in touch with StockFlow for support, sales inquiries, or general questions about our inventory management software.",
-    "url": "https://www.stockflow.be/contact",
-    "mainEntity": {
+  const structuredData = [
+    // ContactPage Schema
+    {
+      "@context": "https://schema.org",
+      "@type": "ContactPage",
+      "name": "Contact StockFlow",
+      "description": "Get in touch with StockFlow for support, sales inquiries, or general questions about our inventory management software.",
+      "url": "https://www.stockflow.be/contact",
+      "mainEntity": {
+        "@type": "Organization",
+        "name": "StockFlow",
+        "url": "https://www.stockflow.be"
+      }
+    },
+    // Organization Schema
+    {
+      "@context": "https://schema.org",
       "@type": "Organization",
       "name": "StockFlow",
+      "alternateName": "stockflow",
       "url": "https://www.stockflow.be",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.stockflow.be/logo.png",
+        "width": 200,
+        "height": 60
+      },
+      "description": "Smart inventory management software for growing businesses. Free stock management solution for SMEs.",
+      "foundingDate": "2024",
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "BE",
+        "addressRegion": "Belgium"
+      },
       "contactPoint": [
         {
           "@type": "ContactPoint",
           "telephone": "+32-XXX-XXX-XXX",
           "contactType": "customer service",
-          "email": "support@stockflow.be"
+          "email": "support@stockflow.be",
+          "availableLanguage": ["English"]
         },
         {
           "@type": "ContactPoint",
           "contactType": "sales",
-          "email": "sales@stockflow.be"
+          "email": "sales@stockflow.be",
+          "availableLanguage": ["English"]
+        },
+        {
+          "@type": "ContactPoint",
+          "contactType": "technical support",
+          "email": "support@stockflow.be"
+        }
+      ],
+      "sameAs": [
+        "https://www.facebook.com/profile.php?id=61578067034898",
+        "https://twitter.com/stockflow",
+        "https://www.linkedin.com/stockflow",
+        "https://www.instagram.com/stockflowbe"
+      ],
+      "knowsAbout": [
+        "Inventory Management",
+        "Stock Control",
+        "Warehouse Management",
+        "Business Software",
+        "SME Solutions"
+      ],
+      "makesOffer": {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "SoftwareApplication",
+          "name": "StockFlow Inventory Management",
+          "description": "Free inventory management software for small and medium businesses"
+        },
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    // BreadcrumbList Schema
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.stockflow.be/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Contact",
+          "item": "https://www.stockflow.be/contact"
         }
       ]
+    },
+    // WebSite Schema
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "StockFlow",
+      "url": "https://www.stockflow.be",
+      "description": "Smart inventory management for growing businesses",
+      "publisher": {
+        "@type": "Organization",
+        "name": "StockFlow"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://www.stockflow.be/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    },
+    // Service Schema
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "name": "Inventory Management Service",
+      "description": "Professional inventory management and stock control services for businesses",
+      "provider": {
+        "@type": "Organization",
+        "name": "StockFlow"
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "Belgium"
+      },
+      "serviceType": "Software as a Service",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR",
+        "description": "Free inventory management service"
+      }
     }
-  };
+  ];
 
   function scrollToSection(arg0: string): void {
     throw new Error('Function not implemented.');

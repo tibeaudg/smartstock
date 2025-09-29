@@ -2,6 +2,7 @@ import SEO from '../../components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '../../components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
+import { generateComprehensiveStructuredData } from '../../lib/structuredData';
 
 export default function StockbeheerSoftware() {
   // Gebruik de page refresh hook
@@ -30,6 +31,41 @@ export default function StockbeheerSoftware() {
     }
   ];
 
+  // Generate structured data
+  const structuredData = generateComprehensiveStructuredData('software', {
+    title: "Stockbeheer Software 2024 | Gratis Proefperiode & Horeca Focus",
+    url: "https://www.stockflow.be/stockbeheer-software",
+    description: "Ontdek de beste stockbeheer software voor KMO's. Gratis starten, real-time tracking & barcode scanning. Bespaar 70% tijd op voorraadbeheer.",
+    breadcrumbs: [
+      { name: "Home", url: "https://www.stockflow.be/", position: 1 },
+      { name: "Stockbeheer Software", url: "https://www.stockflow.be/stockbeheer-software", position: 2 }
+    ],
+    faqData: faqData,
+    softwareData: {
+      name: "stockflow Stockbeheer Software",
+      description: "Gratis stockbeheer software voor kleine ondernemers. Beheer je voorraad eenvoudig online.",
+      category: "BusinessApplication",
+      operatingSystem: "Web, iOS, Android",
+      price: "0",
+      currency: "EUR",
+      rating: {
+        value: "4.8",
+        count: "127"
+      },
+      features: [
+        "Real-time voorraad tracking",
+        "Barcode scanning",
+        "Multi-locatie ondersteuning",
+        "Automatische herbestelling",
+        "Rapportage en analytics",
+        "Team samenwerking",
+        "Mobiele app toegang"
+      ],
+      image: "https://www.stockflow.be/Inventory-Management.png",
+      url: "https://www.stockflow.be/stockbeheer-software"
+    }
+  });
+
   return (
     <SeoPageLayout title="Stockbeheer Software voor Kleine Ondernemers">
       <SEO
@@ -37,6 +73,7 @@ export default function StockbeheerSoftware() {
         description="✅ Ontdek de beste stockbeheer software voor KMO's. Gratis starten, real-time tracking & barcode scanning. Bespaar 70% tijd op voorraadbeheer. Start nu!"
         keywords="stockbeheer software, gratis stockbeheer, voorraadbeheer software, stockbeheer programma, magazijnbeheer software, inventarisatie software, stockbeheer app, voorraadbeheer app, stockflow, gratis voorraadbeheer, KMO software, kleine onderneming software"
         url="https://www.stockflow.be/stockbeheer-software"
+        structuredData={structuredData}
       />
 
       {/* Hero Section - Split Layout */}
@@ -282,81 +319,6 @@ export default function StockbeheerSoftware() {
         </div>
       </footer>
 
-      {/* Schema.org Structured Data */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-          ${faqData.map(faq => `{
-            "@type": "Question",
-            "name": "${faq.question}",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "${faq.answer}"
-            }
-          }`).join(',')}
-        ]
-      }`}} />
-
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
-        "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        "name": "stockflow Stockbeheer Software",
-        "description": "Gratis stockbeheer software voor kleine ondernemers. Beheer je voorraad eenvoudig online.",
-        "applicationCategory": "BusinessApplication",
-        "operatingSystem": "Web, iOS, Android",
-        "offers": {
-          "@type": "Offer",
-          "price": "0",
-          "priceCurrency": "EUR",
-          "availability": "https://schema.org/InStock",
-          "validFrom": "2024-01-01"
-        },
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "4.8",
-          "reviewCount": "127",
-          "bestRating": "5",
-          "worstRating": "1"
-        },
-        "review": [
-          {
-            "@type": "Review",
-            "author": {
-              "@type": "Person",
-              "name": "Jan V."
-            },
-            "reviewRating": {
-              "@type": "Rating",
-              "ratingValue": "5",
-              "bestRating": "5"
-            },
-            "reviewBody": "Geweldige software voor mijn kleine winkel. Eenvoudig te gebruiken en bespaart me veel tijd."
-          },
-          {
-            "@type": "Review",
-            "author": {
-              "@type": "Person",
-              "name": "Maria L."
-            },
-            "reviewRating": {
-              "@type": "Rating",
-              "ratingValue": "5",
-              "bestRating": "5"
-            },
-            "reviewBody": "Perfect voor mijn horeca bedrijf. Voorkomt verspilling en helpt bij planning."
-          }
-        ],
-        "publisher": {
-          "@type": "Organization",
-          "name": "stockflow",
-          "logo": {
-            "@type": "ImageObject",
-            "url": "https://www.stockflow.be/logo.png"
-          }
-        },
-        "url": "https://www.stockflow.be/stockbeheer-software"
-      }`}} />
     </SeoPageLayout>
   );
 }

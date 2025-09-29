@@ -18,6 +18,7 @@ import OptimizedImage from '@/components/OptimizedImage';
 import { Helmet } from 'react-helmet-async';
 import { logger } from '../lib/logger';
 import { useCurrency } from '@/hooks/useCurrency';
+import { generateComprehensiveStructuredData } from '../lib/structuredData';
 // import { useWebsiteTracking } from '@/hooks/useWebsiteTracking';
 // import { usePerformanceOptimization } from '@/hooks/usePerformanceOptimization';
 import { GoogleAdsTracking } from '@/utils/googleAdsTracking';
