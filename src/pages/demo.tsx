@@ -1,12 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Header } from '@/components/HeaderPublic';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { 
   Play, ArrowRight, CheckCircle, Star, Zap, Shield, BarChart3, 
   Package, Users, Clock, Target, TrendingUp, Smartphone, 
-  Monitor, Database, Settings, Download, ExternalLink
+  Monitor, Database, Settings, Download, ExternalLink, Scan,
+  ShoppingCart, Truck, Plus, Edit, Trash2, Search, Filter,
+  TrendingDown, AlertTriangle, CheckCircle2, X
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import SEO from '@/components/SEO';
@@ -127,428 +131,531 @@ const FeatureHighlight = ({
   </motion.div>
 );
 
+// Mock data for demo
+const mockProducts = [
+  { id: 1, name: "Laptop Dell XPS 13", sku: "DELL-XPS13-001", stock: 15, price: 1299.99, category: "Electronics", lowStock: false },
+  { id: 2, name: "Wireless Mouse Logitech", sku: "LOG-MOUSE-002", stock: 3, price: 29.99, category: "Accessories", lowStock: true },
+  { id: 3, name: "USB-C Cable 2m", sku: "USB-C-2M-003", stock: 45, price: 12.99, category: "Cables", lowStock: false },
+  { id: 4, name: "Mechanical Keyboard", sku: "KEYB-MECH-004", stock: 8, price: 89.99, category: "Accessories", lowStock: false },
+  { id: 5, name: "Monitor 24\" 4K", sku: "MON-24-4K-005", stock: 0, price: 299.99, category: "Monitors", lowStock: true },
+  { id: 6, name: "Webcam HD 1080p", sku: "CAM-HD-006", stock: 12, price: 79.99, category: "Accessories", lowStock: false }
+];
+
+const mockMovements = [
+  { id: 1, product: "Laptop Dell XPS 13", type: "In", quantity: 5, date: "2024-01-15", user: "Demo User" },
+  { id: 2, product: "Wireless Mouse Logitech", type: "Out", quantity: 2, date: "2024-01-14", user: "Demo User" },
+  { id: 3, product: "USB-C Cable 2m", type: "In", quantity: 20, date: "2024-01-13", user: "Demo User" },
+  { id: 4, product: "Monitor 24\" 4K", type: "Out", quantity: 3, date: "2024-01-12", user: "Demo User" }
+];
+
+// Demo Components
+const DemoHeader = ({ onLogin }: { onLogin: () => void }) => (
+  <div className="bg-white border-b border-gray-200 px-6 py-4">
+    <div className="flex items-center justify-between">
+      <div className="flex items-center space-x-4">
+        <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+          <Package className="w-5 h-5 text-white" />
+        </div>
+        <div>
+          <h1 className="text-xl font-bold text-gray-900">StockFlow Demo</h1>
+          <p className="text-sm text-gray-500">Interactive Demo Environment</p>
+        </div>
+      </div>
+      <div className="flex items-center space-x-3">
+        <Badge variant="secondary" className="bg-green-50 text-green-700 border-green-200">
+          <CheckCircle className="w-3 h-3 mr-1" />
+          Demo Mode
+        </Badge>
+        <Button onClick={onLogin} className="bg-blue-600 hover:bg-blue-700">
+          Get Started
+        </Button>
+      </div>
+    </div>
+  </div>
+);
+
+const DemoSidebar = ({ activeTab, onTabChange }: { activeTab: string; onTabChange: (tab: string) => void }) => {
+  const menuItems = [
+    { id: 'dashboard', label: 'Dashboard', icon: BarChart3 },
+    { id: 'products', label: 'Products', icon: Package },
+    { id: 'movements', label: 'Movements', icon: ShoppingCart },
+    { id: 'scanner', label: 'Scanner', icon: Scan },
+    { id: 'analytics', label: 'Analytics', icon: TrendingUp }
+  ];
+
+  return (
+    <div className="w-64 bg-gray-50 border-r border-gray-200 h-full">
+      <div className="p-4">
+        <nav className="space-y-2">
+          {menuItems.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => onTabChange(item.id)}
+              className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-left transition-colors ${
+                activeTab === item.id
+                  ? 'bg-blue-100 text-blue-700 border border-blue-200'
+                  : 'text-gray-700 hover:bg-gray-100'
+              }`}
+            >
+              <item.icon className="w-5 h-5" />
+              <span className="font-medium">{item.label}</span>
+            </button>
+          ))}
+        </nav>
+      </div>
+    </div>
+  );
+};
+
+const DemoDashboard = () => {
+  const totalProducts = mockProducts.length;
+  const lowStockCount = mockProducts.filter(p => p.lowStock).length;
+  const outOfStockCount = mockProducts.filter(p => p.stock === 0).length;
+  const totalValue = mockProducts.reduce((sum, p) => sum + (p.stock * p.price), 0);
+
+  return (
+    <div className="p-6 space-y-6">
+      <div>
+        <h2 className="text-2xl font-bold text-gray-900 mb-2">Dashboard</h2>
+        <p className="text-gray-600">Overview of your inventory management</p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Total Products</p>
+                <p className="text-2xl font-bold text-gray-900">{totalProducts}</p>
+              </div>
+              <Package className="w-8 h-8 text-blue-600" />
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Low Stock</p>
+                <p className="text-2xl font-bold text-orange-600">{lowStockCount}</p>
+              </div>
+              <AlertTriangle className="w-8 h-8 text-orange-600" />
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Out of Stock</p>
+                <p className="text-2xl font-bold text-red-600">{outOfStockCount}</p>
+              </div>
+              <X className="w-8 h-8 text-red-600" />
+                </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Total Value</p>
+                <p className="text-2xl font-bold text-green-600">€{totalValue.toLocaleString()}</p>
+              </div>
+              <TrendingUp className="w-8 h-8 text-green-600" />
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <Card>
+          <CardHeader>
+            <CardTitle>Recent Movements</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {mockMovements.slice(0, 4).map((movement) => (
+                <div key={movement.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                  <div>
+                    <p className="font-medium text-gray-900">{movement.product}</p>
+                    <p className="text-sm text-gray-500">{movement.date}</p>
+                  </div>
+                  <div className="text-right">
+                    <Badge variant={movement.type === 'In' ? 'default' : 'destructive'}>
+                      {movement.type} {movement.quantity}
+                    </Badge>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Low Stock Alerts</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {mockProducts.filter(p => p.lowStock || p.stock === 0).map((product) => (
+                <div key={product.id} className="flex items-center justify-between p-3 bg-red-50 rounded-lg">
+                  <div>
+                    <p className="font-medium text-gray-900">{product.name}</p>
+                    <p className="text-sm text-gray-500">SKU: {product.sku}</p>
+                  </div>
+                  <div className="text-right">
+                    <Badge variant={product.stock === 0 ? 'destructive' : 'secondary'}>
+                      {product.stock} left
+                    </Badge>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+};
+
+const DemoProducts = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterCategory, setFilterCategory] = useState('all');
+
+  const filteredProducts = mockProducts.filter(product => {
+    const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         product.sku.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = filterCategory === 'all' || product.category === filterCategory;
+    return matchesSearch && matchesCategory;
+  });
+
+  const categories = ['all', ...Array.from(new Set(mockProducts.map(p => p.category)))];
+
+  return (
+    <div className="p-6 space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Products</h2>
+          <p className="text-gray-600">Manage your inventory products</p>
+        </div>
+        <Button className="bg-blue-600 hover:bg-blue-700">
+          <Plus className="w-4 h-4 mr-2" />
+          Add Product
+        </Button>
+              </div>
+
+      <div className="flex space-x-4">
+        <div className="flex-1">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+            <Input
+              placeholder="Search products..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10"
+            />
+          </div>
+        </div>
+        <select
+          value={filterCategory}
+          onChange={(e) => setFilterCategory(e.target.value)}
+          className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          {categories.map(category => (
+            <option key={category} value={category}>
+              {category === 'all' ? 'All Categories' : category}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="grid gap-4">
+        {filteredProducts.map((product) => (
+          <Card key={product.id} className="hover:shadow-md transition-shadow">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div className="flex-1">
+                  <div className="flex items-center space-x-3">
+                    <h3 className="text-lg font-semibold text-gray-900">{product.name}</h3>
+                    <Badge variant={product.lowStock ? 'destructive' : 'secondary'}>
+                      {product.stock} in stock
+                    </Badge>
+                  </div>
+                  <p className="text-sm text-gray-500 mt-1">SKU: {product.sku}</p>
+                  <p className="text-sm text-gray-500">Category: {product.category}</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-lg font-semibold text-gray-900">€{product.price}</p>
+                  <div className="flex space-x-2 mt-2">
+                    <Button size="sm" variant="outline">
+                      <Edit className="w-4 h-4" />
+                    </Button>
+                    <Button size="sm" variant="outline">
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const DemoMovements = () => (
+  <div className="p-6 space-y-6">
+    <div>
+      <h2 className="text-2xl font-bold text-gray-900 mb-2">Stock Movements</h2>
+      <p className="text-gray-600">Track all inventory movements and transactions</p>
+          </div>
+
+    <div className="space-y-4">
+      {mockMovements.map((movement) => (
+        <Card key={movement.id}>
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-4">
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                  movement.type === 'In' ? 'bg-green-100' : 'bg-red-100'
+                }`}>
+                  {movement.type === 'In' ? (
+                    <TrendingUp className="w-5 h-5 text-green-600" />
+                  ) : (
+                    <TrendingDown className="w-5 h-5 text-red-600" />
+                  )}
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-900">{movement.product}</h3>
+                  <p className="text-sm text-gray-500">{movement.date} • {movement.user}</p>
+                </div>
+              </div>
+              <div className="text-right">
+                <Badge variant={movement.type === 'In' ? 'default' : 'destructive'}>
+                  {movement.type === 'In' ? '+' : '-'}{movement.quantity}
+                </Badge>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  </div>
+);
+
+const DemoScanner = () => {
+  const [scannedCode, setScannedCode] = useState('');
+  const [scanResult, setScanResult] = useState<any>(null);
+
+  const handleScan = () => {
+    // Simulate barcode scanning
+    const mockBarcodes = ['DELL-XPS13-001', 'LOG-MOUSE-002', 'USB-C-2M-003'];
+    const randomCode = mockBarcodes[Math.floor(Math.random() * mockBarcodes.length)];
+    setScannedCode(randomCode);
+    
+    const product = mockProducts.find(p => p.sku === randomCode);
+    setScanResult(product);
+  };
+
+  return (
+    <div className="p-6 space-y-6">
+      <div>
+        <h2 className="text-2xl font-bold text-gray-900 mb-2">Barcode Scanner</h2>
+        <p className="text-gray-600">Scan barcodes to quickly update inventory</p>
+          </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <Card>
+          <CardHeader>
+            <CardTitle>Scanner Interface</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="text-center">
+              <div className="w-32 h-32 mx-auto bg-gray-100 rounded-lg flex items-center justify-center mb-4">
+                <Scan className="w-16 h-16 text-gray-400" />
+              </div>
+              <Button onClick={handleScan} className="w-full">
+                <Scan className="w-4 h-4 mr-2" />
+                Simulate Scan
+              </Button>
+            </div>
+            
+            {scannedCode && (
+              <div className="p-4 bg-blue-50 rounded-lg">
+                <p className="text-sm text-blue-600">Scanned Code: {scannedCode}</p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {scanResult && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Scan Result</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                <div>
+                  <Label className="text-sm font-medium text-gray-600">Product Name</Label>
+                  <p className="text-lg font-semibold">{scanResult.name}</p>
+                </div>
+                <div>
+                  <Label className="text-sm font-medium text-gray-600">SKU</Label>
+                  <p className="text-sm text-gray-900">{scanResult.sku}</p>
+                    </div>
+                    <div>
+                  <Label className="text-sm font-medium text-gray-600">Current Stock</Label>
+                  <p className="text-lg font-semibold">{scanResult.stock} units</p>
+                </div>
+                <div className="flex space-x-2">
+                  <Button size="sm" className="bg-green-600 hover:bg-green-700">
+                    Add Stock
+                  </Button>
+                  <Button size="sm" variant="outline">
+                    Remove Stock
+                  </Button>
+                    </div>
+                  </div>
+            </CardContent>
+          </Card>
+        )}
+                    </div>
+                  </div>
+  );
+};
+
+const DemoAnalytics = () => (
+  <div className="p-6 space-y-6">
+                    <div>
+      <h2 className="text-2xl font-bold text-gray-900 mb-2">Analytics</h2>
+      <p className="text-gray-600">Insights and reports for your inventory</p>
+                    </div>
+
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <Card>
+        <CardHeader>
+          <CardTitle>Stock Distribution</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-3">
+            {mockProducts.map((product) => (
+              <div key={product.id} className="flex items-center justify-between">
+                <span className="text-sm text-gray-600">{product.name}</span>
+                <div className="flex items-center space-x-2">
+                  <div className="w-24 bg-gray-200 rounded-full h-2">
+                    <div 
+                      className="bg-blue-600 h-2 rounded-full" 
+                      style={{ width: `${(product.stock / 50) * 100}%` }}
+                    ></div>
+                  </div>
+                  <span className="text-sm font-medium">{product.stock}</span>
+                </div>
+              </div>
+            ))}
+                    </div>
+                  </CardContent>
+                </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Category Overview</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-3">
+            {Array.from(new Set(mockProducts.map(p => p.category))).map((category) => {
+              const categoryProducts = mockProducts.filter(p => p.category === category);
+              const totalStock = categoryProducts.reduce((sum, p) => sum + p.stock, 0);
+              const totalValue = categoryProducts.reduce((sum, p) => sum + (p.stock * p.price), 0);
+              
+              return (
+                <div key={category} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                  <div>
+                    <p className="font-medium text-gray-900">{category}</p>
+                    <p className="text-sm text-gray-500">{categoryProducts.length} products</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm font-medium">{totalStock} units</p>
+                    <p className="text-sm text-gray-500">€{totalValue.toLocaleString()}</p>
+                  </div>
+                </div>
+              );
+            })}
+              </div>
+        </CardContent>
+      </Card>
+                </div>
+              </div>
+);
+
 export const DemoPage = () => {
   const navigate = useNavigate();
-  const [activeStep, setActiveStep] = useState(1);
+  const [activeTab, setActiveTab] = useState('dashboard');
 
   const handleLoginClick = () => {
     logger.info('Demo page CTA clicked', { source: 'demo_page' });
     navigate('/auth');
   };
 
-  const handleVideoPlay = () => {
-    logger.info('Demo video play', { id: 'demo-page-video' });
-    
-    // Track Google Ads conversion for video engagement
-    GoogleAdsTracking.trackCustomConversion(
-      'video_play',
-      'AW-17574614935',
-      2,
-      {
-        video_name: 'demo_page_video',
-        video_location: 'demo_page',
-        conversion_type: 'video_engagement'
-      }
-    );
+  const renderContent = () => {
+    switch (activeTab) {
+      case 'dashboard':
+        return <DemoDashboard />;
+      case 'products':
+        return <DemoProducts />;
+      case 'movements':
+        return <DemoMovements />;
+      case 'scanner':
+        return <DemoScanner />;
+      case 'analytics':
+        return <DemoAnalytics />;
+      default:
+        return <DemoDashboard />;
+    }
   };
-
-  const instructionSteps = [
-    {
-      number: 1,
-      title: "Register your account",
-      description: "Create a free account in less than 2 minutes. No credit card required.",
-      icon: Users
-    },
-    {
-      number: 2,
-      title: "Set up your first location",
-      description: "Configure your business details and first location for your inventory management.",
-      icon: Settings
-    },
-    {
-      number: 3,
-      title: "Add your products",
-      description: "Import your products via Excel or add them manually with our intuitive interface.",
-      icon: Package
-    },
-    {
-      number: 4,
-      title: "Start scanning",
-      description: "Use your smartphone or scanner to track inventory changes in real-time.",
-      icon: Smartphone
-    },
-    {
-      number: 5,
-      title: "Analyze your data",
-      description: "View reports and insights to optimize your inventory management.",
-      icon: BarChart3
-    }
-  ];
-
-  const features = [
-    {
-      icon: Smartphone,
-      title: "Mobile Inventory Management",
-      description: "Manage your inventory anywhere with our mobile app. Scan barcodes, update inventory and view reports on your phone.",
-      benefits: [
-        "Barcode scanning with your phone",
-        "Offline work possible",
-        "Real-time synchronization",
-        "Intuitive mobile interface"
-      ]
-    },
-    {
-      icon: BarChart3,
-      title: "Advanced Reporting",
-      description: "Get insights into your inventory with detailed reports and analytics. Make better decisions with data.",
-      benefits: [
-        "Real-time inventory reports",
-        "Trend analysis and predictions",
-        "Export to Excel/PDF",
-        "Custom dashboard widgets"
-      ]
-    },
-    {
-      icon: Shield,
-      title: "Secure Cloud Storage",
-      description: "Your data is securely stored in the cloud with automatic backups and enterprise-grade security.",
-      benefits: [
-        "Automatic daily backups",
-        "SSL encryption for all data",
-        "GDPR compliant",
-        "99.9% uptime guarantee"
-      ]
-    }
-  ];
 
   return (
     <>
       <SEO 
-        title="Demo - StockFlow Inventory Management Software"
-        description="Watch our demo and discover how easy it is to manage your inventory with StockFlow. Step-by-step instructions and live demo video."
-        keywords="demo, inventory management demo, stock management software demo, inventory management demo"
+        title="Interactive Demo - StockFlow Inventory Management Software"
+        description="Try StockFlow's inventory management software with our interactive demo. Experience all features with real data and see how easy it is to manage your inventory."
+        keywords="interactive demo, inventory management demo, stock management software demo, try StockFlow"
       />
       
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
+      <div className="min-h-screen bg-gray-50">
         <Header />
         
-        {/* Hero Section */}
-        <section className="pt-20 pb-12 px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <FadeInWhenVisible>
-              <div className="text-center mb-12">
-                <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-medium mb-6">
-                  <Play className="h-4 w-4" />
-                  <span>Live Demo</span>
-                </div>
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
-                  <span className="block text-gray-900">Discover StockFlow</span>
-                  <span className="block bg-gradient-to-r from-blue-500 to-blue-900 bg-clip-text text-transparent">
-                    In Action
-                  </span>
-                </h1>
-                <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                  See how easy it is to manage your inventory with our intuitive software. 
-                  Watch the demo and follow our step-by-step instructions.
-                </p>
-              </div>
-            </FadeInWhenVisible>
-
-            {/* Video Section */}
-            <FadeInWhenVisible delay={200}>
-              <div className="relative max-w-5xl mx-auto mb-16">
-                <div className="bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-100">
-                  <div className="aspect-video bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center">
-                    <video 
-                      controls 
-                      poster="/Inventory-Management.png" 
-                      className="w-full h-full object-cover"
-                      preload="none"
-                      onPlay={handleVideoPlay}
-                    >
-                      <source src="/intro_vid.mp4" type="video/mp4" />
-                      Video not available
-                    </video>
-                  </div>
-                </div>
-                
-                {/* Video overlay info */}
-                <div className="absolute top-4 left-4 bg-black/70 text-white px-3 py-1 rounded-lg text-sm">
-                  <div className="flex items-center gap-2">
-                    <Play className="w-4 h-4" />
-                    <span>Demo Video</span>
-                  </div>
+        {/* Demo Header */}
+        <DemoHeader onLogin={handleLoginClick} />
+        
+        {/* Demo Interface */}
+        <div className="flex h-screen">
+          <DemoSidebar activeTab={activeTab} onTabChange={setActiveTab} />
+          <div className="flex-1 overflow-y-auto">
+            {renderContent()}
                 </div>
               </div>
-            </FadeInWhenVisible>
-          </div>
-        </section>
-
-        {/* Interactive Savings Calculator - High-Converting Micro-Conversion */}
-        <section className="py-16 bg-gradient-to-br from-blue-50 to-indigo-100">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6">
-            <FadeInWhenVisible>
-              <div className="text-center mb-12">
-                <div className="inline-flex items-center gap-2 bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-medium mb-6">
-                  <TrendingUp className="h-4 w-4" />
-                  <span>Calculate Your Savings</span>
-                </div>
-                <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-                  See Your Potential Savings
-                </h2>
-                <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                  After watching the demo, calculate exactly how much StockFlow could save your business. 
-                  Get a personalized estimate in under 2 minutes.
-                </p>
-              </div>
-            </FadeInWhenVisible>
-
-            <FadeInWhenVisible delay={200}>
-              <SavingsCalculator 
-                onCalculate={(savings) => {
-                  // Track the micro-conversion from demo page
-                  try {
-                    GoogleAdsTracking.trackCustomConversion(
-                      'demo_savings_calculated',
-                      'AW-17574614935',
-                      savings,
-                      {
-                        currency: 'EUR',
-                        source: 'demo_page',
-                        conversion_type: 'demo_savings_calculated'
-                      }
-                    );
-                  } catch (error) {
-                    // Silently fail
-                  }
-                }}
-                className="max-w-4xl mx-auto"
-              />
-            </FadeInWhenVisible>
-          </div>
-        </section>
-
-        {/* Step-by-Step Instructions */}
-        <section className="py-16 bg-white">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6">
-            <FadeInWhenVisible>
-              <div className="text-center mb-12">
-                <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-                  How to Get Started
-                </h2>
-                <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                  Follow these simple steps to get started with StockFlow right away
-                </p>
-              </div>
-            </FadeInWhenVisible>
-
-            <div className="grid gap-6 max-w-4xl mx-auto">
-              {instructionSteps.map((step, index) => (
-                <InstructionStep
-                  key={step.number}
-                  number={step.number}
-                  title={step.title}
-                  description={step.description}
-                  icon={step.icon}
-                  isActive={activeStep === step.number}
-                />
-              ))}
+        
+        {/* Demo Footer with CTA */}
+        <div className="bg-white border-t border-gray-200 px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div className="text-sm text-gray-500">
+              <p>This is a demo environment with sample data. <strong>Ready to get started?</strong></p>
             </div>
-
-            <FadeInWhenVisible delay={400}>
-              <div className="text-center mt-12">
-                <Button
-                  size="lg"
-                  className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 py-4 rounded-xl font-bold hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
-                  onClick={handleLoginClick}
-                >
-                  <Zap className="h-5 w-5 mr-2" />
-                  Start Free Now
-                  <ArrowRight className="h-5 w-5 ml-2" />
-                </Button>
-              </div>
-            </FadeInWhenVisible>
-          </div>
-        </section>
-
-        {/* Feature Highlights */}
-        <section className="py-16 bg-gradient-to-br from-gray-50 to-blue-50">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6">
-            <FadeInWhenVisible>
-              <div className="text-center mb-12">
-                <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-                  Key Features
-                </h2>
-                <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                  Discover the powerful features that make StockFlow the best inventory management software
-                </p>
-              </div>
-            </FadeInWhenVisible>
-
-            <div className="grid md:grid-cols-3 gap-8">
-              {features.map((feature, index) => (
-                <FeatureHighlight
-                  key={index}
-                  icon={feature.icon}
-                  title={feature.title}
-                  description={feature.description}
-                  benefits={feature.benefits}
-                />
-              ))}
+            <div className="flex space-x-3">
+              <Button variant="outline" onClick={() => window.location.reload()}>
+                Reset Demo
+              </Button>
+              <Button onClick={handleLoginClick} className="bg-blue-600 hover:bg-blue-700">
+                <Zap className="w-4 h-4 mr-2" />
+                Start Free Account
+              </Button>
             </div>
           </div>
-        </section>
-
-        {/* Interactive Demo Section */}
-        <section className="py-16 bg-white">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6">
-            <FadeInWhenVisible>
-              <div className="text-center mb-12">
-                <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-                  Try It Yourself
-                </h2>
-                <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                  Start immediately with a free account and experience the power of StockFlow
-                </p>
-              </div>
-            </FadeInWhenVisible>
-
-            <div className="grid md:grid-cols-2 gap-12 items-center">
-              <FadeInWhenVisible delay={200}>
-                <div className="space-y-6">
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                      <CheckCircle className="w-6 h-6 text-green-600" />
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-semibold text-gray-900">No Setup Costs</h3>
-                      <p className="text-gray-600">Start immediately without hidden costs</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                      <Clock className="w-6 h-6 text-blue-600" />
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-semibold text-gray-900">5 Minute Setup</h3>
-                      <p className="text-gray-600">You're ready to start within 5 minutes</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                      <Star className="w-6 h-6 text-purple-600" />
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-semibold text-gray-900">Try for Free</h3>
-                      <p className="text-gray-600">Test all features without obligations</p>
-                    </div>
-                  </div>
-                </div>
-              </FadeInWhenVisible>
-
-              <FadeInWhenVisible delay={400}>
-                <Card className="p-8 bg-gradient-to-br from-blue-50 to-purple-50 border-2 border-blue-200">
-                  <CardHeader className="text-center pb-4">
-                    <CardTitle className="text-2xl font-bold text-gray-900">
-                      Start Your Free Account
-                    </CardTitle>
-                    <p className="text-gray-600">
-                      No credit card required • Direct access
-                    </p>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <Button
-                      size="lg"
-                      className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-4 rounded-xl font-bold hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105 shadow-lg"
-                      onClick={handleLoginClick}
-                    >
-                      <Zap className="h-5 w-5 mr-2" />
-                      Create Free Account
-                    </Button>
-                    
-                    <div className="text-center">
-                      <p className="text-sm text-gray-500">
-                        Already have an account?{' '}
-                        <button 
-                          onClick={handleLoginClick}
-                          className="text-blue-600 hover:text-blue-700 font-medium"
-                        >
-                          Login
-                        </button>
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
-              </FadeInWhenVisible>
-            </div>
-          </div>
-        </section>
-
-        {/* Final CTA Section - Enhanced with Value Props */}
-        <section className="py-20 bg-gradient-to-r from-blue-600 to-blue-800">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6">
-            <FadeInWhenVisible>
-              <div className="text-center mb-12">
-                <h2 className="text-4xl sm:text-5xl font-bold text-white mb-6">
-                  Ready to Save €2,400+ Per Year?
-                </h2>
-                <p className="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
-                  Join hundreds of companies that already save thousands annually with StockFlow. 
-                  Start your free account today and see the difference in your first week.
-                </p>
-                
-                {/* Value Proposition Grid */}
-                <div className="grid md:grid-cols-3 gap-6 mb-12 max-w-4xl mx-auto">
-                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
-                    <div className="text-3xl font-bold text-white mb-2">€2,400+</div>
-                    <div className="text-blue-100 text-sm">Average Annual Savings</div>
-                  </div>
-                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
-                    <div className="text-3xl font-bold text-white mb-2">8 Hours</div>
-                    <div className="text-blue-100 text-sm">Saved Per Week</div>
-                  </div>
-                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
-                    <div className="text-3xl font-bold text-white mb-2">5 Min</div>
-                    <div className="text-blue-100 text-sm">Setup Time</div>
-                  </div>
-                </div>
-              </div>
-            </FadeInWhenVisible>
-
-            <FadeInWhenVisible delay={200}>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <Button
-                  size="lg"
-                  className="bg-white text-blue-600 px-12 py-6 rounded-2xl font-bold hover:bg-gray-50 transition-all duration-300 transform hover:scale-105 shadow-2xl text-lg"
-                  onClick={handleLoginClick}
-                >
-                  <Zap className="h-6 w-6 mr-3" />
-                  Start Saving Today - Free
-                  <ArrowRight className="h-6 w-6 ml-3" />
-                </Button>
-                <div className="text-center sm:text-left">
-                  <p className="text-blue-100 text-sm mb-1">No credit card required</p>
-                  <p className="text-blue-200 text-xs">Free forever plan available</p>
-                </div>
-              </div>
-            </FadeInWhenVisible>
-
-            <FadeInWhenVisible delay={400}>
-              <div className="text-center mt-12">
-                <p className="text-blue-200 text-sm mb-4">
-                  Trusted by 500+ businesses across Europe
-                </p>
-                <div className="flex justify-center items-center gap-8 opacity-80">
-                  <div className="text-white font-semibold">Koffieboetiek</div>
-                  <div className="text-white font-semibold">TechOnderdelen</div>
-                  <div className="text-white font-semibold">Creatief Atelier</div>
-                </div>
-              </div>
-            </FadeInWhenVisible>
-          </div>
-        </section>
+        </div>
       </div>
     </>
   );
