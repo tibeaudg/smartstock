@@ -1,0 +1,8 @@
+# ads.txt file for stockflow.be
+# This file helps prevent unauthorized inventory sales
+
+# Google AdSense
+google.com, pub-XXXXXXXXXX, DIRECT, f08c47fec0942fa0
+
+# Add other authorized sellers as needed
+# Example format: domain.com, publisher-id, relationship, certification-authority-id
