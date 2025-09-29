@@ -567,8 +567,8 @@ export const HomePage = () => {
     {
       question: "Can I try StockFlow before committing to anything?",
       answer: "Of course! That's exactly what we recommend. Sign up for free (no credit card required), import a few products, and see how it works for your business. Most customers know within the first week if StockFlow is right for them. If it's not a perfect fit, you can export your data anytime.",
-      category: "Trial",
-      benefit: "Free trial with no commitment"
+      category: "Free Plan",
+      benefit: "Free forever plan with no commitment"
     }
   ];
 
@@ -1443,14 +1443,17 @@ export const HomePage = () => {
               onClick={handleLoginClick}
               className="bg-blue-600 hover:bg-blue-700 text-white px-12 py-6 text-xl font-semibold rounded-full transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25 border border-blue-500/20"
             >
-              Get Started →
+              Get Free Forever Plan
             </Button>
                 </div>
               </ScaleInWhenVisible>
               
               <FadeInWhenVisible delay={800}>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-gray-500 mb-2">
                   No credit card needed ♦ Unlimited time on Free plan
+                </p>
+                <p className="text-xs text-gray-400">
+                  Includes a Free Plan for 1 User/100 Products, or Try All Features Free for 14 Days
                 </p>
               </FadeInWhenVisible>
             </div>
@@ -2091,50 +2094,46 @@ export const HomePage = () => {
           {/* Security Certifications */}
           <FadeInWhenVisible delay={200}>
             <div className="mb-8 md:mb-12">
-              <div className="grid grid-cols-2 gap-6 max-w-2xl mx-auto">
+              <div className="grid grid-cols-4 gap-6 max-w-2xl mx-auto">
                 {/* GDPR */}
                 <div className="flex flex-col items-center px-4">
-                  <div className="w-16 h-16 md:w-20 md:h-20 bg-white rounded-full shadow-lg flex items-center justify-center mb-3">
+                  <div className="w-16 h-16 md:w-20 md:h-20 bg-white rounded-full shadow-lg border border-gray-200 flex items-center justify-center mb-3">
                     <div className="text-center">
                       <div className="text-xs font-bold text-gray-800">GDPR</div>
                       <div className="text-xs text-gray-600">Compliant</div>
                     </div>
                   </div>
-                  <span className="text-sm text-gray-600">GDPR</span>
                 </div>
 
                 {/* SOC 2 */}
                 <div className="flex flex-col items-center px-4">
-                  <div className="w-16 h-16 md:w-20 md:h-20 bg-white rounded-full shadow-lg flex items-center justify-center mb-3">
+                  <div className="w-16 h-16 md:w-20 md:h-20 bg-white rounded-full shadow-lg border border-gray-200 flex items-center justify-center mb-3">
                     <div className="text-center">
                       <div className="text-xs font-bold text-gray-800">SOC 2</div>
                       <div className="text-xs text-gray-600">Type II</div>
                     </div>
                   </div>
-                  <span className="text-sm text-gray-600">SOC 2</span>
                 </div>
 
                 {/* ISO 27001 */}
                 <div className="flex flex-col items-center px-4">
-                  <div className="w-16 h-16 md:w-20 md:h-20 bg-white rounded-full shadow-lg flex items-center justify-center mb-3">
+                  <div className="w-16 h-16 md:w-20 md:h-20 bg-white rounded-full shadow-lg border border-gray-200 flex items-center justify-center mb-3">
                     <div className="text-center">
                       <div className="text-xs font-bold text-gray-800">ISO</div>
                       <div className="text-xs text-gray-600">27001</div>
                     </div>
                   </div>
-                  <span className="text-sm text-gray-600">ISO 27001</span>
                 </div>
 
                 {/* HIPAA */}
                 <div className="flex flex-col items-center px-4">
-                  <div className="w-16 h-16 md:w-20 md:h-20 bg-white rounded-full shadow-lg flex items-center justify-center mb-3">
+                  <div className="w-16 h-16 md:w-20 md:h-20 bg-white rounded-full shadow-lg border border-gray-200 flex items-center justify-center mb-3">
                     <div className="text-center">
                       <div className="text-xs font-bold text-gray-800">HIPAA</div>
                       <div className="text-xs text-gray-600">Ready</div>
                     </div>
                   </div>
-                  <span className="text-sm text-gray-600">HIPAA</span>
-                </div>
+                                  </div>
               </div>
             </div>
           </FadeInWhenVisible>
