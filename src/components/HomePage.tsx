@@ -403,31 +403,63 @@ export const HomePage = () => {
   // usePageRefresh();
   // useWebsiteTracking();
   
-  // Initialize Google Ads tracking on component mount with error handling
+  // Initialize tracking with comprehensive error suppression
   React.useEffect(() => {
-    // Small delay to ensure gtag is loaded
-    const timer = setTimeout(() => {
-      try {
-        GoogleAdsTracking.initializeGoogleAdsTracking();
-        
-        // Track homepage page view conversion
-        GoogleAdsTracking.trackPageViewConversion(
-          'homepage',
-          1,
-          {
+    // Comprehensive global error handler for all tracking services
+    const handleTrackingError = (event: ErrorEvent) => {
+      const errorMessage = event.message || '';
+      const errorSource = event.filename || '';
+      
+      // Suppress Facebook Pixel errors
+      if (errorMessage.includes('facebook.com') || errorSource.includes('fbevents')) {
+        event.preventDefault();
+        return false;
+      }
+      
+      // Suppress Google Ads errors
+      if (errorMessage.includes('googleadservices') || errorMessage.includes('googleads')) {
+        event.preventDefault();
+        return false;
+      }
+      
+      // Suppress CORS errors
+      if (errorMessage.includes('CORS') || errorMessage.includes('Access-Control-Allow-Origin')) {
+        event.preventDefault();
+        return false;
+      }
+    };
+
+    // Add error listeners
+    window.addEventListener('error', handleTrackingError);
+    window.addEventListener('unhandledrejection', (event) => {
+      if (event.reason && event.reason.toString().includes('googleadservices')) {
+        event.preventDefault();
+      }
+    });
+
+    // Only initialize tracking in production
+    if (process.env.NODE_ENV === 'production') {
+      const timer = setTimeout(() => {
+        try {
+          GoogleAdsTracking.initializeGoogleAdsTracking();
+          GoogleAdsTracking.trackPageViewConversion('homepage', 1, {
             page_type: 'landing_page',
             conversion_type: 'page_view'
-          }
-        );
-      } catch (error) {
-        // Silently fail in production, only log in development
-        if (process.env.NODE_ENV === 'development') {
-          console.warn('Google Ads tracking initialization failed:', error);
+          });
+        } catch (error) {
+          // Silently fail
         }
-      }
-    }, 1000);
+      }, 1000);
+      
+      return () => {
+        clearTimeout(timer);
+        window.removeEventListener('error', handleTrackingError);
+      };
+    }
     
-    return () => clearTimeout(timer);
+    return () => {
+      window.removeEventListener('error', handleTrackingError);
+    };
   }, []);
 
   // Cookie consent & exit-intent state
@@ -815,7 +847,7 @@ export const HomePage = () => {
       role: "Studio Manager, Creatief Atelier",
       title: "Creative Workshop Owner",
       quote: "StockFlow's barcode system reduced our material ordering time from 3 hours to 15 minutes. We now track 200+ art supplies with 100% accuracy. Our workshop efficiency increased by 40% in the first month alone.",
-      avatar: '/Laura.png',
+      avatar: '/anke.png',
       rating: 5,
       company: "Creatief Atelier",
       location: "Bruges, Belgium",
@@ -1428,20 +1460,9 @@ export const HomePage = () => {
       <SEO
         title="StockFlow - Stop Losing Money to Stockouts |  SME Inventory Management"
         description="Never run out of stock again. StockFlow automatically tracks your inventory, alerts you when to reorder, and saves  SMEs €2,400+ per year. Built specifically for  small businesses."
-        keywords="voorraadbeheer software, stockbeheer software, inventory management Belgium, voorraadbeheer gratis, stockbeheer gratis,  inventory software, SME inventory management, voorraadbeheer KMO, stockbeheer KMO, prevent stockouts, automatic reordering, inventory tracking Belgium, voorraadbeheer app, stockbeheer app,  business software, voorraadbeheer systeem, stockbeheer systeem, inventory management for small business, voorraadbeheer voor kleine bedrijven, stockbeheer voor kleine bedrijven,  ERP alternative, voorraadbeheer versus Excel, stockbeheer versus Excel, automatic inventory alerts, voorraadbeheer automatisering, stockbeheer automatisering,  inventory tracking, voorraadbeheer tracking, stockbeheer tracking, inventory management software Belgium, voorraadbeheer software België, stockbeheer software België, small business inventory, voorraadbeheer kleine onderneming, stockbeheer kleine onderneming,  business tools, voorraadbeheer tools, stockbeheer tools, inventory software for SMEs, voorraadbeheer software KMO, stockbeheer software KMO, prevent stockouts Belgium, voorraadbeheer stockouts voorkomen, stockbeheer stockouts voorkomen, automatic reorder points, voorraadbeheer automatisch bestellen, stockbeheer automatisch bestellen,  inventory management, voorraadbeheer België, stockbeheer België, SME inventory tracking, voorraadbeheer tracking KMO, stockbeheer tracking KMO, inventory alerts Belgium, voorraadbeheer waarschuwingen, stockbeheer waarschuwingen,  small business software, voorraadbeheer kleine bedrijven software, stockbeheer kleine bedrijven software"
-        url="https://www.stockflow.be/"
+        keywords="inventory management software, stock management software, inventory management, inventory management free, stock management free, inventory software, SME inventory management, inventory management SME, stock management SME, prevent stockouts, automatic reordering, inventory tracking Belgium, inventory management app, stock management app, business software, inventory management system, stock management system, inventory management for small business, inventory management for small companies, stock management for small companies, ERP alternative, inventory management versus Excel, stock management versus Excel, automatic inventory alerts, inventory management automation, stock management automation, inventory tracking, inventory management tracking, stock management tracking, inventory management software Belgium, inventory management software Belgium, stock management software Belgium, small business inventory, inventory management small enterprise, stock management small enterprise, business tools, inventory management tools, stock management tools, inventory software for SMEs, inventory management software SME, stock management software SME, prevent stockouts Belgium, inventory management prevent stockouts, stock management prevent stockouts, automatic reorder points, inventory management automatic ordering, stock management automatic ordering, inventory management Belgium, stock management Belgium, SME inventory tracking, inventory management tracking SME, stock management tracking SME, inventory alerts Belgium, inventory management warnings, stock management warnings, small business software, inventory management small business software, stock management small business software"        url="https://www.stockflow.be/"
         hreflang={[
           { lang: 'en', url: 'https://www.stockflow.be/' },
-          { lang: 'de', url: 'https://www.stockflow.be/de/' },
-          { lang: 'fr', url: 'https://www.stockflow.be/fr/' },
-          { lang: 'es', url: 'https://www.stockflow.be/es/' },
-          { lang: 'it', url: 'https://www.stockflow.be/it/' },
-          { lang: 'pl', url: 'https://www.stockflow.be/pl/' },
-          { lang: 'hu', url: 'https://www.stockflow.be/hu/' },
-          { lang: 'sv', url: 'https://www.stockflow.be/sv/' },
-          { lang: 'th', url: 'https://www.stockflow.be/th/' },
-          { lang: 'si', url: 'https://www.stockflow.be/si/' },
-          { lang: 'ro', url: 'https://www.stockflow.be/ro/' }
         ]}
         structuredData={structuredData}
       />
@@ -1453,22 +1474,7 @@ export const HomePage = () => {
         hideNotifications={true}
       />
 
-      {/* Persistent Header Bar with Quantified Savings */}
-      <div className="bg-gradient-to-r from-red-500 to-orange-500 text-white py-2 px-4 sticky top-0 z-40 shadow-lg">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <span className="text-sm md:text-base font-semibold">
-              Stop Losing €2,400/Year 💸
-            </span>
-          </div>
-          <Button
-            onClick={handleLoginClick}
-            className="bg-white hover:bg-gray-100 text-red-600 px-4 py-2 text-sm font-semibold rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
-          >
-            Start Free Today →
-          </Button>
-        </div>
-      </div>
+
 
       {/* Hero Section with Video Below */}
       <section className="relative bg-gradient-to-br from-slate-50 via-blue-50 to-blue-50 py-16 md:py-32 px-4 overflow-hidden">
@@ -1584,18 +1590,18 @@ export const HomePage = () => {
             </div>
           </FadeInWhenVisible>
           
-          <SlideUpWhenVisible delay={200}>
-            <div className="grid gap-4 max-w-4xl mx-auto px-4 trust-grid">
-              <style jsx>{`
+        <SlideUpWhenVisible delay={200}>
+          <div className="grid gap-4 max-w-4xl mx-auto px-4 trust-grid">
+            <style>{`
+              .trust-grid {
+                grid-template-columns: repeat(2, 1fr);
+              }
+              @media (min-width: 1024px) {
                 .trust-grid {
-                  grid-template-columns: repeat(2, 1fr);
+                  grid-template-columns: repeat(4, 1fr) !important;
                 }
-                @media (min-width: 1024px) {
-                  .trust-grid {
-                    grid-template-columns: repeat(4, 1fr) !important;
-                  }
-                }
-              `}</style>
+              }
+            `}</style>
               {/* Koffieboetiek */}
               <div className="flex flex-col items-center space-y-2 p-3 rounded-lg bg-white/50 backdrop-blur-sm border border-gray-200/50 hover:bg-white/80 transition-all duration-300">
                 <div className="w-12 h-12 lg:w-14 lg:h-14 bg-blue-100 rounded-full flex items-center justify-center shadow-sm">
@@ -1684,44 +1690,27 @@ export const HomePage = () => {
                 >
                   <div className="bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden group h-full">
                     {/* Hero Visual */}
-                    <div className={`relative h-80 overflow-hidden ${
-                      index === 0 ? 'bg-gradient-to-br from-red-500 to-orange-500' :
-                      index === 1 ? 'bg-gradient-to-br from-green-500 to-emerald-500' :
-                      'bg-gradient-to-br from-blue-500 to-cyan-500'
-                    }`}>
-                      {/* Device Mockup */}
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="relative">
-                          {/* Laptop Mockup */}
-                          <div className="w-64 h-40 bg-gray-800 rounded-lg shadow-2xl transform rotate-3">
-                            <div className="w-full h-full bg-white rounded-t-lg p-4">
-                              <div className="h-2 bg-gray-200 rounded mb-2"></div>
-                              <div className="h-2 bg-gray-200 rounded mb-2 w-3/4"></div>
-                              <div className="h-2 bg-gray-200 rounded mb-2 w-1/2"></div>
-                              <div className="flex space-x-1 mt-4">
-                                <div className="w-8 h-8 bg-green-500 rounded"></div>
-                                <div className="w-8 h-8 bg-blue-500 rounded"></div>
-                                <div className="w-8 h-8 bg-purple-500 rounded"></div>
-                              </div>
-                            </div>
-                          </div>
-                          {/* Mobile Mockup */}
-                          <div className="absolute -bottom-4 -right-4 w-16 h-24 bg-gray-800 rounded-lg shadow-xl transform -rotate-12">
-                            <div className="w-full h-full bg-white rounded-t-lg p-2">
-                              <div className="h-1 bg-gray-200 rounded mb-1"></div>
-                              <div className="h-1 bg-gray-200 rounded mb-1 w-2/3"></div>
-                              <div className="w-4 h-4 bg-blue-500 rounded mt-2"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                    <div className="relative h-80 overflow-hidden">
+                      {/* Background Image */}
+                      <div 
+                        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                        style={{
+                          backgroundImage: index === 0 
+                            ? 'url("https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop&crop=center&auto=format&q=80")' // Inventory management dashboard
+                            : index === 1 
+                            ? 'url("https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop&crop=center&auto=format&q=80")' // Business analytics charts
+                            : 'url("https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&h=600&fit=crop&crop=center&auto=format&q=80")' // Business growth/team
+                        }}
+                      />
+
+
+
                       
                       {/* Floating Icons */}
                       <div className="absolute top-4 right-4">
                         <feature.icon className="h-8 w-8 text-white opacity-80" />
                       </div>
                       <div className="absolute bottom-4 left-4">
-                        <div className="w-6 h-6 bg-white/20 rounded-full"></div>
                       </div>
                     </div>
 
@@ -1840,17 +1829,17 @@ export const HomePage = () => {
             </p>
             
             {/* Trust Statistics */}
-            <div className="grid gap-6 max-w-4xl mx-auto trust-stats-grid">
-              <style jsx>{`
-                .trust-stats-grid {
-                  grid-template-columns: repeat(2, 1fr);
-                }
-                @media (min-width: 1024px) {
-                  .trust-stats-grid {
-                    grid-template-columns: repeat(4, 1fr) !important;
-                  }
-                }
-              `}</style>
+        <div className="grid gap-6 max-w-4xl mx-auto trust-stats-grid">
+          <style>{`
+            .trust-stats-grid {
+              grid-template-columns: repeat(2, 1fr);
+            }
+            @media (min-width: 1024px) {
+              .trust-stats-grid {
+                grid-template-columns: repeat(4, 1fr) !important;
+              }
+            }
+          `}</style>
               {trustStats.map((stat, index) => (
                 <div key={index} className="text-center px-4">
                   <div className="text-3xl md:text-4xl font-bold text-blue-600 mb-2">{stat.number}</div>
@@ -2059,7 +2048,7 @@ export const HomePage = () => {
                       
               {/* Trust Indicators */}
               <div className="flex justify-center items-center space-x-8 text-sm text-gray-600 mb-8">
-              <style jsx>{`
+              <style>{`
                 .trust-grid {
                   grid-template-columns: repeat(2, 1fr);
                 }

@@ -81,10 +81,7 @@ export const trackGoogleAdsConversion = (
   eventName: string = 'conversion'
 ): void => {
   if (!isGoogleAdsAvailable()) {
-    // Silently fail in production, only warn in development
-    if (process.env.NODE_ENV === 'development') {
-      console.warn('Google Ads tracking not available');
-    }
+    // Silently fail - no console output
     return;
   }
 
@@ -97,23 +94,16 @@ export const trackGoogleAdsConversion = (
       ...(config.customParameters && { custom_parameters: config.customParameters }),
     };
 
-    // Fire the conversion event with error handling
-    window.gtag('event', eventName, conversionEvent);
-    
-    // Only log in development
-    if (process.env.NODE_ENV === 'development') {
-      console.log('Google Ads conversion tracked:', {
-        eventName,
-        conversionId: config.conversionId,
-        conversionLabel: config.conversionLabel,
-        value: config.value,
-      });
+    // Fire the conversion event with comprehensive error handling
+    try {
+      window.gtag('event', eventName, conversionEvent);
+    } catch (gtagError) {
+      // Silently handle gtag errors
+      return;
     }
   } catch (error) {
-    // Silently fail in production, only log in development
-    if (process.env.NODE_ENV === 'development') {
-      console.error('Error tracking Google Ads conversion:', error);
-    }
+    // Silently fail - no console output
+    return;
   }
 };
 
@@ -311,20 +301,17 @@ export const trackEnhancedConversion = (
  */
 export const initializeGoogleAdsTracking = (): void => {
   if (!isGoogleAdsAvailable()) {
-    // Silently fail in production, only warn in development
-    if (process.env.NODE_ENV === 'development') {
-      console.warn('Google Ads tracking not available - gtag not loaded');
-    }
+    // Silently fail - no console output
     return;
   }
 
-  // Only log in development
-  if (process.env.NODE_ENV === 'development') {
-    console.log('Google Ads tracking initialized successfully');
+  // Silently track initial page load
+  try {
+    trackPageViewConversion('homepage_initial_load');
+  } catch (error) {
+    // Silently handle any errors
+    return;
   }
-  
-  // Optional: Track initial page load
-  trackPageViewConversion('homepage_initial_load');
 };
 
 // Export all conversion tracking functions
