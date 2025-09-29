@@ -59,7 +59,7 @@ export const TestCheckout: React.FC = () => {
             <div className="flex items-center justify-between">
               <div>
                 <div className="font-semibold text-blue-900">Analytics Basic</div>
-                <div className="text-sm text-blue-700">€9.99/maand</div>
+                <div className="text-sm text-blue-700">$9.99/maand</div>
               </div>
             </div>
           </div>
@@ -78,7 +78,7 @@ export const TestCheckout: React.FC = () => {
               <div className="font-semibold">Maandelijkse kosten</div>
               <div className="text-sm text-gray-600">Elke maand opnieuw</div>
             </div>
-            <div className="text-2xl font-bold">€9.99</div>
+            <div className="text-2xl font-bold">$9.99</div>
           </div>
         </div>
         

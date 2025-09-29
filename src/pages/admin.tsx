@@ -491,7 +491,7 @@ export default function AdminPage() {
                                   {loadingStats ? <Loader2 className="w-4 h-4 animate-spin mx-auto" /> : stats?.linkedUserCount || 0}
                                 </td>
                                 <td className="px-4 py-2 text-center font-mono">
-                                  {loadingStats ? <Loader2 className="w-4 h-4 animate-spin mx-auto" /> : `€${(stats?.licenseCost || 0).toFixed(2)}`}
+                                  {loadingStats ? <Loader2 className="w-4 h-4 animate-spin mx-auto" /> : `$${(stats?.licenseCost || 0).toFixed(2)}`}
                                 </td>
                                 <td className="px-4 py-2">{user.blocked ? 'Ja' : 'Nee'}</td>
                                 <td className="px-4 py-2">{new Date(user.created_at).toLocaleDateString('nl-BE')}</td>
@@ -567,7 +567,7 @@ export default function AdminPage() {
                                     </div>
                                     <div>
                                       <span className="font-medium">Maandelijkse licentie kosten:</span> 
-                                      <span className="ml-2 font-mono text-blue-600">€{stats.licenseCost.toFixed(2)}</span>
+                                      <span className="ml-2 font-mono text-blue-600">${stats.licenseCost.toFixed(2)}</span>
                                     </div>
                                   </div>
                                 </div>

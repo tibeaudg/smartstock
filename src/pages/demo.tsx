@@ -262,7 +262,7 @@ const DemoDashboard = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">Total Value</p>
-                <p className="text-2xl font-bold text-green-600">€{totalValue.toLocaleString()}</p>
+                <p className="text-2xl font-bold text-green-600">${totalValue.toLocaleString()}</p>
               </div>
               <TrendingUp className="w-8 h-8 text-green-600" />
             </div>
@@ -388,7 +388,7 @@ const DemoProducts = () => {
                   <p className="text-sm text-gray-500">Category: {product.category}</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-lg font-semibold text-gray-900">€{product.price}</p>
+                  <p className="text-lg font-semibold text-gray-900">${product.price}</p>
                   <div className="flex space-x-2 mt-2">
                     <Button size="sm" variant="outline">
                       <Edit className="w-4 h-4" />
@@ -579,7 +579,7 @@ const DemoAnalytics = () => (
                   </div>
                   <div className="text-right">
                     <p className="text-sm font-medium">{totalStock} units</p>
-                    <p className="text-sm text-gray-500">€{totalValue.toLocaleString()}</p>
+                    <p className="text-sm text-gray-500">${totalValue.toLocaleString()}</p>
                   </div>
                 </div>
               );

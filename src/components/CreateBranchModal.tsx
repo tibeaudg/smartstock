@@ -244,7 +244,7 @@ export const CreateBranchModal = ({
                         </FormControl>
                         <div className="space-y-1 leading-none">
                           <FormLabel>
-                            Ik bevestig dat er €2/maand extra kosten in rekening worden gebracht
+                            Ik bevestig dat er $2/maand extra kosten in rekening worden gebracht
                           </FormLabel>
                         </div>
                       </FormItem>

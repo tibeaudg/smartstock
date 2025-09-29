@@ -40,7 +40,7 @@ export default function InventorySoftwareForSmallBusiness() {
     },
     {
       question: "How much does inventory software cost for small businesses?",
-      answer: "StockFlow offers a free plan for small businesses with up to 30 products, making it perfect for startups and small operations. Premium plans start at just €29/month, which is significantly more affordable than enterprise solutions that can cost hundreds per month."
+      answer: "StockFlow offers a free plan for small businesses with up to 30 products, making it perfect for startups and small operations. Premium plans start at just $29/month, which is significantly more affordable than enterprise solutions that can cost hundreds per month."
     },
     {
       question: "Do small businesses really need inventory software?",
@@ -151,7 +151,7 @@ export default function InventorySoftwareForSmallBusiness() {
   const pricingPlans = [
     {
       name: "Free Plan",
-      price: "€0",
+      price: "$0",
       period: "/month",
       description: "Perfect for getting started",
       features: [
@@ -165,7 +165,7 @@ export default function InventorySoftwareForSmallBusiness() {
     },
     {
       name: "Growth Plan",
-      price: "€29",
+      price: "$29",
       period: "/month",
       description: "Best for growing small businesses",
       features: [

@@ -21,6 +21,32 @@ interface DashboardData {
     incoming: number;
     outgoing: number;
   }>;
+  categoryDistribution?: Array<{
+    category: string;
+    count: number;
+    value: number;
+  }>;
+  topMovingProducts?: Array<{
+    product_name: string;
+    total_movement: number;
+    incoming: number;
+    outgoing: number;
+  }>;
+  stockValueTrend?: Array<{
+    date: string;
+    total_value: number;
+  }>;
+  lowStockProducts?: Array<{
+    product_name: string;
+    quantity_in_stock: number;
+    minimum_stock_level: number;
+    unit_price: number;
+  }>;
+  turnoverRates?: Array<{
+    product_name: string;
+    turnover_rate: number;
+    days_since_last_movement: number;
+  }>;
 }
 
 export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = {}) => {
@@ -32,13 +58,23 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
     if (!user || !activeBranch) throw new Error('Geen gebruiker of filiaal');
 
     try {
-      // Fetch total stock value and product count
+      // Fetch total stock value and product count with additional fields
       const { data: productsData, error: productsError } = await supabase
         .from('products')
-        .select('quantity_in_stock, unit_price, minimum_stock_level')
+        .select(`
+          name, 
+          quantity_in_stock, 
+          unit_price, 
+          minimum_stock_level, 
+          category_id,
+          categories(name)
+        `)
         .eq('branch_id', activeBranch.branch_id);
 
-      if (productsError) throw new Error('Failed to fetch products data');
+      if (productsError) {
+        console.error('Products error:', productsError);
+        throw new Error('Failed to fetch products data');
+      }
 
       // Calculate metrics
       const totalValue = productsData?.reduce((sum, product) => 
@@ -49,12 +85,15 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
       // Get transactions for the selected range
       let query = supabase
         .from('stock_transactions')
-        .select('transaction_type, quantity, created_at')
+        .select('transaction_type, quantity, created_at, product_name, unit_price')
         .eq('branch_id', activeBranch.branch_id);
       if (dateFrom) query = query.gte('created_at', dateFrom.toISOString());
       if (dateTo) query = query.lte('created_at', dateTo.toISOString());
       const { data: transactions, error: transactionError } = await query;
-      if (transactionError) throw new Error('Failed to fetch transactions data');
+      if (transactionError) {
+        console.error('Transactions error:', transactionError);
+        throw new Error('Failed to fetch transactions data');
+      }
 
       // Calculate incoming/outgoing today
       const today = new Date();
@@ -69,6 +108,40 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
       // Generate daily activity data for chart
       const dailyActivity = generateDailyActivity(transactions || [], dateFrom, dateTo);
 
+      // Calculate category distribution
+      const categoryDistribution = calculateCategoryDistribution(productsData || []);
+
+      // Calculate top moving products
+      const topMovingProducts = calculateTopMovingProducts(transactions || []);
+
+      // Calculate stock value trend
+      const stockValueTrend = calculateStockValueTrend(transactions || [], productsData || [], dateFrom, dateTo);
+
+      // Get low stock products - prioritize variants over main products
+      const lowStockProducts = productsData?.filter(product => {
+        // Only include if stock is low and minimum level is set
+        const isLowStock = product.quantity_in_stock <= product.minimum_stock_level && product.minimum_stock_level > 0;
+        
+        // If this is a main product with variants, don't include it (variants will be included separately)
+        if (product.is_variant === false && product.parent_product_id === null) {
+          // Check if this product has variants
+          const hasVariants = productsData?.some(p => p.parent_product_id === product.id);
+          if (hasVariants) {
+            return false; // Don't include main product if it has variants
+          }
+        }
+        
+        return isLowStock;
+      }).map(product => ({
+        product_name: product.is_variant ? `${product.name} - ${product.variant_name}` : product.name,
+        quantity_in_stock: product.quantity_in_stock,
+        minimum_stock_level: product.minimum_stock_level,
+        unit_price: product.unit_price
+      })) || [];
+
+      // Calculate turnover rates
+      const turnoverRates = calculateTurnoverRates(transactions || [], productsData || []);
+
       return {
         totalValue,
         totalProducts: productsData?.length || 0,
@@ -77,6 +150,11 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
         outgoingToday,
         totalTransactions: transactions?.length || 0,
         dailyActivity,
+        categoryDistribution,
+        topMovingProducts,
+        stockValueTrend,
+        lowStockProducts,
+        turnoverRates,
       };
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
@@ -235,4 +313,130 @@ export const useProductCount = () => {
   });
 
   return { productCount: productCount ?? 0, isLoading };
+};
+
+// Helper functions for dashboard calculations
+const calculateCategoryDistribution = (products: any[]) => {
+  const categoryMap = new Map<string, { count: number; value: number }>();
+  
+  products.forEach(product => {
+    const categoryName = product.categories?.name || 'Uncategorized';
+    const existing = categoryMap.get(categoryName) || { count: 0, value: 0 };
+    existing.count += 1;
+    existing.value += product.quantity_in_stock * product.unit_price;
+    categoryMap.set(categoryName, existing);
+  });
+
+  return Array.from(categoryMap.entries()).map(([category, data]) => ({
+    category,
+    count: data.count,
+    value: data.value
+  }));
+};
+
+const calculateTopMovingProducts = (transactions: any[]) => {
+  const productMovementMap = new Map<string, { incoming: number; outgoing: number; total_movement: number }>();
+  
+  transactions.forEach(transaction => {
+    const productName = transaction.product_name || 'Unknown Product';
+    const existing = productMovementMap.get(productName) || { incoming: 0, outgoing: 0, total_movement: 0 };
+    
+    if (transaction.transaction_type === 'incoming') {
+      existing.incoming += transaction.quantity;
+    } else if (transaction.transaction_type === 'outgoing') {
+      existing.outgoing += transaction.quantity;
+    }
+    
+    existing.total_movement = existing.incoming + existing.outgoing;
+    productMovementMap.set(productName, existing);
+  });
+
+  return Array.from(productMovementMap.entries())
+    .map(([product_name, data]) => ({
+      product_name,
+      total_movement: data.total_movement,
+      incoming: data.incoming,
+      outgoing: data.outgoing
+    }))
+    .sort((a, b) => b.total_movement - a.total_movement)
+    .slice(0, 10);
+};
+
+const calculateStockValueTrend = (transactions: any[], products: any[], dateFrom?: Date, dateTo?: Date) => {
+  const trendMap = new Map<string, number>();
+  
+  // Get current stock value
+  const currentValue = products.reduce((sum, product) => 
+    sum + (product.quantity_in_stock * product.unit_price), 0);
+  
+  // If we have transactions, calculate historical values
+  if (transactions && transactions.length > 0) {
+    // Group transactions by date
+    const transactionsByDate = new Map<string, any[]>();
+    transactions.forEach(transaction => {
+      const date = new Date(transaction.created_at).toISOString().split('T')[0];
+      if (!transactionsByDate.has(date)) {
+        transactionsByDate.set(date, []);
+      }
+      transactionsByDate.get(date)!.push(transaction);
+    });
+
+    // Calculate stock value for each date
+    let runningValue = currentValue;
+    const sortedDates = Array.from(transactionsByDate.keys()).sort((a, b) => 
+      new Date(b).getTime() - new Date(a).getTime());
+
+    sortedDates.forEach(date => {
+      const dayTransactions = transactionsByDate.get(date) || [];
+      dayTransactions.forEach(transaction => {
+        if (transaction.transaction_type === 'incoming') {
+          runningValue -= transaction.quantity * (transaction.unit_price || 0);
+        } else if (transaction.transaction_type === 'outgoing') {
+          runningValue += transaction.quantity * (transaction.unit_price || 0);
+        }
+      });
+      trendMap.set(date, runningValue);
+    });
+  }
+
+  // Add current date if not already present
+  const currentDate = new Date().toISOString().split('T')[0];
+  if (!trendMap.has(currentDate)) {
+    trendMap.set(currentDate, currentValue);
+  }
+
+  return Array.from(trendMap.entries())
+    .map(([date, total_value]) => ({ date, total_value }))
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+};
+
+const calculateTurnoverRates = (transactions: any[], products: any[]) => {
+  const productLastMovement = new Map<string, Date>();
+  const productTotalMovement = new Map<string, number>();
+  
+  // Track last movement and total movement for each product
+  transactions.forEach(transaction => {
+    const productName = transaction.product_name || 'Unknown Product';
+    const transactionDate = new Date(transaction.created_at);
+    
+    if (!productLastMovement.has(productName) || transactionDate > productLastMovement.get(productName)!) {
+      productLastMovement.set(productName, transactionDate);
+    }
+    
+    const existing = productTotalMovement.get(productName) || 0;
+    productTotalMovement.set(productName, existing + transaction.quantity);
+  });
+
+  const now = new Date();
+  return Array.from(productLastMovement.entries()).map(([product_name, lastMovement]) => {
+    const daysSinceLastMovement = Math.floor((now.getTime() - lastMovement.getTime()) / (1000 * 60 * 60 * 24));
+    const totalMovement = productTotalMovement.get(product_name) || 0;
+    const turnoverRate = daysSinceLastMovement > 0 ? totalMovement / daysSinceLastMovement : 0;
+    
+    return {
+      product_name,
+      turnover_rate: turnoverRate,
+      days_since_last_movement: daysSinceLastMovement
+    };
+  }).sort((a, b) => b.turnover_rate - a.turnover_rate);
 };

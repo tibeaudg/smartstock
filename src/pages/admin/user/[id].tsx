@@ -103,7 +103,7 @@ export default function AdminUserDetailPage() {
                     </div>
                     <div className="pt-2">
                       <span className="text-sm font-medium">Bedrag:</span>
-                      <span className="ml-2 font-mono text-blue-600">€{inv.total_amount.toFixed(2)}</span>
+                      <span className="ml-2 font-mono text-blue-600">${inv.total_amount.toFixed(2)}</span>
                     </div>
                   </div>
                 </Card>
@@ -126,7 +126,7 @@ export default function AdminUserDetailPage() {
                   ) : invoices.map((inv) => (
                     <tr key={inv.id} className="bg-white border-b">
                       <td className="px-4 py-2">{inv.period_start} - {inv.period_end}</td>
-                      <td className="px-4 py-2 font-mono">€{inv.total_amount.toFixed(2)}</td>
+                      <td className="px-4 py-2 font-mono">${inv.total_amount.toFixed(2)}</td>
                       <td className="px-4 py-2">{inv.status}</td>
                     </tr>
                   ))}

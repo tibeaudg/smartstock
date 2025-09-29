@@ -428,7 +428,7 @@ BEGIN
         INSERT INTO public.analytics_filters (user_id, name, description, filter_type, rules, is_preset) VALUES
             (user_record.id, 'Laag Voorraad', 'Producten met voorraad onder minimum niveau', 'inventory', 
              '[{"field": "current_stock", "operator": "less_than", "value": "min_stock"}]', true),
-            (user_record.id, 'Hoge Omzet', 'Transacties met omzet boven €100', 'transactions', 
+            (user_record.id, 'Hoge Omzet', 'Transacties met omzet boven $100', 'transactions', 
              '[{"field": "total", "operator": "greater_than", "value": 100}]', true),
             (user_record.id, 'Recente Verkoop', 'Verkoop transacties van de laatste 7 dagen', 'transactions', 
              '[{"field": "date", "operator": "last_days", "value": 7}, {"field": "type", "operator": "equals", "value": "out", "logic": "AND"}]', true),
@@ -450,7 +450,7 @@ BEGIN
     INSERT INTO public.analytics_filters (user_id, name, description, filter_type, rules, is_preset) VALUES
         (NEW.id, 'Laag Voorraad', 'Producten met voorraad onder minimum niveau', 'inventory', 
          '[{"field": "current_stock", "operator": "less_than", "value": "min_stock"}]', true),
-        (NEW.id, 'Hoge Omzet', 'Transacties met omzet boven €100', 'transactions', 
+        (NEW.id, 'Hoge Omzet', 'Transacties met omzet boven $100', 'transactions', 
          '[{"field": "total", "operator": "greater_than", "value": 100}]', true),
         (NEW.id, 'Recente Verkoop', 'Verkoop transacties van de laatste 7 dagen', 'transactions', 
          '[{"field": "date", "operator": "last_days", "value": 7}, {"field": "type", "operator": "equals", "value": "out", "logic": "AND"}]', true),

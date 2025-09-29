@@ -167,7 +167,7 @@ export const InvoiceList: React.FC = () => {
               <Euro className="w-8 h-8 text-green-600" />
               <div className="ml-3">
                 <p className="text-sm font-medium text-gray-600">Betaald</p>
-                <p className="text-2xl font-bold text-gray-900">€{totalPaid.toFixed(2)}</p>
+                <p className="text-2xl font-bold text-gray-900">${totalPaid.toFixed(2)}</p>
               </div>
             </div>
           </CardContent>
@@ -179,7 +179,7 @@ export const InvoiceList: React.FC = () => {
               <Calendar className="w-8 h-8 text-yellow-600" />
               <div className="ml-3">
                 <p className="text-sm font-medium text-gray-600">Openstaand</p>
-                <p className="text-2xl font-bold text-gray-900">€{totalPending.toFixed(2)}</p>
+                <p className="text-2xl font-bold text-gray-900">${totalPending.toFixed(2)}</p>
               </div>
             </div>
           </CardContent>

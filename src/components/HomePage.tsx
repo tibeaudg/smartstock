@@ -603,9 +603,9 @@ export const HomePage = () => {
     },
     {
       question: "How much money will StockFlow actually save my business?",
-      answer: "Our customers save an average of €2,400 annually by eliminating stockouts and reducing waste. Laura from De Koffieboetiek saved €400/month just by preventing expired products. Tom from TechOnderdelen BV recovered €15,000 from a single inventory discrepancy. Most businesses see ROI within the first month.",
+      answer: "Our customers save an average of $2,400 annually by eliminating stockouts and reducing waste. Laura from De Koffieboetiek saved $400/month just by preventing expired products. Tom from TechOnderdelen BV recovered $15,000 from a single inventory discrepancy. Most businesses see ROI within the first month.",
       category: "ROI & Savings",
-      benefit: "Average €2,400 annual savings"
+      benefit: "Average $2,400 annual savings"
     },
     {
       question: "What if I'm already using Excel or another system?",
@@ -681,7 +681,7 @@ export const HomePage = () => {
     {
       icon: TrendingUp,
       title: "Never Miss Another Sale",
-      benefit: "Stop losing €2,400+ annually to stockouts",
+      benefit: "Stop losing $2,400+ annually to stockouts",
       impact: "Feel confident your bestsellers are always in stock",
       detailedDescription: "Real-time stock tracking across all locations, automated low stock alerts via email & SMS, smart reorder suggestions based on sales patterns, multi-location inventory management.",
       category: "Smart Inventory Management",
@@ -741,7 +741,7 @@ export const HomePage = () => {
 
   // Data metrics for the features section - focused on key benefits
   const dataMetrics = [
-    { value: "€2,400", label: "Average Annual Savings", description: "Stop losing money to stockouts" },
+    { value: "$2,400", label: "Average Annual Savings", description: "Stop losing money to stockouts" },
     { value: "95%", label: "Customer Satisfaction", description: "Loved by Belgian SMEs" }
   ];
 
@@ -792,7 +792,7 @@ export const HomePage = () => {
   const trustStats = [
     { number: "10,000+", label: "Happy Customers" },
     { number: "98%", label: "Customer Retention" },
-    { number: "€2M+", label: "Inventory Value Managed" },
+    { number: "$2M+", label: "Inventory Value Managed" },
     { number: "4.9/5", label: "Average Rating" }
   ];
   
@@ -801,7 +801,7 @@ export const HomePage = () => {
       name: "Laura Peeters",
       role: "Owner, De Koffieboetiek",
       title: "Coffee Shop Owner",
-      quote: "StockFlow's automatic reorder system increased our inventory accuracy by 95% and cut our stockouts by 80% in the first quarter. We went from losing €400/month on expired products to zero waste. The ROI was immediate.",
+      quote: "StockFlow's automatic reorder system increased our inventory accuracy by 95% and cut our stockouts by 80% in the first quarter. We went from losing $400/month on expired products to zero waste. The ROI was immediate.",
       avatar: '/Laura.png',
       rating: 5,
       company: "De Koffieboetiek",
@@ -812,11 +812,11 @@ export const HomePage = () => {
       specificResults: [
         "95% inventory accuracy improvement",
         "80% reduction in stockouts", 
-        "€400/month waste elimination",
+        "$400/month waste elimination",
         "Immediate ROI in first quarter"
       ],
       beforeAfter: {
-        before: "Manual tracking, frequent stockouts, €400/month waste",
+        before: "Manual tracking, frequent stockouts, $400/month waste",
         after: "95% accuracy, zero waste, automated reorders"
       }
     },
@@ -824,7 +824,7 @@ export const HomePage = () => {
       name: "Tom De Wit",
       role: "Operations Manager, TechOnderdelen BV",
       title: "Electronics Distributor",
-      quote: "When we had a critical inventory discrepancy worth €15,000, StockFlow's real-time tracking identified the issue in under 5 minutes. Their support team resolved it completely within 2 hours. We've never had such fast, reliable inventory management.",
+      quote: "When we had a critical inventory discrepancy worth $15,000, StockFlow's real-time tracking identified the issue in under 5 minutes. Their support team resolved it completely within 2 hours. We've never had such fast, reliable inventory management.",
       avatar: '/jan.png',
       rating: 5,
       company: "TechOnderdelen BV",
@@ -833,7 +833,7 @@ export const HomePage = () => {
       savings: `${formatPrice(5200)}/year saved`,
       timeSaved: "12 hours/week",
       specificResults: [
-        "€15,000 discrepancy resolved in 5 minutes",
+        "$15,000 discrepancy resolved in 5 minutes",
         "2-hour complete resolution time",
         "Zero inventory discrepancies since implementation",
         "12 hours/week time savings"
@@ -996,7 +996,7 @@ export const HomePage = () => {
       bgPattern: "bg-blue-50",
       borderColor: "border-blue-200",
       iconBg: "bg-blue-500",
-      stats: "Save €2,400+ annually",
+      stats: "Save $2,400+ annually",
     },
     {
       title: "Make Data-Driven Decisions",
@@ -1460,7 +1460,7 @@ export const HomePage = () => {
       </Helmet>
       <SEO
         title="StockFlow - Stop Losing Money to Stockouts |  SME Inventory Management"
-        description="Never run out of stock again. StockFlow automatically tracks your inventory, alerts you when to reorder, and saves  SMEs €2,400+ per year. Built specifically for  small businesses."
+        description="Never run out of stock again. StockFlow automatically tracks your inventory, alerts you when to reorder, and saves  SMEs $2,400+ per year. Built specifically for  small businesses."
         keywords="inventory management software, stock management software, inventory management, inventory management free, stock management free, inventory software, SME inventory management, inventory management SME, stock management SME, prevent stockouts, automatic reordering, inventory tracking Belgium, inventory management app, stock management app, business software, inventory management system, stock management system, inventory management for small business, inventory management for small companies, stock management for small companies, ERP alternative, inventory management versus Excel, stock management versus Excel, automatic inventory alerts, inventory management automation, stock management automation, inventory tracking, inventory management tracking, stock management tracking, inventory management software Belgium, inventory management software Belgium, stock management software Belgium, small business inventory, inventory management small enterprise, stock management small enterprise, business tools, inventory management tools, stock management tools, inventory software for SMEs, inventory management software SME, stock management software SME, prevent stockouts Belgium, inventory management prevent stockouts, stock management prevent stockouts, automatic reorder points, inventory management automatic ordering, stock management automatic ordering, inventory management Belgium, stock management Belgium, SME inventory tracking, inventory management tracking SME, stock management tracking SME, inventory alerts Belgium, inventory management warnings, stock management warnings, small business software, inventory management small business software, stock management small business software"        url="https://www.stockflow.be/"
         hreflang={[
           { lang: 'en', url: 'https://www.stockflow.be/' },
@@ -1492,7 +1492,7 @@ export const HomePage = () => {
               
               <SlideUpWhenVisible delay={400}>
                 <p className="text-lg md:text-xl text-gray-600 mb-8 md:mb-12 max-w-3xl mx-auto lg:mx-0 leading-relaxed">
-                  Never run out of stock again. StockFlow automatically tracks your inventory, alerts you when to reorder, and saves SMEs €2,400+ per year.
+                  Never run out of stock again. StockFlow automatically tracks your inventory, alerts you when to reorder, and saves SMEs $2,400+ per year.
                 </p>
               </SlideUpWhenVisible>
               
@@ -1644,7 +1644,7 @@ export const HomePage = () => {
           <FadeInWhenVisible delay={400}>
             <div className="text-center mt-8">
               <p className="text-xs text-gray-400">
-                Join thousands of businesses saving €2,400+ annually
+                Join thousands of businesses saving $2,400+ annually
               </p>
             </div>
           </FadeInWhenVisible>
@@ -1700,7 +1700,7 @@ export const HomePage = () => {
                 How StockFlow Saves You Money
               </h2>
               <p className="text-xl text-gray-600 max-w-4xl mx-auto mb-8">
-                Real businesses save €2,400+ annually. See exactly how StockFlow prevents stockouts, 
+                Real businesses save $2,400+ annually. See exactly how StockFlow prevents stockouts, 
                 reduces waste, and turns inventory management into profit.
               </p>
 
@@ -1937,7 +1937,7 @@ export const HomePage = () => {
                 </div>
                 <h4 className="text-lg font-semibold text-gray-800 mb-2">Community First</h4>
                 <p className="text-gray-600">
-                  For every new customer, we donate €1 to local business development programs. 
+                  For every new customer, we donate $1 to local business development programs. 
                   We're not just building software—we're building a community.
                 </p>
               </div>
@@ -1972,7 +1972,7 @@ export const HomePage = () => {
               Real Customers, Real Savings
             </h2>
             <p className="text-xl text-gray-600 max-w-4xl mx-auto mb-8">
-              See how businesses like yours save €2,400+ annually with StockFlow. 
+              See how businesses like yours save $2,400+ annually with StockFlow. 
               Real results from real customers.
             </p>
             
@@ -2300,7 +2300,7 @@ export const HomePage = () => {
           {/* Description */}
           <SlideUpWhenVisible delay={400}>
             <p className="text-lg md:text-xl lg:text-2xl text-white mb-8 md:mb-12 max-w-4xl mx-auto leading-relaxed">
-              Start your free account today and save €2,400+ per year in lost sales. 
+              Start your free account today and save $2,400+ per year in lost sales. 
               <span className="text-yellow-300 font-semibold"> No credit card required, setup in 5 minutes.</span>
             </p>
           </SlideUpWhenVisible>

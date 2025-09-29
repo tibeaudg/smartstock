@@ -100,7 +100,7 @@ export const VariantSelectionModal = ({
                   </div>
                   <div className="text-right">
                     <div className="text-sm font-medium text-gray-900">
-                      €{variant.sale_price ? Number(variant.sale_price).toFixed(2) : '0.00'}
+                      ${variant.sale_price ? Number(variant.sale_price).toFixed(2) : '0.00'}
                     </div>
                     <div className="text-xs text-gray-500">
                       {actionType === 'in' ? 'Toevoegen' : 'Uithalen'}

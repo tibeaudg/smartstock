@@ -1031,7 +1031,7 @@ export const StockList = () => {
                     )}
                     {(minPriceFilter && minPriceFilter !== '') || (maxPriceFilter && maxPriceFilter !== '') && (
                       <Badge variant="secondary" className="bg-blue-100 text-blue-800">
-                        Price: {minPriceFilter && `€${minPriceFilter}`}{minPriceFilter && maxPriceFilter && ' - '}{maxPriceFilter && `€${maxPriceFilter}`}
+                        Price: {minPriceFilter && `$${minPriceFilter}`}{minPriceFilter && maxPriceFilter && ' - '}{maxPriceFilter && `$${maxPriceFilter}`}
                       </Badge>
                     )}
                     {(minStockFilter && minStockFilter !== '') || (maxStockFilter && maxStockFilter !== '') && (
@@ -1191,14 +1191,14 @@ export const StockList = () => {
                           {columnVisibility.purchasePrice && (
                             <td className="px-2 py-2 text-center">
                               <span className="text-xs text-red-600">
-                                  €{parent.purchase_price ? Number(parent.purchase_price).toFixed(2) : '-'}
+                                  ${parent.purchase_price ? Number(parent.purchase_price).toFixed(2) : '-'}
                               </span>
                             </td>
                           )}
                           {columnVisibility.salePrice && (
                             <td className="px-2 py-2 text-center">
                               <span className="text-xs text-green-600">
-                                  €{parent.sale_price ? Number(parent.sale_price).toFixed(2) : '-'}
+                                  ${parent.sale_price ? Number(parent.sale_price).toFixed(2) : '-'}
                               </span>
                             </td>
                           )}
@@ -1275,14 +1275,14 @@ export const StockList = () => {
                                   {columnVisibility.purchasePrice && (
                                     <td className="px-2 py-2 text-center">
                                       <span className="text-xs text-red-600">
-                                        €{child.purchase_price ? Number(child.purchase_price).toFixed(2) : '-'}
+                                        ${child.purchase_price ? Number(child.purchase_price).toFixed(2) : '-'}
                                       </span>
                                     </td>
                                   )}
                                   {columnVisibility.salePrice && (
                                     <td className="px-2 py-2 text-center">
                                       <span className="text-xs text-green-600">
-                                        €{child.sale_price ? Number(child.sale_price).toFixed(2) : '-'}
+                                        ${child.sale_price ? Number(child.sale_price).toFixed(2) : '-'}
                                       </span>
                                     </td>
                                   )}
@@ -1605,7 +1605,7 @@ export const StockList = () => {
               )}
               {(minPriceFilter && minPriceFilter !== '') || (maxPriceFilter && maxPriceFilter !== '') && (
                 <Badge variant="secondary" className="bg-blue-100 text-blue-800">
-                  Price: {minPriceFilter && `€${minPriceFilter}`}{minPriceFilter && maxPriceFilter && ' - '}{maxPriceFilter && `€${maxPriceFilter}`}
+                  Price: {minPriceFilter && `$${minPriceFilter}`}{minPriceFilter && maxPriceFilter && ' - '}{maxPriceFilter && `$${maxPriceFilter}`}
                 </Badge>
               )}
               {(minStockFilter && minStockFilter !== '') || (maxStockFilter && maxStockFilter !== '') && (
@@ -1833,12 +1833,12 @@ export const StockList = () => {
                       )}
                       {columnVisibility.purchasePrice && (
                         <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-blue-600 text-center">
-                            <span className="text-red-600">€{parent.purchase_price ? Number(parent.purchase_price).toFixed(2) : '-'}</span>
+                            <span className="text-red-600">${parent.purchase_price ? Number(parent.purchase_price).toFixed(2) : '-'}</span>
                         </td>
                       )}
                       {columnVisibility.salePrice && (
                         <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-orange-600 text-center">
-                            <span className="text-green-600">€{parent.sale_price ? Number(parent.sale_price).toFixed(2) : '-'}</span>
+                            <span className="text-green-600">${parent.sale_price ? Number(parent.sale_price).toFixed(2) : '-'}</span>
                         </td>
                       )}
                       {columnVisibility.status && (
@@ -1946,12 +1946,12 @@ export const StockList = () => {
                               )}
                               {columnVisibility.purchasePrice && (
                                 <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-blue-600 text-center">
-                                  <span className="text-red-600">€{child.purchase_price ? Number(child.purchase_price).toFixed(2) : '-'}</span>
+                                  <span className="text-red-600">${child.purchase_price ? Number(child.purchase_price).toFixed(2) : '-'}</span>
                                 </td>
                               )}
                               {columnVisibility.salePrice && (
                                 <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-orange-600 text-center">
-                                  <span className="text-green-600">€{child.sale_price ? Number(child.sale_price).toFixed(2) : '-'}</span>
+                                  <span className="text-green-600">${child.sale_price ? Number(child.sale_price).toFixed(2) : '-'}</span>
                                 </td>
                               )}
                               {columnVisibility.status && (

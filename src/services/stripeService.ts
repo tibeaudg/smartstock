@@ -20,7 +20,7 @@ export const createCheckoutSession = async (moduleId: string, userId: string) =>
       body: JSON.stringify({
         moduleId,
         userId,
-        price: 999, // €9.99 in cents
+        price: 999, // $9.99 in cents
         currency: 'eur',
       }),
     });

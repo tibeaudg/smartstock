@@ -109,7 +109,7 @@ export const SavingsCalculator: React.FC<SavingsCalculatorProps> = ({
 
                 <div className="space-y-2">
                   <Label htmlFor="costPerStockout" className="text-sm font-medium text-gray-700">
-                    Average cost per stockout (€)
+                    Average cost per stockout ($)
                   </Label>
                   <Input
                     id="costPerStockout"
@@ -180,7 +180,7 @@ export const SavingsCalculator: React.FC<SavingsCalculatorProps> = ({
 
                 <div className="space-y-2">
                   <Label htmlFor="hourlyRate" className="text-sm font-medium text-gray-700">
-                    Your hourly rate (€)
+                    Your hourly rate ($)
                   </Label>
                   <Input
                     id="hourlyRate"
@@ -229,7 +229,7 @@ export const SavingsCalculator: React.FC<SavingsCalculatorProps> = ({
           <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
             <div className="text-center mb-6">
               <div className="text-4xl font-bold text-green-600 mb-2">
-                €{calculatedSavings.totalAnnualSavings.toLocaleString()}
+                ${calculatedSavings.totalAnnualSavings.toLocaleString()}
               </div>
               <p className="text-lg text-gray-600">Total Annual Savings</p>
             </div>
@@ -241,7 +241,7 @@ export const SavingsCalculator: React.FC<SavingsCalculatorProps> = ({
                   <span className="font-semibold text-red-800">Stockout Savings</span>
                 </div>
                 <div className="text-2xl font-bold text-red-600">
-                  €{calculatedSavings.annualStockoutSavings.toLocaleString()}
+                  ${calculatedSavings.annualStockoutSavings.toLocaleString()}
                 </div>
                 <p className="text-sm text-red-700">Prevent lost sales</p>
               </div>
@@ -252,7 +252,7 @@ export const SavingsCalculator: React.FC<SavingsCalculatorProps> = ({
                   <span className="font-semibold text-blue-800">Time Savings</span>
                 </div>
                 <div className="text-2xl font-bold text-blue-600">
-                  €{calculatedSavings.annualTimeSavings.toLocaleString()}
+                  ${calculatedSavings.annualTimeSavings.toLocaleString()}
                 </div>
                 <p className="text-sm text-blue-700">Automated management</p>
               </div>
@@ -271,7 +271,7 @@ export const SavingsCalculator: React.FC<SavingsCalculatorProps> = ({
               >
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2">
                   <span className="text-center leading-tight">
-                    Start Saving €{Math.round(calculatedSavings.totalAnnualSavings / 12).toLocaleString()}/Month
+                    Start Saving ${Math.round(calculatedSavings.totalAnnualSavings / 12).toLocaleString()}/Month
                   </span>
                   <span className="text-green-200 text-lg">→</span>
                 </div>

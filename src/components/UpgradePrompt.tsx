@@ -152,11 +152,11 @@ export const UpgradePrompt: React.FC<UpgradePromptProps> = ({
           <div className="flex items-center justify-between">
             <div>
               <div className="text-2xl font-bold text-gray-900">
-                €{upgradeTier.price_monthly.toFixed(2)}
+                ${upgradeTier.price_monthly.toFixed(2)}
                 <span className="text-sm font-normal text-gray-500">/month</span>
               </div>
               <div className="text-sm text-gray-500">
-                or €{upgradeTier.price_yearly.toFixed(2)}/year (save {upgradeTier.yearly_discount_percentage}%)
+                or ${upgradeTier.price_yearly.toFixed(2)}/year (save {upgradeTier.yearly_discount_percentage}%)
               </div>
             </div>
             <Button 
@@ -353,11 +353,11 @@ export const TierUpgradeCard: React.FC<{
           <div className="flex items-center justify-between">
             <div>
               <div className="text-2xl font-bold text-gray-900">
-                €{tier.price_monthly.toFixed(2)}
+                ${tier.price_monthly.toFixed(2)}
                 <span className="text-sm font-normal text-gray-500">/month</span>
               </div>
               <div className="text-sm text-gray-500">
-                or €{tier.price_yearly.toFixed(2)}/year (save {tier.yearly_discount_percentage}%)
+                or ${tier.price_yearly.toFixed(2)}/year (save {tier.yearly_discount_percentage}%)
               </div>
             </div>
             <Button 

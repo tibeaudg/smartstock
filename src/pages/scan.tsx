@@ -986,7 +986,7 @@ export default function ScanPage() {
                    {transactionType === 'incoming' && (
                      <div>
                        <Label htmlFor="purchasePrice" className="text-sm font-medium text-gray-700">
-                         Inkoopprijs (€)
+                         Inkoopprijs ($)
                        </Label>
                        <Input
                          id="purchasePrice"
@@ -1003,7 +1003,7 @@ export default function ScanPage() {
                    {transactionType === 'incoming' && (
                      <div>
                        <Label htmlFor="salePrice" className="text-sm font-medium text-gray-700">
-                         Verkoopprijs (€)
+                         Verkoopprijs ($)
                        </Label>
                        <Input
                          id="salePrice"

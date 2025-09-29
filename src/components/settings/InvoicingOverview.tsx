@@ -120,7 +120,7 @@ export const InvoicingOverview = () => {
               <tbody>
                 <tr className="bg-white border-b">
                   <td className="px-6 py-4 font-medium text-gray-900 capitalize">{currentInvoice.period}</td>
-                  <td className="px-6 py-4 text-right font-mono text-gray-800">€{currentInvoice.amount.toFixed(2)}</td>
+                  <td className="px-6 py-4 text-right font-mono text-gray-800">${currentInvoice.amount.toFixed(2)}</td>
                   <td className="px-6 py-4 text-center">
                     <Badge className={
                       currentInvoice.status === 'paid'
@@ -154,7 +154,7 @@ export const InvoicingOverview = () => {
                 <div className="text-xs text-gray-700">
                   <b>IBAN:</b> BE86731056413050<br />
                   <b>Naam:</b> stockflow<br />
-                  <b>Bedrag:</b> €{currentInvoice.amount.toFixed(2)}<br />
+                  <b>Bedrag:</b> ${currentInvoice.amount.toFixed(2)}<br />
                   <b>Mededeling:</b> {currentInvoice.payment_reference}
                 </div>
               </div>
@@ -193,7 +193,7 @@ export const InvoicingOverview = () => {
                   {paidInvoices.map((invoice) => (
                     <tr key={invoice.id} className="bg-white border-b hover:bg-gray-50">
                       <td className="px-6 py-4 font-medium text-gray-900 capitalize">{invoice.period}</td>
-                      <td className="px-6 py-4 text-right font-mono text-gray-800">€{invoice.amount.toFixed(2)}</td>
+                      <td className="px-6 py-4 text-right font-mono text-gray-800">${invoice.amount.toFixed(2)}</td>
                       <td className="px-6 py-4 text-center">
                         <Badge className="bg-green-100 text-green-800">Betaald</Badge>
                       </td>

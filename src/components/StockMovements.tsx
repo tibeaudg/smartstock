@@ -192,7 +192,7 @@ export const StockMovements = () => {
           <Card>
             <CardContent className="p-3 sm:p-4">
               <p className="text-xs sm:text-sm font-medium text-muted-foreground">Current Stock Value</p>
-              <p className="text-lg sm:text-xl lg:text-2xl font-bold">€{stats.totalValue.toFixed(2)}</p>
+              <p className="text-lg sm:text-xl lg:text-2xl font-bold">${stats.totalValue.toFixed(2)}</p>
             </CardContent>
           </Card>
         </div>
@@ -253,13 +253,13 @@ export const StockMovements = () => {
                   {!isMobile && (
                     <>
                       <td className="px-4 py-2 text-right text-sm">
-                        €{(Number(transaction.unit_price) || 0).toFixed(2)}
+                        ${(Number(transaction.unit_price) || 0).toFixed(2)}
                       </td>
                       <td className="px-4 py-2 text-right text-sm">
                         {transaction.transaction_type === 'outgoing' ? (
-                          <span className="text-green-600">+ €{(Number(transaction.total_value) || (transaction.quantity * Number(transaction.unit_price))).toFixed(2)}</span>
+                          <span className="text-green-600">+ ${(Number(transaction.total_value) || (transaction.quantity * Number(transaction.unit_price))).toFixed(2)}</span>
                         ) : (
-                          <span className="text-red-600">- €{(Number(transaction.total_value) || (transaction.quantity * Number(transaction.unit_price))).toFixed(2)}</span>
+                          <span className="text-red-600">- ${(Number(transaction.total_value) || (transaction.quantity * Number(transaction.unit_price))).toFixed(2)}</span>
                         )}
                       </td>
                     </>

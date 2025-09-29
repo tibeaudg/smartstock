@@ -271,7 +271,7 @@ export default function MagazijnbeheerSoftwareGratis() {
             <div className="bg-green-50 p-8 rounded-lg border-2 border-green-200">
               <div className="text-center mb-6">
                 <h3 className="text-2xl font-bold text-green-800 mb-2">Gratis Versie</h3>
-                <div className="text-4xl font-bold text-green-600 mb-4">€0/maand</div>
+                <div className="text-4xl font-bold text-green-600 mb-4">$0/maand</div>
                 <p className="text-green-700">Perfect voor starters en kleine magazijnen</p>
               </div>
               <ul className="space-y-4">
@@ -295,7 +295,7 @@ export default function MagazijnbeheerSoftwareGratis() {
             <div className="bg-indigo-50 p-8 rounded-lg border-2 border-indigo-200">
               <div className="text-center mb-6">
                 <h3 className="text-2xl font-bold text-indigo-800 mb-2">Premium Versie</h3>
-                <div className="text-4xl font-bold text-indigo-600 mb-4">€29/maand</div>
+                <div className="text-4xl font-bold text-indigo-600 mb-4">$29/maand</div>
                 <p className="text-indigo-700">Voor grote magazijnen en teams</p>
               </div>
               <ul className="space-y-4">

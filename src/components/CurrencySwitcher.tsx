@@ -29,7 +29,7 @@ export const CurrencySwitcher: React.FC<CurrencySwitcherProps> = ({
                 : 'bg-transparent hover:bg-gray-200'
             }`}
           >
-            € EUR
+            $ EUR
           </Button>
           <Button
             variant={currency === 'USD' ? 'default' : 'ghost'}
@@ -64,7 +64,7 @@ export const CurrencySwitcher: React.FC<CurrencySwitcherProps> = ({
               }`}
             >
               <div className="text-left">
-                <div className="font-medium">€ EUR</div>
+                <div className="font-medium">$ EUR</div>
                 <div className="text-sm opacity-75">Euro</div>
               </div>
             </Button>

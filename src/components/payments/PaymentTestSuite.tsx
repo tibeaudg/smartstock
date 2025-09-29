@@ -306,7 +306,7 @@ export const PaymentTestSuite: React.FC = () => {
                   <CardContent>
                     <div className="space-y-3">
                       <div className="flex justify-between items-center">
-                        <span className="text-2xl font-bold">€{module.price_monthly}</span>
+                        <span className="text-2xl font-bold">${module.price_monthly}</span>
                         <span className="text-sm text-gray-500">/maand</span>
                       </div>
                       

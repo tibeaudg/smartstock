@@ -223,7 +223,7 @@ export default function GratisStockbeheer() {
           <div className="flex flex-col gap-4 justify-center items-center">
             <div className="bg-green-50 p-6 rounded-lg border border-green-200">
               <h3 className="text-xl font-bold mb-4 text-green-800">Gratis Versie</h3>
-              <div className="text-3xl font-bold text-green-600 mb-4">€0/maand</div>
+              <div className="text-3xl font-bold text-green-600 mb-4">$0/maand</div>
               <ul className="space-y-3">
                 <li className="flex items-center">
                   <Check className="w-5 h-5 text-green-600 mr-3" />
@@ -275,7 +275,7 @@ export default function GratisStockbeheer() {
               Wat als ik meer dan 30 producten heb?
             </h3>
             <p className="text-gray-700 mb-3">
-              Je kunt eenvoudig upgraden naar de premium versie voor €29 per maand. 
+              Je kunt eenvoudig upgraden naar de premium versie voor $29 per maand. 
               Deze geeft je toegang tot onbeperkte producten en extra functies.
             </p>
           </div>
@@ -386,7 +386,7 @@ export default function GratisStockbeheer() {
             "name": "Wat als ik meer dan 30 producten heb?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Je kunt eenvoudig upgraden naar de premium versie voor €29 per maand. Deze geeft je toegang tot onbeperkte producten en extra functies."
+              "text": "Je kunt eenvoudig upgraden naar de premium versie voor $29 per maand. Deze geeft je toegang tot onbeperkte producten en extra functies."
             }
           },
           {

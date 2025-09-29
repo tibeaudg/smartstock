@@ -258,7 +258,7 @@ export const IncomingDeliveryNotes: React.FC = () => {
                       </div>
                       <div className="flex items-center gap-2">
                         <FileText className="w-4 h-4" />
-                        <span>€{note.total_amount.toFixed(2)}</span>
+                        <span>${note.total_amount.toFixed(2)}</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <Building className="w-4 h-4" />

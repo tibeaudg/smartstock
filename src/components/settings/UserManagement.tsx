@@ -125,7 +125,7 @@ export const UserManagement = () => {
     const totalUsers = uniqueUsers.size;
     const totalBranches = branchIds.length;
     
-    // Pricing: €2 per extra user (first user is free), €5 per extra branch (main branch is free)
+    // Pricing: $2 per extra user (first user is free), $5 per extra branch (main branch is free)
     const extraUsers = Math.max(0, totalUsers - 1); // First user is free
     const extraBranches = Math.max(0, totalBranches - 1); // Main branch is free
     const userCost = extraUsers * 2;
