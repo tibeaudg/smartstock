@@ -23,7 +23,8 @@ import { useAuth, AuthProvider } from "./hooks/useAuth";
 import { useBranches, BranchProvider } from "./hooks/useBranches";
 import { CurrencyProvider } from "./hooks/useCurrency";
 import { FirstBranchSetup } from "./components/FirstBranchSetup";
-import { Suspense } from "react";
+import { OnboardingModal } from "./components/OnboardingModal";
+import { Suspense, useState } from "react";
 import { ContentWrapper } from "./ContentWrapper";
 import AdminUserDetailPage from './pages/AdminUserDetailPage';
 import AdminNotificationsPage from './pages/AdminNotificationsPage';
@@ -176,6 +177,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading, userProfile } = useAuth();
   const { branches, hasNoBranches, loading: branchesLoading } = useBranches();
   const location = useLocation();
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
   // Debug: log auth state and location
   console.debug('[ProtectedRoute] user:', user);
@@ -198,6 +200,20 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   if (!user || !userProfile) {
     console.debug('[ProtectedRoute] Not authenticated, redirecting to /auth');
     return <Navigate to="/auth" state={{ from: location }} replace />;
+  }
+
+  // Check if user needs onboarding
+  if (userProfile && !userProfile.onboarding_completed) {
+    console.debug('[ProtectedRoute] User needs onboarding');
+    return (
+      <>
+        <OnboardingModal 
+          isOpen={true} 
+          onClose={() => setShowOnboarding(false)} 
+        />
+        {children}
+      </>
+    );
   }
 
   // Check if user has no branches and needs to create their first branch

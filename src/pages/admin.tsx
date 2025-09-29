@@ -12,6 +12,7 @@ import SEO from '../components/SEO';
 import { AdminNotificationManager } from '@/components/AdminNotificationManager';
 import { AdminChatList } from '@/components/AdminChatList';
 import { AdminSubscriptionManagement } from '@/components/admin/SubscriptionManagement';
+import { OnboardingTracking } from '@/components/admin/OnboardingTracking';
 import { useNavigate } from 'react-router-dom';
 
 // Gebruikersbeheer types
@@ -182,7 +183,7 @@ export default function AdminPage() {
   const { user, userProfile } = useAuth();
   const { isMobile } = useMobile();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<'users' | 'features' | 'chats' | 'notifications'>('users');
+  const [activeTab, setActiveTab] = useState<'users' | 'features' | 'chats' | 'notifications' | 'onboarding'>('users');
   const [selectedUser, setSelectedUser] = useState<UserProfile | null>(null);
   const [companyTypes, setCompanyTypes] = useState<Record<string, { type: string; custom_type: string | null }>>({});
   
@@ -255,10 +256,11 @@ export default function AdminPage() {
     mutationFn: ({ id, blocked }: { id: string; blocked: boolean }) => blockUser(id, blocked),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['userProfiles'] }),
   });
-  const sidebarNavItems: { id: 'users' | 'features' | 'chats' | 'notifications'; label: string }[] = [
+  const sidebarNavItems: { id: 'users' | 'features' | 'chats' | 'notifications' | 'onboarding'; label: string }[] = [
   { id: 'users', label: 'Gebruikersbeheer' },
   { id: 'chats', label: 'Chats' },
   { id: 'notifications', label: 'Meldingen' },
+  { id: 'onboarding', label: 'Onboarding Tracking' },
 ];
 
   // Real-time updates voor admin data
@@ -582,6 +584,10 @@ export default function AdminPage() {
 
             {activeTab === 'chats' && (
               <AdminChatList />
+            )}
+
+            {activeTab === 'onboarding' && (
+              <OnboardingTracking />
             )}
           </div>
         </div>
