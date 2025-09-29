@@ -263,13 +263,18 @@ export const SavingsCalculator: React.FC<SavingsCalculatorProps> = ({
                 Start saving today with StockFlow's free plan
               </p>
               <Button 
-                className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 text-lg font-semibold"
+                className="bg-green-600 hover:bg-green-700 text-white px-4 py-4 text-base sm:text-lg font-semibold w-full min-h-[64px] flex flex-col items-center justify-center gap-1 sm:gap-2"
                 onClick={() => {
                   // This would trigger the sign-up flow
-                  window.location.href = '/auth';
+                  window.location.href = '/pricing';
                 }}
               >
-                Start Saving €{Math.round(calculatedSavings.totalAnnualSavings / 12).toLocaleString()}/Month →
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2">
+                  <span className="text-center leading-tight">
+                    Start Saving €{Math.round(calculatedSavings.totalAnnualSavings / 12).toLocaleString()}/Month
+                  </span>
+                  <span className="text-green-200 text-lg">→</span>
+                </div>
               </Button>
             </div>
           </div>
