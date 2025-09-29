@@ -23,6 +23,7 @@ export const AuthPage = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+  const [acceptTerms, setAcceptTerms] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentLanguage, setCurrentLanguage] = useState('en');
 
@@ -68,6 +69,7 @@ export const AuthPage = () => {
     setConfirmPassword('');
     setFirstName('');
     setLastName('');
+    setAcceptTerms(false);
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -110,6 +112,21 @@ export const AuthPage = () => {
           await trackRegistrationStarted();
         }
 
+        // Validate required fields
+        if (!firstName.trim()) {
+          if (isTrackingReady) {
+            await trackFormAbandonment('missing_first_name');
+          }
+          toast.error('First name is required');
+          return;
+        }
+        if (!lastName.trim()) {
+          if (isTrackingReady) {
+            await trackFormAbandonment('missing_last_name');
+          }
+          toast.error('Last name is required');
+          return;
+        }
         if (password !== confirmPassword) {
           if (isTrackingReady) {
             await trackFormAbandonment('password_mismatch');
@@ -122,6 +139,13 @@ export const AuthPage = () => {
             await trackFormAbandonment('password_too_short');
           }
           toast.error('Password must be at least 8 characters long');
+          return;
+        }
+        if (!acceptTerms) {
+          if (isTrackingReady) {
+            await trackFormAbandonment('terms_not_accepted');
+          }
+          toast.error('You must accept the terms and conditions');
           return;
         }
 
@@ -186,6 +210,42 @@ export const AuthPage = () => {
         <div className="w-full lg:w-1/2 xl:w-2/5 bg-white flex items-center justify-center p-4 sm:p-6 lg:p-8">
           <div className="w-full max-w-md">
 
+            {/* Mode Switcher Tabs */}
+            <div className="mb-6">
+              <div className="flex bg-gray-100 rounded-lg p-1">
+                <button
+                  type="button"
+                  onClick={() => { setMode('login'); clearForm(); }}
+                  disabled={isSubmitting}
+                  className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all duration-200 ${
+                    mode === 'login'
+                      ? 'bg-white text-gray-900 shadow-sm'
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                >
+                  Login
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { 
+                    setMode('register'); 
+                    clearForm(); 
+                    if (isTrackingReady) {
+                      trackRegistrationStarted();
+                    }
+                  }}
+                  disabled={isSubmitting}
+                  className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all duration-200 ${
+                    mode === 'register'
+                      ? 'bg-white text-gray-900 shadow-sm'
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                >
+                  Register
+                </button>
+              </div>
+            </div>
+
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
               {mode === 'register' 
                 ? 'Start Your Free Account'
@@ -201,6 +261,27 @@ export const AuthPage = () => {
 
             <Card className="shadow-none border-0 bg-transparent">
               <CardContent className="p-0">
+                {/* Mode indicator */}
+                <div className="mb-4">
+                  <div className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
+                    mode === 'login' 
+                      ? 'bg-blue-100 text-blue-800' 
+                      : 'bg-green-100 text-green-800'
+                  }`}>
+                    {mode === 'login' ? (
+                      <>
+                        <div className="w-2 h-2 bg-blue-600 rounded-full mr-2"></div>
+                        Login Mode
+                      </>
+                    ) : (
+                      <>
+                        <div className="w-2 h-2 bg-green-600 rounded-full mr-2"></div>
+                        Registration Mode
+                      </>
+                    )}
+                  </div>
+                </div>
+
                 <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
                   {/* Simplified: only email and password for registration */}
 
@@ -217,6 +298,40 @@ export const AuthPage = () => {
                       placeholder="you@company.com"
                     />
                   </div>
+
+                  {/* First Name and Last Name fields for registration */}
+                  {mode === 'register' && (
+                    <>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <Label htmlFor="firstName" className="text-sm font-medium text-gray-700">First Name</Label>
+                          <Input 
+                            id="firstName" 
+                            type="text" 
+                            value={firstName} 
+                            onChange={(e) => setFirstName(e.target.value)} 
+                            required 
+                            disabled={isSubmitting}
+                            className="mt-1 h-12 sm:h-14 text-base border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                            placeholder="John"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="lastName" className="text-sm font-medium text-gray-700">Last Name</Label>
+                          <Input 
+                            id="lastName" 
+                            type="text" 
+                            value={lastName} 
+                            onChange={(e) => setLastName(e.target.value)} 
+                            required 
+                            disabled={isSubmitting}
+                            className="mt-1 h-12 sm:h-14 text-base border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                            placeholder="Doe"
+                          />
+                        </div>
+                      </div>
+                    </>
+                  )}
 
                   {mode !== 'reset' && (
                     <div>
@@ -239,7 +354,22 @@ export const AuthPage = () => {
                     </div>
                   )}
 
-                  {/* Simplified: no confirm password field */}
+                  {/* Password confirmation for registration */}
+                  {mode === 'register' && (
+                    <div>
+                      <Label htmlFor="confirmPassword" className="text-sm font-medium text-gray-700">Confirm Password</Label>
+                      <Input 
+                        id="confirmPassword" 
+                        type="password" 
+                        value={confirmPassword} 
+                        onChange={(e) => setConfirmPassword(e.target.value)} 
+                        required 
+                        disabled={isSubmitting}
+                        className="mt-1 h-12 sm:h-14 text-base border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                        placeholder="Confirm your password"
+                      />
+                    </div>
+                  )}
 
                   {/* Remember me and Forgot password */}
                   {mode === 'login' && (
@@ -265,6 +395,36 @@ export const AuthPage = () => {
                       </button>
                     </div>
                   )}
+
+                  {/* Terms and conditions for registration */}
+                  {mode === 'register' && (
+                    <div className="flex items-start">
+                      <div className="flex items-center h-5">
+                        <input
+                          id="accept-terms"
+                          name="accept-terms"
+                          type="checkbox"
+                          checked={acceptTerms}
+                          onChange={(e) => setAcceptTerms(e.target.checked)}
+                          required
+                          disabled={isSubmitting}
+                          className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                        />
+                      </div>
+                      <div className="ml-3 text-sm">
+                        <label htmlFor="accept-terms" className="text-gray-700">
+                          I agree to the{' '}
+                          <a href="/terms" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-700 underline">
+                            Terms and Conditions
+                          </a>
+                          {' '}and{' '}
+                          <a href="/privacy" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-700 underline">
+                            Privacy Policy
+                          </a>
+                        </label>
+                      </div>
+                    </div>
+                  )}
                   
                   <Button 
                     type="submit" 
@@ -275,9 +435,9 @@ export const AuthPage = () => {
                       <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> Please wait...</>
                     ) : (
                       <>
-                        {mode === 'login' && 'Log In'}
-                        {mode === 'register' && 'Start Free Account'}
-                        {mode === 'reset' && 'Send reset instructions'}
+                        {mode === 'login' && 'Login to Your Account'}
+                        {mode === 'register' && 'Create Free Account'}
+                        {mode === 'reset' && 'Send Reset Instructions'}
                       </>
                     )}
                   </Button>
@@ -292,7 +452,7 @@ export const AuthPage = () => {
                     </div>
                   </div>
 
-                  {/* Google Sign In */}
+                  {/* Google Login */}
                   <Button 
                     type="button"
                     variant="outline"
@@ -331,54 +491,9 @@ export const AuthPage = () => {
                       <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
                       <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
                     </svg>
-                    Sign In with Google
+                    Login with Google
                   </Button>
 
-                  {/* Mode switcher */}
-                  <div className="text-center">
-                    {mode === 'login' ? (
-                      <p className="text-sm text-gray-600">
-                        Don't have an account?{' '}
-                        <button
-                          type="button"
-                          onClick={async () => { 
-                            setMode('register'); 
-                            clearForm(); 
-                            if (isTrackingReady) {
-                              await trackRegistrationStarted();
-                            }
-                          }}
-                          className="text-blue-600 hover:text-blue-700 hover:underline font-medium"
-                          disabled={isSubmitting}
-                        >
-                          Sign Up
-                        </button>
-                      </p>
-                    ) : (
-                      <p className="text-sm text-gray-600">
-                        Already have an account?{' '}
-                        <button
-                          type="button"
-                          onClick={() => { setMode('login'); clearForm(); }}
-                          className="text-blue-600 hover:text-blue-700 hover:underline font-medium"
-                          disabled={isSubmitting}
-                        >
-                          Sign In
-                        </button>
-                      </p>
-                    )}
-                  </div>
-
-                  {mode === 'register' && (
-                    <div className="text-center">
-                      <p className="text-xs text-gray-500">
-                        By registering you agree to our{' '}
-                        <a href="#" className="text-blue-600 hover:underline">Terms of Service</a>
-                        {' '}and{' '}
-                        <a href="#" className="text-blue-600 hover:underline">Privacy Policy</a>
-                      </p>
-                    </div>
-                  )}
                 </form>
               </CardContent>
             </Card>
