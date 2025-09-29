@@ -1453,6 +1453,23 @@ export const HomePage = () => {
         hideNotifications={true}
       />
 
+      {/* Persistent Header Bar with Quantified Savings */}
+      <div className="bg-gradient-to-r from-red-500 to-orange-500 text-white py-2 px-4 sticky top-0 z-40 shadow-lg">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <span className="text-sm md:text-base font-semibold">
+              Stop Losing €2,400/Year 💸
+            </span>
+          </div>
+          <Button
+            onClick={handleLoginClick}
+            className="bg-white hover:bg-gray-100 text-red-600 px-4 py-2 text-sm font-semibold rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+          >
+            Start Free Today →
+          </Button>
+        </div>
+      </div>
+
       {/* Hero Section with Video Below */}
       <section className="relative bg-gradient-to-br from-slate-50 via-blue-50 to-blue-50 py-16 md:py-32 px-4 overflow-hidden">
         <div className="max-w-7xl mx-auto">
@@ -1488,7 +1505,7 @@ export const HomePage = () => {
                   No credit card needed ♦ Unlimited time on Free plan
                 </p>
                 <p className="text-xs text-gray-400">
-                  Includes a Free Plan for 1 User/100 Products, or Try All Features Free for 14 Days
+                  Includes a Free Plan for 2 Users/100 Products
                 </p>
               </FadeInWhenVisible>
             </div>
@@ -1551,37 +1568,66 @@ export const HomePage = () => {
               </div>
             </div>
           </SlideUpWhenVisible>
+
         </div>
       </section>
 
 
-      {/* Trust Bar */}
+      {/* Enhanced Trust Bar */}
       <section className="py-12 bg-white border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4">
           <FadeInWhenVisible>
             <div className="text-center mb-8">
               <p className="text-sm text-gray-500 font-medium mb-6">
-                Trusted by 10,000+ businesses across Europe
+                Trusted by leading SMEs
               </p>
             </div>
           </FadeInWhenVisible>
           
           <SlideUpWhenVisible delay={200}>
-            <div className="flex justify-center items-center w-full">
-              <img
-                src="/trusted.png"
-                alt="Trusted by businesses across Europe"
-                className="h-24 md:h-32 w-full object-contain"
-                style={{ maxWidth: "200vw" }}
-                loading="lazy"
-              />
+            <div className="grid grid-cols-4 xs:grid-cols-2 gap-4 md:gap-6 max-w-4xl mx-auto px-4">
+              {/* Koffieboetiek */}
+              <div className="flex flex-col items-center space-y-2 p-3 rounded-lg bg-white/50 backdrop-blur-sm border border-gray-200/50 hover:bg-white/80 transition-all duration-300">
+                <div className="w-12 h-12 md:w-14 md:h-14 bg-blue-100 rounded-full flex items-center justify-center shadow-sm">
+                  <span className="text-blue-600 font-bold text-sm md:text-base">KB</span>
+                </div>
+                <span className="text-xs md:text-sm text-gray-700 font-medium text-center">Koffieboetiek</span>
+                <span className="text-xs text-gray-500 text-center">Coffee Shop</span>
+              </div>
+              
+              {/* TechOnderdelen */}
+              <div className="flex flex-col items-center space-y-2 p-3 rounded-lg bg-white/50 backdrop-blur-sm border border-gray-200/50 hover:bg-white/80 transition-all duration-300">
+                <div className="w-12 h-12 md:w-14 md:h-14 bg-green-100 rounded-full flex items-center justify-center shadow-sm">
+                  <span className="text-green-600 font-bold text-sm md:text-base">TB</span>
+                </div>
+                <span className="text-xs md:text-sm text-gray-700 font-medium text-center">TechOnderdelen</span>
+                <span className="text-xs text-gray-500 text-center">Electronics</span>
+              </div>
+              
+              {/* Creatief Atelier */}
+              <div className="flex flex-col items-center space-y-2 p-3 rounded-lg bg-white/50 backdrop-blur-sm border border-gray-200/50 hover:bg-white/80 transition-all duration-300">
+                <div className="w-12 h-12 md:w-14 md:h-14 bg-purple-100 rounded-full flex items-center justify-center shadow-sm">
+                  <span className="text-purple-600 font-bold text-sm md:text-base">CA</span>
+                </div>
+                <span className="text-xs md:text-sm text-gray-700 font-medium text-center">Creatief Atelier</span>
+                <span className="text-xs text-gray-500 text-center">Creative Studio</span>
+              </div>
+              
+              {/* 500+ SMEs */}
+              <div className="flex flex-col items-center space-y-2 p-3 rounded-lg bg-white/50 backdrop-blur-sm border border-gray-200/50 hover:bg-white/80 transition-all duration-300">
+                <div className="w-12 h-12 md:w-14 md:h-14 bg-orange-100 rounded-full flex items-center justify-center shadow-sm">
+                  <span className="text-orange-600 font-bold text-sm md:text-base">+</span>
+                </div>
+                <span className="text-xs md:text-sm text-gray-700 font-medium text-center">500+ SMEs</span>
+                <span className="text-xs text-gray-500 text-center">Across Europe</span>
+              </div>
             </div>
           </SlideUpWhenVisible>
           
           <FadeInWhenVisible delay={400}>
             <div className="text-center mt-8">
               <p className="text-xs text-gray-400">
-                From small coffee shops to large distributors
+                Join thousands of businesses saving €2,400+ annually
               </p>
             </div>
           </FadeInWhenVisible>
