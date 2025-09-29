@@ -21,15 +21,23 @@ const QUALITY_SETTINGS = {
   png: 90
 };
 
-async function optimizeImage(inputPath, outputPath, format = 'webp') {
+// Responsive image sizes
+const RESPONSIVE_SIZES = [320, 640, 768, 1024, 1280, 1920];
+
+async function optimizeImage(inputPath, outputPath, format = 'webp', targetWidth = null) {
   try {
     const image = sharp(inputPath);
     
     // Get image metadata
     const metadata = await image.metadata();
     
-    // Resize if image is too large (max 1920px width)
-    if (metadata.width > 1920) {
+    // Resize if target width is specified or if image is too large
+    if (targetWidth) {
+      image.resize(targetWidth, null, {
+        withoutEnlargement: true,
+        fit: 'inside'
+      });
+    } else if (metadata.width > 1920) {
       image.resize(1920, null, {
         withoutEnlargement: true,
         fit: 'inside'
@@ -103,6 +111,15 @@ async function processDirectory(dirPath) {
         
         // Convert to AVIF (next-gen format for browsers that support it)
         await optimizeImage(filePath, outputPathAvif, 'avif');
+        
+        // Create responsive versions for each format
+        for (const size of RESPONSIVE_SIZES) {
+          const responsiveWebPPath = path.join(outputDir, `w${size}-${fileName}.webp`);
+          const responsiveAvifPath = path.join(outputDir, `w${size}-${fileName}.avif`);
+          
+          await optimizeImage(filePath, responsiveWebPPath, 'webp', size);
+          await optimizeImage(filePath, responsiveAvifPath, 'avif', size);
+        }
       }
     }
   }

@@ -2015,15 +2015,15 @@ export const HomePage = () => {
                   {/* Enhanced User Info with Photo */}
                   <div className="flex items-center mb-4">
                     <div className="w-16 h-16 rounded-full overflow-hidden mr-4 border-2 border-blue-200">
-                      <img 
+                      <OptimizedImage 
                         src={testimonial.avatar} 
                         alt={testimonial.name}
                         className="w-full h-full object-cover"
-                        onError={(e) => {
-                          e.currentTarget.style.display = 'none';
-                          const nextElement = e.currentTarget.nextElementSibling as HTMLElement;
-                          if (nextElement) nextElement.style.display = 'flex';
-                        }}
+                        width={64}
+                        height={64}
+                        useModernFormats={true}
+                        responsive={true}
+                        sizes="64px"
                       />
                       <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-semibold text-lg" style={{display: 'none'}}>
                         {testimonial.name.split(' ').map(n => n[0]).join('')}
@@ -2387,8 +2387,12 @@ export const HomePage = () => {
                 src="/logo.png"
                 alt="StockFlow"
                 className="h-8 w-auto"
+                width={120}
+                height={32}
+                useModernFormats={true}
+                responsive={true}
+                sizes="(max-width: 768px) 100px, 120px"
                 loading="lazy"
-                sizes="32px"
               />
                         </div>
             

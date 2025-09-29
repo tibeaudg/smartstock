@@ -2,6 +2,7 @@ import SEO from '../../components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '../../components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
+import OptimizedImage from '../../components/OptimizedImage';
 
 export default function VoorraadbeheerTips() {
   // Gebruik de page refresh hook
@@ -55,10 +56,15 @@ export default function VoorraadbeheerTips() {
             {/* Right Side - Image */}
             <div className="lg:col-span-1">
               <div className="rounded-lg text-center">
-                <img 
+                <OptimizedImage 
                   src="https://rompslomp.nl/hs-fs/hubfs/voorraadbeheer.jpg?width=1200&height=800&name=voorraadbeheer.jpg" 
                   alt="Voorraadbeheer Tips" 
                   className="w-full max-w-sm sm:max-w-md lg:w-96 h-64 sm:h-80 lg:h-96 mx-auto object-cover rounded-lg mb-4"
+                  width={400}
+                  height={300}
+                  useModernFormats={true}
+                  responsive={true}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 />
               </div>
             </div>
@@ -73,10 +79,15 @@ export default function VoorraadbeheerTips() {
             {/* Left Side - Image */}
             <div className="lg:col-span-1">
               <div className="rounded-lg text-center">
-                <img 
+                <OptimizedImage 
                   src="https://www.greatplacetowork.ca/images/Asset_3.webp" 
                   alt="Team Samenwerking" 
                   className="w-full h-64 sm:h-80 lg:h-96 mx-auto object-cover rounded-lg"
+                  width={400}
+                  height={300}
+                  useModernFormats={true}
+                  responsive={true}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 />
               </div>
             </div>
@@ -139,10 +150,15 @@ export default function VoorraadbeheerTips() {
             {/* Right Side - Image */}
             <div className="lg:col-span-1">
               <div className="rounded-lg text-center">
-                <img 
+                <OptimizedImage 
                   src="https://www.warehousingandfulfillment.com/wp-content/uploads/2020/04/Barcode-Scanning-Technologies.jpg" 
                   alt="Barcode Scanning" 
                   className="w-full max-w-sm sm:max-w-md lg:w-96 h-64 sm:h-80 lg:h-96 mx-auto object-cover rounded-lg mb-4"
+                  width={400}
+                  height={300}
+                  useModernFormats={true}
+                  responsive={true}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 />
               </div>
             </div>
@@ -157,10 +173,15 @@ export default function VoorraadbeheerTips() {
             {/* Left Side - Large Image */}
             <div className="lg:col-span-2">
               <div className=" rounded-lg">
-                <img 
+                <OptimizedImage 
                   src="https://valuechain.be/media/images/20232316226515_shutterstock-1106078390.width-1292.webp" 
                   alt="Modern Magazijn" 
                   className="w-full h-96 object-cover rounded-lg mb-4"
+                  width={800}
+                  height={400}
+                  useModernFormats={true}
+                  responsive={true}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 100vw, 66vw"
                 />
               </div>
             </div>
@@ -247,10 +268,15 @@ export default function VoorraadbeheerTips() {
       {/* Footer */}
       <footer className="bg-gray-900 text-gray-200 py-12 md:py-16">
         <div className="max-w-4xl mx-auto px-6 text-center">
-          <img
+          <OptimizedImage
             src="/logo.png"
             alt="stockflow"
             className="h-10 md:h-12 mx-auto mb-6"
+            width={120}
+            height={48}
+            useModernFormats={true}
+            responsive={true}
+            sizes="(max-width: 768px) 100px, 120px"
           />
                      <p className="text-gray-400 text-base md:text-lg mb-8 leading-relaxed max-w-2xl mx-auto">
              Praktische voorraadbeheer tips voor KMO's.
