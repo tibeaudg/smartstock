@@ -46,7 +46,7 @@ export const VariantSelectionModal = ({
 
   if (!product || !isOpen) return null;
 
-  const actionTitle = actionType === 'in' ? 'Toevoegen' : 'Uithalen';
+  const actionTitle = actionType === 'in' ? 'Add' : 'Remove';
   const actionColor = actionType === 'in' ? 'text-green-600' : 'text-red-600';
 
   return (
@@ -57,7 +57,7 @@ export const VariantSelectionModal = ({
             <span className={actionColor}>{actionTitle}: {product.name}</span>
           </DialogTitle>
           <p className="text-sm text-gray-600 mt-2">
-            Selecteer een variant om de voorraadbeweging uit te voeren:
+            Select a variant to perform the stock movement:
           </p>
         </DialogHeader>
         
@@ -73,12 +73,12 @@ export const VariantSelectionModal = ({
                   {variant.image_url ? (
                     <img
                       src={variant.image_url}
-                      alt={`Productfoto van ${variant.name}`}
+                      alt={`Product photo of ${variant.name}`}
                       className="w-12 h-12 object-cover rounded border"
                     />
                   ) : (
                     <div className="w-12 h-12 bg-gray-200 rounded border flex items-center justify-center text-xs text-gray-400">
-                      Geen
+                      None
                     </div>
                   )}
                   <div className="flex-1">
@@ -89,7 +89,7 @@ export const VariantSelectionModal = ({
                       </Badge>
                     </div>
                     <div className="text-sm text-gray-500 mt-1">
-                      Voorraad: <span className="font-medium">{variant.quantity_in_stock}</span> | 
+                      Stock: <span className="font-medium">{variant.quantity_in_stock}</span> | 
                       Min: <span className="font-medium">{variant.minimum_stock_level}</span>
                     </div>
                     {variant.description && (
@@ -103,7 +103,7 @@ export const VariantSelectionModal = ({
                       ${variant.sale_price ? Number(variant.sale_price).toFixed(2) : '0.00'}
                     </div>
                     <div className="text-xs text-gray-500">
-                      {actionType === 'in' ? 'Toevoegen' : 'Uithalen'}
+                      {actionType === 'in' ? 'Add' : 'Remove'}
                     </div>
                   </div>
                 </div>
@@ -119,7 +119,7 @@ export const VariantSelectionModal = ({
               onClick={onClose}
               className={isMobile ? 'w-full' : ''}
             >
-              Annuleren
+              Cancel
             </Button>
           </div>
         </div>

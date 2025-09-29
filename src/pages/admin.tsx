@@ -11,7 +11,6 @@ import { useMobile } from '@/hooks/use-mobile';
 import SEO from '../components/SEO';
 import { AdminNotificationManager } from '@/components/AdminNotificationManager';
 import { AdminChatList } from '@/components/AdminChatList';
-import { WebsiteAnalytics } from '@/components/analytics/WebsiteAnalytics';
 import { AdminSubscriptionManagement } from '@/components/admin/SubscriptionManagement';
 import { useNavigate } from 'react-router-dom';
 
@@ -183,7 +182,7 @@ export default function AdminPage() {
   const { user, userProfile } = useAuth();
   const { isMobile } = useMobile();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<'users' | 'features' | 'chats' | 'notifications' | 'blogcms' | 'bloganalytics' | 'websiteanalytics'>('users');
+  const [activeTab, setActiveTab] = useState<'users' | 'features' | 'chats' | 'notifications'>('users');
   const [selectedUser, setSelectedUser] = useState<UserProfile | null>(null);
   const [companyTypes, setCompanyTypes] = useState<Record<string, { type: string; custom_type: string | null }>>({});
   
@@ -256,11 +255,10 @@ export default function AdminPage() {
     mutationFn: ({ id, blocked }: { id: string; blocked: boolean }) => blockUser(id, blocked),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['userProfiles'] }),
   });
-  const sidebarNavItems: { id: 'users' | 'features' | 'chats' | 'notifications' | 'blogcms' | 'bloganalytics' | 'websiteanalytics'; label: string }[] = [
+  const sidebarNavItems: { id: 'users' | 'features' | 'chats' | 'notifications'; label: string }[] = [
   { id: 'users', label: 'Gebruikersbeheer' },
   { id: 'chats', label: 'Chats' },
   { id: 'notifications', label: 'Meldingen' },
-  { id: 'websiteanalytics', label: 'Website Analytics' },
 ];
 
   // Real-time updates voor admin data
@@ -357,9 +355,7 @@ export default function AdminPage() {
 
           {/* Main content area */}
           <div className="w-full flex-1 px-2 sm:px-4 md:px-6 space-y-6 mt-6 mb-24">
-            {activeTab === 'websiteanalytics' && (
-              <WebsiteAnalytics />
-            )}
+
             {activeTab === 'notifications' && (
               <AdminNotificationManager />
             )}

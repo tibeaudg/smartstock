@@ -194,7 +194,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
     // Enhanced validation with better error messages
     if (!user) {
       console.error('No authenticated user found');
-      toast.error('U bent niet ingelogd. Log opnieuw in en probeer het opnieuw.');
+      toast.error('You are not logged in. Please log in again and try again.');
       return;
     }
 
@@ -257,7 +257,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
 
           if (supplierError) {
             console.error('Error creating supplier:', supplierError);
-            toast.error('Fout bij het aanmaken van leverancier');
+            toast.error('Error creating supplier');
             return;
           }
           supplierId = newSupplier.id;
@@ -286,7 +286,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
 
           if (categoryError) {
             console.error('Error creating category:', categoryError);
-            toast.error('Fout bij het aanmaken van categorie');
+            toast.error('Error creating category');
             return;
           }
           categoryId = newCategory.id;
@@ -301,7 +301,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
           .from('product-images')
           .upload(fileName, productImage, { upsert: false });
         if (uploadError) {
-          toast.error('Fout bij uploaden van afbeelding');
+          toast.error('Error uploading image');
           setLoading(false);
           return;
         }
@@ -337,7 +337,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
           .single();
         if (productError) {
           console.error('Error adding product:', productError);
-          toast.error(`Fout bij het toevoegen van product: ${productError.message}`);
+          toast.error(`Error adding product: ${productError.message}`);
           return;
         }
         // Direct na toevoegen: forceer refresh van productCount
@@ -360,7 +360,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
           .insert(stockTransactionData);
         if (transactionError) {
           console.error('Error creating initial stock transaction:', transactionError);
-          toast.error(`Product aangemaakt maar voorraad transactie mislukt: ${transactionError.message}`);
+          toast.error(`Product created but stock transaction failed: ${transactionError.message}`);
         } else {
           queryClient.invalidateQueries({ queryKey: ['stockTransactions'] });
         }
@@ -391,7 +391,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
           .single();
         if (parentError || !parent) {
           console.error('Error creating parent product:', parentError);
-          toast.error('Fout bij aanmaken hoofdproduct');
+          toast.error('Error creating main product');
           return;
         }
         // Maak varianten
@@ -423,7 +423,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
             .select();
           if (varErr) {
             console.error('Error creating variants:', varErr);
-            toast.error('Fout bij aanmaken varianten');
+            toast.error('Error creating variants');
             return;
           }
           insertedVariants = createdVariants || [];
@@ -448,7 +448,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
               .insert(transactions);
             if (tErr) {
               console.error('Error creating variant transactions:', tErr);
-              toast.error('Varianten aangemaakt maar initiele transacties faalden');
+              toast.error('Variants created but initial transactions failed');
             }
           }
         }
@@ -457,7 +457,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
         queryClient.invalidateQueries({ queryKey: ['stockTransactions'] });
       }
 
-      toast.success(hasVariants ? 'Hoofdproduct en varianten toegevoegd!' : 'Product succesvol toegevoegd!');
+      toast.success(hasVariants ? 'Main product and variants added!' : 'Product successfully added!');
       form.reset();
       setVariants([]);
       setHasVariants(false);
@@ -468,7 +468,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
       onClose();
     } catch (error) {
       console.error('Error adding product:', error);
-      toast.error('Onverwachte fout bij het toevoegen van product');
+      toast.error('Unexpected error adding product');
     } finally {
       setLoading(false);
     }
@@ -485,13 +485,13 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
       <Dialog open={isOpen} onOpenChange={onClose}>
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>
-            <DialogTitle>Geen filiaal geselecteerd</DialogTitle>
+            <DialogTitle>No branch selected</DialogTitle>
           </DialogHeader>
           <div className="p-4 text-center">
             <p className="text-gray-600 mb-4">
-              Selecteer eerst een filiaal om een product toe te voegen.
+              Please select a branch first to add a product.
             </p>
-            <Button onClick={onClose}>Sluiten</Button>
+            <Button onClick={onClose}>Close</Button>
           </div>
         </DialogContent>
       </Dialog>
@@ -502,7 +502,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className={`w-full max-w-full mx-auto p-0 ${isMobile ? 'h-full max-h-full rounded-none bg-white' : 'bg-white md:w-auto md:max-w-4xl md:max-h-[90vh] md:p-6 md:rounded-lg'}`}>
         <DialogHeader className={`${isMobile ? 'p-4 border-b' : ''}`}>
-          <DialogTitle>Nieuw Product Toevoegen</DialogTitle>
+          <DialogTitle>Add New Product</DialogTitle>
         </DialogHeader>
 
         <div className={`${isMobile ? 'flex-1 overflow-y-auto p-4' : 'max-h-[calc(90vh-120px)] overflow-y-auto'}`}>
@@ -513,7 +513,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                 <h3 className="text-lg font-semibold text-blue-800 mb-4 flex items-center">
                   <div className="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
-                  Basis Informatie
+                  Basic Information
                 </h3>
                 <div className="space-y-4">
             <FormField
@@ -522,11 +522,11 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
               rules={{ required: 'Product naam is verplicht' }}
               render={({ field }) => (
                 <FormItem>
-                        <FormLabel className="text-blue-700 font-medium">Product Naam *</FormLabel>
+                        <FormLabel className="text-blue-700 font-medium">Product Name *</FormLabel>
                   <FormControl>
                           <Input 
                             {...field} 
-                            placeholder="Voer product naam in" 
+                            placeholder="Enter product name" 
                             disabled={loading} 
                             className="py-3 px-3 text-base border-blue-200 focus:border-blue-500" 
                           />
@@ -534,7 +534,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                   {duplicateName && (
                     <div className="flex items-center text-sm text-red-600 mt-1">
                       <AlertCircle className="w-4 h-4 mr-1" />
-                      Deze productnaam bestaat al in dit filiaal.
+                      This product name already exists in this branch.
                     </div>
                   )}
                   <FormMessage />
@@ -554,7 +554,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                       }}
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-blue-700 font-medium">Voorraad {!hasVariants && '*'}</FormLabel>
+                          <FormLabel className="text-blue-700 font-medium">Stock {!hasVariants && '*'}</FormLabel>
                           <FormControl>
                             <Input 
                               {...field} 
@@ -580,7 +580,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                       }}
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-blue-700 font-medium">Min. Niveau {!hasVariants && '*'}</FormLabel>
+                          <FormLabel className="text-blue-700 font-medium">Min. Level {!hasVariants && '*'}</FormLabel>
                           <FormControl>
                             <Input 
                               {...field} 
@@ -611,7 +611,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                 >
                   <span className="flex items-center">
                     <div className="w-3 h-3 bg-gray-400 rounded-full mr-2"></div>
-                    Geavanceerde Opties
+                    Advanced Options
                   </span>
                   <ChevronsUpDown className={`w-4 h-4 transition-transform ${showAdvancedOptions ? 'rotate-180' : ''}`} />
                 </Button>
@@ -631,11 +631,11 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
               name="description"
               render={({ field }) => (
                 <FormItem>
-                              <FormLabel className="text-gray-700">Beschrijving</FormLabel>
+                              <FormLabel className="text-gray-700">Description</FormLabel>
                   <FormControl>
                     <Textarea 
                       {...field} 
-                      placeholder="Voer product beschrijving in" 
+                      placeholder="Enter product description" 
                       disabled={loading}
                                   className="resize-none py-3 px-3 text-base border-gray-200 focus:border-gray-400"
                       rows={3}
@@ -652,11 +652,11 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
               name="location"
               render={({ field }) => (
                 <FormItem>
-                              <FormLabel className="text-gray-700">Locatie</FormLabel>
+                              <FormLabel className="text-gray-700">Location</FormLabel>
                   <FormControl>
                     <Input 
                       {...field} 
-                      placeholder="Voer locatie in (bijv. A1, Rek 3, etc.)" 
+                      placeholder="Enter location (e.g. A1, Shelf 3, etc.)" 
                       disabled={loading}
                                   className="py-3 px-3 text-base border-gray-200 focus:border-gray-400"
                     />
@@ -672,7 +672,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                     <div className="bg-white border border-gray-200 rounded-lg p-4">
                       <h4 className="text-md font-semibold text-gray-700 mb-3 flex items-center">
                         <div className="w-2 h-2 bg-gray-500 rounded-full mr-2"></div>
-                        Categorie & Leverancier
+                        Category & Supplier
                       </h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <FormField
@@ -680,7 +680,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                 name="categoryName"
                 render={({ field }) => (
                   <FormItem>
-                              <FormLabel className="text-gray-700">Categorie</FormLabel>
+                              <FormLabel className="text-gray-700">Category</FormLabel>
                     <FormControl>
                       <Popover open={categoryOpen} onOpenChange={setCategoryOpen}>
                         <PopoverTrigger asChild>
@@ -691,21 +691,21 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                                       className="w-full justify-between py-3 px-3 text-base border-gray-200 focus:border-gray-400"
                             disabled={loading}
                           >
-                            {field.value ? field.value : "Selecteer categorie..."}
+                            {field.value ? field.value : "Select category..."}
                             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                           </Button>
                         </PopoverTrigger>
                         <PopoverContent className="w-full p-0">
                                                      <Command>
                              <CommandInput 
-                               placeholder="Categorie zoeken..." 
+                               placeholder="Search category..." 
                                value={field.value}
                                onValueChange={field.onChange}
                              />
                             <CommandList>
                               <CommandEmpty>
                                 <div className="p-2 text-center">
-                                  <p className="text-sm text-gray-500 mb-2">Geen categorie gevonden</p>
+                                  <p className="text-sm text-gray-500 mb-2">No category found</p>
                                   <Button
                                     variant="outline"
                                     size="sm"
@@ -719,23 +719,23 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                                              .single();
                                            
                                            if (error) {
-                                             toast.error('Fout bij het aanmaken van categorie');
+                                             toast.error('Error creating category');
                                              return;
                                            }
                                            
                                            setCategories(prev => [...prev, newCategory]);
                                            form.setValue('categoryId', newCategory.id);
                                            setCategoryOpen(false);
-                                           toast.success('Nieuwe categorie toegevoegd!');
+                                           toast.success('New category added!');
                                          } catch (error) {
-                                           toast.error('Fout bij het aanmaken van categorie');
+                                           toast.error('Error creating category');
                                          }
                                        }
                                      }}
                                     className="w-full"
                                   >
                                     <Plus className="w-4 h-4 mr-2" />
-                                    "{field.value}" toevoegen
+                                    Add "{field.value}"
                                   </Button>
                                 </div>
                               </CommandEmpty>
@@ -775,7 +775,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                 name="supplierName"
                 render={({ field }) => (
                   <FormItem>
-                              <FormLabel className="text-gray-700">Leverancier</FormLabel>
+                              <FormLabel className="text-gray-700">Supplier</FormLabel>
                     <FormControl>
                       <Popover open={supplierOpen} onOpenChange={setSupplierOpen}>
                         <PopoverTrigger asChild>
@@ -786,21 +786,21 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                                       className="w-full justify-between py-3 px-3 text-base border-gray-200 focus:border-gray-400"
                             disabled={loading}
                           >
-                            {field.value ? field.value : "Selecteer leverancier..."}
+                            {field.value ? field.value : "Select supplier..."}
                             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                           </Button>
                         </PopoverTrigger>
                         <PopoverContent className="w-full p-0">
                                                      <Command>
                              <CommandInput 
-                               placeholder="Leverancier zoeken..." 
+                               placeholder="Search supplier..." 
                                value={field.value}
                                onValueChange={field.onChange}
                              />
                             <CommandList>
                               <CommandEmpty>
                                 <div className="p-2 text-center">
-                                  <p className="text-sm text-gray-500 mb-2">Geen leverancier gevonden</p>
+                                  <p className="text-sm text-gray-500 mb-2">No supplier found</p>
                                   <Button
                                     variant="outline"
                                     size="sm"
@@ -814,23 +814,23 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                                              .single();
                                            
                                            if (error) {
-                                             toast.error('Fout bij het aanmaken van leverancier');
+                                             toast.error('Error creating supplier');
                                              return;
                                            }
                                            
                                            setSuppliers(prev => [...prev, newSupplier]);
                                            form.setValue('supplierId', newSupplier.id);
                                            setSupplierOpen(false);
-                                           toast.success('Nieuwe leverancier toegevoegd!');
+                                           toast.success('New supplier added!');
                                          } catch (error) {
-                                           toast.error('Fout bij het aanmaken van leverancier');
+                                           toast.error('Error creating supplier');
                                          }
                                        }
                                      }}
                                     className="w-full"
                                   >
                                     <Plus className="w-4 h-4 mr-2" />
-                                    "{field.value}" toevoegen
+                                    Add "{field.value}"
                                   </Button>
                                 </div>
                               </CommandEmpty>
@@ -872,7 +872,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                     <div className="bg-white border border-gray-200 rounded-lg p-4">
                       <h4 className="text-md font-semibold text-gray-700 mb-3 flex items-center">
                         <div className="w-2 h-2 bg-gray-500 rounded-full mr-2"></div>
-                        Prijzen
+                        Prices
                       </h4>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <FormField
@@ -884,7 +884,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                 }}
                 render={({ field }) => (
                   <FormItem>
-                              <FormLabel className="text-gray-700">Inkoopprijs</FormLabel>
+                              <FormLabel className="text-gray-700">Purchase Price</FormLabel>
                     <FormControl>
                                               <Input 
                         {...field} 
@@ -910,7 +910,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                 }}
                 render={({ field }) => (
                   <FormItem>
-                              <FormLabel className="text-gray-700">Verkoopprijs</FormLabel>
+                              <FormLabel className="text-gray-700">Sale Price</FormLabel>
                     <FormControl>
                                               <Input 
                         {...field} 
@@ -934,7 +934,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                     <div className="bg-white border border-gray-200 rounded-lg p-4">
                       <h4 className="text-md font-semibold text-gray-700 mb-3 flex items-center">
                         <div className="w-2 h-2 bg-gray-500 rounded-full mr-2"></div>
-                        Productfoto
+                        Product Photo
                       </h4>
                       <div className="space-y-2">
                         <Input 
@@ -963,9 +963,9 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
               <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h4 className="text-sm font-medium text-gray-700">Heeft varianten?</h4>
+                    <h4 className="text-sm font-medium text-gray-700">Has variants?</h4>
                     <p className="text-xs text-gray-500 mt-1">
-                      Schakel dit in om meerdere varianten van dit product toe te voegen (bijv. verschillende kleuren, maten)
+                      Enable this to add multiple variants of this product (e.g. different colors, sizes)
                     </p>
                   </div>
                   <Switch
@@ -1017,7 +1017,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                               }}
                               className="text-red-600 hover:text-red-700"
                             >
-                              Verwijder
+                              Remove
                             </Button>
                           )}
                         </div>
@@ -1025,7 +1025,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div>
                             <Label htmlFor={`variant-name-${index}`} className="text-sm font-medium text-gray-700">
-                              Variant naam *
+                              Variant name *
                             </Label>
                       <Input 
                               id={`variant-name-${index}`}
@@ -1035,7 +1035,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                                 newVariants[index].variantName = e.target.value;
                                 setVariants(newVariants);
                               }}
-                              placeholder="bijv. Geel, Groen, Maat M"
+                              placeholder="e.g. Yellow, Green, Size M"
                               className="mt-1"
                               disabled={loading}
                             />
@@ -1089,7 +1089,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                                 newVariants[index].location = e.target.value;
                                 setVariants(newVariants);
                               }}
-                              placeholder="bijv. A1, Rek 3"
+                              placeholder="e.g. A1, Shelf 3"
                               className="mt-1"
                               disabled={loading}
                             />
@@ -1097,7 +1097,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                           
                           <div>
                             <Label htmlFor={`variant-stock-${index}`} className="text-sm font-medium text-gray-700">
-                              Voorraad *
+                              Stock *
                             </Label>
                             <Input
                               id={`variant-stock-${index}`}
@@ -1116,7 +1116,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                           
                           <div>
                             <Label htmlFor={`variant-min-stock-${index}`} className="text-sm font-medium text-gray-700">
-                              Minimum voorraad
+                              Minimum stock
                             </Label>
                             <Input
                               id={`variant-min-stock-${index}`}
@@ -1135,7 +1135,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                           
                           <div>
                             <Label htmlFor={`variant-purchase-${index}`} className="text-sm font-medium text-gray-700">
-                              Inkoopprijs
+                              Purchase price
                             </Label>
                             <Input
                               id={`variant-purchase-${index}`}
@@ -1155,7 +1155,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                           
                           <div>
                             <Label htmlFor={`variant-sale-${index}`} className="text-sm font-medium text-gray-700">
-                              Verkoopprijs
+                              Sale price
                             </Label>
                       <Input 
                               id={`variant-sale-${index}`}
@@ -1195,7 +1195,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                       disabled={loading}
                     >
                       <Plus className="w-4 h-4 mr-2" />
-                      Variant toevoegen
+                      Add variant
                     </Button>
               </div>
                 </div>
@@ -1211,14 +1211,14 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                   disabled={loading} 
                   className={isMobile ? 'w-full' : 'w-full sm:w-auto'}
                 >
-                  Annuleren
+                  Cancel
                 </Button>
                 <Button 
                   type="submit" 
                   disabled={loading} 
                   className={isMobile ? 'w-full' : 'w-full sm:w-auto'}
                 >
-                  {loading ? 'Toevoegen...' : (hasVariants ? 'Product met Varianten Toevoegen' : 'Product Toevoegen')}
+                  {loading ? 'Adding...' : (hasVariants ? 'Add Product with Variants' : 'Add Product')}
                 </Button>
               </div>
             </div>

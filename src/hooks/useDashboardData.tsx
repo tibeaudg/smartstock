@@ -67,6 +67,9 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
           unit_price, 
           minimum_stock_level, 
           category_id,
+          is_variant,
+          variant_name,
+          parent_product_id,
           categories(name)
         `)
         .eq('branch_id', activeBranch.branch_id);
@@ -79,8 +82,21 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
       // Calculate metrics
       const totalValue = productsData?.reduce((sum, product) => 
         sum + (product.quantity_in_stock * product.unit_price), 0) || 0;
-      const lowStockCount = productsData?.filter(product => 
-        product.quantity_in_stock <= product.minimum_stock_level).length || 0;
+      
+      // Calculate low stock count with same logic as low stock products
+      const lowStockCount = productsData?.filter(product => {
+        const isLowStock = product.quantity_in_stock <= product.minimum_stock_level && product.minimum_stock_level > 0;
+        
+        // If this is a main product with variants, don't count it
+        if (product.is_variant === false && product.parent_product_id === null) {
+          const hasVariants = productsData?.some(p => p.parent_product_id === product.id);
+          if (hasVariants) {
+            return false;
+          }
+        }
+        
+        return isLowStock;
+      }).length || 0;
 
       // Get transactions for the selected range
       let query = supabase

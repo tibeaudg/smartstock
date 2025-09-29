@@ -202,11 +202,11 @@ export const EditProductInfoModal = ({
 
   const handleDelete = async () => {
     if (!user || !activeBranch) {
-      toast.error('Je moet ingelogd zijn en een filiaal geselecteerd hebben');
+      toast.error('You must be logged in and have a branch selected');
       return;
     }
-    const confirmMessage = 'Weet je zeker dat je dit product wilt verwijderen?\n\n' +
-      'LET OP: Dit zal ook alle gerelateerde transacties verwijderen!';
+    const confirmMessage = 'Are you sure you want to delete this product?\n\n' +
+      'WARNING: This will also delete all related transactions!';
     if (!confirm(confirmMessage)) return;
     
     setLoading(true);
@@ -216,17 +216,17 @@ export const EditProductInfoModal = ({
         .delete()
         .match({ id: product.id, branch_id: activeBranch.branch_id });
       if (deleteError) {
-        toast.error(`Verwijderen mislukt: ${deleteError.message}`);
+        toast.error(`Delete failed: ${deleteError.message}`);
         setLoading(false);
         return;
       }
-      toast.success('Product en gerelateerde transacties succesvol verwijderd');
+      toast.success('Product and related transactions successfully deleted');
       // Forceer update van productCount in Sidebar
       queryClient.invalidateQueries({ queryKey: ['productCount', activeBranch.branch_id, user.id] });
       onProductUpdated();
       onClose();
     } catch (error) {
-      toast.error('Er is een onverwachte fout opgetreden');
+      toast.error('An unexpected error occurred');
     } finally {
       setLoading(false);
     }
@@ -239,14 +239,14 @@ export const EditProductInfoModal = ({
     if (hasVariants) {
       const validVariants = variants.filter(v => v.variantName.trim());
       if (validVariants.length === 0) {
-        toast.error('Voeg minimaal één variant toe');
+        toast.error('Add at least one variant');
         return;
       }
       
       // Controleer of alle varianten verplichte velden hebben
       for (const variant of validVariants) {
         if (!variant.variantName.trim()) {
-          toast.error('Alle varianten moeten een naam hebben');
+          toast.error('All variants must have a name');
           return;
         }
       }
@@ -261,7 +261,7 @@ export const EditProductInfoModal = ({
         .from('product-images')
         .upload(fileName, productImage, { upsert: false });
       if (uploadError) {
-        toast.error('Fout bij uploaden van afbeelding');
+        toast.error('Error uploading image');
         setLoading(false);
         return;
       }
@@ -294,7 +294,7 @@ export const EditProductInfoModal = ({
 
           if (supplierError) {
             console.error('Error creating supplier:', supplierError);
-            toast.error('Fout bij het aanmaken van leverancier');
+            toast.error('Error creating supplier');
             setLoading(false);
             return;
           }
@@ -326,7 +326,7 @@ export const EditProductInfoModal = ({
 
           if (categoryError) {
             console.error('Error creating category:', categoryError);
-            toast.error('Fout bij het aanmaken van categorie');
+            toast.error('Error creating category');
             setLoading(false);
             return;
           }
@@ -361,13 +361,13 @@ export const EditProductInfoModal = ({
           
         if (updateError) {
           console.error('Error updating product:', updateError);
-          toast.error('Fout bij het bijwerken van product info');
+          toast.error('Error updating product info');
           setLoading(false);
           return;
         }
         
         console.log('Product updated successfully');
-        toast.success('Productinformatie bijgewerkt!');
+        toast.success('Product information updated!');
       } else {
         // Product met varianten - update hoofdproduct en maak varianten
         const { error: updateError } = await supabase
@@ -395,7 +395,7 @@ export const EditProductInfoModal = ({
           
         if (updateError) {
           console.error('Error updating product:', updateError);
-          toast.error('Fout bij het bijwerken van product info');
+          toast.error('Error updating product info');
           setLoading(false);
           return;
         }
@@ -429,7 +429,7 @@ export const EditProductInfoModal = ({
             .select();
           if (varErr) {
             console.error('Error creating variants:', varErr);
-            toast.error('Fout bij aanmaken varianten');
+            toast.error('Error creating variants');
             setLoading(false);
             return;
           }
@@ -456,13 +456,13 @@ export const EditProductInfoModal = ({
               .insert(transactions);
             if (tErr) {
               console.error('Error creating variant transactions:', tErr);
-              toast.error('Varianten aangemaakt maar initiele transacties faalden');
+              toast.error('Variants created but initial transactions failed');
             }
           }
         }
         
         console.log('Product with variants updated successfully');
-        toast.success('Product en varianten bijgewerkt!');
+        toast.success('Product and variants updated!');
       }
       
       // Invalidate all product queries to ensure fresh data
@@ -473,7 +473,7 @@ export const EditProductInfoModal = ({
       onClose();
     } catch (error) {
       console.error('Error updating product:', error);
-      toast.error('Onverwachte fout bij het bijwerken van product');
+      toast.error('Unexpected error updating product');
     } finally {
       setLoading(false);
     }
@@ -496,7 +496,7 @@ export const EditProductInfoModal = ({
             </Button>
           )}
           <DialogTitle className={`${isMobile ? 'text-center pr-8' : ''}`}>
-            Productinformatie aanpassen: {product.name}
+            Edit Product Information: {product.name}
           </DialogTitle>
         </DialogHeader>
 
@@ -507,11 +507,11 @@ export const EditProductInfoModal = ({
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
               <h3 className="text-lg font-semibold text-blue-800 mb-4 flex items-center">
                 <div className="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
-                Basis Informatie
+                Basic Information
               </h3>
               <div className="space-y-4">
                 <div>
-                  <Label className="text-blue-700 font-medium">Product Naam *</Label>
+                  <Label className="text-blue-700 font-medium">Product Name *</Label>
                   <Input 
                     name="name" 
                     value={form.name} 
@@ -524,7 +524,7 @@ export const EditProductInfoModal = ({
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label className="text-blue-700 font-medium">Voorraad *</Label>
+                    <Label className="text-blue-700 font-medium">Stock *</Label>
                     <Input 
                       name="quantity_in_stock" 
                       type="number" 
@@ -537,7 +537,7 @@ export const EditProductInfoModal = ({
                     />
                   </div>
                   <div>
-                    <Label className="text-blue-700 font-medium">Min. Niveau *</Label>
+                    <Label className="text-blue-700 font-medium">Min. Level *</Label>
                     <Input 
                       name="minimum_stock_level" 
                       type="number" 
@@ -563,7 +563,7 @@ export const EditProductInfoModal = ({
               >
                 <span className="flex items-center">
                   <div className="w-3 h-3 bg-gray-400 rounded-full mr-2"></div>
-                  Geavanceerde Opties
+                  Advanced Options
                 </span>
                 <ChevronsUpDown className={`w-4 h-4 transition-transform ${showAdvancedOptions ? 'rotate-180' : ''}`} />
               </Button>
@@ -579,7 +579,7 @@ export const EditProductInfoModal = ({
                     </h4>
                     <div className="space-y-4">
                       <div>
-                        <Label className="text-gray-700">Beschrijving</Label>
+                        <Label className="text-gray-700">Description</Label>
                         <Textarea 
                           name="description" 
                           value={form.description} 
@@ -592,13 +592,13 @@ export const EditProductInfoModal = ({
 
 
                       <div>
-                        <Label className="text-gray-700">Locatie</Label>
+                        <Label className="text-gray-700">Location</Label>
                         <Input 
                           name="location" 
                           value={form.location} 
                           onChange={handleChange} 
                           disabled={loading} 
-                          placeholder="Voer locatie in (bijv. A1, Rek 3, etc.)" 
+                          placeholder="Enter location (e.g. A1, Shelf 3, etc.)" 
                           className="py-3 px-3 text-base border-gray-200 focus:border-gray-400"
                         />
                       </div>
@@ -609,11 +609,11 @@ export const EditProductInfoModal = ({
                   <div className="bg-white border border-gray-200 rounded-lg p-4">
                     <h4 className="text-md font-semibold text-gray-700 mb-3 flex items-center">
                       <div className="w-2 h-2 bg-gray-500 rounded-full mr-2"></div>
-                      Categorie & Leverancier
+                        Category & Supplier
                     </h4>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <Label className="text-gray-700">Categorie</Label>
+                        <Label className="text-gray-700">Category</Label>
                         <Popover open={categoryOpen} onOpenChange={setCategoryOpen}>
                           <PopoverTrigger asChild>
                             <Button
@@ -623,21 +623,21 @@ export const EditProductInfoModal = ({
                               className="w-full justify-between py-3 px-3 text-base border-gray-200 focus:border-gray-400"
                               disabled={loading}
                             >
-                              {form.category_name ? form.category_name : "Selecteer categorie..."}
+                              {form.category_name ? form.category_name : "Select category..."}
                               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                             </Button>
                           </PopoverTrigger>
                           <PopoverContent className="w-full p-0">
                             <Command>
                               <CommandInput 
-                                placeholder="Categorie zoeken..." 
+                                placeholder="Search category..." 
                                 value={form.category_name}
                                 onValueChange={(value) => handleCategoryChange(value)}
                               />
                               <CommandList>
                                 <CommandEmpty>
                                   <div className="p-2 text-center">
-                                    <p className="text-sm text-gray-500 mb-2">Geen categorie gevonden</p>
+                                    <p className="text-sm text-gray-500 mb-2">No category found</p>
                                     <Button
                                       variant="outline"
                                       size="sm"
@@ -651,23 +651,23 @@ export const EditProductInfoModal = ({
                                               .single();
                                             
                                             if (error) {
-                                              toast.error('Fout bij het aanmaken van categorie');
+                                              toast.error('Error creating category');
                                               return;
                                             }
                                             
                                             setCategories(prev => [...prev, newCategory]);
                                             setForm(prev => ({ ...prev, category_id: newCategory.id }));
                                             setCategoryOpen(false);
-                                            toast.success('Nieuwe categorie toegevoegd!');
+                                            toast.success('New category added!');
                                           } catch (error) {
-                                            toast.error('Fout bij het aanmaken van categorie');
+                                            toast.error('Error creating category');
                                           }
                                         }
                                       }}
                                       className="w-full"
                                     >
                                       <Plus className="w-4 h-4 mr-2" />
-                                      "{form.category_name}" toevoegen
+                                      Add "{form.category_name}"
                                     </Button>
                                   </div>
                                 </CommandEmpty>
@@ -698,7 +698,7 @@ export const EditProductInfoModal = ({
                       </div>
 
                       <div>
-                        <Label className="text-gray-700">Leverancier</Label>
+                        <Label className="text-gray-700">Supplier</Label>
                         <Popover open={supplierOpen} onOpenChange={setSupplierOpen}>
                           <PopoverTrigger asChild>
                             <Button
@@ -708,21 +708,21 @@ export const EditProductInfoModal = ({
                               className="w-full justify-between py-3 px-3 text-base border-gray-200 focus:border-gray-400"
                               disabled={loading}
                             >
-                              {form.supplier_name ? form.supplier_name : "Selecteer leverancier..."}
+                              {form.supplier_name ? form.supplier_name : "Select supplier..."}
                               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                             </Button>
                           </PopoverTrigger>
                           <PopoverContent className="w-full p-0">
                             <Command>
                               <CommandInput 
-                                placeholder="Leverancier zoeken..." 
+                                placeholder="Search supplier..." 
                                 value={form.supplier_name}
                                 onValueChange={(value) => handleSupplierChange(value)}
                               />
                               <CommandList>
                                 <CommandEmpty>
                                   <div className="p-2 text-center">
-                                    <p className="text-sm text-gray-500 mb-2">Geen leverancier gevonden</p>
+                                    <p className="text-sm text-gray-500 mb-2">No supplier found</p>
                                     <Button
                                       variant="outline"
                                       size="sm"
@@ -736,23 +736,23 @@ export const EditProductInfoModal = ({
                                               .single();
                                             
                                             if (error) {
-                                              toast.error('Fout bij het aanmaken van leverancier');
+                                              toast.error('Error creating supplier');
                                               return;
                                             }
                                             
                                             setSuppliers(prev => [...prev, newSupplier]);
                                             setForm(prev => ({ ...prev, supplier_id: newSupplier.id }));
                                             setSupplierOpen(false);
-                                            toast.success('Nieuwe leverancier toegevoegd!');
+                                            toast.success('New supplier added!');
                                           } catch (error) {
-                                            toast.error('Fout bij het aanmaken van leverancier');
+                                            toast.error('Error creating supplier');
                                           }
                                         }
                                       }}
                                       className="w-full"
                                     >
                                       <Plus className="w-4 h-4 mr-2" />
-                                      "{form.supplier_name}" toevoegen
+                                      Add "{form.supplier_name}"
                                     </Button>
                                   </div>
                                 </CommandEmpty>
@@ -788,11 +788,11 @@ export const EditProductInfoModal = ({
                   <div className="bg-white border border-gray-200 rounded-lg p-4">
                     <h4 className="text-md font-semibold text-gray-700 mb-3 flex items-center">
                       <div className="w-2 h-2 bg-gray-500 rounded-full mr-2"></div>
-                      Prijzen
+                        Prices
                     </h4>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <Label className="text-gray-700">Inkoopprijs</Label>
+                        <Label className="text-gray-700">Purchase Price</Label>
                         <Input
                           name="purchase_price"
                           type="number"
@@ -805,7 +805,7 @@ export const EditProductInfoModal = ({
                         />
                       </div>
                       <div>
-                        <Label className="text-gray-700">Verkoopprijs</Label>
+                        <Label className="text-gray-700">Sale Price</Label>
                         <Input
                           name="sale_price"
                           type="number"
@@ -824,7 +824,7 @@ export const EditProductInfoModal = ({
                   <div className="bg-white border border-gray-200 rounded-lg p-4">
                     <h4 className="text-md font-semibold text-gray-700 mb-3 flex items-center">
                       <div className="w-2 h-2 bg-gray-500 rounded-full mr-2"></div>
-                      Productfoto
+                        Product Photo
                     </h4>
                     <div className="space-y-2">
                       <Input 
@@ -853,9 +853,9 @@ export const EditProductInfoModal = ({
               <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h4 className="text-sm font-medium text-gray-700">Heeft varianten?</h4>
+                    <h4 className="text-sm font-medium text-gray-700">Has variants?</h4>
                     <p className="text-xs text-gray-500 mt-1">
-                      Schakel dit in om meerdere varianten van dit product toe te voegen (bijv. verschillende kleuren, maten)
+                      Enable this to add multiple variants of this product (e.g. different colors, sizes)
                     </p>
                   </div>
                   <Switch
@@ -907,7 +907,7 @@ export const EditProductInfoModal = ({
                               }}
                               className="text-red-600 hover:text-red-700"
                             >
-                              Verwijder
+                              Remove
                             </Button>
                           )}
                         </div>
@@ -915,7 +915,7 @@ export const EditProductInfoModal = ({
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div>
                             <Label htmlFor={`variant-name-${index}`} className="text-sm font-medium text-gray-700">
-                              Variant naam *
+                              Variant name *
                             </Label>
                             <Input
                               id={`variant-name-${index}`}
@@ -925,7 +925,7 @@ export const EditProductInfoModal = ({
                                 newVariants[index].variantName = e.target.value;
                                 setVariants(newVariants);
                               }}
-                              placeholder="bijv. Geel, Groen, Maat M"
+                              placeholder="e.g. Yellow, Green, Size M"
                               className="mt-1"
                               disabled={loading}
                             />
@@ -979,7 +979,7 @@ export const EditProductInfoModal = ({
                                 newVariants[index].location = e.target.value;
                                 setVariants(newVariants);
                               }}
-                              placeholder="bijv. A1, Rek 3"
+                              placeholder="e.g. A1, Shelf 3"
                               className="mt-1"
                               disabled={loading}
                             />
@@ -987,7 +987,7 @@ export const EditProductInfoModal = ({
                           
                           <div>
                             <Label htmlFor={`variant-stock-${index}`} className="text-sm font-medium text-gray-700">
-                              Voorraad *
+                              Stock *
                             </Label>
                             <Input
                               id={`variant-stock-${index}`}
@@ -1006,7 +1006,7 @@ export const EditProductInfoModal = ({
                           
                           <div>
                             <Label htmlFor={`variant-min-stock-${index}`} className="text-sm font-medium text-gray-700">
-                              Minimum voorraad
+                              Minimum stock
                             </Label>
                             <Input
                               id={`variant-min-stock-${index}`}
@@ -1025,7 +1025,7 @@ export const EditProductInfoModal = ({
                           
                           <div>
                             <Label htmlFor={`variant-purchase-${index}`} className="text-sm font-medium text-gray-700">
-                              Inkoopprijs
+                              Purchase price
                             </Label>
                             <Input
                               id={`variant-purchase-${index}`}
@@ -1045,7 +1045,7 @@ export const EditProductInfoModal = ({
                           
                           <div>
                             <Label htmlFor={`variant-sale-${index}`} className="text-sm font-medium text-gray-700">
-                              Verkoopprijs
+                              Sale price
                             </Label>
                             <Input
                               id={`variant-sale-${index}`}
@@ -1085,7 +1085,7 @@ export const EditProductInfoModal = ({
                       disabled={loading}
                     >
                       <Plus className="w-4 h-4 mr-2" />
-                      Variant toevoegen
+                      Add variant
                     </Button>
                   </div>
                 </div>
@@ -1104,7 +1104,7 @@ export const EditProductInfoModal = ({
               className={`flex items-center gap-2 ${isMobile ? 'w-full' : 'w-full sm:w-auto'}`}
             >
               <Trash2 className="h-4 w-4" />
-              Verwijderen
+              Delete
             </Button>
             <div className={`flex gap-2 ${isMobile ? 'flex-col' : 'flex-row'}`}>
               <Button 
@@ -1114,7 +1114,7 @@ export const EditProductInfoModal = ({
                 disabled={loading}
                 className={isMobile ? 'w-full' : 'w-full sm:w-auto'}
               >
-                Annuleren
+                Cancel
               </Button>
               <Button 
                 type="submit" 
@@ -1122,7 +1122,7 @@ export const EditProductInfoModal = ({
                 onClick={handleSubmit}
                 className={isMobile ? 'w-full' : 'w-full sm:w-auto'}
               >
-                {loading ? 'Bijwerken...' : (hasVariants ? 'Product met Varianten Bijwerken' : 'Productinformatie bijwerken')}
+                {loading ? 'Updating...' : (hasVariants ? 'Update Product with Variants' : 'Update Product Information')}
               </Button>
             </div>
           </div>

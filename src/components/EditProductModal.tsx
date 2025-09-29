@@ -59,7 +59,7 @@ export const EditProductModal = ({
 
   const handleSubmit = async () => {
     if (!quantity || parseInt(quantity) <= 0) {
-      toast.error('Voer een geldig aantal in');
+      toast.error('Enter a valid quantity');
       return;
     }
 
@@ -70,7 +70,7 @@ export const EditProductModal = ({
       const { data: { user } } = await supabase.auth.getUser();
       
       if (!user) {
-        throw new Error('Niet ingelogd');
+        throw new Error('Not logged in');
       }
 
       const numericQuantity = parseInt(quantity);
@@ -80,7 +80,7 @@ export const EditProductModal = ({
 
       // Validate stock levels
       if (actionType === 'out' && newQuantity < 0) {
-        toast.error('Niet genoeg voorraad beschikbaar');
+        toast.error('Not enough stock available');
         setLoading(false);
         return;
       }
@@ -107,7 +107,7 @@ export const EditProductModal = ({
 
       if (transactionError) {
         console.error('Transaction error:', transactionError);
-        throw new Error(`Fout bij het maken van de transactie: ${transactionError.message}`);
+        throw new Error(`Error creating transaction: ${transactionError.message}`);
       }
 
       // Then update the product quantity
@@ -121,10 +121,10 @@ export const EditProductModal = ({
 
       if (updateError) {
         console.error('Update error:', updateError);
-        throw new Error(`Fout bij het bijwerken van de voorraad: ${updateError.message}`);
+        throw new Error(`Error updating stock: ${updateError.message}`);
       }
 
-      toast.success(`Voorraad succesvol ${actionType === 'in' ? 'toegevoegd' : 'verwijderd'}`);
+      toast.success(`Stock successfully ${actionType === 'in' ? 'added' : 'removed'}`);
       onProductUpdated();
       // Invalideer relevante queries zodat data automatisch wordt gerefetched
       queryClient.invalidateQueries({ queryKey: ['products'] });
@@ -133,7 +133,7 @@ export const EditProductModal = ({
       onClose();
     } catch (error) {
       console.error('Error in stock update:', error);
-      toast.error(error instanceof Error ? error.message : 'Er is een fout opgetreden bij het bijwerken van de voorraad');
+      toast.error(error instanceof Error ? error.message : 'An error occurred while updating stock');
     } finally {
       setLoading(false);
       setQuantity('');
@@ -169,18 +169,18 @@ export const EditProductModal = ({
           <div className={`border rounded-lg p-4 ${actionType === 'in' ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}`}>
             <h3 className={`text-lg font-semibold mb-4 flex items-center ${actionType === 'in' ? 'text-green-800' : 'text-red-800'}`}>
               <div className={`w-3 h-3 rounded-full mr-2 ${actionType === 'in' ? 'bg-green-500' : 'bg-red-500'}`}></div>
-              Voorraad {actionType === 'in' ? 'Toevoegen' : 'Verwijderen'}
+              Stock {actionType === 'in' ? 'Add' : 'Remove'}
             </h3>
             <div className="grid gap-2">
               <Label htmlFor="quantity" className={`font-medium ${actionType === 'in' ? 'text-green-700' : 'text-red-700'}`}>
-                Aantal
+                Quantity
               </Label>
               <Input
                 id="quantity"
                 type="number"
                 value={quantity}
                 onChange={(e) => setQuantity(e.target.value)}
-                placeholder="Voer aantal in"
+                placeholder="Enter quantity"
                 min="1"
                 className={`py-3 px-3 text-base ${actionType === 'in' ? 'border-green-200 focus:border-green-500' : 'border-red-200 focus:border-red-500'}`}
               />
@@ -192,14 +192,14 @@ export const EditProductModal = ({
 
         <DialogFooter>
           <Button variant="outline" onClick={onClose} disabled={loading}>
-            Annuleren
+            Cancel
           </Button>
           <Button 
             onClick={handleSubmit}
             disabled={loading}
             className={actionType === 'in' ? 'bg-green-600 hover:bg-green-700' : 'bg-red-600 hover:bg-red-700'}
           >
-            {loading ? 'Bezig...' : actionType === 'in' ? 'Toevoegen' : 'Verwijderen'}
+            {loading ? 'Processing...' : actionType === 'in' ? 'Add' : 'Remove'}
           </Button>
         </DialogFooter>        
       </DialogContent>

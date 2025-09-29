@@ -114,7 +114,7 @@ export const CreateBranchModal = ({
   }, [open, isAdditionalBranch, user]);
 
   const handleSubmit = async (data: FormData) => {
-    if (!user) return toast.error('Geen gebruiker gevonden');
+    if (!user) return toast.error('No user found');
 
     setLoading(true);
     try {
@@ -155,8 +155,8 @@ export const CreateBranchModal = ({
 
       toast.success(
         isAdditionalBranch
-          ? 'Filiaal succesvol aangemaakt! Extra kosten worden verrekend in de volgende factuur.'
-          : 'Filiaal succesvol aangemaakt!'
+          ? 'Branch successfully created! Additional costs will be charged on the next invoice.'
+          : 'Branch successfully created!'
       );
 
       form.reset();
@@ -165,7 +165,7 @@ export const CreateBranchModal = ({
       window.location.reload(); // Optional: kan verplaatst worden als reload niet wenselijk is
     } catch (err: any) {
       console.error('Fout bij het aanmaken:', err);
-      toast.error('Er is een fout opgetreden: ' + err.message);
+      toast.error('An error occurred: ' + err.message);
     } finally {
       setLoading(false);
     }
@@ -176,12 +176,12 @@ export const CreateBranchModal = ({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            {isAdditionalBranch ? 'Nieuw Filiaal' : 'Hoofdvestiging'}
+            {isAdditionalBranch ? 'New Branch' : 'Main Branch'}
           </DialogTitle>
           <DialogDescription>
             {isAdditionalBranch
-              ? 'Voeg een nieuw filiaal toe aan uw account.'
-              : 'Configureer uw hoofdvestiging.'}
+              ? 'Add a new branch to your account.'
+              : 'Configure your main branch.'}
           </DialogDescription>
         </DialogHeader>
 
@@ -190,12 +190,12 @@ export const CreateBranchModal = ({
             <FormField
               control={form.control}
               name="branchName"
-              rules={{ required: 'Filiaal naam is verplicht' }}
+              rules={{ required: 'Branch name is required' }}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Naam</FormLabel>
+                  <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Filiaal naam" {...field} />
+                    <Input placeholder="Branch name" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -209,9 +209,9 @@ export const CreateBranchModal = ({
                     <div className="flex items-start">
                       <CreditCard className="w-4 h-4 text-yellow-600 mt-0.5 mr-2" />
                       <div>
-                        <p className="text-sm font-medium text-yellow-800">Betaalmethode vereist</p>
+                        <p className="text-sm font-medium text-yellow-800">Payment method required</p>
                         <p className="text-sm text-yellow-700 mt-1">
-                          U moet eerst een betaalmethode toevoegen voordat u extra filialen kunt aanmaken.
+                          You must first add a payment method before you can create additional branches.
                         </p>
                         <Button
                           type="button"
@@ -223,7 +223,7 @@ export const CreateBranchModal = ({
                             onOpenChange?.(false);
                           }}
                         >
-                          Ga naar betaalinstellingen
+                          Go to payment settings
                         </Button>
                       </div>
                     </div>
@@ -244,7 +244,7 @@ export const CreateBranchModal = ({
                         </FormControl>
                         <div className="space-y-1 leading-none">
                           <FormLabel>
-                            Ik bevestig dat er $2/maand extra kosten in rekening worden gebracht
+                            I confirm that $2/month additional costs will be charged
                           </FormLabel>
                         </div>
                       </FormItem>
@@ -256,7 +256,7 @@ export const CreateBranchModal = ({
 
             <DialogFooter>
               <Button type="submit" disabled={loading || (isAdditionalBranch && showPaymentWarning)}>
-                {loading ? 'Bezig...' : 'Opslaan'}
+                {loading ? 'Processing...' : 'Save'}
               </Button>
             </DialogFooter>
           </form>
