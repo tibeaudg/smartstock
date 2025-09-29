@@ -1439,12 +1439,12 @@ export const HomePage = () => {
               
               <ScaleInWhenVisible delay={600}>
                 <div className="mb-6 md:mb-8">
-                  <Button
-                    onClick={handleLoginClick}
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-8 md:px-12 py-4 md:py-6 text-lg md:text-xl font-semibold rounded-full transform hover:scale-110 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25 border border-blue-500/20 w-full sm:w-auto"
-                  >
-                    Get Started →
-                  </Button>
+                <Button
+              onClick={handleLoginClick}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-12 py-6 text-xl font-semibold rounded-full transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25 border border-blue-500/20"
+            >
+              Get Started →
+            </Button>
                 </div>
               </ScaleInWhenVisible>
               
@@ -1714,9 +1714,9 @@ export const HomePage = () => {
 
               
           <div className="text-center mt-8 md:mt-12">
-            <Button
+          <Button
               onClick={handleLoginClick}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-8 md:px-12 py-4 md:py-6 text-lg md:text-xl font-semibold rounded-full transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25 border border-blue-500/20 w-full sm:w-auto"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-12 py-6 text-xl font-semibold rounded-full transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25 border border-blue-500/20"
             >
               Get Started →
             </Button>
@@ -1924,12 +1924,12 @@ export const HomePage = () => {
 
             {/* CTA */}
             <div className="text-center">
-              <Button
-                onClick={handleLoginClick}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-8 md:px-12 py-4 md:py-6 text-lg md:text-xl font-semibold rounded-full transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25 border border-blue-500/20 w-full sm:w-auto"
-              >
-                Get Started →
-              </Button>
+            <Button
+              onClick={handleLoginClick}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-12 py-6 text-xl font-semibold rounded-full transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25 border border-blue-500/20"
+            >
+              Get Started →
+            </Button>
 
               <p className="text-sm text-gray-500 mt-2">
                 Join thousands of businesses already saving time and money • Free forever plan available
@@ -2170,12 +2170,12 @@ export const HomePage = () => {
           {/* Primary CTA */}
           <ScaleInWhenVisible delay={600}>
             <div className="mb-6 md:mb-8">
-              <Button
-                onClick={handleLoginClick}
-                className="bg-white hover:bg-blue-600 text-blue-600 px-8 md:px-16 py-4 md:py-8 text-lg md:text-2xl font-bold rounded-full shadow-2xl hover:shadow-green-500/25 transform hover:scale-110 transition-all duration-300 w-full sm:w-auto"
-              >
-                Start Free Today →
-              </Button>
+            <Button
+              onClick={handleLoginClick}
+              className="bg-white hover:bg-blue-700 text-blue-600 px-12 py-6 text-xl font-semibold rounded-full transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25 border border-blue-500/20"
+            >
+              Start Free Today →
+            </Button>
             </div>
           </ScaleInWhenVisible>
 
