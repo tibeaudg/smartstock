@@ -3,33 +3,11 @@ import { Link } from 'react-router-dom';
 import SeoPageLayout from '../../components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { 
-  Smartphone, 
   BarChart3, 
-  Zap, 
-  Shield, 
   Users, 
   Camera, 
-  Package, 
-  Warehouse,
   CheckCircle,
-  ArrowRight,
   Star,
-  TrendingUp,
-  Clock,
-  Target,
-  Database,
-  Settings,
-  AlertTriangle,
-  DollarSign,
-  Cloud,
-  Smartphone as Mobile,
-  Globe,
-  Heart,
-  Building,
-  Store,
-  Cpu,
-  Layers,
-  Wrench,
   Grid3X3
 } from 'lucide-react';
 

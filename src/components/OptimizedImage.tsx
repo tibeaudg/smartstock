@@ -8,11 +8,7 @@ interface OptimizedImageProps {
   height?: number;
   loading?: 'lazy' | 'eager';
   priority?: boolean;
-  useModernFormats?: boolean;
-  fetchpriority?: 'high' | 'low' | 'auto';
-  sizes?: string;
-  srcSet?: string;
-  responsive?: boolean;
+  fetchPriority?: 'high' | 'low' | 'auto';
 }
 
 export const OptimizedImage: React.FC<OptimizedImageProps> = ({
@@ -23,11 +19,7 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
   height,
   loading = 'lazy',
   priority = false,
-  useModernFormats = false, // Temporarily disable to fix image loading
-  fetchpriority = 'auto',
-  sizes,
-  srcSet,
-  responsive = false // Temporarily disable to fix image loading
+  fetchPriority = 'auto',
 }) => {
   // For now, just return a simple img tag to ensure images load
   return (
@@ -39,7 +31,7 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
       height={height}
       loading={priority ? 'eager' : loading}
       decoding={priority ? 'sync' : 'async'}
-      fetchpriority={fetchpriority}
+      fetchPriority={fetchPriority}
       style={{
         width: width ? `${width}px` : undefined,
         height: height ? `${height}px` : undefined,

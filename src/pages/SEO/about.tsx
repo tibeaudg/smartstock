@@ -1,4 +1,3 @@
-import React from 'react';
 import { SEO } from '../../components/SEO';
 import SeoPageLayout from '../../components/SeoPageLayout';
 import { usePageRefresh } from '../../hooks/usePageRefresh';

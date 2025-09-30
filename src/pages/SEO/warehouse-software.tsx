@@ -4,28 +4,12 @@ import SeoPageLayout from '../../components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { generateComprehensiveStructuredData } from '../../lib/structuredData';
 import { 
-  Smartphone, 
   BarChart3, 
-  Zap, 
-  Shield, 
   Users, 
-  Camera, 
-  Package, 
   Warehouse,
   CheckCircle,
-  ArrowRight,
   Star,
-  TrendingUp,
-  Clock,
   Target,
-  Database,
-  Settings,
-  AlertTriangle,
-  DollarSign,
-  Cloud,
-  Smartphone as Mobile,
-  Globe,
-  MapPin,
   Truck,
   Boxes
 } from 'lucide-react';

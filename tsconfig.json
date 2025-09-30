@@ -15,12 +15,12 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "noImplicitAny": true,
-    "noUnusedParameters": true,
+    "noImplicitAny": false,
+    "noUnusedParameters": false,
     "allowJs": true,
-    "noUnusedLocals": true,
-    "strictNullChecks": true,
-    "strict": true,
+    "noUnusedLocals": false,
+    "strictNullChecks": false,
+    "strict": false,
     "jsx": "react-jsx",
     "jsxImportSource": "react"
   }

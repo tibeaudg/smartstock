@@ -12,13 +12,11 @@ import {
   CheckCircle,
   ArrowRight,
   TrendingUp,
-  Users,
   Star
 } from 'lucide-react';
 
 export default function StockManagement() {
   usePageRefresh();
-  const { formatPrice } = useCurrency();
   
   const faqData = [
     {

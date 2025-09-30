@@ -4,30 +4,11 @@ import SeoPageLayout from '../../components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { generateComprehensiveStructuredData } from '../../lib/structuredData';
 import { 
-  Smartphone, 
   BarChart3, 
-  Zap, 
-  Shield, 
-  Users, 
-  Camera, 
-  Package, 
-  Warehouse,
   CheckCircle,
-  ArrowRight,
   Star,
-  TrendingUp,
-  Clock,
-  Target,
-  Database,
-  Settings,
-  AlertTriangle,
-  DollarSign,
-  Cloud,
-  Smartphone as Mobile,
-  Globe,
   Eye,
-  Activity,
-  MapPin
+  Activity
 } from 'lucide-react';
 
 export default function InventoryTracker() {

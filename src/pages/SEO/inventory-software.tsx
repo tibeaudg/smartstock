@@ -4,27 +4,11 @@ import SeoPageLayout from '../../components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { useCurrency } from '@/hooks/useCurrency';
 import { 
-  Smartphone, 
   BarChart3, 
-  Zap, 
-  Shield, 
   Users, 
   Camera, 
-  Package, 
-  Warehouse,
   CheckCircle,
-  ArrowRight,
-  Star,
-  TrendingUp,
-  Clock,
-  Target,
-  Database,
-  Settings,
-  AlertTriangle,
-  DollarSign,
-  Cloud,
-  Smartphone as Mobile,
-  Globe
+  Star
 } from 'lucide-react';
 
 export default function InventorySoftware() {

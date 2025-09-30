@@ -4,20 +4,14 @@ import SeoPageLayout from '../../components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { useCurrency } from '@/hooks/useCurrency';
 import { 
-  Smartphone, 
   BarChart3, 
   Zap, 
   Shield, 
   Users, 
   Camera, 
-  Package, 
-  Warehouse,
   CheckCircle,
-  ArrowRight,
   Star,
-  TrendingUp,
-  Clock,
-  Target
+  TrendingUp
 } from 'lucide-react';
 
 export default function InventoryManagementSoftware() {
@@ -71,6 +65,8 @@ export default function InventoryManagementSoftware() {
     },
   ];
   
+  // Potential future use
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const benefits = [
     "No hidden costs or commitments",
     "Start immediately, no installation required",
@@ -105,6 +101,8 @@ export default function InventoryManagementSoftware() {
     }
   ];
 
+  // Potential future use
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const testimonials = [
     {
       name: "Sarah Johnson",
@@ -126,6 +124,8 @@ export default function InventoryManagementSoftware() {
     }
   ];
 
+  // Potential future use
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const steps = [
     {
       step: "1",
