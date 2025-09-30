@@ -9,6 +9,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { setupPersistedQueryClient } from './persistQueryClient';
 import { HelmetProvider } from 'react-helmet-async';
 import { ErrorBoundary } from './components/ErrorBoundary';
+import { initClarity } from './services/clarityService';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
@@ -54,6 +55,9 @@ const ConnectionErrorUI = () => (
 async function init() {
   let root: Root;
   try {
+    // Initialize Microsoft Clarity
+    initClarity();
+    
     const isConnected = await checkSupabaseConnection();
 
     if (!isConnected) {

@@ -24,7 +24,8 @@ import { useBranches, BranchProvider } from "./hooks/useBranches";
 import { CurrencyProvider } from "./hooks/useCurrency";
 import { FirstBranchSetup } from "./components/FirstBranchSetup";
 import { OnboardingModal } from "./components/OnboardingModal";
-import { Suspense, useState } from "react";
+import { Suspense, useState, useEffect } from "react";
+import { useClarity } from "./hooks/useClarity";
 import { ContentWrapper } from "./ContentWrapper";
 import AdminUserDetailPage from './pages/AdminUserDetailPage';
 import AdminNotificationsPage from './pages/AdminNotificationsPage';
@@ -281,6 +282,9 @@ const AuthRoute = () => {
 };
 
 export default function App() {
+  // Initialize Clarity tracking
+  useClarity();
+  
   const localBusinessSchema = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",

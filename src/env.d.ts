@@ -7,6 +7,7 @@ interface ImportMetaEnv {
   readonly VITE_STRIPE_PRICE_ENTERPRISE: string
   readonly VITE_SUPABASE_URL: string
   readonly VITE_SUPABASE_ANON_KEY: string
+  readonly VITE_CLARITY_PROJECT_ID?: string
 }
 
 interface ImportMeta {
@@ -18,5 +19,6 @@ declare global {
   interface Window {
     dataLayer: any[];
     gtag: (...args: any[]) => void;
+    clarity: (...args: any[]) => void;
   }
 }
