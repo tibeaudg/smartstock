@@ -8,7 +8,8 @@ import {
   Camera, 
   CheckCircle,
   Star,
-  Cloud
+  Cloud,
+  Wrench
 } from 'lucide-react';
 
 export default function SoftwareForInventoryManagement() {

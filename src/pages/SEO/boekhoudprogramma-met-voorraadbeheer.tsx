@@ -157,9 +157,7 @@ export default function BoekhoudprogrammaMetVoorraadbeheer() {
                   className="w-full max-w-md mx-auto rounded-lg shadow-2xl"
                   width={400}
                   height={300}
-                  useModernFormats={true}
-                  responsive={true}
-                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+
                 />
               </div>
           </div>
@@ -237,9 +235,7 @@ export default function BoekhoudprogrammaMetVoorraadbeheer() {
                   className="w-full max-w-lg mx-auto rounded-lg shadow-lg"
                   width={400}
                   height={300}
-                  useModernFormats={true}
-                  responsive={true}
-                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+
                 />
               </div>
           </div>
@@ -469,9 +465,7 @@ export default function BoekhoudprogrammaMetVoorraadbeheer() {
                   className="h-10 md:h-12 mx-auto mb-6"
                   width={120}
                   height={48}
-                  useModernFormats={true}
-                  responsive={true}
-                  sizes="(max-width: 768px) 100px, 120px"
+
                 />
               <p className="text-gray-400 text-base md:text-lg mb-8 leading-relaxed max-w-2xl mx-auto">
             Het beste boekhoudprogramma met voorraadbeheer voor KMO's. 

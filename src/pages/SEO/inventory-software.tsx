@@ -8,7 +8,10 @@ import {
   Users, 
   Camera, 
   CheckCircle,
-  Star
+  Star,
+  Cloud,
+  Database,
+  Zap
 } from 'lucide-react';
 
 export default function InventorySoftware() {

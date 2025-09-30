@@ -11,7 +11,8 @@ import {
   Camera, 
   CheckCircle,
   Star,
-  Trophy
+  Trophy,
+  Database
 } from 'lucide-react';
 
 export default function BestInventoryManagementSoftware() {

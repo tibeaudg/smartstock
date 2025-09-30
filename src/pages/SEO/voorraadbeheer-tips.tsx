@@ -62,9 +62,6 @@ export default function VoorraadbeheerTips() {
                   className="w-full max-w-sm sm:max-w-md lg:w-96 h-64 sm:h-80 lg:h-96 mx-auto object-cover rounded-lg mb-4"
                   width={400}
                   height={300}
-                  useModernFormats={true}
-                  responsive={true}
-                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 />
               </div>
             </div>
@@ -85,9 +82,6 @@ export default function VoorraadbeheerTips() {
                   className="w-full h-64 sm:h-80 lg:h-96 mx-auto object-cover rounded-lg"
                   width={400}
                   height={300}
-                  useModernFormats={true}
-                  responsive={true}
-                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 />
               </div>
             </div>
@@ -156,9 +150,6 @@ export default function VoorraadbeheerTips() {
                   className="w-full max-w-sm sm:max-w-md lg:w-96 h-64 sm:h-80 lg:h-96 mx-auto object-cover rounded-lg mb-4"
                   width={400}
                   height={300}
-                  useModernFormats={true}
-                  responsive={true}
-                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 />
               </div>
             </div>
@@ -179,9 +170,6 @@ export default function VoorraadbeheerTips() {
                   className="w-full h-96 object-cover rounded-lg mb-4"
                   width={800}
                   height={400}
-                  useModernFormats={true}
-                  responsive={true}
-                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 100vw, 66vw"
                 />
               </div>
             </div>
@@ -274,9 +262,6 @@ export default function VoorraadbeheerTips() {
             className="h-10 md:h-12 mx-auto mb-6"
             width={120}
             height={48}
-            useModernFormats={true}
-            responsive={true}
-            sizes="(max-width: 768px) 100px, 120px"
           />
                      <p className="text-gray-400 text-base md:text-lg mb-8 leading-relaxed max-w-2xl mx-auto">
              Praktische voorraadbeheer tips voor KMO's.

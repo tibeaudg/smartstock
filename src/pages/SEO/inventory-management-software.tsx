@@ -11,7 +11,10 @@ import {
   Camera, 
   CheckCircle,
   Star,
-  TrendingUp
+  TrendingUp,
+  ArrowRight,
+  Clock,
+  Target
 } from 'lucide-react';
 
 export default function InventoryManagementSoftware() {

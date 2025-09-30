@@ -9,7 +9,9 @@ import {
   Warehouse,
   CheckCircle,
   Star,
-  Cloud
+  Cloud,
+  Cpu,
+  Database
 } from 'lucide-react';
 
 export default function InventorySoftwareManagement() {

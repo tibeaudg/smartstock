@@ -8,7 +8,8 @@ import {
   Camera, 
   CheckCircle,
   Star,
-  Grid3X3
+  Grid3X3,
+  Cloud
 } from 'lucide-react';
 
 export default function SoftwaresForInventoryManagement() {
