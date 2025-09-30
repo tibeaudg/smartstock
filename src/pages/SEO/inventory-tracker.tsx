@@ -8,7 +8,10 @@ import {
   CheckCircle,
   Star,
   Eye,
-  Activity
+  Activity,
+  Camera,
+  MapPin,
+  Zap
 } from 'lucide-react';
 
 export default function InventoryTracker() {

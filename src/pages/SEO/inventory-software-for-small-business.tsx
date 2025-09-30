@@ -10,7 +10,8 @@ import {
   Star,
   DollarSign,
   Heart,
-  Building
+  Building,
+  Camera
 } from 'lucide-react';
 
 export default function InventorySoftwareForSmallBusiness() {
