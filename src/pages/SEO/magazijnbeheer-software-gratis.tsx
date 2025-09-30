@@ -2,7 +2,7 @@ import SEO from '../../components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '../../components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
-import { Check, Gift, Zap, Shield, Users, TrendingUp, Star, BarChart3, Smartphone, Warehouse } from 'lucide-react';
+import { Check, Gift, Zap, Shield, Users, Star, BarChart3, Warehouse } from 'lucide-react';
 
 export default function MagazijnbeheerSoftwareGratis() {
   // Gebruik de page refresh hook

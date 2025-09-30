@@ -316,15 +316,15 @@ export function generateComprehensiveStructuredData(
 
   // Add page-specific schemas
   if (pageData.faqData) {
-    schemas.push(generateFAQSchema(pageData.faqData));
+    schemas.push(generateFAQSchema(pageData.faqData) as any);
   }
 
   if (pageData.softwareData) {
-    schemas.push(generateSoftwareApplicationSchema(pageData.softwareData));
+    schemas.push(generateSoftwareApplicationSchema(pageData.softwareData) as any);
   }
 
   if (pageData.serviceData) {
-    schemas.push(generateServiceSchema(pageData.serviceData));
+    schemas.push(generateServiceSchema(pageData.serviceData) as any);
   }
 
   // Add page-specific schema based on type
@@ -340,7 +340,7 @@ export function generateComprehensiveStructuredData(
         "name": "StockFlow",
         "url": "https://www.stockflow.be"
       }
-    });
+    } as any);
   }
 
   return schemas;

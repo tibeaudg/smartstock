@@ -14,9 +14,8 @@ interface HeaderProps {
   hideNotifications?: boolean;
 }
 
-export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButtons, hideNotifications }: HeaderProps) => {
+export const Header = ({ onNavigate, hideAuthButtons, hideNotifications }: HeaderProps) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
 

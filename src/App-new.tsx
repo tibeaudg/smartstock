@@ -121,9 +121,6 @@ const LoadingScreen = () => (
 
 // Router component that contains the route definitions
 const AppRouter = () => {
-  // Initialize Clarity tracking (must be inside Router context)
-  useClarity();
-  
   // Protected Route Component
   const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     const { user, loading, userProfile } = useAuth();
@@ -371,6 +368,9 @@ const AppRouter = () => {
 };
 
 export default function App() {
+  // Initialize Clarity tracking
+  useClarity();
+  
   const localBusinessSchema = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import OptimizedImage from '../../components/OptimizedImage';
 import SeoPageLayout from '../../components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
-import { Check, Gift, Zap, Shield, Users, TrendingUp, Star, BarChart3, Smartphone, Calculator, Package } from 'lucide-react';
+import { Check, Zap, Shield, Users, Star, BarChart3, Calculator, Package } from 'lucide-react';
 
 export default function BoekhoudprogrammaMetVoorraadbeheer() {
   // Gebruik de page refresh hook

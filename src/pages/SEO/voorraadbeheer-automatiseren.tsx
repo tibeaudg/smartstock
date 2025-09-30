@@ -100,7 +100,6 @@ export default function VoorraadbeheerAutomatiseren() {
   return (
     <SeoPageLayout
       title="Voorraadbeheer Automatiseren"
-      image="/optimized/Inventory-Management.png"
     >
       <SEO
         title="Voorraadbeheer Automatiseren | Complete Gids | stockflow"

@@ -2,7 +2,7 @@ import SEO from '../../components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '../../components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
-import { Check, Smartphone, Zap, Shield, Users, TrendingUp, Star, BarChart3, Gift, Camera } from 'lucide-react';
+import { Check, Smartphone, Zap, Shield, Users, Star, BarChart3, Camera } from 'lucide-react';
 
 export default function StockbeheerApp() {
   // Gebruik de page refresh hook

@@ -35,10 +35,21 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     this.setState({ errorInfo });
     
-    // Log de error met contextuele informatie
+    // Log de error met uitgebreide contextuele informatie
     logError(error, {
       componentStack: errorInfo.componentStack,
+      message: `ErrorBoundary caught error: ${error.message}`,
     });
+
+    // Extra debugging informatie voor productie
+    console.group('🚨 React Error Boundary Details');
+    console.error('Error:', error);
+    console.error('Error Info:', errorInfo);
+    console.error('Component Stack:', errorInfo.componentStack);
+    console.error('Current URL:', window.location.href);
+    console.error('User Agent:', navigator.userAgent);
+    console.error('Timestamp:', new Date().toISOString());
+    console.groupEnd();
 
     // Call custom error handler if provided
     if (this.props.onError) {

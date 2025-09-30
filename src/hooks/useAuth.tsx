@@ -74,7 +74,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           email: '',
           first_name: null,
           last_name: null,
-          role: 'user' as const,
+          role: 'staff' as const,
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
           selected_plan: null,
@@ -205,7 +205,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         },
         (payload) => {
           setUserProfile((prev) => {
-            const prevBlocked = prev?.blocked;
+            if (!prev) return prev;
+            const prevBlocked = prev.blocked;
             const newBlocked = payload.new?.blocked;
             if (typeof prevBlocked !== 'undefined') {
               if (prevBlocked && !newBlocked) {
@@ -216,7 +217,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
                 window.location.reload();
               }
             }
-            return { ...prev, ...payload.new };
+            return { ...prev, ...payload.new } as UserProfile;
           });
         }
       )
@@ -299,7 +300,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const signInWithGoogle = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase.auth.signInWithOAuth({
+      const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
           redirectTo: `${window.location.origin}/dashboard`,

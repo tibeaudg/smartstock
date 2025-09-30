@@ -40,6 +40,8 @@ export default defineConfig(({ mode }) => ({
         drop_debugger: mode === 'production',
       },
     },
+    // Generate source maps for better debugging
+    sourcemap: mode === 'development' ? true : 'hidden',
     // Optimize CSS
     cssCodeSplit: true,
     // Optimize assets

@@ -36,7 +36,7 @@ export const SEO: React.FC<SEOProps> = ({
   // Detect browser language for SEO
   const getBrowserLanguage = () => {
     if (typeof window === 'undefined') return 'en';
-    const browserLang = navigator.language || navigator.userLanguage;
+    const browserLang = navigator.language || (navigator as any).userLanguage;
     const primaryLang = browserLang.split('-')[0];
     return primaryLang === 'nl' ? 'nl' : 'en';
   };

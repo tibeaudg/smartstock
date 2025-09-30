@@ -168,8 +168,11 @@ export default function Contact() {
     }
   ];
 
-  function scrollToSection(arg0: string): void {
-    throw new Error('Function not implemented.');
+  function scrollToSection(sectionId: string): void {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
   }
 
   return (

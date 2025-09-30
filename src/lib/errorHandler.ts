@@ -28,6 +28,18 @@ export const logError = (error: Error, context?: Partial<ErrorInfo>) => {
 
   console.error('StockFlow Error:', errorInfo);
 
+  // Verbeterde logging met meer context
+  console.group('🔴 StockFlow Error Details');
+  console.error('Error Message:', error.message);
+  console.error('Error Stack:', error.stack);
+  if (context?.componentStack) {
+    console.error('Component Stack:', context.componentStack);
+  }
+  console.error('URL:', window.location.href);
+  console.error('User Agent:', navigator.userAgent);
+  console.error('Timestamp:', new Date().toISOString());
+  console.groupEnd();
+
   // Hier kun je externe error logging toevoegen (bijv. Sentry, LogRocket, etc.)
   if (typeof window !== 'undefined' && window.location.hostname !== 'localhost') {
     // Externe logging voor productie

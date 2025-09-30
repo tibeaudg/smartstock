@@ -2,7 +2,7 @@ import SEO from '../../components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '../../components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
-import { Check, Gift, Zap, Shield, Users, TrendingUp, Star, BarChart3, Smartphone, Download } from 'lucide-react';
+import { Check, Gift, Zap, Shield, Users, Star, BarChart3, Smartphone} from 'lucide-react';
 
 export default function ProgrammaStockbeheerGratis() {
   // Gebruik de page refresh hook
@@ -123,7 +123,7 @@ export default function ProgrammaStockbeheerGratis() {
                   <span className="text-sm font-bold">✓ 100% Gratis</span>
                 </div>
                 <div className="bg-white bg-opacity-20 px-4 py-2 rounded-full">
-                  <span className="text-sm font-bold">✓ Geen Download</span>
+                  <span className="text-sm font-bold">✓ Geen </span>
                 </div>
                 <div className="bg-white bg-opacity-20 px-4 py-2 rounded-full">
                   <span className="text-sm font-bold">✓ Real-time</span>
@@ -261,20 +261,20 @@ export default function ProgrammaStockbeheerGratis() {
         </div>
       </section>
 
-      {/* No Download Section */}
+      {/* No Section */}
       <section className="py-16 px-4 bg-gray-50">
         <div className="max-w-6xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="text-center">
               <img 
                 src="/optimized/mobile.png" 
-                alt="Geen Download Nodig" 
+                alt="Geen Nodig" 
                 className="w-full max-w-lg mx-auto rounded-lg shadow-lg"
               />
             </div>
             <div>
               <h2 className="text-3xl font-bold mb-6">
-                <span className="text-purple-600">Geen Download</span> Nodig
+                <span className="text-purple-600">Geen </span> Nodig
               </h2>
               <p className="text-lg text-gray-700 mb-8">
                 Ons programma stockbeheer gratis werkt direct in je webbrowser. Geen installatie, 
