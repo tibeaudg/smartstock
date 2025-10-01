@@ -24,6 +24,7 @@ import { generateComprehensiveStructuredData } from '../lib/structuredData';
 import { GoogleAdsTracking } from '@/utils/googleAdsTracking';
 import { ConversionTrackingTest } from './ConversionTrackingTest';
 import { SavingsCalculator } from './SavingsCalculator';
+import Footer from './Footer.js';
 
 // CLS monitoring in development
 if (process.env.NODE_ENV === 'development') {
@@ -2527,136 +2528,10 @@ export const HomePage = () => {
         </div>
       )}
 
+      <Footer />
 
 
 
-      {/* Footer */}
-      <footer className="bg-gray-900 text-gray-200 py-8 md:py-12">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-8 mb-6 md:mb-8">
-            {/* Company Logo */}
-            <div className="flex items-center">
-              <OptimizedImage
-                src="/logo.png"
-                alt="StockFlow"
-                className="h-8 w-auto"
-                width={120}
-                height={32}
-                useModernFormats={true}
-                responsive={true}
-                sizes="(max-width: 768px) 100px, 120px"
-                loading="lazy"
-              />
-                        </div>
-            
-            {/* Pages */}
-            <div>
-              <h3 className="text-lg font-medium mb-4 text-gray-200">Pages</h3>
-              <div className="space-y-2">
-                <button 
-                  onClick={() => scrollToSection('features-section')} 
-                  className="block text-gray-400 hover:text-white"
-                >
-                  Features
-                </button>
-                <button 
-                  onClick={() => scrollToSection('how-it-works-section')} 
-                  className="block text-gray-400 hover:text-white"
-                >
-                  How It Works
-                </button>
-                <button 
-                  onClick={() => scrollToSection('testimonials-section')} 
-                  className="block text-gray-400 hover:text-white"
-                >
-                  Reviews
-                </button>
-                <button 
-                  onClick={() => scrollToSection('faq-section')} 
-                  className="block text-gray-400 hover:text-white"
-                >
-                  FAQs
-                </button>
-            </div>
-                      </div>
-            
-            {/* Contact */}
-            <div>
-              <h3 className="text-lg font-medium mb-4 text-gray-200">Contact</h3>
-              <div className="space-y-2">
-                <Link to="/contact" className="block text-gray-400 hover:text-white">
-                  Contact Us
-                </Link>
-                <Link to="/support" className="block text-gray-400 hover:text-white">
-                  Support
-                </Link>
-                <Link to="/demo" className="block text-gray-400 hover:text-white">
-                  Demo
-                </Link>
-              </div>
-            </div>
-            
-            {/* Socials */}
-      <div>
-              <h3 className="text-lg font-medium mb-4 text-gray-200">Socials</h3>
-              <div className="flex space-x-4">
-            <a 
-              href="https://www.facebook.com/profile.php?id=61578067034898"
-              target="_blank" 
-              rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-white"
-            >
-              <Facebook className="h-5 w-5" />
-            </a>
-            <a 
-              href="https://twitter.com/stockflow" 
-              target="_blank" 
-              rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-white"
-            >
-              <Twitter className="h-5 w-5" />
-            </a>
-            <a 
-              href="https://www.linkedin.com/stockflow" 
-              target="_blank" 
-              rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-white"
-            >
-              <Linkedin className="h-5 w-5" />
-            </a>
-            <a 
-              href="https://www.instagram.com/stockflowbe"
-              target="_blank" 
-              rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-white"
-            >
-              <Instagram className="h-5 w-5" />
-            </a>
-          </div>
-        </div>
-      </div>
-      
-          <div className="border-t border-gray-700 pt-6 text-center">
-            <div className="mb-4">
-              <p className="text-gray-400 text-sm italic">
-                Built by inventory management experts in Belgium to solve the complex challenge of 
-                stockouts and overstocking that costs SMEs thousands of euros annually.
-              </p>
-        </div>
-            <p className="text-gray-500 text-sm">
-              © 2025 StockFlow. All Rights Reserved.
-            </p>
-            <div className="flex justify-center space-x-6 mt-4">
-              <Link to="/privacy-policy" className="text-gray-500 hover:text-white text-sm">
-            Privacy Policy
-          </Link>
-              <Link to="/terms-conditions" className="text-gray-500 hover:text-white text-sm">
-            Terms & Conditions
-          </Link>
-        </div>
-    </div>
-  </div>
-</footer>
 
   </div>
   );

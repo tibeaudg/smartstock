@@ -1,38 +1,146 @@
 import { Link } from 'react-router-dom';
+import { ArrowRight, Send } from 'lucide-react';
 
 const Footer = () => (
-  <footer className="bg-gray-900 text-gray-200 py-12 md:py-16">
-    <div className="max-w-4xl mx-auto px-6 text-center">
-      <img
-        src="/logo.png"
-        alt="stockflow"
-        className="h-10 md:h-12 mx-auto mb-6"
-      />
-      <p className="text-gray-400 text-base md:text-lg mb-8 leading-relaxed max-w-2xl mx-auto">
-        Het beste gratis voorraadbeheerprogramma voor Vlaamse KMO's. 
-        Eenvoudig, veilig en zonder verborgen kosten.
-      </p>
+  <footer className="bg-black text-gray-200 py-16 md:py-20">
+    <div className="max-w-7xl mx-auto px-6">
+      {/* Main Footer Content */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+        {/* Left Section - CTA */}
+        <div className="space-y-6">
+          <h2 className="text-3xl md:text-4xl font-bold text-white">
+            Mobilize Your Inventory
+          </h2>
+          <p className="text-gray-400 text-base md:text-lg max-w-md">
+            Unlock instant analytics and reporting for your inventory data.
+            No setup headaches, just powerful insights, ready to go.
+          </p>
+          
+          <div className="space-y-4">
+            <Link
+              to="/register"
+              className="inline-flex items-center gap-2 bg-white text-black px-6 py-3 rounded-full hover:bg-gray-100 transition-colors font-medium"
+            >
+              Try For Free
+              <ArrowRight className="w-5 h-5" />
+            </Link>
+            
+            <div className="flex items-center gap-2 text-gray-400">
+              <Send className="w-5 h-5" />
+              <div>
+                <p className="text-sm">Send us a message.</p>
+                <a
+                  href="mailto:support@stockflow.be"
+                  className="text-blue-400 hover:text-blue-300 transition-colors"
+                >
+                  info@stockflow.be
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
 
-      <div className="flex justify-center space-x-10 mb-10">
-        <Link
-          to="/voorraadbeheer-tips"
-          className="text-blue-400 hover:text-blue-300 text-sm md:text-base transition-colors duration-200"
-        >
-          Tips
-        </Link>
-        <Link
-          to="/voorraadbeheer-software-vergelijken"
-          className="text-blue-400 hover:text-blue-300 text-sm md:text-base transition-colors duration-200"
-        >
-          Vergelijking
-        </Link>
+        {/* Right Section - Navigation Links */}
+        <div className="grid grid-cols-3 gap-8">
+          {/* Legal Column */}
+          <div>
+            <h3 className="text-gray-400 text-sm font-medium mb-4">Legal</h3>
+            <ul className="space-y-3">
+              <li>
+                <Link
+                  to="/terms"
+                  className="text-white hover:text-gray-300 transition-colors text-sm"
+                >
+                  Terms and Conditions
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/privacy"
+                  className="text-white hover:text-gray-300 transition-colors text-sm"
+                >
+                  Policy
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Menu Column */}
+          <div>
+            <h3 className="text-gray-400 text-sm font-medium mb-4">Menu</h3>
+            <ul className="space-y-3">
+              <li>
+                <Link
+                  to="/"
+                  className="text-white hover:text-gray-300 transition-colors text-sm"
+                >
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/pricing"
+                  className="text-white hover:text-gray-300 transition-colors text-sm"
+                >
+                  Pricing
+                </Link>
+              </li>
+              <li>
+                <a
+                  href="/#faq-section"
+                  className="text-white hover:text-gray-300 transition-colors text-sm"
+                >
+                  Faq
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Actions Column */}
+          <div>
+            <h3 className="text-gray-400 text-sm font-medium mb-4">Actions</h3>
+            <ul className="space-y-3">
+              <li>
+                <Link
+                  to="/contact"
+                  className="text-white hover:text-gray-300 transition-colors text-sm"
+                >
+                  Contact Us
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/demo"
+                  className="text-white hover:text-gray-300 transition-colors text-sm"
+                >
+                  Try Demo
+                </Link>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
 
-      <div className="border-t border-gray-700 pt-6">
-        <p className="text-gray-500 text-xs md:text-sm">
-          &copy; {new Date().getFullYear()} stockflow. Alle rechten voorbehouden. 
-          Gratis voorraadbeheer voor Vlaamse KMO's.
-        </p>
+      {/* Brand Section */}
+      <div className="relative justify-center items-center flex">
+        <h1 
+          className="text-7xl md:text-10xl font-bold text-transparent bg-clip-text"
+          style={{
+            backgroundImage: 'linear-gradient(180deg, #666 0%, #999 50%, #444 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+          }}
+        >
+          StockFlow<sup className="text-4xl md:text-6xl"
+                    style={{
+                      backgroundImage: 'linear-gradient(180deg, #666 0%, #999 50%, #444 100%)',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      backgroundClip: 'text',
+                    }}
+                    >®</sup>
+        </h1>
       </div>
     </div>
   </footer>
