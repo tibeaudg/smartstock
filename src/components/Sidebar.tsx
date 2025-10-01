@@ -75,7 +75,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
   
   // Check specific feature access based on subscription tier
   const hasDeliveryNotes = canUseFeature('delivery-notes');
-  const hasScanner = canUseFeature('scanner');
+  const hasScanner = true; // Scanner is now available for all users
   const hasAnalytics = canUseFeature('analytics');
 
   // If blocked, only show settings/invoicing
@@ -135,6 +135,8 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
     : [
         { id: 'dashboard', label: 'Dashboard', icon: BarChart3, path: '/dashboard', end: true },
 
+        { id: 'scanner', label: 'Scanner', icon: Scan, path: '/dashboard/scan' },
+
         { 
           id: 'stock', 
           label: 'Products', 
@@ -168,12 +170,6 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
           path: '/dashboard/settings',
           subItems: settingsSubItems
         },
-        ...(hasScanner ? [{
-          id: 'scanner',
-          label: 'Scanner',
-          icon: Scan,
-          path: '/dashboard/scan'
-        }] : []),
         ...(isOwner
           ? [
               { 

@@ -247,6 +247,11 @@ export const useSubscription = () => {
     const tier = getCurrentTier();
     if (!tier) return false;
     
+    // Scanner is now available for all users including free tier
+    if (featureName === 'scanner' || featureName === 'Barcode scanner') {
+      return true;
+    }
+    
     // Check if feature is included in tier
     return tier.features.includes(featureName);
   };

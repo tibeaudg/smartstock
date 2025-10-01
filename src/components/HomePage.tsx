@@ -949,7 +949,7 @@ export const HomePage = () => {
         "Print your own barcodes",
         "Works without internet"
       ],
-      tier: "growth",
+      tier: "basic", // Now available for all users including free tier
       image: "/placeholder.svg"
     },
     {

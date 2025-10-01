@@ -65,7 +65,7 @@ export const useScannerSettings = () => {
 
   const saveSettingsMutation = useMutation({
     mutationFn: async (newSettings: Partial<ScannerSettings>) => {
-      if (!user || !activeBranch) throw new Error('User or branch not available');
+      if (!user || !activeBranch) throw new Error('User or branch not found');
 
       const settingsToSave = {
         ...newSettings,
@@ -75,8 +75,9 @@ export const useScannerSettings = () => {
 
       const { data, error } = await supabase
         .from('scanner_settings')
-        .upsert(settingsToSave, {
-          onConflict: 'user_id,branch_id'
+        .upsert(settingsToSave, { 
+          onConflict: 'user_id,branch_id',
+          ignoreDuplicates: false 
         })
         .select()
         .single();
@@ -89,12 +90,12 @@ export const useScannerSettings = () => {
       return data;
     },
     onSuccess: () => {
-      toast.success('Scanner instellingen opgeslagen!');
-      queryClient.invalidateQueries({ queryKey: ['scannerSettings'] });
+      queryClient.invalidateQueries({ queryKey: ['scannerSettings', user?.id, activeBranch?.branch_id] });
+      toast.success('Scanner settings saved successfully');
     },
     onError: (error) => {
-      console.error('Error saving settings:', error);
-      toast.error('Fout bij opslaan van instellingen');
+      console.error('Error saving scanner settings:', error);
+      toast.error('Failed to save scanner settings');
     },
   });
 
