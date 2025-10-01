@@ -53,6 +53,11 @@ export const useScannerSettings = () => {
         .maybeSingle();
 
       if (error) {
+        // If table doesn't exist (42P01), silently use defaults
+        if (error.code === '42P01') {
+          console.warn('Scanner settings table does not exist yet. Using default settings.');
+          return defaultSettings;
+        }
         console.error('Error fetching scanner settings:', error);
         return defaultSettings;
       }
@@ -83,19 +88,30 @@ export const useScannerSettings = () => {
         .single();
 
       if (error) {
+        // If table doesn't exist, just warn and continue
+        if (error.code === '42P01') {
+          console.warn('Scanner settings table does not exist. Settings will not be persisted.');
+          return null;
+        }
         console.error('Error saving scanner settings:', error);
         throw error;
       }
 
       return data;
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['scannerSettings', user?.id, activeBranch?.branch_id] });
-      toast.success('Scanner settings saved successfully');
+    onSuccess: (data) => {
+      if (data) {
+        queryClient.invalidateQueries({ queryKey: ['scannerSettings', user?.id, activeBranch?.branch_id] });
+        toast.success('Scanner settings saved successfully');
+      } else {
+        toast.info('Scanner settings table not available yet');
+      }
     },
-    onError: (error) => {
+    onError: (error: any) => {
       console.error('Error saving scanner settings:', error);
-      toast.error('Failed to save scanner settings');
+      if (error?.code !== '42P01') {
+        toast.error('Failed to save scanner settings');
+      }
     },
   });
 
