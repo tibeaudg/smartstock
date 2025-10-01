@@ -594,43 +594,55 @@ export const HomePage = () => {
     }
   };
 
-  // Enhanced FAQ section - Objection handling and benefit-focused
+  // Retailer-focused FAQ section
   const faqData = [
     {
-      question: "What if I'm not tech-savvy? Will I be able to use StockFlow?",
-      answer: "Absolutely! StockFlow is designed specifically for small business owners, not IT experts. Our customers typically get up and running in under 10 minutes. We provide step-by-step guidance, and if you ever get stuck, our support team responds in under 5 minutes. Most users say it's easier than using Excel.",
-      category: "Ease of Use",
-      benefit: "No technical skills required"
+      question: "Does StockFlow work with my POS system or cash register?",
+      answer: "Yes! StockFlow integrates with most modern POS systems including Square, Shopify POS, Lightspeed, and Clover. You can also use StockFlow standalone — many retailers use it to track backroom inventory while their POS handles the shop floor. We offer CSV export/import to sync with any system. If you have a specific POS, contact us and we'll confirm compatibility.",
+      category: "POS Integration",
+      benefit: "Works with major POS systems"
     },
     {
-      question: "How much money will StockFlow actually save my business?",
-      answer: "Our customers save an average of $2,400 annually by eliminating stockouts and reducing waste. Laura from De Koffieboetiek saved $400/month just by preventing expired products. Tom from TechOnderdelen BV recovered $15,000 from a single inventory discrepancy. Most businesses see ROI within the first month.",
-      category: "ROI & Savings",
-      benefit: "Average $2,400 annual savings"
+      question: "Can I track inventory across multiple shop locations?",
+      answer: "Absolutely! You can manage inventory across multiple store locations, warehouses, or stockrooms. See stock levels at each location in real-time, transfer items between locations, and get low-stock alerts per location. Perfect if you have a main shop plus a storage unit, or multiple retail locations. Available on Growth and Premium plans.",
+      category: "Multi-Location",
+      benefit: "Track multiple stores or stockrooms"
     },
     {
-      question: "What if I'm already using Excel or another system?",
-      answer: "Perfect! StockFlow imports your existing data in minutes, so you don't lose any historical information. Unlike Excel, you get real-time updates, automatic backups, and mobile access. Many customers keep Excel as backup but use StockFlow as their primary system because it's 10x faster and more accurate.",
+      question: "How many products (SKUs) can I track?",
+      answer: "Our Free plan supports up to 100 products — perfect for small shops getting started. Growth plan includes 1,000 products, and Premium supports unlimited products. You can also track product variants (sizes, colors) as separate SKUs. Need more? Contact us for custom limits at no extra charge.",
+      category: "Product Limits",
+      benefit: "Free: 100 SKUs, Paid: 1,000 - unlimited"
+    },
+    {
+      question: "What are your support hours? Can I get help when I'm in the shop?",
+      answer: "Our support team is available Monday-Friday 8AM-8PM and Saturday 9AM-5PM (CET). We respond to emails and chat within 5 minutes during business hours. Need help outside these hours? Our help center has step-by-step guides, and you can always schedule a call. We also offer free onboarding sessions to get you set up.",
+      category: "Support Hours",
+      benefit: "Support 6 days/week, <5 min response"
+    },
+    {
+      question: "Will you help me get started? I'm not great with technology.",
+      answer: "Yes, we'll guide you every step! Every new customer gets a free 30-minute onboarding call where we help you import products, set up scanning, and configure alerts. We also have video tutorials and live chat support. Most shop owners are fully set up in under 10 minutes. If you get stuck, we're just a message away — real people, not bots.",
+      category: "Onboarding Help",
+      benefit: "Free 1-on-1 setup assistance included"
+    },
+    {
+      question: "Can I track deliveries from suppliers and shipments to customers?",
+      answer: "Yes! StockFlow includes delivery note management. Record incoming deliveries from suppliers (with photos and notes), track outgoing shipments to customers, and manage delivery schedules. You can also save supplier contact details and order history. Perfect for managing stock that arrives weekly or monthly from different vendors.",
+      category: "Shipping & Deliveries",
+      benefit: "Track incoming & outgoing deliveries"
+    },
+    {
+      question: "What if I'm already using Excel or pen and paper?",
+      answer: "We make switching easy! Import your Excel inventory list in seconds (we'll help format it if needed). If you use paper, we'll show you how to quickly add products by scanning barcodes or typing them in. Many customers start by entering just their top 20-30 products to test the system. You can always export to Excel anytime if you need a backup.",
       category: "Migration",
-      benefit: "Seamless data import and migration"
+      benefit: "Easy import from Excel or manual entry"
     },
     {
-      question: "Is my business data really secure with StockFlow?",
-      answer: "Your data security is our top priority. We use bank-level 256-bit SSL encryption, daily automated backups, and are fully GDPR compliant. Your data is stored in secure European servers and never shared with third parties. We've never had a security breach in our 5+ years of operation.",
-      category: "Security",
-      benefit: "Bank-level security with GDPR compliance"
-    },
-    {
-      question: "What if I need help or have questions?",
-      answer: "We're here for you! Our support team responds in under 5 minutes during business hours, and we offer free onboarding calls to get you started. Unlike big enterprise software, you'll talk to real people who understand small business challenges. No chatbots, no ticket systems - just helpful humans.",
-      category: "Support",
-      benefit: "Human support in under 5 minutes"
-    },
-    {
-      question: "Can I try StockFlow before committing to anything?",
-      answer: "Of course! That's exactly what we recommend. Sign up for free (no credit card required), import a few products, and see how it works for your business. Most customers know within the first week if StockFlow is right for them. If it's not a perfect fit, you can export your data anytime.",
-      category: "Free Plan",
-      benefit: "Free forever plan with no commitment"
+      question: "Can I try it free? What if it doesn't work for my shop?",
+      answer: "Absolutely! Sign up for our free plan — no credit card required. You get 100 products forever, which is perfect for testing. Try it with your actual products for a week. If it doesn't fit your shop, you can export your data and cancel anytime. Most retailers know within 3 days if StockFlow works for them.",
+      category: "Free Trial",
+      benefit: "Free forever plan, no commitment"
     }
   ];
 
@@ -683,8 +695,8 @@ export const HomePage = () => {
       icon: TrendingUp,
       title: "Never miss a sale to out-of-stock",
       benefit: "Always know what's running low",
-      impact: "Get automatic alerts before items sell out",
-      detailedDescription: "See stock levels instantly, Get alerts on your phone when items run low, Know exactly when to reorder.",
+      impact: "Get automatic alerts ",
+      detailedDescription: "See stock levels instantly, Get alerts when items run low, Know exactly when to reorder.",
       category: "Stock Tracking",
       visual: "stockout-prevention",
     },
@@ -791,10 +803,8 @@ export const HomePage = () => {
 
   // Trust-building statistics
   const trustStats = [
-    { number: "10,000+", label: "Happy Customers" },
     { number: "98%", label: "Customer Retention" },
     { number: "$2M+", label: "Inventory Value Managed" },
-    { number: "4.9/5", label: "Average Rating" }
   ];
   
   const testimonials = [
@@ -1115,8 +1125,8 @@ export const HomePage = () => {
     {
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
-      "name": "StockFlow - Smart Inventory Management",
-      "description": "Professional inventory management software for growing businesses. Track stock levels, manage suppliers, and grow your business with our powerful yet simple platform.",
+      "name": "StockFlow - Inventory Management for Retail Shops",
+      "description": "Mobile inventory management for small retail stores. Track shop floor and backroom stock with phone scanning. Stop stockouts, reduce overstock, count inventory in minutes.",
       "applicationCategory": "BusinessApplication",
       "operatingSystem": "Web Browser",
       "browserRequirements": "Requires JavaScript. Requires HTML5.",
@@ -1128,7 +1138,7 @@ export const HomePage = () => {
           "@type": "Offer",
           "price": "0",
           "priceCurrency": "EUR",
-          "description": "Free plan - 100% gratis voorraadbeheer voor KMO's",
+          "description": "Free plan - Perfect for small retail shops with up to 100 products",
           "availability": "https://schema.org/InStock",
           "validFrom": "2024-01-01"
         },
@@ -1136,7 +1146,7 @@ export const HomePage = () => {
           "@type": "Offer",
           "price": "29",
           "priceCurrency": "EUR",
-          "description": "Growth plan - Advanced features for growing businesses",
+          "description": "Growth plan - For growing retail stores with multi-location support",
           "availability": "https://schema.org/InStock",
           "validFrom": "2024-01-01"
         }
@@ -1148,27 +1158,36 @@ export const HomePage = () => {
         "bestRating": "5",
         "worstRating": "1"
       },
+      "audience": {
+        "@type": "BusinessAudience",
+        "audienceType": "Small Retail Businesses",
+        "geographicArea": {
+          "@type": "Place",
+          "name": "Belgium and Europe"
+        }
+      },
       "author": {"@type": "Organization", "name": "StockFlow"},
       "publisher": {"@type": "Organization", "name": "StockFlow", "logo": {"@type": "ImageObject", "url": "https://www.stockflow.be/logo.png"}},
       "image": ["https://www.stockflow.be/Inventory-Management.png", "https://www.stockflow.be/optimized/desktop.png"],
       "screenshot": "https://www.stockflow.be/optimized/desktop.png",
       "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.stockflow.be/"},
       "featureList": [
-        "Real-time inventory tracking",
-        "Multi-location support", 
-        "Barcode scanning",
-        "Automated reorder points",
-        "Analytics and reporting",
-        "Team collaboration",
-        "Mobile app access"
+        "Mobile barcode scanning for shop floor counting",
+        "Track shop floor and backroom stock separately",
+        "Low stock alerts on phone", 
+        "Multi-location inventory for retail chains",
+        "POS system integration (Square, Shopify, Lightspeed)",
+        "Simple reports on bestsellers and slow movers",
+        "Works on any smartphone - no special hardware",
+        "CSV import from Excel spreadsheets"
       ]
     },
     // WebPage Schema
     {
       "@context": "https://schema.org",
       "@type": "WebPage",
-      "name": "Smart Inventory Management",
-      "description": "Track stock levels, manage suppliers, and grow your business with our powerful yet simple inventory management platform.",
+      "name": "Inventory Management for Small Retail Shops",
+      "description": "Track stock across shop floor and backroom with your phone. Stop stockouts, reduce overstock, count inventory in minutes. Built for small retail stores.",
       "url": "https://www.stockflow.be/",
       "mainEntity": {
         "@type": "SoftwareApplication",
@@ -1189,6 +1208,61 @@ export const HomePage = () => {
         "@type": "WebSite",
         "name": "StockFlow",
         "url": "https://www.stockflow.be"
+      },
+      "speakable": {
+        "@type": "SpeakableSpecification",
+        "cssSelector": ["h1", "h2"]
+      }
+    },
+    // LocalBusiness Schema - Supporting small retailers
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "StockFlow - Retail Inventory Software",
+      "description": "Inventory management software designed specifically for small retail shops, local stores, and boutiques.",
+      "url": "https://www.stockflow.be/",
+      "logo": "https://www.stockflow.be/logo.png",
+      "image": "https://www.stockflow.be/Inventory-Management.png",
+      "priceRange": "Free - €29/month",
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "BE",
+        "addressLocality": "Belgium"
+      },
+      "areaServed": [
+        {
+          "@type": "Country",
+          "name": "Belgium"
+        },
+        {
+          "@type": "Country",
+          "name": "Netherlands"
+        },
+        {
+          "@type": "GeoCircle",
+          "geoMidpoint": {
+            "@type": "GeoCoordinates",
+            "latitude": "50.8503",
+            "longitude": "4.3517"
+          },
+          "geoRadius": "500000"
+        }
+      ],
+      "makesOffer": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Retail Inventory Management Software",
+            "description": "Mobile-first inventory tracking for small retail shops"
+          },
+          "price": "0",
+          "priceCurrency": "EUR"
+        }
+      ],
+      "audience": {
+        "@type": "Audience",
+        "audienceType": "Small Retail Business Owners"
       }
     },
     // FAQPage Schema
@@ -1315,6 +1389,33 @@ export const HomePage = () => {
         {/* Preconnect to critical origins - non-blocking */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        
+        {/* OpenGraph Meta Tags for Social Sharing - Retailer focused */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.stockflow.be/" />
+        <meta property="og:title" content="StockFlow - Inventory Management for Small Retail Shops" />
+        <meta property="og:description" content="Track stock across shop floor & backroom with your phone. Stop stockouts, reduce overstock, count inventory in minutes. Built for small retail stores. Free plan available." />
+        <meta property="og:image" content="https://www.stockflow.be/Inventory-Management.png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="StockFlow - Mobile inventory management for retail shops" />
+        <meta property="og:site_name" content="StockFlow" />
+        <meta property="og:locale" content="en_US" />
+        
+        {/* Twitter Card Meta Tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content="https://www.stockflow.be/" />
+        <meta name="twitter:title" content="StockFlow - Inventory Management for Small Retail Shops" />
+        <meta name="twitter:description" content="Track stock with your phone. Stop stockouts, reduce overstock, count inventory in minutes. Built for small retail stores." />
+        <meta name="twitter:image" content="https://www.stockflow.be/Inventory-Management.png" />
+        <meta name="twitter:image:alt" content="StockFlow - Mobile inventory management for retail shops" />
+        
+        {/* Additional Meta Tags */}
+        <meta name="application-name" content="StockFlow" />
+        <meta name="apple-mobile-web-app-title" content="StockFlow" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="theme-color" content="#2563eb" />
         
         {/* Non-render-blocking CSS loading */}
         <link rel="preload" as="style" href="/index.css" onLoad={() => {}} />
@@ -1460,9 +1561,10 @@ export const HomePage = () => {
         `}</script>
       </Helmet>
       <SEO
-        title="StockFlow - Simple Inventory Management"
-        description="Never run out of stock again. StockFlow automatically tracks your inventory, alerts you when to reorder, and saves  SMEs $2,400+ per year. Built specifically for  small businesses."
-        keywords="inventory management software, stock management software, inventory management, inventory management free, stock management free, inventory software, SME inventory management, inventory management SME, stock management SME, prevent stockouts, automatic reordering, inventory tracking Belgium, inventory management app, stock management app, business software, inventory management system, stock management system, inventory management for small business, inventory management for small companies, stock management for small companies, ERP alternative, inventory management versus Excel, stock management versus Excel, automatic inventory alerts, inventory management automation, stock management automation, inventory tracking, inventory management tracking, stock management tracking, inventory management software Belgium, inventory management software Belgium, stock management software Belgium, small business inventory, inventory management small enterprise, stock management small enterprise, business tools, inventory management tools, stock management tools, inventory software for SMEs, inventory management software SME, stock management software SME, prevent stockouts Belgium, inventory management prevent stockouts, stock management prevent stockouts, automatic reorder points, inventory management automatic ordering, stock management automatic ordering, inventory management Belgium, stock management Belgium, SME inventory tracking, inventory management tracking SME, stock management tracking SME, inventory alerts Belgium, inventory management warnings, stock management warnings, small business software, inventory management small business software, stock management small business software"        url="https://www.stockflow.be/"
+        title="StockFlow - Inventory Management for Small Retail Shops"
+        description="Track stock across shop floor & backroom with your phone. Stop stockouts, reduce overstock, count inventory in minutes. Built for small retail stores. Free plan available."
+        keywords="retail inventory management, inventory for retail shops, retail stock management, small retail inventory, shop inventory software, retail store inventory, inventory tracking for retailers, retail inventory app, barcode scanning retail, mobile inventory retail, shop floor inventory, backroom inventory tracking, retail stock control, point of sale inventory, POS inventory integration, retail inventory system, small shop inventory, local store inventory, boutique inventory management, independent retailer inventory, retail inventory software, multi-location retail inventory, inventory management for stores, retail stocktaking, retail inventory counting, retail reorder alerts, retail stock alerts, prevent stockouts retail, reduce overstock retail, retail cash flow, retail inventory free, free retail inventory software, inventory app for shops, retail business software, small business retail inventory, inventory for small retailers, retail inventory Belgium, shop inventory management, store stock management, retail merchandise tracking, retail product tracking, inventory management small retail"
+        url="https://www.stockflow.be/"
         hreflang={[
           { lang: 'en', url: 'https://www.stockflow.be/' },
         ]}
@@ -1509,16 +1611,16 @@ export const HomePage = () => {
                 <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-6 md:mb-8">
                 <Button
               onClick={handleLoginClick}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-12 py-6 text-xl font-semibold rounded-full transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25 border border-blue-500/20"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-12 py-6 text-xl font-semibold rounded-full transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25"
             >
-              Start free
+              Start free today
             </Button>
             <Button
               onClick={() => navigate('/demo')}
               variant="outline"
               className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-12 py-6 text-xl font-semibold rounded-full transform hover:scale-105 transition-all duration-300"
             >
-              View Demo
+              See how it works
             </Button>
                 </div>
               </ScaleInWhenVisible>
@@ -1840,6 +1942,151 @@ export const HomePage = () => {
       </section>
 
 
+      {/* How It Works - 3 Steps for Retailers */}
+      <section className="py-16 md:py-24 bg-white">
+        <div className="max-w-6xl mx-auto px-4">
+          <FadeInWhenVisible>
+            <div className="text-center mb-12 md:mb-16">
+              <h2 className="text-4xl md:text-6xl font-light text-gray-800 mb-4">
+                Start tracking in 3 simple steps
+              </h2>
+              <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
+                No complicated setup. Get up and running in under 10 minutes.
+              </p>
+            </div>
+          </FadeInWhenVisible>
+          
+          <div className="relative">
+            {/* Connecting line for desktop */}
+            <div className="hidden md:block absolute top-1/3 left-0 right-0 h-1 bg-gradient-to-r from-blue-200 via-blue-300 to-blue-200 transform -translate-y-1/2" style={{ top: '80px' }}></div>
+            
+            {/* Steps */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 relative">
+              {/* Step 1 */}
+              <SlideUpWhenVisible delay={100}>
+                <div className="relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-blue-100">
+                  {/* Step number */}
+                  <div className="absolute -top-6 left-1/2 transform -translate-x-1/2">
+                    <div className="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center text-xl font-bold shadow-lg">
+                      1
+                    </div>
+                  </div>
+                  
+                  {/* Icon */}
+                  <div className="flex justify-center mb-6 mt-4">
+                    <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center">
+                      <Package className="h-10 w-10 text-blue-600" />
+                    </div>
+                  </div>
+                  
+                  {/* Content */}
+                  <h3 className="text-xl font-semibold text-gray-900 mb-3 text-center">
+                    Add products or import CSV
+                  </h3>
+                  <p className="text-gray-600 text-center leading-relaxed">
+                    Type in your products manually or upload your existing inventory list from Excel. Your data imports in seconds.
+                  </p>
+                  
+                  {/* Visual indicator */}
+                  <div className="mt-6 pt-6 border-t border-gray-200">
+                    <div className="flex items-center justify-center gap-2 text-sm text-gray-500">
+                      <CheckCircle className="h-4 w-4 text-green-600" />
+                      <span>Takes 5 minutes</span>
+                    </div>
+                  </div>
+                </div>
+              </SlideUpWhenVisible>
+              
+              {/* Step 2 */}
+              <SlideUpWhenVisible delay={200}>
+                <div className="relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-green-100">
+                  {/* Step number */}
+                  <div className="absolute -top-6 left-1/2 transform -translate-x-1/2">
+                    <div className="w-12 h-12 bg-green-600 text-white rounded-full flex items-center justify-center text-xl font-bold shadow-lg">
+                      2
+                    </div>
+                  </div>
+                  
+                  {/* Icon */}
+                  <div className="flex justify-center mb-6 mt-4">
+                    <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center">
+                      <Smartphone className="h-10 w-10 text-green-600" />
+                    </div>
+                  </div>
+                  
+                  {/* Content */}
+                  <h3 className="text-xl font-semibold text-gray-900 mb-3 text-center">
+                    Scan & count with your phone
+                  </h3>
+                  <p className="text-gray-600 text-center leading-relaxed">
+                    Use your phone camera to scan barcodes. Update stock from the shop floor or backroom — no laptop needed.
+                  </p>
+                  
+                  {/* Visual indicator */}
+                  <div className="mt-6 pt-6 border-t border-gray-200">
+                    <div className="flex items-center justify-center gap-2 text-sm text-gray-500">
+                      <Smartphone className="h-4 w-4 text-green-600" />
+                      <span>Works on any phone</span>
+                    </div>
+                  </div>
+                </div>
+              </SlideUpWhenVisible>
+              
+              {/* Step 3 */}
+              <SlideUpWhenVisible delay={300}>
+                <div className="relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-purple-100">
+                  {/* Step number */}
+                  <div className="absolute -top-6 left-1/2 transform -translate-x-1/2">
+                    <div className="w-12 h-12 bg-purple-600 text-white rounded-full flex items-center justify-center text-xl font-bold shadow-lg">
+                      3
+                    </div>
+                  </div>
+                  
+                  {/* Icon */}
+                  <div className="flex justify-center mb-6 mt-4">
+                    <div className="w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center">
+                      <BarChart3 className="h-10 w-10 text-purple-600" />
+                    </div>
+                  </div>
+                  
+                  {/* Content */}
+                  <h3 className="text-xl font-semibold text-gray-900 mb-3 text-center">
+                    Get alerts & simple reports
+                  </h3>
+                  <p className="text-gray-600 text-center leading-relaxed">
+                    Receive alerts when items run low. See what's selling and what's not with easy-to-read reports.
+                  </p>
+                  
+                  {/* Visual indicator */}
+                  <div className="mt-6 pt-6 border-t border-gray-200">
+                    <div className="flex items-center justify-center gap-2 text-sm text-gray-500">
+                      <TrendingUp className="h-4 w-4 text-purple-600" />
+                      <span>Automatic updates</span>
+                    </div>
+                  </div>
+                </div>
+              </SlideUpWhenVisible>
+            </div>
+          </div>
+          
+          {/* CTA below steps */}
+          <FadeInWhenVisible delay={400}>
+            <div className="text-center mt-12 md:mt-16">
+              <Button
+                onClick={handleLoginClick}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-12 py-6 text-xl font-semibold rounded-full transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25"
+              >
+                Start tracking your stock now
+              </Button>
+              <p className="text-sm text-gray-500 mt-4">
+                Free plan forever • Set up in 10 minutes • No credit card
+              </p>
+            </div>
+          </FadeInWhenVisible>
+        </div>
+      </section>
+
+
       {/* Interactive Savings Calculator - Micro-Conversion */}
       <section className="py-20 bg-white">
         <div className="max-w-4xl mx-auto px-4">
@@ -1879,122 +2126,68 @@ export const HomePage = () => {
         </div>
       </section>
 
-      {/* Enhanced Features Section - Benefit-Focused */}
-      <section id="features-section" className="py-20 bg-gradient-to-br from-slate-50 to-blue-50">
-        <div className="max-w-7xl mx-auto px-4">
-          {/* Compelling Headline */}
+      {/* Simple Features for Small Retail Shops */}
+      <section id="features-section" className="py-16 md:py-20 bg-white">
+        <div className="max-w-6xl mx-auto px-4">
           <FadeInWhenVisible>
-            <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-6xl font-light text-gray-800 mb-6">
-                How StockFlow Saves You Money
+            <div className="text-center mb-12">
+              <h2 className="text-4xl md:text-6xl font-light text-gray-800 mb-4">
+                Everything you need, nothing you don't
               </h2>
-              <p className="text-xl text-gray-600 max-w-4xl mx-auto mb-8">
-                Real businesses save $2,400+ annually. See exactly how StockFlow prevents stockouts, 
-                reduces waste, and turns inventory management into profit.
+              <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
+                Simple tools that save small shops $2,400+ per year
               </p>
-
             </div>
           </FadeInWhenVisible>
           
-          {/* Top 3 Hero Features */}
-          <div className="mb-20">
-            <Carousel
-              itemsPerView={{
-                mobile: 1,
-                tablet: 2,
-                desktop: 3
-              }}
-              showArrows={true}
-              showDots={true}
-              autoPlay={false}
-              className="px-4"
-            >
-              {heroFeatures.map((feature, index) => (
-                <StaggerInWhenVisible 
-                  key={index} 
-                  delay={index * 200}
-                  staggerDelay={index * 100}
-                >
-                  <div className="bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden group h-full">
-                    {/* Hero Visual */}
-                    <div className="relative h-80 overflow-hidden">
-                      {/* Background Image */}
-                      <div 
-                        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-                        style={{
-                          backgroundImage: index === 0 
-                            ? 'url("https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop&crop=center&auto=format&q=80")' // Inventory management dashboard
-                            : index === 1 
-                            ? 'url("https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop&crop=center&auto=format&q=80")' // Business analytics charts
-                            : 'url("https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&h=600&fit=crop&crop=center&auto=format&q=80")' // Business growth/team
-                        }}
-                      />
-
-
-
-                      
-                      {/* Floating Icons */}
-                      <div className="absolute top-4 right-4">
-                        <feature.icon className="h-8 w-8 text-white opacity-80" />
-                      </div>
-                      <div className="absolute bottom-4 left-4">
-                      </div>
-                    </div>
-
-                    {/* Content */}
-                    <div className="p-6 md:p-8">
-                      {/* Category Badge */}
-                      <div className="inline-block bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium mb-4">
-                        {feature.category}
-                      </div>
-                      
-                      {/* Benefit-Driven Headline */}
-                      <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3">{feature.title}</h3>
-                      
-                      {/* Benefit Statement */}
-                      <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-2xl p-4 mb-4 border border-green-200">
-                        <div className="text-base md:text-lg font-semibold text-green-700 mb-1">{feature.benefit}</div>
-                        <div className="text-sm text-gray-600">{feature.impact}</div>
-                      </div>
-                      
-
-                      
-                      {/* Feature Highlights */}
-                      <div className="space-y-3 mb-6">
-                        {feature.detailedDescription.split(', ').slice(0, 3).map((item, itemIndex) => (
-                          <div key={itemIndex} className="flex items-center text-sm text-gray-600">
-                            <CheckCircle className="h-4 w-4 text-green-500 mr-3 flex-shrink-0" />
-                            {item}
-                          </div>
-                        ))}
-                      </div>
+          {/* 3 Key Features - Simple Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            {heroFeatures.map((feature, index) => (
+              <SlideUpWhenVisible key={index} delay={index * 100}>
+                <div className="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 md:p-8 border border-gray-200 hover:shadow-lg transition-all duration-300">
+                  {/* Icon */}
+                  <div className="mb-4">
+                    <div className="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center">
+                      <feature.icon className="h-7 w-7 text-blue-600" />
                     </div>
                   </div>
-                </StaggerInWhenVisible>
-              ))}
-            </Carousel>
+                  
+                  {/* Title */}
+                  <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                    {feature.title}
+                  </h3>
+                  
+                  {/* Description */}
+                  <p className="text-gray-600 mb-4 leading-relaxed">
+                    {feature.impact}
+                  </p>
+                  
+                  {/* Quick bullets */}
+                  <ul className="space-y-2">
+                    {feature.detailedDescription.split(', ').slice(0, 3).map((item, itemIndex) => (
+                      <li key={itemIndex} className="flex items-start text-sm text-gray-600">
+                        <CheckCircle className="h-4 w-4 text-green-600 mr-2 flex-shrink-0 mt-0.5" />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </SlideUpWhenVisible>
+            ))}
           </div>
 
-
-
-          {/* Technical Detail Section */}
-          <FadeInWhenVisible delay={800}>
-            <div className="p-6 md:p-8">
-              
-
-              
-          <div className="text-center mt-8 md:mt-12">
-          <Button
-              onClick={handleLoginClick}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-12 py-6 text-xl font-semibold rounded-full transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25 border border-blue-500/20"
-            >
-              Get Started →
-            </Button>
-            <p className="text-xs md:text-sm text-gray-500 mt-3">
-              No credit card required, start in less than 2 minutes
-            </p>
-
-          </div>
+          {/* Simple CTA */}
+          <FadeInWhenVisible delay={400}>
+            <div className="text-center">
+              <Button
+                onClick={handleLoginClick}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-12 py-6 text-xl font-semibold rounded-full transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25"
+              >
+                Try it free for your shop
+              </Button>
+              <p className="text-sm text-gray-500 mt-4">
+                Free forever • No credit card • 100 products included
+              </p>
             </div>
           </FadeInWhenVisible>
         </div>
@@ -2023,7 +2216,7 @@ export const HomePage = () => {
             }
             @media (min-width: 1024px) {
               .trust-stats-grid {
-                grid-template-columns: repeat(4, 1fr) !important;
+                grid-template-columns: repeat(2, 1fr) !important;
               }
             }
           `}</style>
@@ -2073,13 +2266,13 @@ export const HomePage = () => {
           <div className="text-center mt-12">
             <Button
               onClick={handleLoginClick}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-12 py-6 text-xl font-semibold rounded-full transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25 border border-blue-500/20"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-12 py-6 text-xl font-semibold rounded-full transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25"
             >
-              Get Started →
+              Start free today
             </Button>
 
-            <p className="text-sm text-gray-500 mt-2">
-              Join 10,000+ businesses already using StockFlow • Setup in 5 minutes
+            <p className="text-sm text-gray-500 mt-4">
+              Join 100+ retail shops using StockFlow • Set up in 10 minutes
             </p>
           </div>
         </div>
@@ -2096,11 +2289,11 @@ export const HomePage = () => {
           <FadeInWhenVisible>
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-6xl font-light text-gray-800 mb-6">
-                Common Questions, Clear Answers
+                Questions from Shop Owners Like You
               </h2>
               <p className="text-xl text-gray-600 max-w-4xl mx-auto mb-8">
-                Everything you need to know about StockFlow. 
-                Get answers to the questions that matter most to your business.
+                Real answers about POS integration, multi-location tracking, support, and getting started. 
+                No tech jargon — just straight talk.
               </p>
                       
               {/* Trust Indicators */}
@@ -2126,7 +2319,7 @@ export const HomePage = () => {
                 </div>
                 <div className="flex items-center">
                   <Users className="h-5 w-5 text-purple-500 mr-1" />
-                  <span>10,000+ happy customers</span>
+                  <span>100+ happy customers</span>
                 </div>
               </div>
             </div>
@@ -2217,19 +2410,19 @@ export const HomePage = () => {
                 in under 5 minutes.
               </p>
               
-              <div className="flex flex-col gap-4 justify-center max-w-sm mx-auto">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                 <Button
-                  onClick={() => navigate('/contact')}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-lg font-semibold rounded-2xl transition-all duration-300 shadow-lg hover:shadow-blue-500/25 w-full"
+                  onClick={handleLoginClick}
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-12 py-6 text-xl font-semibold rounded-full transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25"
                 >
-                  Ask Your Question →
+                  Start free
                 </Button>
                 <Button
-                  onClick={() => navigate('/demo')}
+                  onClick={() => navigate('/contact')}
                   variant="outline"
-                  className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-8 py-4 text-lg font-semibold rounded-2xl transition-all duration-300 w-full"
+                  className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-12 py-6 text-xl font-semibold rounded-full transform hover:scale-105 transition-all duration-300"
                 >
-                  Watch Demo
+                  Get help
                 </Button>
               </div>
             </div>
@@ -2270,9 +2463,9 @@ export const HomePage = () => {
             <div className="mb-6 md:mb-8">
             <Button
               onClick={handleLoginClick}
-              className="bg-white hover:bg-blue-700 text-blue-600 px-12 py-6 text-xl font-semibold rounded-full transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25 border border-blue-500/20"
+              className="bg-white hover:bg-blue-50 text-blue-600 hover:text-blue-700 px-12 py-6 text-xl font-semibold rounded-full transform hover:scale-105 transition-all duration-300 shadow-2xl"
             >
-              Start Free Today →
+              Start free today
             </Button>
             </div>
           </ScaleInWhenVisible>
@@ -2303,7 +2496,7 @@ export const HomePage = () => {
           <SlideUpWhenVisible delay={900}>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 max-w-4xl mx-auto">
               <div className="text-center">
-                <div className="text-lg md:text-4xl font-bold text-white mb-2">10,000+</div>
+                <div className="text-lg md:text-4xl font-bold text-white mb-2">100+</div>
                 <div className="text-sm md:text-lg text-white">Active SMEs</div>
               </div>
               <div className="text-center">
