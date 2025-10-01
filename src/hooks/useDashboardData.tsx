@@ -62,6 +62,7 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
       const { data: productsData, error: productsError } = await supabase
         .from('products')
         .select(`
+          id,
           name, 
           quantity_in_stock, 
           unit_price, 
@@ -72,7 +73,8 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
           parent_product_id,
           Categorys(name)
         `)
-        .eq('branch_id', activeBranch.branch_id);
+        .eq('branch_id', activeBranch.branch_id)
+        .order('name');
 
       if (productsError) {
         console.error('Products error:', productsError);
@@ -98,11 +100,13 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
         return isLowStock;
       }).length || 0;
 
-      // Get transactions for the selected range
+      // Get transactions for the selected range - limit to last 1000 transactions for performance
       let query = supabase
         .from('stock_transactions')
         .select('transaction_type, quantity, created_at, product_name, unit_price')
-        .eq('branch_id', activeBranch.branch_id);
+        .eq('branch_id', activeBranch.branch_id)
+        .order('created_at', { ascending: false })
+        .limit(1000);
       if (dateFrom) query = query.gte('created_at', dateFrom.toISOString());
       if (dateTo) query = query.lte('created_at', dateTo.toISOString());
       const { data: transactions, error: transactionError } = await query;
@@ -264,9 +268,10 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
     queryKey: ['dashboardData', activeBranch?.branch_id, dateFrom, dateTo],
     queryFn: fetchDashboardData,
     enabled: !!user && !!activeBranch,
-    refetchOnWindowFocus: true,
-    refetchOnMount: true, // Altijd refetchen bij mount
-    staleTime: 1000 * 30, // 30 seconden cache (verlaagd van 2 minuten)
+    refetchOnWindowFocus: false, // Disable to improve performance
+    refetchOnMount: false, // Use cached data when available
+    staleTime: 1000 * 60 * 5, // 5 minutes cache for better performance
+    gcTime: 1000 * 60 * 10, // Keep in cache for 10 minutes
     onError: (error) => {
       console.error('Dashboard data fetch error:', error);
     },
@@ -277,6 +282,67 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
     isLoading,
     error,
   };
+};
+
+// Lightweight hook for basic dashboard metrics (fast loading)
+export const useBasicDashboardMetrics = () => {
+  const { user } = useAuth();
+  const { activeBranch } = useBranches();
+
+  return useQuery({
+    queryKey: ['basicDashboardMetrics', activeBranch?.branch_id],
+    queryFn: async () => {
+      if (!user || !activeBranch) throw new Error('Geen gebruiker of filiaal');
+      
+      // Fetch only essential metrics with minimal data
+      const [productsResult, transactionsResult] = await Promise.all([
+        supabase
+          .from('products')
+          .select('quantity_in_stock, unit_price, minimum_stock_level')
+          .eq('branch_id', activeBranch.branch_id),
+        supabase
+          .from('stock_transactions')
+          .select('transaction_type, quantity, created_at')
+          .eq('branch_id', activeBranch.branch_id)
+          .gte('created_at', new Date(new Date().setHours(0, 0, 0, 0)).toISOString()) // Today only
+          .limit(100)
+      ]);
+
+      if (productsResult.error) throw productsResult.error;
+      if (transactionsResult.error) throw transactionsResult.error;
+
+      const products = productsResult.data || [];
+      const transactions = transactionsResult.data || [];
+
+      // Calculate basic metrics
+      const totalValue = products.reduce((sum, product) => 
+        sum + (product.quantity_in_stock * product.unit_price), 0);
+      
+      const lowStockCount = products.filter(product => 
+        product.quantity_in_stock <= product.minimum_stock_level && product.minimum_stock_level > 0
+      ).length;
+
+      const incomingToday = transactions
+        .filter(t => t.transaction_type === 'incoming')
+        .reduce((sum, t) => sum + t.quantity, 0);
+      
+      const outgoingToday = transactions
+        .filter(t => t.transaction_type === 'outgoing')
+        .reduce((sum, t) => sum + t.quantity, 0);
+
+      return {
+        totalValue,
+        totalProducts: products.length,
+        lowStockCount,
+        incomingToday,
+        outgoingToday,
+      };
+    },
+    enabled: !!user && !!activeBranch,
+    staleTime: 1000 * 60 * 2, // 2 minutes cache
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+  });
 };
 
 // Extra hook voor alleen het aantal producten

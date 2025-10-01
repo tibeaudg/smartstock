@@ -19,7 +19,7 @@ function isLocalStorageAvailable() {
   }
 }
 
-const AppContent: React.FC = () => {
+export const StockManagementApp: React.FC = () => {
   const { userProfile, loading } = useAuth();
   const { hasNoBranches } = useBranches();
   const location = useLocation();
@@ -67,39 +67,33 @@ const AppContent: React.FC = () => {
   if (!userProfile) return null;
 
   return (
-  <div className="w-screen h-screen overflow-hidden overflow-x-hidden m-0 p-0">
-      {/* Sidebar and Layout are assumed to be part of Layout component */}
-      <Layout
-        currentTab={getCurrentTab()}
-        onTabChange={(tab: string) => {
-        }}
-        userRole={userProfile.role}
-        userProfile={userProfile}
-        // Use an admin-friendly variant when browsing /admin routes so we can control spacing fully
-        variant={location.pathname.startsWith('/admin') ? 'admin' : 'default'}
-      >
-        {/* Main scrollable content */}
-        <div className="flex-1 h-full overflow-y-auto">
-          <Outlet />
-        </div>
-      </Layout>
+    <UnreadMessagesProvider>
+      <div className="w-screen h-screen overflow-hidden overflow-x-hidden m-0 p-0">
+        {/* Sidebar and Layout are assumed to be part of Layout component */}
+        <Layout
+          currentTab={getCurrentTab()}
+          onTabChange={(tab: string) => {
+          }}
+          userRole={userProfile.role}
+          userProfile={userProfile}
+          // Use an admin-friendly variant when browsing /admin routes so we can control spacing fully
+          variant={location.pathname.startsWith('/admin') ? 'admin' : 'default'}
+        >
+          {/* Main scrollable content */}
+          <div className="flex-1 h-full overflow-y-auto">
+            <Outlet />
+          </div>
+        </Layout>
 
-      <CreateBranchModal
-        open={hasNoBranches}
-        onOpenChange={() => {
-        }}
-        onBranchCreated={() => {
-          // New branch created successfully
-        }}
-      />
-    </div>
+        <CreateBranchModal
+          open={hasNoBranches}
+          onOpenChange={() => {
+          }}
+          onBranchCreated={() => {
+            // New branch created successfully
+          }}
+        />
+      </div>
+    </UnreadMessagesProvider>
   );
 };
-
-export const StockManagementApp: React.FC = () => (
-  <BranchProvider>
-    <UnreadMessagesProvider>
-      <AppContent />
-    </UnreadMessagesProvider>
-  </BranchProvider>
-);

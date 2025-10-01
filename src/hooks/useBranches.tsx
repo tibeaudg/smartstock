@@ -249,14 +249,17 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
           const storedId = getBranchIdFromStorage();
           const found = storedId ? data.find(b => b.branch_id === storedId) : null;
           if (found) {
+            console.log('Restoring branch from localStorage in fetchBranches:', found);
             setActiveBranchState(found);
           } else {
             // Altijd hoofdvestiging als fallback
             const mainBranch = data.find(b => b.is_main) || data[0];
             if (mainBranch) {
+              console.log('No stored branch found, using main branch:', mainBranch);
               setActiveBranchState(mainBranch);
               setBranchIdToStorage(mainBranch.branch_id);
             } else {
+              console.log('No branches available');
               setActiveBranchState(null);
               setBranchIdToStorage(null);
             }
@@ -293,6 +296,28 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
       cancelled.current = true;
     };
   }, [user, authLoading]);
+
+  // Additional effect to restore branch from localStorage on mount
+  useEffect(() => {
+    if (!authLoading && user && branches.length > 0 && !activeBranch) {
+      const storedId = getBranchIdFromStorage();
+      if (storedId) {
+        const found = branches.find(b => b.branch_id === storedId);
+        if (found) {
+          console.log('Restoring branch from localStorage:', found);
+          setActiveBranchState(found);
+        } else {
+          // Stored branch ID not found, use main branch or first available
+          const mainBranch = branches.find(b => b.is_main) || branches[0];
+          if (mainBranch) {
+            console.log('Stored branch not found, using fallback:', mainBranch);
+            setActiveBranchState(mainBranch);
+            setBranchIdToStorage(mainBranch.branch_id);
+          }
+        }
+      }
+    }
+  }, [authLoading, user, branches, activeBranch]);
 
   // Real-time updates voor branches
   useEffect(() => {

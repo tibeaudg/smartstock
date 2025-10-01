@@ -97,7 +97,7 @@ import InventorySoftwareForSmallBusiness from "./pages/SEO/inventory-software-fo
 import InventorySoftwareManagement from "./pages/SEO/inventory-software-management";
 import SoftwareForInventoryManagement from "./pages/SEO/software-for-inventory-management";
 import SoftwaresForInventoryManagement from "./pages/SEO/softwares-for-inventory-management";
-import CategorysPage from './pages/Categories';
+import CategorysPage from './pages/categories';
 import SuppliersPage from './pages/suppliers';
 import AdminPage from './pages/admin';
 import { PaymentTestPage } from './pages/PaymentTest';
@@ -124,10 +124,9 @@ const AppRouter = () => {
   // Initialize Clarity tracking (must be inside Router context)
   useClarity();
   
-  // Protected Route Component
+  // Protected Route Component (without branch logic)
   const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     const { user, loading, userProfile } = useAuth();
-    const { branches, hasNoBranches, loading: branchesLoading } = useBranches();
     const location = useLocation();
     const [showOnboarding, setShowOnboarding] = useState(false);
 
@@ -135,16 +134,13 @@ const AppRouter = () => {
     console.debug('[ProtectedRoute] user:', user);
     console.debug('[ProtectedRoute] userProfile:', userProfile);
     console.debug('[ProtectedRoute] loading:', loading);
-    console.debug('[ProtectedRoute] branches:', branches);
-    console.debug('[ProtectedRoute] hasNoBranches:', hasNoBranches);
-    console.debug('[ProtectedRoute] branchesLoading:', branchesLoading);
     console.debug('[ProtectedRoute] location:', location.pathname);
 
     if (location.pathname === '/reset-password') {
       return <>{children}</>;
     }
     
-    if (loading || branchesLoading) {
+    if (loading) {
       console.debug('[ProtectedRoute] Loading...');
       return <LoadingScreen />;
     }
@@ -166,12 +162,6 @@ const AppRouter = () => {
           {children}
         </>
       );
-    }
-
-    // Check if user has no branches and needs to create their first branch
-    if (hasNoBranches && branches.length === 0) {
-      console.debug('[ProtectedRoute] No branches found, showing FirstBranchSetup');
-      return <FirstBranchSetup />;
     }
 
     // BLOCKED USER HANDLING
@@ -212,6 +202,24 @@ const AppRouter = () => {
         {children}
       </Suspense>
     );
+  };
+
+  // Branch-aware route component (must be used inside BranchProvider)
+  const BranchAwareRoute = ({ children }: { children: React.ReactNode }) => {
+    const { branches, hasNoBranches, loading: branchesLoading } = useBranches();
+
+    if (branchesLoading) {
+      console.debug('[BranchAwareRoute] Loading branches...');
+      return <LoadingScreen />;
+    }
+
+    // Check if user has no branches and needs to create their first branch
+    if (hasNoBranches && branches.length === 0) {
+      console.debug('[BranchAwareRoute] No branches found, showing FirstBranchSetup');
+      return <FirstBranchSetup />;
+    }
+
+    return <>{children}</>;
   };
 
   // Auth Route Component
@@ -301,7 +309,11 @@ const AppRouter = () => {
           path="/dashboard"
           element={
             <ProtectedRoute>
-              <StockManagementApp />
+              <BranchProvider>
+                <BranchAwareRoute>
+                  <StockManagementApp />
+                </BranchAwareRoute>
+              </BranchProvider>
             </ProtectedRoute>
           }
         >
@@ -349,7 +361,11 @@ const AppRouter = () => {
           path="/admin/*"
           element={
             <ProtectedRoute>
-              <StockManagementApp />
+              <BranchProvider>
+                <BranchAwareRoute>
+                  <StockManagementApp />
+                </BranchAwareRoute>
+              </BranchProvider>
             </ProtectedRoute>
           }
         >
@@ -403,19 +419,17 @@ export default function App() {
       />
       {/* QueryClientProvider wordt nu beheerd in main.tsx */}
       <AuthProvider>
-        <BranchProvider>
-          <CurrencyProvider>
-            <StripeProvider>
-              <TooltipProvider>
-                <Toaster />
-                <Sonner />
-                <BrowserRouter>
-                  <AppRouter />
-                </BrowserRouter>
-              </TooltipProvider>
-            </StripeProvider>
-          </CurrencyProvider>
-        </BranchProvider>
+        <CurrencyProvider>
+          <StripeProvider>
+            <TooltipProvider>
+              <Toaster />
+              <Sonner />
+              <BrowserRouter>
+                <AppRouter />
+              </BrowserRouter>
+            </TooltipProvider>
+          </StripeProvider>
+        </CurrencyProvider>
       </AuthProvider>
     </ErrorBoundary>
   );

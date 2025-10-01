@@ -27,7 +27,8 @@ import {
   EyeOff,
   Settings,
   ChevronRight,
-  ChevronDown
+  ChevronDown,
+  Upload
 } from 'lucide-react';
 import { ProductActionModal } from './ProductActionModal';
 import { EditProductModal } from './EditProductModal';
@@ -38,6 +39,7 @@ import { ImagePreviewModal } from './ImagePreviewModal';
 import { AddProductModal } from './AddProductModal';
 import { EditProductStockModal } from './EditProductStockModal';
 import { VariantSelectionModal } from './VariantSelectionModal';
+import { BulkImportModal } from './BulkImportModal';
 import { useMobile } from '@/hooks/use-mobile';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -210,6 +212,9 @@ export const StockList = () => {
 
   // State voor add modal
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
+  // State voor bulk import modal
+  const [isBulkImportModalOpen, setIsBulkImportModalOpen] = useState(false);
 
   // Mobile tab switcher state
   const [activeTab, setActiveTab] = useState<'products' | 'Categorys' | 'suppliers'>('products');
@@ -989,13 +994,23 @@ export const StockList = () => {
                   </DropdownMenuCheckboxItem>
                 </DropdownMenuContent>
               </DropdownMenu>
-              <Button 
-                onClick={() => setIsAddModalOpen(true)} 
-                className="w-full h-10 bg-blue-700 hover:bg-blue-700/80 text-white"
-              >
-                <Plus className="w-5 h-5 mr-2" />
-                Add New Product
-              </Button>
+              <div className="flex gap-2">
+                <Button 
+                  onClick={() => setIsBulkImportModalOpen(true)} 
+                  variant="outline"
+                  className="flex-1 h-10 text-sm"
+                >
+                  <Upload className="w-4 h-4 mr-2" />
+                  Import Excel
+                </Button>
+                <Button 
+                  onClick={() => setIsAddModalOpen(true)} 
+                  className="flex-1 h-10 bg-blue-700 hover:bg-blue-700/80 text-white"
+                >
+                  <Plus className="w-5 h-5 mr-2" />
+                  Add New Product
+                </Button>
+              </div>
             </div>
 
             {/* Filter Header */}
@@ -1468,6 +1483,27 @@ export const StockList = () => {
           actionType={selectedAction}
           onVariantSelected={handleVariantSelected}
         />
+        <BulkImportModal
+          isOpen={isBulkImportModalOpen}
+          onClose={() => setIsBulkImportModalOpen(false)}
+          onImportComplete={() => {
+            // Clear filters when products are imported to show all products
+            setCategoryFilter('all');
+            setCategoryFilterName('');
+            setSupplierFilter('all');
+            setSupplierFilterName('');
+            setSearchTerm('');
+            setStockStatusFilter('all');
+            setMinPriceFilter('');
+            setMaxPriceFilter('');
+            setMinStockFilter('');
+            setMaxStockFilter('');
+            
+            // Force refetch to get updated data
+            queryClient.invalidateQueries({ queryKey: ['products'] });
+            refetch();
+          }}
+        />
       </div>
     );
   }
@@ -1482,7 +1518,7 @@ export const StockList = () => {
   // Desktop table view
   return (
     <div className="space-y-4">
-      <div className="flex justify-left items-center">
+      <div className="flex justify-between items-center">
         <div className="flex gap-2">
           {isAdmin && selectedProductIds.length > 0 && (
             <Button variant="destructive" onClick={handleBulkDelete}>
@@ -1565,6 +1601,14 @@ export const StockList = () => {
               </DropdownMenuCheckboxItem>
             </DropdownMenuContent>
           </DropdownMenu>
+          <Button 
+            onClick={() => setIsBulkImportModalOpen(true)} 
+            variant="outline" 
+            className="flex items-center gap-2"
+          >
+            <Upload className="w-4 h-4" />
+            Import Excel
+          </Button>
           <Button onClick={() => setIsAddModalOpen(true)} className="flex items-center gap-2">
             <Plus className="w-4 h-4" />
             Add New Product
@@ -2062,6 +2106,15 @@ export const StockList = () => {
         variants={productVariants}
         actionType={selectedAction}
         onVariantSelected={handleVariantSelected}
+      />
+      <BulkImportModal
+        isOpen={isBulkImportModalOpen}
+        onClose={() => setIsBulkImportModalOpen(false)}
+        onImportComplete={() => {
+          // Refresh products after import
+          queryClient.invalidateQueries({ queryKey: ['products'] });
+          refetch();
+        }}
       />
     </div>
   );

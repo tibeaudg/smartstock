@@ -9,7 +9,7 @@ import { CalendarIcon, DollarSign, Package, TrendingUp, TrendingDown, AlertTrian
 import { format, addDays, startOfWeek, startOfMonth, startOfQuarter, startOfYear, endOfToday } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, BarChart, Bar, Area, AreaChart } from 'recharts';
-import { useDashboardData } from '@/hooks/useDashboardData';
+import { useDashboardData, useBasicDashboardMetrics } from '@/hooks/useDashboardData';
 import { useMobile } from '@/hooks/use-mobile';
 import { useBranches } from '@/hooks/useBranches';
 import { useCurrency } from '@/hooks/useCurrency';
@@ -40,7 +40,10 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
   else if (rangeType === 'year') dateFrom = startOfYear(today);
   else dateFrom = undefined;
 
-  // Haal alle dashboarddata op (voor de statistieken)
+  // Use lightweight metrics for fast initial loading
+  const { data: basicMetrics, isLoading: basicLoading } = useBasicDashboardMetrics();
+  
+  // Haal alle dashboarddata op (voor de statistieken) - load in background
   const { data: metrics, isLoading: loading } = useDashboardData();
 
   // State voor grafiek-periode
@@ -53,12 +56,19 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
   else if (chartRangeType === 'year') chartDateFrom = startOfYear(today);
   else chartDateFrom = undefined;
 
-  // Haal alleen de grafiekdata op voor het gekozen bereik
-  const { data: chartData } = useDashboardData({ dateFrom: chartDateFrom, dateTo: chartDateTo });
+  // Haal alleen de grafiekdata op voor het gekozen bereik - use separate hook to avoid duplicate queries
+  const { data: chartData, isLoading: chartLoading } = useDashboardData({ 
+    dateFrom: chartDateFrom, 
+    dateTo: chartDateTo 
+  });
 
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8'];
 
-  if (loading) {
+  // Show basic metrics immediately if available, otherwise show loading
+  const displayMetrics = metrics || basicMetrics;
+  const isStillLoading = basicLoading || (loading && !basicMetrics);
+
+  if (isStillLoading) {
     return (
       <div className="space-y-8 max-w-[1600px] mx-auto pt-24 pb-64 md:pt-0">
         <div className="flex justify-between items-center">
@@ -79,7 +89,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
   }
 
   // Fallback waarden als metrics undefined is
-  const safeMetrics = (metrics as any) || {
+  const safeMetrics = (displayMetrics as any) || {
     totalValue: 0,
     totalProducts: 0,
     lowStockCount: 0,
