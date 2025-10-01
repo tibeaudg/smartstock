@@ -107,6 +107,7 @@ import { IncomingDeliveryNotes } from './components/delivery-notes/IncomingDeliv
 import { OutgoingDeliveryNotes } from './components/delivery-notes/OutgoingDeliveryNotes';
 import PricingPage from './pages/pricing';
 import CheckoutPage from './pages/checkout';
+import DeadStockCalculatorPage from './pages/dead-stock-calculator';
 import { SubscriptionManagement } from './components/settings/SubscriptionManagement';
 import { AdminSubscriptionManagement } from './components/admin/SubscriptionManagement';
 
@@ -257,6 +258,7 @@ const AppRouter = () => {
         <Route path="/error-test" element={<ErrorTestComponent />} />
         <Route path="/auth" element={<AuthRoute />} />
         <Route path="/pricing" element={<PricingPage />} />
+        <Route path="/dead-stock-calculator" element={<DeadStockCalculatorPage />} />
         <Route path="/contact" element={<SEOContactPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/voorraadbeheer-tips" element={<VoorraadbeheerTips />} />

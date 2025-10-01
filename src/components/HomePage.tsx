@@ -24,25 +24,9 @@ import { generateComprehensiveStructuredData } from '../lib/structuredData';
 import { GoogleAdsTracking } from '@/utils/googleAdsTracking';
 import { ConversionTrackingTest } from './ConversionTrackingTest';
 import { SavingsCalculator } from './SavingsCalculator';
-import Footer from './Footer.js';
+import Footer from './Footer';
 
-// CLS monitoring in development
-if (process.env.NODE_ENV === 'development') {
-  // Dynamic import to prevent SSR issues
-  import('../../scripts/cls-monitor.js').then(() => {
-    console.log('🔍 CLS monitoring loaded');
-  }).catch((error) => {
-    console.warn('CLS monitoring failed to load:', error);
-  });
-}
 
-// Lazy load non-critical components
-const SocialShare = lazy(() => import('./SocialShare'));
-
-// Lazy load heavy components for better performance
-// Removed unused lazy imports: TestimonialsSection, FeaturesSection, VideoSection
-
-// Enhanced animation components with consistent effects
 
   const FadeInWhenVisible = ({ children, delay = 0, direction = 'up', duration = 700 }) => {
   const [isVisible, setIsVisible] = React.useState(false);
@@ -1026,44 +1010,6 @@ export const HomePage = () => {
   ];
   // --- EINDE FEATURE DATA ---
 
-  // Lead capture state
-  const [leadEmail, setLeadEmail] = useState('');
-  const [leadStatus, setLeadStatus] = useState<'idle' | 'success' | 'error'>('idle');
-
-  const handleLeadSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const isValid = /.+@.+\..+/.test(leadEmail);
-    if (!isValid) {
-      setLeadStatus('error');
-      return;
-    }
-    try {
-      const existing = JSON.parse(localStorage.getItem('leads') || '[]');
-      existing.push({ email: leadEmail, ts: Date.now() });
-      localStorage.setItem('leads', JSON.stringify(existing));
-      logger.info('Lead captured', { email: leadEmail });
-      
-      // Track Google Ads conversion for lead capture with error handling
-      try {
-        GoogleAdsTracking.trackContactFormConversion(
-          'email_signup',
-          leadEmail,
-          5 // Assign value to email signups
-        );
-      } catch (error) {
-        // Silently fail in production, only log in development
-        if (process.env.NODE_ENV === 'development') {
-          console.warn('Google Ads tracking failed:', error);
-        }
-      }
-      
-      setLeadStatus('success');
-      setLeadEmail('');
-    } catch (err) {
-      setLeadStatus('error');
-    }
-  };
-
   // Enhanced structured data for better search engine understanding
   const structuredData = [
     // Organization Schema
@@ -1570,46 +1516,40 @@ export const HomePage = () => {
               <FadeInWhenVisible delay={100}>
                 <div className="flex justify-center mb-4">
                   <span className="inline-flex items-center px-4 py-2 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200/50 shadow-sm">
-                    Built for small shops & local stores
+                    Perfect for artisan boutiques & independent retailers
                   </span>
                 </div>
               </FadeInWhenVisible>
           
               <BounceInWhenVisible delay={200}>
-                <h1 className="text-4xl sm:text-4xl md:text-4xl lg:text-7xl font-light text-gray-800 mb-4 md:mb-8 leading-tight px-2">
-                  Inventory Management Built for Independent Boutiques & Retail Shops.
+                <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl xl:text-7xl font-light text-gray-800 mb-4 md:mb-8 leading-tight px-4">
+                  Perfect Inventory Management for Artisan Boutiques & Independent Shops.
                 </h1>
               </BounceInWhenVisible>
               
               <SlideUpWhenVisible delay={400}>
-                <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-6 md:mb-12 max-w-3xl mx-auto px-2 leading-relaxed">
-                  Track stock across front-of-store & backroom, stop stockouts, and spend less time counting.
+                <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 mb-6 md:mb-12 max-w-3xl mx-auto px-4 leading-relaxed">
+                  Track your handmade treasures, artisan collections, and boutique essentials. Never run out of bestsellers or overstock unique pieces.
                 </p>
               </SlideUpWhenVisible>
               
               <ScaleInWhenVisible delay={600}>
-                <div className="flex flex-col md:flex-row gap-4 justify-center items-center mb-6 md:mb-8">
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-stretch sm:items-center mb-6 md:mb-8 px-4">
                 <Button
               onClick={handleLoginClick}
-              className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-8 sm:px-12 py-4 sm:py-6 text-lg sm:text-xl font-semibold rounded-full transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25"
+              className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-6 sm:px-8 md:px-12 py-3 sm:py-4 md:py-6 text-base sm:text-lg md:text-xl font-semibold rounded-full transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25 min-h-[48px]"
             >
               Start free today
             </Button>
-            <Button
-              onClick={() => navigate('/demo')}
-              variant="outline"
-              className="w-full sm:w-auto border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-8 sm:px-12 py-4 sm:py-6 text-lg sm:text-xl font-semibold rounded-full transform hover:scale-105 transition-all duration-300"
-            >
-              Contact us
-            </Button>
+
                 </div>
               </ScaleInWhenVisible>
               
               <FadeInWhenVisible delay={800}>
-                <p className="text-xs sm:text-sm text-gray-500 mb-2 px-2">
+                <p className="text-xs sm:text-sm text-gray-500 mb-2 px-4">
                   No credit card needed ♦ Unlimited time on Free plan
                 </p>
-                <p className="text-xs text-gray-400 px-2">
+                <p className="text-xs sm:text-sm text-gray-400 px-4">
                   Includes a Free Plan for 2 Users/100 Products
                 </p>
               </FadeInWhenVisible>
@@ -1621,10 +1561,10 @@ export const HomePage = () => {
               <div className="relative rounded-xl md:rounded-2xl overflow-hidden shadow-2xl">
                 {/* Background: Store Scene */}
                 <div className="relative h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px]">
-                  {/* In-store photo */}
+                  {/* Boutique store photo */}
                   <img
-                    src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1200&h=800&fit=crop&crop=center&auto=format&q=80"
-                    alt="Store owner managing inventory at retail shop"
+                    src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&h=800&fit=crop&crop=center&auto=format&q=80"
+                    alt="Boutique owner managing artisan inventory in cozy shop setting"
                     className="absolute inset-0 w-full h-full object-cover"
                   />
                   
@@ -1668,28 +1608,28 @@ export const HomePage = () => {
                                 <Package className="h-3 w-3 sm:h-4 sm:w-4 text-blue-600" />
                               </div>
                               <div className="min-w-0 flex-1">
-                                <p className="text-[10px] sm:text-xs md:text-sm font-medium text-gray-900 truncate">Artisan Candle Set</p>
-                                <p className="text-[9px] sm:text-xs text-gray-500 hidden sm:block">SKU: AC-208</p>
+                                <p className="text-[10px] sm:text-xs md:text-sm font-medium text-gray-900 truncate">Handmade Ceramic Mugs</p>
+                                <p className="text-[9px] sm:text-xs text-gray-500 hidden sm:block">SKU: CM-208</p>
                               </div>
                             </div>
                             <div className="text-right ml-2 flex-shrink-0">
-                              <p className="text-[10px] sm:text-xs md:text-sm font-bold text-red-600">3 left</p>
-                              <p className="text-[9px] sm:text-xs text-gray-400 hidden sm:block">Reorder: 12</p>
+                              <p className="text-[10px] sm:text-xs md:text-sm font-bold text-red-600">2 left</p>
+                              <p className="text-[9px] sm:text-xs text-gray-400 hidden sm:block">Reorder: 8</p>
                             </div>
                           </div>
                           
                           <div className="hidden sm:flex items-center justify-between p-1.5 sm:p-2 bg-gray-50 rounded">
                             <div className="flex items-center gap-1 sm:gap-2 min-w-0 flex-1">
-                              <div className="w-6 h-6 sm:w-8 sm:h-8 bg-green-100 rounded flex items-center justify-center flex-shrink-0">
-                                <Package className="h-3 w-3 sm:h-4 sm:w-4 text-green-600" />
+                              <div className="w-6 h-6 sm:w-8 sm:h-8 bg-purple-100 rounded flex items-center justify-center flex-shrink-0">
+                                <Package className="h-3 w-3 sm:h-4 sm:w-4 text-purple-600" />
                               </div>
                               <div className="min-w-0 flex-1">
-                                <p className="text-[10px] sm:text-xs md:text-sm font-medium text-gray-900 truncate">Silk Scarf - Floral</p>
-                                <p className="text-[9px] sm:text-xs text-gray-500">SKU: SS-045</p>
+                                <p className="text-[10px] sm:text-xs md:text-sm font-medium text-gray-900 truncate">Artisan Soap Collection</p>
+                                <p className="text-[9px] sm:text-xs text-gray-500">SKU: AS-045</p>
                               </div>
                             </div>
                             <div className="text-right ml-2 flex-shrink-0">
-                              <p className="text-[10px] sm:text-xs md:text-sm font-bold text-green-600">28 left</p>
+                              <p className="text-[10px] sm:text-xs md:text-sm font-bold text-green-600">15 left</p>
                               <p className="text-[9px] sm:text-xs text-gray-400">In stock</p>
                             </div>
                           </div>
@@ -1723,8 +1663,8 @@ export const HomePage = () => {
                         <Smartphone className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" />
                       </div>
                       <div className="min-w-0">
-                        <p className="text-[10px] sm:text-xs font-semibold text-gray-900 truncate">Scan with phone</p>
-                        <p className="text-[10px] sm:text-xs text-gray-500 truncate">Update from shop floor</p>
+                        <p className="text-[10px] sm:text-xs font-semibold text-gray-900 truncate">Scan artisan items</p>
+                        <p className="text-[10px] sm:text-xs text-gray-500 truncate">Track from boutique floor</p>
                       </div>
                     </div>
                   </div>
@@ -1735,15 +1675,15 @@ export const HomePage = () => {
               <div className="mt-4 sm:mt-6 flex flex-wrap justify-center gap-3 sm:gap-4 md:gap-8 text-xs sm:text-sm text-gray-600 px-2">
                 <div className="flex items-center gap-1 sm:gap-2">
                   <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-green-600 flex-shrink-0" />
-                  <span>Instant stock alerts</span>
+                  <span>Track artisan collections</span>
                 </div>
                 <div className="flex items-center gap-1 sm:gap-2">
                   <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-green-600 flex-shrink-0" />
-                  <span>Mobile scanning</span>
+                  <span>Mobile barcode scanning</span>
                 </div>
                 <div className="flex items-center gap-1 sm:gap-2">
                   <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-green-600 flex-shrink-0" />
-                  <span>No credit card needed</span>
+                  <span>Perfect for small boutiques</span>
                 </div>
               </div>
             </div>
@@ -1758,55 +1698,55 @@ export const HomePage = () => {
         <div className="max-w-6xl mx-auto px-4">
           <FadeInWhenVisible>
             {/* One-line value proposition */}
-            <div className="text-center mb-8 md:mb-12">
-              <h1 className="text-4xl sm:text-4xl md:text-4xl lg:text-7xl font-light text-gray-800 mb-4 md:mb-8 leading-tight px-2">
+            <div className="text-center mb-8 md:mb-12 px-4">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-light text-gray-800 mb-4 md:mb-8 leading-tight">
                 Protect your capital, not just your stock
               </h1>
-              <p className="text-base md:text-lg text-gray-600">
+              <p className="text-sm sm:text-base md:text-lg text-gray-600 max-w-3xl mx-auto">
                 Stop losing money to overstock, waste, and slow-moving inventory
               </p>
             </div>
           </FadeInWhenVisible>
           
           {/* 3 Micro-benefits for retailers */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 px-4">
             <SlideUpWhenVisible delay={100}>
-              <div className="flex flex-col items-center text-center p-4 sm:p-6 rounded-xl hover:bg-gray-50 transition-all duration-300">
-                <div className="w-14 h-14 sm:w-16 sm:h-16 bg-blue-100 rounded-full flex items-center justify-center mb-3 sm:mb-4">
-                  <CheckCircle className="h-7 w-7 sm:h-8 sm:w-8 text-blue-600" />
+              <div className="flex flex-col items-center text-center p-6 sm:p-8 rounded-xl hover:bg-gray-50 transition-all duration-300 border border-gray-100">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 bg-blue-100 rounded-full flex items-center justify-center mb-4 sm:mb-5">
+                  <CheckCircle className="h-8 w-8 sm:h-10 sm:w-10 text-blue-600" />
                 </div>
-                <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">
+                <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3">
                   No more "Do we have this?"
                 </h3>
-                <p className="text-sm text-gray-600 leading-relaxed">
+                <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
                   Check stock instantly from your phone — no need to walk to the backroom or call staff
                 </p>
               </div>
             </SlideUpWhenVisible>
             
             <SlideUpWhenVisible delay={200}>
-              <div className="flex flex-col items-center text-center p-4 sm:p-6 rounded-xl hover:bg-gray-50 transition-all duration-300">
-                <div className="w-14 h-14 sm:w-16 sm:h-16 bg-green-100 rounded-full flex items-center justify-center mb-3 sm:mb-4">
-                  <Clock className="h-7 w-7 sm:h-8 sm:w-8 text-green-600" />
+              <div className="flex flex-col items-center text-center p-6 sm:p-8 rounded-xl hover:bg-gray-50 transition-all duration-300 border border-gray-100">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 bg-green-100 rounded-full flex items-center justify-center mb-4 sm:mb-5">
+                  <Clock className="h-8 w-8 sm:h-10 sm:w-10 text-green-600" />
                 </div>
-                <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">
+                <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3">
                   Count stock in 10 minutes, not hours
                 </h3>
-                <p className="text-sm text-gray-600 leading-relaxed">
+                <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
                   Scan barcodes with your phone camera instead of writing on clipboards and typing into Excel
                 </p>
               </div>
             </SlideUpWhenVisible>
             
             <SlideUpWhenVisible delay={300}>
-              <div className="flex flex-col items-center text-center p-4 sm:p-6 rounded-xl hover:bg-gray-50 transition-all duration-300">
-                <div className="w-14 h-14 sm:w-16 sm:h-16 bg-purple-100 rounded-full flex items-center justify-center mb-3 sm:mb-4">
-                  <TrendingUp className="h-7 w-7 sm:h-8 sm:w-8 text-purple-600" />
+              <div className="flex flex-col items-center text-center p-6 sm:p-8 rounded-xl hover:bg-gray-50 transition-all duration-300 border border-gray-100 sm:col-span-2 lg:col-span-1">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 bg-purple-100 rounded-full flex items-center justify-center mb-4 sm:mb-5">
+                  <TrendingUp className="h-8 w-8 sm:h-10 sm:w-10 text-purple-600" />
                 </div>
-                <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">
+                <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3">
                   Stop wasting money on dead inventory
                 </h3>
-                <p className="text-sm text-gray-600 leading-relaxed">
+                <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
                   Free up cash by identifying slow-movers and optimizing stock levels before capital gets tied up
                 </p>
               </div>
@@ -1822,11 +1762,11 @@ export const HomePage = () => {
       <section className="py-16 md:py-24 bg-white">
         <div className="max-w-6xl mx-auto px-4">
           <FadeInWhenVisible>
-            <div className="text-center mb-12 md:mb-16">
-              <h1 className="text-4xl sm:text-4xl md:text-4xl lg:text-7xl font-light text-gray-800 mb-4 md:mb-8 leading-tight px-2">
+            <div className="text-center mb-12 md:mb-16 px-4">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-light text-gray-800 mb-4 md:mb-8 leading-tight">
                 Start tracking in 3 simple steps
               </h1>
-              <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
+              <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
                 Get up and running in under 10 minutes.
               </p>
             </div>
@@ -1837,10 +1777,10 @@ export const HomePage = () => {
             <div className="hidden md:block absolute top-1/3 left-0 right-0 h-1 bg-gradient-to-r from-blue-200 via-blue-300 to-blue-200 transform -translate-y-1/2" style={{ top: '80px' }}></div>
             
             {/* Steps */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-12 relative">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-12 relative px-4">
               {/* Step 1 */}
               <SlideUpWhenVisible delay={100}>
-                <div className="relative bg-white rounded-2xl p-6 sm:p-8 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-blue-100">
+                <div className="relative bg-white rounded-2xl p-6 sm:p-8 md:p-10 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-blue-100">
 
                   
                   {/* Icon */}
@@ -1870,7 +1810,7 @@ export const HomePage = () => {
               
               {/* Step 2 */}
               <SlideUpWhenVisible delay={200}>
-                <div className="relative bg-white rounded-2xl p-6 sm:p-8 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-green-100">
+                <div className="relative bg-white rounded-2xl p-6 sm:p-8 md:p-10 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-green-100">
 
                   
                   {/* Icon */}
@@ -1900,7 +1840,7 @@ export const HomePage = () => {
               
               {/* Step 3 */}
               <SlideUpWhenVisible delay={300}>
-                <div className="relative bg-blue-100 rounded-2xl p-6 sm:p-8 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-blue-600">
+                <div className="relative bg-blue-100 rounded-2xl p-6 sm:p-8 md:p-10 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-blue-600 md:col-span-2 lg:col-span-1">
 
                   
                   {/* Icon */}
@@ -1935,9 +1875,9 @@ export const HomePage = () => {
             <div className="text-center mt-12 md:mt-16 px-4">
               <Button
                 onClick={handleLoginClick}
-                className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-8 sm:px-12 py-4 sm:py-6 text-lg sm:text-xl font-semibold rounded-full transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25"
+                className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-6 sm:px-10 md:px-12 py-3 sm:py-4 md:py-6 text-base sm:text-lg md:text-xl font-semibold rounded-full transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25 min-h-[48px]"
               >
-                Start tracking your stock now
+                Start Free Today
               </Button>
               <p className="text-xs sm:text-sm text-gray-500 mt-4">
                 Free plan forever • Set up in 10 minutes • No credit card
@@ -1963,24 +1903,95 @@ export const HomePage = () => {
           <FadeInWhenVisible>
 
             
-            <div className="text-center mb-12">
-            <h1 className="text-4xl sm:text-4xl md:text-4xl lg:text-7xl font-light text-gray-800 mb-4 md:mb-8 leading-tight px-2">
+            <div className="text-center mb-12 px-4">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-light text-gray-800 mb-4 md:mb-8 leading-tight">
             Dead Stock Liquidation Optimizer
               </h1>
-              <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
+              <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
                 Stop losing money to inventory that sits unsold. Automatically identify products draining your capital.
               </p>
             </div>
           </FadeInWhenVisible>
 
-          {/* Feature Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-            <SlideUpWhenVisible delay={100}>
-              <div className="bg-white rounded-2xl p-8 shadow-xl border-2 border-blue-600">
-                <div className="w-16 h-16 bg-blue-600 rounded-xl flex items-center justify-center mb-6">
-                  <Clock className="h-8 w-8 text-white" />
+          {/* Feature Grid/Carousel - Carousel on mobile, Grid on desktop */}
+          
+          {/* Mobile Carousel - Only visible on mobile (< md breakpoint) */}
+          <div className="md:hidden mb-12 px-4">
+            <MobileCarousel
+              items={[
+                {
+                  icon: <Clock className="h-7 w-7 sm:h-8 sm:w-8 text-white" />,
+                  title: "Auto-Flag Non-Movers",
+                  description: "Set your threshold: 30, 60, or 90 days. Any product with zero sales automatically gets flagged for review.",
+                  features: [
+                    "Customizable time periods (30/60/90 days)",
+                    "Automatic alerts when items hit threshold",
+                    "Perfect for seasonal & fashion inventory"
+                  ]
+                },
+                {
+                  icon: <Euro className="h-7 w-7 sm:h-8 sm:w-8 text-white" />,
+                  title: "Calculate Capital at Risk",
+                  description: "See exactly how much money is tied up in slow-moving inventory. Know your exposure in real dollars.",
+                  features: [
+                    "Total capital locked in dead stock",
+                    "Break down by product category",
+                    "Track potential losses over time"
+                  ]
+                },
+                {
+                  icon: <TrendingUp className="h-7 w-7 sm:h-8 sm:w-8 text-white" />,
+                  title: "Smart Liquidation Suggestions",
+                  description: "Get AI-powered recommendations on how to move dead stock: bundle, discount, or clearance strategies.",
+                  features: [
+                    "Optimal discount percentages",
+                    "Bundle opportunities with bestsellers",
+                    "Best timing for clearance sales"
+                  ]
+                },
+                {
+                  icon: <Shield className="h-7 w-7 sm:h-8 sm:w-8 text-white" />,
+                  title: "Prevent Future Overstock",
+                  description: "Learn from past mistakes. See which products historically become dead stock to avoid over-ordering.",
+                  features: [
+                    "Historical slow-mover patterns",
+                    "Seasonal trend warnings",
+                    "Smart reorder quantity recommendations"
+                  ]
+                }
+              ]}
+              renderItem={(item, index) => (
+                <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-xl border-2 border-blue-600 h-full">
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 bg-blue-600 rounded-xl flex items-center justify-center mb-5 sm:mb-6">
+                    {item.icon}
+                  </div>
+                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4">
+                    {item.title}
+                  </h3>
+                  <p className="text-gray-600 mb-4 leading-relaxed">
+                    {item.description}
+                  </p>
+                  <ul className="space-y-2">
+                    {item.features.map((feature, idx) => (
+                      <li key={idx} className="flex items-start text-sm text-gray-700">
+                        <CheckCircle className="h-5 w-5 text-green-600 mr-2 flex-shrink-0 mt-0.5" />
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">
+              )}
+            />
+          </div>
+
+          {/* Desktop Grid - Hidden on mobile, visible on md and up */}
+          <div className="hidden md:grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-12 px-4">
+            <SlideUpWhenVisible delay={100}>
+              <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-xl border-2 border-blue-600">
+                <div className="w-14 h-14 sm:w-16 sm:h-16 bg-blue-600 rounded-xl flex items-center justify-center mb-5 sm:mb-6">
+                  <Clock className="h-7 w-7 sm:h-8 sm:w-8 text-white" />
+                </div>
+                <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4">
                   Auto-Flag Non-Movers
                 </h3>
                 <p className="text-gray-600 mb-4 leading-relaxed">
@@ -2004,11 +2015,11 @@ export const HomePage = () => {
             </SlideUpWhenVisible>
 
             <SlideUpWhenVisible delay={200}>
-              <div className="bg-white rounded-2xl p-8 shadow-xl border-2 border-blue-600">
-                <div className="w-16 h-16 bg-blue-600 rounded-xl flex items-center justify-center mb-6">
-                  <Euro className="h-8 w-8 text-white" />
+              <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-xl border-2 border-blue-600">
+                <div className="w-14 h-14 sm:w-16 sm:h-16 bg-blue-600 rounded-xl flex items-center justify-center mb-5 sm:mb-6">
+                  <Euro className="h-7 w-7 sm:h-8 sm:w-8 text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">
+                <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4">
                   Calculate Capital at Risk
                 </h3>
                 <p className="text-gray-600 mb-4 leading-relaxed">
@@ -2032,11 +2043,11 @@ export const HomePage = () => {
             </SlideUpWhenVisible>
 
             <SlideUpWhenVisible delay={300}>
-              <div className="bg-white rounded-2xl p-8 shadow-xl border-2 border-blue-600">
-                <div className="w-16 h-16 bg-blue-600 rounded-xl flex items-center justify-center mb-6">
-                  <TrendingUp className="h-8 w-8 text-white" />
+              <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-xl border-2 border-blue-600">
+                <div className="w-14 h-14 sm:w-16 sm:h-16 bg-blue-600 rounded-xl flex items-center justify-center mb-5 sm:mb-6">
+                  <TrendingUp className="h-7 w-7 sm:h-8 sm:w-8 text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">
+                <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4">
                   Smart Liquidation Suggestions
                 </h3>
                 <p className="text-gray-600 mb-4 leading-relaxed">
@@ -2060,11 +2071,11 @@ export const HomePage = () => {
             </SlideUpWhenVisible>
 
             <SlideUpWhenVisible delay={400}>
-              <div className="bg-white rounded-2xl p-8 shadow-xl border-2 border-blue-600">
-                <div className="w-16 h-16 bg-blue-600 rounded-xl flex items-center justify-center mb-6">
-                  <Shield className="h-8 w-8 text-white" />
+              <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-xl border-2 border-blue-600">
+                <div className="w-14 h-14 sm:w-16 sm:h-16 bg-blue-600 rounded-xl flex items-center justify-center mb-5 sm:mb-6">
+                  <Shield className="h-7 w-7 sm:h-8 sm:w-8 text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">
+                <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4">
                   Prevent Future Overstock
                 </h3>
                 <p className="text-gray-600 mb-4 leading-relaxed">
@@ -2095,11 +2106,11 @@ export const HomePage = () => {
             <div className="text-center mt-12 px-4">
               <Button
                 onClick={handleLoginClick}
-                className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-10 sm:px-16 py-5 sm:py-7 text-xl sm:text-2xl font-bold rounded-full transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-blue-500/50"
+                className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 sm:px-10 md:px-16 py-3 sm:py-5 md:py-7 text-base sm:text-xl md:text-2xl font-bold rounded-full transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-blue-500/50 min-h-[48px]"
               >
-                Start Using Dead Stock Optimizer Free
+                Start Free Today
               </Button>
-              <p className="text-sm text-gray-600 mt-4">
+              <p className="text-xs sm:text-sm text-gray-600 mt-4">
                 Available on all plans • No credit card required • Set up in 2 minutes
               </p>
             </div>
@@ -2108,225 +2119,19 @@ export const HomePage = () => {
       </section>
 
 
-      {/* Dead Stock Calculator Lead Magnet */}
-      <section className="py-16 md:py-20 bg-gradient-to-br from-white via-gray-50 to-blue-50 border-y border-gray-200">
-        <div className="max-w-5xl mx-auto px-4">
-          <div className="bg-white rounded-3xl shadow-2xl border-2 border-blue-200 overflow-hidden">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
-              {/* Left Side - Value Proposition */}
-              <div className="bg-gradient-to-br from-blue-600 to-blue-800 p-8 md:p-12 text-white">
-                <FadeInWhenVisible>
-                  <div className="mb-6">
-                    <div className="inline-flex items-center px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-sm font-semibold mb-6">
-                      🎁 Free Calculator Tool
-                    </div>
-                    
-                    <h2 className="text-3xl md:text-4xl font-bold mb-4 leading-tight">
-                      How Much Is Dead Stock Costing You?
-                    </h2>
-                    
-                    <p className="text-lg text-blue-100 mb-6 leading-relaxed">
-                      Most boutique owners have €2,000-€8,000 tied up in slow-moving inventory. Find out your exact number in 60 seconds.
-                    </p>
-                  </div>
-
-                  {/* Benefits */}
-                  <div className="space-y-4 mb-8">
-                    <div className="flex items-start gap-3">
-                      <div className="w-6 h-6 bg-green-400 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <Check className="h-4 w-4 text-green-900" />
-                      </div>
-                      <div>
-                        <p className="font-semibold text-white">Calculate Your Capital at Risk</p>
-                        <p className="text-sm text-blue-100">See how much money is locked in unsold inventory</p>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-start gap-3">
-                      <div className="w-6 h-6 bg-green-400 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <Check className="h-4 w-4 text-green-900" />
-                      </div>
-                      <div>
-                        <p className="font-semibold text-white">Get Liquidation Recommendations</p>
-                        <p className="text-sm text-blue-100">Receive a custom action plan to recover your capital</p>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-start gap-3">
-                      <div className="w-6 h-6 bg-green-400 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <Check className="h-4 w-4 text-green-900" />
-                      </div>
-                      <div>
-                        <p className="font-semibold text-white">Learn Industry Benchmarks</p>
-                        <p className="text-sm text-blue-100">Compare your inventory health to similar boutiques</p>
-                      </div>
-                    </div>
-                  </div>
-
-                </FadeInWhenVisible>
-              </div>
-
-              {/* Right Side - Email Capture Form */}
-              <div className="p-8 md:p-12 bg-gray-50">
-                <SlideInWhenVisible direction="right" delay={200}>
-                  <div className="mb-6">
-                    <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                      Get Your Free Report
-                    </h3>
-                    <p className="text-gray-600">
-                      Enter your details to receive your personalized dead stock analysis
-                    </p>
-                  </div>
-
-                  {/* Lead Capture Form */}
-                  <form onSubmit={handleLeadSubmit} className="space-y-4">
-                    <div>
-                      <label htmlFor="calc-email" className="block text-sm font-medium text-gray-700 mb-2">
-                        Email Address *
-                      </label>
-                      <input
-                        type="email"
-                        id="calc-email"
-                        value={leadEmail}
-                        onChange={(e) => setLeadEmail(e.target.value)}
-                        placeholder="you@yourboutique.com"
-                        required
-                        className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-200 transition-all outline-none text-gray-900"
-                      />
-                    </div>
-
-                    <div>
-                      <label htmlFor="calc-inventory-value" className="block text-sm font-medium text-gray-700 mb-2">
-                        Approximate Inventory Value (Optional)
-                      </label>
-                      <select
-                        id="calc-inventory-value"
-                        className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-200 transition-all outline-none text-gray-900"
-                      >
-                        <option value="">Select range...</option>
-                        <option value="under-5k">Under €5,000</option>
-                        <option value="5k-15k">€5,000 - €15,000</option>
-                        <option value="15k-50k">€15,000 - €50,000</option>
-                        <option value="50k-plus">€50,000+</option>
-                      </select>
-                    </div>
-
-                    <div>
-                      <label htmlFor="calc-shop-type" className="block text-sm font-medium text-gray-700 mb-2">
-                        Shop Type (Optional)
-                      </label>
-                      <select
-                        id="calc-shop-type"
-                        className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-200 transition-all outline-none text-gray-900"
-                      >
-                        <option value="">Select type...</option>
-                        <option value="fashion">Fashion & Clothing</option>
-                        <option value="gifts">Gifts & Home Decor</option>
-                        <option value="artisan">Artisan & Handcrafted</option>
-                        <option value="specialty">Specialty Foods</option>
-                        <option value="other">Other</option>
-                      </select>
-                    </div>
-
-                    <Button
-                      type="submit"
-                      className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-4 text-lg font-bold rounded-xl transform hover:scale-105 transition-all duration-300 shadow-lg"
-                    >
-                      Calculate My Dead Stock Loss →
-                    </Button>
-
-                    {leadStatus === 'success' && (
-                      <div className="p-4 bg-green-50 border-2 border-green-200 rounded-xl">
-                        <p className="text-green-800 font-semibold flex items-center gap-2">
-                          <CheckCircle className="h-5 w-5" />
-                          Success! Check your email for your personalized report.
-                        </p>
-                      </div>
-                    )}
-
-                    {leadStatus === 'error' && (
-                      <div className="p-4 bg-red-50 border-2 border-red-200 rounded-xl">
-                        <p className="text-red-800 font-semibold">
-                          Please enter a valid email address.
-                        </p>
-                      </div>
-                    )}
-
-                    <p className="text-xs text-gray-500 text-center mt-4">
-                      🔒 We respect your privacy. No spam, unsubscribe anytime.
-                    </p>
-                  </form>
-
-                  {/* Trust Indicators */}
-                  <div className="mt-8 pt-6 border-t border-gray-200">
-                    <div className="flex items-center justify-center gap-6 text-xs text-gray-500">
-                      <div className="flex items-center gap-1">
-                        <Shield className="h-4 w-4 text-green-600" />
-                        <span>GDPR Compliant</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <Clock className="h-4 w-4 text-blue-600" />
-                        <span>60 sec delivery</span>
-                      </div>
-                    </div>
-                  </div>
-                </SlideInWhenVisible>
-              </div>
-            </div>
-          </div>
-
-          {/* Additional Value Statements Below */}
-          <FadeInWhenVisible delay={400}>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
-              <div className="text-center">
-                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Euro className="h-8 w-8 text-blue-600" />
-                </div>
-                <h4 className="font-bold text-gray-900 mb-2">Average Savings: €4,200</h4>
-                <p className="text-sm text-gray-600">
-                  Shop owners who use the calculator recover an average of €4,200 in tied-up capital
-                </p>
-              </div>
-
-              <div className="text-center">
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <TrendingUp className="h-8 w-8 text-green-600" />
-                </div>
-                <h4 className="font-bold text-gray-900 mb-2">250+ Shops Helped</h4>
-                <p className="text-sm text-gray-600">
-                  Boutique owners across Europe trust our calculator to optimize their inventory
-                </p>
-              </div>
-
-              <div className="text-center">
-                <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Zap className="h-8 w-8 text-purple-600" />
-                </div>
-                <h4 className="font-bold text-gray-900 mb-2">Instant Results</h4>
-                <p className="text-sm text-gray-600">
-                  Get your personalized dead stock report delivered to your inbox in under 60 seconds
-                </p>
-              </div>
-            </div>
-          </FadeInWhenVisible>
-        </div>
-      </section>
-
-
-
       
 
 
       {/* Enhanced FAQ Section */}
-      <section id="faq-section" className="py-20 bg-gradient-to-br from-slate-50 to-blue-50">
+      <section id="faq-section" className="py-12 sm:py-16 md:py-20 bg-gradient-to-br from-slate-50 to-blue-50">
         <div className="max-w-6xl mx-auto px-4">
           {/* Compelling Headline */}
           <FadeInWhenVisible>
-            <div className="text-center mb-16">
-              <h1 className="text-4xl sm:text-4xl md:text-4xl lg:text-7xl font-light text-gray-800 mb-4 md:mb-8 leading-tight px-2">
+            <div className="text-center mb-12 sm:mb-16 px-4">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-light text-gray-800 mb-4 md:mb-8 leading-tight">
                 Questions from Shop Owners Like You
               </h1>
-              <p className="text-xl text-gray-600 max-w-4xl mx-auto mb-8">
+              <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-4xl mx-auto mb-6 sm:mb-8">
               POS integration, multi-location tracking. 
               </p>
                       
@@ -2409,26 +2214,26 @@ export const HomePage = () => {
 
           {/* Still Have Questions CTA */}
           <FadeInWhenVisible delay={600}>
-            <div className="p-8 md:p-8 text-center">
-              <h1 className="text-4xl sm:text-4xl md:text-4xl lg:text-7xl font-light text-gray-800 mb-4 md:mb-8 leading-tight px-2">
+            <div className="p-6 sm:p-8 md:p-10 text-center">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-light text-gray-800 mb-4 md:mb-8 leading-tight px-4">
                 Still Have Questions?
               </h1>
-              <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
+              <p className="text-sm sm:text-base text-gray-600 mb-6 sm:mb-8 max-w-2xl mx-auto px-4">
                 Our team is here to help. Get personalized answers to your specific business questions 
                 in under 5 minutes.
               </p>
               
-              <div className="flex flex-col md:flex-row gap-4 justify-center items-center px-4">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-stretch sm:items-center px-4">
                 <Button
                   onClick={handleLoginClick}
-                  className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-8 sm:px-12 py-4 sm:py-6 text-lg sm:text-xl font-semibold rounded-full transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25"
+                  className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-6 sm:px-10 md:px-12 py-3 sm:py-4 md:py-6 text-base sm:text-lg md:text-xl font-semibold rounded-full transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25 min-h-[48px]"
                 >
                   Start free
                 </Button>
                 <Button
                   onClick={() => navigate('/contact')}
                   variant="outline"
-                  className="w-full sm:w-auto border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-8 sm:px-12 py-4 sm:py-6 text-lg sm:text-xl font-semibold rounded-full transform hover:scale-105 transition-all duration-300"
+                  className="w-full sm:w-auto border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-6 sm:px-10 md:px-12 py-3 sm:py-4 md:py-6 text-base sm:text-lg md:text-xl font-semibold rounded-full transform hover:scale-105 transition-all duration-300 min-h-[48px]"
                 >
                   Get help
                 </Button>
@@ -2444,14 +2249,25 @@ export const HomePage = () => {
 
       {/* Cookie Consent Banner */}
       {showCookieBanner && (
-        <div className="fixed inset-x-0 bottom-0 z-50">
-          <div className="mx-auto max-w-6xl m-2 md:m-4 rounded-2xl md:rounded-3xl bg-white shadow-xl border border-gray-200 p-4 flex flex-col md:flex-row items-start md:items-center gap-3">
-            <p className="text-xs md:text-sm text-gray-700">
+        <div className="fixed inset-x-0 bottom-0 z-50 px-2 sm:px-4">
+          <div className="mx-auto max-w-6xl mb-2 sm:mb-3 md:mb-4 rounded-xl sm:rounded-2xl md:rounded-3xl bg-white shadow-xl border border-gray-200 p-3 sm:p-4 md:p-5 flex flex-col sm:flex-row items-start sm:items-center gap-3">
+            <p className="text-xs sm:text-sm text-gray-700 flex-1">
               We use cookies to improve your experience on our website
             </p>
-            <div className="flex gap-2 w-full md:w-auto md:ml-auto">
-              <Button variant="outline" className="border-gray-300 text-xs md:text-sm flex-1 md:flex-none" onClick={() => setShowCookieBanner(false)}>Decline</Button>
-              <Button className="bg-blue-600 text-white hover:bg-blue-700 text-xs md:text-sm flex-1 md:flex-none" onClick={acceptCookies}>Accept</Button>
+            <div className="flex gap-2 w-full sm:w-auto sm:ml-auto">
+              <Button 
+                variant="outline" 
+                className="border-gray-300 text-xs sm:text-sm flex-1 sm:flex-none px-4 py-2 min-h-[40px]" 
+                onClick={() => setShowCookieBanner(false)}
+              >
+                Decline
+              </Button>
+              <Button 
+                className="bg-blue-600 text-white hover:bg-blue-700 text-xs sm:text-sm flex-1 sm:flex-none px-4 py-2 min-h-[40px]" 
+                onClick={acceptCookies}
+              >
+                Accept
+              </Button>
             </div>
           </div>
         </div>

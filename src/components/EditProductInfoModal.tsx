@@ -78,6 +78,7 @@ export const EditProductInfoModal = ({
     barcode?: string;
     location?: string;
   }>>([]);
+  const [hasExistingVariants, setHasExistingVariants] = useState(false);
   
   // Gebruik de page refresh hook
   usePageRefresh();
@@ -124,6 +125,32 @@ export const EditProductInfoModal = ({
       fetchSuppliers();
     }
   }, [user]);
+
+  // Check for existing variants when modal opens
+  useEffect(() => {
+    const checkExistingVariants = async () => {
+      if (!isOpen || !product.id || !activeBranch) return;
+      
+      try {
+        const { data, error } = await supabase
+          .from('products')
+          .select('id')
+          .eq('parent_product_id', product.id)
+          .eq('branch_id', activeBranch.branch_id);
+        
+        if (!error && data && data.length > 0) {
+          setHasExistingVariants(true);
+        } else {
+          setHasExistingVariants(false);
+        }
+      } catch (error) {
+        console.error('Error checking for variants:', error);
+        setHasExistingVariants(false);
+      }
+    };
+
+    checkExistingVariants();
+  }, [isOpen, product.id, activeBranch]);
 
   const fetchCategorys = async () => {
     if (!user) return;
@@ -524,34 +551,43 @@ export const EditProductInfoModal = ({
                   />
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <Label className="text-blue-700 font-medium">Stock *</Label>
-                    <Input 
-                      name="quantity_in_stock" 
-                      type="number" 
-                      value={form.quantity_in_stock} 
-                      onChange={handleChange} 
-                      disabled={loading} 
-                      min={0} 
-                      required 
-                      className="py-3 px-3 text-base border-blue-200 focus:border-blue-500"
-                    />
+                {!hasExistingVariants && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <Label className="text-blue-700 font-medium">Stock *</Label>
+                      <Input 
+                        name="quantity_in_stock" 
+                        type="number" 
+                        value={form.quantity_in_stock} 
+                        onChange={handleChange} 
+                        disabled={loading} 
+                        min={0} 
+                        required 
+                        className="py-3 px-3 text-base border-blue-200 focus:border-blue-500"
+                      />
+                    </div>
+                    <div>
+                      <Label className="text-blue-700 font-medium">Min. Level *</Label>
+                      <Input 
+                        name="minimum_stock_level" 
+                        type="number" 
+                        value={form.minimum_stock_level} 
+                        onChange={handleChange} 
+                        disabled={loading} 
+                        min={0} 
+                        required 
+                        className="py-3 px-3 text-base border-blue-200 focus:border-blue-500"
+                      />
+                    </div>
                   </div>
-                  <div>
-                    <Label className="text-blue-700 font-medium">Min. Level *</Label>
-                    <Input 
-                      name="minimum_stock_level" 
-                      type="number" 
-                      value={form.minimum_stock_level} 
-                      onChange={handleChange} 
-                      disabled={loading} 
-                      min={0} 
-                      required 
-                      className="py-3 px-3 text-base border-blue-200 focus:border-blue-500"
-                    />
+                )}
+                {hasExistingVariants && (
+                  <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                    <p className="text-sm text-purple-700">
+                      This product has variants. Stock and pricing are managed at the variant level. Expand the product in the list to see and edit individual variants.
+                    </p>
                   </div>
-                </div>
+                )}
               </div>
             </div>
 
@@ -593,29 +629,32 @@ export const EditProductInfoModal = ({
                       </div>
 
 
-                      <div>
-                        <Label className="text-gray-700">Location</Label>
-                        <Input 
-                          name="location" 
-                          value={form.location} 
-                          onChange={handleChange} 
-                          disabled={loading} 
-                          placeholder="Enter location (e.g. A1, Shelf 3, etc.)" 
-                          className="py-3 px-3 text-base border-gray-200 focus:border-gray-400"
-                        />
-                      </div>
+                      {!hasExistingVariants && (
+                        <div>
+                          <Label className="text-gray-700">Location</Label>
+                          <Input 
+                            name="location" 
+                            value={form.location} 
+                            onChange={handleChange} 
+                            disabled={loading} 
+                            placeholder="Enter location (e.g. A1, Shelf 3, etc.)" 
+                            className="py-3 px-3 text-base border-gray-200 focus:border-gray-400"
+                          />
+                        </div>
+                      )}
                     </div>
                   </div>
 
                   {/* Category en Leverancier Sectie */}
-                  <div className="bg-white border border-gray-200 rounded-lg p-4">
-                    <h4 className="text-md font-semibold text-gray-700 mb-3 flex items-center">
-                      <div className="w-2 h-2 bg-gray-500 rounded-full mr-2"></div>
-                        Category & Supplier
-                    </h4>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <Label className="text-gray-700">Category</Label>
+                  {!hasExistingVariants && (
+                    <div className="bg-white border border-gray-200 rounded-lg p-4">
+                      <h4 className="text-md font-semibold text-gray-700 mb-3 flex items-center">
+                        <div className="w-2 h-2 bg-gray-500 rounded-full mr-2"></div>
+                          Category & Supplier
+                      </h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <Label className="text-gray-700">Category</Label>
                         <Popover open={categoryOpen} onOpenChange={setCategoryOpen}>
                           <PopoverTrigger asChild>
                             <Button
@@ -783,44 +822,47 @@ export const EditProductInfoModal = ({
                           </PopoverContent>
                         </Popover>
                       </div>
+                      </div>
                     </div>
-                  </div>
+                  )}
 
                   {/* Prijzen Sectie */}
-                  <div className="bg-white border border-gray-200 rounded-lg p-4">
-                    <h4 className="text-md font-semibold text-gray-700 mb-3 flex items-center">
-                      <div className="w-2 h-2 bg-gray-500 rounded-full mr-2"></div>
-                        Prices
-                    </h4>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <Label className="text-gray-700">Purchase Price</Label>
-                        <Input
-                          name="purchase_price"
-                          type="number"
-                          step="0.01"
-                          min="0"
-                          value={form.purchase_price}
-                          onChange={handleChange}
-                          disabled={loading}
-                          className="py-3 px-3 text-base border-gray-200 focus:border-gray-400"
-                        />
-                      </div>
-                      <div>
-                        <Label className="text-gray-700">Sale Price</Label>
-                        <Input
-                          name="sale_price"
-                          type="number"
-                          step="0.01"
-                          min="0"
-                          value={form.sale_price}
-                          onChange={handleChange}
-                          disabled={loading}
-                          className="py-3 px-3 text-base border-gray-200 focus:border-gray-400"
-                        />
+                  {!hasExistingVariants && (
+                    <div className="bg-white border border-gray-200 rounded-lg p-4">
+                      <h4 className="text-md font-semibold text-gray-700 mb-3 flex items-center">
+                        <div className="w-2 h-2 bg-gray-500 rounded-full mr-2"></div>
+                          Prices
+                      </h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <Label className="text-gray-700">Purchase Price</Label>
+                          <Input
+                            name="purchase_price"
+                            type="number"
+                            step="0.01"
+                            min="0"
+                            value={form.purchase_price}
+                            onChange={handleChange}
+                            disabled={loading}
+                            className="py-3 px-3 text-base border-gray-200 focus:border-gray-400"
+                          />
+                        </div>
+                        <div>
+                          <Label className="text-gray-700">Sale Price</Label>
+                          <Input
+                            name="sale_price"
+                            type="number"
+                            step="0.01"
+                            min="0"
+                            value={form.sale_price}
+                            onChange={handleChange}
+                            disabled={loading}
+                            className="py-3 px-3 text-base border-gray-200 focus:border-gray-400"
+                          />
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  )}
 
                   {/* Afbeelding Sectie */}
                   <div className="bg-white border border-gray-200 rounded-lg p-4">
@@ -851,40 +893,41 @@ export const EditProductInfoModal = ({
             </div>
 
             {/* Variant Toggle - Helemaal onderaan */}
-            <div className="space-y-4">
-              <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h4 className="text-sm font-medium text-gray-700">Has variants?</h4>
-                    <p className="text-xs text-gray-500 mt-1">
-                      Enable this to add multiple variants of this product (e.g. different colors, sizes)
-                    </p>
+            {!hasExistingVariants && (
+              <div className="space-y-4">
+                <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="text-sm font-medium text-gray-700">Has variants?</h4>
+                      <p className="text-xs text-gray-500 mt-1">
+                        Enable this to add multiple variants of this product (e.g. different colors, sizes)
+                      </p>
+                    </div>
+                    <Switch
+                      checked={hasVariants}
+                      onCheckedChange={(checked) => {
+                        setHasVariants(checked);
+                        if (checked && variants.length === 0) {
+                          // Voeg standaard een variant toe wanneer ingeschakeld
+                          setVariants([{
+                            variantName: '',
+                            quantityInStock: 0,
+                            minimumStockLevel: 0,
+                            purchasePrice: 0,
+                            salePrice: 0,
+                            sku: '',
+                            barcode: '',
+                            location: ''
+                          }]);
+                        } else if (!checked) {
+                          // Reset variants wanneer uitgeschakeld
+                          setVariants([]);
+                        }
+                      }}
+                      disabled={loading}
+                    />
                   </div>
-                  <Switch
-                    checked={hasVariants}
-                    onCheckedChange={(checked) => {
-                      setHasVariants(checked);
-                      if (checked && variants.length === 0) {
-                        // Voeg standaard een variant toe wanneer ingeschakeld
-                        setVariants([{
-                          variantName: '',
-                          quantityInStock: 0,
-                          minimumStockLevel: 0,
-                          purchasePrice: 0,
-                          salePrice: 0,
-                          sku: '',
-                          barcode: '',
-                          location: ''
-                        }]);
-                      } else if (!checked) {
-                        // Reset variants wanneer uitgeschakeld
-                        setVariants([]);
-                      }
-                    }}
-                    disabled={loading}
-                  />
                 </div>
-              </div>
 
               {/* Variant Sectie */}
               {hasVariants && (
@@ -1092,7 +1135,8 @@ export const EditProductInfoModal = ({
                   </div>
                 </div>
               )}
-            </div>
+              </div>
+            )}
           </form>
         </div>
 

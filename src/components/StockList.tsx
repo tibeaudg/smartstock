@@ -1185,49 +1185,53 @@ export const StockList = () => {
                           {columnVisibility.location && (
                             <td className="px-2 py-2 text-center">
                               <span className="text-xs text-gray-600 truncate max-w-[60px] block">
-                                  {parent.location || '-'}
+                                  {hasChildren ? '-' : (parent.location || '-')}
                               </span>
                             </td>
                           )}
                           {columnVisibility.current && (
-                              <td className="px-2 py-2 text-center font-semibold">{parent.quantity_in_stock}</td>
+                              <td className="px-2 py-2 text-center font-semibold">{hasChildren ? '-' : parent.quantity_in_stock}</td>
                           )}
                           {columnVisibility.minimum && (
-                              <td className="px-2 py-2 text-center">{parent.minimum_stock_level}</td>
+                              <td className="px-2 py-2 text-center">{hasChildren ? '-' : parent.minimum_stock_level}</td>
                           )}
                           {columnVisibility.category && (
                             <td className="px-2 py-2 text-center">
                               <span className="text-xs text-gray-600 truncate max-w-[60px] block">
-                                  {parent.category_name || '-'}
+                                  {hasChildren ? '-' : (parent.category_name || '-')}
                               </span>
                             </td>
                           )}
                           {columnVisibility.supplier && (
                             <td className="px-2 py-2 text-center">
                               <span className="text-xs text-gray-600 truncate max-w-[60px] block">
-                                  {parent.supplier_name || '-'}
+                                  {hasChildren ? '-' : (parent.supplier_name || '-')}
                               </span>
                             </td>
                           )}
                           {columnVisibility.purchasePrice && (
                             <td className="px-2 py-2 text-center">
                               <span className="text-xs text-red-600">
-                                  ${parent.purchase_price ? Number(parent.purchase_price).toFixed(2) : '-'}
+                                  {hasChildren ? '-' : (parent.purchase_price ? `$${Number(parent.purchase_price).toFixed(2)}` : '-')}
                               </span>
                             </td>
                           )}
                           {columnVisibility.salePrice && (
                             <td className="px-2 py-2 text-center">
                               <span className="text-xs text-green-600">
-                                  ${parent.sale_price ? Number(parent.sale_price).toFixed(2) : '-'}
+                                  {hasChildren ? '-' : (parent.sale_price ? `$${Number(parent.sale_price).toFixed(2)}` : '-')}
                               </span>
                             </td>
                           )}
                           {columnVisibility.status && (
                             <td className="px-2 py-2 text-center">
-                                <Badge variant={getStockStatusVariant(parentStatus)}>
-                                  {parentStatus}
-                                </Badge>
+                                {hasChildren ? (
+                                  <span className="text-xs text-gray-400">-</span>
+                                ) : (
+                                  <Badge variant={getStockStatusVariant(parentStatus)}>
+                                    {parentStatus}
+                                  </Badge>
+                                )}
                               </td>
                             )}
                           </tr>
@@ -1748,7 +1752,7 @@ export const StockList = () => {
                 )}
                 {columnVisibility.current && (
                   <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Huidig
+                    Current
                   </th>
                 )}
                 {columnVisibility.minimum && (

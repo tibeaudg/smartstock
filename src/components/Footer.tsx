@@ -41,7 +41,7 @@ const Footer = () => (
         </div>
 
         {/* Right Section - Navigation Links */}
-        <div className="grid grid-cols-3 gap-8">
+        <div className="grid grid-cols-4 gap-6">
           {/* Legal Column */}
           <div>
             <h3 className="text-white text-sm font-medium mb-4">Legal</h3>
@@ -96,6 +96,29 @@ const Footer = () => (
             </ul>
           </div>
 
+          {/* Tools Column */}
+          <div>
+            <h3 className="text-white text-sm font-medium mb-4">Free Tools</h3>
+            <ul className="space-y-3">
+              <li>
+                <Link
+                  to="/dead-stock-calculator"
+                  className="text-white hover:text-gray-300 transition-colors text-sm"
+                >
+                  Dead Stock Calculator
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/demo"
+                  className="text-white hover:text-gray-300 transition-colors text-sm"
+                >
+                  Try Demo
+                </Link>
+              </li>
+            </ul>
+          </div>
+
           {/* Actions Column */}
           <div>
             <h3 className="text-white text-sm font-medium mb-4">Actions</h3>
@@ -110,10 +133,10 @@ const Footer = () => (
               </li>
               <li>
                 <Link
-                  to="/demo"
+                  to="/pricing"
                   className="text-white hover:text-gray-300 transition-colors text-sm"
                 >
-                  Try Demo
+                  Get Started
                 </Link>
               </li>
             </ul>

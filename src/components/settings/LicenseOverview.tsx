@@ -266,7 +266,7 @@ export const LicenseOverview = () => {
       <Card className="hidden">
         <CardHeader>
           <CardTitle>Abonnementen</CardTitle>
-          <CardDescription>Kies of wijzig uw abonnement. De prijzen worden berekend op basis van uw huidig verbruik.</CardDescription>
+          <CardDescription>Kies of wijzig uw abonnement. De prijzen worden berekend op basis van uw Current verbruik.</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col gap-4 sm:flex-col lg:flex-row lg:justify-center lg:items-stretch">
@@ -292,7 +292,7 @@ export const LicenseOverview = () => {
                   >
                     {isActive && (
                         <Badge variant="warning" className="absolute -top-2 -right-2 bg-blue-500 text-white font-bold border-2 border-white">
-                          <Star className="w-3 h-3 mr-1" /> Huidig abonnement
+                          <Star className="w-3 h-3 mr-1" /> Current abonnement
                         </Badge>
                     )}
                     <div className="flex-grow">
