@@ -420,7 +420,7 @@ const MobileProductCard: React.FC<MobileProductCardProps> = ({
   const variantAttributes = formatVariantAttributes(product.variant_attributes);
 
   return (
-    <div className={`bg-white rounded-lg border border-gray-200 p-4 ${isVariant ? 'ml-4 border-l-4 border-l-purple-400' : ''}`}>
+    <div className={`bg-white rounded-lg border border-gray-200 ${isVariant ? 'ml-6 p-3 border-l-4 border-l-purple-400 bg-purple-50/30' : 'p-4'}`}>
       <div className="flex items-start gap-3">
         {/* Selection checkbox */}
         {isAdmin && (
@@ -440,11 +440,11 @@ const MobileProductCard: React.FC<MobileProductCardProps> = ({
             <img
               src={product.image_url}
               alt={`${product.name} product image`}
-              className="w-16 h-16 object-cover rounded-lg border cursor-pointer hover:opacity-80 transition-opacity"
+              className={`object-cover rounded-lg border cursor-pointer hover:opacity-80 transition-opacity ${isVariant ? 'w-14 h-14' : 'w-16 h-16'}`}
               onClick={() => onImagePreview(product.image_url!)}
             />
           ) : (
-            <div className="w-16 h-16 bg-gray-200 rounded-lg border flex items-center justify-center text-xs text-gray-400">
+            <div className={`bg-gray-200 rounded-lg border flex items-center justify-center text-xs text-gray-400 ${isVariant ? 'w-14 h-14' : 'w-16 h-16'}`}>
               No Photo
             </div>
           )}
@@ -468,14 +468,14 @@ const MobileProductCard: React.FC<MobileProductCardProps> = ({
 
             {/* Product name */}
             <div className="flex-1 min-w-0">
-              <h3 className="text-sm font-medium text-gray-900 truncate">
+              <h3 className={`font-medium text-gray-900 truncate ${isVariant ? 'text-xs' : 'text-sm'}`}>
                 {product.name}
                 {isVariant && product.variant_name && (
                   <span className="text-gray-600"> - {product.variant_name}</span>
                 )}
               </h3>
               {isVariant && (
-                <Badge className="bg-purple-100 text-purple-700 border border-purple-200 text-xs mt-1">
+                <Badge className="bg-purple-100 text-purple-700 border border-purple-200 text-[10px] px-1.5 py-0 mt-0.5">
                   Variant
                 </Badge>
               )}
@@ -485,7 +485,7 @@ const MobileProductCard: React.FC<MobileProductCardProps> = ({
             {hasChildren && (
               <button
                 onClick={onToggleExpand}
-                className="p-1 bg-blue-600 text-white rounded border hover:bg-gray-100 transition-colors"
+                className="p-1 bg-blue-600 text-white rounded border border-blue-600 hover:bg-blue-700 transition-colors"
                 aria-label={isExpanded ? 'Collapse variants' : 'Expand variants'}
               >
                 {isExpanded ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
@@ -495,9 +495,9 @@ const MobileProductCard: React.FC<MobileProductCardProps> = ({
           
           {/* Variant attributes */}
           {isVariant && variantAttributes.length > 0 && (
-            <div className="flex flex-wrap gap-1 mb-2">
+            <div className="flex flex-wrap gap-1 mb-1.5">
               {variantAttributes.map((attr, index) => (
-                <Badge key={index} variant="secondary" className="text-xs bg-gray-50">
+                <Badge key={index} variant="secondary" className="text-[10px] px-1.5 py-0 bg-gray-50">
                   {attr}
                 </Badge>
               ))}
@@ -505,7 +505,7 @@ const MobileProductCard: React.FC<MobileProductCardProps> = ({
           )}
           
           {/* Description */}
-          {product.description && (
+          {!isVariant && product.description && (
             <p className="text-xs text-gray-500 mb-2 line-clamp-2">
               {product.description}
             </p>
@@ -513,31 +513,31 @@ const MobileProductCard: React.FC<MobileProductCardProps> = ({
 
           {/* Stock and pricing info */}
           {!hasChildren && (
-            <div className="grid grid-cols-2 gap-4 text-sm">
+            <div className={`grid grid-cols-2 gap-4 ${isVariant ? 'text-xs' : 'text-sm'}`}>
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <div className={`w-2 h-2 rounded-full ${getStockStatusDotColor(stockStatus)}`} />
+                  <div className={`${isVariant ? 'w-1.5 h-1.5' : 'w-2 h-2'} rounded-full ${getStockStatusDotColor(stockStatus)}`} />
                   <span className="font-semibold text-gray-900">{product.quantity_in_stock}</span>
                   <span className="text-gray-500">in stock</span>
                 </div>
-                <div className="text-xs text-gray-500">Min: {product.minimum_stock_level}</div>
+                <div className={`text-gray-500 ${isVariant ? 'text-[10px]' : 'text-xs'}`}>Min: {product.minimum_stock_level}</div>
               </div>
               
               <div className="text-right">
                 {product.purchase_price && (
-                  <div className="text-sm text-red-600 font-medium">
+                  <div className={`text-red-600 font-medium ${isVariant ? 'text-xs' : 'text-sm'}`}>
                     ${Number(product.purchase_price).toFixed(2)}
                   </div>
                 )}
                 {product.sale_price && (
-                  <div className="text-sm text-green-600 font-medium">
+                  <div className={`text-green-600 font-medium ${isVariant ? 'text-xs' : 'text-sm'}`}>
                     ${Number(product.sale_price).toFixed(2)}
                   </div>
                 )}
                 {product.location && (
                   <div className="flex items-center justify-end gap-1 mt-1">
-                    <MapPin className="w-3 h-3 text-gray-400" />
-                    <span className="text-xs text-gray-500">{product.location}</span>
+                    <MapPin className={`text-gray-400 ${isVariant ? 'w-2.5 h-2.5' : 'w-3 h-3'}`} />
+                    <span className={`text-gray-500 ${isVariant ? 'text-[10px]' : 'text-xs'}`}>{product.location}</span>
                   </div>
                 )}
               </div>
@@ -546,32 +546,32 @@ const MobileProductCard: React.FC<MobileProductCardProps> = ({
 
           {/* Actions */}
           {!hasChildren && (
-            <div className="flex gap-2 mt-3">
+            <div className={`flex gap-2 ${isVariant ? 'mt-2' : 'mt-3'}`}>
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => onStockAction(product, 'in')}
-                className="flex-1 text-green-600 border-green-300 hover:bg-green-50"
+                className={`flex-1 text-green-600 border-green-300 hover:bg-green-50 ${isVariant ? 'h-8 text-xs' : ''}`}
               >
-                <Plus className="w-4 h-4 mr-1" />
+                <Plus className={`${isVariant ? 'w-3 h-3' : 'w-4 h-4'} mr-1`} />
                 In
               </Button>
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => onStockAction(product, 'out')}
-                className="flex-1 text-red-600 border-red-300 hover:bg-red-50"
+                className={`flex-1 text-red-600 border-red-300 hover:bg-red-50 ${isVariant ? 'h-8 text-xs' : ''}`}
               >
-                <Minus className="w-4 h-4 mr-1" />
+                <Minus className={`${isVariant ? 'w-3 h-3' : 'w-4 h-4'} mr-1`} />
                 Out
               </Button>
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => onEdit(product)}
-                className="px-3"
+                className={`${isVariant ? 'px-2 h-8' : 'px-3'}`}
               >
-                <Edit className="w-4 h-4" />
+                <Edit className={`${isVariant ? 'w-3 h-3' : 'w-4 h-4'}`} />
               </Button>
             </div>
           )}
