@@ -482,28 +482,6 @@ export const HomePage = () => {
 
 
 
-  const useCases = [
-    {
-      title: "E-commerce",
-      description: "Perfect for online stores managing multiple product lines and seasonal inventory fluctuations.",
-      icon: "🛒"
-    },
-    {
-      title: "Retail",
-      description: "Ideal for physical stores needing real-time inventory tracking and point-of-sale integration.",
-      icon: "🏪"
-    },
-    {
-      title: "Wholesale",
-      description: "Great for wholesale businesses managing large quantities and multiple suppliers.",
-      icon: "📦"
-    },
-    {
-      title: "Manufacturing",
-      description: "Essential for manufacturers tracking raw materials, work-in-progress, and finished goods.",
-      icon: "🏭"
-    }
-  ];
 
 
 
@@ -694,12 +672,12 @@ export const HomePage = () => {
   const heroFeatures = [
     {
       icon: TrendingUp,
-      title: "Never miss a sale to out-of-stock",
-      benefit: "Always know what's running low",
-      impact: "Get automatic alerts ",
-      detailedDescription: "See stock levels instantly, Get alerts when items run low, Know exactly when to reorder.",
-      category: "Stock Tracking",
-      visual: "stockout-prevention",
+      title: "Protect your inventory investment",
+      benefit: "Stop wasting capital on dead stock",
+      impact: "Know what to buy and when",
+      detailedDescription: "Track slow-movers draining cash, Optimize reorder quantities, Prevent expensive spoilage & waste.",
+      category: "Capital Protection",
+      visual: "capital-optimization",
     },
     {
       icon: Euro,
@@ -755,7 +733,7 @@ export const HomePage = () => {
 
   // Data metrics for the features section - focused on key benefits
   const dataMetrics = [
-    { value: "$2,400", label: "Average Annual Savings", description: "Stop losing money to stockouts" },
+    { value: "$2,400", label: "Average Annual Savings", description: "Protect capital from waste & overstock" },
     { value: "95%", label: "Customer Satisfaction", description: "Loved by Belgian SMEs" }
   ];
 
@@ -994,14 +972,14 @@ export const HomePage = () => {
   // --- BEGIN FEATURE DATA ---
   const landingFeatures = [
     {
-      title: "Never miss a sale to out-of-stock",
-      subtitle: "Stock Tracking",
-      desc: "Get alerts on your phone when items run low. Always know what needs ordering before you sell out.",
+      title: "Protect capital tied up in inventory",
+      subtitle: "Capital Management",
+      desc: "Stop losing money to overstock and spoilage. Know exactly how much to order to maximize cash flow.",
       benefits: [
-        "See stock levels instantly",
-        "Get alerts when items run low",
-        "Know exactly when to reorder",
-        "Track both shop floor & backroom"
+        "Identify slow-moving stock draining cash",
+        "Get alerts for items at risk of expiry",
+        "Optimize order quantities to free capital",
+        "Track inventory value across locations"
       ],
       icon: <Package className="h-8 w-8 text-white" />,
       gradient: "from-blue-500 to-blue-700",
@@ -1598,7 +1576,7 @@ export const HomePage = () => {
           
               <BounceInWhenVisible delay={200}>
                 <h1 className="text-4xl sm:text-4xl md:text-4xl lg:text-7xl font-light text-gray-800 mb-4 md:mb-8 leading-tight px-2">
-                  Inventory management made simple
+                  Inventory Management Built for Independent Boutiques & Retail Shops.
                 </h1>
               </BounceInWhenVisible>
               
@@ -1781,10 +1759,10 @@ export const HomePage = () => {
             {/* One-line value proposition */}
             <div className="text-center mb-8 md:mb-12">
               <h1 className="text-4xl sm:text-4xl md:text-4xl lg:text-7xl font-light text-gray-800 mb-4 md:mb-8 leading-tight px-2">
-                Stop guessing what's in stock
+                Protect your capital, not just your stock
               </h1>
               <p className="text-base md:text-lg text-gray-600">
-                Built specifically for small retail shops
+                Stop losing money to overstock, waste, and slow-moving inventory
               </p>
             </div>
           </FadeInWhenVisible>
@@ -1825,10 +1803,10 @@ export const HomePage = () => {
                   <TrendingUp className="h-7 w-7 sm:h-8 sm:w-8 text-purple-600" />
                 </div>
                 <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">
-                  Stop losing sales to empty shelves
+                  Stop wasting money on dead inventory
                 </h3>
                 <p className="text-sm text-gray-600 leading-relaxed">
-                  Get alerts before items sell out — reorder the right amount at the right time
+                  Free up cash by identifying slow-movers and optimizing stock levels before capital gets tied up
                 </p>
               </div>
             </SlideUpWhenVisible>
@@ -1994,7 +1972,7 @@ export const HomePage = () => {
                 Everything you need, nothing you don't
               </h1>
               <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
-                Simple tools that save small shops $2,400+ per year
+                Simple tools that protect $2,400+ in capital annually
               </p>
             </div>
           </FadeInWhenVisible>
