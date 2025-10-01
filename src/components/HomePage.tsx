@@ -689,13 +689,14 @@ export const HomePage = () => {
       visual: "profit-optimization",
     },
     {
-      icon: Smartphone,
-      title: "Count inventory in minutes with your phone",
-      benefit: "Skip the clipboard & spreadsheets",
-      impact: "Scan items with your phone camera",
-      detailedDescription: "Use your phone to scan barcodes, Update stock from the shop floor, No computer needed during counts.",
-      category: "Mobile Counting",
-      visual: "mobile-efficiency",
+      icon: Target,
+      title: "Dead Stock Liquidation Optimizer",
+      benefit: "Automatically identify inventory draining your capital",
+      impact: "Flag items with zero sales for 30, 60, or 90 days",
+      detailedDescription: "Auto-flag non-movers, Calculate tied-up capital by product, Get liquidation recommendations, Prevent seasonal writeoffs.",
+      category: "Capital Recovery",
+      visual: "dead-stock-optimizer",
+      isUnique: true,
     },
   ];
 
@@ -790,70 +791,70 @@ export const HomePage = () => {
     {
       name: "Laura Peeters",
       role: "Owner, De Koffieboetiek",
-      title: "Coffee Shop Owner",
-      quote: "StockFlow's automatic reorder system increased our inventory accuracy by 95% and cut our stockouts by 80% in the first quarter. We went from losing $400/month on expired products to zero waste. The ROI was immediate.",
+      title: "Specialty Coffee & Artisan Goods",
+      quote: "StockFlow stopped us from wasting $4,800 annually on expired inventory and overstock. We now invest that capital into bestselling items instead. Our cash tied up in inventory dropped 35%, and we haven't run out of popular items since.",
       avatar: '/Laura.png',
       rating: 5,
       company: "De Koffieboetiek",
       location: "Ghent, Belgium",
-      industry: "Hospitality",
+      industry: "Specialty Retail",
       savings: `${formatPrice(2400)}/year saved`,
       timeSaved: "8 hours/week",
       specificResults: [
-        "95% inventory accuracy improvement",
-        "80% reduction in stockouts", 
-        "$400/month waste elimination",
-        "Immediate ROI in first quarter"
+        "$4,800/year waste elimination",
+        "35% reduction in capital tied up in stock", 
+        "Cash redirected to bestselling products",
+        "Zero stockouts on popular items"
       ],
       beforeAfter: {
-        before: "Manual tracking, frequent stockouts, $400/month waste",
-        after: "95% accuracy, zero waste, automated reorders"
+        before: "$400/month lost to waste, capital tied up in slow-movers",
+        after: "Zero waste, 35% less capital in inventory, cash for bestsellers"
       }
     },
     {
-      name: "Tom De Wit",
-      role: "Operations Manager, TechOnderdelen BV",
-      title: "Electronics Distributor",
-      quote: "When we had a critical inventory discrepancy worth $15,000, StockFlow's real-time tracking identified the issue in under 5 minutes. Their support team resolved it completely within 2 hours. We've never had such fast, reliable inventory management.",
+      name: "Sophie Martens",
+      role: "Owner, Maison Belle Boutique",
+      title: "Boutique Fashion & Gifts",
+      quote: "StockFlow helped us identify $8,500 worth of slow-moving inventory that was tying up our capital. We cleared it at 30% margin instead of letting it sit for another season. Now we only order what actually sells, freeing up cash for new collections.",
       avatar: '/jan.png',
       rating: 5,
-      company: "TechOnderdelen BV",
+      company: "Maison Belle Boutique",
       location: "Antwerp, Belgium",
-      industry: "Technology",
+      industry: "Fashion & Gifts",
       savings: `${formatPrice(5200)}/year saved`,
       timeSaved: "12 hours/week",
       specificResults: [
-        "$15,000 discrepancy resolved in 5 minutes",
-        "2-hour complete resolution time",
-        "Zero inventory discrepancies since implementation",
-        "12 hours/week time savings"
+        "$8,500 dead stock identified and cleared",
+        "30% margin recovered on slow-movers",
+        "Cash flow improved by 40%",
+        "12 hours/week time savings on inventory"
       ],
       beforeAfter: {
-        before: "Manual tracking, frequent discrepancies, slow resolution",
-        after: "Real-time accuracy, instant problem detection, 2-hour resolution"
+        before: "Capital tied up in unsold stock, guessing what to reorder",
+        after: "Data-driven ordering, cash freed for bestsellers, 40% better cash flow"
       }
     },
     {
       name: "Anke Willems",
-      role: "Studio Manager, Creatief Atelier",
-      title: "Creative Workshop Owner",
-      quote: "StockFlow's barcode system reduced our material ordering time from 3 hours to 15 minutes. We now track 200+ art supplies with 100% accuracy. Our workshop efficiency increased by 40% in the first month alone.",
+      role: "Owner, Artisan & Co.",
+      title: "Handcrafted Home Goods",
+      quote: "We used to over-order seasonal items that would sit unsold for months, tying up €3,200 in capital. StockFlow's alerts help us order just enough to meet demand. That freed-up cash went straight into our best-selling handmade candles and ceramics.",
       avatar: '/anke.png',
       rating: 5,
-      company: "Creatief Atelier",
+      company: "Artisan & Co.",
       location: "Bruges, Belgium",
-      industry: "Creative",
+      industry: "Artisan Retail",
       savings: `${formatPrice(1800)}/year saved`,
       timeSaved: "6 hours/week",
       specificResults: [
-        "3 hours → 15 minutes ordering time",
-        "200+ items tracked with 100% accuracy",
-        "40% efficiency increase in first month",
-        "6 hours/week time savings"
+        "€3,200 capital freed from seasonal overstock",
+        "Optimized reorder quantities by product",
+        "Cash reinvested in bestselling items",
+        "6 hours/week saved on inventory counts"
       ],
       beforeAfter: {
-        before: "3-hour manual ordering, inventory confusion, efficiency issues",
-        after: "15-minute automated ordering, 100% accuracy, 40% efficiency boost"
+        before: "€3,200 tied up in unsold seasonal stock, guessing reorder amounts",
+        after: "Capital freed for bestsellers, data-driven ordering, 6hr/week saved"
       }
     }
   ];
@@ -1599,7 +1600,7 @@ export const HomePage = () => {
               variant="outline"
               className="w-full sm:w-auto border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-8 sm:px-12 py-4 sm:py-6 text-lg sm:text-xl font-semibold rounded-full transform hover:scale-105 transition-all duration-300"
             >
-              See how it works
+              Contact us
             </Button>
                 </div>
               </ScaleInWhenVisible>
@@ -1667,13 +1668,13 @@ export const HomePage = () => {
                                 <Package className="h-3 w-3 sm:h-4 sm:w-4 text-blue-600" />
                               </div>
                               <div className="min-w-0 flex-1">
-                                <p className="text-[10px] sm:text-xs md:text-sm font-medium text-gray-900 truncate">Coffee Beans</p>
-                                <p className="text-[9px] sm:text-xs text-gray-500 hidden sm:block">SKU: CB-001</p>
+                                <p className="text-[10px] sm:text-xs md:text-sm font-medium text-gray-900 truncate">Artisan Candle Set</p>
+                                <p className="text-[9px] sm:text-xs text-gray-500 hidden sm:block">SKU: AC-208</p>
                               </div>
                             </div>
                             <div className="text-right ml-2 flex-shrink-0">
-                              <p className="text-[10px] sm:text-xs md:text-sm font-bold text-red-600">8 left</p>
-                              <p className="text-[9px] sm:text-xs text-gray-400 hidden sm:block">Reorder: 50</p>
+                              <p className="text-[10px] sm:text-xs md:text-sm font-bold text-red-600">3 left</p>
+                              <p className="text-[9px] sm:text-xs text-gray-400 hidden sm:block">Reorder: 12</p>
                             </div>
                           </div>
                           
@@ -1683,12 +1684,12 @@ export const HomePage = () => {
                                 <Package className="h-3 w-3 sm:h-4 sm:w-4 text-green-600" />
                               </div>
                               <div className="min-w-0 flex-1">
-                                <p className="text-[10px] sm:text-xs md:text-sm font-medium text-gray-900 truncate">Tea Selection</p>
-                                <p className="text-[9px] sm:text-xs text-gray-500">SKU: TS-002</p>
+                                <p className="text-[10px] sm:text-xs md:text-sm font-medium text-gray-900 truncate">Silk Scarf - Floral</p>
+                                <p className="text-[9px] sm:text-xs text-gray-500">SKU: SS-045</p>
                               </div>
                             </div>
                             <div className="text-right ml-2 flex-shrink-0">
-                              <p className="text-[10px] sm:text-xs md:text-sm font-bold text-green-600">145 left</p>
+                              <p className="text-[10px] sm:text-xs md:text-sm font-bold text-green-600">28 left</p>
                               <p className="text-[9px] sm:text-xs text-gray-400">In stock</p>
                             </div>
                           </div>
@@ -1840,12 +1841,7 @@ export const HomePage = () => {
               {/* Step 1 */}
               <SlideUpWhenVisible delay={100}>
                 <div className="relative bg-white rounded-2xl p-6 sm:p-8 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-blue-100">
-                  {/* Step number */}
-                  <div className="absolute -top-6 left-1/2 transform -translate-x-1/2">
-                    <div className="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center text-xl font-bold shadow-lg">
-                      1
-                    </div>
-                  </div>
+
                   
                   {/* Icon */}
                   <div className="flex justify-center mb-4 sm:mb-6 mt-4">
@@ -1865,7 +1861,7 @@ export const HomePage = () => {
                   {/* Visual indicator */}
                   <div className="mt-6 pt-6 border-t border-gray-200">
                     <div className="flex items-center justify-center gap-2 text-sm text-gray-500">
-                      <CheckCircle className="h-4 w-4 text-green-600" />
+                      <CheckCircle className="h-4 w-4 text-blue-600" />
                       <span>Takes 5 minutes</span>
                     </div>
                   </div>
@@ -1875,17 +1871,12 @@ export const HomePage = () => {
               {/* Step 2 */}
               <SlideUpWhenVisible delay={200}>
                 <div className="relative bg-white rounded-2xl p-6 sm:p-8 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-green-100">
-                  {/* Step number */}
-                  <div className="absolute -top-6 left-1/2 transform -translate-x-1/2">
-                    <div className="w-12 h-12 bg-green-600 text-white rounded-full flex items-center justify-center text-xl font-bold shadow-lg">
-                      2
-                    </div>
-                  </div>
+
                   
                   {/* Icon */}
                   <div className="flex justify-center mb-4 sm:mb-6 mt-4">
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 bg-green-100 rounded-full flex items-center justify-center">
-                      <Smartphone className="h-8 w-8 sm:h-10 sm:w-10 text-green-600" />
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 bg-blue-100 rounded-full flex items-center justify-center">
+                      <Smartphone className="h-8 w-8 sm:h-10 sm:w-10 text-blue-600" />
                     </div>
                   </div>
                   
@@ -1900,7 +1891,7 @@ export const HomePage = () => {
                   {/* Visual indicator */}
                   <div className="mt-6 pt-6 border-t border-gray-200">
                     <div className="flex items-center justify-center gap-2 text-sm text-gray-500">
-                      <Smartphone className="h-4 w-4 text-green-600" />
+                      <Smartphone className="h-4 w-4 text-blue-600" />
                       <span>Works on any phone</span>
                     </div>
                   </div>
@@ -1909,33 +1900,28 @@ export const HomePage = () => {
               
               {/* Step 3 */}
               <SlideUpWhenVisible delay={300}>
-                <div className="relative bg-white rounded-2xl p-6 sm:p-8 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-purple-100">
-                  {/* Step number */}
-                  <div className="absolute -top-6 left-1/2 transform -translate-x-1/2">
-                    <div className="w-12 h-12 bg-purple-600 text-white rounded-full flex items-center justify-center text-xl font-bold shadow-lg">
-                      3
-                    </div>
-                  </div>
+                <div className="relative bg-blue-100 rounded-2xl p-6 sm:p-8 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-blue-600">
+
                   
                   {/* Icon */}
                   <div className="flex justify-center mb-4 sm:mb-6 mt-4">
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 bg-purple-100 rounded-full flex items-center justify-center">
-                      <BarChart3 className="h-8 w-8 sm:h-10 sm:w-10 text-purple-600" />
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-full flex items-center justify-center">
+                      <Target className="h-8 w-8 sm:h-10 sm:w-10 text-blue-600" />
                     </div>
                   </div>
                   
                   {/* Content */}
                   <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3 text-center">
-                    Get alerts & simple reports
+                  Dead Stock Liquidation Optimizer
                   </h3>
                   <p className="text-gray-600 text-center leading-relaxed">
-                    Receive alerts when items run low. See what's selling and what's not with easy-to-read reports.
+                  Flag items with zero sales for 30, 60, or 90 days. Auto-flag non-movers. Get liquidation recommendations.
                   </p>
                   
                   {/* Visual indicator */}
                   <div className="mt-6 pt-6 border-t border-gray-200">
                     <div className="flex items-center justify-center gap-2 text-sm text-gray-500">
-                      <TrendingUp className="h-4 w-4 text-purple-600" />
+                      <TrendingUp className="h-4 w-4 text-blue-600" />
                       <span>Automatic updates</span>
                     </div>
                   </div>
@@ -1963,67 +1949,158 @@ export const HomePage = () => {
 
 
 
-      {/* Simple Features for Small Retail Shops */}
-      <section id="features-section" className="py-16 md:py-20 bg-white">
-        <div className="max-w-6xl mx-auto px-4">
+
+
+      {/* Dead Stock Liquidation Optimizer - Unique Feature Showcase */}
+      <section className="py-16 md:py-24  relative overflow-hidden">
+        {/* Background decoration */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-10 right-10 w-72 h-72  rounded-full blur-3xl"></div>
+          <div className="absolute bottom-10 left-10 w-96 h-96  rounded-full blur-3xl"></div>
+        </div>
+        
+        <div className="max-w-6xl mx-auto px-4 relative z-10">
           <FadeInWhenVisible>
+
+            
             <div className="text-center mb-12">
-              <h1 className="text-4xl sm:text-4xl md:text-4xl lg:text-7xl font-light text-gray-800 mb-4 md:mb-8 leading-tight px-2">
-                Everything you need, nothing you don't
+            <h1 className="text-4xl sm:text-4xl md:text-4xl lg:text-7xl font-light text-gray-800 mb-4 md:mb-8 leading-tight px-2">
+            Dead Stock Liquidation Optimizer
               </h1>
               <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
-                Simple tools that protect $2,400+ in capital annually
+                Stop losing money to inventory that sits unsold. Automatically identify products draining your capital.
               </p>
             </div>
           </FadeInWhenVisible>
-          
-          {/* 3 Key Features - Simple Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 mb-12">
-            {heroFeatures.map((feature, index) => (
-              <SlideUpWhenVisible key={index} delay={index * 100}>
-                <div className="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-5 sm:p-6 lg:p-8 border border-gray-200 hover:shadow-lg transition-all duration-300">
-                  {/* Icon */}
-                  <div className="mb-3 sm:mb-4">
-                    <div className="w-12 h-12 sm:w-14 sm:h-14 bg-blue-100 rounded-full flex items-center justify-center">
-                      <feature.icon className="h-6 w-6 sm:h-7 sm:w-7 text-blue-600" />
-                    </div>
-                  </div>
-                  
-                  {/* Title */}
-                  <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3">
-                    {feature.title}
-                  </h3>
-                  
-                  {/* Description */}
-                  <p className="text-gray-600 mb-4 leading-relaxed">
-                    {feature.impact}
-                  </p>
-                  
-                  {/* Quick bullets */}
-                  <ul className="space-y-2">
-                    {feature.detailedDescription.split(', ').slice(0, 3).map((item, itemIndex) => (
-                      <li key={itemIndex} className="flex items-start text-sm text-gray-600">
-                        <CheckCircle className="h-4 w-4 text-green-600 mr-2 flex-shrink-0 mt-0.5" />
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
+
+          {/* Feature Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+            <SlideUpWhenVisible delay={100}>
+              <div className="bg-white rounded-2xl p-8 shadow-xl border-2 border-blue-600">
+                <div className="w-16 h-16 bg-blue-600 rounded-xl flex items-center justify-center mb-6">
+                  <Clock className="h-8 w-8 text-white" />
                 </div>
-              </SlideUpWhenVisible>
-            ))}
+                <h3 className="text-xl font-bold text-gray-900 mb-4">
+                  Auto-Flag Non-Movers
+                </h3>
+                <p className="text-gray-600 mb-4 leading-relaxed">
+                  Set your threshold: 30, 60, or 90 days. Any product with zero sales automatically gets flagged for review.
+                </p>
+                <ul className="space-y-2">
+                  <li className="flex items-start text-sm text-gray-700">
+                    <CheckCircle className="h-5 w-5 text-green-600 mr-2 flex-shrink-0 mt-0.5" />
+                    <span>Customizable time periods (30/60/90 days)</span>
+                  </li>
+                  <li className="flex items-start text-sm text-gray-700">
+                    <CheckCircle className="h-5 w-5 text-green-600 mr-2 flex-shrink-0 mt-0.5" />
+                    <span>Automatic alerts when items hit threshold</span>
+                  </li>
+                  <li className="flex items-start text-sm text-gray-700">
+                    <CheckCircle className="h-5 w-5 text-green-600 mr-2 flex-shrink-0 mt-0.5" />
+                    <span>Perfect for seasonal & fashion inventory</span>
+                  </li>
+                </ul>
+              </div>
+            </SlideUpWhenVisible>
+
+            <SlideUpWhenVisible delay={200}>
+              <div className="bg-white rounded-2xl p-8 shadow-xl border-2 border-blue-600">
+                <div className="w-16 h-16 bg-blue-600 rounded-xl flex items-center justify-center mb-6">
+                  <Euro className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-4">
+                  Calculate Capital at Risk
+                </h3>
+                <p className="text-gray-600 mb-4 leading-relaxed">
+                  See exactly how much money is tied up in slow-moving inventory. Know your exposure in real dollars.
+                </p>
+                <ul className="space-y-2">
+                  <li className="flex items-start text-sm text-gray-700">
+                    <CheckCircle className="h-5 w-5 text-green-600 mr-2 flex-shrink-0 mt-0.5" />
+                    <span>Total capital locked in dead stock</span>
+                  </li>
+                  <li className="flex items-start text-sm text-gray-700">
+                    <CheckCircle className="h-5 w-5 text-green-600 mr-2 flex-shrink-0 mt-0.5" />
+                    <span>Break down by product category</span>
+                  </li>
+                  <li className="flex items-start text-sm text-gray-700">
+                    <CheckCircle className="h-5 w-5 text-green-600 mr-2 flex-shrink-0 mt-0.5" />
+                    <span>Track potential losses over time</span>
+                  </li>
+                </ul>
+              </div>
+            </SlideUpWhenVisible>
+
+            <SlideUpWhenVisible delay={300}>
+              <div className="bg-white rounded-2xl p-8 shadow-xl border-2 border-blue-600">
+                <div className="w-16 h-16 bg-blue-600 rounded-xl flex items-center justify-center mb-6">
+                  <TrendingUp className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-4">
+                  Smart Liquidation Suggestions
+                </h3>
+                <p className="text-gray-600 mb-4 leading-relaxed">
+                  Get AI-powered recommendations on how to move dead stock: bundle, discount, or clearance strategies.
+                </p>
+                <ul className="space-y-2">
+                  <li className="flex items-start text-sm text-gray-700">
+                    <CheckCircle className="h-5 w-5 text-green-600 mr-2 flex-shrink-0 mt-0.5" />
+                    <span>Optimal discount percentages</span>
+                  </li>
+                  <li className="flex items-start text-sm text-gray-700">
+                    <CheckCircle className="h-5 w-5 text-green-600 mr-2 flex-shrink-0 mt-0.5" />
+                    <span>Bundle opportunities with bestsellers</span>
+                  </li>
+                  <li className="flex items-start text-sm text-gray-700">
+                    <CheckCircle className="h-5 w-5 text-green-600 mr-2 flex-shrink-0 mt-0.5" />
+                    <span>Best timing for clearance sales</span>
+                  </li>
+                </ul>
+              </div>
+            </SlideUpWhenVisible>
+
+            <SlideUpWhenVisible delay={400}>
+              <div className="bg-white rounded-2xl p-8 shadow-xl border-2 border-blue-600">
+                <div className="w-16 h-16 bg-blue-600 rounded-xl flex items-center justify-center mb-6">
+                  <Shield className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-4">
+                  Prevent Future Overstock
+                </h3>
+                <p className="text-gray-600 mb-4 leading-relaxed">
+                  Learn from past mistakes. See which products historically become dead stock to avoid over-ordering.
+                </p>
+                <ul className="space-y-2">
+                  <li className="flex items-start text-sm text-gray-700">
+                    <CheckCircle className="h-5 w-5 text-green-600 mr-2 flex-shrink-0 mt-0.5" />
+                    <span>Historical slow-mover patterns</span>
+                  </li>
+                  <li className="flex items-start text-sm text-gray-700">
+                    <CheckCircle className="h-5 w-5 text-green-600 mr-2 flex-shrink-0 mt-0.5" />
+                    <span>Seasonal trend warnings</span>
+                  </li>
+                  <li className="flex items-start text-sm text-gray-700">
+                    <CheckCircle className="h-5 w-5 text-green-600 mr-2 flex-shrink-0 mt-0.5" />
+                    <span>Smart reorder quantity recommendations</span>
+                  </li>
+                </ul>
+              </div>
+            </SlideUpWhenVisible>
           </div>
 
-          {/* Simple CTA */}
-          <FadeInWhenVisible delay={400}>
-            <div className="text-center px-4">
+
+
+          {/* CTA */}
+          <FadeInWhenVisible delay={600}>
+            <div className="text-center mt-12 px-4">
               <Button
                 onClick={handleLoginClick}
-                className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-8 sm:px-12 py-4 sm:py-6 text-lg sm:text-xl font-semibold rounded-full transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25"
+                className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-10 sm:px-16 py-5 sm:py-7 text-xl sm:text-2xl font-bold rounded-full transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-blue-500/50"
               >
-                Try it free for your shop
+                Start Using Dead Stock Optimizer Free
               </Button>
-              <p className="text-xs sm:text-sm text-gray-500 mt-4">
-                Free forever • No credit card • 100 products included
+              <p className="text-sm text-gray-600 mt-4">
+                Available on all plans • No credit card required • Set up in 2 minutes
               </p>
             </div>
           </FadeInWhenVisible>
@@ -2031,78 +2108,210 @@ export const HomePage = () => {
       </section>
 
 
+      {/* Dead Stock Calculator Lead Magnet */}
+      <section className="py-16 md:py-20 bg-gradient-to-br from-white via-gray-50 to-blue-50 border-y border-gray-200">
+        <div className="max-w-5xl mx-auto px-4">
+          <div className="bg-white rounded-3xl shadow-2xl border-2 border-blue-200 overflow-hidden">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
+              {/* Left Side - Value Proposition */}
+              <div className="bg-gradient-to-br from-blue-600 to-blue-800 p-8 md:p-12 text-white">
+                <FadeInWhenVisible>
+                  <div className="mb-6">
+                    <div className="inline-flex items-center px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-sm font-semibold mb-6">
+                      🎁 Free Calculator Tool
+                    </div>
+                    
+                    <h2 className="text-3xl md:text-4xl font-bold mb-4 leading-tight">
+                      How Much Is Dead Stock Costing You?
+                    </h2>
+                    
+                    <p className="text-lg text-blue-100 mb-6 leading-relaxed">
+                      Most boutique owners have €2,000-€8,000 tied up in slow-moving inventory. Find out your exact number in 60 seconds.
+                    </p>
+                  </div>
 
-      {/* Why Choose Us Section - Enhanced */}
-      <section className="py-20 bg-gradient-to-br from-slate-50 to-blue-50">
-        <div className="max-w-7xl mx-auto px-4">
-          {/* Compelling Headline */}
-          <div className="text-center mb-16">
-            <h1 className="text-4xl sm:text-4xl md:text-4xl lg:text-7xl font-light text-gray-800 mb-4 md:mb-8 leading-tight px-2">
-              Why Choose StockFlow
-            </h1>
-            <p className="text-xl text-gray-600 max-w-4xl mx-auto mb-8">
-              Built specifically for small businesses. 
-            </p>
-            
-            {/* Trust Statistics */}
-            <div className="grid grid-cols-2 gap-4 md:gap-6 max-w-4xl mx-auto">
-              {trustStats.map((stat, index) => (
-                <div key={index} className="text-center px-2 md:px-4">
-                  <div className="text-2xl md:text-4xl font-bold text-blue-600 mb-2">{stat.number}</div>
-                  <div className="text-xs md:text-sm text-gray-600">{stat.label}</div>
-                </div>
-              ))}
+                  {/* Benefits */}
+                  <div className="space-y-4 mb-8">
+                    <div className="flex items-start gap-3">
+                      <div className="w-6 h-6 bg-green-400 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <Check className="h-4 w-4 text-green-900" />
+                      </div>
+                      <div>
+                        <p className="font-semibold text-white">Calculate Your Capital at Risk</p>
+                        <p className="text-sm text-blue-100">See how much money is locked in unsold inventory</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-start gap-3">
+                      <div className="w-6 h-6 bg-green-400 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <Check className="h-4 w-4 text-green-900" />
+                      </div>
+                      <div>
+                        <p className="font-semibold text-white">Get Liquidation Recommendations</p>
+                        <p className="text-sm text-blue-100">Receive a custom action plan to recover your capital</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-start gap-3">
+                      <div className="w-6 h-6 bg-green-400 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <Check className="h-4 w-4 text-green-900" />
+                      </div>
+                      <div>
+                        <p className="font-semibold text-white">Learn Industry Benchmarks</p>
+                        <p className="text-sm text-blue-100">Compare your inventory health to similar boutiques</p>
+                      </div>
+                    </div>
+                  </div>
+
+                </FadeInWhenVisible>
+              </div>
+
+              {/* Right Side - Email Capture Form */}
+              <div className="p-8 md:p-12 bg-gray-50">
+                <SlideInWhenVisible direction="right" delay={200}>
+                  <div className="mb-6">
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                      Get Your Free Report
+                    </h3>
+                    <p className="text-gray-600">
+                      Enter your details to receive your personalized dead stock analysis
+                    </p>
+                  </div>
+
+                  {/* Lead Capture Form */}
+                  <form onSubmit={handleLeadSubmit} className="space-y-4">
+                    <div>
+                      <label htmlFor="calc-email" className="block text-sm font-medium text-gray-700 mb-2">
+                        Email Address *
+                      </label>
+                      <input
+                        type="email"
+                        id="calc-email"
+                        value={leadEmail}
+                        onChange={(e) => setLeadEmail(e.target.value)}
+                        placeholder="you@yourboutique.com"
+                        required
+                        className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-200 transition-all outline-none text-gray-900"
+                      />
+                    </div>
+
+                    <div>
+                      <label htmlFor="calc-inventory-value" className="block text-sm font-medium text-gray-700 mb-2">
+                        Approximate Inventory Value (Optional)
+                      </label>
+                      <select
+                        id="calc-inventory-value"
+                        className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-200 transition-all outline-none text-gray-900"
+                      >
+                        <option value="">Select range...</option>
+                        <option value="under-5k">Under €5,000</option>
+                        <option value="5k-15k">€5,000 - €15,000</option>
+                        <option value="15k-50k">€15,000 - €50,000</option>
+                        <option value="50k-plus">€50,000+</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label htmlFor="calc-shop-type" className="block text-sm font-medium text-gray-700 mb-2">
+                        Shop Type (Optional)
+                      </label>
+                      <select
+                        id="calc-shop-type"
+                        className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-200 transition-all outline-none text-gray-900"
+                      >
+                        <option value="">Select type...</option>
+                        <option value="fashion">Fashion & Clothing</option>
+                        <option value="gifts">Gifts & Home Decor</option>
+                        <option value="artisan">Artisan & Handcrafted</option>
+                        <option value="specialty">Specialty Foods</option>
+                        <option value="other">Other</option>
+                      </select>
+                    </div>
+
+                    <Button
+                      type="submit"
+                      className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-4 text-lg font-bold rounded-xl transform hover:scale-105 transition-all duration-300 shadow-lg"
+                    >
+                      Calculate My Dead Stock Loss →
+                    </Button>
+
+                    {leadStatus === 'success' && (
+                      <div className="p-4 bg-green-50 border-2 border-green-200 rounded-xl">
+                        <p className="text-green-800 font-semibold flex items-center gap-2">
+                          <CheckCircle className="h-5 w-5" />
+                          Success! Check your email for your personalized report.
+                        </p>
+                      </div>
+                    )}
+
+                    {leadStatus === 'error' && (
+                      <div className="p-4 bg-red-50 border-2 border-red-200 rounded-xl">
+                        <p className="text-red-800 font-semibold">
+                          Please enter a valid email address.
+                        </p>
+                      </div>
+                    )}
+
+                    <p className="text-xs text-gray-500 text-center mt-4">
+                      🔒 We respect your privacy. No spam, unsubscribe anytime.
+                    </p>
+                  </form>
+
+                  {/* Trust Indicators */}
+                  <div className="mt-8 pt-6 border-t border-gray-200">
+                    <div className="flex items-center justify-center gap-6 text-xs text-gray-500">
+                      <div className="flex items-center gap-1">
+                        <Shield className="h-4 w-4 text-green-600" />
+                        <span>GDPR Compliant</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Clock className="h-4 w-4 text-blue-600" />
+                        <span>60 sec delivery</span>
+                      </div>
+                    </div>
+                  </div>
+                </SlideInWhenVisible>
+              </div>
             </div>
           </div>
 
-          {/* Value-Focused Benefits */}
-          <div className="mb-16">
-            <Carousel
-              itemsPerView={{
-                mobile: 1,
-                tablet: 2,
-                desktop: 4
-              }}
-              showArrows={true}
-              showDots={true}
-              autoPlay={false}
-              className="px-4"
-            >
-              {whyChooseUs.map((reason, index) => (
-                <motion.div 
-                  key={index} 
-                  className="text-center bg-white rounded-2xl p-6 md:p-8 shadow-lg hover:shadow-xl transition-all duration-300 h-full"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                >
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-3xl mb-6">
-                  {reason.icon}
+          {/* Additional Value Statements Below */}
+          <FadeInWhenVisible delay={400}>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Euro className="h-8 w-8 text-blue-600" />
                 </div>
-                <h3 className="text-xl font-semibold mb-4 text-gray-900">{reason.title}</h3>
-                <p className="text-gray-600 leading-relaxed">{reason.description}</p>
-                </motion.div>
-              ))}
-            </Carousel>
-          </div>
+                <h4 className="font-bold text-gray-900 mb-2">Average Savings: €4,200</h4>
+                <p className="text-sm text-gray-600">
+                  Shop owners who use the calculator recover an average of €4,200 in tied-up capital
+                </p>
+              </div>
 
+              <div className="text-center">
+                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <TrendingUp className="h-8 w-8 text-green-600" />
+                </div>
+                <h4 className="font-bold text-gray-900 mb-2">250+ Shops Helped</h4>
+                <p className="text-sm text-gray-600">
+                  Boutique owners across Europe trust our calculator to optimize their inventory
+                </p>
+              </div>
 
-
-          {/* Clear Call to Action */}
-          <div className="text-center mt-12 px-4">
-            <Button
-              onClick={handleLoginClick}
-              className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-8 sm:px-12 py-4 sm:py-6 text-lg sm:text-xl font-semibold rounded-full transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25"
-            >
-              Start free today
-            </Button>
-
-            <p className="text-xs sm:text-sm text-gray-500 mt-4">
-              Join 100+ retail shops using StockFlow • Set up in 10 minutes
-            </p>
-          </div>
+              <div className="text-center">
+                <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Zap className="h-8 w-8 text-purple-600" />
+                </div>
+                <h4 className="font-bold text-gray-900 mb-2">Instant Results</h4>
+                <p className="text-sm text-gray-600">
+                  Get your personalized dead stock report delivered to your inbox in under 60 seconds
+                </p>
+              </div>
+            </div>
+          </FadeInWhenVisible>
         </div>
       </section>
+
 
 
       
