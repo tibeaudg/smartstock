@@ -1,5 +1,12 @@
 import { useEffect } from 'react';
 
+// Extend the Window interface to include queryClient
+declare global {
+  interface Window {
+    queryClient?: any;
+  }
+}
+
 export const usePageRefresh = () => {
   useEffect(() => {
     let isPageHidden = false;

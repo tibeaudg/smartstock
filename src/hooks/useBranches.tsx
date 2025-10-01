@@ -40,6 +40,9 @@ function getSafeLocalStorage() {
 }
 
 const BRANCH_STORAGE_KEY = 'active-branch-id';
+const BRANCHES_CACHE_KEY = 'cached-branches';
+const CACHE_TIMESTAMP_KEY = 'branches-cache-timestamp';
+const CACHE_DURATION = 1000 * 60 * 5; // 5 minutes
 const safeStorage = getSafeLocalStorage();
 
 // Helper: haal branch uit localStorage
@@ -62,13 +65,55 @@ const setBranchIdToStorage = (branchId: string | null) => {
   } catch {}
 };
 
+// Helper: get cached branches
+const getCachedBranches = (): Branch[] | null => {
+  try {
+    const cached = safeStorage.getItem(BRANCHES_CACHE_KEY);
+    const timestamp = safeStorage.getItem(CACHE_TIMESTAMP_KEY);
+    
+    if (!cached || !timestamp) return null;
+    
+    const cacheAge = Date.now() - parseInt(timestamp, 10);
+    if (cacheAge > CACHE_DURATION) {
+      // Cache expired
+      return null;
+    }
+    
+    return JSON.parse(cached);
+  } catch {
+    return null;
+  }
+};
+
+// Helper: save branches to cache
+const setCachedBranches = (branches: Branch[]) => {
+  try {
+    safeStorage.setItem(BRANCHES_CACHE_KEY, JSON.stringify(branches));
+    safeStorage.setItem(CACHE_TIMESTAMP_KEY, Date.now().toString());
+  } catch {}
+};
+
 // Verplaats alle state en logica naar binnen in BranchProvider
 export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
   const { user, authLoading } = useAuth();
-  const [branches, setBranches] = useState<Branch[]>([]);
-  const [activeBranch, setActiveBranchState] = useState<Branch | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  
+  // Initialize with cached data to prevent loading screen on tab switch
+  const cachedBranches = getCachedBranches();
+  const [branches, setBranches] = useState<Branch[]>(cachedBranches || []);
+  const [activeBranch, setActiveBranchState] = useState<Branch | null>(() => {
+    // Try to restore active branch from cache immediately
+    if (cachedBranches && cachedBranches.length > 0) {
+      const storedId = getBranchIdFromStorage();
+      const found = storedId ? cachedBranches.find(b => b.branch_id === storedId) : null;
+      return found || cachedBranches.find(b => b.is_main) || cachedBranches[0];
+    }
+    return null;
+  });
+  
+  // Only show loading on initial load when no cache exists
+  const [loading, setLoading] = useState<boolean>(!cachedBranches);
   const [hasNoBranches, setHasNoBranches] = useState<boolean>(false);
+  const [hasFetched, setHasFetched] = useState<boolean>(false);
 
   // Synchroniseer branch tussen tabbladen
   useEffect(() => {
@@ -234,6 +279,8 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
       }
 
       if (data && !cancelled?.current) {
+        // Cache the branches data
+        setCachedBranches(data);
         setBranches(data);
         setHasNoBranches(data.length === 0);
         
@@ -282,8 +329,29 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
     const cancelled = { current: false };
     const initBranches = async () => {
       if (authLoading) return;
+      
       if (user) {
-        await fetchBranches(cancelled);
+        // Only fetch if we haven't fetched yet or if cache is stale
+        const shouldFetch = !hasFetched || !cachedBranches;
+        
+        if (shouldFetch) {
+          await fetchBranches(cancelled);
+          if (!cancelled.current) {
+            setHasFetched(true);
+          }
+        } else {
+          // We have cache, just set loading to false
+          if (!cancelled.current) {
+            setLoading(false);
+          }
+          
+          // Fetch in background without blocking UI
+          fetchBranches(cancelled).then(() => {
+            if (!cancelled.current) {
+              setHasFetched(true);
+            }
+          });
+        }
       } else {
         if (!cancelled.current) {
           setBranches([]);
@@ -367,7 +435,13 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const refreshBranches = async () => {
+    // Refresh without showing loading screen (background refresh)
+    const originalLoading = loading;
     await fetchBranches();
+    // Don't set loading back if we're doing a background refresh
+    if (!originalLoading) {
+      setLoading(false);
+    }
   };
 
   if (typeof window !== 'undefined') {

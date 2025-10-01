@@ -33,10 +33,7 @@ export default function SmallShopStockControl() {
     },
     {
       question: "What are the most common stock control mistakes small shops make?",
-      {
-        question: "What are the most common stock control mistakes small shops make?",
-        answer: "Common mistakes include not setting minimum stock levels, failing to track fast-moving items, relying on manual counting, ignoring seasonal trends, and not analyzing which products are most profitable. Our system helps avoid these pitfalls."
-      }
+      answer: "Common mistakes include not setting minimum stock levels, failing to track fast-moving items, relying on manual counting, ignoring seasonal trends, and not analyzing which products are most profitable. Our system helps avoid these pitfalls."
     },
     {
       question: "How often should small shops check their stock levels?",

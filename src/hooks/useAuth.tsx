@@ -80,7 +80,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           selected_plan: null,
           blocked: false,
           last_login: null,
-          is_owner: false
+          is_owner: false,
+          onboarding_completed: false,
+          onboarding_data: null
         };
       }
       
