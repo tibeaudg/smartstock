@@ -1581,76 +1581,7 @@ export const HomePage = () => {
       </section>
 
 
-      {/* Enhanced Trust Bar */}
-      <section className="py-12 bg-white border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-4">
-          <FadeInWhenVisible>
-            <div className="text-center mb-8">
-              <p className="text-sm text-gray-500 font-medium mb-6">
-                Trusted by leading SMEs
-              </p>
-            </div>
-          </FadeInWhenVisible>
-          
-        <SlideUpWhenVisible delay={200}>
-          <div className="grid gap-4 max-w-4xl mx-auto px-4 trust-grid">
-            <style>{`
-              .trust-grid {
-                grid-template-columns: repeat(2, 1fr);
-              }
-              @media (min-width: 1024px) {
-                .trust-grid {
-                  grid-template-columns: repeat(4, 1fr) !important;
-                }
-              }
-            `}</style>
-              {/* Koffieboetiek */}
-              <div className="flex flex-col items-center space-y-2 p-3 rounded-lg bg-white/50 backdrop-blur-sm border border-gray-200/50 hover:bg-white/80 transition-all duration-300">
-                <div className="w-12 h-12 lg:w-14 lg:h-14 bg-blue-100 rounded-full flex items-center justify-center shadow-sm">
-                  <span className="text-blue-600 font-bold text-sm lg:text-base">KB</span>
-                </div>
-                <span className="text-xs lg:text-sm text-gray-700 font-medium text-center">Koffieboetiek</span>
-                <span className="text-xs text-gray-500 text-center">Coffee Shop</span>
-              </div>
-              
-              {/* TechOnderdelen */}
-              <div className="flex flex-col items-center space-y-2 p-3 rounded-lg bg-white/50 backdrop-blur-sm border border-gray-200/50 hover:bg-white/80 transition-all duration-300">
-                <div className="w-12 h-12 lg:w-14 lg:h-14 bg-green-100 rounded-full flex items-center justify-center shadow-sm">
-                  <span className="text-green-600 font-bold text-sm lg:text-base">TB</span>
-                </div>
-                <span className="text-xs lg:text-sm text-gray-700 font-medium text-center">TechOnderdelen</span>
-                <span className="text-xs text-gray-500 text-center">Electronics</span>
-              </div>
-              
-              {/* Creatief Atelier */}
-              <div className="flex flex-col items-center space-y-2 p-3 rounded-lg bg-white/50 backdrop-blur-sm border border-gray-200/50 hover:bg-white/80 transition-all duration-300">
-                <div className="w-12 h-12 lg:w-14 lg:h-14 bg-purple-100 rounded-full flex items-center justify-center shadow-sm">
-                  <span className="text-purple-600 font-bold text-sm lg:text-base">CA</span>
-                </div>
-                <span className="text-xs lg:text-sm text-gray-700 font-medium text-center">Creatief Atelier</span>
-                <span className="text-xs text-gray-500 text-center">Creative Studio</span>
-              </div>
-              
-              {/* 500+ SMEs */}
-              <div className="flex flex-col items-center space-y-2 p-3 rounded-lg bg-white/50 backdrop-blur-sm border border-gray-200/50 hover:bg-white/80 transition-all duration-300">
-                <div className="w-12 h-12 lg:w-14 lg:h-14 bg-orange-100 rounded-full flex items-center justify-center shadow-sm">
-                  <span className="text-orange-600 font-bold text-sm lg:text-base">+</span>
-                </div>
-                <span className="text-xs lg:text-sm text-gray-700 font-medium text-center">500+ SMEs</span>
-                <span className="text-xs text-gray-500 text-center">Across Europe</span>
-              </div>
-            </div>
-          </SlideUpWhenVisible>
-          
-          <FadeInWhenVisible delay={400}>
-            <div className="text-center mt-8">
-              <p className="text-xs text-gray-400">
-                Join thousands of businesses saving $2,400+ annually
-              </p>
-            </div>
-          </FadeInWhenVisible>
-        </div>
-      </section>
+
 
       {/* Interactive Savings Calculator - Micro-Conversion */}
       <section className="py-20 bg-white">
@@ -1787,47 +1718,7 @@ export const HomePage = () => {
             </Carousel>
           </div>
 
-          {/* Mid-Page Detail Grid */}
-          <FadeInWhenVisible delay={600}>
-            <div className="mb-16">
-              <div className="text-center mb-12">
-                <h3 className="text-3xl md:text-4xl font-light text-gray-800 mb-4">
-                  Built for Small Business Success
-                </h3>
-                <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                  Everything you need to manage inventory like a pro. 
-                  No complexity, no unnecessary features, just results.
-                </p>
-              </div>
-              
-              <Carousel
-                itemsPerView={{
-                  mobile: 1,
-                  tablet: 2,
-                  desktop: 4
-                }}
-                showArrows={true}
-                showDots={true}
-                autoPlay={false}
-                className="px-4"
-              >
-                {secondaryFeatures.map((feature, index) => (
-                  <StaggerInWhenVisible key={index} delay={index * 150} staggerDelay={index * 50}>
-                    <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 group h-full">
-                    <div className="text-center">
-                      <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-2xl mb-4 group-hover:bg-blue-200 transition-colors">
-                        <feature.icon className="h-8 w-8 text-blue-600" />
-                      </div>
-                      <h4 className="text-lg font-semibold text-gray-900 mb-2">{feature.title}</h4>
-                      <p className="text-sm text-blue-600 font-medium mb-3">{feature.benefit}</p>
-                      <p className="text-sm text-gray-600">{feature.description}</p>
-                    </div>
-                    </div>
-                  </StaggerInWhenVisible>
-                ))}
-              </Carousel>
-            </div>
-          </FadeInWhenVisible>
+
 
           {/* Technical Detail Section */}
           <FadeInWhenVisible delay={800}>
@@ -1919,31 +1810,7 @@ export const HomePage = () => {
             </Carousel>
           </div>
 
-          {/* Human Connection - Founder Story */}
-          <div className="bg-white rounded-3xl p-8 md:p-12 shadow-xl">
-            <div className="grid md:grid-cols-2 gap-8 items-center">
-              <div>
-                <h3 className="text-2xl md:text-3xl font-semibold text-gray-800 mb-4">
-                  Founded by Inventory Experts Who Understand Your Pain
-                </h3>
-                <p className="text-gray-600 mb-6 leading-relaxed">
-                  StockFlow was born from frustration. After years of managing inventory for small businesses, 
-                  we were tired of seeing complex, expensive solutions that didn't understand SME needs. 
-                  We built StockFlow because we believe every business deserves simple, powerful inventory management.
-                </p>
-              </div>
-              <div className="text-center">
-                <div className="inline-flex items-center justify-center w-24 h-24 bg-blue-100 rounded-full mb-4">
-                  <Users className="h-12 w-12 text-blue-600" />
-                </div>
-                <h4 className="text-lg font-semibold text-gray-800 mb-2">Community First</h4>
-                <p className="text-gray-600">
-                  For every new customer, we donate $1 to local business development programs. 
-                  We're not just building software—we're building a community.
-                </p>
-              </div>
-            </div>
-          </div>
+
 
           {/* Clear Call to Action */}
           <div className="text-center mt-12">
@@ -2219,66 +2086,7 @@ export const HomePage = () => {
         </div>
       </section>
 
-      {/* Enterprise Security Section */}
-      <section className="py-12 md:py-20 bg-white">
-        <div className="max-w-4xl mx-auto text-center px-4">
-          <FadeInWhenVisible>
-            <h2 className="text-3xl md:text-4xl lg:text-6xl font-light text-gray-800 mb-4 md:mb-6">
-              Enterprise-grade security
-            </h2>
-            <p className="text-lg md:text-xl text-gray-600 mb-8 md:mb-12 max-w-2xl mx-auto">
-              Keep your company's data secure and compliant with industry-leading security standards and certifications.
-            </p>
-          </FadeInWhenVisible>
-          
-          {/* Security Certifications */}
-          <FadeInWhenVisible delay={200}>
-            <div className="mb-8 md:mb-12">
-              <div className="grid grid-cols-4 gap-6 max-w-2xl mx-auto">
-                {/* GDPR */}
-                <div className="flex flex-col items-center px-4">
-                  <div className="w-16 h-16 md:w-20 md:h-20 bg-white rounded-full shadow-lg border border-gray-200 flex items-center justify-center mb-3">
-                    <div className="text-center">
-                      <div className="text-xs font-bold text-gray-800">GDPR</div>
-                      <div className="text-xs text-gray-600">Compliant</div>
-                    </div>
-                  </div>
-                </div>
 
-                {/* SOC 2 */}
-                <div className="flex flex-col items-center px-4">
-                  <div className="w-16 h-16 md:w-20 md:h-20 bg-white rounded-full shadow-lg border border-gray-200 flex items-center justify-center mb-3">
-                    <div className="text-center">
-                      <div className="text-xs font-bold text-gray-800">SOC 2</div>
-                      <div className="text-xs text-gray-600">Type II</div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* ISO 27001 */}
-                <div className="flex flex-col items-center px-4">
-                  <div className="w-16 h-16 md:w-20 md:h-20 bg-white rounded-full shadow-lg border border-gray-200 flex items-center justify-center mb-3">
-                    <div className="text-center">
-                      <div className="text-xs font-bold text-gray-800">ISO</div>
-                      <div className="text-xs text-gray-600">27001</div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* HIPAA */}
-                <div className="flex flex-col items-center px-4">
-                  <div className="w-16 h-16 md:w-20 md:h-20 bg-white rounded-full shadow-lg border border-gray-200 flex items-center justify-center mb-3">
-                    <div className="text-center">
-                      <div className="text-xs font-bold text-gray-800">HIPAA</div>
-                      <div className="text-xs text-gray-600">Ready</div>
-                    </div>
-                  </div>
-                                  </div>
-              </div>
-            </div>
-          </FadeInWhenVisible>
-        </div>
-      </section>
 
       {/* Enhanced Final CTA Section */}
       <section className="py-12 md:py-20 bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 relative overflow-hidden">
