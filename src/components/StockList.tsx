@@ -485,7 +485,7 @@ const MobileProductCard: React.FC<MobileProductCardProps> = ({
             {hasChildren && (
               <button
                 onClick={onToggleExpand}
-                className="p-1 rounded border hover:bg-gray-100 transition-colors"
+                className="p-1 bg-blue-600 text-white rounded border hover:bg-gray-100 transition-colors"
                 aria-label={isExpanded ? 'Collapse variants' : 'Expand variants'}
               >
                 {isExpanded ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
@@ -519,16 +519,6 @@ const MobileProductCard: React.FC<MobileProductCardProps> = ({
                   <div className={`w-2 h-2 rounded-full ${getStockStatusDotColor(stockStatus)}`} />
                   <span className="font-semibold text-gray-900">{product.quantity_in_stock}</span>
                   <span className="text-gray-500">in stock</span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-1.5 mb-1">
-                  <div
-                    className={`h-1.5 rounded-full transition-all ${
-                      stockLevelPercentage > 100 ? 'bg-green-500' :
-                      stockLevelPercentage > 50 ? 'bg-yellow-500' :
-                      'bg-red-500'
-                    }`}
-                    style={{ width: `${Math.min(stockLevelPercentage, 100)}%` }}
-                  />
                 </div>
                 <div className="text-xs text-gray-500">Min: {product.minimum_stock_level}</div>
               </div>
@@ -564,7 +554,7 @@ const MobileProductCard: React.FC<MobileProductCardProps> = ({
                 className="flex-1 text-green-600 border-green-300 hover:bg-green-50"
               >
                 <Plus className="w-4 h-4 mr-1" />
-                Stock In
+                In
               </Button>
               <Button
                 variant="outline"
@@ -573,7 +563,7 @@ const MobileProductCard: React.FC<MobileProductCardProps> = ({
                 className="flex-1 text-red-600 border-red-300 hover:bg-red-50"
               >
                 <Minus className="w-4 h-4 mr-1" />
-                Stock Out
+                Out
               </Button>
               <Button
                 variant="outline"
@@ -694,6 +684,9 @@ export const StockList = () => {
   const { isMobile } = useMobile();
   const navigate = useNavigate();
   const location = useLocation();
+
+  // Check if user is admin
+  const isAdmin = userProfile?.is_owner === true;
 
   // State voor filters
   const [searchTerm, setSearchTerm] = useState('');
@@ -1868,13 +1861,6 @@ export const StockList = () => {
       </div>
     );
   }
-
-
-
-  const isAdmin = userProfile?.is_owner === true;
-
-
-
 
   // Desktop table view
   return (
