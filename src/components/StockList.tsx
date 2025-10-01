@@ -193,8 +193,7 @@ const ProductRow: React.FC<ProductRowProps> = ({
                   <Palette className="w-4 h-4 text-purple-600" />
                 </div>
               ) : (
-                <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                  <ShoppingBasket className="w-4 h-4 text-blue-600" />
+                <div className="">
                 </div>
               )}
             </div>
@@ -256,100 +255,104 @@ const ProductRow: React.FC<ProductRowProps> = ({
       {/* Location column */}
       {columnVisibility.location && (
         <td className="px-4 py-3 text-center">
-          <div className="flex items-center justify-center gap-1">
-            <MapPin className="w-3 h-3 text-gray-400" />
-            <span className="text-sm text-gray-600">
-              {product.location || '-'}
-            </span>
-          </div>
+          {!hasChildren && (
+            <div className="flex items-center justify-center gap-1">
+              <MapPin className="w-3 h-3 text-gray-400" />
+              <span className="text-sm text-gray-600">
+                {product.location || '-'}
+              </span>
+            </div>
+          )}
         </td>
       )}
 
       {/* Stock column */}
       {columnVisibility.current && (
         <td className="px-4 py-3 text-center">
-          <div className="space-y-1">
-            <div className="flex items-center justify-center gap-2">
-              <div className={`w-2 h-2 rounded-full ${getStockStatusDotColor(stockStatus)}`} />
-              <span className="text-sm font-semibold text-gray-900">
-                {product.quantity_in_stock}
-              </span>
+          {!hasChildren && (
+            <div className="space-y-1">
+              <div className="flex items-center justify-center gap-2">
+                <div className={`w-2 h-2 rounded-full ${getStockStatusDotColor(stockStatus)}`} />
+                <span className="text-sm font-semibold text-gray-900">
+                  {product.quantity_in_stock}
+                </span>
+              </div>
+              
+
+              
+              {/* Minimum stock info */}
+              <div className="text-xs text-gray-500">
+                Min: {product.minimum_stock_level}
+              </div>
             </div>
-            
-            {/* Stock level bar */}
-            <div className="w-full bg-gray-200 rounded-full h-1.5">
-              <div
-                className={`h-1.5 rounded-full transition-all ${
-                  stockLevelPercentage > 100 ? 'bg-green-500' :
-                  stockLevelPercentage > 50 ? 'bg-yellow-500' :
-                  'bg-red-500'
-                }`}
-                style={{ width: `${Math.min(stockLevelPercentage, 100)}%` }}
-              />
-            </div>
-            
-            {/* Minimum stock info */}
-            <div className="text-xs text-gray-500">
-              Min: {product.minimum_stock_level}
-            </div>
-          </div>
+          )}
         </td>
       )}
 
       {/* Minimum stock column */}
       {columnVisibility.minimum && (
         <td className="px-4 py-3 text-center">
-          <span className="text-sm text-gray-600">
-            {product.minimum_stock_level}
-          </span>
+          {!hasChildren && (
+            <span className="text-sm text-gray-600">
+              {product.minimum_stock_level}
+            </span>
+          )}
         </td>
       )}
 
       {/* Category column */}
       {columnVisibility.category && (
         <td className="px-4 py-3 text-center">
-          <span className="text-sm text-gray-600">
-            {product.category_name || '-'}
-          </span>
+          {!hasChildren && (
+            <span className="text-sm text-gray-600">
+              {product.category_name || '-'}
+            </span>
+          )}
         </td>
       )}
 
       {/* Supplier column */}
       {columnVisibility.supplier && (
         <td className="px-4 py-3 text-center">
-          <span className="text-sm text-gray-600">
-            {product.supplier_name || '-'}
-          </span>
+          {!hasChildren && (
+            <span className="text-sm text-gray-600">
+              {product.supplier_name || '-'}
+            </span>
+          )}
         </td>
       )}
 
       {/* Combined Pricing column */}
       {(columnVisibility.purchasePrice || columnVisibility.salePrice) && (
         <td className="px-4 py-3 text-center">
-          <div className="space-y-1">
-            {columnVisibility.purchasePrice && (
-              <div className="text-sm text-red-600 font-medium">
-                ${product.purchase_price ? Number(product.purchase_price).toFixed(2) : '-'}
-              </div>
-            )}
-            {columnVisibility.salePrice && (
-              <div className="text-sm text-green-600 font-medium">
-                ${product.sale_price ? Number(product.sale_price).toFixed(2) : '-'}
-              </div>
-            )}
-          </div>
+          {!hasChildren && (
+            <div className="space-y-1">
+              {columnVisibility.purchasePrice && (
+                <div className="text-sm text-red-600 font-medium">
+                  ${product.purchase_price ? Number(product.purchase_price).toFixed(2) : '-'}
+                </div>
+              )}
+              {columnVisibility.salePrice && (
+                <div className="text-sm text-green-600 font-medium">
+                  ${product.sale_price ? Number(product.sale_price).toFixed(2) : '-'}
+                </div>
+              )}
+            </div>
+          )}
         </td>
       )}
 
       {/* Status column */}
       {columnVisibility.status && (
         <td className="px-4 py-3 text-center">
-          <div className="flex items-center justify-center gap-2">
-            <div className={`w-2 h-2 rounded-full ${getStockStatusDotColor(stockStatus)}`} />
-            <span className="text-sm font-medium text-gray-700">
-              {stockStatus}
-            </span>
-          </div>
+          {!hasChildren && (
+            <div className="flex items-center justify-center gap-2">
+              <div className={`w-2 h-2 rounded-full ${getStockStatusDotColor(stockStatus)}`} />
+              <span className="text-sm font-medium text-gray-700">
+                {stockStatus}
+              </span>
+            </div>
+          )}
         </td>
       )}
 
@@ -509,75 +512,92 @@ const MobileProductCard: React.FC<MobileProductCardProps> = ({
           )}
 
           {/* Stock and pricing info */}
-          <div className="grid grid-cols-2 gap-4 text-sm">
-            <div>
-              <div className="flex items-center gap-2 mb-1">
-                <div className={`w-2 h-2 rounded-full ${getStockStatusDotColor(stockStatus)}`} />
-                <span className="font-semibold text-gray-900">{product.quantity_in_stock}</span>
-                <span className="text-gray-500">in stock</span>
+          {!hasChildren && (
+            <div className="grid grid-cols-2 gap-4 text-sm">
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <div className={`w-2 h-2 rounded-full ${getStockStatusDotColor(stockStatus)}`} />
+                  <span className="font-semibold text-gray-900">{product.quantity_in_stock}</span>
+                  <span className="text-gray-500">in stock</span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-1.5 mb-1">
+                  <div
+                    className={`h-1.5 rounded-full transition-all ${
+                      stockLevelPercentage > 100 ? 'bg-green-500' :
+                      stockLevelPercentage > 50 ? 'bg-yellow-500' :
+                      'bg-red-500'
+                    }`}
+                    style={{ width: `${Math.min(stockLevelPercentage, 100)}%` }}
+                  />
+                </div>
+                <div className="text-xs text-gray-500">Min: {product.minimum_stock_level}</div>
               </div>
-              <div className="w-full bg-gray-200 rounded-full h-1.5 mb-1">
-                <div
-                  className={`h-1.5 rounded-full transition-all ${
-                    stockLevelPercentage > 100 ? 'bg-green-500' :
-                    stockLevelPercentage > 50 ? 'bg-yellow-500' :
-                    'bg-red-500'
-                  }`}
-                  style={{ width: `${Math.min(stockLevelPercentage, 100)}%` }}
-                />
+              
+              <div className="text-right">
+                {product.purchase_price && (
+                  <div className="text-sm text-red-600 font-medium">
+                    ${Number(product.purchase_price).toFixed(2)}
+                  </div>
+                )}
+                {product.sale_price && (
+                  <div className="text-sm text-green-600 font-medium">
+                    ${Number(product.sale_price).toFixed(2)}
+                  </div>
+                )}
+                {product.location && (
+                  <div className="flex items-center justify-end gap-1 mt-1">
+                    <MapPin className="w-3 h-3 text-gray-400" />
+                    <span className="text-xs text-gray-500">{product.location}</span>
+                  </div>
+                )}
               </div>
-              <div className="text-xs text-gray-500">Min: {product.minimum_stock_level}</div>
             </div>
-            
-            <div className="text-right">
-              {product.purchase_price && (
-                <div className="text-sm text-red-600 font-medium">
-                  ${Number(product.purchase_price).toFixed(2)}
-                </div>
-              )}
-              {product.sale_price && (
-                <div className="text-sm text-green-600 font-medium">
-                  ${Number(product.sale_price).toFixed(2)}
-                </div>
-              )}
-              {product.location && (
-                <div className="flex items-center justify-end gap-1 mt-1">
-                  <MapPin className="w-3 h-3 text-gray-400" />
-                  <span className="text-xs text-gray-500">{product.location}</span>
-                </div>
-              )}
-            </div>
-          </div>
+          )}
 
           {/* Actions */}
-          <div className="flex gap-2 mt-3">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => onStockAction(product, 'in')}
-              className="flex-1 text-green-600 border-green-300 hover:bg-green-50"
-            >
-              <Plus className="w-4 h-4 mr-1" />
-              Stock In
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => onStockAction(product, 'out')}
-              className="flex-1 text-red-600 border-red-300 hover:bg-red-50"
-            >
-              <Minus className="w-4 h-4 mr-1" />
-              Stock Out
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => onEdit(product)}
-              className="px-3"
-            >
-              <Edit className="w-4 h-4" />
-            </Button>
-          </div>
+          {!hasChildren && (
+            <div className="flex gap-2 mt-3">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => onStockAction(product, 'in')}
+                className="flex-1 text-green-600 border-green-300 hover:bg-green-50"
+              >
+                <Plus className="w-4 h-4 mr-1" />
+                Stock In
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => onStockAction(product, 'out')}
+                className="flex-1 text-red-600 border-red-300 hover:bg-red-50"
+              >
+                <Minus className="w-4 h-4 mr-1" />
+                Stock Out
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => onEdit(product)}
+                className="px-3"
+              >
+                <Edit className="w-4 h-4" />
+              </Button>
+            </div>
+          )}
+          {hasChildren && (
+            <div className="flex gap-2 mt-3">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => onEdit(product)}
+                className="w-full"
+              >
+                <Edit className="w-4 h-4 mr-1" />
+                Edit Product
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </div>
