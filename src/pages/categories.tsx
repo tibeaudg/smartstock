@@ -22,14 +22,14 @@ interface Category {
   product_count?: number;
 }
 
-export default function CategoriesPage() {
+export default function CategorysPage() {
   const { user } = useAuth();
   const { activeBranch } = useBranches();
   const { isMobile } = useMobile();
   const navigate = useNavigate();
   const location = useLocation();
   
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [Categorys, setCategorys] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -41,12 +41,12 @@ export default function CategoriesPage() {
   });
 
   // Mobile tab switcher state
-  const [activeTab, setActiveTab] = useState<'products' | 'categories' | 'suppliers'>('categories');
+  const [activeTab, setActiveTab] = useState<'products' | 'Categorys' | 'suppliers'>('Categorys');
 
   // Update active tab based on current route
   useEffect(() => {
-    if (location.pathname.includes('/categories')) {
-      setActiveTab('categories');
+    if (location.pathname.includes('/Categorys')) {
+      setActiveTab('Categorys');
     } else if (location.pathname.includes('/suppliers')) {
       setActiveTab('suppliers');
     } else {
@@ -55,11 +55,11 @@ export default function CategoriesPage() {
   }, [location.pathname]);
 
   // Handle tab change
-  const handleTabChange = (tab: 'products' | 'categories' | 'suppliers') => {
+  const handleTabChange = (tab: 'products' | 'Categorys' | 'suppliers') => {
     setActiveTab(tab);
     switch (tab) {
-      case 'categories':
-        navigate('/dashboard/categories');
+      case 'Categorys':
+        navigate('/dashboard/Categorys');
         break;
       case 'suppliers':
         navigate('/dashboard/suppliers');
@@ -72,30 +72,30 @@ export default function CategoriesPage() {
 
   useEffect(() => {
     if (user) {
-      fetchCategories();
+      fetchCategorys();
     }
   }, [user]);
 
-  const fetchCategories = async () => {
+  const fetchCategorys = async () => {
     if (!user) return;
     
     try {
-      // First get all categories for the current user
-      const { data: categoriesData, error: categoriesError } = await supabase
-        .from('categories')
+      // First get all Categorys for the current user
+      const { data: CategorysData, error: CategorysError } = await supabase
+        .from('Categorys')
         .select('*')
         .eq('user_id', user.id)
         .order('name');
 
-      if (categoriesError) {
-        console.error('Error fetching categories:', categoriesError);
-        toast.error('Fout bij het ophalen van categorieën');
+      if (CategorysError) {
+        console.error('Error fetching Categorys:', CategorysError);
+        toast.error('Fout bij het ophalen van Categoryën');
         return;
       }
 
       // Then get product count for each category
-      const categoriesWithCount = await Promise.all(
-        (categoriesData || []).map(async (category) => {
+      const CategorysWithCount = await Promise.all(
+        (CategorysData || []).map(async (category) => {
           const { count, error: countError } = await supabase
             .from('products')
             .select('*', { count: 'exact', head: true })
@@ -110,10 +110,10 @@ export default function CategoriesPage() {
         })
       );
 
-      setCategories(categoriesWithCount);
+      setCategorys(CategorysWithCount);
     } catch (error) {
-      console.error('Error fetching categories:', error);
-      toast.error('Onverwachte fout bij het ophalen van categorieën');
+      console.error('Error fetching Categorys:', error);
+      toast.error('Onverwachte fout bij het ophalen van Categoryën');
     } finally {
       setLoading(false);
     }
@@ -121,18 +121,18 @@ export default function CategoriesPage() {
 
   const handleAddCategory = async () => {
     if (!formData.name.trim()) {
-      toast.error('Categorie naam is verplicht');
+      toast.error('Category naam is verplicht');
       return;
     }
 
     if (!user) {
-      toast.error('Je moet ingelogd zijn om categorieën toe te voegen');
+      toast.error('Je moet ingelogd zijn om Categoryën toe te voegen');
       return;
     }
 
     try {
       const { data, error } = await supabase
-        .from('categories')
+        .from('Categorys')
         .insert({
           name: formData.name.trim(),
           description: formData.description.trim() || null,
@@ -143,29 +143,29 @@ export default function CategoriesPage() {
 
       if (error) {
         console.error('Error adding category:', error);
-        toast.error(`Fout bij het toevoegen van categorie: ${error.message}`);
+        toast.error(`Fout bij het toevoegen van Category: ${error.message}`);
         return;
       }
 
-      toast.success('Categorie succesvol toegevoegd!');
+      toast.success('Category succesvol toegevoegd!');
       setShowAddModal(false);
       setFormData({ name: '', description: '' });
-      fetchCategories();
+      fetchCategorys();
     } catch (error) {
       console.error('Error adding category:', error);
-      toast.error('Onverwachte fout bij het toevoegen van categorie');
+      toast.error('Onverwachte fout bij het toevoegen van Category');
     }
   };
 
   const handleEditCategory = async () => {
     if (!selectedCategory || !formData.name.trim()) {
-      toast.error('Categorie naam is verplicht');
+      toast.error('Category naam is verplicht');
       return;
     }
 
     try {
       const { error } = await supabase
-        .from('categories')
+        .from('Categorys')
         .update({
           name: formData.name.trim(),
           description: formData.description.trim() || null
@@ -174,18 +174,18 @@ export default function CategoriesPage() {
 
       if (error) {
         console.error('Error updating category:', error);
-        toast.error(`Fout bij het bijwerken van categorie: ${error.message}`);
+        toast.error(`Fout bij het bijwerken van Category: ${error.message}`);
         return;
       }
 
-      toast.success('Categorie succesvol bijgewerkt!');
+      toast.success('Category succesvol bijgewerkt!');
       setShowEditModal(false);
       setSelectedCategory(null);
       setFormData({ name: '', description: '' });
-      fetchCategories();
+      fetchCategorys();
     } catch (error) {
       console.error('Error updating category:', error);
-      toast.error('Onverwachte fout bij het bijwerken van categorie');
+      toast.error('Onverwachte fout bij het bijwerken van Category');
     }
   };
 
@@ -202,35 +202,35 @@ export default function CategoriesPage() {
 
       if (checkError) {
         console.error('Error checking category usage:', checkError);
-        toast.error('Fout bij het controleren van categorie gebruik');
+        toast.error('Fout bij het controleren van Category gebruik');
         return;
       }
 
       if (productsUsingCategory && productsUsingCategory.length > 0) {
-        toast.error('Deze categorie kan niet worden verwijderd omdat er producten aan gekoppeld zijn');
+        toast.error('Deze Category kan niet worden verwijderd omdat er producten aan gekoppeld zijn');
         setShowDeleteModal(false);
         setSelectedCategory(null);
         return;
       }
 
       const { error } = await supabase
-        .from('categories')
+        .from('Categorys')
         .delete()
         .eq('id', selectedCategory.id);
 
       if (error) {
         console.error('Error deleting category:', error);
-        toast.error(`Fout bij het verwijderen van categorie: ${error.message}`);
+        toast.error(`Fout bij het verwijderen van Category: ${error.message}`);
         return;
       }
 
-      toast.success('Categorie succesvol verwijderd!');
+      toast.success('Category succesvol verwijderd!');
       setShowDeleteModal(false);
       setSelectedCategory(null);
-      fetchCategories();
+      fetchCategorys();
     } catch (error) {
       console.error('Error deleting category:', error);
-      toast.error('Onverwachte fout bij het verwijderen van categorie');
+      toast.error('Onverwachte fout bij het verwijderen van Category');
     }
   };
 
@@ -301,15 +301,15 @@ export default function CategoriesPage() {
                   <span className="sm:hidden">Prod</span>
                 </button>
                 <button
-                  onClick={() => handleTabChange('categories')}
+                  onClick={() => handleTabChange('Categorys')}
                   className={`flex-1 flex items-center justify-center gap-1.5 px-2 py-2.5 rounded-md text-xs font-medium transition-colors ${
-                    activeTab === 'categories'
+                    activeTab === 'Categorys'
                       ? 'bg-blue-100 text-blue-700 border border-blue-200'
                       : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
                   }`}
                 >
                   <Tag className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">Categorieën</span>
+                  <span className="hidden sm:inline">Categoryën</span>
                   <span className="sm:hidden">Cat</span>
                 </button>
                 <button
@@ -332,10 +332,10 @@ export default function CategoriesPage() {
         {/* Header */}
         <div className={`${isMobile ? 'mb-6' : 'mb-8'}`}>
           <h1 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-gray-900 mb-2`}>
-            Manage Categories
+            Manage Categorys
           </h1>
           <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600`}>
-            Manage your product categories for better organization of your stock
+            Manage your product Categorys for better organization of your stock
           </p>
         </div>
 
@@ -350,27 +350,27 @@ export default function CategoriesPage() {
           </Button>
         </div>
 
-        {/* Categories List */}
+        {/* Categorys List */}
         <div className={`grid gap-3 ${isMobile ? '' : 'gap-4'}`}>
           {loading ? (
             <Card>
               <CardContent className={`${isMobile ? 'p-6' : 'p-8'}`}>
                 <div className="text-center">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                  <p className="text-gray-600">Categories loading...</p>
+                  <p className="text-gray-600">Categorys loading...</p>
                 </div>
               </CardContent>
             </Card>
-          ) : categories.length === 0 ? (
+          ) : Categorys.length === 0 ? (
             <Card>
               <CardContent className={`${isMobile ? 'p-6' : 'p-8'}`}>
                 <div className="text-center">
                   <Package className={`${isMobile ? 'w-10 h-10' : 'w-12 h-12'} text-gray-400 mx-auto mb-4`} />
                   <h3 className={`${isMobile ? 'text-base' : 'text-lg'} font-medium text-gray-900 mb-2`}>
-                    No categories
+                    No Categorys
                   </h3>
                   <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600 mb-4`}>
-                    You have no categories yet. Create your first category to get started.
+                    You have no Categorys yet. Create your first category to get started.
                   </p>
                   <Button 
                     onClick={() => setShowAddModal(true)}
@@ -383,7 +383,7 @@ export default function CategoriesPage() {
               </CardContent>
             </Card>
           ) : (
-            categories.map((category) => (
+            Categorys.map((category) => (
               <Card 
                 key={category.id} 
                 className="cursor-pointer hover:shadow-md transition-shadow"
@@ -531,8 +531,8 @@ export default function CategoriesPage() {
               This action cannot be undone.
             </p>
             <p className="text-sm text-gray-500">
-              Let op: Categories that are in use by products cannot be deleted.
-              Categories that are in use by products cannot be deleted.
+              Let op: Categorys that are in use by products cannot be deleted.
+              Categorys that are in use by products cannot be deleted.
             </p>
           </div>
           <DialogFooter>

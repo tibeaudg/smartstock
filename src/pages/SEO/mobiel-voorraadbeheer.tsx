@@ -59,7 +59,7 @@ export default function MobielVoorraadbeheer() {
     },
     {
       title: "Onderweg",
-      description: "Controleer voorraad en plaats bestellingen vanaf elke locatie.",
+      description: "Controleer voorraad en plaats bestellingen vanaf elke Locations.",
       icon: Globe
     },
     {
@@ -295,7 +295,7 @@ export default function MobielVoorraadbeheer() {
             <div>
               <h3 className="text-xl font-semibold mb-4">Flexibiliteit</h3>
               <p className="text-gray-600 mb-4">
-                Werk waar en wanneer je wilt, zonder beperkingen door locatie of tijd.
+                Werk waar en wanneer je wilt, zonder beperkingen door Locations of tijd.
               </p>
               <ul className="space-y-2">
                 {benefits.slice(3).map((benefit, index) => (

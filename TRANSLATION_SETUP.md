@@ -43,7 +43,7 @@ if (primaryLang !== 'nl' && supportedLanguages.includes(primaryLang)) {
 ```
 
 ### 2. Google Translate Widget
-- **Locatie**: Rechtsonder op de pagina
+- **Locations**: Rechtsonder op de pagina
 - **Functionaliteit**: Dropdown om taal te selecteren
 - **Verberg optie**: Gebruikers kunnen widget verbergen/tonen
 - **Automatisch**: Vertaalt bij pagina load als browser taal niet Nederlands is

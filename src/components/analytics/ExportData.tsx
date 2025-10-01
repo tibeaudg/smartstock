@@ -40,7 +40,7 @@ interface ExportJob {
   downloadUrl?: string;
   filters: {
     dateRange: string;
-    categories: string[];
+    Categorys: string[];
     products: string[];
     branches: string[];
     customQuery?: string;
@@ -74,7 +74,7 @@ export const ExportData = () => {
     type: 'products' as const,
     format: 'excel' as const,
     dateRange: '30d',
-    categories: [] as string[],
+    Categorys: [] as string[],
     products: [] as string[],
     branches: [] as string[],
     columns: [] as string[],
@@ -86,16 +86,16 @@ export const ExportData = () => {
 
   const availableColumns = {
     products: [
-      'ID', 'Naam', 'Beschrijving', 'Categorie', 'Voorraad', 'Min. Voorraad', 
-      'Prijs', 'Kostprijs', 'Leverancier', 'Locatie', 'Barcode', 'Gemaakt op'
+      'ID', 'Naam', 'Beschrijving', 'Category', 'Voorraad', 'Min. Voorraad', 
+      'Prijs', 'Kostprijs', 'Leverancier', 'Locations', 'Barcode', 'Gemaakt op'
     ],
     transactions: [
       'ID', 'Datum', 'Type', 'Product', 'Aantal', 'Prijs', 'Totaal', 
       'Gebruiker', 'Filial', 'Referentie', 'Notities'
     ],
     inventory: [
-      'Product ID', 'Product Naam', 'Categorie', 'Huidige Voorraad', 
-      'Min. Voorraad', 'Max. Voorraad', 'Locatie', 'Laatste Beweging', 
+      'Product ID', 'Product Naam', 'Category', 'Huidige Voorraad', 
+      'Min. Voorraad', 'Max. Voorraad', 'Locations', 'Laatste Beweging', 
       'Status', 'Waarde'
     ],
     financial: [
@@ -142,7 +142,7 @@ export const ExportData = () => {
         downloadUrl: job.file_path,
         filters: job.filters || {
           dateRange: '30d',
-          categories: [],
+          Categorys: [],
           products: [],
           branches: []
         },
@@ -158,7 +158,7 @@ export const ExportData = () => {
           description: 'Basis producten export met alle belangrijke velden',
           type: 'products',
           format: 'excel',
-          columns: ['ID', 'Naam', 'Categorie', 'Voorraad', 'Prijs'],
+          columns: ['ID', 'Naam', 'Category', 'Voorraad', 'Prijs'],
           filters: { dateRange: '30d' },
           isDefault: true
         },
@@ -178,7 +178,7 @@ export const ExportData = () => {
           description: 'Volledige voorraad status voor auditing',
           type: 'inventory',
           format: 'pdf',
-          columns: ['Product', 'Voorraad', 'Min. Voorraad', 'Status', 'Locatie'],
+          columns: ['Product', 'Voorraad', 'Min. Voorraad', 'Status', 'Locations'],
           filters: { dateRange: '7d' },
           isDefault: false
         }
@@ -214,7 +214,7 @@ export const ExportData = () => {
           progress: 0,
           filters: {
             dateRange: formData.dateRange,
-            categories: formData.categories,
+            Categorys: formData.Categorys,
             products: formData.products,
             branches: formData.branches,
             customQuery: formData.customQuery
@@ -282,7 +282,7 @@ export const ExportData = () => {
             status,
             location,
             created_at,
-            categories(name),
+            Categorys(name),
             suppliers(name)
           `)
           .eq('user_id', user?.id);
@@ -295,8 +295,8 @@ export const ExportData = () => {
           'Min. Voorraad': product.min_stock,
           Prijs: product.unit_price,
           Status: product.status,
-          Locatie: product.location,
-          Categorie: product.categories?.name || 'Geen categorie',
+          Locations: product.location,
+          Category: product.Categorys?.name || 'Geen Category',
           Leverancier: product.suppliers?.name || 'Geen leverancier',
           'Aangemaakt': new Date(product.created_at).toLocaleDateString('nl-NL')
         })) || [];
@@ -342,7 +342,7 @@ export const ExportData = () => {
             max_stock,
             location,
             status,
-            categories(name)
+            Categorys(name)
           `)
           .eq('user_id', user?.id)
           .eq('status', 'active');
@@ -353,10 +353,10 @@ export const ExportData = () => {
           'Huidige Voorraad': product.current_stock,
           'Min. Voorraad': product.min_stock,
           'Max. Voorraad': product.max_stock,
-          'Locatie': product.location,
+          'Locations': product.location,
           'Status': product.current_stock <= product.min_stock ? 'Laag' : 
                    product.current_stock <= product.min_stock * 1.5 ? 'Waarschuwing' : 'OK',
-          'Categorie': product.categories?.name || 'Geen categorie'
+          'Category': product.Categorys?.name || 'Geen Category'
         })) || [];
       }
 
@@ -405,7 +405,7 @@ export const ExportData = () => {
       type: template.type as any,
       format: template.format as any,
       dateRange: template.filters.dateRange || '30d',
-      categories: [],
+      Categorys: [],
       products: [],
       branches: [],
       columns: template.columns,

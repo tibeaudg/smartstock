@@ -101,20 +101,20 @@ const fetchProducts = async (branchId: string) => {
       return [];
     }
     
-    // Haal de unieke categorie en leverancier IDs op
+    // Haal de unieke Category en leverancier IDs op
     const categoryIds = [...new Set(products.map(p => p.category_id).filter(Boolean))];
     const supplierIds = [...new Set(products.map(p => p.supplier_id).filter(Boolean))];
     
-    // Haal categorie namen op
-    let categories: { [key: string]: string } = {};
+    // Haal Category namen op
+    let Categorys: { [key: string]: string } = {};
     if (categoryIds.length > 0) {
       const { data: categoryData, error: categoryError } = await supabase
-        .from('categories')
+        .from('Categorys')
         .select('id, name')
         .in('id', categoryIds);
       
       if (!categoryError && categoryData) {
-        categories = categoryData.reduce((acc, cat) => {
+        Categorys = categoryData.reduce((acc, cat) => {
           acc[cat.id] = cat.name;
           return acc;
         }, {} as { [key: string]: string });
@@ -140,7 +140,7 @@ const fetchProducts = async (branchId: string) => {
     // Voeg de namen toe aan de producten
     const transformedData = products.map(product => ({
       ...product,
-      category_name: product.category_id ? categories[product.category_id] || null : null,
+      category_name: product.category_id ? Categorys[product.category_id] || null : null,
       supplier_name: product.supplier_id ? suppliers[product.supplier_id] || null : null
     }));
     
@@ -186,8 +186,8 @@ export const StockList = () => {
   const [categoryFilterName, setCategoryFilterName] = useState('');
   const [supplierFilterName, setSupplierFilterName] = useState('');
   
-  // State voor categorieën en leveranciers (voor filter namen)
-  const [categories, setCategories] = useState<Array<{ id: string; name: string }>>([]);
+  // State voor Categoryën en leveranciers (voor filter namen)
+  const [Categorys, setCategorys] = useState<Array<{ id: string; name: string }>>([]);
   const [suppliers, setSuppliers] = useState<Array<{ id: string; name: string }>>([]);
 
   // State voor modals
@@ -212,7 +212,7 @@ export const StockList = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   // Mobile tab switcher state
-  const [activeTab, setActiveTab] = useState<'products' | 'categories' | 'suppliers'>('products');
+  const [activeTab, setActiveTab] = useState<'products' | 'Categorys' | 'suppliers'>('products');
 
   // Column visibility state
   const [columnVisibility, setColumnVisibility] = useState({
@@ -262,8 +262,8 @@ export const StockList = () => {
 
   // Update active tab based on current route
   useEffect(() => {
-    if (location.pathname.includes('/categories')) {
-      setActiveTab('categories');
+    if (location.pathname.includes('/Categorys')) {
+      setActiveTab('Categorys');
     } else if (location.pathname.includes('/suppliers')) {
       setActiveTab('suppliers');
     } else {
@@ -403,32 +403,32 @@ export const StockList = () => {
     };
   }, []);
 
-  // Haal categorieën en leveranciers op
+  // Haal Categoryën en leveranciers op
   useEffect(() => {
     if (user) {
-      fetchCategories();
+      fetchCategorys();
       fetchSuppliers();
     }
   }, [user]);
 
-  const fetchCategories = async () => {
+  const fetchCategorys = async () => {
     if (!user) return;
     
     try {
       const { data, error } = await supabase
-        .from('categories')
+        .from('Categorys')
         .select('id, name')
         .eq('user_id', user.id)
         .order('name');
       
       if (error) {
-        console.error('Error fetching categories:', error);
+        console.error('Error fetching Categorys:', error);
         return;
       }
       
-      setCategories(data || []);
+      setCategorys(data || []);
     } catch (error) {
-      console.error('Error fetching categories:', error);
+      console.error('Error fetching Categorys:', error);
     }
   };
 
@@ -454,11 +454,11 @@ export const StockList = () => {
   };
 
   // Handle tab change
-  const handleTabChange = (tab: 'products' | 'categories' | 'suppliers') => {
+  const handleTabChange = (tab: 'products' | 'Categorys' | 'suppliers') => {
     setActiveTab(tab);
     switch (tab) {
-      case 'categories':
-        navigate('/dashboard/categories');
+      case 'Categorys':
+        navigate('/dashboard/Categorys');
         break;
       case 'suppliers':
         navigate('/dashboard/suppliers');
@@ -811,6 +811,12 @@ export const StockList = () => {
       toast.success(t('stock.success.productsDeleted', { count: selectedProductIds.length }));
       setSelectedProductIds([]);
       setSelectAll(false);
+      
+      // Invalideer alle relevante queries om dashboard te refreshen
+      queryClient.invalidateQueries({ queryKey: ['dashboardData', activeBranch?.branch_id] });
+      queryClient.invalidateQueries({ queryKey: ['productCount', activeBranch?.branch_id] });
+      queryClient.invalidateQueries({ queryKey: ['products'] });
+      
       refetch();
     } catch (error) {
       console.error('Error deleting products:', error);
@@ -827,7 +833,7 @@ export const StockList = () => {
       supplierFilter,
       supplierFilterName
     });
-    console.log('Available categories:', categories);
+    console.log('Available Categorys:', Categorys);
     console.log('Available suppliers:', suppliers);
     console.log('Products:', productsTyped.map(p => ({
       id: p.id,
@@ -937,7 +943,7 @@ export const StockList = () => {
                     checked={columnVisibility.location}
                     onCheckedChange={() => toggleColumnVisibility('location')}
                   >
-                    Locatie
+                    Locations
                   </DropdownMenuCheckboxItem>
                   <DropdownMenuCheckboxItem
                     checked={columnVisibility.current}
@@ -955,7 +961,7 @@ export const StockList = () => {
                     checked={columnVisibility.category}
                     onCheckedChange={() => toggleColumnVisibility('category')}
                   >
-                    Categorie
+                    Category
                   </DropdownMenuCheckboxItem>
                   <DropdownMenuCheckboxItem
                     checked={columnVisibility.supplier}
@@ -1085,7 +1091,7 @@ export const StockList = () => {
                       <th className="px-2 py-2 text-left font-medium text-gray-500 uppercase tracking-wider">Product</th>
                     )}
                     {columnVisibility.location && (
-                      <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Locatie</th>
+                      <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Locations</th>
                     )}
                     {columnVisibility.current && (
                       <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Current</th>
@@ -1307,20 +1313,20 @@ export const StockList = () => {
           </>
         )}
 
-        {/* Categories Tab Content */}
-        {activeTab === 'categories' && (
+        {/* Categorys Tab Content */}
+        {activeTab === 'Categorys' && (
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
             <div className="text-center">
               <Tag className="w-12 h-12 text-gray-400 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-gray-900 mb-2">
-                Manage Categories
+                Manage Categorys
               </h3>
               <p className="text-base text-gray-600 mb-4">
-                Manage your product categories for better organization of your stock
+                Manage your product Categorys for better organization of your stock
               </p>
-              <Button onClick={() => navigate('/dashboard/categories')}>
+              <Button onClick={() => navigate('/dashboard/Categorys')}>
                 <Tag className="w-4 h-4 mr-2" />
-                To Categories
+                To Categorys
               </Button>
             </div>
           </div>
@@ -1507,7 +1513,7 @@ export const StockList = () => {
                 checked={columnVisibility.location}
                 onCheckedChange={() => toggleColumnVisibility('location')}
               >
-                Locatie
+                Locations
               </DropdownMenuCheckboxItem>
               <DropdownMenuCheckboxItem
                 checked={columnVisibility.current}
@@ -1638,7 +1644,7 @@ export const StockList = () => {
             // Update category name when filter changes
             if (value && value !== 'all') {
               // Find category name by ID
-              const category = categories.find(cat => cat.id === value);
+              const category = Categorys.find(cat => cat.id === value);
               setCategoryFilterName(category?.name || 'Gefilterd');
             } else {
               setCategoryFilterName('');
@@ -1693,7 +1699,7 @@ export const StockList = () => {
                 )}
                 {columnVisibility.location && (
                   <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Locatie
+                    Locations
                   </th>
                 )}
                 {columnVisibility.current && (
@@ -1708,7 +1714,7 @@ export const StockList = () => {
                 )}
                 {columnVisibility.category && (
                   <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Categorie
+                    Category
                   </th>
                 )}
                 {columnVisibility.supplier && (

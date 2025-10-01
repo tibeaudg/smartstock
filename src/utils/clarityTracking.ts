@@ -31,7 +31,7 @@ export const trackStockEvent = {
   },
   bulkExport: () => trackEvent('stock:bulk_export'),
   
-  // Categories & Suppliers
+  // Categorys & Suppliers
   categoryCreated: () => trackEvent('stock:category_created'),
   supplierCreated: () => trackEvent('stock:supplier_created'),
 };

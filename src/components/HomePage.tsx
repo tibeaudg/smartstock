@@ -677,66 +677,66 @@ export const HomePage = () => {
     { name: "Partner 5", logo: "/placeholder.svg" }
   ];
 
-  // Benefit-focused features using Feature → Benefit → Impact formula
+  // Retail pains → outcomes (no jargon)
   const heroFeatures = [
     {
       icon: TrendingUp,
-      title: "Never Miss Another Sale",
-      benefit: "Stop losing $2,400+ annually to stockouts",
-      impact: "Feel confident your bestsellers are always in stock",
-      detailedDescription: "Real-time stock tracking across all locations, automated low stock alerts via email & SMS, smart reorder suggestions based on sales patterns, multi-location inventory management.",
-      category: "Smart Inventory Management",
+      title: "Never miss a sale to out-of-stock",
+      benefit: "Always know what's running low",
+      impact: "Get automatic alerts before items sell out",
+      detailedDescription: "See stock levels instantly, Get alerts on your phone when items run low, Know exactly when to reorder.",
+      category: "Stock Tracking",
       visual: "stockout-prevention",
     },
     {
-      icon: Users,
-      title: "Turn Data Into Profit",
-      benefit: "Increase profits by 15-25% with better decisions",
-      impact: "Know exactly which products make you money",
-      detailedDescription: "Sales performance analytics in real-time, inventory turnover analysis & insights, profit margin tracking by product, custom reports for better decision making.",
-      category: "Advanced Analytics Dashboard",
+      icon: Euro,
+      title: "Reduce overstock & free up cash",
+      benefit: "Stop tying up money in slow-moving items",
+      impact: "See what sells & what sits on shelves",
+      detailedDescription: "Track which products sell fast, Spot items that aren't moving, Make smarter buying decisions.",
+      category: "Cash Flow",
       visual: "profit-optimization",
     },
     {
-      icon: Zap,
-      title: "Work From Anywhere",
-      benefit: "Save 8 hours per week with mobile efficiency",
-      impact: "Manage inventory without being tied to your desk",
-      detailedDescription: "Mobile barcode scanning for instant updates, offline functionality - works without internet, push notifications for low stock alerts, touch-friendly interface for all skill levels.",
-      category: "Mobile-First Experience",
+      icon: Smartphone,
+      title: "Count inventory in minutes with your phone",
+      benefit: "Skip the clipboard & spreadsheets",
+      impact: "Scan items with your phone camera",
+      detailedDescription: "Use your phone to scan barcodes, Update stock from the shop floor, No computer needed during counts.",
+      category: "Mobile Counting",
       visual: "mobile-efficiency",
     },
   ];
 
-  // Secondary features for mid-page detail grid
+  // Secondary features (simple retail language)
   const secondaryFeatures = [
     {
       icon: Shield,
-      title: "Bank-Level Security",
-      benefit: "Your data is safe without the bank-level headaches",
-      description: "GDPR compliant with enterprise-grade security that's simple to use.",
-      category: "Security & Compliance"
+      title: "Your data stays safe",
+      benefit: "No need to worry about losing your inventory records",
+      description: "Automatic backups every day. Your stock data is secure.",
+      category: "Data Safety"
     },
     {
       icon: BarChart3,
-      title: "Design Reports in Minutes",
-      benefit: "Launch professional reports without touching a line of code",
-      description: "Drag-and-drop interface creates beautiful reports that impress stakeholders.",
-      category: "Reporting & Analytics"
+      title: "See what's selling",
+      benefit: "Know your top sellers at a glance",
+      description: "Simple reports show which products move fast and which don't.",
+      category: "Sales Insights"
     },
     {
       icon: Clock,
-      title: "We're Always Here",
-      benefit: "Get a human on the line in under 5 minutes, 24/7",
-      description: "Dedicated customer support that actually helps when you need it.",
-      category: "Customer Support"
+      title: "Get help when stuck",
+      benefit: "Real people ready to help in minutes",
+      description: "Chat or email support that responds fast when you need it.",
+      category: "Support"
     },
     {
       icon: Package,
-      title: "Works With Everything",
-      benefit: "Connect all your tools without the integration headaches",
-      description: "Seamless integration with your existing systems and workflows.",
-      category: "Integrations"
+      title: "Start with what you have",
+      benefit: "Import your existing product list",
+      description: "Bring in your current inventory from Excel or CSV files.",
+      category: "Easy Setup"
     }
   ];
 
@@ -892,23 +892,23 @@ export const HomePage = () => {
   const usps = [
     {
       icon: <Package className="h-8 w-8" />,
-      title: "Easy Stock Management",
-      desc: "Track your inventory with our intuitive interface designed for small businesses.",
+      title: "Track stock easily",
+      desc: "See what's in store, what's in the backroom, and what needs ordering.",
     },
     {
       icon: <BarChart3 className="h-8 w-8" />,
-      title: "Real-time Analytics", 
-      desc: "Get insights into your stock levels, sales trends, and business performance.",
+      title: "Know what's selling", 
+      desc: "Spot your best sellers and slow movers to make better buying choices.",
     },
     {
       icon: <Users className="h-8 w-8" />,
-      title: "Team Collaboration",
-      desc: "Work together with your team on inventory management and order processing.",
+      title: "Your whole team can use it",
+      desc: "Everyone sees the same stock numbers, no more asking around.",
     },
     {
       icon: <Shield className="h-8 w-8" />,
-      title: "Secure & Reliable",
-      desc: "Your data is protected with enterprise-grade security and 99.9% uptime.",
+      title: "Your data stays safe",
+      desc: "Automatic backups mean you won't lose your inventory records.",
     },
   ];
   // --- EINDE USP DATA ---
@@ -917,39 +917,39 @@ export const HomePage = () => {
   const subscriptionFeatures = [
     {
       icon: <BarChart3 className="h-12 w-12 text-blue-600" />,
-      title: "Analytics & Reporting",
-      description: "Comprehensive insights into your inventory performance and business metrics.",
+      title: "See What's Selling",
+      description: "Know which products move fast and which ones sit on shelves.",
       features: [
-        "Real-time stock reports",
-        "Sales analytics dashboard",
-        "Performance metrics",
-        "Custom report builder"
+        "View current stock levels",
+        "See your best sellers",
+        "Spot slow-moving items",
+        "Export reports to Excel"
       ],
       tier: "growth",
       image: "/placeholder.svg"
     },
     {
       icon: <Scan className="h-12 w-12 text-green-600" />,
-      title: "Barcode Scanning",
-      description: "Quick and accurate inventory tracking with mobile barcode scanning.",
+      title: "Scan with Your Phone",
+      description: "Count stock faster using your phone camera instead of paper.",
       features: [
-        "Mobile barcode scanner",
-        "Batch scanning support",
-        "Custom barcode generation",
-        "Offline scanning capability"
+        "Scan barcodes with phone",
+        "Count multiple items quickly",
+        "Print your own barcodes",
+        "Works without internet"
       ],
       tier: "growth",
       image: "/placeholder.svg"
     },
     {
       icon: <Truck className="h-12 w-12 text-purple-600" />,
-      title: "Delivery Management",
-      description: "Streamline your delivery process with integrated delivery note management.",
+      title: "Track Deliveries",
+      description: "Keep track of what comes in from suppliers and goes out to customers.",
       features: [
-        "Incoming delivery notes",
-        "Outgoing delivery tracking",
-        "Supplier management",
-        "Delivery scheduling"
+        "Record deliveries received",
+        "Track outgoing orders",
+        "Save supplier details",
+        "Schedule deliveries"
       ],
       tier: "premium",
       image: "/placeholder.svg"
@@ -961,20 +961,20 @@ export const HomePage = () => {
   const capabilities = [
     {
       icon: <Users className="h-12 w-12" />,
-      title: "Team Collaboration",
-      desc: "Work together with your team on inventory management and order processing.",
+      title: "Your whole team can use it",
+      desc: "Everyone sees the same stock numbers, no more asking around or confusion.",
       learnMore: "#",
     },
     {
       icon: <BarChart3 className="h-12 w-12" />,
-      title: "Advanced Analytics",
-      desc: "Get detailed insights into your inventory performance and business metrics.",
+      title: "See what's selling",
+      desc: "Know which products sell fast and which ones don't move.",
       learnMore: "#",
     },
     {
       icon: <Shield className="h-12 w-12" />,
-      title: "Secure Platform",
-      desc: "Enterprise-grade security with 99.9% uptime guarantee for your business data.",
+      title: "Your data stays safe",
+      desc: "Automatic daily backups mean you won't lose your inventory records.",
       learnMore: "#",
     },
   ];
@@ -983,14 +983,14 @@ export const HomePage = () => {
   // --- BEGIN FEATURE DATA ---
   const landingFeatures = [
     {
-      title: "Never Run Out of Stock Again",
-      subtitle: "Smart Inventory Management",
-      desc: "Stop losing sales to stockouts. StockFlow automatically tracks your inventory and alerts you when to reorder, so you never miss a sale.",
+      title: "Never miss a sale to out-of-stock",
+      subtitle: "Stock Tracking",
+      desc: "Get alerts on your phone when items run low. Always know what needs ordering before you sell out.",
       benefits: [
-        "Real-time stock tracking across all locations",
-        "Automated low stock alerts via email & SMS",
-        "Smart reorder suggestions based on sales patterns",
-        "Multi-location inventory management"
+        "See stock levels instantly",
+        "Get alerts when items run low",
+        "Know exactly when to reorder",
+        "Track both shop floor & backroom"
       ],
       icon: <Package className="h-8 w-8 text-white" />,
       gradient: "from-blue-500 to-blue-700",
@@ -1000,14 +1000,14 @@ export const HomePage = () => {
       stats: "Save $2,400+ annually",
     },
     {
-      title: "Make Data-Driven Decisions",
-      subtitle: "Advanced Analytics Dashboard",
-      desc: "Turn your inventory data into actionable insights. See exactly which products are your money-makers and optimize your stock levels for maximum profit.",
+      title: "Reduce overstock & free up cash",
+      subtitle: "Sales Insights",
+      desc: "See which products sell fast and which sit on shelves. Stop tying up money in items that don't move.",
       benefits: [
-        "Sales performance analytics in real-time",
-        "Inventory turnover analysis & insights",
-        "Profit margin tracking by product",
-        "Custom reports for better decision making"
+        "Track which products sell fast",
+        "Spot items that aren't moving",
+        "See your profit on each product",
+        "Make smarter buying decisions"
       ],
       icon: <BarChart3 className="h-8 w-8 text-white" />,
       gradient: "from-green-500 to-green-700",
@@ -1017,14 +1017,14 @@ export const HomePage = () => {
       stats: "Increase profits by 15-25%",
     },
     {
-      title: "Manage Inventory Anywhere",
-      subtitle: "Mobile-First Experience",
-      desc: "Take your inventory management with you. Our mobile app lets you scan barcodes, update stock levels, and manage orders from anywhere.",
+      title: "Count inventory in minutes with your phone",
+      subtitle: "Mobile Counting",
+      desc: "Skip the clipboard and spreadsheets. Use your phone to scan barcodes and update stock from the shop floor.",
       benefits: [
-        "Mobile barcode scanning for instant updates",
-        "Offline functionality - works without internet",
-        "Push notifications for low stock alerts",
-        "Touch-friendly interface for all skill levels"
+        "Scan barcodes with your phone",
+        "Update stock from anywhere in store",
+        "Works without internet connection",
+        "No computer needed during counts"
       ],
       icon: <Smartphone className="h-8 w-8 text-white" />,
       gradient: "from-purple-500 to-purple-700",
@@ -1484,26 +1484,41 @@ export const HomePage = () => {
           {/* Text Content */}
           <div className="text-center mb-8 md:mb-16">
           
+              {/* Micro-badge for small retailers */}
+              <FadeInWhenVisible delay={100}>
+                <div className="flex justify-center mb-4">
+                  <span className="inline-flex items-center px-4 py-2 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200/50 shadow-sm">
+                    Built for small shops & local stores
+                  </span>
+                </div>
+              </FadeInWhenVisible>
+          
               <BounceInWhenVisible delay={200}>
                 <h1 className="text-3xl md:text-5xl lg:text-7xl font-light text-gray-800 mb-6 md:mb-8 leading-tight">
-                  <span className="block">Stop Losing Money</span>
-                  <span className="block text-blue-600">to Stockouts</span>
+                  Inventory management made for small retail shops
                 </h1>
               </BounceInWhenVisible>
               
               <SlideUpWhenVisible delay={400}>
                 <p className="text-lg md:text-xl text-gray-600 mb-8 md:mb-12 max-w-3xl mx-auto lg:mx-0 leading-relaxed">
-                  Never run out of stock again. StockFlow automatically tracks your inventory, alerts you when to reorder, and saves SMEs $2,400+ per year.
+                  Track stock across front-of-store & backroom, stop stockouts, and spend less time counting.
                 </p>
               </SlideUpWhenVisible>
               
               <ScaleInWhenVisible delay={600}>
-                <div className="mb-6 md:mb-8">
+                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-6 md:mb-8">
                 <Button
               onClick={handleLoginClick}
               className="bg-blue-600 hover:bg-blue-700 text-white px-12 py-6 text-xl font-semibold rounded-full transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25 border border-blue-500/20"
             >
-              Get Free Forever Plan
+              Start free
+            </Button>
+            <Button
+              onClick={() => navigate('/demo')}
+              variant="outline"
+              className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-12 py-6 text-xl font-semibold rounded-full transform hover:scale-105 transition-all duration-300"
+            >
+              View Demo
             </Button>
                 </div>
               </ScaleInWhenVisible>

@@ -44,12 +44,12 @@ export default function SuppliersPage() {
   });
 
   // Mobile tab switcher state
-  const [activeTab, setActiveTab] = useState<'products' | 'categories' | 'suppliers'>('suppliers');
+  const [activeTab, setActiveTab] = useState<'products' | 'Categorys' | 'suppliers'>('suppliers');
 
   // Update active tab based on current route
   useEffect(() => {
-    if (location.pathname.includes('/categories')) {
-      setActiveTab('categories');
+    if (location.pathname.includes('/Categorys')) {
+      setActiveTab('Categorys');
     } else if (location.pathname.includes('/suppliers')) {
       setActiveTab('suppliers');
     } else {
@@ -58,11 +58,11 @@ export default function SuppliersPage() {
   }, [location.pathname]);
 
   // Handle tab change
-  const handleTabChange = (tab: 'products' | 'categories' | 'suppliers') => {
+  const handleTabChange = (tab: 'products' | 'Categorys' | 'suppliers') => {
     setActiveTab(tab);
     switch (tab) {
-      case 'categories':
-        navigate('/dashboard/categories');
+      case 'Categorys':
+        navigate('/dashboard/Categorys');
         break;
       case 'suppliers':
         navigate('/dashboard/suppliers');
@@ -310,15 +310,15 @@ export default function SuppliersPage() {
                   <span className="sm:hidden">Prod</span>
                 </button>
                 <button
-                  onClick={() => handleTabChange('categories')}
+                  onClick={() => handleTabChange('Categorys')}
                   className={`flex-1 flex items-center justify-center gap-1.5 px-2 py-2.5 rounded-md text-xs font-medium transition-colors ${
-                    activeTab === 'categories'
+                    activeTab === 'Categorys'
                       ? 'bg-blue-100 text-blue-700 border border-blue-200'
                       : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
                   }`}
                 >
                   <Tag className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">Categorieën</span>
+                  <span className="hidden sm:inline">Categoryën</span>
                   <span className="sm:hidden">Cat</span>
                 </button>
                 <button

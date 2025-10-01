@@ -15,7 +15,7 @@ export default function MagazijnbeheerSoftwareGratis() {
     },
     {
       question: "Welke functies heeft magazijnbeheer software gratis?",
-      answer: "Onze magazijnbeheer software gratis bevat alle essentiële functies: real-time voorraadoverzicht, automatische bestelmeldingen, barcode scanning, team samenwerking, rapportages, locatiebeheer en integratie met andere systemen. Alles wat je nodig hebt voor professioneel magazijnbeheer zonder kosten."
+      answer: "Onze magazijnbeheer software gratis bevat alle essentiële functies: real-time voorraadoverzicht, automatische bestelmeldingen, barcode scanning, team samenwerking, rapportages, Locationsbeheer en integratie met andere systemen. Alles wat je nodig hebt voor professioneel magazijnbeheer zonder kosten."
     },
     {
       question: "Is magazijnbeheer software gratis geschikt voor grote magazijnen?",
@@ -39,8 +39,8 @@ export default function MagazijnbeheerSoftwareGratis() {
     },
     {
       icon: Warehouse,
-      title: "Locatiebeheer",
-      description: "Beheer verschillende magazijnlocaties en stellingen. Perfect voor bedrijven met meerdere opslagruimtes."
+      title: "Locationsbeheer",
+      description: "Beheer verschillende magazijnLocationss en stellingen. Perfect voor bedrijven met meerdere opslagruimtes."
     },
     {
       icon: BarChart3,
@@ -70,7 +70,7 @@ export default function MagazijnbeheerSoftwareGratis() {
     "Real-time magazijnoverzicht en rapportages",
     "Automatische bestelmeldingen en alerts",
     "Barcode scanning functionaliteit",
-    "Locatiebeheer voor meerdere magazijnen",
+    "Locationsbeheer voor meerdere magazijnen",
     "Integratie met ERP en boekhouding",
     "24/7 toegang vanaf overal"
   ];
@@ -82,8 +82,8 @@ export default function MagazijnbeheerSoftwareGratis() {
       premium: "Onbeperkt"
     },
     {
-      feature: "Magazijnlocaties",
-      gratis: "1 locatie",
+      feature: "MagazijnLocationss",
+      gratis: "1 Locations",
       premium: "Onbeperkt"
     },
     {
@@ -122,7 +122,7 @@ export default function MagazijnbeheerSoftwareGratis() {
     <SeoPageLayout title="Magazijnbeheer Software Gratis - Professioneel Magazijnbeheer">
       <SEO
         title="Magazijnbeheer Software Gratis | Professioneel Magazijnbeheer | stockflow"
-        description="Ontdek de beste magazijnbeheer software gratis voor KMO's. Professioneel magazijnbeheer met real-time rapportages, locatiebeheer en 100% gratis. Start vandaag!"
+        description="Ontdek de beste magazijnbeheer software gratis voor KMO's. Professioneel magazijnbeheer met real-time rapportages, Locationsbeheer en 100% gratis. Start vandaag!"
         keywords="magazijnbeheer software gratis, gratis magazijnbeheer software, magazijnbeheer software gratis download, magazijnbeheer software gratis KMO, magazijnbeheer software gratis belgië, magazijnbeheer software gratis vlaanderen, magazijnbeheer software gratis horeca, magazijnbeheer software gratis webshop, magazijnbeheer software gratis detailhandel, magazijnbeheer software gratis starters, magazijnbeheer software gratis kleine bedrijven, magazijnbeheer software gratis stockflow"
         url="https://www.stockflow.be/magazijnbeheer-software-gratis"
       />
@@ -138,14 +138,14 @@ export default function MagazijnbeheerSoftwareGratis() {
               </h1>
               <p className="text-xl mb-8 leading-relaxed">
                 De enige magazijnbeheer software gratis die specifiek ontwikkeld is voor Vlaamse bedrijven. 
-                Professioneel magazijnbeheer met real-time rapportages, locatiebeheer en zonder kosten.
+                Professioneel magazijnbeheer met real-time rapportages, Locationsbeheer en zonder kosten.
               </p>
               <div className="flex flex-wrap gap-4 mb-8">
                 <div className="bg-white bg-opacity-20 px-4 py-2 rounded-full">
                   <span className="text-sm font-bold">✓ 100% Gratis</span>
                 </div>
                 <div className="bg-white bg-opacity-20 px-4 py-2 rounded-full">
-                  <span className="text-sm font-bold">✓ Locatiebeheer</span>
+                  <span className="text-sm font-bold">✓ Locationsbeheer</span>
                 </div>
                 <div className="bg-white bg-opacity-20 px-4 py-2 rounded-full">
                   <span className="text-sm font-bold">✓ Real-time</span>
@@ -348,7 +348,7 @@ export default function MagazijnbeheerSoftwareGratis() {
               </div>
               <h3 className="text-xl font-bold mb-4">Magazijn Inrichten</h3>
               <p className="text-gray-600">
-                Stel je magazijnlocaties en stellingen in. Voeg je eerste producten toe en begin met magazijnbeheer.
+                Stel je magazijnLocationss en stellingen in. Voeg je eerste producten toe en begin met magazijnbeheer.
               </p>
             </div>
             
@@ -551,7 +551,7 @@ export default function MagazijnbeheerSoftwareGratis() {
         "@context": "https://schema.org",
         "@type": "SoftwareApplication",
         "name": "stockflow - Magazijnbeheer Software Gratis",
-        "description": "De beste magazijnbeheer software gratis voor KMO's. Professioneel magazijnbeheer met real-time rapportages, locatiebeheer en 100% gratis.",
+        "description": "De beste magazijnbeheer software gratis voor KMO's. Professioneel magazijnbeheer met real-time rapportages, Locationsbeheer en 100% gratis.",
         "applicationCategory": "BusinessApplication",
         "operatingSystem": "Web Browser",
         "offers": {

@@ -142,9 +142,9 @@ export default function VoorraadbeheerSoftware() {
             </div>
             
             <div className="bg-gray-50 p-6 rounded-lg">
-              <h3 className="text-xl font-semibold mb-4">Multi-locatie Support</h3>
+              <h3 className="text-xl font-semibold mb-4">Multi-Locations Support</h3>
               <p className="text-gray-700">
-                Beheer voorraad op meerdere locaties vanuit één centrale voorraadbeheer software. Ideaal voor bedrijven met meerdere vestigingen.
+                Beheer voorraad op meerdere Locationss vanuit één centrale voorraadbeheer software. Ideaal voor bedrijven met meerdere vestigingen.
               </p>
             </div>
             

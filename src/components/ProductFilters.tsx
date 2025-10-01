@@ -52,37 +52,37 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
 }) => {
   const { user } = useAuth();
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
-  const [categories, setCategories] = useState<Array<{ id: string; name: string }>>([]);
+  const [Categorys, setCategorys] = useState<Array<{ id: string; name: string }>>([]);
   const [suppliers, setSuppliers] = useState<Array<{ id: string; name: string }>>([]);
 
-  // Fetch categories and suppliers when component mounts and user is available
+  // Fetch Categorys and suppliers when component mounts and user is available
   useEffect(() => {
     if (user) {
-      fetchCategories();
+      fetchCategorys();
       fetchSuppliers();
     }
   }, [user]);
 
 
 
-  const fetchCategories = async () => {
+  const fetchCategorys = async () => {
     if (!user) return;
     
     try {
       const { data, error } = await supabase
-        .from('categories')
+        .from('Categorys')
         .select('id, name')
         .eq('user_id', user.id)
         .order('name');
       
       if (error) {
-        console.error('Error fetching categories:', error);
+        console.error('Error fetching Categorys:', error);
         return;
       }
       
-      setCategories(data || []);
+      setCategorys(data || []);
     } catch (error) {
-      console.error('Error fetching categories:', error);
+      console.error('Error fetching Categorys:', error);
     }
   };
 
@@ -149,14 +149,14 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                 {/* Category Filter */}
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700">Categorie</label>
+                  <label className="text-sm font-medium text-gray-700">Category</label>
                   <Select value={categoryFilter} onValueChange={onCategoryFilterChange}>
                     <SelectTrigger>
-                      <SelectValue placeholder="Selecteer categorie..." />
+                      <SelectValue placeholder="Selecteer Category..." />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">Alle categorieën</SelectItem>
-                      {categories.map((category) => (
+                      <SelectItem value="all">Alle Categoryën</SelectItem>
+                      {Categorys.map((category) => (
                         <SelectItem key={category.id} value={category.id}>
                           {category.name}
                         </SelectItem>

@@ -83,7 +83,7 @@ export default function SoftwaresForInventoryManagement() {
     "Get support for your entire software ecosystem"
   ];
 
-  const softwareCategories = [
+  const softwareCategorys = [
     {
       title: "Cloud-based Softwares",
       description: "Modern cloud solutions for flexible inventory management.",
@@ -315,12 +315,12 @@ export default function SoftwaresForInventoryManagement() {
         </div>
       </section>
 
-      {/* Software Categories Section */}
+      {/* Software Categorys Section */}
       <section className="py-16 px-4 bg-gray-50">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Categories of <span className="text-blue-600">Inventory Management Softwares</span>
+              Categorys of <span className="text-blue-600">Inventory Management Softwares</span>
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
               Different types of softwares available for various inventory management needs.
@@ -328,7 +328,7 @@ export default function SoftwaresForInventoryManagement() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {softwareCategories.map((category, index) => (
+            {softwareCategorys.map((category, index) => (
               <div key={index} className="bg-white p-6 rounded-lg shadow-lg">
                 <div className="text-4xl mb-4">{category.icon}</div>
                 <h3 className="text-xl font-semibold mb-3">{category.title}</h3>

@@ -128,7 +128,7 @@ export default function VoorraadbeheerExcelZelfMaken() {
                 <div className="border-l-4 border-blue-500 pl-6">
                   <h3 className="text-xl font-bold mb-3">Stap 1: Basis structuur opzetten</h3>
                   <p className="text-gray-700 leading-relaxed">
-                    Begin met het maken van de basis kolommen: Product ID, Productnaam, Categorie, Voorraad, Minimum voorraad, 
+                    Begin met het maken van de basis kolommen: Product ID, Productnaam, Category, Voorraad, Minimum voorraad, 
                     Maximum voorraad, Prijs en Leverancier. Dit vormt de basis van je voorraadbeheer excel systeem.
                   </p>
                 </div>
@@ -183,13 +183,13 @@ export default function VoorraadbeheerExcelZelfMaken() {
                 <li><strong>SUM:</strong> Voorraad totalen berekenen</li>
                 <li><strong>IF:</strong> Bestelpuntmeldingen maken</li>
                 <li><strong>VLOOKUP:</strong> Productgegevens opzoeken</li>
-                <li><strong>COUNTIF:</strong> Producten tellen per categorie</li>
+                <li><strong>COUNTIF:</strong> Producten tellen per Category</li>
               </ul>
             </div>
             <div className="bg-white p-6 rounded-lg shadow-lg">
               <h3 className="text-xl font-semibold mb-4">Geavanceerde functies</h3>
               <ul className="space-y-2 text-gray-700">
-                <li><strong>SUMIF:</strong> Voorraadwaardes per categorie</li>
+                <li><strong>SUMIF:</strong> Voorraadwaardes per Category</li>
                 <li><strong>INDEX/MATCH:</strong> Flexibele opzoekingen</li>
                 <li><strong>DATEDIF:</strong> Voorraadrotatie berekenen</li>
                 <li><strong>PivotTables:</strong> Dynamische rapportages</li>

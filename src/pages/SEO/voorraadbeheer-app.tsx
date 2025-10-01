@@ -90,7 +90,7 @@ export default function VoorraadbeheerApp() {
               <p className="text-lg text-gray-700 mb-6 leading-relaxed">
                 Een voorraadbeheer app biedt flexibiliteit en efficiëntie die traditionele systemen niet kunnen bieden. 
                 Met een voorraadbeheer app kun je je voorraad beheren waar je ook bent, zonder gebonden te zijn aan een computer. 
-                Dit is vooral waardevol voor bedrijven met meerdere locaties of medewerkers die vaak onderweg zijn.
+                Dit is vooral waardevol voor bedrijven met meerdere Locationss of medewerkers die vaak onderweg zijn.
               </p>
               <div className="space-y-4">
                 <div className="bg-blue-50 p-4 rounded-lg">

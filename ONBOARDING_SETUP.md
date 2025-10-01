@@ -64,7 +64,7 @@ if (userProfile && !userProfile.onboarding_completed) {
 - Voorraadbeheer
 - Barcode Scanning
 - Analytics & Rapporten
-- Multi-locatie
+- Multi-Locations
 - API Integratie
 - Gebruikersbeheer
 - Mobiele App

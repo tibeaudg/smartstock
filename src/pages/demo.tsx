@@ -332,7 +332,7 @@ const DemoProducts = () => {
     return matchesSearch && matchesCategory;
   });
 
-  const categories = ['all', ...Array.from(new Set(mockProducts.map(p => p.category)))];
+  const Categorys = ['all', ...Array.from(new Set(mockProducts.map(p => p.category)))];
 
   return (
     <div className="p-6 space-y-6">
@@ -364,9 +364,9 @@ const DemoProducts = () => {
           onChange={(e) => setFilterCategory(e.target.value)}
           className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
-          {categories.map(category => (
+          {Categorys.map(category => (
             <option key={category} value={category}>
-              {category === 'all' ? 'All Categories' : category}
+              {category === 'all' ? 'All Categorys' : category}
             </option>
           ))}
         </select>

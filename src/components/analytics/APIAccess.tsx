@@ -105,7 +105,7 @@ export const APIAccess = () => {
       parameters: [
         { name: 'limit', type: 'integer', required: false, description: 'Aantal resultaten (max 100)' },
         { name: 'offset', type: 'integer', required: false, description: 'Start positie' },
-        { name: 'category', type: 'string', required: false, description: 'Filter op categorie' }
+        { name: 'category', type: 'string', required: false, description: 'Filter op Category' }
       ],
       example: 'GET /api/v1/products?limit=50&category=electronics',
       response: '{"products": [...], "total": 150, "limit": 50, "offset": 0}'

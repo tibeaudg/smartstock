@@ -60,8 +60,8 @@ export const EditProductInfoModal = ({
   const [imagePreview, setImagePreview] = useState<string | null>(product.image_url || null);
   const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
   
-  // State voor categorieën en leveranciers
-  const [categories, setCategories] = useState<Array<{ id: string; name: string }>>([]);
+  // State voor Categoryën en leveranciers
+  const [Categorys, setCategorys] = useState<Array<{ id: string; name: string }>>([]);
   const [suppliers, setSuppliers] = useState<Array<{ id: string; name: string }>>([]);
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [supplierOpen, setSupplierOpen] = useState(false);
@@ -117,32 +117,32 @@ export const EditProductInfoModal = ({
     }
   }, [isOpen, product]);
 
-  // Haal categorieën en leveranciers op
+  // Haal Categoryën en leveranciers op
   useEffect(() => {
     if (user) {
-      fetchCategories();
+      fetchCategorys();
       fetchSuppliers();
     }
   }, [user]);
 
-  const fetchCategories = async () => {
+  const fetchCategorys = async () => {
     if (!user) return;
     
     try {
       const { data, error } = await supabase
-        .from('categories')
+        .from('Categorys')
         .select('id, name')
         .eq('user_id', user.id)
         .order('name');
       
       if (error) {
-        console.error('Error fetching categories:', error);
+        console.error('Error fetching Categorys:', error);
         return;
       }
       
-      setCategories(data || []);
+      setCategorys(data || []);
     } catch (error) {
-      console.error('Error fetching categories:', error);
+      console.error('Error fetching Categorys:', error);
     }
   };
 
@@ -182,7 +182,7 @@ export const EditProductInfoModal = ({
 
   const handleCategoryChange = (value: string) => {
     // Find the category by name and set both ID and name
-    const category = categories.find(cat => cat.name === value);
+    const category = Categorys.find(cat => cat.name === value);
     setForm({ 
       ...form, 
       category_id: category?.id || '', 
@@ -221,8 +221,10 @@ export const EditProductInfoModal = ({
         return;
       }
       toast.success('Product and related transactions successfully deleted');
-      // Forceer update van productCount in Sidebar
+      // Forceer update van productCount in Sidebar en dashboard data
       queryClient.invalidateQueries({ queryKey: ['productCount', activeBranch.branch_id, user.id] });
+      queryClient.invalidateQueries({ queryKey: ['dashboardData', activeBranch.branch_id] });
+      queryClient.invalidateQueries({ queryKey: ['products'] });
       onProductUpdated();
       onClose();
     } catch (error) {
@@ -308,7 +310,7 @@ export const EditProductInfoModal = ({
       if (form.category_name.trim() && !categoryId) {
         // If we have a name but no ID, try to find existing or create new
         const { data: existingCategory } = await supabase
-        .from('categories')
+        .from('Categorys')
         .select('id')
         .eq('name', form.category_name.trim())
         .eq('user_id', user.id)
@@ -319,7 +321,7 @@ export const EditProductInfoModal = ({
           console.log('Found existing category:', existingCategory);
         } else {
           const { data: newCategory, error: categoryError } = await supabase
-            .from('categories')
+            .from('Categorys')
             .insert({ name: form.category_name.trim(), user_id: user.id })
             .select('id')
             .single();
@@ -605,7 +607,7 @@ export const EditProductInfoModal = ({
                     </div>
                   </div>
 
-                  {/* Categorie en Leverancier Sectie */}
+                  {/* Category en Leverancier Sectie */}
                   <div className="bg-white border border-gray-200 rounded-lg p-4">
                     <h4 className="text-md font-semibold text-gray-700 mb-3 flex items-center">
                       <div className="w-2 h-2 bg-gray-500 rounded-full mr-2"></div>
@@ -645,7 +647,7 @@ export const EditProductInfoModal = ({
                                         if (form.category_name.trim()) {
                                           try {
                                             const { data: newCategory, error } = await supabase
-                                              .from('categories')
+                                              .from('Categorys')
                                               .insert({ name: form.category_name.trim(), user_id: user.id })
                                               .select('id, name')
                                               .single();
@@ -655,7 +657,7 @@ export const EditProductInfoModal = ({
                                               return;
                                             }
                                             
-                                            setCategories(prev => [...prev, newCategory]);
+                                            setCategorys(prev => [...prev, newCategory]);
                                             setForm(prev => ({ ...prev, category_id: newCategory.id }));
                                             setCategoryOpen(false);
                                             toast.success('New category added!');
@@ -672,7 +674,7 @@ export const EditProductInfoModal = ({
                                   </div>
                                 </CommandEmpty>
                                 <CommandGroup>
-                                  {categories.map((category) => (
+                                  {Categorys.map((category) => (
                                     <CommandItem
                                       key={category.id}
                                       value={category.name}
@@ -969,7 +971,7 @@ export const EditProductInfoModal = ({
                           
                           <div>
                             <Label htmlFor={`variant-location-${index}`} className="text-sm font-medium text-gray-700">
-                              Locatie
+                              Locations
                             </Label>
                             <Input
                               id={`variant-location-${index}`}

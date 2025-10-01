@@ -66,8 +66,8 @@ export default function ScanPage() {
     barcode: '',
   });
 
-  // State voor categorieën en leveranciers dropdowns
-  const [categories, setCategories] = useState<Array<{ id: string; name: string }>>([]);
+  // State voor Categoryën en leveranciers dropdowns
+  const [Categorys, setCategorys] = useState<Array<{ id: string; name: string }>>([]);
   const [suppliers, setSuppliers] = useState<Array<{ id: string; name: string }>>([]);
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [supplierOpen, setSupplierOpen] = useState(false);
@@ -133,9 +133,9 @@ export default function ScanPage() {
           const newProduct = {
             name: `Product ${barcode}`,
             description: 'Automatisch aangemaakt via barcode scanner',
-            categoryId: categories.length > 0 ? categories[0].id : '',
+            categoryId: Categorys.length > 0 ? Categorys[0].id : '',
             supplierId: suppliers.length > 0 ? suppliers[0].id : '',
-            categoryName: categories.length > 0 ? categories[0].name : '',
+            categoryName: Categorys.length > 0 ? Categorys[0].name : '',
             supplierName: suppliers.length > 0 ? suppliers[0].name : '',
             quantityInStock: 1,
             minimumStockLevel: 10,
@@ -185,32 +185,32 @@ export default function ScanPage() {
     }
   };
 
-  // Haal categorieën en leveranciers op bij component mount
+  // Haal Categoryën en leveranciers op bij component mount
   useEffect(() => {
     if (user) {
-      fetchCategories();
+      fetchCategorys();
       fetchSuppliers();
     }
   }, [user]);
 
-  const fetchCategories = async () => {
+  const fetchCategorys = async () => {
     if (!user) return;
     
     try {
       const { data, error } = await supabase
-        .from('categories')
+        .from('Categorys')
         .select('id, name')
         .eq('user_id', user.id)
         .order('name');
       
       if (error) {
-        console.error('Error fetching categories:', error);
+        console.error('Error fetching Categorys:', error);
         return;
       }
       
-      setCategories(data || []);
+      setCategorys(data || []);
     } catch (error) {
-      console.error('Error fetching categories:', error);
+      console.error('Error fetching Categorys:', error);
     }
   };
 
@@ -238,7 +238,7 @@ export default function ScanPage() {
       
       // If changing category name, also update category ID
       if (field === 'categoryName') {
-        const category = categories.find(cat => cat.name === value);
+        const category = Categorys.find(cat => cat.name === value);
         newData.categoryId = category?.id || '';
       }
       
@@ -356,7 +356,7 @@ export default function ScanPage() {
         let categoryId = null;
         if (formData.categoryName.trim()) {
           const { data: existingCategory } = await supabase
-            .from('categories')
+            .from('Categorys')
             .select('id')
             .eq('name', formData.categoryName.trim())
             .eq('user_id', user.id)
@@ -366,14 +366,14 @@ export default function ScanPage() {
             categoryId = existingCategory.id;
           } else {
             const { data: newCategory, error: categoryError } = await supabase
-              .from('categories')
+              .from('Categorys')
               .insert({ name: formData.categoryName.trim(), user_id: user.id })
               .select('id')
               .single();
 
             if (categoryError) {
               console.error('Error creating category:', categoryError);
-              toast.error('Fout bij het aanmaken van categorie');
+              toast.error('Fout bij het aanmaken van Category');
               setLoading(false);
               return;
             }
@@ -777,7 +777,7 @@ export default function ScanPage() {
                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                      <div>
                        <Label htmlFor="category" className="text-sm font-medium text-gray-700">
-                         Categorie
+                         Category
                        </Label>
                        <Popover open={categoryOpen} onOpenChange={setCategoryOpen}>
                          <PopoverTrigger asChild>
@@ -787,21 +787,21 @@ export default function ScanPage() {
                              aria-expanded={categoryOpen}
                              className="w-full justify-between mt-1"
                            >
-                             {formData.categoryName ? formData.categoryName : "Selecteer categorie..."}
+                             {formData.categoryName ? formData.categoryName : "Selecteer Category..."}
                              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                            </Button>
                          </PopoverTrigger>
                          <PopoverContent className="w-full p-0">
                            <Command>
                              <CommandInput 
-                               placeholder="Categorie zoeken..." 
+                               placeholder="Category zoeken..." 
                                value={formData.categoryName}
                                onValueChange={(value) => handleInputChange('categoryName', value)}
                              />
                              <CommandList>
                                <CommandEmpty>
                                  <div className="p-2 text-center">
-                                   <p className="text-sm text-gray-500 mb-2">Geen categorie gevonden</p>
+                                   <p className="text-sm text-gray-500 mb-2">Geen Category gevonden</p>
                                    <Button
                                      variant="outline"
                                      size="sm"
@@ -809,23 +809,23 @@ export default function ScanPage() {
                                        if (formData.categoryName.trim()) {
                                          try {
                                            const { data: newCategory, error } = await supabase
-                                             .from('categories')
+                                             .from('Categorys')
                                              .insert({ name: formData.categoryName.trim(), user_id: user.id })
                                              .select('id, name')
                                              .single();
                                            
                                            if (error) {
-                                             toast.error('Fout bij het aanmaken van categorie');
+                                             toast.error('Fout bij het aanmaken van Category');
                                              return;
                                            }
                                            
-                                           setCategories(prev => [...prev, newCategory]);
+                                           setCategorys(prev => [...prev, newCategory]);
                                            // Also set the category ID in the form
                                            setFormData(prev => ({ ...prev, categoryId: newCategory.id }));
                                            setCategoryOpen(false);
-                                           toast.success('Nieuwe categorie toegevoegd!');
+                                           toast.success('Nieuwe Category toegevoegd!');
                                          } catch (error) {
-                                           toast.error('Fout bij het aanmaken van categorie');
+                                           toast.error('Fout bij het aanmaken van Category');
                                          }
                                        }
                                      }}
@@ -837,7 +837,7 @@ export default function ScanPage() {
                                  </div>
                                </CommandEmpty>
                                <CommandGroup>
-                                 {categories.map((category) => (
+                                 {Categorys.map((category) => (
                                    <CommandItem
                                      key={category.id}
                                      value={category.name}

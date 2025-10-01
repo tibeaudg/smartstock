@@ -314,8 +314,8 @@ export const AnalyticsDashboard = () => {
         {/* Category Distribution */}
         <Card>
           <CardHeader>
-            <CardTitle>Categorie Verdeling</CardTitle>
-            <CardDescription>Producten per categorie</CardDescription>
+            <CardTitle>Category Verdeling</CardTitle>
+            <CardDescription>Producten per Category</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">

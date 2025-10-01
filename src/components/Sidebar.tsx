@@ -142,7 +142,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
           path: '/dashboard/stock',
           subItems: [
             { id: 'products', label: 'Products', path: '/dashboard/stock' },
-            { id: 'categories', label: 'Categories', path: '/dashboard/categories' },
+            { id: 'Categorys', label: 'Categorys', path: '/dashboard/Categorys' },
             { id: 'suppliers', label: 'Suppliers', path: '/dashboard/suppliers' }
           ]
         },

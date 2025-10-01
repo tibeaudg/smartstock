@@ -163,9 +163,9 @@ export default function VoorraadbeheerWebshop() {
             </div>
             
             <div className="bg-gray-50 p-6 rounded-lg">
-              <h3 className="text-xl font-semibold mb-4">Multi-locatie Support</h3>
+              <h3 className="text-xl font-semibold mb-4">Multi-Locations Support</h3>
               <p className="text-gray-700">
-                Beheer voorraad op meerdere locaties en synchroniseer alles met je webshop voor een naadloze ervaring.
+                Beheer voorraad op meerdere Locationss en synchroniseer alles met je webshop voor een naadloze ervaring.
               </p>
             </div>
             

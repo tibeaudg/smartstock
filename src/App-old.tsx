@@ -119,7 +119,7 @@ import FreeStockProgram from "./pages/SEO/free-stock-program";
 import SimpleStockManagement from "./pages/SEO/simple-stock-management";
 import InventoryManagementBakery from "./pages/SEO/inventory-management-bakery";
 import CreateInventoryExcel from "./pages/SEO/create-inventory-excel";
-import CategoriesPage from './pages/categories';
+import CategorysPage from './pages/Categorys';
 import SuppliersPage from './pages/suppliers';
 import AdminPage from './pages/admin';
 import { PaymentTestPage } from './pages/PaymentTest';
@@ -374,7 +374,7 @@ const AppRouter = () => {
                     <Route path="scan" element={<ScanPage />} />
                     <Route path="subscription-test" element={<SubscriptionTestPage />} />
                     <Route path="stock" element={<StockList />} />
-                    <Route path="categories" element={<CategoriesPage />} />
+                    <Route path="Categorys" element={<CategorysPage />} />
                     <Route path="suppliers" element={<SuppliersPage />} />
                     <Route path="transactions" element={<StockMovements />} />
                     <Route path="delivery-notes" element={<DeliveryNotesManagement />}>

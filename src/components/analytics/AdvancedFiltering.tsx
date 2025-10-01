@@ -84,7 +84,7 @@ export const AdvancedFiltering = () => {
   const availableFields = {
     products: [
       { value: 'name', label: 'Product Naam', type: 'string' },
-      { value: 'category', label: 'Categorie', type: 'string' },
+      { value: 'category', label: 'Category', type: 'string' },
       { value: 'quantity', label: 'Voorraad', type: 'number' },
       { value: 'price', label: 'Prijs', type: 'number' },
       { value: 'supplier', label: 'Leverancier', type: 'string' },
@@ -106,7 +106,7 @@ export const AdvancedFiltering = () => {
       { value: 'current_stock', label: 'Huidige Voorraad', type: 'number' },
       { value: 'min_stock', label: 'Min. Voorraad', type: 'number' },
       { value: 'max_stock', label: 'Max. Voorraad', type: 'number' },
-      { value: 'location', label: 'Locatie', type: 'string' },
+      { value: 'location', label: 'Locations', type: 'string' },
       { value: 'last_movement', label: 'Laatste Beweging', type: 'date' },
       { value: 'status', label: 'Status', type: 'string' }
     ]

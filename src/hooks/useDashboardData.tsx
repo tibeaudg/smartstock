@@ -70,7 +70,7 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
           is_variant,
           variant_name,
           parent_product_id,
-          categories(name)
+          Categorys(name)
         `)
         .eq('branch_id', activeBranch.branch_id);
 
@@ -265,7 +265,8 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
     queryFn: fetchDashboardData,
     enabled: !!user && !!activeBranch,
     refetchOnWindowFocus: true,
-    staleTime: 1000 * 60 * 2, // 2 minuten cache
+    refetchOnMount: true, // Altijd refetchen bij mount
+    staleTime: 1000 * 30, // 30 seconden cache (verlaagd van 2 minuten)
     onError: (error) => {
       console.error('Dashboard data fetch error:', error);
     },
@@ -336,7 +337,7 @@ const calculateCategoryDistribution = (products: any[]) => {
   const categoryMap = new Map<string, { count: number; value: number }>();
   
   products.forEach(product => {
-    const categoryName = product.categories?.name || 'Uncategorized';
+    const categoryName = product.Categorys?.name || 'Uncategorized';
     const existing = categoryMap.get(categoryName) || { count: 0, value: 0 };
     existing.count += 1;
     existing.value += product.quantity_in_stock * product.unit_price;

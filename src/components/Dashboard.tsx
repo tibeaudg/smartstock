@@ -191,7 +191,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mt-4 sm:mt-6">
         {/* Category Distribution Pie Chart */}
         <div className="bg-white rounded-lg shadow p-4 sm:p-6">
-          <h2 className="text-lg sm:text-xl font-semibold text-gray-800 mb-4">Product Categories</h2>
+          <h2 className="text-lg sm:text-xl font-semibold text-gray-800 mb-4">Product Categorys</h2>
           <ResponsiveContainer width="100%" height={isMobile ? 250 : 300}>
             <PieChart>
               <Pie

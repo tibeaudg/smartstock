@@ -2,7 +2,7 @@ export interface Database {
   public: {
     Tables: {
       
-      categories: {
+      Categorys: {
         Row: {
           id: string;
           name: string;

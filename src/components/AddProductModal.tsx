@@ -55,8 +55,8 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
   const navigate = useNavigate();
   const { isMobile } = useMobile();
   
-  // State voor categorieën en leveranciers
-  const [categories, setCategories] = useState<Array<{ id: string; name: string }>>([]);
+  // State voor Categoryën en leveranciers
+  const [Categorys, setCategorys] = useState<Array<{ id: string; name: string }>>([]);
   const [suppliers, setSuppliers] = useState<Array<{ id: string; name: string }>>([]);
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [supplierOpen, setSupplierOpen] = useState(false);
@@ -129,32 +129,32 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
      
   }, [form, activeBranch]);
 
-  // Haal categorieën en leveranciers op
+  // Haal Categoryën en leveranciers op
   useEffect(() => {
     if (user) {
-      fetchCategories();
+      fetchCategorys();
       fetchSuppliers();
     }
   }, [user]);
 
-  const fetchCategories = async () => {
+  const fetchCategorys = async () => {
     if (!user) return;
     
     try {
       const { data, error } = await supabase
-        .from('categories')
+        .from('Categorys')
         .select('id, name')
         .eq('user_id', user.id)
         .order('name');
       
       if (error) {
-        console.error('Error fetching categories:', error);
+        console.error('Error fetching Categorys:', error);
         return;
       }
       
-      setCategories(data || []);
+      setCategorys(data || []);
     } catch (error) {
-      console.error('Error fetching categories:', error);
+      console.error('Error fetching Categorys:', error);
     }
   };
 
@@ -269,7 +269,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
       if (data.categoryName.trim() && !categoryId) {
         // If we have a name but no ID, try to find existing or create new
         const { data: existingCategory } = await supabase
-          .from('categories')
+          .from('Categorys')
           .select('id')
           .eq('name', data.categoryName.trim())
           .eq('user_id', user.id)
@@ -279,7 +279,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
           categoryId = existingCategory.id;
         } else {
           const { data: newCategory, error: categoryError } = await supabase
-            .from('categories')
+            .from('Categorys')
             .insert({ name: data.categoryName.trim(), user_id: user.id })
             .select('id')
             .single();
@@ -668,7 +668,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                       </div>
                     </div>
 
-                    {/* Categorie en Leverancier Sectie */}
+                    {/* Category en Leverancier Sectie */}
                     <div className="bg-white border border-gray-200 rounded-lg p-4">
                       <h4 className="text-md font-semibold text-gray-700 mb-3 flex items-center">
                         <div className="w-2 h-2 bg-gray-500 rounded-full mr-2"></div>
@@ -713,7 +713,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                                        if (field.value.trim()) {
                                          try {
                                            const { data: newCategory, error } = await supabase
-                                             .from('categories')
+                                             .from('Categorys')
                                              .insert({ name: field.value.trim(), user_id: user.id })
                                              .select('id, name')
                                              .single();
@@ -723,7 +723,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                                              return;
                                            }
                                            
-                                           setCategories(prev => [...prev, newCategory]);
+                                           setCategorys(prev => [...prev, newCategory]);
                                            form.setValue('categoryId', newCategory.id);
                                            setCategoryOpen(false);
                                            toast.success('New category added!');
@@ -740,7 +740,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                                 </div>
                               </CommandEmpty>
                               <CommandGroup>
-                                {categories.map((category) => (
+                                {Categorys.map((category) => (
                                   <CommandItem
                                     key={category.id}
                                     value={category.name}
@@ -1079,7 +1079,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                           
                           <div>
                             <Label htmlFor={`variant-location-${index}`} className="text-sm font-medium text-gray-700">
-                              Locatie
+                              Locations
                             </Label>
                             <Input
                               id={`variant-location-${index}`}

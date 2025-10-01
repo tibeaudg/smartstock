@@ -30,8 +30,8 @@ CREATE TABLE IF NOT EXISTS public.stock_transactions (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Create categories table
-CREATE TABLE IF NOT EXISTS public.categories (
+-- Create Categorys table
+CREATE TABLE IF NOT EXISTS public.Categorys (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     name TEXT NOT NULL,
     description TEXT,
@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS public.suppliers (
 -- Add foreign key constraints
 ALTER TABLE public.products 
 ADD CONSTRAINT fk_products_category 
-FOREIGN KEY (category_id) REFERENCES public.categories(id) ON DELETE SET NULL;
+FOREIGN KEY (category_id) REFERENCES public.Categorys(id) ON DELETE SET NULL;
 
 ALTER TABLE public.products 
 ADD CONSTRAINT fk_products_supplier 
@@ -73,15 +73,15 @@ CREATE INDEX IF NOT EXISTS idx_products_status ON public.products(status);
 CREATE INDEX IF NOT EXISTS idx_products_location ON public.products(location);
 CREATE INDEX IF NOT EXISTS idx_stock_transactions_product_id ON public.stock_transactions(product_id);
 CREATE INDEX IF NOT EXISTS idx_stock_transactions_date ON public.stock_transactions(created_at);
-CREATE INDEX IF NOT EXISTS idx_categories_user_id ON public.categories(user_id);
-CREATE INDEX IF NOT EXISTS idx_categories_name ON public.categories(name);
+CREATE INDEX IF NOT EXISTS idx_Categorys_user_id ON public.Categorys(user_id);
+CREATE INDEX IF NOT EXISTS idx_Categorys_name ON public.Categorys(name);
 CREATE INDEX IF NOT EXISTS idx_suppliers_user_id ON public.suppliers(user_id);
 CREATE INDEX IF NOT EXISTS idx_suppliers_name ON public.suppliers(name);
 
 -- Enable RLS
 ALTER TABLE public.products ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.stock_transactions ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.categories ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.Categorys ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.suppliers ENABLE ROW LEVEL SECURITY;
 
 -- Create RLS policies
@@ -103,16 +103,16 @@ CREATE POLICY "Users can view their own stock transactions" ON public.stock_tran
 CREATE POLICY "Users can insert their own stock transactions" ON public.stock_transactions
     FOR INSERT WITH CHECK (auth.uid() = user_id);
 
-CREATE POLICY "Users can view their own categories" ON public.categories
+CREATE POLICY "Users can view their own Categorys" ON public.Categorys
     FOR SELECT USING (auth.uid() = user_id);
 
-CREATE POLICY "Users can insert their own categories" ON public.categories
+CREATE POLICY "Users can insert their own Categorys" ON public.Categorys
     FOR INSERT WITH CHECK (auth.uid() = user_id);
 
-CREATE POLICY "Users can update their own categories" ON public.categories
+CREATE POLICY "Users can update their own Categorys" ON public.Categorys
     FOR UPDATE USING (auth.uid() = user_id);
 
-CREATE POLICY "Users can delete their own categories" ON public.categories
+CREATE POLICY "Users can delete their own Categorys" ON public.Categorys
     FOR DELETE USING (auth.uid() = user_id);
 
 CREATE POLICY "Users can view their own suppliers" ON public.suppliers
@@ -133,8 +133,8 @@ CREATE TRIGGER update_products_updated_at
     FOR EACH ROW
     EXECUTE FUNCTION update_updated_at_column();
 
-CREATE TRIGGER update_categories_updated_at
-    BEFORE UPDATE ON public.categories
+CREATE TRIGGER update_Categorys_updated_at
+    BEFORE UPDATE ON public.Categorys
     FOR EACH ROW
     EXECUTE FUNCTION update_updated_at_column();
 
@@ -146,5 +146,5 @@ CREATE TRIGGER update_suppliers_updated_at
 -- Grant permissions
 GRANT ALL ON public.products TO authenticated;
 GRANT ALL ON public.stock_transactions TO authenticated;
-GRANT ALL ON public.categories TO authenticated;
+GRANT ALL ON public.Categorys TO authenticated;
 GRANT ALL ON public.suppliers TO authenticated;
