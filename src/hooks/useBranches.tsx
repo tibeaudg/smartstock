@@ -245,6 +245,9 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
           setBranchIdToStorage(null);
           setHasNoBranches(true);
         } else {
+          // We have branches, make sure hasNoBranches is false
+          setHasNoBranches(false);
+          
           // Probeer branch uit localStorage te herstellen
           const storedId = getBranchIdFromStorage();
           const found = storedId ? data.find(b => b.branch_id === storedId) : null;
@@ -356,6 +359,7 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
       supabase.removeChannel(branchesChannel);
     };
   }, [user?.id]);
+
 
   const setActiveBranch = (branch: Branch) => {
     setActiveBranchState(branch);

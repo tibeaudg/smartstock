@@ -4,7 +4,6 @@ import { Layout } from './Layout';
 import { CreateBranchModal } from './CreateBranchModal';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches, BranchProvider } from '@/hooks/useBranches';
-import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { UnreadMessagesProvider } from '@/hooks/UnreadMessagesContext';
 
 function isLocalStorageAvailable() {
@@ -23,9 +22,6 @@ export const StockManagementApp: React.FC = () => {
   const { userProfile, loading } = useAuth();
   const { hasNoBranches } = useBranches();
   const location = useLocation();
-  
-  // Use the page refresh hook
-  usePageRefresh();
 
   // Show loading state while auth is being determined
   if (loading) {
@@ -34,6 +30,15 @@ export const StockManagementApp: React.FC = () => {
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
           <p className="text-gray-600">Loading...</p>
+          <p className="text-gray-400 text-sm mt-4">
+            If this takes too long, 
+            <button 
+              onClick={() => window.location.reload()} 
+              className="text-blue-600 hover:text-blue-800 underline ml-1"
+            >
+              click here to refresh
+            </button>
+          </p>
         </div>
       </div>
     );

@@ -13,25 +13,24 @@ export const usePageRefresh = () => {
         // Pagina wordt verborgen (gebruiker gaat naar ander tabblad)
         isPageHidden = true;
         lastVisibilityChange = now;
+        console.log('Page hidden at:', new Date().toLocaleTimeString());
       } else if (isPageHidden) {
-        // Pagina wordt weer zichtbaar (gebruiker komt terug)
+        // Pagina wordt weer zichtbaar (gebruiker komt terug) - ALTIJD refreshen
         const timeHidden = now - lastVisibilityChange;
         
-        // Alleen refreshen als de pagina langer dan 5 minuten verborgen was
-        // Dit voorkomt problemen met branch state restoration bij korte tab switches
-        if (timeHidden > 5 * 60 * 1000) { // 5 minutes
-          refreshTimeout = setTimeout(() => {
-            console.log('Page was hidden for', timeHidden, 'ms, refreshing...');
-            window.location.reload();
-          }, 100);
-        } else {
-          console.log('Page was hidden for', timeHidden, 'ms, not refreshing to preserve state');
-        }
+        console.log('Page visible again after', timeHidden, 'ms, refreshing page in 100ms...');
+        
+        // Simple solution: always refresh when returning to tab
+        refreshTimeout = setTimeout(() => {
+          console.log('Executing page refresh now...');
+          window.location.reload();
+        }, 100);
       }
     };
 
     // Luister naar visibility change events
     document.addEventListener('visibilitychange', handleVisibilityChange);
+    console.log('Page refresh hook initialized');
 
     // Cleanup functie
     return () => {

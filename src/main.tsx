@@ -117,6 +117,9 @@ const queryClient = new QueryClient({
   },
 });
 
+// Make queryClient available globally for usePageRefresh
+(window as any).queryClient = queryClient;
+
 if (typeof window !== 'undefined') {
   setupPersistedQueryClient(queryClient);
 }

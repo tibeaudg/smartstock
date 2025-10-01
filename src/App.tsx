@@ -25,6 +25,7 @@ import { FirstBranchSetup } from "./components/FirstBranchSetup";
 import { OnboardingModal } from "./components/OnboardingModal";
 import { Suspense, useState, useEffect } from "react";
 import { useClarity } from "./hooks/useClarity";
+import { usePageRefresh } from "./hooks/usePageRefresh";
 import { ContentWrapper } from "./ContentWrapper";
 import AdminUserDetailPage from './pages/AdminUserDetailPage';
 import AdminNotificationsPage from './pages/AdminNotificationsPage';
@@ -210,7 +211,14 @@ const AppRouter = () => {
 
     if (branchesLoading) {
       console.debug('[BranchAwareRoute] Loading branches...');
-      return <LoadingScreen />;
+      return (
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading branches...</p>
+          </div>
+        </div>
+      );
     }
 
     // Check if user has no branches and needs to create their first branch
@@ -387,6 +395,9 @@ const AppRouter = () => {
 };
 
 export default function App() {
+  // Use the page refresh hook at the top level
+  usePageRefresh();
+  
   const localBusinessSchema = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",

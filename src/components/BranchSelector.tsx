@@ -60,7 +60,7 @@ export const BranchSelector = () => {
     return (
       <div className="flex items-center space-x-2 p-2 bg-gray-50 rounded-lg animate-pulse">
         <Building2 className="h-4 w-4 text-gray-400" />
-        <span className="text-sm text-gray-500">Laden...</span>
+        <span className="text-sm text-gray-500">Loading branches...</span>
       </div>
     );
   }
@@ -73,7 +73,9 @@ export const BranchSelector = () => {
     );
   }
 
-  if (branches.length === 0) {
+  // Only show "default branch is being created" if we're sure there are no branches
+  // and we're not in a loading state
+  if (branches.length === 0 && !loading) {
     return (
       <div className="space-y-2">
         <div className="flex items-center space-x-2 text-xs text-gray-500 uppercase tracking-wide font-medium">
