@@ -1671,6 +1671,67 @@ export const HomePage = () => {
       </section>
 
 
+      {/* One-line Value + 3 Quick Bullets - Above the Fold */}
+      <section className="py-12 md:py-16 bg-white border-b border-gray-100">
+        <div className="max-w-6xl mx-auto px-4">
+          <FadeInWhenVisible>
+            {/* One-line value proposition */}
+            <div className="text-center mb-8 md:mb-12">
+              <h2 className="text-2xl md:text-3xl font-medium text-gray-800 mb-2">
+                Stop guessing what's in stock — see it live, always
+              </h2>
+              <p className="text-base md:text-lg text-gray-600">
+                Built specifically for small retail shops
+              </p>
+            </div>
+          </FadeInWhenVisible>
+          
+          {/* 3 Micro-benefits for retailers */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+            <SlideUpWhenVisible delay={100}>
+              <div className="flex flex-col items-center text-center p-6 rounded-xl hover:bg-gray-50 transition-all duration-300">
+                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+                  <CheckCircle className="h-8 w-8 text-blue-600" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  No more "Do we have this?"
+                </h3>
+                <p className="text-sm text-gray-600 leading-relaxed">
+                  Check stock instantly from your phone — no need to walk to the backroom or call staff
+                </p>
+              </div>
+            </SlideUpWhenVisible>
+            
+            <SlideUpWhenVisible delay={200}>
+              <div className="flex flex-col items-center text-center p-6 rounded-xl hover:bg-gray-50 transition-all duration-300">
+                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
+                  <Clock className="h-8 w-8 text-green-600" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  Count stock in 10 minutes, not hours
+                </h3>
+                <p className="text-sm text-gray-600 leading-relaxed">
+                  Scan barcodes with your phone camera instead of writing on clipboards and typing into Excel
+                </p>
+              </div>
+            </SlideUpWhenVisible>
+            
+            <SlideUpWhenVisible delay={300}>
+              <div className="flex flex-col items-center text-center p-6 rounded-xl hover:bg-gray-50 transition-all duration-300">
+                <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mb-4">
+                  <TrendingUp className="h-8 w-8 text-purple-600" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  Stop losing sales to empty shelves
+                </h3>
+                <p className="text-sm text-gray-600 leading-relaxed">
+                  Get alerts before items sell out — reorder the right amount at the right time
+                </p>
+              </div>
+            </SlideUpWhenVisible>
+          </div>
+        </div>
+      </section>
 
 
       {/* Interactive Savings Calculator - Micro-Conversion */}

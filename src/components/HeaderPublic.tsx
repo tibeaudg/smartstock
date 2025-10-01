@@ -73,6 +73,8 @@ export const Header = ({ onNavigate, hideAuthButtons, hideNotifications }: Heade
                   <Link to="/features" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Features</Link>
                   <Link to="/pricing" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Pricing</Link>
                   <Link to="/contact" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Contact</Link>
+                  <Link to="/contact" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Contact</Link>
+
                 </nav>
               )}
 
@@ -93,7 +95,7 @@ export const Header = ({ onNavigate, hideAuthButtons, hideNotifications }: Heade
                       onClick={handleRegisterClick} 
                       className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-3xl font-semibold transition-all duration-300 shadow-lg hover:shadow-blue-500/25 transform hover:scale-105 border border-blue-500/20 h-10 flex items-center justify-center"
                     >
-                      Register/Login
+                      Start Free
                     </Button>
                   </>
                 )}
