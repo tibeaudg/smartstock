@@ -1677,7 +1677,7 @@ export const HomePage = () => {
           <FadeInWhenVisible>
             {/* One-line value proposition */}
             <div className="text-center mb-8 md:mb-12">
-              <h2 className="text-2xl md:text-3xl font-medium text-gray-800 mb-2">
+              <h2 className="text-4xl md:text-6xl font-light text-gray-800 mb-6">
                 Stop guessing what's in stock — see it live, always
               </h2>
               <p className="text-base md:text-lg text-gray-600">
@@ -1730,6 +1730,112 @@ export const HomePage = () => {
               </div>
             </SlideUpWhenVisible>
           </div>
+        </div>
+      </section>
+
+
+      {/* Short Retail Testimonial Snippets */}
+      <section className="py-12 md:py-16 bg-gradient-to-br from-blue-50 to-slate-50">
+        <div className="max-w-5xl mx-auto px-4">
+          <FadeInWhenVisible>
+            <div className="text-center mb-8">
+              <h2 className="text-4xl md:text-6xl font-light text-gray-800 mb-6">
+                Trusted by Local Retailers
+              </h2>
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto">See how businesses like yours save $2,400+ annually with StockFlow. Real results from real customers.
+
+</p>
+            </div>
+          </FadeInWhenVisible>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Testimonial 1 - Coffee Shop */}
+            <SlideInWhenVisible direction="left" delay={100}>
+              <div className="bg-white rounded-xl shadow-lg p-6 md:p-8 border border-gray-100 hover:shadow-xl transition-all duration-300">
+                <div className="flex items-start gap-4 mb-4">
+                  <img 
+                    src="/Laura.png" 
+                    alt="Laura Peeters" 
+                    className="w-12 h-12 rounded-full object-cover"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).style.display = 'none';
+                    }}
+                  />
+                  <div className="flex-1">
+                    <h4 className="font-semibold text-gray-900">Laura Peeters</h4>
+                    <p className="text-sm text-gray-600">Owner, De Koffieboetiek</p>
+                    <div className="flex gap-0.5 mt-1">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                <blockquote className="text-gray-700 text-sm md:text-base leading-relaxed mb-4">
+                  "We cut stockouts by 80% in the first quarter. No more walking to the backroom 20 times a day — I check stock on my phone while helping customers."
+                </blockquote>
+                <div className="flex flex-wrap gap-2">
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
+                    <CheckCircle className="h-3 w-3 mr-1" />
+                    80% fewer stockouts
+                  </span>
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700">
+                    <Clock className="h-3 w-3 mr-1" />
+                    8 hrs/week saved
+                  </span>
+                </div>
+              </div>
+            </SlideInWhenVisible>
+            
+            {/* Testimonial 2 - Creative Workshop */}
+            <SlideInWhenVisible direction="right" delay={200}>
+              <div className="bg-white rounded-xl shadow-lg p-6 md:p-8 border border-gray-100 hover:shadow-xl transition-all duration-300">
+                <div className="flex items-start gap-4 mb-4">
+                  <img 
+                    src="/anke.png" 
+                    alt="Anke Willems" 
+                    className="w-12 h-12 rounded-full object-cover"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).style.display = 'none';
+                    }}
+                  />
+                  <div className="flex-1">
+                    <h4 className="font-semibold text-gray-900">Anke Willems</h4>
+                    <p className="text-sm text-gray-600">Studio Manager, Creatief Atelier</p>
+                    <div className="flex gap-0.5 mt-1">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                <blockquote className="text-gray-700 text-sm md:text-base leading-relaxed mb-4">
+                  "Counting 200+ art supplies used to take 3 hours. Now it takes 15 minutes with my phone. I can focus on customers instead of clipboards."
+                </blockquote>
+                <div className="flex flex-wrap gap-2">
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
+                    <CheckCircle className="h-3 w-3 mr-1" />
+                    3 hrs → 15 min
+                  </span>
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700">
+                    <Smartphone className="h-3 w-3 mr-1" />
+                    200+ items tracked
+                  </span>
+                </div>
+              </div>
+            </SlideInWhenVisible>
+          </div>
+          
+          {/* Early Adopter Incentive */}
+          <FadeInWhenVisible delay={400}>
+            <div className="mt-8 text-center">
+              <div className="inline-block bg-white rounded-xl shadow-md px-6 py-4 border-2 border-blue-100">
+                <p className="text-sm text-gray-700">
+                  <span className="font-semibold text-blue-600">Early adopter bonus:</span> Get 3 months free on any paid plan when you share your success story
+                </p>
+              </div>
+            </div>
+          </FadeInWhenVisible>
         </div>
       </section>
 
@@ -1982,112 +2088,6 @@ export const HomePage = () => {
 
       
 
-      {/* Enhanced Testimonials Section */}
-      <section id="testimonials-section" className="py-20 bg-gradient-to-br from-blue-50 to-indigo-100">
-        <div className="max-w-7xl mx-auto px-4">
-          {/* Compelling Headline */}
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-6xl font-light text-gray-800 mb-6">
-              Real Customers, Real Savings
-            </h2>
-            <p className="text-xl text-gray-600 max-w-4xl mx-auto mb-8">
-              See how businesses like yours save $2,400+ annually with StockFlow. 
-              Real results from real customers.
-            </p>
-            
-
-          </div>
-
-          {/* Enhanced Testimonials Grid */}
-          <div className="mb-16">
-            <Carousel
-              itemsPerView={{
-                mobile: 1,
-                tablet: 2,
-                desktop: 3
-              }}
-              showArrows={true}
-              showDots={true}
-              autoPlay={false}
-              className="px-4"
-            >
-              {testimonials.map((testimonial, index) => (
-                <StaggerInWhenVisible 
-                  key={index} 
-                  delay={index * 200}
-                  staggerDelay={index * 100}
-                >
-                  <div className="bg-white rounded-3xl shadow-xl p-6 md:p-8 border border-gray-100 hover:shadow-2xl transition-all duration-300 h-full">
-                  {/* Rating Stars */}
-                  <div className="flex items-center mb-6">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
-                    ))}
-                    <span className="ml-2 text-sm text-gray-600">Verified Customer</span>
-                  </div>
-                  
-                  {/* Testimonial Quote */}
-                  <blockquote className="text-gray-700 mb-6 leading-relaxed italic">
-                    "{testimonial.quote}"
-                  </blockquote>
-                  
-                  {/* Enhanced User Info with Photo */}
-                  <div className="flex items-center mb-4">
-                    <div className="w-16 h-16 rounded-full overflow-hidden mr-4 border-2 border-blue-200">
-                      <OptimizedImage 
-                        src={testimonial.avatar} 
-                        alt={testimonial.name}
-                        className="w-full h-full object-cover"
-                        width={64}
-                        height={64}
-                        useModernFormats={true}
-                        responsive={true}
-                        sizes="64px"
-                      />
-                      <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-semibold text-lg" style={{display: 'none'}}>
-                        {testimonial.name.split(' ').map(n => n[0]).join('')}
-                      </div>
-                    </div>
-                    <div className="flex-1">
-                      <div className="font-semibold text-gray-900 text-lg">{testimonial.name}</div>
-                      <div className="text-blue-600 font-medium">{testimonial.title}</div>
-                      <div className="text-sm text-gray-600">{testimonial.company} • {testimonial.location}</div>
-                    </div>
-                  </div>
-                  
-                  {/* Industry & Savings */}
-                  <div className="flex justify-center items-center pt-4 border-t border-gray-200">
-                    <div className="text-center">
-                      <div className="text-sm text-gray-600 mb-1">{testimonial.industry}</div>
-                      <div className="text-lg font-bold text-green-600">{testimonial.savings}</div>
-                    </div>
-                  </div>
-                  </div>
-                </StaggerInWhenVisible>
-              ))}
-            </Carousel>
-          </div>
-
-          {/* Social Proof & Case Studies */}
-          <div className="p-8 md:p-8">
-            
-
-            {/* CTA */}
-            <div className="text-center">
-            <Button
-              onClick={handleLoginClick}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-12 py-6 text-xl font-semibold rounded-full transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25 border border-blue-500/20"
-            >
-              Get Started →
-            </Button>
-
-              <p className="text-sm text-gray-500 mt-2">
-                Join thousands of businesses already saving time and money • Free forever plan available
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Enhanced FAQ Section */}
       <section id="faq-section" className="py-20 bg-gradient-to-br from-slate-50 to-blue-50">
