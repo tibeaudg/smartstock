@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, Send } from 'lucide-react';
 
 const Footer = () => (
-  <footer className="bg-black text-gray-200 py-16 md:py-20">
+  <footer className="bg-blue-600 text-gray-200 py-16 md:py-20">
     <div className="max-w-7xl mx-auto px-6">
       {/* Main Footer Content */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
@@ -11,27 +11,27 @@ const Footer = () => (
           <h2 className="text-3xl md:text-4xl font-bold text-white">
             Mobilize Your Inventory
           </h2>
-          <p className="text-gray-400 text-base md:text-lg max-w-md">
+          <p className="text-white text-base md:text-lg max-w-md">
             Unlock instant analytics and reporting for your inventory data.
             No setup headaches, just powerful insights, ready to go.
           </p>
           
           <div className="space-y-4">
             <Link
-              to="/register"
+              to="/pricing"
               className="inline-flex items-center gap-2 bg-white text-black px-6 py-3 rounded-full hover:bg-gray-100 transition-colors font-medium"
             >
-              Try For Free
+              Start Now
               <ArrowRight className="w-5 h-5" />
             </Link>
             
-            <div className="flex items-center gap-2 text-gray-400">
+            <div className="flex items-center gap-2 text-white">
               <Send className="w-5 h-5" />
               <div>
                 <p className="text-sm">Send us a message.</p>
                 <a
                   href="mailto:support@stockflow.be"
-                  className="text-blue-400 hover:text-blue-300 transition-colors"
+                  className="text-white hover:text-gray-300 transition-colors"
                 >
                   info@stockflow.be
                 </a>
@@ -44,7 +44,7 @@ const Footer = () => (
         <div className="grid grid-cols-3 gap-8">
           {/* Legal Column */}
           <div>
-            <h3 className="text-gray-400 text-sm font-medium mb-4">Legal</h3>
+            <h3 className="text-white text-sm font-medium mb-4">Legal</h3>
             <ul className="space-y-3">
               <li>
                 <Link
@@ -67,7 +67,7 @@ const Footer = () => (
 
           {/* Menu Column */}
           <div>
-            <h3 className="text-gray-400 text-sm font-medium mb-4">Menu</h3>
+            <h3 className="text-white text-sm font-medium mb-4">Menu</h3>
             <ul className="space-y-3">
               <li>
                 <Link
@@ -98,7 +98,7 @@ const Footer = () => (
 
           {/* Actions Column */}
           <div>
-            <h3 className="text-gray-400 text-sm font-medium mb-4">Actions</h3>
+            <h3 className="text-white text-sm font-medium mb-4">Actions</h3>
             <ul className="space-y-3">
               <li>
                 <Link
@@ -124,17 +124,17 @@ const Footer = () => (
       {/* Brand Section */}
       <div className="relative justify-center items-center flex">
         <h1 
-          className="text-7xl md:text-10xl font-bold text-transparent bg-clip-text"
+          className="text-6xl md:text-9xl font-bold text-transparent bg-clip-text"
           style={{
-            backgroundImage: 'linear-gradient(180deg, #666 0%, #999 50%, #444 100%)',
+            backgroundImage: 'linear-gradient(180deg, #ffffff 0%, #dbeafe 50%, #bfdbfe 100%)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text',
           }}
         >
-          StockFlow<sup className="text-4xl md:text-6xl"
+          StockFlow<sup className="text-4xl md:text-5xl"
                     style={{
-                      backgroundImage: 'linear-gradient(180deg, #666 0%, #999 50%, #444 100%)',
+                      backgroundImage: 'linear-gradient(180deg, #ffffff 0%, #dbeafe 50%, #bfdbfe 100%)',
                       WebkitBackgroundClip: 'text',
                       WebkitTextFillColor: 'transparent',
                       backgroundClip: 'text',
