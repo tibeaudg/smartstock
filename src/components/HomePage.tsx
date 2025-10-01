@@ -1533,61 +1533,136 @@ export const HomePage = () => {
               </FadeInWhenVisible>
             </div>
             
-          {/* Video Showcase Below */}
+          {/* Hero Visual: In-Store Scene with Dashboard Overlay */}
           <SlideUpWhenVisible delay={1000}>
-            <div className="relative max-w-5xl mx-auto px-4">
-              {/* Video Container */}
-              <div className="relative bg-gray-900 rounded-xl md:rounded-2xl overflow-hidden shadow-2xl">
-                <video
-                  className="w-full h-auto"
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  poster="/placeholder.svg"
-                >
-                  <source src="/intro_vid.mp4" type="video/mp4" />
-                  <source src="/intro_vid.webm" type="video/webm" />
-                  Your browser does not support the video tag.
-                </video>
-                
-                {/* Video Overlay Controls */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none"></div>
-                
-                {/* Play Button Overlay (for fallback) */}
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <div className="w-16 h-16 md:w-20 md:h-20 bg-white/90 rounded-full flex items-center justify-center shadow-lg">
-                    <svg className="w-6 h-6 md:w-8 md:h-8 text-gray-800 ml-1" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M8 5v14l11-7z"/>
-                    </svg>
+            <div className="relative max-w-6xl mx-auto px-4">
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl">
+                {/* Background: Store Scene */}
+                <div className="relative h-[400px] md:h-[500px] lg:h-[600px]">
+                  {/* In-store photo */}
+                  <img
+                    src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1200&h=800&fit=crop&crop=center&auto=format&q=80"
+                    alt="Store owner managing inventory at retail shop"
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                  
+                  {/* Gradient overlay for better contrast */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-black/20 to-transparent"></div>
+                  
+                  {/* Dashboard Overlay - Desktop View */}
+                  <div className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 w-[280px] md:w-[400px] lg:w-[480px]">
+                    <div className="bg-white rounded-xl shadow-2xl overflow-hidden border-4 border-white/20 backdrop-blur-sm">
+                      {/* Dashboard Header */}
+                      <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-4 py-3 flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <Package className="h-5 w-5 text-white" />
+                          <span className="text-white font-semibold text-sm md:text-base">StockFlow</span>
+                        </div>
+                        <div className="flex gap-1.5">
+                          <div className="w-2 h-2 rounded-full bg-white/30"></div>
+                          <div className="w-2 h-2 rounded-full bg-white/30"></div>
+                          <div className="w-2 h-2 rounded-full bg-white/30"></div>
+                        </div>
+                      </div>
+                      
+                      {/* Dashboard Content Preview */}
+                      <div className="p-4 md:p-6 bg-white">
+                        {/* Stock Alert */}
+                        <div className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-lg">
+                          <div className="flex items-start gap-2">
+                            <div className="w-2 h-2 mt-1.5 rounded-full bg-amber-500"></div>
+                            <div className="flex-1">
+                              <p className="text-xs md:text-sm font-semibold text-amber-900">Low Stock Alert</p>
+                              <p className="text-xs text-amber-700 mt-0.5">3 items need reordering</p>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {/* Stock Items */}
+                        <div className="space-y-2">
+                          <div className="flex items-center justify-between p-2 bg-gray-50 rounded">
+                            <div className="flex items-center gap-2">
+                              <div className="w-8 h-8 bg-blue-100 rounded flex items-center justify-center">
+                                <Package className="h-4 w-4 text-blue-600" />
+                              </div>
+                              <div>
+                                <p className="text-xs md:text-sm font-medium text-gray-900">Coffee Beans</p>
+                                <p className="text-xs text-gray-500">SKU: CB-001</p>
+                              </div>
+                            </div>
+                            <div className="text-right">
+                              <p className="text-xs md:text-sm font-bold text-red-600">8 left</p>
+                              <p className="text-xs text-gray-400">Reorder: 50</p>
+                            </div>
+                          </div>
+                          
+                          <div className="flex items-center justify-between p-2 bg-gray-50 rounded">
+                            <div className="flex items-center gap-2">
+                              <div className="w-8 h-8 bg-green-100 rounded flex items-center justify-center">
+                                <Package className="h-4 w-4 text-green-600" />
+                              </div>
+                              <div>
+                                <p className="text-xs md:text-sm font-medium text-gray-900">Tea Selection</p>
+                                <p className="text-xs text-gray-500">SKU: TS-002</p>
+                              </div>
+                            </div>
+                            <div className="text-right">
+                              <p className="text-xs md:text-sm font-bold text-green-600">145 left</p>
+                              <p className="text-xs text-gray-400">In stock</p>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {/* Quick Actions */}
+                        <div className="mt-4 pt-4 border-t border-gray-200">
+                          <div className="flex gap-2">
+                            <button className="flex-1 px-3 py-2 bg-blue-600 text-white text-xs font-medium rounded-lg flex items-center justify-center gap-1">
+                              <Scan className="h-3 w-3" />
+                              Scan
+                            </button>
+                            <button className="flex-1 px-3 py-2 bg-gray-100 text-gray-700 text-xs font-medium rounded-lg">
+                              Reorder
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Floating badge */}
+                    <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-green-500 text-white px-4 py-2 rounded-full shadow-lg text-xs font-semibold whitespace-nowrap">
+                      ✓ Live Dashboard
+                    </div>
+                  </div>
+                  
+                  {/* Mobile Scanner Badge */}
+                  <div className="absolute bottom-6 left-4 md:left-8 bg-white/95 backdrop-blur-sm rounded-xl shadow-xl p-4 max-w-[200px] md:max-w-[240px]">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <Smartphone className="h-5 w-5 text-blue-600" />
+                      </div>
+                      <div>
+                        <p className="text-xs font-semibold text-gray-900">Scan with phone</p>
+                        <p className="text-xs text-gray-500">Update from shop floor</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
               
-              {/* Video Features */}
-              <div className="mt-4 md:mt-6 flex flex-wrap justify-center gap-4 md:gap-6 text-xs md:text-sm text-gray-500">
-                <div className="flex items-center">
-                  <div className="w-2 h-2 bg-green-600 rounded-full mr-2"></div>
-                  Real-time updates
+              {/* Key Features Below Image */}
+              <div className="mt-6 flex flex-wrap justify-center gap-4 md:gap-8 text-xs md:text-sm text-gray-600">
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-green-600" />
+                  <span>Instant stock alerts</span>
                 </div>
-                <div className="flex items-center">
-                  <div className="w-2 h-2 bg-blue-600 rounded-full mr-2"></div>
-                  Mobile responsive
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-green-600" />
+                  <span>Mobile scanning</span>
                 </div>
-                <div className="flex items-center">
-                  <div className="w-2 h-2 bg-purple-600 rounded-full mr-2"></div>
-                  Easy integration
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-green-600" />
+                  <span>No credit card needed</span>
                 </div>
-              </div>
-              
-              {/* View Demo Button */}
-              <div className="mt-8 text-center">
-                <Link
-                  to="/demo"
-                  className="inline-flex items-center text-blue-600 hover:text-blue-700 font-semibold transition-all duration-300 border-2 border-blue-600 hover:border-blue-700 px-8 py-4 rounded-full shadow-lg hover:shadow-blue-500/25 transform hover:scale-105"
-                >
-                  View Demo →
-                </Link>
               </div>
             </div>
           </SlideUpWhenVisible>
