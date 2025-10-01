@@ -183,6 +183,13 @@ export const Header = ({ onNavigate, hideAuthButtons, hideNotifications }: Heade
                   <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">Navigation</h3>
                   <div className="space-y-1">
                     <Link 
+                      to="/features"
+                      className="block w-full text-left text-gray-700 hover:text-blue-700 py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors font-medium" 
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      Features
+                    </Link>
+                    <Link 
                       to="/pricing"
                       className="block w-full text-left text-gray-700 hover:text-blue-700 py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors font-medium" 
                       onClick={() => setMobileMenuOpen(false)}
@@ -196,6 +203,13 @@ export const Header = ({ onNavigate, hideAuthButtons, hideNotifications }: Heade
                     >
                       Contact
                     </Link>
+                    <Link 
+                      to="/auth?mode=login"
+                      className="block w-full text-left text-gray-700 hover:text-blue-700 py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors font-medium" 
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      Login
+                    </Link>
                   </div>
                 </div>
               )}
@@ -203,18 +217,23 @@ export const Header = ({ onNavigate, hideAuthButtons, hideNotifications }: Heade
               {/* Mobile Auth Buttons */}
               {!hideAuthButtons && (
                 <div className="space-y-3">
-                  <Button 
-                    variant="outline" 
-                    className="w-full border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white py-3 rounded-3xl font-semibold h-12 flex items-center justify-center transition-all duration-300 shadow-lg hover:shadow-blue-500/25" 
-                    onClick={() => { handleLoginClick(); setMobileMenuOpen(false); }}
+                  <Link
+                    to="/demo"
+                    className="block w-full"
+                    onClick={() => setMobileMenuOpen(false)}
                   >
-                    View Demo
-                  </Button>
+                    <Button 
+                      variant="outline" 
+                      className="w-full border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white py-3 rounded-3xl font-semibold h-12 flex items-center justify-center transition-all duration-300 shadow-lg hover:shadow-blue-500/25" 
+                    >
+                      View Demo
+                    </Button>
+                  </Link>
                   <Button 
                     className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-3xl h-12 flex items-center justify-center shadow-lg hover:shadow-blue-500/25 transition-all duration-300 border border-blue-500/20" 
                     onClick={() => { handleRegisterClick(); setMobileMenuOpen(false); }}
                   >
-                    Register/Login
+                    Start Free
                   </Button>
                 </div>
               )}
