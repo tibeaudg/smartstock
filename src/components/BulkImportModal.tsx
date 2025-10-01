@@ -123,8 +123,8 @@ export const BulkImportModal: React.FC<BulkImportModalProps> = ({
       }
 
       // Get existing categories and suppliers for matching
-      const { data: existingCategories } = await supabase
-        .from('Categorys')
+      const { data: existingCategorys } = await supabase
+        .from('categories')
         .select('id, name')
         .eq('user_id', user.id);
 
@@ -133,7 +133,7 @@ export const BulkImportModal: React.FC<BulkImportModalProps> = ({
         .select('id, name')
         .eq('user_id', user.id);
 
-      const categoryMap = new Map(existingCategories?.map(c => [c.name.toLowerCase(), c.id]) || []);
+      const categoryMap = new Map(existingCategorys?.map(c => [c.name.toLowerCase(), c.id]) || []);
       const supplierMap = new Map(existingSuppliers?.map(s => [s.name.toLowerCase(), s.id]) || []);
 
       // Import each product
@@ -160,7 +160,7 @@ export const BulkImportModal: React.FC<BulkImportModalProps> = ({
             // Create category if it doesn't exist
             if (!categoryId) {
               const { data: newCategory, error: catError } = await supabase
-                .from('Categorys')
+                .from('categories')
                 .insert({
                   name: row.category.trim(),
                   user_id: user.id,

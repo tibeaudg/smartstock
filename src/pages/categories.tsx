@@ -29,7 +29,7 @@ export default function CategorysPage() {
   const navigate = useNavigate();
   const location = useLocation();
   
-  const [Categorys, setCategorys] = useState<Category[]>([]);
+  const [categories, setCategorys] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -41,12 +41,12 @@ export default function CategorysPage() {
   });
 
   // Mobile tab switcher state
-  const [activeTab, setActiveTab] = useState<'products' | 'Categorys' | 'suppliers'>('Categorys');
+  const [activeTab, setActiveTab] = useState<'products' | 'categories' | 'suppliers'>('categories');
 
   // Update active tab based on current route
   useEffect(() => {
-    if (location.pathname.includes('/Categorys')) {
-      setActiveTab('Categorys');
+    if (location.pathname.includes('/categories')) {
+      setActiveTab('categories');
     } else if (location.pathname.includes('/suppliers')) {
       setActiveTab('suppliers');
     } else {
@@ -55,11 +55,11 @@ export default function CategorysPage() {
   }, [location.pathname]);
 
   // Handle tab change
-  const handleTabChange = (tab: 'products' | 'Categorys' | 'suppliers') => {
+  const handleTabChange = (tab: 'products' | 'categories' | 'suppliers') => {
     setActiveTab(tab);
     switch (tab) {
-      case 'Categorys':
-        navigate('/dashboard/Categorys');
+      case 'categories':
+        navigate('/dashboard/categories');
         break;
       case 'suppliers':
         navigate('/dashboard/suppliers');
@@ -80,15 +80,15 @@ export default function CategorysPage() {
     if (!user) return;
     
     try {
-      // First get all Categorys for the current user
+      // First get all categories for the current user
       const { data: CategorysData, error: CategorysError } = await supabase
-        .from('Categorys')
+        .from('categories')
         .select('*')
         .eq('user_id', user.id)
         .order('name');
 
       if (CategorysError) {
-        console.error('Error fetching Categorys:', CategorysError);
+        console.error('Error fetching categories:', CategorysError);
         toast.error('Fout bij het ophalen van Categoryën');
         return;
       }
@@ -112,7 +112,7 @@ export default function CategorysPage() {
 
       setCategorys(CategorysWithCount);
     } catch (error) {
-      console.error('Error fetching Categorys:', error);
+      console.error('Error fetching categories:', error);
       toast.error('Onverwachte fout bij het ophalen van Categoryën');
     } finally {
       setLoading(false);
@@ -132,7 +132,7 @@ export default function CategorysPage() {
 
     try {
       const { data, error } = await supabase
-        .from('Categorys')
+        .from('categories')
         .insert({
           name: formData.name.trim(),
           description: formData.description.trim() || null,
@@ -165,7 +165,7 @@ export default function CategorysPage() {
 
     try {
       const { error } = await supabase
-        .from('Categorys')
+        .from('categories')
         .update({
           name: formData.name.trim(),
           description: formData.description.trim() || null
@@ -214,7 +214,7 @@ export default function CategorysPage() {
       }
 
       const { error } = await supabase
-        .from('Categorys')
+        .from('categories')
         .delete()
         .eq('id', selectedCategory.id);
 
@@ -301,9 +301,9 @@ export default function CategorysPage() {
                   <span className="sm:hidden">Prod</span>
                 </button>
                 <button
-                  onClick={() => handleTabChange('Categorys')}
+                  onClick={() => handleTabChange('categories')}
                   className={`flex-1 flex items-center justify-center gap-1.5 px-2 py-2.5 rounded-md text-xs font-medium transition-colors ${
-                    activeTab === 'Categorys'
+                    activeTab === 'categories'
                       ? 'bg-blue-100 text-blue-700 border border-blue-200'
                       : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
                   }`}
@@ -332,10 +332,10 @@ export default function CategorysPage() {
         {/* Header */}
         <div className={`${isMobile ? 'mb-6' : 'mb-8'}`}>
           <h1 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-gray-900 mb-2`}>
-            Manage Categorys
+            Manage Categories
           </h1>
           <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600`}>
-            Manage your product Categorys for better organization of your stock
+            Manage your product categories for better organization of your stock
           </p>
         </div>
 
@@ -350,27 +350,27 @@ export default function CategorysPage() {
           </Button>
         </div>
 
-        {/* Categorys List */}
+        {/* categories List */}
         <div className={`grid gap-3 ${isMobile ? '' : 'gap-4'}`}>
           {loading ? (
             <Card>
               <CardContent className={`${isMobile ? 'p-6' : 'p-8'}`}>
                 <div className="text-center">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                  <p className="text-gray-600">Categorys loading...</p>
+                  <p className="text-gray-600">categories loading...</p>
                 </div>
               </CardContent>
             </Card>
-          ) : Categorys.length === 0 ? (
+          ) : categories.length === 0 ? (
             <Card>
               <CardContent className={`${isMobile ? 'p-6' : 'p-8'}`}>
                 <div className="text-center">
                   <Package className={`${isMobile ? 'w-10 h-10' : 'w-12 h-12'} text-gray-400 mx-auto mb-4`} />
                   <h3 className={`${isMobile ? 'text-base' : 'text-lg'} font-medium text-gray-900 mb-2`}>
-                    No Categorys
+                    No categories
                   </h3>
                   <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600 mb-4`}>
-                    You have no Categorys yet. Create your first category to get started.
+                    You have no categories yet. Create your first category to get started.
                   </p>
                   <Button 
                     onClick={() => setShowAddModal(true)}
@@ -383,7 +383,7 @@ export default function CategorysPage() {
               </CardContent>
             </Card>
           ) : (
-            Categorys.map((category) => (
+            categories.map((category) => (
               <Card 
                 key={category.id} 
                 className="cursor-pointer hover:shadow-md transition-shadow"
@@ -531,8 +531,8 @@ export default function CategorysPage() {
               This action cannot be undone.
             </p>
             <p className="text-sm text-gray-500">
-              Let op: Categorys that are in use by products cannot be deleted.
-              Categorys that are in use by products cannot be deleted.
+              Let op: categories that are in use by products cannot be deleted.
+              categories that are in use by products cannot be deleted.
             </p>
           </div>
           <DialogFooter>

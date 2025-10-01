@@ -56,7 +56,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
   const { isMobile } = useMobile();
   
   // State voor Categoryën en leveranciers
-  const [Categorys, setCategorys] = useState<Array<{ id: string; name: string }>>([]);
+  const [categories, setCategorys] = useState<Array<{ id: string; name: string }>>([]);
   const [suppliers, setSuppliers] = useState<Array<{ id: string; name: string }>>([]);
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [supplierOpen, setSupplierOpen] = useState(false);
@@ -142,19 +142,19 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
     
     try {
       const { data, error } = await supabase
-        .from('Categorys')
+        .from('categories')
         .select('id, name')
         .eq('user_id', user.id)
         .order('name');
       
       if (error) {
-        console.error('Error fetching Categorys:', error);
+        console.error('Error fetching categories:', error);
         return;
       }
       
       setCategorys(data || []);
     } catch (error) {
-      console.error('Error fetching Categorys:', error);
+      console.error('Error fetching categories:', error);
     }
   };
 
@@ -269,7 +269,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
       if (data.categoryName.trim() && !categoryId) {
         // If we have a name but no ID, try to find existing or create new
         const { data: existingCategory } = await supabase
-          .from('Categorys')
+          .from('categories')
           .select('id')
           .eq('name', data.categoryName.trim())
           .eq('user_id', user.id)
@@ -279,7 +279,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
           categoryId = existingCategory.id;
         } else {
           const { data: newCategory, error: categoryError } = await supabase
-            .from('Categorys')
+            .from('categories')
             .insert({ name: data.categoryName.trim(), user_id: user.id })
             .select('id')
             .single();
@@ -713,7 +713,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                                        if (field.value.trim()) {
                                          try {
                                            const { data: newCategory, error } = await supabase
-                                             .from('Categorys')
+                                             .from('categories')
                                              .insert({ name: field.value.trim(), user_id: user.id })
                                              .select('id, name')
                                              .single();
@@ -740,7 +740,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                                 </div>
                               </CommandEmpty>
                               <CommandGroup>
-                                {Categorys.map((category) => (
+                                {categories.map((category) => (
                                   <CommandItem
                                     key={category.id}
                                     value={category.name}

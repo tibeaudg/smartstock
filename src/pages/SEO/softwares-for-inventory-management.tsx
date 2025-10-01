@@ -315,12 +315,12 @@ export default function SoftwaresForInventoryManagement() {
         </div>
       </section>
 
-      {/* Software Categorys Section */}
+      {/* Software categories Section */}
       <section className="py-16 px-4 bg-gray-50">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Categorys of <span className="text-blue-600">Inventory Management Softwares</span>
+              categories of <span className="text-blue-600">Inventory Management Softwares</span>
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
               Different types of softwares available for various inventory management needs.

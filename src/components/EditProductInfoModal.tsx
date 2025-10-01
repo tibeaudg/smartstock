@@ -61,7 +61,7 @@ export const EditProductInfoModal = ({
   const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
   
   // State voor Categoryën en leveranciers
-  const [Categorys, setCategorys] = useState<Array<{ id: string; name: string }>>([]);
+  const [categories, setCategorys] = useState<Array<{ id: string; name: string }>>([]);
   const [suppliers, setSuppliers] = useState<Array<{ id: string; name: string }>>([]);
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [supplierOpen, setSupplierOpen] = useState(false);
@@ -130,19 +130,19 @@ export const EditProductInfoModal = ({
     
     try {
       const { data, error } = await supabase
-        .from('Categorys')
+        .from('categories')
         .select('id, name')
         .eq('user_id', user.id)
         .order('name');
       
       if (error) {
-        console.error('Error fetching Categorys:', error);
+        console.error('Error fetching categories:', error);
         return;
       }
       
       setCategorys(data || []);
     } catch (error) {
-      console.error('Error fetching Categorys:', error);
+      console.error('Error fetching categories:', error);
     }
   };
 
@@ -182,7 +182,7 @@ export const EditProductInfoModal = ({
 
   const handleCategoryChange = (value: string) => {
     // Find the category by name and set both ID and name
-    const category = Categorys.find(cat => cat.name === value);
+    const category = categories.find(cat => cat.name === value);
     setForm({ 
       ...form, 
       category_id: category?.id || '', 
@@ -310,7 +310,7 @@ export const EditProductInfoModal = ({
       if (form.category_name.trim() && !categoryId) {
         // If we have a name but no ID, try to find existing or create new
         const { data: existingCategory } = await supabase
-        .from('Categorys')
+        .from('categories')
         .select('id')
         .eq('name', form.category_name.trim())
         .eq('user_id', user.id)
@@ -321,7 +321,7 @@ export const EditProductInfoModal = ({
           console.log('Found existing category:', existingCategory);
         } else {
           const { data: newCategory, error: categoryError } = await supabase
-            .from('Categorys')
+            .from('categories')
             .insert({ name: form.category_name.trim(), user_id: user.id })
             .select('id')
             .single();
@@ -647,7 +647,7 @@ export const EditProductInfoModal = ({
                                         if (form.category_name.trim()) {
                                           try {
                                             const { data: newCategory, error } = await supabase
-                                              .from('Categorys')
+                                              .from('categories')
                                               .insert({ name: form.category_name.trim(), user_id: user.id })
                                               .select('id, name')
                                               .single();
@@ -674,7 +674,7 @@ export const EditProductInfoModal = ({
                                   </div>
                                 </CommandEmpty>
                                 <CommandGroup>
-                                  {Categorys.map((category) => (
+                                  {categories.map((category) => (
                                     <CommandItem
                                       key={category.id}
                                       value={category.name}

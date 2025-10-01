@@ -67,7 +67,7 @@ export default function ScanPage() {
   });
 
   // State voor Categoryën en leveranciers dropdowns
-  const [Categorys, setCategorys] = useState<Array<{ id: string; name: string }>>([]);
+  const [categories, setCategorys] = useState<Array<{ id: string; name: string }>>([]);
   const [suppliers, setSuppliers] = useState<Array<{ id: string; name: string }>>([]);
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [supplierOpen, setSupplierOpen] = useState(false);
@@ -133,9 +133,9 @@ export default function ScanPage() {
           const newProduct = {
             name: `Product ${barcode}`,
             description: 'Automatisch aangemaakt via barcode scanner',
-            categoryId: Categorys.length > 0 ? Categorys[0].id : '',
+            categoryId: categories.length > 0 ? categories[0].id : '',
             supplierId: suppliers.length > 0 ? suppliers[0].id : '',
-            categoryName: Categorys.length > 0 ? Categorys[0].name : '',
+            categoryName: categories.length > 0 ? categories[0].name : '',
             supplierName: suppliers.length > 0 ? suppliers[0].name : '',
             quantityInStock: 1,
             minimumStockLevel: 10,
@@ -198,19 +198,19 @@ export default function ScanPage() {
     
     try {
       const { data, error } = await supabase
-        .from('Categorys')
+        .from('categories')
         .select('id, name')
         .eq('user_id', user.id)
         .order('name');
       
       if (error) {
-        console.error('Error fetching Categorys:', error);
+        console.error('Error fetching categories:', error);
         return;
       }
       
       setCategorys(data || []);
     } catch (error) {
-      console.error('Error fetching Categorys:', error);
+      console.error('Error fetching categories:', error);
     }
   };
 
@@ -238,7 +238,7 @@ export default function ScanPage() {
       
       // If changing category name, also update category ID
       if (field === 'categoryName') {
-        const category = Categorys.find(cat => cat.name === value);
+        const category = categories.find(cat => cat.name === value);
         newData.categoryId = category?.id || '';
       }
       
@@ -356,7 +356,7 @@ export default function ScanPage() {
         let categoryId = null;
         if (formData.categoryName.trim()) {
           const { data: existingCategory } = await supabase
-            .from('Categorys')
+            .from('categories')
             .select('id')
             .eq('name', formData.categoryName.trim())
             .eq('user_id', user.id)
@@ -366,7 +366,7 @@ export default function ScanPage() {
             categoryId = existingCategory.id;
           } else {
             const { data: newCategory, error: categoryError } = await supabase
-              .from('Categorys')
+              .from('categories')
               .insert({ name: formData.categoryName.trim(), user_id: user.id })
               .select('id')
               .single();
@@ -809,7 +809,7 @@ export default function ScanPage() {
                                        if (formData.categoryName.trim()) {
                                          try {
                                            const { data: newCategory, error } = await supabase
-                                             .from('Categorys')
+                                             .from('categories')
                                              .insert({ name: formData.categoryName.trim(), user_id: user.id })
                                              .select('id, name')
                                              .single();
@@ -837,7 +837,7 @@ export default function ScanPage() {
                                  </div>
                                </CommandEmpty>
                                <CommandGroup>
-                                 {Categorys.map((category) => (
+                                 {categories.map((category) => (
                                    <CommandItem
                                      key={category.id}
                                      value={category.name}

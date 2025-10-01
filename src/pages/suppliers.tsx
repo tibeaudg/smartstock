@@ -44,12 +44,12 @@ export default function SuppliersPage() {
   });
 
   // Mobile tab switcher state
-  const [activeTab, setActiveTab] = useState<'products' | 'Categorys' | 'suppliers'>('suppliers');
+  const [activeTab, setActiveTab] = useState<'products' | 'categories' | 'suppliers'>('suppliers');
 
   // Update active tab based on current route
   useEffect(() => {
-    if (location.pathname.includes('/Categorys')) {
-      setActiveTab('Categorys');
+    if (location.pathname.includes('/categories')) {
+      setActiveTab('categories');
     } else if (location.pathname.includes('/suppliers')) {
       setActiveTab('suppliers');
     } else {
@@ -58,11 +58,11 @@ export default function SuppliersPage() {
   }, [location.pathname]);
 
   // Handle tab change
-  const handleTabChange = (tab: 'products' | 'Categorys' | 'suppliers') => {
+  const handleTabChange = (tab: 'products' | 'categories' | 'suppliers') => {
     setActiveTab(tab);
     switch (tab) {
-      case 'Categorys':
-        navigate('/dashboard/Categorys');
+      case 'categories':
+        navigate('/dashboard/categories');
         break;
       case 'suppliers':
         navigate('/dashboard/suppliers');
@@ -310,9 +310,9 @@ export default function SuppliersPage() {
                   <span className="sm:hidden">Prod</span>
                 </button>
                 <button
-                  onClick={() => handleTabChange('Categorys')}
+                  onClick={() => handleTabChange('categories')}
                   className={`flex-1 flex items-center justify-center gap-1.5 px-2 py-2.5 rounded-md text-xs font-medium transition-colors ${
-                    activeTab === 'Categorys'
+                    activeTab === 'categories'
                       ? 'bg-blue-100 text-blue-700 border border-blue-200'
                       : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
                   }`}

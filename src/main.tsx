@@ -92,18 +92,20 @@ async function init() {
   }
 }
 
-// Initialiseer QueryClient voor React Query met robuuste configuratie
+// Initialize QueryClient for React Query with optimized configuration
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 1000 * 60 * 5, // 5 minuten
-      refetchOnWindowFocus: true, 
+      staleTime: 1000 * 60 * 5, // 5 minutes
+      refetchOnWindowFocus: false, // Disabled for better tab switching performance
+      refetchOnMount: false, // Use cached data when available
+      refetchOnReconnect: 'always', // Always refetch when reconnecting
       retry: (failureCount, error) => {
-        // Retry logica: probeer 3 keer, behalve bij 4xx errors
+        // Retry logic: try 3 times, except for 4xx errors
         if (failureCount < 3) {
           const status = (error as any)?.status || (error as any)?.response?.status;
           if (status >= 400 && status < 500) {
-            return false; // Geen retry bij client errors
+            return false; // No retry for client errors
           }
           return true;
         }

@@ -108,15 +108,15 @@ const fetchProducts = async (branchId: string) => {
     const supplierIds = [...new Set(products.map(p => p.supplier_id).filter(Boolean))];
     
     // Haal Category namen op
-    let Categorys: { [key: string]: string } = {};
+    let categories: { [key: string]: string } = {};
     if (categoryIds.length > 0) {
       const { data: categoryData, error: categoryError } = await supabase
-        .from('Categorys')
+        .from('categories')
         .select('id, name')
         .in('id', categoryIds);
       
       if (!categoryError && categoryData) {
-        Categorys = categoryData.reduce((acc, cat) => {
+        categories = categoryData.reduce((acc, cat) => {
           acc[cat.id] = cat.name;
           return acc;
         }, {} as { [key: string]: string });
@@ -142,7 +142,7 @@ const fetchProducts = async (branchId: string) => {
     // Voeg de namen toe aan de producten
     const transformedData = products.map(product => ({
       ...product,
-      category_name: product.category_id ? Categorys[product.category_id] || null : null,
+      category_name: product.category_id ? categories[product.category_id] || null : null,
       supplier_name: product.supplier_id ? suppliers[product.supplier_id] || null : null
     }));
     
@@ -189,7 +189,7 @@ export const StockList = () => {
   const [supplierFilterName, setSupplierFilterName] = useState('');
   
   // State voor Categoryën en leveranciers (voor filter namen)
-  const [Categorys, setCategorys] = useState<Array<{ id: string; name: string }>>([]);
+  const [categories, setCategorys] = useState<Array<{ id: string; name: string }>>([]);
   const [suppliers, setSuppliers] = useState<Array<{ id: string; name: string }>>([]);
 
   // State voor modals
@@ -217,7 +217,7 @@ export const StockList = () => {
   const [isBulkImportModalOpen, setIsBulkImportModalOpen] = useState(false);
 
   // Mobile tab switcher state
-  const [activeTab, setActiveTab] = useState<'products' | 'Categorys' | 'suppliers'>('products');
+  const [activeTab, setActiveTab] = useState<'products' | 'categories' | 'suppliers'>('products');
 
   // Column visibility state
   const [columnVisibility, setColumnVisibility] = useState({
@@ -267,8 +267,8 @@ export const StockList = () => {
 
   // Update active tab based on current route
   useEffect(() => {
-    if (location.pathname.includes('/Categorys')) {
-      setActiveTab('Categorys');
+    if (location.pathname.includes('/categories')) {
+      setActiveTab('categories');
     } else if (location.pathname.includes('/suppliers')) {
       setActiveTab('suppliers');
     } else {
@@ -421,19 +421,19 @@ export const StockList = () => {
     
     try {
       const { data, error } = await supabase
-        .from('Categorys')
+        .from('categories')
         .select('id, name')
         .eq('user_id', user.id)
         .order('name');
       
       if (error) {
-        console.error('Error fetching Categorys:', error);
+        console.error('Error fetching categories:', error);
         return;
       }
       
       setCategorys(data || []);
     } catch (error) {
-      console.error('Error fetching Categorys:', error);
+      console.error('Error fetching categories:', error);
     }
   };
 
@@ -459,11 +459,11 @@ export const StockList = () => {
   };
 
   // Handle tab change
-  const handleTabChange = (tab: 'products' | 'Categorys' | 'suppliers') => {
+  const handleTabChange = (tab: 'products' | 'categories' | 'suppliers') => {
     setActiveTab(tab);
     switch (tab) {
-      case 'Categorys':
-        navigate('/dashboard/Categorys');
+      case 'categories':
+        navigate('/dashboard/categories');
         break;
       case 'suppliers':
         navigate('/dashboard/suppliers');
@@ -498,9 +498,9 @@ export const StockList = () => {
     queryKey: ['products', activeBranch?.branch_id],
     queryFn: () => activeBranch && user ? fetchProducts(activeBranch.branch_id) : [],
     enabled: !!user && !!activeBranch && !!activeBranch.branch_id,
-    refetchOnWindowFocus: true,
-    staleTime: 1000 * 60 * 2, // 2 minuten cache
-    gcTime: 1000 * 60 * 60 * 24, // 24 uur garbage collect
+    refetchOnWindowFocus: false, // Disabled for better tab switching performance
+    staleTime: 1000 * 60 * 5, // 5 minutes cache for better performance
+    gcTime: 1000 * 60 * 60 * 24, // 24 hours garbage collect
     // @ts-expect-error: keepPreviousData is supported in v5, type mismatch workaround
     keepPreviousData: true,
     onError: (error) => {
@@ -838,7 +838,7 @@ export const StockList = () => {
       supplierFilter,
       supplierFilterName
     });
-    console.log('Available Categorys:', Categorys);
+    console.log('Available categories:', categories);
     console.log('Available suppliers:', suppliers);
     console.log('Products:', productsTyped.map(p => ({
       id: p.id,
@@ -1328,20 +1328,20 @@ export const StockList = () => {
           </>
         )}
 
-        {/* Categorys Tab Content */}
-        {activeTab === 'Categorys' && (
+        {/* categories Tab Content */}
+        {activeTab === 'categories' && (
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
             <div className="text-center">
               <Tag className="w-12 h-12 text-gray-400 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-gray-900 mb-2">
-                Manage Categorys
+                Manage Categories
               </h3>
               <p className="text-base text-gray-600 mb-4">
-                Manage your product Categorys for better organization of your stock
+                Manage your product categories for better organization of your stock
               </p>
-              <Button onClick={() => navigate('/dashboard/Categorys')}>
+              <Button onClick={() => navigate('/dashboard/categories')}>
                 <Tag className="w-4 h-4 mr-2" />
-                To Categorys
+                To categories
               </Button>
             </div>
           </div>
@@ -1688,7 +1688,7 @@ export const StockList = () => {
             // Update category name when filter changes
             if (value && value !== 'all') {
               // Find category name by ID
-              const category = Categorys.find(cat => cat.id === value);
+              const category = categories.find(cat => cat.id === value);
               setCategoryFilterName(category?.name || 'Gefilterd');
             } else {
               setCategoryFilterName('');
@@ -1763,7 +1763,7 @@ export const StockList = () => {
                 )}
                 {columnVisibility.supplier && (
                   <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Leverancier
+                    Supplier
                   </th>
                 )}
                 {columnVisibility.purchasePrice && (

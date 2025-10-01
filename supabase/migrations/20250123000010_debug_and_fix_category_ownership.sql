@@ -14,51 +14,51 @@ SELECT
     bu.user_id as branch_user_id,
     bu.role as branch_role,
     u.email as branch_user_email
-FROM Categorys c
+FROM categories c
 LEFT JOIN products p ON c.id = p.category_id
 LEFT JOIN branch_users bu ON p.branch_id = bu.branch_id
 LEFT JOIN auth.users u ON bu.user_id = u.id;
 
 -- Show us what we found (this will be visible in the migration logs)
-SELECT 'DEBUG: Categorys and their usage:' as debug_info;
+SELECT 'DEBUG: categories and their usage:' as debug_info;
 SELECT * FROM category_debug ORDER BY category_name;
 
 -- Now let's fix the ownership
--- For Categorys that have products, assign them to the branch owner
-UPDATE Categorys 
+-- For categories that have products, assign them to the branch owner
+UPDATE categories 
 SET user_id = (
   SELECT DISTINCT bu.user_id 
   FROM products p 
   JOIN branch_users bu ON p.branch_id = bu.branch_id
-  WHERE p.category_id = Categorys.id 
+  WHERE p.category_id = categories.id 
   AND bu.role = 'owner'
   LIMIT 1
 )
 WHERE EXISTS (
   SELECT 1 FROM products p 
   JOIN branch_users bu ON p.branch_id = bu.branch_id
-  WHERE p.category_id = Categorys.id
+  WHERE p.category_id = categories.id
   AND bu.role = 'owner'
 );
 
--- For Categorys that have products but no owner, assign to any user with access
-UPDATE Categorys 
+-- For categories that have products but no owner, assign to any user with access
+UPDATE categories 
 SET user_id = (
   SELECT DISTINCT bu.user_id 
   FROM products p 
   JOIN branch_users bu ON p.branch_id = bu.branch_id
-  WHERE p.category_id = Categorys.id 
+  WHERE p.category_id = categories.id 
   LIMIT 1
 )
 WHERE user_id IS NULL 
 AND EXISTS (
   SELECT 1 FROM products p 
   JOIN branch_users bu ON p.branch_id = bu.branch_id
-  WHERE p.category_id = Categorys.id
+  WHERE p.category_id = categories.id
 );
 
--- For Categorys with no products, assign to the first user
-UPDATE Categorys 
+-- For categories with no products, assign to the first user
+UPDATE categories 
 SET user_id = (SELECT id FROM auth.users ORDER BY created_at ASC LIMIT 1)
 WHERE user_id IS NULL;
 
@@ -99,12 +99,12 @@ SET user_id = (SELECT id FROM auth.users ORDER BY created_at ASC LIMIT 1)
 WHERE user_id IS NULL;
 
 -- Show final results
-SELECT 'FINAL: Categorys after fix:' as debug_info;
+SELECT 'FINAL: categories after fix:' as debug_info;
 SELECT 
     c.id,
     c.name,
     c.user_id,
     u.email as user_email
-FROM Categorys c
+FROM categories c
 LEFT JOIN auth.users u ON c.user_id = u.id
 ORDER BY c.name;

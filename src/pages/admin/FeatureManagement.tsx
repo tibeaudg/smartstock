@@ -30,7 +30,7 @@ interface Feature {
 }
 
 // Category configuration
-const Categorys = {
+const categories = {
   optimization: { name: 'Optimalisaties', color: 'bg-blue-100 text-blue-800', icon: Settings },
   premium: { name: 'Premium Modules', color: 'bg-purple-100 text-purple-800', icon: Star },
   analytics: { name: 'Analytics & Prognoses', color: 'bg-green-100 text-green-800', icon: BarChart3 },
@@ -382,7 +382,7 @@ export const FeatureManagement = () => {
             >
               Alle ({features.length})
             </Button>
-            {Object.entries(Categorys).map(([key, category]) => {
+            {Object.entries(categories).map(([key, category]) => {
               const Icon = category.icon;
               const count = features.filter(f => f.category === key).length;
               return (
@@ -431,7 +431,7 @@ export const FeatureManagement = () => {
       <div className="space-y-4">
         {filteredAndSortedFeatures.map((feature) => {
           const Icon = getIcon(feature.icon);
-          const CategoryIcon = Categorys[feature.category]?.icon || Categorys.optimization.icon;
+          const CategoryIcon = categories[feature.category]?.icon || categories.optimization.icon;
           
           return (
             <Card key={feature.id} className="hover:shadow-md transition-shadow">
@@ -456,7 +456,7 @@ export const FeatureManagement = () => {
                     <div className="flex items-center gap-4 text-sm text-gray-500">
                       <div className="flex items-center gap-1">
                         <CategoryIcon className="w-4 h-4" />
-                        <span>{Categorys[feature.category]?.name || 'Onbekende Category'}</span>
+                        <span>{categories[feature.category]?.name || 'Onbekende Category'}</span>
                       </div>
                       {feature.estimated_release && (
                         <div className="flex items-center gap-1">
@@ -563,7 +563,7 @@ export const FeatureManagement = () => {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    {Object.entries(Categorys).map(([key, category]) => (
+                    {Object.entries(categories).map(([key, category]) => (
                       <SelectItem key={key} value={key}>{category.name}</SelectItem>
                     ))}
                   </SelectContent>

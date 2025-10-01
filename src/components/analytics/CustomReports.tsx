@@ -35,7 +35,7 @@ interface ReportTemplate {
   chartType?: 'bar' | 'line' | 'pie';
   filters: {
     dateRange: string;
-    Categorys: string[];
+    categories: string[];
     products: string[];
     branches: string[];
   };
@@ -74,7 +74,7 @@ export const CustomReports = () => {
     format: 'table' as const,
     chartType: 'bar' as const,
     dateRange: '30d',
-    Categorys: [] as string[],
+    categories: [] as string[],
     products: [] as string[],
     branches: [] as string[],
     columns: [] as string[],
@@ -124,7 +124,7 @@ export const CustomReports = () => {
         chartType: 'bar',
         filters: template.parameters || {
           dateRange: '30d',
-          Categorys: [],
+          categories: [],
           products: [],
           branches: []
         },
@@ -201,7 +201,7 @@ export const CustomReports = () => {
               ELSE 'OK'
             END as status
           FROM products p
-          LEFT JOIN Categorys c ON p.category_id = c.id
+          LEFT JOIN categories c ON p.category_id = c.id
           WHERE p.user_id = '${user.id}'
             AND p.status = 'active'
           ORDER BY p.current_stock ASC
@@ -236,7 +236,7 @@ export const CustomReports = () => {
           query_sql: querySql,
           parameters: {
             dateRange: formData.dateRange,
-            Categorys: formData.Categorys,
+            categories: formData.categories,
             products: formData.products,
             branches: formData.branches
           }
@@ -267,7 +267,7 @@ export const CustomReports = () => {
       format: template.format,
       chartType: template.chartType || 'bar',
       dateRange: template.filters.dateRange,
-      Categorys: template.filters.Categorys,
+      categories: template.filters.categories,
       products: template.filters.products,
       branches: template.filters.branches,
       columns: template.columns,
@@ -290,7 +290,7 @@ export const CustomReports = () => {
             chartType: formData.chartType,
             filters: {
               dateRange: formData.dateRange,
-              Categorys: formData.Categorys,
+              categories: formData.categories,
               products: formData.products,
               branches: formData.branches
             },
@@ -376,7 +376,7 @@ export const CustomReports = () => {
             name,
             current_stock,
             min_stock,
-            Categorys(name)
+            categories(name)
           `)
           .eq('user_id', user.id)
           .eq('status', 'active')
@@ -384,7 +384,7 @@ export const CustomReports = () => {
 
         reportDataResult = inventoryData?.map(product => ({
           product: product.name,
-          Category: product.Categorys?.name || 'Geen Category',
+          Category: product.categories?.name || 'Geen Category',
           voorraad: product.current_stock,
           min_voorraad: product.min_stock,
           status: product.current_stock <= product.min_stock ? 'Laag' : 
@@ -417,7 +417,7 @@ export const CustomReports = () => {
       format: 'table',
       chartType: 'bar',
       dateRange: '30d',
-      Categorys: [],
+      categories: [],
       products: [],
       branches: [],
       columns: [],

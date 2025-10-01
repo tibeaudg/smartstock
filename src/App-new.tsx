@@ -97,7 +97,7 @@ import InventorySoftwareForSmallBusiness from "./pages/SEO/inventory-software-fo
 import InventorySoftwareManagement from "./pages/SEO/inventory-software-management";
 import SoftwareForInventoryManagement from "./pages/SEO/software-for-inventory-management";
 import SoftwaresForInventoryManagement from "./pages/SEO/softwares-for-inventory-management";
-import CategorysPage from './pages/Categorys';
+import CategorysPage from './pages/categories';
 import SuppliersPage from './pages/suppliers';
 import AdminPage from './pages/admin';
 import { PaymentTestPage } from './pages/PaymentTest';
@@ -306,7 +306,7 @@ const AppRouter = () => {
           <Route path="scan" element={<ScanPage />} />
           <Route path="subscription-test" element={<SubscriptionTestPage />} />
           <Route path="stock" element={<StockList />} />
-          <Route path="Categorys" element={<CategorysPage />} />
+          <Route path="categories" element={<CategorysPage />} />
           <Route path="suppliers" element={<SuppliersPage />} />
           <Route path="transactions" element={<StockMovements />} />
           <Route path="delivery-notes" element={<DeliveryNotesManagement />}>

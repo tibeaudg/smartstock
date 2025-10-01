@@ -40,7 +40,7 @@ interface ExportJob {
   downloadUrl?: string;
   filters: {
     dateRange: string;
-    Categorys: string[];
+    categories: string[];
     products: string[];
     branches: string[];
     customQuery?: string;
@@ -74,7 +74,7 @@ export const ExportData = () => {
     type: 'products' as const,
     format: 'excel' as const,
     dateRange: '30d',
-    Categorys: [] as string[],
+    categories: [] as string[],
     products: [] as string[],
     branches: [] as string[],
     columns: [] as string[],
@@ -142,7 +142,7 @@ export const ExportData = () => {
         downloadUrl: job.file_path,
         filters: job.filters || {
           dateRange: '30d',
-          Categorys: [],
+          categories: [],
           products: [],
           branches: []
         },
@@ -214,7 +214,7 @@ export const ExportData = () => {
           progress: 0,
           filters: {
             dateRange: formData.dateRange,
-            Categorys: formData.Categorys,
+            categories: formData.categories,
             products: formData.products,
             branches: formData.branches,
             customQuery: formData.customQuery
@@ -282,7 +282,7 @@ export const ExportData = () => {
             status,
             location,
             created_at,
-            Categorys(name),
+            categories(name),
             suppliers(name)
           `)
           .eq('user_id', user?.id);
@@ -296,7 +296,7 @@ export const ExportData = () => {
           Prijs: product.unit_price,
           Status: product.status,
           Locations: product.location,
-          Category: product.Categorys?.name || 'Geen Category',
+          Category: product.categories?.name || 'Geen Category',
           Leverancier: product.suppliers?.name || 'Geen leverancier',
           'Aangemaakt': new Date(product.created_at).toLocaleDateString('nl-NL')
         })) || [];
@@ -342,7 +342,7 @@ export const ExportData = () => {
             max_stock,
             location,
             status,
-            Categorys(name)
+            categories(name)
           `)
           .eq('user_id', user?.id)
           .eq('status', 'active');
@@ -356,7 +356,7 @@ export const ExportData = () => {
           'Locations': product.location,
           'Status': product.current_stock <= product.min_stock ? 'Laag' : 
                    product.current_stock <= product.min_stock * 1.5 ? 'Waarschuwing' : 'OK',
-          'Category': product.Categorys?.name || 'Geen Category'
+          'Category': product.categories?.name || 'Geen Category'
         })) || [];
       }
 
@@ -405,7 +405,7 @@ export const ExportData = () => {
       type: template.type as any,
       format: template.format as any,
       dateRange: template.filters.dateRange || '30d',
-      Categorys: [],
+      categories: [],
       products: [],
       branches: [],
       columns: template.columns,

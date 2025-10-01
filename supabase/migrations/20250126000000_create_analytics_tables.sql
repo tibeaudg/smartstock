@@ -394,7 +394,7 @@ BEGIN
             COALESCE(c.name, 'Geen Category') as category_name,
             COUNT(p.id)::INTEGER as product_count
         FROM public.products p
-        LEFT JOIN public.Categorys c ON p.category_id = c.id
+        LEFT JOIN public.categories c ON p.category_id = c.id
         WHERE p.user_id = p_user_id
         GROUP BY c.name
     ),

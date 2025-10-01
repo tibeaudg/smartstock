@@ -25,7 +25,7 @@ import { FirstBranchSetup } from "./components/FirstBranchSetup";
 import { OnboardingModal } from "./components/OnboardingModal";
 import { Suspense, useState, useEffect } from "react";
 import { useClarity } from "./hooks/useClarity";
-import { usePageRefresh } from "./hooks/usePageRefresh";
+import { useOptimizedTabSwitching } from "./hooks/useOptimizedTabSwitching";
 import { ContentWrapper } from "./ContentWrapper";
 import AdminUserDetailPage from './pages/AdminUserDetailPage';
 import AdminNotificationsPage from './pages/AdminNotificationsPage';
@@ -152,7 +152,7 @@ const AppRouter = () => {
     }
 
     // Check if user needs onboarding
-    if (userProfile && !userProfile.onboarding_completed) {
+    if (userProfile && !(userProfile as any).onboarding_completed) {
       console.debug('[ProtectedRoute] User needs onboarding');
       return (
         <>
@@ -329,7 +329,7 @@ const AppRouter = () => {
           <Route path="scan" element={<ScanPage />} />
           <Route path="subscription-test" element={<SubscriptionTestPage />} />
           <Route path="stock" element={<StockList />} />
-          <Route path="Categorys" element={<CategorysPage />} />
+          <Route path="categories" element={<CategorysPage />} />
           <Route path="suppliers" element={<SuppliersPage />} />
           <Route path="transactions" element={<StockMovements />} />
           <Route path="delivery-notes" element={<DeliveryNotesManagement />}>
@@ -395,8 +395,8 @@ const AppRouter = () => {
 };
 
 export default function App() {
-  // Use the page refresh hook at the top level
-  usePageRefresh();
+  // Use the optimized tab switching hook at the top level
+  useOptimizedTabSwitching();
   
   const localBusinessSchema = {
     "@context": "https://schema.org",

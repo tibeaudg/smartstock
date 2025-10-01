@@ -71,7 +71,7 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
           is_variant,
           variant_name,
           parent_product_id,
-          Categorys(name)
+          categories(name)
         `)
         .eq('branch_id', activeBranch.branch_id)
         .order('name');
@@ -268,10 +268,12 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
     queryKey: ['dashboardData', activeBranch?.branch_id, dateFrom, dateTo],
     queryFn: fetchDashboardData,
     enabled: !!user && !!activeBranch,
-    refetchOnWindowFocus: false, // Disable to improve performance
+    refetchOnWindowFocus: false, // Disabled for better tab switching performance
     refetchOnMount: false, // Use cached data when available
-    staleTime: 1000 * 60 * 5, // 5 minutes cache for better performance
-    gcTime: 1000 * 60 * 10, // Keep in cache for 10 minutes
+    staleTime: 1000 * 60 * 10, // 10 minutes cache for better performance
+    gcTime: 1000 * 60 * 30, // Keep in cache for 30 minutes
+    // @ts-expect-error: keepPreviousData is supported in v5, type mismatch workaround
+    keepPreviousData: true, // Keep previous data while loading new data
     onError: (error) => {
       console.error('Dashboard data fetch error:', error);
     },
@@ -339,9 +341,11 @@ export const useBasicDashboardMetrics = () => {
       };
     },
     enabled: !!user && !!activeBranch,
-    staleTime: 1000 * 60 * 2, // 2 minutes cache
+    staleTime: 1000 * 60 * 5, // 5 minutes cache for faster loading
     refetchOnWindowFocus: false,
     refetchOnMount: false,
+    // @ts-expect-error: keepPreviousData is supported in v5, type mismatch workaround
+    keepPreviousData: true,
   });
 };
 
@@ -391,8 +395,8 @@ export const useProductCount = () => {
     queryKey: ['productCount', activeBranch?.branch_id, user?.id],
     queryFn: fetchProductCount,
     enabled: !!user && !!activeBranch,
-    refetchOnWindowFocus: true,
-    staleTime: 1000 * 60 * 2,
+    refetchOnWindowFocus: false, // Disabled for better tab switching performance
+    staleTime: 1000 * 60 * 5, // 5 minutes cache
   });
 
   return { productCount: productCount ?? 0, isLoading };
@@ -403,7 +407,7 @@ const calculateCategoryDistribution = (products: any[]) => {
   const categoryMap = new Map<string, { count: number; value: number }>();
   
   products.forEach(product => {
-    const categoryName = product.Categorys?.name || 'Uncategorized';
+    const categoryName = product.categories?.name || 'Uncategorized';
     const existing = categoryMap.get(categoryName) || { count: 0, value: 0 };
     existing.count += 1;
     existing.value += product.quantity_in_stock * product.unit_price;

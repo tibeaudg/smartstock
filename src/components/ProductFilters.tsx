@@ -52,10 +52,10 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
 }) => {
   const { user } = useAuth();
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
-  const [Categorys, setCategorys] = useState<Array<{ id: string; name: string }>>([]);
+  const [categories, setCategorys] = useState<Array<{ id: string; name: string }>>([]);
   const [suppliers, setSuppliers] = useState<Array<{ id: string; name: string }>>([]);
 
-  // Fetch Categorys and suppliers when component mounts and user is available
+  // Fetch categories and suppliers when component mounts and user is available
   useEffect(() => {
     if (user) {
       fetchCategorys();
@@ -70,19 +70,19 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
     
     try {
       const { data, error } = await supabase
-        .from('Categorys')
+        .from('categories')
         .select('id, name')
         .eq('user_id', user.id)
         .order('name');
       
       if (error) {
-        console.error('Error fetching Categorys:', error);
+        console.error('Error fetching categories:', error);
         return;
       }
       
       setCategorys(data || []);
     } catch (error) {
-      console.error('Error fetching Categorys:', error);
+      console.error('Error fetching categories:', error);
     }
   };
 
@@ -152,11 +152,11 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
                   <label className="text-sm font-medium text-gray-700">Category</label>
                   <Select value={categoryFilter} onValueChange={onCategoryFilterChange}>
                     <SelectTrigger>
-                      <SelectValue placeholder="Selecteer Category..." />
+                      <SelectValue placeholder="Select Category..." />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">Alle Categoryën</SelectItem>
-                      {Categorys.map((category) => (
+                      <SelectItem value="all">All categories</SelectItem>
+                      {categories.map((category) => (
                         <SelectItem key={category.id} value={category.id}>
                           {category.name}
                         </SelectItem>
@@ -164,19 +164,19 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
                     </SelectContent>
                   </Select>
                   <div className="text-xs text-gray-500">
-                    Huidige waarde: {categoryFilter} (type: {typeof categoryFilter})
+                    Current value: {categoryFilter} (type: {typeof categoryFilter})
                   </div>
                 </div>
 
                 {/* Supplier Filter */}
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700">Leverancier</label>
+                  <label className="text-sm font-medium text-gray-700">Supplier</label>
                   <Select value={supplierFilter} onValueChange={onSupplierFilterChange}>
                     <SelectTrigger>
-                      <SelectValue placeholder="Selecteer leverancier..." />
+                      <SelectValue placeholder="Select supplier..." />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">Alle leveranciers</SelectItem>
+                      <SelectItem value="all">All Suppliers</SelectItem>
                       {suppliers.map((supplier) => (
                         <SelectItem key={supplier.id} value={supplier.id}>
                           {supplier.name}
@@ -185,7 +185,7 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
                     </SelectContent>
                   </Select>
                   <div className="text-xs text-gray-500">
-                    Huidige waarde: {supplierFilter} (type: {typeof supplierFilter})
+                    Current value: {supplierFilter} (type: {typeof supplierFilter})
                   </div>
                 </div>
 
@@ -197,17 +197,17 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
                       <SelectValue placeholder="All Statuses" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">Alle Statussen</SelectItem>
+                      <SelectItem value="all">All Statuses</SelectItem>
                       <SelectItem value="in-stock">In Stock</SelectItem>
-                      <SelectItem value="low-stock">Lage Stock</SelectItem>
-                      <SelectItem value="out-of-stock">Leeg</SelectItem>
+                      <SelectItem value="low-stock">Low Stock</SelectItem>
+                      <SelectItem value="out-of-stock">Out of Stock</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
                 {/* Price Range Filters */}
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700">Min Prijs ($)</label>
+                  <label className="text-sm font-medium text-gray-700">Min Price ($)</label>
                   <Input
                     type="number"
                     placeholder="0.00"
@@ -218,7 +218,7 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700">Max Prijs ($)</label>
+                  <label className="text-sm font-medium text-gray-700">Max Price ($)</label>
                   <Input
                     type="number"
                     placeholder="999999.99"
@@ -231,7 +231,7 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
 
                 {/* Stock Quantity Range Filters */}
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700">Min Stock</label>
+                  <label className="text-sm font-medium text-gray-700">Min Stock Quantity</label>
                   <Input
                     type="number"
                     placeholder="0"
@@ -241,7 +241,7 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700">Max Stock</label>
+                  <label className="text-sm font-medium text-gray-700">Max Stock Quantity</label>
                   <Input
                     type="number"
                     placeholder="999999"
