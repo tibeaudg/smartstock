@@ -28,7 +28,12 @@ import {
   Settings,
   ChevronRight,
   ChevronDown,
-  Upload
+  Upload,
+  ShoppingBasket,
+  Palette,
+  MoreVertical,
+  MapPin,
+  AlertCircle
 } from 'lucide-react';
 import { ProductActionModal } from './ProductActionModal';
 import { EditProductModal } from './EditProductModal';
@@ -60,6 +65,35 @@ const getStockStatusVariant = (status: string) => {
   }
 };
 
+// Helper function to get stock status dot color
+const getStockStatusDotColor = (status: string) => {
+  switch (status) {
+    case 'In Stock': return 'bg-green-500';
+    case 'Low Stock': return 'bg-orange-500';
+    case 'Out of Stock': return 'bg-red-500';
+    default: return 'bg-red-500';
+  }
+};
+
+// Helper function to format variant attributes
+const formatVariantAttributes = (attributes: Record<string, unknown> | null): string[] => {
+  if (!attributes) return [];
+  
+  const formatted: string[] = [];
+  Object.entries(attributes).forEach(([key, value]) => {
+    if (value && typeof value === 'string') {
+      formatted.push(`${key}: ${value}`);
+    }
+  });
+  return formatted;
+};
+
+// Helper function to get stock level percentage for visual bar
+const getStockLevelPercentage = (current: number, minimum: number): number => {
+  if (minimum === 0) return 100;
+  return Math.min((current / minimum) * 100, 100);
+};
+
 interface Product {
   id: string;
   name: string;
@@ -79,9 +113,476 @@ interface Product {
   is_variant?: boolean;
   parent_product_id?: string | null;
   variant_name?: string | null;
+  variant_attributes?: Record<string, unknown> | null;
+  variant_sku?: string | null;
+  variant_barcode?: string | null;
 }
 
 type StockAction = 'in' | 'out';
+
+// Product Row Component for Desktop
+interface ProductRowProps {
+  product: Product;
+  isVariant?: boolean;
+  isSelected?: boolean;
+  hasChildren?: boolean;
+  isExpanded?: boolean;
+  columnVisibility: any;
+  onToggleExpand?: () => void;
+  onSelect?: (id: string) => void;
+  onStockAction: (product: Product, action: StockAction) => void;
+  onEdit: (product: Product) => void;
+  onImagePreview: (url: string) => void;
+  isAdmin?: boolean;
+}
+
+const ProductRow: React.FC<ProductRowProps> = ({
+  product,
+  isVariant = false,
+  isSelected = false,
+  hasChildren = false,
+  isExpanded = false,
+  columnVisibility,
+  onToggleExpand,
+  onSelect,
+  onStockAction,
+  onEdit,
+  onImagePreview,
+  isAdmin = false
+}) => {
+  const stockStatus = getStockStatus(product.quantity_in_stock, product.minimum_stock_level);
+  const stockLevelPercentage = getStockLevelPercentage(product.quantity_in_stock, product.minimum_stock_level);
+  const variantAttributes = formatVariantAttributes(product.variant_attributes);
+
+  return (
+    <tr className={`${isVariant ? 'bg-blue-50/30' : 'bg-white'} hover:bg-gray-50 transition-colors`}>
+      {/* Selection checkbox */}
+      {isAdmin && (
+        <td className="px-3 py-3 text-center">
+          <input
+            type="checkbox"
+            checked={isSelected}
+            onChange={() => onSelect?.(product.id)}
+            className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+          />
+        </td>
+      )}
+
+      {/* Product column */}
+      {columnVisibility.product && (
+        <td className="px-4 py-3">
+          <div className="flex items-center gap-3">
+            {/* Expand/Collapse button */}
+            {hasChildren && (
+              <button
+                onClick={onToggleExpand}
+                className="p-1 rounded border hover:bg-gray-100 transition-colors"
+                aria-label={isExpanded ? 'Collapse variants' : 'Expand variants'}
+              >
+                {isExpanded ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
+              </button>
+            )}
+            
+            {/* Variant indent */}
+            {isVariant && <div className="w-6" />}
+
+            {/* Product icon */}
+            <div className="flex-shrink-0">
+              {isVariant ? (
+                <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
+                  <Palette className="w-4 h-4 text-purple-600" />
+                </div>
+              ) : (
+                <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                  <ShoppingBasket className="w-4 h-4 text-blue-600" />
+                </div>
+              )}
+            </div>
+
+            {/* Product image */}
+            <div className="flex-shrink-0">
+              {product.image_url ? (
+                <img
+                  src={product.image_url}
+                  alt={`${product.name} product image`}
+                  className="w-12 h-12 object-cover rounded-lg border cursor-pointer hover:opacity-80 transition-opacity"
+                  onClick={() => onImagePreview(product.image_url!)}
+                />
+              ) : (
+                <div className="w-12 h-12 bg-gray-200 rounded-lg border flex items-center justify-center text-xs text-gray-400">
+                  No Photo
+                </div>
+              )}
+            </div>
+
+            {/* Product info */}
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 mb-1">
+                <h3 className="text-sm font-medium text-gray-900 truncate">
+                  {product.name}
+                  {isVariant && product.variant_name && (
+                    <span className="text-gray-600"> - {product.variant_name}</span>
+                  )}
+                </h3>
+                {isVariant && (
+                  <Badge className="bg-purple-100 text-purple-700 border border-purple-200 text-xs">
+                    Variant
+                  </Badge>
+                )}
+              </div>
+              
+              {/* Variant attributes */}
+              {isVariant && variantAttributes.length > 0 && (
+                <div className="flex flex-wrap gap-1 mb-1">
+                  {variantAttributes.map((attr, index) => (
+                    <Badge key={index} variant="secondary" className="text-xs bg-gray-50">
+                      {attr}
+                    </Badge>
+                  ))}
+                </div>
+              )}
+              
+              {/* Description */}
+              {product.description && (
+                <p className="text-xs text-gray-500 truncate max-w-xs">
+                  {product.description}
+                </p>
+              )}
+            </div>
+          </div>
+        </td>
+      )}
+
+      {/* Location column */}
+      {columnVisibility.location && (
+        <td className="px-4 py-3 text-center">
+          <div className="flex items-center justify-center gap-1">
+            <MapPin className="w-3 h-3 text-gray-400" />
+            <span className="text-sm text-gray-600">
+              {product.location || '-'}
+            </span>
+          </div>
+        </td>
+      )}
+
+      {/* Stock column */}
+      {columnVisibility.current && (
+        <td className="px-4 py-3 text-center">
+          <div className="space-y-1">
+            <div className="flex items-center justify-center gap-2">
+              <div className={`w-2 h-2 rounded-full ${getStockStatusDotColor(stockStatus)}`} />
+              <span className="text-sm font-semibold text-gray-900">
+                {product.quantity_in_stock}
+              </span>
+            </div>
+            
+            {/* Stock level bar */}
+            <div className="w-full bg-gray-200 rounded-full h-1.5">
+              <div
+                className={`h-1.5 rounded-full transition-all ${
+                  stockLevelPercentage > 100 ? 'bg-green-500' :
+                  stockLevelPercentage > 50 ? 'bg-yellow-500' :
+                  'bg-red-500'
+                }`}
+                style={{ width: `${Math.min(stockLevelPercentage, 100)}%` }}
+              />
+            </div>
+            
+            {/* Minimum stock info */}
+            <div className="text-xs text-gray-500">
+              Min: {product.minimum_stock_level}
+            </div>
+          </div>
+        </td>
+      )}
+
+      {/* Minimum stock column */}
+      {columnVisibility.minimum && (
+        <td className="px-4 py-3 text-center">
+          <span className="text-sm text-gray-600">
+            {product.minimum_stock_level}
+          </span>
+        </td>
+      )}
+
+      {/* Category column */}
+      {columnVisibility.category && (
+        <td className="px-4 py-3 text-center">
+          <span className="text-sm text-gray-600">
+            {product.category_name || '-'}
+          </span>
+        </td>
+      )}
+
+      {/* Supplier column */}
+      {columnVisibility.supplier && (
+        <td className="px-4 py-3 text-center">
+          <span className="text-sm text-gray-600">
+            {product.supplier_name || '-'}
+          </span>
+        </td>
+      )}
+
+      {/* Combined Pricing column */}
+      {(columnVisibility.purchasePrice || columnVisibility.salePrice) && (
+        <td className="px-4 py-3 text-center">
+          <div className="space-y-1">
+            {columnVisibility.purchasePrice && (
+              <div className="text-sm text-red-600 font-medium">
+                ${product.purchase_price ? Number(product.purchase_price).toFixed(2) : '-'}
+              </div>
+            )}
+            {columnVisibility.salePrice && (
+              <div className="text-sm text-green-600 font-medium">
+                ${product.sale_price ? Number(product.sale_price).toFixed(2) : '-'}
+              </div>
+            )}
+          </div>
+        </td>
+      )}
+
+      {/* Status column */}
+      {columnVisibility.status && (
+        <td className="px-4 py-3 text-center">
+          <div className="flex items-center justify-center gap-2">
+            <div className={`w-2 h-2 rounded-full ${getStockStatusDotColor(stockStatus)}`} />
+            <span className="text-sm font-medium text-gray-700">
+              {stockStatus}
+            </span>
+          </div>
+        </td>
+      )}
+
+      {/* Actions column */}
+      {columnVisibility.actions && (
+        <td className="px-4 py-3 text-center">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="sm" className="h-8 w-8 p-0">
+                <MoreVertical className="w-4 h-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => onStockAction(product, 'in')}>
+                <Plus className="w-4 h-4 mr-2 text-green-600" />
+                Stock In
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onStockAction(product, 'out')}>
+                <Minus className="w-4 h-4 mr-2 text-red-600" />
+                Stock Out
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => onEdit(product)}>
+                <Edit className="w-4 h-4 mr-2" />
+                Edit Product
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </td>
+      )}
+    </tr>
+  );
+};
+
+// Mobile Product Card Component
+interface MobileProductCardProps {
+  product: Product;
+  isVariant?: boolean;
+  isSelected?: boolean;
+  hasChildren?: boolean;
+  isExpanded?: boolean;
+  onToggleExpand?: () => void;
+  onSelect?: (id: string) => void;
+  onStockAction: (product: Product, action: StockAction) => void;
+  onEdit: (product: Product) => void;
+  onImagePreview: (url: string) => void;
+  isAdmin?: boolean;
+}
+
+const MobileProductCard: React.FC<MobileProductCardProps> = ({
+  product,
+  isVariant = false,
+  isSelected = false,
+  hasChildren = false,
+  isExpanded = false,
+  onToggleExpand,
+  onSelect,
+  onStockAction,
+  onEdit,
+  onImagePreview,
+  isAdmin = false
+}) => {
+  const stockStatus = getStockStatus(product.quantity_in_stock, product.minimum_stock_level);
+  const stockLevelPercentage = getStockLevelPercentage(product.quantity_in_stock, product.minimum_stock_level);
+  const variantAttributes = formatVariantAttributes(product.variant_attributes);
+
+  return (
+    <div className={`bg-white rounded-lg border border-gray-200 p-4 ${isVariant ? 'ml-4 border-l-4 border-l-purple-400' : ''}`}>
+      <div className="flex items-start gap-3">
+        {/* Selection checkbox */}
+        {isAdmin && (
+          <div className="flex-shrink-0 pt-1">
+            <input
+              type="checkbox"
+              checked={isSelected}
+              onChange={() => onSelect?.(product.id)}
+              className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+            />
+          </div>
+        )}
+
+        {/* Product image */}
+        <div className="flex-shrink-0">
+          {product.image_url ? (
+            <img
+              src={product.image_url}
+              alt={`${product.name} product image`}
+              className="w-16 h-16 object-cover rounded-lg border cursor-pointer hover:opacity-80 transition-opacity"
+              onClick={() => onImagePreview(product.image_url!)}
+            />
+          ) : (
+            <div className="w-16 h-16 bg-gray-200 rounded-lg border flex items-center justify-center text-xs text-gray-400">
+              No Photo
+            </div>
+          )}
+        </div>
+
+        {/* Product info */}
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 mb-2">
+            {/* Product icon */}
+            <div className="flex-shrink-0">
+              {isVariant ? (
+                <div className="w-6 h-6 bg-purple-100 rounded-full flex items-center justify-center">
+                  <Palette className="w-3 h-3 text-purple-600" />
+                </div>
+              ) : (
+                <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center">
+                  <ShoppingBasket className="w-3 h-3 text-blue-600" />
+                </div>
+              )}
+            </div>
+
+            {/* Product name */}
+            <div className="flex-1 min-w-0">
+              <h3 className="text-sm font-medium text-gray-900 truncate">
+                {product.name}
+                {isVariant && product.variant_name && (
+                  <span className="text-gray-600"> - {product.variant_name}</span>
+                )}
+              </h3>
+              {isVariant && (
+                <Badge className="bg-purple-100 text-purple-700 border border-purple-200 text-xs mt-1">
+                  Variant
+                </Badge>
+              )}
+            </div>
+
+            {/* Expand/Collapse button */}
+            {hasChildren && (
+              <button
+                onClick={onToggleExpand}
+                className="p-1 rounded border hover:bg-gray-100 transition-colors"
+                aria-label={isExpanded ? 'Collapse variants' : 'Expand variants'}
+              >
+                {isExpanded ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
+              </button>
+            )}
+          </div>
+          
+          {/* Variant attributes */}
+          {isVariant && variantAttributes.length > 0 && (
+            <div className="flex flex-wrap gap-1 mb-2">
+              {variantAttributes.map((attr, index) => (
+                <Badge key={index} variant="secondary" className="text-xs bg-gray-50">
+                  {attr}
+                </Badge>
+              ))}
+            </div>
+          )}
+          
+          {/* Description */}
+          {product.description && (
+            <p className="text-xs text-gray-500 mb-2 line-clamp-2">
+              {product.description}
+            </p>
+          )}
+
+          {/* Stock and pricing info */}
+          <div className="grid grid-cols-2 gap-4 text-sm">
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <div className={`w-2 h-2 rounded-full ${getStockStatusDotColor(stockStatus)}`} />
+                <span className="font-semibold text-gray-900">{product.quantity_in_stock}</span>
+                <span className="text-gray-500">in stock</span>
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-1.5 mb-1">
+                <div
+                  className={`h-1.5 rounded-full transition-all ${
+                    stockLevelPercentage > 100 ? 'bg-green-500' :
+                    stockLevelPercentage > 50 ? 'bg-yellow-500' :
+                    'bg-red-500'
+                  }`}
+                  style={{ width: `${Math.min(stockLevelPercentage, 100)}%` }}
+                />
+              </div>
+              <div className="text-xs text-gray-500">Min: {product.minimum_stock_level}</div>
+            </div>
+            
+            <div className="text-right">
+              {product.purchase_price && (
+                <div className="text-sm text-red-600 font-medium">
+                  ${Number(product.purchase_price).toFixed(2)}
+                </div>
+              )}
+              {product.sale_price && (
+                <div className="text-sm text-green-600 font-medium">
+                  ${Number(product.sale_price).toFixed(2)}
+                </div>
+              )}
+              {product.location && (
+                <div className="flex items-center justify-end gap-1 mt-1">
+                  <MapPin className="w-3 h-3 text-gray-400" />
+                  <span className="text-xs text-gray-500">{product.location}</span>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Actions */}
+          <div className="flex gap-2 mt-3">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => onStockAction(product, 'in')}
+              className="flex-1 text-green-600 border-green-300 hover:bg-green-50"
+            >
+              <Plus className="w-4 h-4 mr-1" />
+              Stock In
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => onStockAction(product, 'out')}
+              className="flex-1 text-red-600 border-red-300 hover:bg-red-50"
+            >
+              <Minus className="w-4 h-4 mr-1" />
+              Stock Out
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => onEdit(product)}
+              className="px-3"
+            >
+              <Edit className="w-4 h-4" />
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const fetchProducts = async (branchId: string) => {
   try {
@@ -1098,236 +1599,72 @@ export const StockList = () => {
               />
             </div>
 
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200 text-xs md:text-sm">
-                <thead className="bg-gray-50">
-                  <tr>
-                    {columnVisibility.product && (
-                      <th className="px-2 py-2 text-left font-medium text-gray-500 uppercase tracking-wider">Product</th>
-                    )}
-                    {columnVisibility.location && (
-                      <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Locations</th>
-                    )}
-                    {columnVisibility.current && (
-                      <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Current</th>
-                    )}
-                    {columnVisibility.minimum && (
-                      <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Min.</th>
-                    )}
-                    {columnVisibility.category && (
-                        <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Category</th>
-                    )}
-                    {columnVisibility.supplier && (
-                      <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Supplier</th>
-                    )}
-                    {columnVisibility.purchasePrice && (
-                      <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Purchase Price</th>
-                    )}
-                    {columnVisibility.salePrice && (
-                      <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Sale Price</th>
-                    )}
-                    {columnVisibility.status && (
-                      <th className="px-2 py-2 text-center font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                    )}
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {grouped.parents.length === 0 ? (
-                    <tr>
-                      <td colSpan={Object.values(columnVisibility).filter(Boolean).length} className="px-2 py-4 text-center text-gray-500">
-                        {productsTyped.length === 0 ? 'No products found for this branch.' : 'No products meet your filters.'}
-                      </td>
-                    </tr>
-                  ) : (
-                    grouped.parents.map((parent) => {
-                      const parentStatus = getStockStatus(parent.quantity_in_stock, parent.minimum_stock_level);
-                      const hasChildren = (grouped.children[parent.id]?.length || 0) > 0;
-                      return (
-                        <>
-                        <tr 
-                            key={parent.id} 
-                          className="hover:bg-gray-50 transition-colors cursor-pointer"
-                            onClick={() => { setSelectedProduct(parent); setIsProductActionModalOpen(true); }}
-                        >
-                          {columnVisibility.product && (
-                            <td className="px-2 py-2 whitespace-nowrap">
-                              <div className="flex items-center gap-2">
-                                  {hasChildren && (
-                                    <button
-                                      className="p-1 rounded border hover:bg-gray-50"
-                                      onClick={(e) => { e.stopPropagation(); toggleExpand(parent.id); }}
-                                      aria-label={expandedParents[parent.id] ? 'Collapse' : 'Expand'}
-                                    >
-                                      {expandedParents[parent.id] ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
-                                    </button>
-                                  )}
-                                  {parent.image_url ? (
-                                    <img
-                                      src={parent.image_url}
-                                      alt={`Productfoto van ${parent.name} | voorraadbeheer`}
-                                    className="w-10 h-10 object-cover rounded border"
-                                  />
-                                ) : (
-                                  <div className="w-10 h-10 bg-gray-200 rounded border flex items-center justify-center text-[10px] text-gray-400">No</div>
-                                )}
-                                <div>
-                                    <div className="font-medium text-gray-900 truncate max-w-[80px]">{parent.name}</div>
-                                    {parent.description && (
-                                      <div className="text-[10px] text-gray-500 truncate max-w-[80px]">{parent.description}</div>
-                                    )}
-                                    {hasChildren && (
-                                      <div className="text-[10px] text-gray-500">{grouped.children[parent.id].length} variants</div>
-                                  )}
-                                </div>
-                              </div>
-                            </td>
-                          )}
-                          {columnVisibility.location && (
-                            <td className="px-2 py-2 text-center">
-                              <span className="text-xs text-gray-600 truncate max-w-[60px] block">
-                                  {hasChildren ? '-' : (parent.location || '-')}
-                              </span>
-                            </td>
-                          )}
-                          {columnVisibility.current && (
-                              <td className="px-2 py-2 text-center font-semibold">{hasChildren ? '-' : parent.quantity_in_stock}</td>
-                          )}
-                          {columnVisibility.minimum && (
-                              <td className="px-2 py-2 text-center">{hasChildren ? '-' : parent.minimum_stock_level}</td>
-                          )}
-                          {columnVisibility.category && (
-                            <td className="px-2 py-2 text-center">
-                              <span className="text-xs text-gray-600 truncate max-w-[60px] block">
-                                  {hasChildren ? '-' : (parent.category_name || '-')}
-                              </span>
-                            </td>
-                          )}
-                          {columnVisibility.supplier && (
-                            <td className="px-2 py-2 text-center">
-                              <span className="text-xs text-gray-600 truncate max-w-[60px] block">
-                                  {hasChildren ? '-' : (parent.supplier_name || '-')}
-                              </span>
-                            </td>
-                          )}
-                          {columnVisibility.purchasePrice && (
-                            <td className="px-2 py-2 text-center">
-                              <span className="text-xs text-red-600">
-                                  {hasChildren ? '-' : (parent.purchase_price ? `$${Number(parent.purchase_price).toFixed(2)}` : '-')}
-                              </span>
-                            </td>
-                          )}
-                          {columnVisibility.salePrice && (
-                            <td className="px-2 py-2 text-center">
-                              <span className="text-xs text-green-600">
-                                  {hasChildren ? '-' : (parent.sale_price ? `$${Number(parent.sale_price).toFixed(2)}` : '-')}
-                              </span>
-                            </td>
-                          )}
-                          {columnVisibility.status && (
-                            <td className="px-2 py-2 text-center">
-                                {hasChildren ? (
-                                  <span className="text-xs text-gray-400">-</span>
-                                ) : (
-                                  <Badge variant={getStockStatusVariant(parentStatus)}>
-                                    {parentStatus}
-                                  </Badge>
-                                )}
-                              </td>
-                            )}
-                          </tr>
-
-                          {expandedParents[parent.id] && (grouped.children[parent.id]?.length || 0) > 0 && (
-                            grouped.children[parent.id].map((child) => {
-                              const childStatus = getStockStatus(child.quantity_in_stock, child.minimum_stock_level);
-                              return (
-                                <tr
-                                  key={child.id}
-                                  className="hover:bg-gray-50 transition-colors cursor-pointer"
-                                  onClick={() => { setSelectedProduct(child); setIsProductActionModalOpen(true); }}
-                                >
-                                  {columnVisibility.product && (
-                                    <td className="px-2 py-2 whitespace-nowrap">
-                                      <div className="flex items-center gap-2">
-                                        <div className="w-4" />
-                                        {child.image_url ? (
-                                          <img
-                                            src={child.image_url}
-                                            alt={`Productfoto van ${child.name} | voorraadbeheer`}
-                                            className="w-8 h-8 object-cover rounded border"
-                                          />
-                                        ) : (
-                                          <div className="w-8 h-8 bg-gray-200 rounded border flex items-center justify-center text-[10px] text-gray-400">No</div>
-                                        )}
-                                        <div>
-                                          <div className="flex items-center gap-2 font-medium text-gray-900 truncate max-w-[80px]">
-                                            <span className="truncate">{child.name} - {child.variant_name}</span>
-                                            <Badge className="bg-purple-100 text-purple-700 border border-purple-200">Variant</Badge>
-                                          </div>
-                                          {child.description && (
-                                            <div className="text-[10px] text-gray-500 truncate max-w-[80px]">{child.description}</div>
-                                          )}
-                                        </div>
-                                      </div>
-                                    </td>
-                                  )}
-                                  {columnVisibility.location && (
-                                    <td className="px-2 py-2 text-center">
-                                      <span className="text-xs text-gray-600 truncate max-w-[60px] block">
-                                        {child.location || '-'}
-                                      </span>
-                                    </td>
-                                  )}
-                                  {columnVisibility.current && (
-                                    <td className="px-2 py-2 text-center font-semibold">{child.quantity_in_stock}</td>
-                                  )}
-                                  {columnVisibility.minimum && (
-                                    <td className="px-2 py-2 text-center">{child.minimum_stock_level}</td>
-                                  )}
-                                  {columnVisibility.category && (
-                                    <td className="px-2 py-2 text-center">
-                                      <span className="text-xs text-gray-600 truncate max-w-[60px] block">
-                                        {child.category_name || '-'}
-                                      </span>
-                                    </td>
-                                  )}
-                                  {columnVisibility.supplier && (
-                                    <td className="px-2 py-2 text-center">
-                                      <span className="text-xs text-gray-600 truncate max-w-[60px] block">
-                                        {child.supplier_name || '-'}
-                                      </span>
-                                    </td>
-                                  )}
-                                  {columnVisibility.purchasePrice && (
-                                    <td className="px-2 py-2 text-center">
-                                      <span className="text-xs text-red-600">
-                                        ${child.purchase_price ? Number(child.purchase_price).toFixed(2) : '-'}
-                                      </span>
-                                    </td>
-                                  )}
-                                  {columnVisibility.salePrice && (
-                                    <td className="px-2 py-2 text-center">
-                                      <span className="text-xs text-green-600">
-                                        ${child.sale_price ? Number(child.sale_price).toFixed(2) : '-'}
-                                      </span>
-                                    </td>
-                                  )}
-                                  {columnVisibility.status && (
-                                    <td className="px-2 py-2 text-center">
-                                      <Badge variant={getStockStatusVariant(childStatus)}>
-                                        {childStatus}
-                              </Badge>
-                            </td>
-                          )}
-                        </tr>
-                              );
-                            })
-                          )}
-                        </>
-                      );
-                    })
-                  )}
-                </tbody>
-              </table>
+            {/* Mobile Product Cards */}
+            <div className="space-y-3">
+              {grouped.parents.length === 0 ? (
+                <div className="bg-white rounded-lg border border-gray-200 p-8 text-center">
+                  <div className="flex flex-col items-center gap-2">
+                    <Package className="w-8 h-8 text-gray-400" />
+                    <div className="text-sm text-gray-500">
+                      {productsTyped.length === 0 ? 'No products found for this branch.' : 'No products match your filters.'}
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                grouped.parents.map((parent) => {
+                  const parentChecked = selectedProductIds.includes(parent.id);
+                  const hasChildren = (grouped.children[parent.id]?.length || 0) > 0;
+                  const isExpanded = expandedParents[parent.id] || false;
+                  
+                  return (
+                    <React.Fragment key={parent.id}>
+                      <MobileProductCard
+                        product={parent}
+                        isSelected={parentChecked}
+                        hasChildren={hasChildren}
+                        isExpanded={isExpanded}
+                        onToggleExpand={() => toggleExpand(parent.id)}
+                        onSelect={handleSelectProduct}
+                        onStockAction={handleStockAction}
+                        onEdit={(product) => {
+                          setSelectedProduct(product);
+                          setIsEditInfoModalOpen(true);
+                        }}
+                        onImagePreview={(url) => {
+                          setPreviewImageUrl(url);
+                          setIsImagePreviewOpen(true);
+                        }}
+                        isAdmin={isAdmin}
+                      />
+                      
+                      {isExpanded && hasChildren && (
+                        grouped.children[parent.id].map((child) => {
+                          const childChecked = selectedProductIds.includes(child.id);
+                          return (
+                            <MobileProductCard
+                              key={child.id}
+                              product={child}
+                              isVariant={true}
+                              isSelected={childChecked}
+                              onSelect={handleSelectProduct}
+                              onStockAction={handleStockAction}
+                              onEdit={(product) => {
+                                setSelectedProduct(product);
+                                setIsEditInfoModalOpen(true);
+                              }}
+                              onImagePreview={(url) => {
+                                setPreviewImageUrl(url);
+                                setIsImagePreviewOpen(true);
+                              }}
+                              isAdmin={isAdmin}
+                            />
+                          );
+                        })
+                      )}
+                    </React.Fragment>
+                  );
+                })
+              )}
             </div>
           </>
         )}
@@ -1732,11 +2069,12 @@ export const StockList = () => {
             <thead className="bg-gray-50">
               <tr>
                 {isAdmin && (
-                  <th className="px-2 py-4 text-center">
+                  <th className="px-3 py-4 text-center">
                     <input
                       type="checkbox"
                       checked={selectAll && filteredProducts.length > 0}
                       onChange={(e) => handleSelectAllChange(e.target.checked)}
+                      className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
                     />
                   </th>
                 )}
@@ -1746,47 +2084,42 @@ export const StockList = () => {
                   </th>
                 )}
                 {columnVisibility.location && (
-                  <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Locations
+                  <th className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Location
                   </th>
                 )}
                 {columnVisibility.current && (
-                  <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Current
+                  <th className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Stock Level
                   </th>
                 )}
                 {columnVisibility.minimum && (
-                  <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Minimum
                   </th>
                 )}
                 {columnVisibility.category && (
-                  <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Category
                   </th>
                 )}
                 {columnVisibility.supplier && (
-                  <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Supplier
                   </th>
                 )}
-                {columnVisibility.purchasePrice && (
-                  <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Purchase Price
-                  </th>
-                )}
-                {columnVisibility.salePrice && (
-                  <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Sale Price
+                {(columnVisibility.purchasePrice || columnVisibility.salePrice) && (
+                  <th className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Pricing
                   </th>
                 )}
                 {columnVisibility.status && (
-                  <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Status
                   </th>
                 )}
                 {columnVisibility.actions && (
-                  <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Actions
                   </th>
                 )}    
@@ -1798,250 +2131,69 @@ export const StockList = () => {
                   <td colSpan={
                     (isAdmin ? 1 : 0) + 
                     Object.values(columnVisibility).filter(Boolean).length
-                  } className="px-4 py-2 text-center text-gray-500">
-                    {productsTyped.length === 0 ? 'No products found for this branch.' : 'No products match your filters.'}
+                  } className="px-4 py-8 text-center text-gray-500">
+                    <div className="flex flex-col items-center gap-2">
+                      <Package className="w-8 h-8 text-gray-400" />
+                      <div className="text-sm">
+                        {productsTyped.length === 0 ? 'No products found for this branch.' : 'No products match your filters.'}
+                      </div>
+                    </div>
                   </td>
                 </tr>
               ) : (
-                grouped.parents.map((parent, index) => {
+                grouped.parents.map((parent) => {
                   const parentChecked = selectedProductIds.includes(parent.id);
                   const hasChildren = (grouped.children[parent.id]?.length || 0) > 0;
-                  const parentStatus = getStockStatus(parent.quantity_in_stock, parent.minimum_stock_level);
+                  const isExpanded = expandedParents[parent.id] || false;
+                  
                   return (
-                    <>
-                    <tr
-                        key={parent.id}
-                      className={`${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'} hover:bg-gray-100 transition-colors cursor-pointer`}
-                      style={{ height: '80px' }}
-                        onClick={() => { setSelectedProduct(parent); setIsEditInfoModalOpen(true); }}
-                    >
-                      {isAdmin && (
-                        <td className="px-2 py-2 text-center">
-                          <input
-                            type="checkbox"
-                              checked={parentChecked}
-                              onChange={() => handleSelectProduct(parent.id)}
-                          />
-                        </td>
-                      )}
-                      {columnVisibility.product && (
-                        <td className="px-4 py-2 whitespace-nowrap">
-                          <div className="flex items-center gap-4">
-                              {hasChildren && (
-                                <button
-                                  className="p-1 rounded border hover:bg-gray-50"
-                                  onClick={(e) => { e.stopPropagation(); toggleExpand(parent.id); }}
-                                  aria-label={expandedParents[parent.id] ? 'Collapse' : 'Expand'}
-                                >
-                                  {expandedParents[parent.id] ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
-                                </button>
-                              )}
-                              {parent.image_url ? (
-                                <img
-                                  src={parent.image_url}
-                                  alt={`Productfoto van ${parent.name} | voorraadbeheer`}
-                                className="w-16 h-16 object-cover rounded border cursor-zoom-in"
-                                  onClick={e => { e.stopPropagation(); setPreviewImageUrl(parent.image_url!); setIsImagePreviewOpen(true); }}
-                              />
-                            ) : (
-                              <div className="w-16 h-16 bg-gray-200 rounded border flex items-center justify-center text-xs text-gray-400">No Photo</div>
-                            )}
-                            <div>
-                                <div className="text-sm font-medium text-gray-900">{parent.name}</div>
-                                {parent.description && (
-                                <div className="text-xs text-gray-500 max-w-xs truncate pr-20">
-                                    {parent.description}
-                                </div>
-                              )}
-                                {hasChildren && (
-                                    <div className="text-[11px] text-gray-500">{grouped.children[parent.id].length} variants</div>
-                                )}
-                            </div>
-                          </div>
-                        </td>
-                      )}
-                      {columnVisibility.location && (
-                        <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-600 text-center">
-                            {parent.location || '-'}
-                        </td>
-                      )}
-                      {columnVisibility.current && (
-                        <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-center">
-                            {parent.quantity_in_stock}
-                        </td>
-                      )}
-                      {columnVisibility.minimum && (
-                        <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 text-center">
-                            {parent.minimum_stock_level}
-                        </td>
-                      )}
-                      {columnVisibility.category && (
-                        <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-600 text-center">
-                            {parent.category_name || '-'}
-                        </td>
-                      )}
-                      {columnVisibility.supplier && (
-                        <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-600 text-center">
-                            {parent.supplier_name || '-'}
-                        </td>
-                      )}
-                      {columnVisibility.purchasePrice && (
-                        <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-blue-600 text-center">
-                            <span className="text-red-600">${parent.purchase_price ? Number(parent.purchase_price).toFixed(2) : '-'}</span>
-                        </td>
-                      )}
-                      {columnVisibility.salePrice && (
-                        <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-orange-600 text-center">
-                            <span className="text-green-600">${parent.sale_price ? Number(parent.sale_price).toFixed(2) : '-'}</span>
-                        </td>
-                      )}
-                      {columnVisibility.status && (
-                        <td className="px-4 py-2 whitespace-nowrap text-center">
-                            <Badge variant={getStockStatusVariant(parentStatus)}>
-                              {parentStatus}
-                          </Badge>
-                        </td>
-                      )}
-                      {columnVisibility.actions && (
-                        <td className="px-4 py-1 whitespace-nowrap text-sm font-medium text-center">
-                          <div className="flex space-x-2 justify-center">
-                            <Button
-                              variant="outline"
-                              size="sm"
-                                onClick={(e) => { e.stopPropagation(); handleStockAction(parent, 'in'); }}
-                              className="text-green-600 bg-green-100 border border-green-600 hover:text-white hover:bg-green-600 hover:border-green-600"
-                            >
-                              <Plus className="h-4 w-4" />
-                            </Button>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                                onClick={(e) => { e.stopPropagation(); handleStockAction(parent, 'out'); }}
-                                className="text-red-600 bg-red-100 border border-red-600 hover:text-white hover:bg-red-600 hover:border-red-600"
-                              >
-                                <Minus className="h-4 w-4" />
-                              </Button>
-                            </div>
-                          </td>
-                        )}
-                      </tr>
-
-                      {expandedParents[parent.id] && (grouped.children[parent.id]?.length || 0) > 0 && (
+                    <React.Fragment key={parent.id}>
+                      <ProductRow
+                        product={parent}
+                        isSelected={parentChecked}
+                        hasChildren={hasChildren}
+                        isExpanded={isExpanded}
+                        columnVisibility={columnVisibility}
+                        onToggleExpand={() => toggleExpand(parent.id)}
+                        onSelect={handleSelectProduct}
+                        onStockAction={handleStockAction}
+                        onEdit={(product) => {
+                          setSelectedProduct(product);
+                          setIsEditInfoModalOpen(true);
+                        }}
+                        onImagePreview={(url) => {
+                          setPreviewImageUrl(url);
+                          setIsImagePreviewOpen(true);
+                        }}
+                        isAdmin={isAdmin}
+                      />
+                      
+                      {isExpanded && hasChildren && (
                         grouped.children[parent.id].map((child) => {
                           const childChecked = selectedProductIds.includes(child.id);
-                          const childStatus = getStockStatus(child.quantity_in_stock, child.minimum_stock_level);
                           return (
-                            <tr
+                            <ProductRow
                               key={child.id}
-                              className="bg-white hover:bg-gray-50 transition-colors cursor-pointer"
-                              onClick={() => { setSelectedProduct(child); setIsEditInfoModalOpen(true); }}
-                            >
-                              {isAdmin && (
-                                <td className="px-2 py-2 text-center">
-                                  <input
-                                    type="checkbox"
-                                    checked={childChecked}
-                                    onChange={() => handleSelectProduct(child.id)}
-                                  />
-                                </td>
-                              )}
-                              {columnVisibility.product && (
-                                <td className="px-4 py-2 whitespace-nowrap">
-                                  <div className="flex items-center gap-4">
-                                    <div className="w-4" />
-                                    {child.image_url ? (
-                                      <img
-                                        src={child.image_url}
-                                        alt={`Productfoto van ${child.name} | voorraadbeheer`}
-                                        className="w-12 h-12 object-cover rounded border cursor-zoom-in"
-                                        onClick={e => { e.stopPropagation(); setPreviewImageUrl(child.image_url!); setIsImagePreviewOpen(true); }}
-                                      />
-                                    ) : (
-                                      <div className="w-12 h-12 bg-gray-200 rounded border flex items-center justify-center text-[10px] text-gray-400">No Photo</div>
-                                    )}
-                                    <div>
-                                      <div className="flex items-center gap-2 text-sm text-gray-900">
-                                        <span>{child.name} <span className="text-gray-500">- {child.variant_name}</span></span>
-                                        <Badge className="bg-purple-100 text-purple-700 border border-purple-200">Variant</Badge>
-                                      </div>
-                                      {child.description && (
-                                        <div className="text-xs text-gray-500 max-w-xs truncate pr-20">
-                                          {child.description}
-                                        </div>
-                                      )}
-                                    </div>
-                                  </div>
-                                </td>
-                              )}
-                              {columnVisibility.location && (
-                                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-600 text-center">
-                                  {child.location || '-'}
-                                </td>
-                              )}
-                              {columnVisibility.current && (
-                                <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-center">
-                                  {child.quantity_in_stock}
-                                </td>
-                              )}
-                              {columnVisibility.minimum && (
-                                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900 text-center">
-                                  {child.minimum_stock_level}
-                                </td>
-                              )}
-                              {columnVisibility.category && (
-                                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-600 text-center">
-                                  {child.category_name || '-'}
-                                </td>
-                              )}
-                              {columnVisibility.supplier && (
-                                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-600 text-center">
-                                  {child.supplier_name || '-'}
-                                </td>
-                              )}
-                              {columnVisibility.purchasePrice && (
-                                <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-blue-600 text-center">
-                                  <span className="text-red-600">${child.purchase_price ? Number(child.purchase_price).toFixed(2) : '-'}</span>
-                                </td>
-                              )}
-                              {columnVisibility.salePrice && (
-                                <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-orange-600 text-center">
-                                  <span className="text-green-600">${child.sale_price ? Number(child.sale_price).toFixed(2) : '-'}</span>
-                                </td>
-                              )}
-                              {columnVisibility.status && (
-                                <td className="px-4 py-2 whitespace-nowrap text-center">
-                                  <Badge variant={getStockStatusVariant(childStatus)}>
-                                    {childStatus}
-                                  </Badge>
-                                </td>
-                              )}
-                              {columnVisibility.actions && (
-                                <td className="px-4 py-1 whitespace-nowrap text-sm font-medium text-center">
-                                  <div className="flex space-x-2 justify-center">
-                                    <Button
-                                      variant="outline"
-                                      size="sm"
-                                      onClick={(e) => { e.stopPropagation(); handleStockAction(child, 'in'); }}
-                                      className="text-green-600 bg-green-100 border border-green-600 hover:text-white hover:bg-green-600 hover:border-green-600"
-                                    >
-                                      <Plus className="h-4 w-4" />
-                                    </Button>
-                                    <Button
-                                      variant="outline"
-                                      size="sm"
-                                      onClick={(e) => { e.stopPropagation(); handleStockAction(child, 'out'); }}
-                              className="text-red-600 bg-red-100 border border-red-600 hover:text-white hover:bg-red-600 hover:border-red-600"
-                            >
-                              <Minus className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        </td>
-                      )}
-                    </tr>
+                              product={child}
+                              isVariant={true}
+                              isSelected={childChecked}
+                              columnVisibility={columnVisibility}
+                              onSelect={handleSelectProduct}
+                              onStockAction={handleStockAction}
+                              onEdit={(product) => {
+                                setSelectedProduct(product);
+                                setIsEditInfoModalOpen(true);
+                              }}
+                              onImagePreview={(url) => {
+                          setPreviewImageUrl(url);
+                          setIsImagePreviewOpen(true);
+                        }}
+                              isAdmin={isAdmin}
+                            />
                           );
                         })
                       )}
-                    </>
+                    </React.Fragment>
                   );
                 })
               )}
