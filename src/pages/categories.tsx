@@ -12,6 +12,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
 import { useMobile } from '@/hooks/use-mobile';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 interface Category {
   id: string;
@@ -22,15 +23,48 @@ interface Category {
   product_count?: number;
 }
 
+// Fetch function outside component for React Query
+const fetchCategories = async (userId: string): Promise<Category[]> => {
+  // First get all categories for the current user
+  const { data: categoriesData, error: categoriesError } = await supabase
+    .from('categories')
+    .select('*')
+    .eq('user_id', userId)
+    .order('name');
+
+  if (categoriesError) {
+    console.error('Error fetching categories:', categoriesError);
+    throw categoriesError;
+  }
+
+  // Then get product count for each category
+  const categoriesWithCount = await Promise.all(
+    (categoriesData || []).map(async (category) => {
+      const { count, error: countError } = await supabase
+        .from('products')
+        .select('*', { count: 'exact', head: true })
+        .eq('category_id', category.id);
+
+      if (countError) {
+        console.error('Error counting products for category:', category.id, countError);
+        return { ...category, product_count: 0 };
+      }
+
+      return { ...category, product_count: count || 0 };
+    })
+  );
+
+  return categoriesWithCount;
+};
+
 export default function CategorysPage() {
   const { user } = useAuth();
   const { activeBranch } = useBranches();
   const { isMobile } = useMobile();
   const navigate = useNavigate();
   const location = useLocation();
+  const queryClient = useQueryClient();
   
-  const [categories, setCategorys] = useState<Category[]>([]);
-  const [loading, setLoading] = useState(true);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -38,6 +72,22 @@ export default function CategorysPage() {
   const [formData, setFormData] = useState({
     name: '',
     description: ''
+  });
+
+  // Use React Query for caching
+  const {
+    data: categories = [],
+    isLoading: loading,
+    error: categoriesError,
+  } = useQuery<Category[]>({
+    queryKey: ['categories', user?.id],
+    queryFn: () => user ? fetchCategories(user.id) : [],
+    enabled: !!user,
+    refetchOnWindowFocus: false, // Don't refetch on tab switch
+    staleTime: 1000 * 60 * 5, // 5 minutes cache
+    gcTime: 1000 * 60 * 30, // 30 minutes garbage collect
+    // @ts-expect-error: keepPreviousData is supported in v5
+    keepPreviousData: true,
   });
 
   // Mobile tab switcher state
@@ -70,54 +120,31 @@ export default function CategorysPage() {
     }
   };
 
+  // Real-time updates for categories
   useEffect(() => {
-    if (user) {
-      fetchCategorys();
-    }
-  }, [user]);
+    if (!user?.id) return;
 
-  const fetchCategorys = async () => {
-    if (!user) return;
-    
-    try {
-      // First get all categories for the current user
-      const { data: CategorysData, error: CategorysError } = await supabase
-        .from('categories')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('name');
+    const categoriesChannel = supabase
+      .channel('categories-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'categories',
+          filter: `user_id=eq.${user.id}`,
+        },
+        () => {
+          console.log('Category change detected, refreshing...');
+          queryClient.invalidateQueries({ queryKey: ['categories', user.id] });
+        }
+      )
+      .subscribe();
 
-      if (CategorysError) {
-        console.error('Error fetching categories:', CategorysError);
-        toast.error('Fout bij het ophalen van Categoryën');
-        return;
-      }
-
-      // Then get product count for each category
-      const CategorysWithCount = await Promise.all(
-        (CategorysData || []).map(async (category) => {
-          const { count, error: countError } = await supabase
-            .from('products')
-            .select('*', { count: 'exact', head: true })
-            .eq('category_id', category.id);
-
-          if (countError) {
-            console.error('Error counting products for category:', category.id, countError);
-            return { ...category, product_count: 0 };
-          }
-
-          return { ...category, product_count: count || 0 };
-        })
-      );
-
-      setCategorys(CategorysWithCount);
-    } catch (error) {
-      console.error('Error fetching categories:', error);
-      toast.error('Onverwachte fout bij het ophalen van Categoryën');
-    } finally {
-      setLoading(false);
-    }
-  };
+    return () => {
+      supabase.removeChannel(categoriesChannel);
+    };
+  }, [user?.id, queryClient]);
 
   const handleAddCategory = async () => {
     if (!formData.name.trim()) {
@@ -150,7 +177,7 @@ export default function CategorysPage() {
       toast.success('Category succesvol toegevoegd!');
       setShowAddModal(false);
       setFormData({ name: '', description: '' });
-      fetchCategorys();
+      queryClient.invalidateQueries({ queryKey: ['categories', user.id] });
     } catch (error) {
       console.error('Error adding category:', error);
       toast.error('Onverwachte fout bij het toevoegen van Category');
@@ -182,7 +209,7 @@ export default function CategorysPage() {
       setShowEditModal(false);
       setSelectedCategory(null);
       setFormData({ name: '', description: '' });
-      fetchCategorys();
+      queryClient.invalidateQueries({ queryKey: ['categories', user.id] });
     } catch (error) {
       console.error('Error updating category:', error);
       toast.error('Onverwachte fout bij het bijwerken van Category');
@@ -227,7 +254,7 @@ export default function CategorysPage() {
       toast.success('Category succesvol verwijderd!');
       setShowDeleteModal(false);
       setSelectedCategory(null);
-      fetchCategorys();
+      queryClient.invalidateQueries({ queryKey: ['categories', user.id] });
     } catch (error) {
       console.error('Error deleting category:', error);
       toast.error('Onverwachte fout bij het verwijderen van Category');

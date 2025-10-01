@@ -41,10 +41,10 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
   else dateFrom = undefined;
 
   // Use lightweight metrics for fast initial loading
-  const { data: basicMetrics, isLoading: basicLoading } = useBasicDashboardMetrics();
+  const { data: basicMetrics, isLoading: basicLoading, isFetching: basicFetching } = useBasicDashboardMetrics();
   
   // Haal alle dashboarddata op (voor de statistieken) - load in background
-  const { data: metrics, isLoading: loading } = useDashboardData();
+  const { data: metrics, isLoading: loading, isFetching: metricsFetching } = useDashboardData();
 
   // State voor grafiek-periode
   const [chartRangeType, setChartRangeType] = useState<'week' | 'month' | 'quarter' | 'year' | 'all'>('month');
@@ -66,7 +66,11 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
 
   // Show basic metrics immediately if available, otherwise show loading
   const displayMetrics = metrics || basicMetrics;
-  const isStillLoading = basicLoading || (loading && !basicMetrics);
+  
+  // Only show loading spinner if we have NO data at all
+  // If we have cached data, show it immediately (even while fetching in background)
+  const hasNoData = !basicMetrics && !metrics;
+  const isStillLoading = (basicLoading || loading) && hasNoData;
 
   if (isStillLoading) {
     return (

@@ -12,6 +12,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
 import { useMobile } from '@/hooks/use-mobile';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 interface Supplier {
   id: string;
@@ -24,14 +25,48 @@ interface Supplier {
   product_count?: number;
 }
 
+// Fetch function outside component for React Query
+const fetchSuppliers = async (userId: string): Promise<Supplier[]> => {
+  // First get all suppliers for the current user
+  const { data: suppliersData, error: suppliersError } = await supabase
+    .from('suppliers')
+    .select('*')
+    .eq('user_id', userId)
+    .order('name');
+
+  if (suppliersError) {
+    console.error('Error fetching suppliers:', suppliersError);
+    throw suppliersError;
+  }
+
+  // Then get product count for each supplier
+  const suppliersWithCount = await Promise.all(
+    (suppliersData || []).map(async (supplier) => {
+      const { count, error: countError } = await supabase
+        .from('products')
+        .select('*', { count: 'exact', head: true })
+        .eq('supplier_id', supplier.id);
+
+      if (countError) {
+        console.error('Error counting products for supplier:', supplier.id, countError);
+        return { ...supplier, product_count: 0 };
+      }
+
+      return { ...supplier, product_count: count || 0 };
+    })
+  );
+
+  return suppliersWithCount;
+};
+
 export default function SuppliersPage() {
   const { user } = useAuth();
   const { activeBranch } = useBranches();
   const { isMobile } = useMobile();
   const navigate = useNavigate();
   const location = useLocation();
-  const [suppliers, setSuppliers] = useState<Supplier[]>([]);
-  const [loading, setLoading] = useState(true);
+  const queryClient = useQueryClient();
+  
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -41,6 +76,22 @@ export default function SuppliersPage() {
     email: '',
     phone: '',
     address: ''
+  });
+
+  // Use React Query for caching
+  const {
+    data: suppliers = [],
+    isLoading: loading,
+    error: suppliersError,
+  } = useQuery<Supplier[]>({
+    queryKey: ['suppliers', user?.id],
+    queryFn: () => user ? fetchSuppliers(user.id) : [],
+    enabled: !!user,
+    refetchOnWindowFocus: false, // Don't refetch on tab switch
+    staleTime: 1000 * 60 * 5, // 5 minutes cache
+    gcTime: 1000 * 60 * 30, // 30 minutes garbage collect
+    // @ts-expect-error: keepPreviousData is supported in v5
+    keepPreviousData: true,
   });
 
   // Mobile tab switcher state
@@ -73,54 +124,31 @@ export default function SuppliersPage() {
     }
   };
 
+  // Real-time updates for suppliers
   useEffect(() => {
-    if (user) {
-      fetchSuppliers();
-    }
-  }, [user]);
+    if (!user?.id) return;
 
-  const fetchSuppliers = async () => {
-    if (!user) return;
-    
-    try {
-      // First get all suppliers for the current user
-      const { data: suppliersData, error: suppliersError } = await supabase
-        .from('suppliers')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('name');
+    const suppliersChannel = supabase
+      .channel('suppliers-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'suppliers',
+          filter: `user_id=eq.${user.id}`,
+        },
+        () => {
+          console.log('Supplier change detected, refreshing...');
+          queryClient.invalidateQueries({ queryKey: ['suppliers', user.id] });
+        }
+      )
+      .subscribe();
 
-      if (suppliersError) {
-        console.error('Error fetching suppliers:', suppliersError);
-        toast.error('Fout bij het ophalen van leveranciers');
-        return;
-      }
-
-      // Then get product count for each supplier
-      const suppliersWithCount = await Promise.all(
-        (suppliersData || []).map(async (supplier) => {
-          const { count, error: countError } = await supabase
-            .from('products')
-            .select('*', { count: 'exact', head: true })
-            .eq('supplier_id', supplier.id);
-
-          if (countError) {
-            console.error('Error counting products for supplier:', supplier.id, countError);
-            return { ...supplier, product_count: 0 };
-          }
-
-          return { ...supplier, product_count: count || 0 };
-        })
-      );
-
-      setSuppliers(suppliersWithCount);
-    } catch (error) {
-      console.error('Error fetching suppliers:', error);
-      toast.error('Onverwachte fout bij het ophalen van leveranciers');
-    } finally {
-      setLoading(false);
-    }
-  };
+    return () => {
+      supabase.removeChannel(suppliersChannel);
+    };
+  }, [user?.id, queryClient]);
 
   const handleAddSupplier = async () => {
     if (!formData.name.trim()) {
@@ -155,7 +183,7 @@ export default function SuppliersPage() {
       toast.success('Leverancier succesvol toegevoegd!');
       setShowAddModal(false);
       setFormData({ name: '', email: '', phone: '', address: '' });
-      fetchSuppliers();
+      queryClient.invalidateQueries({ queryKey: ['suppliers', user.id] });
     } catch (error) {
       console.error('Error adding supplier:', error);
       toast.error('Onverwachte fout bij het toevoegen van leverancier');
@@ -189,7 +217,7 @@ export default function SuppliersPage() {
       setShowEditModal(false);
       setSelectedSupplier(null);
       setFormData({ name: '', email: '', phone: '', address: '' });
-      fetchSuppliers();
+      queryClient.invalidateQueries({ queryKey: ['suppliers', user.id] });
     } catch (error) {
       console.error('Error updating supplier:', error);
       toast.error('Onverwachte fout bij het bijwerken van leverancier');
@@ -234,7 +262,7 @@ export default function SuppliersPage() {
       toast.success('Leverancier succesvol verwijderd!');
       setShowDeleteModal(false);
       setSelectedSupplier(null);
-      fetchSuppliers();
+      queryClient.invalidateQueries({ queryKey: ['suppliers', user.id] });
     } catch (error) {
       console.error('Error deleting supplier:', error);
       toast.error('Onverwachte fout bij het verwijderen van leverancier');
