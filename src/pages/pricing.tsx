@@ -9,6 +9,8 @@ import { useSubscription } from '@/hooks/useSubscription';
 import { useTranslation } from 'react-i18next';
 import { Header } from '@/components/HeaderPublic';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
+import SEO from '@/components/SEO';
+import { generateComprehensiveStructuredData } from '@/lib/structuredData';
 
 interface PricingTier {
   id: string;
@@ -88,10 +90,51 @@ export default function PricingPage() {
     return `${value} ${type}`;
   };
 
+  // Structured data for pricing page to help with sitelinks
+  const structuredData = generateComprehensiveStructuredData(
+    'software',
+    {
+      title: 'StockFlow Prijzen - Gratis Voorraadbeheer Tarieven',
+      url: 'https://www.stockflow.be/pricing',
+      description: 'Transparante prijzen voor voorraadbeheer. Start gratis of kies een betaald plan. Geen verborgen kosten.',
+      breadcrumbs: [
+        { name: 'Home', url: 'https://www.stockflow.be', position: 1 },
+        { name: 'Prijzen', url: 'https://www.stockflow.be/pricing', position: 2 }
+      ],
+      softwareData: {
+        name: 'StockFlow - Inventory Management',
+        description: 'Gratis voorraadbeheer software voor kleine bedrijven met premium opties voor groeiende organisaties',
+        category: 'BusinessApplication',
+        operatingSystem: 'Web Browser, iOS, Android',
+        price: '0',
+        currency: 'USD',
+        rating: {
+          value: '4.8',
+          count: '150'
+        },
+        features: [
+          'Real-time voorraad tracking',
+          'Barcode scanning',
+          'Analytics & rapportage',
+          'Multi-locatie support',
+          'Team samenwerking'
+        ],
+        url: 'https://www.stockflow.be/pricing'
+      }
+    }
+  );
+
   // Show loading state
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+        <SEO
+          title="StockFlow Prijzen - Gratis Voorraadbeheer Tarieven"
+          description="Transparante prijzen voor voorraadbeheer. Start gratis of kies een betaald plan. Geen verborgen kosten, 14 dagen gratis proberen."
+          keywords="stockflow prijzen, voorraadbeheer kosten, gratis voorraad software, pricing, tarieven, abonnementen"
+          url="https://www.stockflow.be/pricing"
+          structuredData={structuredData}
+        />
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
           <p className="text-gray-600">Loading pricing plans...</p>
@@ -102,6 +145,13 @@ export default function PricingPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+      <SEO
+        title="StockFlow Prijzen - Gratis Voorraadbeheer Tarieven"
+        description="Transparante prijzen voor voorraadbeheer. Start gratis of kies een betaald plan. Geen verborgen kosten, 14 dagen gratis proberen."
+        keywords="stockflow prijzen, voorraadbeheer kosten, gratis voorraad software, pricing, tarieven, abonnementen"
+        url="https://www.stockflow.be/pricing"
+        structuredData={structuredData}
+      />
       <Header 
         onLoginClick={() => navigate('/auth?mode=login')}
         onNavigate={() => {}}

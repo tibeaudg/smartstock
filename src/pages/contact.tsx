@@ -10,6 +10,8 @@ import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { logger } from '../lib/logger';
 import { Header } from '@/components/HeaderPublic';
 import { useNavigate } from 'react-router-dom';
+import SEO from '@/components/SEO';
+import { generateComprehensiveStructuredData } from '@/lib/structuredData';
 
 // A reusable component for fade-in animations when scrolling
 const FadeInWhenVisible = ({ children }: { children: React.ReactNode }) => {
@@ -59,8 +61,29 @@ export default function ContactPage() {
     }
   };
 
+  // Structured data for contact page to help with sitelinks
+  const structuredData = generateComprehensiveStructuredData(
+    'contact',
+    {
+      title: 'Contact StockFlow - Support & Vragen',
+      url: 'https://www.stockflow.be/contact',
+      description: 'Neem contact op met ons team. We beantwoorden meestal binnen 1 uur. Vragen over voorraadbeheer, demo\'s of support.',
+      breadcrumbs: [
+        { name: 'Home', url: 'https://www.stockflow.be', position: 1 },
+        { name: 'Contact', url: 'https://www.stockflow.be/contact', position: 2 }
+      ]
+    }
+  );
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-blue-50">
+      <SEO
+        title="Contact StockFlow - Support & Vragen"
+        description="Neem contact op met ons team. We beantwoorden meestal binnen 1 uur. Vragen over voorraadbeheer, demo's of support? Contact StockFlow voor hulp."
+        keywords="stockflow contact, voorraadbeheer support, inventory management help, contact, klantenservice, hulp, demo aanvragen"
+        url="https://www.stockflow.be/contact"
+        structuredData={structuredData}
+      />
       <Header 
         onLoginClick={() => navigate('/auth?mode=login')}
         onNavigate={() => {}}

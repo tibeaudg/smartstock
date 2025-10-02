@@ -109,7 +109,7 @@ export function generateBreadcrumbSchema(breadcrumbs: BreadcrumbItem[]) {
   };
 }
 
-// Generate WebSite Schema
+// Generate WebSite Schema with sitelinks
 export function generateWebSiteSchema(organizationName: string, baseUrl: string) {
   return {
     "@context": "https://schema.org",
@@ -125,7 +125,37 @@ export function generateWebSiteSchema(organizationName: string, baseUrl: string)
       "@type": "SearchAction",
       "target": `${baseUrl}/search?q={search_term_string}`,
       "query-input": "required name=search_term_string"
-    }
+    },
+    "hasPart": [
+      {
+        "@type": "WebPage",
+        "@id": `${baseUrl}/auth`,
+        "name": "Login & Registreer - Gratis Voorraadbeheer",
+        "description": "Log in of registreer voor gratis voorraadbeheer met StockFlow",
+        "url": `${baseUrl}/auth`
+      },
+      {
+        "@type": "WebPage",
+        "@id": `${baseUrl}/contact`,
+        "name": "Contact - Support & Vragen",
+        "description": "Neem contact op met ons team voor vragen en support",
+        "url": `${baseUrl}/contact`
+      },
+      {
+        "@type": "WebPage",
+        "@id": `${baseUrl}/features`,
+        "name": "Features - Krachtige Voorraadbeheer Tools",
+        "description": "Ontdek alle krachtige features van StockFlow inventory management",
+        "url": `${baseUrl}/features`
+      },
+      {
+        "@type": "WebPage",
+        "@id": `${baseUrl}/pricing`,
+        "name": "Prijzen - Gratis & Premium Tarieven",
+        "description": "Transparante prijzen voor voorraadbeheer software",
+        "url": `${baseUrl}/pricing`
+      }
+    ]
   };
 }
 
