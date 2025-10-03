@@ -56,7 +56,7 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({ onBarcodeDetecte
         setCameraSupported(hasCameraSupport);
         
         if (!hasCameraSupport) {
-          setError('Camera wordt niet ondersteund op dit apparaat/browser');
+          setError('Camera is not supported on this device/browser');
           setIsInitializing(false);
           return;
         }
@@ -83,7 +83,7 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({ onBarcodeDetecte
         
       } catch (err) {
         console.error('Scanner initialization failed:', err);
-        setError('Kan scanner niet initialiseren');
+        setError('Cannot initialize scanner');
         setIsInitializing(false);
       }
     };
@@ -143,7 +143,7 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({ onBarcodeDetecte
       setIsInitializing(true);
       
       if (!codeReaderRef.current) {
-        throw new Error('Barcode reader niet geïnitialiseerd');
+        throw new Error('Barcode reader not initialized');
       }
 
       // Request camera permission first
@@ -206,7 +206,7 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({ onBarcodeDetecte
             console.log('Barcode detected:', barcode);
             setScanResult(barcode);
             setIsScanning(false);
-            toast.success(`Barcode gedetecteerd: ${barcode}`);
+            toast.success(`Barcode detected: ${barcode}`);
             
             // Stop scanning and call callback
             if (codeReaderRef.current) {
@@ -221,7 +221,7 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({ onBarcodeDetecte
             onBarcodeDetected(barcode);
           }
           
-          if (error && error.name !== 'NotFoundException') {
+          if (error && !error.name?.includes('NotFoundException')) {
             console.error('Scanning error:', error);
             // Don't show error for NotFoundException as it's normal during scanning
           }
@@ -230,29 +230,29 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({ onBarcodeDetecte
 
       setIsScanning(true);
       setIsInitializing(false);
-      toast.info('Camera gestart! Richt je camera op een barcode.');
+      toast.info('Camera started! Point your camera at a barcode.');
       
     } catch (err: any) {
       console.error('Error accessing camera:', err);
       setIsInitializing(false);
       
-      let errorMessage = 'Kan camera niet openen.';
+      let errorMessage = 'Cannot open camera.';
       
       if (err.name === 'NotAllowedError') {
-        errorMessage = 'Camera toegang geweigerd. Geef toegang tot je camera in je browser instellingen.';
+        errorMessage = 'Camera access denied. Grant access to your camera in your browser settings.';
         if (isIOS) {
-          errorMessage += ' Ga naar Instellingen → Safari → Camera → Toestaan';
+          errorMessage += ' Go to Settings → Safari → Camera → Allow';
         }
       } else if (err.name === 'NotFoundError') {
-        errorMessage = 'Geen camera gevonden op dit apparaat.';
+        errorMessage = 'No camera found on this device.';
       } else if (err.name === 'NotReadableError') {
-        errorMessage = 'Camera wordt al gebruikt door een andere applicatie.';
+        errorMessage = 'Camera is already in use by another application.';
       } else if (err.name === 'OverconstrainedError') {
-        errorMessage = 'Camera voldoet niet aan de vereiste specificaties.';
+        errorMessage = 'Camera does not meet required specifications.';
       } else if (err.name === 'TypeError') {
-        errorMessage = 'Camera niet ondersteund op dit apparaat.';
+        errorMessage = 'Camera not supported on this device.';
       } else if (err.name === 'NotSupportedError') {
-        errorMessage = 'Camera wordt niet ondersteund in deze browser.';
+        errorMessage = 'Camera is not supported in this browser.';
       }
       
       setError(errorMessage);
@@ -277,7 +277,7 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({ onBarcodeDetecte
     // Demo barcode for testing
     const demoBarcode = '1234567890123';
     setManualBarcode(demoBarcode);
-    toast.success('Demo barcode ingevoerd');
+    toast.success('Demo barcode entered');
   };
 
   const retryCamera = async () => {
@@ -320,20 +320,20 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({ onBarcodeDetecte
                 <div className="flex items-start gap-2 text-red-700">
                   <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
                   <div className="text-sm">
-                    <p className="font-medium mb-1">Camera Fout</p>
+                    <p className="font-medium mb-1">Camera Error</p>
                     <p>{error}</p>
                     <div className="mt-2 space-y-2">
-                      {error.includes('toegang geweigerd') && (
+                      {error.includes('access denied') && (
                         <Button 
                           onClick={retryCamera}
                           variant="outline" 
                           size="sm" 
                           className="mr-2"
                         >
-                          Opnieuw proberen
+                          Try Again
                         </Button>
                       )}
-                      {isIOS && error.includes('toegang geweigerd') && (
+                      {isIOS && error.includes('access denied') && (
                         <Button 
                           onClick={showIOSHelperModal}
                           variant="outline" 
@@ -351,7 +351,7 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({ onBarcodeDetecte
             {scanResult && (
               <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg flex items-center text-green-700">
                 <CheckCircle className="w-4 h-4 mr-2" />
-                <span className="text-sm">Barcode gedetecteerd: {scanResult}</span>
+                <span className="text-sm">Barcode detected: {scanResult}</span>
               </div>
             )}
 
@@ -363,7 +363,7 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({ onBarcodeDetecte
                     <div className="w-full h-64 flex items-center justify-center">
                       <div className="text-center text-gray-500">
                         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-2"></div>
-                        <p className="text-sm">Camera wordt gestart...</p>
+                        <p className="text-sm">Camera is starting...</p>
                       </div>
                     </div>
                   ) : isScanning ? (
@@ -386,7 +386,7 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({ onBarcodeDetecte
                       {isMobile && (
                         <div className="absolute top-2 left-2 bg-blue-600 text-white px-2 py-1 rounded text-xs flex items-center">
                           <Smartphone className="w-3 h-3 mr-1" />
-                          Mobiel
+                          Mobile
                         </div>
                       )}
                       {/* Camera permission indicator */}
@@ -401,7 +401,7 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({ onBarcodeDetecte
                     <div className="w-full h-64 flex items-center justify-center">
                       <div className="text-center text-gray-500">
                         <Camera className="w-12 h-12 mx-auto mb-2 text-gray-400" />
-                        <p className="text-sm">Camera niet actief</p>
+                        <p className="text-sm">Camera not active</p>
                       </div>
                     </div>
                   )}
@@ -415,7 +415,7 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({ onBarcodeDetecte
                       disabled={!!error || isInitializing}
                     >
                       <Scan className="w-4 h-4 mr-2" />
-                      {isInitializing ? 'Initialiseren...' : 'Start Camera'}
+                      {isInitializing ? 'Initializing...' : 'Start Camera'}
                     </Button>
                   ) : (
                     <Button
@@ -434,7 +434,7 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({ onBarcodeDetecte
             {/* Manual Input */}
             <div className="border-t pt-6">
               <Label htmlFor="manual-barcode" className="text-sm font-medium text-gray-700 mb-2 block">
-                Barcode handmatig invoeren
+                Enter barcode manually
               </Label>
               <form onSubmit={handleManualSubmit} className="space-y-3">
                 <Input
@@ -442,13 +442,13 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({ onBarcodeDetecte
                   type="text"
                   value={manualBarcode}
                   onChange={(e) => setManualBarcode(e.target.value)}
-                  placeholder="Voer barcode in (bijv. 1234567890123)"
+                  placeholder="Enter barcode (e.g. 1234567890123)"
                   className="w-full"
                 />
                 <div className="flex gap-2">
                   <Button type="submit" disabled={!manualBarcode.trim()} className="flex-1">
                     <QrCode className="w-4 h-4 mr-2" />
-                    Barcode Gebruiken
+                    Use Barcode
                   </Button>
                   <Button 
                     type="button" 
@@ -467,12 +467,12 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({ onBarcodeDetecte
               <div className="flex items-start gap-2">
                 <AlertCircle className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
                 <div className="text-sm text-blue-700">
-                  <p className="font-medium mb-1">Hoe werkt het?</p>
+                  <p className="font-medium mb-1">How does it work?</p>
                   <ul className="space-y-1 text-xs">
-                    <li>• Start de camera en richt op een barcode</li>
-                    <li>• Houd de camera stil voor betere detectie</li>
-                    <li>• Of voer de barcode handmatig in</li>
-                    <li>• Ondersteunde formaten: EAN-13, EAN-8, UPC-A, UPC-E, Code 128, Code 39</li>
+                    <li>• Start the camera and point it at a barcode</li>
+                    <li>• Hold the camera still for better detection</li>
+                    <li>• Or enter the barcode manually</li>
+                    <li>• Supported formats: EAN-13, EAN-8, UPC-A, UPC-E, Code 128, Code 39</li>
                   </ul>
                 </div>
               </div>
@@ -486,32 +486,17 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({ onBarcodeDetecte
                   <div className="text-sm text-yellow-700">
                     <p className="font-medium mb-1">iPhone Tips:</p>
                     <ul className="space-y-1 text-xs">
-                      <li>• Zorg dat je Safari gebruikt (niet Chrome/Firefox)</li>
-                      <li>• Geef camera toegang wanneer gevraagd</li>
-                      <li>• Houd de camera ongeveer 10-15cm van de barcode</li>
-                      <li>• Zorg voor goede belichting</li>
+                      <li>• Make sure you use Safari (not Chrome/Firefox)</li>
+                      <li>• Grant camera access when prompted</li>
+                      <li>• Hold the camera about 10-15cm from the barcode</li>
+                      <li>• Ensure good lighting</li>
                       {isIOS && !isSafari && (
-                        <li className="font-bold text-red-600">⚠️ Gebruik Safari browser voor beste resultaten</li>
+                        <li className="font-bold text-red-600">⚠️ Use Safari browser for best results</li>
                       )}
                     </ul>
                   </div>
                 </div>
               </div>
-            )}
-
-            {/* Debug Info */}
-            {process.env.NODE_ENV === 'development' && (
-              <details className="mt-4 text-xs">
-                <summary className="cursor-pointer text-gray-600">Debug Info</summary>
-                <div className="mt-2 p-2 bg-gray-50 rounded space-y-1">
-                  <div>Mobile: {isMobile ? 'Ja' : 'Nee'}</div>
-                  <div>iOS: {isIOS ? 'Ja' : 'Nee'}</div>
-                  <div>Safari: {isSafari ? 'Ja' : 'Nee'}</div>
-                  <div>Camera Support: {cameraSupported ? 'Ja' : 'Nee'}</div>
-                  <div>Camera Permission: {cameraPermission}</div>
-                  <div>Available Devices: {availableDevices.length}</div>
-                </div>
-              </details>
             )}
           </div>
         </div>

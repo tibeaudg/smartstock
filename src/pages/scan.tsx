@@ -4,9 +4,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Scan, Plus, Camera, Package, AlertCircle, ArrowUpDown, Check, ChevronsUpDown, Tag, Truck, X } from 'lucide-react';
+import { Scan, Plus, Camera, Package, AlertCircle, ArrowUpDown, Check, ChevronsUpDown, Tag, Truck, X, HelpCircle, Clock, Trash2 } from 'lucide-react';
 import { BarcodeScanner } from '@/components/BarcodeScanner';
-import { CameraDebugInfo } from '@/components/CameraDebugInfo';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
 import { useMobile } from '@/hooks/use-mobile';
@@ -34,24 +33,21 @@ interface ProductFormData {
 }
 
 export default function ScanPage() {
-  const { user, userProfile } = useAuth();
+  const { user } = useAuth();
   const { activeBranch, loading: branchLoading } = useBranches();
   const { isMobile, isIOS, isSafari, cameraSupported } = useMobile();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  
-  // Check if user is owner (using is_owner field from profiles table)
-  const isOwner = userProfile && userProfile.is_owner === true && !userProfile.blocked;
-  
   
   // Get scanner settings
   const { settings: scannerSettings, onScanSuccess } = useScannerSettings();
   
   const [showScanner, setShowScanner] = useState(false);
   const [showProductForm, setShowProductForm] = useState(false);
-  const [showDebugInfo, setShowDebugInfo] = useState(false);
+  const [showHelpModal, setShowHelpModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [transactionType, setTransactionType] = useState<'incoming' | 'outgoing'>('incoming');
+  const [scanHistory, setScanHistory] = useState<Array<{barcode: string; name: string; timestamp: Date}>>([]);
   const [formData, setFormData] = useState<ProductFormData>({
     name: '',
     description: '',
@@ -94,6 +90,15 @@ export default function ScanPage() {
       if (existingProduct) {
         // Product already exists - show message and fill in data
         toast.success(`Product found: ${existingProduct.name}`);
+        
+        // Add to scan history
+        setScanHistory(prev => {
+          const newHistory = [
+            { barcode, name: existingProduct.name, timestamp: new Date() },
+            ...prev.filter(item => item.barcode !== barcode) // Remove duplicate if exists
+          ];
+          return newHistory.slice(0, 10); // Keep only last 10 items
+        });
         
         // Fill in the form with existing product data
         setFormData(prev => ({
@@ -466,6 +471,17 @@ export default function ScanPage() {
         : 'Product successfully removed from stock!'
       );
       
+      // Add to scan history
+      if (dataToUse.barcode) {
+        setScanHistory(prev => {
+          const newHistory = [
+            { barcode: dataToUse.barcode, name: productName, timestamp: new Date() },
+            ...prev.filter(item => item.barcode !== dataToUse.barcode) // Remove duplicate if exists
+          ];
+          return newHistory.slice(0, 10); // Keep only last 10 items
+        });
+      }
+      
       // Reset form and navigate to stock page
       setFormData({
         name: '',
@@ -553,13 +569,25 @@ export default function ScanPage() {
          {/* Scanner Section */}
          <Card className="mb-6 md:mb-8">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Scan className="w-5 h-5 text-blue-600" />
-              Barcode Scanner
-            </CardTitle>
-            <CardDescription>
-              Use your phone camera to scan barcodes
-            </CardDescription>
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle className="flex items-center gap-2">
+                  <Scan className="w-5 h-5 text-blue-600" />
+                  Barcode Scanner
+                </CardTitle>
+                <CardDescription>
+                  Use your phone camera to scan barcodes
+                </CardDescription>
+              </div>
+              <Button
+                onClick={() => setShowHelpModal(true)}
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 text-gray-500 hover:text-blue-600"
+              >
+                <HelpCircle className="w-5 h-5" />
+              </Button>
+            </div>
           </CardHeader>
           <CardContent>
             <div className="flex flex-col sm:flex-row gap-4">
@@ -572,18 +600,6 @@ export default function ScanPage() {
                 <Camera className="w-5 h-5 mr-2" />
                 Start Scanner
               </Button>
-              
-              {isOwner && (
-                <Button
-                  onClick={() => setShowDebugInfo(true)}
-                  variant="outline"
-                  className="flex-1 h-12 px-4 p-2"
-                  size="lg"
-                >
-                  <AlertCircle className="w-5 h-5 mr-2" />
-                  Debug Info
-                </Button>
-              )}
             </div>
             
             {/* Camera Support Warning */}
@@ -997,47 +1013,67 @@ export default function ScanPage() {
           </Card>
         )}
 
-        {/* Instructions */}
+        {/* Scan History */}
         <Card className="mt-6 md:mt-8">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <AlertCircle className="w-5 h-5 text-amber-600" />
-              How does it work?
+              <Clock className="w-5 h-5 text-blue-600" />
+              Scan History
             </CardTitle>
+            <CardDescription>
+              Recently scanned barcodes (last 10 items)
+            </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="space-y-2 md:space-y-3 text-xs md:text-sm text-gray-600">
-              <div className="flex items-start gap-3">
-                <div className="w-6 h-6 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xs font-medium flex-shrink-0 mt-0.5">
-                  1
-                </div>
-                <p>Click "Start Scanner" and grant access to your camera</p>
+            {scanHistory.length === 0 ? (
+              <div className="text-center py-8 text-gray-500">
+                <Package className="w-12 h-12 mx-auto mb-3 text-gray-300" />
+                <p className="text-sm">No items scanned yet</p>
+                <p className="text-xs mt-1">Scanned items will appear here</p>
               </div>
-              <div className="flex items-start gap-3">
-                <div className="w-6 h-6 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xs font-medium flex-shrink-0 mt-0.5">
-                  2
-                </div>
-                <p>Point your camera at a barcode</p>
+            ) : (
+              <div className="space-y-2">
+                {scanHistory.map((item, index) => (
+                  <div 
+                    key={`${item.barcode}-${index}`}
+                    className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                  >
+                    <div className="flex-1">
+                      <p className="font-medium text-sm text-gray-900">{item.name}</p>
+                      <p className="text-xs text-gray-500 font-mono">{item.barcode}</p>
+                      <p className="text-xs text-gray-400 mt-1">
+                        {item.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      </p>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => {
+                        setScanHistory(prev => prev.filter((_, i) => i !== index));
+                        toast.success('Item removed from history');
+                      }}
+                      className="text-gray-400 hover:text-red-600"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                ))}
+                {scanHistory.length > 0 && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      setScanHistory([]);
+                      toast.success('History cleared');
+                    }}
+                    className="w-full mt-2"
+                  >
+                    <Trash2 className="w-4 h-4 mr-2" />
+                    Clear All History
+                  </Button>
+                )}
               </div>
-              <div className="flex items-start gap-3">
-                <div className="w-6 h-6 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xs font-medium flex-shrink-0 mt-0.5">
-                  3
-                </div>
-                <p>Choose between "Add" (new product) or "Remove" (existing product)</p>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="w-6 h-6 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xs font-medium flex-shrink-0 mt-0.5">
-                  4
-                </div>
-                <p>Fill in the required information and click the corresponding button</p>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="w-6 h-6 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xs font-medium flex-shrink-0 mt-0.5">
-                  5
-                </div>
-                <p>The product will be added to or removed from your inventory</p>
-              </div>
-            </div>
+            )}
           </CardContent>
         </Card>
       </div>
@@ -1052,23 +1088,57 @@ export default function ScanPage() {
         />
       )}
 
-      {/* Debug Info Modal - Only for owners */}
-      {isOwner && showDebugInfo && (
+      {/* Help Modal */}
+      {showHelpModal && (
         <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="bg-white rounded-lg max-w-md w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-semibold text-gray-900">Camera Debug Information</h2>
+                <h2 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
+                  <AlertCircle className="w-5 h-5 text-amber-600" />
+                  How does it work?
+                </h2>
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => setShowDebugInfo(false)}
+                  onClick={() => setShowHelpModal(false)}
                   className="h-8 w-8 p-0"
                 >
                   <X className="h-4 w-4" />
                 </Button>
               </div>
-              <CameraDebugInfo />
+              <div className="space-y-3 text-sm text-gray-600">
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xs font-medium flex-shrink-0 mt-0.5">
+                    1
+                  </div>
+                  <p>Click "Start Scanner" and grant access to your camera</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xs font-medium flex-shrink-0 mt-0.5">
+                    2
+                  </div>
+                  <p>Point your camera at a barcode</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xs font-medium flex-shrink-0 mt-0.5">
+                    3
+                  </div>
+                  <p>Choose between "Add" (new product) or "Remove" (existing product)</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xs font-medium flex-shrink-0 mt-0.5">
+                    4
+                  </div>
+                  <p>Fill in the required information and click the corresponding button</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xs font-medium flex-shrink-0 mt-0.5">
+                    5
+                  </div>
+                  <p>The product will be added to or removed from your inventory</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -1830,7 +1830,7 @@ export const HomePage = () => {
               <div className="order-2 lg:order-1">
                 <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-3xl p-8 md:p-12">
                   <img
-                    src="/placeholder.svg"
+                    src="scanner.png"
                     alt="Mobile phone scanning barcodes for inventory management"
                     className="w-full h-auto rounded-2xl shadow-lg"
                   />

@@ -14,7 +14,7 @@ interface HeaderProps {
   hideNotifications?: boolean;
 }
 
-export const Header = ({ onNavigate, hideAuthButtons, hideNotifications }: HeaderProps) => {
+export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButtons, hideNotifications }: HeaderProps) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [resourcesDropdownOpen, setResourcesDropdownOpen] = useState(false);
@@ -85,57 +85,7 @@ export const Header = ({ onNavigate, hideAuthButtons, hideNotifications }: Heade
                 <nav className="hidden md:flex items-center gap-6 text-sm">
                   <Link to="/features" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Features</Link>
                   <Link to="/pricing" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Pricing</Link>
-                  
-                  {/* Resources Dropdown */}
-                  <div className="relative">
-                    <button
-                      onClick={() => setResourcesDropdownOpen(!resourcesDropdownOpen)}
-                      className="flex items-center gap-1 text-gray-600 hover:text-blue-600 transition-colors font-medium"
-                    >
-                      Resources
-                      <ChevronDown className="h-4 w-4" />
-                    </button>
-                    
-                    {resourcesDropdownOpen && (
-                      <div className="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
-                        <Link 
-                          to="/help" 
-                          className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors"
-                          onClick={() => setResourcesDropdownOpen(false)}
-                        >
-                          Help Center
-                        </Link>
-                        <Link 
-                          to="/blog" 
-                          className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors"
-                          onClick={() => setResourcesDropdownOpen(false)}
-                        >
-                          Blog
-                        </Link>
-                        <Link 
-                          to="/api-docs" 
-                          className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors"
-                          onClick={() => setResourcesDropdownOpen(false)}
-                        >
-                          API Documentation
-                        </Link>
-                        <Link 
-                          to="/integrations" 
-                          className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors"
-                          onClick={() => setResourcesDropdownOpen(false)}
-                        >
-                          Integrations
-                        </Link>
-                      </div>
-                    )}
-                  </div>
-                  
-                  <Link 
-                      to="/auth?mode=login" 
-                      className="text-gray-600 hover:text-blue-600 transition-colors font-medium"
-                    >
-                    Login
-                    </Link>
+
                 </nav>
               )}
 
@@ -147,10 +97,10 @@ export const Header = ({ onNavigate, hideAuthButtons, hideNotifications }: Heade
                 {!hideAuthButtons && (
                   <>
                     <Link
-                      to="/demo"
+                      to="/auth?mode=login"
                       className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-4 py-3 rounded-3xl font-semibold transition-all duration-300 shadow-lg hover:shadow-blue-500/25 transform hover:scale-105 h-10 flex items-center justify-center"
                     >
-                      View Demo
+                      Login
                     </Link>
                     <Button 
                       onClick={handleRegisterClick} 
@@ -296,7 +246,7 @@ export const Header = ({ onNavigate, hideAuthButtons, hideNotifications }: Heade
               {!hideAuthButtons && (
                 <div className="space-y-3">
                   <Link
-                    to="/demo"
+                    to="/auth?mode=login"
                     className="block w-full"
                     onClick={() => setMobileMenuOpen(false)}
                   >
@@ -304,7 +254,7 @@ export const Header = ({ onNavigate, hideAuthButtons, hideNotifications }: Heade
                       variant="outline" 
                       className="w-full border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white py-3 rounded-3xl font-semibold h-12 flex items-center justify-center transition-all duration-300 shadow-lg hover:shadow-blue-500/25" 
                     >
-                      View Demo
+                      Login
                     </Button>
                   </Link>
                   <Button 
