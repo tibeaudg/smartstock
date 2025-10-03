@@ -160,10 +160,13 @@ const ProductRow: React.FC<ProductRowProps> = ({
   const variantAttributes = formatVariantAttributes(product.variant_attributes);
 
   return (
-    <tr className={`${isVariant ? 'bg-blue-50/30' : 'bg-white'} hover:bg-gray-50 transition-colors`}>
+    <tr 
+      className={`${isVariant ? 'bg-blue-50/30' : 'bg-white'} hover:bg-gray-50 transition-colors ${hasChildren ? 'cursor-pointer' : ''}`}
+      onClick={hasChildren ? onToggleExpand : undefined}
+    >
       {/* Selection checkbox */}
       {isAdmin && (
-        <td className="px-3 py-3 text-center">
+        <td className="px-3 py-3 text-center" onClick={(e) => e.stopPropagation()}>
           <input
             type="checkbox"
             checked={isSelected}
@@ -177,15 +180,11 @@ const ProductRow: React.FC<ProductRowProps> = ({
       {columnVisibility.product && (
         <td className="px-4 py-3">
           <div className="flex items-center gap-3">
-            {/* Expand/Collapse button */}
+            {/* Expand/Collapse indicator */}
             {hasChildren && (
-              <button
-                onClick={onToggleExpand}
-                className="p-1 rounded border hover:bg-gray-100 transition-colors"
-                aria-label={isExpanded ? 'Collapse variants' : 'Expand variants'}
-              >
-                {isExpanded ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
-              </button>
+              <div className="p-1 flex-shrink-0">
+                {isExpanded ? <ChevronDown className="w-4 h-4 text-blue-600" /> : <ChevronRight className="w-4 h-4 text-blue-600" />}
+              </div>
             )}
             
             {/* Variant indent */}
@@ -204,7 +203,7 @@ const ProductRow: React.FC<ProductRowProps> = ({
             </div>
 
             {/* Product image */}
-            <div className="flex-shrink-0">
+            <div className="flex-shrink-0" onClick={(e) => e.stopPropagation()}>
               {product.image_url ? (
                 <img
                   src={product.image_url}
@@ -364,7 +363,7 @@ const ProductRow: React.FC<ProductRowProps> = ({
 
       {/* Actions column */}
       {columnVisibility.actions && (
-        <td className="px-4 py-3 text-center">
+        <td className="px-4 py-3 text-center" onClick={(e) => e.stopPropagation()}>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="sm" className="h-8 w-8 p-0">
@@ -436,11 +435,14 @@ const MobileProductCard: React.FC<MobileProductCardProps> = ({
   const variantAttributes = formatVariantAttributes(product.variant_attributes);
 
   return (
-    <div className={`bg-white rounded-lg border border-gray-200 ${isVariant ? 'ml-6 p-3 border-l-4 border-l-purple-400 bg-purple-50/30' : 'p-4'}`}>
+    <div 
+      className={`bg-white rounded-lg border border-gray-200 ${isVariant ? 'ml-6 p-3 border-l-4 border-l-purple-400 bg-purple-50/30' : 'p-4'} ${hasChildren ? 'cursor-pointer' : ''}`}
+      onClick={hasChildren ? onToggleExpand : undefined}
+    >
       <div className="flex items-start gap-3">
         {/* Selection checkbox */}
         {isAdmin && (
-          <div className="flex-shrink-0 pt-1">
+          <div className="flex-shrink-0 pt-1" onClick={(e) => e.stopPropagation()}>
             <input
               type="checkbox"
               checked={isSelected}
@@ -451,7 +453,7 @@ const MobileProductCard: React.FC<MobileProductCardProps> = ({
         )}
 
         {/* Product image */}
-        <div className="flex-shrink-0">
+        <div className="flex-shrink-0" onClick={(e) => e.stopPropagation()}>
           {product.image_url ? (
             <img
               src={product.image_url}
@@ -504,15 +506,11 @@ const MobileProductCard: React.FC<MobileProductCardProps> = ({
               </div>
             </div>
 
-            {/* Expand/Collapse button */}
+            {/* Expand/Collapse indicator */}
             {hasChildren && (
-              <button
-                onClick={onToggleExpand}
-                className="p-1 bg-blue-600 text-white rounded border border-blue-600 hover:bg-blue-700 transition-colors"
-                aria-label={isExpanded ? 'Collapse variants' : 'Expand variants'}
-              >
-                {isExpanded ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
-              </button>
+              <div className="p-1 flex-shrink-0">
+                {isExpanded ? <ChevronDown className="w-5 h-5 text-blue-600" /> : <ChevronRight className="w-5 h-5 text-blue-600" />}
+              </div>
             )}
           </div>
           
@@ -569,7 +567,7 @@ const MobileProductCard: React.FC<MobileProductCardProps> = ({
 
           {/* Actions */}
           {!hasChildren && (
-            <div className={`flex gap-2 ${isVariant ? 'mt-2' : 'mt-3'}`}>
+            <div className={`flex gap-2 ${isVariant ? 'mt-2' : 'mt-3'}`} onClick={(e) => e.stopPropagation()}>
               <Button
                 variant="outline"
                 size="sm"
@@ -599,7 +597,7 @@ const MobileProductCard: React.FC<MobileProductCardProps> = ({
             </div>
           )}
           {hasChildren && (
-            <div className="flex gap-2 mt-3">
+            <div className="flex gap-2 mt-3" onClick={(e) => e.stopPropagation()}>
               {onAddVariant && (
                 <Button
                   variant="outline"

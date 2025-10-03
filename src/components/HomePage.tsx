@@ -1351,7 +1351,7 @@ export const HomePage = () => {
   ];
 
   return (
-    <div className="bg-white text-gray-900 font-sans">
+    <div className="gradient-background text-gray-900 font-sans">
       <Helmet>
         {/* Non-render-blocking resource optimization */}
         
@@ -1570,8 +1570,25 @@ export const HomePage = () => {
 
 
       {/* Hero Section with Video Below */}
-      <section className="relative bg-gradient-to-br from-slate-50 via-blue-50 to-blue-50 py-12 md:py-32 px-4 overflow-hidden">
-        <div className="max-w-7xl mx-auto">
+      <section className="relative py-12 md:py-32 px-4 overflow-hidden bg-gradient-to-b from-[#D9E6F5] to-[#F0F7FF]">
+        {/* Subtle geometric pattern overlay */}
+        <div 
+          className="absolute inset-0 pointer-events-none opacity-[0.07]"
+          style={{
+            backgroundImage: `
+              linear-gradient(30deg, #e0f2fe 12%, transparent 12.5%, transparent 87%, #e0f2fe 87.5%, #e0f2fe),
+              linear-gradient(150deg, #e0f2fe 12%, transparent 12.5%, transparent 87%, #e0f2fe 87.5%, #e0f2fe),
+              linear-gradient(30deg, #e0f2fe 12%, transparent 12.5%, transparent 87%, #e0f2fe 87.5%, #e0f2fe),
+              linear-gradient(150deg, #e0f2fe 12%, transparent 12.5%, transparent 87%, #e0f2fe 87.5%, #e0f2fe),
+              linear-gradient(60deg, #bae6fd 25%, transparent 25.5%, transparent 75%, #bae6fd 75%, #bae6fd),
+              linear-gradient(60deg, #bae6fd 25%, transparent 25.5%, transparent 75%, #bae6fd 75%, #bae6fd)
+            `,
+            backgroundSize: '80px 140px',
+            backgroundPosition: '0 0, 0 0, 40px 70px, 40px 70px, 0 0, 40px 70px'
+          }}
+        />
+        
+        <div className="max-w-7xl mx-auto relative z-10">
           {/* Text Content */}
           <div className="text-center mb-6 md:mb-16">
           
@@ -1600,7 +1617,13 @@ export const HomePage = () => {
                 <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-stretch sm:items-center mb-6 md:mb-8 px-4">
                 <Button
               onClick={handleLoginClick}
-              className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-6 sm:px-8 md:px-12 py-3 sm:py-4 md:py-6 text-base sm:text-lg md:text-xl font-semibold rounded-full transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25 min-h-[48px]"
+              className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white
+              px-8 py-4 text-lg md:px-10 md:py-5 md:text-xl
+              font-semibold rounded-full transform hover:scale-105
+              transition-all duration-300
+              shadow-xl hover:shadow-2xl hover:shadow-blue-500/50
+              ring-2 ring-blue-500/0 focus:ring-4 focus:ring-blue-500/50 focus:outline-none
+              min-h-[48px]"
             >
               Start free today
             </Button>
@@ -1619,134 +1642,16 @@ export const HomePage = () => {
           {/* Hero Visual: In-Store Scene with Dashboard Overlay */}
           <SlideUpWhenVisible delay={1000}>
             <div className="relative max-w-6xl mx-auto px-2 sm:px-4">
-              <div className="relative rounded-xl md:rounded-2xl overflow-hidden shadow-2xl">
-                {/* Background: Store Scene */}
-                <div className="relative h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px]">
-                  {/* Boutique store photo */}
-                  <img
-                    src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&h=800&fit=crop&crop=center&auto=format&q=80"
-                    alt="Boutique owner managing artisan inventory in cozy shop setting"
-                    className="absolute inset-0 w-full h-full object-cover"
-                  />
-                  
-                  {/* Gradient overlay for better contrast */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-black/20 to-transparent"></div>
-                  
-                  {/* Dashboard Overlay - Desktop View */}
-                  <div className="absolute right-2 sm:right-4 md:right-8 top-1/2 -translate-y-1/2 w-[200px] sm:w-[280px] md:w-[400px] lg:w-[480px]">
-                    <div className="bg-white rounded-lg md:rounded-xl shadow-2xl overflow-hidden border-2 md:border-4 border-white/20 backdrop-blur-sm">
-                      {/* Dashboard Header */}
-                      <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-2 sm:px-4 py-2 sm:py-3 flex items-center justify-between">
-                        <div className="flex items-center gap-1 sm:gap-2">
-                          <Package className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
-                          <span className="text-white font-semibold text-xs sm:text-sm md:text-base">StockFlow</span>
-                        </div>
-                        <div className="hidden sm:flex gap-1.5">
-                          <div className="w-2 h-2 rounded-full bg-white/30"></div>
-                          <div className="w-2 h-2 rounded-full bg-white/30"></div>
-                          <div className="w-2 h-2 rounded-full bg-white/30"></div>
-                        </div>
-                      </div>
-                      
-                      {/* Dashboard Content Preview */}
-                      <div className="p-2 sm:p-4 md:p-6 bg-white">
-                        {/* Stock Alert */}
-                        <div className="mb-2 sm:mb-4 p-2 sm:p-3 bg-amber-50 border border-amber-200 rounded-lg">
-                          <div className="flex items-start gap-1 sm:gap-2">
-                            <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 mt-1 sm:mt-1.5 rounded-full bg-amber-500 flex-shrink-0"></div>
-                            <div className="flex-1 min-w-0">
-                              <p className="text-[10px] sm:text-xs md:text-sm font-semibold text-amber-900 truncate">Low Stock Alert</p>
-                              <p className="text-[9px] sm:text-xs text-amber-700 mt-0.5 hidden sm:block">3 items need reordering</p>
-                            </div>
-                          </div>
-                        </div>
-                        
-                        {/* Stock Items */}
-                        <div className="space-y-1 sm:space-y-2">
-                          <div className="flex items-center justify-between p-1.5 sm:p-2 bg-gray-50 rounded">
-                            <div className="flex items-center gap-1 sm:gap-2 min-w-0 flex-1">
-                              <div className="w-6 h-6 sm:w-8 sm:h-8 bg-blue-100 rounded flex items-center justify-center flex-shrink-0">
-                                <Package className="h-3 w-3 sm:h-4 sm:w-4 text-blue-600" />
-                              </div>
-                              <div className="min-w-0 flex-1">
-                                <p className="text-[10px] sm:text-xs md:text-sm font-medium text-gray-900 truncate">Handmade Ceramic Mugs</p>
-                                <p className="text-[9px] sm:text-xs text-gray-500 hidden sm:block">SKU: CM-208</p>
-                              </div>
-                            </div>
-                            <div className="text-right ml-2 flex-shrink-0">
-                              <p className="text-[10px] sm:text-xs md:text-sm font-bold text-red-600">2 left</p>
-                              <p className="text-[9px] sm:text-xs text-gray-400 hidden sm:block">Reorder: 8</p>
-                            </div>
-                          </div>
-                          
-                          <div className="hidden sm:flex items-center justify-between p-1.5 sm:p-2 bg-gray-50 rounded">
-                            <div className="flex items-center gap-1 sm:gap-2 min-w-0 flex-1">
-                              <div className="w-6 h-6 sm:w-8 sm:h-8 bg-purple-100 rounded flex items-center justify-center flex-shrink-0">
-                                <Package className="h-3 w-3 sm:h-4 sm:w-4 text-purple-600" />
-                              </div>
-                              <div className="min-w-0 flex-1">
-                                <p className="text-[10px] sm:text-xs md:text-sm font-medium text-gray-900 truncate">Artisan Soap Collection</p>
-                                <p className="text-[9px] sm:text-xs text-gray-500">SKU: AS-045</p>
-                              </div>
-                            </div>
-                            <div className="text-right ml-2 flex-shrink-0">
-                              <p className="text-[10px] sm:text-xs md:text-sm font-bold text-green-600">15 left</p>
-                              <p className="text-[9px] sm:text-xs text-gray-400">In stock</p>
-                            </div>
-                          </div>
-                        </div>
-                        
-                        {/* Quick Actions */}
-                        <div className="mt-2 sm:mt-4 pt-2 sm:pt-4 border-t border-gray-200">
-                          <div className="flex gap-1 sm:gap-2">
-                            <button className="flex-1 px-2 sm:px-3 py-1.5 sm:py-2 bg-blue-600 text-white text-[10px] sm:text-xs font-medium rounded-lg flex items-center justify-center gap-1">
-                              <Scan className="h-3 w-3" />
-                              <span className="hidden sm:inline">Scan</span>
-                            </button>
-                            <button className="flex-1 px-2 sm:px-3 py-1.5 sm:py-2 bg-gray-100 text-gray-700 text-[10px] sm:text-xs font-medium rounded-lg">
-                              Reorder
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    {/* Floating badge */}
-                    <div className="absolute -bottom-2 sm:-bottom-3 left-1/2 -translate-x-1/2 bg-green-500 text-white px-2 sm:px-4 py-1 sm:py-2 rounded-full shadow-lg text-[10px] sm:text-xs font-semibold whitespace-nowrap">
-                      ✓ Live Dashboard
-                    </div>
-                  </div>
-                  
-                  {/* Mobile Scanner Badge */}
-                  <div className="hidden sm:block absolute bottom-4 sm:bottom-6 left-2 sm:left-4 md:left-8 bg-white/95 backdrop-blur-sm rounded-lg sm:rounded-xl shadow-xl p-2 sm:p-4 max-w-[160px] sm:max-w-[200px] md:max-w-[240px]">
-                    <div className="flex items-center gap-2 sm:gap-3">
-                      <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <Smartphone className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" />
-                      </div>
-                      <div className="min-w-0">
-                        <p className="text-[10px] sm:text-xs font-semibold text-gray-900 truncate">Scan artisan items</p>
-                        <p className="text-[10px] sm:text-xs text-gray-500 truncate">Track from boutique floor</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              <div className="relative rounded-xl md:rounded-2xl overflow-hidden shadow-2xl bg-gradient-to-br from-gray-50 to-gray-100">
+                {/* Dashboard image */}
+                <img
+                  src="dashboard.png"
+                  alt="Boutique owner managing artisan inventory in cozy shop setting"
+                  className="w-full h-auto object-contain"
+                />
               </div>
               
-              {/* Key Features Below Image */}
-              <div className="mt-4 sm:mt-6 flex flex-wrap justify-center gap-3 sm:gap-4 md:gap-8 text-xs sm:text-sm text-gray-600 px-2">
-                <div className="flex items-center gap-1 sm:gap-2">
-                  <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-green-600 flex-shrink-0" />
-                  <span>Track artisan collections</span>
-                </div>
-                <div className="flex items-center gap-1 sm:gap-2">
-                  <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-green-600 flex-shrink-0" />
-                  <span>Mobile barcode scanning</span>
-                </div>
-                <div className="flex items-center gap-1 sm:gap-2">
-                  <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-green-600 flex-shrink-0" />
-                  <span>Perfect for small boutiques</span>
-                </div>
-              </div>
+
             </div>
           </SlideUpWhenVisible>
 
@@ -1755,15 +1660,15 @@ export const HomePage = () => {
 
 
       {/* One-line Value + 3 Quick Bullets - Above the Fold */}
-      <section className="py-12 md:py-16 bg-white border-b border-gray-100">
+      <section className="py-12 md:py-16 border-b border-gray-100">
         <div className="max-w-6xl mx-auto px-4">
           <FadeInWhenVisible>
             {/* One-line value proposition */}
             <div className="text-center mb-8 md:mb-12 px-4">
-              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-light text-gray-800 mb-4 md:mb-8 leading-tight">
-                Protect your capital, not just your stock
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-light text-gray-900 mb-4 md:mb-8 leading-tight">
+                Stop Wasting Money on Stock
               </h1>
-              <p className="text-sm sm:text-base md:text-lg text-gray-600 max-w-3xl mx-auto">
+              <p className="text-sm sm:text-base md:text-lg text-gray-700 font-medium max-w-3xl mx-auto">
                 Stop losing money to overstock, waste, and slow-moving inventory
               </p>
             </div>
@@ -1772,44 +1677,77 @@ export const HomePage = () => {
           {/* 3 Micro-benefits for retailers */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 px-4">
             <SlideUpWhenVisible delay={100}>
-              <div className="flex flex-col items-center text-center p-6 sm:p-8 rounded-xl hover:bg-gray-50 transition-all duration-300 border border-gray-100">
-                <div className="w-16 h-16 sm:w-20 sm:h-20 bg-blue-100 rounded-full flex items-center justify-center mb-4 sm:mb-5">
-                  <CheckCircle className="h-8 w-8 sm:h-10 sm:w-10 text-blue-600" />
+              <div className="flex flex-col items-center text-center p-6 sm:p-8 rounded-xl bg-white border border-gray-200 shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-blue-100 to-blue-200 rounded-full flex items-center justify-center mb-4 sm:mb-5 shadow-inner">
+                  <CheckCircle className="h-10 w-10 sm:h-12 sm:w-12 text-blue-700" />
                 </div>
-                <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3">
+                <h3 className="text-lg sm:text-2xl font-bold text-gray-900 mb-4">
                   No more "Do we have this?"
                 </h3>
-                <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
-                  Check stock instantly from your phone — no need to walk to the backroom or call staff
-                </p>
+                <div className="space-y-3 w-full">
+                  <div className="flex items-center gap-2 text-left">
+                    <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
+                    <span className="text-sm text-gray-600">Check stock instantly from phone</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-left">
+                    <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
+                    <span className="text-sm text-gray-600">No need to walk to the backroom</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-left">
+                    <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
+                    <span className="text-sm text-gray-600">Real-time stock availability</span>
+                  </div>
+                </div>
               </div>
             </SlideUpWhenVisible>
             
             <SlideUpWhenVisible delay={200}>
-              <div className="flex flex-col items-center text-center p-6 sm:p-8 rounded-xl hover:bg-gray-50 transition-all duration-300 border border-gray-100">
-                <div className="w-16 h-16 sm:w-20 sm:h-20 bg-green-100 rounded-full flex items-center justify-center mb-4 sm:mb-5">
-                  <Clock className="h-8 w-8 sm:h-10 sm:w-10 text-green-600" />
+              <div className="flex flex-col items-center text-center p-6 sm:p-8 rounded-xl bg-white border border-gray-200 shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-green-100 to-green-200 rounded-full flex items-center justify-center mb-4 sm:mb-5 shadow-inner">
+                  <Clock className="h-10 w-10 sm:h-12 sm:w-12 text-green-700" />
                 </div>
-                <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3">
-                  Count stock in 10 minutes, not hours
+                <h3 className="text-lg sm:text-2xl font-bold text-gray-900 mb-4">
+                  Count stock in 10 minutes
                 </h3>
-                <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
-                  Scan barcodes with your phone camera instead of writing on clipboards and typing into Excel
-                </p>
+                <div className="space-y-3 w-full">
+                  <div className="flex items-center gap-2 text-left">
+                    <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
+                    <span className="text-sm text-gray-600">Scan barcodes with phone camera</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-left">
+                    <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
+                    <span className="text-sm text-gray-600">No clipboards or Excel sheets</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-left">
+                    <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
+                    <span className="text-sm text-gray-600">Complete counts in 10 minutes</span>
+                  </div>
+                </div>
               </div>
             </SlideUpWhenVisible>
             
             <SlideUpWhenVisible delay={300}>
-              <div className="flex flex-col items-center text-center p-6 sm:p-8 rounded-xl hover:bg-gray-50 transition-all duration-300 border border-gray-100 sm:col-span-2 lg:col-span-1">
-                <div className="w-16 h-16 sm:w-20 sm:h-20 bg-purple-100 rounded-full flex items-center justify-center mb-4 sm:mb-5">
-                  <TrendingUp className="h-8 w-8 sm:h-10 sm:w-10 text-purple-600" />
+              <div className="flex flex-col items-center text-center p-6 sm:p-8 rounded-xl bg-white border border-gray-200 shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 sm:col-span-2 lg:col-span-1">
+                <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-purple-100 to-purple-200 rounded-full flex items-center justify-center mb-4 sm:mb-5 shadow-inner">
+                  <TrendingUp className="h-10 w-10 sm:h-12 sm:w-12 text-purple-700" />
                 </div>
-                <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3">
-                  Stop wasting money on dead inventory
+                <h3 className="text-lg sm:text-2xl font-bold text-gray-900 mb-4">
+                  Stop wasting money
                 </h3>
-                <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
-                  Free up cash by identifying slow-movers and optimizing stock levels before capital gets tied up
-                </p>
+                <div className="space-y-3 w-full">
+                  <div className="flex items-center gap-2 text-left">
+                    <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
+                    <span className="text-sm text-gray-600">Identify slow-moving products</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-left">
+                    <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
+                    <span className="text-sm text-gray-600">Optimize stock levels automatically</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-left">
+                    <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
+                    <span className="text-sm text-gray-600">Free up cash before it's tied up</span>
+                  </div>
+                </div>
               </div>
             </SlideUpWhenVisible>
           </div>
@@ -1819,360 +1757,152 @@ export const HomePage = () => {
 
 
 
-      {/* How It Works - 3 Steps for Retailers */}
-      <section className="py-16 md:py-24 bg-white">
-        <div className="max-w-6xl mx-auto px-4">
+
+
+
+      {/* Start Tracking in 3 Simple Steps - New Section */}
+      <section className="py-20 md:py-28 bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-50 relative overflow-hidden">
+        {/* Subtle background decoration */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-20 left-1/4 w-96 h-96 bg-blue-400 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-20 right-1/4 w-96 h-96 bg-indigo-400 rounded-full blur-3xl"></div>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          {/* Header */}
           <FadeInWhenVisible>
-            <div className="text-center mb-12 md:mb-16 px-4">
-              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-light text-gray-800 mb-4 md:mb-8 leading-tight">
+            <div className="text-center mb-16 md:mb-20">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-light text-gray-800 mb-4 md:mb-8 leading-tight">
                 Start tracking in 3 simple steps
               </h1>
-              <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
+              <p className="text-lg sm:text-xl text-gray-600 mb-6 max-w-2xl mx-auto">
                 Get up and running in under 10 minutes.
               </p>
+              <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-2 rounded-full">
+                <Clock className="h-5 w-5" />
+                <span className="font-semibold text-lg">10 min</span>
+              </div>
             </div>
           </FadeInWhenVisible>
-          
-          <div className="relative">
-            {/* Connecting line for desktop */}
-            <div className="hidden md:block absolute top-1/3 left-0 right-0 h-1 bg-gradient-to-r from-blue-200 via-blue-300 to-blue-200 transform -translate-y-1/2" style={{ top: '80px' }}></div>
-            
-            {/* Steps */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-12 relative px-4">
-              {/* Step 1 */}
-              <SlideUpWhenVisible delay={100}>
-                <div className="relative bg-white rounded-2xl p-6 sm:p-8 md:p-10 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-blue-100">
 
-                  
-                  {/* Icon */}
-                  <div className="flex justify-center mb-4 sm:mb-6 mt-4">
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 bg-blue-100 rounded-full flex items-center justify-center">
-                      <Package className="h-8 w-8 sm:h-10 sm:w-10 text-blue-600" />
-                    </div>
+          {/* Three Steps Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6 lg:gap-8 max-w-6xl mx-auto relative">
+            {/* Arrow between Step 1 and 2 - Desktop only */}
+            <div className="hidden md:block absolute top-1/2 left-1/3 -translate-x-1/2 -translate-y-1/2 z-10">
+              <div className="bg-blue-600 text-white rounded-full p-3 shadow-lg">
+                <ArrowRight className="h-6 w-6" />
+              </div>
+            </div>
+
+            {/* Arrow between Step 2 and 3 - Desktop only */}
+            <div className="hidden md:block absolute top-1/2 left-2/3 -translate-x-1/2 -translate-y-1/2 z-10">
+              <div className="bg-blue-600 text-white rounded-full p-3 shadow-lg">
+                <ArrowRight className="h-6 w-6" />
+              </div>
+            </div>
+
+            {/* Step 1: Add products or import CSV */}
+            <FadeInWhenVisible delay={100}>
+              <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 h-full flex flex-col">
+                {/* Icon */}
+                <div className="flex justify-center mb-6">
+                  <div className="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center">
+                    <Package className="h-12 w-12 text-blue-600" />
                   </div>
-                  
-                  {/* Content */}
-                  <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3 text-center">
+                </div>
+
+                {/* Content */}
+                <div className="flex-1">
+                  <h3 className="text-xl font-bold text-gray-900 mb-4 text-center">
                     Add products or import CSV
                   </h3>
-                  <p className="text-gray-600 text-center leading-relaxed">
+                  <p className="text-gray-600 text-center leading-relaxed mb-6">
                     Type in your products manually or upload your existing inventory list from Excel. Your data imports in seconds.
                   </p>
-                  
-                  {/* Visual indicator */}
-                  <div className="mt-6 pt-6 border-t border-gray-200">
-                    <div className="flex items-center justify-center gap-2 text-sm text-gray-500">
-                      <CheckCircle className="h-4 w-4 text-blue-600" />
-                      <span>Takes 5 minutes</span>
-                    </div>
+                </div>
+
+                {/* Footer indicator */}
+                <div className="pt-6 border-t border-gray-200">
+                  <div className="flex items-center justify-center gap-2 text-gray-600">
+                    <CheckCircle className="h-5 w-5 text-blue-600" />
+                    <span className="font-medium">Takes 5 minutes</span>
                   </div>
                 </div>
-              </SlideUpWhenVisible>
-              
-              {/* Step 2 */}
-              <SlideUpWhenVisible delay={200}>
-                <div className="relative bg-white rounded-2xl p-6 sm:p-8 md:p-10 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-green-100">
+              </div>
+            </FadeInWhenVisible>
 
-                  
-                  {/* Icon */}
-                  <div className="flex justify-center mb-4 sm:mb-6 mt-4">
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 bg-blue-100 rounded-full flex items-center justify-center">
-                      <Smartphone className="h-8 w-8 sm:h-10 sm:w-10 text-blue-600" />
-                    </div>
+            {/* Step 2: Scan & count with your phone */}
+            <FadeInWhenVisible delay={200}>
+              <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 h-full flex flex-col">
+                {/* Icon */}
+                <div className="flex justify-center mb-6">
+                  <div className="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center">
+                    <Smartphone className="h-12 w-12 text-blue-600" />
                   </div>
-                  
-                  {/* Content */}
-                  <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3 text-center">
+                </div>
+
+                {/* Content */}
+                <div className="flex-1">
+                  <h3 className="text-xl font-bold text-gray-900 mb-4 text-center">
                     Scan & count with your phone
                   </h3>
-                  <p className="text-gray-600 text-center leading-relaxed">
+                  <p className="text-gray-600 text-center leading-relaxed mb-6">
                     Use your phone camera to scan barcodes. Update stock from the shop floor or backroom — no laptop needed.
                   </p>
-                  
-                  {/* Visual indicator */}
-                  <div className="mt-6 pt-6 border-t border-gray-200">
-                    <div className="flex items-center justify-center gap-2 text-sm text-gray-500">
-                      <Smartphone className="h-4 w-4 text-blue-600" />
-                      <span>Works on any phone</span>
-                    </div>
-                  </div>
                 </div>
-              </SlideUpWhenVisible>
-              
-              {/* Step 3 */}
-              <SlideUpWhenVisible delay={300}>
-                <div className="relative bg-blue-100 rounded-2xl p-6 sm:p-8 md:p-10 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-blue-600 md:col-span-2 lg:col-span-1">
 
-                  
-                  {/* Icon */}
-                  <div className="flex justify-center mb-4 sm:mb-6 mt-4">
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-full flex items-center justify-center">
-                      <Target className="h-8 w-8 sm:h-10 sm:w-10 text-blue-600" />
-                    </div>
-                  </div>
-                  
-                  {/* Content */}
-                  <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3 text-center">
-                  Dead Stock Liquidation Optimizer
-                  </h3>
-                  <p className="text-gray-600 text-center leading-relaxed">
-                  Flag items with zero sales for 30, 60, or 90 days. Auto-flag non-movers. Get liquidation recommendations.
-                  </p>
-                  
-                  {/* Visual indicator */}
-                  <div className="mt-6 pt-6 border-t border-gray-200">
-                    <div className="flex items-center justify-center gap-2 text-sm text-gray-500">
-                      <TrendingUp className="h-4 w-4 text-blue-600" />
-                      <span>Automatic updates</span>
-                    </div>
+                {/* Footer indicator */}
+                <div className="pt-6 border-t border-gray-200">
+                  <div className="flex items-center justify-center gap-2 text-gray-600">
+                    <Smartphone className="h-5 w-5 text-blue-600" />
+                    <span className="font-medium">Works on any phone</span>
                   </div>
                 </div>
-              </SlideUpWhenVisible>
-            </div>
+              </div>
+            </FadeInWhenVisible>
+
+            {/* Step 3: Dead Stock Liquidation Optimizer */}
+            <FadeInWhenVisible delay={300}>
+              <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 h-full flex flex-col">
+                {/* Icon */}
+                <div className="flex justify-center mb-6">
+                  <div className="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center">
+                    <Target className="h-12 w-12 text-blue-600" />
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div className="flex-1">
+                  <h3 className="text-xl font-bold text-gray-900 mb-4 text-center">
+                    Dead Stock Liquidation Optimizer
+                  </h3>
+                  <p className="text-gray-600 text-center leading-relaxed mb-6">
+                    Flag items with zero sales for 30, 60, or 90 days. Auto-flag non-movers. Get liquidation recommendations.
+                  </p>
+                </div>
+
+                {/* Footer indicator */}
+                <div className="pt-6 border-t border-gray-200">
+                  <div className="flex items-center justify-center gap-2 text-gray-600">
+                    <TrendingUp className="h-5 w-5 text-blue-600" />
+                    <span className="font-medium">Automatic updates</span>
+                  </div>
+                </div>
+              </div>
+            </FadeInWhenVisible>
           </div>
-          
-          {/* CTA below steps */}
+
+          {/* CTA Button */}
           <FadeInWhenVisible delay={400}>
-            <div className="text-center mt-12 md:mt-16 px-4">
+            <div className="text-center mt-16">
               <Button
                 onClick={handleLoginClick}
-                className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-6 sm:px-10 md:px-12 py-3 sm:py-4 md:py-6 text-base sm:text-lg md:text-xl font-semibold rounded-full transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25 min-h-[48px]"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-12 py-6 text-lg font-bold rounded-full shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
               >
                 Start Free Today
               </Button>
-              <p className="text-xs sm:text-sm text-gray-500 mt-4">
+              <p className="text-sm text-gray-500 mt-4">
                 Free plan forever • Set up in 10 minutes • No credit card
-              </p>
-            </div>
-          </FadeInWhenVisible>
-        </div>
-      </section>
-
-
-
-
-
-      {/* Dead Stock Liquidation Optimizer - Unique Feature Showcase */}
-      <section className="py-16 md:py-24  relative overflow-hidden">
-        {/* Background decoration */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-10 right-10 w-72 h-72  rounded-full blur-3xl"></div>
-          <div className="absolute bottom-10 left-10 w-96 h-96  rounded-full blur-3xl"></div>
-        </div>
-        
-        <div className="max-w-6xl mx-auto px-4 relative z-10">
-          <FadeInWhenVisible>
-
-            
-            <div className="text-center mb-12 px-4">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-light text-gray-800 mb-4 md:mb-8 leading-tight">
-            Dead Stock Liquidation Optimizer
-              </h1>
-              <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
-                Stop losing money to inventory that sits unsold. Automatically identify products draining your capital.
-              </p>
-            </div>
-          </FadeInWhenVisible>
-
-          {/* Feature Grid/Carousel - Carousel on mobile, Grid on desktop */}
-          
-          {/* Mobile Carousel - Only visible on mobile (< md breakpoint) */}
-          <div className="md:hidden mb-12 px-4">
-            <MobileCarousel
-              items={[
-                {
-                  icon: <Clock className="h-7 w-7 sm:h-8 sm:w-8 text-white" />,
-                  title: "Auto-Flag Non-Movers",
-                  description: "Set your threshold: 30, 60, or 90 days. Any product with zero sales automatically gets flagged for review.",
-                  features: [
-                    "Customizable time periods (30/60/90 days)",
-                    "Automatic alerts when items hit threshold",
-                    "Perfect for seasonal & fashion inventory"
-                  ]
-                },
-                {
-                  icon: <Euro className="h-7 w-7 sm:h-8 sm:w-8 text-white" />,
-                  title: "Calculate Capital at Risk",
-                  description: "See exactly how much money is tied up in slow-moving inventory. Know your exposure in real dollars.",
-                  features: [
-                    "Total capital locked in dead stock",
-                    "Break down by product category",
-                    "Track potential losses over time"
-                  ]
-                },
-                {
-                  icon: <TrendingUp className="h-7 w-7 sm:h-8 sm:w-8 text-white" />,
-                  title: "Smart Liquidation Suggestions",
-                  description: "Get AI-powered recommendations on how to move dead stock: bundle, discount, or clearance strategies.",
-                  features: [
-                    "Optimal discount percentages",
-                    "Bundle opportunities with bestsellers",
-                    "Best timing for clearance sales"
-                  ]
-                },
-                {
-                  icon: <Shield className="h-7 w-7 sm:h-8 sm:w-8 text-white" />,
-                  title: "Prevent Future Overstock",
-                  description: "Learn from past mistakes. See which products historically become dead stock to avoid over-ordering.",
-                  features: [
-                    "Historical slow-mover patterns",
-                    "Seasonal trend warnings",
-                    "Smart reorder quantity recommendations"
-                  ]
-                }
-              ]}
-              renderItem={(item, index) => (
-                <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-xl border-2 border-blue-600 h-full">
-                  <div className="w-14 h-14 sm:w-16 sm:h-16 bg-blue-600 rounded-xl flex items-center justify-center mb-5 sm:mb-6">
-                    {item.icon}
-                  </div>
-                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4">
-                    {item.title}
-                  </h3>
-                  <p className="text-gray-600 mb-4 leading-relaxed">
-                    {item.description}
-                  </p>
-                  <ul className="space-y-2">
-                    {item.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-start text-sm text-gray-700">
-                        <CheckCircle className="h-5 w-5 text-green-600 mr-2 flex-shrink-0 mt-0.5" />
-                        <span>{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            />
-          </div>
-
-          {/* Desktop Grid - Hidden on mobile, visible on md and up */}
-          <div className="hidden md:grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-12 px-4">
-            <SlideUpWhenVisible delay={100}>
-              <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-xl border-2 border-blue-600">
-                <div className="w-14 h-14 sm:w-16 sm:h-16 bg-blue-600 rounded-xl flex items-center justify-center mb-5 sm:mb-6">
-                  <Clock className="h-7 w-7 sm:h-8 sm:w-8 text-white" />
-                </div>
-                <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4">
-                  Auto-Flag Non-Movers
-                </h3>
-                <p className="text-gray-600 mb-4 leading-relaxed">
-                  Set your threshold: 30, 60, or 90 days. Any product with zero sales automatically gets flagged for review.
-                </p>
-                <ul className="space-y-2">
-                  <li className="flex items-start text-sm text-gray-700">
-                    <CheckCircle className="h-5 w-5 text-green-600 mr-2 flex-shrink-0 mt-0.5" />
-                    <span>Customizable time periods (30/60/90 days)</span>
-                  </li>
-                  <li className="flex items-start text-sm text-gray-700">
-                    <CheckCircle className="h-5 w-5 text-green-600 mr-2 flex-shrink-0 mt-0.5" />
-                    <span>Automatic alerts when items hit threshold</span>
-                  </li>
-                  <li className="flex items-start text-sm text-gray-700">
-                    <CheckCircle className="h-5 w-5 text-green-600 mr-2 flex-shrink-0 mt-0.5" />
-                    <span>Perfect for seasonal & fashion inventory</span>
-                  </li>
-                </ul>
-              </div>
-            </SlideUpWhenVisible>
-
-            <SlideUpWhenVisible delay={200}>
-              <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-xl border-2 border-blue-600">
-                <div className="w-14 h-14 sm:w-16 sm:h-16 bg-blue-600 rounded-xl flex items-center justify-center mb-5 sm:mb-6">
-                  <Euro className="h-7 w-7 sm:h-8 sm:w-8 text-white" />
-                </div>
-                <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4">
-                  Calculate Capital at Risk
-                </h3>
-                <p className="text-gray-600 mb-4 leading-relaxed">
-                  See exactly how much money is tied up in slow-moving inventory. Know your exposure in real dollars.
-                </p>
-                <ul className="space-y-2">
-                  <li className="flex items-start text-sm text-gray-700">
-                    <CheckCircle className="h-5 w-5 text-green-600 mr-2 flex-shrink-0 mt-0.5" />
-                    <span>Total capital locked in dead stock</span>
-                  </li>
-                  <li className="flex items-start text-sm text-gray-700">
-                    <CheckCircle className="h-5 w-5 text-green-600 mr-2 flex-shrink-0 mt-0.5" />
-                    <span>Break down by product category</span>
-                  </li>
-                  <li className="flex items-start text-sm text-gray-700">
-                    <CheckCircle className="h-5 w-5 text-green-600 mr-2 flex-shrink-0 mt-0.5" />
-                    <span>Track potential losses over time</span>
-                  </li>
-                </ul>
-              </div>
-            </SlideUpWhenVisible>
-
-            <SlideUpWhenVisible delay={300}>
-              <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-xl border-2 border-blue-600">
-                <div className="w-14 h-14 sm:w-16 sm:h-16 bg-blue-600 rounded-xl flex items-center justify-center mb-5 sm:mb-6">
-                  <TrendingUp className="h-7 w-7 sm:h-8 sm:w-8 text-white" />
-                </div>
-                <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4">
-                  Smart Liquidation Suggestions
-                </h3>
-                <p className="text-gray-600 mb-4 leading-relaxed">
-                  Get AI-powered recommendations on how to move dead stock: bundle, discount, or clearance strategies.
-                </p>
-                <ul className="space-y-2">
-                  <li className="flex items-start text-sm text-gray-700">
-                    <CheckCircle className="h-5 w-5 text-green-600 mr-2 flex-shrink-0 mt-0.5" />
-                    <span>Optimal discount percentages</span>
-                  </li>
-                  <li className="flex items-start text-sm text-gray-700">
-                    <CheckCircle className="h-5 w-5 text-green-600 mr-2 flex-shrink-0 mt-0.5" />
-                    <span>Bundle opportunities with bestsellers</span>
-                  </li>
-                  <li className="flex items-start text-sm text-gray-700">
-                    <CheckCircle className="h-5 w-5 text-green-600 mr-2 flex-shrink-0 mt-0.5" />
-                    <span>Best timing for clearance sales</span>
-                  </li>
-                </ul>
-              </div>
-            </SlideUpWhenVisible>
-
-            <SlideUpWhenVisible delay={400}>
-              <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-xl border-2 border-blue-600">
-                <div className="w-14 h-14 sm:w-16 sm:h-16 bg-blue-600 rounded-xl flex items-center justify-center mb-5 sm:mb-6">
-                  <Shield className="h-7 w-7 sm:h-8 sm:w-8 text-white" />
-                </div>
-                <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4">
-                  Prevent Future Overstock
-                </h3>
-                <p className="text-gray-600 mb-4 leading-relaxed">
-                  Learn from past mistakes. See which products historically become dead stock to avoid over-ordering.
-                </p>
-                <ul className="space-y-2">
-                  <li className="flex items-start text-sm text-gray-700">
-                    <CheckCircle className="h-5 w-5 text-green-600 mr-2 flex-shrink-0 mt-0.5" />
-                    <span>Historical slow-mover patterns</span>
-                  </li>
-                  <li className="flex items-start text-sm text-gray-700">
-                    <CheckCircle className="h-5 w-5 text-green-600 mr-2 flex-shrink-0 mt-0.5" />
-                    <span>Seasonal trend warnings</span>
-                  </li>
-                  <li className="flex items-start text-sm text-gray-700">
-                    <CheckCircle className="h-5 w-5 text-green-600 mr-2 flex-shrink-0 mt-0.5" />
-                    <span>Smart reorder quantity recommendations</span>
-                  </li>
-                </ul>
-              </div>
-            </SlideUpWhenVisible>
-          </div>
-
-
-
-          {/* CTA */}
-          <FadeInWhenVisible delay={600}>
-            <div className="text-center mt-12 px-4">
-              <Button
-                onClick={handleLoginClick}
-                className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 sm:px-10 md:px-16 py-3 sm:py-5 md:py-7 text-base sm:text-xl md:text-2xl font-bold rounded-full transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-blue-500/50 min-h-[48px]"
-              >
-                Start Free Today
-              </Button>
-              <p className="text-xs sm:text-sm text-gray-600 mt-4">
-                Available on all plans • No credit card required • Set up in 2 minutes
               </p>
             </div>
           </FadeInWhenVisible>
@@ -2183,7 +1913,7 @@ export const HomePage = () => {
       
 
       {/* Pricing Section */}
-      <section id="pricing-section" className="py-16 bg-gradient-to-br from-blue-50 to-indigo-100">
+      <section id="pricing-section" className="py-16">
         <div className="container mx-auto px-4 py-16">
           {/* Header */}
           <div className="text-center mb-16">
@@ -2364,7 +2094,7 @@ export const HomePage = () => {
       </section>
 
       {/* Enhanced FAQ Section */}
-      <section id="faq-section" className="py-12 sm:py-16 md:py-20 bg-gradient-to-br from-slate-50 to-blue-50">
+      <section id="faq-section" className="py-12 sm:py-16 md:py-20">
         <div className="max-w-6xl mx-auto px-4">
           {/* Compelling Headline */}
           <FadeInWhenVisible>
@@ -2467,7 +2197,13 @@ export const HomePage = () => {
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-stretch sm:items-center px-4">
                 <Button
                   onClick={handleLoginClick}
-                  className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-6 sm:px-10 md:px-12 py-3 sm:py-4 md:py-6 text-base sm:text-lg md:text-xl font-semibold rounded-full transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25 min-h-[48px]"
+                  className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white
+                  px-8 py-4 text-lg md:px-10 md:py-5 md:text-xl
+                  font-semibold rounded-full transform hover:scale-105
+                  transition-all duration-300
+                  shadow-xl hover:shadow-2xl hover:shadow-blue-500/50
+                  ring-2 ring-blue-500/0 focus:ring-4 focus:ring-blue-500/50 focus:outline-none
+                  min-h-[48px]"
                 >
                   Start free
                 </Button>

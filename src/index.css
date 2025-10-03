@@ -140,8 +140,10 @@
 
   html,
   body {
-    @apply bg-white text-foreground min-h-screen m-0 p-0 overflow-x-hidden;
+    @apply text-foreground min-h-screen m-0 p-0 overflow-x-hidden;
     width: 100%;
+    background: radial-gradient(ellipse at top center, #FFFFFF 0%, #F0F6FF 50%, #E6EFF8 100%);
+    background-attachment: fixed;
   }
 
   /* Autofill & unwanted yellow cleanup */
@@ -175,10 +177,6 @@
   textarea:focus,
   select:focus {
     background-color: white !important;
-  }
-
-  .bg-white {
-    background-color: rgb(var(--background)) !important;
   }
 }
 
@@ -218,4 +216,10 @@ body>* {
 }
 .scrollbar-hide::-webkit-scrollbar { 
   display: none;  /* Safari and Chrome */
+}
+
+/* Subtle gradient background for StockFlow */
+.gradient-background {
+  background: radial-gradient(ellipse at top center, #FFFFFF 0%, #F0F6FF 50%, #E6EFF8 100%);
+  min-height: 100vh;
 }
