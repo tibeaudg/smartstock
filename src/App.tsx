@@ -209,14 +209,29 @@ const AppRouter = () => {
   // Branch-aware route component (must be used inside BranchProvider)
   const BranchAwareRoute = ({ children }: { children: React.ReactNode }) => {
     const { branches, hasNoBranches, loading: branchesLoading } = useBranches();
+    const [forceRender, setForceRender] = useState(false);
 
-    if (branchesLoading) {
-      console.debug('[BranchAwareRoute] Loading branches...');
+    // Safety timeout - force render after 5 seconds
+    useEffect(() => {
+      if (branchesLoading) {
+        console.warn('[BranchAwareRoute] Branch loading detected, starting safety timer');
+        const timeout = setTimeout(() => {
+          console.error('[BranchAwareRoute] Safety timeout reached - forcing render despite loading state');
+          setForceRender(true);
+        }, 5000);
+        
+        return () => clearTimeout(timeout);
+      }
+    }, [branchesLoading]);
+
+    if (branchesLoading && !forceRender) {
+      console.debug('[BranchAwareRoute] Loading branches... (loading:', branchesLoading, 'branches:', branches?.length, ')');
       return (
         <div className="min-h-screen bg-gray-50 flex items-center justify-center">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
             <p className="text-gray-600">Loading branches...</p>
+            <p className="text-xs text-gray-400 mt-2">If this takes too long, please refresh the page</p>
           </div>
         </div>
       );
@@ -228,6 +243,7 @@ const AppRouter = () => {
       return <FirstBranchSetup />;
     }
 
+    console.debug('[BranchAwareRoute] Rendering children (branches:', branches?.length, ')');
     return <>{children}</>;
   };
 

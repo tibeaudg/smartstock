@@ -1523,13 +1523,13 @@ export const HomePage = () => {
           
               <BounceInWhenVisible delay={200}>
                 <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl xl:text-7xl font-light text-gray-800 mb-4 md:mb-8 leading-tight px-4">
-                  Perfect Inventory Management for Artisan Boutiques & Independent Shops.
+                  Simple Inventory Management.
                 </h1>
               </BounceInWhenVisible>
               
               <SlideUpWhenVisible delay={400}>
                 <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 mb-6 md:mb-12 max-w-3xl mx-auto px-4 leading-relaxed">
-                  Track your handmade treasures, artisan collections, and boutique essentials. Never run out of bestsellers or overstock unique pieces.
+                Easily track your products, manage collections, and monitor inventory. Avoid running out of popular items or overstocking unique pieces..
                 </p>
               </SlideUpWhenVisible>
               

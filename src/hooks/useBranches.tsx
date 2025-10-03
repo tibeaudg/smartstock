@@ -210,7 +210,10 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const fetchBranches = async (cancelled?: { current: boolean }) => {
+    console.debug('[fetchBranches] Starting fetch, user:', user?.id);
+    
     if (!user || !user.id) {
+      console.debug('[fetchBranches] No user, clearing state');
       if (!cancelled?.current) {
         setBranches([]);
         setActiveBranchState(null);
@@ -222,6 +225,7 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     try {
+      console.debug('[fetchBranches] Calling get_user_branches RPC for user:', user.id);
       // Fetching branches for user
       const { data, error } = await supabase.rpc('get_user_branches', {
         user_id: user.id
@@ -243,7 +247,10 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
 
         if (directError) {
           console.error('Direct query also failed:', directError);
-          if (!cancelled?.current) setLoading(false);
+          if (!cancelled?.current) {
+            setLoading(false);
+            setHasNoBranches(true);
+          }
           return;
         }
 
@@ -279,6 +286,7 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
       }
 
       if (data && !cancelled?.current) {
+        console.debug('[fetchBranches] Received branches data:', data.length, 'branches');
         // Cache the branches data
         setCachedBranches(data);
         setBranches(data);
@@ -286,7 +294,7 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
         
         // Als er geen branches zijn, gebruiker moet eerst een branch aanmaken
         if (data.length === 0) {
-          console.log('No branches found, user needs to create first branch...');
+          console.log('[fetchBranches] No branches found, user needs to create first branch...');
           setBranches([]);
           setActiveBranchState(null);
           setBranchIdToStorage(null);
@@ -299,17 +307,17 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
           const storedId = getBranchIdFromStorage();
           const found = storedId ? data.find(b => b.branch_id === storedId) : null;
           if (found) {
-            console.log('Restoring branch from localStorage in fetchBranches:', found);
+            console.log('[fetchBranches] Restoring branch from localStorage:', found.branch_name);
             setActiveBranchState(found);
           } else {
             // Altijd hoofdvestiging als fallback
             const mainBranch = data.find(b => b.is_main) || data[0];
             if (mainBranch) {
-              console.log('No stored branch found, using main branch:', mainBranch);
+              console.log('[fetchBranches] No stored branch found, using main branch:', mainBranch.branch_name);
               setActiveBranchState(mainBranch);
               setBranchIdToStorage(mainBranch.branch_id);
             } else {
-              console.log('No branches available');
+              console.log('[fetchBranches] No branches available');
               setActiveBranchState(null);
               setBranchIdToStorage(null);
             }
@@ -318,31 +326,70 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
       }
     } catch (error) {
       if (!cancelled?.current) {
-        console.error('Exception fetching branches:', error);
+        console.error('[fetchBranches] Exception fetching branches:', error);
+        setHasNoBranches(true);
       }
     } finally {
-      if (!cancelled?.current) setLoading(false);
+      if (!cancelled?.current) {
+        console.debug('[fetchBranches] Setting loading to false');
+        setLoading(false);
+      }
     }
   };
 
   useEffect(() => {
     const cancelled = { current: false };
+    
+    console.debug('[useBranches] useEffect triggered - authLoading:', authLoading, 'user:', !!user, 'hasFetched:', hasFetched);
+    
+    // Add safety timeout to prevent infinite loading
+    const safetyTimeout = setTimeout(() => {
+      if (!cancelled.current && loading) {
+        console.error('[useBranches] SAFETY TIMEOUT REACHED after 5 seconds - forcing loading to false');
+        console.error('[useBranches] State at timeout - authLoading:', authLoading, 'user:', !!user, 'branches:', branches.length);
+        setLoading(false);
+        // DON'T set hasNoBranches here - only the actual fetch should determine that
+        // The timeout is just to stop showing the loading spinner
+      }
+    }, 5000); // 5 seconds max loading time (reduced from 10)
+    
     const initBranches = async () => {
-      if (authLoading) return;
+      console.debug('[useBranches] initBranches called - authLoading:', authLoading, 'user:', !!user);
+      
+      if (authLoading) {
+        console.debug('[useBranches] Waiting for auth to complete...');
+        // If auth is still loading, set a shorter timeout and check again
+        setTimeout(() => {
+          if (!cancelled.current && authLoading) {
+            console.warn('[useBranches] Auth still loading after 2s, proceeding anyway');
+            setLoading(false);
+          }
+        }, 2000);
+        return;
+      }
       
       if (user) {
-        // Only fetch if we haven't fetched yet or if cache is stale
-        const shouldFetch = !hasFetched || !cachedBranches;
+        // Check cache freshness each time, not just on mount
+        const currentCache = getCachedBranches();
+        const shouldFetch = !hasFetched || !currentCache;
+        
+        console.debug('[useBranches] User logged in - shouldFetch:', shouldFetch, 'hasFetched:', hasFetched, 'has cache:', !!currentCache, 'cache length:', currentCache?.length);
         
         if (shouldFetch) {
+          console.debug('[useBranches] Fetching branches from server...');
           await fetchBranches(cancelled);
           if (!cancelled.current) {
             setHasFetched(true);
           }
         } else {
           // We have cache, just set loading to false
+          console.debug('[useBranches] Using cached branches, setting loading to false');
           if (!cancelled.current) {
             setLoading(false);
+            // Make sure hasNoBranches is correctly set based on cache
+            if (currentCache && currentCache.length > 0) {
+              setHasNoBranches(false);
+            }
           }
           
           // Fetch in background without blocking UI
@@ -353,6 +400,7 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
           });
         }
       } else {
+        console.debug('[useBranches] No user, clearing branches');
         if (!cancelled.current) {
           setBranches([]);
           setActiveBranchState(null);
@@ -365,6 +413,7 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
     initBranches();
     return () => {
       cancelled.current = true;
+      clearTimeout(safetyTimeout);
     };
   }, [user, authLoading]);
 
