@@ -1671,7 +1671,7 @@ export const HomePage = () => {
 
       {/* Social Proof Bar - Immediately Below Hero */}
       <section className="py-6 sm:py-8 md:py-10 bg-white">
-        <div className="max-w-7xl mx-auto px-4c">
+        <div className="max-w-7xl mx-auto px-4">
           <FadeInWhenVisible>
             <div className="text-center">
               <p className="text-xs sm:text-sm md:text-base font-medium text-gray-600 mb-4 sm:mb-6 md:mb-8">
@@ -1679,7 +1679,21 @@ export const HomePage = () => {
               </p>
               
               {/* Company Logos or Industry Icons */}
-              <div className="grid grid-cols-2 xl:grid-cols-4 gap-6 sm:gap-8 md:gap-10 lg:gap-12 max-w-5xl mx-auto">
+              <style>
+                {`
+                  .trusted-badges {
+                    display: grid;
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 1.5rem;
+                  }
+                  @media (min-width: 640px) {
+                    .trusted-badges {
+                      grid-template-columns: repeat(4, 1fr) !important;
+                    }
+                  }
+                `}
+              </style>
+              <div className="trusted-badges mx-auto">
                 <div className="flex flex-col items-center gap-2">
                   <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
                     <Building className="h-8 w-8 text-gray-600" />
@@ -2138,7 +2152,21 @@ export const HomePage = () => {
                 Secure, Reliable, Compliant
               </h3>
               
-              <div className="grid grid-cols-2 xl:grid-cols-4 gap-6 sm:gap-8 md:gap-10 lg:gap-12 max-w-5xl mx-auto">
+              <style>
+                {`
+                  .trust-badges {
+                    display: grid;
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 1.5rem;
+                  }
+                  @media (min-width: 640px) {
+                    .trust-badges {
+                      grid-template-columns: repeat(4, 1fr) !important;
+                    }
+                  }
+                `}
+              </style>
+              <div className="trust-badges mx-auto">
                 <div className="flex flex-col items-center gap-2">
                   <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
                     <Shield className="h-8 w-8 text-green-600" />
