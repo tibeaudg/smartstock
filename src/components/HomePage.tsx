@@ -1,14 +1,14 @@
 import React, { useState, useRef, lazy } from 'react';
 import { Header } from './HeaderPublic';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import Carousel from './ui/carousel';
 import { 
   Package, BarChart3, Users, Shield, Check, TrendingUp, Zap, Star, Clock, Euro, Target, 
   ChevronLeft, ChevronRight, Scan, Truck, ArrowRight, Play, Award, Globe, Smartphone, 
   CheckCircle, Rocket, Crown, Sparkles, Timer, Facebook, Twitter, Linkedin, Instagram,
-  Repeat, Camera
+  Repeat, Camera, Building
 } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
 import SEO from './SEO';
@@ -19,6 +19,8 @@ import { Helmet } from 'react-helmet-async';
 import { logger } from '../lib/logger';
 import { useCurrency } from '@/hooks/useCurrency';
 import { generateComprehensiveStructuredData } from '../lib/structuredData';
+import { useAuth } from '@/hooks/useAuth';
+import { useSubscription } from '@/hooks/useSubscription';
 // import { useWebsiteTracking } from '@/hooks/useWebsiteTracking';
 // import { usePerformanceOptimization } from '@/hooks/usePerformanceOptimization';
 import { GoogleAdsTracking } from '@/utils/googleAdsTracking';
@@ -386,6 +388,11 @@ export const HomePage = () => {
   const navigate = useNavigate();
   const { formatPrice } = useCurrency();
   
+  // Pricing-related state and hooks
+  const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly');
+  const { user } = useAuth();
+  const { pricingTiers, isLoading } = useSubscription();
+  
   // ALL HOOKS DISABLED TO PREVENT CRASHES
   // usePageRefresh();
   // useWebsiteTracking();
@@ -534,6 +541,62 @@ export const HomePage = () => {
     }
     
     scrollToSection('video-section');
+  };
+
+  // Pricing helper functions
+  const getTierIcon = (tierName: string) => {
+    switch (tierName) {
+      case 'basic':
+        return <Package className="h-8 w-8" />;
+      case 'growth':
+        return <Zap className="h-8 w-8" />;
+      case 'premium':
+        return <Crown className="h-8 w-8" />;
+      default:
+        return <Package className="h-8 w-8" />;
+    }
+  };
+
+  const getTierColor = (tierName: string) => {
+    switch (tierName) {
+      case 'basic':
+        return 'text-gray-600';
+      case 'growth':
+        return 'text-blue-600';
+      case 'premium':
+        return 'text-purple-600';
+      default:
+        return 'text-gray-600';
+    }
+  };
+
+  const handleSelectPlan = (tierId: string, isBusinessTier: boolean = false) => {
+    if (!user) {
+      navigate('/auth');
+      return;
+    }
+    
+    // For business tier, redirect to contact page
+    if (isBusinessTier) {
+      navigate('/contact?subject=business-tier');
+      return;
+    }
+    
+    // Navigate to checkout or subscription page
+    navigate(`/checkout?tier=${tierId}&cycle=${billingCycle}`);
+  };
+
+  const formatPriceUSD = (price: number) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD'
+    }).format(price);
+  };
+
+  const getLimitText = (value: number | null, type: string) => {
+    if (value === null) return 'Unlimited';
+    if (value === 0) return 'Not included';
+    return `${value} ${type}`;
   };
 
   // Exit-intent popup removed
@@ -1516,14 +1579,14 @@ export const HomePage = () => {
               <FadeInWhenVisible delay={100}>
                 <div className="flex justify-center mb-4">
                   <span className="inline-flex items-center px-4 py-2 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200/50 shadow-sm">
-                    Perfect for artisan boutiques & independent retailers
+                   For Small & Medium Sized Businesses
                   </span>
                 </div>
               </FadeInWhenVisible>
           
               <BounceInWhenVisible delay={200}>
-                <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl xl:text-7xl font-light text-gray-800 mb-4 md:mb-8 leading-tight px-4">
-                  Simple Inventory Management.
+                <h1 className="text-2xl sm:text-3xl md:text-6xl lg:text-6xl xl:text-7xl font-light text-gray-800 mb-4 md:mb-8 leading-tight px-4">
+                  Simple Inventory Management
                 </h1>
               </BounceInWhenVisible>
               
@@ -1549,9 +1612,7 @@ export const HomePage = () => {
                 <p className="text-xs sm:text-sm text-gray-500 mb-2 px-4">
                   No credit card needed ♦ Unlimited time on Free plan
                 </p>
-                <p className="text-xs sm:text-sm text-gray-400 px-4">
-                  Includes a Free Plan for 2 Users/100 Products
-                </p>
+
               </FadeInWhenVisible>
             </div>
             
@@ -2121,6 +2182,186 @@ export const HomePage = () => {
 
       
 
+      {/* Pricing Section */}
+      <section id="pricing-section" className="py-16 bg-gradient-to-br from-blue-50 to-indigo-100">
+        <div className="container mx-auto px-4 py-16">
+          {/* Header */}
+          <div className="text-center mb-16">
+            <h1 className="text-5xl md:text-7xl font-light text-gray-800 mb-6">
+              Pricing
+            </h1>
+            <p className="text-xl text-gray-600 mb-8">
+              Choose the plan that best suits your business needs. All prices in USD.
+            </p>
+            
+            {/* Billing Toggle */}
+            <div className="flex items-center justify-center space-x-4 mb-8">
+              <span className={`text-sm font-medium ${billingCycle === 'monthly' ? 'text-gray-900' : 'text-gray-500'}`}>
+                Monthly
+              </span>
+              <button
+                onClick={() => setBillingCycle(billingCycle === 'monthly' ? 'yearly' : 'monthly')}
+                className="relative inline-flex h-6 w-11 items-center rounded-full bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              >
+                <span
+                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                    billingCycle === 'yearly' ? 'translate-x-6' : 'translate-x-1'
+                  }`}
+                />
+              </button>
+              <span className={`text-sm font-medium ${billingCycle === 'yearly' ? 'text-gray-900' : 'text-gray-500'}`}>
+                Yearly
+              </span>
+              {billingCycle === 'yearly' && (
+                <Badge variant="secondary" className="ml-2">
+                  Save
+                </Badge>
+              )}
+            </div>
+          </div>
+
+          {/* Pricing Cards */}
+          {isLoading ? (
+            <div className="text-center py-16">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+              <p className="text-gray-600">Loading pricing plans...</p>
+            </div>
+          ) : pricingTiers && pricingTiers.length > 0 ? (
+            <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+              {pricingTiers.map((tier) => (
+                <Card 
+                  key={tier.id} 
+                  className={`relative ${tier.is_popular ? 'ring-2 ring-blue-500 shadow-xl scale-105' : 'shadow-lg'}`}
+                >
+                  {tier.is_popular && (
+                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                      <Badge className="bg-blue-500 text-white px-4 py-1">
+                        <Star className="h-3 w-3 mr-1" />
+                        Most popular
+                      </Badge>
+                    </div>
+                  )}
+
+                  <CardHeader className="text-center pb-4">
+                    <div className={`mx-auto mb-4 ${getTierColor(tier.name)}`}>
+                      {getTierIcon(tier.name)}
+                    </div>
+                    <CardTitle className="text-2xl font-semibold">{tier.display_name}</CardTitle>
+                    <CardDescription className="text-gray-600">
+                      {tier.description}
+                    </CardDescription>
+                    <div className="mt-4">
+                      <div className="text-4xl font-bold text-gray-900">
+                        {tier.name === 'business' 
+                          ? 'On Demand' 
+                          : tier.price_monthly === 0 
+                            ? '$0' 
+                            : formatPriceUSD(billingCycle === 'monthly' ? tier.price_monthly : tier.price_yearly)}
+                      </div>
+                      {tier.price_monthly > 0 && tier.name !== 'business' && (
+                        <div className="text-sm text-gray-500">
+                          {billingCycle === 'yearly' ? 'per year' : 'per month'}
+                        </div>
+                      )}
+                      {tier.name === 'business' && (
+                        <div className="text-sm text-gray-500">
+                          Custom pricing
+                        </div>
+                      )}
+                    </div>
+                  </CardHeader>
+
+                  <CardContent className="space-y-6">
+                    {/* Limits */}
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-gray-600">Products</span>
+                        <span className="text-sm font-medium">{getLimitText(tier.max_products, 'products')}</span>
+                      </div>
+
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-gray-600">Users</span>
+                        <span className="text-sm font-medium">{getLimitText(tier.max_users, 'users')}</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-gray-600">Branches</span>
+                          <span className="text-sm font-medium">{getLimitText(tier.max_branches, 'branches')}</span>
+                      </div>
+                    </div>
+
+                    {/* Features */}
+                    <div className="space-y-3">
+                      <h4 className="font-semibold text-gray-900">Included:</h4>
+                      <ul className="space-y-2">
+                        {tier.features.map((feature, index) => (
+                          <li key={index} className="flex items-start">
+                            <Check className="h-4 w-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                            <span className="text-sm text-gray-600">{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </CardContent>
+
+                  <CardFooter>
+                    <Button 
+                      className="w-full rounded-full transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+                      onClick={() => handleSelectPlan(tier.name, tier.name === 'business')}
+                    >
+                      {tier.name === 'business' 
+                        ? 'Contact Sales' 
+                        : tier.price_monthly === 0 
+                          ? 'Get Started' 
+                          : 'Start 14-day trial'}
+                    </Button>
+                  </CardFooter>
+                </Card>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-16">
+              <p className="text-gray-600">No pricing plans available at the moment.</p>
+            </div>
+          )}
+
+          {/* Free Trial Info */}
+          <div className="mt-16 text-center">
+            <div className="bg-white rounded-lg shadow-lg p-8 max-w-4xl mx-auto">
+              <div className="flex items-center justify-center mb-4">
+                <Clock className="h-8 w-8 text-blue-600 mr-3" />
+                  <h3 className="text-2xl font-semibold text-gray-900">14-day free trial</h3>
+              </div>
+              <p className="text-gray-600 mb-6">
+                Try all premium features 14 days free. No credit card required, 
+                cancel anytime.
+              </p>
+              <div className="grid md:grid-cols-3 gap-6 text-left">
+                <div className="flex items-start">
+                  <Check className="h-5 w-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <h4 className="font-semibold text-gray-900">No obligations</h4>
+                    <p className="text-sm text-gray-600">Cancel anytime without any costs</p>
+                  </div>
+                </div>
+                <div className="flex items-start">
+                  <Check className="h-5 w-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <h4 className="font-semibold text-gray-900">Full access</h4>
+                    <p className="text-sm text-gray-600">All features and limits of your chosen plan</p>
+                  </div>
+                </div>
+                <div className="flex items-start">
+                  <Check className="h-5 w-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <h4 className="font-semibold text-gray-900">Direct start</h4>
+                    <p className="text-sm text-gray-600">Start directly with your inventory management</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Enhanced FAQ Section */}
       <section id="faq-section" className="py-12 sm:py-16 md:py-20 bg-gradient-to-br from-slate-50 to-blue-50">

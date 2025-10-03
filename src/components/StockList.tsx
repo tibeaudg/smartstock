@@ -44,6 +44,7 @@ import { ImagePreviewModal } from './ImagePreviewModal';
 import { AddProductModal } from './AddProductModal';
 import { EditProductStockModal } from './EditProductStockModal';
 import { VariantSelectionModal } from './VariantSelectionModal';
+import { AddVariantModal } from './AddVariantModal';
 import { BulkImportModal } from './BulkImportModal';
 import { useMobile } from '@/hooks/use-mobile';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -127,11 +128,13 @@ interface ProductRowProps {
   isSelected?: boolean;
   hasChildren?: boolean;
   isExpanded?: boolean;
+  variantCount?: number;
   columnVisibility: any;
   onToggleExpand?: () => void;
   onSelect?: (id: string) => void;
   onStockAction: (product: Product, action: StockAction) => void;
   onEdit: (product: Product) => void;
+  onAddVariant?: (product: Product) => void;
   onImagePreview: (url: string) => void;
   isAdmin?: boolean;
 }
@@ -142,11 +145,13 @@ const ProductRow: React.FC<ProductRowProps> = ({
   isSelected = false,
   hasChildren = false,
   isExpanded = false,
+  variantCount = 0,
   columnVisibility,
   onToggleExpand,
   onSelect,
   onStockAction,
   onEdit,
+  onAddVariant,
   onImagePreview,
   isAdmin = false
 }) => {
@@ -223,9 +228,10 @@ const ProductRow: React.FC<ProductRowProps> = ({
                     <span className="text-gray-600"> - {product.variant_name}</span>
                   )}
                 </h3>
-                {isVariant && (
-                  <Badge className="bg-purple-100 text-purple-700 border border-purple-200 text-xs">
-                    Variant
+
+                {hasChildren && !isExpanded && variantCount > 0 && (
+                  <Badge className="bg-blue-100 text-blue-700 border border-blue-200 text-xs">
+                    {variantCount} {variantCount === 1 ? 'variant' : 'variants'}
                   </Badge>
                 )}
               </div>
@@ -374,6 +380,12 @@ const ProductRow: React.FC<ProductRowProps> = ({
                 <Minus className="w-4 h-4 mr-2 text-red-600" />
                 Stock Out
               </DropdownMenuItem>
+              {hasChildren && onAddVariant && (
+                <DropdownMenuItem onClick={() => onAddVariant(product)}>
+                  <Plus className="w-4 h-4 mr-2 text-blue-600" />
+                  Add Variant
+                </DropdownMenuItem>
+              )}
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => onEdit(product)}>
                 <Edit className="w-4 h-4 mr-2" />
@@ -394,10 +406,12 @@ interface MobileProductCardProps {
   isSelected?: boolean;
   hasChildren?: boolean;
   isExpanded?: boolean;
+  variantCount?: number;
   onToggleExpand?: () => void;
   onSelect?: (id: string) => void;
   onStockAction: (product: Product, action: StockAction) => void;
   onEdit: (product: Product) => void;
+  onAddVariant?: (product: Product) => void;
   onImagePreview: (url: string) => void;
   isAdmin?: boolean;
 }
@@ -408,10 +422,12 @@ const MobileProductCard: React.FC<MobileProductCardProps> = ({
   isSelected = false,
   hasChildren = false,
   isExpanded = false,
+  variantCount = 0,
   onToggleExpand,
   onSelect,
   onStockAction,
   onEdit,
+  onAddVariant,
   onImagePreview,
   isAdmin = false
 }) => {
@@ -474,11 +490,18 @@ const MobileProductCard: React.FC<MobileProductCardProps> = ({
                   <span className="text-gray-600"> - {product.variant_name}</span>
                 )}
               </h3>
-              {isVariant && (
-                <Badge className="bg-purple-100 text-purple-700 border border-purple-200 text-[10px] px-1.5 py-0 mt-0.5">
-                  Variant
-                </Badge>
-              )}
+              <div className="flex gap-1 mt-0.5">
+                {isVariant && (
+                  <Badge className="bg-purple-100 text-purple-700 border border-purple-200 text-[10px] px-1.5 py-0">
+                    Variant
+                  </Badge>
+                )}
+                {hasChildren && !isExpanded && variantCount > 0 && (
+                  <Badge className="bg-blue-100 text-blue-700 border border-blue-200 text-[10px] px-1.5 py-0">
+                    {variantCount} {variantCount === 1 ? 'variant' : 'variants'}
+                  </Badge>
+                )}
+              </div>
             </div>
 
             {/* Expand/Collapse button */}
@@ -577,11 +600,22 @@ const MobileProductCard: React.FC<MobileProductCardProps> = ({
           )}
           {hasChildren && (
             <div className="flex gap-2 mt-3">
+              {onAddVariant && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onAddVariant(product)}
+                  className="flex-1 text-blue-600 border-blue-300 hover:bg-blue-50"
+                >
+                  <Plus className="w-4 h-4 mr-1" />
+                  Add Variant
+                </Button>
+              )}
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => onEdit(product)}
-                className="w-full"
+                className="flex-1"
               >
                 <Edit className="w-4 h-4 mr-1" />
                 Edit Product
@@ -710,6 +744,7 @@ export const StockList = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isEditInfoModalOpen, setIsEditInfoModalOpen] = useState(false);
   const [isProductActionModalOpen, setIsProductActionModalOpen] = useState(false);
+  const [isAddVariantModalOpen, setIsAddVariantModalOpen] = useState(false);
   const [isVariantSelectionModalOpen, setIsVariantSelectionModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [selectedAction, setSelectedAction] = useState<StockAction>('in');
@@ -1288,6 +1323,12 @@ export const StockList = () => {
     setIsEditInfoModalOpen(true);
   };
 
+  // Handler for adding new variant to parent product
+  const handleAddVariant = (product: Product) => {
+    setSelectedProduct(product);
+    setIsAddVariantModalOpen(true);
+  };
+
   // Functie om variant selectie af te handelen
   const handleVariantSelected = (variant: Product) => {
     setSelectedVariant(variant);
@@ -1627,6 +1668,7 @@ export const StockList = () => {
                 grouped.parents.map((parent) => {
                   const parentChecked = selectedProductIds.includes(parent.id);
                   const hasChildren = (grouped.children[parent.id]?.length || 0) > 0;
+                  const variantCount = grouped.children[parent.id]?.length || 0;
                   const isExpanded = expandedParents[parent.id] || false;
                   
                   return (
@@ -1636,6 +1678,7 @@ export const StockList = () => {
                         isSelected={parentChecked}
                         hasChildren={hasChildren}
                         isExpanded={isExpanded}
+                        variantCount={variantCount}
                         onToggleExpand={() => toggleExpand(parent.id)}
                         onSelect={handleSelectProduct}
                         onStockAction={handleStockAction}
@@ -1643,6 +1686,7 @@ export const StockList = () => {
                           setSelectedProduct(product);
                           setIsEditInfoModalOpen(true);
                         }}
+                        onAddVariant={handleAddVariant}
                         onImagePreview={(url) => {
                           setPreviewImageUrl(url);
                           setIsImagePreviewOpen(true);
@@ -2150,6 +2194,7 @@ export const StockList = () => {
                 grouped.parents.map((parent) => {
                   const parentChecked = selectedProductIds.includes(parent.id);
                   const hasChildren = (grouped.children[parent.id]?.length || 0) > 0;
+                  const variantCount = grouped.children[parent.id]?.length || 0;
                   const isExpanded = expandedParents[parent.id] || false;
                   
                   return (
@@ -2159,6 +2204,7 @@ export const StockList = () => {
                         isSelected={parentChecked}
                         hasChildren={hasChildren}
                         isExpanded={isExpanded}
+                        variantCount={variantCount}
                         columnVisibility={columnVisibility}
                         onToggleExpand={() => toggleExpand(parent.id)}
                         onSelect={handleSelectProduct}
@@ -2167,6 +2213,7 @@ export const StockList = () => {
                           setSelectedProduct(product);
                           setIsEditInfoModalOpen(true);
                         }}
+                        onAddVariant={handleAddVariant}
                         onImagePreview={(url) => {
                           setPreviewImageUrl(url);
                           setIsImagePreviewOpen(true);
@@ -2277,6 +2324,19 @@ export const StockList = () => {
           queryClient.invalidateQueries({ queryKey: ['products'] });
           refetch();
         }}
+      />
+      <AddVariantModal
+        isOpen={isAddVariantModalOpen}
+        onClose={() => {
+          setIsAddVariantModalOpen(false);
+          setSelectedProduct(null);
+        }}
+        onVariantAdded={() => {
+          // Refresh products after variant is added
+          queryClient.invalidateQueries({ queryKey: ['products'] });
+          refetch();
+        }}
+        parentProduct={selectedProduct}
       />
     </div>
   );
