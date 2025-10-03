@@ -1671,7 +1671,7 @@ export const HomePage = () => {
 
       {/* Social Proof Bar - Immediately Below Hero */}
       <section className="py-6 sm:py-8 md:py-10 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4">
           <FadeInWhenVisible>
             <div className="text-center">
               <p className="text-xs sm:text-sm md:text-base font-medium text-gray-600 mb-4 sm:mb-6 md:mb-8">
@@ -1679,34 +1679,33 @@ export const HomePage = () => {
               </p>
               
               {/* Company Logos or Industry Icons */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8 md:gap-10 lg:gap-12 max-w-4xl mx-auto opacity-60 hover:opacity-100 transition-opacity duration-300">
-                {/* Industry Icons since we don't have real company logos */}
-                <div className="flex flex-col items-center gap-2 sm:gap-2.5">
-                  <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors duration-200">
-                    <Building className="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 lg:h-9 lg:w-9 text-gray-600" />
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 lg:gap-12 max-w-4xl mx-auto">
+                <div className="flex flex-col items-center gap-2">
+                  <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
+                    <Building className="h-8 w-8 text-gray-600" />
                   </div>
-                  <span className="text-xs sm:text-xs md:text-sm text-gray-500 font-medium">Retail</span>
+                  <span className="text-sm font-medium text-gray-700">Retail</span>
                 </div>
                 
-                <div className="flex flex-col items-center gap-2 sm:gap-2.5">
-                  <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors duration-200">
-                    <Package className="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 lg:h-9 lg:w-9 text-gray-600" />
+                <div className="flex flex-col items-center gap-2">
+                  <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
+                    <Package className="h-8 w-8 text-gray-600" />
                   </div>
-                  <span className="text-xs sm:text-xs md:text-sm text-gray-500 font-medium whitespace-nowrap">Food & Beverage</span>
+                  <span className="text-sm font-medium text-gray-700">Food & Beverage</span>
                 </div>
                 
-                <div className="flex flex-col items-center gap-2 sm:gap-2.5">
-                  <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors duration-200">
-                    <Truck className="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 lg:h-9 lg:w-9 text-gray-600" />
+                <div className="flex flex-col items-center gap-2">
+                  <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
+                    <Truck className="h-8 w-8 text-gray-600" />
                   </div>
-                  <span className="text-xs sm:text-xs md:text-sm text-gray-500 font-medium">Wholesale</span>
+                  <span className="text-sm font-medium text-gray-700">Wholesale</span>
                 </div>
                 
-                <div className="flex flex-col items-center gap-2 sm:gap-2.5">
-                  <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors duration-200">
-                    <BarChart3 className="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 lg:h-9 lg:w-9 text-gray-600" />
+                <div className="flex flex-col items-center gap-2">
+                  <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
+                    <BarChart3 className="h-8 w-8 text-gray-600" />
                   </div>
-                  <span className="text-xs sm:text-xs md:text-sm text-gray-500 font-medium">Manufacturing</span>
+                  <span className="text-sm font-medium text-gray-700">Manufacturing</span>
                 </div>
               </div>
               
@@ -1821,7 +1820,7 @@ export const HomePage = () => {
           {/* Feature 1: Mobile Scanning */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 md:gap-12 lg:gap-16 items-center mb-12 sm:mb-16 md:mb-20 lg:mb-24">
             <SlideInWhenVisible direction="right" delay={200}>
-              <div className="lg:order-2">
+              <div className="order-1 lg:order-2">
                 <div className="space-y-4 sm:space-y-6">
                   <div className="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 text-blue-700 text-sm font-medium">
                     Core Feature
@@ -1851,7 +1850,7 @@ export const HomePage = () => {
             </SlideInWhenVisible>
             
             <SlideInWhenVisible direction="left" delay={100}>
-              <div className="lg:order-1">
+              <div className="order-2 lg:order-1">
                 <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-3xl p-6 sm:p-8 md:p-12 shadow-lg flex items-center justify-center min-h-[350px] sm:min-h-[400px] lg:min-h-[500px]">
                   <img
                     src="scanner.png"
@@ -1866,7 +1865,7 @@ export const HomePage = () => {
           {/* Feature 2: Dead Stock Alerts */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 md:gap-12 lg:gap-16 items-center mb-12 sm:mb-16 md:mb-20 lg:mb-24">
             <SlideInWhenVisible direction="right" delay={100}>
-              <div>
+              <div className="order-1">
                 <div className="space-y-4 sm:space-y-6">
                   <div className="inline-flex items-center px-4 py-2 rounded-full bg-purple-100 text-purple-700 text-sm font-medium">
                     Unique Feature
@@ -1896,7 +1895,7 @@ export const HomePage = () => {
             </SlideInWhenVisible>
             
             <SlideInWhenVisible direction="left" delay={200}>
-              <div>
+              <div className="order-2">
                 <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-3xl p-6 sm:p-8 md:p-12 flex items-center justify-center min-h-[350px] sm:min-h-[400px] lg:min-h-[500px] shadow-lg">
                   <img
                     src="deadstock.png"
@@ -1911,7 +1910,7 @@ export const HomePage = () => {
           {/* Feature 3: Multi-Location Tracking */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 md:gap-12 lg:gap-16 items-center">
             <SlideInWhenVisible direction="right" delay={200}>
-              <div className="lg:order-2">
+              <div className="order-1 lg:order-2">
                 <div className="space-y-4 sm:space-y-6">
                   <div className="inline-flex items-center px-4 py-2 rounded-full bg-green-100 text-green-700 text-sm font-medium">
                     Advanced Feature
@@ -1941,7 +1940,7 @@ export const HomePage = () => {
             </SlideInWhenVisible>
             
             <SlideInWhenVisible direction="left" delay={100}>
-              <div className="lg:order-1">
+              <div className="order-2 lg:order-1">
                 <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-3xl p-6 sm:p-8 md:p-12 shadow-lg flex items-center justify-center min-h-[350px] sm:min-h-[400px] lg:min-h-[500px]">
                   <img
                     src="branches.png"
@@ -2139,7 +2138,7 @@ export const HomePage = () => {
                 Secure, Reliable, Compliant
               </h3>
               
-              <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 lg:gap-12 max-w-4xl mx-auto">
                 <div className="flex flex-col items-center gap-2">
                   <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
                     <Shield className="h-8 w-8 text-green-600" />
