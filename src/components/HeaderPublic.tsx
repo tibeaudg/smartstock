@@ -85,7 +85,6 @@ export const Header = ({ onNavigate, hideAuthButtons, hideNotifications }: Heade
                 <nav className="hidden md:flex items-center gap-6 text-sm">
                   <Link to="/features" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Features</Link>
                   <Link to="/pricing" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Pricing</Link>
-                  <Link to="/customers" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Customers</Link>
                   
                   {/* Resources Dropdown */}
                   <div className="relative">

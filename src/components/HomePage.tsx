@@ -1594,20 +1594,23 @@ export const HomePage = () => {
               <FadeInWhenVisible delay={100}>
                 <div className="flex justify-center mb-6">
                   <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-blue-50 text-blue-700 border border-blue-200/50 shadow-sm">
-                    Trusted by 500+ Belgian SMEs
+                    Build For SME's
                   </span>
                 </div>
               </FadeInWhenVisible>
           
               <BounceInWhenVisible delay={200}>
-                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-gray-900 mb-6 md:mb-8 leading-tight px-4">
-                  Inventory Management That Saves You Money
-                </h1>
+            <div className="text-center mb-16 md:mb-20">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-light text-gray-800 mb-4 md:mb-8 leading-tight">
+                Inventory Management That Saves You Money
+              </h1>
+
+            </div>
               </BounceInWhenVisible>
               
               <SlideUpWhenVisible delay={400}>
                 <p className="text-lg sm:text-xl md:text-2xl text-gray-700 mb-8 md:mb-12 max-w-4xl mx-auto px-4 leading-relaxed font-medium">
-                  Stop wasting capital on overstock and dead inventory. Track stock, reduce waste, and optimize ordering — all in one simple platform.
+                  Stop wasting capital on overstock and dead inventory. Track stock, reduce waste, and optimize ordering. All in one simple platform.
                 </p>
               </SlideUpWhenVisible>
               
@@ -1712,14 +1715,7 @@ export const HomePage = () => {
                 </div>
               </div>
               
-              {/* Metrics */}
-              <div className="mt-6 pt-6 border-t border-gray-200">
-                <p className="text-sm text-gray-600">
-                  <span className="font-semibold text-blue-600">4.8/5 stars</span> • 
-                  <span className="font-semibold text-blue-600"> 500+ businesses</span> • 
-                  <span className="font-semibold text-blue-600"> €2.4M inventory managed</span>
-                </p>
-              </div>
+
             </div>
           </FadeInWhenVisible>
         </div>
@@ -1728,11 +1724,16 @@ export const HomePage = () => {
       {/* Problem → Solution Section */}
       <section className="py-16 md:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4">
+          {/* Header */}
           <FadeInWhenVisible>
-            <div className="text-center mb-16">
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+            <div className="text-center mb-16 md:mb-20">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-light text-gray-800 mb-4 md:mb-8 leading-tight">
                 Stop Losing Money on Inventory Mistakes
-              </h2>
+              </h1>
+              <p className="text-lg sm:text-xl text-gray-600 mb-6 max-w-2xl mx-auto">
+                Get a clear picture of your inventory and make better decisions.
+              </p>
+
             </div>
           </FadeInWhenVisible>
           
@@ -1810,11 +1811,16 @@ export const HomePage = () => {
       {/* Key Features Section - Alternating Layout */}
       <section className="py-20 md:py-28 bg-white">
         <div className="max-w-7xl mx-auto px-4">
+          {/* Header */}
           <FadeInWhenVisible>
             <div className="text-center mb-16 md:mb-20">
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-light text-gray-800 mb-4 md:mb-8 leading-tight">
                 Everything You Need to Manage Inventory
-              </h2>
+              </h1>
+              <p className="text-lg sm:text-xl text-gray-600 mb-6 max-w-2xl mx-auto">
+                Keep track of your inventory, see what's selling, and get alerts when you need to reorder.
+              </p>
+
             </div>
           </FadeInWhenVisible>
 
@@ -2128,320 +2134,7 @@ export const HomePage = () => {
 
       
 
-      {/* Pricing Section */}
-      <section id="pricing-section" className="py-16">
-        <div className="container mx-auto px-4 py-16">
-          {/* Header */}
-          <div className="text-center mb-16">
-            <h1 className="text-5xl md:text-7xl font-light text-gray-800 mb-6">
-              Pricing
-            </h1>
-            <p className="text-xl text-gray-600 mb-8">
-              Choose the plan that best suits your business needs. All prices in USD.
-            </p>
-            
-            {/* Billing Toggle */}
-            <div className="flex items-center justify-center space-x-4 mb-8">
-              <span className={`text-sm font-medium ${billingCycle === 'monthly' ? 'text-gray-900' : 'text-gray-500'}`}>
-                Monthly
-              </span>
-              <button
-                onClick={() => setBillingCycle(billingCycle === 'monthly' ? 'yearly' : 'monthly')}
-                className="relative inline-flex h-6 w-11 items-center rounded-full bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-              >
-                <span
-                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                    billingCycle === 'yearly' ? 'translate-x-6' : 'translate-x-1'
-                  }`}
-                />
-              </button>
-              <span className={`text-sm font-medium ${billingCycle === 'yearly' ? 'text-gray-900' : 'text-gray-500'}`}>
-                Yearly
-              </span>
-              {billingCycle === 'yearly' && (
-                <Badge variant="secondary" className="ml-2">
-                  Save
-                </Badge>
-              )}
-            </div>
-          </div>
 
-          {/* Pricing Cards */}
-          {isLoading ? (
-            <div className="text-center py-16">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-              <p className="text-gray-600">Loading pricing plans...</p>
-            </div>
-          ) : pricingTiers && pricingTiers.length > 0 ? (
-            <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto">
-              {pricingTiers.map((tier) => (
-                <Card 
-                  key={tier.id} 
-                  className={`relative ${tier.is_popular ? 'ring-2 ring-blue-500 shadow-xl scale-105' : 'shadow-lg'}`}
-                >
-                  {tier.is_popular && (
-                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                      <Badge className="bg-blue-500 text-white px-4 py-1">
-                        <Star className="h-3 w-3 mr-1" />
-                        Most popular
-                      </Badge>
-                    </div>
-                  )}
-
-                  <CardHeader className="text-center pb-4">
-                    <div className={`mx-auto mb-4 ${getTierColor(tier.name)}`}>
-                      {getTierIcon(tier.name)}
-                    </div>
-                    <CardTitle className="text-2xl font-semibold">{tier.display_name}</CardTitle>
-                    <CardDescription className="text-gray-600">
-                      {tier.description}
-                    </CardDescription>
-                    <div className="mt-4">
-                      <div className="text-4xl font-bold text-gray-900">
-                        {tier.name === 'business' 
-                          ? 'On Demand' 
-                          : tier.price_monthly === 0 
-                            ? '$0' 
-                            : formatPriceUSD(billingCycle === 'monthly' ? tier.price_monthly : tier.price_yearly)}
-                      </div>
-                      {tier.price_monthly > 0 && tier.name !== 'business' && (
-                        <div className="text-sm text-gray-500">
-                          {billingCycle === 'yearly' ? 'per year' : 'per month'}
-                        </div>
-                      )}
-                      {tier.name === 'business' && (
-                        <div className="text-sm text-gray-500">
-                          Custom pricing
-                        </div>
-                      )}
-                    </div>
-                  </CardHeader>
-
-                  <CardContent className="space-y-6">
-                    {/* Limits */}
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm text-gray-600">Products</span>
-                        <span className="text-sm font-medium">{getLimitText(tier.max_products, 'products')}</span>
-                      </div>
-
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm text-gray-600">Users</span>
-                        <span className="text-sm font-medium">{getLimitText(tier.max_users, 'users')}</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm text-gray-600">Branches</span>
-                          <span className="text-sm font-medium">{getLimitText(tier.max_branches, 'branches')}</span>
-                      </div>
-                    </div>
-
-                    {/* Features */}
-                    <div className="space-y-3">
-                      <h4 className="font-semibold text-gray-900">Included:</h4>
-                      <ul className="space-y-2">
-                        {tier.features.map((feature, index) => (
-                          <li key={index} className="flex items-start">
-                            <Check className="h-4 w-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
-                            <span className="text-sm text-gray-600">{feature}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </CardContent>
-
-                  <CardFooter>
-                    <Button 
-                      className="w-full rounded-full transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
-                      onClick={() => handleSelectPlan(tier.name, tier.name === 'business')}
-                    >
-                      {tier.name === 'business' 
-                        ? 'Contact Sales' 
-                        : tier.price_monthly === 0 
-                          ? 'Get Started' 
-                          : 'Start 14-day trial'}
-                    </Button>
-                  </CardFooter>
-                </Card>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-16">
-              <p className="text-gray-600">No pricing plans available at the moment.</p>
-            </div>
-          )}
-
-          {/* Free Trial Info */}
-          <div className="mt-16 text-center">
-            <div className="bg-white rounded-lg shadow-lg p-8 max-w-4xl mx-auto">
-              <div className="flex items-center justify-center mb-4">
-                <Clock className="h-8 w-8 text-blue-600 mr-3" />
-                  <h3 className="text-2xl font-semibold text-gray-900">14-day free trial</h3>
-              </div>
-              <p className="text-gray-600 mb-6">
-                Try all premium features 14 days free. No credit card required, 
-                cancel anytime.
-              </p>
-              <div className="grid md:grid-cols-3 gap-6 text-left">
-                <div className="flex items-start">
-                  <Check className="h-5 w-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
-                  <div>
-                    <h4 className="font-semibold text-gray-900">No obligations</h4>
-                    <p className="text-sm text-gray-600">Cancel anytime without any costs</p>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <Check className="h-5 w-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
-                  <div>
-                    <h4 className="font-semibold text-gray-900">Full access</h4>
-                    <p className="text-sm text-gray-600">All features and limits of your chosen plan</p>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <Check className="h-5 w-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
-                  <div>
-                    <h4 className="font-semibold text-gray-900">Direct start</h4>
-                    <p className="text-sm text-gray-600">Start directly with your inventory management</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials Section */}
-      <section className="py-20 md:py-28 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4">
-          <FadeInWhenVisible>
-            <div className="text-center mb-16">
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                Loved by Small Business Owners
-              </h2>
-            </div>
-          </FadeInWhenVisible>
-
-          {/* Testimonials Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
-            {/* Testimonial 1 */}
-            <SlideUpWhenVisible delay={100}>
-              <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-                <div className="flex items-center mb-6">
-                  <img 
-                    src="/Laura.png" 
-                    alt="Laura Peeters"
-                    className="w-16 h-16 rounded-full object-cover mr-4"
-                  />
-                  <div>
-                    <h4 className="font-bold text-gray-900">Laura Peeters</h4>
-                    <p className="text-sm text-gray-600">Owner, De Koffieboetiek</p>
-                  </div>
-                </div>
-                
-                <blockquote className="text-gray-700 mb-6 leading-relaxed">
-                  "StockFlow stopped us from wasting €4,800 annually on expired inventory and overstock. We now invest that capital into bestselling items instead."
-                </blockquote>
-                
-                <div className="flex items-center justify-between">
-                  <div className="flex text-yellow-400">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="h-4 w-4 fill-current" />
-                    ))}
-                  </div>
-                  <div className="text-sm text-green-600 font-semibold">
-                    €4,800/year saved
-                  </div>
-                </div>
-              </div>
-            </SlideUpWhenVisible>
-
-            {/* Testimonial 2 */}
-            <SlideUpWhenVisible delay={200}>
-              <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-                <div className="flex items-center mb-6">
-                  <img 
-                    src="/jan.png" 
-                    alt="Sophie Martens"
-                    className="w-16 h-16 rounded-full object-cover mr-4"
-                  />
-                  <div>
-                    <h4 className="font-bold text-gray-900">Sophie Martens</h4>
-                    <p className="text-sm text-gray-600">Owner, Maison Belle Boutique</p>
-                  </div>
-                </div>
-                
-                <blockquote className="text-gray-700 mb-6 leading-relaxed">
-                  "StockFlow helped us identify €8,500 worth of slow-moving inventory. We cleared it at 30% margin instead of letting it sit for another season."
-                </blockquote>
-                
-                <div className="flex items-center justify-between">
-                  <div className="flex text-yellow-400">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="h-4 w-4 fill-current" />
-                    ))}
-                  </div>
-                  <div className="text-sm text-green-600 font-semibold">
-                    €8,500 recovered
-                  </div>
-                </div>
-              </div>
-            </SlideUpWhenVisible>
-
-            {/* Testimonial 3 */}
-            <SlideUpWhenVisible delay={300}>
-              <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-                <div className="flex items-center mb-6">
-                  <img 
-                    src="/anke.png" 
-                    alt="Anke Willems"
-                    className="w-16 h-16 rounded-full object-cover mr-4"
-                  />
-                  <div>
-                    <h4 className="font-bold text-gray-900">Anke Willems</h4>
-                    <p className="text-sm text-gray-600">Owner, Artisan & Co.</p>
-                  </div>
-                </div>
-                
-                <blockquote className="text-gray-700 mb-6 leading-relaxed">
-                  "We used to over-order seasonal items that would sit unsold for months, tying up €3,200 in capital. StockFlow's alerts help us order just enough."
-                </blockquote>
-                
-                <div className="flex items-center justify-between">
-                  <div className="flex text-yellow-400">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="h-4 w-4 fill-current" />
-                    ))}
-                  </div>
-                  <div className="text-sm text-green-600 font-semibold">
-                    €3,200 freed
-                  </div>
-                </div>
-              </div>
-            </SlideUpWhenVisible>
-          </div>
-
-          {/* Trust Metrics */}
-          <FadeInWhenVisible delay={400}>
-            <div className="mt-16 text-center">
-              <div className="bg-white rounded-2xl p-8 shadow-lg max-w-4xl mx-auto">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                  <div className="text-center">
-                    <div className="text-4xl font-bold text-blue-600 mb-2">4.8/5</div>
-                    <div className="text-gray-600">Customer Rating</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-4xl font-bold text-blue-600 mb-2">500+</div>
-                    <div className="text-gray-600">Businesses Using StockFlow</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-4xl font-bold text-blue-600 mb-2">€2.4M</div>
-                    <div className="text-gray-600">Inventory Managed</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </FadeInWhenVisible>
-        </div>
-      </section>
 
       {/* Trust Badges Section */}
       <section className="py-12 md:py-16 bg-white border-t border-gray-100">
@@ -2467,12 +2160,7 @@ export const HomePage = () => {
                   <span className="text-sm font-medium text-gray-700">99.9% Uptime</span>
                 </div>
                 
-                <div className="flex flex-col items-center gap-2">
-                  <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center">
-                    <Building className="h-8 w-8 text-purple-600" />
-                  </div>
-                  <span className="text-sm font-medium text-gray-700">EU Hosted</span>
-                </div>
+
                 
                 <div className="flex flex-col items-center gap-2">
                   <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center">
@@ -2493,132 +2181,61 @@ export const HomePage = () => {
         </div>
       </section>
 
-      {/* Enhanced FAQ Section */}
-      <section id="faq-section" className="py-12 sm:py-16 md:py-20">
-        <div className="max-w-6xl mx-auto px-4">
-          {/* Compelling Headline */}
-          <FadeInWhenVisible>
-            <div className="text-center mb-12 sm:mb-16 px-4">
-              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-light text-gray-800 mb-4 md:mb-8 leading-tight">
-                Questions from Shop Owners Like You
-              </h1>
-              <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-4xl mx-auto mb-6 sm:mb-8">
-              POS integration, multi-location tracking. 
-              </p>
-                      
-            </div>
-          </FadeInWhenVisible>
 
-          {/* FAQ Grid */}
-          <div className="mb-16">
-            <Carousel
-              itemsPerView={{
-                mobile: 1,
-                tablet: 1,
-                desktop: 2
-              }}
-              showArrows={true}
-              showDots={true}
-              autoPlay={false}
-              className="px-4"
-            >
-              {faqData.map((faq, index) => (
-                <StaggerInWhenVisible 
-                  key={index} 
-                  delay={index * 150}
-                  staggerDelay={index * 75}
-                >
-                  <div className="bg-white rounded-3xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden h-full">
-                    {/* FAQ Header */}
-                    <button
-                      onClick={() => setOpenFAQ(openFAQ === index ? null : index)}
-                      className="w-full p-6 text-left hover:bg-gray-50 transition-colors"
-                    >
-                      <div className="flex justify-between items-start">
-                        <div className="flex-1">
-                          {/* Category Badge */}
-                          <div className="inline-block bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium mb-3">
-                            {faq.category}
-                          </div>
-                          
-                          {/* Question */}
-                          <h3 className="text-lg font-semibold text-gray-900 mb-2 leading-relaxed">
-                            {faq.question}
-                          </h3>
-                          
-                          {/* Benefit Preview */}
-                          <div className="text-sm text-blue-600 font-medium">
-                            {faq.benefit}
-                          </div>
-                        </div>
-                      
-                        {/* Expand/Collapse Icon */}
-                        <div className="ml-4 flex-shrink-0">
-                          <div className={`w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center transition-transform duration-200 ${
-                            openFAQ === index ? 'rotate-180' : ''
-                          }`}>
-                            <ChevronRight className="h-5 w-5 text-blue-600" />
-                          </div>
-                        </div>
-                      </div>
-                    </button>
-                    
-                    {/* FAQ Answer */}
-                    {openFAQ === index && (
-                      <motion.div 
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="px-6 pb-6"
-                      >
-                        <div className="bg-gradient-to-r from-blue-50 to-green-50 rounded-2xl p-6 border border-blue-200">
-                          <p className="text-gray-700 leading-relaxed">{faq.answer}</p>
-                        </div>
-                      </motion.div>
-                    )}
-                  </div>
-                </StaggerInWhenVisible>
-              ))}
-            </Carousel>
-          </div>
 
-          {/* Still Have Questions CTA */}
+
+          {/* Final Call-to-Action Section */}
           <FadeInWhenVisible delay={600}>
-            <div className="p-6 sm:p-8 md:p-10 text-center">
-              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-light text-gray-800 mb-4 md:mb-8 leading-tight px-4">
-                Still Have Questions?
-              </h1>
-              <p className="text-sm sm:text-base text-gray-600 mb-6 sm:mb-8 max-w-2xl mx-auto px-4">
-                Our team is here to help. Get personalized answers to your specific business questions 
-                in under 5 minutes.
-              </p>
-              
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-stretch sm:items-center px-4">
-                <Button
-                  onClick={handleLoginClick}
-                  className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white
-                  px-8 py-4 text-lg md:px-10 md:py-5 md:text-xl
-                  font-semibold rounded-full transform hover:scale-105
-                  transition-all duration-300
-                  shadow-xl hover:shadow-2xl hover:shadow-blue-500/50
-                  ring-2 ring-blue-500/0 focus:ring-4 focus:ring-blue-500/50 focus:outline-none
-                  min-h-[48px]"
-                >
-                  Start free
-                </Button>
-                <Button
-                  onClick={() => navigate('/contact')}
-                  variant="outline"
-                  className="w-full sm:w-auto border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-6 sm:px-10 md:px-12 py-3 sm:py-4 md:py-6 text-base sm:text-lg md:text-xl font-semibold rounded-full transform hover:scale-105 transition-all duration-300 min-h-[48px]"
-                >
-                  Get help
-                </Button>
+            <section className="bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 rounded-3xl shadow-2xl overflow-hidden">
+              <div className="relative px-6 sm:px-8 md:px-12 lg:px-16 py-12 sm:py-14 md:py-16 lg:py-20">
+                {/* Decorative background elements */}
+                <div className="absolute inset-0 bg-grid-white/5 [mask-image:radial-gradient(white,transparent_80%)]"></div>
+                <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/20 rounded-full blur-3xl"></div>
+                <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/20 rounded-full blur-3xl"></div>
+                
+                {/* Content */}
+                <div className="relative z-10 text-center max-w-4xl mx-auto">
+                  {/* Main Headline */}
+                  <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 sm:mb-6 leading-tight">
+                    Ready to simplify your stock management?
+                  </h2>
+                  
+                  {/* Subheadline */}
+                  <p className="text-lg sm:text-xl md:text-2xl text-blue-100 mb-8 sm:mb-10 md:mb-12 max-w-3xl mx-auto leading-relaxed">
+                    Start your free trial today and see how StockFlow saves you time and money.
+                  </p>
+                  
+                  {/* CTA Buttons */}
+                  <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 justify-center items-stretch sm:items-center mb-6 sm:mb-8">
+                    <Button
+                      onClick={handleLoginClick}
+                      className="w-full sm:w-auto bg-white text-blue-600 hover:bg-gray-50
+                      px-10 py-5 sm:px-12 sm:py-6 md:px-14 md:py-7
+                      text-lg sm:text-xl md:text-2xl
+                      font-bold rounded-full transform hover:scale-105
+                      transition-all duration-300
+                      shadow-2xl hover:shadow-3xl
+                      ring-0 focus:ring-4 focus:ring-white/50 focus:outline-none
+                      min-h-[56px] sm:min-h-[64px]"
+                    >
+                      Start For Free
+                    </Button>
+
+                  </div>
+                  
+                  {/* Supporting Text */}
+                  <div className="space-y-2">
+                    <p className="text-blue-100 text-sm sm:text-base font-medium">
+                      No credit card required. Cancel anytime.
+                    </p>
+                    <p className="text-blue-200/80 text-xs sm:text-sm">
+                      Get started in 2 minutes.
+                    </p>
+                  </div>
+                </div>
               </div>
-            </div>
+            </section>
           </FadeInWhenVisible>
-        </div>
-      </section>
 
 
 
