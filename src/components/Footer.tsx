@@ -1,169 +1,207 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, Send } from 'lucide-react';
+import { ArrowRight, Send, Facebook, Twitter, Linkedin, Instagram } from 'lucide-react';
 
 const Footer = () => (
-  <footer className="bg-blue-600 text-gray-200 py-16 md:py-20">
+  <footer className="bg-gray-900 text-gray-300 py-16 md:py-20">
     <div className="max-w-7xl mx-auto px-6">
-      {/* Main Footer Content */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
-        {/* Left Section - CTA */}
-        <div className="space-y-6">
-          <h2 className="text-3xl md:text-4xl font-bold text-white">
-            Mobilize Your Inventory
-          </h2>
-          <p className="text-white text-base md:text-lg max-w-md">
-            Unlock instant analytics and reporting for your inventory data.
-            No setup headaches, just powerful insights, ready to go.
-          </p>
-          
-          <div className="space-y-4">
-            <Link
-              to="/pricing"
-              className="inline-flex items-center gap-2 bg-white text-black px-6 py-3 rounded-full hover:bg-gray-100 transition-colors font-medium"
-            >
-              Start Now
-              <ArrowRight className="w-5 h-5" />
-            </Link>
-            
-            <div className="flex items-center gap-2 text-white">
-              <Send className="w-5 h-5" />
-              <div>
-                <p className="text-sm">Send us a message.</p>
-                <a
-                  href="mailto:support@stockflow.be"
-                  className="text-white hover:text-gray-300 transition-colors"
-                >
-                  info@stockflow.be
-                </a>
-              </div>
-            </div>
-          </div>
+      {/* Main Footer Content - 4 Column Layout */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+        {/* Product Column */}
+        <div>
+          <h3 className="text-white text-lg font-semibold mb-6">Product</h3>
+          <ul className="space-y-3">
+            <li>
+              <Link to="/features" className="text-gray-300 hover:text-white transition-colors">
+                Features
+              </Link>
+            </li>
+            <li>
+              <Link to="/pricing" className="text-gray-300 hover:text-white transition-colors">
+                Pricing
+              </Link>
+            </li>
+            <li>
+              <Link to="/integrations" className="text-gray-300 hover:text-white transition-colors">
+                Integrations
+              </Link>
+            </li>
+            <li>
+              <Link to="/mobile-app" className="text-gray-300 hover:text-white transition-colors">
+                Mobile App
+              </Link>
+            </li>
+            <li>
+              <Link to="/roadmap" className="text-gray-300 hover:text-white transition-colors">
+                Roadmap
+              </Link>
+            </li>
+          </ul>
         </div>
 
-        {/* Right Section - Navigation Links */}
-        <div className="grid grid-cols-4 gap-6">
-          {/* Legal Column */}
-          <div>
-            <h3 className="text-white text-sm font-medium mb-4">Legal</h3>
-            <ul className="space-y-3">
-              <li>
-                <Link
-                  to="/terms"
-                  className="text-white hover:text-gray-300 transition-colors text-sm"
-                >
-                  Terms and Conditions
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/privacy"
-                  className="text-white hover:text-gray-300 transition-colors text-sm"
-                >
-                  Policy
-                </Link>
-              </li>
-            </ul>
-          </div>
+        {/* Resources Column */}
+        <div>
+          <h3 className="text-white text-lg font-semibold mb-6">Resources</h3>
+          <ul className="space-y-3">
+            <li>
+              <Link to="/help" className="text-gray-300 hover:text-white transition-colors">
+                Help Center
+              </Link>
+            </li>
+            <li>
+              <Link to="/blog" className="text-gray-300 hover:text-white transition-colors">
+                Blog
+              </Link>
+            </li>
+            <li>
+              <Link to="/case-studies" className="text-gray-300 hover:text-white transition-colors">
+                Case Studies
+              </Link>
+            </li>
+            <li>
+              <Link to="/api-docs" className="text-gray-300 hover:text-white transition-colors">
+                API Docs
+              </Link>
+            </li>
+            <li>
+              <Link to="/changelog" className="text-gray-300 hover:text-white transition-colors">
+                Changelog
+              </Link>
+            </li>
+          </ul>
+        </div>
 
-          {/* Menu Column */}
-          <div>
-            <h3 className="text-white text-sm font-medium mb-4">Menu</h3>
-            <ul className="space-y-3">
-              <li>
-                <Link
-                  to="/"
-                  className="text-white hover:text-gray-300 transition-colors text-sm"
-                >
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/pricing"
-                  className="text-white hover:text-gray-300 transition-colors text-sm"
-                >
-                  Pricing
-                </Link>
-              </li>
-              <li>
-                <a
-                  href="/#faq-section"
-                  className="text-white hover:text-gray-300 transition-colors text-sm"
-                >
-                  Faq
-                </a>
-              </li>
-            </ul>
-          </div>
+        {/* Company Column */}
+        <div>
+          <h3 className="text-white text-lg font-semibold mb-6">Company</h3>
+          <ul className="space-y-3">
+            <li>
+              <Link to="/about" className="text-gray-300 hover:text-white transition-colors">
+                About Us
+              </Link>
+            </li>
+            <li>
+              <Link to="/careers" className="text-gray-300 hover:text-white transition-colors">
+                Careers
+              </Link>
+            </li>
+            <li>
+              <Link to="/press" className="text-gray-300 hover:text-white transition-colors">
+                Press Kit
+              </Link>
+            </li>
+            <li>
+              <Link to="/partners" className="text-gray-300 hover:text-white transition-colors">
+                Partners
+              </Link>
+            </li>
+          </ul>
+        </div>
 
-          {/* Tools Column */}
-          <div>
-            <h3 className="text-white text-sm font-medium mb-4">Free Tools</h3>
-            <ul className="space-y-3">
-              <li>
-                <Link
-                  to="/dead-stock-calculator"
-                  className="text-white hover:text-gray-300 transition-colors text-sm"
-                >
-                  Dead Stock Calculator
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/demo"
-                  className="text-white hover:text-gray-300 transition-colors text-sm"
-                >
-                  Try Demo
-                </Link>
-              </li>
-            </ul>
-          </div>
+        {/* Support Column */}
+        <div>
+          <h3 className="text-white text-lg font-semibold mb-6">Support</h3>
+          <ul className="space-y-3">
+            <li>
+              <Link to="/contact" className="text-gray-300 hover:text-white transition-colors">
+                Contact
+              </Link>
+            </li>
+            <li>
+              <Link to="/chat" className="text-gray-300 hover:text-white transition-colors">
+                Chat
+              </Link>
+            </li>
+            <li>
+              <Link to="/status" className="text-gray-300 hover:text-white transition-colors">
+                Status
+              </Link>
+            </li>
+            <li>
+              <a href="tel:+32123456789" className="text-gray-300 hover:text-white transition-colors">
+                +32 XXX XXX
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
 
-          {/* Actions Column */}
-          <div>
-            <h3 className="text-white text-sm font-medium mb-4">Actions</h3>
-            <ul className="space-y-3">
-              <li>
-                <Link
-                  to="/contact"
-                  className="text-white hover:text-gray-300 transition-colors text-sm"
-                >
-                  Contact Us
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/pricing"
-                  className="text-white hover:text-gray-300 transition-colors text-sm"
-                >
-                  Get Started
-                </Link>
-              </li>
-            </ul>
+      {/* Newsletter Signup */}
+      <div className="border-t border-gray-800 pt-8 mb-8">
+        <div className="max-w-2xl mx-auto text-center">
+          <h3 className="text-white text-xl font-semibold mb-4">
+            Inventory tips & product updates
+          </h3>
+          <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+            <input
+              type="email"
+              placeholder="Enter your email"
+              className="flex-1 px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+            <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors flex items-center justify-center gap-2">
+              Subscribe
+              <Send className="h-4 w-4" />
+            </button>
           </div>
         </div>
       </div>
 
-      {/* Brand Section */}
-      <div className="relative justify-center items-center flex">
-        <h1 
-          className="text-6xl md:text-9xl font-bold text-transparent bg-clip-text"
-          style={{
-            backgroundImage: 'linear-gradient(180deg, #ffffff 0%, #dbeafe 50%, #bfdbfe 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-          }}
-        >
-          StockFlow<sup className="text-4xl md:text-5xl"
-                    style={{
-                      backgroundImage: 'linear-gradient(180deg, #ffffff 0%, #dbeafe 50%, #bfdbfe 100%)',
-                      WebkitBackgroundClip: 'text',
-                      WebkitTextFillColor: 'transparent',
-                      backgroundClip: 'text',
-                    }}
-                    >®</sup>
-        </h1>
+      {/* Bottom Section */}
+      <div className="border-t border-gray-800 pt-8">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+          {/* Left - Language/Currency */}
+          <div className="flex items-center gap-4 text-sm">
+            <span className="flex items-center gap-2">
+              🇧🇪 Belgium
+            </span>
+            <select className="bg-gray-800 border border-gray-700 rounded px-2 py-1 text-white">
+              <option>English</option>
+              <option>Dutch</option>
+              <option>French</option>
+              <option>German</option>
+            </select>
+            <select className="bg-gray-800 border border-gray-700 rounded px-2 py-1 text-white">
+              <option>EUR</option>
+              <option>USD</option>
+            </select>
+          </div>
+
+          {/* Center - Social Media */}
+          <div className="flex items-center gap-4">
+            <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              <Linkedin className="h-5 w-5" />
+            </a>
+            <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              <Twitter className="h-5 w-5" />
+            </a>
+            <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              <Facebook className="h-5 w-5" />
+            </a>
+            <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              <Instagram className="h-5 w-5" />
+            </a>
+          </div>
+
+          {/* Right - Legal Links */}
+          <div className="flex items-center gap-4 text-sm">
+            <Link to="/privacy" className="text-gray-400 hover:text-white transition-colors">
+              Privacy
+            </Link>
+            <Link to="/terms" className="text-gray-400 hover:text-white transition-colors">
+              Terms
+            </Link>
+            <Link to="/cookies" className="text-gray-400 hover:text-white transition-colors">
+              Cookies
+            </Link>
+            <span className="text-gray-400">GDPR</span>
+          </div>
+        </div>
+
+        {/* Copyright */}
+        <div className="mt-8 pt-8 border-t border-gray-800 text-center">
+          <p className="text-gray-400 text-sm">
+            © 2025 StockFlow • Privacy • Terms • Cookies • GDPR
+          </p>
+        </div>
       </div>
     </div>
   </footer>

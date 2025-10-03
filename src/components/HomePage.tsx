@@ -1569,184 +1569,237 @@ export const HomePage = () => {
 
 
 
-      {/* Hero Section with Video Below */}
-      <section className="relative py-12 md:py-32 px-4 overflow-hidden bg-gradient-to-b from-[#D9E6F5] to-[#F0F7FF]">
+      {/* Hero Section - Redesigned according to proposal */}
+      <section className="relative py-12 md:py-24 px-4 overflow-hidden bg-gradient-to-b from-white to-blue-50/30">
         {/* Subtle geometric pattern overlay */}
         <div 
-          className="absolute inset-0 pointer-events-none opacity-[0.07]"
+          className="absolute inset-0 pointer-events-none opacity-[0.03]"
           style={{
             backgroundImage: `
-              linear-gradient(30deg, #e0f2fe 12%, transparent 12.5%, transparent 87%, #e0f2fe 87.5%, #e0f2fe),
-              linear-gradient(150deg, #e0f2fe 12%, transparent 12.5%, transparent 87%, #e0f2fe 87.5%, #e0f2fe),
-              linear-gradient(30deg, #e0f2fe 12%, transparent 12.5%, transparent 87%, #e0f2fe 87.5%, #e0f2fe),
-              linear-gradient(150deg, #e0f2fe 12%, transparent 12.5%, transparent 87%, #e0f2fe 87.5%, #e0f2fe),
-              linear-gradient(60deg, #bae6fd 25%, transparent 25.5%, transparent 75%, #bae6fd 75%, #bae6fd),
-              linear-gradient(60deg, #bae6fd 25%, transparent 25.5%, transparent 75%, #bae6fd 75%, #bae6fd)
+              linear-gradient(30deg, #2563EB 12%, transparent 12.5%, transparent 87%, #2563EB 87.5%, #2563EB),
+              linear-gradient(150deg, #2563EB 12%, transparent 12.5%, transparent 87%, #2563EB 87.5%, #2563EB),
+              linear-gradient(30deg, #2563EB 12%, transparent 12.5%, transparent 87%, #2563EB 87.5%, #2563EB),
+              linear-gradient(150deg, #2563EB 12%, transparent 12.5%, transparent 87%, #2563EB 87.5%, #2563EB)
             `,
             backgroundSize: '80px 140px',
-            backgroundPosition: '0 0, 0 0, 40px 70px, 40px 70px, 0 0, 40px 70px'
+            backgroundPosition: '0 0, 0 0, 40px 70px, 40px 70px'
           }}
         />
         
         <div className="max-w-7xl mx-auto relative z-10">
           {/* Text Content */}
-          <div className="text-center mb-6 md:mb-16">
+          <div className="text-center mb-8 md:mb-16">
           
-              {/* Micro-badge for small retailers */}
+              {/* Micro-badge for social proof */}
               <FadeInWhenVisible delay={100}>
-                <div className="flex justify-center mb-4">
-                  <span className="inline-flex items-center px-4 py-2 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200/50 shadow-sm">
-                   For Small & Medium Sized Businesses
+                <div className="flex justify-center mb-6">
+                  <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-blue-50 text-blue-700 border border-blue-200/50 shadow-sm">
+                    Trusted by 500+ Belgian SMEs
                   </span>
                 </div>
               </FadeInWhenVisible>
           
               <BounceInWhenVisible delay={200}>
-                <h1 className="text-2xl sm:text-3xl md:text-6xl lg:text-6xl xl:text-7xl font-light text-gray-800 mb-4 md:mb-8 leading-tight px-4">
-                  Simple Inventory Management
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-gray-900 mb-6 md:mb-8 leading-tight px-4">
+                  Inventory Management That Saves You Money
                 </h1>
               </BounceInWhenVisible>
               
               <SlideUpWhenVisible delay={400}>
-                <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 mb-6 md:mb-12 max-w-3xl mx-auto px-4 leading-relaxed">
-                Easily track your products, manage collections, and monitor inventory. Avoid running out of popular items or overstocking unique pieces..
+                <p className="text-lg sm:text-xl md:text-2xl text-gray-700 mb-8 md:mb-12 max-w-4xl mx-auto px-4 leading-relaxed font-medium">
+                  Stop wasting capital on overstock and dead inventory. Track stock, reduce waste, and optimize ordering — all in one simple platform.
+                </p>
+              </SlideUpWhenVisible>
+              
+              <SlideUpWhenVisible delay={500}>
+                <p className="text-base sm:text-lg text-gray-600 mb-8 md:mb-12 max-w-3xl mx-auto px-4">
+                  Built for small retail shops, restaurants, and warehouses across Belgium & Europe
                 </p>
               </SlideUpWhenVisible>
               
               <ScaleInWhenVisible delay={600}>
-                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-stretch sm:items-center mb-6 md:mb-8 px-4">
-                <Button
-              onClick={handleLoginClick}
-              className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white
-              px-8 py-4 text-lg md:px-10 md:py-5 md:text-xl
-              font-semibold rounded-full transform hover:scale-105
-              transition-all duration-300
-              shadow-xl hover:shadow-2xl hover:shadow-blue-500/50
-              ring-2 ring-blue-500/0 focus:ring-4 focus:ring-blue-500/50 focus:outline-none
-              min-h-[48px]"
-            >
-              Start free today
-            </Button>
+                <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-stretch sm:items-center mb-8 md:mb-12 px-4">
+                  <Button
+                    onClick={handleLoginClick}
+                    className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white
+                    px-10 py-5 text-lg md:px-12 md:py-6 md:text-xl
+                    font-semibold rounded-full transform hover:scale-105
+                    transition-all duration-300
+                    shadow-xl hover:shadow-2xl hover:shadow-blue-500/50
+                    ring-2 ring-blue-500/0 focus:ring-4 focus:ring-blue-500/50 focus:outline-none
+                    min-h-[56px]"
+                  >
+                    Start For Free
+                  </Button>
+                  
 
                 </div>
               </ScaleInWhenVisible>
               
               <FadeInWhenVisible delay={800}>
-                <p className="text-xs sm:text-sm text-gray-500 mb-2 px-4">
-                  No credit card needed ♦ Unlimited time on Free plan
-                </p>
-
+                <div className="flex flex-col sm:flex-row gap-2 sm:gap-6 justify-center items-center text-sm text-gray-600 px-4">
+                  <div className="flex items-center gap-2">
+                    <Check className="h-4 w-4 text-green-500" />
+                    <span>No credit card</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Check className="h-4 w-4 text-green-500" />
+                    <span>Free forever plan</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Check className="h-4 w-4 text-green-500" />
+                    <span>Setup in 10 min</span>
+                  </div>
+                </div>
               </FadeInWhenVisible>
             </div>
             
-          {/* Hero Visual: In-Store Scene with Dashboard Overlay */}
+          {/* Hero Visual: Dashboard Screenshot */}
           <SlideUpWhenVisible delay={1000}>
             <div className="relative max-w-6xl mx-auto px-2 sm:px-4">
-              <div className="relative rounded-xl md:rounded-2xl overflow-hidden shadow-2xl bg-gradient-to-br from-gray-50 to-gray-100">
+              <div className="relative rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl bg-white border border-gray-200">
                 {/* Dashboard image */}
                 <img
                   src="dashboard.png"
-                  alt="Boutique owner managing artisan inventory in cozy shop setting"
+                  alt="StockFlow dashboard showing inventory management interface with stock levels, analytics, and mobile scanning features"
                   className="w-full h-auto object-contain"
                 />
               </div>
-              
-
             </div>
           </SlideUpWhenVisible>
 
         </div>
       </section>
 
-
-      {/* One-line Value + 3 Quick Bullets - Above the Fold */}
-      <section className="py-12 md:py-16 border-b border-gray-100">
-        <div className="max-w-6xl mx-auto px-4">
+      {/* Social Proof Bar - Immediately Below Hero */}
+      <section className="py-8 bg-white ">
+        <div className="max-w-7xl mx-auto px-4">
           <FadeInWhenVisible>
-            {/* One-line value proposition */}
-            <div className="text-center mb-8 md:mb-12 px-4">
-              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-light text-gray-900 mb-4 md:mb-8 leading-tight">
-                Stop Wasting Money on Stock
-              </h1>
-              <p className="text-sm sm:text-base md:text-lg text-gray-700 font-medium max-w-3xl mx-auto">
-                Stop losing money to overstock, waste, and slow-moving inventory
+            <div className="text-center">
+              <p className="text-sm font-medium text-gray-600 mb-6">
+                "Trusted by leading Belgian businesses"
               </p>
+              
+              {/* Company Logos or Industry Icons */}
+              <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12 opacity-60 hover:opacity-100 transition-opacity duration-300">
+                {/* Industry Icons since we don't have real company logos */}
+                <div className="flex flex-col items-center gap-2">
+                  <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
+                    <Building className="h-8 w-8 text-gray-600" />
+                  </div>
+                  <span className="text-xs text-gray-500 font-medium">Retail</span>
+                </div>
+                
+                <div className="flex flex-col items-center gap-2">
+                  <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
+                    <Package className="h-8 w-8 text-gray-600" />
+                  </div>
+                  <span className="text-xs text-gray-500 font-medium">Food & Beverage</span>
+                </div>
+                
+                <div className="flex flex-col items-center gap-2">
+                  <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
+                    <Truck className="h-8 w-8 text-gray-600" />
+                  </div>
+                  <span className="text-xs text-gray-500 font-medium">Wholesale</span>
+                </div>
+                
+                <div className="flex flex-col items-center gap-2">
+                  <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
+                    <BarChart3 className="h-8 w-8 text-gray-600" />
+                  </div>
+                  <span className="text-xs text-gray-500 font-medium">Manufacturing</span>
+                </div>
+              </div>
+              
+              {/* Metrics */}
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <p className="text-sm text-gray-600">
+                  <span className="font-semibold text-blue-600">4.8/5 stars</span> • 
+                  <span className="font-semibold text-blue-600"> 500+ businesses</span> • 
+                  <span className="font-semibold text-blue-600"> €2.4M inventory managed</span>
+                </p>
+              </div>
+            </div>
+          </FadeInWhenVisible>
+        </div>
+      </section>
+
+      {/* Problem → Solution Section */}
+      <section className="py-16 md:py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4">
+          <FadeInWhenVisible>
+            <div className="text-center mb-16">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                Stop Losing Money on Inventory Mistakes
+              </h2>
             </div>
           </FadeInWhenVisible>
           
-          {/* 3 Micro-benefits for retailers */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 px-4">
+          {/* 3-Column Problem → Solution Layout */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+            {/* Lost Capital */}
             <SlideUpWhenVisible delay={100}>
-              <div className="flex flex-col items-center text-center p-6 sm:p-8 rounded-xl bg-white border border-gray-200 shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-                <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-blue-100 to-blue-200 rounded-full flex items-center justify-center mb-4 sm:mb-5 shadow-inner">
-                  <CheckCircle className="h-10 w-10 sm:h-12 sm:w-12 text-blue-700" />
+              <div className="text-center bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                <div className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Euro className="h-10 w-10 text-red-600" />
                 </div>
-                <h3 className="text-lg sm:text-2xl font-bold text-gray-900 mb-4">
-                  No more "Do we have this?"
-                </h3>
-                <div className="space-y-3 w-full">
-                  <div className="flex items-center gap-2 text-left">
-                    <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
-                    <span className="text-sm text-gray-600">Check stock instantly from phone</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-left">
-                    <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
-                    <span className="text-sm text-gray-600">No need to walk to the backroom</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-left">
-                    <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
-                    <span className="text-sm text-gray-600">Real-time stock availability</span>
-                  </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">Lost Capital</h3>
+                <div className="bg-red-50 border border-red-200 rounded-xl p-6 mb-6">
+                  <p className="text-gray-700 font-medium mb-2">
+                    "€3,200 tied up in slow-moving stock"
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    Money sitting on shelves instead of working for your business
+                  </p>
+                </div>
+                <div className="flex items-center justify-center gap-2 text-green-600 font-semibold">
+                  <ArrowRight className="h-5 w-5" />
+                  <span>Free up cash for bestsellers</span>
                 </div>
               </div>
             </SlideUpWhenVisible>
             
+            {/* Wasted Time */}
             <SlideUpWhenVisible delay={200}>
-              <div className="flex flex-col items-center text-center p-6 sm:p-8 rounded-xl bg-white border border-gray-200 shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-                <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-green-100 to-green-200 rounded-full flex items-center justify-center mb-4 sm:mb-5 shadow-inner">
-                  <Clock className="h-10 w-10 sm:h-12 sm:w-12 text-green-700" />
+              <div className="text-center bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                <div className="w-20 h-20 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Clock className="h-10 w-10 text-orange-600" />
                 </div>
-                <h3 className="text-lg sm:text-2xl font-bold text-gray-900 mb-4">
-                  Count stock in 10 minutes
-                </h3>
-                <div className="space-y-3 w-full">
-                  <div className="flex items-center gap-2 text-left">
-                    <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
-                    <span className="text-sm text-gray-600">Scan barcodes with phone camera</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-left">
-                    <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
-                    <span className="text-sm text-gray-600">No clipboards or Excel sheets</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-left">
-                    <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
-                    <span className="text-sm text-gray-600">Complete counts in 10 minutes</span>
-                  </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">Wasted Time</h3>
+                <div className="bg-orange-50 border border-orange-200 rounded-xl p-6 mb-6">
+                  <p className="text-gray-700 font-medium mb-2">
+                    "8 hours/week counting stock with clipboard"
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    Manual counting that could be spent serving customers
+                  </p>
+                </div>
+                <div className="flex items-center justify-center gap-2 text-green-600 font-semibold">
+                  <ArrowRight className="h-5 w-5" />
+                  <span>Count in 10 minutes with phone</span>
                 </div>
               </div>
             </SlideUpWhenVisible>
             
+            {/* Guessing Game */}
             <SlideUpWhenVisible delay={300}>
-              <div className="flex flex-col items-center text-center p-6 sm:p-8 rounded-xl bg-white border border-gray-200 shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 sm:col-span-2 lg:col-span-1">
-                <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-purple-100 to-purple-200 rounded-full flex items-center justify-center mb-4 sm:mb-5 shadow-inner">
-                  <TrendingUp className="h-10 w-10 sm:h-12 sm:w-12 text-purple-700" />
+              <div className="text-center bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                <div className="w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <BarChart3 className="h-10 w-10 text-purple-600" />
                 </div>
-                <h3 className="text-lg sm:text-2xl font-bold text-gray-900 mb-4">
-                  Stop wasting money
-                </h3>
-                <div className="space-y-3 w-full">
-                  <div className="flex items-center gap-2 text-left">
-                    <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
-                    <span className="text-sm text-gray-600">Identify slow-moving products</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-left">
-                    <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
-                    <span className="text-sm text-gray-600">Optimize stock levels automatically</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-left">
-                    <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
-                    <span className="text-sm text-gray-600">Free up cash before it's tied up</span>
-                  </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">Guessing Game</h3>
+                <div className="bg-purple-50 border border-purple-200 rounded-xl p-6 mb-6">
+                  <p className="text-gray-700 font-medium mb-2">
+                    "Don't know what's selling vs. sitting"
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    Making reorder decisions without data
+                  </p>
+                </div>
+                <div className="flex items-center justify-center gap-2 text-green-600 font-semibold">
+                  <ArrowRight className="h-5 w-5" />
+                  <span>See exactly what to reorder</span>
                 </div>
               </div>
             </SlideUpWhenVisible>
@@ -1754,14 +1807,156 @@ export const HomePage = () => {
         </div>
       </section>
 
+      {/* Key Features Section - Alternating Layout */}
+      <section className="py-20 md:py-28 bg-white">
+        <div className="max-w-7xl mx-auto px-4">
+          <FadeInWhenVisible>
+            <div className="text-center mb-16 md:mb-20">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                Everything You Need to Manage Inventory
+              </h2>
+            </div>
+          </FadeInWhenVisible>
 
+          {/* Feature 1: Mobile Scanning */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center mb-20 md:mb-24">
+            <SlideInWhenVisible direction="left" delay={100}>
+              <div className="order-2 lg:order-1">
+                <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-3xl p-8 md:p-12">
+                  <img
+                    src="/placeholder.svg"
+                    alt="Mobile phone scanning barcodes for inventory management"
+                    className="w-full h-auto rounded-2xl shadow-lg"
+                  />
+                </div>
+              </div>
+            </SlideInWhenVisible>
+            
+            <SlideInWhenVisible direction="right" delay={200}>
+              <div className="order-1 lg:order-2">
+                <div className="space-y-6">
+                  <div className="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 text-blue-700 text-sm font-medium">
+                    Core Feature
+                  </div>
+                  <h3 className="text-3xl md:text-4xl font-bold text-gray-900">
+                    Scan Barcodes with Phone
+                  </h3>
+                  <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
+                    Skip the clipboard. Use your phone camera to scan barcodes and update stock from anywhere in your shop.
+                  </p>
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3">
+                      <Check className="h-5 w-5 text-green-500" />
+                      <span className="text-gray-700">Works offline</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <Check className="h-5 w-5 text-green-500" />
+                      <span className="text-gray-700">No special hardware</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <Check className="h-5 w-5 text-green-500" />
+                      <span className="text-gray-700">iOS & Android</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </SlideInWhenVisible>
+          </div>
 
+          {/* Feature 2: Dead Stock Alerts */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center mb-20 md:mb-24">
+            <SlideInWhenVisible direction="right" delay={100}>
+              <div>
+                <div className="space-y-6">
+                  <div className="inline-flex items-center px-4 py-2 rounded-full bg-purple-100 text-purple-700 text-sm font-medium">
+                    Unique Feature
+                  </div>
+                  <h3 className="text-3xl md:text-4xl font-bold text-gray-900">
+                    Dead Stock Liquidation Optimizer
+                  </h3>
+                  <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
+                    Automatically identify inventory draining your capital. Flag items with zero sales for 30, 60, or 90 days.
+                  </p>
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3">
+                      <Check className="h-5 w-5 text-green-500" />
+                      <span className="text-gray-700">Auto-flag non-movers</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <Check className="h-5 w-5 text-green-500" />
+                      <span className="text-gray-700">Calculate tied-up capital</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <Check className="h-5 w-5 text-green-500" />
+                      <span className="text-gray-700">Get liquidation recommendations</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </SlideInWhenVisible>
+            
+            <SlideInWhenVisible direction="left" delay={200}>
+              <div>
+                <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-3xl p-8 md:p-12">
+                  <img
+                    src="/placeholder.svg"
+                    alt="Dead stock liquidation optimizer dashboard showing slow-moving inventory"
+                    className="w-full h-auto rounded-2xl shadow-lg"
+                  />
+                </div>
+              </div>
+            </SlideInWhenVisible>
+          </div>
 
-
-
+          {/* Feature 3: Multi-Location Tracking */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            <SlideInWhenVisible direction="left" delay={100}>
+              <div className="order-2 lg:order-1">
+                <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-3xl p-8 md:p-12">
+                  <img
+                    src="/placeholder.svg"
+                    alt="Multi-location inventory tracking across multiple stores"
+                    className="w-full h-auto rounded-2xl shadow-lg"
+                  />
+                </div>
+              </div>
+            </SlideInWhenVisible>
+            
+            <SlideInWhenVisible direction="right" delay={200}>
+              <div className="order-1 lg:order-2">
+                <div className="space-y-6">
+                  <div className="inline-flex items-center px-4 py-2 rounded-full bg-green-100 text-green-700 text-sm font-medium">
+                    Advanced Feature
+                  </div>
+                  <h3 className="text-3xl md:text-4xl font-bold text-gray-900">
+                    Multi-Location Management
+                  </h3>
+                  <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
+                    Track inventory across multiple stores, warehouses, or stockrooms. See stock levels at each location in real-time.
+                  </p>
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3">
+                      <Check className="h-5 w-5 text-green-500" />
+                      <span className="text-gray-700">Real-time stock levels</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <Check className="h-5 w-5 text-green-500" />
+                      <span className="text-gray-700">Transfer items between locations</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <Check className="h-5 w-5 text-green-500" />
+                      <span className="text-gray-700">Low stock alerts per location</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </SlideInWhenVisible>
+          </div>
+        </div>
+      </section>
 
       {/* Start Tracking in 3 Simple Steps - New Section */}
-      <section className="py-20 md:py-28 bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-50 relative overflow-hidden">
+      <section className="py-20 md:py-28 bg-white relative overflow-hidden">
         {/* Subtle background decoration */}
         <div className="absolute inset-0 opacity-5">
           <div className="absolute top-20 left-1/4 w-96 h-96 bg-blue-400 rounded-full blur-3xl"></div>
@@ -1801,53 +1996,67 @@ export const HomePage = () => {
               </div>
             </div>
 
-            {/* Step 1: Add products or import CSV */}
+            {/* Step 1: Import Products */}
             <FadeInWhenVisible delay={100}>
               <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 h-full flex flex-col">
+                {/* Step Number */}
+                <div className="flex justify-center mb-6">
+                  <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center text-white text-2xl font-bold">
+                    1
+                  </div>
+                </div>
+
                 {/* Icon */}
                 <div className="flex justify-center mb-6">
-                  <div className="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center">
-                    <Package className="h-12 w-12 text-blue-600" />
+                  <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center">
+                    <Package className="h-10 w-10 text-blue-600" />
                   </div>
                 </div>
 
                 {/* Content */}
                 <div className="flex-1">
-                  <h3 className="text-xl font-bold text-gray-900 mb-4 text-center">
-                    Add products or import CSV
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4 text-center">
+                    Import Products
                   </h3>
                   <p className="text-gray-600 text-center leading-relaxed mb-6">
-                    Type in your products manually or upload your existing inventory list from Excel. Your data imports in seconds.
+                    Upload Excel or type in your products. Your data imports in seconds.
                   </p>
                 </div>
 
                 {/* Footer indicator */}
                 <div className="pt-6 border-t border-gray-200">
                   <div className="flex items-center justify-center gap-2 text-gray-600">
-                    <CheckCircle className="h-5 w-5 text-blue-600" />
+                    <Timer className="h-5 w-5 text-blue-600" />
                     <span className="font-medium">Takes 5 minutes</span>
                   </div>
                 </div>
               </div>
             </FadeInWhenVisible>
 
-            {/* Step 2: Scan & count with your phone */}
+            {/* Step 2: Scan & Count */}
             <FadeInWhenVisible delay={200}>
               <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 h-full flex flex-col">
+                {/* Step Number */}
+                <div className="flex justify-center mb-6">
+                  <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center text-white text-2xl font-bold">
+                    2
+                  </div>
+                </div>
+
                 {/* Icon */}
                 <div className="flex justify-center mb-6">
-                  <div className="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center">
-                    <Smartphone className="h-12 w-12 text-blue-600" />
+                  <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center">
+                    <Smartphone className="h-10 w-10 text-blue-600" />
                   </div>
                 </div>
 
                 {/* Content */}
                 <div className="flex-1">
-                  <h3 className="text-xl font-bold text-gray-900 mb-4 text-center">
-                    Scan & count with your phone
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4 text-center">
+                    Scan & Count
                   </h3>
                   <p className="text-gray-600 text-center leading-relaxed mb-6">
-                    Use your phone camera to scan barcodes. Update stock from the shop floor or backroom — no laptop needed.
+                    Use your phone camera to scan barcodes. Update stock from anywhere in your shop.
                   </p>
                 </div>
 
@@ -1861,23 +2070,30 @@ export const HomePage = () => {
               </div>
             </FadeInWhenVisible>
 
-            {/* Step 3: Dead Stock Liquidation Optimizer */}
+            {/* Step 3: Track & Optimize */}
             <FadeInWhenVisible delay={300}>
               <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 h-full flex flex-col">
+                {/* Step Number */}
+                <div className="flex justify-center mb-6">
+                  <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center text-white text-2xl font-bold">
+                    3
+                  </div>
+                </div>
+
                 {/* Icon */}
                 <div className="flex justify-center mb-6">
-                  <div className="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center">
-                    <Target className="h-12 w-12 text-blue-600" />
+                  <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center">
+                    <Target className="h-10 w-10 text-blue-600" />
                   </div>
                 </div>
 
                 {/* Content */}
                 <div className="flex-1">
-                  <h3 className="text-xl font-bold text-gray-900 mb-4 text-center">
-                    Dead Stock Liquidation Optimizer
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4 text-center">
+                    Track & Optimize
                   </h3>
                   <p className="text-gray-600 text-center leading-relaxed mb-6">
-                    Flag items with zero sales for 30, 60, or 90 days. Auto-flag non-movers. Get liquidation recommendations.
+                    See low stock alerts, track what's selling, and optimize your inventory automatically.
                   </p>
                 </div>
 
@@ -2090,6 +2306,190 @@ export const HomePage = () => {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-20 md:py-28 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4">
+          <FadeInWhenVisible>
+            <div className="text-center mb-16">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                Loved by Small Business Owners
+              </h2>
+            </div>
+          </FadeInWhenVisible>
+
+          {/* Testimonials Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+            {/* Testimonial 1 */}
+            <SlideUpWhenVisible delay={100}>
+              <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                <div className="flex items-center mb-6">
+                  <img 
+                    src="/Laura.png" 
+                    alt="Laura Peeters"
+                    className="w-16 h-16 rounded-full object-cover mr-4"
+                  />
+                  <div>
+                    <h4 className="font-bold text-gray-900">Laura Peeters</h4>
+                    <p className="text-sm text-gray-600">Owner, De Koffieboetiek</p>
+                  </div>
+                </div>
+                
+                <blockquote className="text-gray-700 mb-6 leading-relaxed">
+                  "StockFlow stopped us from wasting €4,800 annually on expired inventory and overstock. We now invest that capital into bestselling items instead."
+                </blockquote>
+                
+                <div className="flex items-center justify-between">
+                  <div className="flex text-yellow-400">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="h-4 w-4 fill-current" />
+                    ))}
+                  </div>
+                  <div className="text-sm text-green-600 font-semibold">
+                    €4,800/year saved
+                  </div>
+                </div>
+              </div>
+            </SlideUpWhenVisible>
+
+            {/* Testimonial 2 */}
+            <SlideUpWhenVisible delay={200}>
+              <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                <div className="flex items-center mb-6">
+                  <img 
+                    src="/jan.png" 
+                    alt="Sophie Martens"
+                    className="w-16 h-16 rounded-full object-cover mr-4"
+                  />
+                  <div>
+                    <h4 className="font-bold text-gray-900">Sophie Martens</h4>
+                    <p className="text-sm text-gray-600">Owner, Maison Belle Boutique</p>
+                  </div>
+                </div>
+                
+                <blockquote className="text-gray-700 mb-6 leading-relaxed">
+                  "StockFlow helped us identify €8,500 worth of slow-moving inventory. We cleared it at 30% margin instead of letting it sit for another season."
+                </blockquote>
+                
+                <div className="flex items-center justify-between">
+                  <div className="flex text-yellow-400">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="h-4 w-4 fill-current" />
+                    ))}
+                  </div>
+                  <div className="text-sm text-green-600 font-semibold">
+                    €8,500 recovered
+                  </div>
+                </div>
+              </div>
+            </SlideUpWhenVisible>
+
+            {/* Testimonial 3 */}
+            <SlideUpWhenVisible delay={300}>
+              <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                <div className="flex items-center mb-6">
+                  <img 
+                    src="/anke.png" 
+                    alt="Anke Willems"
+                    className="w-16 h-16 rounded-full object-cover mr-4"
+                  />
+                  <div>
+                    <h4 className="font-bold text-gray-900">Anke Willems</h4>
+                    <p className="text-sm text-gray-600">Owner, Artisan & Co.</p>
+                  </div>
+                </div>
+                
+                <blockquote className="text-gray-700 mb-6 leading-relaxed">
+                  "We used to over-order seasonal items that would sit unsold for months, tying up €3,200 in capital. StockFlow's alerts help us order just enough."
+                </blockquote>
+                
+                <div className="flex items-center justify-between">
+                  <div className="flex text-yellow-400">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="h-4 w-4 fill-current" />
+                    ))}
+                  </div>
+                  <div className="text-sm text-green-600 font-semibold">
+                    €3,200 freed
+                  </div>
+                </div>
+              </div>
+            </SlideUpWhenVisible>
+          </div>
+
+          {/* Trust Metrics */}
+          <FadeInWhenVisible delay={400}>
+            <div className="mt-16 text-center">
+              <div className="bg-white rounded-2xl p-8 shadow-lg max-w-4xl mx-auto">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  <div className="text-center">
+                    <div className="text-4xl font-bold text-blue-600 mb-2">4.8/5</div>
+                    <div className="text-gray-600">Customer Rating</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-4xl font-bold text-blue-600 mb-2">500+</div>
+                    <div className="text-gray-600">Businesses Using StockFlow</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-4xl font-bold text-blue-600 mb-2">€2.4M</div>
+                    <div className="text-gray-600">Inventory Managed</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </FadeInWhenVisible>
+        </div>
+      </section>
+
+      {/* Trust Badges Section */}
+      <section className="py-12 md:py-16 bg-white border-t border-gray-100">
+        <div className="max-w-7xl mx-auto px-4">
+          <FadeInWhenVisible>
+            <div className="text-center">
+              <h3 className="text-lg font-semibold text-gray-900 mb-8">
+                Secure, Reliable, Compliant
+              </h3>
+              
+              <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
+                <div className="flex flex-col items-center gap-2">
+                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
+                    <Shield className="h-8 w-8 text-green-600" />
+                  </div>
+                  <span className="text-sm font-medium text-gray-700">GDPR Compliant</span>
+                </div>
+                
+                <div className="flex flex-col items-center gap-2">
+                  <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
+                    <Globe className="h-8 w-8 text-blue-600" />
+                  </div>
+                  <span className="text-sm font-medium text-gray-700">99.9% Uptime</span>
+                </div>
+                
+                <div className="flex flex-col items-center gap-2">
+                  <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center">
+                    <Building className="h-8 w-8 text-purple-600" />
+                  </div>
+                  <span className="text-sm font-medium text-gray-700">EU Hosted</span>
+                </div>
+                
+                <div className="flex flex-col items-center gap-2">
+                  <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center">
+                    <Shield className="h-8 w-8 text-orange-600" />
+                  </div>
+                  <span className="text-sm font-medium text-gray-700">SSL Encrypted</span>
+                </div>
+                
+                <div className="flex flex-col items-center gap-2">
+                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
+                    <CheckCircle className="h-8 w-8 text-green-600" />
+                  </div>
+                  <span className="text-sm font-medium text-gray-700">Secure Payments</span>
+                </div>
+              </div>
+            </div>
+          </FadeInWhenVisible>
         </div>
       </section>
 

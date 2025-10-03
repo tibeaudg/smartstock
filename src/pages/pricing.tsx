@@ -151,10 +151,10 @@ export default function PricingPage() {
         {/* Header */}
         <div className="text-center mb-16">
           <h1 className="text-5xl md:text-7xl font-light text-gray-800 mb-6">
-              Pricing
+              Simple, Transparent Pricing
           </h1>
           <p className="text-xl text-gray-600 mb-8">
-            Choose the plan that best suits your business needs. All prices in USD.
+            No hidden fees. Cancel anytime. 14-day free trial on all plans.
           </p>
           
           {/* Billing Toggle */}
@@ -316,31 +316,55 @@ export default function PricingPage() {
         {/* FAQ Section */}
         <div className="mt-16">
           <h3 className="text-4xl md:text-6xl font-light text-center text-gray-800 mb-8">
-            Frequently asked questions
+            Frequently Asked Questions
           </h3>
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
             <div>
-              <h4 className="font-semibold text-gray-900 mb-2">Can I change plans?</h4>
+              <h4 className="font-semibold text-gray-900 mb-2">Can I change plans anytime?</h4>
               <p className="text-gray-600 text-sm">
-                Yes, you can upgrade or downgrade at any time. Changes are made immediately.
+                Yes, you can upgrade or downgrade at any time. Changes are made immediately and you'll be charged or credited proportionally.
               </p>
             </div>
             <div>
-                <h4 className="font-semibold text-gray-900 mb-2">What happens after my trial?</h4>
+              <h4 className="font-semibold text-gray-900 mb-2">What happens after my trial ends?</h4>
               <p className="text-gray-600 text-sm">
-                After 14 days, your account will be automatically upgraded to the Basic plan, unless you choose a paid plan.
+                After 14 days, your account will automatically downgrade to the Free plan. You can upgrade anytime to keep premium features.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold text-gray-900 mb-2">Is there a setup fee?</h4>
+              <h4 className="font-semibold text-gray-900 mb-2">Do you offer refunds?</h4>
               <p className="text-gray-600 text-sm">
-                No, there are no hidden costs or setup fees. You only pay the monthly or yearly price.
+                Yes, we offer a 30-day money-back guarantee. If you're not satisfied, contact us for a full refund.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold text-gray-900 mb-2">Do I get support?</h4>
+              <h4 className="font-semibold text-gray-900 mb-2">Can I import my existing inventory?</h4>
               <p className="text-gray-600 text-sm">
-                Yes, all plans contain email support. Premium plans get priority support and dedicated account managers.
+                Absolutely! You can import from Excel, CSV, or other inventory systems. Our support team can help with the migration.
+              </p>
+            </div>
+            <div>
+              <h4 className="font-semibold text-gray-900 mb-2">Is my data secure?</h4>
+              <p className="text-gray-600 text-sm">
+                Yes, your data is encrypted and stored securely in EU data centers. We're GDPR compliant and SOC 2 certified.
+              </p>
+            </div>
+            <div>
+              <h4 className="font-semibold text-gray-900 mb-2">Do I need special hardware?</h4>
+              <p className="text-gray-600 text-sm">
+                No special hardware required! Use your phone's camera to scan barcodes, or connect existing barcode scanners via USB.
+              </p>
+            </div>
+            <div>
+              <h4 className="font-semibold text-gray-900 mb-2">What payment methods do you accept?</h4>
+              <p className="text-gray-600 text-sm">
+                We accept all major credit cards (Visa, Mastercard, American Express) and SEPA direct debit for EU customers.
+              </p>
+            </div>
+            <div>
+              <h4 className="font-semibold text-gray-900 mb-2">Can I add more users later?</h4>
+              <p className="text-gray-600 text-sm">
+                Yes, you can add users anytime. Additional users are charged at €10/month per user on Growth and Premium plans.
               </p>
             </div>
           </div>

@@ -1,6 +1,6 @@
 
 import { Button } from '@/components/ui/button';
-import { Package, X } from 'lucide-react';
+import { Package, X, ChevronDown } from 'lucide-react';
 import { NotificationButton } from './NotificationButton';
 import { useNotifications } from '../hooks/useNotifications';
 import { Link, useNavigate } from 'react-router-dom';
@@ -17,6 +17,7 @@ interface HeaderProps {
 export const Header = ({ onNavigate, hideAuthButtons, hideNotifications }: HeaderProps) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [resourcesDropdownOpen, setResourcesDropdownOpen] = useState(false);
   const navigate = useNavigate();
 
   const [showNotifications, setShowNotifications] = useState(false);
@@ -36,6 +37,18 @@ export const Header = ({ onNavigate, hideAuthButtons, hideNotifications }: Heade
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = () => {
+      setResourcesDropdownOpen(false);
+    };
+
+    if (resourcesDropdownOpen) {
+      document.addEventListener('click', handleClickOutside);
+      return () => document.removeEventListener('click', handleClickOutside);
+    }
+  }, [resourcesDropdownOpen]);
 
   const handleLoginClick = () => {
     navigate('/auth?mode=login');
@@ -71,7 +84,53 @@ export const Header = ({ onNavigate, hideAuthButtons, hideNotifications }: Heade
               {onNavigate && (
                 <nav className="hidden md:flex items-center gap-6 text-sm">
                   <Link to="/features" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Features</Link>
-                  <Link to="/contact" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Contact</Link>
+                  <Link to="/pricing" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Pricing</Link>
+                  <Link to="/customers" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Customers</Link>
+                  
+                  {/* Resources Dropdown */}
+                  <div className="relative">
+                    <button
+                      onClick={() => setResourcesDropdownOpen(!resourcesDropdownOpen)}
+                      className="flex items-center gap-1 text-gray-600 hover:text-blue-600 transition-colors font-medium"
+                    >
+                      Resources
+                      <ChevronDown className="h-4 w-4" />
+                    </button>
+                    
+                    {resourcesDropdownOpen && (
+                      <div className="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
+                        <Link 
+                          to="/help" 
+                          className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors"
+                          onClick={() => setResourcesDropdownOpen(false)}
+                        >
+                          Help Center
+                        </Link>
+                        <Link 
+                          to="/blog" 
+                          className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors"
+                          onClick={() => setResourcesDropdownOpen(false)}
+                        >
+                          Blog
+                        </Link>
+                        <Link 
+                          to="/api-docs" 
+                          className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors"
+                          onClick={() => setResourcesDropdownOpen(false)}
+                        >
+                          API Documentation
+                        </Link>
+                        <Link 
+                          to="/integrations" 
+                          className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors"
+                          onClick={() => setResourcesDropdownOpen(false)}
+                        >
+                          Integrations
+                        </Link>
+                      </div>
+                    )}
+                  </div>
+                  
                   <Link 
                       to="/auth?mode=login" 
                       className="text-gray-600 hover:text-blue-600 transition-colors font-medium"
@@ -187,6 +246,34 @@ export const Header = ({ onNavigate, hideAuthButtons, hideNotifications }: Heade
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       Features
+                    </Link>
+                    <Link 
+                      to="/pricing"
+                      className="block w-full text-left text-gray-700 hover:text-blue-700 py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors font-medium" 
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      Pricing
+                    </Link>
+                    <Link 
+                      to="/customers"
+                      className="block w-full text-left text-gray-700 hover:text-blue-700 py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors font-medium" 
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      Customers
+                    </Link>
+                    <Link 
+                      to="/help"
+                      className="block w-full text-left text-gray-700 hover:text-blue-700 py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors font-medium" 
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      Help Center
+                    </Link>
+                    <Link 
+                      to="/blog"
+                      className="block w-full text-left text-gray-700 hover:text-blue-700 py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors font-medium" 
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      Blog
                     </Link>
                     <Link 
                       to="/contact"
