@@ -27,6 +27,7 @@ import { GoogleAdsTracking } from '@/utils/googleAdsTracking';
 import { ConversionTrackingTest } from './ConversionTrackingTest';
 import { SavingsCalculator } from './SavingsCalculator';
 import Footer from './Footer';
+import { FloatingChatWidget } from './FloatingChatWidget';
 
 
 
@@ -1601,23 +1602,18 @@ export const HomePage = () => {
           
               <BounceInWhenVisible delay={200}>
                 <div className="text-center mb-6 sm:mb-10 md:mb-14 lg:mb-16">
-                  <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-light text-gray-800 mb-3 sm:mb-4 md:mb-6 lg:mb-8 leading-tight px-2">
+                  <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-7xl font-light text-gray-800 mb-3 sm:mb-4 md:mb-6 lg:mb-8 leading-tight px-2">
                 Inventory Management That Saves You Money
               </h1>
             </div>
               </BounceInWhenVisible>
               
               <SlideUpWhenVisible delay={400}>
-                <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-700 mb-6 sm:mb-8 md:mb-10 lg:mb-12 max-w-4xl mx-auto px-4 leading-relaxed font-medium">
+                <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-700 mb-6 sm:mb-8 md:mb-10 lg:mb-12 max-w-4xl mx-auto px-4 leading-relaxed">
                   Stop wasting capital on overstock and dead inventory. Track stock, reduce waste, and optimize ordering. All in one simple platform.
                 </p>
               </SlideUpWhenVisible>
-              
-              <SlideUpWhenVisible delay={500}>
-                <p className="text-sm sm:text-base md:text-lg text-gray-600 mb-6 sm:mb-8 md:mb-10 lg:mb-12 max-w-3xl mx-auto px-4">
-                  Built for small retail shops, restaurants, and warehouses across Belgium & Europe
-                </p>
-              </SlideUpWhenVisible>
+
               
               <ScaleInWhenVisible delay={600}>
                 <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-6 justify-center items-stretch sm:items-center mb-6 sm:mb-8 md:mb-10 lg:mb-12 px-4 max-w-md sm:max-w-none mx-auto">
@@ -2267,7 +2263,8 @@ export const HomePage = () => {
 
       <Footer />
 
-
+      {/* Floating Chat Widget - Separate from logged-in user chat */}
+      <FloatingChatWidget alwaysVisible={true} />
 
 
   </div>
