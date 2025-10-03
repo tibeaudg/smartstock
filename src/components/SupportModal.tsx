@@ -1,20 +1,14 @@
 import React, { useState } from 'react';
 import { 
   X, 
-  MessageCircle, 
-  Play, 
   HelpCircle, 
   Phone, 
   Mail, 
-  FileText,
-  ExternalLink,
   ChevronRight,
-  Crown,
   Copy,
   Check
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { ChatModal } from './ChatModal';
 import { useAuth } from '@/hooks/useAuth';
 import { useSubscription } from '@/hooks/useSubscription';
 import { toast } from 'sonner';
@@ -23,7 +17,6 @@ interface SupportModalProps {
   open: boolean;
   onClose: () => void;
   'aria-describedby'?: string;
-  resetUnreadMessages?: () => void;
 }
 
 interface SupportOption {
@@ -39,28 +32,16 @@ interface SupportOption {
 export const SupportModal: React.FC<SupportModalProps> = ({ 
   open, 
   onClose, 
-  'aria-describedby': ariaDescribedBy,
-  resetUnreadMessages
+  'aria-describedby': ariaDescribedBy
 }) => {
-  const [chatOpen, setChatOpen] = useState(false);
   const [phoneOpen, setPhoneOpen] = useState(false);
   const { userProfile } = useAuth();
   const { currentTier } = useSubscription();
 
   // Check plan access based on current tier
-  const isGrowthOrPremium = currentTier?.name === 'growth' || currentTier?.name === 'premium';
   const isPremiumOnly = currentTier?.name === 'premium';
 
   const supportOptions: SupportOption[] = [
-    {
-      id: 'chat',
-      title: 'Chat with us',
-      description: 'Direct contact with our support team via chat',
-      icon: MessageCircle,
-      action: () => setChatOpen(true),
-      color: 'bg-blue-500',
-      disabled: !isGrowthOrPremium
-    },
     {
       id: 'faq',
       title: 'Frequently asked questions',
@@ -130,7 +111,7 @@ export const SupportModal: React.FC<SupportModalProps> = ({
           style={{ left: '50%', transform: 'translate(-50%, -50%)', width: '600px' }}
           onClick={(e) => e.stopPropagation()}
         >
-        <SupportContent onClose={onClose} supportOptions={supportOptions} isGrowthOrPremium={isGrowthOrPremium} isPremiumOnly={isPremiumOnly} />
+        <SupportContent onClose={onClose} supportOptions={supportOptions} isPremiumOnly={isPremiumOnly} />
       </div>
 
       {/* Mobile Position */}
@@ -138,19 +119,9 @@ export const SupportModal: React.FC<SupportModalProps> = ({
         className="absolute inset-x-4 top-1/2 -translate-y-1/2 md:hidden"
         onClick={(e) => e.stopPropagation()}
       >
-        <SupportContent onClose={onClose} supportOptions={supportOptions} isGrowthOrPremium={isGrowthOrPremium} isPremiumOnly={isPremiumOnly} />
+        <SupportContent onClose={onClose} supportOptions={supportOptions} isPremiumOnly={isPremiumOnly} />
         </div>
       </div>
-
-      {/* Chat Modal - Only show for Growth and Premium users */}
-      {chatOpen && isGrowthOrPremium && (
-        <ChatModal 
-          open={chatOpen} 
-          onClose={() => setChatOpen(false)} 
-          aria-describedby="chat-modal-description"
-          resetUnreadMessages={resetUnreadMessages}
-        />
-      )}
 
       {/* Phone Modal - Only show for Premium users */}
       {phoneOpen && isPremiumOnly && (
@@ -167,11 +138,10 @@ export const SupportModal: React.FC<SupportModalProps> = ({
 interface SupportContentProps {
   onClose: () => void;
   supportOptions: SupportOption[];
-  isGrowthOrPremium: boolean;
   isPremiumOnly: boolean;
 }
 
-const SupportContent: React.FC<SupportContentProps> = ({ onClose, supportOptions, isGrowthOrPremium, isPremiumOnly }) => {
+const SupportContent: React.FC<SupportContentProps> = ({ onClose, supportOptions, isPremiumOnly }) => {
   return (
     <div className="bg-white rounded-xl shadow-2xl w-full max-w-2xl mx-auto flex flex-col max-h-[700px] overflow-hidden">
       {/* Header */}
@@ -237,7 +207,7 @@ const SupportContent: React.FC<SupportContentProps> = ({ onClose, supportOptions
                         {option.title}
                         {isDisabled && (
                           <span className="ml-2 text-xs bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">
-                            {option.id === 'chat' ? 'Growth+' : 'Premium'}
+                            Premium
                           </span>
                         )}
                       </h3>
@@ -261,7 +231,7 @@ const SupportContent: React.FC<SupportContentProps> = ({ onClose, supportOptions
                 {/* Tooltip for disabled options */}
                 {isDisabled && (
                   <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap">
-                    {option.id === 'chat' ? 'Growth+ plan required' : 'Premium plan required'} - Upgrade to access
+                    Premium plan required - Upgrade to access
                     <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
                   </div>
                 )}

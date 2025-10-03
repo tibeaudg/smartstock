@@ -29,6 +29,8 @@ import {
 from 'lucide-react';
 import { BranchSelector } from './BranchSelector';
 import { SupportModal } from './SupportModal';
+import { ChatModal } from './ChatModal';
+import { FloatingChatButton } from './FloatingChatButton';
 import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Button } from '@/components/ui/button';
@@ -66,7 +68,9 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
   const { isMobile } = useMobile();
   const { signOut } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [supportOpen, setSupportOpen] = useState(false);
+  const [chatOpen, setChatOpen] = useState(false);
   const { unreadCount: unreadMessages, resetUnreadCount } = useUnreadMessages();
   const [openSubmenus, setOpenSubmenus] = useState<Record<string, boolean>>({});
   
@@ -315,52 +319,6 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
 
 
 
-          {/* Help Section */}
-          <div className="border-t border-gray-200">
-            <div className="px-3 py-2">
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                onClick={() => setSupportOpen(true)}
-                className={`
-                  w-full flex items-center px-3 py-2 rounded-lg text-left transition-colors
-                  ${unreadMessages > 0 
-                    ? 'bg-blue-50 text-blue-700 hover:bg-blue-100' 
-                    : 'text-gray-600 hover:bg-blue-50 hover:text-blue-700'
-                  }
-                  focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
-                  ${isOpen ? '' : 'justify-center'}
-                `}
-                aria-label="Open hulp chat"
-              >
-                <div className="relative">
-                  {unreadMessages > 0 ? (
-                    <MessageSquare className="w-5 h-5 flex-shrink-0 text-blue-600" />
-                  ) : (
-                    <HelpCircle className="w-5 h-5 flex-shrink-0" />
-                  )}
-                  {unreadMessages > 0 && !isOpen && (
-                    <span className="absolute -top-1 -right-1 flex items-center justify-center">
-                      <Bell className="w-4 h-4 text-red-500 fill-current animate-pulse" />
-                    </span>
-                  )}
-                </div>
-                {isOpen && (
-                  <>
-                    <span className="font-medium ml-3 flex-1 text-left">Support</span>
-                    {unreadMessages > 0 && (
-                      <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full mr-2">
-                        {unreadMessages}
-                      </span>
-                    )}
-                    <ChevronDown className="w-4 h-4 ml-auto" />
-                  </>
-                )}
-              </Button>
-            </div>
-          </div>
-
         {/* Sign Out Button */}
         <div className="border-t border-gray-200">
           <div className="px-3 py-2">
@@ -399,6 +357,29 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
           open={supportOpen} 
           onClose={() => setSupportOpen(false)} 
           aria-describedby="support-modal-description"
+        />,
+        document.body
+      )}
+
+      {/* Floating Chat Button - Rendered using Portal */}
+      {!isMobile && createPortal(
+        <>
+          <FloatingChatButton onClick={() => setChatOpen(true)} />
+          {unreadMessages > 0 && (
+            <div className="fixed z-50 bottom-[88px] right-[52px] bg-red-500 text-white text-xs px-2 py-0.5 rounded-full font-semibold shadow-lg">
+              {unreadMessages}
+            </div>
+          )}
+        </>,
+        document.body
+      )}
+
+      {/* Chat Modal - Rendered using Portal */}
+      {chatOpen && createPortal(
+        <ChatModal 
+          open={chatOpen} 
+          onClose={() => setChatOpen(false)} 
+          aria-describedby="chat-modal-description"
           resetUnreadMessages={resetUnreadCount}
         />,
         document.body
