@@ -79,6 +79,16 @@ export const EditProductInfoModal = ({
     location?: string;
   }>>([]);
   const [hasExistingVariants, setHasExistingVariants] = useState(false);
+  const [existingVariants, setExistingVariants] = useState<Product[]>([]);
+  const [isAddingVariant, setIsAddingVariant] = useState(false);
+  const [newVariant, setNewVariant] = useState({
+    variantName: '',
+    quantityInStock: 0,
+    minimumStockLevel: 0,
+    purchasePrice: 0,
+    salePrice: 0,
+    location: ''
+  });
   
   // Gebruik de page refresh hook
   usePageRefresh();
@@ -128,28 +138,32 @@ export const EditProductInfoModal = ({
 
   // Check for existing variants when modal opens
   useEffect(() => {
-    const checkExistingVariants = async () => {
+    const fetchExistingVariants = async () => {
       if (!isOpen || !product.id || !activeBranch) return;
       
       try {
         const { data, error } = await supabase
           .from('products')
-          .select('id')
+          .select('*')
           .eq('parent_product_id', product.id)
-          .eq('branch_id', activeBranch.branch_id);
+          .eq('branch_id', activeBranch.branch_id)
+          .order('variant_name');
         
         if (!error && data && data.length > 0) {
           setHasExistingVariants(true);
+          setExistingVariants(data as Product[]);
         } else {
           setHasExistingVariants(false);
+          setExistingVariants([]);
         }
       } catch (error) {
-        console.error('Error checking for variants:', error);
+        console.error('Error fetching variants:', error);
         setHasExistingVariants(false);
+        setExistingVariants([]);
       }
     };
 
-    checkExistingVariants();
+    fetchExistingVariants();
   }, [isOpen, product.id, activeBranch]);
 
   const fetchCategorys = async () => {
@@ -225,6 +239,84 @@ export const EditProductInfoModal = ({
       supplier_id: supplier?.id || '', 
       supplier_name: value 
     });
+  };
+
+  const handleAddVariant = async () => {
+    if (!user || !activeBranch) {
+      toast.error('You must be logged in and have a branch selected');
+      return;
+    }
+
+    if (!newVariant.variantName.trim()) {
+      toast.error('Variant name is required');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const { error } = await supabase
+        .from('products')
+        .insert({
+          name: product.name,
+          description: product.description,
+          quantity_in_stock: newVariant.quantityInStock,
+          minimum_stock_level: newVariant.minimumStockLevel,
+          unit_price: newVariant.salePrice, // For backwards compatibility
+          purchase_price: newVariant.purchasePrice,
+          sale_price: newVariant.salePrice,
+          category_id: product.category_id,
+          supplier_id: product.supplier_id,
+          location: newVariant.location,
+          branch_id: activeBranch.branch_id,
+          user_id: user.id,
+          parent_product_id: product.id,
+          is_variant: true,
+          variant_name: newVariant.variantName,
+          image_url: product.image_url // Inherit parent's image
+        });
+
+      if (error) {
+        console.error('Error creating variant:', error);
+        toast.error(`Failed to create variant: ${error.message}`);
+        setLoading(false);
+        return;
+      }
+
+      toast.success(`Variant "${newVariant.variantName}" created successfully`);
+      
+      // Reset form
+      setNewVariant({
+        variantName: '',
+        quantityInStock: 0,
+        minimumStockLevel: 0,
+        purchasePrice: 0,
+        salePrice: 0,
+        location: ''
+      });
+      setIsAddingVariant(false);
+
+      // Refresh variants list
+      const { data: updatedVariants } = await supabase
+        .from('products')
+        .select('*')
+        .eq('parent_product_id', product.id)
+        .eq('branch_id', activeBranch.branch_id)
+        .order('variant_name');
+      
+      if (updatedVariants) {
+        setExistingVariants(updatedVariants as Product[]);
+      }
+
+      // Invalidate queries to refresh the product list
+      queryClient.invalidateQueries({ queryKey: ['products'] });
+      queryClient.invalidateQueries({ queryKey: ['productCount', activeBranch.branch_id, user.id] });
+      
+    } catch (error) {
+      console.error('Exception creating variant:', error);
+      toast.error('An unexpected error occurred');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleDelete = async () => {
@@ -582,10 +674,148 @@ export const EditProductInfoModal = ({
                   </div>
                 )}
                 {hasExistingVariants && (
-                  <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
-                    <p className="text-sm text-purple-700">
-                      This product has variants. Stock and pricing are managed at the variant level. Expand the product in the list to see and edit individual variants.
-                    </p>
+                  <div className="bg-purple-50 border border-purple-200 rounded-lg p-4 space-y-4">
+                    <div className="flex items-center justify-between">
+                      <h4 className="text-sm font-semibold text-purple-900">Product Variants ({existingVariants.length})</h4>
+                      <Button
+                        type="button"
+                        size="sm"
+                        onClick={() => setIsAddingVariant(true)}
+                        className="bg-purple-600 hover:bg-purple-700 text-white"
+                      >
+                        <Plus className="w-4 h-4 mr-1" />
+                        Add Variant
+                      </Button>
+                    </div>
+                    
+                    {/* List of existing variants */}
+                    <div className="space-y-2 max-h-60 overflow-y-auto">
+                      {existingVariants.map((variant) => (
+                        <div key={variant.id} className="bg-white border border-purple-200 rounded-lg p-3 flex items-center justify-between">
+                          <div className="flex-1">
+                            <p className="text-sm font-medium text-gray-900">{variant.variant_name}</p>
+                            <div className="flex gap-4 mt-1 text-xs text-gray-600">
+                              <span>Stock: {variant.quantity_in_stock}</span>
+                              <span>Min: {variant.minimum_stock_level}</span>
+                              <span>Price: ${variant.sale_price.toFixed(2)}</span>
+                              {variant.location && <span>Location: {variant.location}</span>}
+                            </div>
+                          </div>
+                          <Button
+                            type="button"
+                            size="sm"
+                            variant="outline"
+                            onClick={() => {
+                              // TODO: Open edit modal for this variant
+                              toast.info('Edit variant functionality coming soon');
+                            }}
+                            className="ml-2"
+                          >
+                            Edit
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Add new variant form */}
+                    {isAddingVariant && (
+                      <div className="bg-white border-2 border-purple-300 rounded-lg p-4 space-y-3">
+                        <div className="flex items-center justify-between mb-2">
+                          <h5 className="text-sm font-semibold text-purple-900">New Variant</h5>
+                          <Button
+                            type="button"
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => {
+                              setIsAddingVariant(false);
+                              setNewVariant({
+                                variantName: '',
+                                quantityInStock: 0,
+                                minimumStockLevel: 0,
+                                purchasePrice: 0,
+                                salePrice: 0,
+                                location: ''
+                              });
+                            }}
+                          >
+                            <X className="w-4 h-4" />
+                          </Button>
+                        </div>
+                        
+                        <div className="grid grid-cols-2 gap-2">
+                          <div className="col-span-2">
+                            <Label className="text-xs">Variant Name *</Label>
+                            <Input
+                              value={newVariant.variantName}
+                              onChange={(e) => setNewVariant({ ...newVariant, variantName: e.target.value })}
+                              placeholder="e.g., Yellow, Size M"
+                              className="text-sm"
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-xs">Stock *</Label>
+                            <Input
+                              type="number"
+                              value={newVariant.quantityInStock}
+                              onChange={(e) => setNewVariant({ ...newVariant, quantityInStock: Number(e.target.value) })}
+                              min={0}
+                              className="text-sm"
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-xs">Min Level *</Label>
+                            <Input
+                              type="number"
+                              value={newVariant.minimumStockLevel}
+                              onChange={(e) => setNewVariant({ ...newVariant, minimumStockLevel: Number(e.target.value) })}
+                              min={0}
+                              className="text-sm"
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-xs">Purchase Price *</Label>
+                            <Input
+                              type="number"
+                              step="0.01"
+                              value={newVariant.purchasePrice}
+                              onChange={(e) => setNewVariant({ ...newVariant, purchasePrice: Number(e.target.value) })}
+                              min={0}
+                              className="text-sm"
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-xs">Sale Price *</Label>
+                            <Input
+                              type="number"
+                              step="0.01"
+                              value={newVariant.salePrice}
+                              onChange={(e) => setNewVariant({ ...newVariant, salePrice: Number(e.target.value) })}
+                              min={0}
+                              className="text-sm"
+                            />
+                          </div>
+                          <div className="col-span-2">
+                            <Label className="text-xs">Location</Label>
+                            <Input
+                              value={newVariant.location}
+                              onChange={(e) => setNewVariant({ ...newVariant, location: e.target.value })}
+                              placeholder="Optional"
+                              className="text-sm"
+                            />
+                          </div>
+                        </div>
+                        
+                        <Button
+                          type="button"
+                          size="sm"
+                          onClick={handleAddVariant}
+                          disabled={!newVariant.variantName || loading}
+                          className="w-full bg-purple-600 hover:bg-purple-700 text-white"
+                        >
+                          {loading ? 'Creating...' : 'Create Variant'}
+                        </Button>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>

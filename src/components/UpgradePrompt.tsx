@@ -25,25 +25,25 @@ export const UpgradePrompt: React.FC<UpgradePromptProps> = ({
   const navigate = useNavigate();
 
   const getUpgradeTier = () => {
-    if (currentTier?.name === 'basic') {
-      return pricingTiers.find(tier => tier.name === 'growth');
+    if (currentTier?.name === 'basic' || currentTier?.name === 'free') {
+      return pricingTiers.find(tier => tier.name === 'starter' || tier.name === 'growth');
     }
-    if (currentTier?.name === 'growth') {
-      return pricingTiers.find(tier => tier.name === 'premium');
+    if (currentTier?.name === 'starter' || currentTier?.name === 'growth') {
+      return pricingTiers.find(tier => tier.name === 'business' || tier.name === 'premium');
     }
-    // For users without subscription or on trial, show growth as default upgrade
-    return pricingTiers.find(tier => tier.name === 'growth');
+    // For users without subscription or on trial, show starter/growth as default upgrade
+    return pricingTiers.find(tier => tier.name === 'starter' || tier.name === 'growth');
   };
 
   const getAvailableUpgradeTiers = () => {
-    if (currentTier?.name === 'basic') {
-      return pricingTiers.filter(tier => tier.name !== 'basic');
+    if (currentTier?.name === 'basic' || currentTier?.name === 'free') {
+      return pricingTiers.filter(tier => tier.name !== 'basic' && tier.name !== 'free');
     }
-    if (currentTier?.name === 'growth') {
-      return pricingTiers.filter(tier => tier.name === 'premium');
+    if (currentTier?.name === 'starter' || currentTier?.name === 'growth') {
+      return pricingTiers.filter(tier => tier.name === 'business' || tier.name === 'premium');
     }
     // For users without subscription or on trial, show all paid tiers
-    return pricingTiers.filter(tier => tier.name !== 'basic');
+    return pricingTiers.filter(tier => tier.name !== 'basic' && tier.name !== 'free');
   };
 
   const upgradeTier = getUpgradeTier();
@@ -74,8 +74,10 @@ export const UpgradePrompt: React.FC<UpgradePromptProps> = ({
 
   const getTierIcon = () => {
     switch (upgradeTier.name) {
+      case 'starter':
       case 'growth':
         return <Zap className="h-6 w-6 text-blue-600" />;
+      case 'business':
       case 'premium':
         return <Crown className="h-6 w-6 text-purple-600" />;
       default:
@@ -85,8 +87,10 @@ export const UpgradePrompt: React.FC<UpgradePromptProps> = ({
 
   const getTierColor = () => {
     switch (upgradeTier.name) {
+      case 'starter':
       case 'growth':
         return 'border-blue-200 bg-blue-50';
+      case 'business':
       case 'premium':
         return 'border-purple-200 bg-purple-50';
       default:
@@ -162,12 +166,12 @@ export const UpgradePrompt: React.FC<UpgradePromptProps> = ({
             <Button 
               onClick={handleUpgrade}
               className={`${
-                upgradeTier.name === 'growth' 
+                (upgradeTier.name === 'starter' || upgradeTier.name === 'growth')
                   ? 'bg-blue-600 hover:bg-blue-700' 
                   : 'bg-purple-600 hover:bg-purple-700'
               }`}
             >
-              Upgrade nu
+              {(upgradeTier.name === 'business' || upgradeTier.name === 'premium') ? 'Contact Sales' : 'Upgrade nu'}
               <ArrowRight className="h-4 w-4 ml-2" />
             </Button>
           </div>
@@ -201,14 +205,14 @@ export const UpgradeOptions: React.FC<{
   const navigate = useNavigate();
 
   const getAvailableUpgradeTiers = () => {
-    if (currentTier?.name === 'basic') {
-      return pricingTiers.filter(tier => tier.name !== 'basic');
+    if (currentTier?.name === 'basic' || currentTier?.name === 'free') {
+      return pricingTiers.filter(tier => tier.name !== 'basic' && tier.name !== 'free');
     }
-    if (currentTier?.name === 'growth') {
-      return pricingTiers.filter(tier => tier.name === 'premium');
+    if (currentTier?.name === 'starter' || currentTier?.name === 'growth') {
+      return pricingTiers.filter(tier => tier.name === 'business' || tier.name === 'premium');
     }
     // For users without subscription or on trial, show all paid tiers
-    return pricingTiers.filter(tier => tier.name !== 'basic');
+    return pricingTiers.filter(tier => tier.name !== 'basic' && tier.name !== 'free');
   };
 
   const availableTiers = getAvailableUpgradeTiers();
@@ -275,8 +279,10 @@ export const TierUpgradeCard: React.FC<{
 
   const getTierIcon = () => {
     switch (tier.name) {
+      case 'starter':
       case 'growth':
         return <Zap className="h-6 w-6 text-blue-600" />;
+      case 'business':
       case 'premium':
         return <Crown className="h-6 w-6 text-purple-600" />;
       default:
@@ -286,8 +292,10 @@ export const TierUpgradeCard: React.FC<{
 
   const getTierColor = () => {
     switch (tier.name) {
+      case 'starter':
       case 'growth':
         return 'border-blue-200 bg-blue-50';
+      case 'business':
       case 'premium':
         return 'border-purple-200 bg-purple-50';
       default:
@@ -363,12 +371,12 @@ export const TierUpgradeCard: React.FC<{
             <Button 
               onClick={handleUpgrade}
               className={`${
-                tier.name === 'growth' 
+                (tier.name === 'starter' || tier.name === 'growth')
                   ? 'bg-blue-600 hover:bg-blue-700' 
                   : 'bg-purple-600 hover:bg-purple-700'
               }`}
             >
-              Upgrade nu
+              {(tier.name === 'business' || tier.name === 'premium') ? 'Contact Sales' : 'Upgrade nu'}
               <ArrowRight className="h-4 w-4 ml-2" />
             </Button>
           </div>
@@ -399,14 +407,14 @@ export const AllUpgradeOptions: React.FC<{
   const { currentTier, pricingTiers } = useSubscription();
 
   const getAvailableUpgradeTiers = () => {
-    if (currentTier?.name === 'basic') {
-      return pricingTiers.filter(tier => tier.name !== 'basic');
+    if (currentTier?.name === 'basic' || currentTier?.name === 'free') {
+      return pricingTiers.filter(tier => tier.name !== 'basic' && tier.name !== 'free');
     }
-    if (currentTier?.name === 'growth') {
-      return pricingTiers.filter(tier => tier.name === 'premium');
+    if (currentTier?.name === 'starter' || currentTier?.name === 'growth') {
+      return pricingTiers.filter(tier => tier.name === 'business' || tier.name === 'premium');
     }
     // For users without subscription or on trial, show all paid tiers
-    return pricingTiers.filter(tier => tier.name !== 'basic');
+    return pricingTiers.filter(tier => tier.name !== 'basic' && tier.name !== 'free');
   };
 
   const availableTiers = getAvailableUpgradeTiers();
@@ -436,7 +444,7 @@ export const CompactUpgradePrompt: React.FC<{
   const { currentTier, pricingTiers } = useSubscription();
   const navigate = useNavigate();
 
-  const upgradeTier = pricingTiers.find(tier => tier.name === 'growth');
+  const upgradeTier = pricingTiers.find(tier => tier.name === 'starter' || tier.name === 'growth');
   if (!upgradeTier) return null;
 
   const handleUpgrade = () => {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,9 +9,10 @@ import { motion } from 'framer-motion';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { logger } from '../lib/logger';
 import { Header } from '@/components/HeaderPublic';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import SEO from '@/components/SEO';
 import { generateComprehensiveStructuredData } from '@/lib/structuredData';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 // A reusable component for fade-in animations when scrolling
 const FadeInWhenVisible = ({ children }: { children: React.ReactNode }) => {
@@ -34,30 +35,56 @@ const FadeInWhenVisible = ({ children }: { children: React.ReactNode }) => {
 type ContactFormValues = { 
   name: string; 
   email: string; 
+  subject: string;
   message: string; 
 };
 
 export default function ContactPage() {
   usePageRefresh();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const [selectedSubject, setSelectedSubject] = useState<string>('');
   
-  const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<ContactFormValues>({
-    defaultValues: { name: '', email: '', message: '' }
+  const { register, handleSubmit, reset, setValue, formState: { errors, isSubmitting } } = useForm<ContactFormValues>({
+    defaultValues: { name: '', email: '', subject: '', message: '' }
   });
+
+  // Handle subject from URL parameter (e.g., from business tier)
+  useEffect(() => {
+    const subjectParam = searchParams.get('subject');
+    if (subjectParam) {
+      const formattedSubject = subjectParam === 'business-tier' 
+        ? 'Business Tier Inquiry' 
+        : subjectParam;
+      setSelectedSubject(formattedSubject);
+      setValue('subject', formattedSubject);
+    }
+  }, [searchParams, setValue]);
 
   const onSubmitContact = async (values: ContactFormValues) => {
     try {
+      // Validate subject is selected
+      if (!values.subject || values.subject.trim() === '') {
+        alert('Please select a subject for your inquiry.');
+        return;
+      }
+
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(values)
       });
       if (!res.ok) throw new Error('Failed to send');
+      
+      // Reset form and selected subject
       reset();
-      logger.info('Contact message sent', { email: values.email });
-      alert('Thank you! We will contact you soon.');
+      setSelectedSubject('');
+      
+      logger.info('Contact message sent', { email: values.email, subject: values.subject });
+      alert('Thank you! We will contact you soon. We typically respond within 1 hour during business hours.');
     } catch (e) {
-      alert('Sending failed. Please try again.');
+      console.error('Contact form error:', e);
+      alert('Sending failed. Please try again or email us directly at info@stockflow.be');
     }
   };
 
@@ -187,6 +214,31 @@ export default function ContactPage() {
                           />
                           {errors.email && <p className="text-sm text-red-600 mt-1">Email is required</p>}
                         </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Subject</label>
+                        <Select
+                          value={selectedSubject}
+                          onValueChange={(value) => {
+                            setSelectedSubject(value);
+                            setValue('subject', value);
+                          }}
+                        >
+                          <SelectTrigger className="h-12 text-base">
+                            <SelectValue placeholder="Select a subject" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="General Inquiry">General Inquiry</SelectItem>
+                            <SelectItem value="Business Tier Inquiry">Business Tier / Enterprise</SelectItem>
+                            <SelectItem value="Technical Support">Technical Support</SelectItem>
+                            <SelectItem value="Sales Question">Sales Question</SelectItem>
+                            <SelectItem value="Demo Request">Demo Request</SelectItem>
+                            <SelectItem value="Partnership">Partnership Opportunity</SelectItem>
+                            <SelectItem value="Other">Other</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        {errors.subject && <p className="text-sm text-red-600 mt-1">Please select a subject</p>}
                       </div>
                       
                       <div>

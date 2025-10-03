@@ -573,9 +573,9 @@ export const HomePage = () => {
     },
     {
       question: "How many products (SKUs) can I track?",
-      answer: "Our Free plan supports up to 100 products — perfect for small shops getting started. Growth plan includes 1,000 products, and Premium supports unlimited products. You can also track product variants (sizes, colors) as separate SKUs. Need more? Contact us for custom limits at no extra charge.",
+      answer: "Our Free plan supports up to 50 products — perfect for small shops getting started. Starter plan includes 1,000 products, and Business tier supports unlimited products with custom pricing. You can also track product variants (sizes, colors) as separate SKUs. Need more? Contact us for custom solutions.",
       category: "Product Limits",
-      benefit: "Free: 100 SKUs, Paid: 1,000 - unlimited"
+      benefit: "Free: 50 SKUs, Starter: 1,000, Business: unlimited"
     },
     {
       question: "What are your support hours? Can I get help when I'm in the shop?",

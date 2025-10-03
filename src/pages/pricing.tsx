@@ -12,24 +12,7 @@ import { usePageRefresh } from '@/hooks/usePageRefresh';
 import SEO from '@/components/SEO';
 import { generateComprehensiveStructuredData } from '@/lib/structuredData';
 
-interface PricingTier {
-  id: string;
-  name: string;
-  displayName: string;
-  description: string;
-  priceMonthly: number;
-  priceYearly: number;
-  yearlyDiscount: number;
-  maxProducts: number | null;
-  maxOrders: number | null;
-  maxUsers: number | null;
-  maxBranches: number | null;
-  features: string[];
-  isPopular: boolean;
-  isEnterprise: boolean;
-  icon: React.ReactNode;
-  color: string;
-}
+
 
 // Helper function to get tier icon
 const getTierIcon = (tierName: string) => {
@@ -67,9 +50,15 @@ export default function PricingPage() {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const handleSelectPlan = (tierId: string) => {
+  const handleSelectPlan = (tierId: string, isBusinessTier: boolean = false) => {
     if (!user) {
       navigate('/auth');
+      return;
+    }
+    
+    // For business tier, redirect to contact page
+    if (isBusinessTier) {
+      navigate('/contact?subject=business-tier');
       return;
     }
     
@@ -220,11 +209,20 @@ export default function PricingPage() {
                 </CardDescription>
                 <div className="mt-4">
                   <div className="text-4xl font-bold text-gray-900">
-                    {tier.price_monthly === 0 ? '$0' : formatPrice(billingCycle === 'monthly' ? tier.price_monthly : tier.price_yearly)}
+                    {tier.name === 'business' 
+                      ? 'On Demand' 
+                      : tier.price_monthly === 0 
+                        ? '$0' 
+                        : formatPrice(billingCycle === 'monthly' ? tier.price_monthly : tier.price_yearly)}
                   </div>
-                  {tier.price_monthly > 0 && (
+                  {tier.price_monthly > 0 && tier.name !== 'business' && (
                     <div className="text-sm text-gray-500">
                       {billingCycle === 'yearly' ? 'per year' : 'per month'}
+                    </div>
+                  )}
+                  {tier.name === 'business' && (
+                    <div className="text-sm text-gray-500">
+                      Custom pricing
                     </div>
                   )}
                 </div>
@@ -265,9 +263,13 @@ export default function PricingPage() {
               <CardFooter>
                 <Button 
                   className="w-full rounded-full transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl }"
-                  onClick={() => handleSelectPlan(tier.name)}
+                  onClick={() => handleSelectPlan(tier.name, tier.name === 'business')}
                 >
-                  {tier.price_monthly === 0 ? 'Get Started' : 'Start 14-day trial'}
+                  {tier.name === 'business' 
+                    ? 'Contact Sales' 
+                    : tier.price_monthly === 0 
+                      ? 'Get Started' 
+                      : 'Start 14-day trial'}
                 </Button>
               </CardFooter>
             </Card>

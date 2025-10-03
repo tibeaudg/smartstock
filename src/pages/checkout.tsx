@@ -32,6 +32,12 @@ export default function CheckoutPage() {
       navigate('/pricing');
       return;
     }
+    
+    // Redirect business tier to contact page
+    if (selectedTier.name === 'business') {
+      navigate('/contact?subject=business-tier');
+      return;
+    }
   }, [user, selectedTier, navigate]);
 
   if (!selectedTier) {

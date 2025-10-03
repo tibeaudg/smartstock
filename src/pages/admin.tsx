@@ -40,9 +40,12 @@ interface UserStats {
 
 // Plan informatie voor prijsberekening (nieuwe subscription tiers)
 const plans = {
+  'free': { price: 0, limit: 50, displayName: 'Free / Basic' },
   'basic': { price: 0, limit: 50, displayName: 'Basic' },
-  'growth': { price: 29.99, limit: 500, displayName: 'Growth' },
-  'premium': { price: 79.99, limit: null, displayName: 'Premium' }
+  'starter': { price: 24.99, limit: 1000, displayName: 'Starter' },
+  'growth': { price: 24.99, limit: 1000, displayName: 'Growth' },
+  'business': { price: 0, limit: null, displayName: 'Business (On Demand)' },
+  'premium': { price: 0, limit: null, displayName: 'Premium' }
 };
 
 // Simuleer de prijsberekening voor een gebruiker (nieuwe subscription model)
