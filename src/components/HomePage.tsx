@@ -1671,7 +1671,7 @@ export const HomePage = () => {
 
       {/* Social Proof Bar - Immediately Below Hero */}
       <section className="py-6 sm:py-8 md:py-10 bg-white">
-        <div className="max-w-7xl mx-auto px-4">
+        <div className="max-w-7xl mx-auto px-4c">
           <FadeInWhenVisible>
             <div className="text-center">
               <p className="text-xs sm:text-sm md:text-base font-medium text-gray-600 mb-4 sm:mb-6 md:mb-8">
@@ -1679,7 +1679,7 @@ export const HomePage = () => {
               </p>
               
               {/* Company Logos or Industry Icons */}
-              <div className="grid grid-cols-2 sm:flex sm:flex-wrap sm:justify-center gap-6 sm:gap-8 md:gap-10 lg:gap-12 max-w-5xl mx-auto">
+              <div className="grid grid-cols-2 xl:grid-cols-4 gap-6 sm:gap-8 md:gap-10 lg:gap-12 max-w-5xl mx-auto">
                 <div className="flex flex-col items-center gap-2">
                   <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
                     <Building className="h-8 w-8 text-gray-600" />
@@ -2138,7 +2138,7 @@ export const HomePage = () => {
                 Secure, Reliable, Compliant
               </h3>
               
-              <div className="grid grid-cols-2 sm:flex sm:flex-wrap sm:justify-center gap-6 sm:gap-8 md:gap-10 lg:gap-12 max-w-5xl mx-auto">
+              <div className="grid grid-cols-2 xl:grid-cols-4 gap-6 sm:gap-8 md:gap-10 lg:gap-12 max-w-5xl mx-auto">
                 <div className="flex flex-col items-center gap-2">
                   <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
                     <Shield className="h-8 w-8 text-green-600" />
