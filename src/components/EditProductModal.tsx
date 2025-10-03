@@ -156,7 +156,7 @@ export const EditProductModal = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-md w-full max-h-[90vh] overflow-y-auto mx-auto px-4 sm:px-8">
+      <DialogContent className="max-w-md w-150 max-h-[90vh] overflow-y-auto mx-auto px-4 sm:px-8">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <span className={actionColor}>{actionTitle}: {product.name}</span>

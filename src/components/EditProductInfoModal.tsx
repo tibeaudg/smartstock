@@ -697,7 +697,7 @@ export const EditProductInfoModal = ({
                             <div className="flex gap-4 mt-1 text-xs text-gray-600">
                               <span>Stock: {variant.quantity_in_stock}</span>
                               <span>Min: {variant.minimum_stock_level}</span>
-                              <span>Price: ${(variant.sale_price || 0).toFixed(2)}</span>
+                              <span>Price: ${Number(variant.sale_price || 0).toFixed(2)}</span>
                               {variant.location && <span>Location: {variant.location}</span>}
                             </div>
                           </div>
