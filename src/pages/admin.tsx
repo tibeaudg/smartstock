@@ -51,7 +51,7 @@ const plans = {
 // Simuleer de prijsberekening voor een gebruiker (nieuwe subscription model)
 function calculateUserLicenseCost(planId: string | null, stats: Omit<UserStats, 'userId' | 'licenseCost' | 'statsLastUpdated'>): number {
   const plan = plans[planId as keyof typeof plans] || plans.basic;
-  let price = plan.price;
+  const price = plan.price;
   
   // In het nieuwe model zijn alle limieten inbegrepen in de tier prijs
   // Geen extra kosten voor gebruikers, filialen of producten
@@ -189,16 +189,13 @@ export default function AdminPage() {
   const [activeTab, setActiveTab] = useState<'users' | 'features' | 'chats' | 'notifications' | 'onboarding'>('users');
   const [selectedUser, setSelectedUser] = useState<UserProfile | null>(null);
   const [companyTypes, setCompanyTypes] = useState<Record<string, { type: string; custom_type: string | null }>>({});
+  const [userStats, setUserStats] = useState<UserStats[]>([]);
+  const [loadingStats, setLoadingStats] = useState(false);
   
   // Gebruik de page refresh hook
   usePageRefresh();
   
-  // Toegangscontrole - alleen eigenaren kunnen de admin pagina bekijken
-  if (!userProfile || userProfile.is_owner !== true) {
-    // Redirect naar dashboard als gebruiker geen eigenaar is
-    navigate('/dashboard');
-    return null;
-  }
+  const queryClient = useQueryClient();
   
   // Gebruikersbeheer
   const { data: users = [], isLoading: loadingUsers } = useQuery({
@@ -206,10 +203,12 @@ export default function AdminPage() {
     queryFn: fetchUserProfiles,
   });
 
-  // Bereken statistieken voor gebruikers
-  const [userStats, setUserStats] = useState<UserStats[]>([]);
-  const [loadingStats, setLoadingStats] = useState(false);
+  const blockMutation = useMutation({
+    mutationFn: ({ id, blocked }: { id: string; blocked: boolean }) => blockUser(id, blocked),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['userProfiles'] }),
+  });
 
+  // Bereken statistieken voor gebruikers
   useEffect(() => {
     if (users.length === 0) {
       setUserStats([]);
@@ -243,28 +242,14 @@ export default function AdminPage() {
         .select('user_id, type, custom_type');
       if (!error && data) {
         const map: Record<string, { type: string; custom_type: string | null }> = {};
-        data.forEach((row: any) => {
-          map[row.user_id] = { type: row.type, custom_type: row.custom_type };
+        data.forEach((row: Record<string, string | null>) => {
+          map[row.user_id as string] = { type: row.type as string, custom_type: row.custom_type };
         });
         setCompanyTypes(map);
       }
     }
     fetchCompanyTypes();
   }, [users]);
-
-
-
-  const queryClient = useQueryClient();
-  const blockMutation = useMutation({
-    mutationFn: ({ id, blocked }: { id: string; blocked: boolean }) => blockUser(id, blocked),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['userProfiles'] }),
-  });
-  const sidebarNavItems: { id: 'users' | 'features' | 'chats' | 'notifications' | 'onboarding'; label: string }[] = [
-  { id: 'users', label: 'Gebruikersbeheer' },
-  { id: 'chats', label: 'Chats' },
-  { id: 'notifications', label: 'Meldingen' },
-  { id: 'onboarding', label: 'Onboarding Tracking' },
-];
 
   // Real-time updates voor admin data
   useEffect(() => {
@@ -280,7 +265,6 @@ export default function AdminPage() {
           table: 'profiles',
         },
         () => {
-          console.log('Profile wijziging gedetecteerd, refresh gebruikers...');
           queryClient.invalidateQueries({ queryKey: ['userProfiles'] });
         }
       )
@@ -290,6 +274,24 @@ export default function AdminPage() {
       supabase.removeChannel(adminChannel);
     };
   }, [user?.id, queryClient]);
+
+  const sidebarNavItems: { id: 'users' | 'features' | 'chats' | 'notifications' | 'onboarding'; label: string }[] = [
+    { id: 'users', label: 'Gebruikersbeheer' },
+    { id: 'chats', label: 'Chats' },
+    { id: 'notifications', label: 'Meldingen' },
+    { id: 'onboarding', label: 'Onboarding Tracking' },
+  ];
+  
+  // Toegangscontrole - alleen eigenaren kunnen de admin pagina bekijken
+  useEffect(() => {
+    if (userProfile && userProfile.is_owner !== true) {
+      navigate('/dashboard');
+    }
+  }, [userProfile, navigate]);
+
+  if (!userProfile || userProfile.is_owner !== true) {
+    return null;
+  }
 
   return (
     <BranchProvider>

@@ -32,7 +32,7 @@ export default tseslint.config(
       "no-new-func": "error",
       "no-script-url": "error",
       "no-unsafe-optional-chaining": "error",
-      "no-unsafe-unary-negation": "error",
+      "no-unsafe-negation": "error",
       "prefer-promise-reject-errors": "error",
       "require-await": "error",
       "no-var": "error",
