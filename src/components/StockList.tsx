@@ -50,6 +50,7 @@ import { EditProductStockModal } from './EditProductStockModal';
 import { VariantSelectionModal } from './VariantSelectionModal';
 import { AddVariantModal } from './AddVariantModal';
 import { BulkImportModal } from './BulkImportModal';
+import { SupplierPreviewPopover } from './SupplierPreviewPopover';
 import { useMobile } from '@/hooks/use-mobile';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -376,6 +377,23 @@ const ProductDetailDrawer: React.FC<ProductDetailDrawerProps> = ({ product, isOp
                     <MapPin className="w-4 h-4 text-gray-400" />
                     {product.location}
                   </p>
+                </div>
+              )}
+
+              {product.supplier_id && product.supplier_name && (
+                <div>
+                  <label className="text-sm font-medium text-gray-700">Supplier</label>
+                  <div className="mt-1">
+                    <SupplierPreviewPopover
+                      supplierId={product.supplier_id}
+                      supplierName={product.supplier_name}
+                    >
+                      <div className="flex items-center gap-2 text-sm text-gray-900 hover:text-blue-600 hover:underline cursor-pointer transition-colors">
+                        <Truck className="w-4 h-4 text-gray-400" />
+                        <span>{product.supplier_name}</span>
+                      </div>
+                    </SupplierPreviewPopover>
+                  </div>
                 </div>
               )}
 
@@ -728,9 +746,20 @@ const ProductRow: React.FC<ProductRowProps> = ({
       {columnVisibility.supplier && (
         <td className="px-4 py-3 text-center">
           {!hasChildren && (
-            <span className="text-sm text-gray-600">
-              {product.supplier_name || '-'}
-            </span>
+            product.supplier_id && product.supplier_name ? (
+              <SupplierPreviewPopover
+                supplierId={product.supplier_id}
+                supplierName={product.supplier_name}
+              >
+                <span className="text-sm text-gray-600 hover:text-blue-600 hover:underline cursor-pointer transition-colors">
+                  {product.supplier_name}
+                </span>
+              </SupplierPreviewPopover>
+            ) : (
+              <span className="text-sm text-gray-600">
+                -
+              </span>
+            )
           )}
         </td>
       )}
@@ -915,6 +944,23 @@ const MobileProductDetailDrawer: React.FC<MobileProductDetailDrawerProps> = ({ p
                 <MapPin className="w-3 h-3 text-gray-400" />
                 {product.location}
               </p>
+            </div>
+          )}
+
+          {product.supplier_id && product.supplier_name && (
+            <div>
+              <label className="text-xs font-medium text-gray-700">Supplier</label>
+              <div className="mt-1">
+                <SupplierPreviewPopover
+                  supplierId={product.supplier_id}
+                  supplierName={product.supplier_name}
+                >
+                  <div className="flex items-center gap-1 text-xs text-gray-900 hover:text-blue-600 hover:underline cursor-pointer transition-colors">
+                    <Truck className="w-3 h-3 text-gray-400" />
+                    <span>{product.supplier_name}</span>
+                  </div>
+                </SupplierPreviewPopover>
+              </div>
             </div>
           )}
 
