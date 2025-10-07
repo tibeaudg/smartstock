@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -129,6 +129,26 @@ interface Product {
   variant_attributes?: Record<string, unknown> | null;
   variant_sku?: string | null;
   variant_barcode?: string | null;
+}
+
+interface StockTransaction {
+  id: string;
+  created_at: string;
+  product_id: string;
+  product_name: string;
+  transaction_type: 'incoming' | 'outgoing';
+  quantity: number;
+  unit_price: number | string;
+  total_value?: number | string;
+  reference_number: string | null;
+  notes: string | null;
+  branch_id: string;
+  created_by: string;
+  variant_id?: string | null;
+  variant_name?: string | null;
+  first_name?: string | null;
+  last_name?: string | null;
+  email?: string | null;
 }
 
 type StockAction = 'in' | 'out';
@@ -300,17 +320,10 @@ interface ProductDetailDrawerProps {
 
 const ProductDetailDrawer: React.FC<ProductDetailDrawerProps> = ({ product, isOpen, columnCount }) => {
   const { activeBranch } = useBranches();
-  const [stockHistory, setStockHistory] = useState<any[]>([]);
+  const [stockHistory, setStockHistory] = useState<StockTransaction[]>([]);
   const [loadingHistory, setLoadingHistory] = useState(false);
 
-  // Fetch recent stock history when drawer opens
-  useEffect(() => {
-    if (isOpen && product.id) {
-      fetchStockHistory();
-    }
-  }, [isOpen, product.id]);
-
-  const fetchStockHistory = async () => {
+  const fetchStockHistory = useCallback(async () => {
     if (!activeBranch?.branch_id) return;
     
     setLoadingHistory(true);
@@ -335,7 +348,14 @@ const ProductDetailDrawer: React.FC<ProductDetailDrawerProps> = ({ product, isOp
     } finally {
       setLoadingHistory(false);
     }
-  };
+  }, [activeBranch?.branch_id, product.id]);
+
+  // Fetch recent stock history when drawer opens
+  useEffect(() => {
+    if (isOpen && product.id) {
+      fetchStockHistory();
+    }
+  }, [isOpen, product.id, fetchStockHistory]);
 
   if (!isOpen) return null;
 
@@ -497,7 +517,7 @@ interface ProductRowProps {
   hasChildren?: boolean;
   isExpanded?: boolean;
   variantCount?: number;
-  columnVisibility: any;
+  columnVisibility: Record<string, boolean>;
   onToggleExpand?: () => void;
   onSelect?: (id: string) => void;
   onStockAction: (product: Product, action: StockAction) => void;
@@ -871,17 +891,10 @@ interface MobileProductDetailDrawerProps {
 
 const MobileProductDetailDrawer: React.FC<MobileProductDetailDrawerProps> = ({ product, isOpen }) => {
   const { activeBranch } = useBranches();
-  const [stockHistory, setStockHistory] = useState<any[]>([]);
+  const [stockHistory, setStockHistory] = useState<StockTransaction[]>([]);
   const [loadingHistory, setLoadingHistory] = useState(false);
 
-  // Fetch recent stock history when drawer opens
-  useEffect(() => {
-    if (isOpen && product.id) {
-      fetchStockHistory();
-    }
-  }, [isOpen, product.id]);
-
-  const fetchStockHistory = async () => {
+  const fetchStockHistory = useCallback(async () => {
     if (!activeBranch?.branch_id) return;
     
     setLoadingHistory(true);
@@ -906,7 +919,14 @@ const MobileProductDetailDrawer: React.FC<MobileProductDetailDrawerProps> = ({ p
     } finally {
       setLoadingHistory(false);
     }
-  };
+  }, [activeBranch?.branch_id, product.id]);
+
+  // Fetch recent stock history when drawer opens
+  useEffect(() => {
+    if (isOpen && product.id) {
+      fetchStockHistory();
+    }
+  }, [isOpen, product.id, fetchStockHistory]);
 
   if (!isOpen) return null;
 
@@ -1775,7 +1795,7 @@ export const StockList = () => {
   };
 
   // Clear all filters function
-  const clearAllFilters = () => {
+  const clearAllFilters = useCallback(() => {
     setFilters({
       searchTerm: '',
       categoryFilter: 'all',
@@ -1791,7 +1811,7 @@ export const StockList = () => {
     });
     setCategoryFilterName('');
     setSupplierFilterName('');
-  };
+  }, []);
 
   // Tel actieve filters
   const activeFilterCount = useMemo(() => {
