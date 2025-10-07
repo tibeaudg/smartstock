@@ -51,6 +51,7 @@ import { useMobile } from '@/hooks/use-mobile';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useTranslation } from 'react-i18next';
+import { Upload as UploadIcon } from 'lucide-react';
 
 const getStockStatus = (quantity: number, minLevel: number) => {
   // Ensure we're working with numbers
@@ -126,6 +127,164 @@ interface Product {
 }
 
 type StockAction = 'in' | 'out';
+
+// Photo Upload Placeholder Component
+interface PhotoUploadPlaceholderProps {
+  productId: string;
+  size?: 'small' | 'medium' | 'large';
+  onUploadSuccess?: (imageUrl: string) => void;
+}
+
+const PhotoUploadPlaceholder: React.FC<PhotoUploadPlaceholderProps> = ({ 
+  productId, 
+  size = 'medium',
+  onUploadSuccess 
+}) => {
+  const [isDragging, setIsDragging] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
+  const { user } = useAuth();
+
+  const sizeClasses = {
+    small: 'w-14 h-14',
+    medium: 'w-12 h-12',
+    large: 'w-16 h-16'
+  };
+
+  const iconSizes = {
+    small: 'w-4 h-4',
+    medium: 'w-5 h-5',
+    large: 'w-6 h-6'
+  };
+
+  const handleFileUpload = async (file: File) => {
+    if (!user || !file) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please upload an image file');
+      return;
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('Image size must be less than 5MB');
+      return;
+    }
+
+    setIsUploading(true);
+
+    try {
+      // Create unique filename
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${user.id}/${productId}-${Date.now()}.${fileExt}`;
+
+      // Upload to Supabase storage
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('product-images')
+        .upload(fileName, file, {
+          cacheControl: '3600',
+          upsert: false
+        });
+
+      if (uploadError) throw uploadError;
+
+      // Get public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('product-images')
+        .getPublicUrl(fileName);
+
+      // Update product with new image URL
+      const { error: updateError } = await supabase
+        .from('products')
+        .update({ image_url: publicUrl })
+        .eq('id', productId);
+
+      if (updateError) throw updateError;
+
+      toast.success('Product photo uploaded successfully');
+      onUploadSuccess?.(publicUrl);
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      toast.error('Failed to upload image');
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+
+    const files = Array.from(e.dataTransfer.files);
+    if (files.length > 0) {
+      handleFileUpload(files[0]);
+    }
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+  };
+
+  const handleClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    fileInputRef.current?.click();
+  };
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      handleFileUpload(files[0]);
+    }
+  };
+
+  return (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <div
+            className={`${sizeClasses[size]} rounded-lg border-2 border-dashed flex items-center justify-center cursor-pointer transition-all ${
+              isDragging 
+                ? 'border-blue-500 bg-blue-50' 
+                : 'border-gray-300 bg-gray-50 hover:border-blue-400 hover:bg-blue-50'
+            } ${isUploading ? 'opacity-50 cursor-wait' : ''}`}
+            onDrop={handleDrop}
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onClick={handleClick}
+          >
+            {isUploading ? (
+              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-600"></div>
+            ) : (
+              <Plus className={`${iconSizes[size]} text-gray-400 transition-colors ${isDragging ? 'text-blue-500' : 'hover:text-blue-500'}`} />
+            )}
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleFileSelect}
+              onClick={(e) => e.stopPropagation()}
+            />
+          </div>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p className="text-sm">Add Product Photo</p>
+          <p className="text-xs text-gray-400">Click or drag to upload</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  );
+};
 
 // Product Detail Drawer Component
 interface ProductDetailDrawerProps {
@@ -326,6 +485,7 @@ interface ProductRowProps {
   isAdmin?: boolean;
   isDetailExpanded?: boolean;
   onToggleDetailExpand?: () => void;
+  onImageUpload?: () => void;
 }
 
 const ProductRow: React.FC<ProductRowProps> = ({
@@ -344,7 +504,8 @@ const ProductRow: React.FC<ProductRowProps> = ({
   onImagePreview,
   isAdmin = false,
   isDetailExpanded = false,
-  onToggleDetailExpand
+  onToggleDetailExpand,
+  onImageUpload
 }) => {
   const stockStatus = getStockStatus(product.quantity_in_stock, product.minimum_stock_level);
   const stockLevelPercentage = getStockLevelPercentage(product.quantity_in_stock, product.minimum_stock_level);
@@ -426,9 +587,11 @@ const ProductRow: React.FC<ProductRowProps> = ({
                   onClick={() => onImagePreview(product.image_url!)}
                 />
               ) : (
-                <div className="w-12 h-12 bg-gray-200 rounded-lg border flex items-center justify-center text-xs text-gray-400">
-                  No Photo
-                </div>
+                <PhotoUploadPlaceholder
+                  productId={product.id}
+                  size="medium"
+                  onUploadSuccess={() => onImageUpload?.()}
+                />
               )}
             </div>
 
@@ -826,6 +989,7 @@ interface MobileProductCardProps {
   isAdmin?: boolean;
   isDetailExpanded?: boolean;
   onToggleDetailExpand?: () => void;
+  onImageUpload?: () => void;
 }
 
 const MobileProductCard: React.FC<MobileProductCardProps> = ({
@@ -843,7 +1007,8 @@ const MobileProductCard: React.FC<MobileProductCardProps> = ({
   onImagePreview,
   isAdmin = false,
   isDetailExpanded = false,
-  onToggleDetailExpand
+  onToggleDetailExpand,
+  onImageUpload
 }) => {
   const stockStatus = getStockStatus(product.quantity_in_stock, product.minimum_stock_level);
   const stockLevelPercentage = getStockLevelPercentage(product.quantity_in_stock, product.minimum_stock_level);
@@ -877,9 +1042,11 @@ const MobileProductCard: React.FC<MobileProductCardProps> = ({
                 onClick={() => onImagePreview(product.image_url!)}
               />
             ) : (
-              <div className={`bg-gray-200 rounded-lg border flex items-center justify-center text-xs text-gray-400 ${isVariant ? 'w-14 h-14' : 'w-16 h-16'}`}>
-                No Photo
-              </div>
+              <PhotoUploadPlaceholder
+                productId={product.id}
+                size={isVariant ? 'small' : 'large'}
+                onUploadSuccess={() => onImageUpload?.()}
+              />
             )}
           </div>
 
@@ -2170,6 +2337,7 @@ export const StockList = () => {
                         isAdmin={isAdmin}
                         isDetailExpanded={parentDetailExpanded}
                         onToggleDetailExpand={() => toggleDetailExpand(parent.id)}
+                        onImageUpload={() => refetch()}
                       />
                       
                       {isExpanded && hasChildren && (
@@ -2195,6 +2363,7 @@ export const StockList = () => {
                               isAdmin={isAdmin}
                               isDetailExpanded={childDetailExpanded}
                               onToggleDetailExpand={() => toggleDetailExpand(child.id)}
+                              onImageUpload={() => refetch()}
                             />
                           );
                         })
@@ -2705,6 +2874,7 @@ export const StockList = () => {
                         isAdmin={isAdmin}
                         isDetailExpanded={parentDetailExpanded}
                         onToggleDetailExpand={() => toggleDetailExpand(parent.id)}
+                        onImageUpload={() => refetch()}
                       />
                       
                       {/* Product Detail Drawer for Parent */}
@@ -2738,6 +2908,7 @@ export const StockList = () => {
                                 isAdmin={isAdmin}
                                 isDetailExpanded={childDetailExpanded}
                                 onToggleDetailExpand={() => toggleDetailExpand(child.id)}
+                                onImageUpload={() => refetch()}
                               />
                               
                               {/* Product Detail Drawer for Variant */}
