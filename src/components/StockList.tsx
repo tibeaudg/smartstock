@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator, DropdownMenuCheckboxItem } from '@/components/ui/dropdown-menu';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { 
   Search, 
   Filter, 
@@ -52,8 +53,12 @@ import { toast } from 'sonner';
 import { useTranslation } from 'react-i18next';
 
 const getStockStatus = (quantity: number, minLevel: number) => {
-  if (quantity === 0) return 'Out of Stock';
-  if (quantity <= minLevel) return 'Low Stock';
+  // Ensure we're working with numbers
+  const qty = Number(quantity);
+  const min = Number(minLevel);
+  
+  if (qty === 0) return 'Out of Stock';
+  if (qty > 0 && qty <= min) return 'Low Stock';
   return 'In Stock';
 };
 
@@ -67,13 +72,14 @@ const getStockStatusVariant = (status: string) => {
 };
 
 // Helper function to get stock status dot color
-const getStockStatusDotColor = (status: string) => {
-  switch (status) {
-    case 'In Stock': return 'bg-green-500';
-    case 'Low Stock': return 'bg-orange-500';
-    case 'Out of Stock': return 'bg-red-500';
-    default: return 'bg-red-500';
-  }
+const getStockStatusDotColor = (quantity: number, minLevel: number) => {
+  // Ensure we're working with numbers
+  const qty = Number(quantity);
+  const min = Number(minLevel);
+  
+  if (qty === 0) return 'bg-red-500';
+  if (qty > 0 && qty <= min) return 'bg-orange-500';
+  return 'bg-green-500';
 };
 
 // Helper function to format variant attributes
@@ -275,21 +281,43 @@ const ProductRow: React.FC<ProductRowProps> = ({
       {columnVisibility.current && (
         <td className="px-4 py-3 text-center">
           {!hasChildren && (
-            <div className="space-y-1">
-              <div className="flex items-center justify-center gap-2">
-                <div className={`w-2 h-2 rounded-full ${getStockStatusDotColor(stockStatus)}`} />
-                <span className="text-sm font-semibold text-gray-900">
-                  {product.quantity_in_stock}
-                </span>
-              </div>
-              
-
-              
-              {/* Minimum stock info */}
-              <div className="text-xs text-gray-500">
-                Min: {product.minimum_stock_level}
-              </div>
-            </div>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div 
+                    className="space-y-1 cursor-pointer hover:bg-gray-50 rounded-md p-2 transition-colors" 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onStockAction(product, 'in');
+                    }}
+                  >
+                    <div className="flex items-center justify-center gap-2">
+                      <div className={`w-2 h-2 rounded-full ${getStockStatusDotColor(product.quantity_in_stock, product.minimum_stock_level)} ${Number(product.quantity_in_stock) === 0 ? 'animate-pulse' : ''}`} />
+                      <span className={`text-sm font-semibold text-gray-900 ${Number(product.quantity_in_stock) === 0 ? 'animate-pulse text-red-600' : ''}`}>
+                        {product.quantity_in_stock}
+                      </span>
+                    </div>
+                    
+                    {/* Minimum stock info */}
+                    <div className="text-xs text-gray-500">
+                      Min: {product.minimum_stock_level}
+                    </div>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="font-medium">
+                    {product.quantity_in_stock} in stock. Minimum: {product.minimum_stock_level}
+                  </p>
+                  {Number(product.quantity_in_stock) === 0 && (
+                    <p className="text-xs text-red-400 mt-1">⚠️ Out of stock!</p>
+                  )}
+                  {Number(product.quantity_in_stock) > 0 && Number(product.quantity_in_stock) <= Number(product.minimum_stock_level) && (
+                    <p className="text-xs text-orange-400 mt-1">⚠️ Low stock alert</p>
+                  )}
+                  <p className="text-xs text-gray-400 mt-1">Click to adjust stock</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           )}
         </td>
       )}
@@ -352,7 +380,7 @@ const ProductRow: React.FC<ProductRowProps> = ({
         <td className="px-4 py-3 text-center">
           {!hasChildren && (
             <div className="flex items-center justify-center gap-2">
-              <div className={`w-2 h-2 rounded-full ${getStockStatusDotColor(stockStatus)}`} />
+              <div className={`w-2 h-2 rounded-full ${getStockStatusDotColor(product.quantity_in_stock, product.minimum_stock_level)}`} />
               <span className="text-sm font-medium text-gray-700">
                 {stockStatus}
               </span>
@@ -535,14 +563,38 @@ const MobileProductCard: React.FC<MobileProductCardProps> = ({
           {/* Stock and pricing info */}
           {!hasChildren && (
             <div className={`grid grid-cols-2 gap-4 ${isVariant ? 'text-xs' : 'text-sm'}`}>
-              <div>
-                <div className="flex items-center gap-2 mb-1">
-                  <div className={`${isVariant ? 'w-1.5 h-1.5' : 'w-2 h-2'} rounded-full ${getStockStatusDotColor(stockStatus)}`} />
-                  <span className="font-semibold text-gray-900">{product.quantity_in_stock}</span>
-                  <span className="text-gray-500">in stock</span>
-                </div>
-                <div className={`text-gray-500 ${isVariant ? 'text-[10px]' : 'text-xs'}`}>Min: {product.minimum_stock_level}</div>
-              </div>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div 
+                      className="cursor-pointer hover:bg-gray-50 rounded-md p-1.5 -m-1.5 transition-colors"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onStockAction(product, 'in');
+                      }}
+                    >
+                      <div className="flex items-center gap-2 mb-1">
+                        <div className={`${isVariant ? 'w-1.5 h-1.5' : 'w-2 h-2'} rounded-full ${getStockStatusDotColor(product.quantity_in_stock, product.minimum_stock_level)} ${Number(product.quantity_in_stock) === 0 ? 'animate-pulse' : ''}`} />
+                        <span className={`font-semibold text-gray-900 ${Number(product.quantity_in_stock) === 0 ? 'animate-pulse text-red-600' : ''}`}>{product.quantity_in_stock}</span>
+                        <span className="text-gray-500">in stock</span>
+                      </div>
+                      <div className={`text-gray-500 ${isVariant ? 'text-[10px]' : 'text-xs'}`}>Min: {product.minimum_stock_level}</div>
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p className="font-medium">
+                      {product.quantity_in_stock} in stock. Minimum: {product.minimum_stock_level}
+                    </p>
+                    {Number(product.quantity_in_stock) === 0 && (
+                      <p className="text-xs text-red-400 mt-1">⚠️ Out of stock!</p>
+                    )}
+                    {Number(product.quantity_in_stock) > 0 && Number(product.quantity_in_stock) <= Number(product.minimum_stock_level) && (
+                      <p className="text-xs text-orange-400 mt-1">⚠️ Low stock alert</p>
+                    )}
+                    <p className="text-xs text-gray-400 mt-1">Click to adjust stock</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
               
               <div className="text-right">
                 {product.purchase_price && (
