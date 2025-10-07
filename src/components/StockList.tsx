@@ -127,6 +127,187 @@ interface Product {
 
 type StockAction = 'in' | 'out';
 
+// Product Detail Drawer Component
+interface ProductDetailDrawerProps {
+  product: Product;
+  isOpen: boolean;
+  columnCount: number;
+}
+
+const ProductDetailDrawer: React.FC<ProductDetailDrawerProps> = ({ product, isOpen, columnCount }) => {
+  const { activeBranch } = useBranches();
+  const [stockHistory, setStockHistory] = useState<any[]>([]);
+  const [loadingHistory, setLoadingHistory] = useState(false);
+
+  // Fetch recent stock history when drawer opens
+  useEffect(() => {
+    if (isOpen && product.id) {
+      fetchStockHistory();
+    }
+  }, [isOpen, product.id]);
+
+  const fetchStockHistory = async () => {
+    if (!activeBranch?.branch_id) return;
+    
+    setLoadingHistory(true);
+    try {
+      const { data, error } = await supabase
+        .from('stock_transactions')
+        .select('*')
+        .eq('product_id', product.id)
+        .eq('branch_id', activeBranch.branch_id)
+        .order('created_at', { ascending: false })
+        .limit(5);
+      
+      if (error) {
+        console.error('Error fetching stock history:', error);
+        setStockHistory([]);
+      } else {
+        setStockHistory(data || []);
+      }
+    } catch (error) {
+      console.error('Error fetching stock history:', error);
+      setStockHistory([]);
+    } finally {
+      setLoadingHistory(false);
+    }
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <tr className="bg-gray-50 border-t border-b border-gray-200">
+      <td colSpan={columnCount} className="px-4 py-4">
+        <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Left Column - Product Details */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold text-gray-900 border-b pb-2">Product Details</h3>
+              
+              {product.description && (
+                <div>
+                  <label className="text-sm font-medium text-gray-700">Description</label>
+                  <p className="text-sm text-gray-600 mt-1">{product.description}</p>
+                </div>
+              )}
+              
+              <div className="grid grid-cols-2 gap-4">
+                {product.variant_sku && (
+                  <div>
+                    <label className="text-sm font-medium text-gray-700">SKU</label>
+                    <p className="text-sm text-gray-900 mt-1 font-mono">{product.variant_sku}</p>
+                  </div>
+                )}
+                
+                {product.variant_barcode && (
+                  <div>
+                    <label className="text-sm font-medium text-gray-700">Barcode</label>
+                    <p className="text-sm text-gray-900 mt-1 font-mono">{product.variant_barcode}</p>
+                  </div>
+                )}
+              </div>
+
+              {product.location && (
+                <div>
+                  <label className="text-sm font-medium text-gray-700">Location</label>
+                  <p className="text-sm text-gray-900 mt-1 flex items-center gap-2">
+                    <MapPin className="w-4 h-4 text-gray-400" />
+                    {product.location}
+                  </p>
+                </div>
+              )}
+
+              <div className="grid grid-cols-3 gap-4">
+                <div>
+                  <label className="text-sm font-medium text-gray-700">Purchase Price</label>
+                  <p className="text-sm text-red-600 font-semibold mt-1">
+                    ${product.purchase_price ? Number(product.purchase_price).toFixed(2) : '0.00'}
+                  </p>
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-gray-700">Sale Price</label>
+                  <p className="text-sm text-green-600 font-semibold mt-1">
+                    ${product.sale_price ? Number(product.sale_price).toFixed(2) : '0.00'}
+                  </p>
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-gray-700">Margin</label>
+                  <p className="text-sm text-blue-600 font-semibold mt-1">
+                    ${product.sale_price && product.purchase_price 
+                      ? (Number(product.sale_price) - Number(product.purchase_price)).toFixed(2)
+                      : '0.00'}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Column - Stock History */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold text-gray-900 border-b pb-2">Recent Stock History</h3>
+              
+              {loadingHistory ? (
+                <div className="flex items-center justify-center py-8">
+                  <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
+                </div>
+              ) : stockHistory.length > 0 ? (
+                <div className="space-y-2">
+                  {stockHistory.map((transaction, index) => (
+                    <div 
+                      key={transaction.id || index} 
+                      className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                          transaction.transaction_type === 'in' ? 'bg-green-100' : 'bg-red-100'
+                        }`}>
+                          {transaction.transaction_type === 'in' ? (
+                            <TrendingUp className="w-4 h-4 text-green-600" />
+                          ) : (
+                            <TrendingDown className="w-4 h-4 text-red-600" />
+                          )}
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-gray-900">
+                            {transaction.transaction_type === 'in' ? 'Stock In' : 'Stock Out'}
+                          </p>
+                          <p className="text-xs text-gray-500">
+                            {new Date(transaction.created_at).toLocaleDateString('en-US', {
+                              month: 'short',
+                              day: 'numeric',
+                              year: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit'
+                            })}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <p className={`text-sm font-semibold ${
+                          transaction.transaction_type === 'in' ? 'text-green-600' : 'text-red-600'
+                        }`}>
+                          {transaction.transaction_type === 'in' ? '+' : '-'}{Math.abs(transaction.quantity)}
+                        </p>
+                        {transaction.notes && (
+                          <p className="text-xs text-gray-500 max-w-[150px] truncate">{transaction.notes}</p>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="flex flex-col items-center justify-center py-8 text-gray-500">
+                  <AlertCircle className="w-8 h-8 mb-2" />
+                  <p className="text-sm">No stock history available</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </td>
+    </tr>
+  );
+};
+
 // Product Row Component for Desktop
 interface ProductRowProps {
   product: Product;
@@ -143,6 +324,8 @@ interface ProductRowProps {
   onAddVariant?: (product: Product) => void;
   onImagePreview: (url: string) => void;
   isAdmin?: boolean;
+  isDetailExpanded?: boolean;
+  onToggleDetailExpand?: () => void;
 }
 
 const ProductRow: React.FC<ProductRowProps> = ({
@@ -159,7 +342,9 @@ const ProductRow: React.FC<ProductRowProps> = ({
   onEdit,
   onAddVariant,
   onImagePreview,
-  isAdmin = false
+  isAdmin = false,
+  isDetailExpanded = false,
+  onToggleDetailExpand
 }) => {
   const stockStatus = getStockStatus(product.quantity_in_stock, product.minimum_stock_level);
   const stockLevelPercentage = getStockLevelPercentage(product.quantity_in_stock, product.minimum_stock_level);
@@ -167,8 +352,7 @@ const ProductRow: React.FC<ProductRowProps> = ({
 
   return (
     <tr 
-      className={`${isVariant ? 'bg-blue-50/30' : 'bg-white'} hover:bg-gray-50 transition-colors ${hasChildren ? 'cursor-pointer' : ''}`}
-      onClick={hasChildren ? onToggleExpand : undefined}
+      className={`${isVariant ? 'bg-blue-50/30' : 'bg-white'} hover:bg-gray-50 transition-colors`}
     >
       {/* Selection checkbox */}
       {isAdmin && (
@@ -186,11 +370,35 @@ const ProductRow: React.FC<ProductRowProps> = ({
       {columnVisibility.product && (
         <td className="px-4 py-3">
           <div className="flex items-center gap-3">
-            {/* Expand/Collapse indicator */}
+            {/* Detail expand/collapse button */}
+            {!hasChildren && onToggleDetailExpand && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onToggleDetailExpand();
+                }}
+                className="p-1 flex-shrink-0 hover:bg-gray-100 rounded transition-colors"
+                title="View details"
+              >
+                {isDetailExpanded ? (
+                  <ChevronDown className="w-4 h-4 text-gray-600" />
+                ) : (
+                  <ChevronRight className="w-4 h-4 text-gray-600" />
+                )}
+              </button>
+            )}
+            {/* Expand/Collapse indicator for variants */}
             {hasChildren && (
-              <div className="p-1 flex-shrink-0">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onToggleExpand?.();
+                }}
+                className="p-1 flex-shrink-0 hover:bg-blue-50 rounded transition-colors"
+                title="Toggle variants"
+              >
                 {isExpanded ? <ChevronDown className="w-4 h-4 text-blue-600" /> : <ChevronRight className="w-4 h-4 text-blue-600" />}
-              </div>
+              </button>
             )}
             
             {/* Variant indent */}
@@ -426,6 +634,181 @@ const ProductRow: React.FC<ProductRowProps> = ({
   );
 };
 
+// Mobile Product Detail Drawer Component
+interface MobileProductDetailDrawerProps {
+  product: Product;
+  isOpen: boolean;
+}
+
+const MobileProductDetailDrawer: React.FC<MobileProductDetailDrawerProps> = ({ product, isOpen }) => {
+  const { activeBranch } = useBranches();
+  const [stockHistory, setStockHistory] = useState<any[]>([]);
+  const [loadingHistory, setLoadingHistory] = useState(false);
+
+  // Fetch recent stock history when drawer opens
+  useEffect(() => {
+    if (isOpen && product.id) {
+      fetchStockHistory();
+    }
+  }, [isOpen, product.id]);
+
+  const fetchStockHistory = async () => {
+    if (!activeBranch?.branch_id) return;
+    
+    setLoadingHistory(true);
+    try {
+      const { data, error } = await supabase
+        .from('stock_transactions')
+        .select('*')
+        .eq('product_id', product.id)
+        .eq('branch_id', activeBranch.branch_id)
+        .order('created_at', { ascending: false })
+        .limit(5);
+      
+      if (error) {
+        console.error('Error fetching stock history:', error);
+        setStockHistory([]);
+      } else {
+        setStockHistory(data || []);
+      }
+    } catch (error) {
+      console.error('Error fetching stock history:', error);
+      setStockHistory([]);
+    } finally {
+      setLoadingHistory(false);
+    }
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="mt-3 bg-white rounded-lg border-2 border-blue-200 p-4 shadow-sm">
+      <div className="space-y-4">
+        {/* Product Details Section */}
+        <div className="space-y-3">
+          <h4 className="text-sm font-semibold text-gray-900 border-b pb-2">Product Details</h4>
+          
+          {product.description && (
+            <div>
+              <label className="text-xs font-medium text-gray-700">Description</label>
+              <p className="text-xs text-gray-600 mt-1">{product.description}</p>
+            </div>
+          )}
+          
+          <div className="grid grid-cols-2 gap-3">
+            {product.variant_sku && (
+              <div>
+                <label className="text-xs font-medium text-gray-700">SKU</label>
+                <p className="text-xs text-gray-900 mt-1 font-mono">{product.variant_sku}</p>
+              </div>
+            )}
+            
+            {product.variant_barcode && (
+              <div>
+                <label className="text-xs font-medium text-gray-700">Barcode</label>
+                <p className="text-xs text-gray-900 mt-1 font-mono">{product.variant_barcode}</p>
+              </div>
+            )}
+          </div>
+
+          {product.location && (
+            <div>
+              <label className="text-xs font-medium text-gray-700">Location</label>
+              <p className="text-xs text-gray-900 mt-1 flex items-center gap-1">
+                <MapPin className="w-3 h-3 text-gray-400" />
+                {product.location}
+              </p>
+            </div>
+          )}
+
+          <div className="grid grid-cols-3 gap-3">
+            <div>
+              <label className="text-xs font-medium text-gray-700">Purchase</label>
+              <p className="text-xs text-red-600 font-semibold mt-1">
+                ${product.purchase_price ? Number(product.purchase_price).toFixed(2) : '0.00'}
+              </p>
+            </div>
+            <div>
+              <label className="text-xs font-medium text-gray-700">Sale</label>
+              <p className="text-xs text-green-600 font-semibold mt-1">
+                ${product.sale_price ? Number(product.sale_price).toFixed(2) : '0.00'}
+              </p>
+            </div>
+            <div>
+              <label className="text-xs font-medium text-gray-700">Margin</label>
+              <p className="text-xs text-blue-600 font-semibold mt-1">
+                ${product.sale_price && product.purchase_price 
+                  ? (Number(product.sale_price) - Number(product.purchase_price)).toFixed(2)
+                  : '0.00'}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Stock History Section */}
+        <div className="space-y-3">
+          <h4 className="text-sm font-semibold text-gray-900 border-b pb-2">Recent Stock History</h4>
+          
+          {loadingHistory ? (
+            <div className="flex items-center justify-center py-6">
+              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-600"></div>
+            </div>
+          ) : stockHistory.length > 0 ? (
+            <div className="space-y-2">
+              {stockHistory.map((transaction, index) => (
+                <div 
+                  key={transaction.id || index} 
+                  className="flex items-center justify-between p-2 bg-gray-50 rounded border border-gray-200"
+                >
+                  <div className="flex items-center gap-2">
+                    <div className={`w-6 h-6 rounded-full flex items-center justify-center ${
+                      transaction.transaction_type === 'in' ? 'bg-green-100' : 'bg-red-100'
+                    }`}>
+                      {transaction.transaction_type === 'in' ? (
+                        <TrendingUp className="w-3 h-3 text-green-600" />
+                      ) : (
+                        <TrendingDown className="w-3 h-3 text-red-600" />
+                      )}
+                    </div>
+                    <div>
+                      <p className="text-xs font-medium text-gray-900">
+                        {transaction.transaction_type === 'in' ? 'In' : 'Out'}
+                      </p>
+                      <p className="text-[10px] text-gray-500">
+                        {new Date(transaction.created_at).toLocaleDateString('en-US', {
+                          month: 'short',
+                          day: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit'
+                        })}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className={`text-xs font-semibold ${
+                      transaction.transaction_type === 'in' ? 'text-green-600' : 'text-red-600'
+                    }`}>
+                      {transaction.transaction_type === 'in' ? '+' : '-'}{Math.abs(transaction.quantity)}
+                    </p>
+                    {transaction.notes && (
+                      <p className="text-[10px] text-gray-500 max-w-[100px] truncate">{transaction.notes}</p>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center py-6 text-gray-500">
+              <AlertCircle className="w-6 h-6 mb-1" />
+              <p className="text-xs">No history available</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // Mobile Product Card Component
 interface MobileProductCardProps {
   product: Product;
@@ -441,6 +824,8 @@ interface MobileProductCardProps {
   onAddVariant?: (product: Product) => void;
   onImagePreview: (url: string) => void;
   isAdmin?: boolean;
+  isDetailExpanded?: boolean;
+  onToggleDetailExpand?: () => void;
 }
 
 const MobileProductCard: React.FC<MobileProductCardProps> = ({
@@ -456,224 +841,258 @@ const MobileProductCard: React.FC<MobileProductCardProps> = ({
   onEdit,
   onAddVariant,
   onImagePreview,
-  isAdmin = false
+  isAdmin = false,
+  isDetailExpanded = false,
+  onToggleDetailExpand
 }) => {
   const stockStatus = getStockStatus(product.quantity_in_stock, product.minimum_stock_level);
   const stockLevelPercentage = getStockLevelPercentage(product.quantity_in_stock, product.minimum_stock_level);
   const variantAttributes = formatVariantAttributes(product.variant_attributes);
 
   return (
-    <div 
-      className={`bg-white rounded-lg border border-gray-200 ${isVariant ? 'ml-6 p-3 border-l-4 border-l-purple-400 bg-purple-50/30' : 'p-4'} ${hasChildren ? 'cursor-pointer' : ''}`}
-      onClick={hasChildren ? onToggleExpand : undefined}
-    >
-      <div className="flex items-start gap-3">
-        {/* Selection checkbox */}
-        {isAdmin && (
-          <div className="flex-shrink-0 pt-1" onClick={(e) => e.stopPropagation()}>
-            <input
-              type="checkbox"
-              checked={isSelected}
-              onChange={() => onSelect?.(product.id)}
-              className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
-            />
-          </div>
-        )}
-
-        {/* Product image */}
-        <div className="flex-shrink-0" onClick={(e) => e.stopPropagation()}>
-          {product.image_url ? (
-            <img
-              src={product.image_url}
-              alt={`${product.name} product image`}
-              className={`object-cover rounded-lg border cursor-pointer hover:opacity-80 transition-opacity ${isVariant ? 'w-14 h-14' : 'w-16 h-16'}`}
-              onClick={() => onImagePreview(product.image_url!)}
-            />
-          ) : (
-            <div className={`bg-gray-200 rounded-lg border flex items-center justify-center text-xs text-gray-400 ${isVariant ? 'w-14 h-14' : 'w-16 h-16'}`}>
-              No Photo
+    <div className={`${isVariant ? 'ml-6' : ''}`}>
+      <div 
+        className={`bg-white rounded-lg border border-gray-200 ${isVariant ? 'p-3 border-l-4 border-l-purple-400 bg-purple-50/30' : 'p-4'}`}
+      >
+        <div className="flex items-start gap-3">
+          {/* Selection checkbox */}
+          {isAdmin && (
+            <div className="flex-shrink-0 pt-1" onClick={(e) => e.stopPropagation()}>
+              <input
+                type="checkbox"
+                checked={isSelected}
+                onChange={() => onSelect?.(product.id)}
+                className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+              />
             </div>
           )}
-        </div>
 
-        {/* Product info */}
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-2">
-            {/* Product icon */}
-            <div className="flex-shrink-0">
-              {isVariant ? (
-                <div className="w-6 h-6 bg-purple-100 rounded-full flex items-center justify-center">
-                  <Palette className="w-3 h-3 text-purple-600" />
-                </div>
-              ) : (
-                <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center">
-                  <ShoppingBasket className="w-3 h-3 text-blue-600" />
-                </div>
-              )}
-            </div>
-
-            {/* Product name */}
-            <div className="flex-1 min-w-0">
-              <h3 className={`font-medium text-gray-900 truncate ${isVariant ? 'text-xs' : 'text-sm'}`}>
-                {product.name}
-                {isVariant && product.variant_name && (
-                  <span className="text-gray-600"> - {product.variant_name}</span>
-                )}
-              </h3>
-              <div className="flex gap-1 mt-0.5">
-                {isVariant && (
-                  <Badge className="bg-purple-100 text-purple-700 border border-purple-200 text-[10px] px-1.5 py-0">
-                    Variant
-                  </Badge>
-                )}
-                {hasChildren && !isExpanded && variantCount > 0 && (
-                  <Badge className="bg-blue-100 text-blue-700 border border-blue-200 text-[10px] px-1.5 py-0">
-                    {variantCount} {variantCount === 1 ? 'variant' : 'variants'}
-                  </Badge>
-                )}
-              </div>
-            </div>
-
-            {/* Expand/Collapse indicator */}
-            {hasChildren && (
-              <div className="p-1 flex-shrink-0">
-                {isExpanded ? <ChevronDown className="w-5 h-5 text-blue-600" /> : <ChevronRight className="w-5 h-5 text-blue-600" />}
+          {/* Product image */}
+          <div className="flex-shrink-0" onClick={(e) => e.stopPropagation()}>
+            {product.image_url ? (
+              <img
+                src={product.image_url}
+                alt={`${product.name} product image`}
+                className={`object-cover rounded-lg border cursor-pointer hover:opacity-80 transition-opacity ${isVariant ? 'w-14 h-14' : 'w-16 h-16'}`}
+                onClick={() => onImagePreview(product.image_url!)}
+              />
+            ) : (
+              <div className={`bg-gray-200 rounded-lg border flex items-center justify-center text-xs text-gray-400 ${isVariant ? 'w-14 h-14' : 'w-16 h-16'}`}>
+                No Photo
               </div>
             )}
           </div>
-          
-          {/* Variant attributes */}
-          {isVariant && variantAttributes.length > 0 && (
-            <div className="flex flex-wrap gap-1 mb-1.5">
-              {variantAttributes.map((attr, index) => (
-                <Badge key={index} variant="secondary" className="text-[10px] px-1.5 py-0 bg-gray-50">
-                  {attr}
-                </Badge>
-              ))}
-            </div>
-          )}
-          
-          {/* Description */}
-          {!isVariant && product.description && (
-            <p className="text-xs text-gray-500 mb-2 line-clamp-2">
-              {product.description}
-            </p>
-          )}
 
-          {/* Stock and pricing info */}
-          {!hasChildren && (
-            <div className={`grid grid-cols-2 gap-4 ${isVariant ? 'text-xs' : 'text-sm'}`}>
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <div 
-                      className="cursor-pointer hover:bg-gray-50 rounded-md p-1.5 -m-1.5 transition-colors"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onStockAction(product, 'in');
-                      }}
-                    >
-                      <div className="flex items-center gap-2 mb-1">
-                        <div className={`${isVariant ? 'w-1.5 h-1.5' : 'w-2 h-2'} rounded-full ${getStockStatusDotColor(product.quantity_in_stock, product.minimum_stock_level)} ${Number(product.quantity_in_stock) === 0 ? 'animate-pulse' : ''}`} />
-                        <span className={`font-semibold text-gray-900 ${Number(product.quantity_in_stock) === 0 ? 'animate-pulse text-red-600' : ''}`}>{product.quantity_in_stock}</span>
-                        <span className="text-gray-500">in stock</span>
-                      </div>
-                      <div className={`text-gray-500 ${isVariant ? 'text-[10px]' : 'text-xs'}`}>Min: {product.minimum_stock_level}</div>
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p className="font-medium">
-                      {product.quantity_in_stock} in stock. Minimum: {product.minimum_stock_level}
-                    </p>
-                    {Number(product.quantity_in_stock) === 0 && (
-                      <p className="text-xs text-red-400 mt-1">⚠️ Out of stock!</p>
-                    )}
-                    {Number(product.quantity_in_stock) > 0 && Number(product.quantity_in_stock) <= Number(product.minimum_stock_level) && (
-                      <p className="text-xs text-orange-400 mt-1">⚠️ Low stock alert</p>
-                    )}
-                    <p className="text-xs text-gray-400 mt-1">Click to adjust stock</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-              
-              <div className="text-right">
-                {product.purchase_price && (
-                  <div className={`text-red-600 font-medium ${isVariant ? 'text-xs' : 'text-sm'}`}>
-                    ${Number(product.purchase_price).toFixed(2)}
+          {/* Product info */}
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 mb-2">
+              {/* Product icon */}
+              <div className="flex-shrink-0">
+                {isVariant ? (
+                  <div className="w-6 h-6 bg-purple-100 rounded-full flex items-center justify-center">
+                    <Palette className="w-3 h-3 text-purple-600" />
                   </div>
-                )}
-                {product.sale_price && (
-                  <div className={`text-green-600 font-medium ${isVariant ? 'text-xs' : 'text-sm'}`}>
-                    ${Number(product.sale_price).toFixed(2)}
-                  </div>
-                )}
-                {product.location && (
-                  <div className="flex items-center justify-end gap-1 mt-1">
-                    <MapPin className={`text-gray-400 ${isVariant ? 'w-2.5 h-2.5' : 'w-3 h-3'}`} />
-                    <span className={`text-gray-500 ${isVariant ? 'text-[10px]' : 'text-xs'}`}>{product.location}</span>
+                ) : (
+                  <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center">
+                    <ShoppingBasket className="w-3 h-3 text-blue-600" />
                   </div>
                 )}
               </div>
-            </div>
-          )}
 
-          {/* Actions */}
-          {!hasChildren && (
-            <div className={`flex gap-2 ${isVariant ? 'mt-2' : 'mt-3'}`} onClick={(e) => e.stopPropagation()}>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => onStockAction(product, 'in')}
-                className={`flex-1 text-green-600 border-green-300 hover:bg-green-50 ${isVariant ? 'h-8 text-xs' : ''}`}
-              >
-                <Plus className={`${isVariant ? 'w-3 h-3' : 'w-4 h-4'} mr-1`} />
-                In
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => onStockAction(product, 'out')}
-                className={`flex-1 text-red-600 border-red-300 hover:bg-red-50 ${isVariant ? 'h-8 text-xs' : ''}`}
-              >
-                <Minus className={`${isVariant ? 'w-3 h-3' : 'w-4 h-4'} mr-1`} />
-                Out
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => onEdit(product)}
-                className={`${isVariant ? 'px-2 h-8' : 'px-3'}`}
-              >
-                <Edit className={`${isVariant ? 'w-3 h-3' : 'w-4 h-4'}`} />
-              </Button>
+              {/* Product name */}
+              <div className="flex-1 min-w-0">
+                <h3 className={`font-medium text-gray-900 truncate ${isVariant ? 'text-xs' : 'text-sm'}`}>
+                  {product.name}
+                  {isVariant && product.variant_name && (
+                    <span className="text-gray-600"> - {product.variant_name}</span>
+                  )}
+                </h3>
+                <div className="flex gap-1 mt-0.5">
+                  {isVariant && (
+                    <Badge className="bg-purple-100 text-purple-700 border border-purple-200 text-[10px] px-1.5 py-0">
+                      Variant
+                    </Badge>
+                  )}
+                  {hasChildren && !isExpanded && variantCount > 0 && (
+                    <Badge className="bg-blue-100 text-blue-700 border border-blue-200 text-[10px] px-1.5 py-0">
+                      {variantCount} {variantCount === 1 ? 'variant' : 'variants'}
+                    </Badge>
+                  )}
+                </div>
+              </div>
+
+              {/* Detail expand button for products without children */}
+              {!hasChildren && onToggleDetailExpand && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onToggleDetailExpand();
+                  }}
+                  className="p-1 flex-shrink-0 hover:bg-gray-100 rounded transition-colors"
+                  title="View details"
+                >
+                  {isDetailExpanded ? (
+                    <ChevronDown className="w-5 h-5 text-gray-600" />
+                  ) : (
+                    <ChevronRight className="w-5 h-5 text-gray-600" />
+                  )}
+                </button>
+              )}
+              
+              {/* Expand/Collapse indicator for variants */}
+              {hasChildren && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onToggleExpand?.();
+                  }}
+                  className="p-1 flex-shrink-0 hover:bg-blue-50 rounded transition-colors"
+                  title="Toggle variants"
+                >
+                  {isExpanded ? <ChevronDown className="w-5 h-5 text-blue-600" /> : <ChevronRight className="w-5 h-5 text-blue-600" />}
+                </button>
+              )}
             </div>
-          )}
-          {hasChildren && (
-            <div className="flex gap-2 mt-3" onClick={(e) => e.stopPropagation()}>
-              {onAddVariant && (
+            
+            {/* Variant attributes */}
+            {isVariant && variantAttributes.length > 0 && (
+              <div className="flex flex-wrap gap-1 mb-1.5">
+                {variantAttributes.map((attr, index) => (
+                  <Badge key={index} variant="secondary" className="text-[10px] px-1.5 py-0 bg-gray-50">
+                    {attr}
+                  </Badge>
+                ))}
+              </div>
+            )}
+            
+            {/* Description */}
+            {!isVariant && product.description && (
+              <p className="text-xs text-gray-500 mb-2 line-clamp-2">
+                {product.description}
+              </p>
+            )}
+
+            {/* Stock and pricing info */}
+            {!hasChildren && (
+              <div className={`grid grid-cols-2 gap-4 ${isVariant ? 'text-xs' : 'text-sm'}`}>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div 
+                        className="cursor-pointer hover:bg-gray-50 rounded-md p-1.5 -m-1.5 transition-colors"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onStockAction(product, 'in');
+                        }}
+                      >
+                        <div className="flex items-center gap-2 mb-1">
+                          <div className={`${isVariant ? 'w-1.5 h-1.5' : 'w-2 h-2'} rounded-full ${getStockStatusDotColor(product.quantity_in_stock, product.minimum_stock_level)} ${Number(product.quantity_in_stock) === 0 ? 'animate-pulse' : ''}`} />
+                          <span className={`font-semibold text-gray-900 ${Number(product.quantity_in_stock) === 0 ? 'animate-pulse text-red-600' : ''}`}>{product.quantity_in_stock}</span>
+                          <span className="text-gray-500">in stock</span>
+                        </div>
+                        <div className={`text-gray-500 ${isVariant ? 'text-[10px]' : 'text-xs'}`}>Min: {product.minimum_stock_level}</div>
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p className="font-medium">
+                        {product.quantity_in_stock} in stock. Minimum: {product.minimum_stock_level}
+                      </p>
+                      {Number(product.quantity_in_stock) === 0 && (
+                        <p className="text-xs text-red-400 mt-1">⚠️ Out of stock!</p>
+                      )}
+                      {Number(product.quantity_in_stock) > 0 && Number(product.quantity_in_stock) <= Number(product.minimum_stock_level) && (
+                        <p className="text-xs text-orange-400 mt-1">⚠️ Low stock alert</p>
+                      )}
+                      <p className="text-xs text-gray-400 mt-1">Click to adjust stock</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+                
+                <div className="text-right">
+                  {product.purchase_price && (
+                    <div className={`text-red-600 font-medium ${isVariant ? 'text-xs' : 'text-sm'}`}>
+                      ${Number(product.purchase_price).toFixed(2)}
+                    </div>
+                  )}
+                  {product.sale_price && (
+                    <div className={`text-green-600 font-medium ${isVariant ? 'text-xs' : 'text-sm'}`}>
+                      ${Number(product.sale_price).toFixed(2)}
+                    </div>
+                  )}
+                  {product.location && (
+                    <div className="flex items-center justify-end gap-1 mt-1">
+                      <MapPin className={`text-gray-400 ${isVariant ? 'w-2.5 h-2.5' : 'w-3 h-3'}`} />
+                      <span className={`text-gray-500 ${isVariant ? 'text-[10px]' : 'text-xs'}`}>{product.location}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Actions */}
+            {!hasChildren && (
+              <div className={`flex gap-2 ${isVariant ? 'mt-2' : 'mt-3'}`} onClick={(e) => e.stopPropagation()}>
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => onAddVariant(product)}
-                  className="flex-1 text-blue-600 border-blue-300 hover:bg-blue-50"
+                  onClick={() => onStockAction(product, 'in')}
+                  className={`flex-1 text-green-600 border-green-300 hover:bg-green-50 ${isVariant ? 'h-8 text-xs' : ''}`}
                 >
-                  <Plus className="w-4 h-4 mr-1" />
-                  Add Variant
+                  <Plus className={`${isVariant ? 'w-3 h-3' : 'w-4 h-4'} mr-1`} />
+                  In
                 </Button>
-              )}
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => onEdit(product)}
-                className="flex-1"
-              >
-                <Edit className="w-4 h-4 mr-1" />
-                Edit Product
-              </Button>
-            </div>
-          )}
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onStockAction(product, 'out')}
+                  className={`flex-1 text-red-600 border-red-300 hover:bg-red-50 ${isVariant ? 'h-8 text-xs' : ''}`}
+                >
+                  <Minus className={`${isVariant ? 'w-3 h-3' : 'w-4 h-4'} mr-1`} />
+                  Out
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onEdit(product)}
+                  className={`${isVariant ? 'px-2 h-8' : 'px-3'}`}
+                >
+                  <Edit className={`${isVariant ? 'w-3 h-3' : 'w-4 h-4'}`} />
+                </Button>
+              </div>
+            )}
+            {hasChildren && (
+              <div className="flex gap-2 mt-3" onClick={(e) => e.stopPropagation()}>
+                {onAddVariant && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => onAddVariant(product)}
+                    className="flex-1 text-blue-600 border-blue-300 hover:bg-blue-50"
+                  >
+                    <Plus className="w-4 h-4 mr-1" />
+                    Add Variant
+                  </Button>
+                )}
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onEdit(product)}
+                  className="flex-1"
+                >
+                  <Edit className="w-4 h-4 mr-1" />
+                  Edit Product
+                </Button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
+      
+      {/* Product Detail Drawer */}
+      <MobileProductDetailDrawer
+        product={product}
+        isOpen={isDetailExpanded}
+      />
     </div>
   );
 };
@@ -836,6 +1255,12 @@ export const StockList = () => {
   const [expandedParents, setExpandedParents] = useState<Record<string, boolean>>({});
   const toggleExpand = (parentId: string) => {
     setExpandedParents(prev => ({ ...prev, [parentId]: !prev[parentId] }));
+  };
+
+  // Product detail drawer expand/collapse
+  const [expandedDetails, setExpandedDetails] = useState<Record<string, boolean>>({});
+  const toggleDetailExpand = (productId: string) => {
+    setExpandedDetails(prev => ({ ...prev, [productId]: !prev[productId] }));
   };
 
   // Load column visibility from localStorage on component mount
@@ -1720,6 +2145,7 @@ export const StockList = () => {
                   const hasChildren = (grouped.children[parent.id]?.length || 0) > 0;
                   const variantCount = grouped.children[parent.id]?.length || 0;
                   const isExpanded = expandedParents[parent.id] || false;
+                  const parentDetailExpanded = expandedDetails[parent.id] || false;
                   
                   return (
                     <React.Fragment key={parent.id}>
@@ -1742,11 +2168,14 @@ export const StockList = () => {
                           setIsImagePreviewOpen(true);
                         }}
                         isAdmin={isAdmin}
+                        isDetailExpanded={parentDetailExpanded}
+                        onToggleDetailExpand={() => toggleDetailExpand(parent.id)}
                       />
                       
                       {isExpanded && hasChildren && (
                         grouped.children[parent.id].map((child) => {
                           const childChecked = selectedProductIds.includes(child.id);
+                          const childDetailExpanded = expandedDetails[child.id] || false;
                           return (
                             <MobileProductCard
                               key={child.id}
@@ -1764,6 +2193,8 @@ export const StockList = () => {
                                 setIsImagePreviewOpen(true);
                               }}
                               isAdmin={isAdmin}
+                              isDetailExpanded={childDetailExpanded}
+                              onToggleDetailExpand={() => toggleDetailExpand(child.id)}
                             />
                           );
                         })
@@ -2247,6 +2678,9 @@ export const StockList = () => {
                   const variantCount = grouped.children[parent.id]?.length || 0;
                   const isExpanded = expandedParents[parent.id] || false;
                   
+                  const parentDetailExpanded = expandedDetails[parent.id] || false;
+                  const totalColumns = (isAdmin ? 1 : 0) + Object.values(columnVisibility).filter(Boolean).length;
+                  
                   return (
                     <React.Fragment key={parent.id}>
                       <ProductRow
@@ -2269,30 +2703,50 @@ export const StockList = () => {
                           setIsImagePreviewOpen(true);
                         }}
                         isAdmin={isAdmin}
+                        isDetailExpanded={parentDetailExpanded}
+                        onToggleDetailExpand={() => toggleDetailExpand(parent.id)}
+                      />
+                      
+                      {/* Product Detail Drawer for Parent */}
+                      <ProductDetailDrawer
+                        product={parent}
+                        isOpen={parentDetailExpanded}
+                        columnCount={totalColumns}
                       />
                       
                       {isExpanded && hasChildren && (
                         grouped.children[parent.id].map((child) => {
                           const childChecked = selectedProductIds.includes(child.id);
+                          const childDetailExpanded = expandedDetails[child.id] || false;
                           return (
-                            <ProductRow
-                              key={child.id}
-                              product={child}
-                              isVariant={true}
-                              isSelected={childChecked}
-                              columnVisibility={columnVisibility}
-                              onSelect={handleSelectProduct}
-                              onStockAction={handleStockAction}
-                              onEdit={(product) => {
-                                setSelectedProduct(product);
-                                setIsEditInfoModalOpen(true);
-                              }}
-                              onImagePreview={(url) => {
-                          setPreviewImageUrl(url);
-                          setIsImagePreviewOpen(true);
-                        }}
-                              isAdmin={isAdmin}
-                            />
+                            <React.Fragment key={child.id}>
+                              <ProductRow
+                                product={child}
+                                isVariant={true}
+                                isSelected={childChecked}
+                                columnVisibility={columnVisibility}
+                                onSelect={handleSelectProduct}
+                                onStockAction={handleStockAction}
+                                onEdit={(product) => {
+                                  setSelectedProduct(product);
+                                  setIsEditInfoModalOpen(true);
+                                }}
+                                onImagePreview={(url) => {
+                                  setPreviewImageUrl(url);
+                                  setIsImagePreviewOpen(true);
+                                }}
+                                isAdmin={isAdmin}
+                                isDetailExpanded={childDetailExpanded}
+                                onToggleDetailExpand={() => toggleDetailExpand(child.id)}
+                              />
+                              
+                              {/* Product Detail Drawer for Variant */}
+                              <ProductDetailDrawer
+                                product={child}
+                                isOpen={childDetailExpanded}
+                                columnCount={totalColumns}
+                              />
+                            </React.Fragment>
                           );
                         })
                       )}
