@@ -136,11 +136,27 @@ export const AuthPage = () => {
           toast.error('Passwords do not match');
           return;
         }
-        if (password.length < 8) { // Aangeraden: 8 tekens
+        
+        // Enhanced password validation
+        if (password.length < 12) {
           if (isTrackingReady) {
             await trackFormAbandonment('password_too_short');
           }
-          toast.error('Password must be at least 8 characters long');
+          toast.error('Password must be at least 12 characters long');
+          return;
+        }
+        
+        // Check password complexity
+        const hasUpperCase = /[A-Z]/.test(password);
+        const hasLowerCase = /[a-z]/.test(password);
+        const hasNumbers = /\d/.test(password);
+        const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+        
+        if (!hasUpperCase || !hasLowerCase || !hasNumbers || !hasSpecialChar) {
+          if (isTrackingReady) {
+            await trackFormAbandonment('password_too_weak');
+          }
+          toast.error('Password must contain uppercase, lowercase, numbers, and special characters');
           return;
         }
         if (!acceptTerms) {

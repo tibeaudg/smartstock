@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { fetchBlogPostBySlug } from '../../integrations/supabase/client';
 import SEO from '../../components/SEO';
 import type { BlogPost } from '../../integrations/supabase/types';
+import DOMPurify from 'dompurify';
 
 import { BlogLayout } from '../../components/BlogLayout';
 
@@ -79,7 +80,10 @@ export default function BlogPostPage() {
             day: 'numeric'
           })} • door {'StockFlow'}
         </p>
-  <div className="prose prose-lg prose-blue" dangerouslySetInnerHTML={{ __html: post.content }} />
+  <div className="prose prose-lg prose-blue" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content, { 
+    ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'u', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li', 'a', 'img', 'blockquote', 'code', 'pre'],
+    ALLOWED_ATTR: ['href', 'src', 'alt', 'title', 'class', 'target', 'rel']
+  }) }} />
       </div>
     </BlogLayout>
   );

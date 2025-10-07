@@ -59,7 +59,12 @@ export const useStockMovements = () => {
     const dateRange = getDateRange();
     if (dateRange.start) query = query.gte('created_at', dateRange.start);
     if (dateRange.end) query = query.lte('created_at', dateRange.end);
-    if (filters.searchQuery) query = query.or(`product_name.ilike.%${filters.searchQuery}%,reference_number.ilike.%${filters.searchQuery}%`);
+    // Use textSearch or separate filters to prevent SQL injection
+    if (filters.searchQuery) {
+      // Sanitize search query - remove special SQL characters
+      const sanitizedQuery = filters.searchQuery.replace(/[%;\\]/g, '');
+      query = query.or(`product_name.ilike.%${sanitizedQuery}%,reference_number.ilike.%${sanitizedQuery}%`);
+    }
     const { data, error } = await query;
     if (error) throw new Error(error.message);
     return (data || []).map((row: any) => ({

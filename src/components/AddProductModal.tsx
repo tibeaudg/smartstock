@@ -295,19 +295,47 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
 
       // Upload image if exists
       if (productImage) {
-        const fileExt = productImage.name.split('.').pop();
-        const fileName = `${Date.now()}_${Math.random().toString(36).substring(2, 8)}.${fileExt}`;
+        // Validate file type
+        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+        if (!allowedTypes.includes(productImage.type)) {
+          toast.error('Invalid image format. Please use JPEG, PNG, or WebP');
+          setLoading(false);
+          return;
+        }
+
+        // Validate file size (max 5MB)
+        if (productImage.size > 5 * 1024 * 1024) {
+          toast.error('Image size must be less than 5MB');
+          setLoading(false);
+          return;
+        }
+
+        const fileExt = productImage.name.split('.').pop()?.toLowerCase();
+        
+        // Validate file extension
+        if (!fileExt || !['jpg', 'jpeg', 'png', 'webp'].includes(fileExt)) {
+          toast.error('Invalid file extension');
+          setLoading(false);
+          return;
+        }
+
+        const fileName = `${user.id}/${Date.now()}_${Math.random().toString(36).substring(2, 8)}.${fileExt}`;
         const { data: uploadData, error: uploadError } = await supabase.storage
           .from('product-images')
-          .upload(fileName, productImage, { upsert: false });
+          .upload(fileName, productImage, { 
+            upsert: false,
+            contentType: productImage.type
+          });
         if (uploadError) {
           toast.error('Error uploading image');
           setLoading(false);
           return;
         }
-        // Gebruik het SUPABASE_URL direct uit de client config
-        const SUPABASE_URL = "https://sszuxnqhbxauvershuys.supabase.co";
-        imageUrl = `${SUPABASE_URL}/storage/v1/object/public/product-images/${fileName}`;
+        // Get public URL from Supabase storage
+        const { data: { publicUrl } } = supabase.storage
+          .from('product-images')
+          .getPublicUrl(fileName);
+        imageUrl = publicUrl;
       }
 
       if (!hasVariants) {

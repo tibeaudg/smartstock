@@ -8,12 +8,42 @@ dotenv.config();
 const app = express();
 const PORT = 3001;
 
+// Rate limiting middleware
+const rateLimit = {};
+const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
+const MAX_REQUESTS = 10; // max 10 requests per minute
+
+const rateLimiter = (req, res, next) => {
+  const ip = req.ip || req.connection.remoteAddress;
+  const now = Date.now();
+  
+  if (!rateLimit[ip]) {
+    rateLimit[ip] = { count: 1, resetTime: now + RATE_LIMIT_WINDOW };
+    return next();
+  }
+  
+  if (now > rateLimit[ip].resetTime) {
+    rateLimit[ip] = { count: 1, resetTime: now + RATE_LIMIT_WINDOW };
+    return next();
+  }
+  
+  if (rateLimit[ip].count >= MAX_REQUESTS) {
+    return res.status(429).json({ ok: false, error: 'Too many requests. Please try again later.' });
+  }
+  
+  rateLimit[ip].count++;
+  next();
+};
+
 // Middleware
 app.use(cors({
   origin: ['http://localhost:8080', 'http://localhost:8081', 'http://localhost:8082'],
-  credentials: true
+  credentials: true,
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
-app.use(express.json());
+app.use(express.json({ limit: '1mb' })); // Limit payload size
+app.use(rateLimiter);
 
 // Import API handlers
 const visitorChatHandler = require('./api/visitor-chat.js');

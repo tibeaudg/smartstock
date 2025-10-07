@@ -185,9 +185,10 @@ const PhotoUploadPlaceholder: React.FC<PhotoUploadPlaceholderProps> = ({
   const handleFileUpload = async (file: File) => {
     if (!user || !file) return;
 
-    // Validate file type
-    if (!file.type.startsWith('image/')) {
-      toast.error('Please upload an image file');
+    // Validate file type - only allow specific image formats
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+    if (!allowedTypes.includes(file.type)) {
+      toast.error('Please upload a valid image file (JPEG, PNG, or WebP)');
       return;
     }
 
@@ -197,11 +198,17 @@ const PhotoUploadPlaceholder: React.FC<PhotoUploadPlaceholderProps> = ({
       return;
     }
 
+    // Validate file extension
+    const fileExt = file.name.split('.').pop()?.toLowerCase();
+    if (!fileExt || !['jpg', 'jpeg', 'png', 'webp'].includes(fileExt)) {
+      toast.error('Invalid file extension');
+      return;
+    }
+
     setIsUploading(true);
 
     try {
       // Create unique filename
-      const fileExt = file.name.split('.').pop();
       const fileName = `${user.id}/${productId}-${Date.now()}.${fileExt}`;
 
       // Upload to Supabase storage
@@ -209,7 +216,8 @@ const PhotoUploadPlaceholder: React.FC<PhotoUploadPlaceholderProps> = ({
         .from('product-images')
         .upload(fileName, file, {
           cacheControl: '3600',
-          upsert: false
+          upsert: false,
+          contentType: file.type
         });
 
       if (uploadError) throw uploadError;
