@@ -808,11 +808,13 @@ const ProductRow: React.FC<ProductRowProps> = ({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">
-              {/* Stock Actions */}
-              <DropdownMenuItem onClick={() => onStockAction(product, 'in')}>
-                <Plus className="w-4 h-4 mr-2 text-green-600" />
-                <span className="flex-1">Adjust Stock</span>
-              </DropdownMenuItem>
+              {/* Stock Actions - Only show for variants, not parent products */}
+              {!hasChildren && (
+                <DropdownMenuItem onClick={() => onStockAction(product, 'in')}>
+                  <Plus className="w-4 h-4 mr-2 text-green-600" />
+                  <span className="flex-1">Adjust Stock</span>
+                </DropdownMenuItem>
+              )}
               
               {hasChildren && onAddVariant && (
                 <DropdownMenuItem onClick={() => onAddVariant(product)}>

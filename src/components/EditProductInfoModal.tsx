@@ -56,8 +56,6 @@ export const EditProductInfoModal = ({
   const queryClient = useQueryClient();
   const { isMobile } = useMobile();
   const [loading, setLoading] = useState(false);
-  const [productImage, setProductImage] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(product.image_url || null);
   const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
   
   // State voor Categoryën en leveranciers
@@ -123,8 +121,6 @@ export const EditProductInfoModal = ({
         supplier_name: product.supplier_name || '',
         location: product.location || '',
       });
-      setImagePreview(product.image_url || null);
-      setProductImage(null);
     }
   }, [isOpen, product]);
 
@@ -205,17 +201,6 @@ export const EditProductInfoModal = ({
     }
   };
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] || null;
-    setProductImage(file);
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => setImagePreview(reader.result as string);
-      reader.readAsDataURL(file);
-    } else {
-      setImagePreview(product.image_url || null);
-    }
-  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.type === 'number' ? Number(e.target.value) : e.target.value });
@@ -374,21 +359,6 @@ export const EditProductInfoModal = ({
     }
     
     setLoading(true);
-    let imageUrl = product.image_url;
-    if (productImage) {
-      const fileExt = productImage.name.split('.').pop();
-      const fileName = `${Date.now()}_${Math.random().toString(36).substring(2, 8)}.${fileExt}`;
-      const { error: uploadError } = await supabase.storage
-        .from('product-images')
-        .upload(fileName, productImage, { upsert: false });
-      if (uploadError) {
-        toast.error('Error uploading image');
-        setLoading(false);
-        return;
-      }
-      const SUPABASE_URL = "https://sszuxnqhbxauvershuys.supabase.co";
-      imageUrl = `${SUPABASE_URL}/storage/v1/object/public/product-images/${fileName}`;
-    }
 
     try {
       console.log('Updating product with form data:', form);
@@ -470,7 +440,7 @@ export const EditProductInfoModal = ({
             unit_price: Number(form.unit_price),
             purchase_price: Number(form.purchase_price),
             sale_price: Number(form.sale_price),
-            image_url: imageUrl,
+            image_url: product.image_url,
             category_id: categoryId,
             supplier_id: supplierId,
             category_name: form.category_name.trim() || null,
@@ -501,7 +471,7 @@ export const EditProductInfoModal = ({
             unit_price: Number(form.unit_price),
             purchase_price: Number(form.purchase_price),
             sale_price: Number(form.sale_price),
-            image_url: imageUrl,
+            image_url: product.image_url,
             category_id: categoryId,
             supplier_id: supplierId,
             category_name: form.category_name.trim() || null,
@@ -1094,29 +1064,6 @@ export const EditProductInfoModal = ({
                     </div>
                   )}
 
-                  {/* Afbeelding Sectie */}
-                  <div className="bg-white border border-gray-200 rounded-lg p-4">
-                    <h4 className="text-md font-semibold text-gray-700 mb-3 flex items-center">
-                      <div className="w-2 h-2 bg-gray-500 rounded-full mr-2"></div>
-                        Product Photo
-                    </h4>
-                    <div className="space-y-2">
-                      <Input 
-                        type="file" 
-                        accept="image/*" 
-                        onChange={handleImageChange} 
-                        disabled={loading} 
-                        className="py-2 border-gray-200 focus:border-gray-400" 
-                      />
-                      {imagePreview && (
-                        <img 
-                          src={imagePreview} 
-                          alt="Preview" 
-                          className="mt-2 w-24 h-24 max-w-full object-cover rounded border mx-auto" 
-                        />
-                      )}
-                    </div>
-                  </div>
 
                 </div>
               )}
