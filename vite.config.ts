@@ -10,6 +10,14 @@ export default defineConfig(({ mode }) => ({
     port: 8080,
     // 👇 DEZE regel zorgt dat alle routes fallbacken naar index.html
     historyApiFallback: true,
+    // Proxy API requests to the dev server
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+        secure: false,
+      }
+    }
   },
   plugins: [
     react(),

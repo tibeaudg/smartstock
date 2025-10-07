@@ -75,7 +75,16 @@ export const FloatingChatWidget: React.FC<FloatingChatWidgetProps> = ({
         }),
       });
 
-      const data = await response.json();
+      // Check if response has content before parsing JSON
+      let data;
+      const contentType = response.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        data = await response.json();
+      } else {
+        const text = await response.text();
+        console.error('Non-JSON response:', text);
+        data = { ok: false, error: 'Server error' };
+      }
 
       if (response.ok && data.ok) {
         setStatus('success');
