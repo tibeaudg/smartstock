@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-// Icons niet nodig in deze modal
+import { Plus, Minus } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { useQueryClient } from '@tanstack/react-query';
@@ -37,10 +37,11 @@ export const EditProductModal = ({
   onClose,
   onProductUpdated,
   product,
-  actionType
+  actionType: initialActionType = 'in'
 }: EditProductModalProps) => {
   const [quantity, setQuantity] = useState<string>('');
   const [loading, setLoading] = useState(false);
+  const [currentActionType, setCurrentActionType] = useState<'in' | 'out'>(initialActionType);
   // Geen geavanceerde opties in deze modal; enkel quantity aanpassen
   const queryClient = useQueryClient();
   
@@ -74,12 +75,12 @@ export const EditProductModal = ({
       }
 
       const numericQuantity = parseInt(quantity);
-      const newQuantity = actionType === 'in' 
+      const newQuantity = currentActionType === 'in' 
         ? product.quantity_in_stock + numericQuantity
         : product.quantity_in_stock - numericQuantity;
 
       // Validate stock levels
-      if (actionType === 'out' && newQuantity < 0) {
+      if (currentActionType === 'out' && newQuantity < 0) {
         toast.error('Not enough stock available');
         setLoading(false);
         return;
@@ -91,11 +92,11 @@ export const EditProductModal = ({
         .insert({
           product_id: product.id,
           product_name: product.is_variant && product.variant_name ? `${product.name} - ${product.variant_name}` : product.name,
-          transaction_type: actionType === 'in' ? 'incoming' : 'outgoing',
+          transaction_type: currentActionType === 'in' ? 'incoming' : 'outgoing',
           quantity: numericQuantity,
           unit_price: product.unit_price,
-          reference_number: `STOCK_${actionType?.toUpperCase()}_${Date.now()}`,
-          notes: `Stock ${actionType === 'in' ? 'added' : 'removed'} via product edit`,
+          reference_number: `STOCK_${currentActionType?.toUpperCase()}_${Date.now()}`,
+          notes: `Stock ${currentActionType === 'in' ? 'added' : 'removed'} via product edit`,
           user_id: user.id, // Behoud user_id voor backward compatibility
           created_by: user.id, // Nieuwe kolom voor relaties
           branch_id: product.branch_id, // Add this if you have branch information
@@ -124,7 +125,7 @@ export const EditProductModal = ({
         throw new Error(`Error updating stock: ${updateError.message}`);
       }
 
-      toast.success(`Stock successfully ${actionType === 'in' ? 'added' : 'removed'}`);
+      toast.success(`Stock successfully ${currentActionType === 'in' ? 'added' : 'removed'}`);
       onProductUpdated();
       // Invalideer relevante queries zodat data automatisch wordt gerefetched
       queryClient.invalidateQueries({ queryKey: ['products'] });
@@ -145,14 +146,15 @@ export const EditProductModal = ({
   useEffect(() => {
     if (isOpen) {
       setQuantity('');
+      setCurrentActionType(initialActionType);
     }
-  }, [isOpen]);
+  }, [isOpen, initialActionType]);
 
   if (!isOpen) return null;
 
   // Add this to show the action type
-  const actionTitle = actionType === 'in' ? 'Add Stock' : 'Remove Stock';
-  const actionColor = actionType === 'in' ? 'text-green-600' : 'text-red-600';
+  const actionTitle = currentActionType === 'in' ? 'Add Stock' : 'Remove Stock';
+  const actionColor = currentActionType === 'in' ? 'text-green-600' : 'text-red-600';
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -165,14 +167,45 @@ export const EditProductModal = ({
 
         <div className="py-4 space-y-6">
           
+          {/* Stock Operation Switcher */}
+          <div className="grid gap-2">
+            <Label>Stock Operation</Label>
+            <div className={`flex rounded-lg border-2 ${currentActionType === 'in' ? 'border-green-200 bg-green-50' : 'border-red-200 bg-red-50'}`}>
+              <button
+                type="button"
+                onClick={() => setCurrentActionType('in')}
+                className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-l-md transition-colors ${
+                  currentActionType === 'in' 
+                    ? 'bg-green-600 text-white' 
+                    : 'text-green-700 hover:bg-green-100'
+                }`}
+              >
+                <Plus className="w-4 h-4" />
+                <span className="font-medium">Add Stock</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setCurrentActionType('out')}
+                className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-r-md transition-colors ${
+                  currentActionType === 'out' 
+                    ? 'bg-red-600 text-white' 
+                    : 'text-red-700 hover:bg-red-100'
+                }`}
+              >
+                <Minus className="w-4 h-4" />
+                <span className="font-medium">Remove Stock</span>
+              </button>
+            </div>
+          </div>
+
           {/* Voorraad Bewerking Sectie */}
-          <div className={`border rounded-lg p-4 ${actionType === 'in' ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}`}>
-            <h3 className={`text-lg font-semibold mb-4 flex items-center ${actionType === 'in' ? 'text-green-800' : 'text-red-800'}`}>
-              <div className={`w-3 h-3 rounded-full mr-2 ${actionType === 'in' ? 'bg-green-500' : 'bg-red-500'}`}></div>
-              Stock {actionType === 'in' ? 'Add' : 'Remove'}
+          <div className={`border rounded-lg p-4 ${currentActionType === 'in' ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}`}>
+            <h3 className={`text-lg font-semibold mb-4 flex items-center ${currentActionType === 'in' ? 'text-green-800' : 'text-red-800'}`}>
+              <div className={`w-3 h-3 rounded-full mr-2 ${currentActionType === 'in' ? 'bg-green-500' : 'bg-red-500'}`}></div>
+              Stock {currentActionType === 'in' ? 'Add' : 'Remove'}
             </h3>
             <div className="grid gap-2">
-              <Label htmlFor="quantity" className={`font-medium ${actionType === 'in' ? 'text-green-700' : 'text-red-700'}`}>
+              <Label htmlFor="quantity" className={`font-medium ${currentActionType === 'in' ? 'text-green-700' : 'text-red-700'}`}>
                 Quantity
               </Label>
               <Input
@@ -182,7 +215,7 @@ export const EditProductModal = ({
                 onChange={(e) => setQuantity(e.target.value)}
                 placeholder="Enter quantity"
                 min="1"
-                className={`py-3 px-3 text-base ${actionType === 'in' ? 'border-green-200 focus:border-green-500' : 'border-red-200 focus:border-red-500'}`}
+                className={`py-3 px-3 text-base ${currentActionType === 'in' ? 'border-green-200 focus:border-green-500' : 'border-red-200 focus:border-red-500'}`}
               />
             </div>
           </div>
@@ -197,9 +230,9 @@ export const EditProductModal = ({
           <Button 
             onClick={handleSubmit}
             disabled={loading}
-            className={actionType === 'in' ? 'bg-green-600 hover:bg-green-700' : 'bg-red-600 hover:bg-red-700'}
+            className={currentActionType === 'in' ? 'bg-green-600 hover:bg-green-700' : 'bg-red-600 hover:bg-red-700'}
           >
-            {loading ? 'Processing...' : actionType === 'in' ? 'Add' : 'Remove'}
+            {loading ? 'Processing...' : currentActionType === 'in' ? 'Add Stock' : 'Remove Stock'}
           </Button>
         </DialogFooter>        
       </DialogContent>

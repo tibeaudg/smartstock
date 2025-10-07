@@ -34,7 +34,10 @@ import {
   Palette,
   MoreVertical,
   MapPin,
-  AlertCircle
+  AlertCircle,
+  Archive,
+  Copy,
+  PackageOpen
 } from 'lucide-react';
 import { ProductActionModal } from './ProductActionModal';
 import { EditProductModal } from './EditProductModal';
@@ -486,6 +489,9 @@ interface ProductRowProps {
   isDetailExpanded?: boolean;
   onToggleDetailExpand?: () => void;
   onImageUpload?: () => void;
+  onDuplicate?: (product: Product) => void;
+  onArchive?: (product: Product) => void;
+  onMoveToLocation?: (product: Product) => void;
 }
 
 const ProductRow: React.FC<ProductRowProps> = ({
@@ -505,7 +511,10 @@ const ProductRow: React.FC<ProductRowProps> = ({
   isAdmin = false,
   isDetailExpanded = false,
   onToggleDetailExpand,
-  onImageUpload
+  onImageUpload,
+  onDuplicate,
+  onArchive,
+  onMoveToLocation
 }) => {
   const stockStatus = getStockStatus(product.quantity_in_stock, product.minimum_stock_level);
   const stockLevelPercentage = getStockLevelPercentage(product.quantity_in_stock, product.minimum_stock_level);
@@ -769,26 +778,51 @@ const ProductRow: React.FC<ProductRowProps> = ({
                 <MoreVertical className="w-4 h-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
+            <DropdownMenuContent align="end" className="w-56">
+              {/* Stock Actions */}
               <DropdownMenuItem onClick={() => onStockAction(product, 'in')}>
                 <Plus className="w-4 h-4 mr-2 text-green-600" />
-                Stock In
+                <span className="flex-1">Adjust Stock</span>
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => onStockAction(product, 'out')}>
-                <Minus className="w-4 h-4 mr-2 text-red-600" />
-                Stock Out
-              </DropdownMenuItem>
+              
               {hasChildren && onAddVariant && (
                 <DropdownMenuItem onClick={() => onAddVariant(product)}>
                   <Plus className="w-4 h-4 mr-2 text-blue-600" />
-                  Add Variant
+                  <span className="flex-1">Add Variant</span>
                 </DropdownMenuItem>
               )}
+              
               <DropdownMenuSeparator />
+              
+              {/* Primary Actions */}
               <DropdownMenuItem onClick={() => onEdit(product)}>
-                <Edit className="w-4 h-4 mr-2" />
-                Edit Product
+                <Edit className="w-4 h-4 mr-2 text-blue-600" />
+                <span className="flex-1">Edit</span>
               </DropdownMenuItem>
+              
+              {onDuplicate && (
+                <DropdownMenuItem onClick={() => onDuplicate(product)}>
+                  <Copy className="w-4 h-4 mr-2 text-purple-600" />
+                  <span className="flex-1">Duplicate</span>
+                </DropdownMenuItem>
+              )}
+              
+              {onMoveToLocation && (
+                <DropdownMenuItem onClick={() => onMoveToLocation(product)}>
+                  <MapPin className="w-4 h-4 mr-2 text-orange-600" />
+                  <span className="flex-1">Move to Location</span>
+                </DropdownMenuItem>
+              )}
+              
+              <DropdownMenuSeparator />
+              
+              {/* Destructive Actions */}
+              {onArchive && (
+                <DropdownMenuItem onClick={() => onArchive(product)}>
+                  <Archive className="w-4 h-4 mr-2 text-gray-600" />
+                  <span className="flex-1">Archive</span>
+                </DropdownMenuItem>
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
         </td>
@@ -990,6 +1024,9 @@ interface MobileProductCardProps {
   isDetailExpanded?: boolean;
   onToggleDetailExpand?: () => void;
   onImageUpload?: () => void;
+  onDuplicate?: (product: Product) => void;
+  onArchive?: (product: Product) => void;
+  onMoveToLocation?: (product: Product) => void;
 }
 
 const MobileProductCard: React.FC<MobileProductCardProps> = ({
@@ -1008,7 +1045,10 @@ const MobileProductCard: React.FC<MobileProductCardProps> = ({
   isAdmin = false,
   isDetailExpanded = false,
   onToggleDetailExpand,
-  onImageUpload
+  onImageUpload,
+  onDuplicate,
+  onArchive,
+  onMoveToLocation
 }) => {
   const stockStatus = getStockStatus(product.quantity_in_stock, product.minimum_stock_level);
   const stockLevelPercentage = getStockLevelPercentage(product.quantity_in_stock, product.minimum_stock_level);
@@ -1206,25 +1246,51 @@ const MobileProductCard: React.FC<MobileProductCardProps> = ({
                   className={`flex-1 text-green-600 border-green-300 hover:bg-green-50 ${isVariant ? 'h-8 text-xs' : ''}`}
                 >
                   <Plus className={`${isVariant ? 'w-3 h-3' : 'w-4 h-4'} mr-1`} />
-                  In
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => onStockAction(product, 'out')}
-                  className={`flex-1 text-red-600 border-red-300 hover:bg-red-50 ${isVariant ? 'h-8 text-xs' : ''}`}
-                >
-                  <Minus className={`${isVariant ? 'w-3 h-3' : 'w-4 h-4'} mr-1`} />
-                  Out
+                  Stock
                 </Button>
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={() => onEdit(product)}
-                  className={`${isVariant ? 'px-2 h-8' : 'px-3'}`}
+                  className={`flex-1 ${isVariant ? 'h-8 text-xs' : ''}`}
                 >
-                  <Edit className={`${isVariant ? 'w-3 h-3' : 'w-4 h-4'}`} />
+                  <Edit className={`${isVariant ? 'w-3 h-3' : 'w-4 h-4'} mr-1`} />
+                  Edit
                 </Button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className={`${isVariant ? 'px-2 h-8' : 'px-3'}`}
+                    >
+                      <MoreVertical className={`${isVariant ? 'w-3 h-3' : 'w-4 h-4'}`} />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-48">
+                    {onDuplicate && (
+                      <DropdownMenuItem onClick={() => onDuplicate(product)}>
+                        <Copy className="w-4 h-4 mr-2 text-purple-600" />
+                        <span>Duplicate</span>
+                      </DropdownMenuItem>
+                    )}
+                    {onMoveToLocation && (
+                      <DropdownMenuItem onClick={() => onMoveToLocation(product)}>
+                        <MapPin className="w-4 h-4 mr-2 text-orange-600" />
+                        <span>Move to Location</span>
+                      </DropdownMenuItem>
+                    )}
+                    {onArchive && (
+                      <>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem onClick={() => onArchive(product)}>
+                          <Archive className="w-4 h-4 mr-2 text-gray-600" />
+                          <span>Archive</span>
+                        </DropdownMenuItem>
+                      </>
+                    )}
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
             )}
             {hasChildren && (
@@ -1999,6 +2065,84 @@ export const StockList = () => {
     });
   };
 
+  // Duplicate product handler
+  const handleDuplicateProduct = async (product: Product) => {
+    if (!activeBranch) return;
+
+    try {
+      // Create a copy of the product with a new name
+      const { id, ...productData } = product;
+      
+      const duplicatedProduct = {
+        ...productData,
+        name: `${product.name} (Copy)`,
+        branch_id: activeBranch.branch_id,
+      };
+
+      const { error } = await supabase
+        .from('products')
+        .insert([duplicatedProduct]);
+
+      if (error) throw error;
+
+      toast.success('Product duplicated successfully');
+      
+      // Refresh product list
+      queryClient.invalidateQueries({ queryKey: ['products'] });
+      refetch();
+    } catch (error) {
+      console.error('Error duplicating product:', error);
+      toast.error('Failed to duplicate product');
+    }
+  };
+
+  // Archive product handler
+  const handleArchiveProduct = async (product: Product) => {
+    try {
+      const { error } = await supabase
+        .from('products')
+        .update({ status: 'archived' })
+        .eq('id', product.id);
+
+      if (error) throw error;
+
+      toast.success('Product archived successfully');
+      
+      // Refresh product list
+      queryClient.invalidateQueries({ queryKey: ['products'] });
+      refetch();
+    } catch (error) {
+      console.error('Error archiving product:', error);
+      toast.error('Failed to archive product');
+    }
+  };
+
+  // Move to location handler
+  const handleMoveToLocation = async (product: Product) => {
+    // Show a prompt to enter new location
+    const newLocation = prompt('Enter new location for this product:', product.location || '');
+    
+    if (newLocation === null) return; // User cancelled
+    
+    try {
+      const { error } = await supabase
+        .from('products')
+        .update({ location: newLocation })
+        .eq('id', product.id);
+
+      if (error) throw error;
+
+      toast.success('Product location updated successfully');
+      
+      // Refresh product list
+      queryClient.invalidateQueries({ queryKey: ['products'] });
+      refetch();
+    } catch (error) {
+      console.error('Error updating product location:', error);
+      toast.error('Failed to update product location');
+    }
+  };
+
   const handleBulkDelete = async () => {
     if (selectedProductIds.length === 0) return;
     
@@ -2338,6 +2482,9 @@ export const StockList = () => {
                         isDetailExpanded={parentDetailExpanded}
                         onToggleDetailExpand={() => toggleDetailExpand(parent.id)}
                         onImageUpload={() => refetch()}
+                        onDuplicate={handleDuplicateProduct}
+                        onArchive={handleArchiveProduct}
+                        onMoveToLocation={handleMoveToLocation}
                       />
                       
                       {isExpanded && hasChildren && (
@@ -2364,6 +2511,9 @@ export const StockList = () => {
                               isDetailExpanded={childDetailExpanded}
                               onToggleDetailExpand={() => toggleDetailExpand(child.id)}
                               onImageUpload={() => refetch()}
+                              onDuplicate={handleDuplicateProduct}
+                              onArchive={handleArchiveProduct}
+                              onMoveToLocation={handleMoveToLocation}
                             />
                           );
                         })
@@ -2875,6 +3025,9 @@ export const StockList = () => {
                         isDetailExpanded={parentDetailExpanded}
                         onToggleDetailExpand={() => toggleDetailExpand(parent.id)}
                         onImageUpload={() => refetch()}
+                        onDuplicate={handleDuplicateProduct}
+                        onArchive={handleArchiveProduct}
+                        onMoveToLocation={handleMoveToLocation}
                       />
                       
                       {/* Product Detail Drawer for Parent */}
@@ -2909,6 +3062,9 @@ export const StockList = () => {
                                 isDetailExpanded={childDetailExpanded}
                                 onToggleDetailExpand={() => toggleDetailExpand(child.id)}
                                 onImageUpload={() => refetch()}
+                                onDuplicate={handleDuplicateProduct}
+                                onArchive={handleArchiveProduct}
+                                onMoveToLocation={handleMoveToLocation}
                               />
                               
                               {/* Product Detail Drawer for Variant */}
