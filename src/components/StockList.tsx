@@ -541,7 +541,7 @@ const ProductRow: React.FC<ProductRowProps> = ({
 
   return (
     <tr 
-      className={`${isVariant ? 'bg-blue-50/30' : 'bg-white'} hover:bg-gray-50 transition-colors`}
+      className={`${isVariant ? 'bg-blue-50/30' : 'bg-white'} hover:bg-gray-50 hover:shadow-sm transition-all duration-200 cursor-pointer group`}
     >
       {/* Selection checkbox */}
       {isAdmin && (
@@ -2030,6 +2030,88 @@ export const StockList = () => {
     return () => document.removeEventListener('keydown', handleEscape);
   }, [clearAllFilters]);
 
+  // Bulk action handlers
+  const handleBulkArchive = async () => {
+    try {
+      // Archive all selected products (set status to archived)
+      const { error } = await supabase
+        .from('products')
+        .update({ status: 'archived' })
+        .in('id', selectedProductIds)
+        .eq('branch_id', activeBranch?.branch_id);
+      
+      if (error) {
+        console.error('Error archiving products:', error);
+        toast.error('Error archiving products');
+        return;
+      }
+      
+      toast.success(`Successfully archived ${selectedProductIds.length} product${selectedProductIds.length !== 1 ? 's' : ''}`);
+      setSelectedProductIds([]);
+      
+      // Refresh data
+      queryClient.invalidateQueries({ queryKey: ['products'] });
+      refetch();
+    } catch (error) {
+      console.error('Error archiving products:', error);
+      toast.error('Error archiving products');
+    }
+  };
+
+  const handleBulkExport = () => {
+    try {
+      // Get selected products data
+      const selectedProducts = productsTyped.filter(p => selectedProductIds.includes(p.id));
+      
+      // Create CSV data
+      const csvHeaders = [
+        'Name',
+        'Description',
+        'Category',
+        'Supplier',
+        'Location',
+        'Stock Level',
+        'Minimum Stock',
+        'Purchase Price',
+        'Sale Price',
+        'Status'
+      ];
+      
+      const csvData = selectedProducts.map(product => [
+        product.name,
+        product.description || '',
+        product.category_name || '',
+        product.supplier_name || '',
+        product.location || '',
+        product.quantity_in_stock,
+        product.minimum_stock_level,
+        product.purchase_price,
+        product.unit_price,
+        product.status || ''
+      ]);
+      
+      // Create and download CSV
+      const csvContent = [csvHeaders, ...csvData]
+        .map(row => row.map(cell => `"${cell}"`).join(','))
+        .join('\n');
+      
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', `products_export_${new Date().toISOString().split('T')[0]}.csv`);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      toast.success(`Successfully exported ${selectedProductIds.length} product${selectedProductIds.length !== 1 ? 's' : ''}`);
+    } catch (error) {
+      console.error('Error exporting products:', error);
+      toast.error('Error exporting products');
+    }
+  };
+
   // Functie om varianten van een product op te halen
   const fetchProductVariants = async (productId: string): Promise<Product[]> => {
     try {
@@ -2524,11 +2606,44 @@ export const StockList = () => {
             {/* Mobile Product Cards */}
             <div className="space-y-3">
               {grouped.parents.length === 0 ? (
-                <div className="bg-white rounded-lg border border-gray-200 p-8 text-center">
-                  <div className="flex flex-col items-center gap-2">
-                    <Package className="w-8 h-8 text-gray-400" />
-                    <div className="text-sm text-gray-500">
-                      {productsTyped.length === 0 ? 'No products found for this branch.' : 'No products match your filters.'}
+                <div className="bg-white rounded-lg border border-gray-200 p-12 text-center">
+                  <div className="flex flex-col items-center gap-6">
+                    {/* Empty state illustration */}
+                    <div className="relative">
+                      <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center">
+                        <Package className="w-12 h-12 text-gray-400" />
+                      </div>
+                      <div className="absolute -top-2 -right-2 w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center">
+                        <Search className="w-3 h-3 text-blue-600" />
+                      </div>
+                    </div>
+                    
+                    {/* Content */}
+                    <div className="space-y-2">
+                      <h3 className="text-lg font-medium text-gray-900">
+                        {productsTyped.length === 0 ? 'No products yet' : 'No matching products'}
+                      </h3>
+                      <p className="text-sm text-gray-500 max-w-sm">
+                        {productsTyped.length === 0 
+                          ? 'Get started by adding your first product to track inventory and manage stock levels.'
+                          : 'Try adjusting your filters or search terms to find what you\'re looking for.'
+                        }
+                      </p>
+                    </div>
+                    
+                    {/* Action buttons */}
+                    <div className="flex gap-3">
+                      {productsTyped.length === 0 ? (
+                        <Button onClick={() => setIsAddModalOpen(true)} className="px-6">
+                          <Plus className="w-4 h-4 mr-2" />
+                          Add First Product
+                        </Button>
+                      ) : (
+                        <Button variant="outline" onClick={clearAllFilters}>
+                          <X className="w-4 h-4 mr-2" />
+                          Clear Filters
+                        </Button>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -2599,6 +2714,33 @@ export const StockList = () => {
                             />
                           );
                         })
+                      )}
+                      
+                      {/* Empty state for no variants */}
+                      {isExpanded && !hasChildren && (
+                        <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 ml-8 mt-2">
+                          <div className="flex flex-col items-center gap-3">
+                            <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
+                              <Package className="w-6 h-6 text-gray-400" />
+                            </div>
+                            <div className="text-center">
+                              <p className="text-sm font-medium text-gray-900">No variants yet</p>
+                              <p className="text-xs text-gray-500">Add variants to organize different sizes, colors, or options</p>
+                            </div>
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              onClick={() => {
+                                setSelectedProduct(parent);
+                                setIsAddVariantModalOpen(true);
+                              }}
+                              className="text-xs"
+                            >
+                              <Plus className="w-3 h-3 mr-1" />
+                              Add Variant
+                            </Button>
+                          </div>
+                        </div>
                       )}
                     </React.Fragment>
                   );
@@ -2956,10 +3098,99 @@ export const StockList = () => {
         />
       </div>
 
+      {/* Row Count Display */}
+      <div className="flex items-center justify-between mb-4 px-4 py-2 bg-gray-50 rounded-lg">
+        <div className="text-sm text-gray-600">
+          Showing <span className="font-medium text-gray-900">{grouped.parents.length}</span> of <span className="font-medium text-gray-900">{productsTyped.length}</span> products
+          {activeFilterCount > 0 && (
+            <span className="ml-2 text-blue-600">
+              (filtered from {productsTyped.length} total)
+            </span>
+          )}
+        </div>
+        {selectedProductIds.length > 0 && (
+          <div className="text-sm text-blue-600 font-medium">
+            {selectedProductIds.length} selected
+          </div>
+        )}
+      </div>
+
+      {/* Bulk Actions Toolbar */}
+      {selectedProductIds.length > 0 && (
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-medium text-blue-900">
+                  {selectedProductIds.length} product{selectedProductIds.length !== 1 ? 's' : ''} selected
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    // Bulk delete functionality
+                    const confirmDelete = window.confirm(
+                      `Are you sure you want to delete ${selectedProductIds.length} product${selectedProductIds.length !== 1 ? 's' : ''}? This action cannot be undone.`
+                    );
+                    if (confirmDelete) {
+                      handleBulkDelete();
+                    }
+                  }}
+                  className="text-red-600 border-red-300 hover:bg-red-50"
+                >
+                  <Trash2 className="w-4 h-4 mr-1" />
+                  Delete Selected
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    // Bulk archive functionality
+                    const confirmArchive = window.confirm(
+                      `Are you sure you want to archive ${selectedProductIds.length} product${selectedProductIds.length !== 1 ? 's' : ''}?`
+                    );
+                    if (confirmArchive) {
+                      handleBulkArchive();
+                    }
+                  }}
+                  className="text-orange-600 border-orange-300 hover:bg-orange-50"
+                >
+                  <Archive className="w-4 h-4 mr-1" />
+                  Archive Selected
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    // Bulk export functionality
+                    handleBulkExport();
+                  }}
+                  className="text-green-600 border-green-300 hover:bg-green-50"
+                >
+                  <Copy className="w-4 h-4 mr-1" />
+                  Export Selected
+                </Button>
+              </div>
+            </div>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setSelectedProductIds([])}
+              className="text-gray-600 hover:text-gray-800"
+            >
+              <X className="w-4 h-4 mr-1" />
+              Clear Selection
+            </Button>
+          </div>
+        </div>
+      )}
+
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+            <thead className="bg-gray-50 sticky top-0 z-10">
               <tr>
                 {isAdmin && (
                   <th className="px-3 py-4 text-center">
@@ -3024,11 +3255,44 @@ export const StockList = () => {
                   <td colSpan={
                     (isAdmin ? 1 : 0) + 
                     Object.values(columnVisibility).filter(Boolean).length
-                  } className="px-4 py-8 text-center text-gray-500">
-                    <div className="flex flex-col items-center gap-2">
-                      <Package className="w-8 h-8 text-gray-400" />
-                      <div className="text-sm">
-                        {productsTyped.length === 0 ? 'No products found for this branch.' : 'No products match your filters.'}
+                  } className="px-4 py-16">
+                    <div className="flex flex-col items-center gap-6">
+                      {/* Empty state illustration */}
+                      <div className="relative">
+                        <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center">
+                          <Package className="w-10 h-10 text-gray-400" />
+                        </div>
+                        <div className="absolute -top-1 -right-1 w-5 h-5 bg-blue-100 rounded-full flex items-center justify-center">
+                          <Search className="w-2.5 h-2.5 text-blue-600" />
+                        </div>
+                      </div>
+                      
+                      {/* Content */}
+                      <div className="space-y-2 text-center">
+                        <h3 className="text-lg font-medium text-gray-900">
+                          {productsTyped.length === 0 ? 'No products yet' : 'No matching products'}
+                        </h3>
+                        <p className="text-sm text-gray-500 max-w-md">
+                          {productsTyped.length === 0 
+                            ? 'Get started by adding your first product to track inventory and manage stock levels.'
+                            : 'Try adjusting your filters or search terms to find what you\'re looking for.'
+                          }
+                        </p>
+                      </div>
+                      
+                      {/* Action buttons */}
+                      <div className="flex gap-3">
+                        {productsTyped.length === 0 ? (
+                          <Button onClick={() => setIsAddModalOpen(true)} className="px-6">
+                            <Plus className="w-4 h-4 mr-2" />
+                            Add First Product
+                          </Button>
+                        ) : (
+                          <Button variant="outline" onClick={clearAllFilters}>
+                            <X className="w-4 h-4 mr-2" />
+                            Clear Filters
+                          </Button>
+                        )}
                       </div>
                     </div>
                   </td>
@@ -3119,6 +3383,38 @@ export const StockList = () => {
                             </React.Fragment>
                           );
                         })
+                      )}
+                      
+                      {/* Empty state for no variants - Desktop */}
+                      {isExpanded && !hasChildren && (
+                        <tr>
+                          <td colSpan={
+                            (isAdmin ? 1 : 0) + 
+                            Object.values(columnVisibility).filter(Boolean).length
+                          } className="px-4 py-8">
+                            <div className="flex flex-col items-center gap-4 ml-8">
+                              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
+                                <Package className="w-8 h-8 text-gray-400" />
+                              </div>
+                              <div className="text-center">
+                                <p className="text-sm font-medium text-gray-900">No variants yet</p>
+                                <p className="text-xs text-gray-500">Add variants to organize different sizes, colors, or options</p>
+                              </div>
+                              <Button 
+                                variant="outline" 
+                                size="sm" 
+                                onClick={() => {
+                                  setSelectedProduct(parent);
+                                  setIsAddVariantModalOpen(true);
+                                }}
+                                className="text-xs"
+                              >
+                                <Plus className="w-3 h-3 mr-1" />
+                                Add Variant
+                              </Button>
+                            </div>
+                          </td>
+                        </tr>
                       )}
                     </React.Fragment>
                   );
