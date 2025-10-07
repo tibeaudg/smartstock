@@ -44,6 +44,7 @@ import { EditProductModal } from './EditProductModal';
 import { EditProductInfoModal } from './EditProductInfoModal';
 import { StockMovementForm } from './stock/StockMovementForm';
 import { ProductFilters } from './ProductFilters';
+import { EnhancedProductFilters } from './EnhancedProductFilters';
 import { ImagePreviewModal } from './ImagePreviewModal';
 import { AddProductModal } from './AddProductModal';
 import { EditProductStockModal } from './EditProductStockModal';
@@ -1472,15 +1473,20 @@ export const StockList = () => {
   // Check if user is admin
   const isAdmin = userProfile?.is_owner === true;
 
-  // State voor filters
-  const [searchTerm, setSearchTerm] = useState('');
-  const [categoryFilter, setCategoryFilter] = useState('all');
-  const [supplierFilter, setSupplierFilter] = useState('all');
-  const [stockStatusFilter, setStockStatusFilter] = useState('all');
-  const [minPriceFilter, setMinPriceFilter] = useState('');
-  const [maxPriceFilter, setMaxPriceFilter] = useState('');
-  const [minStockFilter, setMinStockFilter] = useState('');
-  const [maxStockFilter, setMaxStockFilter] = useState('');
+  // Enhanced filter state
+  const [filters, setFilters] = useState({
+    searchTerm: '',
+    categoryFilter: 'all',
+    supplierFilter: 'all',
+    stockStatusFilter: 'all',
+    locationFilter: 'all',
+    minPriceFilter: '',
+    maxPriceFilter: '',
+    minStockFilter: '',
+    maxStockFilter: '',
+    selectedSizes: [] as string[],
+    selectedColors: [] as string[],
+  });
   
   // State voor filter namen (voor weergave)
   const [categoryFilterName, setCategoryFilterName] = useState('');
@@ -1594,17 +1600,22 @@ export const StockList = () => {
         
         // Batch all state updates together
         Promise.resolve().then(() => {
-          setCategoryFilter(filterValue);
+          setFilters(prev => ({
+            ...prev,
+            categoryFilter: filterValue,
+            supplierFilter: 'all',
+            searchTerm: '',
+            stockStatusFilter: 'all',
+            locationFilter: 'all',
+            minPriceFilter: '',
+            maxPriceFilter: '',
+            minStockFilter: '',
+            maxStockFilter: '',
+            selectedSizes: [],
+            selectedColors: [],
+          }));
           setCategoryFilterName(filterName || '');
-          // Clear other filters
-          setSupplierFilter('all');
           setSupplierFilterName('');
-          setSearchTerm('');
-          setStockStatusFilter('all');
-          setMinPriceFilter('');
-          setMaxPriceFilter('');
-          setMinStockFilter('');
-          setMaxStockFilter('');
         });
         
       } else if (filterType === 'supplier' && filterValue) {
@@ -1612,17 +1623,22 @@ export const StockList = () => {
         
         // Batch all state updates together
         Promise.resolve().then(() => {
-          setSupplierFilter(filterValue);
+          setFilters(prev => ({
+            ...prev,
+            supplierFilter: filterValue,
+            categoryFilter: 'all',
+            searchTerm: '',
+            stockStatusFilter: 'all',
+            locationFilter: 'all',
+            minPriceFilter: '',
+            maxPriceFilter: '',
+            minStockFilter: '',
+            maxStockFilter: '',
+            selectedSizes: [],
+            selectedColors: [],
+          }));
           setSupplierFilterName(filterName || '');
-          // Clear other filters
-          setCategoryFilter('all');
           setCategoryFilterName('');
-          setSearchTerm('');
-          setStockStatusFilter('all');
-          setMinPriceFilter('');
-          setMaxPriceFilter('');
-          setMinStockFilter('');
-          setMaxStockFilter('');
         });
       }
       
@@ -1637,22 +1653,19 @@ export const StockList = () => {
   // Debug logging voor filter wijzigingen
   useEffect(() => {
     console.log('🔄 Filters changed:', { 
-      categoryFilter, 
+      filters,
       categoryFilterName, 
-      supplierFilter, 
       supplierFilterName,
-      searchTerm,
-      stockStatusFilter
     });
     
     // Log wanneer filters daadwerkelijk worden toegepast
-    if (categoryFilter !== 'all' && categoryFilter !== '') {
-      console.log('✅ Category filter applied:', categoryFilter, categoryFilterName);
+    if (filters.categoryFilter !== 'all' && filters.categoryFilter !== '') {
+      console.log('✅ Category filter applied:', filters.categoryFilter, categoryFilterName);
     }
-    if (supplierFilter !== 'all' && supplierFilter !== '') {
-      console.log('✅ Supplier filter applied:', supplierFilter, supplierFilterName);
+    if (filters.supplierFilter !== 'all' && filters.supplierFilter !== '') {
+      console.log('✅ Supplier filter applied:', filters.supplierFilter, supplierFilterName);
     }
-  }, [categoryFilter, categoryFilterName, supplierFilter, supplierFilterName, searchTerm, stockStatusFilter]);
+  }, [filters, categoryFilterName, supplierFilterName]);
 
   // Extra effect om te controleren of filters correct zijn ingesteld
   useEffect(() => {
@@ -1661,36 +1674,27 @@ export const StockList = () => {
       
       // Check if filters are actually set after a delay
       setTimeout(() => {
-        if (filterType === 'category' && categoryFilter === filterValue) {
+        if (filterType === 'category' && filters.categoryFilter === filterValue) {
           console.log('🎯 Category filter successfully applied!');
-        } else if (filterType === 'supplier' && supplierFilter === filterValue) {
+        } else if (filterType === 'supplier' && filters.supplierFilter === filterValue) {
           console.log('🎯 Supplier filter successfully applied!');
         } else {
           console.log('❌ Filter not applied correctly:', {
             filterType,
             filterValue,
-            currentCategoryFilter: categoryFilter,
-            currentSupplierFilter: supplierFilter
+            currentCategoryFilter: filters.categoryFilter,
+            currentSupplierFilter: filters.supplierFilter
           });
         }
       }, 200);
     }
-  }, [location.state, categoryFilter, supplierFilter]);
+  }, [location.state, filters.categoryFilter, filters.supplierFilter]);
 
   // Clear filters when component unmounts or branch changes
   useEffect(() => {
     if (activeBranch?.branch_id) {
       // Reset filters when branch changes
-      setCategoryFilter('all');
-      setCategoryFilterName('');
-      setSupplierFilter('all');
-      setSupplierFilterName('');
-      setSearchTerm('');
-      setStockStatusFilter('all');
-      setMinPriceFilter('');
-      setMaxPriceFilter('');
-      setMinStockFilter('');
-      setMaxStockFilter('');
+      clearAllFilters();
       
       // Force refetch to get fresh data
       queryClient.invalidateQueries({ queryKey: ['products'] });
@@ -1700,16 +1704,7 @@ export const StockList = () => {
   // Cleanup effect for filters when component unmounts
   useEffect(() => {
     return () => {
-      setCategoryFilter('all');
-      setCategoryFilterName('');
-      setSupplierFilter('all');
-      setSupplierFilterName('');
-      setSearchTerm('');
-      setStockStatusFilter('all');
-      setMinPriceFilter('');
-      setMaxPriceFilter('');
-      setMinStockFilter('');
-      setMaxStockFilter('');
+      clearAllFilters();
     };
   }, []);
 
@@ -1779,19 +1774,41 @@ export const StockList = () => {
     }
   };
 
+  // Clear all filters function
+  const clearAllFilters = () => {
+    setFilters({
+      searchTerm: '',
+      categoryFilter: 'all',
+      supplierFilter: 'all',
+      stockStatusFilter: 'all',
+      locationFilter: 'all',
+      minPriceFilter: '',
+      maxPriceFilter: '',
+      minStockFilter: '',
+      maxStockFilter: '',
+      selectedSizes: [],
+      selectedColors: [],
+    });
+    setCategoryFilterName('');
+    setSupplierFilterName('');
+  };
+
   // Tel actieve filters
   const activeFilterCount = useMemo(() => {
     let count = 0;
-    if (searchTerm !== '') count++;
-    if (categoryFilter !== 'all' && categoryFilter !== '') count++;
-    if (supplierFilter !== 'all' && supplierFilter !== '') count++;
-    if (stockStatusFilter !== 'all') count++;
-    if (minPriceFilter !== '') count++;
-    if (maxPriceFilter !== '') count++;
-    if (minStockFilter !== '') count++;
-    if (maxStockFilter !== '') count++;
+    if (filters.searchTerm !== '') count++;
+    if (filters.categoryFilter !== 'all' && filters.categoryFilter !== '') count++;
+    if (filters.supplierFilter !== 'all' && filters.supplierFilter !== '') count++;
+    if (filters.stockStatusFilter !== 'all') count++;
+    if (filters.locationFilter !== 'all' && filters.locationFilter !== '') count++;
+    if (filters.minPriceFilter !== '') count++;
+    if (filters.maxPriceFilter !== '') count++;
+    if (filters.minStockFilter !== '') count++;
+    if (filters.maxStockFilter !== '') count++;
+    if (filters.selectedSizes.length > 0) count++;
+    if (filters.selectedColors.length > 0) count++;
     return count;
-  }, [categoryFilter, supplierFilter, stockStatusFilter, minPriceFilter, maxPriceFilter, minStockFilter, maxStockFilter, searchTerm]);
+  }, [filters]);
 
   // Filter products based on all filter criteria
   const {
@@ -1856,8 +1873,7 @@ export const StockList = () => {
 
   const filteredProducts = useMemo(() => {
     console.log('🔍 Filtering products with:', { 
-      categoryFilter, 
-      supplierFilter, 
+      filters, 
       totalProducts: productsTyped.length,
       categoryFilterName,
       supplierFilterName
@@ -1867,73 +1883,106 @@ export const StockList = () => {
       const stockStatus = getStockStatus(product.quantity_in_stock, product.minimum_stock_level);
       
       // Category filter
-      const matchesCategory = categoryFilter === 'all' || categoryFilter === '' || product.category_id === categoryFilter;
+      const matchesCategory = filters.categoryFilter === 'all' || filters.categoryFilter === '' || product.category_id === filters.categoryFilter;
       
       // Supplier filter
-      const matchesSupplier = supplierFilter === 'all' || supplierFilter === '' || product.supplier_id === supplierFilter;
+      const matchesSupplier = filters.supplierFilter === 'all' || filters.supplierFilter === '' || product.supplier_id === filters.supplierFilter;
+      
+      // Location filter
+      const matchesLocation = filters.locationFilter === 'all' || filters.locationFilter === '' || product.location === filters.locationFilter;
       
       // Search term filter
-      const matchesSearch = searchTerm === '' || 
-        product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (product.description && product.description.toLowerCase().includes(searchTerm.toLowerCase()));
+      const matchesSearch = filters.searchTerm === '' || 
+        product.name.toLowerCase().includes(filters.searchTerm.toLowerCase()) ||
+        (product.description && product.description.toLowerCase().includes(filters.searchTerm.toLowerCase()));
 
       // Stock status filter
-      const matchesStockStatus = stockStatusFilter === 'all' || 
-        (stockStatusFilter === 'in-stock' && stockStatus === 'In Stock') ||
-        (stockStatusFilter === 'low-stock' && stockStatus === 'Low Stock') ||
-        (stockStatusFilter === 'out-of-stock' && stockStatus === 'Out of Stock');
+      const matchesStockStatus = filters.stockStatusFilter === 'all' || 
+        (filters.stockStatusFilter === 'in-stock' && stockStatus === 'In Stock') ||
+        (filters.stockStatusFilter === 'low-stock' && stockStatus === 'Low Stock') ||
+        (filters.stockStatusFilter === 'out-of-stock' && stockStatus === 'Out of Stock');
 
       // Price range filter
-      const matchesMinPrice = minPriceFilter === '' || product.unit_price >= parseFloat(minPriceFilter);
-      const matchesMaxPrice = maxPriceFilter === '' || product.unit_price <= parseFloat(maxPriceFilter);
+      const matchesMinPrice = filters.minPriceFilter === '' || product.unit_price >= parseFloat(filters.minPriceFilter);
+      const matchesMaxPrice = filters.maxPriceFilter === '' || product.unit_price <= parseFloat(filters.maxPriceFilter);
 
       // Stock quantity range filter
-      const matchesMinStock = minStockFilter === '' || product.quantity_in_stock >= parseInt(minStockFilter);
-      const matchesMaxStock = maxStockFilter === '' || product.quantity_in_stock <= parseInt(maxStockFilter);
+      const matchesMinStock = filters.minStockFilter === '' || product.quantity_in_stock >= parseInt(filters.minStockFilter);
+      const matchesMaxStock = filters.maxStockFilter === '' || product.quantity_in_stock <= parseInt(filters.maxStockFilter);
+
+      // Attributes filter (Size and Color)
+      let matchesAttributes = true;
+      if (filters.selectedSizes.length > 0 || filters.selectedColors.length > 0) {
+        matchesAttributes = false;
+        
+        if (product.variant_attributes) {
+          const attrs = typeof product.variant_attributes === 'string' 
+            ? JSON.parse(product.variant_attributes) 
+            : product.variant_attributes;
+          
+          // Check if any selected size matches
+          const matchesSize = filters.selectedSizes.length === 0 || 
+            filters.selectedSizes.some(size => 
+              Object.entries(attrs).some(([key, value]) => 
+                key.toLowerCase().includes('size') && value === size
+              )
+            );
+          
+          // Check if any selected color matches
+          const matchesColor = filters.selectedColors.length === 0 || 
+            filters.selectedColors.some(color => 
+              Object.entries(attrs).some(([key, value]) => 
+                key.toLowerCase().includes('color') && value === color
+              )
+            );
+          
+          matchesAttributes = matchesSize && matchesColor;
+        }
+      }
 
       // Enhanced logging for category filter
-      if (categoryFilter !== 'all' && categoryFilter !== '') {
+      if (filters.categoryFilter !== 'all' && filters.categoryFilter !== '') {
         console.log('📋 Product category check:', { 
           productName: product.name, 
           productCategoryId: product.category_id, 
-          categoryFilter, 
+          categoryFilter: filters.categoryFilter, 
           matchesCategory,
           productType: typeof product.category_id,
-          filterType: typeof categoryFilter
+          filterType: typeof filters.categoryFilter
         });
       }
 
       // Enhanced logging for supplier filter
-      if (supplierFilter !== 'all' && supplierFilter !== '') {
+      if (filters.supplierFilter !== 'all' && filters.supplierFilter !== '') {
         console.log('📋 Product supplier check:', { 
           productName: product.name, 
           productSupplierId: product.supplier_id, 
-          supplierFilter, 
+          supplierFilter: filters.supplierFilter, 
           matchesSupplier,
           productType: typeof product.supplier_id,
-          filterType: typeof supplierFilter
+          filterType: typeof filters.supplierFilter
         });
       }
 
-      return matchesCategory && matchesSupplier && matchesSearch && matchesStockStatus && 
-             matchesMinPrice && matchesMaxPrice && matchesMinStock && matchesMaxStock;
+      return matchesCategory && matchesSupplier && matchesLocation && matchesSearch && matchesStockStatus && 
+             matchesMinPrice && matchesMaxPrice && matchesMinStock && matchesMaxStock && matchesAttributes;
     });
     
     console.log(`📊 Filtering result: ${filtered.length} products match filters out of ${productsTyped.length} total`);
     
     // Log detailed filtering info
-    if (categoryFilter !== 'all' && categoryFilter !== '') {
-      const categoryProducts = productsTyped.filter(p => p.category_id === categoryFilter);
-      console.log(`🎯 Products with category ${categoryFilter}:`, categoryProducts.map(p => ({ name: p.name, category_id: p.category_id })));
+    if (filters.categoryFilter !== 'all' && filters.categoryFilter !== '') {
+      const categoryProducts = productsTyped.filter(p => p.category_id === filters.categoryFilter);
+      console.log(`🎯 Products with category ${filters.categoryFilter}:`, categoryProducts.map(p => ({ name: p.name, category_id: p.category_id })));
     }
     
-    if (supplierFilter !== 'all' && supplierFilter !== '') {
-      const supplierProducts = productsTyped.filter(p => p.supplier_id === supplierFilter);
-      console.log(`🎯 Products with supplier ${supplierFilter}:`, supplierProducts.map(p => ({ name: p.name, supplier_id: p.supplier_id })));
+    if (filters.supplierFilter !== 'all' && filters.supplierFilter !== '') {
+      const supplierProducts = productsTyped.filter(p => p.supplier_id === filters.supplierFilter);
+      console.log(`🎯 Products with supplier ${filters.supplierFilter}:`, supplierProducts.map(p => ({ name: p.name, supplier_id: p.supplier_id })));
     }
     
     return filtered;
-  }, [productsTyped, searchTerm, categoryFilter, supplierFilter, stockStatusFilter, minPriceFilter, maxPriceFilter, minStockFilter, maxStockFilter]);
+  }, [productsTyped, filters]);
 
   // Group products by parent (parent = non-variant). Variants under parent.
   const grouped = useMemo(() => {
@@ -1968,36 +2017,18 @@ export const StockList = () => {
     }
   };
 
-  const handleClearFilters = () => {
-    console.log('Clearing all filters');
-    setSearchTerm('');
-    setCategoryFilter('all');
-    setCategoryFilterName('');
-    setSupplierFilter('all');
-    setSupplierFilterName('');
-    setStockStatusFilter('all');
-    setMinPriceFilter('');
-    setMaxPriceFilter('');
-    setMinStockFilter('');
-    setMaxStockFilter('');
-    
-    // Force refetch to get fresh data
-    if (activeBranch?.branch_id) {
-      queryClient.invalidateQueries({ queryKey: ['products'] });
-    }
-  };
 
   // Add escape key handler for clearing filters
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        handleClearFilters();
+        clearAllFilters();
       }
     };
 
     document.addEventListener('keydown', handleEscape);
     return () => document.removeEventListener('keydown', handleEscape);
-  }, [handleClearFilters]);
+  }, [clearAllFilters]);
 
   // Functie om varianten van een product op te halen
   const fetchProductVariants = async (productId: string): Promise<Product[]> => {
@@ -2222,9 +2253,8 @@ export const StockList = () => {
   const testFilters = () => {
     console.log('🧪 Testing filters...');
     console.log('Current filters:', {
-      categoryFilter,
+      filters,
       categoryFilterName,
-      supplierFilter,
       supplierFilterName
     });
     console.log('Available categories:', categories);
@@ -2239,9 +2269,9 @@ export const StockList = () => {
     })));
     
     // Test filtering logic
-    if (categoryFilter !== 'all' && categoryFilter !== '') {
-      const matchingProducts = productsTyped.filter(p => p.category_id === categoryFilter);
-      console.log(`🎯 Products matching category ${categoryFilter}:`, matchingProducts.length);
+    if (filters.categoryFilter !== 'all' && filters.categoryFilter !== '') {
+      const matchingProducts = productsTyped.filter(p => p.category_id === filters.categoryFilter);
+      console.log(`🎯 Products matching category ${filters.categoryFilter}:`, matchingProducts.length);
       matchingProducts.forEach(p => {
         console.log(`  - ${p.name} (category_id: ${p.category_id})`);
       });
@@ -2252,9 +2282,9 @@ export const StockList = () => {
       console.log(`🔍 Filter effectiveness: ${filteredCount}/${allProducts} products shown`);
     }
     
-    if (supplierFilter !== 'all' && supplierFilter !== '') {
-      const matchingProducts = productsTyped.filter(p => p.supplier_id === supplierFilter);
-      console.log(`🎯 Products matching supplier ${supplierFilter}:`, matchingProducts.length);
+    if (filters.supplierFilter !== 'all' && filters.supplierFilter !== '') {
+      const matchingProducts = productsTyped.filter(p => p.supplier_id === filters.supplierFilter);
+      console.log(`🎯 Products matching supplier ${filters.supplierFilter}:`, matchingProducts.length);
       matchingProducts.forEach(p => {
         console.log(`  - ${p.name} (supplier_id: ${p.supplier_id})`);
       });
@@ -2267,7 +2297,7 @@ export const StockList = () => {
       console.log('🔍 Stock page detected, running test filters...');
       testFilters();
     }
-  }, [location.pathname, categoryFilter, supplierFilter, searchTerm, productsTyped]);
+  }, [location.pathname, filters.categoryFilter, filters.supplierFilter, filters.searchTerm, productsTyped]);
 
   if (loading) {
     return (
@@ -2403,57 +2433,75 @@ export const StockList = () => {
             </div>
 
             {/* Filter Header */}
-            {((categoryFilter && categoryFilter !== 'all' && categoryFilter !== '') || 
-              (supplierFilter && supplierFilter !== 'all' && supplierFilter !== '') ||
-              (searchTerm && searchTerm !== '') ||
-              (stockStatusFilter && stockStatusFilter !== 'all') ||
-              (minPriceFilter && minPriceFilter !== '') ||
-              (maxPriceFilter && maxPriceFilter !== '') ||
-              (minStockFilter && minStockFilter !== '') ||
-              (maxStockFilter && maxStockFilter !== '')) && (
+            {((filters.categoryFilter && filters.categoryFilter !== 'all' && filters.categoryFilter !== '') || 
+              (filters.supplierFilter && filters.supplierFilter !== 'all' && filters.supplierFilter !== '') ||
+              (filters.searchTerm && filters.searchTerm !== '') ||
+              (filters.locationFilter && filters.locationFilter !== 'all' && filters.locationFilter !== '') ||
+              (filters.stockStatusFilter && filters.stockStatusFilter !== 'all') ||
+              (filters.selectedSizes.length > 0) ||
+              (filters.selectedColors.length > 0) ||
+              (filters.minPriceFilter && filters.minPriceFilter !== '') ||
+              (filters.maxPriceFilter && filters.maxPriceFilter !== '') ||
+              (filters.minStockFilter && filters.minStockFilter !== '') ||
+              (filters.maxStockFilter && filters.maxStockFilter !== '')) && (
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4 filter-header">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className="text-sm font-medium text-blue-900">
                       Filtered on:
                     </span>
-                    {categoryFilter && categoryFilter !== 'all' && categoryFilter !== '' && (
+                    {filters.categoryFilter && filters.categoryFilter !== 'all' && filters.categoryFilter !== '' && (
                       <Badge variant="secondary" className="bg-blue-100 text-blue-800">
                         Category: {categoryFilterName || 'Filtered'}
                       </Badge>
                     )}
-                    {supplierFilter && supplierFilter !== 'all' && supplierFilter !== '' && (
+                    {filters.supplierFilter && filters.supplierFilter !== 'all' && filters.supplierFilter !== '' && (
                       <Badge variant="secondary" className="bg-blue-100 text-blue-800">
                         Supplier: {supplierFilterName || 'Filtered'}
                       </Badge>
                     )}
-                    {searchTerm && searchTerm !== '' && (
+                    {filters.searchTerm && filters.searchTerm !== '' && (
                       <Badge variant="secondary" className="bg-blue-100 text-blue-800">
-                        Search term: "{searchTerm}"
+                        Search: "{filters.searchTerm}"
                       </Badge>
                     )}
-                    {stockStatusFilter && stockStatusFilter !== 'all' && (
+                    {filters.locationFilter && filters.locationFilter !== 'all' && (
                       <Badge variant="secondary" className="bg-blue-100 text-blue-800">
-                        Status: {stockStatusFilter === 'in-stock' ? 'In Stock' : 
-                                stockStatusFilter === 'low-stock' ? 'Low Stock' : 
-                                stockStatusFilter === 'out-of-stock' ? 'Out of Stock' : stockStatusFilter}
+                        Location: {filters.locationFilter}
                       </Badge>
                     )}
-                    {(minPriceFilter && minPriceFilter !== '') || (maxPriceFilter && maxPriceFilter !== '') && (
+                    {filters.stockStatusFilter && filters.stockStatusFilter !== 'all' && (
                       <Badge variant="secondary" className="bg-blue-100 text-blue-800">
-                        Price: {minPriceFilter && `$${minPriceFilter}`}{minPriceFilter && maxPriceFilter && ' - '}{maxPriceFilter && `$${maxPriceFilter}`}
+                        Status: {filters.stockStatusFilter === 'in-stock' ? 'In Stock' : 
+                                filters.stockStatusFilter === 'low-stock' ? 'Low Stock' : 
+                                filters.stockStatusFilter === 'out-of-stock' ? 'Out of Stock' : filters.stockStatusFilter}
                       </Badge>
                     )}
-                    {(minStockFilter && minStockFilter !== '') || (maxStockFilter && maxStockFilter !== '') && (
+                    {filters.selectedSizes.length > 0 && (
                       <Badge variant="secondary" className="bg-blue-100 text-blue-800">
-                        Stock Level: {minStockFilter && minStockFilter}{minStockFilter && maxStockFilter && ' - '}{maxStockFilter && maxStockFilter}
+                        Sizes: {filters.selectedSizes.join(', ')}
+                      </Badge>
+                    )}
+                    {filters.selectedColors.length > 0 && (
+                      <Badge variant="secondary" className="bg-blue-100 text-blue-800">
+                        Colors: {filters.selectedColors.join(', ')}
+                      </Badge>
+                    )}
+                    {(filters.minPriceFilter && filters.minPriceFilter !== '') || (filters.maxPriceFilter && filters.maxPriceFilter !== '') && (
+                      <Badge variant="secondary" className="bg-blue-100 text-blue-800">
+                        Price: {filters.minPriceFilter && `$${filters.minPriceFilter}`}{filters.minPriceFilter && filters.maxPriceFilter && ' - '}{filters.maxPriceFilter && `$${filters.maxPriceFilter}`}
+                      </Badge>
+                    )}
+                    {(filters.minStockFilter && filters.minStockFilter !== '') || (filters.maxStockFilter && filters.maxStockFilter !== '') && (
+                      <Badge variant="secondary" className="bg-blue-100 text-blue-800">
+                        Stock: {filters.minStockFilter && filters.minStockFilter}{filters.minStockFilter && filters.maxStockFilter && ' - '}{filters.maxStockFilter && filters.maxStockFilter}
                       </Badge>
                     )}
                   </div>
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={handleClearFilters}
+                    onClick={clearAllFilters}
                     className="text-blue-700 border-blue-300 hover:bg-blue-100"
                   >
                     <X className="w-4 h-4 mr-1" />
@@ -2465,24 +2513,10 @@ export const StockList = () => {
 
             {/* Search and Advanced Filters - Right above table */}
             <div className="mb-4">
-              <ProductFilters
-                searchTerm={searchTerm}
-                onSearchChange={setSearchTerm}
-                categoryFilter={categoryFilter}
-                onCategoryFilterChange={setCategoryFilter}
-                supplierFilter={supplierFilter}
-                onSupplierFilterChange={setSupplierFilter}
-                stockStatusFilter={stockStatusFilter}
-                onStockStatusFilterChange={setStockStatusFilter}
-                minPriceFilter={minPriceFilter}
-                onMinPriceFilterChange={setMinPriceFilter}
-                maxPriceFilter={maxPriceFilter}
-                onMaxPriceFilterChange={setMaxPriceFilter}
-                minStockFilter={minStockFilter}
-                onMinStockFilterChange={setMinStockFilter}
-                maxStockFilter={maxStockFilter}
-                onMaxStockFilterChange={setMaxStockFilter}
-                onClearFilters={handleClearFilters}
+              <EnhancedProductFilters
+                filters={filters}
+                onFiltersChange={setFilters}
+                onClearFilters={clearAllFilters}
                 activeFiltersCount={activeFilterCount}
               />
             </div>
@@ -2641,16 +2675,7 @@ export const StockList = () => {
             }}
             onProductUpdated={() => {
               // Clear filters when product is updated to show all products
-              setCategoryFilter('all');
-              setCategoryFilterName('');
-              setSupplierFilter('all');
-              setSupplierFilterName('');
-              setSearchTerm('');
-              setStockStatusFilter('all');
-              setMinPriceFilter('');
-              setMaxPriceFilter('');
-              setMinStockFilter('');
-              setMaxStockFilter('');
+              clearAllFilters();
               
               // Force refetch to get updated data
               queryClient.invalidateQueries({ queryKey: ['products'] });
@@ -2674,16 +2699,7 @@ export const StockList = () => {
             }}
             onProductUpdated={() => {
               // Clear filters when product is updated to show all products
-              setCategoryFilter('all');
-              setCategoryFilterName('');
-              setSupplierFilter('all');
-              setSupplierFilterName('');
-              setSearchTerm('');
-              setStockStatusFilter('all');
-              setMinPriceFilter('');
-              setMaxPriceFilter('');
-              setMinStockFilter('');
-              setMaxStockFilter('');
+              clearAllFilters();
               
               // Force refetch to get updated data
               queryClient.invalidateQueries({ queryKey: ['products'] });
@@ -2700,16 +2716,7 @@ export const StockList = () => {
           onClose={() => setIsAddModalOpen(false)}
           onProductAdded={() => {
             // Clear filters when new product is added to show all products
-            setCategoryFilter('all');
-            setCategoryFilterName('');
-            setSupplierFilter('all');
-            setSupplierFilterName('');
-            setSearchTerm('');
-            setStockStatusFilter('all');
-            setMinPriceFilter('');
-            setMaxPriceFilter('');
-            setMinStockFilter('');
-            setMaxStockFilter('');
+            clearAllFilters();
             
             // Force refetch to get updated data
             queryClient.invalidateQueries({ queryKey: ['products'] });
@@ -2734,16 +2741,7 @@ export const StockList = () => {
           onClose={() => setIsBulkImportModalOpen(false)}
           onImportComplete={() => {
             // Clear filters when products are imported to show all products
-            setCategoryFilter('all');
-            setCategoryFilterName('');
-            setSupplierFilter('all');
-            setSupplierFilterName('');
-            setSearchTerm('');
-            setStockStatusFilter('all');
-            setMinPriceFilter('');
-            setMaxPriceFilter('');
-            setMinStockFilter('');
-            setMaxStockFilter('');
+            clearAllFilters();
             
             // Force refetch to get updated data
             queryClient.invalidateQueries({ queryKey: ['products'] });
@@ -2856,57 +2854,75 @@ export const StockList = () => {
       </div>
 
       {/* Filter Header */}
-      {((categoryFilter && categoryFilter !== 'all' && categoryFilter !== '') || 
-        (supplierFilter && supplierFilter !== 'all' && supplierFilter !== '') ||
-        (searchTerm && searchTerm !== '') ||
-        (stockStatusFilter && stockStatusFilter !== 'all') ||
-        (minPriceFilter && minPriceFilter !== '') ||
-        (maxPriceFilter && maxPriceFilter !== '') ||
-        (minStockFilter && minStockFilter !== '') ||
-        (maxStockFilter && maxStockFilter !== '')) && (
+      {((filters.categoryFilter && filters.categoryFilter !== 'all' && filters.categoryFilter !== '') || 
+        (filters.supplierFilter && filters.supplierFilter !== 'all' && filters.supplierFilter !== '') ||
+        (filters.searchTerm && filters.searchTerm !== '') ||
+        (filters.locationFilter && filters.locationFilter !== 'all' && filters.locationFilter !== '') ||
+        (filters.stockStatusFilter && filters.stockStatusFilter !== 'all') ||
+        (filters.selectedSizes.length > 0) ||
+        (filters.selectedColors.length > 0) ||
+        (filters.minPriceFilter && filters.minPriceFilter !== '') ||
+        (filters.maxPriceFilter && filters.maxPriceFilter !== '') ||
+        (filters.minStockFilter && filters.minStockFilter !== '') ||
+        (filters.maxStockFilter && filters.maxStockFilter !== '')) && (
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4 filter-header">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <span className="text-sm font-medium text-blue-900">
                 Filtered on:
               </span>
-              {categoryFilter && categoryFilter !== 'all' && categoryFilter !== '' && (
+              {filters.categoryFilter && filters.categoryFilter !== 'all' && filters.categoryFilter !== '' && (
                 <Badge variant="secondary" className="bg-blue-100 text-blue-800">
                   Category: {categoryFilterName || 'Filtered'}
                 </Badge>
               )}
-              {supplierFilter && supplierFilter !== 'all' && supplierFilter !== '' && (
+              {filters.supplierFilter && filters.supplierFilter !== 'all' && filters.supplierFilter !== '' && (
                 <Badge variant="secondary" className="bg-blue-100 text-blue-800">
                   Supplier: {supplierFilterName || 'Filtered'}
                 </Badge>
               )}
-              {searchTerm && searchTerm !== '' && (
+              {filters.searchTerm && filters.searchTerm !== '' && (
                 <Badge variant="secondary" className="bg-blue-100 text-blue-800">
-                  Search term: "{searchTerm}"
+                  Search: "{filters.searchTerm}"
                 </Badge>
               )}
-              {stockStatusFilter && stockStatusFilter !== 'all' && (
+              {filters.locationFilter && filters.locationFilter !== 'all' && (
                 <Badge variant="secondary" className="bg-blue-100 text-blue-800">
-                  Status: {stockStatusFilter === 'in-stock' ? 'In Stock' : 
-                          stockStatusFilter === 'low-stock' ? 'Low Stock' : 
-                          stockStatusFilter === 'out-of-stock' ? 'Out of Stock' : stockStatusFilter}
+                  Location: {filters.locationFilter}
                 </Badge>
               )}
-              {(minPriceFilter && minPriceFilter !== '') || (maxPriceFilter && maxPriceFilter !== '') && (
+              {filters.stockStatusFilter && filters.stockStatusFilter !== 'all' && (
                 <Badge variant="secondary" className="bg-blue-100 text-blue-800">
-                  Price: {minPriceFilter && `$${minPriceFilter}`}{minPriceFilter && maxPriceFilter && ' - '}{maxPriceFilter && `$${maxPriceFilter}`}
+                  Status: {filters.stockStatusFilter === 'in-stock' ? 'In Stock' : 
+                          filters.stockStatusFilter === 'low-stock' ? 'Low Stock' : 
+                          filters.stockStatusFilter === 'out-of-stock' ? 'Out of Stock' : filters.stockStatusFilter}
                 </Badge>
               )}
-              {(minStockFilter && minStockFilter !== '') || (maxStockFilter && maxStockFilter !== '') && (
+              {filters.selectedSizes.length > 0 && (
                 <Badge variant="secondary" className="bg-blue-100 text-blue-800">
-              Stock Level     : {minStockFilter && minStockFilter}{minStockFilter && maxStockFilter && ' - '}{maxStockFilter && maxStockFilter}
+                  Sizes: {filters.selectedSizes.join(', ')}
+                </Badge>
+              )}
+              {filters.selectedColors.length > 0 && (
+                <Badge variant="secondary" className="bg-blue-100 text-blue-800">
+                  Colors: {filters.selectedColors.join(', ')}
+                </Badge>
+              )}
+              {(filters.minPriceFilter && filters.minPriceFilter !== '') || (filters.maxPriceFilter && filters.maxPriceFilter !== '') && (
+                <Badge variant="secondary" className="bg-blue-100 text-blue-800">
+                  Price: {filters.minPriceFilter && `$${filters.minPriceFilter}`}{filters.minPriceFilter && filters.maxPriceFilter && ' - '}{filters.maxPriceFilter && `$${filters.maxPriceFilter}`}
+                </Badge>
+              )}
+              {(filters.minStockFilter && filters.minStockFilter !== '') || (filters.maxStockFilter && filters.maxStockFilter !== '') && (
+                <Badge variant="secondary" className="bg-blue-100 text-blue-800">
+                  Stock: {filters.minStockFilter && filters.minStockFilter}{filters.minStockFilter && filters.maxStockFilter && ' - '}{filters.maxStockFilter && filters.maxStockFilter}
                 </Badge>
               )}
             </div>
             <Button
               variant="outline"
               size="sm"
-              onClick={handleClearFilters}
+              onClick={clearAllFilters}
               className="text-blue-700 border-blue-300 hover:bg-blue-100"
             >
               <X className="w-4 h-4 mr-1" />
@@ -2917,46 +2933,25 @@ export const StockList = () => {
       )}
 
       <div className="filter-area">
-        <ProductFilters
-          searchTerm={searchTerm}
-          onSearchChange={setSearchTerm}
-          categoryFilter={categoryFilter}
-          onCategoryFilterChange={(value) => {
-            console.log('Category filter changed:', value);
-            setCategoryFilter(value);
-            // Update category name when filter changes
-            if (value && value !== 'all') {
-              // Find category name by ID
-              const category = categories.find(cat => cat.id === value);
+        <EnhancedProductFilters
+          filters={filters}
+          onFiltersChange={(newFilters) => {
+            setFilters(newFilters);
+            // Update category and supplier names when filters change
+            if (newFilters.categoryFilter && newFilters.categoryFilter !== 'all') {
+              const category = categories.find(cat => cat.id === newFilters.categoryFilter);
               setCategoryFilterName(category?.name || 'Gefilterd');
             } else {
               setCategoryFilterName('');
             }
-          }}
-          supplierFilter={supplierFilter}
-          onSupplierFilterChange={(value) => {
-            console.log('Supplier filter changed:', value);
-            setSupplierFilter(value);
-            // Update supplier name when filter changes
-            if (value && value !== 'all') {
-              // Find supplier name by ID
-              const supplier = suppliers.find(sup => sup.id === value);
+            if (newFilters.supplierFilter && newFilters.supplierFilter !== 'all') {
+              const supplier = suppliers.find(sup => sup.id === newFilters.supplierFilter);
               setSupplierFilterName(supplier?.name || '');
             } else {
               setSupplierFilterName('');
             }
           }}
-          stockStatusFilter={stockStatusFilter}
-          onStockStatusFilterChange={setStockStatusFilter}
-          minPriceFilter={minPriceFilter}
-          onMinPriceFilterChange={setMinPriceFilter}
-          maxPriceFilter={maxPriceFilter}
-          onMaxPriceFilterChange={setMaxPriceFilter}
-          minStockFilter={minStockFilter}
-          onMinStockFilterChange={setMinStockFilter}
-          maxStockFilter={maxStockFilter}
-          onMaxStockFilterChange={setMaxStockFilter}
-          onClearFilters={handleClearFilters}
+          onClearFilters={clearAllFilters}
           activeFiltersCount={activeFilterCount}
         />
       </div>
