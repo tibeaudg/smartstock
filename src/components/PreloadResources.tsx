@@ -5,25 +5,41 @@ interface PreloadResourcesProps {
   criticalImages?: string[];
   criticalFonts?: string[];
   criticalCSS?: string[];
+  prefetchRoutes?: string[];
 }
 
 export const PreloadResources: React.FC<PreloadResourcesProps> = ({
   criticalImages = [],
   criticalFonts = [],
-  criticalCSS = []
+  criticalCSS = [],
+  prefetchRoutes = []
 }) => {
   return (
     <Helmet>
-      {/* Preload critical images */}
-      {criticalImages.map((image, index) => (
-        <link
-          key={`image-${index}`}
-          rel="preload"
-          as="image"
-          href={image}
-          type="image/webp"
-        />
-      ))}
+      {/* Preload critical images with modern formats */}
+      {criticalImages.map((image, index) => {
+        const avifPath = image.replace(/\.(jpg|jpeg|png|webp)$/i, '.avif');
+        const webpPath = image.replace(/\.(jpg|jpeg|png)$/i, '.webp');
+        
+        return (
+          <React.Fragment key={`image-${index}`}>
+            <link
+              rel="preload"
+              as="image"
+              href={avifPath}
+              type="image/avif"
+              imageSrcset={`${avifPath} 1x`}
+            />
+            <link
+              rel="preload"
+              as="image"
+              href={webpPath}
+              type="image/webp"
+              imageSrcset={`${webpPath} 1x`}
+            />
+          </React.Fragment>
+        );
+      })}
       
       {/* Preload critical fonts */}
       {criticalFonts.map((font, index) => (
@@ -47,18 +63,29 @@ export const PreloadResources: React.FC<PreloadResourcesProps> = ({
         />
       ))}
       
-      {/* DNS prefetch for external domains */}
+      {/* DNS prefetch for external domains - non-blocking */}
       <link rel="dns-prefetch" href="//fonts.googleapis.com" />
       <link rel="dns-prefetch" href="//fonts.gstatic.com" />
-      <link rel="dns-prefetch" href="//www.google-analytics.com" />
+      <link rel="dns-prefetch" href="//www.googletagmanager.com" />
+      <link rel="dns-prefetch" href="//connect.facebook.net" />
+      <link rel="dns-prefetch" href="//www.clarity.ms" />
       
-      {/* Preconnect to external domains */}
+      {/* Preconnect to critical external domains */}
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      <link rel="preconnect" href="https://sszuxnqhbxauvershuys.supabase.co" />
       
-      {/* Resource hints for performance */}
+      {/* Prefetch common routes for faster navigation */}
+      <link rel="prefetch" href="/pricing" />
+      <link rel="prefetch" href="/features" />
       <link rel="prefetch" href="/voorraadbeheer-tips" />
       <link rel="prefetch" href="/voorraadbeheer-software-vergelijken" />
+      {prefetchRoutes.map((route, index) => (
+        <link key={`route-${index}`} rel="prefetch" href={route} />
+      ))}
+      
+      {/* Prerender for authenticated dashboard (low priority) */}
+      <link rel="prerender" href="/dashboard" />
     </Helmet>
   );
 };

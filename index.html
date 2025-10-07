@@ -2,49 +2,6 @@
 <html lang="en">
 
 <head>
-    <!-- Google tag (gtag.js) - Only load in production -->
-<script>
-  if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
-    const script = document.createElement('script');
-    script.async = true;
-    script.src = 'https://www.googletagmanager.com/gtag/js?id=AW-17574614935';
-    document.head.appendChild(script);
-    
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'AW-17574614935');
-  }
-</script>
-
-<!-- Meta Pixel Code - Only load in production -->
-<script>
-  if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
-    !function(f,b,e,v,n,t,s)
-    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-    n.queue=[];t=b.createElement(e);t.async=!0;
-    t.src=v;s=b.getElementsByTagName(e)[0];
-    s.parentNode.insertBefore(t,s)}(window, document,'script',
-    'https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', '1788618995199125');
-    fbq('track', 'PageView');
-  }
-</script>
-<!-- End Meta Pixel Code -->
-
-<!-- Microsoft Clarity - Only load in production -->
-<script>
-  if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
-    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "thsm97g0bc");
-  }
-</script>
-<!-- End Microsoft Clarity -->
 
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -60,13 +17,25 @@
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
     img-src 'self' data: https:;
   ">
+  
+  <!-- Preconnect to critical domains -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="dns-prefetch" href="//www.googletagmanager.com">
+  <link rel="dns-prefetch" href="//connect.facebook.net">
+  <link rel="dns-prefetch" href="//www.clarity.ms">
+  
   <!-- CSS Loading with fallback -->
   <link rel="stylesheet" href="/src/index.css" onerror="console.log('CSS loaded via Vite')">
   <link rel="stylesheet" href="/src/App.css" onerror="console.log('CSS loaded via Vite')">
+  
   <style>
     /* Critical CSS: minimal layout for fast first render */
-    html,body{min-height:100vh;margin:0;padding:0;width:100%;background:#fff;}
+    html,body{min-height:100vh;margin:0;padding:0;width:100%;background:#fff;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;}
     #root{width:100vw;margin:0 auto;}
+    .loading-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:#f9fafb;}
+    .spinner{border:3px solid #e5e7eb;border-top-color:#2563eb;border-radius:50%;width:40px;height:40px;animation:spin 1s linear infinite;}
+    @keyframes spin{to{transform:rotate(360deg);}}
   </style>
 </head>
 
@@ -80,9 +49,51 @@
     </script>
   </noscript>
   
-  <div id="root"></div>
+  <div id="root">
+    <!-- Loading placeholder -->
+    <div class="loading-screen">
+      <div class="spinner"></div>
+    </div>
+  </div>
   
+  <!-- Load tracking scripts asynchronously after page load to prevent render blocking -->
+  <script>
+    // Defer tracking scripts until after page load
+    window.addEventListener('load', function() {
+      // Google tag (gtag.js) - Only load in production
+      if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = 'https://www.googletagmanager.com/gtag/js?id=AW-17574614935';
+        document.head.appendChild(script);
+        
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'AW-17574614935');
+        
+        // Meta Pixel Code
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '1788618995199125');
+        fbq('track', 'PageView');
+        
+        // Microsoft Clarity
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "thsm97g0bc");
+      }
+    });
+  </script>
   
-  <script type="module" src="/src/main.tsx" defer></script>
+  <script type="module" src="/src/main.tsx"></script>
 </body>
 </html>

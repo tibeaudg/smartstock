@@ -2,6 +2,32 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Performance optimizations */
+@layer base {
+  /* Improve font rendering */
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  /* Optimize image rendering */
+  img {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+  
+  /* Prevent layout shifts */
+  img[width][height] {
+    height: auto;
+  }
+  
+  /* Enable GPU acceleration for transforms */
+  .transform {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+}
+
 /* Blog Styles */
 .blog-content {
   @apply max-w-[65ch] mx-auto;
