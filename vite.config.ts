@@ -38,50 +38,9 @@ export default defineConfig(({ mode }) => ({
         manualChunks: (id) => {
           // Split vendor libraries into separate chunks
           if (id.includes('node_modules')) {
-            // React core - ensure ALL React-related packages stay together
-            if (id.includes('react') || 
-                id.includes('react-dom') || 
-                id.includes('scheduler') ||
-                id.includes('react-router') ||
-                id.includes('react-helmet') ||
-                id.includes('react-helmet-async') ||
-                id.includes('react-hook-form') ||
-                id.includes('react-day-picker') ||
-                id.includes('react-resizable-panels') ||
-                id.includes('react-simple-maps') ||
-                id.includes('react-qr-code') ||
-                id.includes('react-i18next') ||
-                id.includes('@tanstack/react-query') ||
-                id.includes('@tanstack/query-sync-storage-persister') ||
-                id.includes('@tanstack/react-query-persist-client')) {
-              return 'vendor-react';
-            }
-            // UI components (Radix UI) - keep separate but ensure they load after React
-            if (id.includes('@radix-ui')) {
-              return 'vendor-ui';
-            }
-            // Form libraries (non-React ones)
-            if (id.includes('zod')) {
-              return 'vendor-forms';
-            }
-            // Supabase
-            if (id.includes('@supabase')) {
-              return 'vendor-supabase';
-            }
-            // Animation libraries
-            if (id.includes('framer-motion')) {
-              return 'vendor-animations';
-            }
-            // Chart/visualization libraries
-            if (id.includes('recharts') || id.includes('d3')) {
-              return 'vendor-charts';
-            }
-            // Icons
-            if (id.includes('lucide-react')) {
-              return 'vendor-icons';
-            }
-            // Other vendor libraries
-            return 'vendor-misc';
+            // Put ALL vendor libraries in a single chunk to avoid race conditions
+            // This ensures React and all dependencies load together
+            return 'vendor';
           }
           
           // Split large page components

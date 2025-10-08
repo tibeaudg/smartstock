@@ -14,7 +14,6 @@ import { useNavigate, Link } from 'react-router-dom';
 import SEO from './SEO';
 import { motion } from 'framer-motion';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
-import OptimizedImage from '@/components/OptimizedImage';
 import { Helmet } from 'react-helmet-async';
 import { logger } from '../lib/logger';
 import { useCurrency } from '@/hooks/useCurrency';
@@ -1657,7 +1656,7 @@ export const HomePage = () => {
             <div className="relative max-w-6xl mx-auto px-2 sm:px-4">
               <div className="relative rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl bg-white border border-gray-200">
                 {/* Dashboard image */}
-                <OptimizedImage
+                <img
                   src="/dashboard.png"
                   alt="StockFlow dashboard showing inventory management interface with stock levels, analytics, and mobile scanning features"
                   className="w-full h-auto object-contain"
@@ -1869,7 +1868,7 @@ export const HomePage = () => {
             <SlideInWhenVisible direction="left" delay={100}>
               <div className="order-2 lg:order-1">
                 <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-3xl p-6 sm:p-8 md:p-12 shadow-lg flex items-center justify-center min-h-[350px] sm:min-h-[400px] lg:min-h-[500px]">
-                  <OptimizedImage
+                  <img
                     src="/scanner.png"
                     alt="Mobile phone scanning barcodes for inventory management"
                     className="w-full h-auto max-w-[280px] sm:max-w-[320px] lg:max-w-full max-h-[300px] sm:max-h-[350px] lg:max-h-[400px] object-contain rounded-2xl"
@@ -1917,7 +1916,7 @@ export const HomePage = () => {
             <SlideInWhenVisible direction="left" delay={200}>
               <div className="order-2">
                 <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-3xl p-6 sm:p-8 md:p-12 flex items-center justify-center min-h-[350px] sm:min-h-[400px] lg:min-h-[500px] shadow-lg">
-                  <OptimizedImage
+                  <img
                     src="/deadstock.png"
                     alt="Dead stock liquidation optimizer dashboard showing slow-moving inventory"
                     className="w-full h-auto max-w-[280px] sm:max-w-[320px] lg:max-w-full max-h-[300px] sm:max-h-[350px] lg:max-h-[400px] object-contain rounded-2xl"
@@ -1965,7 +1964,7 @@ export const HomePage = () => {
             <SlideInWhenVisible direction="left" delay={100}>
               <div className="order-2 lg:order-1">
                 <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-3xl p-6 sm:p-8 md:p-12 shadow-lg flex items-center justify-center min-h-[350px] sm:min-h-[400px] lg:min-h-[500px]">
-                  <OptimizedImage
+                  <img
                     src="/branches.png"
                     alt="Multi-location inventory tracking across multiple stores"
                     className="w-full h-auto max-w-[280px] sm:max-w-[320px] lg:max-w-full max-h-[300px] sm:max-h-[350px] lg:max-h-[400px] object-contain rounded-2xl"

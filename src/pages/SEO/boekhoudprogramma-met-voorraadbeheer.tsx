@@ -1,6 +1,5 @@
 import SEO from '../../components/SEO';
 import { Link } from 'react-router-dom';
-import OptimizedImage from '../../components/OptimizedImage';
 import SeoPageLayout from '../../components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { Check, Zap, Shield, Users, Star, BarChart3, Calculator, Package } from 'lucide-react';
@@ -151,7 +150,7 @@ export default function BoekhoudprogrammaMetVoorraadbeheer() {
               </div>
             </div>
             <div className="text-center">
-              <OptimizedImage 
+              <img 
                   src="/optimized/desktop.png" 
                   alt="Boekhoudprogramma met Voorraadbeheer" 
                   className="w-full max-w-md mx-auto rounded-lg shadow-2xl"
@@ -229,7 +228,7 @@ export default function BoekhoudprogrammaMetVoorraadbeheer() {
               </div>
             </div>
             <div className="text-center">
-              <OptimizedImage 
+              <img 
                   src="/optimized/image.png" 
                   alt="Boekhoudprogramma Interface" 
                   className="w-full max-w-lg mx-auto rounded-lg shadow-lg"
@@ -459,7 +458,7 @@ export default function BoekhoudprogrammaMetVoorraadbeheer() {
       {/* Footer */}
       <footer className="bg-gray-900 text-gray-200 py-12 md:py-16">
         <div className="max-w-4xl mx-auto px-6 text-center">
-          <OptimizedImage 
+          <img 
                   src="/logo.png" 
                   alt="stockflow" 
                   className="h-10 md:h-12 mx-auto mb-6"

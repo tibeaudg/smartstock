@@ -60,6 +60,17 @@ async function init() {
       throw new Error('React is not loaded. Check module bundling configuration.');
     }
     
+    // Additional safety: Wait for React to be fully available
+    let retries = 0;
+    while (typeof React === 'undefined' && retries < 10) {
+      await new Promise(resolve => setTimeout(resolve, 100));
+      retries++;
+    }
+    
+    if (typeof React === 'undefined') {
+      throw new Error('React failed to load after waiting. Check module bundling configuration.');
+    }
+    
     // Initialize performance optimizations
     initializePerformanceOptimizations();
     
