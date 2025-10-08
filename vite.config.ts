@@ -20,12 +20,18 @@ export default defineConfig(({ mode }) => ({
     }
   },
   plugins: [
-    react(),
+    react({
+      // Ensure proper React handling in production
+      jsxRuntime: 'automatic',
+    }),
     mode === 'development' && componentTagger()
   ].filter(Boolean),
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+      // Ensure React is properly resolved
+      "react": path.resolve(__dirname, "./node_modules/react"),
+      "react-dom": path.resolve(__dirname, "./node_modules/react-dom"),
     },
   },
   build: {
@@ -35,7 +41,7 @@ export default defineConfig(({ mode }) => ({
         manualChunks: (id) => {
           // Split vendor libraries into separate chunks
           if (id.includes('node_modules')) {
-            // React core
+            // React core - ensure React is always bundled together
             if (id.includes('react') || id.includes('react-dom') || id.includes('scheduler')) {
               return 'vendor-react';
             }
@@ -131,6 +137,7 @@ export default defineConfig(({ mode }) => ({
   optimizeDeps: {
     include: ['react', 'react-dom', 'react-router-dom'],
     exclude: ['@vite/client', '@vite/env'],
+    force: true, // Force re-optimization
   },
   // Performance optimizations
   experimental: {
