@@ -55,7 +55,10 @@ const ConnectionErrorUI = () => (
 async function init() {
   let root: Root;
   try {
-
+    // Safety check: Ensure React is loaded before proceeding
+    if (typeof React === 'undefined') {
+      throw new Error('React is not loaded. Check module bundling configuration.');
+    }
     
     // Initialize performance optimizations
     initializePerformanceOptimizations();

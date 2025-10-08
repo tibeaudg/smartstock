@@ -29,9 +29,6 @@ export default defineConfig(({ mode }) => ({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
-      // Ensure React is properly resolved
-      "react": path.resolve(__dirname, "./node_modules/react"),
-      "react-dom": path.resolve(__dirname, "./node_modules/react-dom"),
     },
   },
   build: {
@@ -41,24 +38,30 @@ export default defineConfig(({ mode }) => ({
         manualChunks: (id) => {
           // Split vendor libraries into separate chunks
           if (id.includes('node_modules')) {
-            // React core - ensure React is always bundled together
-            if (id.includes('react') || id.includes('react-dom') || id.includes('scheduler')) {
+            // React core - ensure ALL React-related packages stay together
+            if (id.includes('react') || 
+                id.includes('react-dom') || 
+                id.includes('scheduler') ||
+                id.includes('react-router') ||
+                id.includes('react-helmet') ||
+                id.includes('react-helmet-async') ||
+                id.includes('react-hook-form') ||
+                id.includes('react-day-picker') ||
+                id.includes('react-resizable-panels') ||
+                id.includes('react-simple-maps') ||
+                id.includes('react-qr-code') ||
+                id.includes('react-i18next') ||
+                id.includes('@tanstack/react-query') ||
+                id.includes('@tanstack/query-sync-storage-persister') ||
+                id.includes('@tanstack/react-query-persist-client')) {
               return 'vendor-react';
             }
-            // Router
-            if (id.includes('react-router')) {
-              return 'vendor-router';
-            }
-            // UI components (Radix UI)
+            // UI components (Radix UI) - keep separate but ensure they load after React
             if (id.includes('@radix-ui')) {
               return 'vendor-ui';
             }
-            // React Query
-            if (id.includes('@tanstack/react-query')) {
-              return 'vendor-query';
-            }
-            // Form libraries
-            if (id.includes('react-hook-form') || id.includes('zod')) {
+            // Form libraries (non-React ones)
+            if (id.includes('zod')) {
               return 'vendor-forms';
             }
             // Supabase
