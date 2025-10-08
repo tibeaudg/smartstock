@@ -97,19 +97,12 @@ export function inlineSmallSVGs() {
 
 /**
  * Optimize font loading using font-display: swap
+ * Note: This should be handled in CSS files to comply with CSP
  */
 export function optimizeFontLoading() {
-  const style = document.createElement('style');
-  style.textContent = `
-    @font-face {
-      font-family: 'Inter';
-      font-style: normal;
-      font-weight: 400;
-      font-display: swap;
-      src: local('Inter'), url('/fonts/inter-var.woff2') format('woff2');
-    }
-  `;
-  document.head.appendChild(style);
+  // Font loading is now handled in the main CSS file to avoid CSP violations
+  // This function is kept for backwards compatibility but does nothing
+  console.log('Font loading optimization is handled via CSS');
 }
 
 /**
@@ -122,7 +115,10 @@ export function deferNonCriticalCSS() {
     const href = link.getAttribute('href');
     if (href && !href.includes('critical')) {
       link.setAttribute('media', 'print');
-      link.setAttribute('onload', "this.media='all'");
+      // Use event listener instead of inline onload attribute to comply with CSP
+      link.addEventListener('load', function() {
+        this.media = 'all';
+      });
     }
   });
 }
