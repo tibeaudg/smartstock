@@ -38,7 +38,7 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
         height={height}
         loading={priority ? 'eager' : loading}
         decoding={priority ? 'sync' : 'async'}
-        fetchpriority={fetchPriority}
+        fetchPriority={fetchPriority}
         style={{
           width: width ? undefined : '100%',
           height: height ? undefined : 'auto',
@@ -96,7 +96,7 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
         height={height}
         loading={priority ? 'eager' : loading}
         decoding={priority ? 'sync' : 'async'}
-        fetchpriority={fetchPriority}
+        fetchPriority={fetchPriority}
         style={{
           width: width ? undefined : '100%',
           height: height ? undefined : 'auto',
