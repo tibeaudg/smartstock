@@ -68,7 +68,6 @@ export const PreloadResources: React.FC<PreloadResourcesProps> = ({
       <link rel="dns-prefetch" href="//fonts.gstatic.com" />
       <link rel="dns-prefetch" href="//www.googletagmanager.com" />
       <link rel="dns-prefetch" href="//connect.facebook.net" />
-      <link rel="dns-prefetch" href="//www.clarity.ms" />
       
       {/* Preconnect to critical external domains */}
       <link rel="preconnect" href="https://fonts.googleapis.com" />

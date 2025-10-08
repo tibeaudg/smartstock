@@ -9,7 +9,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { setupPersistedQueryClient } from './persistQueryClient';
 import { HelmetProvider } from 'react-helmet-async';
 import { ErrorBoundary } from './components/ErrorBoundary';
-import { initClarity } from './services/clarityService';
 import { initializePerformanceOptimizations } from './utils/performanceOptimization';
 
 const rootElement = document.getElementById('root');
@@ -56,8 +55,7 @@ const ConnectionErrorUI = () => (
 async function init() {
   let root: Root;
   try {
-    // Initialize Microsoft Clarity
-    initClarity();
+
     
     // Initialize performance optimizations
     initializePerformanceOptimizations();

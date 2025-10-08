@@ -25,7 +25,6 @@ import { CurrencyProvider } from "./hooks/useCurrency";
 import { FirstBranchSetup } from "./components/FirstBranchSetup";
 import { OnboardingModal } from "./components/OnboardingModal";
 import { Suspense, useState, useEffect } from "react";
-import { useClarity } from "./hooks/useClarity";
 import { ContentWrapper } from "./ContentWrapper";
 import AdminUserDetailPage from './pages/AdminUserDetailPage';
 import AdminNotificationsPage from './pages/AdminNotificationsPage';

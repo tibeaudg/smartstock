@@ -25,7 +25,6 @@ import { CurrencyProvider } from "./hooks/useCurrency";
 import { FirstBranchSetup } from "./components/FirstBranchSetup";
 import { OnboardingModal } from "./components/OnboardingModal";
 import { Suspense, useState, useEffect } from "react";
-import { useClarity } from "./hooks/useClarity";
 import { useOptimizedTabSwitching } from "./hooks/useOptimizedTabSwitching";
 import { ContentWrapper } from "./ContentWrapper";
 import AdminUserDetailPage from './pages/AdminUserDetailPage';
@@ -124,8 +123,7 @@ const LoadingScreen = () => (
 
 // Router component that contains the route definitions
 const AppRouter = () => {
-  // Initialize Clarity tracking (must be inside Router context)
-  useClarity();
+
   
   // Protected Route Component (without branch logic)
   const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {

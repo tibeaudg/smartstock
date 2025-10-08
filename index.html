@@ -10,8 +10,8 @@
   <meta name="description" content="Discover how StockFlow helps you manage your inventory, efficiently and for free. Try it now!" />
   <meta http-equiv="Content-Security-Policy" content="
     default-src 'self';
-    connect-src 'self' https://sszuxnqhbxauvershuys.supabase.co wss://sszuxnqhbxauvershuys.supabase.co https://www.google-analytics.com https://region1.google-analytics.com https://www.google.com https://www.googletagmanager.com https://googleads.g.doubleclick.net https://www.googleadservices.com https://www.google.be https://api.stripe.com https://checkout.stripe.com https://api.ipify.org https://clients5.google.com https://connect.facebook.net https://www.facebook.com https://www.clarity.ms https://scripts.clarity.ms https://analytics.google.com;
-    script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://www.google.com https://www.google.be https://js.stripe.com https://clients5.google.com https://connect.facebook.net https://www.clarity.ms https://scripts.clarity.ms;
+    connect-src 'self' https://sszuxnqhbxauvershuys.supabase.co wss://sszuxnqhbxauvershuys.supabase.co https://www.google-analytics.com https://region1.google-analytics.com https://www.google.com https://www.googletagmanager.com https://googleads.g.doubleclick.net https://www.googleadservices.com https://www.google.be https://api.stripe.com https://checkout.stripe.com https://api.ipify.org https://clients5.google.com https://connect.facebook.net https://www.facebook.com https://analytics.google.com;
+    script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://www.google.com https://www.google.be https://js.stripe.com https://clients5.google.com https://connect.facebook.net;
     frame-src 'self' https://www.googletagmanager.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://www.google.com https://www.google.be https://td.doubleclick.net https://checkout.stripe.com https://js.stripe.com https://clients5.google.com;
     font-src 'self' https://fonts.gstatic.com https://fonts.googleapis.com;
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
@@ -28,7 +28,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="dns-prefetch" href="//www.googletagmanager.com">
   <link rel="dns-prefetch" href="//connect.facebook.net">
-  <link rel="dns-prefetch" href="//www.clarity.ms">
   
   <!-- CSS Loading with fallback -->
   <link rel="stylesheet" href="/src/index.css">
@@ -84,13 +83,7 @@
         'https://connect.facebook.net/en_US/fbevents.js');
         fbq('init', '1788618995199125');
         fbq('track', 'PageView');
-        
-        // Microsoft Clarity
-        (function(c,l,a,r,i,t,y){
-            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-        })(window, document, "clarity", "script", "thsm97g0bc");
+      
       }
     });
   </script>
