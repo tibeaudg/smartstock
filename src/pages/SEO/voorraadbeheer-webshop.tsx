@@ -51,6 +51,9 @@ export default function VoorraadbeheerWebshop() {
               <p className="text-sm sm:text-base md:text-lg text-gray-700 mb-6 sm:mb-8 leading-relaxed">
                 Optimaliseer je webshop voorraadbeheer met onze gratis software. Voorkom uitverkochte producten, verhoog je omzet en verbeter je klantentevredenheid. Speciaal ontwikkeld voor e-commerce bedrijven om je voorraadbeheer naar het volgende niveau te tillen.
               </p>
+              <p className="text-sm text-gray-600 mb-6">
+                Ook interessant: <Link to="/nl/voorraadbeheer-voor-starters" className="text-blue-600 hover:underline">Voorraadbeheer voor Starters</Link>, <Link to="/nl/mobiel-voorraadbeheer" className="text-blue-600 hover:underline">Mobiel Voorraadbeheer</Link>, of <Link to="/nl" className="text-blue-600 hover:underline">ontdek alle oplossingen</Link>.
+              </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link
                   to="/auth"
@@ -59,7 +62,7 @@ export default function VoorraadbeheerWebshop() {
                   Start Gratis Nu
                 </Link>
                 <Link
-                  to="/voorraadbeheer-software"
+                  to="/nl/voorraadbeheer-software"
                   className="border border-blue-600 text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition text-center"
                 >
                   Meer Informatie

@@ -51,6 +51,9 @@ export default function VoorraadbeheerBakkerij() {
               <p className="text-sm sm:text-base md:text-lg text-gray-700 mb-6 sm:mb-8 leading-relaxed">
                 Optimaliseer je bakkerij voorraadbeheer met onze gratis software. Voorkom verspilling, bespaar kosten en verbeter je productieplanning. Speciaal ontwikkeld voor bakkerijen om je voorraadbeheer naar het volgende niveau te tillen.
               </p>
+              <p className="text-sm text-gray-600 mb-6">
+                Ontdek ook: <Link to="/nl/voorraadbeheer-horeca" className="text-blue-600 hover:underline">Voorraadbeheer voor Horeca</Link>, <Link to="/nl/voorraadbeheer-automatiseren" className="text-blue-600 hover:underline">Voorraadbeheer Automatiseren</Link>, of <Link to="/nl" className="text-blue-600 hover:underline">bekijk alle oplossingen</Link>.
+              </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link
                   to="/auth"
@@ -59,7 +62,7 @@ export default function VoorraadbeheerBakkerij() {
                   Start Gratis Nu
                 </Link>
                 <Link
-                  to="/voorraadbeheer-software"
+                  to="/nl/voorraadbeheer-software"
                   className="border border-blue-600 text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition text-center"
                 >
                   Meer Informatie

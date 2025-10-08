@@ -52,6 +52,9 @@ export default function VoorraadbeheerTips() {
                              <p className="text-sm sm:text-base md:text-lg text-gray-700 mb-6 sm:mb-8 leading-relaxed">
                  Ontdek praktische voorraadbeheer tips die je direct kunt toepassen. Van het organiseren van je magazijn tot het optimaliseren van je bestelprocessen - deze voorraadbeheer tips helpen je om slimmer te werken, kosten te besparen en fouten te voorkomen. Leer van experts hoe je je voorraadbeheer naar het volgende niveau tilt met bewezen strategieën en best practices.
                </p>
+               <p className="text-sm text-gray-600 mb-6">
+                 Meer weten? Lees ook: <Link to="/nl/voorraadbeheer-fouten-voorkomen" className="text-blue-600 hover:underline">Fouten Voorkomen</Link>, <Link to="/nl/voorraadbeheer-automatiseren" className="text-blue-600 hover:underline">Automatiseren</Link>, of <Link to="/nl/voorraadbeheer-software-vergelijken" className="text-blue-600 hover:underline">Software Vergelijken</Link>. <Link to="/nl" className="text-blue-600 hover:underline">Terug naar homepage</Link>.
+               </p>
             </div>
             {/* Right Side - Image */}
             <div className="lg:col-span-1">

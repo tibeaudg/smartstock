@@ -51,6 +51,9 @@ export default function VoorraadbeheerSoftware() {
               <p className="text-sm sm:text-base md:text-lg text-gray-700 mb-6 sm:mb-8 leading-relaxed">
                 Beheer je voorraad eenvoudig online met onze gratis voorraadbeheer software. Perfect voor winkels, horeca en zelfstandigen. Start direct zonder kosten en ervaar hoe gemakkelijk voorraadbeheer kan zijn met de juiste voorraadbeheer software.
               </p>
+              <p className="text-sm text-gray-600 mb-6">
+                Lees meer: <Link to="/nl" className="text-blue-600 hover:underline font-semibold">Nederlandse homepage</Link> | <Link to="/nl/voorraadbeheer-horeca" className="text-blue-600 hover:underline">Voor Horeca</Link> | <Link to="/nl/voorraadbeheer-webshop" className="text-blue-600 hover:underline">Voor Webshops</Link> | <Link to="/nl/voorraadbeheer-software-vergelijken" className="text-blue-600 hover:underline">Vergelijken</Link>
+              </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link
                   to="/auth"
@@ -59,7 +62,7 @@ export default function VoorraadbeheerSoftware() {
                   Start Gratis Nu
                 </Link>
                 <Link
-                  to="/stockbeheer-software"
+                  to="/nl/stockbeheer-software"
                   className="border border-blue-600 text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition text-center"
                 >
                   Meer Informatie

@@ -25,6 +25,40 @@ function buildUrlTag(loc, lastmod) {
 }
 
 function getSeoRoutes() {
+  // Dutch pages that should also be available under /nl/
+  const dutchPages = [
+    'gratis-stockbeheer',
+    'mobiel-voorraadbeheer',
+    'voorraadbeheer-automatiseren',
+    'voorraadbeheer-excel-vs-software',
+    'voorraadbeheer-fouten-voorkomen',
+    'voorraadbeheer-horeca',
+    'voorraadbeheer-software-vergelijken',
+    'voorraadbeheer-tips',
+    'voorraadbeheer-voor-starters',
+    'voorraadbeheer-webshop',
+    'voorraadbeheer-software',
+    'voorraadbeheer-bakkerij',
+    'voorraadbeheer',
+    'stockbeheer',
+    'stockbeheer-software',
+    'simpelstockbeheer',
+    'gratis-voorraadbeheer',
+    'voorraadbeheer-voor-horeca',
+    'gratis-voorraadbeheer-app',
+    'gratis-voorraadbeheer-software',
+    'programma-stockbeheer-gratis',
+    'stockbeheer-app',
+    'magazijnbeheer-software-gratis',
+    'voorraad-software-gratis',
+    'boekhoudprogramma-met-voorraadbeheer',
+    'app-voorraadbeheer-thuis',
+    'voorraadbeheer-app',
+    'voorraadbeheer-excel-template-gratis',
+    'voorraadbeheer-excel-zelf-maken',
+    'voorraadbeheer-excel'
+  ];
+
   const staticFallback = [
     '/gratis-stockbeheer',
     '/mobiel-voorraadbeheer',
@@ -43,9 +77,22 @@ function getSeoRoutes() {
     const entries = fs.readdirSync(seoDir, { withFileTypes: true });
     const routes = entries
       .filter((e) => e.isFile() && e.name.endsWith('.tsx'))
-      .map((e) => `/${e.name.replace(/\.tsx$/, '')}`)
+      .map((e) => {
+        const filename = e.name.replace(/\.tsx$/, '');
+        return `/${filename}`;
+      })
       .sort();
-    return routes.length ? routes : staticFallback;
+    
+    // Add /nl/ versions for Dutch pages
+    const allRoutes = [...routes];
+    routes.forEach(route => {
+      const routeName = route.substring(1); // remove leading slash
+      if (dutchPages.includes(routeName)) {
+        allRoutes.push(`/nl${route}`);
+      }
+    });
+    
+    return allRoutes.length ? allRoutes : staticFallback;
   } catch {
     return staticFallback;
   }
@@ -75,7 +122,7 @@ async function getPublishedBlogPosts() {
 module.exports = async (req, res) => {
   try {
     const today = new Date().toISOString();
-    const staticRoutes = ['/', '/blog'];
+    const staticRoutes = ['/', '/nl', '/blog']; // Added /nl for Dutch homepage
     const seoRoutes = getSeoRoutes();
     const blogPosts = await getPublishedBlogPosts();
 

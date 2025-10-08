@@ -51,6 +51,9 @@ export default function VoorraadbeheerHoreca() {
               <p className="text-sm sm:text-base md:text-lg text-gray-700 mb-6 sm:mb-8 leading-relaxed">
                 ⭐ Horeca voorraadbeheer software die verspilling voorkomt. Houdbaarheidsdata tracking, menuplanning & automatische meldingen. Bespaar tot 20% op voedselkosten. Perfect voor restaurants, cafés en hotels. Gratis starten!
               </p>
+              <p className="text-sm text-gray-600 mb-6">
+                Bekijk ook: <Link to="/nl/voorraadbeheer-bakkerij" className="text-blue-600 hover:underline">Voorraadbeheer voor Bakkerijen</Link>, <Link to="/nl/voorraadbeheer-tips" className="text-blue-600 hover:underline">Voorraadbeheer Tips</Link>, of <Link to="/nl" className="text-blue-600 hover:underline">terug naar homepage</Link>.
+              </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link
                   to="/auth"
@@ -59,7 +62,7 @@ export default function VoorraadbeheerHoreca() {
                   Start Gratis Nu
                 </Link>
                 <Link
-                  to="/voorraadbeheer-software"
+                  to="/nl/voorraadbeheer-software"
                   className="border border-blue-600 text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition text-center"
                 >
                   Meer Informatie

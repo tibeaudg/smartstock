@@ -5,6 +5,7 @@ import { StripeProvider } from "@/components/providers/StripeProvider";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { StockManagementApp } from "./components/StockManagementApp";
 import { HomePage } from "./components/HomePage";
+import { HomePageNL } from "./components/HomePageNL";
 import { AuthPage } from "./components/AuthPage";
 import NotFound from "./pages/NotFound";
 import DemoPage from './pages/demo';
@@ -269,6 +270,10 @@ const AppRouter = () => {
       <Routes>
         {/* Openbare routes */}
         <Route path="/" element={<HomePage />} />
+        
+        {/* Dutch Homepage */}
+        <Route path="/nl" element={<HomePageNL />} />
+        
         <Route path="/features" element={<FeaturesPage />} />
         <Route path="/demo" element={<DemoPage />} />
         <Route path="/error-test" element={<ErrorTestComponent />} />
@@ -277,44 +282,104 @@ const AppRouter = () => {
         <Route path="/dead-stock-calculator" element={<DeadStockCalculatorPage />} />
         <Route path="/contact" element={<SEOContactPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
+        {/* Dutch SEO Pages - Both original paths and /nl/ paths */}
         <Route path="/voorraadbeheer-tips" element={<VoorraadbeheerTips />} />
+        <Route path="/nl/voorraadbeheer-tips" element={<VoorraadbeheerTips />} />
+        
         <Route path="/voorraadbeheer-software-vergelijken" element={<VoorraadbeheerSoftwareVergelijken />} />
+        <Route path="/nl/voorraadbeheer-software-vergelijken" element={<VoorraadbeheerSoftwareVergelijken />} />
+        
         <Route path="/voorraadbeheer-webshop" element={<VoorraadbeheerWebshop />} />
+        <Route path="/nl/voorraadbeheer-webshop" element={<VoorraadbeheerWebshop />} />
+        
         <Route path="/voorraadbeheer-bakkerij" element={<VoorraadbeheerBakkerij />} />
+        <Route path="/nl/voorraadbeheer-bakkerij" element={<VoorraadbeheerBakkerij />} />
+        
         <Route path="/voorraadbeheer-fouten-voorkomen" element={<VoorraadbeheerFoutenVoorkomen />} />
+        <Route path="/nl/voorraadbeheer-fouten-voorkomen" element={<VoorraadbeheerFoutenVoorkomen />} />
+        
         <Route path="/voorraadbeheer-automatiseren" element={<VoorraadbeheerAutomatiseren />} />
+        <Route path="/nl/voorraadbeheer-automatiseren" element={<VoorraadbeheerAutomatiseren />} />
+        
         <Route path="/voorraadbeheer-horeca" element={<VoorraadbeheerHoreca />} />
+        <Route path="/nl/voorraadbeheer-horeca" element={<VoorraadbeheerHoreca />} />
+        
         <Route path="/voorraadbeheer-excel-vs-software" element={<VoorraadbeheerExcelVsSoftware />} />
+        <Route path="/nl/voorraadbeheer-excel-vs-software" element={<VoorraadbeheerExcelVsSoftware />} />
+        
         <Route path="/voorraadbeheer-voor-starters" element={<VoorraadbeheerVoorStarters />} />
+        <Route path="/nl/voorraadbeheer-voor-starters" element={<VoorraadbeheerVoorStarters />} />
+        
         <Route path="/mobiel-voorraadbeheer" element={<MobielVoorraadbeheer />} />
+        <Route path="/nl/mobiel-voorraadbeheer" element={<MobielVoorraadbeheer />} />
+        
         <Route path="/voorraadbeheer-software" element={<VoorraadbeheerSoftware />} />
+        <Route path="/nl/voorraadbeheer-software" element={<VoorraadbeheerSoftware />} />
+        
         <Route path="/stockbeheer-software" element={<StockbeheerSoftware />} />
+        <Route path="/nl/stockbeheer-software" element={<StockbeheerSoftware />} />
+        
         <Route path="/voorraadbeheer-excel" element={<VoorraadbeheerExcel />} />
+        <Route path="/nl/voorraadbeheer-excel" element={<VoorraadbeheerExcel />} />
+        
         <Route path="/voorraadbeheer" element={<Voorraadbeheer />} />
+        <Route path="/nl/voorraadbeheer" element={<Voorraadbeheer />} />
+        
         <Route path="/stockbeheer" element={<Stockbeheer />} />
+        <Route path="/nl/stockbeheer" element={<Stockbeheer />} />
+        
         <Route path="/simpelstockbeheer" element={<SimpelStockbeheer />} />
+        <Route path="/nl/simpelstockbeheer" element={<SimpelStockbeheer />} />
+        
         <Route path="/gratis-voorraadbeheer" element={<GratisVoorraadbeheer />} />
+        <Route path="/nl/gratis-voorraadbeheer" element={<GratisVoorraadbeheer />} />
+        
         <Route path="/voorraadbeheer-voor-horeca" element={<VoorraadbeheerVoorHoreca />} />
+        <Route path="/nl/voorraadbeheer-voor-horeca" element={<VoorraadbeheerVoorHoreca />} />
         
         {/* Blog routes */}
         <Route path="/blog" element={<BlogListPage />} />
         <Route path="/blog/:slug" element={<BlogPostPage />} />
+        
+        {/* More Dutch SEO Pages */}
         <Route path="/gratis-stockbeheer" element={<GratisStockbeheer />} />
+        <Route path="/nl/gratis-stockbeheer" element={<GratisStockbeheer />} />
+        
         <Route path="/gratis-voorraadbeheer-app" element={<GratisVoorraadbeheerApp />} />
+        <Route path="/nl/gratis-voorraadbeheer-app" element={<GratisVoorraadbeheerApp />} />
+        
         <Route path="/gratis-voorraadbeheer-software" element={<GratisVoorraadbeheerSoftware />} />
+        <Route path="/nl/gratis-voorraadbeheer-software" element={<GratisVoorraadbeheerSoftware />} />
+        
         <Route path="/programma-stockbeheer-gratis" element={<ProgrammaStockbeheerGratis />} />
+        <Route path="/nl/programma-stockbeheer-gratis" element={<ProgrammaStockbeheerGratis />} />
+        
         <Route path="/stockbeheer-app" element={<StockbeheerApp />} />
+        <Route path="/nl/stockbeheer-app" element={<StockbeheerApp />} />
+        
         <Route path="/magazijnbeheer-software-gratis" element={<MagazijnbeheerSoftwareGratis />} />
+        <Route path="/nl/magazijnbeheer-software-gratis" element={<MagazijnbeheerSoftwareGratis />} />
+        
         <Route path="/voorraad-software-gratis" element={<VoorraadSoftwareGratis />} />
+        <Route path="/nl/voorraad-software-gratis" element={<VoorraadSoftwareGratis />} />
+        
         <Route path="/boekhoudprogramma-met-voorraadbeheer" element={<BoekhoudprogrammaMetVoorraadbeheer />} />
+        <Route path="/nl/boekhoudprogramma-met-voorraadbeheer" element={<BoekhoudprogrammaMetVoorraadbeheer />} />
         <Route path="/online-inventory-management" element={<OnlineInventoryManagement />} />
         <Route path="/online-inventory-software" element={<OnlineInventorySoftware />} />
         <Route path="/best-online-inventory-software" element={<BestOnlineInventorySoftware />} />
         <Route path="/best-online-inventory-system" element={<BestOnlineInventorySystem />} />
         <Route path="/app-voorraadbeheer-thuis" element={<AppVoorraadbeheerThuis />} />
+        <Route path="/nl/app-voorraadbeheer-thuis" element={<AppVoorraadbeheerThuis />} />
+        
         <Route path="/voorraadbeheer-app" element={<VoorraadbeheerApp />} />
+        <Route path="/nl/voorraadbeheer-app" element={<VoorraadbeheerApp />} />
+        
         <Route path="/voorraadbeheer-excel-template-gratis" element={<VoorraadbeheerExcelTemplateGratis />} />
+        <Route path="/nl/voorraadbeheer-excel-template-gratis" element={<VoorraadbeheerExcelTemplateGratis />} />
+        
         <Route path="/voorraadbeheer-excel-zelf-maken" element={<VoorraadbeheerExcelZelfMaken />} />
+        <Route path="/nl/voorraadbeheer-excel-zelf-maken" element={<VoorraadbeheerExcelZelfMaken />} />
         <Route path="/warehouse-management-system" element={<WarehouseManagementSystem />} />
         <Route path="/inventory-management-software" element={<InventoryManagementSoftware />} />
         <Route path="/inventory-management" element={<InventoryManagement />} />
