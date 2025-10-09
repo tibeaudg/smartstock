@@ -2061,10 +2061,10 @@ export const StockList = () => {
   // Bulk action handlers
   const handleBulkArchive = async () => {
     try {
-      // Archive all selected products (set status to archived)
+      // Archive all selected products (set status to discontinued)
       const { error } = await supabase
         .from('products')
-        .update({ status: 'archived' })
+        .update({ status: 'discontinued' })
         .in('id', selectedProductIds)
         .eq('branch_id', activeBranch?.branch_id);
       
@@ -2290,7 +2290,7 @@ export const StockList = () => {
     try {
       const { error } = await supabase
         .from('products')
-        .update({ status: 'archived' })
+        .update({ status: 'discontinued' })
         .eq('id', product.id);
 
       if (error) throw error;

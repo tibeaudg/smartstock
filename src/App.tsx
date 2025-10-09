@@ -64,6 +64,8 @@ import React from 'react';
 import VoorraadbeheerSoftware from "./pages/SEO/voorraadbeheer-software";
 import VoorraadbeheerKMO from "./pages/SEO/voorraadbeheer-kmo";
 import Magazijnbeheer from "./pages/SEO/magazijnbeheer";
+import WarehouseManagement from "./pages/SEO/warehouse-management";
+import InventoryManagementSME from "./pages/SEO/inventory-management-sme";
 import Stockbeheer from "./pages/SEO/stockbeheer";
 import SimpelStockbeheer from "./pages/SEO/simpelstockbeheer";
 import GratisVoorraadbeheer from "./pages/SEO/gratis-voorraadbeheer";
@@ -130,6 +132,79 @@ import StockFlowVsLinnworks from "./pages/SEO/stockflow-vs-linnworks";
 
 // Import comparison pages - Phase 3 Regional
 import StockFlowVsTeamleader from "./pages/SEO/stockflow-vs-teamleader";
+
+// Import Regional SEO Pages - Belgium
+import VoorraadbeheerSoftwareBelgie from "./pages/SEO/regions/voorraadbeheer-software-belgie";
+import VoorraadbeheerSoftwareOostVlaanderen from "./pages/SEO/regions/voorraadbeheer-software-oost-vlaanderen";
+import VoorraadbeheerSoftwareWestVlaanderen from "./pages/SEO/regions/voorraadbeheer-software-west-vlaanderen";
+import VoorraadbeheerSoftwareAntwerpenProvincie from "./pages/SEO/regions/voorraadbeheer-software-antwerpen-provincie";
+import VoorraadbeheerSoftwareLimburg from "./pages/SEO/regions/voorraadbeheer-software-limburg";
+import VoorraadbeheerSoftwareVlaamsBrabant from "./pages/SEO/regions/voorraadbeheer-software-vlaams-brabant";
+
+// Oost-Vlaanderen cities
+import VoorraadbeheerSoftwareGent from "./pages/SEO/regions/voorraadbeheer-software-gent";
+import VoorraadbeheerSoftwareAalst from "./pages/SEO/regions/voorraadbeheer-software-aalst";
+import VoorraadbeheerSoftwareSintNiklaas from "./pages/SEO/regions/voorraadbeheer-software-sint-niklaas";
+import VoorraadbeheerSoftwareDendermonde from "./pages/SEO/regions/voorraadbeheer-software-dendermonde";
+import VoorraadbeheerSoftwareWetteren from "./pages/SEO/regions/voorraadbeheer-software-wetteren";
+import VoorraadbeheerSoftwareLochristi from "./pages/SEO/regions/voorraadbeheer-software-lochristi";
+import VoorraadbeheerSoftwareEeklo from "./pages/SEO/regions/voorraadbeheer-software-eeklo";
+import VoorraadbeheerSoftwareOudenaarde from "./pages/SEO/regions/voorraadbeheer-software-oudenaarde";
+import VoorraadbeheerSoftwareGeraardsbergen from "./pages/SEO/regions/voorraadbeheer-software-geraardsbergen";
+import VoorraadbeheerSoftwareNinove from "./pages/SEO/regions/voorraadbeheer-software-ninove";
+import VoorraadbeheerSoftwareZottegem from "./pages/SEO/regions/voorraadbeheer-software-zottegem";
+import VoorraadbeheerSoftwareHamme from "./pages/SEO/regions/voorraadbeheer-software-hamme";
+
+// West-Vlaanderen cities
+import VoorraadbeheerSoftwareBrugge from "./pages/SEO/regions/voorraadbeheer-software-brugge";
+import VoorraadbeheerSoftwareKortrijk from "./pages/SEO/regions/voorraadbeheer-software-kortrijk";
+import VoorraadbeheerSoftwareOostende from "./pages/SEO/regions/voorraadbeheer-software-oostende";
+import VoorraadbeheerSoftwareRoeselare from "./pages/SEO/regions/voorraadbeheer-software-roeselare";
+import VoorraadbeheerSoftwareIeper from "./pages/SEO/regions/voorraadbeheer-software-ieper";
+import VoorraadbeheerSoftwareWaregem from "./pages/SEO/regions/voorraadbeheer-software-waregem";
+import VoorraadbeheerSoftwareKnokkeHeist from "./pages/SEO/regions/voorraadbeheer-software-knokke-heist";
+import VoorraadbeheerSoftwareMenen from "./pages/SEO/regions/voorraadbeheer-software-menen";
+import VoorraadbeheerSoftwareIzegem from "./pages/SEO/regions/voorraadbeheer-software-izegem";
+import VoorraadbeheerSoftwareHarelbeke from "./pages/SEO/regions/voorraadbeheer-software-harelbeke";
+import VoorraadbeheerSoftwarePoperinge from "./pages/SEO/regions/voorraadbeheer-software-poperinge";
+import VoorraadbeheerSoftwareTielt from "./pages/SEO/regions/voorraadbeheer-software-tielt";
+import VoorraadbeheerSoftwareDiksmuide from "./pages/SEO/regions/voorraadbeheer-software-diksmuide";
+
+// Antwerpen cities
+import VoorraadbeheerSoftwareAntwerpen from "./pages/SEO/regions/voorraadbeheer-software-antwerpen";
+import VoorraadbeheerSoftwareMechelen from "./pages/SEO/regions/voorraadbeheer-software-mechelen";
+import VoorraadbeheerSoftwareTurnhout from "./pages/SEO/regions/voorraadbeheer-software-turnhout";
+import VoorraadbeheerSoftwareMol from "./pages/SEO/regions/voorraadbeheer-software-mol";
+import VoorraadbeheerSoftwareGeel from "./pages/SEO/regions/voorraadbeheer-software-geel";
+import VoorraadbeheerSoftwareHeistOpDenBerg from "./pages/SEO/regions/voorraadbeheer-software-heist-op-den-berg";
+import VoorraadbeheerSoftwareLier from "./pages/SEO/regions/voorraadbeheer-software-lier";
+import VoorraadbeheerSoftwareMortsel from "./pages/SEO/regions/voorraadbeheer-software-mortsel";
+import VoorraadbeheerSoftwareBoom from "./pages/SEO/regions/voorraadbeheer-software-boom";
+import VoorraadbeheerSoftwareBrasschaat from "./pages/SEO/regions/voorraadbeheer-software-brasschaat";
+import VoorraadbeheerSoftwareDuffel from "./pages/SEO/regions/voorraadbeheer-software-duffel";
+import VoorraadbeheerSoftwareSchoten from "./pages/SEO/regions/voorraadbeheer-software-schoten";
+
+// Limburg cities
+import VoorraadbeheerSoftwareHasselt from "./pages/SEO/regions/voorraadbeheer-software-hasselt";
+import VoorraadbeheerSoftwareGenk from "./pages/SEO/regions/voorraadbeheer-software-genk";
+import VoorraadbeheerSoftwareTongeren from "./pages/SEO/regions/voorraadbeheer-software-tongeren";
+import VoorraadbeheerSoftwareSintTruiden from "./pages/SEO/regions/voorraadbeheer-software-sint-truiden";
+import VoorraadbeheerSoftwareBeringen from "./pages/SEO/regions/voorraadbeheer-software-beringen";
+import VoorraadbeheerSoftwareBilzen from "./pages/SEO/regions/voorraadbeheer-software-bilzen";
+import VoorraadbeheerSoftwareLommel from "./pages/SEO/regions/voorraadbeheer-software-lommel";
+import VoorraadbeheerSoftwareHeusdenZolder from "./pages/SEO/regions/voorraadbeheer-software-heusden-zolder";
+
+// Vlaams-Brabant cities
+import VoorraadbeheerSoftwareLeuven from "./pages/SEO/regions/voorraadbeheer-software-leuven";
+import VoorraadbeheerSoftwareVilvoorde from "./pages/SEO/regions/voorraadbeheer-software-vilvoorde";
+import VoorraadbeheerSoftwareTienen from "./pages/SEO/regions/voorraadbeheer-software-tienen";
+import VoorraadbeheerSoftwareAarschot from "./pages/SEO/regions/voorraadbeheer-software-aarschot";
+import VoorraadbeheerSoftwareDiest from "./pages/SEO/regions/voorraadbeheer-software-diest";
+import VoorraadbeheerSoftwareHalle from "./pages/SEO/regions/voorraadbeheer-software-halle";
+import VoorraadbeheerSoftwareZaventem from "./pages/SEO/regions/voorraadbeheer-software-zaventem";
+import VoorraadbeheerSoftwareGrimbergen from "./pages/SEO/regions/voorraadbeheer-software-grimbergen";
+import VoorraadbeheerSoftwareDilbeek from "./pages/SEO/regions/voorraadbeheer-software-dilbeek";
+import VoorraadbeheerSoftwareTervuren from "./pages/SEO/regions/voorraadbeheer-software-tervuren";
 
 import CategorysPage from './pages/categories';
 import SuppliersPage from './pages/suppliers';
@@ -349,9 +424,13 @@ const AppRouter = () => {
         
         <Route path="/voorraadbeheer-kmo" element={<VoorraadbeheerKMO />} />
         <Route path="/nl/voorraadbeheer-kmo" element={<VoorraadbeheerKMO />} />
+        <Route path="/inventory-management-sme" element={<InventoryManagementSME />} />
+        <Route path="/en/inventory-management-sme" element={<InventoryManagementSME />} />
         
         <Route path="/magazijnbeheer" element={<Magazijnbeheer />} />
         <Route path="/nl/magazijnbeheer" element={<Magazijnbeheer />} />
+        <Route path="/warehouse-management" element={<WarehouseManagement />} />
+        <Route path="/en/warehouse-management" element={<WarehouseManagement />} />
         
         <Route path="/stockbeheer-software" element={<StockbeheerSoftware />} />
         <Route path="/nl/stockbeheer-software" element={<StockbeheerSoftware />} />
@@ -471,6 +550,81 @@ const AppRouter = () => {
         {/* Comparison Pages - Phase 3 Regional */}
         <Route path="/stockflow-vs-teamleader" element={<StockFlowVsTeamleader />} />
         <Route path="/nl/stockflow-vs-teamleader" element={<StockFlowVsTeamleader />} />
+
+        {/* Regional SEO Pages - Belgium */}
+        <Route path="/voorraadbeheer-software-belgie" element={<VoorraadbeheerSoftwareBelgie />} />
+        
+        {/* Province Pages */}
+        <Route path="/voorraadbeheer-software-oost-vlaanderen" element={<VoorraadbeheerSoftwareOostVlaanderen />} />
+        <Route path="/voorraadbeheer-software-west-vlaanderen" element={<VoorraadbeheerSoftwareWestVlaanderen />} />
+        <Route path="/voorraadbeheer-software-antwerpen-provincie" element={<VoorraadbeheerSoftwareAntwerpenProvincie />} />
+        <Route path="/voorraadbeheer-software-limburg" element={<VoorraadbeheerSoftwareLimburg />} />
+        <Route path="/voorraadbeheer-software-vlaams-brabant" element={<VoorraadbeheerSoftwareVlaamsBrabant />} />
+        
+        {/* Oost-Vlaanderen City Pages */}
+        <Route path="/voorraadbeheer-software-gent" element={<VoorraadbeheerSoftwareGent />} />
+        <Route path="/voorraadbeheer-software-aalst" element={<VoorraadbeheerSoftwareAalst />} />
+        <Route path="/voorraadbeheer-software-sint-niklaas" element={<VoorraadbeheerSoftwareSintNiklaas />} />
+        <Route path="/voorraadbeheer-software-dendermonde" element={<VoorraadbeheerSoftwareDendermonde />} />
+        <Route path="/voorraadbeheer-software-wetteren" element={<VoorraadbeheerSoftwareWetteren />} />
+        <Route path="/voorraadbeheer-software-lochristi" element={<VoorraadbeheerSoftwareLochristi />} />
+        <Route path="/voorraadbeheer-software-eeklo" element={<VoorraadbeheerSoftwareEeklo />} />
+        <Route path="/voorraadbeheer-software-oudenaarde" element={<VoorraadbeheerSoftwareOudenaarde />} />
+        <Route path="/voorraadbeheer-software-geraardsbergen" element={<VoorraadbeheerSoftwareGeraardsbergen />} />
+        <Route path="/voorraadbeheer-software-ninove" element={<VoorraadbeheerSoftwareNinove />} />
+        <Route path="/voorraadbeheer-software-zottegem" element={<VoorraadbeheerSoftwareZottegem />} />
+        <Route path="/voorraadbeheer-software-hamme" element={<VoorraadbeheerSoftwareHamme />} />
+        
+        {/* West-Vlaanderen City Pages */}
+        <Route path="/voorraadbeheer-software-brugge" element={<VoorraadbeheerSoftwareBrugge />} />
+        <Route path="/voorraadbeheer-software-kortrijk" element={<VoorraadbeheerSoftwareKortrijk />} />
+        <Route path="/voorraadbeheer-software-oostende" element={<VoorraadbeheerSoftwareOostende />} />
+        <Route path="/voorraadbeheer-software-roeselare" element={<VoorraadbeheerSoftwareRoeselare />} />
+        <Route path="/voorraadbeheer-software-ieper" element={<VoorraadbeheerSoftwareIeper />} />
+        <Route path="/voorraadbeheer-software-waregem" element={<VoorraadbeheerSoftwareWaregem />} />
+        <Route path="/voorraadbeheer-software-knokke-heist" element={<VoorraadbeheerSoftwareKnokkeHeist />} />
+        <Route path="/voorraadbeheer-software-menen" element={<VoorraadbeheerSoftwareMenen />} />
+        <Route path="/voorraadbeheer-software-izegem" element={<VoorraadbeheerSoftwareIzegem />} />
+        <Route path="/voorraadbeheer-software-harelbeke" element={<VoorraadbeheerSoftwareHarelbeke />} />
+        <Route path="/voorraadbeheer-software-poperinge" element={<VoorraadbeheerSoftwarePoperinge />} />
+        <Route path="/voorraadbeheer-software-tielt" element={<VoorraadbeheerSoftwareTielt />} />
+        <Route path="/voorraadbeheer-software-diksmuide" element={<VoorraadbeheerSoftwareDiksmuide />} />
+        
+        {/* Antwerpen City Pages */}
+        <Route path="/voorraadbeheer-software-antwerpen" element={<VoorraadbeheerSoftwareAntwerpen />} />
+        <Route path="/voorraadbeheer-software-mechelen" element={<VoorraadbeheerSoftwareMechelen />} />
+        <Route path="/voorraadbeheer-software-turnhout" element={<VoorraadbeheerSoftwareTurnhout />} />
+        <Route path="/voorraadbeheer-software-mol" element={<VoorraadbeheerSoftwareMol />} />
+        <Route path="/voorraadbeheer-software-geel" element={<VoorraadbeheerSoftwareGeel />} />
+        <Route path="/voorraadbeheer-software-heist-op-den-berg" element={<VoorraadbeheerSoftwareHeistOpDenBerg />} />
+        <Route path="/voorraadbeheer-software-lier" element={<VoorraadbeheerSoftwareLier />} />
+        <Route path="/voorraadbeheer-software-mortsel" element={<VoorraadbeheerSoftwareMortsel />} />
+        <Route path="/voorraadbeheer-software-boom" element={<VoorraadbeheerSoftwareBoom />} />
+        <Route path="/voorraadbeheer-software-brasschaat" element={<VoorraadbeheerSoftwareBrasschaat />} />
+        <Route path="/voorraadbeheer-software-duffel" element={<VoorraadbeheerSoftwareDuffel />} />
+        <Route path="/voorraadbeheer-software-schoten" element={<VoorraadbeheerSoftwareSchoten />} />
+        
+        {/* Limburg City Pages */}
+        <Route path="/voorraadbeheer-software-hasselt" element={<VoorraadbeheerSoftwareHasselt />} />
+        <Route path="/voorraadbeheer-software-genk" element={<VoorraadbeheerSoftwareGenk />} />
+        <Route path="/voorraadbeheer-software-tongeren" element={<VoorraadbeheerSoftwareTongeren />} />
+        <Route path="/voorraadbeheer-software-sint-truiden" element={<VoorraadbeheerSoftwareSintTruiden />} />
+        <Route path="/voorraadbeheer-software-beringen" element={<VoorraadbeheerSoftwareBeringen />} />
+        <Route path="/voorraadbeheer-software-bilzen" element={<VoorraadbeheerSoftwareBilzen />} />
+        <Route path="/voorraadbeheer-software-lommel" element={<VoorraadbeheerSoftwareLommel />} />
+        <Route path="/voorraadbeheer-software-heusden-zolder" element={<VoorraadbeheerSoftwareHeusdenZolder />} />
+        
+        {/* Vlaams-Brabant City Pages */}
+        <Route path="/voorraadbeheer-software-leuven" element={<VoorraadbeheerSoftwareLeuven />} />
+        <Route path="/voorraadbeheer-software-vilvoorde" element={<VoorraadbeheerSoftwareVilvoorde />} />
+        <Route path="/voorraadbeheer-software-tienen" element={<VoorraadbeheerSoftwareTienen />} />
+        <Route path="/voorraadbeheer-software-aarschot" element={<VoorraadbeheerSoftwareAarschot />} />
+        <Route path="/voorraadbeheer-software-diest" element={<VoorraadbeheerSoftwareDiest />} />
+        <Route path="/voorraadbeheer-software-halle" element={<VoorraadbeheerSoftwareHalle />} />
+        <Route path="/voorraadbeheer-software-zaventem" element={<VoorraadbeheerSoftwareZaventem />} />
+        <Route path="/voorraadbeheer-software-grimbergen" element={<VoorraadbeheerSoftwareGrimbergen />} />
+        <Route path="/voorraadbeheer-software-dilbeek" element={<VoorraadbeheerSoftwareDilbeek />} />
+        <Route path="/voorraadbeheer-software-tervuren" element={<VoorraadbeheerSoftwareTervuren />} />
 
         {/* Beschermde dashboard routes */}
         <Route

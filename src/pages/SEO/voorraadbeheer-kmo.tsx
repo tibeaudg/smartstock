@@ -103,6 +103,10 @@ export default function VoorraadbeheerKMO() {
         description="Voorraadbeheer software speciaal voor KMO's en kleine ondernemingen. Start gratis, implementeer in 1 dag en bespaar 70% tijd. Perfect voor groeiende bedrijven."
         keywords="voorraadbeheer kmo, voorraadbeheer kleine onderneming, voorraadbeheer software kmo, kmo voorraadbeheer, stockbeheer kmo, voorraadbeheer mkb, voorraadbeheer voor kleine bedrijven, betaalbaar voorraadbeheer, voorraadbeheer starters"
         url="https://www.stockflow.be/voorraadbeheer-kmo"
+        hreflang={[
+          { lang: "nl", url: "https://www.stockflow.be/voorraadbeheer-kmo" },
+          { lang: "en", url: "https://www.stockflow.be/inventory-management-sme" }
+        ]}
       />
 
       {/* Hero Section */}

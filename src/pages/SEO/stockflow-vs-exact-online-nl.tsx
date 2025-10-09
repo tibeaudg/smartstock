@@ -73,6 +73,10 @@ export default function StockFlowVsExactOnlineNL() {
         description="Vergelijk StockFlow en Exact Online voor voorraadbeheer. StockFlow biedt dezelfde functies voor een fractie van de kosten. Perfect voor KMO's. Start gratis."
         keywords="stockflow vs exact online, exact online alternatief, voorraadbeheer software, goedkoop exact alternatief, voorraadbeheer kmo"
         url="https://www.stockflow.be/nl/stockflow-vs-exact-online"
+        hreflang={[
+          { lang: "nl", url: "https://www.stockflow.be/nl/stockflow-vs-exact-online" },
+          { lang: "en", url: "https://www.stockflow.be/stockflow-vs-exact-online" }
+        ]}
       />
 
       {/* Hero Section */}

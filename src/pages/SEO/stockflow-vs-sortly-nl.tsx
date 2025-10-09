@@ -73,6 +73,10 @@ export default function StockFlowVsSortlyNL() {
         description="Vergelijk StockFlow en Sortly voorraadbeheer software. Bekijk functies, prijzen, en waarom StockFlow de betere keuze is voor KMO's. Start vandaag gratis."
         keywords="stockflow vs sortly, sortly alternatief, voorraadbeheer software vergelijking, sortly vs stockflow, beste voorraad app, gratis voorraad software"
         url="https://www.stockflow.be/nl/stockflow-vs-sortly"
+        hreflang={[
+          { lang: "nl", url: "https://www.stockflow.be/nl/stockflow-vs-sortly" },
+          { lang: "en", url: "https://www.stockflow.be/stockflow-vs-sortly" }
+        ]}
       />
 
       {/* Hero Section */}

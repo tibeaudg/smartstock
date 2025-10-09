@@ -83,6 +83,19 @@ function getSeoRoutes() {
       })
       .sort();
     
+    // Also scan the regions subdirectory
+    const regionsDir = path.join(seoDir, 'regions');
+    if (fs.existsSync(regionsDir)) {
+      const regionEntries = fs.readdirSync(regionsDir, { withFileTypes: true });
+      const regionRoutes = regionEntries
+        .filter((e) => e.isFile() && e.name.endsWith('.tsx'))
+        .map((e) => {
+          const filename = e.name.replace(/\.tsx$/, '');
+          return `/${filename}`;
+        });
+      routes.push(...regionRoutes);
+    }
+    
     // Add /nl/ versions for Dutch pages
     const allRoutes = [...routes];
     routes.forEach(route => {

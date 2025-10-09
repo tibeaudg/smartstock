@@ -73,6 +73,10 @@ export default function StockFlowVsExactOnline() {
         description="Compare StockFlow and Exact Online for inventory management. StockFlow offers the same features at a fraction of the cost. Perfect for SMEs. Start free."
         keywords="stockflow vs exact online, exact online alternative, inventory management software, voorraadbeheer software, affordable exact alternative, small business inventory"
         url="https://www.stockflow.be/stockflow-vs-exact-online"
+        hreflang={[
+          { lang: "en", url: "https://www.stockflow.be/stockflow-vs-exact-online" },
+          { lang: "nl", url: "https://www.stockflow.be/nl/stockflow-vs-exact-online" }
+        ]}
       />
 
       {/* Hero Section */}

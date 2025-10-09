@@ -73,6 +73,10 @@ export default function StockFlowVsSortly() {
         description="Compare StockFlow and Sortly inventory management software. See features, pricing, and why StockFlow is the better choice for small businesses. Start free today."
         keywords="stockflow vs sortly, sortly alternative, inventory management software comparison, sortly vs stockflow, best inventory app, free inventory software"
         url="https://www.stockflow.be/stockflow-vs-sortly"
+        hreflang={[
+          { lang: "en", url: "https://www.stockflow.be/stockflow-vs-sortly" },
+          { lang: "nl", url: "https://www.stockflow.be/nl/stockflow-vs-sortly" }
+        ]}
       />
 
       {/* Hero Section */}

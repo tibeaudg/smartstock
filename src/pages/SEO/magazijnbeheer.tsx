@@ -99,6 +99,10 @@ export default function Magazijnbeheer() {
         description="Professionele magazijnbeheer software met multi-locatie support, barcode scanning en shipping integratie. Verhoog efficiency en elimineer fouten in je warehouse."
         keywords="magazijnbeheer, magazijnbeheer software, warehouse management, magazijn software, warehouse management system, magazijnbeheer systeem, magazijn optimalisatie, warehouse software, stockflow magazijnbeheer"
         url="https://www.stockflow.be/magazijnbeheer"
+        hreflang={[
+          { lang: "nl", url: "https://www.stockflow.be/magazijnbeheer" },
+          { lang: "en", url: "https://www.stockflow.be/warehouse-management" }
+        ]}
       />
 
       {/* Hero Section */}

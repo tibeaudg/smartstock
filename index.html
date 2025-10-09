@@ -23,11 +23,19 @@
     upgrade-insecure-requests;
   ">
   
-  <!-- Preconnect to critical domains -->
+  <!-- Preconnect to critical domains for faster resource loading -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://sszuxnqhbxauvershuys.supabase.co" crossorigin>
+  
+  <!-- DNS prefetch for external domains to reduce DNS lookup time -->
   <link rel="dns-prefetch" href="//www.googletagmanager.com">
   <link rel="dns-prefetch" href="//connect.facebook.net">
+  <link rel="dns-prefetch" href="//www.google-analytics.com">
+  <link rel="dns-prefetch" href="//checkout.stripe.com">
+  
+  <!-- Preload critical fonts -->
+  <link rel="preload" href="https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2" as="font" type="font/woff2" crossorigin>
   
   <!-- CSS Loading with fallback -->
   <link rel="stylesheet" href="/src/index.css">
