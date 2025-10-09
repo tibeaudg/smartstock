@@ -15,10 +15,10 @@ interface SEOProps {
   nofollow?: boolean;
 }
 
-const defaultTitle = 'stockflow - Smart Stock Management';
-const defaultDescription = 'Manage your inventory easily, quickly and smartly with stockflow.';
-const defaultImage = '/public/Inventory-Management.png';
-const defaultUrl = 'https://stockflow.app';
+const defaultTitle = 'StockFlow - Smart Inventory Management';
+const defaultDescription = 'Manage your inventory easily, quickly and smartly with StockFlow. Free inventory management software for growing businesses.';
+const defaultImage = '/Inventory-Management.png';
+const defaultUrl = 'https://www.stockflow.be';
 
 export const SEO: React.FC<SEOProps> = ({
   title = defaultTitle,
@@ -43,15 +43,12 @@ export const SEO: React.FC<SEOProps> = ({
   
   const currentLang = getBrowserLanguage();
   const actualLocale = locale === 'en' ? currentLang : locale;
-  
-  // Enhanced keywords with WMS and international terms
-  const enhancedKeywords = `${keywords}, warehouse management, WMS software, inventory management system, stock tracking, warehouse automation, supply chain management, logistics software, warehouse optimization, inventory control, stock management, warehouse efficiency, inventory tracking software, warehouse management solution, stock control system, warehouse operations management, inventory management software, warehouse management platform, stock tracking system, warehouse management tools, inventory management tools, warehouse software solution, stock management platform, warehouse management software, inventory control software, warehouse management system software, WMS platform, warehouse management tools, inventory tracking platform, stock management tools, warehouse optimization software, supply chain software, logistics management, warehouse efficiency software, inventory management platform, stock control software, warehouse operations software, inventory tracking tools, warehouse management solution software, stock management system, warehouse automation software, inventory control platform, warehouse management software solution, WMS software solution, warehouse management platform software, stock tracking platform, warehouse management tools software, inventory management tools software, warehouse software platform, stock management platform software, warehouse management software platform, inventory control software platform, warehouse management system platform, WMS platform software, warehouse management tools platform, inventory tracking platform software, stock management tools platform, warehouse optimization platform, supply chain platform, logistics platform, warehouse efficiency platform, inventory management platform software, stock control platform software, warehouse operations platform software, inventory tracking platform tools, warehouse management solution platform, stock management system platform, warehouse automation platform software, inventory control platform software, warehouse management software platform solution, WMS software platform solution, warehouse management platform solution, stock tracking platform solution, warehouse management tools platform solution, inventory management tools platform solution, warehouse software platform solution, stock management platform solution, warehouse management software platform solution, inventory control software platform solution, warehouse management system platform solution, WMS platform solution, warehouse management tools platform solution, inventory tracking platform solution, stock management tools platform solution, warehouse optimization platform solution, supply chain platform solution, logistics platform solution, warehouse efficiency platform solution, inventory management platform solution, stock control platform solution, warehouse operations platform solution, inventory tracking platform solution, warehouse management solution platform solution, stock management system platform solution, warehouse automation platform solution, inventory control platform solution, warehouse management software platform solution, WMS software platform solution, warehouse management platform solution, stock tracking platform solution, warehouse management tools platform solution, inventory management tools platform solution, warehouse software platform solution, stock management platform solution, warehouse management software platform solution, inventory control software platform solution, warehouse management system platform solution, WMS platform solution, warehouse management tools platform solution, inventory tracking platform solution, stock management tools platform solution, warehouse optimization platform solution, supply chain platform solution, logistics platform solution, warehouse efficiency platform solution, inventory management platform solution, stock control platform solution, warehouse operations platform solution, inventory tracking platform solution, warehouse management solution platform solution, stock management system platform solution, warehouse automation platform solution, inventory control platform solution`;
 
   return (
     <Helmet>
       <title>{title}</title>
       <meta name="description" content={description} />
-      <meta name="keywords" content={enhancedKeywords} />
+      <meta name="keywords" content={keywords} />
       <meta name="language" content={actualLocale} />
       <meta name="geo.region" content="BE" />
       <meta name="geo.placename" content="Belgium" />

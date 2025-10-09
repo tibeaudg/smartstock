@@ -8,16 +8,30 @@ const repoRoot = path.resolve(__dirname, '..');
 
 const BASE_URL = process.env.SITE_URL?.replace(/\/$/, '') || 'https://www.stockflow.be';
 const SEO_PAGES_DIR = path.join(repoRoot, 'src', 'pages', 'SEO');
+const REGIONAL_PAGES_DIR = path.join(repoRoot, 'src', 'pages', 'SEO', 'regions');
 const BLOG_JSON_FALLBACK = path.join(repoRoot, 'src', 'lib', 'blogposts.json');
 const OUTPUT_SITEMAP = path.join(repoRoot, 'public', 'sitemap.xml');
 const OUTPUT_SITEMAP_INDEX = path.join(repoRoot, 'public', 'sitemap-index.xml');
 
-// Supported languages
-const SUPPORTED_LANGUAGES = ['en', 'de', 'fr', 'es', 'it', 'pl', 'hu', 'sv', 'th', 'si', 'ro'];
+// Supported languages - English is default, nl is primary for Belgium
+const SUPPORTED_LANGUAGES = ['en', 'nl', 'de', 'fr', 'es', 'it', 'pl', 'hu', 'sv', 'th', 'si', 'ro'];
 
 function readSeoRoutes() {
   try {
     const entries = fs.readdirSync(SEO_PAGES_DIR, { withFileTypes: true });
+    const routes = entries
+      .filter((e) => e.isFile() && e.name.endsWith('.tsx'))
+      .map((e) => `/${e.name.replace(/\.tsx$/, '')}`)
+      .sort();
+    return routes;
+  } catch (err) {
+    return [];
+  }
+}
+
+function readRegionalRoutes() {
+  try {
+    const entries = fs.readdirSync(REGIONAL_PAGES_DIR, { withFileTypes: true });
     const routes = entries
       .filter((e) => e.isFile() && e.name.endsWith('.tsx'))
       .map((e) => `/${e.name.replace(/\.tsx$/, '')}`)
@@ -101,8 +115,9 @@ function buildHreflangUrlTag(loc, lastmod, hreflang = []) {
 
 async function generateInternationalSitemap() {
   const today = new Date().toISOString();
-  const staticRoutes = ['/', '/blog'];
+  const staticRoutes = ['/', '/blog', '/pricing', '/features', '/contact', '/about'];
   const seoRoutes = readSeoRoutes();
+  const regionalRoutes = readRegionalRoutes();
   const blogPosts = await readBlogPosts();
 
   const urls = [];
@@ -139,6 +154,25 @@ async function generateInternationalSitemap() {
         hreflang,
         priority: '0.8'
       });
+    }
+
+    // Regional pages (Belgian cities - primarily Dutch/English)
+    for (const route of regionalRoutes) {
+      // Regional pages are primarily for Belgian market (nl/en only)
+      const regionalLangs = ['en', 'nl'];
+      if (regionalLangs.includes(lang)) {
+        const hreflang = regionalLangs.map(l => ({
+          lang: l,
+          url: `${BASE_URL}${l === 'en' ? '' : `/${l}`}${route}`
+        }));
+        
+        urls.push({ 
+          loc: `${BASE_URL}${langPrefix}${route}`, 
+          lastmod: today,
+          hreflang,
+          priority: '0.7'
+        });
+      }
     }
 
     // Blog posts

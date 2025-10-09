@@ -1,9 +1,85 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight, Send, Facebook, Twitter, Linkedin, Instagram } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
-const Footer = () => (
-  
-  <footer className="bg-gray-900 text-gray-200 py-12 md:py-16">
+const Footer = () => {
+  // Organization Schema for Footer
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "StockFlow",
+    "alternateName": "stockflow",
+    "url": "https://www.stockflow.be",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.stockflow.be/logo.png",
+      "width": 200,
+      "height": 60
+    },
+    "description": "Free inventory management software for growing businesses in Belgium. Smart stock control and warehouse management solution for SMEs.",
+    "foundingDate": "2024",
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "BE",
+      "addressRegion": "Belgium",
+      "addressLocality": "Belgium"
+    },
+    "contactPoint": [
+      {
+        "@type": "ContactPoint",
+        "contactType": "customer service",
+        "email": "support@stockflow.be",
+        "availableLanguage": ["English", "Dutch", "French", "German"]
+      },
+      {
+        "@type": "ContactPoint",
+        "contactType": "sales",
+        "email": "sales@stockflow.be",
+        "availableLanguage": ["English", "Dutch"]
+      }
+    ],
+    "sameAs": [
+      "https://www.facebook.com/profile.php?id=61578067034898",
+      "https://twitter.com/stockflow",
+      "https://www.linkedin.com/stockflow",
+      "https://www.instagram.com/stockflowbe"
+    ],
+    "areaServed": {
+      "@type": "Country",
+      "name": "Belgium"
+    },
+    "knowsAbout": [
+      "Inventory Management",
+      "Stock Control",
+      "Warehouse Management",
+      "Business Software",
+      "SME Solutions",
+      "Voorraadbeheer",
+      "Magazijnbeheer"
+    ],
+    "makesOffer": {
+      "@type": "Offer",
+      "itemOffered": {
+        "@type": "SoftwareApplication",
+        "name": "StockFlow Inventory Management",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web Browser",
+        "description": "Free inventory management software for small and medium businesses"
+      },
+      "price": "0",
+      "priceCurrency": "EUR",
+      "availability": "https://schema.org/InStock"
+    }
+  };
+
+  return (
+    <>
+      <Helmet>
+        <script type="application/ld+json">
+          {JSON.stringify(organizationSchema)}
+        </script>
+      </Helmet>
+      <footer className="bg-gray-900 text-gray-200 py-12 md:py-16">
   <div className="max-w-6xl mx-auto px-6">
     <div className="grid md:grid-cols-4 gap-8 mb-8">
       {/* Company Info */}
@@ -113,6 +189,8 @@ const Footer = () => (
     </div>
   </div>
 </footer>
-);
+    </>
+  );
+};
 
 export default Footer;

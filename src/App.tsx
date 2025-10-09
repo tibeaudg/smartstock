@@ -133,6 +133,10 @@ import StockFlowVsLinnworks from "./pages/SEO/stockflow-vs-linnworks";
 // Import comparison pages - Phase 3 Regional
 import StockFlowVsTeamleader from "./pages/SEO/stockflow-vs-teamleader";
 
+// Import new Benelux competitor pages
+import StockFlowVsVisma from "./pages/SEO/stockflow-vs-visma";
+import StockFlowVsVismaNL from "./pages/SEO/stockflow-vs-visma-nl";
+
 // Import Regional SEO Pages - Belgium
 import VoorraadbeheerSoftwareBelgie from "./pages/SEO/regions/voorraadbeheer-software-belgie";
 import VoorraadbeheerSoftwareOostVlaanderen from "./pages/SEO/regions/voorraadbeheer-software-oost-vlaanderen";
@@ -550,6 +554,10 @@ const AppRouter = () => {
         {/* Comparison Pages - Phase 3 Regional */}
         <Route path="/stockflow-vs-teamleader" element={<StockFlowVsTeamleader />} />
         <Route path="/nl/stockflow-vs-teamleader" element={<StockFlowVsTeamleader />} />
+
+        {/* New Benelux Competitor Pages */}
+        <Route path="/stockflow-vs-visma" element={<StockFlowVsVisma />} />
+        <Route path="/nl/stockflow-vs-visma" element={<StockFlowVsVismaNL />} />
 
         {/* Regional SEO Pages - Belgium */}
         <Route path="/voorraadbeheer-software-belgie" element={<VoorraadbeheerSoftwareBelgie />} />

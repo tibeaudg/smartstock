@@ -14,9 +14,33 @@ import {
   TrendingUp,
   Star
 } from 'lucide-react';
+import { generateFAQSchema, generateSoftwareApplicationSchema, generateBreadcrumbSchema } from '@/lib/structuredData';
 
 export default function StockFlowVsSortly() {
   usePageRefresh();
+
+  const faqData = [
+    {
+      question: "What's the main difference between StockFlow and Sortly?",
+      answer: "StockFlow offers a completely free plan for up to 30 products, while Sortly only offers a 14-day trial. StockFlow also includes unlimited users at all price tiers, whereas Sortly charges per user. Additionally, StockFlow provides European data hosting and Dutch language support, making it ideal for Belgian businesses."
+    },
+    {
+      question: "Is StockFlow better than Sortly for small businesses?",
+      answer: "For small businesses, especially in Europe, StockFlow is often the better choice due to its free tier, unlimited users, and lower pricing. StockFlow's premium plan starts at €29/month with unlimited products, while Sortly starts at $29/month with limited users and features."
+    },
+    {
+      question: "Can I migrate from Sortly to StockFlow?",
+      answer: "Yes, you can easily migrate from Sortly to StockFlow. Our support team can help you import your product data, photos, and inventory history. Most migrations are completed within a few hours."
+    },
+    {
+      question: "Does StockFlow have all the features that Sortly has?",
+      answer: "StockFlow offers all essential inventory management features including barcode scanning, low stock alerts, multi-location support, custom reports, and a mobile app. While some enterprise features differ, StockFlow provides everything small to medium businesses need at a better price point."
+    },
+    {
+      question: "How much money can I save by choosing StockFlow over Sortly?",
+      answer: "Businesses typically save $300-600 per year by choosing StockFlow. With our free plan for up to 30 products and no per-user fees, the savings add up quickly compared to Sortly's $29/month starting price plus additional user costs."
+    }
+  ];
 
   const comparisonFeatures: ComparisonFeature[] = [
     { feature: 'Free Plan Available', stockflow: true, competitor: 'Limited (14-day trial)' },
@@ -66,6 +90,27 @@ export default function StockFlowVsSortly() {
     },
   ];
 
+  // Structured Data
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Home', url: 'https://www.stockflow.be', position: 1 },
+    { name: 'Comparisons', url: 'https://www.stockflow.be', position: 2 },
+    { name: 'StockFlow vs Sortly', url: 'https://www.stockflow.be/stockflow-vs-sortly', position: 3 }
+  ]);
+
+  const faqSchema = generateFAQSchema(faqData);
+
+  const softwareSchema = generateSoftwareApplicationSchema({
+    name: 'StockFlow - Inventory Management',
+    description: 'Free inventory management software with unlimited users and European data hosting',
+    category: 'BusinessApplication',
+    operatingSystem: 'Web Browser, iOS, Android',
+    price: '0',
+    currency: 'EUR',
+    rating: { value: '4.8', count: '32' },
+    url: 'https://www.stockflow.be',
+    image: 'https://www.stockflow.be/Inventory-Management.png'
+  });
+
   return (
     <SeoPageLayout title="StockFlow vs Sortly">
       <SEO
@@ -77,6 +122,7 @@ export default function StockFlowVsSortly() {
           { lang: "en", url: "https://www.stockflow.be/stockflow-vs-sortly" },
           { lang: "nl", url: "https://www.stockflow.be/nl/stockflow-vs-sortly" }
         ]}
+        structuredData={[breadcrumbSchema, faqSchema, softwareSchema]}
       />
 
       {/* Hero Section */}
