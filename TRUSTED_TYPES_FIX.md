@@ -217,20 +217,39 @@ try {
 
 ## CSP Headers
 
-To enable Trusted Types, add these CSP headers:
+✅ **CRITICAL FIX**: The policy name must be added to the CSP header!
 
-```http
-Content-Security-Policy: 
-  require-trusted-types-for 'script';
-  trusted-types stockflow-scripts default;
+### Problem
+The `trusted-types` directive in the CSP header must explicitly allow the policy name.
+
+### Solution in `index.html`
+
+**Before:**
+```html
+trusted-types default angular angular#bundler dompurify tt-policy 'allow-duplicates';
 ```
 
-Currently using **report-only mode** for testing:
-
-```http
-Content-Security-Policy-Report-Only: 
-  require-trusted-types-for 'script';
+**After:**
+```html
+trusted-types default angular angular#bundler dompurify tt-policy stockflow-scripts 'allow-duplicates';
 ```
+
+### Complete CSP Configuration
+
+```html
+<meta http-equiv="Content-Security-Policy" content="
+  default-src 'self';
+  connect-src 'self' https://sszuxnqhbxauvershuys.supabase.co ...;
+  script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://connect.facebook.net ...;
+  trusted-types default angular angular#bundler dompurify tt-policy stockflow-scripts 'allow-duplicates';
+  require-trusted-types-for 'script';
+">
+```
+
+**Key Points:**
+- ✅ Policy name `stockflow-scripts` is in the `trusted-types` directive
+- ✅ `require-trusted-types-for 'script'` enforces the policy
+- ✅ `'allow-duplicates'` allows multiple policies with the same name
 
 ## Future Improvements
 

@@ -3,46 +3,65 @@ import { CookiePreferences } from '@/components/CookieConsent';
 const CONSENT_KEY = 'stockflow_cookie_consent';
 const PREFERENCES_KEY = 'stockflow_cookie_preferences';
 
+// Singleton policy instance to avoid recreating
+let trustedTypesPolicy: any = null;
+
+/**
+ * Create or get Trusted Types policy for script loading
+ * This is required to safely load external scripts
+ */
+const getTrustedTypesPolicy = () => {
+  if (trustedTypesPolicy) {
+    return trustedTypesPolicy;
+  }
+  
+  if (typeof window === 'undefined' || !('trustedTypes' in window)) {
+    return null;
+  }
+
+  try {
+    // @ts-ignore - trustedTypes is not yet in all TypeScript definitions
+    trustedTypesPolicy = window.trustedTypes.createPolicy('stockflow-scripts', {
+      createScriptURL: (input: string) => {
+        // Only allow our trusted domains
+        const allowedDomains = [
+          'https://www.googletagmanager.com',
+          'https://connect.facebook.net'
+        ];
+        
+        if (allowedDomains.some(domain => input.startsWith(domain))) {
+          return input;
+        }
+        
+        throw new Error('Untrusted script URL: ' + input);
+      }
+    });
+    
+    return trustedTypesPolicy;
+  } catch (e) {
+    // Policy might already exist
+    console.warn('[Trusted Types] Could not create policy:', e);
+    return null;
+  }
+};
+
 /**
  * Create Trusted Types policy for script loading
  * This is required to safely load external scripts
  */
 const createTrustedScriptURL = (url: string): string | TrustedScriptURL => {
-  if (typeof window !== 'undefined' && 'trustedTypes' in window) {
+  const policy = getTrustedTypesPolicy();
+  
+  if (policy) {
     try {
-      // @ts-ignore - trustedTypes is not yet in all TypeScript definitions
-      const policy = window.trustedTypes.createPolicy('stockflow-scripts', {
-        createScriptURL: (input: string) => {
-          // Only allow our trusted domains
-          const allowedDomains = [
-            'https://www.googletagmanager.com',
-            'https://connect.facebook.net'
-          ];
-          
-          if (allowedDomains.some(domain => input.startsWith(domain))) {
-            return input;
-          }
-          
-          throw new Error('Untrusted script URL: ' + input);
-        }
-      });
-      
       return policy.createScriptURL(url);
     } catch (e) {
-      // Policy might already exist, try to use it
-      try {
-        // @ts-ignore
-        const existingPolicy = window.trustedTypes.getPolicy?.('stockflow-scripts');
-        if (existingPolicy) {
-          return existingPolicy.createScriptURL(url);
-        }
-      } catch {
-        // Fall through to return raw URL
-      }
+      console.error('[Trusted Types] Failed to create trusted URL:', e);
     }
   }
   
-  // If Trusted Types not supported, return raw URL
+  // If Trusted Types not supported or failed, return raw URL
+  // This allows the code to work in browsers without Trusted Types
   return url;
 };
 
