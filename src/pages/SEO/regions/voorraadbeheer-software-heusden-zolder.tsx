@@ -33,7 +33,7 @@ export default function VoorraadbeheerSoftwareHeusdenZolder() {
   const stats = [
     { label: 'Inwoners', value: '32.000', description: 'Mensen in Heusden-Zolder' },
     { label: 'Provincie', value: 'Limburg', description: 'Deel van Limburg' },
-    { label: 'Lokale KMO's', value: '1000+', description: 'Actieve bedrijven' },
+    { label: 'Lokale KMO\'s', value: '1000+', description: 'Actieve bedrijven' },
     { label: 'Klantrating', value: '4.9/5', description: 'Gemiddelde tevredenheid' }
   ];
 

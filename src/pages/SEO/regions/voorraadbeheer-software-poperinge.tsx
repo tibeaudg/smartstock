@@ -33,7 +33,7 @@ export default function VoorraadbeheerSoftwarePoperinge() {
   const stats = [
     { label: 'Inwoners', value: '20.000', description: 'Mensen in Poperinge' },
     { label: 'Provincie', value: 'West-Vlaanderen', description: 'Deel van West-Vlaanderen' },
-    { label: 'Lokale KMO's', value: '1000+', description: 'Actieve bedrijven' },
+    { label: 'Lokale KMO\'s', value: '1000+', description: 'Actieve bedrijven' },
     { label: 'Klantrating', value: '4.9/5', description: 'Gemiddelde tevredenheid' }
   ];
 

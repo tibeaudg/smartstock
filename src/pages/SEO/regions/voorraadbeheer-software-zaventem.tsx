@@ -33,7 +33,7 @@ export default function VoorraadbeheerSoftwareZaventem() {
   const stats = [
     { label: 'Inwoners', value: '32.000', description: 'Mensen in Zaventem' },
     { label: 'Provincie', value: 'Vlaams-Brabant', description: 'Deel van Vlaams-Brabant' },
-    { label: 'Lokale KMO's', value: '1000+', description: 'Actieve bedrijven' },
+    { label: 'Lokale KMO\'s', value: '1000+', description: 'Actieve bedrijven' },
     { label: 'Klantrating', value: '4.9/5', description: 'Gemiddelde tevredenheid' }
   ];
 

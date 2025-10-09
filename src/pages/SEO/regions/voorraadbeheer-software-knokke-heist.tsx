@@ -33,7 +33,7 @@ export default function VoorraadbeheerSoftwareKnokkeHeist() {
   const stats = [
     { label: 'Inwoners', value: '34.000', description: 'Mensen in Knokke-Heist' },
     { label: 'Provincie', value: 'West-Vlaanderen', description: 'Deel van West-Vlaanderen' },
-    { label: 'Lokale KMO's', value: '1000+', description: 'Actieve bedrijven' },
+    { label: 'Lokale KMO\'s', value: '1000+', description: 'Actieve bedrijven' },
     { label: 'Klantrating', value: '4.9/5', description: 'Gemiddelde tevredenheid' }
   ];
 

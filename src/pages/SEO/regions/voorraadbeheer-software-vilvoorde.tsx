@@ -33,7 +33,7 @@ export default function VoorraadbeheerSoftwareVilvoorde() {
   const stats = [
     { label: 'Inwoners', value: '46.000', description: 'Mensen in Vilvoorde' },
     { label: 'Provincie', value: 'Vlaams-Brabant', description: 'Deel van Vlaams-Brabant' },
-    { label: 'Lokale KMO's', value: '1000+', description: 'Actieve bedrijven' },
+    { label: 'Lokale KMO\'s', value: '1000+', description: 'Actieve bedrijven' },
     { label: 'Klantrating', value: '4.9/5', description: 'Gemiddelde tevredenheid' }
   ];
 

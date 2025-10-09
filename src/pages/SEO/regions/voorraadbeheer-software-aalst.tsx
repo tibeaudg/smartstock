@@ -33,7 +33,7 @@ export default function VoorraadbeheerSoftwareAalst() {
   const stats = [
     { label: 'Inwoners', value: '88.000', description: 'Mensen in Aalst' },
     { label: 'Provincie', value: 'Oost-Vlaanderen', description: 'Deel van Oost-Vlaanderen' },
-    { label: 'Lokale KMO's', value: '1000+', description: 'Actieve bedrijven' },
+    { label: 'Lokale KMO\'s', value: '1000+', description: 'Actieve bedrijven' },
     { label: 'Klantrating', value: '4.9/5', description: 'Gemiddelde tevredenheid' }
   ];
 

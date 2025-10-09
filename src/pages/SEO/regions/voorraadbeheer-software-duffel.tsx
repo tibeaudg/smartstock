@@ -33,7 +33,7 @@ export default function VoorraadbeheerSoftwareDuffel() {
   const stats = [
     { label: 'Inwoners', value: '17.500', description: 'Mensen in Duffel' },
     { label: 'Provincie', value: 'Antwerpen', description: 'Deel van Antwerpen' },
-    { label: 'Lokale KMO's', value: '1000+', description: 'Actieve bedrijven' },
+    { label: 'Lokale KMO\'s', value: '1000+', description: 'Actieve bedrijven' },
     { label: 'Klantrating', value: '4.9/5', description: 'Gemiddelde tevredenheid' }
   ];
 

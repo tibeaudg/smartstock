@@ -25,7 +25,7 @@ export default function VoorraadbeheerSoftwareBelgie() {
 
   const stats = [
     { label: 'Actieve Bedrijven', value: '1.5M+', description: 'Ondernemingen in België' },
-    { label: 'KMO's', value: '99%', description: 'Zijn kleine en middelgrote bedrijven' },
+    { label: 'KMO\'s', value: '99%', description: 'Zijn kleine en middelgrote bedrijven' },
     { label: 'Sectoren', value: '6+', description: 'Belangrijke industrieën' },
     { label: 'Klantrating', value: '4.9/5', description: 'Gemiddelde tevredenheid' }
   ];
