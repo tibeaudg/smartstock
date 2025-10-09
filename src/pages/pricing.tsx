@@ -51,6 +51,22 @@ export default function PricingPage() {
   const { t } = useTranslation();
 
   const handleSelectPlan = (tierId: string, isBusinessTier: boolean = false) => {
+    // Find the selected tier to check if it's free
+    const selectedTier = pricingTiers.find(t => t.name === tierId);
+    const isFree = selectedTier?.price_monthly === 0;
+    
+    // For free tier, redirect to register/dashboard
+    if (isFree) {
+      if (!user) {
+        navigate('/register');
+        return;
+      }
+      // If user is already logged in, redirect to dashboard (they already have free access)
+      navigate('/dashboard');
+      return;
+    }
+    
+    // For paid tiers, require authentication
     if (!user) {
       navigate('/auth');
       return;
@@ -62,7 +78,7 @@ export default function PricingPage() {
       return;
     }
     
-    // Navigate to checkout or subscription page
+    // Navigate to checkout for paid tiers
     navigate(`/checkout?tier=${tierId}&cycle=${billingCycle}`);
   };
 
