@@ -4,6 +4,49 @@ const CONSENT_KEY = 'stockflow_cookie_consent';
 const PREFERENCES_KEY = 'stockflow_cookie_preferences';
 
 /**
+ * Create Trusted Types policy for script loading
+ * This is required to safely load external scripts
+ */
+const createTrustedScriptURL = (url: string): string | TrustedScriptURL => {
+  if (typeof window !== 'undefined' && 'trustedTypes' in window) {
+    try {
+      // @ts-ignore - trustedTypes is not yet in all TypeScript definitions
+      const policy = window.trustedTypes.createPolicy('stockflow-scripts', {
+        createScriptURL: (input: string) => {
+          // Only allow our trusted domains
+          const allowedDomains = [
+            'https://www.googletagmanager.com',
+            'https://connect.facebook.net'
+          ];
+          
+          if (allowedDomains.some(domain => input.startsWith(domain))) {
+            return input;
+          }
+          
+          throw new Error('Untrusted script URL: ' + input);
+        }
+      });
+      
+      return policy.createScriptURL(url);
+    } catch (e) {
+      // Policy might already exist, try to use it
+      try {
+        // @ts-ignore
+        const existingPolicy = window.trustedTypes.getPolicy?.('stockflow-scripts');
+        if (existingPolicy) {
+          return existingPolicy.createScriptURL(url);
+        }
+      } catch {
+        // Fall through to return raw URL
+      }
+    }
+  }
+  
+  // If Trusted Types not supported, return raw URL
+  return url;
+};
+
+/**
  * Get cookie consent preferences
  */
 export const getCookieConsent = (): CookiePreferences | null => {
@@ -76,7 +119,10 @@ export const loadGoogleAds = (): void => {
 
   const script = document.createElement('script');
   script.async = true;
-  script.src = 'https://www.googletagmanager.com/gtag/js?id=AW-17574614935';
+  // Use trusted script URL to comply with Trusted Types policy
+  const trustedUrl = createTrustedScriptURL('https://www.googletagmanager.com/gtag/js?id=AW-17574614935');
+  // @ts-ignore - TypeScript doesn't recognize TrustedScriptURL yet
+  script.src = trustedUrl;
   script.onload = () => {
     // @ts-ignore
     window.dataLayer = window.dataLayer || [];
@@ -112,23 +158,36 @@ export const loadFacebookPixel = (): void => {
     return;
   }
 
-  // Facebook Pixel Code
-  // @ts-ignore
-  !function(f,b,e,v,n,t,s)
-  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-  n.queue=[];t=b.createElement(e);t.async=!0;
-  t.src=v;s=b.getElementsByTagName(e)[0];
-  s.parentNode.insertBefore(t,s)}(window, document,'script',
-  'https://connect.facebook.net/en_US/fbevents.js');
-  // @ts-ignore
-  fbq('init', '1788618995199125', {
-    external_id: undefined, // Don't track external IDs without consent
-  });
-  // @ts-ignore
-  fbq('track', 'PageView');
-  console.log('[Cookie Consent] Facebook Pixel loaded successfully');
+  // Facebook Pixel Code - Modified to support Trusted Types
+  const fbScript = document.createElement('script');
+  fbScript.async = true;
+  const trustedFbUrl = createTrustedScriptURL('https://connect.facebook.net/en_US/fbevents.js');
+  // @ts-ignore - TypeScript doesn't recognize TrustedScriptURL yet
+  fbScript.src = trustedFbUrl;
+  
+  fbScript.onload = () => {
+    // Initialize Facebook Pixel after script loads
+    // @ts-ignore
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[]}(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    
+    // Now initialize and track
+    // @ts-ignore
+    if (window.fbq) {
+      // @ts-ignore
+      fbq('init', '1788618995199125', {
+        external_id: undefined, // Don't track external IDs without consent
+      });
+      // @ts-ignore
+      fbq('track', 'PageView');
+      console.log('[Cookie Consent] Facebook Pixel loaded successfully');
+    }
+  };
+  
+  document.head.appendChild(fbScript);
 };
 
 /**
