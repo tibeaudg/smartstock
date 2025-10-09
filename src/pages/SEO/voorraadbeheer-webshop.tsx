@@ -103,7 +103,7 @@ export default function VoorraadbeheerWebshop() {
                 Waarom is voorraadbeheer cruciaal voor webshops?
               </h2>
               <p className="text-sm sm:text-base md:text-lg text-gray-700 mb-4 sm:mb-6 leading-relaxed">
-                Voorraadbeheer voor webshops is essentieel voor het succes van je e-commerce bedrijf. Je moet ervoor zorgen dat je klanten altijd kunnen bestellen wat ze willen, zonder teleurstellingen door uitverkochte producten. Goed voorraadbeheer verhoogt je omzet, verbetert klantentevredenheid en voorkomt verlies van verkoopkansen.
+                <Link to="/voorraadbeheer-software" className="text-blue-600 font-semibold hover:underline">Voorraadbeheer</Link> voor webshops is essentieel voor het succes van je e-commerce bedrijf. Je moet ervoor zorgen dat je klanten altijd kunnen bestellen wat ze willen, zonder teleurstellingen door uitverkochte producten. Goed voorraadbeheer verhoogt je omzet, verbetert klantentevredenheid en voorkomt verlies van verkoopkansen. Of je nu een <Link to="/voorraadbeheer-kmo" className="text-blue-600 font-semibold hover:underline">kleine webshop</Link> runt of een groot e-commerce platform beheert, de juiste software maakt het verschil.
               </p>
               <div className="space-y-3 sm:space-y-4">
                 <div className="bg-blue-50 p-3 sm:p-4 rounded-lg">
@@ -259,6 +259,86 @@ export default function VoorraadbeheerWebshop() {
                 <p className="text-gray-700">{faq.answer}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Related Articles */}
+      <section className="py-16 px-4 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl font-bold mb-8 text-center">Gerelateerde Artikelen</h2>
+          <div className="grid md:grid-cols-3 gap-6">
+            <Link to="/voorraadbeheer-software" className="group">
+              <div className="bg-gray-50 p-6 rounded-xl hover:shadow-lg transition">
+                <h3 className="font-semibold text-lg mb-2 group-hover:text-blue-600 transition">
+                  Voorraadbeheer Software
+                </h3>
+                <p className="text-gray-600 text-sm mb-3">
+                  Complete gids over professionele voorraadbeheer software voor alle bedrijfstypen.
+                </p>
+                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
+              </div>
+            </Link>
+
+            <Link to="/magazijnbeheer" className="group">
+              <div className="bg-gray-50 p-6 rounded-xl hover:shadow-lg transition">
+                <h3 className="font-semibold text-lg mb-2 group-hover:text-blue-600 transition">
+                  Magazijnbeheer Software
+                </h3>
+                <p className="text-gray-600 text-sm mb-3">
+                  Optimaliseer je fulfillment operaties met magazijnbeheer software.
+                </p>
+                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
+              </div>
+            </Link>
+
+            <Link to="/voorraadbeheer-automatiseren" className="group">
+              <div className="bg-gray-50 p-6 rounded-xl hover:shadow-lg transition">
+                <h3 className="font-semibold text-lg mb-2 group-hover:text-blue-600 transition">
+                  Voorraadbeheer Automatiseren
+                </h3>
+                <p className="text-gray-600 text-sm mb-3">
+                  Automatiseer je e-commerce voorraad en bespaar 70% tijd.
+                </p>
+                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
+              </div>
+            </Link>
+
+            <Link to="/voorraadbeheer-kmo" className="group">
+              <div className="bg-gray-50 p-6 rounded-xl hover:shadow-lg transition">
+                <h3 className="font-semibold text-lg mb-2 group-hover:text-blue-600 transition">
+                  Voorraadbeheer voor KMO's
+                </h3>
+                <p className="text-gray-600 text-sm mb-3">
+                  Betaalbare oplossingen voor kleine webshops en startende e-commerce.
+                </p>
+                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
+              </div>
+            </Link>
+
+            <Link to="/voorraadbeheer-excel" className="group">
+              <div className="bg-gray-50 p-6 rounded-xl hover:shadow-lg transition">
+                <h3 className="font-semibold text-lg mb-2 group-hover:text-blue-600 transition">
+                  Van Excel naar Software
+                </h3>
+                <p className="text-gray-600 text-sm mb-3">
+                  Groei van handmatige Excel sheets naar professionele webshop software.
+                </p>
+                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
+              </div>
+            </Link>
+
+            <Link to="/inventory-management-software" className="group">
+              <div className="bg-gray-50 p-6 rounded-xl hover:shadow-lg transition">
+                <h3 className="font-semibold text-lg mb-2 group-hover:text-blue-600 transition">
+                  Inventory Management Software
+                </h3>
+                <p className="text-gray-600 text-sm mb-3">
+                  English version - e-commerce inventory management solutions.
+                </p>
+                <div className="text-blue-600 text-sm font-semibold">Read more →</div>
+              </div>
+            </Link>
           </div>
         </div>
       </section>

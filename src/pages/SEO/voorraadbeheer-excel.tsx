@@ -285,6 +285,86 @@ export default function VoorraadbeheerExcel() {
         </div>
       </section>
 
+      {/* Related Articles */}
+      <section className="py-16 px-4 bg-gray-50">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl font-bold mb-8 text-center">Gerelateerde Artikelen</h2>
+          <div className="grid md:grid-cols-3 gap-6">
+            <Link to="/voorraadbeheer-software" className="group">
+              <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition">
+                <h3 className="font-semibold text-lg mb-2 group-hover:text-blue-600 transition">
+                  Voorraadbeheer Software
+                </h3>
+                <p className="text-gray-600 text-sm mb-3">
+                  Ontdek alle voordelen van professionele voorraadbeheer software.
+                </p>
+                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
+              </div>
+            </Link>
+
+            <Link to="/voorraadbeheer-automatiseren" className="group">
+              <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition">
+                <h3 className="font-semibold text-lg mb-2 group-hover:text-blue-600 transition">
+                  Voorraadbeheer Automatiseren
+                </h3>
+                <p className="text-gray-600 text-sm mb-3">
+                  Automatiseer je voorraadbeheer en bespaar 70% tijd.
+                </p>
+                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
+              </div>
+            </Link>
+
+            <Link to="/voorraadbeheer-kmo" className="group">
+              <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition">
+                <h3 className="font-semibold text-lg mb-2 group-hover:text-blue-600 transition">
+                  Voorraadbeheer voor KMO's
+                </h3>
+                <p className="text-gray-600 text-sm mb-3">
+                  Betaalbare oplossingen speciaal voor kleine bedrijven.
+                </p>
+                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
+              </div>
+            </Link>
+
+            <Link to="/magazijnbeheer" className="group">
+              <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition">
+                <h3 className="font-semibold text-lg mb-2 group-hover:text-blue-600 transition">
+                  Magazijnbeheer Software
+                </h3>
+                <p className="text-gray-600 text-sm mb-3">
+                  Voor warehouse-specific behoeften en multi-locatie beheer.
+                </p>
+                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
+              </div>
+            </Link>
+
+            <Link to="/voorraadbeheer-webshop" className="group">
+              <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition">
+                <h3 className="font-semibold text-lg mb-2 group-hover:text-blue-600 transition">
+                  Voorraadbeheer voor Webshops
+                </h3>
+                <p className="text-gray-600 text-sm mb-3">
+                  Real-time sync en e-commerce integraties.
+                </p>
+                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
+              </div>
+            </Link>
+
+            <Link to="/inventory-management-software" className="group">
+              <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition">
+                <h3 className="font-semibold text-lg mb-2 group-hover:text-blue-600 transition">
+                  Inventory Management Software
+                </h3>
+                <p className="text-gray-600 text-sm mb-3">
+                  English version - professional inventory software solutions.
+                </p>
+                <div className="text-blue-600 text-sm font-semibold">Read more →</div>
+              </div>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="bg-gray-900 text-gray-200 py-12 md:py-16">
         <div className="max-w-4xl mx-auto px-6 text-center">

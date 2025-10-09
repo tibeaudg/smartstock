@@ -62,6 +62,8 @@ import ScanPage from './pages/scan';
 import SubscriptionTestPage from './pages/subscription-test';
 import React from 'react';
 import VoorraadbeheerSoftware from "./pages/SEO/voorraadbeheer-software";
+import VoorraadbeheerKMO from "./pages/SEO/voorraadbeheer-kmo";
+import Magazijnbeheer from "./pages/SEO/magazijnbeheer";
 import Stockbeheer from "./pages/SEO/stockbeheer";
 import SimpelStockbeheer from "./pages/SEO/simpelstockbeheer";
 import GratisVoorraadbeheer from "./pages/SEO/gratis-voorraadbeheer";
@@ -98,6 +100,10 @@ import InventorySoftwareForSmallBusiness from "./pages/SEO/inventory-software-fo
 import InventorySoftwareManagement from "./pages/SEO/inventory-software-management";
 import SoftwareForInventoryManagement from "./pages/SEO/software-for-inventory-management";
 import SoftwaresForInventoryManagement from "./pages/SEO/softwares-for-inventory-management";
+import WatIsVoorraadbeheerSoftware from "./pages/SEO/wat-is-voorraadbeheer-software";
+import ExcelVsVoorraadbeheerSoftware from "./pages/SEO/excel-vs-voorraadbeheer-software";
+import ChecklistVoorraadbeheerSoftwareGereed from "./pages/SEO/checklist-voorraadbeheer-software-gereed";
+import VoorraadbeheerAutomatiseren5Stappen from "./pages/SEO/voorraadbeheer-automatiseren-5-stappen";
 
 // Import comparison pages - Phase 1
 import StockFlowVsSortly from "./pages/SEO/stockflow-vs-sortly";
@@ -341,6 +347,12 @@ const AppRouter = () => {
         <Route path="/voorraadbeheer-software" element={<VoorraadbeheerSoftware />} />
         <Route path="/nl/voorraadbeheer-software" element={<VoorraadbeheerSoftware />} />
         
+        <Route path="/voorraadbeheer-kmo" element={<VoorraadbeheerKMO />} />
+        <Route path="/nl/voorraadbeheer-kmo" element={<VoorraadbeheerKMO />} />
+        
+        <Route path="/magazijnbeheer" element={<Magazijnbeheer />} />
+        <Route path="/nl/magazijnbeheer" element={<Magazijnbeheer />} />
+        
         <Route path="/stockbeheer-software" element={<StockbeheerSoftware />} />
         <Route path="/nl/stockbeheer-software" element={<StockbeheerSoftware />} />
         
@@ -349,6 +361,18 @@ const AppRouter = () => {
         
         <Route path="/voorraadbeheer" element={<Voorraadbeheer />} />
         <Route path="/nl/voorraadbeheer" element={<Voorraadbeheer />} />
+        
+        <Route path="/wat-is-voorraadbeheer-software" element={<WatIsVoorraadbeheerSoftware />} />
+        <Route path="/nl/wat-is-voorraadbeheer-software" element={<WatIsVoorraadbeheerSoftware />} />
+        
+        <Route path="/excel-vs-voorraadbeheer-software" element={<ExcelVsVoorraadbeheerSoftware />} />
+        <Route path="/nl/excel-vs-voorraadbeheer-software" element={<ExcelVsVoorraadbeheerSoftware />} />
+        
+        <Route path="/checklist-voorraadbeheer-software-gereed" element={<ChecklistVoorraadbeheerSoftwareGereed />} />
+        <Route path="/nl/checklist-voorraadbeheer-software-gereed" element={<ChecklistVoorraadbeheerSoftwareGereed />} />
+        
+        <Route path="/voorraadbeheer-automatiseren-5-stappen" element={<VoorraadbeheerAutomatiseren5Stappen />} />
+        <Route path="/nl/voorraadbeheer-automatiseren-5-stappen" element={<VoorraadbeheerAutomatiseren5Stappen />} />
         
         <Route path="/stockbeheer" element={<Stockbeheer />} />
         <Route path="/nl/stockbeheer" element={<Stockbeheer />} />

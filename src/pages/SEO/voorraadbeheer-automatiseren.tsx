@@ -423,42 +423,86 @@ export default function VoorraadbeheerAutomatiseren() {
       </div>
 
       {/* Related Articles */}
-      <div className="max-w-4xl mx-auto mb-8 mt-6">
-        <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
-          Meer lezen over voorraadbeheer?
-        </h2>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Link to="/voorraadbeheer-software-vergelijken" className="group">
-            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow group-hover:border-teal-300">
-              <h3 className="font-semibold text-gray-900 mb-2 group-hover:text-teal-600 transition-colors">
-                Software vergelijken
-              </h3>
-              <p className="text-gray-600 text-sm">
-                Vergelijk verschillende voorraadbeheer software oplossingen.
-              </p>
-            </div>
-          </Link>
-          <Link to="/voorraadbeheer-tips" className="group">
-            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow group-hover:border-teal-300">
-              <h3 className="font-semibold text-gray-900 mb-2 group-hover:text-teal-600 transition-colors">
-                Voorraadbeheer tips
-              </h3>
-              <p className="text-gray-600 text-sm">
-                Praktische tips voor effici�nt voorraadbeheer en kostenbesparing.
-              </p>
-            </div>
-          </Link>
-          <Link to="/voorraadbeheer-webshop" className="group">
-            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow group-hover:border-teal-300">
-              <h3 className="font-semibold text-gray-900 mb-2 group-hover:text-teal-600 transition-colors">
-                Webshop integratie
-              </h3>
-              <p className="text-gray-600 text-sm">
-                Ontdek hoe je voorraadbeheer kunt koppelen aan je webshop.
-              </p>
-            </div>
-          </Link>
+      <section className="py-16 px-4 bg-gray-50">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl font-bold mb-8 text-center">Gerelateerde Artikelen</h2>
+          <div className="grid md:grid-cols-3 gap-6">
+            <Link to="/voorraadbeheer-software" className="group">
+              <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition">
+                <h3 className="font-semibold text-lg mb-2 group-hover:text-teal-600 transition">
+                  Voorraadbeheer Software
+                </h3>
+                <p className="text-gray-600 text-sm mb-3">
+                  Complete gids over professionele voorraadbeheer software.
+                </p>
+                <div className="text-teal-600 text-sm font-semibold">Lees meer →</div>
+              </div>
+            </Link>
+
+            <Link to="/magazijnbeheer" className="group">
+              <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition">
+                <h3 className="font-semibold text-lg mb-2 group-hover:text-teal-600 transition">
+                  Magazijnbeheer Automatiseren
+                </h3>
+                <p className="text-gray-600 text-sm mb-3">
+                  Automatiseer je warehouse operaties en verhoog efficiency.
+                </p>
+                <div className="text-teal-600 text-sm font-semibold">Lees meer →</div>
+              </div>
+            </Link>
+
+            <Link to="/voorraadbeheer-webshop" className="group">
+              <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition">
+                <h3 className="font-semibold text-lg mb-2 group-hover:text-teal-600 transition">
+                  Webshop Automatisering
+                </h3>
+                <p className="text-gray-600 text-sm mb-3">
+                  Automatiseer je e-commerce voorraad synchronisatie.
+                </p>
+                <div className="text-teal-600 text-sm font-semibold">Lees meer →</div>
+              </div>
+            </Link>
+
+            <Link to="/voorraadbeheer-kmo" className="group">
+              <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition">
+                <h3 className="font-semibold text-lg mb-2 group-hover:text-teal-600 transition">
+                  Automatisering voor KMO's
+                </h3>
+                <p className="text-gray-600 text-sm mb-3">
+                  Betaalbare automatisering oplossingen voor kleine bedrijven.
+                </p>
+                <div className="text-teal-600 text-sm font-semibold">Lees meer →</div>
+              </div>
+            </Link>
+
+            <Link to="/voorraadbeheer-excel" className="group">
+              <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition">
+                <h3 className="font-semibold text-lg mb-2 group-hover:text-teal-600 transition">
+                  Van Handmatig naar Geautomatiseerd
+                </h3>
+                <p className="text-gray-600 text-sm mb-3">
+                  Overstappen van Excel naar geautomatiseerde software.
+                </p>
+                <div className="text-teal-600 text-sm font-semibold">Lees meer →</div>
+              </div>
+            </Link>
+
+            <Link to="/inventory-management-software" className="group">
+              <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition">
+                <h3 className="font-semibold text-lg mb-2 group-hover:text-teal-600 transition">
+                  Inventory Automation
+                </h3>
+                <p className="text-gray-600 text-sm mb-3">
+                  English version - automate your inventory management.
+                </p>
+                <div className="text-teal-600 text-sm font-semibold">Read more →</div>
+              </div>
+            </Link>
+          </div>
         </div>
+      </section>
+
+      <div className="max-w-4xl mx-auto mb-8">
         <footer className="bg-gray-900 text-gray-200 py-12 md:py-16">
   <div className="max-w-4xl mx-auto px-6 text-center">
     <img
