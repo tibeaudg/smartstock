@@ -11,6 +11,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { initializePerformanceOptimizations } from './utils/performanceOptimization';
 import { initPerformanceMonitoring } from './utils/performanceMonitor';
+import { initializeTrustedTypes } from './utils/trustedTypes';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
@@ -71,6 +72,9 @@ async function init() {
     if (typeof React === 'undefined') {
       throw new Error('React failed to load after waiting. Check module bundling configuration.');
     }
+    
+    // Initialize Trusted Types policy early
+    initializeTrustedTypes();
     
     // Initialize performance optimizations
     initializePerformanceOptimizations();
