@@ -2,191 +2,117 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, Send, Facebook, Twitter, Linkedin, Instagram } from 'lucide-react';
 
 const Footer = () => (
-  <footer className="bg-gray-900 text-gray-300 py-16 md:py-20">
-    <div className="max-w-7xl mx-auto px-6">
-      {/* Main Footer Content - 4 Column Layout */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-        {/* Product Column */}
-        <div>
-          <h3 className="text-white text-lg font-semibold mb-6">Product</h3>
-          <ul className="space-y-3">
-            <li>
-              <Link to="/features" className="text-gray-300 hover:text-white transition-colors">
-                Features
-              </Link>
-            </li>
-            <li>
-              <Link to="/pricing" className="text-gray-300 hover:text-white transition-colors">
-                Pricing
-              </Link>
-            </li>
-            <li>
-              <Link to="/integrations" className="text-gray-300 hover:text-white transition-colors">
-                Integrations
-              </Link>
-            </li>
-            <li>
-              <Link to="/mobile-app" className="text-gray-300 hover:text-white transition-colors">
-                Mobile App
-              </Link>
-            </li>
-            <li>
-              <Link to="/roadmap" className="text-gray-300 hover:text-white transition-colors">
-                Roadmap
-              </Link>
-            </li>
-          </ul>
-        </div>
-
-        {/* Resources Column */}
-        <div>
-          <h3 className="text-white text-lg font-semibold mb-6">Resources</h3>
-          <ul className="space-y-3">
-            <li>
-              <Link to="/help" className="text-gray-300 hover:text-white transition-colors">
-                Help Center
-              </Link>
-            </li>
-            <li>
-              <Link to="/blog" className="text-gray-300 hover:text-white transition-colors">
-                Blog
-              </Link>
-            </li>
-            <li>
-              <Link to="/case-studies" className="text-gray-300 hover:text-white transition-colors">
-                Case Studies
-              </Link>
-            </li>
-            <li>
-              <Link to="/api-docs" className="text-gray-300 hover:text-white transition-colors">
-                API Docs
-              </Link>
-            </li>
-            <li>
-              <Link to="/changelog" className="text-gray-300 hover:text-white transition-colors">
-                Changelog
-              </Link>
-            </li>
-          </ul>
-        </div>
-
-        {/* Company Column */}
-        <div>
-          <h3 className="text-white text-lg font-semibold mb-6">Company</h3>
-          <ul className="space-y-3">
-            <li>
-              <Link to="/about" className="text-gray-300 hover:text-white transition-colors">
-                About Us
-              </Link>
-            </li>
-            <li>
-              <Link to="/careers" className="text-gray-300 hover:text-white transition-colors">
-                Careers
-              </Link>
-            </li>
-            <li>
-              <Link to="/press" className="text-gray-300 hover:text-white transition-colors">
-                Press Kit
-              </Link>
-            </li>
-            <li>
-              <Link to="/partners" className="text-gray-300 hover:text-white transition-colors">
-                Partners
-              </Link>
-            </li>
-          </ul>
-        </div>
-
-        {/* Support Column */}
-        <div>
-          <h3 className="text-white text-lg font-semibold mb-6">Support</h3>
-          <ul className="space-y-3">
-            <li>
-              <Link to="/contact" className="text-gray-300 hover:text-white transition-colors">
-                Contact
-              </Link>
-            </li>
-            <li>
-              <Link to="/chat" className="text-gray-300 hover:text-white transition-colors">
-                Chat
-              </Link>
-            </li>
-            <li>
-              <Link to="/status" className="text-gray-300 hover:text-white transition-colors">
-                Status
-              </Link>
-            </li>
-            <li>
-              <a href="tel:+32123456789" className="text-gray-300 hover:text-white transition-colors">
-                +32 XXX XXX
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-
-
-
-      {/* Bottom Section */}
-      <div className="border-t border-gray-800 pt-8">
-        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-          {/* Left - Language/Currency */}
-          <div className="flex items-center gap-4 text-sm">
-            <span className="flex items-center gap-2">
-              🇧🇪 Belgium
-            </span>
-            <select className="bg-gray-800 border border-gray-700 rounded px-2 py-1 text-white">
-              <option>English</option>
-              <option>Dutch</option>
-              <option>French</option>
-              <option>German</option>
-            </select>
-            <select className="bg-gray-800 border border-gray-700 rounded px-2 py-1 text-white">
-              <option>EUR</option>
-              <option>USD</option>
-            </select>
-          </div>
-
-          {/* Center - Social Media */}
-          <div className="flex items-center gap-4">
-            <a href="#" className="text-gray-400 hover:text-white transition-colors">
-              <Linkedin className="h-5 w-5" />
-            </a>
-            <a href="#" className="text-gray-400 hover:text-white transition-colors">
-              <Twitter className="h-5 w-5" />
-            </a>
-            <a href="#" className="text-gray-400 hover:text-white transition-colors">
+  
+  <footer className="bg-gray-900 text-gray-200 py-12 md:py-16">
+  <div className="max-w-6xl mx-auto px-6">
+    <div className="grid md:grid-cols-4 gap-8 mb-8">
+      {/* Company Info */}
+      <div className="md:col-span-2">
+        <img
+          src="/logo.png"
+          alt="stockflow"
+          className="h-10 md:h-12 mb-6"
+          loading="lazy"
+          decoding="async"
+          onLoad={(e) => {
+            e.currentTarget.classList.add('loaded');
+          }}
+          onError={(e) => {
+            e.currentTarget.src = '/placeholder.svg';
+          }}
+        />
+        <p className="text-gray-400 text-base md:text-lg mb-6 leading-relaxed">
+          Smart inventory management for growing businesses
+        </p>
+        
+        {/* Social Media Follow Buttons */}
+        <div className="mb-6">
+          <h4 className="text-white font-semibold mb-3">Follow Us</h4>
+          <div className="flex gap-3">
+            <a 
+              href="https://www.facebook.com/profile.php?id=61578067034898"
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-lg transition-colors"
+              aria-label="Follow us on Facebook"
+            >
               <Facebook className="h-5 w-5" />
             </a>
-            <a href="#" className="text-gray-400 hover:text-white transition-colors">
+            <a 
+              href="https://twitter.com/stockflow" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="bg-sky-500 hover:bg-sky-600 text-white p-2 rounded-lg transition-colors"
+              aria-label="Follow us on Twitter"
+            >
+              <Twitter className="h-5 w-5" />
+            </a>
+            <a 
+              href="https://www.linkedin.com/stockflow" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="bg-blue-700 hover:bg-blue-800 text-white p-2 rounded-lg transition-colors"
+              aria-label="Follow us on LinkedIn"
+            >
+              <Linkedin className="h-5 w-5" />
+            </a>
+            <a 
+              href="https://www.instagram.com/stockflowbe"
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="bg-pink-600 hover:bg-pink-700 text-white p-2 rounded-lg transition-colors"
+              aria-label="Follow us on Instagram"
+            >
               <Instagram className="h-5 w-5" />
             </a>
           </div>
-
-          {/* Right - Legal Links */}
-          <div className="flex items-center gap-4 text-sm">
-            <Link to="/privacy" className="text-gray-400 hover:text-white transition-colors">
-              Privacy
-            </Link>
-            <Link to="/terms" className="text-gray-400 hover:text-white transition-colors">
-              Terms
-            </Link>
-            <Link to="/cookies" className="text-gray-400 hover:text-white transition-colors">
-              Cookies
-            </Link>
-            <span className="text-gray-400">GDPR</span>
-          </div>
         </div>
+      </div>
+      
+      {/* Quick Links */}
+      <div>
+        <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
+        <div className="space-y-2">
+          <Link to="/contact" className="block text-gray-400 hover:text-white underline cursor-pointer">
+            Contact
+          </Link>
+          <Link to="/auth" className="block text-gray-400 hover:text-white underline">
+            Login
+          </Link>
+          <Link to="/pricing" className="block text-gray-400 hover:text-white underline">
+            Pricing
+          </Link>
+        </div>
+      </div>
 
-        {/* Copyright */}
-        <div className="mt-8 pt-8 border-t border-gray-800 text-center">
-          <p className="text-gray-400 text-sm">
-            © 2025 StockFlow • Privacy • Terms • Cookies • GDPR
-          </p>
+      
+      {/* Legal & Company Links */}
+      <div>
+        <h3 className="text-lg font-semibold mb-4">Legal & Company</h3>
+        <div className="space-y-2">
+          <Link to="/privacy-policy" className="block text-gray-400 hover:text-white underline">
+            Privacy Policy
+          </Link>
+          <Link to="/terms-conditions" className="block text-gray-400 hover:text-white underline">
+            Terms & Conditions
+          </Link>
+          <Link to="/about" className="block text-gray-400 hover:text-white underline">
+            About
+          </Link>
+          <Link to="/contact" className="block text-gray-400 hover:text-white underline">
+            Contact
+          </Link>
         </div>
       </div>
     </div>
-  </footer>
+
+    <div className="border-t border-gray-700 pt-6 text-center">
+      <p className="text-gray-500 text-xs md:text-sm">
+        &copy; {new Date().getFullYear()} stockflow. All rights reserved. 
+      </p>
+    </div>
+  </div>
+</footer>
 );
 
 export default Footer;
