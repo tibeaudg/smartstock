@@ -58,7 +58,7 @@ export default function PricingPage() {
     // For free tier, redirect to register/dashboard
     if (isFree) {
       if (!user) {
-        navigate('/register');
+        navigate('/auth?mode=register');
         return;
       }
       // If user is already logged in, redirect to dashboard (they already have free access)
