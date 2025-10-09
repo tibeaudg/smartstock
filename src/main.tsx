@@ -10,6 +10,7 @@ import { setupPersistedQueryClient } from './persistQueryClient';
 import { HelmetProvider } from 'react-helmet-async';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { initializePerformanceOptimizations } from './utils/performanceOptimization';
+import { initPerformanceMonitoring } from './utils/performanceMonitor';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
@@ -73,6 +74,11 @@ async function init() {
     
     // Initialize performance optimizations
     initializePerformanceOptimizations();
+    
+    // Initialize performance monitoring in development
+    if (process.env.NODE_ENV === 'development') {
+      initPerformanceMonitoring();
+    }
     
     const isConnected = await checkSupabaseConnection();
 

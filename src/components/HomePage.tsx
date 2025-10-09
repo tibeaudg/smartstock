@@ -20,6 +20,7 @@ import { useCurrency } from '@/hooks/useCurrency';
 import { generateComprehensiveStructuredData } from '../lib/structuredData';
 import { useAuth } from '@/hooks/useAuth';
 import { useSubscription } from '@/hooks/useSubscription';
+import { useIsMobile } from '@/hooks/useWindowSize';
 // import { useWebsiteTracking } from '@/hooks/useWebsiteTracking';
 // import { usePerformanceOptimization } from '@/hooks/usePerformanceOptimization';
 import { GoogleAdsTracking } from '@/utils/googleAdsTracking';
@@ -33,10 +34,10 @@ import { FloatingChatWidget } from './FloatingChatWidget';
   const FadeInWhenVisible = ({ children, delay = 0, direction = 'up', duration = 700 }) => {
   const [isVisible, setIsVisible] = React.useState(false);
   const ref = React.useRef(null);
+  const isMobile = useIsMobile();
 
   React.useEffect(() => {
       // Reduce animations on mobile for better performance
-      const isMobile = window.innerWidth < 768;
       if (isMobile) {
         setIsVisible(true);
         return;
@@ -56,10 +57,9 @@ import { FloatingChatWidget } from './FloatingChatWidget';
     }
 
     return () => observer.disconnect();
-  }, [delay]);
+  }, [delay, isMobile]);
 
     const getTransform = () => {
-      const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
       if (isMobile) return 'translate-y-0';
       
       switch (direction) {
@@ -127,9 +127,9 @@ const SlideInWhenVisible = ({ children, delay = 0, direction = 'left' }) => {
 const ScaleInWhenVisible = ({ children, delay = 0, duration = 700 }) => {
   const [isVisible, setIsVisible] = React.useState(false);
   const ref = React.useRef(null);
+  const isMobile = useIsMobile();
 
   React.useEffect(() => {
-    const isMobile = window.innerWidth < 768;
     if (isMobile) {
       setIsVisible(true);
       return;
@@ -149,7 +149,7 @@ const ScaleInWhenVisible = ({ children, delay = 0, duration = 700 }) => {
     }
 
     return () => observer.disconnect();
-  }, [delay]);
+  }, [delay, isMobile]);
 
   return (
     <div 
@@ -1365,19 +1365,7 @@ export const HomePage = () => {
         <link rel="preload" as="image" href="/logo.png" />
         <link rel="preload" as="image" href="/Inventory-Management.png" />
         
-        {/* Font preloading with display swap to prevent render blocking */}
-        <link rel="preload" as="font" href="/fonts/inter-var.woff2" type="font/woff2" crossOrigin="anonymous" />
-        <link rel="preload" as="font" href="/fonts/inter-var.woff" type="font/woff" crossOrigin="anonymous" />
-        
-        {/* DNS prefetch for external resources - non-blocking */}
-        <link rel="dns-prefetch" href="//fonts.googleapis.com" />
-        <link rel="dns-prefetch" href="//cdnjs.cloudflare.com" />
-        <link rel="dns-prefetch" href="//www.google-analytics.com" />
-        <link rel="dns-prefetch" href="//www.googletagmanager.com" />
-        
-        {/* Preconnect to critical origins - non-blocking */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* Resource hints managed in index.html to avoid duplicates and stay within recommended limits */}
         
         {/* OpenGraph Meta Tags for Social Sharing - Retailer focused */}
         <meta property="og:type" content="website" />
@@ -1551,7 +1539,7 @@ export const HomePage = () => {
       </Helmet>
       <SEO
         title="StockFlow - Inventory Management for Small Retail Shops"
-        description="Track stock across shop floor & backroom with your phone. Stop stockouts, reduce overstock, count inventory in minutes. Built for small retail stores. Free plan available."
+        description="Track stock with your phone. Stop stockouts, reduce overstock, count inventory in minutes. Built for small retail stores."
         keywords="retail inventory management, inventory for retail shops, retail stock management, small retail inventory, shop inventory software, retail store inventory, inventory tracking for retailers, retail inventory app, barcode scanning retail, mobile inventory retail, shop floor inventory, backroom inventory tracking, retail stock control, point of sale inventory, POS inventory integration, retail inventory system, small shop inventory, local store inventory, boutique inventory management, independent retailer inventory, retail inventory software, multi-location retail inventory, inventory management for stores, retail stocktaking, retail inventory counting, retail reorder alerts, retail stock alerts, prevent stockouts retail, reduce overstock retail, retail cash flow, retail inventory free, free retail inventory software, inventory app for shops, retail business software, small business retail inventory, inventory for small retailers, retail inventory Belgium, shop inventory management, store stock management, retail merchandise tracking, retail product tracking, inventory management small retail"
         url="https://www.stockflow.be/"
         hreflang={[
@@ -1737,9 +1725,9 @@ export const HomePage = () => {
           {/* Header */}
           <FadeInWhenVisible>
             <div className="text-center mb-10 sm:mb-12 md:mb-16 lg:mb-20">
-              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-light text-gray-800 mb-3 sm:mb-4 md:mb-6 lg:mb-8 leading-tight px-2">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-light text-gray-800 mb-3 sm:mb-4 md:mb-6 lg:mb-8 leading-tight px-2">
                 Stop Losing Money on Inventory Mistakes
-              </h1>
+              </h2>
               <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-4 sm:mb-6 max-w-2xl mx-auto px-4">
                 Get a clear picture of your inventory and make better decisions.
               </p>
@@ -1823,9 +1811,9 @@ export const HomePage = () => {
           {/* Header */}
           <FadeInWhenVisible>
             <div className="text-center mb-10 sm:mb-12 md:mb-16 lg:mb-20">
-              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-light text-gray-800 mb-3 sm:mb-4 md:mb-6 lg:mb-8 leading-tight px-2">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-light text-gray-800 mb-3 sm:mb-4 md:mb-6 lg:mb-8 leading-tight px-2">
                 Everything You Need to Manage Inventory
-              </h1>
+              </h2>
               <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-4 sm:mb-6 max-w-2xl mx-auto px-4">
                 Keep track of your inventory, see what's selling, and get alerts when you need to reorder.
               </p>
@@ -1991,9 +1979,9 @@ export const HomePage = () => {
           {/* Header */}
           <FadeInWhenVisible>
             <div className="text-center mb-10 sm:mb-12 md:mb-16 lg:mb-20">
-              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-light text-gray-800 mb-3 sm:mb-4 md:mb-6 lg:mb-8 leading-tight px-2">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-light text-gray-800 mb-3 sm:mb-4 md:mb-6 lg:mb-8 leading-tight px-2">
                 Start tracking in 3 simple steps
-              </h1>
+              </h2>
               <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-4 sm:mb-5 md:mb-6 max-w-2xl mx-auto px-4">
                 Get up and running in under 10 minutes.
               </p>

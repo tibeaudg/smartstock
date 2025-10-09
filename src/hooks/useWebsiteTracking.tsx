@@ -2,6 +2,7 @@ import { useEffect, useCallback, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { shouldDisableTracking, isAdminUser } from '@/config/tracking';
+import { canUseAnalytics } from '@/utils/cookieConsentManager';
 
 interface TrackingEvent {
   event_type: string;
@@ -27,6 +28,11 @@ export const useWebsiteTracking = () => {
 
   // Check if tracking should be disabled
   const shouldTrack = useCallback(async () => {
+    // Check cookie consent first
+    if (!canUseAnalytics()) {
+      return false;
+    }
+
     // Check basic conditions first (synchronous)
     if (shouldDisableTracking()) {
       return false;
@@ -236,45 +242,68 @@ export const useWebsiteTracking = () => {
     };
   }, [trackClick]);
 
-  // Setup scroll tracking
+  // Setup scroll tracking with optimized layout reads
   useEffect(() => {
     let maxScrollDepth = 0;
     let scrollTimeout: NodeJS.Timeout;
+    let rafId: number | null = null;
+    let cachedScrollHeight = 0;
+
+    // Cache scroll height and update on resize
+    const updateScrollHeight = () => {
+      cachedScrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+    };
+    
+    updateScrollHeight();
+    window.addEventListener('resize', updateScrollHeight, { passive: true });
 
     const handleScroll = () => {
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const scrollDepth = Math.round((scrollTop / scrollHeight) * 100);
-
-      if (scrollDepth > maxScrollDepth) {
-        maxScrollDepth = scrollDepth;
-        
-        // Track milestone scroll depths
-        if (scrollDepth >= 25 && maxScrollDepth < 25) {
-          trackScrollDepth(25);
-        } else if (scrollDepth >= 50 && maxScrollDepth < 50) {
-          trackScrollDepth(50);
-        } else if (scrollDepth >= 75 && maxScrollDepth < 75) {
-          trackScrollDepth(75);
-        } else if (scrollDepth >= 90 && maxScrollDepth < 90) {
-          trackScrollDepth(90);
-        }
+      // Cancel any pending animation frame
+      if (rafId) {
+        cancelAnimationFrame(rafId);
       }
 
-      // Debounce scroll tracking
-      clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(() => {
+      // Use requestAnimationFrame to batch layout reads
+      rafId = requestAnimationFrame(() => {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const scrollDepth = cachedScrollHeight > 0 
+          ? Math.round((scrollTop / cachedScrollHeight) * 100) 
+          : 0;
+
         if (scrollDepth > maxScrollDepth) {
           maxScrollDepth = scrollDepth;
+          
+          // Track milestone scroll depths
+          if (scrollDepth >= 25 && maxScrollDepth < 25) {
+            trackScrollDepth(25);
+          } else if (scrollDepth >= 50 && maxScrollDepth < 50) {
+            trackScrollDepth(50);
+          } else if (scrollDepth >= 75 && maxScrollDepth < 75) {
+            trackScrollDepth(75);
+          } else if (scrollDepth >= 90 && maxScrollDepth < 90) {
+            trackScrollDepth(90);
+          }
         }
-      }, 100);
+
+        // Debounce scroll tracking
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+          if (scrollDepth > maxScrollDepth) {
+            maxScrollDepth = scrollDepth;
+          }
+        }, 100);
+      });
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', updateScrollHeight);
       clearTimeout(scrollTimeout);
+      if (rafId) {
+        cancelAnimationFrame(rafId);
+      }
     };
   }, [trackScrollDepth]);
 

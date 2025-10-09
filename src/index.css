@@ -21,10 +21,38 @@
     height: auto;
   }
   
-  /* Enable GPU acceleration for transforms */
+  /* Enable GPU acceleration for transforms and animations */
   .transform {
     transform: translateZ(0);
     backface-visibility: hidden;
+    will-change: transform;
+  }
+  
+  /* Optimize animations to use GPU and avoid reflows */
+  [class*="transition-"],
+  [class*="animate-"] {
+    will-change: transform, opacity;
+  }
+  
+  /* Contain layout changes within elements */
+  .card,
+  .modal,
+  .dropdown {
+    contain: layout style paint;
+  }
+  
+  /* Reduce layout thrashing from scroll events */
+  * {
+    scroll-behavior: smooth;
+  }
+  
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 }
 

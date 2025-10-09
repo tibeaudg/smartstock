@@ -125,35 +125,13 @@ export function deferNonCriticalCSS() {
 
 /**
  * Enable resource hints for faster navigation
+ * Note: Static resource hints are now managed in index.html to avoid duplicates
+ * and stay within the recommended limit of 3-4 preconnect origins
  */
 export function enableResourceHints() {
-  // DNS prefetch for external domains
-  const dnsPrefetchDomains = [
-    '//fonts.googleapis.com',
-    '//fonts.gstatic.com',
-    '//www.googletagmanager.com'
-  ];
-  
-  dnsPrefetchDomains.forEach(domain => {
-    const link = document.createElement('link');
-    link.rel = 'dns-prefetch';
-    link.href = domain;
-    document.head.appendChild(link);
-  });
-  
-  // Preconnect to critical origins
-  const preconnectOrigins = [
-    'https://fonts.googleapis.com',
-    'https://fonts.gstatic.com'
-  ];
-  
-  preconnectOrigins.forEach(origin => {
-    const link = document.createElement('link');
-    link.rel = 'preconnect';
-    link.href = origin;
-    link.crossOrigin = 'anonymous';
-    document.head.appendChild(link);
-  });
+  // Resource hints are now statically defined in index.html
+  // This function is kept for backwards compatibility but does nothing
+  console.log('Resource hints are managed in index.html');
 }
 
 /**

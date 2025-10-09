@@ -20,6 +20,7 @@ import { useCurrency } from '@/hooks/useCurrency';
 import { generateComprehensiveStructuredData } from '../lib/structuredData';
 import { useAuth } from '@/hooks/useAuth';
 import { useSubscription } from '@/hooks/useSubscription';
+import { useIsMobile } from '@/hooks/useWindowSize';
 import { GoogleAdsTracking } from '@/utils/googleAdsTracking';
 import { ConversionTrackingTest } from './ConversionTrackingTest';
 import { SavingsCalculator } from './SavingsCalculator';
@@ -31,10 +32,10 @@ import { FloatingChatWidget } from './FloatingChatWidget';
   const FadeInWhenVisible = ({ children, delay = 0, direction = 'up', duration = 700 }) => {
   const [isVisible, setIsVisible] = React.useState(false);
   const ref = React.useRef(null);
+  const isMobile = useIsMobile();
 
   React.useEffect(() => {
       // Reduce animations on mobile for better performance
-      const isMobile = window.innerWidth < 768;
       if (isMobile) {
         setIsVisible(true);
         return;
@@ -54,10 +55,9 @@ import { FloatingChatWidget } from './FloatingChatWidget';
     }
 
     return () => observer.disconnect();
-  }, [delay]);
+  }, [delay, isMobile]);
 
     const getTransform = () => {
-      const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
       if (isMobile) return 'translate-y-0';
       
       switch (direction) {
@@ -125,9 +125,9 @@ const SlideInWhenVisible = ({ children, delay = 0, direction = 'left' }) => {
 const ScaleInWhenVisible = ({ children, delay = 0, duration = 700 }) => {
   const [isVisible, setIsVisible] = React.useState(false);
   const ref = React.useRef(null);
+  const isMobile = useIsMobile();
 
   React.useEffect(() => {
-    const isMobile = window.innerWidth < 768;
     if (isMobile) {
       setIsVisible(true);
       return;
@@ -147,7 +147,7 @@ const ScaleInWhenVisible = ({ children, delay = 0, duration = 700 }) => {
     }
 
     return () => observer.disconnect();
-  }, [delay]);
+  }, [delay, isMobile]);
 
   return (
     <div 
@@ -591,9 +591,9 @@ export const HomePageNL = () => {
           {/* Header */}
           <FadeInWhenVisible>
             <div className="text-center mb-10 sm:mb-12 md:mb-16 lg:mb-20">
-              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-light text-gray-800 mb-3 sm:mb-4 md:mb-6 lg:mb-8 leading-tight px-2">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-light text-gray-800 mb-3 sm:mb-4 md:mb-6 lg:mb-8 leading-tight px-2">
                 Stop met Geld Verliezen door Voorraadfouten
-              </h1>
+              </h2>
               <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-4 sm:mb-6 max-w-2xl mx-auto px-4">
                 Krijg een duidelijk overzicht van je voorraad en neem betere beslissingen.
               </p>
@@ -677,9 +677,9 @@ export const HomePageNL = () => {
           {/* Header */}
           <FadeInWhenVisible>
             <div className="text-center mb-10 sm:mb-12 md:mb-16 lg:mb-20">
-              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-light text-gray-800 mb-3 sm:mb-4 md:mb-6 lg:mb-8 leading-tight px-2">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-light text-gray-800 mb-3 sm:mb-4 md:mb-6 lg:mb-8 leading-tight px-2">
                 Alles wat je Nodig Hebt voor Voorraadbeheer
-              </h1>
+              </h2>
               <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-4 sm:mb-6 max-w-2xl mx-auto px-4">
                 Houd je voorraad bij, zie wat verkoopt en ontvang waarschuwingen wanneer je moet bestellen.
               </p>
@@ -836,9 +836,9 @@ export const HomePageNL = () => {
           {/* Header */}
           <FadeInWhenVisible>
             <div className="text-center mb-10 sm:mb-12 md:mb-16 lg:mb-20">
-              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-light text-gray-800 mb-3 sm:mb-4 md:mb-6 lg:mb-8 leading-tight px-2">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-light text-gray-800 mb-3 sm:mb-4 md:mb-6 lg:mb-8 leading-tight px-2">
                 Start met bijhouden in 3 eenvoudige stappen
-              </h1>
+              </h2>
               <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-4 sm:mb-5 md:mb-6 max-w-2xl mx-auto px-4">
                 Klaar om te gebruiken in minder dan 10 minuten.
               </p>

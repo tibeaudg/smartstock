@@ -1,18 +1,26 @@
 import { loadStripe, Stripe } from '@stripe/stripe-js';
+import { canLoadStripe } from '@/utils/cookieConsentManager';
 
 // Stripe configuration
 const STRIPE_PUBLISHABLE_KEY = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY;
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
 
-let stripePromise: Promise<Stripe | null>;
+let stripePromise: Promise<Stripe | null> | null = null;
 
-// Initialize Stripe with error handling
+// Initialize Stripe with error handling and consent check
 export const getStripe = () => {
+  // Check cookie consent before loading Stripe
+  if (!canLoadStripe()) {
+    console.log('[Cookie Consent] Functional cookies required for payment processing');
+    return Promise.resolve(null);
+  }
+
   if (!stripePromise) {
     if (!STRIPE_PUBLISHABLE_KEY) {
       console.warn('Stripe publishable key not configured. Stripe functionality will be disabled.');
       stripePromise = Promise.resolve(null);
     } else {
+      console.log('[Cookie Consent] Loading Stripe with user consent');
       stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY);
     }
   }

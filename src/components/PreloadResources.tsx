@@ -63,16 +63,7 @@ export const PreloadResources: React.FC<PreloadResourcesProps> = ({
         />
       ))}
       
-      {/* DNS prefetch for external domains - non-blocking */}
-      <link rel="dns-prefetch" href="//fonts.googleapis.com" />
-      <link rel="dns-prefetch" href="//fonts.gstatic.com" />
-      <link rel="dns-prefetch" href="//www.googletagmanager.com" />
-      <link rel="dns-prefetch" href="//connect.facebook.net" />
-      
-      {/* Preconnect to critical external domains */}
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-      <link rel="preconnect" href="https://sszuxnqhbxauvershuys.supabase.co" />
+      {/* Resource hints are managed in index.html to avoid duplicates */}
       
       {/* Prefetch common routes for faster navigation */}
       <link rel="prefetch" href="/pricing" />

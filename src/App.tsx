@@ -42,6 +42,8 @@ import { AdvancedFiltering } from './components/analytics/AdvancedFiltering';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { ErrorTestComponent } from './components/ErrorTestComponent';
 import FeaturesPage from './components/FeaturesPage';
+import CookieConsent from './components/CookieConsent';
+import { useCookieConsent } from './hooks/useCookieConsent';
 
 // Import all SEO pages
 import VoorraadbeheerTips from './pages/SEO/voorraadbeheer-tips';
@@ -720,6 +722,9 @@ export default function App() {
   // Use the optimized tab switching hook at the top level
   useOptimizedTabSwitching();
   
+  // Initialize cookie consent and tracking
+  useCookieConsent();
+  
   const localBusinessSchema = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
@@ -760,6 +765,7 @@ export default function App() {
               <BrowserRouter>
                 <AppRouter />
               </BrowserRouter>
+              <CookieConsent />
             </TooltipProvider>
           </StripeProvider>
         </CurrencyProvider>

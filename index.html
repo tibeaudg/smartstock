@@ -25,9 +25,6 @@
   <meta name="twitter:description" content="Free inventory management software for growing businesses. Manage stock and optimize warehouse operations." />
   <meta name="twitter:image" content="https://www.stockflow.be/Inventory-Management.png" />
   
-  <!-- Canonical URL -->
-  <link rel="canonical" href="https://www.stockflow.be/" />
-  
   <meta http-equiv="Content-Security-Policy" content="
     default-src 'self';
     connect-src 'self' https://sszuxnqhbxauvershuys.supabase.co wss://sszuxnqhbxauvershuys.supabase.co https://www.google-analytics.com https://region1.google-analytics.com https://www.google.com https://www.googletagmanager.com https://googleads.g.doubleclick.net https://www.googleadservices.com https://www.google.be https://api.stripe.com https://checkout.stripe.com https://api.ipify.org https://clients5.google.com https://connect.facebook.net https://www.facebook.com https://analytics.google.com;
@@ -40,26 +37,25 @@
     object-src 'none';
     base-uri 'self';
     form-action 'self' https://checkout.stripe.com;
+    trusted-types default angular angular#bundler dompurify tt-policy 'allow-duplicates';
+    require-trusted-types-for 'script';
     upgrade-insecure-requests;
   ">
   
-  <!-- Preconnect to critical domains for faster resource loading -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <!-- Preconnect ONLY to the most critical origins (max 3-4) -->
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://sszuxnqhbxauvershuys.supabase.co" crossorigin>
   
-  <!-- DNS prefetch for external domains to reduce DNS lookup time -->
+  <!-- DNS prefetch for less critical external domains -->
+  <link rel="dns-prefetch" href="//fonts.googleapis.com">
   <link rel="dns-prefetch" href="//www.googletagmanager.com">
   <link rel="dns-prefetch" href="//connect.facebook.net">
   <link rel="dns-prefetch" href="//www.google-analytics.com">
+  <link rel="dns-prefetch" href="//js.stripe.com">
   <link rel="dns-prefetch" href="//checkout.stripe.com">
   
   <!-- Preload critical fonts -->
   <link rel="preload" href="https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2" as="font" type="font/woff2" crossorigin>
-  
-  <!-- CSS Loading with fallback -->
-  <link rel="stylesheet" href="/src/index.css">
-  <link rel="stylesheet" href="/src/App.css">
   
   <style>
     /* Critical CSS: minimal layout for fast first render */
@@ -72,10 +68,8 @@
 </head>
 
 <body>
-  <!-- Meta Pixel Noscript - Only in production -->
-  <noscript>
-    <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1788618995199125&ev=PageView&noscript=1" />
-  </noscript>
+  <!-- Note: Meta Pixel noscript removed - requires cookie consent -->
+  <!-- Tracking pixels will only load after user consent -->
   
   <div id="root">
     <!-- Loading placeholder -->
@@ -84,36 +78,21 @@
     </div>
   </div>
   
-  <!-- Load tracking scripts asynchronously after page load to prevent render blocking -->
+  <!-- Cookie Consent Notice: Tracking scripts are now loaded conditionally -->
+  <!-- Scripts will only load after user consent via the Cookie Consent banner -->
+  <!-- See src/utils/cookieConsentManager.ts for implementation -->
   <script>
-    // Defer tracking scripts until after page load
-    window.addEventListener('load', function() {
-      // Google tag (gtag.js) - Only load in production
+    // Initialize tracking flag
+    window.stockflowTrackingReady = false;
+    
+    // This will be called by the cookie consent manager after user accepts
+    window.initStockflowTracking = function() {
+      // Only load in production
       if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
-        const script = document.createElement('script');
-        script.async = true;
-        script.src = 'https://www.googletagmanager.com/gtag/js?id=AW-17574614935';
-        document.head.appendChild(script);
-        
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'AW-17574614935');
-        
-        // Meta Pixel Code
-        !function(f,b,e,v,n,t,s)
-        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-        n.queue=[];t=b.createElement(e);t.async=!0;
-        t.src=v;s=b.getElementsByTagName(e)[0];
-        s.parentNode.insertBefore(t,s)}(window, document,'script',
-        'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', '1788618995199125');
-        fbq('track', 'PageView');
-      
+        window.stockflowTrackingReady = true;
+        console.log('[StockFlow] Tracking initialization deferred to consent manager');
       }
-    });
+    };
   </script>
   
   <script type="module" src="/src/main.tsx"></script>

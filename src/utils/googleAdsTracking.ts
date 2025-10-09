@@ -1,6 +1,8 @@
 // Google Ads Conversion Tracking Utility
 // This file handles Google Ads conversion events for the AW-17574614935 account
 
+import { canUseMarketing } from './cookieConsentManager';
+
 declare global {
   interface Window {
     gtag: (...args: any[]) => void;
@@ -68,6 +70,11 @@ export const GOOGLE_ADS_CONVERSIONS = {
  * Check if Google Ads tracking is available
  */
 export const isGoogleAdsAvailable = (): boolean => {
+  // Check cookie consent first
+  if (!canUseMarketing()) {
+    return false;
+  }
+  
   return typeof window !== 'undefined' && 
          typeof window.gtag === 'function' && 
          Array.isArray(window.dataLayer);
