@@ -183,8 +183,9 @@ export default function BestInventoryManagementSoftware() {
         "Mobile access",
         "Email support"
       ],
-      cta: "Start Free",
-      popular: false
+      cta: "Get Started",
+      popular: false,
+      isFree: true
     },
     {
       name: "Growth Plan",
@@ -198,13 +199,14 @@ export default function BestInventoryManagementSoftware() {
         "Priority support",
         "Multi-location support"
       ],
-      cta: "Start Free Trial",
-      popular: true
+      cta: "Start 14-day trial",
+      popular: true,
+      isFree: false
     },
     {
       name: "Enterprise Plan",
-      price: formatPrice(99),
-      period: "/month",
+      price: "On Demand",
+      period: "",
       description: "For large businesses with complex needs",
       features: [
         "Everything in Growth",
@@ -214,7 +216,9 @@ export default function BestInventoryManagementSoftware() {
         "API access"
       ],
       cta: "Contact Sales",
-      popular: false
+      popular: false,
+      isFree: false,
+      isBusiness: true
     }
   ];
 
@@ -257,47 +261,35 @@ export default function BestInventoryManagementSoftware() {
               </div>
             </div>
             
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-white">
-              The <span className="text-blue-400">Best Inventory Management Software</span> of 2024
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light mb-8 text-white leading-tight">
+              The <span className="text-blue-400 font-semibold">Best Inventory Management Software</span> of 2024
             </h1>
-            <p className="text-lg md:text-xl text-gray-100 mb-6 max-w-4xl mx-auto">
+            <p className="text-xl md:text-2xl text-gray-100 mb-8 max-w-5xl mx-auto leading-relaxed">
               <strong>Save 35% on inventory costs</strong> and <strong>15 hours weekly</strong> with real-time tracking, automated alerts, and powerful analytics. Join 10,000+ businesses who chose StockFlow.
             </p>
             
             {/* Value Props */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 max-w-4xl mx-auto">
-              <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-lg p-4">
-                <div className="text-2xl font-bold text-white">35%</div>
-                <div className="text-sm text-gray-200">Cost Reduction</div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 max-w-5xl mx-auto">
+              <div className="bg-white bg-opacity-15 backdrop-blur-sm rounded-xl p-6 border border-white border-opacity-20">
+                <div className="text-3xl font-bold text-white mb-2">35%</div>
+                <div className="text-base text-gray-200 font-medium">Cost Reduction</div>
               </div>
-              <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-lg p-4">
-                <div className="text-2xl font-bold text-white">15h</div>
-                <div className="text-sm text-gray-200">Hours Saved/Week</div>
+              <div className="bg-white bg-opacity-15 backdrop-blur-sm rounded-xl p-6 border border-white border-opacity-20">
+                <div className="text-3xl font-bold text-white mb-2">15h</div>
+                <div className="text-base text-gray-200 font-medium">Hours Saved/Week</div>
               </div>
-              <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-lg p-4">
-                <div className="text-2xl font-bold text-white">24/7</div>
-                <div className="text-sm text-gray-200">Support</div>
+              <div className="bg-white bg-opacity-15 backdrop-blur-sm rounded-xl p-6 border border-white border-opacity-20">
+                <div className="text-3xl font-bold text-white mb-2">24/7</div>
+                <div className="text-base text-gray-200 font-medium">Support</div>
               </div>
             </div>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+            <div className="flex justify-center mb-8">
               <Link
                 to="/auth"
-                className="bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-blue-700 transition shadow-lg"
+                className="bg-blue-600 text-white px-12 py-5 rounded-xl font-semibold text-xl hover:bg-blue-700 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105"
               >
                 Start Free - No Credit Card
-              </Link>
-              <Link
-                to="/pricing"
-                className="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition shadow-lg"
-              >
-                View Pricing
-              </Link>
-              <Link
-                to="/demo"
-                className="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-blue-600 transition"
-              >
-                Watch Demo
               </Link>
             </div>
             <p className="text-sm text-gray-200">✓ No credit card required ✓ 14-day free trial ✓ Cancel anytime</p>
@@ -518,35 +510,70 @@ export default function BestInventoryManagementSoftware() {
 
           <div className="grid md:grid-cols-3 gap-8">
             {pricingPlans.map((plan, index) => (
-              <div key={index} className={`bg-white p-8 rounded-lg shadow-lg ${plan.popular ? 'border-2 border-blue-600' : ''}`}>
+              <div key={index} className={`bg-white p-8 rounded-lg shadow-lg relative ${plan.popular ? 'ring-2 ring-blue-500 shadow-xl scale-105' : 'shadow-lg'}`}>
                 {plan.popular && (
-                  <div className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold text-center mb-4">
-                    Most Popular
+                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                    <div className="bg-blue-500 text-white px-4 py-1 rounded-full text-sm font-semibold">
+                      Most Popular
+                    </div>
                   </div>
                 )}
-                <h3 className="text-2xl font-bold mb-4">{plan.name}</h3>
-                <div className="text-4xl font-bold text-blue-600 mb-2">
-                  {plan.price}<span className="text-lg text-gray-500">{plan.period}</span>
+                
+                {/* Money-back guarantee badge for paid tiers */}
+                {!plan.isFree && !plan.isBusiness && (
+                  <div className="absolute -top-2 right-4">
+                    <div className="bg-green-50 text-green-700 border border-green-200 px-2 py-1 rounded-full text-xs">
+                      30-day guarantee
+                    </div>
+                  </div>
+                )}
+
+                <div className="text-center pb-4">
+                  <h3 className="text-2xl font-semibold mb-4">{plan.name}</h3>
+                  <p className="text-gray-600 mb-4">{plan.description}</p>
+                  <div className="mt-4">
+                    <div className="text-4xl font-bold text-gray-900">
+                      {plan.isBusiness ? 'On Demand' : plan.price}
+                    </div>
+                    {!plan.isBusiness && (
+                      <div className="text-sm text-gray-500">
+                        {plan.period}
+                      </div>
+                    )}
+                    {plan.isBusiness && (
+                      <div className="text-sm text-gray-500">
+                        Custom pricing
+                      </div>
+                    )}
+                  </div>
                 </div>
-                <p className="text-gray-600 mb-6">{plan.description}</p>
-                <ul className="space-y-3 mb-8">
-                  {plan.features.map((feature, featureIndex) => (
-                    <li key={featureIndex} className="flex items-center">
-                      <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-                <Link
-                  to="/auth"
-                  className={`w-full py-3 rounded-lg font-semibold text-center block transition ${
-                    plan.popular 
-                      ? 'bg-blue-600 text-white hover:bg-blue-700' 
-                      : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
-                  }`}
-                >
-                  {plan.cta}
-                </Link>
+
+                <div className="space-y-6">
+                  <div className="space-y-3">
+                    <h4 className="font-semibold text-gray-900">Included:</h4>
+                    <ul className="space-y-2">
+                      {plan.features.map((feature, featureIndex) => (
+                        <li key={featureIndex} className="flex items-start">
+                          <CheckCircle className="h-4 w-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                          <span className="text-sm text-gray-600">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+                <div className="mt-8">
+                  <Link
+                    to={plan.isBusiness ? "/contact?subject=business-tier" : "/auth"}
+                    className={`w-full py-3 rounded-lg font-semibold text-center block transition transform hover:scale-105 shadow-lg hover:shadow-xl ${
+                      plan.popular 
+                        ? 'bg-blue-600 text-white hover:bg-blue-700' 
+                        : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
+                    }`}
+                  >
+                    {plan.cta}
+                  </Link>
+                </div>
               </div>
             ))}
           </div>
@@ -562,18 +589,12 @@ export default function BestInventoryManagementSoftware() {
           <p className="text-lg md:text-xl mb-8 opacity-90">
             Join thousands of businesses who chose StockFlow as their inventory management solution.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+          <div className="flex justify-center mb-8">
             <Link
               to="/auth"
-              className="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition shadow-lg"
+              className="bg-white text-blue-600 px-12 py-5 rounded-xl font-semibold text-xl hover:bg-gray-100 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105"
             >
               Start Free Trial
-            </Link>
-            <Link
-              to="/demo"
-              className="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-blue-600 transition"
-            >
-              Watch Demo
             </Link>
           </div>
           <div className="flex flex-wrap justify-center items-center gap-6 text-sm opacity-75">
