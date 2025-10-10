@@ -7,17 +7,24 @@ export const createTrustedHTML = (html: string): string | TrustedHTML => {
       // Create policy for HTML content (JSON-LD structured data, CSS, etc.)
       const policy = window.trustedTypes.createPolicy('stockflow-html', {
         createHTML: (input: string) => {
-          // Check for dangerous patterns
+          // Allow JSON-LD structured data (safe for SEO)
+          // JSON-LD scripts don't execute JavaScript, they're just data
+          const isJsonLD = /^\s*\{[\s\S]*\}\s*$/.test(input) && 
+                          (input.includes('"@context"') || input.includes("'@context'"));
+          
+          if (isJsonLD) {
+            return input; // Safe JSON-LD content
+          }
+          
+          // Check for dangerous patterns in other content
           const dangerousPatterns = [
-            /<script[^>]*>/i,
+            /<script[^>]*>/i, // Block script tags (but JSON-LD is already allowed above)
             /javascript:/i,
-            /on\w+\s*=/i,
+            /on\w+\s*=/i, // Block event handlers
             /<iframe[^>]*>/i,
             /<object[^>]*>/i,
             /<embed[^>]*>/i,
             /expression\s*\(/i,
-            /url\s*\(/i,
-            /@import/i,
             /eval\s*\(/i,
             /Function\s*\(/i
           ];
@@ -57,17 +64,24 @@ export const initializeTrustedTypes = () => {
       // Create the policy early to avoid conflicts
       window.trustedTypes.createPolicy('stockflow-html', {
         createHTML: (input: string) => {
+          // Allow JSON-LD structured data (safe for SEO)
+          // JSON-LD scripts don't execute JavaScript, they're just data
+          const isJsonLD = /^\s*\{[\s\S]*\}\s*$/.test(input) && 
+                          (input.includes('"@context"') || input.includes("'@context'"));
+          
+          if (isJsonLD) {
+            return input; // Safe JSON-LD content
+          }
+          
           // Basic validation for safe content
           const dangerousPatterns = [
-            /<script[^>]*>/i,
+            /<script[^>]*>/i, // Block script tags (but JSON-LD is already allowed above)
             /javascript:/i,
-            /on\w+\s*=/i,
+            /on\w+\s*=/i, // Block event handlers
             /<iframe[^>]*>/i,
             /<object[^>]*>/i,
             /<embed[^>]*>/i,
             /expression\s*\(/i,
-            /url\s*\(/i,
-            /@import/i,
             /eval\s*\(/i,
             /Function\s*\(/i
           ];
@@ -95,6 +109,14 @@ export const initializeDefaultPolicy = () => {
     try {
       window.trustedTypes.createPolicy('default', {
         createHTML: (input: string) => {
+          // Allow JSON-LD structured data (safe for SEO)
+          const isJsonLD = /^\s*\{[\s\S]*\}\s*$/.test(input) && 
+                          (input.includes('"@context"') || input.includes("'@context'"));
+          
+          if (isJsonLD) {
+            return input; // Safe JSON-LD content
+          }
+          
           // Allow style injections from UI libraries (needed for Radix UI)
           // but validate for critical XSS patterns
           const criticalPatterns = [

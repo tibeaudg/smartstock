@@ -130,14 +130,22 @@ export const SEO: React.FC<SEOProps> = ({
       <meta name="apple-mobile-web-app-status-bar-style" content="default" />
       
       {/* Structured Data */}
-      {structuredData && (
-        <script 
-          type="application/ld+json" 
-          dangerouslySetInnerHTML={{ 
-            __html: createTrustedHTML(JSON.stringify(structuredData)) 
-          }} 
-        />
-      )}
+      {structuredData && (() => {
+        try {
+          const jsonString = JSON.stringify(structuredData, null, 0);
+          return (
+            <script 
+              type="application/ld+json" 
+              dangerouslySetInnerHTML={{ 
+                __html: createTrustedHTML(jsonString) 
+              }} 
+            />
+          );
+        } catch (error) {
+          console.warn('[SEO] Failed to stringify structured data:', error);
+          return null;
+        }
+      })()}
     </Helmet>
   );
 };

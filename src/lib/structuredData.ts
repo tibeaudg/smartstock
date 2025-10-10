@@ -307,6 +307,23 @@ export function generateLocalBusinessSchema(organizationName: string, baseUrl: s
   };
 }
 
+// Safe JSON stringify that handles circular references and undefined values
+function safeStringify(obj: any): string {
+  const seen = new WeakSet();
+  return JSON.stringify(obj, (key, value) => {
+    if (typeof value === 'object' && value !== null) {
+      if (seen.has(value)) {
+        return '[Circular]';
+      }
+      seen.add(value);
+    }
+    if (value === undefined) {
+      return null;
+    }
+    return value;
+  });
+}
+
 // Generate comprehensive structured data for SEO pages
 export function generateComprehensiveStructuredData(
   pageType: 'contact' | 'software' | 'service' | 'article',
@@ -394,5 +411,8 @@ export function generateComprehensiveStructuredData(
     } as any);
   }
 
-  return schemas;
+  // Filter out any undefined or null schemas
+  const validSchemas = schemas.filter(schema => schema && typeof schema === 'object');
+  
+  return validSchemas;
 }

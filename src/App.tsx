@@ -100,6 +100,7 @@ import InventorySoftware from "./pages/SEO/inventory-software";
 import WarehouseSoftware from "./pages/SEO/warehouse-software";
 import InventoryTracker from "./pages/SEO/inventory-tracker";
 import BestInventoryManagementSoftware from "./pages/SEO/best-inventory-management-software";
+import NlPricingPage from "./pages/nl-pricing";
 import InventorySoftwareForSmallBusiness from "./pages/SEO/inventory-software-for-small-business";
 import InventorySoftwareManagement from "./pages/SEO/inventory-software-management";
 import SoftwareForInventoryManagement from "./pages/SEO/software-for-inventory-management";
@@ -391,6 +392,7 @@ const AppRouter = () => {
         <Route path="/error-test" element={<ErrorTestComponent />} />
         <Route path="/auth" element={<AuthRoute />} />
         <Route path="/pricing" element={<PricingPage />} />
+        <Route path="/nl/pricing" element={<NlPricingPage />} />
         <Route path="/dead-stock-calculator" element={<DeadStockCalculatorPage />} />
         <Route path="/contact" element={<SEOContactPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />

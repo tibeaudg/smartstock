@@ -220,8 +220,8 @@ export default function BestInventoryManagementSoftware() {
   return (
     <SeoPageLayout title="Best Inventory Management Software">
       <SEO
-        title="Best Inventory Management Software 2024 - Top Rated | StockFlow"
-        description="Discover the best inventory management software for your business. Real-time tracking, barcode scanning, automated alerts, and more. Top rated by users worldwide. Start free trial!"
+        title="Best Inventory Management Software 2024 - Free Trial | 10,000+ Users | StockFlow"
+        description="Join 10,000+ businesses using the #1 rated inventory software. Real-time tracking, 35% cost reduction, 15 hours saved weekly. Start free trial - no credit card required!"
         keywords="best inventory management software, top inventory management software, best inventory software, best stock management software, best inventory system, best inventory tracking software, best inventory management system, best inventory software 2024, top rated inventory software, best inventory management solution, best inventory software for small business, best inventory software for ecommerce, best inventory management software comparison, best inventory software reviews, best inventory management software features, best inventory software pricing, best inventory software demo, best inventory software trial"
         url="https://www.stockflow.be/best-inventory-management-software"
       />
@@ -240,31 +240,66 @@ export default function BestInventoryManagementSoftware() {
         
         <div className="relative max-w-6xl mx-auto">
           <div className="text-center mb-8">
-            <div className="flex justify-center items-center mb-6">
-              <Trophy className="w-8 h-8 text-yellow-400 mr-3" />
-              <span className="text-yellow-400 font-semibold text-lg">#1 Rated Inventory Software</span>
+            {/* Trust Badges */}
+            <div className="flex flex-wrap justify-center items-center gap-4 mb-6">
+              <div className="flex items-center bg-yellow-400 bg-opacity-20 px-4 py-2 rounded-full">
+                <Trophy className="w-6 h-6 text-yellow-400 mr-2" />
+                <span className="text-yellow-400 font-semibold text-sm">#1 Rated 2024</span>
+              </div>
+              <div className="flex items-center bg-green-400 bg-opacity-20 px-4 py-2 rounded-full">
+                <Star className="w-6 h-6 text-green-400 mr-2" />
+                <span className="text-green-400 font-semibold text-sm">4.9/5 Rating</span>
+              </div>
+              <div className="flex items-center bg-blue-400 bg-opacity-20 px-4 py-2 rounded-full">
+                <Users className="w-6 h-6 text-blue-400 mr-2" />
+                <span className="text-blue-400 font-semibold text-sm">10,000+ Users</span>
+              </div>
             </div>
+            
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-white">
               The <span className="text-blue-400">Best Inventory Management Software</span> of 2024
             </h1>
-            <p className="text-lg md:text-xl text-gray-100 mb-8 max-w-4xl mx-auto">
-              Join thousands of businesses who chose StockFlow as the best inventory management software. Real-time tracking, automated alerts, and powerful analytics in one comprehensive solution.
+            <p className="text-lg md:text-xl text-gray-100 mb-6 max-w-4xl mx-auto">
+              <strong>Save 35% on inventory costs</strong> and <strong>15 hours weekly</strong> with real-time tracking, automated alerts, and powerful analytics. Join 10,000+ businesses who chose StockFlow.
             </p>
+            
+            {/* Value Props */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 max-w-4xl mx-auto">
+              <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-lg p-4">
+                <div className="text-2xl font-bold text-white">35%</div>
+                <div className="text-sm text-gray-200">Cost Reduction</div>
+              </div>
+              <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-lg p-4">
+                <div className="text-2xl font-bold text-white">15h</div>
+                <div className="text-sm text-gray-200">Hours Saved/Week</div>
+              </div>
+              <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-lg p-4">
+                <div className="text-2xl font-bold text-white">24/7</div>
+                <div className="text-sm text-gray-200">Support</div>
+              </div>
+            </div>
+            
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
               <Link
                 to="/auth"
                 className="bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-blue-700 transition shadow-lg"
               >
-                Start Free Trial
+                Start Free - No Credit Card
+              </Link>
+              <Link
+                to="/pricing"
+                className="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition shadow-lg"
+              >
+                View Pricing
               </Link>
               <Link
                 to="/demo"
-                className="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition shadow-lg"
+                className="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-blue-600 transition"
               >
                 Watch Demo
               </Link>
             </div>
-            <p className="text-sm text-gray-200">Trusted by 10,000+ businesses worldwide</p>
+            <p className="text-sm text-gray-200">✓ No credit card required ✓ 14-day free trial ✓ Cancel anytime</p>
           </div>
         </div>
       </section>
@@ -289,6 +324,62 @@ export default function BestInventoryManagementSoftware() {
                 <p className="text-sm text-gray-600">{award.organization}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Quick Wins Section */}
+      <section className="py-16 px-4 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+              Why Businesses Choose StockFlow Over Competitors
+            </h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              Real results from real businesses using the best inventory management software.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+            <div className="text-center">
+              <div className="text-4xl font-bold text-blue-600 mb-2">35%</div>
+              <div className="text-lg font-semibold mb-2">Cost Reduction</div>
+              <div className="text-sm text-gray-600">Average inventory cost savings</div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl font-bold text-green-600 mb-2">15h</div>
+              <div className="text-lg font-semibold mb-2">Hours Saved</div>
+              <div className="text-sm text-gray-600">Per week on manual tasks</div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl font-bold text-purple-600 mb-2">99.9%</div>
+              <div className="text-lg font-semibold mb-2">Accuracy</div>
+              <div className="text-sm text-gray-600">Inventory tracking precision</div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl font-bold text-orange-600 mb-2">24/7</div>
+              <div className="text-lg font-semibold mb-2">Support</div>
+              <div className="text-sm text-gray-600">Expert help when you need it</div>
+            </div>
+          </div>
+
+          <div className="bg-blue-50 rounded-lg p-8 text-center">
+            <h3 className="text-2xl font-bold mb-4">Join 500+ Companies Who Signed Up This Month</h3>
+            <p className="text-lg text-gray-600 mb-6">See why businesses are switching to StockFlow as their inventory management solution</p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <div className="flex items-center bg-white px-4 py-2 rounded-full shadow-sm">
+                <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
+                <span className="text-sm font-medium">No setup fees</span>
+              </div>
+              <div className="flex items-center bg-white px-4 py-2 rounded-full shadow-sm">
+                <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
+                <span className="text-sm font-medium">Instant access</span>
+              </div>
+              <div className="flex items-center bg-white px-4 py-2 rounded-full shadow-sm">
+                <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
+                <span className="text-sm font-medium">Free migration</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>

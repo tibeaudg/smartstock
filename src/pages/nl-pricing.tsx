@@ -12,8 +12,6 @@ import { usePageRefresh } from '@/hooks/usePageRefresh';
 import SEO from '@/components/SEO';
 import { generateComprehensiveStructuredData } from '@/lib/structuredData';
 
-
-
 // Helper function to get tier icon
 const getTierIcon = (tierName: string) => {
   switch (tierName) {
@@ -42,7 +40,7 @@ const getTierColor = (tierName: string) => {
   }
 };
 
-export default function PricingPage() {
+export default function NlPricingPage() {
   usePageRefresh();
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly');
   const { user } = useAuth();
@@ -83,36 +81,36 @@ export default function PricingPage() {
   };
 
   const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat('nl-NL', {
       style: 'currency',
-      currency: 'USD'
+      currency: 'EUR'
     }).format(price);
   };
 
   const getLimitText = (value: number | null, type: string) => {
-    if (value === null) return 'Unlimited';
-    if (value === 0) return 'Not included';
+    if (value === null) return 'Onbeperkt';
+    if (value === 0) return 'Niet inbegrepen';
     return `${value} ${type}`;
   };
 
-  // Structured data for pricing page to help with sitelinks
+  // Structured data for Dutch pricing page
   const structuredData = generateComprehensiveStructuredData(
     'software',
     {
-      title: 'StockFlow Prijzen - Gratis Voorraadbeheer Tarieven',
-      url: 'https://www.stockflow.be/pricing',
-      description: 'Transparante prijzen voor voorraadbeheer. Start gratis of kies een betaald plan. Geen verborgen kosten.',
+      title: 'StockFlow Prijzen - Transparante Tarieven voor Voorraadbeheer 2024',
+      url: 'https://www.stockflow.be/nl/pricing',
+      description: 'Transparante prijzen voor voorraadbeheer. Start gratis of kies een betaald plan. Geen verborgen kosten, 14 dagen gratis proberen.',
       breadcrumbs: [
         { name: 'Home', url: 'https://www.stockflow.be', position: 1 },
-        { name: 'Prijzen', url: 'https://www.stockflow.be/pricing', position: 2 }
+        { name: 'Prijzen', url: 'https://www.stockflow.be/nl/pricing', position: 2 }
       ],
       softwareData: {
-        name: 'StockFlow - Inventory Management',
+        name: 'StockFlow - Voorraadbeheer Software',
         description: 'Gratis voorraadbeheer software voor kleine bedrijven met premium opties voor groeiende organisaties',
         category: 'BusinessApplication',
         operatingSystem: 'Web Browser, iOS, Android',
         price: '0',
-        currency: 'USD',
+        currency: 'EUR',
         rating: {
           value: '4.8',
           count: '150'
@@ -124,7 +122,7 @@ export default function PricingPage() {
           'Multi-locatie support',
           'Team samenwerking'
         ],
-        url: 'https://www.stockflow.be/pricing'
+        url: 'https://www.stockflow.be/nl/pricing'
       }
     }
   );
@@ -134,15 +132,15 @@ export default function PricingPage() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
         <SEO
-          title="StockFlow Prijzen - Gratis Voorraadbeheer Tarieven"
+          title="StockFlow Prijzen - Transparante Tarieven voor Voorraadbeheer 2024"
           description="Transparante prijzen voor voorraadbeheer. Start gratis of kies een betaald plan. Geen verborgen kosten, 14 dagen gratis proberen."
-          keywords="stockflow prijzen, voorraadbeheer kosten, gratis voorraad software, pricing, tarieven, abonnementen"
-          url="https://www.stockflow.be/pricing"
+          keywords="stockflow prijzen, voorraadbeheer kosten, gratis voorraad software, pricing, tarieven, abonnementen, voorraadbeheer software prijzen, gratis stockbeheer, voorraadbeheer software kosten"
+          url="https://www.stockflow.be/nl/pricing"
           structuredData={structuredData}
         />
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading pricing plans...</p>
+          <p className="text-gray-600">Prijzen laden...</p>
         </div>
       </div>
     );
@@ -151,10 +149,10 @@ export default function PricingPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <SEO
-        title="StockFlow Pricing - Simple, Transparent Plans | Start Free"
-        description="Simple, transparent pricing for inventory management. Start free with 30 products, upgrade when you grow. No hidden fees, 14-day free trial on all plans."
-        keywords="inventory management pricing, stock management software cost, free inventory software, pricing plans, subscription pricing, inventory software pricing, stockflow pricing, inventory management cost, free trial inventory software, inventory software plans"
-        url="https://www.stockflow.be/pricing"
+        title="StockFlow Prijzen - Transparante Tarieven voor Voorraadbeheer 2024"
+        description="Transparante prijzen voor voorraadbeheer. Start gratis of kies een betaald plan. Geen verborgen kosten, 14 dagen gratis proberen."
+        keywords="stockflow prijzen, voorraadbeheer kosten, gratis voorraad software, pricing, tarieven, abonnementen, voorraadbeheer software prijzen, gratis stockbeheer, voorraadbeheer software kosten"
+        url="https://www.stockflow.be/nl/pricing"
         structuredData={structuredData}
       />
       <Header 
@@ -170,29 +168,29 @@ export default function PricingPage() {
           <div className="flex flex-wrap justify-center items-center gap-4 mb-6">
             <div className="flex items-center bg-green-100 px-4 py-2 rounded-full">
               <Users className="w-5 h-5 text-green-600 mr-2" />
-              <span className="text-green-700 font-semibold text-sm">Trusted by 10,000+ businesses</span>
+              <span className="text-green-700 font-semibold text-sm">Vertrouwd door 10.000+ bedrijven</span>
             </div>
             <div className="flex items-center bg-blue-100 px-4 py-2 rounded-full">
               <Star className="w-5 h-5 text-blue-600 mr-2" />
-              <span className="text-blue-700 font-semibold text-sm">4.9/5 rating</span>
+              <span className="text-blue-700 font-semibold text-sm">4.9/5 beoordeling</span>
             </div>
             <div className="flex items-center bg-purple-100 px-4 py-2 rounded-full">
               <Clock className="w-5 h-5 text-purple-600 mr-2" />
-              <span className="text-purple-700 font-semibold text-sm">500+ signed up this month</span>
+              <span className="text-purple-700 font-semibold text-sm">500+ aangemeld deze maand</span>
             </div>
           </div>
           
           <h1 className="text-5xl md:text-7xl font-light text-gray-800 mb-6">
-              Start Free, Upgrade When You Grow
+              Start Gratis, Upgrade Wanneer Je Groeit
           </h1>
           <p className="text-xl text-gray-600 mb-8">
-            No hidden fees. Cancel anytime. 14-day free trial on all plans. <strong>Join 500+ companies who signed up this month.</strong>
+            Geen verborgen kosten. Annuleer altijd. 14 dagen gratis proefperiode op alle plannen. <strong>Sluit je aan bij 500+ bedrijven die deze maand zijn aangemeld.</strong>
           </p>
           
           {/* Billing Toggle */}
           <div className="flex items-center justify-center space-x-4 mb-8">
             <span className={`text-sm font-medium ${billingCycle === 'monthly' ? 'text-gray-900' : 'text-gray-500'}`}>
-              Monthly
+              Maandelijks
             </span>
             <button
               onClick={() => setBillingCycle(billingCycle === 'monthly' ? 'yearly' : 'monthly')}
@@ -205,11 +203,11 @@ export default function PricingPage() {
               />
             </button>
             <span className={`text-sm font-medium ${billingCycle === 'yearly' ? 'text-gray-900' : 'text-gray-500'}`}>
-              Yearly
+              Jaarlijks
             </span>
             {billingCycle === 'yearly' && (
               <Badge variant="secondary" className="ml-2">
-                Save 20%
+                Bespaar 20%
               </Badge>
             )}
           </div>
@@ -226,7 +224,7 @@ export default function PricingPage() {
                 <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                   <Badge className="bg-blue-500 text-white px-4 py-1">
                     <Star className="h-3 w-3 mr-1" />
-                    Most popular
+                    Meest populair
                   </Badge>
                 </div>
               )}
@@ -234,8 +232,8 @@ export default function PricingPage() {
               {/* Money-back guarantee badge for paid tiers */}
               {tier.price_monthly > 0 && tier.name !== 'business' && (
                 <div className="absolute -top-2 right-4">
-                  <Badge variant="secondary" className="bg-green-50 text-green-700 border-green-200 text-xs">
-                    30-day guarantee
+                  <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 text-xs">
+                    30-dagen garantie
                   </Badge>
                 </div>
               )}
@@ -251,19 +249,19 @@ export default function PricingPage() {
                 <div className="mt-4">
                   <div className="text-4xl font-bold text-gray-900">
                     {tier.name === 'business' 
-                      ? 'On Demand' 
+                      ? 'Op Maat' 
                       : tier.price_monthly === 0 
-                        ? '$0' 
+                        ? '€0' 
                         : formatPrice(billingCycle === 'monthly' ? tier.price_monthly : tier.price_yearly)}
                   </div>
                   {tier.price_monthly > 0 && tier.name !== 'business' && (
                     <div className="text-sm text-gray-500">
-                      {billingCycle === 'yearly' ? 'per year' : 'per month'}
+                      {billingCycle === 'yearly' ? 'per jaar' : 'per maand'}
                     </div>
                   )}
                   {tier.name === 'business' && (
                     <div className="text-sm text-gray-500">
-                      Custom pricing
+                      Aangepaste prijzen
                     </div>
                   )}
                 </div>
@@ -273,23 +271,23 @@ export default function PricingPage() {
                 {/* Limits */}
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600">Products</span>
-                    <span className="text-sm font-medium">{getLimitText(tier.max_products, 'products')}</span>
+                    <span className="text-sm text-gray-600">Producten</span>
+                    <span className="text-sm font-medium">{getLimitText(tier.max_products, 'producten')}</span>
                   </div>
 
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600">Users</span>
-                    <span className="text-sm font-medium">{getLimitText(tier.max_users, 'users')}</span>
+                    <span className="text-sm text-gray-600">Gebruikers</span>
+                    <span className="text-sm font-medium">{getLimitText(tier.max_users, 'gebruikers')}</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600">Branches</span>
-                      <span className="text-sm font-medium">{getLimitText(tier.max_branches, 'branches')}</span>
+                    <span className="text-sm text-gray-600">Vestigingen</span>
+                      <span className="text-sm font-medium">{getLimitText(tier.max_branches, 'vestigingen')}</span>
                   </div>
                 </div>
 
                 {/* Features */}
                 <div className="space-y-3">
-                  <h4 className="font-semibold text-gray-900">Included:</h4>
+                  <h4 className="font-semibold text-gray-900">Inbegrepen:</h4>
                   <ul className="space-y-2">
                     {tier.features.map((feature, index) => (
                       <li key={index} className="flex items-start">
@@ -307,10 +305,10 @@ export default function PricingPage() {
                   onClick={() => handleSelectPlan(tier.name, tier.name === 'business')}
                 >
                   {tier.name === 'business' 
-                    ? 'Contact Sales' 
+                    ? 'Contact Verkoop' 
                     : tier.price_monthly === 0 
-                      ? 'Get Started' 
-                      : 'Start 14-day trial'}
+                      ? 'Start Gratis' 
+                      : 'Start 14-dagen proefperiode'}
                 </Button>
               </CardFooter>
             </Card>
@@ -320,7 +318,7 @@ export default function PricingPage() {
         {/* Social Proof Section */}
         <div className="mt-16 text-center">
           <div className="bg-white rounded-lg shadow-lg p-8 max-w-6xl mx-auto">
-            <h3 className="text-2xl font-semibold text-gray-900 mb-8">Trusted by Businesses Worldwide</h3>
+            <h3 className="text-2xl font-semibold text-gray-900 mb-8">Vertrouwd door Bedrijven Wereldwijd</h3>
             
             {/* Customer Testimonials */}
             <div className="grid md:grid-cols-3 gap-8 mb-8">
@@ -330,7 +328,7 @@ export default function PricingPage() {
                     <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
                   ))}
                 </div>
-                <p className="text-gray-600 mb-4">"StockFlow reduced our inventory costs by 40% in just 3 months. The best investment we've made."</p>
+                <p className="text-gray-600 mb-4">"StockFlow heeft onze voorraadkosten met 40% verlaagd in slechts 3 maanden. De beste investering die we hebben gedaan."</p>
                 <div className="font-semibold">Sarah Johnson</div>
                 <div className="text-sm text-gray-500">CEO, Retail Plus</div>
               </div>
@@ -341,7 +339,7 @@ export default function PricingPage() {
                     <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
                   ))}
                 </div>
-                <p className="text-gray-600 mb-4">"Finally, inventory management that actually works. We save 20 hours per week on manual tracking."</p>
+                <p className="text-gray-600 mb-4">"Eindelijk voorraadbeheer dat echt werkt. We besparen 20 uur per week op handmatige tracking."</p>
                 <div className="font-semibold">Mike Rodriguez</div>
                 <div className="text-sm text-gray-500">Operations Manager, Global Supply</div>
               </div>
@@ -352,7 +350,7 @@ export default function PricingPage() {
                     <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
                   ))}
                 </div>
-                <p className="text-gray-600 mb-4">"The real-time tracking and analytics are game-changers. Our team loves how intuitive it is."</p>
+                <p className="text-gray-600 mb-4">"De real-time tracking en analytics zijn game-changers. Ons team houdt van hoe intuïtief het is."</p>
                 <div className="font-semibold">David Chen</div>
                 <div className="text-sm text-gray-500">CEO, TechStart Solutions</div>
               </div>
@@ -360,13 +358,13 @@ export default function PricingPage() {
             
             {/* Customer Logos */}
             <div className="border-t pt-8">
-              <p className="text-gray-500 mb-6">Join these companies using StockFlow</p>
+              <p className="text-gray-500 mb-6">Sluit je aan bij deze bedrijven die StockFlow gebruiken</p>
               <div className="flex flex-wrap justify-center items-center gap-8 opacity-60">
-                <div className="text-2xl font-bold text-gray-400">Company A</div>
-                <div className="text-2xl font-bold text-gray-400">Company B</div>
-                <div className="text-2xl font-bold text-gray-400">Company C</div>
-                <div className="text-2xl font-bold text-gray-400">Company D</div>
-                <div className="text-2xl font-bold text-gray-400">Company E</div>
+                <div className="text-2xl font-bold text-gray-400">Bedrijf A</div>
+                <div className="text-2xl font-bold text-gray-400">Bedrijf B</div>
+                <div className="text-2xl font-bold text-gray-400">Bedrijf C</div>
+                <div className="text-2xl font-bold text-gray-400">Bedrijf D</div>
+                <div className="text-2xl font-bold text-gray-400">Bedrijf E</div>
               </div>
             </div>
           </div>
@@ -377,101 +375,34 @@ export default function PricingPage() {
           <div className="bg-white rounded-lg shadow-lg p-8 max-w-4xl mx-auto">
             <div className="flex items-center justify-center mb-4">
               <Clock className="h-8 w-8 text-blue-600 mr-3" />
-                <h3 className="text-2xl font-semibold text-gray-900">14-day free trial</h3>
+                <h3 className="text-2xl font-semibold text-gray-900">14-dagen gratis proefperiode</h3>
             </div>
             <p className="text-gray-600 mb-6">
-              Try all premium features 14 days free. No credit card required, 
-              cancel anytime.
+              Probeer alle premium functies 14 dagen gratis. Geen creditcard vereist, 
+              annuleer altijd.
             </p>
             <div className="grid md:grid-cols-3 gap-6 text-left">
               <div className="flex items-start">
                 <Check className="h-5 w-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
                 <div>
-                  <h4 className="font-semibold text-gray-900">No obligations</h4>
-                  <p className="text-sm text-gray-600">Cancel anytime without any costs</p>
+                  <h4 className="font-semibold text-gray-900">Geen verplichtingen</h4>
+                  <p className="text-sm text-gray-600">Annuleer altijd zonder kosten</p>
                 </div>
               </div>
               <div className="flex items-start">
                 <Check className="h-5 w-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
                 <div>
-                  <h4 className="font-semibold text-gray-900">Full access</h4>
-                  <p className="text-sm text-gray-600">All features and limits of your chosen plan</p>
+                  <h4 className="font-semibold text-gray-900">Volledige toegang</h4>
+                  <p className="text-sm text-gray-600">Alle functies en limieten van je gekozen plan</p>
                 </div>
               </div>
               <div className="flex items-start">
                 <Check className="h-5 w-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
                 <div>
-                  <h4 className="font-semibold text-gray-900">Direct start</h4>
-                  <p className="text-sm text-gray-600">Start directly with your inventory management</p>
+                  <h4 className="font-semibold text-gray-900">Direct starten</h4>
+                  <p className="text-sm text-gray-600">Start direct met je voorraadbeheer</p>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Competitor Comparison Section */}
-        <div className="mt-16">
-          <h3 className="text-4xl md:text-6xl font-light text-center text-gray-800 mb-8">
-            How We Compare
-          </h3>
-          <div className="bg-white rounded-lg shadow-lg overflow-hidden max-w-6xl mx-auto">
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Feature</th>
-                    <th className="px-6 py-4 text-center text-sm font-semibold text-blue-600">StockFlow</th>
-                    <th className="px-6 py-4 text-center text-sm font-semibold text-gray-600">Competitor A</th>
-                    <th className="px-6 py-4 text-center text-sm font-semibold text-gray-600">Competitor B</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200">
-                  <tr className="bg-white">
-                    <td className="px-6 py-4 text-sm text-gray-900">Free Plan</td>
-                    <td className="px-6 py-4 text-center text-sm text-green-600 font-semibold">✓ 30 products</td>
-                    <td className="px-6 py-4 text-center text-sm text-gray-600">✗</td>
-                    <td className="px-6 py-4 text-center text-sm text-gray-600">✗</td>
-                  </tr>
-                  <tr className="bg-gray-50">
-                    <td className="px-6 py-4 text-sm text-gray-900">Real-time tracking</td>
-                    <td className="px-6 py-4 text-center text-sm text-green-600 font-semibold">✓</td>
-                    <td className="px-6 py-4 text-center text-sm text-gray-600">Limited</td>
-                    <td className="px-6 py-4 text-center text-sm text-gray-600">Premium only</td>
-                  </tr>
-                  <tr className="bg-white">
-                    <td className="px-6 py-4 text-sm text-gray-900">Mobile access</td>
-                    <td className="px-6 py-4 text-center text-sm text-green-600 font-semibold">✓</td>
-                    <td className="px-6 py-4 text-center text-sm text-gray-600">Extra cost</td>
-                    <td className="px-6 py-4 text-center text-sm text-gray-600">Limited</td>
-                  </tr>
-                  <tr className="bg-gray-50">
-                    <td className="px-6 py-4 text-sm text-gray-900">Barcode scanning</td>
-                    <td className="px-6 py-4 text-center text-sm text-green-600 font-semibold">✓</td>
-                    <td className="px-6 py-4 text-center text-sm text-gray-600">Premium only</td>
-                    <td className="px-6 py-4 text-center text-sm text-gray-600">Extra cost</td>
-                  </tr>
-                  <tr className="bg-white">
-                    <td className="px-6 py-4 text-sm text-gray-900">24/7 Support</td>
-                    <td className="px-6 py-4 text-center text-sm text-green-600 font-semibold">✓</td>
-                    <td className="px-6 py-4 text-center text-sm text-gray-600">Business hours</td>
-                    <td className="px-6 py-4 text-center text-sm text-gray-600">Email only</td>
-                  </tr>
-                  <tr className="bg-gray-50">
-                    <td className="px-6 py-4 text-sm text-gray-900">Starting Price</td>
-                    <td className="px-6 py-4 text-center text-sm text-green-600 font-semibold">Free</td>
-                    <td className="px-6 py-4 text-center text-sm text-gray-600">$29/month</td>
-                    <td className="px-6 py-4 text-center text-sm text-gray-600">$49/month</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div className="bg-blue-50 px-6 py-4 text-center">
-              <p className="text-sm text-gray-600">
-                <strong>Save up to $600/year</strong> compared to competitors. 
-                <a href="/best-inventory-management-software" className="text-blue-600 hover:underline ml-1">
-                  See detailed comparison →
-                </a>
-              </p>
             </div>
           </div>
         </div>
@@ -479,55 +410,55 @@ export default function PricingPage() {
         {/* FAQ Section */}
         <div className="mt-16">
           <h3 className="text-4xl md:text-6xl font-light text-center text-gray-800 mb-8">
-            Frequently Asked Questions
+            Veelgestelde Vragen
           </h3>
           <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
             <div>
-              <h4 className="font-semibold text-gray-900 mb-2">Can I change plans anytime?</h4>
+              <h4 className="font-semibold text-gray-900 mb-2">Kan ik plannen altijd wijzigen?</h4>
               <p className="text-gray-600 text-sm">
-                Yes, you can upgrade or downgrade at any time. Changes are made immediately and you'll be charged or credited proportionally.
+                Ja, je kunt altijd upgraden of downgraden. Wijzigingen worden direct doorgevoerd en je wordt proportioneel gefactureerd of gecrediteerd.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold text-gray-900 mb-2">What happens after my trial ends?</h4>
+              <h4 className="font-semibold text-gray-900 mb-2">Wat gebeurt er na mijn proefperiode?</h4>
               <p className="text-gray-600 text-sm">
-                After 14 days, your account will automatically downgrade to the Free plan. You can upgrade anytime to keep premium features.
+                Na 14 dagen wordt je account automatisch gedowngraded naar het Gratis plan. Je kunt altijd upgraden om premium functies te behouden.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold text-gray-900 mb-2">Do you offer refunds?</h4>
+              <h4 className="font-semibold text-gray-900 mb-2">Bieden jullie restituties?</h4>
               <p className="text-gray-600 text-sm">
-                Yes, we offer a 30-day money-back guarantee. If you're not satisfied, contact us for a full refund.
+                Ja, we bieden een 30-dagen geld-terug-garantie. Als je niet tevreden bent, neem contact met ons op voor volledige restitutie.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold text-gray-900 mb-2">Can I import my existing inventory?</h4>
+              <h4 className="font-semibold text-gray-900 mb-2">Kan ik mijn bestaande voorraad importeren?</h4>
               <p className="text-gray-600 text-sm">
-                Absolutely! You can import from Excel, CSV, or other inventory systems. Our support team can help with the migration.
+                Absoluut! Je kunt importeren vanuit Excel, CSV of andere voorraadsystemen. Ons supportteam helpt bij de migratie.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold text-gray-900 mb-2">Is my data secure?</h4>
+              <h4 className="font-semibold text-gray-900 mb-2">Is mijn data veilig?</h4>
               <p className="text-gray-600 text-sm">
-                Yes, your data is encrypted and stored securely in EU data centers. We're GDPR compliant, SOC 2 certified, and use bank-level security with daily backups.
+                Ja, je data is versleuteld en veilig opgeslagen in EU datacenters. We zijn GDPR-compliant, SOC 2 gecertificeerd en gebruiken bankniveau beveiliging met dagelijkse backups.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold text-gray-900 mb-2">Do I need special hardware?</h4>
+              <h4 className="font-semibold text-gray-900 mb-2">Heb ik speciale hardware nodig?</h4>
               <p className="text-gray-600 text-sm">
-                No special hardware required! Use your phone's camera to scan barcodes, or connect existing barcode scanners via USB.
+                Geen speciale hardware vereist! Gebruik de camera van je telefoon om barcodes te scannen, of sluit bestaande barcodescanners aan via USB.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold text-gray-900 mb-2">What payment methods do you accept?</h4>
+              <h4 className="font-semibold text-gray-900 mb-2">Welke betaalmethoden accepteren jullie?</h4>
               <p className="text-gray-600 text-sm">
-                We accept all major credit cards (Visa, Mastercard, American Express) and SEPA direct debit for EU customers.
+                We accepteren alle grote creditcards (Visa, Mastercard, American Express) en SEPA direct debit voor EU-klanten. Ook Bancontact voor Belgische klanten.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold text-gray-900 mb-2">Can I add more users later?</h4>
+              <h4 className="font-semibold text-gray-900 mb-2">Kan ik later meer gebruikers toevoegen?</h4>
               <p className="text-gray-600 text-sm">
-                Yes, you can add users anytime. Additional users are charged at €10/month per user on Growth and Premium plans.
+                Ja, je kunt altijd gebruikers toevoegen. Extra gebruikers worden gefactureerd tegen €10/maand per gebruiker op Growth en Premium plannen.
               </p>
             </div>
           </div>
@@ -548,15 +479,15 @@ export default function PricingPage() {
                 decoding="async"
               />
               <p className="text-gray-400 text-base md:text-lg mb-6 leading-relaxed max-w-2xl">
-                The best inventory management software for businesses worldwide. 
-                Simple, secure and without hidden costs.
+                De beste voorraadbeheer software voor bedrijven wereldwijd. 
+                Eenvoudig, veilig en zonder verborgen kosten.
               </p>
               
               {/* Security Badges */}
               <div className="flex flex-wrap items-center gap-4 mb-6">
                 <div className="flex items-center bg-green-100 px-3 py-1 rounded-full">
                   <Shield className="w-4 h-4 text-green-600 mr-2" />
-                  <span className="text-green-700 text-sm font-medium">SSL Encrypted</span>
+                  <span className="text-green-700 text-sm font-medium">SSL Versleuteld</span>
                 </div>
                 <div className="flex items-center bg-blue-100 px-3 py-1 rounded-full">
                   <Shield className="w-4 h-4 text-blue-600 mr-2" />
@@ -564,7 +495,7 @@ export default function PricingPage() {
                 </div>
                 <div className="flex items-center bg-purple-100 px-3 py-1 rounded-full">
                   <Shield className="w-4 h-4 text-purple-600 mr-2" />
-                  <span className="text-purple-700 text-sm font-medium">SOC 2 Certified</span>
+                  <span className="text-purple-700 text-sm font-medium">SOC 2 Gecertificeerd</span>
                 </div>
               </div>
               <div className="flex space-x-4">
@@ -585,10 +516,10 @@ export default function PricingPage() {
             
             {/* Quick Links */}
             <div>
-              <h3 className="text-white font-semibold text-lg mb-4">Quick Links</h3>
+              <h3 className="text-white font-semibold text-lg mb-4">Snelle Links</h3>
               <ul className="space-y-2">
                 <li><a href="/" className="text-gray-400 hover:text-white transition-colors">Home</a></li>
-                <li><a href="/pricing" className="text-gray-400 hover:text-white transition-colors">Pricing</a></li>
+                <li><a href="/nl/pricing" className="text-gray-400 hover:text-white transition-colors">Prijzen</a></li>
                 <li><a href="/contact" className="text-gray-400 hover:text-white transition-colors">Contact</a></li>
               </ul>
             </div>
@@ -597,15 +528,15 @@ export default function PricingPage() {
             <div>
               <h3 className="text-white font-semibold text-lg mb-4">Support</h3>
               <ul className="space-y-2">
-                <li><a href="/contact" className="text-gray-400 hover:text-white transition-colors">Help Center</a></li>
-                <li><a href="/contact" className="text-gray-400 hover:text-white transition-colors">Contact Us</a></li>
+                <li><a href="/contact" className="text-gray-400 hover:text-white transition-colors">Helpcentrum</a></li>
+                <li><a href="/contact" className="text-gray-400 hover:text-white transition-colors">Contact Opnemen</a></li>
               </ul>
             </div>
           </div>
 
           <div className="border-t border-gray-700 pt-6 text-center">
             <p className="text-gray-500 text-xs md:text-sm">
-              &copy; {new Date().getFullYear()} stockflow. All rights reserved. 
+              &copy; {new Date().getFullYear()} stockflow. Alle rechten voorbehouden. 
             </p>
           </div>
         </div>

@@ -158,6 +158,62 @@ const Footer = () => {
           <Link to="/pricing" className="block text-gray-400 hover:text-white underline">
             Pricing
           </Link>
+          <Link to="/features" className="block text-gray-400 hover:text-white underline">
+            Features
+          </Link>
+          <Link to="/demo" className="block text-gray-400 hover:text-white underline">
+            Demo
+          </Link>
+        </div>
+      </div>
+
+      {/* SEO Pages - English */}
+      <div>
+        <h3 className="text-lg font-semibold mb-4">Inventory Management</h3>
+        <div className="space-y-2">
+          <Link to="/best-inventory-management-software" className="block text-gray-400 hover:text-white underline">
+            Best Inventory Software
+          </Link>
+          <Link to="/inventory-management-software" className="block text-gray-400 hover:text-white underline">
+            Inventory Software
+          </Link>
+          <Link to="/free-inventory-management" className="block text-gray-400 hover:text-white underline">
+            Free Inventory Management
+          </Link>
+          <Link to="/inventory-software" className="block text-gray-400 hover:text-white underline">
+            Inventory Software
+          </Link>
+          <Link to="/warehouse-management" className="block text-gray-400 hover:text-white underline">
+            Warehouse Management
+          </Link>
+          <Link to="/stock-management-software" className="block text-gray-400 hover:text-white underline">
+            Stock Management
+          </Link>
+        </div>
+      </div>
+
+      {/* SEO Pages - Dutch */}
+      <div>
+        <h3 className="text-lg font-semibold mb-4">Voorraadbeheer</h3>
+        <div className="space-y-2">
+          <Link to="/voorraadbeheer" className="block text-gray-400 hover:text-white underline">
+            Voorraadbeheer
+          </Link>
+          <Link to="/voorraadbeheer-software" className="block text-gray-400 hover:text-white underline">
+            Voorraadbeheer Software
+          </Link>
+          <Link to="/gratis-voorraadbeheer" className="block text-gray-400 hover:text-white underline">
+            Gratis Voorraadbeheer
+          </Link>
+          <Link to="/voorraadbeheer-app" className="block text-gray-400 hover:text-white underline">
+            Voorraadbeheer App
+          </Link>
+          <Link to="/stockbeheer" className="block text-gray-400 hover:text-white underline">
+            Stockbeheer
+          </Link>
+          <Link to="/magazijnbeheer" className="block text-gray-400 hover:text-white underline">
+            Magazijnbeheer
+          </Link>
         </div>
       </div>
 
@@ -178,6 +234,9 @@ const Footer = () => {
           <Link to="/contact" className="block text-gray-400 hover:text-white underline">
             Contact
           </Link>
+          <a href="/sitemap.xml" className="block text-gray-400 hover:text-white underline">
+            Sitemap
+          </a>
         </div>
       </div>
     </div>

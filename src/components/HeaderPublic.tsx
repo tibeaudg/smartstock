@@ -85,7 +85,56 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButton
                 <nav className="hidden md:flex items-center gap-6 text-sm">
                   <Link to="/features" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Features</Link>
                   <Link to="/pricing" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Pricing</Link>
-
+                  
+                  {/* Resources Dropdown */}
+                  <div className="relative">
+                    <button
+                      onClick={() => setResourcesDropdownOpen(!resourcesDropdownOpen)}
+                      className="flex items-center text-gray-600 hover:text-blue-600 transition-colors font-medium"
+                    >
+                      Resources
+                      <ChevronDown className="ml-1 h-4 w-4" />
+                    </button>
+                    
+                    {resourcesDropdownOpen && (
+                      <div className="absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
+                        <div className="px-4 py-2">
+                          <h4 className="text-sm font-semibold text-gray-900 mb-2">Inventory Management</h4>
+                          <div className="space-y-1">
+                            <Link to="/best-inventory-management-software" className="block text-sm text-gray-600 hover:text-blue-600 py-1">
+                              Best Inventory Software
+                            </Link>
+                            <Link to="/inventory-management-software" className="block text-sm text-gray-600 hover:text-blue-600 py-1">
+                              Inventory Software
+                            </Link>
+                            <Link to="/free-inventory-management" className="block text-sm text-gray-600 hover:text-blue-600 py-1">
+                              Free Inventory Management
+                            </Link>
+                            <Link to="/warehouse-management" className="block text-sm text-gray-600 hover:text-blue-600 py-1">
+                              Warehouse Management
+                            </Link>
+                          </div>
+                        </div>
+                        <div className="border-t border-gray-100 px-4 py-2">
+                          <h4 className="text-sm font-semibold text-gray-900 mb-2">Voorraadbeheer</h4>
+                          <div className="space-y-1">
+                            <Link to="/voorraadbeheer" className="block text-sm text-gray-600 hover:text-blue-600 py-1">
+                              Voorraadbeheer
+                            </Link>
+                            <Link to="/voorraadbeheer-software" className="block text-sm text-gray-600 hover:text-blue-600 py-1">
+                              Voorraadbeheer Software
+                            </Link>
+                            <Link to="/gratis-voorraadbeheer" className="block text-sm text-gray-600 hover:text-blue-600 py-1">
+                              Gratis Voorraadbeheer
+                            </Link>
+                            <Link to="/voorraadbeheer-app" className="block text-sm text-gray-600 hover:text-blue-600 py-1">
+                              Voorraadbeheer App
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </nav>
               )}
 
