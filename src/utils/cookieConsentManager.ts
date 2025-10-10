@@ -177,7 +177,16 @@ export const loadFacebookPixel = (): void => {
     return;
   }
 
-  // Facebook Pixel Code - Modified to support Trusted Types
+  // Initialize Facebook Pixel stub BEFORE loading the script
+  // This prevents "fbq is not defined" errors
+  // @ts-expect-error
+  !function(f: any,b: any,e: any,v: any,n: any,t: any,s: any)
+  {if(f.fbq)return;n=f.fbq=function(...args: any[]){n.callMethod?
+  n.callMethod(...args):n.queue.push(args)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[]}(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  
+  // Now load the actual Facebook Pixel script
   const fbScript = document.createElement('script');
   fbScript.async = true;
   const trustedFbUrl = createTrustedScriptURL('https://connect.facebook.net/en_US/fbevents.js');
@@ -185,15 +194,7 @@ export const loadFacebookPixel = (): void => {
   fbScript.src = trustedFbUrl;
   
   fbScript.onload = () => {
-    // Initialize Facebook Pixel after script loads
-    // @ts-expect-error
-    !function(f: any,b: any,e: any,v: any,n: any,t: any,s: any)
-    {if(f.fbq)return;n=f.fbq=function(...args: any[]){n.callMethod?
-    n.callMethod(...args):n.queue.push(args)};
-    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-    n.queue=[]}(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');
-    
-    // Now initialize and track
+    // Initialize and track after script loads
     // @ts-expect-error
     if (window.fbq) {
       // @ts-expect-error
