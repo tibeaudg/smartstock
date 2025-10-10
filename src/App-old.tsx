@@ -96,8 +96,6 @@ import StockManagement from "./pages/SEO/stock-management";
 import StockManagementAppSEO from "./pages/SEO/stock-management-app";
 import StockManagementSoftware from "./pages/SEO/stock-management-software";
 import FreeStockManagement from "./pages/SEO/free-stock-management";
-import FreeInventoryManagement from "./pages/SEO/free-inventory-management";
-import FreeInventoryApp from "./pages/SEO/free-inventory-app";
 import MobileInventoryManagement from "./pages/SEO/mobile-inventory-management";
 import InventoryApp from "./pages/SEO/inventory-app";
 import InventoryManagementTips from "./pages/SEO/inventory-management-tips";
@@ -334,8 +332,6 @@ const AppRouter = () => {
                   <Route path="/stock-management-app" element={<StockManagementAppSEO />} />
                   <Route path="/stock-management-software" element={<StockManagementSoftware />} />
                   <Route path="/free-stock-management" element={<FreeStockManagement />} />
-                  <Route path="/free-inventory-management" element={<FreeInventoryManagement />} />
-                  <Route path="/free-inventory-app" element={<FreeInventoryApp />} />
                   <Route path="/mobile-inventory-management" element={<MobileInventoryManagement />} />
                   <Route path="/inventory-app" element={<InventoryApp />} />
                   <Route path="/inventory-management-tips" element={<InventoryManagementTips />} />

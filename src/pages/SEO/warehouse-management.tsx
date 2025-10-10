@@ -359,24 +359,20 @@ export default function WarehouseManagement() {
         </div>
       </section>
 
-      {/* Schema.org Structured Data - FAQ */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": faqData.map(faq => ({
-          "@type": "Question",
-          "name": faq.question,
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": faq.answer
-          }
-        }))
-      })}} />
-
-      {/* Schema.org Structured Data - SoftwareApplication */}
-
       {/* Schema.org Structured Data */}
       <StructuredData data={[
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": faqData.map(faq => ({
+            "@type": "Question",
+            "name": faq.question,
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": faq.answer
+            }
+          }))
+        },
         {
                 "@context": "https://schema.org",
                 "@type": "SoftwareApplication",
