@@ -299,35 +299,11 @@ export const AuthPage = () => {
                 : 'Welcome Back'
               }
             </h1>
-            <p className="text-base sm:text-lg text-gray-600 mb-6 sm:mb-8">
-              {mode === 'register' 
-                ? 'Join 500+ SMEs that already benefit from free inventory management'
-                : 'Log in to access your inventory management dashboard'
-              }
-            </p>
+
 
             <Card className="shadow-none border-0 bg-transparent">
               <CardContent className="p-0">
-                {/* Mode indicator */}
-                <div className="mb-4">
-                  <div className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
-                    mode === 'login' 
-                      ? 'bg-blue-100 text-blue-800' 
-                      : 'bg-green-100 text-green-800'
-                  }`}>
-                    {mode === 'login' ? (
-                      <>
-                        <div className="w-2 h-2 bg-blue-600 rounded-full mr-2"></div>
-                        Login Mode
-                      </>
-                    ) : (
-                      <>
-                        <div className="w-2 h-2 bg-green-600 rounded-full mr-2"></div>
-                        Registration Mode
-                      </>
-                    )}
-                  </div>
-                </div>
+
 
                 <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
                   {/* Simplified: only email and password for registration */}
@@ -341,7 +317,7 @@ export const AuthPage = () => {
                       onChange={(e) => setEmail(e.target.value)} 
                       required 
                       disabled={isSubmitting}
-                      className="mt-1 h-12 sm:h-14 text-base border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                      className="mt-1 h-10 sm:h-10 text-base border-gray-300 focus:border-blue-500 focus:ring-blue-500"
                       placeholder="you@company.com"
                     />
                   </div>
@@ -359,7 +335,7 @@ export const AuthPage = () => {
                             onChange={(e) => setFirstName(e.target.value)} 
                             required 
                             disabled={isSubmitting}
-                            className="mt-1 h-12 sm:h-14 text-base border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                            className="mt-1 h-10 sm:h-10 text-base border-gray-300 focus:border-blue-500 focus:ring-blue-500"
                             placeholder="John"
                           />
                         </div>
@@ -372,7 +348,7 @@ export const AuthPage = () => {
                             onChange={(e) => setLastName(e.target.value)} 
                             required 
                             disabled={isSubmitting}
-                            className="mt-1 h-12 sm:h-14 text-base border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                            className="mt-1 h-10 sm:h-10 text-base border-gray-300 focus:border-blue-500 focus:ring-blue-500"
                             placeholder="Doe"
                           />
                         </div>
@@ -390,7 +366,7 @@ export const AuthPage = () => {
                         onChange={(e) => setPassword(e.target.value)} 
                         required 
                         disabled={isSubmitting}
-                        className="mt-1 h-12 sm:h-14 text-base border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                        className="mt-1 h-10 sm:h-10 text-base border-gray-300 focus:border-blue-500 focus:ring-blue-500"
                         placeholder={mode === 'register' ? "At least 8 characters" : "Your password"}
                       />
                       {mode === 'register' && (
@@ -412,7 +388,7 @@ export const AuthPage = () => {
                         onChange={(e) => setConfirmPassword(e.target.value)} 
                         required 
                         disabled={isSubmitting}
-                        className="mt-1 h-12 sm:h-14 text-base border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                        className="mt-1 h-10 sm:h-10 text-base border-gray-300 focus:border-blue-500 focus:ring-blue-500"
                         placeholder="Confirm your password"
                       />
                     </div>
@@ -475,7 +451,7 @@ export const AuthPage = () => {
                   
                   <Button 
                     type="submit" 
-                    className="w-full h-12 sm:h-14 text-base font-semibold bg-black hover:bg-gray-800 transition-all duration-300" 
+                    className="w-full h-10 sm:h-10 text-base font-semibold bg-black hover:bg-gray-800 transition-all duration-300" 
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? (
@@ -503,7 +479,7 @@ export const AuthPage = () => {
                   <Button 
                     type="button"
                     variant="outline"
-                    className="w-full h-12 sm:h-14 text-base font-medium border-gray-300 hover:bg-gray-50"
+                          className="w-full h-10 sm:h-10 text-base font-medium border-gray-300 hover:bg-gray-50"
                     disabled={isSubmitting}
                     onClick={async () => {
                       setIsSubmitting(true);

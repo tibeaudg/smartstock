@@ -237,12 +237,14 @@ export const FeatureManagement = () => {
       switch (sortBy) {
         case 'votes':
           return b.votes - a.votes;
-        case 'priority':
+        case 'priority': {
           const priorityOrder = { high: 3, medium: 2, low: 1 };
           return priorityOrder[b.priority] - priorityOrder[a.priority];
-        case 'status':
+        }
+        case 'status': {
           const statusOrder = { 'in-development': 3, planned: 2, released: 1 };
           return statusOrder[b.status] - statusOrder[a.status];
+        }
         default:
           return 0;
       }

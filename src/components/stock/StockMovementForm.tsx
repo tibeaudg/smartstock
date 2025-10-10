@@ -85,7 +85,7 @@ export const StockMovementForm = ({
           onChange={handleQuantityChange}
           onKeyDown={(e) => {
             // Prevent non-numeric input
-            if (!/[\d\.]/.test(e.key) && 
+            if (!/[\d.]/.test(e.key) && 
                 !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'].includes(e.key)) {
               e.preventDefault();
             }

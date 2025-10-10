@@ -1,8 +1,7 @@
-import { useTranslation } from 'react-i18next';
-
 // Generate comprehensive structured data for international SEO
-export const generateInternationalStructuredData = (baseUrl: string, currentLang: string = 'en') => {
-  const { t } = useTranslation();
+// Note: This function should be called within a React component context where useTranslation is available
+// For non-React contexts, use generateWMSStructuredData or other functions instead
+export const generateInternationalStructuredData = (baseUrl: string, currentLang: string = 'en', t: (key: string) => string) => {
   
   const organizationData = {
     "@context": "https://schema.org",

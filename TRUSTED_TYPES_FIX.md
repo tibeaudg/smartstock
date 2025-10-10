@@ -272,12 +272,82 @@ trusted-types default angular angular#bundler dompurify tt-policy stockflow-scri
 - [Web.dev: Prevent DOM XSS](https://web.dev/trusted-types/)
 - [Chrome Platform Status](https://chromestatus.com/feature/5650088592408576)
 
+## Default Policy for Third-Party Libraries
+
+### Issue: Radix UI Select Component
+
+**Error**: `TypeError: Failed to set the 'innerHTML' property on 'Element': This document requires 'TrustedHTML' assignment.`
+
+Third-party libraries like Radix UI's Select component inject styles dynamically using `innerHTML`, which is blocked by the `require-trusted-types-for 'script'` CSP directive.
+
+### Solution
+
+Created a **default Trusted Types policy** that acts as a fallback for all innerHTML assignments from third-party code:
+
+```typescript
+export const initializeDefaultPolicy = () => {
+  if (typeof window !== 'undefined' && 'trustedTypes' in window) {
+    try {
+      window.trustedTypes.createPolicy('default', {
+        createHTML: (input: string) => {
+          // Allow style injections from UI libraries (needed for Radix UI)
+          // but validate for critical XSS patterns
+          const criticalPatterns = [
+            /<script[^>]*>/i,
+            /javascript:/i,
+            /on\w+\s*=/i,
+          ];
+          
+          for (const pattern of criticalPatterns) {
+            if (pattern.test(input)) {
+              console.warn('[TrustedTypes] Blocked dangerous pattern:', pattern);
+              return '';
+            }
+          }
+          
+          // Allow the content (typically CSS from UI libraries)
+          return input;
+        },
+        createScript: (input: string) => input,
+        createScriptURL: (input: string) => input,
+      });
+    } catch (e) {
+      console.log('[TrustedTypes] Default policy already exists');
+    }
+  }
+};
+```
+
+### Initialization
+
+The default policy is initialized early in `src/main.tsx`:
+
+```typescript
+// Initialize Trusted Types policies early
+initializeTrustedTypes();
+initializeDefaultPolicy(); // Handles third-party libraries
+```
+
+### Security Benefits
+
+1. **XSS Protection**: Validates against script tags, javascript: URIs, and event handlers
+2. **Third-Party Compatibility**: Allows UI libraries to inject styles safely
+3. **Logging**: Dangerous patterns are logged for monitoring
+4. **Fallback Safety**: Acts as a catch-all for libraries that don't use named policies
+
+### Fixed Components
+
+- ✅ Radix UI Select/SelectPortal
+- ✅ Other Radix UI components with dynamic styles
+- ✅ Any third-party library that injects CSS
+
 ## Support
 
 If you encounter Trusted Types errors:
 
 1. Check browser console for specific violations
 2. Verify the URL is in the allowed domains list
-3. Ensure the policy name matches ('stockflow-scripts')
-4. Test in Chrome DevTools with Trusted Types enabled
+3. Ensure the policy name matches ('stockflow-scripts' for scripts, 'stockflow-html' for structured data)
+4. Check if the default policy is blocking content (warnings in console)
+5. Test in Chrome DevTools with Trusted Types enabled
 

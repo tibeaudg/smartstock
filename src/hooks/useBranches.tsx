@@ -29,7 +29,9 @@ function getSafeLocalStorage() {
       window.localStorage.removeItem(testKey);
       return window.localStorage;
     }
-  } catch (e) {}
+  } catch (e) {
+    // localStorage not available, using fallback
+  }
   let store = {};
   return {
     getItem: (key) => (key in store ? store[key] : null),
@@ -62,7 +64,9 @@ const setBranchIdToStorage = (branchId: string | null) => {
     } else {
       safeStorage.removeItem(BRANCH_STORAGE_KEY);
     }
-  } catch {}
+  } catch {
+    // Unable to write to storage
+  }
 };
 
 // Helper: get cached branches
@@ -90,7 +94,9 @@ const setCachedBranches = (branches: Branch[]) => {
   try {
     safeStorage.setItem(BRANCHES_CACHE_KEY, JSON.stringify(branches));
     safeStorage.setItem(CACHE_TIMESTAMP_KEY, Date.now().toString());
-  } catch {}
+  } catch {
+    // Unable to cache branches
+  }
 };
 
 // Verplaats alle state en logica naar binnen in BranchProvider

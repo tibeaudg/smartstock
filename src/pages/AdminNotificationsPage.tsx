@@ -74,7 +74,9 @@ export default function AdminNotificationsPage() {
         const refreshed = await fetchNotifications(user.id);
         setNotifications(refreshed);
       }
-    } catch {}
+    } catch (error) {
+      console.error('Failed to refresh notifications:', error);
+    }
     if (showUsers === notificationId) {
       setShowUsers(null);
       setUsers([]);

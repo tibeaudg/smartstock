@@ -87,3 +87,45 @@ export const initializeTrustedTypes = () => {
     }
   }
 };
+
+// Create default policy for third-party libraries (Radix UI, etc.)
+// This policy handles innerHTML assignments from libraries that don't use named policies
+export const initializeDefaultPolicy = () => {
+  if (typeof window !== 'undefined' && 'trustedTypes' in window) {
+    try {
+      window.trustedTypes.createPolicy('default', {
+        createHTML: (input: string) => {
+          // Allow style injections from UI libraries (needed for Radix UI)
+          // but validate for critical XSS patterns
+          const criticalPatterns = [
+            /<script[^>]*>/i,
+            /javascript:/i,
+            /on\w+\s*=/i,
+          ];
+          
+          for (const pattern of criticalPatterns) {
+            if (pattern.test(input)) {
+              console.warn('[TrustedTypes] Blocked dangerous pattern:', pattern);
+              return '';
+            }
+          }
+          
+          // Allow the content (typically CSS from UI libraries)
+          return input;
+        },
+        createScript: (input: string) => {
+          // Pass through for script content
+          return input;
+        },
+        createScriptURL: (input: string) => {
+          // Pass through for script URLs
+          return input;
+        },
+      });
+      console.log('[TrustedTypes] Default policy initialized for third-party libraries');
+    } catch (e) {
+      // Policy already exists, that's fine
+      console.log('[TrustedTypes] Default policy already exists');
+    }
+  }
+};

@@ -20,7 +20,7 @@ const getTrustedTypesPolicy = () => {
   }
 
   try {
-    // @ts-ignore - trustedTypes is not yet in all TypeScript definitions
+    // @ts-expect-error - trustedTypes is not yet in all TypeScript definitions
     trustedTypesPolicy = window.trustedTypes.createPolicy('stockflow-scripts', {
       createScriptURL: (input: string) => {
         // Only allow our trusted domains
@@ -140,21 +140,21 @@ export const loadGoogleAds = (): void => {
   script.async = true;
   // Use trusted script URL to comply with Trusted Types policy
   const trustedUrl = createTrustedScriptURL('https://www.googletagmanager.com/gtag/js?id=AW-17574614935');
-  // @ts-ignore - TypeScript doesn't recognize TrustedScriptURL yet
+  // @ts-expect-error - TypeScript doesn't recognize TrustedScriptURL yet
   script.src = trustedUrl;
   script.onload = () => {
-    // @ts-ignore
+    // @ts-expect-error
     window.dataLayer = window.dataLayer || [];
-    // @ts-ignore
-    function gtag(){window.dataLayer.push(arguments);}
-    // @ts-ignore
+    // @ts-expect-error
+    function gtag(...args: any[]){window.dataLayer.push(args);}
+    // @ts-expect-error
     gtag('js', new Date());
-    // @ts-ignore
+    // @ts-expect-error
     gtag('config', 'AW-17574614935', {
       'anonymize_ip': true, // Anonymize IP for privacy
       'allow_ad_personalization_signals': canUseMarketing(),
     });
-    // @ts-ignore
+    // @ts-expect-error
     window.gtag = gtag;
     console.log('[Cookie Consent] Google Ads loaded successfully');
   };
@@ -171,7 +171,7 @@ export const loadFacebookPixel = (): void => {
   }
 
   // Check if already loaded
-  // @ts-ignore
+  // @ts-expect-error
   if (window.fbq) {
     console.log('[Cookie Consent] Facebook Pixel already loaded');
     return;
@@ -181,26 +181,26 @@ export const loadFacebookPixel = (): void => {
   const fbScript = document.createElement('script');
   fbScript.async = true;
   const trustedFbUrl = createTrustedScriptURL('https://connect.facebook.net/en_US/fbevents.js');
-  // @ts-ignore - TypeScript doesn't recognize TrustedScriptURL yet
+  // @ts-expect-error - TypeScript doesn't recognize TrustedScriptURL yet
   fbScript.src = trustedFbUrl;
   
   fbScript.onload = () => {
     // Initialize Facebook Pixel after script loads
-    // @ts-ignore
-    !function(f,b,e,v,n,t,s)
-    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    // @ts-expect-error
+    !function(f: any,b: any,e: any,v: any,n: any,t: any,s: any)
+    {if(f.fbq)return;n=f.fbq=function(...args: any[]){n.callMethod?
+    n.callMethod(...args):n.queue.push(args)};
     if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
     n.queue=[]}(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');
     
     // Now initialize and track
-    // @ts-ignore
+    // @ts-expect-error
     if (window.fbq) {
-      // @ts-ignore
+      // @ts-expect-error
       fbq('init', '1788618995199125', {
         external_id: undefined, // Don't track external IDs without consent
       });
-      // @ts-ignore
+      // @ts-expect-error
       fbq('track', 'PageView');
       console.log('[Cookie Consent] Facebook Pixel loaded successfully');
     }
@@ -267,18 +267,18 @@ export const removeTrackingScripts = (): void => {
   }
 
   // Clear dataLayer
-  // @ts-ignore
+  // @ts-expect-error
   if (window.dataLayer) {
-    // @ts-ignore
+    // @ts-expect-error
     window.dataLayer = [];
   }
 
   // Clear Facebook Pixel
-  // @ts-ignore
+  // @ts-expect-error
   if (window.fbq) {
-    // @ts-ignore
+    // @ts-expect-error
     delete window.fbq;
-    // @ts-ignore
+    // @ts-expect-error
     delete window._fbq;
   }
 
@@ -293,12 +293,12 @@ export const onConsentChange = (callback: (preferences: CookiePreferences) => vo
     callback(event.detail);
   };
 
-  // @ts-ignore
+  // @ts-expect-error
   window.addEventListener('cookieConsentChanged', handler);
 
   // Return cleanup function
   return () => {
-    // @ts-ignore
+    // @ts-expect-error
     window.removeEventListener('cookieConsentChanged', handler);
   };
 };
