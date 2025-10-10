@@ -18,6 +18,7 @@ import {
   DollarSign
 } from 'lucide-react';
 
+import { StructuredData } from '../../components/StructuredData';
 export default function InventoryManagement() {
   // Gebruik de page refresh hook
   usePageRefresh();
@@ -466,8 +467,7 @@ export default function InventoryManagement() {
         </div>
       </footer>
 
-      {/* Schema.org Structured Data */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
         "@context": "https://schema.org",
         "@type": "FAQPage",
         "mainEntity": [
@@ -482,31 +482,31 @@ export default function InventoryManagement() {
         ]
       }`}} />
 
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
-        "@context": "https://schema.org",
-        "@type": "Article",
-        "headline": "Inventory Management - Complete Guide & Best Practices",
-        "description": "Master inventory management with our comprehensive guide. Learn best practices, benefits, and how to optimize your stock levels for maximum profitability.",
-        "image": "https://www.stockflow.be/Inventory-Management.png",
-        "author": {
-          "@type": "Organization",
-          "name": "StockFlow"
-        },
-        "publisher": {
-          "@type": "Organization",
-          "name": "StockFlow",
-          "logo": {
-            "@type": "ImageObject",
-            "url": "https://www.stockflow.be/logo.png"
-          }
-        },
-        "mainEntityOfPage": {
-          "@type": "WebPage",
-          "@id": "https://www.stockflow.be/inventory-management"
-        },
-        "datePublished": "2024-01-01",
-        "dateModified": "${new Date().toISOString().split('T')[0]}"
-      }`}} />
+      {/* Schema.org Structured Data */}
+      <StructuredData data={[
+        {"@context": "https://schema.org",
+                "@type": "Article",
+                "headline": "Inventory Management - Complete Guide & Best Practices",
+                "description": "Master inventory management with our comprehensive guide. Learn best practices, benefits, and how to optimize your stock levels for maximum profitability.",
+                "image": "https://www.stockflow.be/Inventory-Management.png",
+                "author": {
+                  "@type": "Organization",
+                  "name": "StockFlow"
+                },
+                "publisher": {
+                  "@type": "Organization",
+                  "name": "StockFlow",
+                  "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://www.stockflow.be/logo.png"
+                  }
+                },
+                "mainEntityOfPage": {
+                  "@type": "WebPage",
+                  "@id": "https://www.stockflow.be/inventory-management"
+                },
+                "datePublished": "2024-01-01",
+                "dateModified": "new Date().toISOString().split('T')[0]"        }      ]} />
     </SeoPageLayout>
   );
 }

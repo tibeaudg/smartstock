@@ -2,6 +2,7 @@ import SEO from '../../components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '../../components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
+import { useStructuredData, createFAQStructuredData, createArticleStructuredData } from '@/hooks/useStructuredData';
 import { Check, TrendingUp, Clock, Shield, Users, Zap, DollarSign, BarChart3 } from 'lucide-react';
 
 export default function VoorraadbeheerKMO() {
@@ -29,6 +30,16 @@ export default function VoorraadbeheerKMO() {
       answer: "KMO's zien gemiddeld 70% tijdsbesparing op voorraadtaken, 25% reductie in voorraadkosten en 15-20% omzetgroei door betere beschikbaarheid. De meeste KMO's verdienen hun investering binnen 3-6 maanden terug."
     }
   ];
+
+  // Add structured data using the hook
+  useStructuredData([
+    createFAQStructuredData(faqData),
+    createArticleStructuredData({
+      headline: "Voorraadbeheer Software voor KMO's",
+      description: "Betaalbare en gebruiksvriendelijke voorraadbeheer software speciaal voor KMO's en kleine ondernemingen. Start gratis en groei mee.",
+      url: "https://www.stockflow.be/voorraadbeheer-kmo"
+    })
+  ]);
 
   const kmoFeatures = [
     {
@@ -743,47 +754,6 @@ export default function VoorraadbeheerKMO() {
           </div>
         </div>
       </footer>
-
-      {/* Schema.org Structured Data */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-          ${faqData.map(faq => `{
-            "@type": "Question",
-            "name": "${faq.question}",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "${faq.answer}"
-            }
-          }`).join(',')}
-        ]
-      }`}} />
-
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
-        "@context": "https://schema.org",
-        "@type": "Article",
-        "headline": "Voorraadbeheer Software voor KMO's",
-        "description": "Betaalbare en gebruiksvriendelijke voorraadbeheer software speciaal voor KMO's en kleine ondernemingen. Start gratis en groei mee.",
-        "author": {
-          "@type": "Organization",
-          "name": "stockflow"
-        },
-        "publisher": {
-          "@type": "Organization",
-          "name": "stockflow",
-          "logo": {
-            "@type": "ImageObject",
-            "url": "https://www.stockflow.be/logo.png"
-          }
-        },
-        "datePublished": "2024-01-01",
-        "dateModified": "${new Date().toISOString().split('T')[0]}",
-        "mainEntityOfPage": {
-          "@type": "WebPage",
-          "@id": "https://www.stockflow.be/voorraadbeheer-kmo"
-        }
-      }`}} />
     </SeoPageLayout>
   );
 }

@@ -4,6 +4,7 @@ import SeoPageLayout from '../../components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { Check, X, TrendingUp, AlertTriangle, Users, Smartphone, Clock, DollarSign, Zap } from 'lucide-react';
 
+import { StructuredData } from '../../components/StructuredData';
 export default function ExcelVsVoorraadbeheerSoftware() {
   usePageRefresh();
   
@@ -727,8 +728,7 @@ export default function ExcelVsVoorraadbeheerSoftware() {
         </div>
       </footer>
 
-      {/* Schema.org Structured Data */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
         "@context": "https://schema.org",
         "@type": "FAQPage",
         "mainEntity": [
@@ -743,30 +743,32 @@ export default function ExcelVsVoorraadbeheerSoftware() {
         ]
       }`}} />
 
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
-        "@context": "https://schema.org",
-        "@type": "Article",
-        "headline": "Excel vs Voorraadbeheer Software — Welke Past Bij Jou?",
-        "description": "Complete vergelijking tussen Excel en voorraadbeheer software met praktische tips voor de overstap.",
-        "author": {
-          "@type": "Organization",
-          "name": "stockflow"
-        },
-        "publisher": {
-          "@type": "Organization",
-          "name": "stockflow",
-          "logo": {
-            "@type": "ImageObject",
-            "url": "https://www.stockflow.be/logo.png"
-          }
-        },
-        "datePublished": "2024-01-01",
-        "dateModified": "${new Date().toISOString().split('T')[0]}",
-        "mainEntityOfPage": {
-          "@type": "WebPage",
-          "@id": "https://www.stockflow.be/excel-vs-voorraadbeheer-software"
-        }
-      }`}} />
+      {/* Schema.org Structured Data */}
+      <StructuredData data={[
+        {"@context": "https://schema.org",
+                "@type": "Article",
+                "headline": "Excel vs Voorraadbeheer Software — Welke Past Bij Jou?",
+                "description": "Complete vergelijking tussen Excel en voorraadbeheer software met praktische tips voor de overstap.",
+                "author": {
+                  "@type": "Organization",
+                  "name": "stockflow"
+                },
+                "publisher": {
+                  "@type": "Organization",
+                  "name": "stockflow",
+                  "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://www.stockflow.be/logo.png"
+                  }
+                },
+                "datePublished": "2024-01-01",
+                "dateModified": "new Date().toISOString().split('T')[0]",
+                "mainEntityOfPage": {
+                  "@type": "WebPage",
+                  "@id": "https://www.stockflow.be/excel-vs-voorraadbeheer-software"
+                }
+              }
+        ]} />
     </SeoPageLayout>
   );
 }

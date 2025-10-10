@@ -4,6 +4,7 @@ import SeoPageLayout from '../../components/SeoPageLayout';
 import { BookOpen, Target, TrendingUp, Shield, Users, Rocket } from 'lucide-react';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 
+import { StructuredData } from '../../components/StructuredData';
 export default function VoorraadbeheerVoorStarters() {
   // Gebruik de page refresh hook
   usePageRefresh();
@@ -299,8 +300,7 @@ export default function VoorraadbeheerVoorStarters() {
         </div>
       </footer>
 
-      {/* Schema.org Structured Data */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
         "@context": "https://schema.org",
         "@type": "FAQPage",
         "mainEntity": [
@@ -315,31 +315,31 @@ export default function VoorraadbeheerVoorStarters() {
         ]
       }`}} />
 
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
-        "@context": "https://schema.org",
-        "@type": "Article",
-        "headline": "Voorraadbeheer voor Starters | Complete Gids voor KMO's",
-        "description": "Voorraadbeheer voor starters: complete gids met tips en stappenplan voor kleine bedrijven en zelfstandigen. Leer hoe je eenvoudig begint met professioneel voorraadbeheer.",
-        "image": "https://www.stockflow.be/optimized/Inventory-Management.png",
-        "author": {
-          "@type": "Organization",
-          "name": "stockflow"
-        },
-        "publisher": {
-          "@type": "Organization",
-          "name": "stockflow",
-          "logo": {
-            "@type": "ImageObject",
-            "url": "https://www.stockflow.be/logo.png"
-          }
-        },
-        "mainEntityOfPage": {
-          "@type": "WebPage",
-          "@id": "https://www.stockflow.be/voorraadbeheer-voor-starters"
-        },
-        "datePublished": "2024-06-01",
-        "dateModified": "2024-12-19"
-      }`}} />
+      {/* Schema.org Structured Data */}
+      <StructuredData data={[
+        {"@context": "https://schema.org",
+                "@type": "Article",
+                "headline": "Voorraadbeheer voor Starters | Complete Gids voor KMO's",
+                "description": "Voorraadbeheer voor starters: complete gids met tips en stappenplan voor kleine bedrijven en zelfstandigen. Leer hoe je eenvoudig begint met professioneel voorraadbeheer.",
+                "image": "https://www.stockflow.be/optimized/Inventory-Management.png",
+                "author": {
+                  "@type": "Organization",
+                  "name": "stockflow"
+                },
+                "publisher": {
+                  "@type": "Organization",
+                  "name": "stockflow",
+                  "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://www.stockflow.be/logo.png"
+                  }
+                },
+                "mainEntityOfPage": {
+                  "@type": "WebPage",
+                  "@id": "https://www.stockflow.be/voorraadbeheer-voor-starters"
+                },
+                "datePublished": "2024-06-01",
+                "dateModified": "2024-12-19"        }      ]} />
     </SeoPageLayout>
   );
 } 

@@ -14,6 +14,7 @@ import {
   Database
 } from 'lucide-react';
 
+import { StructuredData } from '../../components/StructuredData';
 export default function InventorySoftwareManagement() {
   // Gebruik de page refresh hook
   usePageRefresh();
@@ -476,8 +477,7 @@ export default function InventorySoftwareManagement() {
         </div>
       </footer>
 
-      {/* Schema.org Structured Data */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
         "@context": "https://schema.org",
         "@type": "FAQPage",
         "mainEntity": [
@@ -492,53 +492,55 @@ export default function InventorySoftwareManagement() {
         ]
       }`}} />
 
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
-        "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        "name": "StockFlow - Inventory Software Management",
-        "description": "Master inventory software management with StockFlow. Automated tracking, real-time analytics, and comprehensive management tools.",
-        "applicationCategory": "BusinessApplication",
-        "operatingSystem": "Web Browser",
-        "offers": {
-          "@type": "Offer",
-          "price": "0",
-          "priceCurrency": "EUR",
-          "description": "Free plan - Basic inventory software management",
-          "availability": "https://schema.org/InStock"
-        },
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "4.8",
-          "ratingCount": "150",
-          "bestRating": "5",
-          "worstRating": "1"
-        },
-        "author": {
-          "@type": "Organization",
-          "name": "StockFlow"
-        },
-        "publisher": {
-          "@type": "Organization",
-          "name": "StockFlow",
-          "logo": {
-            "@type": "ImageObject",
-            "url": "https://www.stockflow.be/logo.png"
-          }
-        },
-        "image": "https://www.stockflow.be/Inventory-Management.png",
-        "mainEntityOfPage": {
-          "@type": "WebPage",
-          "@id": "https://www.stockflow.be/inventory-software-management"
-        },
-        "featureList": [
-          "Centralized management",
-          "Automated processes",
-          "Advanced analytics",
-          "Barcode integration",
-          "Team collaboration",
-          "Cloud-based access"
-        ]
-      }`}} />
+      {/* Schema.org Structured Data */}
+      <StructuredData data={[
+        {"@context": "https://schema.org",
+                "@type": "SoftwareApplication",
+                "name": "StockFlow - Inventory Software Management",
+                "description": "Master inventory software management with StockFlow. Automated tracking, real-time analytics, and comprehensive management tools.",
+                "applicationCategory": "BusinessApplication",
+                "operatingSystem": "Web Browser",
+                "offers": {
+                  "@type": "Offer",
+                  "price": "0",
+                  "priceCurrency": "EUR",
+                  "description": "Free plan - Basic inventory software management",
+                  "availability": "https://schema.org/InStock"
+                },
+                "aggregateRating": {
+                  "@type": "AggregateRating",
+                  "ratingValue": "4.8",
+                  "ratingCount": "150",
+                  "bestRating": "5",
+                  "worstRating": "1"
+                },
+                "author": {
+                  "@type": "Organization",
+                  "name": "StockFlow"
+                },
+                "publisher": {
+                  "@type": "Organization",
+                  "name": "StockFlow",
+                  "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://www.stockflow.be/logo.png"
+                  }
+                },
+                "image": "https://www.stockflow.be/Inventory-Management.png",
+                "mainEntityOfPage": {
+                  "@type": "WebPage",
+                  "@id": "https://www.stockflow.be/inventory-software-management"
+                },
+                "featureList": [
+                  "Centralized management",
+                  "Automated processes",
+                  "Advanced analytics",
+                  "Barcode integration",
+                  "Team collaboration",
+                  "Cloud-based access"
+                ]
+              }
+        ]} />
     </SeoPageLayout>
   );
 }

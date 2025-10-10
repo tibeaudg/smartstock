@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import SeoPageLayout from '../../components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 
+import { StructuredData } from '../../components/StructuredData';
 export default function VoorraadbeheerApp() {
   // Gebruik de page refresh hook
   usePageRefresh();
@@ -272,8 +273,7 @@ export default function VoorraadbeheerApp() {
         </div>
       </footer>
 
-      {/* Schema.org Structured Data */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
         "@context": "https://schema.org",
         "@type": "FAQPage",
         "mainEntity": [
@@ -288,31 +288,31 @@ export default function VoorraadbeheerApp() {
         ]
       }`}} />
 
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
-        "@context": "https://schema.org",
-        "@type": "Article",
-        "headline": "Voorraadbeheer App - Mobiel Voorraadbeheer",
-        "description": "Ontdek de beste voorraadbeheer app voor je bedrijf. Mobiel voorraadbeheer met barcode scanning, real-time synchronisatie en gratis starten.",
-        "image": "https://www.stockflow.be/optimized/Inventory-Management.png",
-        "author": {
-          "@type": "Organization",
-          "name": "stockflow"
-        },
-        "publisher": {
-          "@type": "Organization",
-          "name": "stockflow",
-          "logo": {
-            "@type": "ImageObject",
-            "url": "https://www.stockflow.be/logo.png"
-          }
-        },
-        "mainEntityOfPage": {
-          "@type": "WebPage",
-          "@id": "https://www.stockflow.be/voorraadbeheer-app"
-        },
-        "datePublished": "2024-06-01",
-        "dateModified": "2024-12-19"
-      }`}} />
+      {/* Schema.org Structured Data */}
+      <StructuredData data={[
+        {"@context": "https://schema.org",
+                "@type": "Article",
+                "headline": "Voorraadbeheer App - Mobiel Voorraadbeheer",
+                "description": "Ontdek de beste voorraadbeheer app voor je bedrijf. Mobiel voorraadbeheer met barcode scanning, real-time synchronisatie en gratis starten.",
+                "image": "https://www.stockflow.be/optimized/Inventory-Management.png",
+                "author": {
+                  "@type": "Organization",
+                  "name": "stockflow"
+                },
+                "publisher": {
+                  "@type": "Organization",
+                  "name": "stockflow",
+                  "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://www.stockflow.be/logo.png"
+                  }
+                },
+                "mainEntityOfPage": {
+                  "@type": "WebPage",
+                  "@id": "https://www.stockflow.be/voorraadbeheer-app"
+                },
+                "datePublished": "2024-06-01",
+                "dateModified": "2024-12-19"        }      ]} />
     </SeoPageLayout>
   );
 }

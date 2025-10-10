@@ -4,6 +4,7 @@ import SeoPageLayout from '../../components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { Check, X, TrendingUp, Package, Database, Link as LinkIcon, Users, AlertTriangle, Clock, Zap, Target, BarChart3, Settings } from 'lucide-react';
 
+import { StructuredData } from '../../components/StructuredData';
 export default function VoorraadbeheerAutomatiseren5Stappen() {
   usePageRefresh();
   
@@ -699,8 +700,7 @@ export default function VoorraadbeheerAutomatiseren5Stappen() {
         </div>
       </footer>
 
-      {/* Schema.org Structured Data */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
         "@context": "https://schema.org",
         "@type": "FAQPage",
         "mainEntity": [
@@ -731,30 +731,32 @@ export default function VoorraadbeheerAutomatiseren5Stappen() {
         ]
       }`}} />
 
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
-        "@context": "https://schema.org",
-        "@type": "Article",
-        "headline": "Voorraadbeheer Automatiseren in 5 Stappen",
-        "description": "Stap-voor-stap implementatie gids voor voorraadbeheer automatisering met praktische tips en tijdlijn.",
-        "author": {
-          "@type": "Organization",
-          "name": "stockflow"
-        },
-        "publisher": {
-          "@type": "Organization",
-          "name": "stockflow",
-          "logo": {
-            "@type": "ImageObject",
-            "url": "https://www.stockflow.be/logo.png"
-          }
-        },
-        "datePublished": "2024-01-01",
-        "dateModified": "${new Date().toISOString().split('T')[0]}",
-        "mainEntityOfPage": {
-          "@type": "WebPage",
-          "@id": "https://www.stockflow.be/voorraadbeheer-automatiseren-5-stappen"
-        }
-      }`}} />
+      {/* Schema.org Structured Data */}
+      <StructuredData data={[
+        {"@context": "https://schema.org",
+                "@type": "Article",
+                "headline": "Voorraadbeheer Automatiseren in 5 Stappen",
+                "description": "Stap-voor-stap implementatie gids voor voorraadbeheer automatisering met praktische tips en tijdlijn.",
+                "author": {
+                  "@type": "Organization",
+                  "name": "stockflow"
+                },
+                "publisher": {
+                  "@type": "Organization",
+                  "name": "stockflow",
+                  "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://www.stockflow.be/logo.png"
+                  }
+                },
+                "datePublished": "2024-01-01",
+                "dateModified": "new Date().toISOString().split('T')[0]",
+                "mainEntityOfPage": {
+                  "@type": "WebPage",
+                  "@id": "https://www.stockflow.be/voorraadbeheer-automatiseren-5-stappen"
+                }
+              }
+        ]} />
     </SeoPageLayout>
   );
 }

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import SeoPageLayout from '../../components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 
+import { StructuredData } from '../../components/StructuredData';
 export default function WarehouseManagementSystem() {
   // Use the page refresh hook
   usePageRefresh();
@@ -295,41 +296,45 @@ export default function WarehouseManagementSystem() {
       })}} />
 
       {/* Schema.org Structured Data - SoftwareApplication */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        "name": "StockFlow - Warehouse Management System",
-        "description": "Comprehensive warehouse management system for modern businesses. Streamline operations, reduce costs, and improve efficiency.",
-        "applicationCategory": "BusinessApplication",
-        "applicationSubCategory": "SaaS",
-        "operatingSystem": "Web Browser",
-        "offers": {
-          "@type": "Offer",
-          "price": "0",
-          "priceCurrency": "EUR",
-          "availability": "https://schema.org/InStock"
-        },
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "4.8",
-          "ratingCount": "32",
-          "bestRating": "5",
-          "worstRating": "1"
-        },
-        "author": {
-          "@type": "Organization",
-          "name": "StockFlow"
-        },
-        "publisher": {
-          "@type": "Organization",
-          "name": "StockFlow",
-          "logo": {
-            "@type": "ImageObject",
-            "url": "https://www.stockflow.be/logo.png"
-          }
-        },
-        "url": "https://www.stockflow.be/warehouse-management-system"
-      })}} />
+
+      {/* Schema.org Structured Data */}
+      <StructuredData data={[
+        {
+                "@context": "https://schema.org",
+                "@type": "SoftwareApplication",
+                "name": "StockFlow - Warehouse Management System",
+                "description": "Comprehensive warehouse management system for modern businesses. Streamline operations, reduce costs, and improve efficiency.",
+                "applicationCategory": "BusinessApplication",
+                "applicationSubCategory": "SaaS",
+                "operatingSystem": "Web Browser",
+                "offers": {
+                  "@type": "Offer",
+                  "price": "0",
+                  "priceCurrency": "EUR",
+                  "availability": "https://schema.org/InStock"
+                },
+                "aggregateRating": {
+                  "@type": "AggregateRating",
+                  "ratingValue": "4.8",
+                  "ratingCount": "32",
+                  "bestRating": "5",
+                  "worstRating": "1"
+                },
+                "author": {
+                  "@type": "Organization",
+                  "name": "StockFlow"
+                },
+                "publisher": {
+                  "@type": "Organization",
+                  "name": "StockFlow",
+                  "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://www.stockflow.be/logo.png"
+                  }
+                },
+                "url": "https://www.stockflow.be/warehouse-management-system"
+              }
+      ]} />
     </SeoPageLayout>
   );
 }

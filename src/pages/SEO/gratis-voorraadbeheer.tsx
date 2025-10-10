@@ -4,6 +4,7 @@ import SeoPageLayout from '../../components/SeoPageLayout';
 import { Check, Smartphone, Shield, Users, TrendingUp, Gift, Zap } from 'lucide-react';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 
+import { StructuredData } from '../../components/StructuredData';
 export default function GratisStockbeheer() {
   // Gebruik de page refresh hook
   usePageRefresh();
@@ -369,78 +370,77 @@ export default function GratisStockbeheer() {
       </div>
 
       {/* Structured Data */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": "Is gratis voorraadbeheer echt gratis?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Ja, stockflow biedt een volledig gratis versie aan voor maximaal 30 producten. Er zijn geen verborgen kosten of verplichtingen. Je kunt altijd gratis blijven gebruiken."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Wat als ik meer dan 30 producten heb?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Je kunt eenvoudig upgraden naar de premium versie voor $29 per maand. Deze geeft je toegang tot onbeperkte producten en extra functies."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Kan ik mijn data exporteren?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Ja, je kunt altijd je data exporteren in verschillende formaten. Je bent nooit vastgeklonken aan stockflow."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Is mijn data veilig?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Absoluut. We gebruiken enterprise-grade beveiliging en je data wordt regelmatig geback-upt. Je privacy is onze prioriteit."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Kan ik gratis voorraadbeheer testen?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Ja, je kunt direct beginnen zonder verplichtingen. Maak een gratis account aan en test alle functies."
-            }
-          }
-        ]
-      }`}} />
 
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
-        "@context": "https://schema.org",
-        "@type": "Article",
-        "headline": "Gratis Stockbeheer App voor KMO's",
-        "description": "Ontdek gratis voorraadbeheer voor KMO's. Beheer tot 30 producten gratis met stockflow. Professioneel voorraadbeheer zonder kosten, perfect voor starters en kleine bedrijven.",
-        "image": "https://www.stockflow.be/logo.png",
-        "author": {
-          "@type": "Organization",
-          "name": "stockflow"
-        },
-        "publisher": {
-          "@type": "Organization",
-          "name": "stockflow",
-          "logo": {
-            "@type": "ImageObject",
-            "url": "https://www.stockflow.be/logo.png"
-          }
-        },
-        "datePublished": "2024-01-01",
-        "dateModified": "2024-12-19",
-        "mainEntityOfPage": {
-          "@type": "WebPage",
-          "@id": "https://www.stockflow.be/gratis-voorraadbeheer"
-        }
-      }`}} />
+      {/* Schema.org Structured Data */}
+      <StructuredData data={[
+        {"@context": "https://schema.org",
+                "@type": "FAQPage",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "Is gratis voorraadbeheer echt gratis?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Ja, stockflow biedt een volledig gratis versie aan voor maximaal 30 producten. Er zijn geen verborgen kosten of verplichtingen. Je kunt altijd gratis blijven gebruiken."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "Wat als ik meer dan 30 producten heb?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Je kunt eenvoudig upgraden naar de premium versie voor $29 per maand. Deze geeft je toegang tot onbeperkte producten en extra functies."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "Kan ik mijn data exporteren?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Ja, je kunt altijd je data exporteren in verschillende formaten. Je bent nooit vastgeklonken aan stockflow."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "Is mijn data veilig?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Absoluut. We gebruiken enterprise-grade beveiliging en je data wordt regelmatig geback-upt. Je privacy is onze prioriteit."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "Kan ik gratis voorraadbeheer testen?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Ja, je kunt direct beginnen zonder verplichtingen. Maak een gratis account aan en test alle functies."
+                    }
+                  }
+                ]        },        {"@context": "https://schema.org",
+                "@type": "Article",
+                "headline": "Gratis Stockbeheer App voor KMO's",
+                "description": "Ontdek gratis voorraadbeheer voor KMO's. Beheer tot 30 producten gratis met stockflow. Professioneel voorraadbeheer zonder kosten, perfect voor starters en kleine bedrijven.",
+                "image": "https://www.stockflow.be/logo.png",
+                "author": {
+                  "@type": "Organization",
+                  "name": "stockflow"
+                },
+                "publisher": {
+                  "@type": "Organization",
+                  "name": "stockflow",
+                  "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://www.stockflow.be/logo.png"
+                  }
+                },
+                "datePublished": "2024-01-01",
+                "dateModified": "2024-12-19",
+                "mainEntityOfPage": {
+                  "@type": "WebPage",
+                  "@id": "https://www.stockflow.be/gratis-voorraadbeheer"
+                }
+              }
+        ]} />
     </SeoPageLayout>
   );
 } 

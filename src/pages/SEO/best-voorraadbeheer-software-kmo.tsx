@@ -17,6 +17,7 @@ import {
   Clock
 } from 'lucide-react';
 
+import { StructuredData } from '../../components/StructuredData';
 export default function BestVoorraadbeheerSoftwareKMO() {
   usePageRefresh();
 
@@ -459,29 +460,31 @@ export default function BestVoorraadbeheerSoftwareKMO() {
       </section>
 
       {/* Structured Data */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{
-        __html: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "Article",
-          "headline": "Beste Voorraadbeheer Software voor KMO's 2025",
-          "description": "Vergelijk de top voorraadbeheer software voor kleine en middelgrote ondernemingen. Reviews, prijzen en functies.",
-          "author": {
-            "@type": "Organization",
-            "name": "StockFlow"
-          },
-          "publisher": {
-            "@type": "Organization",
-            "name": "StockFlow",
-            "logo": {
-              "@type": "ImageObject",
-              "url": "https://www.stockflow.be/logo.png"
-            }
-          },
-          "datePublished": "2025-01-01",
-          "dateModified": "2025-01-01",
-          "inLanguage": "nl"
-        })
-      }} />
+
+      {/* Schema.org Structured Data */}
+      <StructuredData data={[
+        {
+                  "@context": "https://schema.org",
+                  "@type": "Article",
+                  "headline": "Beste Voorraadbeheer Software voor KMO's 2025",
+                  "description": "Vergelijk de top voorraadbeheer software voor kleine en middelgrote ondernemingen. Reviews, prijzen en functies.",
+                  "author": {
+                    "@type": "Organization",
+                    "name": "StockFlow"
+                  },
+                  "publisher": {
+                    "@type": "Organization",
+                    "name": "StockFlow",
+                    "logo": {
+                      "@type": "ImageObject",
+                      "url": "https://www.stockflow.be/logo.png"
+                    }
+                  },
+                  "datePublished": "2025-01-01",
+                  "dateModified": "2025-01-01",
+                  "inLanguage": "nl"
+                }
+      ]} />
     </SeoPageLayout>
   );
 }

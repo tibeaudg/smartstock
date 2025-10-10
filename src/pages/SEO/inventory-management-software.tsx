@@ -17,6 +17,7 @@ import {
   Target
 } from 'lucide-react';
 
+import { StructuredData } from '../../components/StructuredData';
 export default function InventoryManagementSoftware() {
   // Gebruik de page refresh hook
   usePageRefresh();
@@ -1001,8 +1002,7 @@ export default function InventoryManagementSoftware() {
         </div>
       </footer>
 
-      {/* Schema.org Structured Data */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
         "@context": "https://schema.org",
         "@type": "FAQPage",
         "mainEntity": [
@@ -1017,125 +1017,122 @@ export default function InventoryManagementSoftware() {
         ]
       }`}} />
 
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
-        "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        "name": "StockFlow - Inventory Management Software",
-        "description": "Professional inventory management software for growing businesses. Track stock levels, manage suppliers, and grow your business with our powerful yet simple platform.",
-        "applicationCategory": "BusinessApplication",
-        "operatingSystem": "Web Browser",
-        "browserRequirements": "Requires JavaScript. Requires HTML5.",
-        "softwareVersion": "1.0",
-        "datePublished": "2024-01-01",
-        "dateModified": "${new Date().toISOString().split('T')[0]}",
-        "offers": [
-          {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "EUR",
-            "description": "Free plan - 100% free inventory management for SMEs",
-            "availability": "https://schema.org/InStock",
-            "validFrom": "2024-01-01"
-          },
-          {
-            "@type": "Offer",
-            "price": "29",
-            "priceCurrency": "EUR",
-            "description": "Growth plan - Advanced features for growing businesses",
-            "availability": "https://schema.org/InStock",
-            "validFrom": "2024-01-01"
-          }
-        ],
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "4.8",
-          "ratingCount": "150",
-          "bestRating": "5",
-          "worstRating": "1"
+      {/* Schema.org Structured Data */}
+      <StructuredData data={[
+        {"@context": "https://schema.org",
+                "@type": "SoftwareApplication",
+                "name": "StockFlow - Inventory Management Software",
+                "description": "Professional inventory management software for growing businesses. Track stock levels, manage suppliers, and grow your business with our powerful yet simple platform.",
+                "applicationCategory": "BusinessApplication",
+                "operatingSystem": "Web Browser",
+                "browserRequirements": "Requires JavaScript. Requires HTML5.",
+                "softwareVersion": "1.0",
+                "datePublished": "2024-01-01",
+                "dateModified": "new Date().toISOString().split('T')[0]",
+                "offers": [
+                  {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "EUR",
+                    "description": "Free plan - 100% free inventory management for SMEs",
+                    "availability": "https://schema.org/InStock",
+                    "validFrom": "2024-01-01"
+                  },
+                  {
+                    "@type": "Offer",
+                    "price": "29",
+                    "priceCurrency": "EUR",
+                    "description": "Growth plan - Advanced features for growing businesses",
+                    "availability": "https://schema.org/InStock",
+                    "validFrom": "2024-01-01"
+                  }
+                ],
+                "aggregateRating": {
+                  "@type": "AggregateRating",
+                  "ratingValue": "4.8",
+                  "ratingCount": "150",
+                  "bestRating": "5",
+                  "worstRating": "1"
+                },
+                "author": {
+                  "@type": "Organization",
+                  "name": "StockFlow"
+                },
+                "publisher": {
+                  "@type": "Organization",
+                  "name": "StockFlow",
+                  "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://www.stockflow.be/logo.png"
+                  }
+                },
+                "image": [
+                  "https://www.stockflow.be/Inventory-Management.png",
+                  "https://www.stockflow.be/optimized/desktop.png"
+                ],
+                "screenshot": "https://www.stockflow.be/optimized/desktop.png",
+                "mainEntityOfPage": {
+                  "@type": "WebPage",
+                  "@id": "https://www.stockflow.be/inventory-management-software"
+                },
+                "featureList": [
+                  "Real-time inventory tracking",
+                  "Barcode scanning",
+                  "Automated reorder points",
+                  "Multi-location support",
+                  "Advanced analytics",
+                  "Mobile access",
+                  "Team collaboration",
+                  "Integration capabilities"
+                  ],
+                  "keywords": "inventory management software, stock management, inventory control, warehouse management, inventory tracking, stock management software, inventory system, warehouse software, inventory optimization, stock control software, inventory management system, warehouse management system, inventory tracking software, stock management system, inventory software, warehouse tracking, inventory control system, stock tracking software, inventory management solution, warehouse inventory software, inventory management platform"
         },
-        "author": {
-          "@type": "Organization",
-          "name": "StockFlow"
-        },
-        "publisher": {
-          "@type": "Organization",
-          "name": "StockFlow",
-          "logo": {
-            "@type": "ImageObject",
-            "url": "https://www.stockflow.be/logo.png"
-          }
-        },
-        "image": [
-          "https://www.stockflow.be/Inventory-Management.png",
-          "https://www.stockflow.be/optimized/desktop.png"
-        ],
-        "screenshot": "https://www.stockflow.be/optimized/desktop.png",
-        "mainEntityOfPage": {
-          "@type": "WebPage",
-          "@id": "https://www.stockflow.be/inventory-management-software"
-        },
-        "featureList": [
-          "Real-time inventory tracking",
-          "Barcode scanning",
-          "Automated reorder points",
-          "Multi-location support",
-          "Advanced analytics",
-          "Mobile access",
-          "Team collaboration",
-          "Integration capabilities"
-        ],
-        "keywords": "inventory management software, stock management, inventory control, warehouse management, inventory tracking, stock management software, inventory system, warehouse software, inventory optimization, stock control software, inventory management system, warehouse management system, inventory tracking software, stock management system, inventory software, warehouse tracking, inventory control system, stock tracking software, inventory management solution, warehouse inventory software, inventory management platform"
-      }`}} />
-
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "StockFlow",
-        "url": "https://www.stockflow.be",
-        "logo": "https://www.stockflow.be/logo.png",
-        "description": "Professional inventory management software for growing businesses",
-        "address": {
-          "@type": "PostalAddress",
-          "addressCountry": "BE"
-        },
-        "contactPoint": {
-          "@type": "ContactPoint",
-          "contactType": "customer service",
-          "email": "info@stockflow.be"
-        },
-        "sameAs": [
-          "https://www.linkedin.com/company/stockflow"
-        ]
-      }`}} />
-
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
-        "@context": "https://schema.org",
-        "@type": "WebPage",
-        "name": "Inventory Management Software - StockFlow",
-        "description": "Professional inventory management software for growing businesses. Track stock levels, manage suppliers, and grow your business with our powerful yet simple platform.",
-        "url": "https://www.stockflow.be/inventory-management-software",
-        "mainEntity": {
-          "@type": "SoftwareApplication",
-          "name": "StockFlow - Inventory Management Software"
-        },
-        "breadcrumb": {
-          "@type": "BreadcrumbList",
-          "itemListElement": [
-            {
-              "@type": "ListItem",
-              "position": 1,
-              "name": "Home",
-              "item": "https://www.stockflow.be"
-            },
-            {
-              "@type": "ListItem",
-              "position": 2,
-              "name": "Inventory Management Software",
-              "item": "https://www.stockflow.be/inventory-management-software"
-            }
-          ]
+        {
+          "@context": "https://schema.org",
+                "@type": "Organization",
+                "name": "StockFlow",
+                "url": "https://www.stockflow.be",
+                "logo": "https://www.stockflow.be/logo.png",
+                "description": "Professional inventory management software for growing businesses",
+                "address": {
+                  "@type": "PostalAddress",
+                  "addressCountry": "BE"
+                },
+                "contactPoint": {
+                  "@type": "ContactPoint",
+                  "contactType": "customer service",
+                  "email": "info@stockflow.be"
+                },
+                "sameAs": [
+                  "https://www.linkedin.com/company/stockflow"
+                ]        },        {"@context": "https://schema.org",
+                "@type": "WebPage",
+                "name": "Inventory Management Software - StockFlow",
+                "description": "Professional inventory management software for growing businesses. Track stock levels, manage suppliers, and grow your business with our powerful yet simple platform.",
+                "url": "https://www.stockflow.be/inventory-management-software",
+                "mainEntity": {
+                  "@type": "SoftwareApplication",
+                  "name": "StockFlow - Inventory Management Software"
+                },
+                "breadcrumb": {
+                  "@type": "BreadcrumbList",
+                  "itemListElement": [
+                    {
+                      "@type": "ListItem",
+                      "position": 1,
+                      "name": "Home",
+                      "item": "https://www.stockflow.be"
+                    },
+                    {
+                      "@type": "ListItem",
+                      "position": 2,
+                      "name": "Inventory Management Software",
+                      "item": "https://www.stockflow.be/inventory-management-software"
+                    }
+                    ]
+                  }
         }
-      }`}} />
-    </SeoPageLayout>
+      ]} />
+      </SeoPageLayout>
   );
 }

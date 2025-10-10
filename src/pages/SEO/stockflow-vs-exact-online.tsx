@@ -15,6 +15,7 @@ import {
   Star
 } from 'lucide-react';
 
+import { StructuredData } from '../../components/StructuredData';
 export default function StockFlowVsExactOnline() {
   usePageRefresh();
 
@@ -398,28 +399,30 @@ export default function StockFlowVsExactOnline() {
       </section>
 
       {/* Structured Data */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{
-        __html: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "Article",
-          "headline": "StockFlow vs Exact Online: Affordable Inventory Alternative 2025",
-          "description": "Compare StockFlow and Exact Online for inventory management. See features, pricing, and why StockFlow is better for SMEs.",
-          "author": {
-            "@type": "Organization",
-            "name": "StockFlow"
-          },
-          "publisher": {
-            "@type": "Organization",
-            "name": "StockFlow",
-            "logo": {
-              "@type": "ImageObject",
-              "url": "https://www.stockflow.be/logo.png"
-            }
-          },
-          "datePublished": "2025-01-01",
-          "dateModified": "2025-01-01"
-        })
-      }} />
+
+      {/* Schema.org Structured Data */}
+      <StructuredData data={[
+        {
+                  "@context": "https://schema.org",
+                  "@type": "Article",
+                  "headline": "StockFlow vs Exact Online: Affordable Inventory Alternative 2025",
+                  "description": "Compare StockFlow and Exact Online for inventory management. See features, pricing, and why StockFlow is better for SMEs.",
+                  "author": {
+                    "@type": "Organization",
+                    "name": "StockFlow"
+                  },
+                  "publisher": {
+                    "@type": "Organization",
+                    "name": "StockFlow",
+                    "logo": {
+                      "@type": "ImageObject",
+                      "url": "https://www.stockflow.be/logo.png"
+                    }
+                  },
+                  "datePublished": "2025-01-01",
+                  "dateModified": "2025-01-01"
+                }
+      ]} />
     </SeoPageLayout>
   );
 }

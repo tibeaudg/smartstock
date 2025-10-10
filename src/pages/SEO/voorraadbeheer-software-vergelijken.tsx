@@ -6,6 +6,7 @@ import { Check, Star, Smartphone, Bell, Zap, Shield, Users, TrendingUp } from 'l
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { Header } from '@/components/HeaderPublic';
 
+import { StructuredData } from '../../components/StructuredData';
 export default function VoorraadbeheerSoftwareVergelijken() {
   // Gebruik de page refresh hook
   usePageRefresh();
@@ -390,36 +391,38 @@ export default function VoorraadbeheerSoftwareVergelijken() {
       </section>
 
       {/* Structured Data */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{
-        __html: `{
-        "@context": "https://schema.org",
-        "@type": "Article",
-        "headline": "Stockbeheer Software Vergelijken 2024",
-        "description": "Vergelijk de beste stockbeheer software en voorraadbeheer programma's voor KMO's in 2024. Ontdek welke software voor voorraadbeheer het beste past bij jouw bedrijf met onze uitgebreide vergelijking.",
-        "author": { 
-          "@type": "Organization", 
-          "name": "stockflow",
-          "url": "https://www.stockflow.be"
-        },
-        "publisher": { 
-          "@type": "Organization", 
-          "name": "stockflow", 
-          "logo": { 
-            "@type": "ImageObject", 
-            "url": "https://www.stockflow.be/logo.png" 
-          } 
-        },
-        "mainEntityOfPage": { 
-          "@type": "WebPage", 
-          "@id": "https://www.stockflow.be/voorraadbeheer-software-vergelijken" 
-        },
-        "datePublished": "2024-01-15",
-        "dateModified": "2024-01-15",
-        "image": "https://www.stockflow.be/logo.png",
-        "articleSection": "Voorraadbeheer",
-        "keywords": "stockbeheer software, software stockbeheer, programma stockbeheer, voorraadbeheer software, stockbeheer programma, software vergelijken, beste voorraadbeheer software, voorraadbeheer software kiezen, voorraadbeheersoftware, bedrijfssoftware vergelijken, voorraadbeheer app, programma voorraadbeheer, software voor voorraadbeheer, voorraad app, app voorraadbeheer, beste voorraadbeheer app, voorraadbeheer programma"
-      }` }} />
-    </SeoPageLayout><Footer /></>
+
+      {/* Schema.org Structured Data */}
+      <StructuredData data={[
+        {"@context": "https://schema.org",
+                "@type": "Article",
+                "headline": "Stockbeheer Software Vergelijken 2024",
+                "description": "Vergelijk de beste stockbeheer software en voorraadbeheer programma's voor KMO's in 2024. Ontdek welke software voor voorraadbeheer het beste past bij jouw bedrijf met onze uitgebreide vergelijking.",
+                "author": { 
+                  "@type": "Organization", 
+                  "name": "stockflow",
+                  "url": "https://www.stockflow.be"
+                },
+                "publisher": { 
+                  "@type": "Organization", 
+                  "name": "stockflow", 
+                  "logo": { 
+                    "@type": "ImageObject", 
+                    "url": "https://www.stockflow.be/logo.png" 
+                  } 
+                },
+                "mainEntityOfPage": { 
+                  "@type": "WebPage", 
+                  "@id": "https://www.stockflow.be/voorraadbeheer-software-vergelijken" 
+                },
+                "datePublished": "2024-01-15",
+                "dateModified": "2024-01-15",
+                "image": "https://www.stockflow.be/logo.png",
+                  "articleSection": "Voorraadbeheer",
+                  "keywords": "stockbeheer software, software stockbeheer, programma stockbeheer, voorraadbeheer software, stockbeheer programma, software vergelijken, beste voorraadbeheer software, voorraadbeheer software kiezen, voorraadbeheersoftware, bedrijfssoftware vergelijken, voorraadbeheer app, programma voorraadbeheer, software voor voorraadbeheer, voorraad app, app voorraadbeheer, beste voorraadbeheer app, voorraadbeheer programma"
+                }
+      ]} />
+      </SeoPageLayout><Footer /></>
 
   );
 } 

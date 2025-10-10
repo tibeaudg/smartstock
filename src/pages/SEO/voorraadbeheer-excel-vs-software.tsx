@@ -4,6 +4,7 @@ import SeoPageLayout from '../../components/SeoPageLayout';
 import { Check, AlertTriangle, FileSpreadsheet, X } from 'lucide-react';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 
+import { StructuredData } from '../../components/StructuredData';
 export default function VoorraadbeheerExcelVsSoftware() {
   // Gebruik de page refresh hook
   usePageRefresh();
@@ -478,78 +479,77 @@ export default function VoorraadbeheerExcelVsSoftware() {
       </div>
 
       {/* Structured Data */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": "Kan ik mijn Excel data importeren in voorraadbeheer software?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Ja, de meeste voorraadbeheer software ondersteunt Excel import. Je kunt je bestaande data eenvoudig overzetten naar het nieuwe systeem."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Hoeveel kost voorraadbeheer software?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "stockflow biedt een gratis versie aan voor kleine bedrijven. Premium versies kosten vanaf �29 per maand, afhankelijk van je behoeften."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Hoe lang duurt het om over te stappen?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "De overstap duurt meestal 1-2 weken, inclusief data import, training en het testen van het nieuwe systeem."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Kan ik beide systemen parallel gebruiken tijdens de overstap?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Ja, veel bedrijven gebruiken beide systemen tijdelijk om de overstap geleidelijk te maken en fouten te voorkomen."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Welke software is het beste voor kleine bedrijven?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Bekijk onze complete vergelijking van voorraadbeheer software voor KMO's. stockflow is speciaal ontwikkeld voor kleine bedrijven."
-            }
-          }
-        ]
-      }`}} />
 
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
-        "@context": "https://schema.org",
-        "@type": "Article",
-        "headline": "Voorraadbeheer: Excel vs. Software",
-        "description": "Voorraadbeheer in Excel of met software? Complete vergelijking van voordelen en nadelen. Ontdek wanneer je moet overstappen van Excel naar moderne voorraadbeheer software voor KMO's.",
-        "image": "https://www.stockflow.be/optimized/Inventory-Management.png",
-        "author": {
-          "@type": "Organization",
-          "name": "stockflow"
-        },
-        "publisher": {
-          "@type": "Organization",
-          "name": "stockflow",
-          "logo": {
-            "@type": "ImageObject",
-            "url": "https://www.stockflow.be/logo.png"
-          }
-        },
-        "datePublished": "2024-01-01",
-        "dateModified": "2024-12-19",
-        "mainEntityOfPage": {
-          "@type": "WebPage",
-          "@id": "https://www.stockflow.be/voorraadbeheer-excel-vs-software"
-        }
-      }`}} />
+      {/* Schema.org Structured Data */}
+      <StructuredData data={[
+        {"@context": "https://schema.org",
+                "@type": "FAQPage",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "Kan ik mijn Excel data importeren in voorraadbeheer software?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Ja, de meeste voorraadbeheer software ondersteunt Excel import. Je kunt je bestaande data eenvoudig overzetten naar het nieuwe systeem."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "Hoeveel kost voorraadbeheer software?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "stockflow biedt een gratis versie aan voor kleine bedrijven. Premium versies kosten vanaf �29 per maand, afhankelijk van je behoeften."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "Hoe lang duurt het om over te stappen?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "De overstap duurt meestal 1-2 weken, inclusief data import, training en het testen van het nieuwe systeem."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "Kan ik beide systemen parallel gebruiken tijdens de overstap?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Ja, veel bedrijven gebruiken beide systemen tijdelijk om de overstap geleidelijk te maken en fouten te voorkomen."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "Welke software is het beste voor kleine bedrijven?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Bekijk onze complete vergelijking van voorraadbeheer software voor KMO's. stockflow is speciaal ontwikkeld voor kleine bedrijven."
+                    }
+                  }
+                ]        },        {"@context": "https://schema.org",
+                "@type": "Article",
+                "headline": "Voorraadbeheer: Excel vs. Software",
+                "description": "Voorraadbeheer in Excel of met software? Complete vergelijking van voordelen en nadelen. Ontdek wanneer je moet overstappen van Excel naar moderne voorraadbeheer software voor KMO's.",
+                "image": "https://www.stockflow.be/optimized/Inventory-Management.png",
+                "author": {
+                  "@type": "Organization",
+                  "name": "stockflow"
+                },
+                "publisher": {
+                  "@type": "Organization",
+                  "name": "stockflow",
+                  "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://www.stockflow.be/logo.png"
+                  }
+                },
+                "datePublished": "2024-01-01",
+                "dateModified": "2024-12-19",
+                "mainEntityOfPage": {
+                  "@type": "WebPage",
+                  "@id": "https://www.stockflow.be/voorraadbeheer-excel-vs-software"
+                }
+              }
+        ]} />
     </SeoPageLayout>
   );
 } 

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import SeoPageLayout from '../../components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 
+import { StructuredData } from '../../components/StructuredData';
 export default function VoorraadbeheerExcel() {
   // Gebruik de page refresh hook
   usePageRefresh();
@@ -387,8 +388,7 @@ export default function VoorraadbeheerExcel() {
         </div>
       </footer>
 
-      {/* Schema.org Structured Data */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
         "@context": "https://schema.org",
         "@type": "FAQPage",
         "mainEntity": [
@@ -403,31 +403,31 @@ export default function VoorraadbeheerExcel() {
         ]
       }`}} />
 
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
-        "@context": "https://schema.org",
-        "@type": "Article",
-        "headline": "Voorraadbeheer in Excel vs Software: Wat is Beter?",
-        "description": "Vergelijk voorraadbeheer in Excel met gespecialiseerde software. Ontdek waarom Excel beperkt is en hoe software je tijd bespaart.",
-        "image": "https://www.stockflow.be/optimized/Inventory-Management.png",
-        "author": {
-          "@type": "Organization",
-          "name": "stockflow"
-        },
-        "publisher": {
-          "@type": "Organization",
-          "name": "stockflow",
-          "logo": {
-            "@type": "ImageObject",
-            "url": "https://www.stockflow.be/logo.png"
-          }
-        },
-        "mainEntityOfPage": {
-          "@type": "WebPage",
-          "@id": "https://www.stockflow.be/voorraadbeheer-excel"
-        },
-        "datePublished": "2024-06-01",
-        "dateModified": "2024-12-19"
-      }`}} />
+      {/* Schema.org Structured Data */}
+      <StructuredData data={[
+        {"@context": "https://schema.org",
+                "@type": "Article",
+                "headline": "Voorraadbeheer in Excel vs Software: Wat is Beter?",
+                "description": "Vergelijk voorraadbeheer in Excel met gespecialiseerde software. Ontdek waarom Excel beperkt is en hoe software je tijd bespaart.",
+                "image": "https://www.stockflow.be/optimized/Inventory-Management.png",
+                "author": {
+                  "@type": "Organization",
+                  "name": "stockflow"
+                },
+                "publisher": {
+                  "@type": "Organization",
+                  "name": "stockflow",
+                  "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://www.stockflow.be/logo.png"
+                  }
+                },
+                "mainEntityOfPage": {
+                  "@type": "WebPage",
+                  "@id": "https://www.stockflow.be/voorraadbeheer-excel"
+                },
+                "datePublished": "2024-06-01",
+                "dateModified": "2024-12-19"        }      ]} />
     </SeoPageLayout>
   );
 }

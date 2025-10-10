@@ -4,6 +4,7 @@ import SeoPageLayout from '../../components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { Check, Package, MapPin, Smartphone, BarChart3, Users, Zap, TrendingUp, ArrowRight, Clock } from 'lucide-react';
 
+import { StructuredData } from '../../components/StructuredData';
 export default function Magazijnbeheer() {
   usePageRefresh();
   
@@ -692,8 +693,7 @@ export default function Magazijnbeheer() {
         </div>
       </footer>
 
-      {/* Schema.org Structured Data */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
         "@context": "https://schema.org",
         "@type": "FAQPage",
         "mainEntity": [
@@ -708,30 +708,32 @@ export default function Magazijnbeheer() {
         ]
       }`}} />
 
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
-        "@context": "https://schema.org",
-        "@type": "Article",
-        "headline": "Magazijnbeheer Software - Optimaliseer je Warehouse",
-        "description": "Professionele magazijnbeheer software met multi-locatie support, barcode scanning en shipping integratie voor efficiënte warehouse operaties.",
-        "author": {
-          "@type": "Organization",
-          "name": "stockflow"
-        },
-        "publisher": {
-          "@type": "Organization",
-          "name": "stockflow",
-          "logo": {
-            "@type": "ImageObject",
-            "url": "https://www.stockflow.be/logo.png"
-          }
-        },
-        "datePublished": "2024-01-01",
-        "dateModified": "${new Date().toISOString().split('T')[0]}",
-        "mainEntityOfPage": {
-          "@type": "WebPage",
-          "@id": "https://www.stockflow.be/magazijnbeheer"
-        }
-      }`}} />
+      {/* Schema.org Structured Data */}
+      <StructuredData data={[
+        {"@context": "https://schema.org",
+                "@type": "Article",
+                "headline": "Magazijnbeheer Software - Optimaliseer je Warehouse",
+                "description": "Professionele magazijnbeheer software met multi-locatie support, barcode scanning en shipping integratie voor efficiënte warehouse operaties.",
+                "author": {
+                  "@type": "Organization",
+                  "name": "stockflow"
+                },
+                "publisher": {
+                  "@type": "Organization",
+                  "name": "stockflow",
+                  "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://www.stockflow.be/logo.png"
+                  }
+                },
+                "datePublished": "2024-01-01",
+                "dateModified": "new Date().toISOString().split('T')[0]",
+                "mainEntityOfPage": {
+                  "@type": "WebPage",
+                  "@id": "https://www.stockflow.be/magazijnbeheer"
+                }
+              }
+        ]} />
     </SeoPageLayout>
   );
 }

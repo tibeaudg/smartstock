@@ -4,6 +4,7 @@ import SeoPageLayout from '../../components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { Check, TrendingUp, Clock, Shield, Users, Zap, DollarSign, BarChart3, ArrowRight } from 'lucide-react';
 
+import { StructuredData } from '../../components/StructuredData';
 export default function InventoryManagementSME() {
   usePageRefresh();
   
@@ -345,52 +346,56 @@ export default function InventoryManagementSME() {
       })}} />
 
       {/* Schema.org Structured Data - SoftwareApplication */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        "name": "StockFlow - Inventory Management for SMEs",
-        "description": "Inventory management software specially for SMEs and small businesses. Start free, implement in 1 day and save 70% time.",
-        "applicationCategory": "BusinessApplication",
-        "applicationSubCategory": "SaaS",
-        "operatingSystem": "Web Browser",
-        "softwareVersion": "2.0",
-        "offers": {
-          "@type": "Offer",
-          "price": "0",
-          "priceCurrency": "EUR",
-          "availability": "https://schema.org/InStock"
-        },
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "4.8",
-          "ratingCount": "32",
-          "bestRating": "5",
-          "worstRating": "1"
-        },
-        "featureList": [
-          "Affordable & transparent pricing",
-          "Quick implementation",
-          "Easy for teams",
-          "Scalable",
-          "Secure",
-          "Automation"
-        ],
-        "author": {
-          "@type": "Organization",
-          "name": "StockFlow"
-        },
-        "publisher": {
-          "@type": "Organization",
-          "name": "StockFlow",
-          "logo": {
-            "@type": "ImageObject",
-            "url": "https://www.stockflow.be/logo.png"
-          }
-        },
-        "url": "https://www.stockflow.be/inventory-management-sme",
-        "inLanguage": "en",
-        "availableLanguage": ["en", "nl"]
-      })}} />
+
+      {/* Schema.org Structured Data */}
+      <StructuredData data={[
+        {
+                "@context": "https://schema.org",
+                "@type": "SoftwareApplication",
+                "name": "StockFlow - Inventory Management for SMEs",
+                "description": "Inventory management software specially for SMEs and small businesses. Start free, implement in 1 day and save 70% time.",
+                "applicationCategory": "BusinessApplication",
+                "applicationSubCategory": "SaaS",
+                "operatingSystem": "Web Browser",
+                "softwareVersion": "2.0",
+                "offers": {
+                  "@type": "Offer",
+                  "price": "0",
+                  "priceCurrency": "EUR",
+                  "availability": "https://schema.org/InStock"
+                },
+                "aggregateRating": {
+                  "@type": "AggregateRating",
+                  "ratingValue": "4.8",
+                  "ratingCount": "32",
+                  "bestRating": "5",
+                  "worstRating": "1"
+                },
+                "featureList": [
+                  "Affordable & transparent pricing",
+                  "Quick implementation",
+                  "Easy for teams",
+                  "Scalable",
+                  "Secure",
+                  "Automation"
+                ],
+                "author": {
+                  "@type": "Organization",
+                  "name": "StockFlow"
+                },
+                "publisher": {
+                  "@type": "Organization",
+                  "name": "StockFlow",
+                  "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://www.stockflow.be/logo.png"
+                  }
+                },
+                "url": "https://www.stockflow.be/inventory-management-sme",
+                "inLanguage": "en",
+                "availableLanguage": ["en", "nl"]
+              }
+      ]} />
     </SeoPageLayout>
   );
 }

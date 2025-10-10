@@ -4,6 +4,7 @@ import SeoPageLayout from '../../components/SeoPageLayout';
 import { AlertTriangle, Clock, Shield, Database, Settings, Users, Check, X } from 'lucide-react';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 
+import { StructuredData } from '../../components/StructuredData';
 export default function VoorraadbeheerFoutenVoorkomen() {
   // Gebruik de page refresh hook
   usePageRefresh();
@@ -472,78 +473,80 @@ export default function VoorraadbeheerFoutenVoorkomen() {
       </div>
 
       {/* Structured Data */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": "Hoe kan ik handmatige invoerfouten voorkomen?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Door gebruik te maken van voorraadbeheer software met automatische synchronisatie, barcode scanners en dubbele controle procedures kun je handmatige fouten minimaliseren."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Hoe vaak moet ik mijn voorraad controleren?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Dit hangt af van je bedrijfstype. Voor de meeste bedrijven is een wekelijkse controle voldoende, maar voor snel veranderende voorraad kan dagelijkse controle nodig zijn."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Welke software helpt bij foutpreventie?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Moderne voorraadbeheer software zoals stockflow biedt automatische updates, meldingen en foutpreventie functies."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Hoe kan ik mijn team trainen voor foutpreventie?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Organiseer regelmatige trainingen, maak duidelijke procedures en gebruik gebruiksvriendelijke software die fouten voorkomt."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Wat zijn de kosten van voorraadbeheer fouten?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Fouten kunnen leiden tot tekorten, overstock, ontevreden klanten en verlies van omzet. De kosten kunnen oplopen tot 10-20% van je voorraadwaarde per jaar."
-            }
-          }
-        ]
-      }`}} />
 
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
-        "@context": "https://schema.org",
-        "@type": "Article",
-        "headline": "Fouten in Voorraadbeheer Voorkomen",
-        "description": "Veelgemaakte fouten in voorraadbeheer voorkomen? Complete gids met tips en best practices voor een foutloos voorraadbeheer in je bedrijf. Leer hoe je voorraadbeheer fouten kunt voorkomen.",
-        "image": "https://www.stockflow.be/logo.png",
-        "author": {
-          "@type": "Organization",
-          "name": "stockflow"
+      {/* Schema.org Structured Data */}
+      <StructuredData data={[
+        {"@context": "https://schema.org",
+                "@type": "FAQPage",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "Hoe kan ik handmatige invoerfouten voorkomen?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Door gebruik te maken van voorraadbeheer software met automatische synchronisatie, barcode scanners en dubbele controle procedures kun je handmatige fouten minimaliseren."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "Hoe vaak moet ik mijn voorraad controleren?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Dit hangt af van je bedrijfstype. Voor de meeste bedrijven is een wekelijkse controle voldoende, maar voor snel veranderende voorraad kan dagelijkse controle nodig zijn."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "Welke software helpt bij foutpreventie?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Moderne voorraadbeheer software zoals stockflow biedt automatische updates, meldingen en foutpreventie functies."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "Hoe kan ik mijn team trainen voor foutpreventie?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Organiseer regelmatige trainingen, maak duidelijke procedures en gebruik gebruiksvriendelijke software die fouten voorkomt."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "Wat zijn de kosten van voorraadbeheer fouten?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Fouten kunnen leiden tot tekorten, overstock, ontevreden klanten en verlies van omzet. De kosten kunnen oplopen tot 10-20% van je voorraadwaarde per jaar."
+                    }
+                  }
+                ]
         },
-        "publisher": {
-          "@type": "Organization",
-          "name": "stockflow",
-          "logo": {
-            "@type": "ImageObject",
-            "url": "https://www.stockflow.be/logo.png"
-          }
-        },
-        "datePublished": "2024-01-01",
-        "dateModified": "2024-12-19",
-        "mainEntityOfPage": {
-          "@type": "WebPage",
-          "@id": "https://www.stockflow.be/voorraadbeheer-fouten-voorkomen"
+        {
+          "@context": "https://schema.org",
+          "@type": "Article",
+                "headline": "Fouten in Voorraadbeheer Voorkomen",
+                "description": "Veelgemaakte fouten in voorraadbeheer voorkomen? Complete gids met tips en best practices voor een foutloos voorraadbeheer in je bedrijf. Leer hoe je voorraadbeheer fouten kunt voorkomen.",
+                "image": "https://www.stockflow.be/logo.png",
+                "author": {
+                  "@type": "Organization",
+                  "name": "stockflow"
+                },
+                "publisher": {
+                  "@type": "Organization",
+                  "name": "stockflow",
+                  "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://www.stockflow.be/logo.png"
+                  }
+                },
+                "datePublished": "2024-01-01",
+                "dateModified": "2024-12-19",
+                "mainEntityOfPage": {
+                  "@type": "WebPage",
+                  "@id": "https://www.stockflow.be/voorraadbeheer-fouten-voorkomen"
+                }
         }
-      }`}} />
+      ]} />
     </SeoPageLayout>
   );
 } 

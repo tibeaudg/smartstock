@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import SeoPageLayout from '../../components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 
+import { StructuredData } from '../../components/StructuredData';
 export default function AppVoorraadbeheerThuis() {
   // Gebruik de page refresh hook
   usePageRefresh();
@@ -302,8 +303,7 @@ export default function AppVoorraadbeheerThuis() {
         </div>
       </footer>
 
-      {/* Schema.org Structured Data */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
         "@context": "https://schema.org",
         "@type": "FAQPage",
         "mainEntity": [
@@ -318,31 +318,31 @@ export default function AppVoorraadbeheerThuis() {
         ]
       }`}} />
 
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
-        "@context": "https://schema.org",
-        "@type": "Article",
-        "headline": "App Voorraadbeheer Thuis - Voorraadbeheer voor Thuisbedrijven",
-        "description": "Ontdek de beste app voorraadbeheer thuis voor je thuisbedrijf. Eenvoudig voorraadbeheer voor kleine ondernemingen, webshops en thuisbedrijven. Gratis starten!",
-        "image": "https://www.stockflow.be/optimized/Inventory-Management.png",
-        "author": {
-          "@type": "Organization",
-          "name": "stockflow"
-        },
-        "publisher": {
-          "@type": "Organization",
-          "name": "stockflow",
-          "logo": {
-            "@type": "ImageObject",
-            "url": "https://www.stockflow.be/logo.png"
-          }
-        },
-        "mainEntityOfPage": {
-          "@type": "WebPage",
-          "@id": "https://www.stockflow.be/app-voorraadbeheer-thuis"
-        },
-        "datePublished": "2024-06-01",
-        "dateModified": "2024-12-19"
-      }`}} />
+      {/* Schema.org Structured Data */}
+      <StructuredData data={[
+        {"@context": "https://schema.org",
+                "@type": "Article",
+                "headline": "App Voorraadbeheer Thuis - Voorraadbeheer voor Thuisbedrijven",
+                "description": "Ontdek de beste app voorraadbeheer thuis voor je thuisbedrijf. Eenvoudig voorraadbeheer voor kleine ondernemingen, webshops en thuisbedrijven. Gratis starten!",
+                "image": "https://www.stockflow.be/optimized/Inventory-Management.png",
+                "author": {
+                  "@type": "Organization",
+                  "name": "stockflow"
+                },
+                "publisher": {
+                  "@type": "Organization",
+                  "name": "stockflow",
+                  "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://www.stockflow.be/logo.png"
+                  }
+                },
+                "mainEntityOfPage": {
+                  "@type": "WebPage",
+                  "@id": "https://www.stockflow.be/app-voorraadbeheer-thuis"
+                },
+                "datePublished": "2024-06-01",
+                "dateModified": "2024-12-19"        }      ]} />
     </SeoPageLayout>
   );
 }

@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { generateFAQSchema, generateSoftwareApplicationSchema, generateBreadcrumbSchema } from '@/lib/structuredData';
 
+import { StructuredData } from '../../components/StructuredData';
 export default function StockFlowVsSortly() {
   usePageRefresh();
 
@@ -397,28 +398,30 @@ export default function StockFlowVsSortly() {
       </section>
 
       {/* Structured Data */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{
-        __html: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "Article",
-          "headline": "StockFlow vs Sortly: Complete Comparison 2025",
-          "description": "Compare StockFlow and Sortly inventory management software. Features, pricing, and migration guide.",
-          "author": {
-            "@type": "Organization",
-            "name": "StockFlow"
-          },
-          "publisher": {
-            "@type": "Organization",
-            "name": "StockFlow",
-            "logo": {
-              "@type": "ImageObject",
-              "url": "https://www.stockflow.be/logo.png"
-            }
-          },
-          "datePublished": "2025-01-01",
-          "dateModified": "2025-01-01"
-        })
-      }} />
+
+      {/* Schema.org Structured Data */}
+      <StructuredData data={[
+        {
+                  "@context": "https://schema.org",
+                  "@type": "Article",
+                  "headline": "StockFlow vs Sortly: Complete Comparison 2025",
+                  "description": "Compare StockFlow and Sortly inventory management software. Features, pricing, and migration guide.",
+                  "author": {
+                    "@type": "Organization",
+                    "name": "StockFlow"
+                  },
+                  "publisher": {
+                    "@type": "Organization",
+                    "name": "StockFlow",
+                    "logo": {
+                      "@type": "ImageObject",
+                      "url": "https://www.stockflow.be/logo.png"
+                    }
+                  },
+                  "datePublished": "2025-01-01",
+                  "dateModified": "2025-01-01"
+                }
+      ]} />
     </SeoPageLayout>
   );
 }

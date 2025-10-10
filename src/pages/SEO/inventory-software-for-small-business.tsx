@@ -14,6 +14,7 @@ import {
   Camera
 } from 'lucide-react';
 
+import { StructuredData } from '../../components/StructuredData';
 export default function InventorySoftwareForSmallBusiness() {
   // Gebruik de page refresh hook
   usePageRefresh();
@@ -553,8 +554,7 @@ export default function InventorySoftwareForSmallBusiness() {
         </div>
       </footer>
 
-      {/* Schema.org Structured Data */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
         "@context": "https://schema.org",
         "@type": "FAQPage",
         "mainEntity": [
@@ -569,62 +569,64 @@ export default function InventorySoftwareForSmallBusiness() {
         ]
       }`}} />
 
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
-        "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        "name": "StockFlow - Inventory Software for Small Business",
-        "description": "Perfect inventory software for small businesses. Easy to use, affordable pricing, and powerful features. Start free with up to 30 products.",
-        "applicationCategory": "BusinessApplication",
-        "operatingSystem": "Web Browser",
-        "offers": [
-          {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "EUR",
-            "description": "Free plan - Up to 30 products",
-            "availability": "https://schema.org/InStock"
-          },
-          {
-            "@type": "Offer",
-            "price": "29",
-            "priceCurrency": "EUR",
-            "description": "Growth plan - Unlimited products with advanced features",
-            "availability": "https://schema.org/InStock"
-          }
-        ],
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "4.8",
-          "ratingCount": "500",
-          "bestRating": "5",
-          "worstRating": "1"
-        },
-        "author": {
-          "@type": "Organization",
-          "name": "StockFlow"
-        },
-        "publisher": {
-          "@type": "Organization",
-          "name": "StockFlow",
-          "logo": {
-            "@type": "ImageObject",
-            "url": "https://www.stockflow.be/logo.png"
-          }
-        },
-        "image": "https://www.stockflow.be/Inventory-Management.png",
-        "mainEntityOfPage": {
-          "@type": "WebPage",
-          "@id": "https://www.stockflow.be/inventory-software-for-small-business"
-        },
-        "featureList": [
-          "Small business focused",
-          "Mobile barcode scanning",
-          "Automated alerts",
-          "Simple reports",
-          "Team collaboration",
-          "Affordable pricing"
-        ]
-      }`}} />
+      {/* Schema.org Structured Data */}
+      <StructuredData data={[
+        {"@context": "https://schema.org",
+                "@type": "SoftwareApplication",
+                "name": "StockFlow - Inventory Software for Small Business",
+                "description": "Perfect inventory software for small businesses. Easy to use, affordable pricing, and powerful features. Start free with up to 30 products.",
+                "applicationCategory": "BusinessApplication",
+                "operatingSystem": "Web Browser",
+                "offers": [
+                  {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "EUR",
+                    "description": "Free plan - Up to 30 products",
+                    "availability": "https://schema.org/InStock"
+                  },
+                  {
+                    "@type": "Offer",
+                    "price": "29",
+                    "priceCurrency": "EUR",
+                    "description": "Growth plan - Unlimited products with advanced features",
+                    "availability": "https://schema.org/InStock"
+                  }
+                ],
+                "aggregateRating": {
+                  "@type": "AggregateRating",
+                  "ratingValue": "4.8",
+                  "ratingCount": "500",
+                  "bestRating": "5",
+                  "worstRating": "1"
+                },
+                "author": {
+                  "@type": "Organization",
+                  "name": "StockFlow"
+                },
+                "publisher": {
+                  "@type": "Organization",
+                  "name": "StockFlow",
+                  "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://www.stockflow.be/logo.png"
+                  }
+                },
+                "image": "https://www.stockflow.be/Inventory-Management.png",
+                "mainEntityOfPage": {
+                  "@type": "WebPage",
+                  "@id": "https://www.stockflow.be/inventory-software-for-small-business"
+                },
+                "featureList": [
+                  "Small business focused",
+                  "Mobile barcode scanning",
+                  "Automated alerts",
+                  "Simple reports",
+                  "Team collaboration",
+                  "Affordable pricing"
+                ]
+              }
+        ]} />
     </SeoPageLayout>
   );
 }

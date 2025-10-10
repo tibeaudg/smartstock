@@ -4,6 +4,7 @@ import SeoPageLayout from '../../components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { Check, Smartphone, Zap, Shield, Users, Star, BarChart3, Camera } from 'lucide-react';
 
+import { StructuredData } from '../../components/StructuredData';
 export default function StockbeheerApp() {
   // Gebruik de page refresh hook
   usePageRefresh();
@@ -471,8 +472,7 @@ export default function StockbeheerApp() {
         </div>
       </footer>
 
-      {/* Schema.org Structured Data */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
         "@context": "https://schema.org",
         "@type": "FAQPage",
         "mainEntity": [
@@ -487,29 +487,31 @@ export default function StockbeheerApp() {
         ]
       }`}} />
 
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
-        "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        "name": "stockflow - Stockbeheer App",
-        "description": "De beste stockbeheer app voor KMO's. Mobiel stockbeheer met barcode scanning, real-time synchronisatie en gratis starten.",
-        "applicationCategory": "BusinessApplication",
-        "operatingSystem": "Web Browser",
-        "offers": {
-          "@type": "Offer",
-          "price": "0",
-          "priceCurrency": "EUR",
-          "description": "100% gratis stockbeheer app voor KMO's"
-        },
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "4.8",
-          "ratingCount": "32"
-        },
-        "author": {"@type": "Organization", "name": "stockflow"},
-        "publisher": {"@type": "Organization", "name": "stockflow", "logo": {"@type": "ImageObject", "url": "https://www.stockflow.be/logo.png"}},
-        "image": "https://www.stockflow.be/optimized/mobile.png",
-        "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.stockflow.be/stockbeheer-app"}
-      }`}} />
+      {/* Schema.org Structured Data */}
+      <StructuredData data={[
+        {"@context": "https://schema.org",
+                "@type": "SoftwareApplication",
+                "name": "stockflow - Stockbeheer App",
+                "description": "De beste stockbeheer app voor KMO's. Mobiel stockbeheer met barcode scanning, real-time synchronisatie en gratis starten.",
+                "applicationCategory": "BusinessApplication",
+                "operatingSystem": "Web Browser",
+                "offers": {
+                  "@type": "Offer",
+                  "price": "0",
+                  "priceCurrency": "EUR",
+                  "description": "100% gratis stockbeheer app voor KMO's"
+                },
+                "aggregateRating": {
+                  "@type": "AggregateRating",
+                  "ratingValue": "4.8",
+                  "ratingCount": "32"
+                },
+                "author": {"@type": "Organization", "name": "stockflow"},
+                "publisher": {"@type": "Organization", "name": "stockflow", "logo": {"@type": "ImageObject", "url": "https://www.stockflow.be/logo.png"}},
+                "image": "https://www.stockflow.be/optimized/mobile.png",
+                "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.stockflow.be/stockbeheer-app"}
+              }
+        ]} />
     </SeoPageLayout>
   );
 }

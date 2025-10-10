@@ -15,6 +15,7 @@ import {
   Star
 } from 'lucide-react';
 
+import { StructuredData } from '../../components/StructuredData';
 export default function StockFlowVsSortlyNL() {
   usePageRefresh();
 
@@ -351,29 +352,31 @@ export default function StockFlowVsSortlyNL() {
       </section>
 
       {/* Structured Data */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{
-        __html: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "Article",
-          "headline": "StockFlow vs Sortly: Complete Vergelijking 2025",
-          "description": "Vergelijk StockFlow en Sortly voorraadbeheer software. Functies, prijzen, en migratie gids.",
-          "author": {
-            "@type": "Organization",
-            "name": "StockFlow"
-          },
-          "publisher": {
-            "@type": "Organization",
-            "name": "StockFlow",
-            "logo": {
-              "@type": "ImageObject",
-              "url": "https://www.stockflow.be/logo.png"
-            }
-          },
-          "datePublished": "2025-01-01",
-          "dateModified": "2025-01-01",
-          "inLanguage": "nl"
-        })
-      }} />
+
+      {/* Schema.org Structured Data */}
+      <StructuredData data={[
+        {
+                  "@context": "https://schema.org",
+                  "@type": "Article",
+                  "headline": "StockFlow vs Sortly: Complete Vergelijking 2025",
+                  "description": "Vergelijk StockFlow en Sortly voorraadbeheer software. Functies, prijzen, en migratie gids.",
+                  "author": {
+                    "@type": "Organization",
+                    "name": "StockFlow"
+                  },
+                  "publisher": {
+                    "@type": "Organization",
+                    "name": "StockFlow",
+                    "logo": {
+                      "@type": "ImageObject",
+                      "url": "https://www.stockflow.be/logo.png"
+                    }
+                  },
+                  "datePublished": "2025-01-01",
+                  "dateModified": "2025-01-01",
+                  "inLanguage": "nl"
+                }
+      ]} />
     </SeoPageLayout>
   );
 }

@@ -4,6 +4,7 @@ import SeoPageLayout from '../../components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { Check, X, TrendingUp, AlertCircle, Users, MapPin, Clock, DollarSign, Zap, Target, Package, BarChart3 } from 'lucide-react';
 
+import { StructuredData } from '../../components/StructuredData';
 export default function ChecklistVoorraadbeheerSoftwareGereed() {
   usePageRefresh();
   
@@ -712,8 +713,7 @@ export default function ChecklistVoorraadbeheerSoftwareGereed() {
         </div>
       </footer>
 
-      {/* Schema.org Structured Data */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
         "@context": "https://schema.org",
         "@type": "FAQPage",
         "mainEntity": [
@@ -728,30 +728,32 @@ export default function ChecklistVoorraadbeheerSoftwareGereed() {
         ]
       }`}} />
 
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
-        "@context": "https://schema.org",
-        "@type": "Article",
-        "headline": "Checklist: Is je Bedrijf Klaar voor Voorraadbeheer Software?",
-        "description": "10-punten readiness checklist om te bepalen of jouw bedrijf klaar is voor voorraadbeheer software, inclusief scoring en advies.",
-        "author": {
-          "@type": "Organization",
-          "name": "stockflow"
-        },
-        "publisher": {
-          "@type": "Organization",
-          "name": "stockflow",
-          "logo": {
-            "@type": "ImageObject",
-            "url": "https://www.stockflow.be/logo.png"
-          }
-        },
-        "datePublished": "2024-01-01",
-        "dateModified": "${new Date().toISOString().split('T')[0]}",
-        "mainEntityOfPage": {
-          "@type": "WebPage",
-          "@id": "https://www.stockflow.be/checklist-voorraadbeheer-software-gereed"
-        }
-      }`}} />
+      {/* Schema.org Structured Data */}
+      <StructuredData data={[
+        {"@context": "https://schema.org",
+                "@type": "Article",
+                "headline": "Checklist: Is je Bedrijf Klaar voor Voorraadbeheer Software?",
+                "description": "10-punten readiness checklist om te bepalen of jouw bedrijf klaar is voor voorraadbeheer software, inclusief scoring en advies.",
+                "author": {
+                  "@type": "Organization",
+                  "name": "stockflow"
+                },
+                "publisher": {
+                  "@type": "Organization",
+                  "name": "stockflow",
+                  "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://www.stockflow.be/logo.png"
+                  }
+                },
+                "datePublished": "2024-01-01",
+                "dateModified": "new Date().toISOString().split('T')[0]",
+                "mainEntityOfPage": {
+                  "@type": "WebPage",
+                  "@id": "https://www.stockflow.be/checklist-voorraadbeheer-software-gereed"
+                }
+              }
+        ]} />
     </SeoPageLayout>
   );
 }

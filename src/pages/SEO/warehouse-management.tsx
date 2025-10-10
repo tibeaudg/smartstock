@@ -4,6 +4,7 @@ import SeoPageLayout from '../../components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { Check, Package, MapPin, Smartphone, BarChart3, Users, Zap, TrendingUp, ArrowRight, Clock } from 'lucide-react';
 
+import { StructuredData } from '../../components/StructuredData';
 export default function WarehouseManagement() {
   usePageRefresh();
   
@@ -373,52 +374,56 @@ export default function WarehouseManagement() {
       })}} />
 
       {/* Schema.org Structured Data - SoftwareApplication */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        "name": "StockFlow - Warehouse Management Software",
-        "description": "Professional warehouse management software with multi-location support, barcode scanning and shipping integration. Increase efficiency and eliminate errors in your warehouse.",
-        "applicationCategory": "BusinessApplication",
-        "applicationSubCategory": "SaaS",
-        "operatingSystem": "Web Browser",
-        "softwareVersion": "2.0",
-        "offers": {
-          "@type": "Offer",
-          "price": "0",
-          "priceCurrency": "EUR",
-          "availability": "https://schema.org/InStock"
-        },
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "4.8",
-          "ratingCount": "32",
-          "bestRating": "5",
-          "worstRating": "1"
-        },
-        "featureList": [
-          "Multi-location management",
-          "Barcode scanning",
-          "Picking & packing",
-          "Team management",
-          "Real-time reporting",
-          "Shipping integration"
-        ],
-        "author": {
-          "@type": "Organization",
-          "name": "StockFlow"
-        },
-        "publisher": {
-          "@type": "Organization",
-          "name": "StockFlow",
-          "logo": {
-            "@type": "ImageObject",
-            "url": "https://www.stockflow.be/logo.png"
-          }
-        },
-        "url": "https://www.stockflow.be/warehouse-management",
-        "inLanguage": "en",
-        "availableLanguage": ["en", "nl"]
-      })}} />
+
+      {/* Schema.org Structured Data */}
+      <StructuredData data={[
+        {
+                "@context": "https://schema.org",
+                "@type": "SoftwareApplication",
+                "name": "StockFlow - Warehouse Management Software",
+                "description": "Professional warehouse management software with multi-location support, barcode scanning and shipping integration. Increase efficiency and eliminate errors in your warehouse.",
+                "applicationCategory": "BusinessApplication",
+                "applicationSubCategory": "SaaS",
+                "operatingSystem": "Web Browser",
+                "softwareVersion": "2.0",
+                "offers": {
+                  "@type": "Offer",
+                  "price": "0",
+                  "priceCurrency": "EUR",
+                  "availability": "https://schema.org/InStock"
+                },
+                "aggregateRating": {
+                  "@type": "AggregateRating",
+                  "ratingValue": "4.8",
+                  "ratingCount": "32",
+                  "bestRating": "5",
+                  "worstRating": "1"
+                },
+                "featureList": [
+                  "Multi-location management",
+                  "Barcode scanning",
+                  "Picking & packing",
+                  "Team management",
+                  "Real-time reporting",
+                  "Shipping integration"
+                ],
+                "author": {
+                  "@type": "Organization",
+                  "name": "StockFlow"
+                },
+                "publisher": {
+                  "@type": "Organization",
+                  "name": "StockFlow",
+                  "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://www.stockflow.be/logo.png"
+                  }
+                },
+                "url": "https://www.stockflow.be/warehouse-management",
+                "inLanguage": "en",
+                "availableLanguage": ["en", "nl"]
+              }
+      ]} />
     </SeoPageLayout>
   );
 }

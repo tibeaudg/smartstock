@@ -4,6 +4,7 @@ import SeoPageLayout from '../../components/SeoPageLayout';
 import { Check, Smartphone, Bell, Shield, TrendingUp, Clock, BarChart3, DollarSign, RefreshCw, Settings } from 'lucide-react';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 
+import { StructuredData } from '../../components/StructuredData';
 export default function VoorraadbeheerAutomatiseren() {
   // Gebruik de page refresh hook
   usePageRefresh();
@@ -542,78 +543,77 @@ export default function VoorraadbeheerAutomatiseren() {
       </div>
 
       {/* Structured Data */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": "Hoeveel kost voorraadbeheer automatisering?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "De kosten vari�ren afhankelijk van je behoeften. stockflow biedt een gratis versie aan, terwijl premium versies vanaf �29 per maand kosten. De ROI is meestal binnen 3-6 maanden bereikt."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Hoe lang duurt het om voorraadbeheer te automatiseren?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "De implementatie duurt meestal 2-4 weken, afhankelijk van de complexiteit van je processen en de gewenste integraties."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Kan ik mijn bestaande systemen blijven gebruiken?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Ja, moderne voorraadbeheer software integreert met bestaande systemen zoals boekhouding, webshops en kassasystemen."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Wat als ik technisch niet zo sterk ben?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "stockflow is ontworpen voor gebruiksvriendelijkheid. Je hebt geen technische kennis nodig om te beginnen."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Kan ik geleidelijk automatiseren?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Absoluut! Begin met de belangrijkste processen en breid geleidelijk uit. Dit maakt de overstap minder overweldigend."
-            }
-          }
-        ]
-      }`}} />
 
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
-        "@context": "https://schema.org",
-        "@type": "Article",
-        "headline": "Voorraadbeheer Automatiseren",
-        "description": "Voorraadbeheer automatiseren? Complete gids met voordelen, tips en tools om je voorraadbeheer slimmer en effici�nter te maken met automatisering. Ontdek hoe je tijd kunt besparen en fouten kunt voorkomen.",
-        "image": "https://www.stockflow.be/optimized/Inventory-Management.png",
-        "author": {
-          "@type": "Organization",
-          "name": "stockflow"
-        },
-        "publisher": {
-          "@type": "Organization",
-          "name": "stockflow",
-          "logo": {
-            "@type": "ImageObject",
-            "url": "https://www.stockflow.be/logo.png"
-          }
-        },
-        "datePublished": "2024-01-01",
-        "dateModified": "2024-12-19",
-        "mainEntityOfPage": {
-          "@type": "WebPage",
-          "@id": "https://www.stockflow.be/voorraadbeheer-automatiseren"
-        }
-      }`}} />
+      {/* Schema.org Structured Data */}
+      <StructuredData data={[
+        {"@context": "https://schema.org",
+                "@type": "FAQPage",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "Hoeveel kost voorraadbeheer automatisering?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "De kosten vari�ren afhankelijk van je behoeften. stockflow biedt een gratis versie aan, terwijl premium versies vanaf �29 per maand kosten. De ROI is meestal binnen 3-6 maanden bereikt."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "Hoe lang duurt het om voorraadbeheer te automatiseren?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "De implementatie duurt meestal 2-4 weken, afhankelijk van de complexiteit van je processen en de gewenste integraties."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "Kan ik mijn bestaande systemen blijven gebruiken?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Ja, moderne voorraadbeheer software integreert met bestaande systemen zoals boekhouding, webshops en kassasystemen."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "Wat als ik technisch niet zo sterk ben?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "stockflow is ontworpen voor gebruiksvriendelijkheid. Je hebt geen technische kennis nodig om te beginnen."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "Kan ik geleidelijk automatiseren?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Absoluut! Begin met de belangrijkste processen en breid geleidelijk uit. Dit maakt de overstap minder overweldigend."
+                    }
+                  }
+                ]        },        {"@context": "https://schema.org",
+                "@type": "Article",
+                "headline": "Voorraadbeheer Automatiseren",
+                "description": "Voorraadbeheer automatiseren? Complete gids met voordelen, tips en tools om je voorraadbeheer slimmer en effici�nter te maken met automatisering. Ontdek hoe je tijd kunt besparen en fouten kunt voorkomen.",
+                "image": "https://www.stockflow.be/optimized/Inventory-Management.png",
+                "author": {
+                  "@type": "Organization",
+                  "name": "stockflow"
+                },
+                "publisher": {
+                  "@type": "Organization",
+                  "name": "stockflow",
+                  "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://www.stockflow.be/logo.png"
+                  }
+                },
+                "datePublished": "2024-01-01",
+                "dateModified": "2024-12-19",
+                "mainEntityOfPage": {
+                  "@type": "WebPage",
+                  "@id": "https://www.stockflow.be/voorraadbeheer-automatiseren"
+                }
+              }
+        ]} />
     </SeoPageLayout>
   );
 } 

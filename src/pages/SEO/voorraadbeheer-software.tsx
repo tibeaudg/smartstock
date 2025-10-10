@@ -4,6 +4,7 @@ import SeoPageLayout from '../../components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { Check, TrendingUp, Clock, Shield, Users, Zap, DollarSign, BarChart3, Package, Smartphone } from 'lucide-react';
 
+import { StructuredData } from '../../components/StructuredData';
 export default function VoorraadbeheerSoftware() {
   usePageRefresh();
   
@@ -755,8 +756,7 @@ export default function VoorraadbeheerSoftware() {
         </div>
       </footer>
 
-      {/* Schema.org Structured Data */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
         "@context": "https://schema.org",
         "@type": "FAQPage",
         "mainEntity": [
@@ -771,47 +771,47 @@ export default function VoorraadbeheerSoftware() {
         ]
       }`}} />
 
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
-        "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        "name": "stockflow Voorraadbeheer Software",
-        "description": "Complete voorraadbeheer software voor moderne bedrijven. Van KMO tot webshop - beheer je voorraad professioneel.",
-        "applicationCategory": "BusinessApplication",
-        "operatingSystem": "Web, iOS, Android",
-        "offers": {
-          "@type": "Offer",
-          "price": "0",
-          "priceCurrency": "EUR"
+      {/* Schema.org Structured Data */}
+      <StructuredData data={[
+        {"@context": "https://schema.org",
+                "@type": "SoftwareApplication",
+                "name": "stockflow Voorraadbeheer Software",
+                "description": "Complete voorraadbeheer software voor moderne bedrijven. Van KMO tot webshop - beheer je voorraad professioneel.",
+                "applicationCategory": "BusinessApplication",
+                "operatingSystem": "Web, iOS, Android",
+                "offers": {
+                  "@type": "Offer",
+                  "price": "0",
+                  "priceCurrency": "EUR"
+                },
+                "publisher": {
+                  "@type": "Organization",
+                  "name": "stockflow",
+                  "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://www.stockflow.be/logo.png"
+                  }
+                },
+                "url": "https://www.stockflow.be/voorraadbeheer-software"
         },
-        "publisher": {
-          "@type": "Organization",
-          "name": "stockflow",
-          "logo": {
-            "@type": "ImageObject",
-            "url": "https://www.stockflow.be/logo.png"
-          }
-        },
-        "url": "https://www.stockflow.be/voorraadbeheer-software"
-      }`}} />
-
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-          {
-            "@type": "ListItem",
-            "position": 1,
-            "name": "Home",
-            "item": "https://www.stockflow.be"
-          },
-          {
-            "@type": "ListItem",
-            "position": 2,
-            "name": "Voorraadbeheer Software",
-            "item": "https://www.stockflow.be/voorraadbeheer-software"
-          }
-        ]
-      }`}} />
+        {"@context": "https://schema.org",
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                  {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Home",
+                    "item": "https://www.stockflow.be"
+                  },
+                  {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "Voorraadbeheer Software",
+                    "item": "https://www.stockflow.be/voorraadbeheer-software"
+                  }
+                ]
+              }
+        ]} />
     </SeoPageLayout>
   );
 }

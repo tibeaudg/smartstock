@@ -15,6 +15,7 @@ import {
   Star
 } from 'lucide-react';
 
+import { StructuredData } from '../../components/StructuredData';
 export default function StockFlowVsExactOnlineNL() {
   usePageRefresh();
 
@@ -398,29 +399,31 @@ export default function StockFlowVsExactOnlineNL() {
       </section>
 
       {/* Structured Data */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{
-        __html: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "Article",
-          "headline": "StockFlow vs Exact Online: Betaalbaar Voorraad Alternatief 2025",
-          "description": "Vergelijk StockFlow en Exact Online voor voorraadbeheer. Bekijk functies, prijzen, en waarom StockFlow beter is voor KMO's.",
-          "author": {
-            "@type": "Organization",
-            "name": "StockFlow"
-          },
-          "publisher": {
-            "@type": "Organization",
-            "name": "StockFlow",
-            "logo": {
-              "@type": "ImageObject",
-              "url": "https://www.stockflow.be/logo.png"
-            }
-          },
-          "datePublished": "2025-01-01",
-          "dateModified": "2025-01-01",
-          "inLanguage": "nl"
-        })
-      }} />
+
+      {/* Schema.org Structured Data */}
+      <StructuredData data={[
+        {
+                  "@context": "https://schema.org",
+                  "@type": "Article",
+                  "headline": "StockFlow vs Exact Online: Betaalbaar Voorraad Alternatief 2025",
+                  "description": "Vergelijk StockFlow en Exact Online voor voorraadbeheer. Bekijk functies, prijzen, en waarom StockFlow beter is voor KMO's.",
+                  "author": {
+                    "@type": "Organization",
+                    "name": "StockFlow"
+                  },
+                  "publisher": {
+                    "@type": "Organization",
+                    "name": "StockFlow",
+                    "logo": {
+                      "@type": "ImageObject",
+                      "url": "https://www.stockflow.be/logo.png"
+                    }
+                  },
+                  "datePublished": "2025-01-01",
+                  "dateModified": "2025-01-01",
+                  "inLanguage": "nl"
+                }
+      ]} />
     </SeoPageLayout>
   );
 }

@@ -15,6 +15,7 @@ import {
   Database
 } from 'lucide-react';
 
+import { StructuredData } from '../../components/StructuredData';
 export default function BestInventoryManagementSoftware() {
   // Gebruik de page refresh hook
   usePageRefresh();
@@ -632,8 +633,7 @@ export default function BestInventoryManagementSoftware() {
         </div>
       </footer>
 
-      {/* Schema.org Structured Data */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
         "@context": "https://schema.org",
         "@type": "FAQPage",
         "mainEntity": [
@@ -648,75 +648,77 @@ export default function BestInventoryManagementSoftware() {
         ]
       }`}} />
 
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
-        "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        "name": "StockFlow - Best Inventory Management Software",
-        "description": "Discover the best inventory management software for your business. Real-time tracking, barcode scanning, automated alerts, and more.",
-        "applicationCategory": "BusinessApplication",
-        "operatingSystem": "Web Browser",
-        "offers": [
-          {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "EUR",
-            "description": "Free plan - Up to 30 products",
-            "availability": "https://schema.org/InStock"
-          },
-          {
-            "@type": "Offer",
-            "price": "29",
-            "priceCurrency": "EUR",
-            "description": "Growth plan - Unlimited products with advanced features",
-            "availability": "https://schema.org/InStock"
-          },
-          {
-            "@type": "Offer",
-            "price": "99",
-            "priceCurrency": "EUR",
-            "description": "Enterprise plan - Advanced features for large businesses",
-            "availability": "https://schema.org/InStock"
-          }
-        ],
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "4.9",
-          "ratingCount": "1000",
-          "bestRating": "5",
-          "worstRating": "1"
-        },
-        "author": {
-          "@type": "Organization",
-          "name": "StockFlow"
-        },
-        "publisher": {
-          "@type": "Organization",
-          "name": "StockFlow",
-          "logo": {
-            "@type": "ImageObject",
-            "url": "https://www.stockflow.be/logo.png"
-          }
-        },
-        "image": "https://www.stockflow.be/Inventory-Management.png",
-        "mainEntityOfPage": {
-          "@type": "WebPage",
-          "@id": "https://www.stockflow.be/best-inventory-management-software"
-        },
-        "award": [
-          "Best Inventory Software 2024",
-          "Top Rated by Users",
-          "Best Value for Money",
-          "Easiest to Use"
-        ],
-        "featureList": [
-          "Real-time inventory tracking",
-          "Advanced barcode scanning",
-          "Automated reorder points",
-          "Comprehensive analytics",
-          "Multi-user collaboration",
-          "Enterprise security"
-        ]
-      }`}} />
+      {/* Schema.org Structured Data */}
+      <StructuredData data={[
+        {"@context": "https://schema.org",
+                "@type": "SoftwareApplication",
+                "name": "StockFlow - Best Inventory Management Software",
+                "description": "Discover the best inventory management software for your business. Real-time tracking, barcode scanning, automated alerts, and more.",
+                "applicationCategory": "BusinessApplication",
+                "operatingSystem": "Web Browser",
+                "offers": [
+                  {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "EUR",
+                    "description": "Free plan - Up to 30 products",
+                    "availability": "https://schema.org/InStock"
+                  },
+                  {
+                    "@type": "Offer",
+                    "price": "29",
+                    "priceCurrency": "EUR",
+                    "description": "Growth plan - Unlimited products with advanced features",
+                    "availability": "https://schema.org/InStock"
+                  },
+                  {
+                    "@type": "Offer",
+                    "price": "99",
+                    "priceCurrency": "EUR",
+                    "description": "Enterprise plan - Advanced features for large businesses",
+                    "availability": "https://schema.org/InStock"
+                  }
+                ],
+                "aggregateRating": {
+                  "@type": "AggregateRating",
+                  "ratingValue": "4.9",
+                  "ratingCount": "1000",
+                  "bestRating": "5",
+                  "worstRating": "1"
+                },
+                "author": {
+                  "@type": "Organization",
+                  "name": "StockFlow"
+                },
+                "publisher": {
+                  "@type": "Organization",
+                  "name": "StockFlow",
+                  "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://www.stockflow.be/logo.png"
+                  }
+                },
+                "image": "https://www.stockflow.be/Inventory-Management.png",
+                "mainEntityOfPage": {
+                  "@type": "WebPage",
+                  "@id": "https://www.stockflow.be/best-inventory-management-software"
+                },
+                "award": [
+                  "Best Inventory Software 2024",
+                  "Top Rated by Users",
+                  "Best Value for Money",
+                  "Easiest to Use"
+                ],
+                "featureList": [
+                  "Real-time inventory tracking",
+                  "Advanced barcode scanning",
+                  "Automated reorder points",
+                  "Comprehensive analytics",
+                  "Multi-user collaboration",
+                  "Enterprise security"
+                ]
+        }
+      ]} />
     </SeoPageLayout>
   );
 }

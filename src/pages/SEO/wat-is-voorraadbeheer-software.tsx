@@ -4,6 +4,7 @@ import SeoPageLayout from '../../components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { Check, Package, BarChart3, RefreshCw, Users, Smartphone, Cloud, TrendingUp, AlertCircle, Zap } from 'lucide-react';
 
+import { StructuredData } from '../../components/StructuredData';
 export default function WatIsVoorraadbeheerSoftware() {
   usePageRefresh();
   
@@ -681,8 +682,7 @@ export default function WatIsVoorraadbeheerSoftware() {
         </div>
       </footer>
 
-      {/* Schema.org Structured Data */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
         "@context": "https://schema.org",
         "@type": "FAQPage",
         "mainEntity": [
@@ -697,30 +697,32 @@ export default function WatIsVoorraadbeheerSoftware() {
         ]
       }`}} />
 
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
-        "@context": "https://schema.org",
-        "@type": "Article",
-        "headline": "Wat is Voorraadbeheer Software en Hoe Werkt Het?",
-        "description": "Complete uitleg over wat voorraadbeheer software is, hoe het werkt en waarom je het nodig hebt. Met praktische voorbeelden en tips.",
-        "author": {
-          "@type": "Organization",
-          "name": "stockflow"
-        },
-        "publisher": {
-          "@type": "Organization",
-          "name": "stockflow",
-          "logo": {
-            "@type": "ImageObject",
-            "url": "https://www.stockflow.be/logo.png"
-          }
-        },
-        "datePublished": "2024-01-01",
-        "dateModified": "${new Date().toISOString().split('T')[0]}",
-        "mainEntityOfPage": {
-          "@type": "WebPage",
-          "@id": "https://www.stockflow.be/wat-is-voorraadbeheer-software"
-        }
-      }`}} />
+      {/* Schema.org Structured Data */}
+      <StructuredData data={[
+        {"@context": "https://schema.org",
+                "@type": "Article",
+                "headline": "Wat is Voorraadbeheer Software en Hoe Werkt Het?",
+                "description": "Complete uitleg over wat voorraadbeheer software is, hoe het werkt en waarom je het nodig hebt. Met praktische voorbeelden en tips.",
+                "author": {
+                  "@type": "Organization",
+                  "name": "stockflow"
+                },
+                "publisher": {
+                  "@type": "Organization",
+                  "name": "stockflow",
+                  "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://www.stockflow.be/logo.png"
+                  }
+                },
+                "datePublished": "2024-01-01",
+                "dateModified": "new Date().toISOString().split('T')[0]",
+                "mainEntityOfPage": {
+                  "@type": "WebPage",
+                  "@id": "https://www.stockflow.be/wat-is-voorraadbeheer-software"
+                }
+              }
+        ]} />
     </SeoPageLayout>
   );
 }
