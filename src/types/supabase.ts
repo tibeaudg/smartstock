@@ -1,2 +1,2 @@
-// Simply re-export the generated Database type
-export type { Database } from './supabase-generated';
+// Re-export the Database type from integrations
+export type { Database } from '../integrations/supabase/types';
