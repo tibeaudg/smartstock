@@ -90,15 +90,15 @@ export async function fetchBlogPosts(): Promise<BlogPost[]> {
 }
 
 export async function addBlogPost(post: Omit<BlogPost, 'id'>): Promise<BlogPost> {
-  const insertData: Database['public']['Tables']['blogposts']['Insert'][] = [post as any];
-  const { data, error } = await supabase.from('blogposts').insert(insertData).select();
+  const insertData = [post as any];
+  const { data, error } = await supabase.from('blogposts').insert(insertData as any).select();
   if (error) throw error;
   return data?.[0] as BlogPost;
 }
 
 export async function updateBlogPost(id: string, post: Partial<BlogPost>): Promise<BlogPost> {
-  const updateData: Database['public']['Tables']['blogposts']['Update'] = post as any;
-  const { data, error } = await supabase.from('blogposts').update(updateData).eq('id', id).select();
+  const updateData = post as any;
+  const { data, error } = await supabase.from('blogposts').update(updateData as any).eq('id', id).select();
   if (error) throw error;
   return data?.[0] as BlogPost;
 }
@@ -134,8 +134,8 @@ export async function fetchBlogPostBySlug(slug: string): Promise<BlogPost | null
 // Auth Conversion Tracking functions
 export async function trackAuthConversionEvent(event: Omit<AuthConversionEvent, 'id' | 'created_at' | 'updated_at'>): Promise<void> {
   try {
-    const insertData: Database['public']['Tables']['auth_conversion_events']['Insert'][] = [event as any];
-    const { error } = await supabase.from('auth_conversion_events').insert(insertData);
+    const insertData = [event as any];
+    const { error } = await supabase.from('auth_conversion_events').insert(insertData as any);
     if (error) {
       // Silently fail if table doesn't exist (404) - tracking is optional
       if (error.code !== 'PGRST116' && !error.message?.includes('404')) {
