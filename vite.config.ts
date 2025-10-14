@@ -44,32 +44,7 @@ export default defineConfig(({ mode }) => ({
     // Optimize bundle size
     rollupOptions: {
       output: {
-        manualChunks: (id) => {
-          // Leave React and all React-dependent UI libraries in the main bundle
-          if (
-            id.includes('react') ||
-            id.includes('react-dom') ||
-            id.includes('@radix-ui') ||
-            id.includes('framer-motion') ||
-            id.includes('lucide-react')
-          ) {
-            return; // do not split
-          }
-        
-          // Other vendor chunking
-          if (id.includes('node_modules')) {
-            return 'vendor';
-          }
-        
-          // Page/component chunking
-          if (id.includes('/pages/')) {
-            return 'pages';
-          }
-        },
-                // Optimize chunk names
-        chunkFileNames: 'assets/[name]-[hash].js',
-        entryFileNames: 'assets/[name]-[hash].js',
-        assetFileNames: 'assets/[name]-[hash].[ext]',
+        manualChunks: undefined
       },
     },
     // Enable modern build features
@@ -116,3 +91,5 @@ export default defineConfig(({ mode }) => ({
     target: 'esnext',
   },
 }));
+
+

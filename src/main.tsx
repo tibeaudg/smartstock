@@ -1,4 +1,3 @@
-import React, { Suspense } from 'react';
 import { createRoot, Root } from 'react-dom/client';
 import App from './App';
 import { UnreadMessagesProvider } from './hooks/UnreadMessagesContext';
@@ -12,6 +11,19 @@ import { ErrorBoundary } from './components/ErrorBoundary';
 import { initializePerformanceOptimizations } from './utils/performanceOptimization';
 import { initPerformanceMonitoring } from './utils/performanceMonitor';
 import { initializeTrustedTypes, initializeDefaultPolicy } from './utils/trustedTypes';
+import { Suspense } from 'react';
+
+// somewhere early in your app (e.g., main.tsx)
+import * as React from 'react';
+
+const origCreateContext = React.createContext;
+
+React.createContext = function (...args) {
+  console.trace('createContext called by:');
+  return origCreateContext.apply(this, args);
+};
+
+
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
