@@ -238,25 +238,29 @@ async function init() {
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 1000 * 60 * 5, // 5 minutes
-      refetchOnWindowFocus: false, // Disabled for better tab switching performance
-      refetchOnMount: false, // Use cached data when available
-      refetchOnReconnect: 'always', // Always refetch when reconnecting
+      staleTime: 1000 * 60 * 5, // 5 minutes - data is considered fresh for this long
+      gcTime: 1000 * 60 * 30, // 30 minutes - keep unused data in cache
+      refetchOnWindowFocus: false, // Disabled - handled manually by useOptimizedTabSwitching
+      refetchOnMount: false, // Disabled - use cached data when available for better UX
+      refetchOnReconnect: true, // Always refetch when network reconnects
       retry: (failureCount, error) => {
         // Retry logic: try 3 times, except for 4xx errors
         if (failureCount < 3) {
           const status = (error as any)?.status || (error as any)?.response?.status;
           if (status >= 400 && status < 500) {
-            return false; // No retry for client errors
+            return false; // No retry for client errors (bad request, unauthorized, etc.)
           }
           return true;
         }
         return false;
       },
-      retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
+      retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000), // Exponential backoff
+      // Keep previous data while fetching new data for smoother UX
+      placeholderData: (previousData) => previousData,
     },
     mutations: {
-      retry: 1,
+      retry: 1, // Only retry mutations once
+      retryDelay: 1000,
     },
   },
 });

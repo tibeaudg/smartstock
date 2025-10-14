@@ -253,36 +253,76 @@ const AppRouter = () => {
   // Branch-aware route component (must be used inside BranchProvider)
   const BranchAwareRoute = ({ children }: { children: React.ReactNode }) => {
     const { branches, hasNoBranches, loading: branchesLoading } = useBranches();
+    const { authLoading } = useAuth();
     const [forceRender, setForceRender] = useState(false);
+    const [retryCount, setRetryCount] = useState(0);
 
-    // Safety timeout - force render after 5 seconds
+    // Safety timeout - force render after 8 seconds (increased from 5)
     useEffect(() => {
-      if (branchesLoading) {
+      if (branchesLoading && !authLoading) {
         console.warn('[BranchAwareRoute] Branch loading detected, starting safety timer');
         const timeout = setTimeout(() => {
-          console.error('[BranchAwareRoute] Safety timeout reached - forcing render despite loading state');
+          console.error('[BranchAwareRoute] Safety timeout reached - showing retry option');
           setForceRender(true);
-        }, 5000);
+        }, 8000);
         
         return () => clearTimeout(timeout);
       }
-    }, [branchesLoading]);
+    }, [branchesLoading, authLoading]);
 
-    if (branchesLoading && !forceRender) {
-      console.debug('[BranchAwareRoute] Loading branches... (loading:', branchesLoading, 'branches:', branches?.length, ')');
+    // Show loading only if auth is also loading OR branches are loading (but not too long)
+    if ((branchesLoading || authLoading) && !forceRender) {
+      console.debug('[BranchAwareRoute] Loading... (auth:', authLoading, 'branches:', branchesLoading, 'count:', branches?.length, ')');
       return (
         <div className="min-h-screen bg-gray-50 flex items-center justify-center">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Loading branches...</p>
-            <p className="text-xs text-gray-400 mt-2">If this takes too long, please refresh the page</p>
+            <p className="text-gray-600">
+              {authLoading ? 'Checking authentication...' : 'Loading your workspace...'}
+            </p>
+            <p className="text-xs text-gray-400 mt-2">This should only take a moment</p>
+          </div>
+        </div>
+      );
+    }
+
+    // If force render is triggered (timeout), show retry option
+    if (forceRender && branchesLoading) {
+      return (
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+          <div className="max-w-md bg-white rounded-lg shadow-lg p-8 text-center">
+            <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Clock className="h-8 w-8 text-orange-600" />
+            </div>
+            <h2 className="text-xl font-bold text-gray-900 mb-2">Taking longer than expected</h2>
+            <p className="text-gray-600 mb-6">
+              We're having trouble loading your workspace. This might be due to a slow connection.
+            </p>
+            <div className="flex gap-3 justify-center">
+              <Button
+                onClick={() => window.location.reload()}
+                className="bg-blue-600 hover:bg-blue-700"
+              >
+                Refresh Page
+              </Button>
+              <Button
+                onClick={() => {
+                  setForceRender(false);
+                  setRetryCount(c => c + 1);
+                }}
+                variant="outline"
+              >
+                Continue Anyway
+              </Button>
+            </div>
           </div>
         </div>
       );
     }
 
     // Check if user has no branches and needs to create their first branch
-    if (hasNoBranches && branches.length === 0) {
+    // Only show this if we're certain (not loading and explicitly hasNoBranches)
+    if (hasNoBranches && branches.length === 0 && !branchesLoading) {
       console.debug('[BranchAwareRoute] No branches found, showing FirstBranchSetup');
       return <FirstBranchSetup />;
     }

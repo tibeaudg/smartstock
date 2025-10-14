@@ -21,6 +21,7 @@ import { generateComprehensiveStructuredData } from '../lib/structuredData';
 import { useAuth } from '@/hooks/useAuth';
 import { useSubscription } from '@/hooks/useSubscription';
 import { useIsMobile } from '@/hooks/useWindowSize';
+import { supabase } from '@/integrations/supabase/client';
 // import { useWebsiteTracking } from '@/hooks/useWebsiteTracking';
 // import { usePerformanceOptimization } from '@/hooks/usePerformanceOptimization';
 import { GoogleAdsTracking } from '@/utils/googleAdsTracking';
@@ -432,9 +433,8 @@ export const HomePage = () => {
   // Use fallback data if subscription data fails to load
   const effectivePricingTiers = (subscriptionError || pricingTiers.length === 0) ? fallbackPricingTiers : pricingTiers;
   
-  // ALL HOOKS DISABLED TO PREVENT CRASHES
-  // usePageRefresh();
-  // useWebsiteTracking();
+  // Smart tab switching is handled by useOptimizedTabSwitching in App.tsx
+  // No aggressive page refresh needed here
   
   // Initialize tracking with comprehensive error suppression
   React.useEffect(() => {
@@ -507,7 +507,7 @@ export const HomePage = () => {
 
 
 
-  const handleLoginClick = () => {
+  const handleLoginClick = async () => {
     logger.info('CTA click', { id: 'start-now' });
     
     // Track Google Ads conversion for registration intent with error handling
@@ -526,6 +526,22 @@ export const HomePage = () => {
       // Silently fail in production, only log in development
       if (process.env.NODE_ENV === 'development') {
         console.warn('Google Ads tracking failed:', error);
+      }
+    }
+    
+    // If user is already logged in (has session), go directly to dashboard
+    // But first check if session is valid
+    if (user) {
+      console.log('[HomePage] User already logged in, checking session...');
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session) {
+          console.log('[HomePage] Valid session found, navigating to dashboard');
+          navigate('/dashboard');
+          return;
+        }
+      } catch (error) {
+        console.error('[HomePage] Session check failed:', error);
       }
     }
     
@@ -1763,7 +1779,7 @@ export const HomePage = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10 xl:gap-12">
             {/* Lost Capital */}
             <SlideUpWhenVisible delay={100}>
-              <div className="text-center bg-white rounded-xl sm:rounded-2xl p-5 sm:p-6 md:p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+              <div className="text-center bg-white border border-gray-200 rounded-xl sm:rounded-2xl p-5 sm:p-6 md:p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
                 <div className="w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-5 md:mb-6">
                   <Euro className="h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 text-red-600" />
                 </div>
@@ -1785,7 +1801,7 @@ export const HomePage = () => {
             
             {/* Wasted Time */}
             <SlideUpWhenVisible delay={200}>
-              <div className="text-center bg-white rounded-xl sm:rounded-2xl p-5 sm:p-6 md:p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+              <div className="text-center bg-white border border-gray-200 rounded-xl sm:rounded-2xl p-5 sm:p-6 md:p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
                 <div className="w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-5 md:mb-6">
                   <Clock className="h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 text-orange-600" />
                 </div>
@@ -1807,7 +1823,7 @@ export const HomePage = () => {
             
             {/* Guessing Game */}
             <SlideUpWhenVisible delay={300}>
-              <div className="text-center bg-white rounded-xl sm:rounded-2xl p-5 sm:p-6 md:p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 sm:col-span-2 lg:col-span-1">
+              <div className="text-center bg-white border border-gray-200 rounded-xl sm:rounded-2xl p-5 sm:p-6 md:p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 sm:col-span-2 lg:col-span-1">
                 <div className="w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-5 md:mb-6">
                   <BarChart3 className="h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 text-purple-600" />
                 </div>

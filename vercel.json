@@ -2,7 +2,8 @@
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/sitemap.xml", "destination": "/api/sitemap" },
-    { "source": "/ads.txt", "destination": "/api/ads" }
+    { "source": "/ads.txt", "destination": "/api/ads" },
+    { "source": "/((?!api/).*)", "destination": "/index.html" }
   ],
   "headers": [
     {

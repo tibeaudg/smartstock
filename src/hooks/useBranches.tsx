@@ -120,6 +120,7 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState<boolean>(!cachedBranches);
   const [hasNoBranches, setHasNoBranches] = useState<boolean>(false);
   const [hasFetched, setHasFetched] = useState<boolean>(false);
+  const tabHiddenAtRef = React.useRef<number | null>(null);
 
   // Synchroniseer branch tussen tabbladen
   useEffect(() => {
@@ -133,6 +134,34 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
     window.addEventListener('storage', onStorage);
     return () => window.removeEventListener('storage', onStorage);
   }, [branches, activeBranch]);
+
+  // Handle tab visibility changes - invalidate cache if idle for >5 minutes
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        tabHiddenAtRef.current = Date.now();
+      } else if (tabHiddenAtRef.current && user) {
+        const hiddenDuration = Date.now() - tabHiddenAtRef.current;
+        const hiddenMinutes = hiddenDuration / (1000 * 60);
+        
+        console.log('[useBranches] Tab visible after', hiddenMinutes.toFixed(2), 'minutes');
+        
+        // If idle for more than 5 minutes, invalidate cache and refetch
+        if (hiddenMinutes > 5) {
+          console.log('[useBranches] Long idle detected, invalidating cache and refetching...');
+          clearCachedBranches();
+          setHasFetched(false);
+          // Trigger refetch
+          fetchBranches();
+        }
+        
+        tabHiddenAtRef.current = null;
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, [user]);
 
   const createDefaultBranch = async (userId: string) => {
     try {

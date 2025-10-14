@@ -56,44 +56,46 @@ export const BranchSelector = () => {
     navigate('/dashboard/settings/branches');
   };
 
+  // Show loading state
   if (loading) {
-    return (
-      <div className="flex items-center space-x-2 p-2 bg-gray-50 rounded-lg animate-pulse">
-        <Building2 className="h-4 w-4 text-gray-400" />
-        <span className="text-sm text-gray-500">Loading branches...</span>
-      </div>
-    );
-  }
-
-  if (!branches || !Array.isArray(branches)) {
-    return (
-      <div style={{ color: '#b91c1c', background: '#fef2f2', padding: 24, borderRadius: 8, marginBottom: 24 }}>
-        <b>Error:</b> Branches could not be loaded. Please refresh the page or contact the administrator.
-      </div>
-    );
-  }
-
-  // Only show "default branch is being created" if we're sure there are no branches
-  // and we're not in a loading state
-  if (branches.length === 0 && !loading) {
     return (
       <div className="space-y-2">
         <div className="flex items-center space-x-2 text-xs text-gray-500 uppercase tracking-wide font-medium">
           <Building2 className="h-3 w-3" />
           <span>Active Branch</span>
         </div>
-        <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg border border-blue-200">
-          <div className="flex items-center space-x-3">
-            <Building2 className="h-5 w-5 text-blue-600" />
-            <div className="flex flex-col">
-              <span className="text-sm font-medium text-blue-900">Default branch is being created...</span>
-              <span className="text-xs text-blue-700">Please wait, we are creating your first branch</span>
-            </div>
-          </div>
+        <div className="flex items-center space-x-2 p-3 bg-gray-50 rounded-lg border border-gray-200 animate-pulse">
+          <Building2 className="h-4 w-4 text-gray-400" />
+          <span className="text-sm text-gray-500">Loading workspace...</span>
         </div>
       </div>
     );
   }
+
+  // Error state
+  if (!branches || !Array.isArray(branches)) {
+    return (
+      <div className="space-y-2">
+        <div className="flex items-center space-x-2 text-xs text-gray-500 uppercase tracking-wide font-medium">
+          <Building2 className="h-3 w-3" />
+          <span>Active Branch</span>
+        </div>
+        <div className="p-3 bg-red-50 rounded-lg border border-red-200">
+          <p className="text-sm text-red-800 font-medium">Error loading branches</p>
+          <button 
+            onClick={() => window.location.reload()}
+            className="text-xs text-red-600 hover:text-red-700 underline mt-1"
+          >
+            Refresh page
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // NOTE: We don't show "default branch is being created" here anymore
+  // That state is handled by FirstBranchSetup component when needed
+  // This component should only show when branches actually exist
 
   return (
     <>

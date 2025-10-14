@@ -8,6 +8,8 @@ import React, {
 import { supabase } from '@/integrations/supabase/client'; // getypeerd met Database
 import type { User, AuthError, Session } from '@supabase/supabase-js';
 import type { Database } from '@/integrations/supabase/types';
+import { useSessionRevalidation } from './useSessionRevalidation';
+import { useTabSyncSession } from './useTabSyncSession';
 
 // UserProfile type from database schema
 export type UserProfile = Database['public']['Tables']['profiles']['Row'];
@@ -17,6 +19,7 @@ interface AuthContextType {
   session: Session | null;
   userProfile: UserProfile | null;
   loading: boolean;
+  authLoading: boolean; // Alias for loading for clarity
   signIn: (email: string, password: string) => Promise<{ error: AuthError | null }>;
   signUp: (
     email: string,
@@ -49,6 +52,33 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     UserProfile | null
   >(null);
   const [loading, setLoading] = useState(true);
+
+  // Session revalidation on tab visibility change
+  useSessionRevalidation(async (isValid) => {
+    if (!isValid && user) {
+      console.log('[AuthProvider] Session invalid, refreshing auth state...');
+      // Try to refresh the session
+      const { data } = await supabase.auth.getSession();
+      if (!data.session) {
+        // Session is truly expired, clear auth state
+        setUser(null);
+        setSession(null);
+        setUserProfile(null);
+      }
+    }
+  });
+
+  // Tab sync for session state across tabs
+  useTabSyncSession(user?.id || null, async () => {
+    console.log('[AuthProvider] Session update from another tab, refreshing...');
+    const { data } = await supabase.auth.getSession();
+    if (data.session) {
+      setSession(data.session);
+      setUser(data.session.user);
+      const profile = await fetchUserProfile(data.session.user.id);
+      setUserProfile(profile);
+    }
+  });
 
   // Fetch user profile from database
   const fetchUserProfile = async (
@@ -393,6 +423,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         session,
         userProfile,
         loading,
+        authLoading: loading, // Alias for clarity
         signIn,
         signUp,
         signInWithGoogle,

@@ -2,7 +2,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './useAuth';
 import { useBranches } from './useBranches';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 interface UseDashboardDataParams {
   dateFrom?: Date;
@@ -53,6 +53,8 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
   const { user } = useAuth();
   const { activeBranch } = useBranches();
   const queryClient = useQueryClient();
+  const tabHiddenAtRef = useRef<number | null>(null);
+  const shouldRefetchRef = useRef<boolean>(false);
 
   const fetchDashboardData = async () => {
     if (!user || !activeBranch) throw new Error('Geen gebruiker of filiaal');
@@ -216,6 +218,37 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
       outgoing: data.outgoing,
     }));
   };
+
+  // Handle tab visibility - determine if refetch is needed
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        tabHiddenAtRef.current = Date.now();
+      } else if (tabHiddenAtRef.current) {
+        const hiddenDuration = Date.now() - tabHiddenAtRef.current;
+        const hiddenMinutes = hiddenDuration / (1000 * 60);
+        
+        console.log('[useDashboardData] Tab visible after', hiddenMinutes.toFixed(2), 'minutes');
+        
+        // If idle for more than 5 minutes, mark for refetch
+        if (hiddenMinutes > 5) {
+          console.log('[useDashboardData] Long idle detected, marking for refetch...');
+          shouldRefetchRef.current = true;
+          // Invalidate dashboard queries
+          if (activeBranch) {
+            queryClient.invalidateQueries({ 
+              queryKey: ['dashboardData', activeBranch.branch_id, dateFrom, dateTo] 
+            });
+          }
+        }
+        
+        tabHiddenAtRef.current = null;
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, [activeBranch, dateFrom, dateTo, queryClient]);
 
   // Real-time updates voor dashboard data
   useEffect(() => {
