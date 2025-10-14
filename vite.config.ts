@@ -110,7 +110,6 @@ export default defineConfig(({ mode }) => ({
   optimizeDeps: {
     include: ['react', 'react-dom', 'react-router-dom'],
     exclude: ['@vite/client', '@vite/env'],
-    force: true, // Force re-optimization
   },
   // Performance optimizations
   experimental: {
