@@ -1,4 +1,4 @@
-import React, { Suspense, ReactNode, Component } from 'react';
+import React, { Suspense } from 'react';
 import { createRoot, Root } from 'react-dom/client';
 import App from './App';
 import { UnreadMessagesProvider } from './hooks/UnreadMessagesContext';
@@ -57,20 +57,9 @@ const ConnectionErrorUI = () => (
 async function init() {
   let root: Root;
   try {
-    // Safety check: Ensure React is loaded before proceeding
-    if (typeof React === 'undefined') {
-      throw new Error('React is not loaded. Check module bundling configuration.');
-    }
-    
-    // Additional safety: Wait for React to be fully available
-    let retries = 0;
-    while (typeof React === 'undefined' && retries < 10) {
-      await new Promise(resolve => setTimeout(resolve, 100));
-      retries++;
-    }
-    
-    if (typeof React === 'undefined') {
-      throw new Error('React failed to load after waiting. Check module bundling configuration.');
+    // Safety check: Ensure React and its core APIs are loaded before proceeding
+    if (typeof React === 'undefined' || typeof React.createContext !== 'function') {
+      throw new Error('React or React.createContext is not available. Check module bundling configuration.');
     }
     
     // Initialize Trusted Types policies early
@@ -92,32 +81,32 @@ async function init() {
     if (process.env.NODE_ENV === 'production') {
       // In production, try connection check but don't fail if it times out
       try {
-        const connectionTimeout = new Promise((_, reject) => {
+        const connectionTimeout = new Promise<boolean>((_, reject) => {
           setTimeout(() => reject(new Error('Supabase connection timeout')), 5000); // 5 second timeout in production
         });
         
         isConnected = await Promise.race([
           checkSupabaseConnection(),
           connectionTimeout
-        ]);
+        ]) as boolean;
         
         if (!isConnected) {
           console.warn('Supabase connection failed, continuing with degraded functionality');
         }
-      } catch (error) {
+      } catch (error: any) {
         console.warn('Supabase connection check failed, continuing with degraded functionality:', error.message);
         // Don't throw - continue with app initialization
       }
     } else {
       // In development, be stricter about connection requirements
-      const connectionTimeout = new Promise((_, reject) => {
+      const connectionTimeout = new Promise<boolean>((_, reject) => {
         setTimeout(() => reject(new Error('Supabase connection timeout')), 10000); // 10 second timeout in dev
       });
       
       isConnected = await Promise.race([
         checkSupabaseConnection(),
         connectionTimeout
-      ]);
+      ]) as boolean;
 
       if (!isConnected) {
         throw new Error('Could not connect to Supabase');
@@ -143,7 +132,7 @@ async function init() {
       </ErrorBoundary>
     );
     root.render(AppTree);
-  } catch (error) {
+  } catch (error: any) {
     console.error('App initialization failed:', error);
 
     // Render de fout-UI bij een verbindingsfout
@@ -193,7 +182,7 @@ async function init() {
                     </ErrorBoundary>
                   );
                   fallbackRoot.render(AppTree);
-                } catch (fallbackError) {
+                } catch (fallbackError: any) {
                   console.error('Fallback initialization failed:', fallbackError);
                   window.location.reload();
                 }

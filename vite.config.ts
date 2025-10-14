@@ -26,50 +26,47 @@ export default defineConfig(({ mode }) => ({
     }),
     mode === 'development' && componentTagger()
   ].filter(Boolean),
+
+  // vite.config.js
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+      react: path.resolve(__dirname, 'node_modules/react'),
+      'react-dom': path.resolve(__dirname, 'node_modules/react-dom'),
     },
   },
+  optimizeDeps: {
+    include: ['react', 'react-dom'],
+  },
+
+
   build: {
     // Optimize bundle size
     rollupOptions: {
       output: {
         manualChunks: (id) => {
-          // Split vendor libraries into separate chunks
+          // Leave React and all React-dependent UI libraries in the main bundle
+          if (
+            id.includes('react') ||
+            id.includes('react-dom') ||
+            id.includes('@radix-ui') ||
+            id.includes('framer-motion') ||
+            id.includes('lucide-react')
+          ) {
+            return; // do not split
+          }
+        
+          // Other vendor chunking
           if (id.includes('node_modules')) {
-            // Split React and core dependencies
-            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
-              return 'vendor-react';
-            }
-            // Split UI libraries
-            if (id.includes('@radix-ui') || id.includes('lucide-react') || id.includes('framer-motion')) {
-              return 'vendor-ui';
-            }
-            // Split data fetching libraries
-            if (id.includes('@tanstack') || id.includes('@supabase') || id.includes('axios')) {
-              return 'vendor-data';
-            }
-            // Put other vendor libraries in a single chunk
             return 'vendor';
           }
-          
-          // Split large page components
-          if (id.includes('/pages/SEO/') || id.includes('/pages/blog/')) {
-            return 'pages-seo';
-          }
-          
-          // Split admin components
-          if (id.includes('/components/admin/') || id.includes('/pages/admin')) {
-            return 'admin';
-          }
-          
-          // Split analytics components
-          if (id.includes('/components/analytics/')) {
-            return 'analytics';
+        
+          // Page/component chunking
+          if (id.includes('/pages/')) {
+            return 'pages';
           }
         },
-        // Optimize chunk names
+                // Optimize chunk names
         chunkFileNames: 'assets/[name]-[hash].js',
         entryFileNames: 'assets/[name]-[hash].js',
         assetFileNames: 'assets/[name]-[hash].[ext]',
@@ -106,11 +103,7 @@ export default defineConfig(({ mode }) => ({
       polyfill: true,
     },
   },
-  // Optimize dependencies
-  optimizeDeps: {
-    include: ['react', 'react-dom', 'react-router-dom'],
-    exclude: ['@vite/client', '@vite/env'],
-  },
+
   // Performance optimizations
   experimental: {
     renderBuiltUrl(filename: string) {
