@@ -1,4 +1,8 @@
 import { supabase } from '../integrations/supabase/client';
+import type { Database } from '../integrations/supabase/types';
+
+type NotificationRead = Database['public']['Tables']['notification_reads']['Insert'];
+type NotificationInsert = Database['public']['Tables']['notifications']['Insert'];
 
 // Delete a notification (admin only)
 export async function deleteNotification(notificationId: string) {
@@ -35,9 +39,9 @@ export async function fetchNotifications(userId: string): Promise<Notification[]
     .eq('user_id', userId);
   if (readsError) throw readsError;
 
-  const readMap = new Map(reads.map(r => [r.notification_id, r.read_at]));
+  const readMap = new Map((reads || []).map(r => [r.notification_id, r.read_at]));
 
-  return notifications.map((n: any) => ({
+  return (notifications || []).map((n: any) => ({
     ...n,
     read: readMap.has(n.id),
     read_at: readMap.get(n.id) || undefined,
@@ -47,7 +51,7 @@ export async function fetchNotifications(userId: string): Promise<Notification[]
 // Mark all notifications as read for the user
 export async function markAllNotificationsAsRead(userId: string, notificationIds: string[]) {
   const now = new Date().toISOString();
-  const inserts = notificationIds.map(id => ({
+  const inserts: NotificationRead[] = notificationIds.map(id => ({
     notification_id: id,
     user_id: userId,
     read_at: now,
@@ -61,9 +65,10 @@ export async function markAllNotificationsAsRead(userId: string, notificationIds
 
 // Admin: send a new notification
 export async function sendNotification(title: string, message: string, created_by: string) {
+  const inserts: NotificationInsert[] = [{ title, message, created_by }];
   const { data, error } = await supabase
     .from('notifications')
-    .insert([{ title, message, created_by }]);
+    .insert(inserts);
   if (error) throw error;
   return data;
 }

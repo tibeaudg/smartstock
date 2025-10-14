@@ -495,15 +495,6 @@ export const HomePage = () => {
     };
   }, []);
 
-  // Cookie consent & exit-intent state
-  const [showCookieBanner, setShowCookieBanner] = useState<boolean>(() => {
-    try {
-      return localStorage.getItem('cookie_consent') !== 'accepted';
-    } catch {
-      return true;
-    }
-  });
-
   // FAQ accordion state
   const [openFAQ, setOpenFAQ] = useState<number | null>(null);
   
@@ -639,11 +630,6 @@ export const HomePage = () => {
   };
 
   // Exit-intent popup removed
-
-  const acceptCookies = () => {
-    try { localStorage.setItem('cookie_consent', 'accepted'); } catch {}
-    setShowCookieBanner(false);
-  };
 
   // Contact form logic removed - now on separate /contact page
 
@@ -2304,36 +2290,6 @@ export const HomePage = () => {
               </div>
             </section>
           </FadeInWhenVisible>
-
-
-
-
-
-      {/* Cookie Consent Banner */}
-      {showCookieBanner && (
-        <div className="fixed inset-x-0 bottom-0 z-50 px-2 sm:px-4">
-          <div className="mx-auto max-w-6xl mb-2 sm:mb-3 md:mb-4 rounded-xl sm:rounded-2xl md:rounded-3xl bg-white shadow-xl border border-gray-200 p-3 sm:p-4 md:p-5 flex flex-col sm:flex-row items-start sm:items-center gap-3">
-            <p className="text-xs sm:text-sm text-gray-700 flex-1">
-              We use cookies to improve your experience on our website
-            </p>
-            <div className="flex gap-2 w-full sm:w-auto sm:ml-auto">
-              <Button 
-                variant="outline" 
-                className="border-gray-300 text-xs sm:text-sm flex-1 sm:flex-none px-4 py-2 min-h-[40px]" 
-                onClick={() => setShowCookieBanner(false)}
-              >
-                Decline
-              </Button>
-              <Button 
-                className="bg-blue-600 text-white hover:bg-blue-700 text-xs sm:text-sm flex-1 sm:flex-none px-4 py-2 min-h-[40px]" 
-                onClick={acceptCookies}
-              >
-                Accept
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
 
       <Footer />
 
