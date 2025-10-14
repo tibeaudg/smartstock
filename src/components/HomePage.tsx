@@ -1563,7 +1563,7 @@ export const HomePage = () => {
         `}</script>
       </Helmet>
       <SEO
-        title="StockFlow - Inventory Management for Small Retail Shops"
+        title="StockFlow - Cloud-based Inventory & Warehouse Management Platform"
         description="Track stock with your phone. Stop stockouts, reduce overstock, count inventory in minutes. Built for small retail stores."
         keywords="stockflow, stock flow, stockflow app, stockflow software, stockflow inventory, retail inventory management, inventory for retail shops, retail stock management, small retail inventory, shop inventory software, retail store inventory, inventory tracking for retailers, retail inventory app, barcode scanning retail, mobile inventory retail, shop floor inventory, backroom inventory tracking, retail stock control, point of sale inventory, POS inventory integration, retail inventory system, small shop inventory, local store inventory, boutique inventory management, independent retailer inventory, retail inventory software, multi-location retail inventory, inventory management for stores, retail stocktaking, retail inventory counting, retail reorder alerts, retail stock alerts, prevent stockouts retail, reduce overstock retail, retail cash flow, retail inventory free, free retail inventory software, inventory app for shops, retail business software, small business retail inventory, inventory for small retailers, retail inventory Belgium, shop inventory management, store stock management, retail merchandise tracking, retail product tracking, inventory management small retail"
         url="https://www.stockflow.be/"
