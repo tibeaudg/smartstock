@@ -1,7 +1,6 @@
 import { defineConfig } from "vite";
 import react from '@vitejs/plugin-react';
 import path from "path";
-import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -22,31 +21,96 @@ export default defineConfig(({ mode }) => ({
       // Ensure proper React handling in production
       jsxRuntime: 'automatic',
     }),
-    mode === 'development' && componentTagger()
-  ].filter(Boolean),
+  ],
 
-  // vite.config.js
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
-      react: path.resolve(__dirname, 'node_modules/react'),
-      'react-dom': path.resolve(__dirname, 'node_modules/react-dom'),
     },
   },
+  
   optimizeDeps: {
     include: ['react', 'react-dom'],
   },
 
   build: {
-    // Optimize bundle size
+    // Optimize bundle size with better chunk splitting
     rollupOptions: {
       output: {
-        manualChunks(id) {
-          if (id.includes('react') || id.includes('react-dom')) return 'react';
-          // optional: lump other UI libs together, don’t split core React
+        manualChunks: {
+          // Core React libraries
+          'react-vendor': ['react', 'react-dom'],
+          // UI libraries
+          'ui-vendor': [
+            '@radix-ui/react-dialog',
+            '@radix-ui/react-dropdown-menu',
+            '@radix-ui/react-select',
+            '@radix-ui/react-tabs',
+            '@radix-ui/react-toast',
+            '@radix-ui/react-tooltip',
+            '@radix-ui/react-popover',
+            '@radix-ui/react-accordion',
+            '@radix-ui/react-alert-dialog',
+            '@radix-ui/react-avatar',
+            '@radix-ui/react-checkbox',
+            '@radix-ui/react-collapsible',
+            '@radix-ui/react-context-menu',
+            '@radix-ui/react-hover-card',
+            '@radix-ui/react-label',
+            '@radix-ui/react-menubar',
+            '@radix-ui/react-navigation-menu',
+            '@radix-ui/react-progress',
+            '@radix-ui/react-radio-group',
+            '@radix-ui/react-scroll-area',
+            '@radix-ui/react-separator',
+            '@radix-ui/react-slider',
+            '@radix-ui/react-slot',
+            '@radix-ui/react-switch',
+            '@radix-ui/react-toggle',
+            '@radix-ui/react-toggle-group',
+          ],
+          // Data and state management
+          'data-vendor': [
+            '@tanstack/react-query',
+            '@tanstack/query-sync-storage-persister',
+            '@tanstack/react-query-persist-client',
+            '@supabase/supabase-js',
+          ],
+          // Form and validation
+          'form-vendor': [
+            'react-hook-form',
+            '@hookform/resolvers',
+            'zod',
+          ],
+          // Charts and visualization
+          'chart-vendor': [
+            'recharts',
+            'react-simple-maps',
+          ],
+          // Other large libraries
+          'utils-vendor': [
+            'framer-motion',
+            'date-fns',
+            'clsx',
+            'tailwind-merge',
+            'class-variance-authority',
+            'lucide-react',
+            'sonner',
+            'vaul',
+            'cmdk',
+            'input-otp',
+            'qrcode.react',
+            'react-qr-code',
+            'react-day-picker',
+            'react-resizable-panels',
+            'embla-carousel-react',
+            'xlsx',
+            '@zxing/library',
+          ],
         },
       },
     },
+    
     // Enable modern build features
     target: 'esnext',
     minify: 'terser',
@@ -64,29 +128,25 @@ export default defineConfig(({ mode }) => ({
         comments: false,
       },
     },
-    // Generate source maps for better debugging
-    sourcemap: mode === 'development' ? true : 'hidden',
+    
+    // Disable source maps in production to reduce size
+    sourcemap: false,
+    
     // Optimize CSS
     cssCodeSplit: true,
     cssMinify: true,
-    // Optimize assets
-    assetsInlineLimit: 4096, // Inline assets smaller than 4KB
-    // Improve chunk size warnings (increased due to large app, but chunks are split)
-    chunkSizeWarningLimit: 2000,
-    // Enable module preloading
-    modulePreload: {
-      polyfill: true,
-    },
+    
+    // Reduce asset inlining threshold
+    assetsInlineLimit: 2048, // Reduced from 4096
+    
+    // Increase chunk size warning limit
+    chunkSizeWarningLimit: 1000, // Reduced from 2000
+    
+    // Disable module preloading to reduce complexity
+    modulePreload: false,
   },
 
-  // Performance optimizations
-  experimental: {
-    renderBuiltUrl(filename: string) {
-      // Use CDN for production assets (if applicable)
-      return { relative: true };
-    },
-  },
-  // Performance optimizations
+  // Remove experimental features that might cause issues
   esbuild: {
     target: 'esnext',
   },
