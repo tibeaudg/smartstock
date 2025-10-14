@@ -39,15 +39,10 @@ import { initPerformanceMonitoring } from './utils/performanceMonitor';
 import { initializeTrustedTypes, initializeDefaultPolicy } from './utils/trustedTypes';
 import { Suspense } from 'react';
 
-// somewhere early in your app (e.g., main.tsx)
+// Debug code for tracking React.createContext calls
+// Disabled to avoid readonly property assignment
+// If needed for debugging, temporarily enable this code
 import * as React from 'react';
-
-const origCreateContext = React.createContext;
-
-React.createContext = function (...args) {
-  console.trace('createContext called by:');
-  return origCreateContext.apply(this, args);
-};
 
 
 
@@ -55,6 +50,9 @@ const rootElement = document.getElementById('root');
 if (!rootElement) {
   throw new Error('Root element not found in the document');
 }
+
+// Store root instance globally to prevent multiple createRoot() calls
+let appRoot: Root | null = (window as any).__APP_ROOT__ || null;
 
 // ErrorBoundary wordt nu geïmporteerd vanuit components/ErrorBoundary.tsx
 
@@ -93,7 +91,6 @@ const ConnectionErrorUI = () => (
 
 // Initialiseer de React-app met een Supabase-verbindingscontrole
 async function init() {
-  let root: Root;
   try {
     // Safety check: Ensure React and its core APIs are loaded before proceeding
     if (typeof React === 'undefined' || typeof React.createContext !== 'function') {
@@ -151,8 +148,12 @@ async function init() {
       }
     }
 
-    // De root wordt hier aangemaakt en de app wordt gerenderd
-    root = createRoot(rootElement);
+    // Create or reuse the root instance
+    if (!appRoot) {
+      appRoot = createRoot(rootElement);
+      (window as any).__APP_ROOT__ = appRoot;
+    }
+    
     const AppTree = (
       <ErrorBoundary>
         <QueryClientProvider client={queryClient}>
@@ -169,17 +170,18 @@ async function init() {
         </QueryClientProvider>
       </ErrorBoundary>
     );
-    root.render(AppTree);
+    appRoot.render(AppTree);
   } catch (error: any) {
     console.error('App initialization failed:', error);
 
-    // Render de fout-UI bij een verbindingsfout
-    if (!root) {
-      root = createRoot(rootElement);
+    // Create or reuse the root instance for error UI
+    if (!appRoot) {
+      appRoot = createRoot(rootElement);
+      (window as any).__APP_ROOT__ = appRoot;
     }
     
     // Show connection error UI with retry option
-    root.render(
+    appRoot.render(
       <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4 font-sans">
         <div className="bg-white p-8 rounded-xl shadow-md max-w-lg w-full text-center">
           <svg className="mx-auto h-12 w-12 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -203,7 +205,6 @@ async function init() {
               onClick={() => {
                 // Try to load app without connection check as fallback
                 try {
-                  const fallbackRoot = createRoot(rootElement);
                   const AppTree = (
                     <ErrorBoundary>
                       <QueryClientProvider client={queryClient}>
@@ -219,7 +220,7 @@ async function init() {
                       </QueryClientProvider>
                     </ErrorBoundary>
                   );
-                  fallbackRoot.render(AppTree);
+                  appRoot!.render(AppTree);
                 } catch (fallbackError: any) {
                   console.error('Fallback initialization failed:', fallbackError);
                   window.location.reload();

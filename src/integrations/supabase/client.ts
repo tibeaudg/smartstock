@@ -135,10 +135,16 @@ export async function trackAuthConversionEvent(event: Omit<AuthConversionEvent, 
   try {
     const { error } = await supabase.from('auth_conversion_events').insert([event]);
     if (error) {
-      console.error('Failed to track auth conversion event:', error);
+      // Silently fail if table doesn't exist (404) - tracking is optional
+      if (error.code !== 'PGRST116' && !error.message?.includes('404')) {
+        console.error('Failed to track auth conversion event:', error);
+      }
     }
-  } catch (error) {
-    console.error('Error tracking auth conversion event:', error);
+  } catch (error: any) {
+    // Silently fail for 404 errors - table may not exist yet
+    if (!error?.message?.includes('404')) {
+      console.error('Error tracking auth conversion event:', error);
+    }
   }
 }
 

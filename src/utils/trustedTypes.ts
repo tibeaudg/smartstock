@@ -106,6 +106,17 @@ export const initializeTrustedTypes = () => {
 // This policy handles innerHTML assignments from libraries that don't use named policies
 export const initializeDefaultPolicy = () => {
   if (typeof window !== 'undefined' && 'trustedTypes' in window) {
+    // Check if default policy already exists to avoid duplicate creation
+    try {
+      const existingPolicy = window.trustedTypes.getExposedPolicy('default');
+      if (existingPolicy) {
+        console.log('[TrustedTypes] Default policy already exists, skipping creation');
+        return;
+      }
+    } catch (e) {
+      // Policy doesn't exist, continue with creation
+    }
+    
     try {
       window.trustedTypes.createPolicy('default', {
         createHTML: (input: string) => {
@@ -147,7 +158,7 @@ export const initializeDefaultPolicy = () => {
       console.log('[TrustedTypes] Default policy initialized for third-party libraries');
     } catch (e) {
       // Policy already exists, that's fine
-      console.log('[TrustedTypes] Default policy already exists');
+      console.log('[TrustedTypes] Default policy creation failed, may already exist');
     }
   }
 };

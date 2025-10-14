@@ -14,8 +14,10 @@ import { AdminChatList } from '@/components/AdminChatList';
 import { AdminSubscriptionManagement } from '@/components/admin/SubscriptionManagement';
 import { OnboardingTracking } from '@/components/admin/OnboardingTracking';
 import { useNavigate } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
-// Gebruikersbeheer types
+// User management types
 interface UserProfile {
   id: string;
   email: string;
@@ -38,7 +40,7 @@ interface UserStats {
   statsLastUpdated?: string;
 }
 
-// Plan informatie voor prijsberekening (nieuwe subscription tiers)
+// Plan information for price calculation (new subscription tiers)
 const plans = {
   'free': { price: 0, limit: 50, displayName: 'Free / Basic' },
   'basic': { price: 0, limit: 50, displayName: 'Basic' },
@@ -48,19 +50,19 @@ const plans = {
   'premium': { price: 0, limit: null, displayName: 'Premium' }
 };
 
-// Simuleer de prijsberekening voor een gebruiker (nieuwe subscription model)
+// Simulate price calculation for a user (new subscription model)
 function calculateUserLicenseCost(planId: string | null, stats: Omit<UserStats, 'userId' | 'licenseCost' | 'statsLastUpdated'>): number {
   const plan = plans[planId as keyof typeof plans] || plans.basic;
   const price = plan.price;
   
-  // In het nieuwe model zijn alle limieten inbegrepen in de tier prijs
-  // Geen extra kosten voor gebruikers, filialen of producten
-  // Premium plan heeft onbeperkte limieten
+  // In the new model, all limits are included in the tier price
+  // No extra costs for users, branches or products
+  // Premium plan has unlimited limits
   
   return price;
 }
 
-// Gebruikersbeheer functies
+// User management functions
 async function fetchUserProfiles(): Promise<UserProfile[]> {
   const { data, error } = await supabase
     .from('profiles')
@@ -69,7 +71,7 @@ async function fetchUserProfiles(): Promise<UserProfile[]> {
   return data || [];
 }
 
-// Functie om gebruikersstatistieken te berekenen
+// Function to calculate user statistics
 function calculateUserStats(users: UserProfile[]) {
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -89,6 +91,155 @@ function calculateUserStats(users: UserProfile[]) {
     newUsersThisMonth,
     newUsersThisYear
   };
+}
+
+// Function to calculate days since last login
+function getDaysSinceLastLogin(lastLogin: string | null): string {
+  if (!lastLogin) return 'Never';
+  
+  const lastLoginDate = new Date(lastLogin);
+  const now = new Date();
+  const diffTime = now.getTime() - lastLoginDate.getTime();
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+  
+  if (diffDays === 0) return 'Today';
+  if (diffDays === 1) return '1d ago';
+  if (diffDays < 0) return `${Math.abs(diffDays)}d future`;
+  
+  return `${diffDays}d ago`;
+}
+
+// Chart component for user registrations
+interface ChartData {
+  date: string;
+  count: number;
+}
+
+function RegistrationChart({ users, timeRange, onTimeRangeChange }: { 
+  users: UserProfile[]; 
+  timeRange: 'day' | 'week' | 'month' | 'year';
+  onTimeRangeChange: (range: 'day' | 'week' | 'month' | 'year') => void;
+}) {
+  const [chartData, setChartData] = useState<ChartData[]>([]);
+
+  useEffect(() => {
+    const generateChartData = () => {
+      const now = new Date();
+      const data: ChartData[] = [];
+      
+      if (timeRange === 'day') {
+        // Show last 30 days
+        for (let i = 29; i >= 0; i--) {
+          const date = new Date(now);
+          date.setDate(date.getDate() - i);
+          const dateStr = date.toISOString().split('T')[0];
+          
+          const count = users.filter(user => {
+            const userDate = new Date(user.created_at).toISOString().split('T')[0];
+            return userDate === dateStr;
+          }).length;
+          
+          data.push({ date: dateStr, count });
+        }
+      } else if (timeRange === 'week') {
+        // Show last 12 weeks
+        for (let i = 11; i >= 0; i--) {
+          const weekStart = new Date(now);
+          weekStart.setDate(weekStart.getDate() - (weekStart.getDay() + (i * 7)));
+          const weekEnd = new Date(weekStart);
+          weekEnd.setDate(weekEnd.getDate() + 6);
+          
+          const count = users.filter(user => {
+            const userDate = new Date(user.created_at);
+            return userDate >= weekStart && userDate <= weekEnd;
+          }).length;
+          
+          data.push({ 
+            date: `Week ${weekStart.getDate()}/${weekStart.getMonth() + 1}`, 
+            count 
+          });
+        }
+      } else if (timeRange === 'month') {
+        // Show last 12 months
+        for (let i = 11; i >= 0; i--) {
+          const month = new Date(now.getFullYear(), now.getMonth() - i, 1);
+          const monthStr = month.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+          
+          const count = users.filter(user => {
+            const userDate = new Date(user.created_at);
+            return userDate.getFullYear() === month.getFullYear() && 
+                   userDate.getMonth() === month.getMonth();
+          }).length;
+          
+          data.push({ date: monthStr, count });
+        }
+      } else if (timeRange === 'year') {
+        // Show last 5 years
+        for (let i = 4; i >= 0; i--) {
+          const year = now.getFullYear() - i;
+          const count = users.filter(user => {
+            const userDate = new Date(user.created_at);
+            return userDate.getFullYear() === year;
+          }).length;
+          
+          data.push({ date: year.toString(), count });
+        }
+      }
+      
+      setChartData(data);
+    };
+
+    generateChartData();
+  }, [users, timeRange]);
+
+  const maxCount = Math.max(...chartData.map(d => d.count), 1);
+
+  return (
+    <div className="w-full h-64 bg-white p-4 rounded-lg border">
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-lg font-semibold">User Registrations</h3>
+        <div className="flex gap-2">
+          <Select value={timeRange} onValueChange={onTimeRangeChange}>
+            <SelectTrigger className="w-32">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="day">Daily</SelectItem>
+              <SelectItem value="week">Weekly</SelectItem>
+              <SelectItem value="month">Monthly</SelectItem>
+              <SelectItem value="year">Yearly</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+      
+      <div className="flex items-end justify-between h-48 gap-1">
+        {chartData.map((item, index) => (
+          <div key={index} className="flex flex-col items-center flex-1">
+            <div 
+              className="w-full bg-blue-500 rounded-t transition-all duration-300 hover:bg-blue-600"
+              style={{ 
+                height: `${(item.count / maxCount) * 100}%`,
+                minHeight: item.count > 0 ? '4px' : '0px'
+              }}
+              title={`${item.date}: ${item.count} users`}
+            />
+            <div className="text-xs text-gray-600 mt-2 transform -rotate-45 origin-left">
+              {timeRange === 'day' ? new Date(item.date).getDate() : 
+               timeRange === 'week' ? `W${index + 1}` :
+               timeRange === 'month' ? new Date(item.date).getMonth() + 1 :
+               item.date}
+            </div>
+          </div>
+        ))}
+      </div>
+      
+      <div className="flex justify-between text-xs text-gray-500 mt-2">
+        <span>0</span>
+        <span>{maxCount}</span>
+      </div>
+    </div>
+  );
 }
 
 async function fetchUserStats(userId: string): Promise<UserStats> {
@@ -191,6 +342,7 @@ export default function AdminPage() {
   const [companyTypes, setCompanyTypes] = useState<Record<string, { type: string; custom_type: string | null }>>({});
   const [userStats, setUserStats] = useState<UserStats[]>([]);
   const [loadingStats, setLoadingStats] = useState(false);
+  const [chartTimeRange, setChartTimeRange] = useState<'day' | 'week' | 'month' | 'year'>('month');
   
   // Gebruik de page refresh hook
   usePageRefresh();
@@ -276,13 +428,13 @@ export default function AdminPage() {
   }, [user?.id, queryClient]);
 
   const sidebarNavItems: { id: 'users' | 'features' | 'chats' | 'notifications' | 'onboarding'; label: string }[] = [
-    { id: 'users', label: 'Gebruikersbeheer' },
+    { id: 'users', label: 'User Management' },
     { id: 'chats', label: 'Chats' },
-    { id: 'notifications', label: 'Meldingen' },
+    { id: 'notifications', label: 'Notifications' },
     { id: 'onboarding', label: 'Onboarding Tracking' },
   ];
   
-  // Toegangscontrole - alleen eigenaren kunnen de admin pagina bekijken
+  // Access control - only owners can view the admin page
   useEffect(() => {
     if (userProfile && userProfile.is_owner !== true) {
       navigate('/dashboard');
@@ -367,51 +519,63 @@ export default function AdminPage() {
               <AdminNotificationManager />
             )}
             {activeTab === 'users' && (
-              <Card>
-                <CardHeader>
-                  <CardTitle>Gebruikersbeheer</CardTitle>
-                  <CardDescription>Beheer gebruikers, blokkeer/deblokkeer en bekijk gebruikersgegevens.</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  {/* Stats Cards - responsive grid */}
-                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-4 mb-6">
-                    <Card className="bg-blue-50 border-blue-200">
-                      <CardContent className="p-2 sm:p-4">
-                        <div className="text-lg sm:text-2xl font-bold text-blue-700">{users.length}</div>
-                        <div className="text-xs sm:text-sm text-blue-600">Totaal gebruikers</div>
-                      </CardContent>
-                    </Card>
-                    <Card className="bg-green-50 border-green-200">
-                      <CardContent className="p-2 sm:p-4">
-                        <div className="text-lg sm:text-2xl font-bold text-green-700">{calculateUserStats(users).newUsersToday}</div>
-                        <div className="text-xs sm:text-sm text-green-600">Nieuwe vandaag</div>
-                      </CardContent>
-                    </Card>
-                    <Card className="bg-yellow-50 border-yellow-200">
-                      <CardContent className="p-2 sm:p-4">
-                        <div className="text-lg sm:text-2xl font-bold text-yellow-700">{calculateUserStats(users).newUsersThisWeek}</div>
-                        <div className="text-xs sm:text-sm text-yellow-600">Nieuwe deze week</div>
-                      </CardContent>
-                    </Card>
-                    <Card className="bg-purple-50 border-purple-200">
-                      <CardContent className="p-2 sm:p-4">
-                        <div className="text-lg sm:text-2xl font-bold text-purple-700">{calculateUserStats(users).newUsersThisMonth}</div>
-                        <div className="text-xs sm:text-sm text-purple-600">Nieuwe deze maand</div>
-                      </CardContent>
-                    </Card>
-                    <Card className="bg-orange-50 border-orange-200">
-                      <CardContent className="p-2 sm:p-4">
-                        <div className="text-lg sm:text-2xl font-bold text-orange-700">{calculateUserStats(users).newUsersThisYear}</div>
-                        <div className="text-xs sm:text-sm text-orange-600">Nieuwe dit jaar</div>
-                      </CardContent>
-                    </Card>
-                  </div>
+              <div className="space-y-6">
+                {/* Registration Chart */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>User Registration Analytics</CardTitle>
+                    <CardDescription>Track user registrations over time with interactive charts.</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <RegistrationChart users={users} timeRange={chartTimeRange} onTimeRangeChange={setChartTimeRange} />
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>User Management</CardTitle>
+                    <CardDescription>Manage users, block/unblock and view user details.</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    {/* Stats Cards - responsive grid */}
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-4 mb-6">
+                      <Card className="bg-blue-50 border-blue-200">
+                        <CardContent className="p-2 sm:p-4">
+                          <div className="text-lg sm:text-2xl font-bold text-blue-700">{users.length}</div>
+                          <div className="text-xs sm:text-sm text-blue-600">Total users</div>
+                        </CardContent>
+                      </Card>
+                      <Card className="bg-green-50 border-green-200">
+                        <CardContent className="p-2 sm:p-4">
+                          <div className="text-lg sm:text-2xl font-bold text-green-700">{calculateUserStats(users).newUsersToday}</div>
+                          <div className="text-xs sm:text-sm text-green-600">New today</div>
+                        </CardContent>
+                      </Card>
+                      <Card className="bg-yellow-50 border-yellow-200">
+                        <CardContent className="p-2 sm:p-4">
+                          <div className="text-lg sm:text-2xl font-bold text-yellow-700">{calculateUserStats(users).newUsersThisWeek}</div>
+                          <div className="text-xs sm:text-sm text-yellow-600">New this week</div>
+                        </CardContent>
+                      </Card>
+                      <Card className="bg-purple-50 border-purple-200">
+                        <CardContent className="p-2 sm:p-4">
+                          <div className="text-lg sm:text-2xl font-bold text-purple-700">{calculateUserStats(users).newUsersThisMonth}</div>
+                          <div className="text-xs sm:text-sm text-purple-600">New this month</div>
+                        </CardContent>
+                      </Card>
+                      <Card className="bg-orange-50 border-orange-200">
+                        <CardContent className="p-2 sm:p-4">
+                          <div className="text-lg sm:text-2xl font-bold text-orange-700">{calculateUserStats(users).newUsersThisYear}</div>
+                          <div className="text-xs sm:text-sm text-orange-600">New this year</div>
+                        </CardContent>
+                      </Card>
+                    </div>
 
                   {/* Mobile: Card-based user list */}
                   {isMobile ? (
                     <div className="space-y-4">
                       {users.length === 0 ? (
-                        <div className="text-center py-8 text-gray-500">Geen gebruikers gevonden.</div>
+                        <div className="text-center py-8 text-gray-500">No users found.</div>
                       ) : users.map((user) => {
                         const stats = userStats.find(s => s.userId === user.id);
                         return (
@@ -424,25 +588,25 @@ export default function AdminPage() {
                                     <p className="text-xs text-gray-600">{user.first_name} {user.last_name}</p>
                                   </div>
                                   <span className={`px-2 py-1 rounded text-xs ${user.blocked ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'}`}>
-                                    {user.blocked ? 'Geblokkeerd' : 'Actief'}
+                                    {user.blocked ? 'Blocked' : 'Active'}
                                   </span>
                                 </div>
                                 <div className="grid grid-cols-2 gap-2 text-xs text-gray-600">
-                                  <div>Plan: {user.selected_plan || 'Geen'}</div>
-                                  <div>Rol: {user.role}</div>
-                                  <div>Producten: {loadingStats ? <Loader2 className="w-3 h-3 animate-spin inline" /> : stats?.productCount || 0}</div>
-                                  <div>Filialen: {loadingStats ? <Loader2 className="w-3 h-3 animate-spin inline" /> : stats?.branchCount || 0}</div>
+                                  <div>Plan: {user.selected_plan || 'None'}</div>
+                                  <div>Role: {user.role}</div>
+                                  <div>Products: {loadingStats ? <Loader2 className="w-3 h-3 animate-spin inline" /> : stats?.productCount || 0}</div>
+                                  <div>Branches: {loadingStats ? <Loader2 className="w-3 h-3 animate-spin inline" /> : stats?.branchCount || 0}</div>
                                 </div>
                                 <div className="flex justify-between items-center pt-2">
                                   <span className="text-xs text-gray-500">
-                                    {new Date(user.created_at).toLocaleDateString('nl-BE')}
+                                    {new Date(user.created_at).toLocaleDateString('en-US')}
                                   </span>
                                   <button
                                     className={`px-2 py-1 rounded text-xs ${user.blocked ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}
                                     onClick={e => { e.stopPropagation(); blockMutation.mutate({ id: user.id, blocked: !!user.blocked }); }}
                                     disabled={blockMutation.isPending}
                                   >
-                                    {user.blocked ? 'Deblokkeren' : 'Blokkeren'}
+                                    {user.blocked ? 'Unblock' : 'Block'}
                                   </button>
                                 </div>
                               </div>
@@ -458,23 +622,23 @@ export default function AdminPage() {
                         <thead className="text-xs uppercase bg-gray-50">
                           <tr>
                             <th className="px-4 py-2">Email</th>
-                            <th className="px-4 py-2">Naam</th>
-                            <th className="px-4 py-2">Bedrijfstype</th>
-                            <th className="px-4 py-2">Rol</th>
+                            <th className="px-4 py-2">Name</th>
+                            <th className="px-4 py-2">Company Type</th>
+                            <th className="px-4 py-2">Role</th>
                             <th className="px-4 py-2">Plan</th>
-                            <th className="px-4 py-2">Producten</th>
-                            <th className="px-4 py-2">Filialen</th>
-                            <th className="px-4 py-2">Gelinkte Gebruikers</th>
-                            <th className="px-4 py-2">Licentie Kosten</th>
-                            <th className="px-4 py-2">Geblokkeerd</th>
-                            <th className="px-4 py-2">Aangemaakt</th>
-                            <th className="px-4 py-2">Laatste login</th>
-                            <th className="px-4 py-2">Acties</th>
+                            <th className="px-4 py-2">Products</th>
+                            <th className="px-4 py-2">Branches</th>
+                            <th className="px-4 py-2">Linked Users</th>
+                            <th className="px-4 py-2">License Cost</th>
+                            <th className="px-4 py-2">Blocked</th>
+                            <th className="px-4 py-2">Created</th>
+                            <th className="px-4 py-2">Last Login</th>
+                            <th className="px-4 py-2">Actions</th>
                           </tr>
                         </thead>
                         <tbody>
                           {users.length === 0 ? (
-                            <tr><td colSpan={13} className="text-center py-4">Geen gebruikers gevonden.</td></tr>
+                            <tr><td colSpan={13} className="text-center py-4">No users found.</td></tr>
                           ) : users.map((user) => {
                             const stats = userStats.find(s => s.userId === user.id);
                             return (
@@ -483,7 +647,7 @@ export default function AdminPage() {
                                 <td className="px-4 py-2">{user.first_name} {user.last_name}</td>
                                 <td className="px-4 py-2">{companyTypes[user.id]?.type === 'Overig' ? companyTypes[user.id]?.custom_type : companyTypes[user.id]?.type || '-'}</td>
                                 <td className="px-4 py-2">{user.role}</td>
-                                <td className="px-4 py-2">{user.selected_plan || 'Geen plan'}</td>
+                                <td className="px-4 py-2">{user.selected_plan || 'No plan'}</td>
                                 <td className="px-4 py-2 text-center">
                                   {loadingStats ? <Loader2 className="w-4 h-4 animate-spin mx-auto" /> : stats?.productCount || 0}
                                 </td>
@@ -496,16 +660,16 @@ export default function AdminPage() {
                                 <td className="px-4 py-2 text-center font-mono">
                                   {loadingStats ? <Loader2 className="w-4 h-4 animate-spin mx-auto" /> : `$${(stats?.licenseCost || 0).toFixed(2)}`}
                                 </td>
-                                <td className="px-4 py-2">{user.blocked ? 'Ja' : 'Nee'}</td>
-                                <td className="px-4 py-2">{new Date(user.created_at).toLocaleDateString('nl-BE')}</td>
-                                <td className="px-4 py-2">{user.last_login ? new Date(user.last_login).toLocaleString('nl-BE') : '-'}</td>
+                                <td className="px-4 py-2">{user.blocked ? 'Yes' : 'No'}</td>
+                                <td className="px-4 py-2">{new Date(user.created_at).toLocaleDateString('en-US')}</td>
+                                <td className="px-4 py-2">{getDaysSinceLastLogin(user.last_login)}</td>
                                 <td className="px-4 py-2">
                                   <button
                                     className={`px-2 py-1 rounded text-xs ${user.blocked ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}
                                     onClick={e => { e.stopPropagation(); blockMutation.mutate({ id: user.id, blocked: !!user.blocked }); }}
                                     disabled={blockMutation.isPending}
                                   >
-                                    {user.blocked ? 'Deblokkeren' : 'Blokkeren'}
+                                    {user.blocked ? 'Unblock' : 'Block'}
                                   </button>
                                 </td>
                               </tr>
@@ -516,39 +680,42 @@ export default function AdminPage() {
                     </div>
                   )}
                   
-                  {/* Gebruikersdetails */}
+                  {/* User details */}
                   {selectedUser && (
                     <div className="mt-8">
                       <Card>
                         <CardHeader>
-                          <CardTitle>Details van {selectedUser.email}</CardTitle>
-                          <CardDescription>Gebruikersgegevens en instellingen.</CardDescription>
+                          <CardTitle>Details for {selectedUser.email}</CardTitle>
+                          <CardDescription>User information and settings.</CardDescription>
                         </CardHeader>
                         <CardContent>
                           <div className="space-y-4">
                             <div>
-                              <h4 className="font-semibold mb-2">Gebruikersgegevens</h4>
+                              <h4 className="font-semibold mb-2">User Information</h4>
                               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                                 <div>
                                   <span className="font-medium">Email:</span> {selectedUser.email}
                                 </div>
                                 <div>
-                                  <span className="font-medium">Naam:</span> {selectedUser.first_name} {selectedUser.last_name}
+                                  <span className="font-medium">Name:</span> {selectedUser.first_name} {selectedUser.last_name}
                                 </div>
                                 <div>
-                                  <span className="font-medium">Rol:</span> {selectedUser.role}
+                                  <span className="font-medium">Role:</span> {selectedUser.role}
                                 </div>
                                 <div>
-                                  <span className="font-medium">Plan:</span> {selectedUser.selected_plan || 'Geen plan'}
+                                  <span className="font-medium">Plan:</span> {selectedUser.selected_plan || 'No plan'}
                                 </div>
                                 <div>
                                   <span className="font-medium">Status:</span> 
                                   <span className={`ml-2 px-2 py-1 rounded text-xs ${selectedUser.blocked ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'}`}>
-                                    {selectedUser.blocked ? 'Geblokkeerd' : 'Actief'}
+                                    {selectedUser.blocked ? 'Blocked' : 'Active'}
                                   </span>
                                 </div>
                                 <div>
-                                  <span className="font-medium">Aangemaakt:</span> {new Date(selectedUser.created_at).toLocaleDateString('nl-BE')}
+                                  <span className="font-medium">Created:</span> {new Date(selectedUser.created_at).toLocaleDateString('en-US')}
+                                </div>
+                                <div>
+                                  <span className="font-medium">Last Login:</span> {getDaysSinceLastLogin(selectedUser.last_login)}
                                 </div>
                               </div>
                             </div>
@@ -557,19 +724,19 @@ export default function AdminPage() {
                               if (!stats) return null;
                               return (
                                 <div>
-                                  <h4 className="font-semibold mb-2">Gebruiksstatistieken</h4>
+                                  <h4 className="font-semibold mb-2">Usage Statistics</h4>
                                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                                     <div>
-                                      <span className="font-medium">Aantal producten:</span> {stats.productCount}
+                                      <span className="font-medium">Number of products:</span> {stats.productCount}
                                     </div>
                                     <div>
-                                      <span className="font-medium">Aantal filialen:</span> {stats.branchCount}
+                                      <span className="font-medium">Number of branches:</span> {stats.branchCount}
                                     </div>
                                     <div>
-                                      <span className="font-medium">Gelinkte gebruikers:</span> {stats.linkedUserCount}
+                                      <span className="font-medium">Linked users:</span> {stats.linkedUserCount}
                                     </div>
                                     <div>
-                                      <span className="font-medium">Maandelijkse licentie kosten:</span> 
+                                      <span className="font-medium">Monthly license cost:</span> 
                                       <span className="ml-2 font-mono text-blue-600">${stats.licenseCost.toFixed(2)}</span>
                                     </div>
                                   </div>
@@ -577,15 +744,15 @@ export default function AdminPage() {
                               );
                             })()}
                           </div>
-                          <button className="mt-4 px-4 py-2 bg-gray-200 rounded" onClick={() => setSelectedUser(null)}>Terug naar gebruikerslijst</button>
+                          <button className="mt-4 px-4 py-2 bg-gray-200 rounded" onClick={() => setSelectedUser(null)}>Back to user list</button>
                         </CardContent>
                       </Card>
                     </div>
                   )}
                 </CardContent>
               </Card>
+            </div>
             )}
-
 
             {activeTab === 'chats' && (
               <AdminChatList />
