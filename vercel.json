@@ -2,8 +2,7 @@
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/sitemap.xml", "destination": "/api/sitemap" },
-    { "source": "/ads.txt", "destination": "/api/ads" },
-    { "source": "/((?!assets|.*\\.(css|js|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot|webp|avif|mp4|webm)).*)", "destination": "/" }
+    { "source": "/ads.txt", "destination": "/api/ads" }
   ],
   "headers": [
     {
