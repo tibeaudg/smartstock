@@ -190,41 +190,7 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButton
                     >
                       Pricing
                     </Link>
-                    <Link 
-                      to="/customers"
-                      className="block w-full text-left text-gray-700 hover:text-blue-700 py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors font-medium" 
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      Customers
-                    </Link>
-                    <Link 
-                      to="/help"
-                      className="block w-full text-left text-gray-700 hover:text-blue-700 py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors font-medium" 
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      Help Center
-                    </Link>
-                    <Link 
-                      to="/blog"
-                      className="block w-full text-left text-gray-700 hover:text-blue-700 py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors font-medium" 
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      Blog
-                    </Link>
-                    <Link 
-                      to="/contact"
-                      className="block w-full text-left text-gray-700 hover:text-blue-700 py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors font-medium" 
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      Contact
-                    </Link>
-                    <Link 
-                      to="/auth?mode=login"
-                      className="block w-full text-left text-gray-700 hover:text-blue-700 py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors font-medium" 
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      Login
-                    </Link>
+
                   </div>
                 </div>
               )}
