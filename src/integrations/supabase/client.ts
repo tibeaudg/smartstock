@@ -105,12 +105,21 @@ supabase.auth.onAuthStateChange(() => {
   // Auth state change logging removed for production security
 });
 
-// Export a function to check connection
+// Export a function to check connection with timeout
 export const checkSupabaseConnection = async () => {
   try {
-    const { error } = await supabase.from('profiles').select('count');
-    if (error) {
-      console.error('Supabase connection test failed:', error);
+    // Create a timeout promise
+    const timeoutPromise = new Promise((_, reject) => {
+      setTimeout(() => reject(new Error('Connection timeout')), 8000); // 8 second timeout
+    });
+    
+    // Race between the actual connection test and timeout
+    const connectionPromise = supabase.from('profiles').select('count');
+    
+    const result = await Promise.race([connectionPromise, timeoutPromise]) as any;
+    
+    if (result.error) {
+      console.error('Supabase connection test failed:', result.error);
       return false;
     }
     return true;

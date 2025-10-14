@@ -38,8 +38,19 @@ export default defineConfig(({ mode }) => ({
         manualChunks: (id) => {
           // Split vendor libraries into separate chunks
           if (id.includes('node_modules')) {
-            // Put ALL vendor libraries in a single chunk to avoid race conditions
-            // This ensures React and all dependencies load together
+            // Split React and core dependencies
+            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
+              return 'vendor-react';
+            }
+            // Split UI libraries
+            if (id.includes('@radix-ui') || id.includes('lucide-react') || id.includes('framer-motion')) {
+              return 'vendor-ui';
+            }
+            // Split data fetching libraries
+            if (id.includes('@tanstack') || id.includes('@supabase') || id.includes('axios')) {
+              return 'vendor-data';
+            }
+            // Put other vendor libraries in a single chunk
             return 'vendor';
           }
           
@@ -89,7 +100,7 @@ export default defineConfig(({ mode }) => ({
     // Optimize assets
     assetsInlineLimit: 4096, // Inline assets smaller than 4KB
     // Improve chunk size warnings (increased due to large app, but chunks are split)
-    chunkSizeWarningLimit: 1500,
+    chunkSizeWarningLimit: 2000,
     // Enable module preloading
     modulePreload: {
       polyfill: true,

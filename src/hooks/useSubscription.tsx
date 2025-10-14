@@ -55,15 +55,24 @@ export const useSubscription = () => {
   } = useQuery<PricingTier[]>({
     queryKey: ['pricing-tiers'],
     queryFn: async () => {
-      const { data, error } = await supabase
+      // Add timeout to prevent hanging requests
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error('Request timeout')), 8000);
+      });
+      
+      const queryPromise = supabase
         .from('pricing_tiers')
         .select('*')
         .order('price_monthly', { ascending: true });
-
-      if (error) throw error;
-      return data || [];
+      
+      const result = await Promise.race([queryPromise, timeoutPromise]) as any;
+      
+      if (result.error) throw result.error;
+      return result.data || [];
     },
     staleTime: 1000 * 60 * 5, // 5 minutes
+    retry: 1, // Only retry once to prevent infinite loops
+    retryDelay: 2000, // 2 second delay between retries
   });
 
   // Fetch user's current subscription
@@ -76,7 +85,12 @@ export const useSubscription = () => {
     queryFn: async () => {
       if (!user) return null;
 
-      const { data, error } = await supabase
+      // Add timeout to prevent hanging requests
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error('Request timeout')), 8000);
+      });
+      
+      const queryPromise = supabase
         .from('user_subscriptions')
         .select(`
           *,
@@ -85,12 +99,16 @@ export const useSubscription = () => {
         .eq('user_id', user.id)
         .eq('status', 'active')
         .maybeSingle();
-
-      if (error) throw error;
-      return data || null;
+      
+      const result = await Promise.race([queryPromise, timeoutPromise]) as any;
+      
+      if (result.error) throw result.error;
+      return result.data || null;
     },
     enabled: !!user,
     staleTime: 1000 * 60 * 2, // 2 minutes
+    retry: 1, // Only retry once to prevent infinite loops
+    retryDelay: 2000, // 2 second delay between retries
   });
 
   // Fetch usage tracking
@@ -103,17 +121,26 @@ export const useSubscription = () => {
     queryFn: async () => {
       if (!user) return null;
 
-      const { data, error } = await supabase
+      // Add timeout to prevent hanging requests
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error('Request timeout')), 8000);
+      });
+      
+      const queryPromise = supabase
         .from('usage_tracking')
         .select('*')
         .eq('user_id', user.id)
         .maybeSingle();
-
-      if (error) throw error;
-      return data || null;
+      
+      const result = await Promise.race([queryPromise, timeoutPromise]) as any;
+      
+      if (result.error) throw result.error;
+      return result.data || null;
     },
     enabled: !!user,
     staleTime: 1000 * 30, // 30 seconds
+    retry: 1, // Only retry once to prevent infinite loops
+    retryDelay: 2000, // 2 second delay between retries
   });
 
   // Start trial mutation

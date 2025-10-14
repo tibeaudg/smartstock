@@ -391,7 +391,46 @@ export const HomePage = () => {
   // Pricing-related state and hooks
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly');
   const { user } = useAuth();
-  const { pricingTiers, isLoading } = useSubscription();
+  const { pricingTiers, isLoading, error: subscriptionError } = useSubscription();
+  
+  // Fallback pricing data in case subscription data fails to load
+  const fallbackPricingTiers = [
+    {
+      id: 'basic',
+      name: 'basic',
+      display_name: 'Free Plan',
+      description: 'Perfect for small businesses getting started',
+      price_monthly: 0,
+      price_yearly: 0,
+      yearly_discount_percentage: 0,
+      max_products: 100,
+      max_orders_per_month: null,
+      max_users: 1,
+      max_branches: 1,
+      features: ['Basic inventory tracking', 'Mobile scanning', 'Low stock alerts'],
+      is_popular: false,
+      is_enterprise: false
+    },
+    {
+      id: 'growth',
+      name: 'growth',
+      display_name: 'Growth Plan',
+      description: 'For growing businesses with multiple locations',
+      price_monthly: 29,
+      price_yearly: 290,
+      yearly_discount_percentage: 17,
+      max_products: 1000,
+      max_orders_per_month: null,
+      max_users: 5,
+      max_branches: 3,
+      features: ['Everything in Free', 'Multi-location support', 'Advanced analytics', 'Team collaboration'],
+      is_popular: true,
+      is_enterprise: false
+    }
+  ];
+  
+  // Use fallback data if subscription data fails to load
+  const effectivePricingTiers = (subscriptionError || pricingTiers.length === 0) ? fallbackPricingTiers : pricingTiers;
   
   // ALL HOOKS DISABLED TO PREVENT CRASHES
   // usePageRefresh();
@@ -1540,7 +1579,7 @@ export const HomePage = () => {
       <SEO
         title="StockFlow - Inventory Management for Small Retail Shops"
         description="Track stock with your phone. Stop stockouts, reduce overstock, count inventory in minutes. Built for small retail stores."
-        keywords="retail inventory management, inventory for retail shops, retail stock management, small retail inventory, shop inventory software, retail store inventory, inventory tracking for retailers, retail inventory app, barcode scanning retail, mobile inventory retail, shop floor inventory, backroom inventory tracking, retail stock control, point of sale inventory, POS inventory integration, retail inventory system, small shop inventory, local store inventory, boutique inventory management, independent retailer inventory, retail inventory software, multi-location retail inventory, inventory management for stores, retail stocktaking, retail inventory counting, retail reorder alerts, retail stock alerts, prevent stockouts retail, reduce overstock retail, retail cash flow, retail inventory free, free retail inventory software, inventory app for shops, retail business software, small business retail inventory, inventory for small retailers, retail inventory Belgium, shop inventory management, store stock management, retail merchandise tracking, retail product tracking, inventory management small retail"
+        keywords="stockflow, stock flow, stockflow app, stockflow software, stockflow inventory, retail inventory management, inventory for retail shops, retail stock management, small retail inventory, shop inventory software, retail store inventory, inventory tracking for retailers, retail inventory app, barcode scanning retail, mobile inventory retail, shop floor inventory, backroom inventory tracking, retail stock control, point of sale inventory, POS inventory integration, retail inventory system, small shop inventory, local store inventory, boutique inventory management, independent retailer inventory, retail inventory software, multi-location retail inventory, inventory management for stores, retail stocktaking, retail inventory counting, retail reorder alerts, retail stock alerts, prevent stockouts retail, reduce overstock retail, retail cash flow, retail inventory free, free retail inventory software, inventory app for shops, retail business software, small business retail inventory, inventory for small retailers, retail inventory Belgium, shop inventory management, store stock management, retail merchandise tracking, retail product tracking, inventory management small retail"
         url="https://www.stockflow.be/"
         hreflang={[
           { lang: 'en', url: 'https://www.stockflow.be/' },

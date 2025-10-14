@@ -85,10 +85,43 @@ async function init() {
       initPerformanceMonitoring();
     }
     
-    const isConnected = await checkSupabaseConnection();
+    // Add timeout to Supabase connection check to prevent infinite loading
+    // In production, we'll be more lenient with connection failures
+    let isConnected = false;
+    
+    if (process.env.NODE_ENV === 'production') {
+      // In production, try connection check but don't fail if it times out
+      try {
+        const connectionTimeout = new Promise((_, reject) => {
+          setTimeout(() => reject(new Error('Supabase connection timeout')), 5000); // 5 second timeout in production
+        });
+        
+        isConnected = await Promise.race([
+          checkSupabaseConnection(),
+          connectionTimeout
+        ]);
+        
+        if (!isConnected) {
+          console.warn('Supabase connection failed, continuing with degraded functionality');
+        }
+      } catch (error) {
+        console.warn('Supabase connection check failed, continuing with degraded functionality:', error.message);
+        // Don't throw - continue with app initialization
+      }
+    } else {
+      // In development, be stricter about connection requirements
+      const connectionTimeout = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error('Supabase connection timeout')), 10000); // 10 second timeout in dev
+      });
+      
+      isConnected = await Promise.race([
+        checkSupabaseConnection(),
+        connectionTimeout
+      ]);
 
-    if (!isConnected) {
-      throw new Error('Could not connect to Supabase');
+      if (!isConnected) {
+        throw new Error('Could not connect to Supabase');
+      }
     }
 
     // De root wordt hier aangemaakt en de app wordt gerenderd
@@ -114,8 +147,65 @@ async function init() {
     console.error('App initialization failed:', error);
 
     // Render de fout-UI bij een verbindingsfout
-    root = createRoot(rootElement);
-    root.render(<ConnectionErrorUI />);
+    if (!root) {
+      root = createRoot(rootElement);
+    }
+    
+    // Show connection error UI with retry option
+    root.render(
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4 font-sans">
+        <div className="bg-white p-8 rounded-xl shadow-md max-w-lg w-full text-center">
+          <svg className="mx-auto h-12 w-12 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M18.364 5.636a9 9 0 010 12.728m-12.728 0a9 9 0 010-12.728m12.728 0L5.636 18.364m0-12.728L18.364 5.636" />
+          </svg>
+          <h1 className="text-2xl font-bold text-gray-800 mt-4">Connection Error</h1>
+          <p className="text-gray-600 mt-2 mb-4">
+            {error.message?.includes('timeout') 
+              ? 'Connection timed out. Please check your internet connection and try again.'
+              : 'Cannot connect to the server. Check your internet connection and try again.'
+            }
+          </p>
+          <div className="flex gap-3 justify-center">
+            <button
+              onClick={() => window.location.reload()}
+              className="bg-blue-600 text-white px-5 py-2 rounded-lg font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors"
+            >
+              Try Again
+            </button>
+            <button
+              onClick={() => {
+                // Try to load app without connection check as fallback
+                try {
+                  const fallbackRoot = createRoot(rootElement);
+                  const AppTree = (
+                    <ErrorBoundary>
+                      <QueryClientProvider client={queryClient}>
+                        <HelmetProvider>
+                          <AuthProvider>
+                            <UnreadMessagesProvider>
+                              <Suspense fallback={<LoadingFallback />}>
+                                <App />
+                              </Suspense>
+                            </UnreadMessagesProvider>
+                          </AuthProvider>
+                        </HelmetProvider>
+                      </QueryClientProvider>
+                    </ErrorBoundary>
+                  );
+                  fallbackRoot.render(AppTree);
+                } catch (fallbackError) {
+                  console.error('Fallback initialization failed:', fallbackError);
+                  window.location.reload();
+                }
+              }}
+              className="bg-gray-500 text-white px-5 py-2 rounded-lg font-semibold hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 transition-colors"
+            >
+              Continue Offline
+            </button>
+          </div>
+        </div>
+      </div>
+    );
   }
 }
 

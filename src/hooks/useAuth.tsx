@@ -55,19 +55,26 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     userId: string
   ): Promise<UserProfile | null> => {
     try {
-      const { data, error } = await supabase
+      // Add timeout to prevent hanging requests
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error('Request timeout')), 8000);
+      });
+      
+      const queryPromise = supabase
         .from('profiles')
         .select('*')
         .eq('id', userId)
         .maybeSingle(); // Gebruik maybeSingle() in plaats van single() om 0 rijen te accepteren
+      
+      const result = await Promise.race([queryPromise, timeoutPromise]) as any;
 
-      if (error) {
-        console.error('Error fetching user profile:', error.message);
+      if (result.error) {
+        console.error('Error fetching user profile:', result.error.message);
         return null;
       }
       
       // Als er geen profiel bestaat, maak een basis profiel object
-      if (!data) {
+      if (!result.data) {
         console.log('No profile found for user, creating basic profile object');
         return {
           id: userId,
@@ -86,10 +93,25 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         };
       }
       
-      return data as UserProfile;
+      return result.data as UserProfile;
     } catch (err) {
       console.error('Unexpected error fetching user profile:', err);
-      return null;
+      // Return basic profile object as fallback
+      return {
+        id: userId,
+        email: '',
+        first_name: null,
+        last_name: null,
+        role: 'staff' as const,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        selected_plan: null,
+        blocked: false,
+        last_login: null,
+        is_owner: false,
+        onboarding_completed: false,
+        onboarding_data: null
+      };
     }
   };
 
