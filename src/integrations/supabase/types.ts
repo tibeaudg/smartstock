@@ -816,7 +816,7 @@ export type Database = {
           first_name: string | null
           id: string
           last_name: string | null
-          role: Database["public"]["Enums"]["user_role"]
+          role: Database["public"]["Enums"]["user_role"] | string
           updated_at: string | null
           selected_plan: string | null
           blocked: boolean | null
@@ -831,7 +831,7 @@ export type Database = {
           first_name?: string | null
           id: string
           last_name?: string | null
-          role?: Database["public"]["Enums"]["user_role"]
+          role?: Database["public"]["Enums"]["user_role"] | string
           updated_at?: string | null
           selected_plan?: string | null
           blocked?: boolean | null
@@ -846,7 +846,7 @@ export type Database = {
           first_name?: string | null
           id?: string
           last_name?: string | null
-          role?: Database["public"]["Enums"]["user_role"]
+          role?: Database["public"]["Enums"]["user_role"] | string
           updated_at?: string | null
           selected_plan?: string | null
           blocked?: boolean | null
@@ -962,6 +962,33 @@ export type Database = {
           }
         ]
       }
+      categories: {
+        Row: {
+          id: string
+          name: string
+          description: string | null
+          user_id: string
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          description?: string | null
+          user_id: string
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          description?: string | null
+          user_id?: string
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       suppliers: {
         Row: {
           address: string | null
@@ -970,6 +997,9 @@ export type Database = {
           id: string
           name: string
           phone: string | null
+          user_id: string | null
+          contact_person: string | null
+          updated_at: string | null
         }
         Insert: {
           address?: string | null
@@ -978,6 +1008,9 @@ export type Database = {
           id?: string
           name: string
           phone?: string | null
+          user_id?: string | null
+          contact_person?: string | null
+          updated_at?: string | null
         }
         Update: {
           address?: string | null
@@ -986,6 +1019,9 @@ export type Database = {
           id?: string
           name?: string
           phone?: string | null
+          user_id?: string | null
+          contact_person?: string | null
+          updated_at?: string | null
         }
         Relationships: []
       }
@@ -1054,6 +1090,290 @@ export type Database = {
             referencedColumns: ["id"]
           }
         ]
+      }
+      notifications: {
+        Row: {
+          id: string
+          user_id: string | null
+          title: string
+          message: string
+          type: 'info' | 'warning' | 'error' | 'success'
+          is_read: boolean
+          created_by: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id?: string | null
+          title: string
+          message: string
+          type?: 'info' | 'warning' | 'error' | 'success'
+          is_read?: boolean
+          created_by?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string | null
+          title?: string
+          message?: string
+          type?: 'info' | 'warning' | 'error' | 'success'
+          is_read?: boolean
+          created_by?: string | null
+          created_at?: string
+        }
+        Relationships: []
+      }
+      notification_reads: {
+        Row: {
+          id: string
+          notification_id: string
+          user_id: string
+          read_at: string
+        }
+        Insert: {
+          id?: string
+          notification_id: string
+          user_id: string
+          read_at?: string
+        }
+        Update: {
+          id?: string
+          notification_id?: string
+          user_id?: string
+          read_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notification_reads_notification_id_fkey"
+            columns: ["notification_id"]
+            isOneToOne: false
+            referencedRelation: "notifications"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      blogposts: {
+        Row: {
+          id: string
+          title: string
+          slug: string
+          content: string
+          excerpt: string | null
+          author: string | null
+          date_published: string | null
+          published: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          title: string
+          slug: string
+          content: string
+          excerpt?: string | null
+          author?: string | null
+          date_published?: string | null
+          published?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          title?: string
+          slug?: string
+          content?: string
+          excerpt?: string | null
+          author?: string | null
+          date_published?: string | null
+          published?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      blog_analytics: {
+        Row: {
+          id: string
+          blog_post_id: string | null
+          visitor_ip: string | null
+          user_agent: string | null
+          referrer: string | null
+          slug: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          blog_post_id?: string | null
+          visitor_ip?: string | null
+          user_agent?: string | null
+          referrer?: string | null
+          slug?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          blog_post_id?: string | null
+          visitor_ip?: string | null
+          user_agent?: string | null
+          referrer?: string | null
+          slug?: string | null
+          created_at?: string
+        }
+        Relationships: []
+      }
+      auth_conversion_events: {
+        Row: {
+          id: string
+          user_id: string | null
+          event_type: string
+          session_id: string | null
+          visitor_ip: string | null
+          user_agent: string | null
+          email: string | null
+          referrer: string | null
+          utm_source: string | null
+          utm_medium: string | null
+          utm_campaign: string | null
+          country: string | null
+          city: string | null
+          page_load_time_ms: number | null
+          time_on_page_seconds: number | null
+          form_abandonment_step: string | null
+          error_message: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id?: string | null
+          event_type: string
+          session_id?: string | null
+          visitor_ip?: string | null
+          user_agent?: string | null
+          email?: string | null
+          referrer?: string | null
+          utm_source?: string | null
+          utm_medium?: string | null
+          utm_campaign?: string | null
+          country?: string | null
+          city?: string | null
+          page_load_time_ms?: number | null
+          time_on_page_seconds?: number | null
+          form_abandonment_step?: string | null
+          error_message?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string | null
+          event_type?: string
+          session_id?: string | null
+          visitor_ip?: string | null
+          user_agent?: string | null
+          email?: string | null
+          referrer?: string | null
+          utm_source?: string | null
+          utm_medium?: string | null
+          utm_campaign?: string | null
+          country?: string | null
+          city?: string | null
+          page_load_time_ms?: number | null
+          time_on_page_seconds?: number | null
+          form_abandonment_step?: string | null
+          error_message?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      auth_conversion_analytics: {
+        Row: {
+          id: string
+          date: string
+          event_type: string
+          event_count: number
+          unique_sessions: number
+          unique_visitors: number
+          unique_emails: number
+          avg_load_time_ms: number | null
+          avg_time_on_page_seconds: number | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          date: string
+          event_type: string
+          event_count?: number
+          unique_sessions?: number
+          unique_visitors?: number
+          unique_emails?: number
+          avg_load_time_ms?: number | null
+          avg_time_on_page_seconds?: number | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          date?: string
+          event_type?: string
+          event_count?: number
+          unique_sessions?: number
+          unique_visitors?: number
+          unique_emails?: number
+          avg_load_time_ms?: number | null
+          avg_time_on_page_seconds?: number | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      auth_conversion_funnel: {
+        Row: {
+          id: string
+          date: string
+          page_views: number
+          registration_started: number
+          registration_completed: number
+          login_attempts: number
+          login_success: number
+          registration_start_rate: number
+          registration_completion_rate: number
+          overall_conversion_rate: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          date: string
+          page_views?: number
+          registration_started?: number
+          registration_completed?: number
+          login_attempts?: number
+          login_success?: number
+          registration_start_rate?: number
+          registration_completion_rate?: number
+          overall_conversion_rate?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          date?: string
+          page_views?: number
+          registration_started?: number
+          registration_completed?: number
+          login_attempts?: number
+          login_success?: number
+          registration_start_rate?: number
+          registration_completion_rate?: number
+          overall_conversion_rate?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
     }
     Views: {

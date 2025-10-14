@@ -27,7 +27,7 @@ import { GoogleAdsTracking } from '@/utils/googleAdsTracking';
 import { ConversionTrackingTest } from './ConversionTrackingTest';
 import { SavingsCalculator } from './SavingsCalculator';
 import Footer from './Footer';
-import { FloatingChatWidget } from './FloatingChatWidget';
+import { ContactForm } from './ContactForm';
 
 
 
@@ -2176,6 +2176,15 @@ export const HomePage = () => {
         </div>
       </section>
 
+      {/* Contact Form Section */}
+      <section className="py-16 md:py-24 bg-gray-50">
+        <div className="max-w-4xl mx-auto px-4">
+          <FadeInWhenVisible delay={200}>
+            <ContactForm />
+          </FadeInWhenVisible>
+        </div>
+      </section>
+
 
       
 
@@ -2329,7 +2338,6 @@ export const HomePage = () => {
       <Footer />
 
       {/* Floating Chat Widget - Separate from logged-in user chat */}
-      <FloatingChatWidget alwaysVisible={true} />
 
 
   </div>

@@ -44,7 +44,10 @@ export default defineConfig(({ mode }) => ({
     // Optimize bundle size
     rollupOptions: {
       output: {
-        manualChunks: undefined
+        manualChunks(id) {
+          if (id.includes('react') || id.includes('react-dom')) return 'react';
+          // optional: lump other UI libs together, don’t split core React
+        },
       },
     },
     // Enable modern build features

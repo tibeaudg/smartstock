@@ -1,3 +1,29 @@
+// Initialize Sentry as early as possible
+import * as Sentry from "@sentry/react";
+
+// Prevent multiple Sentry initializations during HMR (Hot Module Reload)
+if (!(window as any).__SENTRY_INITIALIZED__) {
+  Sentry.init({
+    dsn: "https://e491b26fa2d97550098be3eb6fb44715@o4510186798776320.ingest.us.sentry.io/4510186800283648",
+    // Setting this option to true will send default PII data to Sentry.
+    // For example, automatic IP address collection on events
+    sendDefaultPii: true,
+    environment: process.env.NODE_ENV || 'development',
+    // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
+    // We recommend adjusting this value in production
+    tracesSampleRate: process.env.NODE_ENV === 'production' ? 0.1 : 1.0,
+    // Capture Replay for 10% of all sessions,
+    // plus for 100% of sessions with an error
+    replaysSessionSampleRate: 0.1,
+    replaysOnErrorSampleRate: 1.0,
+    integrations: [
+      Sentry.browserTracingIntegration(),
+      Sentry.replayIntegration(),
+    ],
+  });
+  (window as any).__SENTRY_INITIALIZED__ = true;
+}
+
 import { createRoot, Root } from 'react-dom/client';
 import App from './App';
 import { UnreadMessagesProvider } from './hooks/UnreadMessagesContext';
@@ -257,6 +283,17 @@ window.addEventListener('error', (event) => {
     error: event.error,
     timestamp: new Date().toISOString(),
   });
+  
+  // Send to Sentry
+  Sentry.captureException(event.error || new Error(event.message), {
+    contexts: {
+      errorEvent: {
+        filename: event.filename,
+        lineno: event.lineno,
+        colno: event.colno,
+      }
+    }
+  });
 });
 
 // Globale handler voor unhandled promise rejections
@@ -266,6 +303,9 @@ window.addEventListener('unhandledrejection', (event) => {
     promise: event.promise,
     timestamp: new Date().toISOString(),
   });
+  
+  // Send to Sentry
+  Sentry.captureException(event.reason);
 });
 
 // Start de applicatie
