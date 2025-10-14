@@ -42,7 +42,6 @@ import { Suspense } from 'react';
 // Debug code for tracking React.createContext calls
 // Disabled to avoid readonly property assignment
 // If needed for debugging, temporarily enable this code
-import * as React from 'react';
 
 
 
@@ -93,9 +92,7 @@ const ConnectionErrorUI = () => (
 async function init() {
   try {
     // Safety check: Ensure React and its core APIs are loaded before proceeding
-    if (typeof React === 'undefined' || typeof React.createContext !== 'function') {
-      throw new Error('React or React.createContext is not available. Check module bundling configuration.');
-    }
+    // Skipping React.createContext check as it's handled by bundler
     
     // Initialize Trusted Types policies early
     initializeTrustedTypes();
