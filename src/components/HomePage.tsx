@@ -418,6 +418,13 @@ export const HomePage = () => {
   // Feature tab state
   const [selectedFeature, setSelectedFeature] = useState(0);
   
+  // Hero carousel state
+  const [heroCurrentIndex, setHeroCurrentIndex] = useState(0);
+  
+  // Modal state
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalImage, setModalImage] = useState('');
+  
   // Pricing toggle state
   const [isYearly, setIsYearly] = useState(false);
 
@@ -548,6 +555,33 @@ export const HomePage = () => {
       description: "Leverage our exclusive machine learning algorithms to optimize your inventory 24/7, something manual tracking simply can't match."
     }
   ];
+
+  // Hero carousel data
+  const heroImages = [
+    {
+      src: '/dashboard.png',
+      alt: 'StockFlow desktop dashboard showing inventory management interface',
+      title: 'Desktop Dashboard',
+      description: 'Full-featured inventory management on desktop'
+    },
+    {
+      src: '/mobile.png',
+      alt: 'StockFlow mobile dashboard showing inventory management on mobile',
+      title: 'Mobile Dashboard',
+      description: 'Inventory management on the go with your phone'
+    }
+  ];
+
+  // Modal functions
+  const openModal = (imageSrc: string) => {
+    setModalImage(imageSrc);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setModalImage('');
+  };
 
   // Filter FAQ data based on search term
   const filteredFaqData = faqSearchTerm
@@ -1222,19 +1256,71 @@ export const HomePage = () => {
               </FadeInWhenVisible>
             </div>
             
-          {/* Hero Visual: Dashboard Screenshot */}
+          {/* Hero Visual: Dashboard Carousel */}
           <SlideUpWhenVisible delay={1000}>
             <div className="relative max-w-6xl mx-auto px-2 sm:px-4">
+              {/* Carousel Container */}
               <div className="relative rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl bg-white border border-gray-200">
-                {/* Dashboard image */}
-                <img
-                  src="/dashboard.png"
-                  alt="StockFlow dashboard showing inventory management interface with stock levels, analytics, and mobile scanning features"
-                  className="w-full h-auto object-contain"
-                  loading="lazy"
-                  width={1200}
-                  height={800}
-                />
+                {/* Images */}
+                <div className="relative overflow-hidden">
+                  <div 
+                    className="flex transition-transform duration-500 ease-in-out"
+                    style={{ transform: `translateX(-${heroCurrentIndex * 100}%)` }}
+                  >
+                    {heroImages.map((image, index) => (
+                      <div key={index} className="w-full flex-shrink-0 relative">
+                        <img
+                          src={image.src}
+                          alt={image.alt}
+                          className="w-full h-auto object-contain cursor-pointer hover:opacity-95 transition-opacity"
+                          loading="lazy"
+                          onClick={() => openModal(image.src)}
+                          width={1200}
+                          height={800}
+                        />
+                        {/* Image overlay with title */}
+                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+                          <h3 className="text-white font-semibold text-sm sm:text-base">
+                            {image.title}
+                          </h3>
+                          <p className="text-white/80 text-xs sm:text-sm">
+                            {image.description}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Navigation Arrows */}
+                <button
+                  onClick={() => setHeroCurrentIndex((prev) => (prev - 1 + heroImages.length) % heroImages.length)}
+                  className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white rounded-full p-2 shadow-lg transition-all"
+                  aria-label="Previous image"
+                >
+                  <ChevronLeft className="h-5 w-5 text-gray-600" />
+                </button>
+                <button
+                  onClick={() => setHeroCurrentIndex((prev) => (prev + 1) % heroImages.length)}
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white rounded-full p-2 shadow-lg transition-all"
+                  aria-label="Next image"
+                >
+                  <ChevronRight className="h-5 w-5 text-gray-600" />
+                </button>
+
+                {/* Navigation Dots */}
+                <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                  {heroImages.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setHeroCurrentIndex(index)}
+                      className={`w-2 h-2 rounded-full transition-all ${
+                        index === heroCurrentIndex ? 'bg-white' : 'bg-white/50'
+                      }`}
+                      aria-label={`Go to image ${index + 1}`}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
           </SlideUpWhenVisible>
@@ -2132,6 +2218,32 @@ export const HomePage = () => {
           </FadeInWhenVisible>
 
       <Footer />
+
+      {/* Image Modal */}
+      {isModalOpen && (
+        <div 
+          className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4"
+          onClick={closeModal}
+        >
+          <div className="relative max-w-7xl max-h-full">
+            <button
+              onClick={closeModal}
+              className="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors"
+              aria-label="Close modal"
+            >
+              <svg className="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            <img
+              src={modalImage}
+              alt="StockFlow dashboard enlarged view"
+              className="max-w-full max-h-full object-contain rounded-lg"
+              onClick={(e) => e.stopPropagation()}
+            />
+          </div>
+        </div>
+      )}
 
       {/* Floating Chat Widget - Separate from logged-in user chat */}
 
