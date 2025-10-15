@@ -1630,14 +1630,14 @@ export const HomePage = () => {
           
               <BounceInWhenVisible delay={200}>
                 <div className="text-center mb-6 sm:mb-10 md:mb-14 lg:mb-16">
-                  <h1 className="lg:pl-24 lg:pr-24 lg:pt-6 lg:pb-6 text-[clamp(3rem,5vw,5rem)] font-light text-shadow-lg text-gray-800 mb-3 leading-tight px-2">
+                  <h1 className="lg:pl-24 lg:pr-24 lg:pt-6 lg:pb-6 text-[clamp(3rem,5vw,5rem)] font-light text-gray-800 mb-3 leading-tight px-2">
                   <strong className="text-blue-600">Cloud‑based</strong> Inventory & Warehouse <strong className="text-blue-600">Management</strong> Platform
               </h1>
             </div>
               </BounceInWhenVisible>
               
               <SlideUpWhenVisible delay={400}>
-                  <p className="lg:pb-12 text-base sm:text-lg md:text-xl lg:text-2xl text-gray-700 mb-6 sm:mb-8 md:mb-10 lg:mb-12 max-w-4xl mx-auto px-4 leading-relaxed">
+                  <p className="lg:pb-12 text-xs sm:text-sm md:text-base lg:text-lg text-gray-700 mb-6 sm:mb-8 md:mb-10 lg:mb-12 max-w-4xl mx-auto px-4 leading-relaxed">
                     Stop wasting capital on overstock and dead inventory. Track stock, reduce waste, and optimize ordering. All in one simple platform.
                 </p>
               </SlideUpWhenVisible>
@@ -1766,8 +1766,11 @@ export const HomePage = () => {
           {/* Header */}
           <FadeInWhenVisible>
             <div className="text-center mb-10 sm:mb-12 md:mb-16 lg:mb-20">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-light text-gray-800 mb-3 sm:mb-4 md:mb-6 lg:mb-8 leading-tight px-2">
-                Stop Losing Money on Inventory Mistakes
+            <h2 className="font-light leading-tight text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-gray-900 mb-4 sm:mb-6 md:mb-8 leading-tight tracking-tight px-2">
+                Stop Losing Money On<br className="hidden sm:block" />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
+                Inventory Mistakes
+                </span>
               </h2>
               <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-4 sm:mb-6 max-w-2xl mx-auto px-4">
                 Get a clear picture of your inventory and make better decisions.
@@ -1847,47 +1850,64 @@ export const HomePage = () => {
       </section>
 
       {/* Key Features Section - Alternating Layout */}
-      <section className="py-12 sm:py-16 md:py-20 lg:py-24 xl:py-28 bg-white">
+      <section className="py-16 sm:py-20 md:py-24 lg:py-28 xl:py-32 bg-gradient-to-b from-gray-50 to-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <FadeInWhenVisible>
-            <div className="text-center mb-10 sm:mb-12 md:mb-16 lg:mb-20">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-light text-gray-800 mb-3 sm:mb-4 md:mb-6 lg:mb-8 leading-tight px-2">
-                Everything You Need to Manage Inventory
+            <div className="text-center mb-16 sm:mb-20 md:mb-24 lg:mb-28">
+              <div className="inline-block mb-4 sm:mb-6">
+                <span className="px-4 py-2 bg-blue-100 text-blue-700 text-sm font-semibold rounded-full">
+                  POWERFUL FEATURES
+                </span>
+              </div>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light text-gray-900 mb-4 sm:mb-6 md:mb-8 leading-tight tracking-tight px-2">
+                Everything You Need To<br className="hidden sm:block" />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
+                  Manage Inventory
+                </span>
               </h2>
-              <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-4 sm:mb-6 max-w-2xl mx-auto px-4">
+              <p className="text-lg sm:text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto px-4 leading-relaxed">
                 Keep track of your inventory, see what's selling, and get alerts when you need to reorder.
               </p>
-
             </div>
           </FadeInWhenVisible>
 
           {/* Feature 1: Mobile Scanning */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 md:gap-12 lg:gap-16 items-center mb-12 sm:mb-16 md:mb-20 lg:mb-24">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 md:gap-12 lg:gap-16 items-center mb-16 sm:mb-20 md:mb-24 lg:mb-28">
             <SlideInWhenVisible direction="right" delay={200}>
               <div className="order-1 lg:order-2">
-                <div className="space-y-4 sm:space-y-6">
-                  <div className="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 text-blue-700 text-sm font-medium">
+                <div className="space-y-5 sm:space-y-6 md:space-y-8">
+                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 text-white text-xs font-bold uppercase tracking-wide shadow-md">
+                    <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
                     Core Feature
                   </div>
-                  <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">
-                    Scan Barcodes with Phone
-                  </h3>
-                  <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed">
+                  <div>
+                    <h3 className="text-3xl sm:text-4xl md:text-5xl font-light leading-tight text-gray-900 mb-4">
+                      Scan Barcodes with Phone
+                    </h3>
+                    <div className="w-20 h-1.5 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full mb-6"></div>
+                  </div>
+                  <p className="text-lg sm:text-xl md:text-2xl text-gray-600 leading-relaxed">
                     Skip the clipboard. Use your phone camera to scan barcodes and update stock from anywhere in your shop.
                   </p>
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-3">
-                      <Check className="h-5 w-5 text-green-500" />
-                      <span className="text-gray-700">Works offline</span>
+                  <div className="space-y-4 pt-4">
+                    <div className="flex items-center gap-4 p-4 bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+                      <div className="flex-shrink-0 w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                        <Check className="h-5 w-5 text-green-600" />
+                      </div>
+                      <span className="text-gray-900 font-medium text-lg">Works offline</span>
                     </div>
-                    <div className="flex items-center gap-3">
-                      <Check className="h-5 w-5 text-green-500" />
-                      <span className="text-gray-700">No special hardware</span>
+                    <div className="flex items-center gap-4 p-4 bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+                      <div className="flex-shrink-0 w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                        <Check className="h-5 w-5 text-green-600" />
+                      </div>
+                      <span className="text-gray-900 font-medium text-lg">No special hardware</span>
                     </div>
-                    <div className="flex items-center gap-3">
-                      <Check className="h-5 w-5 text-green-500" />
-                      <span className="text-gray-700">iOS & Android</span>
+                    <div className="flex items-center gap-4 p-4 bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+                      <div className="flex-shrink-0 w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                        <Check className="h-5 w-5 text-green-600" />
+                      </div>
+                      <span className="text-gray-900 font-medium text-lg">iOS & Android</span>
                     </div>
                   </div>
                 </div>
@@ -1896,46 +1916,59 @@ export const HomePage = () => {
             
             <SlideInWhenVisible direction="left" delay={100}>
               <div className="order-2 lg:order-1">
-                <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-3xl p-6 sm:p-8 md:p-12 shadow-lg flex items-center justify-center min-h-[350px] sm:min-h-[400px] lg:min-h-[500px]">
-                  <img
-                    src="/scanner.png"
-                    alt="Mobile phone scanning barcodes for inventory management"
-                    className="w-full h-auto max-w-[280px] sm:max-w-[320px] lg:max-w-full max-h-[300px] sm:max-h-[350px] lg:max-h-[400px] object-contain rounded-2xl"
-                    loading="lazy"
-                    width={800}
-                    height={600}
-                  />
+                <div className="relative group">
+                  <div className="absolute -inset-1 bg-gradient-to-br from-blue-500 to-blue-600 rounded-3xl blur-xl opacity-25 group-hover:opacity-40 transition-opacity duration-500"></div>
+                  <div className="relative bg-gradient-to-br from-blue-50 via-blue-100 to-blue-50 rounded-3xl p-8 sm:p-10 md:p-12 shadow-xl border border-blue-200/50 flex items-center justify-center min-h-[400px] sm:min-h-[450px] lg:min-h-[550px]">
+                    <img
+                      src="/scanner.png"
+                      alt="Mobile phone scanning barcodes for inventory management"
+                      className="w-full h-auto max-w-[300px] sm:max-w-[340px] lg:max-w-full max-h-[320px] sm:max-h-[380px] lg:max-h-[450px] object-contain rounded-2xl transform group-hover:scale-105 transition-transform duration-500"
+                      loading="lazy"
+                      width={800}
+                      height={600}
+                    />
+                  </div>
                 </div>
               </div>
             </SlideInWhenVisible>
           </div>
 
           {/* Feature 2: Dead Stock Alerts */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 md:gap-12 lg:gap-16 items-center mb-12 sm:mb-16 md:mb-20 lg:mb-24">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 md:gap-12 lg:gap-16 items-center mb-16 sm:mb-20 md:mb-24 lg:mb-28">
             <SlideInWhenVisible direction="right" delay={100}>
               <div className="order-1">
-                <div className="space-y-4 sm:space-y-6">
-                  <div className="inline-flex items-center px-4 py-2 rounded-full bg-purple-100 text-purple-700 text-sm font-medium">
+                <div className="space-y-5 sm:space-y-6 md:space-y-8">
+                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-purple-500 to-purple-600 text-white text-xs font-bold uppercase tracking-wide shadow-md">
+                    <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
                     Unique Feature
                   </div>
-                  <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">
-                    Dead Stock Liquidation Optimizer
-                  </h3>
-                  <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed">
+                  <div>
+                    <h3 className="text-3xl sm:text-4xl md:text-5xl font-light leading-tight text-gray-900 mb-4">
+                      Dead Stock Liquidation Optimizer
+                    </h3>
+                    <div className="w-20 h-1.5 bg-gradient-to-r from-purple-500 to-purple-600 rounded-full mb-6"></div>
+                  </div>
+                  <p className="text-lg sm:text-xl md:text-2xl text-gray-600 leading-relaxed">
                     Automatically identify inventory draining your capital. Flag items with zero sales for 30, 60, or 90 days.
                   </p>
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-3">
-                      <Check className="h-5 w-5 text-green-500" />
-                      <span className="text-gray-700">Auto-flag non-movers</span>
+                  <div className="space-y-4 pt-4">
+                    <div className="flex items-center gap-4 p-4 bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+                      <div className="flex-shrink-0 w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                        <Check className="h-5 w-5 text-green-600" />
+                      </div>
+                      <span className="text-gray-900 font-medium text-lg">Auto-flag non-movers</span>
                     </div>
-                    <div className="flex items-center gap-3">
-                      <Check className="h-5 w-5 text-green-500" />
-                      <span className="text-gray-700">Calculate tied-up capital</span>
+                    <div className="flex items-center gap-4 p-4 bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+                      <div className="flex-shrink-0 w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                        <Check className="h-5 w-5 text-green-600" />
+                      </div>
+                      <span className="text-gray-900 font-medium text-lg">Calculate tied-up capital</span>
                     </div>
-                    <div className="flex items-center gap-3">
-                      <Check className="h-5 w-5 text-green-500" />
-                      <span className="text-gray-700">Get liquidation recommendations</span>
+                    <div className="flex items-center gap-4 p-4 bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+                      <div className="flex-shrink-0 w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                        <Check className="h-5 w-5 text-green-600" />
+                      </div>
+                      <span className="text-gray-900 font-medium text-lg">Get liquidation recommendations</span>
                     </div>
                   </div>
                 </div>
@@ -1944,15 +1977,18 @@ export const HomePage = () => {
             
             <SlideInWhenVisible direction="left" delay={200}>
               <div className="order-2">
-                <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-3xl p-6 sm:p-8 md:p-12 flex items-center justify-center min-h-[350px] sm:min-h-[400px] lg:min-h-[500px] shadow-lg">
-                  <img
-                    src="/deadstock.png"
-                    alt="Dead stock liquidation optimizer dashboard showing slow-moving inventory"
-                    className="w-full h-auto max-w-[280px] sm:max-w-[320px] lg:max-w-full max-h-[300px] sm:max-h-[350px] lg:max-h-[400px] object-contain rounded-2xl"
-                    loading="lazy"
-                    width={800}
-                    height={600}
-                  />
+                <div className="relative group">
+                  <div className="absolute -inset-1 bg-gradient-to-br from-purple-500 to-purple-600 rounded-3xl blur-xl opacity-25 group-hover:opacity-40 transition-opacity duration-500"></div>
+                  <div className="relative bg-gradient-to-br from-purple-50 via-purple-100 to-purple-50 rounded-3xl p-8 sm:p-10 md:p-12 shadow-xl border border-purple-200/50 flex items-center justify-center min-h-[400px] sm:min-h-[450px] lg:min-h-[550px]">
+                    <img
+                      src="/deadstock.png"
+                      alt="Dead stock liquidation optimizer dashboard showing slow-moving inventory"
+                      className="w-full h-auto max-w-[300px] sm:max-w-[340px] lg:max-w-full max-h-[320px] sm:max-h-[380px] lg:max-h-[450px] object-contain rounded-2xl transform group-hover:scale-105 transition-transform duration-500"
+                      loading="lazy"
+                      width={800}
+                      height={600}
+                    />
+                  </div>
                 </div>
               </div>
             </SlideInWhenVisible>
@@ -1962,28 +1998,38 @@ export const HomePage = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 md:gap-12 lg:gap-16 items-center">
             <SlideInWhenVisible direction="right" delay={200}>
               <div className="order-1 lg:order-2">
-                <div className="space-y-4 sm:space-y-6">
-                  <div className="inline-flex items-center px-4 py-2 rounded-full bg-green-100 text-green-700 text-sm font-medium">
+                <div className="space-y-5 sm:space-y-6 md:space-y-8">
+                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 text-white text-xs font-bold uppercase tracking-wide shadow-md">
+                    <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
                     Advanced Feature
                   </div>
-                  <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">
-                    Multi-Location Management
-                  </h3>
-                  <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed">
+                  <div>
+                    <h3 className="text-3xl sm:text-4xl md:text-5xl font-light leading-tight text-gray-900 mb-4">
+                      Multi-Location Management
+                    </h3>
+                    <div className="w-20 h-1.5 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full mb-6"></div>
+                  </div>
+                  <p className="text-lg sm:text-xl md:text-2xl text-gray-600 leading-relaxed">
                     Track inventory across multiple stores, warehouses, or stockrooms. See stock levels at each location in real-time.
                   </p>
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-3">
-                      <Check className="h-5 w-5 text-green-500" />
-                      <span className="text-gray-700">Real-time stock levels</span>
+                  <div className="space-y-4 pt-4">
+                    <div className="flex items-center gap-4 p-4 bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+                      <div className="flex-shrink-0 w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                        <Check className="h-5 w-5 text-green-600" />
+                      </div>
+                      <span className="text-gray-900 font-medium text-lg">Real-time stock levels</span>
                     </div>
-                    <div className="flex items-center gap-3">
-                      <Check className="h-5 w-5 text-green-500" />
-                      <span className="text-gray-700">Transfer items between locations</span>
+                    <div className="flex items-center gap-4 p-4 bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+                      <div className="flex-shrink-0 w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                        <Check className="h-5 w-5 text-green-600" />
+                      </div>
+                      <span className="text-gray-900 font-medium text-lg">Transfer items between locations</span>
                     </div>
-                    <div className="flex items-center gap-3">
-                      <Check className="h-5 w-5 text-green-500" />
-                      <span className="text-gray-700">Low stock alerts per location</span>
+                    <div className="flex items-center gap-4 p-4 bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+                      <div className="flex-shrink-0 w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                        <Check className="h-5 w-5 text-green-600" />
+                      </div>
+                      <span className="text-gray-900 font-medium text-lg">Low stock alerts per location</span>
                     </div>
                   </div>
                 </div>
@@ -1992,15 +2038,18 @@ export const HomePage = () => {
             
             <SlideInWhenVisible direction="left" delay={100}>
               <div className="order-2 lg:order-1">
-                <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-3xl p-6 sm:p-8 md:p-12 shadow-lg flex items-center justify-center min-h-[350px] sm:min-h-[400px] lg:min-h-[500px]">
-                  <img
-                    src="/branches.png"
-                    alt="Multi-location inventory tracking across multiple stores"
-                    className="w-full h-auto max-w-[280px] sm:max-w-[320px] lg:max-w-full max-h-[300px] sm:max-h-[350px] lg:max-h-[400px] object-contain rounded-2xl"
-                    loading="lazy"
-                    width={800}
-                    height={600}
-                  />
+                <div className="relative group">
+                  <div className="absolute -inset-1 bg-gradient-to-br from-green-500 to-emerald-600 rounded-3xl blur-xl opacity-25 group-hover:opacity-40 transition-opacity duration-500"></div>
+                  <div className="relative bg-gradient-to-br from-green-50 via-green-100 to-emerald-50 rounded-3xl p-8 sm:p-10 md:p-12 shadow-xl border border-green-200/50 flex items-center justify-center min-h-[400px] sm:min-h-[450px] lg:min-h-[550px]">
+                    <img
+                      src="/branches.png"
+                      alt="Multi-location inventory tracking across multiple stores"
+                      className="w-full h-auto max-w-[300px] sm:max-w-[340px] lg:max-w-full max-h-[320px] sm:max-h-[380px] lg:max-h-[450px] object-contain rounded-2xl transform group-hover:scale-105 transition-transform duration-500"
+                      loading="lazy"
+                      width={800}
+                      height={600}
+                    />
+                  </div>
                 </div>
               </div>
             </SlideInWhenVisible>
@@ -2020,8 +2069,11 @@ export const HomePage = () => {
           {/* Header */}
           <FadeInWhenVisible>
             <div className="text-center mb-10 sm:mb-12 md:mb-16 lg:mb-20">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-light text-gray-800 mb-3 sm:mb-4 md:mb-6 lg:mb-8 leading-tight px-2">
-                Start tracking in 3 simple steps
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light text-gray-900 mb-4 sm:mb-6 md:mb-8 leading-tight tracking-tight px-2">
+                Start Tracking<br className="hidden sm:block" />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
+                  in 3 Simple Steps
+                </span>
               </h2>
               <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-4 sm:mb-5 md:mb-6 max-w-2xl mx-auto px-4">
                 Get up and running in under 10 minutes.

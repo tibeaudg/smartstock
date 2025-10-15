@@ -111,6 +111,12 @@ import ExcelVsVoorraadbeheerSoftware from "./pages/SEO/excel-vs-voorraadbeheer-s
 import ChecklistVoorraadbeheerSoftwareGereed from "./pages/SEO/checklist-voorraadbeheer-software-gereed";
 import VoorraadbeheerAutomatiseren5Stappen from "./pages/SEO/voorraadbeheer-automatiseren-5-stappen";
 
+// Import new SEO keyword pages
+import SoftwareStockbeheer from "./pages/SEO/software-stockbeheer";
+import StockbeheerProgramma from "./pages/SEO/stockbeheer-programma";
+import ProgrammaStockbeheer from "./pages/SEO/programma-stockbeheer";
+import MagazijnbeheerSoftware from "./pages/SEO/magazijnbeheer-software";
+
 // Import comparison pages - Phase 1
 import StockFlowVsSortly from "./pages/SEO/stockflow-vs-sortly";
 import StockFlowVsSortlyNL from "./pages/SEO/stockflow-vs-sortly-nl";
@@ -413,6 +419,19 @@ const AppRouter = () => {
         
         <Route path="/stockbeheer-software" element={<StockbeheerSoftware />} />
         <Route path="/nl/stockbeheer-software" element={<StockbeheerSoftware />} />
+        
+        {/* New SEO keyword pages */}
+        <Route path="/software-stockbeheer" element={<SoftwareStockbeheer />} />
+        <Route path="/nl/software-stockbeheer" element={<SoftwareStockbeheer />} />
+        
+        <Route path="/stockbeheer-programma" element={<StockbeheerProgramma />} />
+        <Route path="/nl/stockbeheer-programma" element={<StockbeheerProgramma />} />
+        
+        <Route path="/programma-stockbeheer" element={<ProgrammaStockbeheer />} />
+        <Route path="/nl/programma-stockbeheer" element={<ProgrammaStockbeheer />} />
+        
+        <Route path="/magazijnbeheer-software" element={<MagazijnbeheerSoftware />} />
+        <Route path="/nl/magazijnbeheer-software" element={<MagazijnbeheerSoftware />} />
         
         <Route path="/voorraadbeheer-excel" element={<VoorraadbeheerExcel />} />
         <Route path="/nl/voorraadbeheer-excel" element={<VoorraadbeheerExcel />} />

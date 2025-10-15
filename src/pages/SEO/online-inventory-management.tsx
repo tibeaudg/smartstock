@@ -2,10 +2,9 @@ import SEO from '../../components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '../../components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
+import { generateComprehensiveStructuredData } from '../../lib/structuredData';
 
-import { StructuredData } from '../../components/StructuredData';
 export default function OnlineInventoryManagement() {
-  // Gebruik de page refresh hook
   usePageRefresh();
   
   const faqData = [
@@ -31,13 +30,48 @@ export default function OnlineInventoryManagement() {
     }
   ];
 
+  const structuredData = generateComprehensiveStructuredData('software', {
+    title: "Best Inventory Management Online for Small Businesses | StockFlow",
+    url: "https://www.stockflow.be/online-inventory-management",
+    description: "Simple inventory management online for small businesses. Manage stock, suppliers, and inventory in one web app. Free to try.",
+    breadcrumbs: [
+      { name: "Home", url: "https://www.stockflow.be/", position: 1 },
+      { name: "Inventory Management Online", url: "https://www.stockflow.be/online-inventory-management", position: 2 }
+    ],
+    faqData: faqData,
+    softwareData: {
+      name: "StockFlow Online Inventory Management",
+      description: "Simple inventory management online for small businesses. Manage stock in one web app.",
+      category: "BusinessApplication",
+      operatingSystem: "Web, iOS, Android",
+      price: "0",
+      currency: "EUR",
+      rating: {
+        value: "4.8",
+        count: "127"
+      },
+      features: [
+        "Real-time inventory tracking online",
+        "Barcode scanning",
+        "Multi-location support",
+        "Automated reorder points",
+        "Cloud-based access",
+        "Mobile app",
+        "Reporting and analytics"
+      ],
+      image: "https://www.stockflow.be/Inventory-Management.png",
+      url: "https://www.stockflow.be/online-inventory-management"
+    }
+  });
+
   return (
     <SeoPageLayout title="Online Inventory Management">
       <SEO
-        title="Online Inventory Management: Complete Guide 2024 | stockflow"
-        description="Discover the best online inventory management solutions for your business. Real-time tracking, automated alerts, and seamless integration. Start free today with stockflow."
-        keywords="online inventory management, inventory management software, stock management, inventory tracking, warehouse management, inventory control, stock control software, inventory management system, real-time inventory, cloud inventory management, stockflow"
+        title="Best Inventory Management Online for Small Businesses | StockFlow"
+        description="Simple inventory management online for small businesses. Manage stock, suppliers, and inventory in one web app. Free to try."
+        keywords="inventory management online, online inventory management, online stock management, cloud inventory management, web based inventory, real-time inventory tracking, inventory management system"
         url="https://www.stockflow.be/online-inventory-management"
+        structuredData={structuredData}
       />
 
       {/* Hero Section - Split Layout */}
@@ -47,7 +81,7 @@ export default function OnlineInventoryManagement() {
             {/* Left Side - Text Content */}
             <div className="lg:col-span-2">
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6">
-                <span className="text-blue-600">Online Inventory Management</span> Made Simple
+                <span className="text-blue-600">Inventory Management Online</span> for Small Businesses
               </h1>
               <p className="text-sm sm:text-base md:text-lg text-gray-700 mb-6 sm:mb-8 leading-relaxed">
                 Transform your business with powerful online inventory management solutions. Track stock levels in real-time, automate reorder points, and eliminate stockouts with our comprehensive inventory management platform. Perfect for businesses of all sizes looking to optimize their operations and reduce costs.

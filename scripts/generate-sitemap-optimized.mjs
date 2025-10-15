@@ -132,12 +132,12 @@ async function generateOptimizedSitemap() {
     let changefreq = 'monthly';
     
     // High priority for main Dutch keywords
-    if (route.match(/^\/voorraadbeheer-software$|^\/stockbeheer$/)) {
+    if (route.match(/^\/voorraadbeheer-software$|^\/stockbeheer$|^\/stockbeheer-software$|^\/software-stockbeheer$|^\/stockbeheer-programma$|^\/programma-stockbeheer$|^\/magazijnbeheer-software$/)) {
       priority = '0.9';
       changefreq = 'weekly';
     }
     // Medium-high priority for English main keywords
-    else if (route.match(/^\/inventory-management-software$|^\/inventory-management$/)) {
+    else if (route.match(/^\/inventory-management-software$|^\/inventory-management$|^\/inventory-management-online$|^\/online-inventory-management$|^\/best-inventory-management-software$/)) {
       priority = '0.8';
       changefreq = 'weekly';
     }
