@@ -418,12 +418,23 @@ export const HomePage = () => {
   // Feature tab state
   const [selectedFeature, setSelectedFeature] = useState(0);
   
-  // Hero carousel state
-  const [heroCurrentIndex, setHeroCurrentIndex] = useState(0);
-  
   // Modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalImage, setModalImage] = useState('');
+  
+  // Screen size detection
+  const [isMobile, setIsMobile] = useState(false);
+  
+  React.useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
   
   // Pricing toggle state
   const [isYearly, setIsYearly] = useState(false);
@@ -553,22 +564,6 @@ export const HomePage = () => {
       icon: <Rocket className="h-8 w-8" />,
       title: "Proprietary AI-Powered Insights",
       description: "Leverage our exclusive machine learning algorithms to optimize your inventory 24/7, something manual tracking simply can't match."
-    }
-  ];
-
-  // Hero carousel data
-  const heroImages = [
-    {
-      src: '/dashboard.png',
-      alt: 'StockFlow desktop dashboard showing inventory management interface',
-      title: 'Desktop Dashboard',
-      description: 'Full-featured inventory management on desktop'
-    },
-    {
-      src: '/mobile.png',
-      alt: 'StockFlow mobile dashboard showing inventory management on mobile',
-      title: 'Mobile Dashboard',
-      description: 'Inventory management on the go with your phone'
     }
   ];
 
@@ -1256,72 +1251,56 @@ export const HomePage = () => {
               </FadeInWhenVisible>
             </div>
             
-          {/* Hero Visual: Dashboard Carousel */}
+          {/* Hero Visual: Responsive Dashboard Images */}
           <SlideUpWhenVisible delay={1000}>
             <div className="relative max-w-6xl mx-auto px-2 sm:px-4">
-              {/* Carousel Container */}
-              <div className="relative rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl bg-white border border-gray-200">
-                {/* Images */}
-                <div className="relative overflow-hidden">
-                  <div 
-                    className="flex transition-transform duration-500 ease-in-out"
-                    style={{ transform: `translateX(-${heroCurrentIndex * 100}%)` }}
-                  >
-                    {heroImages.map((image, index) => (
-                      <div key={index} className="w-full flex-shrink-0 relative">
-                        <img
-                          src={image.src}
-                          alt={image.alt}
-                          className="w-full h-auto object-contain cursor-pointer hover:opacity-95 transition-opacity"
-                          loading="lazy"
-                          onClick={() => openModal(image.src)}
-                          width={1200}
-                          height={800}
-                        />
-                        {/* Image overlay with title */}
-                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
-                          <h3 className="text-white font-semibold text-sm sm:text-base">
-                            {image.title}
-                          </h3>
-                          <p className="text-white/80 text-xs sm:text-sm">
-                            {image.description}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
+              {/* Mobile Image - Only visible on mobile */}
+              {isMobile && (
+                <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-white border border-gray-200">
+                  <img
+                    src="/mobile.png"
+                    alt="StockFlow mobile dashboard showing inventory management on mobile"
+                    className="w-full h-auto object-contain cursor-pointer hover:opacity-95 transition-opacity"
+                    loading="lazy"
+                    onClick={() => openModal('/mobile.png')}
+                    width={400}
+                    height={600}
+                  />
+                  {/* Mobile overlay */}
+                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+                    <h3 className="text-white font-semibold text-sm">
+                      Mobile Dashboard
+                    </h3>
+                    <p className="text-white/80 text-xs">
+                      Inventory management on the go with your phone
+                    </p>
                   </div>
                 </div>
+              )}
 
-                {/* Navigation Arrows */}
-                <button
-                  onClick={() => setHeroCurrentIndex((prev) => (prev - 1 + heroImages.length) % heroImages.length)}
-                  className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white rounded-full p-2 shadow-lg transition-all"
-                  aria-label="Previous image"
-                >
-                  <ChevronLeft className="h-5 w-5 text-gray-600" />
-                </button>
-                <button
-                  onClick={() => setHeroCurrentIndex((prev) => (prev + 1) % heroImages.length)}
-                  className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white rounded-full p-2 shadow-lg transition-all"
-                  aria-label="Next image"
-                >
-                  <ChevronRight className="h-5 w-5 text-gray-600" />
-                </button>
-
-                {/* Navigation Dots */}
-                <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-                  {heroImages.map((_, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setHeroCurrentIndex(index)}
-                      className={`w-2 h-2 rounded-full transition-all ${
-                        index === heroCurrentIndex ? 'bg-white' : 'bg-white/50'
-                      }`}
-                      aria-label={`Go to image ${index + 1}`}
-                    />
-                  ))}
+              {/* Desktop Image - Only visible on desktop */}
+              {!isMobile && (
+                <div className="relative rounded-3xl overflow-hidden shadow-2xl bg-white border border-gray-200">
+                  <img
+                    src="/dashboard.png"
+                    alt="StockFlow desktop dashboard showing inventory management interface"
+                    className="w-full h-auto object-contain cursor-pointer hover:opacity-95 transition-opacity"
+                    loading="lazy"
+                    onClick={() => openModal('/dashboard.png')}
+                    width={1200}
+                    height={800}
+                  />
+                  {/* Desktop overlay */}
+                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
+                    <h3 className="text-white font-semibold text-base">
+                      Desktop Dashboard
+                    </h3>
+                    <p className="text-white/80 text-sm">
+                      Full-featured inventory management on desktop
+                    </p>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </SlideUpWhenVisible>
 
