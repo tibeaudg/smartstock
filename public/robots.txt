@@ -5,7 +5,6 @@ Allow: /
 # Disallow authenticated pages
 Disallow: /dashboard
 Disallow: /dashboard/*
-Disallow: /auth
 Disallow: /checkout
 Disallow: /admin
 Disallow: /admin/*
