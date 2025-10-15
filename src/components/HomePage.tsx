@@ -387,54 +387,10 @@ const MobileCarousel = ({ items, renderItem }) => {
 
 export const HomePage = () => {
   const navigate = useNavigate();
-  const { formatPrice } = useCurrency();
   
   // Pricing-related state and hooks
-  const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly');
   const { user } = useAuth();
   const { pricingTiers, isLoading, error: subscriptionError } = useSubscription();
-  
-  // Fallback pricing data in case subscription data fails to load
-  const fallbackPricingTiers = [
-    {
-      id: 'basic',
-      name: 'basic',
-      display_name: 'Free Plan',
-      description: 'Perfect for small businesses getting started',
-      price_monthly: 0,
-      price_yearly: 0,
-      yearly_discount_percentage: 0,
-      max_products: 100,
-      max_orders_per_month: null,
-      max_users: 1,
-      max_branches: 1,
-      features: ['Basic inventory tracking', 'Mobile scanning', 'Low stock alerts'],
-      is_popular: false,
-      is_enterprise: false
-    },
-    {
-      id: 'growth',
-      name: 'growth',
-      display_name: 'Growth Plan',
-      description: 'For growing businesses with multiple locations',
-      price_monthly: 29,
-      price_yearly: 290,
-      yearly_discount_percentage: 17,
-      max_products: 1000,
-      max_orders_per_month: null,
-      max_users: 5,
-      max_branches: 3,
-      features: ['Everything in Free', 'Multi-location support', 'Advanced analytics', 'Team collaboration'],
-      is_popular: true,
-      is_enterprise: false
-    }
-  ];
-  
-  // Use fallback data if subscription data fails to load
-  const effectivePricingTiers = (subscriptionError || pricingTiers.length === 0) ? fallbackPricingTiers : pricingTiers;
-  
-  // Smart tab switching is handled by useOptimizedTabSwitching in App.tsx
-  // No aggressive page refresh needed here
   
   // Initialize tracking with comprehensive error suppression
   React.useEffect(() => {
@@ -548,104 +504,8 @@ export const HomePage = () => {
     navigate('/pricing');
   };
 
-  const handlePricingClick = () => {
-    logger.info('CTA click', { id: 'pricing' });
-    
-    // Track Google Ads conversion for pricing page view with error handling
-    try {
-      GoogleAdsTracking.trackPricingViewConversion('homepage_cta');
-    } catch (error) {
-      // Silently fail in production, only log in development
-      if (process.env.NODE_ENV === 'development') {
-        console.warn('Google Ads tracking failed:', error);
-      }
-    }
-    
-    navigate('/pricing');
-  };
 
-  const handleHowItWorksClick = () => {
-    logger.info('CTA click', { id: 'how-it-works' });
-    
-    // Track Google Ads conversion for demo interest with error handling
-    try {
-      GoogleAdsTracking.trackCustomConversion(
-        'demo_interest',
-        'AW-17574614935',
-        1,
-        {
-          cta_location: 'hero_section',
-          cta_type: 'secondary_button',
-          conversion_type: 'demo_interest'
-        }
-      );
-    } catch (error) {
-      // Silently fail in production, only log in development
-      if (process.env.NODE_ENV === 'development') {
-        console.warn('Google Ads tracking failed:', error);
-      }
-    }
-    
-    scrollToSection('video-section');
-  };
 
-  // Pricing helper functions
-  const getTierIcon = (tierName: string) => {
-    switch (tierName) {
-      case 'basic':
-        return <Package className="h-8 w-8" />;
-      case 'growth':
-        return <Zap className="h-8 w-8" />;
-      case 'premium':
-        return <Crown className="h-8 w-8" />;
-      default:
-        return <Package className="h-8 w-8" />;
-    }
-  };
-
-  const getTierColor = (tierName: string) => {
-    switch (tierName) {
-      case 'basic':
-        return 'text-gray-600';
-      case 'growth':
-        return 'text-blue-600';
-      case 'premium':
-        return 'text-purple-600';
-      default:
-        return 'text-gray-600';
-    }
-  };
-
-  const handleSelectPlan = (tierId: string, isBusinessTier: boolean = false) => {
-    if (!user) {
-      navigate('/auth');
-      return;
-    }
-    
-    // For business tier, redirect to contact page
-    if (isBusinessTier) {
-      navigate('/contact?subject=business-tier');
-      return;
-    }
-    
-    // Navigate to checkout or subscription page
-    navigate(`/checkout?tier=${tierId}&cycle=${billingCycle}`);
-  };
-
-  const formatPriceUSD = (price: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD'
-    }).format(price);
-  };
-
-  const getLimitText = (value: number | null, type: string) => {
-    if (value === null) return 'Unlimited';
-    if (value === 0) return 'Not included';
-    return `${value} ${type}`;
-  };
-
-  // Exit-intent popup removed
 
   // Contact form logic removed - now on separate /contact page
 
@@ -713,39 +573,6 @@ export const HomePage = () => {
     }
   ];
 
-  // Trust bar company logos - Real small businesses from around the world
-  const trustCompanies = [
-    { 
-      name: "Bakkerij De Vries", 
-      logo: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=150&h=80&fit=crop&crop=center",
-      url: "https://www.bakkerijdevries.nl",
-      location: "Netherlands"
-    },
-    { 
-      name: "Café Central", 
-      logo: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=150&h=80&fit=crop&crop=center",
-      url: "https://www.cafecentral.be",
-      location: "Belgium"
-    },
-    { 
-      name: "Boutique Marie", 
-      logo: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=150&h=80&fit=crop&crop=center",
-      url: "https://www.boutiquemarie.fr",
-      location: "France"
-    },
-    { 
-      name: "TechStart Solutions", 
-      logo: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=150&h=80&fit=crop&crop=center",
-      url: "https://www.techstartsolutions.com",
-      location: "Germany"
-    },
-    { 
-      name: "Green Valley Store", 
-      logo: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=150&h=80&fit=crop&crop=center",
-      url: "https://www.greenvalleystore.co.uk",
-      location: "United Kingdom"
-    }
-  ];
 
   // Integration partners
   const integrationPartners = [
@@ -756,94 +583,8 @@ export const HomePage = () => {
     { name: "Partner 5", logo: "/placeholder.svg" }
   ];
 
-  // Retail pains → outcomes (no jargon)
-  const heroFeatures = [
-    {
-      icon: TrendingUp,
-      title: "Protect your inventory investment",
-      benefit: "Stop wasting capital on dead stock",
-      impact: "Know what to buy and when",
-      detailedDescription: "Track slow-movers draining cash, Optimize reorder quantities, Prevent expensive spoilage & waste.",
-      category: "Capital Protection",
-      visual: "capital-optimization",
-    },
-    {
-      icon: Euro,
-      title: "Reduce overstock & free up cash",
-      benefit: "Stop tying up money in slow-moving items",
-      impact: "See what sells & what sits on shelves",
-      detailedDescription: "Track which products sell fast, Spot items that aren't moving, Make smarter buying decisions.",
-      category: "Cash Flow",
-      visual: "profit-optimization",
-    },
-    {
-      icon: Target,
-      title: "Dead Stock Liquidation Optimizer",
-      benefit: "Automatically identify inventory draining your capital",
-      impact: "Flag items with zero sales for 30, 60, or 90 days",
-      detailedDescription: "Auto-flag non-movers, Calculate tied-up capital by product, Get liquidation recommendations, Prevent seasonal writeoffs.",
-      category: "Capital Recovery",
-      visual: "dead-stock-optimizer",
-      isUnique: true,
-    },
-  ];
 
-  // Secondary features (simple retail language)
-  const secondaryFeatures = [
-    {
-      icon: Shield,
-      title: "Your data stays safe",
-      benefit: "No need to worry about losing your inventory records",
-      description: "Automatic backups every day. Your stock data is secure.",
-      category: "Data Safety"
-    },
-    {
-      icon: BarChart3,
-      title: "See what's selling",
-      benefit: "Know your top sellers at a glance",
-      description: "Simple reports show which products move fast and which don't.",
-      category: "Sales Insights"
-    },
-    {
-      icon: Clock,
-      title: "Get help when stuck",
-      benefit: "Real people ready to help in minutes",
-      description: "Chat or email support that responds fast when you need it.",
-      category: "Support"
-    },
-    {
-      icon: Package,
-      title: "Start with what you have",
-      benefit: "Import your existing product list",
-      description: "Bring in your current inventory from Excel or CSV files.",
-      category: "Easy Setup"
-    }
-  ];
 
-  // Data metrics for the features section - focused on key benefits
-  const dataMetrics = [
-    { value: "$2,400", label: "Average Annual Savings", description: "Protect capital from waste & overstock" },
-    { value: "95%", label: "Customer Satisfaction", description: "Loved by Belgian SMEs" }
-  ];
-
-  // How it works steps
-  const howItWorksSteps = [
-    {
-      step: "1",
-      title: "Sign Up & Import Data",
-      description: "Create your free account and import your existing inventory via CSV/Excel or integrate with your current systems."
-    },
-    {
-      step: "2", 
-      title: "Track & Monitor",
-      description: "Monitor your inventory in real-time with automated alerts."
-    },
-    {
-      step: "3",
-      title: "Grow & Scale",
-      description: "Scale your business with advanced analytics and reporting."
-    }
-  ];
 
   // Why choose us reasons - Value-focused approach
   const whyChooseUs = [
@@ -869,171 +610,9 @@ export const HomePage = () => {
     }
   ];
 
-  // Trust-building statistics
-  const trustStats = [
-    { number: "98%", label: "Customer Retention" },
-    { number: "$2M+", label: "Inventory Value Managed" },
-  ];
-  
-  const testimonials = [
-    {
-      name: "Laura Peeters",
-      role: "Owner, De Koffieboetiek",
-      title: "Specialty Coffee & Artisan Goods",
-      quote: "StockFlow stopped us from wasting $4,800 annually on expired inventory and overstock. We now invest that capital into bestselling items instead. Our cash tied up in inventory dropped 35%, and we haven't run out of popular items since.",
-      avatar: '/Laura.png',
-      rating: 5,
-      company: "De Koffieboetiek",
-      location: "Ghent, Belgium",
-      industry: "Specialty Retail",
-      savings: `${formatPrice(2400)}/year saved`,
-      timeSaved: "8 hours/week",
-      specificResults: [
-        "$4,800/year waste elimination",
-        "35% reduction in capital tied up in stock", 
-        "Cash redirected to bestselling products",
-        "Zero stockouts on popular items"
-      ],
-      beforeAfter: {
-        before: "$400/month lost to waste, capital tied up in slow-movers",
-        after: "Zero waste, 35% less capital in inventory, cash for bestsellers"
-      }
-    },
-    {
-      name: "Sophie Martens",
-      role: "Owner, Maison Belle Boutique",
-      title: "Boutique Fashion & Gifts",
-      quote: "StockFlow helped us identify $8,500 worth of slow-moving inventory that was tying up our capital. We cleared it at 30% margin instead of letting it sit for another season. Now we only order what actually sells, freeing up cash for new collections.",
-      avatar: '/jan.png',
-      rating: 5,
-      company: "Maison Belle Boutique",
-      location: "Antwerp, Belgium",
-      industry: "Fashion & Gifts",
-      savings: `${formatPrice(5200)}/year saved`,
-      timeSaved: "12 hours/week",
-      specificResults: [
-        "$8,500 dead stock identified and cleared",
-        "30% margin recovered on slow-movers",
-        "Cash flow improved by 40%",
-        "12 hours/week time savings on inventory"
-      ],
-      beforeAfter: {
-        before: "Capital tied up in unsold stock, guessing what to reorder",
-        after: "Data-driven ordering, cash freed for bestsellers, 40% better cash flow"
-      }
-    },
-    {
-      name: "Anke Willems",
-      role: "Owner, Artisan & Co.",
-      title: "Handcrafted Home Goods",
-      quote: "We used to over-order seasonal items that would sit unsold for months, tying up €3,200 in capital. StockFlow's alerts help us order just enough to meet demand. That freed-up cash went straight into our best-selling handmade candles and ceramics.",
-      avatar: '/anke.png',
-      rating: 5,
-      company: "Artisan & Co.",
-      location: "Bruges, Belgium",
-      industry: "Artisan Retail",
-      savings: `${formatPrice(1800)}/year saved`,
-      timeSaved: "6 hours/week",
-      specificResults: [
-        "€3,200 capital freed from seasonal overstock",
-        "Optimized reorder quantities by product",
-        "Cash reinvested in bestselling items",
-        "6 hours/week saved on inventory counts"
-      ],
-      beforeAfter: {
-        before: "€3,200 tied up in unsold seasonal stock, guessing reorder amounts",
-        after: "Capital freed for bestsellers, data-driven ordering, 6hr/week saved"
-      }
-    }
-  ];
 
-  // Benefits section
-  const benefits = [
-    {
-      icon: <Euro className="h-8 w-8" />,
-      title: "100% Free Forever",
-      description: "No hidden costs, no limits. Completely free inventory management for SMEs."
-    },
-    {
-      icon: <Clock className="h-8 w-8" />,
-      title: "Get Started Immediately",
-      description: "No complex setup or training required. Start your inventory management within 5 minutes."
-    },
-    {
-      icon: <Target className="h-8 w-8" />,
-      title: "Specifically for SMEs",
-      description: "Developed with the needs of businesses in mind. Professional support and local expertise."
-    }
-  ];
+ 
 
-  // --- BEGIN USP DATA ---
-  const usps = [
-    {
-      icon: <Package className="h-8 w-8" />,
-      title: "Track stock easily",
-      desc: "See what's in store, what's in the backroom, and what needs ordering.",
-    },
-    {
-      icon: <BarChart3 className="h-8 w-8" />,
-      title: "Know what's selling", 
-      desc: "Spot your best sellers and slow movers to make better buying choices.",
-    },
-    {
-      icon: <Users className="h-8 w-8" />,
-      title: "Your whole team can use it",
-      desc: "Everyone sees the same stock numbers, no more asking around.",
-    },
-    {
-      icon: <Shield className="h-8 w-8" />,
-      title: "Your data stays safe",
-      desc: "Automatic backups mean you won't lose your inventory records.",
-    },
-  ];
-  // --- EINDE USP DATA ---
-
-  // --- BEGIN SUBSCRIPTION FEATURES DATA ---
-  const subscriptionFeatures = [
-    {
-      icon: <BarChart3 className="h-12 w-12 text-blue-600" />,
-      title: "See What's Selling",
-      description: "Know which products move fast and which ones sit on shelves.",
-      features: [
-        "View current stock levels",
-        "See your best sellers",
-        "Spot slow-moving items",
-        "Export reports to Excel"
-      ],
-      tier: "growth",
-      image: "/placeholder.svg"
-    },
-    {
-      icon: <Scan className="h-12 w-12 text-green-600" />,
-      title: "Scan with Your Phone",
-      description: "Count stock faster using your phone camera instead of paper.",
-      features: [
-        "Scan barcodes with phone",
-        "Count multiple items quickly",
-        "Print your own barcodes",
-        "Works without internet"
-      ],
-      tier: "basic", // Now available for all users including free tier
-      image: "/placeholder.svg"
-    },
-    {
-      icon: <Truck className="h-12 w-12 text-purple-600" />,
-      title: "Track Deliveries",
-      description: "Keep track of what comes in from suppliers and goes out to customers.",
-      features: [
-        "Record deliveries received",
-        "Track outgoing orders",
-        "Save supplier details",
-        "Schedule deliveries"
-      ],
-      tier: "premium",
-      image: "/placeholder.svg"
-    }
-  ];
-  // --- EINDE SUBSCRIPTION FEATURES DATA ---
 
   // --- BEGIN CAPABILITIES DATA ---
   const capabilities = [
@@ -1058,61 +637,6 @@ export const HomePage = () => {
   ];
   // --- EINDE CAPABILITIES DATA ---
 
-  // --- BEGIN FEATURE DATA ---
-  const landingFeatures = [
-    {
-      title: "Protect capital tied up in inventory",
-      subtitle: "Capital Management",
-      desc: "Stop losing money to overstock and spoilage. Know exactly how much to order to maximize cash flow.",
-      benefits: [
-        "Identify slow-moving stock draining cash",
-        "Get alerts for items at risk of expiry",
-        "Optimize order quantities to free capital",
-        "Track inventory value across locations"
-      ],
-      icon: <Package className="h-8 w-8 text-white" />,
-      gradient: "from-blue-500 to-blue-700",
-      bgPattern: "bg-blue-50",
-      borderColor: "border-blue-200",
-      iconBg: "bg-blue-500",
-      stats: "Save $2,400+ annually",
-    },
-    {
-      title: "Reduce overstock & free up cash",
-      subtitle: "Sales Insights",
-      desc: "See which products sell fast and which sit on shelves. Stop tying up money in items that don't move.",
-      benefits: [
-        "Track which products sell fast",
-        "Spot items that aren't moving",
-        "See your profit on each product",
-        "Make smarter buying decisions"
-      ],
-      icon: <BarChart3 className="h-8 w-8 text-white" />,
-      gradient: "from-green-500 to-green-700",
-      bgPattern: "bg-green-50",
-      borderColor: "border-green-200",
-      iconBg: "bg-green-500",
-      stats: "Increase profits by 15-25%",
-    },
-    {
-      title: "Count inventory in minutes with your phone",
-      subtitle: "Mobile Counting",
-      desc: "Skip the clipboard and spreadsheets. Use your phone to scan barcodes and update stock from the shop floor.",
-      benefits: [
-        "Scan barcodes with your phone",
-        "Update stock from anywhere in store",
-        "Works without internet connection",
-        "No computer needed during counts"
-      ],
-      icon: <Smartphone className="h-8 w-8 text-white" />,
-      gradient: "from-purple-500 to-purple-700",
-      bgPattern: "bg-purple-50",
-      borderColor: "border-purple-200",
-      iconBg: "bg-purple-500",
-      stats: "Save 8 hours per week",
-    }
-  ];
-  // --- EINDE FEATURE DATA ---
 
   // Enhanced structured data for better search engine understanding
   const structuredData = [
@@ -1611,7 +1135,7 @@ export const HomePage = () => {
 
 
       {/* Hero Section - Redesigned according to proposal */}
-      <section className="relative py-10 sm:py-14 md:py-20 lg:py-24 px-4 sm:px-6 overflow-hidden bg-gradient-to-b from-white to-blue-50/30">
+      <section className="relative py-10 sm:py-14 md:py-20 lg:py-24 px-4 sm:px-6 overflow-hidden bg-gradient-to-b from-blue-50/30 to-white">
         {/* Subtle geometric pattern overlay */}
         <div 
           className="absolute inset-0 pointer-events-none opacity-[0.03]"
@@ -1713,13 +1237,11 @@ export const HomePage = () => {
       </section>
 
       {/* Social Proof Bar - Immediately Below Hero */}
-      <section className="py-6 sm:py-8 md:py-10 bg-white border-b border-gray-300">
+      <section className="py-6 sm:py-8 md:py-10 bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4">
           <FadeInWhenVisible>
             <div className="text-center">
-              <p className="text-xs sm:text-sm md:text-base font-medium text-gray-600 mb-4 sm:mb-6 md:mb-8">
-                "Trusted by leading Belgian businesses"
-              </p>
+
               
               {/* Company Logos or Industry Icons */}
               <style>
@@ -1738,28 +1260,28 @@ export const HomePage = () => {
               </style>
               <div className="trusted-badges mx-auto">
                 <div className="flex flex-col items-center gap-2">
-                  <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
-                    <Building className="h-8 w-8 text-gray-600" />
+                  <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center drop-shadow-lg border border-gray-200">
+                    <Building className="h-8 w-8 text-gray-600 " />
                   </div>
                   <span className="text-sm font-medium text-gray-700">Retail</span>
                 </div>
                 
                 <div className="flex flex-col items-center gap-2">
-                  <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
+                  <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center drop-shadow-lg border border-gray-200">
                     <Package className="h-8 w-8 text-gray-600" />
                   </div>
                   <span className="text-sm font-medium text-gray-700">Food & Beverage</span>
                 </div>
                 
                 <div className="flex flex-col items-center gap-2">
-                  <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
+                  <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center drop-shadow-lg border border-gray-200">
                     <Truck className="h-8 w-8 text-gray-600" />
                   </div>
                   <span className="text-sm font-medium text-gray-700">Wholesale</span>
                 </div>
                 
                 <div className="flex flex-col items-center gap-2">
-                  <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
+                  <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center drop-shadow-lg border border-gray-200">
                     <BarChart3 className="h-8 w-8 text-gray-600" />
                   </div>
                   <span className="text-sm font-medium text-gray-700">Manufacturing</span>
@@ -1862,7 +1384,7 @@ export const HomePage = () => {
       </section>
 
       {/* Key Features Section - Alternating Layout */}
-      <section className="py-16 sm:py-20 md:py-24 lg:py-28 xl:py-32 bg-gray-50">
+      <section className="py-16 sm:py-20 md:py-24 lg:py-28 xl:py-32 bg-gradient-to-b from-blue-50/30 to-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <FadeInWhenVisible>
@@ -2070,7 +1592,7 @@ export const HomePage = () => {
       </section>
 
       {/* Start Tracking in 3 Simple Steps - New Section */}
-      <section className="py-12 sm:py-16 md:py-20 lg:py-24 xl:py-28 bg-white relative overflow-hidden">
+      <section className="py-12 sm:py-16 md:py-20 lg:py-24 xl:py-28 bg-gradient-to-b from-blue-50/30 to-white relative overflow-hidden">
         {/* Subtle background decoration */}
         <div className="absolute inset-0 opacity-5">
           <div className="absolute top-20 left-1/4 w-96 h-96 bg-blue-400 rounded-full blur-3xl"></div>
@@ -2242,11 +1764,145 @@ export const HomePage = () => {
         </div>
       </section>
 
-      {/* Contact Form Section */}
-      <section className="py-16 md:py-24 bg-gray-50">
-        <div className="max-w-4xl mx-auto px-4">
-          <FadeInWhenVisible delay={200}>
-            <ContactForm />
+
+
+      {/* Why Choose Us Section */}
+      <section className="py-16 sm:py-20 md:py-24 lg:py-28 bg-gradient-to-b from-blue-50/30 to-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Header */}
+          <FadeInWhenVisible>
+            <div className="text-center mb-12 sm:mb-16 md:mb-20">
+              <div className="inline-block mb-4 sm:mb-6">
+                <span className="px-4 py-2 bg-blue-100 text-blue-700 text-sm font-semibold rounded-full">
+                  WHY STOCKFLOW
+                </span>
+              </div>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light text-gray-900 mb-4 sm:mb-6 leading-tight tracking-tight px-2">
+                Why Choose<br className="hidden sm:block" />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
+                  StockFlow
+                </span>
+              </h2>
+              <p className="text-lg sm:text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto px-4 leading-relaxed">
+                The smart choice for inventory management
+              </p>
+            </div>
+          </FadeInWhenVisible>
+
+          {/* Why Choose Us Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10 max-w-6xl mx-auto">
+            {whyChooseUs.map((reason, index) => (
+              <ScaleInWhenVisible key={index} delay={index * 100}>
+                <div className="bg-gradient-to-br from-white to-gray-50 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-blue-200 h-full">
+                  {/* Icon */}
+                  <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600 mb-6">
+                    {reason.icon}
+                  </div>
+                  
+                  {/* Content */}
+                  <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">
+                    {reason.title}
+                  </h3>
+                  <p className="text-base sm:text-lg text-gray-600 leading-relaxed">
+                    {reason.description}
+                  </p>
+                </div>
+              </ScaleInWhenVisible>
+            ))}
+          </div>
+        </div>
+      </section>
+
+
+      {/* FAQ Section */}
+      <section className="py-16 sm:py-20 md:py-24 lg:py-28 bg-gradient-to-b from-blue-50/30 to-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Header */}
+          <FadeInWhenVisible>
+            <div className="text-center mb-12 sm:mb-16">
+              <div className="inline-block mb-4 sm:mb-6">
+                <span className="px-4 py-2 bg-blue-100 text-blue-700 text-sm font-semibold rounded-full">
+                  FREQUENTLY ASKED QUESTIONS
+                </span>
+              </div>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light text-gray-900 mb-4 sm:mb-6 leading-tight tracking-tight px-2">
+                Got Questions?<br className="hidden sm:block" />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
+                  We've Got Answers
+                </span>
+              </h2>
+              <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+                Everything you need to know about StockFlow
+              </p>
+            </div>
+          </FadeInWhenVisible>
+
+          {/* FAQ Accordion */}
+          <div className="space-y-4">
+            {faqData.map((faq, index) => (
+              <FadeInWhenVisible key={index} delay={index * 50}>
+                <div className="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300">
+                  <button
+                    onClick={() => setOpenFAQ(openFAQ === index ? null : index)}
+                    className="w-full text-left px-6 py-5 flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-xl"
+                  >
+                    <div className="flex-1 pr-4">
+                      <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-1">
+                        {faq.question}
+                      </h3>
+                      {faq.benefit && (
+                        <p className="text-sm text-blue-600 font-medium">
+                          {faq.benefit}
+                        </p>
+                      )}
+                    </div>
+                    <div className={`flex-shrink-0 transform transition-transform duration-300 ${openFAQ === index ? 'rotate-180' : ''}`}>
+                      <svg
+                        className="w-5 h-5 text-gray-500"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M19 9l-7 7-7-7"
+                        />
+                      </svg>
+                    </div>
+                  </button>
+                  
+                  {/* Answer (collapsible) */}
+                  <div
+                    className={`overflow-hidden transition-all duration-300 ${
+                      openFAQ === index ? 'max-h-96' : 'max-h-0'
+                    }`}
+                  >
+                    <div className="px-6 pb-5 pt-2">
+                      <p className="text-base text-gray-600 leading-relaxed">
+                        {faq.answer}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </FadeInWhenVisible>
+            ))}
+          </div>
+
+          {/* CTA after FAQ */}
+          <FadeInWhenVisible delay={400}>
+            <div className="text-center mt-12 sm:mt-16">
+              <p className="text-lg text-gray-600 mb-6">
+                Still have questions? We're here to help!
+              </p>
+              <Button
+                onClick={() => navigate('/contact')}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-lg font-semibold rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+              >
+                Contact Support
+              </Button>
+            </div>
           </FadeInWhenVisible>
         </div>
       </section>
@@ -2257,7 +1913,7 @@ export const HomePage = () => {
 
 
       {/* Trust Badges Section */}
-      <section className="py-12 md:py-16 bg-gray-50">
+      <section className="py-12 md:py-16 bg-white border-t border-gray-200">
         <div className="max-w-7xl mx-auto px-4">
           <FadeInWhenVisible>
             <div className="text-center">
