@@ -1260,29 +1260,29 @@ export const HomePage = () => {
               </style>
               <div className="trusted-badges mx-auto">
                 <div className="flex flex-col items-center gap-2">
-                  <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center drop-shadow-lg border border-gray-200">
-                    <Building className="h-8 w-8 text-gray-600 " />
+                  <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center drop-shadow-lg border border-gray-200">
+                    <Building className="h-8 w-8 text-white " />
                   </div>
                   <span className="text-sm font-medium text-gray-700">Retail</span>
                 </div>
                 
                 <div className="flex flex-col items-center gap-2">
-                  <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center drop-shadow-lg border border-gray-200">
-                    <Package className="h-8 w-8 text-gray-600" />
+                  <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center drop-shadow-lg border border-gray-200">
+                    <Package className="h-8 w-8 text-white" />
                   </div>
                   <span className="text-sm font-medium text-gray-700">Food & Beverage</span>
                 </div>
                 
                 <div className="flex flex-col items-center gap-2">
-                  <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center drop-shadow-lg border border-gray-200">
-                    <Truck className="h-8 w-8 text-gray-600" />
+                  <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center drop-shadow-lg border border-gray-200">
+                    <Truck className="h-8 w-8 text-white" />
                   </div>
                   <span className="text-sm font-medium text-gray-700">Wholesale</span>
                 </div>
                 
                 <div className="flex flex-col items-center gap-2">
-                  <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center drop-shadow-lg border border-gray-200">
-                    <BarChart3 className="h-8 w-8 text-gray-600" />
+                  <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center drop-shadow-lg border border-gray-200">
+                    <BarChart3 className="h-8 w-8 text-white" />
                   </div>
                   <span className="text-sm font-medium text-gray-700">Manufacturing</span>
                 </div>
@@ -1300,8 +1300,8 @@ export const HomePage = () => {
           {/* Header */}
           <FadeInWhenVisible>
             <div className="text-center mb-10 sm:mb-12 md:mb-16 lg:mb-20">
-            <h2 className="font-light text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-gray-900 mb-4 sm:mb-6 md:mb-8 leading-tight tracking-tight px-2">
-                Stop Losing Money On<br className="hidden sm:block" />
+            <h2 className="lg:pl-24 lg:pr-24 lg:pt-6 lg:pb-6 text-[clamp(3rem,5vw,5rem)] font-light text-gray-800 mb-3 leading-tight px-2">
+            Stop Losing Money On <br className="hidden sm:block" />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
                 Inventory Mistakes
                 </span>
@@ -1394,8 +1394,8 @@ export const HomePage = () => {
                   POWERFUL FEATURES
                 </span>
               </div>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light text-gray-900 mb-4 sm:mb-6 md:mb-8 leading-tight tracking-tight px-2">
-                Everything You Need To<br className="hidden sm:block" />
+              <h2 className="lg:pl-24 lg:pr-24 lg:pt-6 lg:pb-6 text-[clamp(3rem,5vw,5rem)] font-light text-gray-800 mb-3 leading-tight px-2">
+              Everything You Need To <br className="hidden sm:block" />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
                   Manage Inventory
                 </span>
@@ -1603,10 +1603,10 @@ export const HomePage = () => {
           {/* Header */}
           <FadeInWhenVisible>
             <div className="text-center mb-10 sm:mb-12 md:mb-16 lg:mb-20">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light text-gray-900 mb-4 sm:mb-6 md:mb-8 leading-tight tracking-tight px-2">
-                Start Tracking<br className="hidden sm:block" />
+            <h2 className="lg:pl-24 lg:pr-24 lg:pt-6 lg:pb-6 text-[clamp(3rem,5vw,5rem)] font-light text-gray-800 mb-3 leading-tight px-2">
+            Start Tracking In <br className="hidden sm:block" />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
-                  in 3 Simple Steps
+                  3 Simple Steps
                 </span>
               </h2>
               <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-4 sm:mb-5 md:mb-6 max-w-2xl mx-auto px-4">
@@ -1777,10 +1777,10 @@ export const HomePage = () => {
                   WHY STOCKFLOW
                 </span>
               </div>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light text-gray-900 mb-4 sm:mb-6 leading-tight tracking-tight px-2">
-                Why Choose<br className="hidden sm:block" />
+              <h2 className="lg:pl-24 lg:pr-24 lg:pt-6 lg:pb-6 text-[clamp(3rem,5vw,5rem)] font-light text-gray-800 mb-3 leading-tight px-2">
+              Why Choose <br className="hidden sm:block" />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
-                  StockFlow
+                  StockFlow?
                 </span>
               </h2>
               <p className="text-lg sm:text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto px-4 leading-relaxed">
@@ -1825,8 +1825,8 @@ export const HomePage = () => {
                   FREQUENTLY ASKED QUESTIONS
                 </span>
               </div>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light text-gray-900 mb-4 sm:mb-6 leading-tight tracking-tight px-2">
-                Got Questions?<br className="hidden sm:block" />
+              <h2 className="lg:pl-24 lg:pr-24 lg:pt-6 lg:pb-6 text-[clamp(3rem,5vw,5rem)] font-light text-gray-800 mb-3 leading-tight px-2">
+              Got Questions? <br className="hidden sm:block" />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
                   We've Got Answers
                 </span>
