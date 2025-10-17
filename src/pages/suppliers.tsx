@@ -5,7 +5,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
-import { Plus, Edit, Trash2, Truck, Mail, Phone, MapPin, Package, Tag } from 'lucide-react';
+import { Plus, Edit, Trash2, Truck, Mail, Phone, MapPin, Package, Tag, Search, Upload, Download, CheckSquare, Square, Loader2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
@@ -19,7 +19,12 @@ interface Supplier {
   name: string;
   email: string | null;
   phone: string | null;
+  mobile: string | null;
   address: string | null;
+  company: string | null;
+  municipality: string | null;
+  group: string | null;
+  peppol_enabled: boolean;
   created_at: string;
   updated_at: string;
   product_count?: number;
@@ -71,11 +76,18 @@ export default function SuppliersPage() {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedSupplier, setSelectedSupplier] = useState<Supplier | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedSuppliers, setSelectedSuppliers] = useState<string[]>([]);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
-    address: ''
+    mobile: '',
+    address: '',
+    company: '',
+    municipality: '',
+    group: '',
+    peppol_enabled: false
   });
 
   // Use React Query for caching
@@ -93,6 +105,14 @@ export default function SuppliersPage() {
     // @ts-expect-error: keepPreviousData is supported in v5
     keepPreviousData: true,
   });
+
+  // Filter suppliers based on search term
+  const filteredSuppliers = suppliers.filter(supplier =>
+    supplier.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    supplier.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    supplier.company?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    supplier.municipality?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   // Mobile tab switcher state
   const [activeTab, setActiveTab] = useState<'products' | 'categories' | 'suppliers'>('suppliers');
@@ -168,7 +188,12 @@ export default function SuppliersPage() {
           name: formData.name.trim(),
           email: formData.email.trim() || null,
           phone: formData.phone.trim() || null,
+          mobile: formData.mobile.trim() || null,
           address: formData.address.trim() || null,
+          company: formData.company.trim() || null,
+          municipality: formData.municipality.trim() || null,
+          group: formData.group.trim() || null,
+          peppol_enabled: formData.peppol_enabled,
           user_id: user.id
         })
         .select()
@@ -182,7 +207,7 @@ export default function SuppliersPage() {
 
       toast.success('Leverancier succesvol toegevoegd!');
       setShowAddModal(false);
-      setFormData({ name: '', email: '', phone: '', address: '' });
+      setFormData({ name: '', email: '', phone: '', mobile: '', address: '', company: '', municipality: '', group: '', peppol_enabled: false });
       queryClient.invalidateQueries({ queryKey: ['suppliers', user.id] });
     } catch (error) {
       console.error('Error adding supplier:', error);
@@ -203,7 +228,12 @@ export default function SuppliersPage() {
           name: formData.name.trim(),
           email: formData.email.trim() || null,
           phone: formData.phone.trim() || null,
-          address: formData.address.trim() || null
+          mobile: formData.mobile.trim() || null,
+          address: formData.address.trim() || null,
+          company: formData.company.trim() || null,
+          municipality: formData.municipality.trim() || null,
+          group: formData.group.trim() || null,
+          peppol_enabled: formData.peppol_enabled
         })
         .eq('id', selectedSupplier.id);
 
@@ -216,7 +246,7 @@ export default function SuppliersPage() {
       toast.success('Leverancier succesvol bijgewerkt!');
       setShowEditModal(false);
       setSelectedSupplier(null);
-      setFormData({ name: '', email: '', phone: '', address: '' });
+      setFormData({ name: '', email: '', phone: '', mobile: '', address: '', company: '', municipality: '', group: '', peppol_enabled: false });
       queryClient.invalidateQueries({ queryKey: ['suppliers', user.id] });
     } catch (error) {
       console.error('Error updating supplier:', error);
@@ -275,7 +305,12 @@ export default function SuppliersPage() {
       name: supplier.name,
       email: supplier.email || '',
       phone: supplier.phone || '',
-      address: supplier.address || ''
+      mobile: supplier.mobile || '',
+      address: supplier.address || '',
+      company: supplier.company || '',
+      municipality: supplier.municipality || '',
+      group: supplier.group || '',
+      peppol_enabled: supplier.peppol_enabled || false
     });
     setShowEditModal(true);
   };
@@ -286,7 +321,7 @@ export default function SuppliersPage() {
   };
 
   const resetForm = () => {
-    setFormData({ name: '', email: '', phone: '', address: '' });
+    setFormData({ name: '', email: '', phone: '', mobile: '', address: '', company: '', municipality: '', group: '', peppol_enabled: false });
     setSelectedSupplier(null);
   };
 
@@ -307,6 +342,31 @@ export default function SuppliersPage() {
     });
   };
 
+  const handleSelectSupplier = (supplierId: string) => {
+    setSelectedSuppliers(prev => 
+      prev.includes(supplierId) 
+        ? prev.filter(id => id !== supplierId)
+        : [...prev, supplierId]
+    );
+  };
+
+  const handleSelectAll = () => {
+    if (selectedSuppliers.length === filteredSuppliers.length) {
+      setSelectedSuppliers([]);
+    } else {
+      setSelectedSuppliers(filteredSuppliers.map(s => s.id));
+    }
+  };
+
+  const handleMergeSuppliers = () => {
+    if (selectedSuppliers.length < 2) {
+      toast.error('Selecteer minimaal 2 leveranciers om samen te voegen');
+      return;
+    }
+    // TODO: Implement merge functionality
+    toast.info('Merge functionaliteit wordt binnenkort toegevoegd');
+  };
+
   if (!user) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -319,7 +379,7 @@ export default function SuppliersPage() {
 
   return (
     <div className={`${isMobile ? 'px-2 py-4' : 'container mx-auto px-4 py-8'}`}>
-      <div className={`${isMobile ? 'w-full' : 'max-w-6xl mx-auto'}`}>
+      <div className={`${isMobile ? 'w-full' : 'max-w-7xl mx-auto'}`}>
         {/* Mobile Tab Switcher - Only show on mobile */}
         {isMobile && (
           <div className="mb-4">
@@ -366,170 +426,232 @@ export default function SuppliersPage() {
           </div>
         )}
 
-        {/* Header */}
-        <div className={`${isMobile ? 'mb-6' : 'mb-8'}`}>
-          <h1 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-gray-900 mb-2`}>
-            Manage Suppliers
-          </h1>
-          <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600`}>
-            Manage your suppliers for better organization of your purchases and stock
-          </p>
+        {/* Header Section */}
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-gray-100 rounded flex items-center justify-center">
+              <Package className="w-4 h-4 text-gray-600" />
+            </div>
+            <h1 className="text-2xl font-bold text-gray-900">Leveranciers</h1>
+          </div>
+          <div className="flex gap-2">
+            <Button 
+              variant="outline"
+              className="text-red-600 border-red-200 hover:bg-red-50"
+            >
+              <Upload className="w-4 h-4 mr-2" />
+              Importeren
+            </Button>
+            <Button 
+              variant="outline"
+              className="text-red-600 border-red-200 hover:bg-red-50"
+            >
+              <Download className="w-4 h-4 mr-2" />
+              Exporteren
+            </Button>
+            <Button 
+              onClick={() => setShowAddModal(true)}
+              className="bg-red-600 hover:bg-red-700 text-white"
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Toevoegen
+            </Button>
+          </div>
         </div>
 
-        {/* Add Supplier Button */}
-        <div className={`${isMobile ? 'mb-4' : 'mb-6'}`}>
-          <Button 
-            onClick={() => setShowAddModal(true)} 
-            className={`flex items-center gap-2 ${isMobile ? 'w-full' : ''}`}
-          >
-            <Plus className="w-4 h-4" />
-            New Supplier
-          </Button>
+        {/* Search Section */}
+        <div className="bg-white rounded-lg border border-gray-200 p-4 mb-6">
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">OVERZICHT</h2>
+          <div className="flex gap-4 items-center">
+            <div className="flex-1 relative">
+              <Input
+                placeholder="Zoeken"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pr-10"
+              />
+              <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+            </div>
+            <Button 
+              onClick={handleMergeSuppliers}
+              className="bg-red-600 hover:bg-red-700 text-white"
+            >
+              Samenvoegen
+            </Button>
+          </div>
         </div>
 
-        {/* Suppliers List */}
-        <div className={`grid gap-3 ${isMobile ? '' : 'gap-4'}`}>
+        {/* Suppliers Table */}
+        <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
           {loading ? (
-            <Card>
-              <CardContent className={`${isMobile ? 'p-6' : 'p-8'}`}>
-                <div className="text-center">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                  <p className="text-gray-600">Suppliers loading...</p>
-                </div>
-              </CardContent>
-            </Card>
-          ) : suppliers.length === 0 ? (
-            <Card>
-              <CardContent className={`${isMobile ? 'p-6' : 'p-8'}`}>
-                <div className="text-center">
-                  <Truck className={`${isMobile ? 'w-10 h-10' : 'w-12 h-12'} text-gray-400 mx-auto mb-4`} />
-                  <h3 className={`${isMobile ? 'text-base' : 'text-lg'} font-medium text-gray-900 mb-2`}>
-                    No suppliers
-                  </h3>
-                  <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600 mb-4`}>
-                    You have no suppliers yet. Create your first supplier to get started.
-                  </p>
-                  <Button 
-                    onClick={() => setShowAddModal(true)}
-                    className={isMobile ? 'w-full' : ''}
-                  >
-                    <Plus className="w-4 h-4 mr-2" />
-                    First Supplier
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ) : (
-            suppliers.map((supplier) => (
-              <Card 
-                key={supplier.id} 
-                className="cursor-pointer hover:shadow-md transition-shadow"
-                onClick={() => handleSupplierClick(supplier)}
+            <div className="p-8 text-center">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+              <p className="text-gray-600">Suppliers loading...</p>
+            </div>
+          ) : filteredSuppliers.length === 0 ? (
+            <div className="p-8 text-center">
+              <Truck className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-gray-900 mb-2">
+                No suppliers
+              </h3>
+              <p className="text-base text-gray-600 mb-4">
+                You have no suppliers yet. Create your first supplier to get started.
+              </p>
+              <Button 
+                onClick={() => setShowAddModal(true)}
+                className="bg-red-600 hover:bg-red-700 text-white"
               >
-                <CardContent className={`${isMobile ? 'p-4' : 'p-6'}`}>
-                  <div className="flex items-center justify-between">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <h3 className={`${isMobile ? 'text-base' : 'text-lg'} font-semibold text-gray-900`}>
-                          {supplier.name}
-                        </h3>
-                        <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded-full">
-                          {supplier.product_count || 0} product{supplier.product_count !== 1 ? 'en' : ''}
-                        </span>
-                      </div>
-                      <div className="space-y-1 text-sm text-gray-600">
-                        {supplier.email && (
-                          <div className="flex items-center gap-2">
-                            <Mail className="w-4 h-4" />
-                            <span>{supplier.email}</span>
-                          </div>
-                        )}
-                        {supplier.phone && (
-                          <div className="flex items-center gap-2">
-                            <Phone className="w-4 h-4" />
-                            <span>{supplier.phone}</span>
-                          </div>
-                        )}
-                        {supplier.address && (
-                          <div className="flex items-center gap-2">
-                            <MapPin className="w-4 h-4" />
-                            <span>{supplier.address}</span>
-                          </div>
-                        )}
-                      </div>
-                      <p className="text-xs text-gray-500 mt-2">
-                        Aangemaakt op {new Date(supplier.created_at).toLocaleDateString('nl-NL')}
-                      </p>
-                    </div>
-                    <div className={`flex gap-2 ${isMobile ? 'ml-3' : ''}`}>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          openEditModal(supplier);
-                        }}
-                        className={isMobile ? 'px-2 py-1' : ''}
+                <Plus className="w-4 h-4 mr-2" />
+                First Supplier
+              </Button>
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-gray-50 border-b border-gray-200">
+                  <tr>
+                    <th className="px-4 py-3 text-left">
+                      <button
+                        onClick={handleSelectAll}
+                        className="flex items-center"
                       >
-                        <Edit className="w-4 h-4" />
-                        {!isMobile && <span className="ml-1">Edit</span>}
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          openDeleteModal(supplier);
-                        }}
-                        className={`${isMobile ? 'px-2 py-1' : ''} text-red-600 hover:text-red-700 hover:bg-red-50`}
-                      >
-                        <Trash2 className="w-4 h-4" />
-                        {!isMobile && <span className="ml-1">Delete</span>}
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))
+                        {selectedSuppliers.length === filteredSuppliers.length ? (
+                          <CheckSquare className="w-4 h-4 text-gray-600" />
+                        ) : (
+                          <Square className="w-4 h-4 text-gray-400" />
+                        )}
+                      </button>
+                    </th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-900">Nr</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-900">Naam</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-900">Bedrijf</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-900">Contact</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-900">Gemeente</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-900">E-mail</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-900">Telefoon</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-900">Mobiel</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-900">Groep</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-900">Verstuurt via Peppol</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-900">Acties</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                  {filteredSuppliers.map((supplier, index) => (
+                    <tr key={supplier.id} className="hover:bg-gray-50">
+                      <td className="px-4 py-3">
+                        <button
+                          onClick={() => handleSelectSupplier(supplier.id)}
+                          className="flex items-center"
+                        >
+                          {selectedSuppliers.includes(supplier.id) ? (
+                            <CheckSquare className="w-4 h-4 text-gray-600" />
+                          ) : (
+                            <Square className="w-4 h-4 text-gray-400" />
+                          )}
+                        </button>
+                      </td>
+                      <td className="px-4 py-3 text-sm text-gray-900">{index + 1}</td>
+                      <td className="px-4 py-3 text-sm text-gray-900 font-medium">{supplier.name}</td>
+                      <td className="px-4 py-3 text-sm text-gray-900">{supplier.company || '-'}</td>
+                      <td className="px-4 py-3 text-sm text-gray-900">{supplier.name}</td>
+                      <td className="px-4 py-3 text-sm text-gray-900">{supplier.municipality || '-'}</td>
+                      <td className="px-4 py-3 text-sm text-gray-900">{supplier.email || '-'}</td>
+                      <td className="px-4 py-3 text-sm text-gray-900">{supplier.phone || '-'}</td>
+                      <td className="px-4 py-3 text-sm text-gray-900">{supplier.mobile || '-'}</td>
+                      <td className="px-4 py-3 text-sm text-gray-900">{supplier.group || '-'}</td>
+                      <td className="px-4 py-3 text-sm text-gray-900">
+                        <div className="flex items-center">
+                          <Loader2 className="w-4 h-4 text-gray-400 animate-spin" />
+                        </div>
+                      </td>
+                      <td className="px-4 py-3">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => openEditModal(supplier)}
+                          className="bg-red-600 hover:bg-red-700 text-white border-red-600"
+                        >
+                          <Edit className="w-4 h-4" />
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
         </div>
       </div>
 
       {/* Add Supplier Modal */}
       <Dialog open={showAddModal} onOpenChange={setShowAddModal}>
-        <DialogContent>
+        <DialogContent className="max-w-2xl">
           <DialogHeader>
             <DialogTitle>Add New Supplier</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
-            <div>
-              <Label htmlFor="name">Supplier Name *</Label>
-              <Input
-                id="name"
-                value={formData.name}
-                onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                    placeholder="Name of the supplier"
-              />
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="name">Supplier Name *</Label>
+                <Input
+                  id="name"
+                  value={formData.name}
+                  onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                  placeholder="Name of the supplier"
+                />
+              </div>
+              <div>
+                <Label htmlFor="company">Company</Label>
+                <Input
+                  id="company"
+                  value={formData.company}
+                  onChange={(e) => setFormData(prev => ({ ...prev, company: e.target.value }))}
+                  placeholder="Company name"
+                />
+              </div>
             </div>
-            <div>
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                value={formData.email}
-                onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                placeholder="email@supplier.nl"
-              />
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                  placeholder="email@supplier.nl"
+                />
+              </div>
+              <div>
+                <Label htmlFor="phone">Phone</Label>
+                <Input
+                  id="phone"
+                  type="tel"
+                  value={formData.phone}
+                  onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
+                  placeholder="+31 6 12345678"
+                />
+              </div>
             </div>
-            <div>
-              <Label htmlFor="phone">Phone</Label>
-              <Input
-                id="phone"
-                type="tel"
-                value={formData.phone}
-                onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
-                placeholder="+31 6 12345678"
-              />
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="mobile">Mobile</Label>
+                <Input
+                  id="mobile"
+                  type="tel"
+                  value={formData.mobile}
+                  onChange={(e) => setFormData(prev => ({ ...prev, mobile: e.target.value }))}
+                  placeholder="+31 6 12345678"
+                />
+              </div>
+              <div>
+                <Label htmlFor="municipality">Municipality</Label>
+                <Input
+                  id="municipality"
+                  value={formData.municipality}
+                  onChange={(e) => setFormData(prev => ({ ...prev, municipality: e.target.value }))}
+                  placeholder="City, postal code"
+                />
+              </div>
             </div>
             <div>
               <Label htmlFor="address">Address</Label>
@@ -541,12 +663,33 @@ export default function SuppliersPage() {
                 rows={3}
               />
             </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="group">Group</Label>
+                <Input
+                  id="group"
+                  value={formData.group}
+                  onChange={(e) => setFormData(prev => ({ ...prev, group: e.target.value }))}
+                  placeholder="Supplier group"
+                />
+              </div>
+              <div className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  id="peppol_enabled"
+                  checked={formData.peppol_enabled}
+                  onChange={(e) => setFormData(prev => ({ ...prev, peppol_enabled: e.target.checked }))}
+                  className="rounded"
+                />
+                <Label htmlFor="peppol_enabled">Verstuurt via Peppol</Label>
+              </div>
+            </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowAddModal(false)}>
               Cancel
             </Button>
-            <Button onClick={handleAddSupplier}>
+            <Button onClick={handleAddSupplier} className="bg-red-600 hover:bg-red-700 text-white">
               Add Supplier
             </Button>
           </DialogFooter>
@@ -555,39 +698,73 @@ export default function SuppliersPage() {
 
       {/* Edit Supplier Modal */}
       <Dialog open={showEditModal} onOpenChange={setShowEditModal}>
-        <DialogContent>
+        <DialogContent className="max-w-2xl">
           <DialogHeader>
             <DialogTitle>Edit Supplier</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
-            <div>
-              <Label htmlFor="edit-name">Supplier Name *</Label>
-              <Input
-                id="edit-name"
-                value={formData.name}
-                onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                placeholder="Name of the supplier"
-              />
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="edit-name">Supplier Name *</Label>
+                <Input
+                  id="edit-name"
+                  value={formData.name}
+                  onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                  placeholder="Name of the supplier"
+                />
+              </div>
+              <div>
+                <Label htmlFor="edit-company">Company</Label>
+                <Input
+                  id="edit-company"
+                  value={formData.company}
+                  onChange={(e) => setFormData(prev => ({ ...prev, company: e.target.value }))}
+                  placeholder="Company name"
+                />
+              </div>
             </div>
-            <div>
-              <Label htmlFor="edit-email">Email</Label>
-              <Input
-                id="edit-email"
-                type="email"
-                value={formData.email}
-                onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="edit-email">Email</Label>
+                <Input
+                  id="edit-email"
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
                   placeholder="email@supplier.nl"
-              />
+                />
+              </div>
+              <div>
+                <Label htmlFor="edit-phone">Phone</Label>
+                <Input
+                  id="edit-phone"
+                  type="tel"
+                  value={formData.phone}
+                  onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
+                  placeholder="+31 6 12345678"
+                />
+              </div>
             </div>
-            <div>
-              <Label htmlFor="edit-phone">Phone</Label>
-              <Input
-                id="edit-phone"
-                type="tel"
-                value={formData.phone}
-                onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
-                placeholder="+31 6 12345678"
-              />
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="edit-mobile">Mobile</Label>
+                <Input
+                  id="edit-mobile"
+                  type="tel"
+                  value={formData.mobile}
+                  onChange={(e) => setFormData(prev => ({ ...prev, mobile: e.target.value }))}
+                  placeholder="+31 6 12345678"
+                />
+              </div>
+              <div>
+                <Label htmlFor="edit-municipality">Municipality</Label>
+                <Input
+                  id="edit-municipality"
+                  value={formData.municipality}
+                  onChange={(e) => setFormData(prev => ({ ...prev, municipality: e.target.value }))}
+                  placeholder="City, postal code"
+                />
+              </div>
             </div>
             <div>
               <Label htmlFor="edit-address">Address</Label>
@@ -599,12 +776,33 @@ export default function SuppliersPage() {
                 rows={3}
               />
             </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="edit-group">Group</Label>
+                <Input
+                  id="edit-group"
+                  value={formData.group}
+                  onChange={(e) => setFormData(prev => ({ ...prev, group: e.target.value }))}
+                  placeholder="Supplier group"
+                />
+              </div>
+              <div className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  id="edit-peppol_enabled"
+                  checked={formData.peppol_enabled}
+                  onChange={(e) => setFormData(prev => ({ ...prev, peppol_enabled: e.target.checked }))}
+                  className="rounded"
+                />
+                <Label htmlFor="edit-peppol_enabled">Verstuurt via Peppol</Label>
+              </div>
+            </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowEditModal(false)}>
               Cancel
             </Button>
-            <Button onClick={handleEditSupplier}>
+            <Button onClick={handleEditSupplier} className="bg-red-600 hover:bg-red-700 text-white">
               Save Changes
             </Button>
           </DialogFooter>

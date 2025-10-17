@@ -76,7 +76,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   return (
     <div className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
       {/* Image section with overlay */}
-      <div className="relative h-48 bg-gray-100 overflow-hidden">
+      <div className="relative h-72 bg-gray-100 overflow-hidden">
         {product.image_url ? (
           <div className="w-full h-full flex items-center justify-center bg-gray-50">
             <img 
@@ -125,19 +125,19 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         )}
         
         {/* Dark gradient overlay at bottom */}
-        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/60 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-gray-900 to-transparent" />
         
         {/* Product name and details on overlay */}
         <div className="absolute bottom-3 left-3 right-3 text-white">
-          <h3 className="font-bold text-lg mb-1 line-clamp-1">{product.name}</h3>
-          {product.variant_name && (
-            <p className="text-sm text-white/90 mb-2">{product.variant_name}</p>
-          )}
+           <h3 className="font-bold text-lg mb-1 line-clamp-1">
+             {product.name}{product.variant_name ? ` - ${product.variant_name}` : ''}
+           </h3>
+
+
+
+
+
           <div className="flex items-center gap-3 text-sm">
-            <span className="flex items-center gap-1">
-              <Tag className="w-4 h-4" />
-              from ${product.sale_price ? Number(product.sale_price).toFixed(2) : '0.00'}
-            </span>
             <span className="flex items-center gap-1">
               <Package className="w-4 h-4" />
               {product.quantity_in_stock}

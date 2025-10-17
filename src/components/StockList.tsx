@@ -1162,270 +1162,69 @@ const MobileProductCard: React.FC<MobileProductCardProps> = ({
 
   return (
     <div className={`${isVariant ? 'ml-6' : ''}`}>
-      <div 
-        className={`bg-white rounded-lg border border-gray-200 ${isVariant ? 'p-3 border-l-4 border-l-purple-400 bg-purple-50/30' : 'p-4'}`}
-      >
-        <div className="flex items-start gap-3">
-          {/* Selection checkbox */}
-          {isAdmin && (
-            <div className="flex-shrink-0 pt-1" onClick={(e) => e.stopPropagation()}>
-              <input
-                type="checkbox"
-                checked={isSelected}
-                onChange={() => onSelect?.(product.id)}
-                className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+      <div className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+        {/* Image section with overlay */}
+        <div className="relative h-48 bg-gray-100 overflow-hidden">
+          {product.image_url ? (
+            <div className="w-full h-full flex items-center justify-center bg-gray-50">
+              <img 
+                src={product.image_url} 
+                className="w-full h-full object-cover cursor-pointer hover:opacity-90 transition-opacity"
+                onClick={() => onImagePreview(product.image_url!)}
+                alt={`${product.name} product image`}
+              />
+            </div>
+          ) : (
+            <div className="w-full h-full flex items-center justify-center">
+              <PhotoUploadPlaceholder 
+                productId={product.id} 
+                size="large"
               />
             </div>
           )}
-
-          {/* Product image */}
-          <div className="flex-shrink-0" onClick={(e) => e.stopPropagation()}>
-            {product.image_url ? (
-              <div className={`bg-gray-50 rounded-lg border flex items-center justify-center overflow-hidden ${isVariant ? 'w-14 h-14' : 'w-16 h-16'}`}>
-                <img
-                  src={product.image_url}
-                  alt={`${product.name} product image`}
-                  className="max-w-full max-h-full object-contain cursor-pointer hover:opacity-80 transition-opacity"
-                  onClick={() => onImagePreview(product.image_url!)}
-                />
-              </div>
-            ) : (
-              <PhotoUploadPlaceholder
-                productId={product.id}
-                size={isVariant ? 'small' : 'large'}
-                onUploadSuccess={() => onImageUpload?.()}
-              />
-            )}
-          </div>
-
-          {/* Product info */}
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 mb-2">
-              {/* Product icon */}
-              <div className="flex-shrink-0">
-                {isVariant ? (
-                  <div className="w-6 h-6 bg-purple-100 rounded-full flex items-center justify-center">
-                    <Palette className="w-3 h-3 text-purple-600" />
-                  </div>
-                ) : (
-                  <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center">
-                    <ShoppingBasket className="w-3 h-3 text-blue-600" />
-                  </div>
-                )}
-              </div>
-
-              {/* Product name */}
-              <div className="flex-1 min-w-0">
-                <h3 className={`font-medium text-gray-900 truncate ${isVariant ? 'text-xs' : 'text-sm'}`}>
-                  {product.name}
-                  {isVariant && product.variant_name && (
-                    <span className="text-gray-600"> - {product.variant_name}</span>
-                  )}
-                </h3>
-                <div className="flex gap-1 mt-0.5">
-                  {isVariant && (
-                    <Badge className="bg-purple-100 text-purple-700 border border-purple-200 text-[10px] px-1.5 py-0">
-                      Variant
-                    </Badge>
-                  )}
-                  {hasChildren && !isExpanded && variantCount > 0 && (
-                    <Badge className="bg-blue-100 text-blue-700 border border-blue-200 text-[10px] px-1.5 py-0">
-                      {variantCount} {variantCount === 1 ? 'variant' : 'variants'}
-                    </Badge>
-                  )}
-                </div>
-              </div>
-
-              {/* Detail expand button for products without children */}
-              {!hasChildren && onToggleDetailExpand && (
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onToggleDetailExpand();
-                  }}
-                  className="p-1 flex-shrink-0 hover:bg-gray-100 rounded transition-colors"
-                  title="View details"
-                >
-                  {isDetailExpanded ? (
-                    <ChevronDown className="w-5 h-5 text-gray-600" />
-                  ) : (
-                    <ChevronRight className="w-5 h-5 text-gray-600" />
-                  )}
-                </button>
-              )}
-              
-              {/* Expand/Collapse indicator for variants */}
-              {hasChildren && (
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onToggleExpand?.();
-                  }}
-                  className="p-1 flex-shrink-0 hover:bg-blue-50 rounded transition-colors"
-                  title="Toggle variants"
-                >
-                  {isExpanded ? <ChevronDown className="w-5 h-5 text-blue-600" /> : <ChevronRight className="w-5 h-5 text-blue-600" />}
-                </button>
-              )}
+          
+          {/* Favorite button - top right */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              // onFavoriteToggle(product.id, !product.is_favorite);
+            }}
+            className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center hover:bg-white transition-colors"
+          >
+            <Heart className={`w-4 h-4 ${product.is_favorite ? "fill-red-500 text-red-500" : "text-gray-600"}`} />
+          </button>
+          
+          {/* Dark gradient overlay at bottom */}
+          <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/70 to-transparent" />
+          
+          {/* Product name and details on overlay */}
+          <div className="absolute bottom-4 left-4 right-4 text-white">
+            <h3 className="font-bold text-lg mb-1 line-clamp-1">{product.name}</h3>
+            <p className="text-sm text-white/90 mb-2">
+              {isVariant ? 'Variant' : (product.category_name || 'Product')}
+            </p>
+            <div className="flex items-center gap-3 text-sm">
+              <span className="flex items-center gap-1">
+                <Tag className="w-4 h-4" />
+                from ${product.sale_price ? Number(product.sale_price).toFixed(2) : '0.00'}
+              </span>
+              <span className="flex items-center gap-1">
+                <Package className="w-4 h-4" />
+                {product.quantity_in_stock} in stock
+              </span>
             </div>
-            
-            {/* Variant attributes */}
-            {isVariant && variantAttributes.length > 0 && (
-              <div className="flex flex-wrap gap-1 mb-1.5">
-                {variantAttributes.map((attr, index) => (
-                  <Badge key={index} variant="secondary" className="text-[10px] px-1.5 py-0 bg-gray-50">
-                    {attr}
-                  </Badge>
-                ))}
-              </div>
-            )}
-            
-            {/* Description */}
-            {!isVariant && product.description && (
-              <p className="text-xs text-gray-500 mb-2 line-clamp-2">
-                {product.description}
-              </p>
-            )}
-
-            {/* Stock and pricing info */}
-            {!hasChildren && (
-              <div className={`grid grid-cols-2 gap-4 ${isVariant ? 'text-xs' : 'text-sm'}`}>
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <div 
-                        className="cursor-pointer hover:bg-gray-50 rounded-md p-1.5 -m-1.5 transition-colors"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onStockAction(product, 'in');
-                        }}
-                      >
-                        <div className="flex items-center gap-2 mb-1">
-                          <div className={`${isVariant ? 'w-1.5 h-1.5' : 'w-2 h-2'} rounded-full ${getStockStatusDotColor(product.quantity_in_stock, product.minimum_stock_level)} ${Number(product.quantity_in_stock) === 0 ? 'animate-pulse' : ''}`} />
-                          <span className={`font-semibold text-gray-900 ${Number(product.quantity_in_stock) === 0 ? 'animate-pulse text-red-600' : ''}`}>{product.quantity_in_stock}</span>
-                          <span className="text-gray-500">in stock</span>
-                        </div>
-                        <div className={`text-gray-500 ${isVariant ? 'text-[10px]' : 'text-xs'}`}>Min: {product.minimum_stock_level}</div>
-                      </div>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p className="font-medium">
-                        {product.quantity_in_stock} in stock. Minimum: {product.minimum_stock_level}
-                      </p>
-                      {Number(product.quantity_in_stock) === 0 && (
-                        <p className="text-xs text-red-400 mt-1">⚠️ Out of stock!</p>
-                      )}
-                      {Number(product.quantity_in_stock) > 0 && Number(product.quantity_in_stock) <= Number(product.minimum_stock_level) && (
-                        <p className="text-xs text-orange-400 mt-1">⚠️ Low stock alert</p>
-                      )}
-                      <p className="text-xs text-gray-400 mt-1">Click to adjust stock</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-                
-                <div className="text-right">
-                  {product.purchase_price && (
-                    <div className={`text-red-600 font-medium ${isVariant ? 'text-xs' : 'text-sm'}`}>
-                      ${Number(product.purchase_price).toFixed(2)}
-                    </div>
-                  )}
-                  {product.sale_price && (
-                    <div className={`text-green-600 font-medium ${isVariant ? 'text-xs' : 'text-sm'}`}>
-                      ${Number(product.sale_price).toFixed(2)}
-                    </div>
-                  )}
-                  {product.location && (
-                    <div className="flex items-center justify-end gap-1 mt-1">
-                      <MapPin className={`text-gray-400 ${isVariant ? 'w-2.5 h-2.5' : 'w-3 h-3'}`} />
-                      <span className={`text-gray-500 ${isVariant ? 'text-[10px]' : 'text-xs'}`}>{product.location}</span>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* Actions */}
-            {!hasChildren && (
-              <div className={`flex gap-2 ${isVariant ? 'mt-2' : 'mt-3'}`} onClick={(e) => e.stopPropagation()}>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => onStockAction(product, 'in')}
-                  className={`flex-1 text-green-600 border-green-300 hover:bg-green-50 ${isVariant ? 'h-8 text-xs' : ''}`}
-                >
-                  <Plus className={`${isVariant ? 'w-3 h-3' : 'w-4 h-4'} mr-1`} />
-                  Stock
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => onEdit(product)}
-                  className={`flex-1 ${isVariant ? 'h-8 text-xs' : ''}`}
-                >
-                  <Edit className={`${isVariant ? 'w-3 h-3' : 'w-4 h-4'} mr-1`} />
-                  Edit
-                </Button>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className={`${isVariant ? 'px-2 h-8' : 'px-3'}`}
-                    >
-                      <MoreVertical className={`${isVariant ? 'w-3 h-3' : 'w-4 h-4'}`} />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-48">
-                    {onDuplicate && (
-                      <DropdownMenuItem onClick={() => onDuplicate(product)}>
-                        <Copy className="w-4 h-4 mr-2 text-purple-600" />
-                        <span>Duplicate</span>
-                      </DropdownMenuItem>
-                    )}
-                    {onMoveToLocation && (
-                      <DropdownMenuItem onClick={() => onMoveToLocation(product)}>
-                        <MapPin className="w-4 h-4 mr-2 text-orange-600" />
-                        <span>Move to Location</span>
-                      </DropdownMenuItem>
-                    )}
-                    {onArchive && (
-                      <>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem onClick={() => onArchive(product)}>
-                          <Archive className="w-4 h-4 mr-2 text-gray-600" />
-                          <span>Archive</span>
-                        </DropdownMenuItem>
-                      </>
-                    )}
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-            )}
-            {hasChildren && (
-              <div className="flex gap-2 mt-3" onClick={(e) => e.stopPropagation()}>
-                {onAddVariant && (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => onAddVariant(product)}
-                    className="flex-1 text-blue-600 border-blue-300 hover:bg-blue-50"
-                  >
-                    <Plus className="w-4 h-4 mr-1" />
-                    Add Variant
-                  </Button>
-                )}
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => onEdit(product)}
-                  className="flex-1"
-                >
-                  <Edit className="w-4 h-4 mr-1" />
-                  Edit Product
-                </Button>
-              </div>
-            )}
           </div>
+        </div>
+        
+        {/* Action button at bottom center */}
+        <div className="p-4 flex justify-center">
+          <Button
+            variant="outline"
+            className="px-6 py-2 bg-white border-gray-300 text-gray-700 hover:bg-gray-50"
+            onClick={() => onStockAction(product, 'in')}
+          >
+            Adjust Stock
+          </Button>
         </div>
       </div>
       
