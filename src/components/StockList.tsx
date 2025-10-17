@@ -37,7 +37,10 @@ import {
   AlertCircle,
   Archive,
   Copy,
-  PackageOpen
+  PackageOpen,
+  Grid3x3,
+  List,
+  Heart
 } from 'lucide-react';
 import { ProductActionModal } from './ProductActionModal';
 import { EditProductModal } from './EditProductModal';
@@ -52,6 +55,7 @@ import { VariantSelectionModal } from './VariantSelectionModal';
 import { AddVariantModal } from './AddVariantModal';
 import { BulkImportModal } from './BulkImportModal';
 import { SupplierPreviewPopover } from './SupplierPreviewPopover';
+import { ProductCard } from './ProductCard';
 import { useMobile } from '@/hooks/use-mobile';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -107,6 +111,23 @@ const getStockLevelPercentage = (current: number, minimum: number): number => {
   return Math.min((current / minimum) * 100, 100);
 };
 
+// Helper function to get stockable products (variants if they exist, otherwise parent products)
+const getStockableProducts = (products: Product[]): Product[] => {
+  const stockable: Product[] = [];
+  products.forEach(product => {
+    if (product.is_variant) {
+      stockable.push(product);
+    } else {
+      // Check if product has variants
+      const hasVariants = products.some(p => p.parent_product_id === product.id);
+      if (!hasVariants) {
+        stockable.push(product);
+      }
+    }
+  });
+  return stockable;
+};
+
 interface Product {
   id: string;
   name: string;
@@ -129,6 +150,7 @@ interface Product {
   variant_attributes?: Record<string, unknown> | null;
   variant_sku?: string | null;
   variant_barcode?: string | null;
+  is_favorite?: boolean;
 }
 
 interface StockTransaction {
@@ -160,7 +182,7 @@ interface PhotoUploadPlaceholderProps {
   onUploadSuccess?: (imageUrl: string) => void;
 }
 
-const PhotoUploadPlaceholder: React.FC<PhotoUploadPlaceholderProps> = ({ 
+export const PhotoUploadPlaceholder: React.FC<PhotoUploadPlaceholderProps> = ({ 
   productId, 
   size = 'medium',
   onUploadSuccess 
@@ -237,6 +259,11 @@ const PhotoUploadPlaceholder: React.FC<PhotoUploadPlaceholderProps> = ({
 
       toast.success('Product photo uploaded successfully');
       onUploadSuccess?.(publicUrl);
+      
+      // Refresh the page after a short delay to show the updated image
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500);
     } catch (error) {
       console.error('Error uploading image:', error);
       toast.error('Failed to upload image');
@@ -636,12 +663,14 @@ const ProductRow: React.FC<ProductRowProps> = ({
             {/* Product image */}
             <div className="flex-shrink-0" onClick={(e) => e.stopPropagation()}>
               {product.image_url ? (
-                <img
-                  src={product.image_url}
-                  alt={`${product.name} product image`}
-                  className="w-12 h-12 object-cover rounded-lg border cursor-pointer hover:opacity-80 transition-opacity"
-                  onClick={() => onImagePreview(product.image_url!)}
-                />
+                <div className="w-12 h-12 bg-gray-50 rounded-lg border flex items-center justify-center overflow-hidden">
+                  <img
+                    src={product.image_url}
+                    alt={`${product.name} product image`}
+                    className="max-w-full max-h-full object-contain cursor-pointer hover:opacity-80 transition-opacity"
+                    onClick={() => onImagePreview(product.image_url!)}
+                  />
+                </div>
               ) : (
                 <PhotoUploadPlaceholder
                   productId={product.id}
@@ -1152,12 +1181,14 @@ const MobileProductCard: React.FC<MobileProductCardProps> = ({
           {/* Product image */}
           <div className="flex-shrink-0" onClick={(e) => e.stopPropagation()}>
             {product.image_url ? (
-              <img
-                src={product.image_url}
-                alt={`${product.name} product image`}
-                className={`object-cover rounded-lg border cursor-pointer hover:opacity-80 transition-opacity ${isVariant ? 'w-14 h-14' : 'w-16 h-16'}`}
-                onClick={() => onImagePreview(product.image_url!)}
-              />
+              <div className={`bg-gray-50 rounded-lg border flex items-center justify-center overflow-hidden ${isVariant ? 'w-14 h-14' : 'w-16 h-16'}`}>
+                <img
+                  src={product.image_url}
+                  alt={`${product.name} product image`}
+                  className="max-w-full max-h-full object-contain cursor-pointer hover:opacity-80 transition-opacity"
+                  onClick={() => onImagePreview(product.image_url!)}
+                />
+              </div>
             ) : (
               <PhotoUploadPlaceholder
                 productId={product.id}
@@ -1426,13 +1457,28 @@ const fetchProducts = async (branchId: string) => {
     if (!products || products.length === 0) {
       return [];
     }
-    
+
+    // Type fix: specify product type so TS knows about category_id and supplier_id
+    type Product = {
+      category_id?: string | null;
+      supplier_id?: string | null;
+      // add other relevant product fields here if needed
+      [key: string]: any;
+    };
+
+    const typedProducts = products as Product[];
+
     // Haal de unieke Category en leverancier IDs op
-    const categoryIds = [...new Set(products.map(p => p.category_id).filter(Boolean))];
-    const supplierIds = [...new Set(products.map(p => p.supplier_id).filter(Boolean))];
-    
+    const categoryIds = [
+      ...new Set(typedProducts.map(p => p.category_id).filter((id): id is string => Boolean(id)))
+    ];
+    const supplierIds = [
+      ...new Set(typedProducts.map(p => p.supplier_id).filter((id): id is string => Boolean(id)))
+    ];
+
     // Haal Category namen op
     let categories: { [key: string]: string } = {};
+
     if (categoryIds.length > 0) {
       const { data: categoryData, error: categoryError } = await supabase
         .from('categories')
@@ -1514,6 +1560,13 @@ export const StockList = () => {
     maxStockFilter: '',
     selectedSizes: [] as string[],
     selectedColors: [] as string[],
+    favoritesFilter: false,
+  });
+
+  // View mode state with localStorage persistence
+  const [viewMode, setViewMode] = useState<'list' | 'card'>(() => {
+    const saved = localStorage.getItem('stockViewMode');
+    return (saved as 'list' | 'card') || 'list';
   });
   
   // State voor filter namen (voor weergave)
@@ -1816,10 +1869,16 @@ export const StockList = () => {
       maxStockFilter: '',
       selectedSizes: [],
       selectedColors: [],
+      favoritesFilter: false,
     });
     setCategoryFilterName('');
     setSupplierFilterName('');
   }, []);
+
+  // Save view mode to localStorage when it changes
+  useEffect(() => {
+    localStorage.setItem('stockViewMode', viewMode);
+  }, [viewMode]);
 
   // Tel actieve filters
   const activeFilterCount = useMemo(() => {
@@ -1835,6 +1894,7 @@ export const StockList = () => {
     if (filters.maxStockFilter !== '') count++;
     if (filters.selectedSizes.length > 0) count++;
     if (filters.selectedColors.length > 0) count++;
+    if (filters.favoritesFilter) count++;
     return count;
   }, [filters]);
 
@@ -1930,6 +1990,9 @@ export const StockList = () => {
         (filters.stockStatusFilter === 'low-stock' && stockStatus === 'Low Stock') ||
         (filters.stockStatusFilter === 'out-of-stock' && stockStatus === 'Out of Stock');
 
+      // Favorites filter
+      const matchesFavorites = !filters.favoritesFilter || product.is_favorite;
+
       // Price range filter
       const matchesMinPrice = filters.minPriceFilter === '' || product.unit_price >= parseFloat(filters.minPriceFilter);
       const matchesMaxPrice = filters.maxPriceFilter === '' || product.unit_price <= parseFloat(filters.maxPriceFilter);
@@ -1993,7 +2056,7 @@ export const StockList = () => {
       }
 
       return matchesCategory && matchesSupplier && matchesLocation && matchesSearch && matchesStockStatus && 
-             matchesMinPrice && matchesMaxPrice && matchesMinStock && matchesMaxStock && matchesAttributes;
+             matchesFavorites && matchesMinPrice && matchesMaxPrice && matchesMinStock && matchesMaxStock && matchesAttributes;
     });
     
     console.log(`📊 Filtering result: ${filtered.length} products match filters out of ${productsTyped.length} total`);
@@ -2332,6 +2395,24 @@ export const StockList = () => {
     }
   };
 
+  // Favorite toggle handler
+  const handleFavoriteToggle = async (productId: string, isFavorite: boolean) => {
+    try {
+      const { error } = await supabase
+        .from('products')
+        .update({ is_favorite: isFavorite })
+        .eq('id', productId);
+      
+      if (error) throw error;
+      
+      toast.success(isFavorite ? 'Added to favorites' : 'Removed from favorites');
+      refetch();
+    } catch (error) {
+      console.error('Error updating favorite:', error);
+      toast.error('Failed to update favorite');
+    }
+  };
+
   const handleBulkDelete = async () => {
     if (selectedProductIds.length === 0) return;
     
@@ -2452,16 +2533,35 @@ export const StockList = () => {
 
         {/* Only show products content when on products tab */}
         {activeTab === 'products' && (
-          <>
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
             {/* Action Buttons for Mobile */}
             <div className="space-y-2">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="w-full h-10 text-sm">
-                    <Settings className="w-4 h-4 mr-2" />
-                    Manage Columns
-                  </Button>
-                </DropdownMenuTrigger>
+              <div className="flex gap-2">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" className="flex-1 h-10 text-sm">
+                      {viewMode === 'list' ? <List className="w-4 h-4 mr-2" /> : <Grid3x3 className="w-4 h-4 mr-2" />}
+                      View
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem onClick={() => setViewMode('list')}>
+                      <List className="w-4 h-4 mr-2" />
+                      List View
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setViewMode('card')}>
+                      <Grid3x3 className="w-4 h-4 mr-2" />
+                      Card View
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" className="flex-1 h-10 text-sm">
+                      <Settings className="w-4 h-4 mr-2" />
+                      Columns
+                    </Button>
+                  </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">
                   <DropdownMenuItem disabled className="font-semibold">
                     Column Visibility
@@ -2621,6 +2721,91 @@ export const StockList = () => {
               </div>
             )}
 
+            {/* Quick Filters for Mobile */}
+            <div className="flex gap-2 items-center mb-4">
+              <Button
+                variant={filters.favoritesFilter ? "default" : "outline"}
+                size="sm"
+                onClick={() => setFilters(prev => ({ 
+                  ...prev, 
+                  favoritesFilter: !prev.favoritesFilter,
+                  categoryFilter: 'all',
+                  supplierFilter: 'all',
+                  searchTerm: '',
+                  stockStatusFilter: 'all',
+                  locationFilter: 'all',
+                  minPriceFilter: '',
+                  maxPriceFilter: '',
+                  minStockFilter: '',
+                  maxStockFilter: '',
+                  selectedSizes: [],
+                  selectedColors: [],
+                }))}
+                className="flex-1"
+              >
+                <Heart className={`w-4 h-4 mr-2 ${filters.favoritesFilter ? "fill-current" : ""}`} />
+                Favorites
+              </Button>
+              
+              <Select
+                value={filters.categoryFilter}
+                onValueChange={(value) => setFilters(prev => ({ 
+                  ...prev, 
+                  categoryFilter: value,
+                  supplierFilter: 'all',
+                  searchTerm: '',
+                  stockStatusFilter: 'all',
+                  locationFilter: 'all',
+                  minPriceFilter: '',
+                  maxPriceFilter: '',
+                  minStockFilter: '',
+                  maxStockFilter: '',
+                  selectedSizes: [],
+                  selectedColors: [],
+                  favoritesFilter: false,
+                }))}
+              >
+                <SelectTrigger className="flex-1">
+                  <SelectValue placeholder="Categories" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Categories</SelectItem>
+                  {categories.map(cat => (
+                    <SelectItem key={cat.id} value={cat.id}>{cat.name}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              
+              <Select
+                value={filters.supplierFilter}
+                onValueChange={(value) => setFilters(prev => ({ 
+                  ...prev, 
+                  supplierFilter: value,
+                  categoryFilter: 'all',
+                  searchTerm: '',
+                  stockStatusFilter: 'all',
+                  locationFilter: 'all',
+                  minPriceFilter: '',
+                  maxPriceFilter: '',
+                  minStockFilter: '',
+                  maxStockFilter: '',
+                  selectedSizes: [],
+                  selectedColors: [],
+                  favoritesFilter: false,
+                }))}
+              >
+                <SelectTrigger className="flex-1">
+                  <SelectValue placeholder="Suppliers" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Suppliers</SelectItem>
+                  {suppliers.map(sup => (
+                    <SelectItem key={sup.id} value={sup.id}>{sup.name}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
             {/* Search and Advanced Filters - Right above table */}
             <div className="mb-4">
               <EnhancedProductFilters
@@ -2632,8 +2817,29 @@ export const StockList = () => {
             </div>
 
             {/* Mobile Product Cards */}
-            <div className="space-y-3">
-              {grouped.parents.length === 0 ? (
+            {viewMode === 'card' ? (
+              <div className="grid grid-cols-1 gap-4">
+                {getStockableProducts(filteredProducts).map(product => (
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                    isVariant={product.is_variant}
+                    onFavoriteToggle={handleFavoriteToggle}
+                    onStockAction={handleStockAction}
+                    onEdit={(product) => {
+                      setSelectedProduct(product);
+                      setIsEditInfoModalOpen(true);
+                    }}
+                    onImagePreview={(url) => {
+                      setPreviewImageUrl(url);
+                      setIsImagePreviewOpen(true);
+                    }}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {grouped.parents.length === 0 ? (
                 <div className="bg-white rounded-lg border border-gray-200 p-12 text-center">
                   <div className="flex flex-col items-center gap-6">
                     {/* Empty state illustration */}
@@ -2774,11 +2980,12 @@ export const StockList = () => {
                   );
                 })
               )}
-            </div>
-          </>
+              </div>
+            )}
+          </div>
+          </div>
         )}
 
-        {/* categories Tab Content */}
         {activeTab === 'categories' && (
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
             <div className="text-center">
@@ -2924,103 +3131,107 @@ export const StockList = () => {
 
   // Desktop table view
   return (
-    <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        <div className="flex gap-2">
-          {isAdmin && selectedProductIds.length > 0 && (
-            <Button variant="destructive" onClick={handleBulkDelete}>
-              Delete selected ({selectedProductIds.length})
+    <div className="space-y-2">
+      {/* Top Right Actions - Compact Header */}
+      <div className="flex justify-end items-center gap-2 py-2">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="sm" className="h-9">
+              <Settings className="w-4 h-4" />
             </Button>
-          )}
-        </div>
-        <div className="flex gap-2">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="flex items-center gap-2">
-                <Settings className="w-4 h-4" />
-                Columns
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
-              <DropdownMenuItem disabled className="font-semibold">
-                Column Visibility
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuCheckboxItem
-                checked={columnVisibility.product}
-                onCheckedChange={() => toggleColumnVisibility('product')}
-              >
-                Product
-              </DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem
-                checked={columnVisibility.location}
-                onCheckedChange={() => toggleColumnVisibility('location')}
-              >
-                Locations
-              </DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem
-                checked={columnVisibility.current}
-                onCheckedChange={() => toggleColumnVisibility('current')}
-              >
-                Current Stock
-              </DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem
-                checked={columnVisibility.minimum}
-                onCheckedChange={() => toggleColumnVisibility('minimum')}
-              >
-                Minimum Stock Level
-              </DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem
-                checked={columnVisibility.category}
-                onCheckedChange={() => toggleColumnVisibility('category')}
-              >
-                Category
-              </DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem
-                checked={columnVisibility.supplier}
-                onCheckedChange={() => toggleColumnVisibility('supplier')}
-              >
-                Supplier
-              </DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem
-                checked={columnVisibility.purchasePrice}
-                onCheckedChange={() => toggleColumnVisibility('purchasePrice')}
-              >
-                Purchase Price
-              </DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem
-                checked={columnVisibility.salePrice}
-                onCheckedChange={() => toggleColumnVisibility('salePrice')}
-              >
-                Sale Price
-              </DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem
-                checked={columnVisibility.status}
-                onCheckedChange={() => toggleColumnVisibility('status')}
-              >
-                Status
-              </DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem
-                checked={columnVisibility.actions}
-                onCheckedChange={() => toggleColumnVisibility('actions')}
-              >
-                Actions
-              </DropdownMenuCheckboxItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <Button 
-            onClick={() => setIsBulkImportModalOpen(true)} 
-            variant="outline" 
-            className="flex items-center gap-2"
-          >
-            <Upload className="w-4 h-4" />
-            Import Excel
-          </Button>
-          <Button onClick={() => setIsAddModalOpen(true)} className="flex items-center gap-2">
-            <Plus className="w-4 h-4" />
-            Add New Product
-          </Button>
-        </div>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-56">
+            <DropdownMenuItem disabled className="font-semibold">
+              View Options
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={() => setViewMode('list')}>
+              <List className="w-4 h-4 mr-2" />
+              List View
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setViewMode('card')}>
+              <Grid3x3 className="w-4 h-4 mr-2" />
+              Card View
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem disabled className="font-semibold">
+              Column Visibility
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuCheckboxItem
+              checked={columnVisibility.product}
+              onCheckedChange={() => toggleColumnVisibility('product')}
+            >
+              Product
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem
+              checked={columnVisibility.location}
+              onCheckedChange={() => toggleColumnVisibility('location')}
+            >
+              Locations
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem
+              checked={columnVisibility.current}
+              onCheckedChange={() => toggleColumnVisibility('current')}
+            >
+              Current Stock
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem
+              checked={columnVisibility.minimum}
+              onCheckedChange={() => toggleColumnVisibility('minimum')}
+            >
+              Minimum Stock Level
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem
+              checked={columnVisibility.category}
+              onCheckedChange={() => toggleColumnVisibility('category')}
+            >
+              Category
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem
+              checked={columnVisibility.supplier}
+              onCheckedChange={() => toggleColumnVisibility('supplier')}
+            >
+              Supplier
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem
+              checked={columnVisibility.purchasePrice}
+              onCheckedChange={() => toggleColumnVisibility('purchasePrice')}
+            >
+              Purchase Price
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem
+              checked={columnVisibility.salePrice}
+              onCheckedChange={() => toggleColumnVisibility('salePrice')}
+            >
+              Sale Price
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem
+              checked={columnVisibility.status}
+              onCheckedChange={() => toggleColumnVisibility('status')}
+            >
+              Status
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem
+              checked={columnVisibility.actions}
+              onCheckedChange={() => toggleColumnVisibility('actions')}
+            >
+              Actions
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={() => setIsBulkImportModalOpen(true)}>
+              <Upload className="w-4 h-4 mr-2" />
+              Import Excel
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+        <Button 
+          onClick={() => setIsAddModalOpen(true)} 
+          className="h-9 bg-blue-600 hover:bg-blue-700 text-white"
+        >
+          <Plus className="w-4 h-4 mr-2" />
+          Add New Product
+        </Button>
       </div>
 
       {/* Filter Header */}
@@ -3101,6 +3312,90 @@ export const StockList = () => {
           </div>
         </div>
       )}
+
+      {/* Quick Filters */}
+      <div className="flex gap-2 items-center mb-4">
+        <Button
+          variant={filters.favoritesFilter ? "default" : "outline"}
+          size="sm"
+          onClick={() => setFilters(prev => ({ 
+            ...prev, 
+            favoritesFilter: !prev.favoritesFilter,
+            categoryFilter: 'all',
+            supplierFilter: 'all',
+            searchTerm: '',
+            stockStatusFilter: 'all',
+            locationFilter: 'all',
+            minPriceFilter: '',
+            maxPriceFilter: '',
+            minStockFilter: '',
+            maxStockFilter: '',
+            selectedSizes: [],
+            selectedColors: [],
+          }))}
+        >
+          <Heart className={`w-4 h-4 mr-2 ${filters.favoritesFilter ? "fill-current" : ""}`} />
+          Favorites
+        </Button>
+        
+        <Select
+          value={filters.categoryFilter}
+          onValueChange={(value) => setFilters(prev => ({ 
+            ...prev, 
+            categoryFilter: value,
+            supplierFilter: 'all',
+            searchTerm: '',
+            stockStatusFilter: 'all',
+            locationFilter: 'all',
+            minPriceFilter: '',
+            maxPriceFilter: '',
+            minStockFilter: '',
+            maxStockFilter: '',
+            selectedSizes: [],
+            selectedColors: [],
+            favoritesFilter: false,
+          }))}
+        >
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="All Categories" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Categories</SelectItem>
+            {categories.map(cat => (
+              <SelectItem key={cat.id} value={cat.id}>{cat.name}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        
+        <Select
+          value={filters.supplierFilter}
+          onValueChange={(value) => setFilters(prev => ({ 
+            ...prev, 
+            supplierFilter: value,
+            categoryFilter: 'all',
+            searchTerm: '',
+            stockStatusFilter: 'all',
+            locationFilter: 'all',
+            minPriceFilter: '',
+            maxPriceFilter: '',
+            minStockFilter: '',
+            maxStockFilter: '',
+            selectedSizes: [],
+            selectedColors: [],
+            favoritesFilter: false,
+          }))}
+        >
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="All Suppliers" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Suppliers</SelectItem>
+            {suppliers.map(sup => (
+              <SelectItem key={sup.id} value={sup.id}>{sup.name}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
 
       <div className="filter-area">
         <EnhancedProductFilters
@@ -3215,9 +3510,30 @@ export const StockList = () => {
         </div>
       )}
 
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
+      {viewMode === 'card' ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          {getStockableProducts(filteredProducts).map(product => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              isVariant={product.is_variant}
+              onFavoriteToggle={handleFavoriteToggle}
+              onStockAction={handleStockAction}
+              onEdit={(product) => {
+                setSelectedProduct(product);
+                setIsEditInfoModalOpen(true);
+              }}
+              onImagePreview={(url) => {
+                setPreviewImageUrl(url);
+                setIsImagePreviewOpen(true);
+              }}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50 sticky top-0 z-10">
               <tr>
                 {isAdmin && (
@@ -3452,6 +3768,7 @@ export const StockList = () => {
           </table>
         </div>
       </div>
+      )}
       <ImagePreviewModal
         isOpen={isImagePreviewOpen}
         onClose={() => setIsImagePreviewOpen(false)}
@@ -3539,3 +3856,5 @@ export const StockList = () => {
     </div>
   );
 };
+
+
