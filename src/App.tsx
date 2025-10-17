@@ -153,6 +153,7 @@ import StockFlowVsVismaNL from "./pages/SEO/stockflow-vs-visma-nl";
 
 import CategorysPage from './pages/categories';
 import SuppliersPage from './pages/suppliers';
+import PurchaseOrdersPage from './pages/purchase-orders';
 import AdminPage from './pages/admin';
 import { PaymentTestPage } from './pages/PaymentTest';
 import { DeliveryNotesManagement } from './components/delivery-notes/DeliveryNotesManagement';
@@ -629,6 +630,7 @@ const AppRouter = () => {
           <Route path="stock" element={<StockList />} />
           <Route path="categories" element={<CategorysPage />} />
           <Route path="suppliers" element={<SuppliersPage />} />
+          <Route path="purchase-orders" element={<PurchaseOrdersPage />} />
           <Route path="transactions" element={<StockMovements />} />
           <Route path="delivery-notes" element={<DeliveryNotesManagement />}>
             <Route index element={<IncomingDeliveryNotes />} />

@@ -25,7 +25,8 @@ import {
   Filter,
   Database,
   Activity,
-  User
+  User,
+  ShoppingBag
 } 
 from 'lucide-react';
 import { BranchSelector } from './BranchSelector';
@@ -155,6 +156,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
           ]
         },
         { id: 'transactions', label: 'Movements', icon: ShoppingCart, path: '/dashboard/transactions' },
+        { id: 'purchase-orders', label: 'Purchase Orders', icon: ShoppingBag, path: '/dashboard/purchase-orders' },
         ...(hasDeliveryNotes ? [{
           id: 'delivery-notes',
           label: 'Delivery Notes',
