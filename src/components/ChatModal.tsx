@@ -77,6 +77,9 @@ export const ChatModal: React.FC<ChatModalProps> = ({
       try {
         const chat = await getOrCreateChat(user.id);
         if (!mounted) return;
+        if (!chat) {
+          throw new Error('Failed to create or retrieve chat');
+        }
         setChatId(chat.id);
         
         console.log('Chat initialized with profile:', { userProfile, chatId: chat.id });

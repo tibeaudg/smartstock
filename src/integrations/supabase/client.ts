@@ -97,13 +97,30 @@ export async function fetchBlogPosts(): Promise<BlogPost[]> {
 }
 
 export async function addBlogPost(post: Omit<BlogPost, 'id'>): Promise<BlogPost> {
-  const { data, error } = await supabase.from('blogposts').insert([post as any]).select();
+  const insertData: Database['public']['Tables']['blogposts']['Insert'] = {
+    title: post.title,
+    slug: post.slug,
+    content: post.content,
+    author: post.author || null,
+    date_published: post.date_published || null,
+    published: post.published,
+    excerpt: null,
+  };
+  const { data, error } = await supabase.from('blogposts').insert([insertData]).select();
   if (error) throw error;
   return data?.[0] as BlogPost;
 }
 
 export async function updateBlogPost(id: string, post: Partial<BlogPost>): Promise<BlogPost> {
-  const { data, error } = await supabase.from('blogposts').update(post as any).eq('id', id).select();
+  const updateData: Database['public']['Tables']['blogposts']['Update'] = {
+    title: post.title,
+    slug: post.slug,
+    content: post.content,
+    author: post.author,
+    date_published: post.date_published,
+    published: post.published,
+  };
+  const { data, error } = await supabase.from('blogposts').update(updateData).eq('id', id).select();
   if (error) throw error;
   return data?.[0] as BlogPost;
 }
@@ -139,7 +156,25 @@ export async function fetchBlogPostBySlug(slug: string): Promise<BlogPost | null
 // Auth Conversion Tracking functions
 export async function trackAuthConversionEvent(event: Omit<AuthConversionEvent, 'id' | 'created_at' | 'updated_at'>): Promise<void> {
   try {
-    const { error } = await supabase.from('auth_conversion_events').insert([event as any]);
+    const insertData: Database['public']['Tables']['auth_conversion_events']['Insert'] = {
+      event_type: event.event_type,
+      user_id: event.user_id || null,
+      email: event.email || null,
+      session_id: event.session_id || null,
+      visitor_ip: event.visitor_ip || null,
+      user_agent: event.user_agent || null,
+      referrer: event.referrer || null,
+      utm_source: event.utm_source || null,
+      utm_medium: event.utm_medium || null,
+      utm_campaign: event.utm_campaign || null,
+      country: event.country || null,
+      city: event.city || null,
+      page_load_time_ms: event.page_load_time_ms || null,
+      time_on_page_seconds: event.time_on_page_seconds || null,
+      form_abandonment_step: event.form_abandonment_step || null,
+      error_message: event.error_message || null,
+    };
+    const { error } = await supabase.from('auth_conversion_events').insert([insertData]);
     if (error) {
       // Silently fail if table doesn't exist (404) - tracking is optional
       if (error.code !== 'PGRST116' && !error.message?.includes('404')) {

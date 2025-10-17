@@ -431,36 +431,7 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({ onBarcodeDetecte
               </div>
             )}
 
-            {/* Manual Input */}
-            <div className="border-t pt-6">
-              <Label htmlFor="manual-barcode" className="text-sm font-medium text-gray-700 mb-2 block">
-                Enter barcode manually
-              </Label>
-              <form onSubmit={handleManualSubmit} className="space-y-3">
-                <Input
-                  id="manual-barcode"
-                  type="text"
-                  value={manualBarcode}
-                  onChange={(e) => setManualBarcode(e.target.value)}
-                  placeholder="Enter barcode (e.g. 1234567890123)"
-                  className="w-full"
-                />
-                <div className="flex gap-2">
-                  <Button type="submit" disabled={!manualBarcode.trim()} className="flex-1">
-                    <QrCode className="w-4 h-4 mr-2" />
-                    Use Barcode
-                  </Button>
-                  <Button 
-                    type="button" 
-                    variant="outline" 
-                    onClick={handleDemoBarcode}
-                    className="flex-shrink-0"
-                  >
-                    Demo
-                  </Button>
-                </div>
-              </form>
-            </div>
+
 
             {/* Info */}
             <div className="mt-6 p-3 bg-blue-50 border border-blue-200 rounded-lg">

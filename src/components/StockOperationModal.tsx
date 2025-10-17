@@ -22,6 +22,7 @@ export const StockOperationModal = ({
 }: StockOperationModalProps) => {
   const { isMobile } = useMobile();
   const [selectedOperation, setSelectedOperation] = useState<'in' | 'out'>('in');
+  
 
   const handleContinue = () => {
     onSelectOperation(selectedOperation, defaultType);

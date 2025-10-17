@@ -258,7 +258,7 @@ export const PhotoUploadPlaceholder: React.FC<PhotoUploadPlaceholderProps> = ({
       // Update product with new image URL
       const { error: updateError } = await supabase
         .from('products')
-        .update({ image_url: publicUrl })
+        .update({ image_url: publicUrl } as any)
         .eq('id', productId);
 
       if (updateError) throw updateError;
@@ -1303,7 +1303,7 @@ const fetchProducts = async (branchId: string) => {
     }
     
     // Voeg de namen toe aan de producten
-    const transformedData = products.map(product => ({
+    const transformedData = typedProducts.map(product => ({
       ...product,
       category_name: product.category_id ? categories[product.category_id] || null : null,
       supplier_name: product.supplier_id ? suppliers[product.supplier_id] || null : null
@@ -1380,6 +1380,7 @@ export const StockList = () => {
   const [isManualStockModalOpen, setIsManualStockModalOpen] = useState(false);
   // Test state variable
   const [isStockOperationModalOpen, setIsStockOperationModalOpen] = useState(false);
+
   const [isBarcodeScannerOpen, setIsBarcodeScannerOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [selectedAction, setSelectedAction] = useState<StockAction>('in');
@@ -1925,7 +1926,7 @@ export const StockList = () => {
       // Archive all selected products (set status to discontinued)
       const { error } = await supabase
         .from('products')
-        .update({ status: 'discontinued' })
+        .update({ status: 'discontinued' } as any)
         .in('id', selectedProductIds)
         .eq('branch_id', activeBranch?.branch_id);
       
@@ -2102,16 +2103,15 @@ export const StockList = () => {
   }, []);
 
 
-  // Handler for stock operation selection
+  // Handler for stock operation selection (scan only)
   const handleStockOperationSelect = (operation: 'in' | 'out', type: 'scan' | 'manual') => {
     setSelectedAction(operation);
     setSelectedOperationType(type);
     
     if (type === 'scan') {
       setIsBarcodeScannerOpen(true);
-    } else {
-      setIsManualStockModalOpen(true);
     }
+    // Manual operations now go directly to ManualStockAdjustModal
   };
 
   // Handler for barcode detection
@@ -2209,7 +2209,7 @@ export const StockList = () => {
 
       const { error } = await supabase
         .from('products')
-        .insert([duplicatedProduct]);
+        .insert([duplicatedProduct] as any);
 
       if (error) throw error;
 
@@ -2229,7 +2229,7 @@ export const StockList = () => {
     try {
       const { error } = await supabase
         .from('products')
-        .update({ status: 'discontinued' })
+        .update({ status: 'discontinued' } as any)
         .eq('id', product.id);
 
       if (error) throw error;
@@ -2255,7 +2255,7 @@ export const StockList = () => {
     try {
       const { error } = await supabase
         .from('products')
-        .update({ location: newLocation })
+        .update({ location: newLocation } as any)
         .eq('id', product.id);
 
       if (error) throw error;
@@ -2276,7 +2276,7 @@ export const StockList = () => {
     try {
       const { error } = await supabase
         .from('products')
-        .update({ is_favorite: isFavorite })
+        .update({ is_favorite: isFavorite } as any)
         .eq('id', productId);
       
       if (error) throw error;
@@ -2518,8 +2518,8 @@ export const StockList = () => {
                 </Button>
                 <Button 
                   onClick={() => {
-                    setSelectedOperationType('manual');
-                    setIsStockOperationModalOpen(true);
+                    setSelectedAction('in'); // Default to 'in' for manual
+                    setIsManualStockModalOpen(true);
                   }} 
                   className="flex-1 h-10 bg-blue-600 hover:bg-blue-700 text-white"
                 >
@@ -3008,20 +3008,6 @@ export const StockList = () => {
           }}
           defaultAction={selectedAction}
         />
-        <StockOperationModal
-          isOpen={isStockOperationModalOpen}
-          onClose={() => setIsStockOperationModalOpen(false)}
-          onSelectOperation={handleStockOperationSelect}
-          defaultType={selectedOperationType}
-        />
-        {isBarcodeScannerOpen && (
-          <BarcodeScanner
-            onBarcodeDetected={handleBarcodeDetected}
-            onClose={() => setIsBarcodeScannerOpen(false)}
-            onScanSuccess={onScanSuccess}
-            settings={scannerSettings}
-          />
-        )}
         <VariantSelectionModal
           isOpen={isVariantSelectionModalOpen}
           onClose={() => {
@@ -3046,6 +3032,20 @@ export const StockList = () => {
             refetch();
           }}
         />
+        <StockOperationModal
+          isOpen={isStockOperationModalOpen}
+          onClose={() => setIsStockOperationModalOpen(false)}
+          onSelectOperation={handleStockOperationSelect}
+          defaultType={selectedOperationType}
+        />
+        {isBarcodeScannerOpen && (
+          <BarcodeScanner
+            onBarcodeDetected={handleBarcodeDetected}
+            onClose={() => setIsBarcodeScannerOpen(false)}
+            onScanSuccess={onScanSuccess}
+            settings={scannerSettings}
+          />
+        )}
       </div>
     );
   }
@@ -3079,8 +3079,8 @@ export const StockList = () => {
           </Button>
           <Button 
             onClick={() => {
-              setSelectedOperationType('manual');
-              setIsStockOperationModalOpen(true);
+              setSelectedAction('in'); // Default to 'in' for manual
+              setIsManualStockModalOpen(true);
             }} 
             className="h-9 bg-blue-600 hover:bg-blue-700 text-white"
           >
@@ -3717,6 +3717,29 @@ export const StockList = () => {
         }}
         parentProduct={selectedProduct}
       />
+      <StockOperationModal
+        isOpen={isStockOperationModalOpen}
+        onClose={() => setIsStockOperationModalOpen(false)}
+        onSelectOperation={handleStockOperationSelect}
+        defaultType={selectedOperationType}
+      />
+      <ManualStockAdjustModal
+        isOpen={isManualStockModalOpen}
+        onClose={() => setIsManualStockModalOpen(false)}
+        onProductUpdated={() => {
+          queryClient.invalidateQueries({ queryKey: ['products'] });
+          refetch();
+        }}
+        defaultAction={selectedAction}
+      />
+      {isBarcodeScannerOpen && (
+        <BarcodeScanner
+          onBarcodeDetected={handleBarcodeDetected}
+          onClose={() => setIsBarcodeScannerOpen(false)}
+          onScanSuccess={onScanSuccess}
+          settings={scannerSettings}
+        />
+      )}
     </div>
   );
 };

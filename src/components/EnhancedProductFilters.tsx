@@ -24,6 +24,7 @@ interface FilterState {
   maxStockFilter: string;
   selectedSizes: string[];
   selectedColors: string[];
+  favoritesFilter: boolean;
 }
 
 interface EnhancedProductFiltersProps {

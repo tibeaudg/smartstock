@@ -6,7 +6,15 @@ import { useBranches } from './useBranches';
 import { toast } from 'sonner';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
-export const useStockMovements = () => {
+export const useStockMovements = (): {
+  transactions: StockTransaction[];
+  stats: StockMovementStats;
+  loading: boolean;
+  error: Error | null;
+  filters: TransactionFilters;
+  setFilters: React.Dispatch<React.SetStateAction<TransactionFilters>>;
+  refresh: () => void;
+} => {
   const { user } = useAuth();
   const { activeBranch } = useBranches();
   const queryClient = useQueryClient();

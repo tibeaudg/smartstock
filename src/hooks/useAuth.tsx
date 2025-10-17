@@ -202,10 +202,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           // Update last_login for any sign-in event
           if (event === 'SIGNED_IN') {
             try {
-              const updateData = { 
+              const updateData: Database['public']['Tables']['profiles']['Update'] = { 
                 last_login: new Date().toISOString() 
               };
-              await supabase.from('profiles').update(updateData as any).eq('id', newSession.user.id);
+              await supabase.from('profiles').update(updateData).eq('id', newSession.user.id);
             } catch (error) {
               console.error('Error updating last_login:', error);
             }
@@ -225,7 +225,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
                               newSession.user.user_metadata?.name?.split(' ').slice(1).join(' ') || '';
 
               // Create profile for Google user
-              const profileData = {
+              const profileData: Database['public']['Tables']['profiles']['Insert'] = {
                 id: newSession.user.id,
                 email: newSession.user.email || '',
                 first_name: firstName,
@@ -235,7 +235,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
                 updated_at: new Date().toISOString(),
                 last_login: new Date().toISOString(),
               };
-              const { error: profileError } = await supabase.from('profiles').upsert(profileData as any, { onConflict: 'id' });
+              const { error: profileError } = await supabase.from('profiles').upsert(profileData, { onConflict: 'id' });
 
               if (profileError) {
                 console.error('Error creating profile for Google user:', profileError);
@@ -304,10 +304,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       const { data, error } = await supabase.auth.signInWithPassword({ email, password });
       if (!error && data?.user) {
         // Update last_login in profiles
-        const updateData = { 
+        const updateData: Database['public']['Tables']['profiles']['Update'] = { 
           last_login: new Date().toISOString() 
         };
-        await supabase.from('profiles').update(updateData as any).eq('id', data.user.id);
+        await supabase.from('profiles').update(updateData).eq('id', data.user.id);
       }
       return { error };
     } catch (error: any) {
@@ -346,7 +346,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       }
 
       // Profiel aanmaken in de 'profiles' tabel
-      const profileData = {
+      const profileData: Database['public']['Tables']['profiles']['Insert'] = {
         id: userId,
         email,
         first_name: firstName,
@@ -355,7 +355,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         is_owner: false, // Nieuwe gebruikers zijn standaard GEEN eigenaar
         updated_at: new Date().toISOString(),
       };
-      const { error: profileError } = await supabase.from('profiles').upsert(profileData as any, { onConflict: 'id' }); // Zorgt dat upsert op basis van primary key 'id' werkt
+      const { error: profileError } = await supabase.from('profiles').upsert(profileData, { onConflict: 'id' }); // Zorgt dat upsert op basis van primary key 'id' werkt
       
 
       if (profileError) {

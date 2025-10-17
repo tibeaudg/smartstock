@@ -1,6 +1,14 @@
 import { supabase } from '@/integrations/supabase/client';
 
-export async function getOrCreateChat(userId: string) {
+interface Chat {
+  id: string;
+  user_id: string;
+  is_closed: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export async function getOrCreateChat(userId: string): Promise<Chat | null> {
   // Zoek bestaande open chat
   const { data: chats, error } = await supabase
     .from('chats')
@@ -9,7 +17,7 @@ export async function getOrCreateChat(userId: string) {
     .eq('is_closed', false)
     .limit(1);
   if (error) throw error;
-  if (chats && chats.length > 0) return chats[0];
+  if (chats && chats.length > 0) return chats[0] as Chat;
   // Maak nieuwe chat aan
   const { data: newChat, error: createError } = await supabase
     .from('chats')
@@ -17,7 +25,7 @@ export async function getOrCreateChat(userId: string) {
     .select()
     .single();
   if (createError) throw createError;
-  return newChat;
+  return newChat as Chat | null;
 }
 
 export async function fetchChatMessages(chatId: string) {

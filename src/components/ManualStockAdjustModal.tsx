@@ -3,16 +3,13 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
 import { toast } from 'sonner';
 import { useQueryClient } from '@tanstack/react-query';
 import { useMobile } from '@/hooks/use-mobile';
-import { ArrowLeft, Plus, Minus, Search, Check, ChevronsUpDown } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { ArrowLeft, Plus, Minus } from 'lucide-react';
 
 interface Product {
   id: string;
@@ -58,12 +55,27 @@ export const ManualStockAdjustModal = ({
   const [actionType, setActionType] = useState<'in' | 'out'>(defaultAction);
   const [showCreateNew, setShowCreateNew] = useState(false);
 
+  // Close suggestions when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Element;
+      if (!target.closest('.relative')) {
+        setSearchOpen(false);
+      }
+    };
+
+    if (searchOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
+    }
+  }, [searchOpen]);
+
   // Fetch products when modal opens
   useEffect(() => {
     if (isOpen && activeBranch) {
       fetchProducts();
     }
-  }, [isOpen, activeBranch, fetchProducts]);
+  }, [isOpen, activeBranch]);
 
   // Reset state when modal opens
   useEffect(() => {
@@ -77,7 +89,12 @@ export const ManualStockAdjustModal = ({
   }, [isOpen, defaultAction]);
 
   const fetchProducts = useCallback(async () => {
-    if (!activeBranch) return;
+    if (!activeBranch) {
+      console.log('No active branch found');
+      return;
+    }
+    
+    console.log('Fetching products for branch:', activeBranch.branch_id);
     
     try {
       const { data, error } = await supabase
@@ -92,6 +109,7 @@ export const ManualStockAdjustModal = ({
         return;
       }
       
+      console.log('Fetched products:', data?.length || 0);
       setProducts(data || []);
     } catch (error) {
       console.error('Error fetching products:', error);
@@ -99,13 +117,25 @@ export const ManualStockAdjustModal = ({
     }
   }, [activeBranch]);
 
-  const filteredProducts = products.filter(product =>
-    product.name.toLowerCase().includes(searchValue.toLowerCase())
-  );
+  // Filter and format products for display
+  const filteredProducts = products
+    .filter(product => {
+      // Only show variants, never show parent products
+      return product.is_variant === true;
+    })
+    .map(product => ({
+      ...product,
+      displayName: product.variant_name 
+        ? `${product.name} (${product.variant_name})`
+        : product.name
+    }))
+    .filter(product =>
+      product.displayName.toLowerCase().includes(searchValue.toLowerCase())
+    );
 
-  const handleProductSelect = (product: Product) => {
+  const handleProductSelect = (product: any) => {
     setSelectedProduct(product);
-    setSearchValue(product.name);
+    setSearchValue(product.displayName);
     setSearchOpen(false);
     setShowCreateNew(false);
   };
@@ -218,66 +248,54 @@ export const ManualStockAdjustModal = ({
             {/* Product Search */}
             <div className="space-y-2">
               <Label>Select Product</Label>
-              <Popover open={searchOpen} onOpenChange={setSearchOpen}>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    role="combobox"
-                    aria-expanded={searchOpen}
-                    className="w-full justify-between"
-                  >
-                    {selectedProduct ? selectedProduct.name : "Search for a product..."}
-                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-full p-0">
-                  <Command>
-                    <CommandInput
-                      placeholder="Search products..."
-                      value={searchValue}
-                      onValueChange={setSearchValue}
-                    />
-                    <CommandList>
-                      <CommandEmpty>
-                        <div className="p-2 text-center">
-                          <p className="text-sm text-gray-500 mb-2">No product found</p>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={handleCreateNew}
-                            className="w-full"
-                          >
-                            <Plus className="w-4 h-4 mr-2" />
-                            Create New Product
-                          </Button>
-                        </div>
-                      </CommandEmpty>
-                      <CommandGroup>
+              <div className="relative">
+                <Input
+                  placeholder="Type to search for a product..."
+                  value={searchValue}
+                  onChange={(e) => {
+                    setSearchValue(e.target.value);
+                    setSearchOpen(true);
+                  }}
+                  onFocus={() => setSearchOpen(true)}
+                  className="w-full"
+                />
+                
+                {/* Autocomplete Suggestions */}
+                {searchOpen && searchValue && (
+                  <div className="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-y-auto">
+                    {filteredProducts.length > 0 ? (
+                      <div className="py-1">
                         {filteredProducts.map((product) => (
-                          <CommandItem
+                          <button
                             key={product.id}
-                            value={product.name}
-                            onSelect={() => handleProductSelect(product)}
+                            type="button"
+                            onClick={() => handleProductSelect(product)}
+                            className="w-full px-4 py-3 text-left hover:bg-gray-50 border-b border-gray-100 last:border-b-0"
                           >
-                            <Check
-                              className={cn(
-                                "mr-2 h-4 w-4",
-                                selectedProduct?.id === product.id ? "opacity-100" : "opacity-0"
-                              )}
-                            />
-                            <div className="flex-1">
-                              <div className="font-medium">{product.name}</div>
-                              <div className="text-sm text-gray-500">
-                                Stock: {product.quantity_in_stock} | SKU: {product.sku || 'N/A'}
-                              </div>
+                            <div className="font-medium text-gray-900">{product.displayName}</div>
+                            <div className="text-sm text-gray-500">
+                              Stock: {product.quantity_in_stock} | SKU: {product.sku || 'N/A'}
                             </div>
-                          </CommandItem>
+                          </button>
                         ))}
-                      </CommandGroup>
-                    </CommandList>
-                  </Command>
-                </PopoverContent>
-              </Popover>
+                      </div>
+                    ) : (
+                      <div className="p-4 text-center">
+                        <p className="text-sm text-gray-500 mb-3">No products found</p>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={handleCreateNew}
+                          className="w-full"
+                        >
+                          <Plus className="w-4 h-4 mr-2" />
+                          Create New Product
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* Show Create New Product option */}
