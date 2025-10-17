@@ -12,11 +12,6 @@
       "source": "/index.php",
       "destination": "/",
       "permanent": true
-    },
-    {
-      "source": "https://stockflow.be/:path*",
-      "destination": "https://www.stockflow.be/:path*",
-      "permanent": true
     }
   ],
   "rewrites": [
