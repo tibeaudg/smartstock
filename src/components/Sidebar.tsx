@@ -24,7 +24,8 @@ import {
   Download,
   Filter,
   Database,
-  Activity
+  Activity,
+  User
 } 
 from 'lucide-react';
 import { BranchSelector } from './BranchSelector';
@@ -73,6 +74,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
   const [chatOpen, setChatOpen] = useState(false);
   const { unreadCount: unreadMessages, resetUnreadCount } = useUnreadMessages();
   const [openSubmenus, setOpenSubmenus] = useState<Record<string, boolean>>({});
+  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   
   // Check subscription-based feature access
   const { canUseFeature, currentTier } = useSubscription();
@@ -107,7 +109,6 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
   };
   
   const settingsSubItems = [
-    { id: 'profile', label: 'Profile', path: '/dashboard/settings/profile' },
     { id: 'branches', label: 'Branches', path: '/dashboard/settings/branches' },
     { id: 'users', label: 'Users', path: '/dashboard/settings/users' },
     { id: 'subscription', label: 'Subscription', path: '/dashboard/settings/subscription' },
@@ -220,7 +221,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
         )}
 
         {/* Navigation */}
-        <nav className="flex-1 px-2 sm:px-3 py-3 sm:py-4 text-xs sm:text-sm pb-40 sm:pb-60 overflow-y-auto">
+        <nav className="flex-1 px-2 sm:px-3 py-3 sm:py-4 text-xs sm:text-sm pb-40 sm:pb-60 overflow-hidden">
           <ul className="space-y-1">
             {menuItems.map((item) => {
               const Icon = item.icon;
@@ -236,8 +237,11 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
 
               const hasSubItems = item.subItems && item.subItems.length > 0;
               const isSubmenuOpen = openSubmenus[item.id];
-              const isItemActive = location.pathname === item.path || 
-                (hasSubItems && item.subItems.some(sub => location.pathname === sub.path));
+              // Only consider parent active if it's not the same path as any submenu item
+              const isParentActive = location.pathname === item.path && 
+                (!hasSubItems || !item.subItems.some(sub => sub.path === item.path));
+              const isAnySubItemActive = hasSubItems && item.subItems.some(sub => location.pathname === sub.path);
+              const isExpanded = isSubmenuOpen || isAnySubItemActive;
 
               return (
                 <li key={item.id} className="space-y-1">
@@ -259,8 +263,10 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
                     }}
                     className={`
                       w-full font-semibold flex items-center px-2 sm:px-3 py-2 rounded-lg text-left transition-colors
-                      ${(isItemActive || isSubmenuOpen)
+                      ${isParentActive
                         ? 'bg-blue-50 text-blue-700 border border-blue-200' 
+                        : isExpanded
+                        ? 'bg-gray-50 text-gray-700'
                         : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                       }
                     `}
@@ -282,7 +288,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
 
                   {/* Submenu */}
                   {isOpen && hasSubItems && isSubmenuOpen && (
-                    <ul className="ml-3 sm:ml-4 space-y-1">
+                    <ul className="ml-3 sm:ml-4 space-y-1 border-l-2 border-gray-200 pl-3">
                       {item.subItems.map((subItem) => (
                         <li key={subItem.id}>
                           <NavLink
@@ -294,9 +300,9 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
                               }
                             }}
                             className={({ isActive }) => `
-                              w-full flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 py-2 rounded-lg text-left transition-colors text-xs sm:text-sm
+                              w-full flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 py-2 rounded-lg text-left font-medium transition-colors text-xs sm:text-sm
                               ${isActive 
-                                ? 'bg-blue-50 text-blue-700 border border-blue-200' 
+                                ? 'bg-blue-50 text-blue-700' 
                                 : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                               }
                             `}
@@ -319,29 +325,80 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
 
 
 
-        {/* Sign Out Button */}
-        <div className="border-t border-gray-200">
+        {/* Profile Component */}
+        <div className="border-t border-gray-200 relative">
           <div className="px-3 py-2">
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                onClick={handleSignOut}
-                className={`
-                  w-full flex items-center px-3 py-2 rounded-lg text-left transition-colors
-                  text-red-600 hover:bg-red-50 hover:text-red-700
-                  focus:ring-2 focus:ring-red-500 focus:ring-offset-2
-                  ${isOpen ? '' : 'justify-center'}
-                `}
-                aria-label="Sign out"
-              >
-                <LogOut className="w-5 h-5 flex-shrink-0" />
-                {isOpen && (
-                  <span className="font-medium ml-3 flex-1 text-left">Logout</span>
-                )}
-              </Button>
-            </div>
+            <button
+              onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
+              className={`
+                w-full flex items-center gap-3 p-3 rounded-lg text-left transition-colors
+                hover:bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
+                ${isOpen ? '' : 'justify-center'}
+              `}
+            >
+              <div className="rounded-full bg-blue-600 w-10 h-10 flex items-center justify-center flex-shrink-0">
+                <span className="text-white font-semibold">
+                  {userProfile?.first_name?.[0] || userProfile?.email?.[0] || 'U'}
+                </span>
+              </div>
+              {isOpen && (
+                <>
+                  <div className="flex-1 text-left min-w-0">
+                    <div className="font-semibold text-gray-900 truncate">
+                      {userProfile?.first_name && userProfile?.last_name 
+                        ? `${userProfile.first_name} ${userProfile.last_name}`
+                        : userProfile?.first_name || userProfile?.email?.split('@')[0] || 'User'}
+                    </div>
+                    <div className="text-xs text-gray-500 truncate">
+                      {userProfile?.email || 'No email'}
+                    </div>
+                  </div>
+                  <ChevronDown 
+                    className={`w-4 h-4 text-gray-500 transition-transform ${
+                      profileDropdownOpen ? 'rotate-180' : ''
+                    }`} 
+                  />
+                </>
+              )}
+            </button>
           </div>
+
+          {/* Profile Dropdown Menu */}
+          {profileDropdownOpen && createPortal(
+            <div 
+              className="fixed inset-0 z-40" 
+              onClick={() => setProfileDropdownOpen(false)}
+            >
+              <div 
+                className="absolute bottom-16 left-4 bg-white rounded-lg shadow-lg border border-gray-200 py-1 min-w-[180px]"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <button
+                  onClick={() => {
+                    navigate('/dashboard/settings/profile');
+                    setProfileDropdownOpen(false);
+                    if (isMobile) onToggle();
+                  }}
+                  className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                >
+                  <User className="w-4 h-4" />
+                  <span>Profile Settings</span>
+                </button>
+                <button
+                  onClick={() => {
+                    handleSignOut();
+                    setProfileDropdownOpen(false);
+                  }}
+                  className="w-full flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                >
+                  <LogOut className="w-4 h-4" />
+                  <span>Logout</span>
+                </button>
+              </div>
+            </div>,
+            document.body
+          )}
+        </div>
 
 
         </div>
