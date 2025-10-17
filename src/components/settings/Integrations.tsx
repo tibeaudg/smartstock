@@ -175,7 +175,7 @@ export default function IntegrationsSettings() {
         <meta name="description" content="Manage your StockFlow integrations with external services and platforms." />
       </Helmet>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Integrations</h1>
