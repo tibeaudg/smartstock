@@ -32,7 +32,7 @@ async function readBlogPosts() {
   const supabaseUrl = process.env.SUPABASE_URL;
   const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
 
-  // Try Supabase first
+  // Try Supabase first (only if environment variables are available)
   if (supabaseUrl && supabaseAnonKey) {
     try {
       const { createClient } = await import('@supabase/supabase-js');
@@ -50,6 +50,8 @@ async function readBlogPosts() {
     } catch (e) {
       console.warn('Supabase fetch failed, using JSON fallback:', e.message);
     }
+  } else {
+    console.log('Supabase environment variables not available, using JSON fallback');
   }
 
   // JSON fallback
@@ -61,7 +63,8 @@ async function readBlogPosts() {
         slug: p.slug, 
         date_published: p.datePublished || p.date_published 
       }));
-  } catch {
+  } catch (e) {
+    console.warn('JSON fallback failed:', e.message);
     return [];
   }
 }
