@@ -103,6 +103,9 @@ export const SEO: React.FC<SEOProps> = ({
       {/* Canonical */}
       <link rel="canonical" href={url} />
       
+      {/* Self-referencing hreflang */}
+      <link rel="alternate" hrefLang={actualLocale === 'nl' ? 'nl-BE' : 'en-US'} href={url} />
+      
       {/* Hreflang for international SEO */}
       {hreflang.map((hreflangItem) => (
         <link key={hreflangItem.lang} rel="alternate" hrefLang={hreflangItem.lang} href={hreflangItem.url} />
@@ -112,6 +115,11 @@ export const SEO: React.FC<SEOProps> = ({
       {alternateLanguages.map((altLang) => (
         <link key={altLang.lang} rel="alternate" hrefLang={altLang.lang} href={altLang.url} />
       ))}
+      
+      {/* X-default for international targeting */}
+      {alternateLanguages.length > 0 && (
+        <link rel="alternate" hrefLang="x-default" href={url} />
+      )}
       
       {/* Robots */}
       {noindex && <meta name="robots" content="noindex" />}

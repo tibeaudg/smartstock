@@ -1202,7 +1202,7 @@ export const HomePage = () => {
               <BounceInWhenVisible delay={200}>
                 <div className="text-center mb-6 sm:mb-10 md:mb-14 lg:mb-16">
                   <h1 className="lg:pl-24 lg:pr-24 lg:pt-6 lg:pb-6 text-[clamp(3rem,5vw,5rem)] font-light text-gray-800 mb-3 leading-tight px-2">
-                  <strong className="text-blue-600">Cloud‑based</strong> Inventory & Warehouse <strong className="text-blue-600">Management</strong> Platform
+                  <strong className="text-blue-600">Cloud‑based</strong> Inventory <strong className="text-blue-600">Management</strong> Platform
               </h1>
             </div>
               </BounceInWhenVisible>

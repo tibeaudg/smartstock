@@ -7,8 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>StockFlow - Free Inventory Management Software | Belgium</title>
   <link rel="icon" href="/favicon.ico" />
-  <meta name="description" content="Free inventory management software for growing businesses in Belgium. Manage stock, track inventory, and optimize your warehouse operations with StockFlow." />
-  <meta name="keywords" content="inventory management, stock control, warehouse management, voorraadbeheer, magazijnbeheer, Belgium, free inventory software" />
+  <!-- Meta description handled by React Helmet for dynamic SEO -->
   
   <!-- Open Graph Meta Tags -->
   <meta property="og:type" content="website" />
@@ -29,6 +28,7 @@
     default-src 'self';
     connect-src 'self' https://sszuxnqhbxauvershuys.supabase.co wss://sszuxnqhbxauvershuys.supabase.co https://www.google-analytics.com https://region1.google-analytics.com https://www.google.com https://www.googletagmanager.com https://googleads.g.doubleclick.net https://www.googleadservices.com https://www.google.be https://api.stripe.com https://checkout.stripe.com https://api.ipify.org https://clients5.google.com https://connect.facebook.net https://www.facebook.com https://analytics.google.com https://*.ingest.sentry.io https://*.sentry.io;
     script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://www.google.com https://www.google.be https://js.stripe.com https://clients5.google.com https://connect.facebook.net;
+    worker-src 'self' blob:;
     frame-src 'self' https://www.googletagmanager.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://www.google.com https://www.google.be https://td.doubleclick.net https://checkout.stripe.com https://js.stripe.com https://clients5.google.com;
     font-src 'self' https://fonts.gstatic.com https://fonts.googleapis.com;
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
@@ -42,27 +42,37 @@
     upgrade-insecure-requests;
   ">
   
-  <!-- Preconnect ONLY to the most critical origins (max 3-4) -->
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Preconnect to critical origins -->
   <link rel="preconnect" href="https://sszuxnqhbxauvershuys.supabase.co" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   
-  <!-- DNS prefetch for less critical external domains -->
-  <link rel="dns-prefetch" href="//fonts.googleapis.com">
+  <!-- DNS prefetch for external domains -->
   <link rel="dns-prefetch" href="//www.googletagmanager.com">
-  <link rel="dns-prefetch" href="//connect.facebook.net">
   <link rel="dns-prefetch" href="//www.google-analytics.com">
   <link rel="dns-prefetch" href="//js.stripe.com">
-  <link rel="dns-prefetch" href="//checkout.stripe.com">
+  
+  <!-- Preload critical images -->
+  <link rel="preload" as="image" href="/logo.png" fetchpriority="high">
+  <link rel="preload" as="image" href="/Inventory-Management.png" fetchpriority="high" imagesrcset="/Inventory-Management.webp" imagesizes="100vw">
+  
+  <!-- Modulepreload for critical JavaScript -->
+  <link rel="modulepreload" href="/src/main.tsx">
+  <link rel="modulepreload" href="/src/App.tsx">
   
   <!-- Font preloading removed - fonts will load on-demand to avoid unused preload warnings -->
   
   <style>
     /* Critical CSS: minimal layout for fast first render */
-    html,body{min-height:100vh;margin:0;padding:0;width:100%;background:#fff;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;}
-    #root{width:100vw;margin:0 auto;}
+    html,body{min-height:100vh;margin:0;padding:0;width:100%;background:#fff;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
+    *{box-sizing:border-box;}
+    #root{width:100vw;margin:0 auto;overflow-x:hidden;}
     .loading-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:#f9fafb;}
     .spinner{border:3px solid #e5e7eb;border-top-color:#2563eb;border-radius:50%;width:40px;height:40px;animation:spin 1s linear infinite;}
     @keyframes spin{to{transform:rotate(360deg);}}
+    /* Prevent layout shift */
+    img{max-width:100%;height:auto;}
+    /* Font display swap for faster text rendering */
+    @font-face{font-display:swap;}
   </style>
 </head>
 

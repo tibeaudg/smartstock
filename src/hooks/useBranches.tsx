@@ -99,6 +99,16 @@ const setCachedBranches = (branches: Branch[]) => {
   }
 };
 
+// Helper: clear cached branches
+const clearCachedBranches = () => {
+  try {
+    safeStorage.removeItem(BRANCHES_CACHE_KEY);
+    safeStorage.removeItem(CACHE_TIMESTAMP_KEY);
+  } catch {
+    // Unable to clear cache
+  }
+};
+
 // Verplaats alle state en logica naar binnen in BranchProvider
 export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
   const { user, authLoading } = useAuth();

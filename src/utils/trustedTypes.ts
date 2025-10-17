@@ -61,7 +61,7 @@ export const createTrustedHTML = (html: string): string | TrustedHTML => {
 export const initializeTrustedTypes = () => {
   if (typeof window !== 'undefined' && 'trustedTypes' in window) {
     try {
-      // Create the policy early to avoid conflicts
+      // Create the stockflow-html policy
       window.trustedTypes.createPolicy('stockflow-html', {
         createHTML: (input: string) => {
           // Allow JSON-LD structured data (safe for SEO)
@@ -98,6 +98,66 @@ export const initializeTrustedTypes = () => {
     } catch (e) {
       // Policy already exists, that's fine
       console.log('[StockFlow] Trusted Types policy already exists');
+    }
+
+    try {
+      // Create the stockflow-scripts policy for external scripts
+      window.trustedTypes.createPolicy('stockflow-scripts', {
+        createScriptURL: (input: string) => {
+          // Allow known safe domains for script URLs
+          const allowedDomains = [
+            'sentry.io',
+            'cdn.jsdelivr.net',
+            'unpkg.com',
+            'cdnjs.cloudflare.com',
+            'googleapis.com',
+            'gstatic.com',
+            'stripe.com',
+            'js.stripe.com',
+            'supabase.co'
+          ];
+          
+          const isAllowed = allowedDomains.some(domain => input.includes(domain));
+          
+          if (isAllowed) {
+            return input;
+          }
+          
+          // Allow blob URLs (used by Sentry for workers)
+          if (input.startsWith('blob:')) {
+            return input;
+          }
+          
+          // Allow relative URLs
+          if (input.startsWith('/') || input.startsWith('./') || input.startsWith('../')) {
+            return input;
+          }
+          
+          console.warn('[TrustedTypes] Blocked script URL from untrusted domain:', input);
+          return '';
+        },
+        createScript: (input: string) => {
+          // Basic validation for script content
+          const dangerousPatterns = [
+            /eval\s*\(/i,
+            /Function\s*\(/i,
+            /setTimeout\s*\(\s*["\']/i,
+            /setInterval\s*\(\s*["\']/i,
+          ];
+          
+          for (const pattern of dangerousPatterns) {
+            if (pattern.test(input)) {
+              console.warn('[TrustedTypes] Blocked dangerous script pattern:', pattern);
+              return '';
+            }
+          }
+          
+          return input;
+        }
+      });
+    } catch (e) {
+      // Policy already exists, that's fine
+      console.log('[StockFlow] Scripts policy already exists');
     }
   }
 };
@@ -147,12 +207,55 @@ export const initializeDefaultPolicy = () => {
           return input;
         },
         createScript: (input: string) => {
-          // Pass through for script content
+          // Basic validation for script content
+          const dangerousPatterns = [
+            /eval\s*\(/i,
+            /Function\s*\(/i,
+            /setTimeout\s*\(\s*["\']/i,
+            /setInterval\s*\(\s*["\']/i,
+          ];
+          
+          for (const pattern of dangerousPatterns) {
+            if (pattern.test(input)) {
+              console.warn('[TrustedTypes] Blocked dangerous script pattern:', pattern);
+              return '';
+            }
+          }
+          
           return input;
         },
         createScriptURL: (input: string) => {
-          // Pass through for script URLs
-          return input;
+          // Allow known safe domains for script URLs
+          const allowedDomains = [
+            'sentry.io',
+            'cdn.jsdelivr.net',
+            'unpkg.com',
+            'cdnjs.cloudflare.com',
+            'googleapis.com',
+            'gstatic.com',
+            'stripe.com',
+            'js.stripe.com',
+            'supabase.co'
+          ];
+          
+          const isAllowed = allowedDomains.some(domain => input.includes(domain));
+          
+          if (isAllowed) {
+            return input;
+          }
+          
+          // Allow blob URLs (used by Sentry for workers)
+          if (input.startsWith('blob:')) {
+            return input;
+          }
+          
+          // Allow relative URLs
+          if (input.startsWith('/') || input.startsWith('./') || input.startsWith('../')) {
+            return input;
+          }
+          
+          console.warn('[TrustedTypes] Blocked script URL from untrusted domain:', input);
+          return '';
         },
       });
       console.log('[TrustedTypes] Default policy initialized for third-party libraries');

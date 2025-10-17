@@ -112,21 +112,10 @@ export default defineConfig(({ mode }) => ({
     },
     
     // Enable modern build features
-    target: 'esnext',
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: mode === 'production',
-        drop_debugger: mode === 'production',
-        pure_funcs: mode === 'production' ? ['console.log', 'console.debug', 'console.trace'] : [],
-        passes: 2,
-      },
-      mangle: {
-        safari10: true,
-      },
-      format: {
-        comments: false,
-      },
+    target: 'es2020',
+    minify: 'esbuild', // Faster than terser
+    esbuildOptions: {
+      drop: mode === 'production' ? ['console', 'debugger'] : [],
     },
     
     // Disable source maps in production to reduce size
@@ -136,19 +125,34 @@ export default defineConfig(({ mode }) => ({
     cssCodeSplit: true,
     cssMinify: true,
     
-    // Reduce asset inlining threshold
-    assetsInlineLimit: 2048, // Reduced from 4096
+    // Reduce asset inlining threshold for better caching
+    assetsInlineLimit: 4096,
     
-    // Increase chunk size warning limit
-    chunkSizeWarningLimit: 1000, // Reduced from 2000
+    // Chunk size warning
+    chunkSizeWarningLimit: 800,
     
-    // Disable module preloading to reduce complexity
-    modulePreload: false,
+    // Enable module preloading for better performance
+    modulePreload: {
+      polyfill: true,
+    },
+    
+    // Enable reportCompressedSize for build analysis
+    reportCompressedSize: true,
   },
 
-  // Remove experimental features that might cause issues
+  // ESBuild configuration for optimal builds
   esbuild: {
-    target: 'esnext',
+    target: 'es2020',
+    legalComments: 'none',
+    treeShaking: true,
+  },
+  
+  // Performance optimizations
+  experimental: {
+    renderBuiltUrl(filename) {
+      // Use CDN for static assets if configured
+      return filename;
+    },
   },
 }));
 

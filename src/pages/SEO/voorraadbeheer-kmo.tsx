@@ -4,9 +4,14 @@ import SeoPageLayout from '../../components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { useStructuredData, createFAQStructuredData, createArticleStructuredData } from '@/hooks/useStructuredData';
 import { Check, TrendingUp, Clock, Shield, Users, Zap, DollarSign, BarChart3 } from 'lucide-react';
+import { RelatedArticles } from '@/components/seo/RelatedArticles';
+import { getRelatedPages } from '@/config/topicClusters';
 
 export default function VoorraadbeheerKMO() {
   usePageRefresh();
+  
+  // Get related pages from topic cluster
+  const relatedPages = getRelatedPages('/voorraadbeheer-kmo', 6);
   
   const faqData = [
     {
@@ -114,9 +119,10 @@ export default function VoorraadbeheerKMO() {
         description="Voorraadbeheer software speciaal voor KMO's en kleine ondernemingen. Start gratis, implementeer in 1 dag en bespaar 70% tijd. Perfect voor groeiende bedrijven."
         keywords="voorraadbeheer kmo, voorraadbeheer kleine onderneming, voorraadbeheer software kmo, kmo voorraadbeheer, stockbeheer kmo, voorraadbeheer mkb, voorraadbeheer voor kleine bedrijven, betaalbaar voorraadbeheer, voorraadbeheer starters"
         url="https://www.stockflow.be/voorraadbeheer-kmo"
-        hreflang={[
-          { lang: "nl", url: "https://www.stockflow.be/voorraadbeheer-kmo" },
-          { lang: "en", url: "https://www.stockflow.be/inventory-management-sme" }
+        locale="nl"
+        alternateLanguages={[
+          { lang: 'nl-BE', url: 'https://www.stockflow.be/voorraadbeheer-kmo' },
+          { lang: 'en-US', url: 'https://www.stockflow.be/inventory-management-sme' }
         ]}
       />
 
@@ -733,6 +739,13 @@ export default function VoorraadbeheerKMO() {
           </div>
         </div>
       </section>
+
+      {/* Related Articles Section */}
+      <RelatedArticles 
+        articles={relatedPages}
+        title="Meer Oplossingen voor KMO's"
+        language="nl"
+      />
 
       {/* Footer */}
       <footer className="bg-gray-900 text-gray-200 py-12 px-4">

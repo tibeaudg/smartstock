@@ -3,25 +3,60 @@ import * as Sentry from "@sentry/react";
 
 // Prevent multiple Sentry initializations during HMR (Hot Module Reload)
 if (!(window as any).__SENTRY_INITIALIZED__) {
-  Sentry.init({
-    dsn: "https://e491b26fa2d97550098be3eb6fb44715@o4510186798776320.ingest.us.sentry.io/4510186800283648",
-    // Setting this option to true will send default PII data to Sentry.
-    // For example, automatic IP address collection on events
-    sendDefaultPii: true,
-    environment: process.env.NODE_ENV || 'development',
-    // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
-    // We recommend adjusting this value in production
-    tracesSampleRate: process.env.NODE_ENV === 'production' ? 0.1 : 1.0,
-    // Capture Replay for 10% of all sessions,
-    // plus for 100% of sessions with an error
-    replaysSessionSampleRate: 0.1,
-    replaysOnErrorSampleRate: 1.0,
-    integrations: [
-      Sentry.browserTracingIntegration(),
-      Sentry.replayIntegration(),
-    ],
-  });
-  (window as any).__SENTRY_INITIALIZED__ = true;
+  try {
+    // Create trusted DSN URL for Sentry
+    let trustedDsn: string | TrustedScriptURL = "https://e491b26fa2d97550098be3eb6fb44715@o4510186798776320.ingest.us.sentry.io/4510186800283648";
+    
+    if (typeof window !== 'undefined' && 'trustedTypes' in window) {
+      try {
+        // Use the existing 'stockflow-scripts' policy which is allowed by CSP
+        const existingPolicy = window.trustedTypes.getExposedPolicy('stockflow-scripts');
+        if (existingPolicy) {
+          trustedDsn = existingPolicy.createScriptURL(trustedDsn as string);
+        } else {
+          // If stockflow-scripts doesn't exist, try the default policy
+          const defaultPolicy = window.trustedTypes.getExposedPolicy('default');
+          if (defaultPolicy) {
+            trustedDsn = defaultPolicy.createScriptURL(trustedDsn as string);
+          }
+        }
+      } catch (e) {
+        console.warn('[Sentry] Trusted Types policy access failed, using fallback');
+      }
+    }
+
+    Sentry.init({
+      dsn: trustedDsn,
+      // Setting this option to true will send default PII data to Sentry.
+      // For example, automatic IP address collection on events
+      sendDefaultPii: true,
+      environment: process.env.NODE_ENV || 'development',
+      // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
+      // We recommend adjusting this value in production
+      tracesSampleRate: process.env.NODE_ENV === 'production' ? 0.1 : 1.0,
+      // Capture Replay for 10% of all sessions,
+      // plus for 100% of sessions with an error
+      replaysSessionSampleRate: 0.1,
+      replaysOnErrorSampleRate: 1.0,
+      integrations: [
+        Sentry.browserTracingIntegration(),
+        Sentry.replayIntegration(),
+      ],
+      // Add error handling for Sentry initialization
+      beforeSend(event) {
+        // Only send events in production or if explicitly enabled
+        if (process.env.NODE_ENV === 'production' || process.env.VITE_ENABLE_SENTRY === 'true') {
+          return event;
+        }
+        return null; // Don't send events in development
+      },
+    });
+    (window as any).__SENTRY_INITIALIZED__ = true;
+    console.log('[Sentry] Successfully initialized');
+  } catch (error) {
+    console.warn('[Sentry] Failed to initialize Sentry:', error);
+    // Continue without Sentry if initialization fails
+  }
 }
 
 import { createRoot, Root } from 'react-dom/client';
@@ -106,33 +141,13 @@ async function init() {
       initPerformanceMonitoring();
     }
     
-    // Add timeout to Supabase connection check to prevent infinite loading
-    // In production, we'll be more lenient with connection failures
+    // Check Supabase connection - be lenient and don't block app initialization
     let isConnected = false;
     
-    if (process.env.NODE_ENV === 'production') {
-      // In production, try connection check but don't fail if it times out
-      try {
-        const connectionTimeout = new Promise<boolean>((_, reject) => {
-          setTimeout(() => reject(new Error('Supabase connection timeout')), 5000); // 5 second timeout in production
-        });
-        
-        isConnected = await Promise.race([
-          checkSupabaseConnection(),
-          connectionTimeout
-        ]) as boolean;
-        
-        if (!isConnected) {
-          console.warn('Supabase connection failed, continuing with degraded functionality');
-        }
-      } catch (error: any) {
-        console.warn('Supabase connection check failed, continuing with degraded functionality:', error.message);
-        // Don't throw - continue with app initialization
-      }
-    } else {
-      // In development, be stricter about connection requirements
+    try {
+      // Use a shorter timeout for better UX
       const connectionTimeout = new Promise<boolean>((_, reject) => {
-        setTimeout(() => reject(new Error('Supabase connection timeout')), 10000); // 10 second timeout in dev
+        setTimeout(() => reject(new Error('Supabase connection timeout')), 5000); // 5 second timeout
       });
       
       isConnected = await Promise.race([
@@ -140,9 +155,16 @@ async function init() {
         connectionTimeout
       ]) as boolean;
 
-      if (!isConnected) {
-        throw new Error('Could not connect to Supabase');
+      if (isConnected) {
+        console.log('[StockFlow] Supabase connection successful');
+      } else {
+        console.warn('[StockFlow] Supabase connection failed, continuing in offline mode');
       }
+    } catch (error: any) {
+      console.warn('[StockFlow] Supabase connection error:', error.message);
+      console.warn('[StockFlow] Continuing in offline mode - some features may be limited');
+      // Don't throw - continue with app initialization
+      // The app should work with limited functionality
     }
 
     // Create or reuse the root instance

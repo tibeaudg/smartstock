@@ -27,6 +27,47 @@ import { SavingsCalculator } from './SavingsCalculator';
 import Footer from './Footer';
 import { ContactForm } from './ContactForm';
 
+// SEO-rich text content component to improve text-to-code ratio
+const SEOTextContent = () => (
+  <section className="py-16 px-4 bg-white">
+    <div className="max-w-4xl mx-auto prose prose-lg">
+      <h2 className="text-3xl font-bold mb-6 text-gray-900">
+        Professioneel Voorraadbeheer voor Moderne Bedrijven
+      </h2>
+      <p className="text-lg text-gray-700 mb-4 leading-relaxed">
+        StockFlow is dé toonaangevende voorraadbeheer software voor KMO's, kleine ondernemingen en groeiende bedrijven in België en Nederland. 
+        Onze cloud-based oplossing maakt professioneel voorraadbeheer toegankelijk voor elk bedrijf, ongeacht de grootte. 
+        Met real-time inzicht in je voorraadniveaus, automatische bestelmeldingen en geavanceerde rapportage tools 
+        help je je bedrijf efficiënter te werken en sneller te groeien.
+      </p>
+      <p className="text-lg text-gray-700 mb-4 leading-relaxed">
+        Of je nu een webshop runt, een retailwinkel beheert, of een magazijn optimaliseert - StockFlow biedt de tools 
+        die je nodig hebt om je voorraad onder controle te houden. Van barcode scanning tot multi-locatie beheer, 
+        van automatische voorraad updates tot gedetailleerde analyses - alles wat je nodig hebt in één gebruiksvriendelijk platform.
+      </p>
+      <p className="text-lg text-gray-700 mb-4 leading-relaxed">
+        Meer dan 500 bedrijven vertrouwen op StockFlow voor hun dagelijkse voorraadbeheer. Ze besparen gemiddeld 70% tijd 
+        op voorraadtaken en reduceren hun voorraadkosten met 25%. Door betere planning en real-time inzicht voorkom je 
+        stockouts en overstock, wat direct bijdraagt aan een betere cashflow en hogere winstmarges.
+      </p>
+      <h3 className="text-2xl font-bold mb-4 text-gray-900 mt-8">
+        Waarom Kiezen voor StockFlow?
+      </h3>
+      <p className="text-lg text-gray-700 mb-4 leading-relaxed">
+        In tegenstelling tot traditionele voorraadbeheer systemen die complex en duur zijn, biedt StockFlow een 
+        gebruiksvriendelijke en betaalbare oplossing. Je kunt gratis starten met tot 30 producten en meegroeien 
+        zonder te hoeven wisselen van platform. Onze software is speciaal ontworpen voor de Belgische en Nederlandse markt, 
+        met ondersteuning voor lokale talen, valuta's en bedrijfspraktijken.
+      </p>
+      <p className="text-lg text-gray-700 leading-relaxed">
+        StockFlow integreert naadloos met populaire e-commerce platforms, boekhoudsoftware en andere bedrijfssystemen. 
+        Dit betekent dat je niet hoeft te werken met meerdere losse systemen - alles komt samen in één centraal platform. 
+        Met onze mobiele app kun je ook onderweg je voorraad beheren, producten scannen en bestellingen verwerken.
+      </p>
+    </div>
+  </section>
+);
+
 
 
   const FadeInWhenVisible = ({ children, delay = 0, direction = 'up', duration = 700 }) => {
@@ -981,6 +1022,150 @@ export const HomePageNL = () => {
         </div>
       </section>
 
+      {/* Resources & Learning Section */}
+      <section className="py-16 md:py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <FadeInWhenVisible>
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+                Ontdek Meer over Voorraadbeheer
+              </h2>
+              <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
+                Leer hoe je je voorraad optimaliseert met onze uitgebreide gidsen en resources
+              </p>
+            </div>
+          </FadeInWhenVisible>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            <SlideUpWhenVisible delay={100}>
+              <Link
+                to="/voorraadbeheer-software"
+                className="group bg-gradient-to-br from-blue-50 to-blue-100 p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-blue-200"
+              >
+                <div className="w-14 h-14 bg-blue-600 rounded-xl flex items-center justify-center mb-4">
+                  <Package className="h-7 w-7 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition">
+                  Voorraadbeheer Software
+                </h3>
+                <p className="text-gray-700 mb-4 leading-relaxed">
+                  Complete gids over voorraadbeheer software voor moderne bedrijven. Van KMO tot webshop.
+                </p>
+                <div className="flex items-center text-blue-600 font-semibold">
+                  <span>Lees meer</span>
+                  <ArrowRight className="ml-2 h-5 w-5 transform group-hover:translate-x-1 transition" />
+                </div>
+              </Link>
+            </SlideUpWhenVisible>
+
+            <SlideUpWhenVisible delay={200}>
+              <Link
+                to="/voorraadbeheer-kmo"
+                className="group bg-gradient-to-br from-purple-50 to-purple-100 p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-purple-200"
+              >
+                <div className="w-14 h-14 bg-purple-600 rounded-xl flex items-center justify-center mb-4">
+                  <Users className="h-7 w-7 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-3 group-hover:text-purple-600 transition">
+                  Voorraadbeheer voor KMO
+                </h3>
+                <p className="text-gray-700 mb-4 leading-relaxed">
+                  Betaalbare voorraadbeheer oplossingen speciaal ontworpen voor kleine en middelgrote ondernemingen.
+                </p>
+                <div className="flex items-center text-purple-600 font-semibold">
+                  <span>Ontdek meer</span>
+                  <ArrowRight className="ml-2 h-5 w-5 transform group-hover:translate-x-1 transition" />
+                </div>
+              </Link>
+            </SlideUpWhenVisible>
+
+            <SlideUpWhenVisible delay={300}>
+              <Link
+                to="/magazijnbeheer-software"
+                className="group bg-gradient-to-br from-green-50 to-green-100 p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-green-200"
+              >
+                <div className="w-14 h-14 bg-green-600 rounded-xl flex items-center justify-center mb-4">
+                  <Truck className="h-7 w-7 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-3 group-hover:text-green-600 transition">
+                  Magazijnbeheer Software
+                </h3>
+                <p className="text-gray-700 mb-4 leading-relaxed">
+                  Professionele magazijnbeheer software voor optimale controle over je warehouse operaties.
+                </p>
+                <div className="flex items-center text-green-600 font-semibold">
+                  <span>Bekijk oplossing</span>
+                  <ArrowRight className="ml-2 h-5 w-5 transform group-hover:translate-x-1 transition" />
+                </div>
+              </Link>
+            </SlideUpWhenVisible>
+
+            <SlideUpWhenVisible delay={400}>
+              <Link
+                to="/voorraadbeheer-horeca"
+                className="group bg-gradient-to-br from-orange-50 to-orange-100 p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-orange-200"
+              >
+                <div className="w-14 h-14 bg-orange-600 rounded-xl flex items-center justify-center mb-4">
+                  <Building className="h-7 w-7 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-3 group-hover:text-orange-600 transition">
+                  Voorraadbeheer Horeca
+                </h3>
+                <p className="text-gray-700 mb-4 leading-relaxed">
+                  Speciaal voor restaurants, cafés en hotels. Beheer ingrediënten en voorraad effectief.
+                </p>
+                <div className="flex items-center text-orange-600 font-semibold">
+                  <span>Meer info</span>
+                  <ArrowRight className="ml-2 h-5 w-5 transform group-hover:translate-x-1 transition" />
+                </div>
+              </Link>
+            </SlideUpWhenVisible>
+
+            <SlideUpWhenVisible delay={500}>
+              <Link
+                to="/voorraadbeheer-webshop"
+                className="group bg-gradient-to-br from-indigo-50 to-indigo-100 p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-indigo-200"
+              >
+                <div className="w-14 h-14 bg-indigo-600 rounded-xl flex items-center justify-center mb-4">
+                  <Globe className="h-7 w-7 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-3 group-hover:text-indigo-600 transition">
+                  Voorraadbeheer Webshop
+                </h3>
+                <p className="text-gray-700 mb-4 leading-relaxed">
+                  Integreer je online winkel met professioneel voorraadbeheer voor naadloze e-commerce.
+                </p>
+                <div className="flex items-center text-indigo-600 font-semibold">
+                  <span>Lees verder</span>
+                  <ArrowRight className="ml-2 h-5 w-5 transform group-hover:translate-x-1 transition" />
+                </div>
+              </Link>
+            </SlideUpWhenVisible>
+
+            <SlideUpWhenVisible delay={600}>
+              <Link
+                to="/voorraadbeheer-tips"
+                className="group bg-gradient-to-br from-pink-50 to-pink-100 p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-pink-200"
+              >
+                <div className="w-14 h-14 bg-pink-600 rounded-xl flex items-center justify-center mb-4">
+                  <Target className="h-7 w-7 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-3 group-hover:text-pink-600 transition">
+                  Voorraadbeheer Tips
+                </h3>
+                <p className="text-gray-700 mb-4 leading-relaxed">
+                  Praktische tips en best practices om je voorraadbeheer te verbeteren en kosten te besparen.
+                </p>
+                <div className="flex items-center text-pink-600 font-semibold">
+                  <span>Bekijk tips</span>
+                  <ArrowRight className="ml-2 h-5 w-5 transform group-hover:translate-x-1 transition" />
+                </div>
+              </Link>
+            </SlideUpWhenVisible>
+          </div>
+        </div>
+      </section>
+
       {/* Contact Form Section */}
       <section className="py-16 md:py-24 bg-gray-50">
         <div className="max-w-4xl mx-auto px-4">
@@ -1101,6 +1286,9 @@ export const HomePageNL = () => {
           </div>
         </section>
       </FadeInWhenVisible>
+
+      {/* SEO-rich text content for better text-to-code ratio */}
+      <SEOTextContent />
 
       <Footer />
 

@@ -16,12 +16,15 @@ export const getStripe = () => {
   }
 
   if (!stripePromise) {
-    if (!STRIPE_PUBLISHABLE_KEY) {
-      console.warn('Stripe publishable key not configured. Stripe functionality will be disabled.');
+    if (!STRIPE_PUBLISHABLE_KEY || STRIPE_PUBLISHABLE_KEY.includes('test_51234567890abcdef')) {
+      console.warn('Stripe publishable key not configured or using placeholder. Stripe functionality will be disabled.');
       stripePromise = Promise.resolve(null);
     } else {
       console.log('[Cookie Consent] Loading Stripe with user consent');
-      stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY);
+      stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY).catch((error) => {
+        console.error('[Stripe] Failed to load Stripe.js:', error);
+        return null;
+      });
     }
   }
   return stripePromise;

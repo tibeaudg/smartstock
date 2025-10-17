@@ -16,12 +16,18 @@ import {
   Clock,
   Target
 } from 'lucide-react';
+import { RelatedArticles } from '@/components/seo/RelatedArticles';
+import { TopicClusterNav } from '@/components/seo/TopicClusterNav';
+import { englishMainCluster, getRelatedPages } from '@/config/topicClusters';
 
 import { StructuredData } from '../../components/StructuredData';
 export default function InventoryManagementSoftware() {
   // Gebruik de page refresh hook
   usePageRefresh();
   const { formatPrice } = useCurrency();
+  
+  // Get related pages from topic cluster
+  const relatedPages = getRelatedPages('/inventory-management-software', 6);
   
   const faqData = [
     {
@@ -160,6 +166,11 @@ export default function InventoryManagementSoftware() {
         description="Professional inventory management software for growing businesses. Track stock levels, manage suppliers, and grow your business with our powerful yet simple platform. Free trial available."
         keywords="stockflow, stock flow, stockflow app, stockflow software, inventory management software, stock management, inventory control, warehouse management, inventory tracking, stock management software, inventory system, warehouse software, inventory optimization, stock control software, inventory management system, warehouse management system, inventory tracking software, stock management system, inventory software, warehouse tracking, inventory control system, stock tracking software, inventory management solution, warehouse inventory software, inventory management platform"
         url="https://www.stockflow.be/inventory-management-software"
+        locale="en"
+        alternateLanguages={[
+          { lang: 'en-US', url: 'https://www.stockflow.be/inventory-management-software' },
+          { lang: 'nl-BE', url: 'https://www.stockflow.be/voorraadbeheer-software' }
+        ]}
       />
 
       {/* Hero Section - Improved Above the Fold */}
@@ -979,6 +990,13 @@ export default function InventoryManagementSoftware() {
           </div>
         </div>
       </section>
+
+      {/* Related Articles Section */}
+      <RelatedArticles 
+        articles={relatedPages}
+        title="Explore More About Inventory Management"
+        language="en"
+      />
 
       {/* Footer */}
       <footer className="bg-gray-900 text-gray-200 py-12 md:py-16">

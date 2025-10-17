@@ -3,10 +3,16 @@ import { Link } from 'react-router-dom';
 import SeoPageLayout from '../../components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { Check, TrendingUp, Clock, Shield, Users, Zap, DollarSign, BarChart3, Package, Smartphone } from 'lucide-react';
+import { RelatedArticles } from '@/components/seo/RelatedArticles';
+import { TopicClusterNav } from '@/components/seo/TopicClusterNav';
+import { dutchMainCluster, getRelatedPages } from '@/config/topicClusters';
 
 import { StructuredData } from '../../components/StructuredData';
 export default function VoorraadbeheerSoftware() {
   usePageRefresh();
+  
+  // Get related pages from topic cluster
+  const relatedPages = getRelatedPages('/voorraadbeheer-software', 6);
   
   const faqData = [
     {
@@ -145,6 +151,11 @@ export default function VoorraadbeheerSoftware() {
         description="Complete voorraadbeheer software voor moderne bedrijven. Van KMO tot webshop - beheer je voorraad professioneel. Start gratis, geen creditcard nodig. 500+ tevreden gebruikers."
         keywords="voorraadbeheer software, gratis voorraadbeheer, stockbeheer software, voorraadbeheer programma, magazijnbeheer software, inventarisatie software, voorraadbeheer app, stockbeheer app, stockflow, gratis stockbeheer, KMO software, kleine onderneming software, voorraad software, inventory software"
         url="https://www.stockflow.be/voorraadbeheer-software"
+        locale="nl"
+        alternateLanguages={[
+          { lang: 'nl-BE', url: 'https://www.stockflow.be/voorraadbeheer-software' },
+          { lang: 'en-US', url: 'https://www.stockflow.be/inventory-management-software' }
+        ]}
       />
 
       {/* Hero Section */}
@@ -322,30 +333,40 @@ export default function VoorraadbeheerSoftware() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
-            {industryUseCases.map((useCase, index) => (
-              <Link 
-                key={index} 
-                to={useCase.link}
-                className="bg-white p-8 rounded-xl shadow-sm hover:shadow-lg transition group"
-              >
-                <h3 className="text-2xl font-bold mb-3 group-hover:text-blue-600 transition">
-                  {useCase.title}
-                </h3>
-                <p className="text-gray-600 mb-6">{useCase.description}</p>
-                <div className="space-y-2">
-                  {useCase.benefits.map((benefit, bIndex) => (
-                    <div key={bIndex} className="flex items-center text-sm text-gray-700">
-                      <Check className="w-4 h-4 text-green-600 mr-2" />
-                      {benefit}
-                    </div>
-                  ))}
-                </div>
-                <div className="mt-4 text-blue-600 font-semibold text-sm group-hover:underline">
-                  Lees meer →
-                </div>
-              </Link>
-            ))}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="md:col-span-2 grid md:grid-cols-2 gap-8">
+              {industryUseCases.map((useCase, index) => (
+                <Link 
+                  key={index} 
+                  to={useCase.link}
+                  className="bg-white p-8 rounded-xl shadow-sm hover:shadow-lg transition group"
+                >
+                  <h3 className="text-2xl font-bold mb-3 group-hover:text-blue-600 transition">
+                    {useCase.title}
+                  </h3>
+                  <p className="text-gray-600 mb-6">{useCase.description}</p>
+                  <div className="space-y-2">
+                    {useCase.benefits.map((benefit, bIndex) => (
+                      <div key={bIndex} className="flex items-center text-sm text-gray-700">
+                        <Check className="w-4 h-4 text-green-600 mr-2" />
+                        {benefit}
+                      </div>
+                    ))}
+                  </div>
+                  <div className="mt-4 text-blue-600 font-semibold text-sm group-hover:underline">
+                    Lees meer →
+                  </div>
+                </Link>
+              ))}
+            </div>
+            
+            {/* Topic Cluster Navigation - Sidebar */}
+            <div className="lg:block hidden">
+              <TopicClusterNav 
+                cluster={dutchMainCluster} 
+                currentPath="/voorraadbeheer-software"
+              />
+            </div>
           </div>
         </div>
       </section>
@@ -734,6 +755,13 @@ export default function VoorraadbeheerSoftware() {
           </div>
         </div>
       </section>
+
+      {/* Related Articles Section */}
+      <RelatedArticles 
+        articles={relatedPages}
+        title="Ontdek Meer over Voorraadbeheer"
+        language="nl"
+      />
 
       {/* Footer */}
       <footer className="bg-gray-900 text-gray-200 py-12 px-4">

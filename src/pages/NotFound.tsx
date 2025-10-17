@@ -176,7 +176,12 @@ const NotFound = () => {
           keywords="404, page not found, inventory management, stock management, tips, SME"
           url={`https://www.stockflow.be${location.pathname}`}
           structuredData={structuredData}
+          noindex={true}
         />
+        <Helmet>
+          <meta name="prerender-status-code" content="404" />
+          <meta name="robots" content="noindex, follow" />
+        </Helmet>
         
         {/* Header */}
         <div className="text-center mb-12">

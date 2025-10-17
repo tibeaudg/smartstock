@@ -41,7 +41,7 @@ const Footer = () => {
     "sameAs": [
       "https://www.facebook.com/profile.php?id=61578067034898",
       "https://twitter.com/stockflow",
-      "https://www.linkedin.com/stockflow",
+      "https://www.linkedin.com/company/stockflow",
       "https://www.instagram.com/stockflowbe"
     ],
     "areaServed": {
@@ -80,8 +80,8 @@ const Footer = () => {
         </script>
       </Helmet>
       <footer className="bg-gray-900 text-gray-200 py-12 md:py-16">
-  <div className="max-w-6xl mx-auto px-6">
-    <div className="grid md:grid-cols-4 gap-8 mb-8">
+  <div className="max-w-7xl mx-auto px-6">
+    <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-8 mb-8">
       {/* Company Info */}
       <div className="md:col-span-2">
         <img
@@ -124,7 +124,7 @@ const Footer = () => {
               <Twitter className="h-5 w-5" />
             </a>
             <a 
-              href="https://www.linkedin.com/stockflow" 
+              href="https://www.linkedin.com/company/stockflow" 
               target="_blank" 
               rel="noopener noreferrer"
               className="bg-blue-700 hover:bg-blue-800 text-white p-2 rounded-lg transition-colors"
@@ -167,7 +167,49 @@ const Footer = () => {
         </div>
       </div>
 
+      {/* Solutions (Dutch) */}
+      <div>
+        <h3 className="text-lg font-semibold mb-4">Oplossingen</h3>
+        <div className="space-y-2">
+          <Link to="/voorraadbeheer-software" className="block text-gray-400 hover:text-white underline">
+            Voorraadbeheer Software
+          </Link>
+          <Link to="/voorraadbeheer-kmo" className="block text-gray-400 hover:text-white underline">
+            Voor KMO
+          </Link>
+          <Link to="/voorraadbeheer-horeca" className="block text-gray-400 hover:text-white underline">
+            Voor Horeca
+          </Link>
+          <Link to="/voorraadbeheer-webshop" className="block text-gray-400 hover:text-white underline">
+            Voor Webshops
+          </Link>
+          <Link to="/magazijnbeheer-software" className="block text-gray-400 hover:text-white underline">
+            Magazijnbeheer
+          </Link>
+        </div>
+      </div>
 
+      {/* Solutions (English) */}
+      <div>
+        <h3 className="text-lg font-semibold mb-4">Solutions</h3>
+        <div className="space-y-2">
+          <Link to="/inventory-management-software" className="block text-gray-400 hover:text-white underline">
+            Inventory Software
+          </Link>
+          <Link to="/inventory-management-sme" className="block text-gray-400 hover:text-white underline">
+            For SME
+          </Link>
+          <Link to="/warehouse-management-system" className="block text-gray-400 hover:text-white underline">
+            Warehouse Management
+          </Link>
+          <Link to="/best-inventory-management-software" className="block text-gray-400 hover:text-white underline">
+            Best Inventory Software
+          </Link>
+          <Link to="/inventory-software-for-small-business" className="block text-gray-400 hover:text-white underline">
+            For Small Business
+          </Link>
+        </div>
+      </div>
       
       {/* Legal & Company Links */}
       <div>
