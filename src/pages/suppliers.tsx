@@ -3,7 +3,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Plus, Edit, Trash2, Truck, Mail, Phone, MapPin, Package, Tag, Search, Upload, Download, CheckSquare, Square, Loader2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
@@ -172,12 +171,12 @@ export default function SuppliersPage() {
 
   const handleAddSupplier = async () => {
     if (!formData.name.trim()) {
-      toast.error('Leverancier naam is verplicht');
+      toast.error('Supplier name is required');
       return;
     }
 
     if (!user) {
-      toast.error('Je moet ingelogd zijn om leveranciers toe te voegen');
+      toast.error('You must be logged in to add suppliers');
       return;
     }
 
@@ -201,23 +200,23 @@ export default function SuppliersPage() {
 
       if (error) {
         console.error('Error adding supplier:', error);
-        toast.error(`Fout bij het toevoegen van leverancier: ${error.message}`);
+        toast.error(`Error adding supplier: ${error.message}`);
         return;
       }
 
-      toast.success('Leverancier succesvol toegevoegd!');
+      toast.success('Supplier successfully added!');
       setShowAddModal(false);
       setFormData({ name: '', email: '', phone: '', mobile: '', address: '', company: '', municipality: '', group: '', peppol_enabled: false });
       queryClient.invalidateQueries({ queryKey: ['suppliers', user.id] });
     } catch (error) {
       console.error('Error adding supplier:', error);
-      toast.error('Onverwachte fout bij het toevoegen van leverancier');
+      toast.error('Unexpected error adding supplier');
     }
   };
 
   const handleEditSupplier = async () => {
     if (!selectedSupplier || !formData.name.trim()) {
-      toast.error('Leverancier naam is verplicht');
+      toast.error('Supplier name is required');
       return;
     }
 
@@ -239,18 +238,18 @@ export default function SuppliersPage() {
 
       if (error) {
         console.error('Error updating supplier:', error);
-        toast.error(`Fout bij het bijwerken van leverancier: ${error.message}`);
+        toast.error(`Error updating supplier: ${error.message}`);
         return;
       }
 
-      toast.success('Leverancier succesvol bijgewerkt!');
+      toast.success('Supplier successfully updated!');
       setShowEditModal(false);
       setSelectedSupplier(null);
       setFormData({ name: '', email: '', phone: '', mobile: '', address: '', company: '', municipality: '', group: '', peppol_enabled: false });
       queryClient.invalidateQueries({ queryKey: ['suppliers', user.id] });
     } catch (error) {
       console.error('Error updating supplier:', error);
-      toast.error('Onverwachte fout bij het bijwerken van leverancier');
+      toast.error('Unexpected error updating supplier');
     }
   };
 
@@ -267,12 +266,12 @@ export default function SuppliersPage() {
 
       if (checkError) {
         console.error('Error checking supplier usage:', checkError);
-        toast.error('Fout bij het controleren van leverancier gebruik');
+        toast.error('Error checking supplier usage');
         return;
       }
 
       if (productsUsingSupplier && productsUsingSupplier.length > 0) {
-        toast.error('Deze leverancier kan niet worden verwijderd omdat er producten aan gekoppeld zijn');
+        toast.error('This supplier cannot be deleted because it is associated with products');
         setShowDeleteModal(false);
         setSelectedSupplier(null);
         return;
@@ -285,17 +284,17 @@ export default function SuppliersPage() {
 
       if (error) {
         console.error('Error deleting supplier:', error);
-        toast.error(`Fout bij het verwijderen van leverancier: ${error.message}`);
+          toast.error(`Error deleting supplier: ${error.message}`);
         return;
       }
 
-      toast.success('Leverancier succesvol verwijderd!');
+      toast.success('Supplier successfully deleted!');
       setShowDeleteModal(false);
       setSelectedSupplier(null);
       queryClient.invalidateQueries({ queryKey: ['suppliers', user.id] });
     } catch (error) {
       console.error('Error deleting supplier:', error);
-      toast.error('Onverwachte fout bij het verwijderen van leverancier');
+      toast.error('Unexpected error deleting supplier');
     }
   };
 
@@ -358,20 +357,13 @@ export default function SuppliersPage() {
     }
   };
 
-  const handleMergeSuppliers = () => {
-    if (selectedSuppliers.length < 2) {
-      toast.error('Selecteer minimaal 2 leveranciers om samen te voegen');
-      return;
-    }
-    // TODO: Implement merge functionality
-    toast.info('Merge functionaliteit wordt binnenkort toegevoegd');
-  };
+
 
   if (!user) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
-          <p className="text-gray-600">U bent niet ingelogd</p>
+          <p className="text-gray-600">You are not logged in</p>
         </div>
       </div>
     );
@@ -394,7 +386,7 @@ export default function SuppliersPage() {
                   }`}
                 >
                   <Package className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">Producten</span>
+                  <span className="hidden sm:inline">Products</span>
                   <span className="sm:hidden">Prod</span>
                 </button>
                 <button
@@ -406,7 +398,7 @@ export default function SuppliersPage() {
                   }`}
                 >
                   <Tag className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">Categoryën</span>
+                  <span className="hidden sm:inline">Categories</span>
                   <span className="sm:hidden">Cat</span>
                 </button>
                 <button
@@ -418,8 +410,8 @@ export default function SuppliersPage() {
                   }`}
                 >
                   <Truck className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">Leveranciers</span>
-                  <span className="sm:hidden">Lev</span>
+                  <span className="hidden sm:inline">Suppliers</span>
+                  <span className="sm:hidden">Sup</span>
                 </button>
               </div>
             </div>
@@ -428,56 +420,53 @@ export default function SuppliersPage() {
 
         {/* Header Section */}
         <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-gray-100 rounded flex items-center justify-center">
-              <Package className="w-4 h-4 text-gray-600" />
-            </div>
-            <h1 className="text-2xl font-bold text-gray-900">Leveranciers</h1>
-          </div>
+        {/* Header */}
+        <div className={`${isMobile ? 'mb-6' : 'mb-8'}`}>
+          <h1 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-gray-900 mb-2`}>
+            Manage Suppliers
+          </h1>
+          <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600`}>
+            Manage your suppliers for better organization of your stock
+          </p>
+        </div>
           <div className="flex gap-2">
             <Button 
               variant="outline"
-              className="text-red-600 border-red-200 hover:bg-red-50"
+              className="text-blue-600 border-blue-200 hover:bg-blue-50"
             >
               <Upload className="w-4 h-4 mr-2" />
-              Importeren
+              Import
             </Button>
             <Button 
               variant="outline"
-              className="text-red-600 border-red-200 hover:bg-red-50"
+              className="text-blue-600 border-blue-200 hover:bg-blue-50"
             >
               <Download className="w-4 h-4 mr-2" />
-              Exporteren
+              Export
             </Button>
             <Button 
               onClick={() => setShowAddModal(true)}
-              className="bg-red-600 hover:bg-red-700 text-white"
+              className="bg-blue-600 hover:bg-blue-700 text-white"
             >
               <Plus className="w-4 h-4 mr-2" />
-              Toevoegen
+              Add
             </Button>
           </div>
         </div>
 
         {/* Search Section */}
         <div className="bg-white rounded-lg border border-gray-200 p-4 mb-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">OVERZICHT</h2>
           <div className="flex gap-4 items-center">
             <div className="flex-1 relative">
               <Input
-                placeholder="Zoeken"
+                placeholder="Search"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pr-10"
               />
               <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
             </div>
-            <Button 
-              onClick={handleMergeSuppliers}
-              className="bg-red-600 hover:bg-red-700 text-white"
-            >
-              Samenvoegen
-            </Button>
+
           </div>
         </div>
 
@@ -486,23 +475,23 @@ export default function SuppliersPage() {
           {loading ? (
             <div className="p-8 text-center">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-              <p className="text-gray-600">Suppliers loading...</p>
+              <p className="text-gray-600">Loading suppliers...</p>
             </div>
           ) : filteredSuppliers.length === 0 ? (
             <div className="p-8 text-center">
               <Truck className="w-12 h-12 text-gray-400 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-gray-900 mb-2">
-                No suppliers
+                No suppliers found
               </h3>
               <p className="text-base text-gray-600 mb-4">
                 You have no suppliers yet. Create your first supplier to get started.
               </p>
               <Button 
                 onClick={() => setShowAddModal(true)}
-                className="bg-red-600 hover:bg-red-700 text-white"
+                className="bg-blue-600 hover:bg-blue-700 text-white"
               >
                 <Plus className="w-4 h-4 mr-2" />
-                First Supplier
+                Add Supplier
               </Button>
             </div>
           ) : (
@@ -522,17 +511,9 @@ export default function SuppliersPage() {
                         )}
                       </button>
                     </th>
-                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-900">Nr</th>
-                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-900">Naam</th>
-                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-900">Bedrijf</th>
-                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-900">Contact</th>
-                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-900">Gemeente</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-900">Name</th>
                     <th className="px-4 py-3 text-left text-sm font-medium text-gray-900">E-mail</th>
-                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-900">Telefoon</th>
-                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-900">Mobiel</th>
-                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-900">Groep</th>
-                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-900">Verstuurt via Peppol</th>
-                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-900">Acties</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-900">Phone</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
@@ -550,26 +531,15 @@ export default function SuppliersPage() {
                           )}
                         </button>
                       </td>
-                      <td className="px-4 py-3 text-sm text-gray-900">{index + 1}</td>
                       <td className="px-4 py-3 text-sm text-gray-900 font-medium">{supplier.name}</td>
-                      <td className="px-4 py-3 text-sm text-gray-900">{supplier.company || '-'}</td>
-                      <td className="px-4 py-3 text-sm text-gray-900">{supplier.name}</td>
-                      <td className="px-4 py-3 text-sm text-gray-900">{supplier.municipality || '-'}</td>
                       <td className="px-4 py-3 text-sm text-gray-900">{supplier.email || '-'}</td>
                       <td className="px-4 py-3 text-sm text-gray-900">{supplier.phone || '-'}</td>
-                      <td className="px-4 py-3 text-sm text-gray-900">{supplier.mobile || '-'}</td>
-                      <td className="px-4 py-3 text-sm text-gray-900">{supplier.group || '-'}</td>
-                      <td className="px-4 py-3 text-sm text-gray-900">
-                        <div className="flex items-center">
-                          <Loader2 className="w-4 h-4 text-gray-400 animate-spin" />
-                        </div>
-                      </td>
                       <td className="px-4 py-3">
                         <Button
                           variant="outline"
                           size="sm"
                           onClick={() => openEditModal(supplier)}
-                          className="bg-red-600 hover:bg-red-700 text-white border-red-600"
+                          className="bg-blue-600 hover:bg-blue-700 text-white border-blue-600"
                         >
                           <Edit className="w-4 h-4" />
                         </Button>
@@ -587,17 +557,17 @@ export default function SuppliersPage() {
       <Dialog open={showAddModal} onOpenChange={setShowAddModal}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
-            <DialogTitle>Add New Supplier</DialogTitle>
+            <DialogTitle>Add Supplier</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="name">Supplier Name *</Label>
+                <Label htmlFor="name">Supplier Name</Label>
                 <Input
                   id="name"
                   value={formData.name}
                   onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                  placeholder="Name of the supplier"
+                  placeholder="Supplier name"
                 />
               </div>
               <div>
@@ -689,7 +659,7 @@ export default function SuppliersPage() {
             <Button variant="outline" onClick={() => setShowAddModal(false)}>
               Cancel
             </Button>
-            <Button onClick={handleAddSupplier} className="bg-red-600 hover:bg-red-700 text-white">
+            <Button onClick={handleAddSupplier} className="bg-blue-600 hover:bg-blue-700 text-white">
               Add Supplier
             </Button>
           </DialogFooter>
@@ -802,7 +772,7 @@ export default function SuppliersPage() {
             <Button variant="outline" onClick={() => setShowEditModal(false)}>
               Cancel
             </Button>
-            <Button onClick={handleEditSupplier} className="bg-red-600 hover:bg-red-700 text-white">
+            <Button onClick={handleEditSupplier} className="bg-blue-600 hover:bg-blue-700 text-white">
               Save Changes
             </Button>
           </DialogFooter>
@@ -832,7 +802,7 @@ export default function SuppliersPage() {
             <Button 
               variant="destructive" 
               onClick={handleDeleteSupplier}
-              className="bg-red-600 hover:bg-red-700"
+              className="bg-blue-600 hover:bg-blue-700"
             >
               Delete
             </Button>
