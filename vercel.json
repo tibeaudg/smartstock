@@ -20,10 +20,10 @@
     }
   ],
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/$1" },
+    { "source": "/api/:path*", "destination": "/api/:path*" },
     { "source": "/sitemap.xml", "destination": "/api/sitemap" },
     { "source": "/ads.txt", "destination": "/api/ads" },
-    { "source": "/((?!api/).*)", "destination": "/index.html" }
+    { "source": "/:path((?!api).*)", "destination": "/index.html" }
   ],
   "headers": [
     {
@@ -40,7 +40,7 @@
       ]
     },
     {
-      "source": "/(.*).css",
+      "source": "/:path*.css",
       "headers": [
         {
           "key": "Content-Type",
@@ -53,7 +53,7 @@
       ]
     },
     {
-      "source": "/(.*).js",
+      "source": "/:path*.js",
       "headers": [
         {
           "key": "Content-Type",
@@ -66,7 +66,7 @@
       ]
     },
     {
-      "source": "/assets/(.*)",
+      "source": "/assets/:path*",
       "headers": [
         {
           "key": "Cache-Control",
@@ -79,7 +79,7 @@
       ]
     },
     {
-      "source": "/(.*).webp",
+      "source": "/:path*.webp",
       "headers": [
         {
           "key": "Cache-Control",
@@ -92,7 +92,7 @@
       ]
     },
     {
-      "source": "/(.*).avif",
+      "source": "/:path*.avif",
       "headers": [
         {
           "key": "Cache-Control",
@@ -105,7 +105,7 @@
       ]
     },
     {
-      "source": "/(.*)",
+      "source": "/:path*",
       "headers": [
         {
           "key": "Content-Security-Policy",
