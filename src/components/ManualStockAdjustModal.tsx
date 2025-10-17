@@ -90,11 +90,11 @@ export const ManualStockAdjustModal = ({
 
   const fetchProducts = useCallback(async () => {
     if (!activeBranch) {
-      console.log('No active branch found');
+      
       return;
     }
     
-    console.log('Fetching products for branch:', activeBranch.branch_id);
+    
     
     try {
       const { data, error } = await supabase
@@ -109,7 +109,7 @@ export const ManualStockAdjustModal = ({
         return;
       }
       
-      console.log('Fetched products:', data?.length || 0);
+      
       setProducts(data || []);
     } catch (error) {
       console.error('Error fetching products:', error);

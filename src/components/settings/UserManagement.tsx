@@ -154,9 +154,19 @@ export const UserManagement = () => {
     staleTime: 1000 * 60 * 2,
   });
 
-  // Real-time updates voor gebruikers
+  // Real-time updates voor gebruikers - throttled to prevent excessive updates
   useEffect(() => {
     if (!user?.id || !selectedBranchId) return;
+
+    let timeoutId: NodeJS.Timeout;
+    
+    const throttledInvalidate = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        queryClient.invalidateQueries({ queryKey: ['branchUsers', selectedBranchId] });
+        queryClient.invalidateQueries({ queryKey: ['pricingInfo', user.id] });
+      }, 1000); // Throttle to max 1 update per second
+    };
 
     const usersChannel = supabase
       .channel('branch-users-changes-' + selectedBranchId)
@@ -168,11 +178,7 @@ export const UserManagement = () => {
           table: 'branch_users',
           filter: `branch_id=eq.${selectedBranchId}`,
         },
-        () => {
-          console.log('Branch user change detected, refresh users...');
-          queryClient.invalidateQueries({ queryKey: ['branchUsers', selectedBranchId] });
-          queryClient.invalidateQueries({ queryKey: ['pricingInfo', user.id] });
-        }
+        throttledInvalidate
       )
       .on(
         'postgres_changes',
@@ -181,15 +187,12 @@ export const UserManagement = () => {
           schema: 'public',
           table: 'profiles',
         },
-        () => {
-          console.log('Profile change detected, refresh users...');
-          queryClient.invalidateQueries({ queryKey: ['branchUsers', selectedBranchId] });
-          queryClient.invalidateQueries({ queryKey: ['pricingInfo', user.id] });
-        }
+        throttledInvalidate
       )
       .subscribe();
 
     return () => {
+      clearTimeout(timeoutId);
       supabase.removeChannel(usersChannel);
     };
   }, [user?.id, selectedBranchId, queryClient]);

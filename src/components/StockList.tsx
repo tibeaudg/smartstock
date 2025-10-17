@@ -1217,7 +1217,6 @@ const MobileProductCard: React.FC<MobileProductCardProps> = ({
 
 const fetchProducts = async (branchId: string) => {
   try {
-    console.log('fetchProducts called with branchId:', branchId);
     
     // Haal eerst de producten op
     const { data: products, error: productsError } = await supabase
@@ -1309,18 +1308,6 @@ const fetchProducts = async (branchId: string) => {
       supplier_name: product.supplier_id ? suppliers[product.supplier_id] || null : null
     }));
     
-    console.log(`Fetched ${transformedData.length || 0} products for branch:`, { 
-      branchId,
-      totalProducts: transformedData.length || 0,
-      firstProduct: transformedData[0] ? {
-        id: transformedData[0].id,
-        name: transformedData[0].name,
-        category_id: transformedData[0].category_id,
-        supplier_id: transformedData[0].supplier_id,
-        category_name: transformedData[0].category_name,
-        supplier_name: transformedData[0].supplier_name
-      } : null
-    });
     return transformedData;
   } catch (error) {
     console.error('Error in fetchProducts:', error);
@@ -1469,14 +1456,12 @@ export const StockList = () => {
 
   // Check for filters from navigation state
   useEffect(() => {
-    console.log('📍 Location state changed:', location.state);
     if (location.state && Object.keys(location.state).length > 0) {
       const { filterType, filterValue, filterName } = location.state;
-      console.log('⚙️ Processing filter:', { filterType, filterValue, filterName });
       
       // Use a callback approach to ensure state updates are applied correctly
       if (filterType === 'category' && filterValue) {
-        console.log('🏷️ Setting category filter:', filterValue, filterName);
+        
         
         // Batch all state updates together
         Promise.resolve().then(() => {
@@ -1499,7 +1484,7 @@ export const StockList = () => {
         });
         
       } else if (filterType === 'supplier' && filterValue) {
-        console.log('🚚 Setting supplier filter:', filterValue, filterName);
+        
         
         // Batch all state updates together
         Promise.resolve().then(() => {
@@ -1524,7 +1509,7 @@ export const StockList = () => {
       
       // Clear navigation state after a longer delay to ensure filters are applied
       setTimeout(() => {
-        console.log('🧹 Clearing navigation state');
+        
         navigate(location.pathname, { replace: true, state: {} });
       }, 1000);
     }
@@ -1540,10 +1525,10 @@ export const StockList = () => {
     
     // Log wanneer filters daadwerkelijk worden toegepast
     if (filters.categoryFilter !== 'all' && filters.categoryFilter !== '') {
-      console.log('✅ Category filter applied:', filters.categoryFilter, categoryFilterName);
+      
     }
     if (filters.supplierFilter !== 'all' && filters.supplierFilter !== '') {
-      console.log('✅ Supplier filter applied:', filters.supplierFilter, supplierFilterName);
+      
     }
   }, [filters, categoryFilterName, supplierFilterName]);
 
@@ -1555,9 +1540,9 @@ export const StockList = () => {
       // Check if filters are actually set after a delay
       setTimeout(() => {
         if (filterType === 'category' && filters.categoryFilter === filterValue) {
-          console.log('🎯 Category filter successfully applied!');
+          
         } else if (filterType === 'supplier' && filters.supplierFilter === filterValue) {
-          console.log('🎯 Supplier filter successfully applied!');
+          
         } else {
           console.log('❌ Filter not applied correctly:', {
             filterType,
@@ -1717,9 +1702,18 @@ export const StockList = () => {
     },
   });
 
-  // Real-time updates voor producten
+  // Real-time updates voor producten - throttled to prevent excessive updates
   useEffect(() => {
     if (!user?.id || !activeBranch?.branch_id) return;
+
+    let timeoutId: NodeJS.Timeout;
+    
+    const throttledInvalidate = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        queryClient.invalidateQueries({ queryKey: ['products', activeBranch.branch_id] });
+      }, 1000); // Throttle to max 1 update per second
+    };
 
     const productsChannel = supabase
       .channel('products-changes-' + activeBranch.branch_id)
@@ -1731,10 +1725,7 @@ export const StockList = () => {
           table: 'products',
           filter: `branch_id=eq.${activeBranch.branch_id}`,
         },
-        () => {
-          console.log('Product wijziging gedetecteerd, refresh producten...');
-          queryClient.invalidateQueries({ queryKey: ['products', activeBranch.branch_id] });
-        }
+        throttledInvalidate
       )
       .on(
         'postgres_changes',
@@ -1744,14 +1735,12 @@ export const StockList = () => {
           table: 'stock_transactions',
           filter: `branch_id=eq.${activeBranch.branch_id}`,
         },
-        () => {
-          console.log('Stock transaction wijziging gedetecteerd, refresh producten...');
-          queryClient.invalidateQueries({ queryKey: ['products', activeBranch.branch_id] });
-        }
+        throttledInvalidate
       )
       .subscribe();
 
     return () => {
+      clearTimeout(timeoutId);
       supabase.removeChannel(productsChannel);
     };
   }, [user?.id, activeBranch?.branch_id, queryClient]);
@@ -1858,17 +1847,17 @@ export const StockList = () => {
              matchesFavorites && matchesMinPrice && matchesMaxPrice && matchesMinStock && matchesMaxStock && matchesAttributes;
     });
     
-    console.log(`📊 Filtering result: ${filtered.length} products match filters out of ${productsTyped.length} total`);
+    
     
     // Log detailed filtering info
     if (filters.categoryFilter !== 'all' && filters.categoryFilter !== '') {
       const categoryProducts = productsTyped.filter(p => p.category_id === filters.categoryFilter);
-      console.log(`🎯 Products with category ${filters.categoryFilter}:`, categoryProducts.map(p => ({ name: p.name, category_id: p.category_id })));
+      
     }
     
     if (filters.supplierFilter !== 'all' && filters.supplierFilter !== '') {
       const supplierProducts = productsTyped.filter(p => p.supplier_id === filters.supplierFilter);
-      console.log(`🎯 Products with supplier ${filters.supplierFilter}:`, supplierProducts.map(p => ({ name: p.name, supplier_id: p.supplier_id })));
+      
     }
     
     return filtered;
@@ -2318,14 +2307,14 @@ export const StockList = () => {
 
   // Test functie voor filters
   const testFilters = () => {
-    console.log('🧪 Testing filters...');
+    
     console.log('Current filters:', {
       filters,
       categoryFilterName,
       supplierFilterName
     });
-    console.log('Available categories:', categories);
-    console.log('Available suppliers:', suppliers);
+    
+    
     console.log('Products:', productsTyped.map(p => ({
       id: p.id,
       name: p.name,
@@ -2338,22 +2327,22 @@ export const StockList = () => {
     // Test filtering logic
     if (filters.categoryFilter !== 'all' && filters.categoryFilter !== '') {
       const matchingProducts = productsTyped.filter(p => p.category_id === filters.categoryFilter);
-      console.log(`🎯 Products matching category ${filters.categoryFilter}:`, matchingProducts.length);
+      
       matchingProducts.forEach(p => {
-        console.log(`  - ${p.name} (category_id: ${p.category_id})`);
+        
       });
       
       // Test if the filter is working correctly
       const allProducts = productsTyped.length;
       const filteredCount = matchingProducts.length;
-      console.log(`🔍 Filter effectiveness: ${filteredCount}/${allProducts} products shown`);
+      
     }
     
     if (filters.supplierFilter !== 'all' && filters.supplierFilter !== '') {
       const matchingProducts = productsTyped.filter(p => p.supplier_id === filters.supplierFilter);
-      console.log(`🎯 Products matching supplier ${filters.supplierFilter}:`, matchingProducts.length);
+      
       matchingProducts.forEach(p => {
-        console.log(`  - ${p.name} (supplier_id: ${p.supplier_id})`);
+        
       });
     }
   };
@@ -2361,7 +2350,7 @@ export const StockList = () => {
   // Debug effect voor filters
   useEffect(() => {
     if (location.pathname.includes('/stock')) {
-      console.log('🔍 Stock page detected, running test filters...');
+      
       testFilters();
     }
   }, [location.pathname, filters.categoryFilter, filters.supplierFilter, filters.searchTerm, productsTyped]);

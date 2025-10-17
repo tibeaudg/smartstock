@@ -109,8 +109,10 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, preFilledSKU 
   }, [preFilledSKU, isOpen]);
 
 
-  // Check for duplicate product name
+  // Check for duplicate product name - debounced to prevent excessive API calls
   useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+    
     const checkDuplicate = async () => {
       const name = form.getValues('name').trim();
       if (!name) {
@@ -135,15 +137,23 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, preFilledSKU 
       }
     };
 
+    const debouncedCheckDuplicate = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(checkDuplicate, 500); // Debounce for 500ms
+    };
+
     const subscription = form.watch((value, { name }) => {
       if (name === 'name') {
-        checkDuplicate();
+        debouncedCheckDuplicate();
       }
     });
 
-    return () => subscription.unsubscribe?.();
+    return () => {
+      clearTimeout(timeoutId);
+      subscription.unsubscribe?.();
+    };
      
-  }, [form, activeBranch]);
+  }, [form, activeBranch, hasVariants]);
 
   // Haal Categoryën en leveranciers op
   useEffect(() => {
