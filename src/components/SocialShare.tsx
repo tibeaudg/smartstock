@@ -23,7 +23,7 @@ interface SocialShareProps {
 
 export const SocialShare: React.FC<SocialShareProps> = ({
   url = window.location.href,
-  title = 'StockFlow - Free Inventory Management Software',
+  title = 'StockFlow - Cloud-based Inventory Management Platform',
   description = 'Manage your inventory easily, quickly and smartly with StockFlow. Free for SMEs.',
   image = 'https://www.stockflow.be/Inventory-Management.png',
   className = '',

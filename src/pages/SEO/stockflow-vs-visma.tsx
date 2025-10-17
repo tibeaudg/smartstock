@@ -101,7 +101,7 @@ export default function StockFlowVsVisma() {
 
   const softwareSchema = generateSoftwareApplicationSchema({
     name: 'StockFlow - Inventory Management',
-    description: 'Free inventory management software for Belgian and Dutch SMEs',
+    description: 'Cloud-based Inventory Management Platform for Belgian and Dutch SMEs',
     category: 'BusinessApplication',
     operatingSystem: 'Web Browser, iOS, Android',
     price: '0',

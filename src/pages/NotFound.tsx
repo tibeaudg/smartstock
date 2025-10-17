@@ -116,7 +116,7 @@ const NotFound = () => {
           "name": "What is StockFlow?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "StockFlow is a free inventory management software designed specifically for SMEs to track stock levels, manage inventory, and optimize business operations.",
+            "text": "StockFlow is a Cloud-based Inventory Management Platform designed specifically for SMEs to track stock levels, manage inventory, and optimize business operations.",
             "author": {
               "@type": "Organization",
               "name": "StockFlow"

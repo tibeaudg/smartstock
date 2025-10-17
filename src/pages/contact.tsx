@@ -284,7 +284,7 @@ export default function ContactPage() {
                 decoding="async"
               />
               <p className="text-gray-400 text-base md:text-lg mb-6 leading-relaxed max-w-2xl">
-                The best free inventory management software for SMEs. 
+                The best Cloud-based Inventory Management Platform for SMEs. 
                 Simple, secure and without hidden costs.
               </p>
               <div className="flex space-x-4">

@@ -17,7 +17,7 @@ interface SEOProps {
 }
 
 const defaultTitle = 'StockFlow - Smart Inventory Management';
-const defaultDescription = 'Manage your inventory easily, quickly and smartly with StockFlow. Free inventory management software for growing businesses.';
+const defaultDescription = 'Manage your inventory easily, quickly and smartly with StockFlow. Cloud-based Inventory Management Platform for growing businesses.';
 const defaultImage = '/Inventory-Management.png';
 const defaultUrl = 'https://www.stockflow.be';
 
@@ -62,7 +62,7 @@ export const SEO: React.FC<SEOProps> = ({
       <meta property="og:image" content={image} />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
-      <meta property="og:image:alt" content="StockFlow - Free Inventory Management Software for SMEs" />
+      <meta property="og:image:alt" content="StockFlow - Cloud-based Inventory Management Platform for SMEs" />
       <meta property="og:url" content={url} />
       <meta property="og:type" content="website" />
       <meta property="og:locale" content={actualLocale} />
@@ -81,7 +81,7 @@ export const SEO: React.FC<SEOProps> = ({
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={image} />
-      <meta name="twitter:image:alt" content="StockFlow - Free Inventory Management Software for SMEs" />
+      <meta name="twitter:image:alt" content="StockFlow - Cloud-based Inventory Management Platform for SMEs" />
       <meta name="twitter:site" content="@stockflowapp" />
       <meta name="twitter:creator" content="@stockflowapp" />
       <meta name="twitter:domain" content="stockflow.be" />

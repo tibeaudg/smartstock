@@ -19,7 +19,7 @@ export default function FreeInventoryManagement() {
   return (
     <SeoPageLayout title="Free Inventory Management">
       <SEO
-        title="Free Inventory Management Software | StockFlow"
+        title="Cloud-based Inventory Management Platform | StockFlow"
         description="Start with free inventory management. Track up to 30 products at no cost. Upgrade when you grow."
         keywords="free inventory management, free stock software, no cost inventory, free warehouse management"
         url="https://www.stockflow.be/free-inventory-management"

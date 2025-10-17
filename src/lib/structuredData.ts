@@ -87,7 +87,7 @@ export function generateOrganizationSchema(data: OrganizationData) {
       "itemOffered": {
         "@type": "SoftwareApplication",
         "name": `${data.name} Inventory Management`,
-        "description": data.description || "Free inventory management software for small and medium businesses"
+        "description": data.description || "Cloud-based Inventory Management Platform for small and medium businesses"
       },
       "price": "0",
       "priceCurrency": "EUR"
@@ -299,7 +299,7 @@ export function generateLocalBusinessSchema(organizationName: string, baseUrl: s
           "itemOffered": {
             "@type": "Service",
             "name": "Free Inventory Management",
-            "description": "Free inventory management software for small businesses"
+            "description": "Cloud-based Inventory Management Platform for small businesses"
           }
         }
       ]

@@ -102,7 +102,7 @@ export default function Contact() {
         "itemOffered": {
           "@type": "SoftwareApplication",
           "name": "StockFlow Inventory Management",
-          "description": "Free inventory management software for small and medium businesses"
+          "description": "Cloud-based Inventory Management Platform for small and medium businesses"
         },
         "price": "0",
         "priceCurrency": "EUR"
@@ -179,7 +179,7 @@ export default function Contact() {
     <SeoPageLayout title="Contact Us">
       <SEO
         title="Contact StockFlow - Get Support & Sales Information"
-        description="Contact StockFlow for support, sales inquiries, or questions about our free inventory management software. Get help from our expert team and learn how we can help your business grow."
+        description="Contact StockFlow for support, sales inquiries, or questions about our Cloud-based Inventory Management Platform. Get help from our expert team and learn how we can help your business grow."
         keywords="contact stockflow, stockflow support, stockflow sales, inventory management support, stock management support, warehouse management support, inventory software support, stock software support, warehouse software support, business software support, inventory management contact, stock management contact, warehouse management contact, inventory software contact, stock software contact, warehouse software contact, business software contact, inventory management help, stock management help, warehouse management help, inventory software help, stock software help, warehouse software help, business software help, inventory management assistance, stock management assistance, warehouse management assistance, inventory software assistance, stock software assistance, warehouse software assistance, business software assistance"
         url="https://www.stockflow.be/contact"
         structuredData={structuredData}

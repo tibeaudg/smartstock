@@ -41,7 +41,7 @@ const pagesToCreate = [
   {
     filename: 'free-inventory-management.tsx',
     componentName: 'FreeInventoryManagement',
-    title: 'Free Inventory Management Software | StockFlow',
+    title: 'Cloud-based Inventory Management Platform | StockFlow',
     description: 'Start with free inventory management. Track up to 30 products at no cost. Upgrade when you grow.',
     h1: 'Free Inventory Management',
     subtitle: 'Get Started Without Spending a Dollar',

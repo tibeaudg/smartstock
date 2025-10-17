@@ -16,7 +16,7 @@ const Footer = () => {
       "width": 200,
       "height": 60
     },
-    "description": "Free inventory management software for growing businesses in Belgium. Smart stock control and warehouse management solution for SMEs.",
+    "description": "Cloud-based Inventory Management Platform for growing businesses in Belgium. Smart stock control and warehouse management solution for SMEs.",
     "foundingDate": "2024",
     "address": {
       "@type": "PostalAddress",
@@ -64,7 +64,7 @@ const Footer = () => {
         "name": "StockFlow Inventory Management",
         "applicationCategory": "BusinessApplication",
         "operatingSystem": "Web Browser",
-        "description": "Free inventory management software for small and medium businesses"
+        "description": "Cloud-based Inventory Management Platform for small and medium businesses"
       },
       "price": "0",
       "priceCurrency": "EUR",

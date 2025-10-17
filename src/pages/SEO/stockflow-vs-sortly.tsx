@@ -102,7 +102,7 @@ export default function StockFlowVsSortly() {
 
   const softwareSchema = generateSoftwareApplicationSchema({
     name: 'StockFlow - Inventory Management',
-    description: 'Free inventory management software with unlimited users and European data hosting',
+    description: 'Cloud-based Inventory Management Platform with unlimited users and European data hosting',
     category: 'BusinessApplication',
     operatingSystem: 'Web Browser, iOS, Android',
     price: '0',

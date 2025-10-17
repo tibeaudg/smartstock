@@ -9,7 +9,7 @@ export default function About() {
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": "StockFlow",
-    "description": "Leading provider of free inventory management software for small and medium businesses worldwide.",
+    "description": "Leading provider of Cloud-based Inventory Management Platform for small and medium businesses worldwide.",
     "url": "https://www.stockflow.be",
     "logo": "https://www.stockflow.be/logo.png",
     "foundingDate": "2020",
@@ -38,8 +38,8 @@ export default function About() {
   return (
     <SeoPageLayout title="About Us">
       <SEO
-        title="About StockFlow - Free Inventory Management Software for SMEs"
-        description="Learn about StockFlow, the leading provider of free inventory management software for small and medium businesses. Discover our mission, team, and commitment to helping businesses grow."
+        title="About StockFlow - Cloud-based Inventory Management Platform for SMEs"
+        description="Learn about StockFlow, the leading provider of Cloud-based Inventory Management Platform for small and medium businesses. Discover our mission, team, and commitment to helping businesses grow."
         keywords="about stockflow, inventory management company, stock management company, warehouse management company, inventory software company, stock software company, warehouse software company, business software company, inventory management team, stock management team, warehouse management team, inventory software team, stock software team, warehouse software team, business software team, inventory management mission, stock management mission, warehouse management mission, inventory software mission, stock software mission, warehouse software mission, business software mission, inventory management company story, stock management company story, warehouse management company story, inventory software company story, stock software company story, warehouse software company story, business software company story"
         url="https://www.stockflow.be/about"
         structuredData={structuredData}
