@@ -27,8 +27,6 @@ export const StockOperationModal = ({
     onClose();
   };
 
-  if (!isOpen) return null;
-
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className={`${isMobile ? 'w-full max-w-full mx-auto p-0 h-full max-h-full rounded-none' : 'max-w-md mx-auto'}`}>

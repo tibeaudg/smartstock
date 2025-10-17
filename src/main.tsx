@@ -1,32 +1,23 @@
-// Initialize Sentry as early as possible
+// Initialize Trusted Types FIRST, before any other imports
+import { initializeTrustedTypes, initializeDefaultPolicy } from './utils/trustedTypes';
+
+// Initialize Trusted Types policies early
+if (typeof window !== 'undefined') {
+  initializeTrustedTypes();
+  initializeDefaultPolicy();
+}
+
+// Initialize Sentry as early as possible (after Trusted Types)
 import * as Sentry from "@sentry/react";
 
 // Prevent multiple Sentry initializations during HMR (Hot Module Reload)
 if (!(window as any).__SENTRY_INITIALIZED__) {
   try {
-    // Create trusted DSN URL for Sentry
-    let trustedDsn: string | TrustedScriptURL = "https://e491b26fa2d97550098be3eb6fb44715@o4510186798776320.ingest.us.sentry.io/4510186800283648";
-    
-    if (typeof window !== 'undefined' && 'trustedTypes' in window) {
-      try {
-        // Use the existing 'stockflow-scripts' policy which is allowed by CSP
-        const existingPolicy = window.trustedTypes.getExposedPolicy('stockflow-scripts');
-        if (existingPolicy) {
-          trustedDsn = existingPolicy.createScriptURL(trustedDsn as string);
-        } else {
-          // If stockflow-scripts doesn't exist, try the default policy
-          const defaultPolicy = window.trustedTypes.getExposedPolicy('default');
-          if (defaultPolicy) {
-            trustedDsn = defaultPolicy.createScriptURL(trustedDsn as string);
-          }
-        }
-      } catch (e) {
-        console.warn('[Sentry] Trusted Types policy access failed, using fallback');
-      }
-    }
+    // DSN is just a string, not a script URL - no need for Trusted Types
+    const dsn: string = "https://e491b26fa2d97550098be3eb6fb44715@o4510186798776320.ingest.us.sentry.io/4510186800283648";
 
     Sentry.init({
-      dsn: trustedDsn,
+      dsn: dsn,
       // Setting this option to true will send default PII data to Sentry.
       // For example, automatic IP address collection on events
       sendDefaultPii: true,
@@ -71,7 +62,6 @@ import { HelmetProvider } from 'react-helmet-async';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { initializePerformanceOptimizations } from './utils/performanceOptimization';
 import { initPerformanceMonitoring } from './utils/performanceMonitor';
-import { initializeTrustedTypes, initializeDefaultPolicy } from './utils/trustedTypes';
 import { Suspense } from 'react';
 
 // Debug code for tracking React.createContext calls
@@ -129,9 +119,7 @@ async function init() {
     // Safety check: Ensure React and its core APIs are loaded before proceeding
     // Skipping React.createContext check as it's handled by bundler
     
-    // Initialize Trusted Types policies early
-    initializeTrustedTypes();
-    initializeDefaultPolicy();
+    // Trusted Types policies already initialized at top of file
     
     // Initialize performance optimizations
     initializePerformanceOptimizations();

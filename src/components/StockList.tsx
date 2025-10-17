@@ -570,6 +570,7 @@ interface ProductRowProps {
   onDuplicate?: (product: Product) => void;
   onArchive?: (product: Product) => void;
   onMoveToLocation?: (product: Product) => void;
+  rowIndex?: number;
 }
 
 const ProductRow: React.FC<ProductRowProps> = ({
@@ -592,15 +593,22 @@ const ProductRow: React.FC<ProductRowProps> = ({
   onImageUpload,
   onDuplicate,
   onArchive,
-  onMoveToLocation
+  onMoveToLocation,
+  rowIndex = 0
 }) => {
   const stockStatus = getStockStatus(product.quantity_in_stock, product.minimum_stock_level);
   const stockLevelPercentage = getStockLevelPercentage(product.quantity_in_stock, product.minimum_stock_level);
   const variantAttributes = formatVariantAttributes(product.variant_attributes);
 
+  // Determine row background color for alternating pattern
+  const getRowBackgroundColor = () => {
+    if (isVariant) return 'bg-blue-50/30';
+    return rowIndex % 2 === 0 ? 'bg-white' : 'bg-gray-50';
+  };
+
   return (
     <tr 
-      className={`${isVariant ? 'bg-blue-50/30' : 'bg-white'} hover:bg-gray-50 hover:shadow-sm transition-all duration-200 cursor-pointer group`}
+      className={`${getRowBackgroundColor()} hover:bg-gray-100 hover:shadow-sm transition-all duration-200 cursor-pointer group border-b-2 border-gray-100`}
     >
       {/* Selection checkbox */}
       {isAdmin && (
@@ -618,23 +626,6 @@ const ProductRow: React.FC<ProductRowProps> = ({
       {columnVisibility.product && (
         <td className="px-4 py-3">
           <div className="flex items-center gap-3">
-            {/* Detail expand/collapse button */}
-            {!hasChildren && onToggleDetailExpand && (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onToggleDetailExpand();
-                }}
-                className="p-1 flex-shrink-0 hover:bg-gray-100 rounded transition-colors"
-                title="View details"
-              >
-                {isDetailExpanded ? (
-                  <ChevronDown className="w-4 h-4 text-gray-600" />
-                ) : (
-                  <ChevronRight className="w-4 h-4 text-gray-600" />
-                )}
-              </button>
-            )}
             {/* Expand/Collapse indicator for variants */}
             {hasChildren && (
               <button
@@ -737,7 +728,7 @@ const ProductRow: React.FC<ProductRowProps> = ({
         </td>
       )}
 
-      {/* Stock column */}
+      {/* Stock column with Status */}
       {columnVisibility.current && (
         <td className="px-4 py-3 text-center">
           {!hasChildren && (
@@ -758,9 +749,9 @@ const ProductRow: React.FC<ProductRowProps> = ({
                       </span>
                     </div>
                     
-                    {/* Minimum stock info */}
-                    <div className="text-xs text-gray-500">
-                      Min: {product.minimum_stock_level}
+                    {/* Status label */}
+                    <div className="text-xs font-medium text-gray-600">
+                      {stockStatus}
                     </div>
                   </div>
                 </TooltipTrigger>
@@ -778,17 +769,6 @@ const ProductRow: React.FC<ProductRowProps> = ({
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
-          )}
-        </td>
-      )}
-
-      {/* Minimum stock column */}
-      {columnVisibility.minimum && (
-        <td className="px-4 py-3 text-center">
-          {!hasChildren && (
-            <span className="text-sm text-gray-600">
-              {product.minimum_stock_level}
-            </span>
           )}
         </td>
       )}
@@ -841,20 +821,6 @@ const ProductRow: React.FC<ProductRowProps> = ({
                   ${product.sale_price ? Number(product.sale_price).toFixed(2) : '-'}
                 </div>
               )}
-            </div>
-          )}
-        </td>
-      )}
-
-      {/* Status column */}
-      {columnVisibility.status && (
-        <td className="px-4 py-3 text-center">
-          {!hasChildren && (
-            <div className="flex items-center justify-center gap-2">
-              <div className={`w-2 h-2 rounded-full ${getStockStatusDotColor(product.quantity_in_stock, product.minimum_stock_level)}`} />
-              <span className="text-sm font-medium text-gray-700">
-                {stockStatus}
-              </span>
             </div>
           )}
         </td>
@@ -1232,11 +1198,13 @@ const MobileProductCard: React.FC<MobileProductCardProps> = ({
         </div>
       </div>
       
-      {/* Product Detail Drawer */}
-      <MobileProductDetailDrawer
-        product={product}
-        isOpen={isDetailExpanded}
-      />
+      {/* Product Detail Drawer - only show for products with variants */}
+      {hasChildren && (
+        <MobileProductDetailDrawer
+          product={product}
+          isOpen={isDetailExpanded}
+        />
+      )}
     </div>
   );
 };
@@ -1433,13 +1401,11 @@ export const StockList = () => {
   const [columnVisibility, setColumnVisibility] = useState({
     product: true,
     current: true,
-    minimum: true,
     category: true,
     supplier: true,
     location: true,
     purchasePrice: true,
     salePrice: true,
-    status: true,
     actions: true
   });
 
@@ -2002,7 +1968,7 @@ export const StockList = () => {
         product.minimum_stock_level,
         product.purchase_price,
         product.unit_price,
-        product.status || ''
+        getStockStatus(product.quantity_in_stock, product.minimum_stock_level)
       ]);
       
       // Create and download CSV
@@ -2454,12 +2420,7 @@ export const StockList = () => {
                   >
                     Current Stock
                   </DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem
-                    checked={columnVisibility.minimum}
-                    onCheckedChange={() => toggleColumnVisibility('minimum')}
-                  >
-                    Minimum Stock Level
-                  </DropdownMenuCheckboxItem>
+
                   <DropdownMenuCheckboxItem
                     checked={columnVisibility.category}
                     onCheckedChange={() => toggleColumnVisibility('category')}
@@ -2483,12 +2444,6 @@ export const StockList = () => {
                     onCheckedChange={() => toggleColumnVisibility('salePrice')}
                   >
                     Sale Price
-                  </DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem
-                    checked={columnVisibility.status}
-                    onCheckedChange={() => toggleColumnVisibility('status')}
-                  >
-                    Status
                   </DropdownMenuCheckboxItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -2772,7 +2727,7 @@ export const StockList = () => {
                         }}
                         isAdmin={isAdmin}
                         isDetailExpanded={parentDetailExpanded}
-                        onToggleDetailExpand={() => toggleDetailExpand(parent.id)}
+                        onToggleDetailExpand={hasChildren ? () => toggleDetailExpand(parent.id) : undefined}
                         onImageUpload={() => refetch()}
                         onDuplicate={handleDuplicateProduct}
                         onArchive={handleArchiveProduct}
@@ -3026,7 +2981,12 @@ export const StockList = () => {
       {/* Top Right Actions - Compact Header */}
       <div className="flex justify-end items-center gap-2 py-2">
         <Button 
-          onClick={() => setIsStockOperationModalOpen(true)} 
+          onClick={() => {
+            console.log('Scan button clicked');
+            setSelectedAction('in');
+            setSelectedOperationType('scan');
+            setIsScanStockModalOpen(true);
+          }} 
           variant="outline"
           className="h-9"
         >
@@ -3034,7 +2994,12 @@ export const StockList = () => {
           Scan
         </Button>
         <Button 
-          onClick={() => setIsStockOperationModalOpen(true)} 
+          onClick={() => {
+            console.log('Manual button clicked');
+            setSelectedAction('in');
+            setSelectedOperationType('manual');
+            setIsManualStockModalOpen(true);
+          }} 
           className="h-9 bg-blue-600 hover:bg-blue-700 text-white"
         >
           <Plus className="w-4 h-4 mr-2" />
@@ -3211,12 +3176,7 @@ export const StockList = () => {
             >
               Current Stock
             </DropdownMenuCheckboxItem>
-            <DropdownMenuCheckboxItem
-              checked={columnVisibility.minimum}
-              onCheckedChange={() => toggleColumnVisibility('minimum')}
-            >
-              Minimum Stock Level
-            </DropdownMenuCheckboxItem>
+
             <DropdownMenuCheckboxItem
               checked={columnVisibility.category}
               onCheckedChange={() => toggleColumnVisibility('category')}
@@ -3240,12 +3200,6 @@ export const StockList = () => {
               onCheckedChange={() => toggleColumnVisibility('salePrice')}
             >
               Sale Price
-            </DropdownMenuCheckboxItem>
-            <DropdownMenuCheckboxItem
-              checked={columnVisibility.status}
-              onCheckedChange={() => toggleColumnVisibility('status')}
-            >
-              Status
             </DropdownMenuCheckboxItem>
             <DropdownMenuCheckboxItem
               checked={columnVisibility.actions}
@@ -3392,11 +3346,7 @@ export const StockList = () => {
                     Stock Level
                   </th>
                 )}
-                {columnVisibility.minimum && (
-                  <th className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Minimum
-                  </th>
-                )}
+
                 {columnVisibility.category && (
                   <th className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Category
@@ -3412,11 +3362,6 @@ export const StockList = () => {
                     Pricing
                   </th>
                 )}
-                {columnVisibility.status && (
-                  <th className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Status
-                  </th>
-                )}
                 {columnVisibility.actions && (
                   <th className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Actions
@@ -3424,7 +3369,7 @@ export const StockList = () => {
                 )}    
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-white">
               {grouped.parents.length === 0 ? (
                 <tr>
                   <td colSpan={
@@ -3473,7 +3418,7 @@ export const StockList = () => {
                   </td>
                 </tr>
               ) : (
-                grouped.parents.map((parent) => {
+                grouped.parents.map((parent, parentIndex) => {
                   const parentChecked = selectedProductIds.includes(parent.id);
                   const hasChildren = (grouped.children[parent.id]?.length || 0) > 0;
                   const variantCount = grouped.children[parent.id]?.length || 0;
@@ -3505,22 +3450,25 @@ export const StockList = () => {
                         }}
                         isAdmin={isAdmin}
                         isDetailExpanded={parentDetailExpanded}
-                        onToggleDetailExpand={() => toggleDetailExpand(parent.id)}
+                        onToggleDetailExpand={hasChildren ? () => toggleDetailExpand(parent.id) : undefined}
                         onImageUpload={() => refetch()}
                         onDuplicate={handleDuplicateProduct}
                         onArchive={handleArchiveProduct}
                         onMoveToLocation={handleMoveToLocation}
+                        rowIndex={parentIndex}
                       />
                       
-                      {/* Product Detail Drawer for Parent */}
-                      <ProductDetailDrawer
-                        product={parent}
-                        isOpen={parentDetailExpanded}
-                        columnCount={totalColumns}
-                      />
+                      {/* Product Detail Drawer for Parent - only show for products with variants */}
+                      {hasChildren && (
+                        <ProductDetailDrawer
+                          product={parent}
+                          isOpen={parentDetailExpanded}
+                          columnCount={totalColumns}
+                        />
+                      )}
                       
                       {isExpanded && hasChildren && (
-                        grouped.children[parent.id].map((child) => {
+                        grouped.children[parent.id].map((child, childIndex) => {
                           const childChecked = selectedProductIds.includes(child.id);
                           const childDetailExpanded = expandedDetails[child.id] || false;
                           return (
@@ -3547,9 +3495,10 @@ export const StockList = () => {
                                 onDuplicate={handleDuplicateProduct}
                                 onArchive={handleArchiveProduct}
                                 onMoveToLocation={handleMoveToLocation}
+                                rowIndex={parentIndex + childIndex + 1}
                               />
                               
-                              {/* Product Detail Drawer for Variant */}
+                              {/* Product Detail Drawer for Variant - variants always have detail drawer */}
                               <ProductDetailDrawer
                                 product={child}
                                 isOpen={childDetailExpanded}
