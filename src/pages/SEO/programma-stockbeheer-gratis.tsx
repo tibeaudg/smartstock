@@ -467,46 +467,44 @@ export default function ProgrammaStockbeheerGratis() {
         </div>
       </footer>
 
-            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-          ${faqData.map(faq => `{
-            "@type": "Question",
-            "name": "${faq.question}",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "${faq.answer}"
-            }
-          }`).join(',')}
-        ]
-      }`}} />
-
       {/* Schema.org Structured Data */}
       <StructuredData data={[
-        {"@context": "https://schema.org",
-                "@type": "SoftwareApplication",
-                "name": "stockflow - Programma Stockbeheer Gratis",
-                "description": "Het beste programma stockbeheer gratis voor KMO's. Professioneel stockbeheer met real-time rapportages, automatische bestellingen en 100% gratis.",
-                "applicationCategory": "BusinessApplication",
-                "operatingSystem": "Web Browser",
-                "offers": {
-                  "@type": "Offer",
-                  "price": "0",
-                  "priceCurrency": "EUR",
-                  "description": "100% gratis programma stockbeheer voor KMO's"
-                },
-                "aggregateRating": {
-                  "@type": "AggregateRating",
-                  "ratingValue": "4.8",
-                  "ratingCount": "32"
-                },
-                "author": {"@type": "Organization", "name": "stockflow"},
-                "publisher": {"@type": "Organization", "name": "stockflow", "logo": {"@type": "ImageObject", "url": "https://www.stockflow.be/logo.png"}},
-                "image": "https://www.stockflow.be/optimized/desktop.png",
-                "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.stockflow.be/programma-stockbeheer-gratis"}
-              }
-        ]} />
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": faqData.map(faq => ({
+            "@type": "Question",
+            "name": faq.question,
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": faq.answer
+            }
+          }))
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          "name": "stockflow - Programma Stockbeheer Gratis",
+          "description": "Het beste programma stockbeheer gratis voor KMO's. Professioneel stockbeheer met real-time rapportages, automatische bestellingen en 100% gratis.",
+          "applicationCategory": "BusinessApplication",
+          "operatingSystem": "Web Browser",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "EUR",
+            "description": "100% gratis programma stockbeheer voor KMO's"
+          },
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "ratingCount": "32"
+          },
+          "author": {"@type": "Organization", "name": "stockflow"},
+          "publisher": {"@type": "Organization", "name": "stockflow", "logo": {"@type": "ImageObject", "url": "https://www.stockflow.be/logo.png"}},
+          "image": "https://www.stockflow.be/optimized/desktop.png",
+          "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.stockflow.be/programma-stockbeheer-gratis"}
+        }
+      ]} />
     </SeoPageLayout>
   );
 }

@@ -308,46 +308,46 @@ export default function OnlineInventoryManagement() {
         </div>
       </footer>
 
-            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-          ${faqData.map(faq => `{
-            "@type": "Question",
-            "name": "${faq.question}",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "${faq.answer}"
-            }
-          }`).join(',')}
-        ]
-      }`}} />
-
       {/* Schema.org Structured Data */}
       <StructuredData data={[
-        {"@context": "https://schema.org",
-                "@type": "Article",
-                "headline": "Online Inventory Management: Complete Guide 2024",
-                "description": "Discover the best online inventory management solutions for your business. Real-time tracking, automated alerts, and seamless integration. Start free today with stockflow.",
-                "image": "https://www.stockflow.be/optimized/Inventory-Management.png",
-                "author": {
-                  "@type": "Organization",
-                  "name": "stockflow"
-                },
-                "publisher": {
-                  "@type": "Organization",
-                  "name": "stockflow",
-                  "logo": {
-                    "@type": "ImageObject",
-                    "url": "https://www.stockflow.be/logo.png"
-                  }
-                },
-                "mainEntityOfPage": {
-                  "@type": "WebPage",
-                  "@id": "https://www.stockflow.be/online-inventory-management"
-                },
-                "datePublished": "2024-06-01",
-                "dateModified": "2024-12-19"        }      ]} />
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": faqData.map(faq => ({
+            "@type": "Question",
+            "name": faq.question,
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": faq.answer
+            }
+          }))
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "Article",
+          "headline": "Online Inventory Management: Complete Guide 2024",
+          "description": "Discover the best online inventory management solutions for your business. Real-time tracking, automated alerts, and seamless integration. Start free today with stockflow.",
+          "image": "https://www.stockflow.be/optimized/Inventory-Management.png",
+          "author": {
+            "@type": "Organization",
+            "name": "stockflow"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "stockflow",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://www.stockflow.be/logo.png"
+            }
+          },
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://www.stockflow.be/online-inventory-management"
+          },
+          "datePublished": "2024-06-01",
+          "dateModified": "2024-12-19"
+        }
+      ]} />
     </SeoPageLayout>
   );
 }

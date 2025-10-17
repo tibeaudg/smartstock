@@ -784,62 +784,61 @@ export default function VoorraadbeheerSoftware() {
         </div>
       </footer>
 
-            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-          ${faqData.map(faq => `{
-            "@type": "Question",
-            "name": "${faq.question}",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "${faq.answer}"
-            }
-          }`).join(',')}
-        ]
-      }`}} />
-
       {/* Schema.org Structured Data */}
       <StructuredData data={[
-        {"@context": "https://schema.org",
-                "@type": "SoftwareApplication",
-                "name": "stockflow Voorraadbeheer Software",
-                "description": "Complete voorraadbeheer software voor moderne bedrijven. Van KMO tot webshop - beheer je voorraad professioneel.",
-                "applicationCategory": "BusinessApplication",
-                "operatingSystem": "Web, iOS, Android",
-                "offers": {
-                  "@type": "Offer",
-                  "price": "0",
-                  "priceCurrency": "EUR"
-                },
-                "publisher": {
-                  "@type": "Organization",
-                  "name": "stockflow",
-                  "logo": {
-                    "@type": "ImageObject",
-                    "url": "https://www.stockflow.be/logo.png"
-                  }
-                },
-                "url": "https://www.stockflow.be/voorraadbeheer-software"
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": faqData.map(faq => ({
+            "@type": "Question",
+            "name": faq.question,
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": faq.answer
+            }
+          }))
         },
-        {"@context": "https://schema.org",
-                "@type": "BreadcrumbList",
-                "itemListElement": [
-                  {
-                    "@type": "ListItem",
-                    "position": 1,
-                    "name": "Home",
-                    "item": "https://www.stockflow.be"
-                  },
-                  {
-                    "@type": "ListItem",
-                    "position": 2,
-                    "name": "Voorraadbeheer Software",
-                    "item": "https://www.stockflow.be/voorraadbeheer-software"
-                  }
-                ]
-              }
-        ]} />
+        {
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          "name": "stockflow Voorraadbeheer Software",
+          "description": "Complete voorraadbeheer software voor moderne bedrijven. Van KMO tot webshop - beheer je voorraad professioneel.",
+          "applicationCategory": "BusinessApplication",
+          "operatingSystem": "Web, iOS, Android",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "EUR"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "stockflow",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://www.stockflow.be/logo.png"
+            }
+          },
+          "url": "https://www.stockflow.be/voorraadbeheer-software"
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://www.stockflow.be"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Voorraadbeheer Software",
+              "item": "https://www.stockflow.be/voorraadbeheer-software"
+            }
+          ]
+        }
+      ]} />
     </SeoPageLayout>
   );
 }

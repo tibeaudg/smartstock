@@ -228,59 +228,55 @@ export default function StockManagement() {
         </div>
       </section>
 
-      {/* Schema.org Structured Data - FAQ */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": faqData.map(faq => ({
-          "@type": "Question",
-          "name": faq.question,
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": faq.answer
-          }
-        }))
-      })}} />
-
-      {/* Schema.org Structured Data - SoftwareApplication */}
-
       {/* Schema.org Structured Data */}
       <StructuredData data={[
         {
-                "@context": "https://schema.org",
-                "@type": "SoftwareApplication",
-                "name": "StockFlow - Stock Management Software",
-                "description": "Master stock management for your business. Track products, optimize levels, and grow with confidence.",
-                "applicationCategory": "BusinessApplication",
-                "applicationSubCategory": "SaaS",
-                "operatingSystem": "Web Browser",
-                "offers": {
-                  "@type": "Offer",
-                  "price": "0",
-                  "priceCurrency": "EUR",
-                  "availability": "https://schema.org/InStock"
-                },
-                "aggregateRating": {
-                  "@type": "AggregateRating",
-                  "ratingValue": "4.8",
-                  "ratingCount": "32",
-                  "bestRating": "5",
-                  "worstRating": "1"
-                },
-                "author": {
-                  "@type": "Organization",
-                  "name": "StockFlow"
-                },
-                "publisher": {
-                  "@type": "Organization",
-                  "name": "StockFlow",
-                  "logo": {
-                    "@type": "ImageObject",
-                    "url": "https://www.stockflow.be/logo.png"
-                  }
-                },
-                "url": "https://www.stockflow.be/stock-management"
-              }
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": faqData.map(faq => ({
+            "@type": "Question",
+            "name": faq.question,
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": faq.answer
+            }
+          }))
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          "name": "StockFlow - Stock Management Software",
+          "description": "Master stock management for your business. Track products, optimize levels, and grow with confidence.",
+          "applicationCategory": "BusinessApplication",
+          "applicationSubCategory": "SaaS",
+          "operatingSystem": "Web Browser",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "EUR",
+            "availability": "https://schema.org/InStock"
+          },
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "ratingCount": "32",
+            "bestRating": "5",
+            "worstRating": "1"
+          },
+          "author": {
+            "@type": "Organization",
+            "name": "StockFlow"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "StockFlow",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://www.stockflow.be/logo.png"
+            }
+          },
+          "url": "https://www.stockflow.be/stock-management"
+        }
       ]} />
     </SeoPageLayout>
   );

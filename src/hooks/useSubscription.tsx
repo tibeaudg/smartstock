@@ -57,7 +57,7 @@ export const useSubscription = () => {
     queryFn: async () => {
       // Add timeout to prevent hanging requests
       const timeoutPromise = new Promise((_, reject) => {
-        setTimeout(() => reject(new Error('Request timeout')), 8000);
+        setTimeout(() => reject(new Error('Request timeout')), 5000); // Reduced from 8000 to 5000ms
       });
       
       const queryPromise = supabase
@@ -65,10 +65,16 @@ export const useSubscription = () => {
         .select('*')
         .order('price_monthly', { ascending: true });
       
-      const result = await Promise.race([queryPromise, timeoutPromise]) as any;
-      
-      if (result.error) throw result.error;
-      return result.data || [];
+      try {
+        const result = await Promise.race([queryPromise, timeoutPromise]) as any;
+        
+        if (result.error) throw result.error;
+        return result.data || [];
+      } catch (timeoutError) {
+        console.error('Pricing tiers fetch timeout:', timeoutError);
+        // Return empty array instead of throwing to prevent infinite loading
+        return [];
+      }
     },
     staleTime: Infinity, // Never mark as stale - persist until invalidated
     retry: 1, // Only retry once to prevent infinite loops

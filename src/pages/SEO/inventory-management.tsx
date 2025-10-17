@@ -467,23 +467,22 @@ export default function InventoryManagement() {
         </div>
       </footer>
 
-            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-          ${faqData.map(faq => `{
-            "@type": "Question",
-            "name": "${faq.question}",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "${faq.answer}"
-            }
-          }`).join(',')}
-        ]
-      }`}} />
+            
 
       {/* Schema.org Structured Data */}
       <StructuredData data={[
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": faqData.map(faq => ({
+            "@type": "Question",
+            "name": faq.question,
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": faq.answer
+            }
+          }))
+        },
         {"@context": "https://schema.org",
                 "@type": "Article",
                 "headline": "Inventory Management - Complete Guide & Best Practices",

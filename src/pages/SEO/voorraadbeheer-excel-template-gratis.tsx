@@ -314,46 +314,46 @@ export default function VoorraadbeheerExcelTemplateGratis() {
         </div>
       </footer>
 
-            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-          ${faqData.map(faq => `{
-            "@type": "Question",
-            "name": "${faq.question}",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "${faq.answer}"
-            }
-          }`).join(',')}
-        ]
-      }`}} />
-
       {/* Schema.org Structured Data */}
       <StructuredData data={[
-        {"@context": "https://schema.org",
-                "@type": "Article",
-                "headline": "Voorraadbeheer Excel Template Gratis - Download Nu",
-                "description": "Download onze gratis voorraadbeheer excel template. Eenvoudig voorraadbeheer met Excel, automatische berekeningen en bestelpuntmeldingen. Gratis download!",
-                "image": "https://www.stockflow.be/logo.png",
-                "author": {
-                  "@type": "Organization",
-                  "name": "stockflow"
-                },
-                "publisher": {
-                  "@type": "Organization",
-                  "name": "stockflow",
-                  "logo": {
-                    "@type": "ImageObject",
-                    "url": "https://www.stockflow.be/logo.png"
-                  }
-                },
-                "mainEntityOfPage": {
-                  "@type": "WebPage",
-                  "@id": "https://www.stockflow.be/voorraadbeheer-excel-template-gratis"
-                },
-                "datePublished": "2024-06-01",
-                "dateModified": "2024-12-19"        }      ]} />
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": faqData.map(faq => ({
+            "@type": "Question",
+            "name": faq.question,
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": faq.answer
+            }
+          }))
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "Article",
+          "headline": "Voorraadbeheer Excel Template Gratis - Download Nu",
+          "description": "Download onze gratis voorraadbeheer excel template. Eenvoudig voorraadbeheer met Excel, automatische berekeningen en bestelpuntmeldingen. Gratis download!",
+          "image": "https://www.stockflow.be/logo.png",
+          "author": {
+            "@type": "Organization",
+            "name": "stockflow"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "stockflow",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://www.stockflow.be/logo.png"
+            }
+          },
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://www.stockflow.be/voorraadbeheer-excel-template-gratis"
+          },
+          "datePublished": "2024-06-01",
+          "dateModified": "2024-12-19"
+        }
+      ]} />
     </SeoPageLayout>
   );
 }

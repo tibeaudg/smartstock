@@ -280,46 +280,46 @@ export default function VoorraadbeheerTips() {
         </div>
       </footer>
 
-            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-          ${faqData.map(faq => `{
-            "@type": "Question",
-            "name": "${faq.question}",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "${faq.answer}"
-            }
-          }`).join(',')}
-        ]
-      }`}} />
-
       {/* Schema.org Structured Data */}
       <StructuredData data={[
-        {"@context": "https://schema.org",
-                "@type": "Article",
-                "headline": "Voorraadbeheer Tips: 5 Bewezen Strategieën voor KMO's",
-                "description": "Ontdek 5 bewezen voorraadbeheer tips die je vandaag nog kunt toepassen. Bespaar 70% tijd, voorkom tekorten en groei je KMO. Gratis tips van experts.",
-                "image": "https://www.stockflow.be/optimized/Inventory-Management.png",
-                "author": {
-                  "@type": "Organization",
-                  "name": "stockflow"
-                },
-                "publisher": {
-                  "@type": "Organization",
-                  "name": "stockflow",
-                  "logo": {
-                    "@type": "ImageObject",
-                    "url": "https://www.stockflow.be/logo.png"
-                  }
-                },
-                "mainEntityOfPage": {
-                  "@type": "WebPage",
-                  "@id": "https://www.stockflow.be/voorraadbeheer-tips"
-                },
-                "datePublished": "2024-06-01",
-                "dateModified": "2024-12-19"        }      ]} />
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": faqData.map(faq => ({
+            "@type": "Question",
+            "name": faq.question,
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": faq.answer
+            }
+          }))
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "Article",
+          "headline": "Voorraadbeheer Tips: 5 Bewezen Strategieën voor KMO's",
+          "description": "Ontdek 5 bewezen voorraadbeheer tips die je vandaag nog kunt toepassen. Bespaar 70% tijd, voorkom tekorten en groei je KMO. Gratis tips van experts.",
+          "image": "https://www.stockflow.be/optimized/Inventory-Management.png",
+          "author": {
+            "@type": "Organization",
+            "name": "stockflow"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "stockflow",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://www.stockflow.be/logo.png"
+            }
+          },
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://www.stockflow.be/voorraadbeheer-tips"
+          },
+          "datePublished": "2024-06-01",
+          "dateModified": "2024-12-19"
+        }
+      ]} />
     </SeoPageLayout>
    );
  } 

@@ -285,27 +285,25 @@ export default function VoorraadbeheerHoreca() {
         </div>
       </footer>
 
-            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-          ${faqData.map(faq => `{
-            "@type": "Question",
-            "name": "${faq.question}",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "${faq.answer}"
-            }
-          }`).join(',')}
-        ]
-      }`}} />
-
       {/* Schema.org Structured Data */}
       <StructuredData data={[
-        {"@context": "https://schema.org",
-                "@type": "Article",
-                "headline": "Voorraadbeheer voor Horeca | Restaurant & Caf� Stockbeheer",
-                "description": "Voorraadbeheer voor horeca: complete gids voor restaurants, caf�s en bakkers. Ontdek hoe je eenvoudig je horeca voorraad beheert, verspilling voorkomt en voldoet aan voedselveiligheidseisen.",
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": faqData.map(faq => ({
+            "@type": "Question",
+            "name": faq.question,
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": faq.answer
+            }
+          }))
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "Article",
+          "headline": "Voorraadbeheer voor Horeca | Restaurant & Caf� Stockbeheer",
+          "description": "Voorraadbeheer voor horeca: complete gids voor restaurants, caf�s en bakkers. Ontdek hoe je eenvoudig je horeca voorraad beheert, verspilling voorkomt en voldoet aan voedselveiligheidseisen.",
                 "image": "https://www.stockflow.be/optimized/Inventory-Management.png",
                 "author": {
                   "@type": "Organization",

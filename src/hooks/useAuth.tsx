@@ -87,7 +87,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     try {
       // Add timeout to prevent hanging requests
       const timeoutPromise = new Promise((_, reject) => {
-        setTimeout(() => reject(new Error('Request timeout')), 8000);
+        setTimeout(() => reject(new Error('Request timeout')), 5000); // Reduced from 8000 to 5000ms
       });
       
       const queryPromise = supabase
@@ -100,7 +100,22 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
       if (result.error) {
         console.error('Error fetching user profile:', result.error.message);
-        return null;
+        // Return basic profile object as fallback instead of null
+        return {
+          id: userId,
+          email: '',
+          first_name: null,
+          last_name: null,
+          role: 'staff' as const,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+          selected_plan: null,
+          blocked: false,
+          last_login: null,
+          is_owner: false,
+          onboarding_completed: false,
+          onboarding_data: null
+        };
       }
       
       // Als er geen profiel bestaat, maak een basis profiel object

@@ -467,46 +467,44 @@ export default function VoorraadSoftwareGratis() {
         </div>
       </footer>
 
-            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-          ${faqData.map(faq => `{
-            "@type": "Question",
-            "name": "${faq.question}",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "${faq.answer}"
-            }
-          }`).join(',')}
-        ]
-      }`}} />
-
       {/* Schema.org Structured Data */}
       <StructuredData data={[
-        {"@context": "https://schema.org",
-                "@type": "SoftwareApplication",
-                "name": "stockflow - Voorraad Software Gratis",
-                "description": "De beste voorraad software gratis voor KMO's. Professioneel voorraadbeheer met real-time rapportages, automatische bestellingen en 100% gratis.",
-                "applicationCategory": "BusinessApplication",
-                "operatingSystem": "Web Browser",
-                "offers": {
-                  "@type": "Offer",
-                  "price": "0",
-                  "priceCurrency": "EUR",
-                  "description": "100% gratis voorraad software voor KMO's"
-                },
-                "aggregateRating": {
-                  "@type": "AggregateRating",
-                  "ratingValue": "4.8",
-                  "ratingCount": "32"
-                },
-                "author": {"@type": "Organization", "name": "stockflow"},
-                "publisher": {"@type": "Organization", "name": "stockflow", "logo": {"@type": "ImageObject", "url": "https://www.stockflow.be/logo.png"}},
-                "image": "https://www.stockflow.be/optimized/desktop.png",
-                "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.stockflow.be/voorraad-software-gratis"}
-              }
-        ]} />
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": faqData.map(faq => ({
+            "@type": "Question",
+            "name": faq.question,
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": faq.answer
+            }
+          }))
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          "name": "stockflow - Voorraad Software Gratis",
+          "description": "De beste voorraad software gratis voor KMO's. Professioneel voorraadbeheer met real-time rapportages, automatische bestellingen en 100% gratis.",
+          "applicationCategory": "BusinessApplication",
+          "operatingSystem": "Web Browser",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "EUR",
+            "description": "100% gratis voorraad software voor KMO's"
+          },
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "ratingCount": "32"
+          },
+          "author": {"@type": "Organization", "name": "stockflow"},
+          "publisher": {"@type": "Organization", "name": "stockflow", "logo": {"@type": "ImageObject", "url": "https://www.stockflow.be/logo.png"}},
+          "image": "https://www.stockflow.be/optimized/desktop.png",
+          "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.stockflow.be/voorraad-software-gratis"}
+        }
+      ]} />
     </SeoPageLayout>
   );
 }

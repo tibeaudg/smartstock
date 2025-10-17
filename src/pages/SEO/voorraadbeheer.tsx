@@ -269,52 +269,46 @@ export default function VoorraadbeheerSoftware() {
         </div>
       </footer>
 
-
-
-
-
-
-
-            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-          ${faqData.map(faq => `{
-            "@type": "Question",
-            "name": "${faq.question}",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "${faq.answer}"
-            }
-          }`).join(',')}
-        ]
-      }`}} />
-
       {/* Schema.org Structured Data */}
       <StructuredData data={[
-        {"@context": "https://schema.org",
-                "@type": "Article",
-                "headline": "Voorraadbeheer",
-                "description": "Voorraadbeheer: beheer je voorraad eenvoudig via je smartphone of tablet. Ontdek de voordelen van een mobiele voorraadbeheer app.",
-                "image": "https://www.stockflow.be/optimized/Inventory-Management.png",
-                "author": {
-                  "@type": "Organization",
-                  "name": "stockflow"
-                },
-                "publisher": {
-                  "@type": "Organization",
-                  "name": "stockflow",
-                  "logo": {
-                    "@type": "ImageObject",
-                    "url": "https://www.stockflow.be/logo.png"
-                  }
-                },
-                "mainEntityOfPage": {
-                  "@type": "WebPage",
-                  "@id": "https://www.stockflow.be/voorraadbeheer-software"
-                },
-                "datePublished": "2024-06-01",
-                "dateModified": "2024-12-19"        }      ]} />
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": faqData.map(faq => ({
+            "@type": "Question",
+            "name": faq.question,
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": faq.answer
+            }
+          }))
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "Article",
+          "headline": "Voorraadbeheer",
+          "description": "Voorraadbeheer: beheer je voorraad eenvoudig via je smartphone of tablet. Ontdek de voordelen van een mobiele voorraadbeheer app.",
+          "image": "https://www.stockflow.be/optimized/Inventory-Management.png",
+          "author": {
+            "@type": "Organization",
+            "name": "stockflow"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "stockflow",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://www.stockflow.be/logo.png"
+            }
+          },
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://www.stockflow.be/voorraadbeheer-software"
+          },
+          "datePublished": "2024-06-01",
+          "dateModified": "2024-12-19"
+        }
+      ]} />
     </SeoPageLayout>
   );
 } 

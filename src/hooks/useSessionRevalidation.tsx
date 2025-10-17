@@ -26,9 +26,9 @@ export const useSessionRevalidation = (onSessionChange?: (valid: boolean) => voi
       try {
         console.log('[SessionRevalidation] Tab became visible, checking session validity...');
         
-        // Add timeout to prevent hanging
+        // Add timeout to prevent hanging - increased to 10 seconds for slower connections
         const timeoutPromise = new Promise<null>((_, reject) => {
-          setTimeout(() => reject(new Error('Session check timeout')), 3000);
+          setTimeout(() => reject(new Error('Session check timeout')), 10000);
         });
 
         const sessionPromise = supabase.auth.getSession();

@@ -61,9 +61,9 @@ supabase.auth.onAuthStateChange(() => {
 // Export a function to check connection with timeout
 export const checkSupabaseConnection = async () => {
   try {
-    // Create a timeout promise with a more reasonable timeout
+    // Create a shorter timeout for better UX
     const timeoutPromise = new Promise((_, reject) => {
-      setTimeout(() => reject(new Error('Connection timeout')), 10000); // 10 second timeout
+      setTimeout(() => reject(new Error('Connection timeout')), 3000); // 3 second timeout
     });
     
     // Try auth session check (lightest operation, doesn't require database access)
@@ -77,15 +77,15 @@ export const checkSupabaseConnection = async () => {
       // getSession() only requires API access, not database access
       return true;
     } catch (authError) {
-      // Timeout or network error
+      // Timeout or network error - this is expected in offline scenarios
       console.warn('Supabase auth check failed:', authError);
       return false;
     }
   } catch (error) {
     // Unexpected error - log but don't fail the app
     console.warn('Supabase connection test exception:', error);
-    // Return true to allow app to continue - offline mode will handle this
-    return true;
+    // Return false to indicate connection issues - offline mode will handle this
+    return false;
   }
 };
 

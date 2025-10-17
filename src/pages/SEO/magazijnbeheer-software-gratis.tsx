@@ -532,46 +532,44 @@ export default function MagazijnbeheerSoftwareGratis() {
         </div>
       </footer>
 
-            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-          ${faqData.map(faq => `{
-            "@type": "Question",
-            "name": "${faq.question}",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "${faq.answer}"
-            }
-          }`).join(',')}
-        ]
-      }`}} />
-
       {/* Schema.org Structured Data */}
       <StructuredData data={[
-        {"@context": "https://schema.org",
-                "@type": "SoftwareApplication",
-                "name": "stockflow - Magazijnbeheer Software Gratis",
-                "description": "De beste magazijnbeheer software gratis voor KMO's. Professioneel magazijnbeheer met real-time rapportages, Locationsbeheer en 100% gratis.",
-                "applicationCategory": "BusinessApplication",
-                "operatingSystem": "Web Browser",
-                "offers": {
-                  "@type": "Offer",
-                  "price": "0",
-                  "priceCurrency": "EUR",
-                  "description": "100% gratis magazijnbeheer software voor KMO's"
-                },
-                "aggregateRating": {
-                  "@type": "AggregateRating",
-                  "ratingValue": "4.8",
-                  "ratingCount": "32"
-                },
-                "author": {"@type": "Organization", "name": "stockflow"},
-                "publisher": {"@type": "Organization", "name": "stockflow", "logo": {"@type": "ImageObject", "url": "https://www.stockflow.be/logo.png"}},
-                "image": "https://www.stockflow.be/optimized/desktop.png",
-                "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.stockflow.be/magazijnbeheer-software-gratis"}
-              }
-        ]} />
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": faqData.map(faq => ({
+            "@type": "Question",
+            "name": faq.question,
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": faq.answer
+            }
+          }))
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          "name": "stockflow - Magazijnbeheer Software Gratis",
+          "description": "De beste magazijnbeheer software gratis voor KMO's. Professioneel magazijnbeheer met real-time rapportages, Locationsbeheer en 100% gratis.",
+          "applicationCategory": "BusinessApplication",
+          "operatingSystem": "Web Browser",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "EUR",
+            "description": "100% gratis magazijnbeheer software voor KMO's"
+          },
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "ratingCount": "32"
+          },
+          "author": {"@type": "Organization", "name": "stockflow"},
+          "publisher": {"@type": "Organization", "name": "stockflow", "logo": {"@type": "ImageObject", "url": "https://www.stockflow.be/logo.png"}},
+          "image": "https://www.stockflow.be/optimized/desktop.png",
+          "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.stockflow.be/magazijnbeheer-software-gratis"}
+        }
+      ]} />
     </SeoPageLayout>
   );
 }

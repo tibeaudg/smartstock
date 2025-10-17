@@ -87,44 +87,60 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
 
       console.debug('[fetchBranches] Calling get_user_branches RPC for user:', user.id);
       
-      const { data, error } = await supabase.rpc('get_user_branches', {
+      // Add timeout to prevent hanging requests
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error('Request timeout')), 5000);
+      });
+      
+      const rpcPromise = supabase.rpc('get_user_branches', {
         user_id: user.id
       });
 
-      if (error) {
-        console.error('Error fetching branches with RPC, trying direct query:', error);
-        // Fallback: probeer direct de branches tabel te queryen
-        const { data: directData, error: directError } = await supabase
-          .from('branches')
-          .select(`
-            id,
-            name,
-            is_main,
-            user_id,
-            branch_users!inner(role)
-          `)
-          .eq('user_id', user.id);
+      try {
+        const { data, error } = await Promise.race([rpcPromise, timeoutPromise]) as any;
 
-        if (directError) {
-          console.error('Direct query also failed:', directError);
-          throw directError;
+        if (error) {
+          console.error('Error fetching branches with RPC, trying direct query:', error);
+          // Fallback: probeer direct de branches tabel te queryen
+          const { data: directData, error: directError } = await supabase
+            .from('branches')
+            .select(`
+              id,
+              name,
+              is_main,
+              user_id,
+              branch_users!inner(role)
+            `)
+            .eq('user_id', user.id);
+
+          if (directError) {
+            console.error('Direct query also failed:', directError);
+            // Return empty array instead of throwing to prevent infinite loading
+            return [];
+          }
+
+          // Transform direct data to match expected format
+          const transformedData = directData?.map(branch => ({
+            branch_id: branch.id,
+            branch_name: branch.name,
+            is_main: branch.is_main || false,
+            user_role: branch.branch_users?.[0]?.role || 'admin'
+          })) || [];
+
+          return transformedData;
         }
 
-        // Transform direct data to match expected format
-        const transformedData = directData?.map(branch => ({
-          branch_id: branch.id,
-          branch_name: branch.name,
-          is_main: branch.is_main || false,
-          user_role: branch.branch_users?.[0]?.role || 'admin'
-        })) || [];
-
-        return transformedData;
+        return data || [];
+      } catch (timeoutError) {
+        console.error('Branch fetch timeout:', timeoutError);
+        // Return empty array instead of throwing to prevent infinite loading
+        return [];
       }
-
-      return data || [];
     },
     enabled: !!user && !authLoading,
     staleTime: Infinity, // Never stale - data persists until manually invalidated
+    retry: 1, // Only retry once to prevent infinite loops
+    retryDelay: 2000, // 2 second delay between retries
   });
 
   // Computed value for hasNoBranches

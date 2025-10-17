@@ -181,6 +181,22 @@ const AppRouter = () => {
     const { user, loading, userProfile } = useAuth();
     const location = useLocation();
     const [showOnboarding, setShowOnboarding] = useState(false);
+    const [forceRender, setForceRender] = useState(false);
+
+    // Safety timeout - force render after 10 seconds if still loading
+    useEffect(() => {
+      if (loading) {
+        console.warn('[ProtectedRoute] Auth loading detected, starting safety timer');
+        const timeout = setTimeout(() => {
+          console.error('[ProtectedRoute] Auth loading timeout - forcing render');
+          setForceRender(true);
+        }, 10000);
+        
+        return () => clearTimeout(timeout);
+      } else {
+        setForceRender(false);
+      }
+    }, [loading]);
 
     // Debug: log auth state and location
     console.debug('[ProtectedRoute] user:', user);
@@ -192,9 +208,46 @@ const AppRouter = () => {
       return <>{children}</>;
     }
     
-    if (loading) {
+    if (loading && !forceRender) {
       console.debug('[ProtectedRoute] Loading...');
       return <LoadingScreen />;
+    }
+
+    // If we're force rendering due to timeout, show a retry option
+    if (forceRender && loading) {
+      return (
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+          <div className="max-w-md bg-white rounded-lg shadow-lg p-8 text-center">
+            <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg className="h-8 w-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+              </svg>
+            </div>
+            <h2 className="text-xl font-bold text-gray-900 mb-2">Authentication taking longer than expected</h2>
+            <p className="text-gray-600 mb-6">
+              We're having trouble verifying your authentication. This might be due to a slow connection or server issue.
+            </p>
+            <div className="flex gap-3 justify-center">
+              <button
+                onClick={() => window.location.reload()}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium"
+              >
+                Refresh Page
+              </button>
+              <button
+                onClick={() => {
+                  setForceRender(false);
+                  // Force continue to auth page
+                  window.location.href = '/auth';
+                }}
+                className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md font-medium"
+              >
+                Go to Login
+              </button>
+            </div>
+          </div>
+        </div>
+      );
     }
     
     if (!user || !userProfile) {

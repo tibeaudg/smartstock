@@ -147,7 +147,7 @@ async function init() {
     try {
       // Use a shorter timeout for better UX
       const connectionTimeout = new Promise<boolean>((_, reject) => {
-        setTimeout(() => reject(new Error('Supabase connection timeout')), 5000); // 5 second timeout
+        setTimeout(() => reject(new Error('Supabase connection timeout')), 3000); // 3 second timeout
       });
       
       isConnected = await Promise.race([
@@ -159,12 +159,17 @@ async function init() {
         console.log('[StockFlow] Supabase connection successful');
       } else {
         console.warn('[StockFlow] Supabase connection failed, continuing in offline mode');
+        // Set a flag to indicate offline mode
+        (window as any).__STOCKFLOW_OFFLINE__ = true;
       }
     } catch (error: any) {
       console.warn('[StockFlow] Supabase connection error:', error.message);
       console.warn('[StockFlow] Continuing in offline mode - some features may be limited');
       // Don't throw - continue with app initialization
       // The app should work with limited functionality
+      isConnected = false;
+      // Set a flag to indicate offline mode
+      (window as any).__STOCKFLOW_OFFLINE__ = true;
     }
 
     // Create or reuse the root instance

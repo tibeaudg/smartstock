@@ -326,46 +326,46 @@ export default function VoorraadbeheerExcelZelfMaken() {
         </div>
       </footer>
 
-            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: `{
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-          ${faqData.map(faq => `{
-            "@type": "Question",
-            "name": "${faq.question}",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "${faq.answer}"
-            }
-          }`).join(',')}
-        ]
-      }`}} />
-
       {/* Schema.org Structured Data */}
       <StructuredData data={[
-        {"@context": "https://schema.org",
-                "@type": "Article",
-                "headline": "Voorraadbeheer Excel Zelf Maken - Stapsgewijze Handleiding",
-                "description": "Leer hoe je voorraadbeheer excel zelf kunt maken. Stapsgewijze handleiding met formules, functies en templates. Gratis tutorial voor beginners.",
-                "image": "https://www.stockflow.be/logo.png",
-                "author": {
-                  "@type": "Organization",
-                  "name": "stockflow"
-                },
-                "publisher": {
-                  "@type": "Organization",
-                  "name": "stockflow",
-                  "logo": {
-                    "@type": "ImageObject",
-                    "url": "https://www.stockflow.be/logo.png"
-                  }
-                },
-                "mainEntityOfPage": {
-                  "@type": "WebPage",
-                  "@id": "https://www.stockflow.be/voorraadbeheer-excel-zelf-maken"
-                },
-                "datePublished": "2024-06-01",
-                "dateModified": "2024-12-19"        }      ]} />
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": faqData.map(faq => ({
+            "@type": "Question",
+            "name": faq.question,
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": faq.answer
+            }
+          }))
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "Article",
+          "headline": "Voorraadbeheer Excel Zelf Maken - Stapsgewijze Handleiding",
+          "description": "Leer hoe je voorraadbeheer excel zelf kunt maken. Stapsgewijze handleiding met formules, functies en templates. Gratis tutorial voor beginners.",
+          "image": "https://www.stockflow.be/logo.png",
+          "author": {
+            "@type": "Organization",
+            "name": "stockflow"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "stockflow",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://www.stockflow.be/logo.png"
+            }
+          },
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://www.stockflow.be/voorraadbeheer-excel-zelf-maken"
+          },
+          "datePublished": "2024-06-01",
+          "dateModified": "2024-12-19"
+        }
+      ]} />
     </SeoPageLayout>
   );
 }
