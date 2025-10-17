@@ -260,10 +260,10 @@ async function init() {
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 1000 * 60 * 5, // 5 minutes - data is considered fresh for this long
-      gcTime: 1000 * 60 * 30, // 30 minutes - keep unused data in cache
-      refetchOnWindowFocus: false, // Disabled - handled manually by useOptimizedTabSwitching
-      refetchOnMount: false, // Disabled - use cached data when available for better UX
+      staleTime: Infinity, // Never mark data as stale automatically - rely on manual invalidation
+      gcTime: 1000 * 60 * 60 * 24 * 7, // 7 days - keep unused data in cache for a week
+      refetchOnWindowFocus: false, // Disabled - show cached data immediately on focus
+      refetchOnMount: false, // Disabled - use cached data when available for instant loading
       refetchOnReconnect: true, // Always refetch when network reconnects
       retry: (failureCount, error) => {
         // Retry logic: try 3 times, except for 4xx errors

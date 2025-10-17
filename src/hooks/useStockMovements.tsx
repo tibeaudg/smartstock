@@ -84,8 +84,8 @@ export const useStockMovements = () => {
     queryKey: ['stockTransactions', activeBranch?.branch_id, filtersKey],
     queryFn: fetchTransactions,
     enabled: !!user && !!activeBranch,
-    refetchOnWindowFocus: true,
-    staleTime: 1000 * 60 * 2,
+    refetchOnWindowFocus: false, // Disabled - show cached data immediately
+    staleTime: Infinity, // Never mark as stale - persist until invalidated
     onError: (error) => {
       console.error('Stock movements fetch error:', error);
     },

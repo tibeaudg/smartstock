@@ -53,8 +53,6 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
   const { user } = useAuth();
   const { activeBranch } = useBranches();
   const queryClient = useQueryClient();
-  const tabHiddenAtRef = useRef<number | null>(null);
-  const shouldRefetchRef = useRef<boolean>(false);
 
   const fetchDashboardData = async () => {
     if (!user || !activeBranch) throw new Error('Geen gebruiker of filiaal');
@@ -219,37 +217,6 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
     }));
   };
 
-  // Handle tab visibility - determine if refetch is needed
-  useEffect(() => {
-    const handleVisibilityChange = () => {
-      if (document.hidden) {
-        tabHiddenAtRef.current = Date.now();
-      } else if (tabHiddenAtRef.current) {
-        const hiddenDuration = Date.now() - tabHiddenAtRef.current;
-        const hiddenMinutes = hiddenDuration / (1000 * 60);
-        
-        console.log('[useDashboardData] Tab visible after', hiddenMinutes.toFixed(2), 'minutes');
-        
-        // If idle for more than 5 minutes, mark for refetch
-        if (hiddenMinutes > 5) {
-          console.log('[useDashboardData] Long idle detected, marking for refetch...');
-          shouldRefetchRef.current = true;
-          // Invalidate dashboard queries
-          if (activeBranch) {
-            queryClient.invalidateQueries({ 
-              queryKey: ['dashboardData', activeBranch.branch_id, dateFrom, dateTo] 
-            });
-          }
-        }
-        
-        tabHiddenAtRef.current = null;
-      }
-    };
-
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
-  }, [activeBranch, dateFrom, dateTo, queryClient]);
-
   // Real-time updates voor dashboard data
   useEffect(() => {
     if (!user?.id || !activeBranch?.branch_id) return;
@@ -301,10 +268,9 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
     queryKey: ['dashboardData', activeBranch?.branch_id, dateFrom, dateTo],
     queryFn: fetchDashboardData,
     enabled: !!user && !!activeBranch,
-    refetchOnWindowFocus: false, // Disabled for better tab switching performance
-    refetchOnMount: false, // Use cached data when available
-    staleTime: 1000 * 60 * 10, // 10 minutes cache for better performance
-    gcTime: 1000 * 60 * 30, // Keep in cache for 30 minutes
+    refetchOnWindowFocus: false, // Disabled - show cached data immediately
+    refetchOnMount: false, // Use cached data when available for instant loading
+    staleTime: Infinity, // Never mark as stale - data persists until manually invalidated
     // @ts-expect-error: keepPreviousData is supported in v5, type mismatch workaround
     keepPreviousData: true, // Keep previous data while loading new data
     onError: (error) => {
@@ -374,7 +340,7 @@ export const useBasicDashboardMetrics = () => {
       };
     },
     enabled: !!user && !!activeBranch,
-    staleTime: 1000 * 60 * 5, // 5 minutes cache for faster loading
+    staleTime: Infinity, // Never mark as stale - persist until invalidated
     refetchOnWindowFocus: false,
     refetchOnMount: false,
     // @ts-expect-error: keepPreviousData is supported in v5, type mismatch workaround
@@ -428,8 +394,8 @@ export const useProductCount = () => {
     queryKey: ['productCount', activeBranch?.branch_id, user?.id],
     queryFn: fetchProductCount,
     enabled: !!user && !!activeBranch,
-    refetchOnWindowFocus: false, // Disabled for better tab switching performance
-    staleTime: 1000 * 60 * 5, // 5 minutes cache
+    refetchOnWindowFocus: false, // Disabled - show cached data immediately
+    staleTime: Infinity, // Never mark as stale - persist until invalidated
   });
 
   return { productCount: productCount ?? 0, isLoading };

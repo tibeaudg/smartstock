@@ -1,6 +1,7 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './useAuth';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 interface Branch {
   branch_id: string;
@@ -42,9 +43,6 @@ function getSafeLocalStorage() {
 }
 
 const BRANCH_STORAGE_KEY = 'active-branch-id';
-const BRANCHES_CACHE_KEY = 'cached-branches';
-const CACHE_TIMESTAMP_KEY = 'branches-cache-timestamp';
-const CACHE_DURATION = 1000 * 60 * 5; // 5 minutes
 const safeStorage = getSafeLocalStorage();
 
 // Helper: haal branch uit localStorage
@@ -69,209 +67,26 @@ const setBranchIdToStorage = (branchId: string | null) => {
   }
 };
 
-// Helper: get cached branches
-const getCachedBranches = (): Branch[] | null => {
-  try {
-    const cached = safeStorage.getItem(BRANCHES_CACHE_KEY);
-    const timestamp = safeStorage.getItem(CACHE_TIMESTAMP_KEY);
-    
-    if (!cached || !timestamp) return null;
-    
-    const cacheAge = Date.now() - parseInt(timestamp, 10);
-    if (cacheAge > CACHE_DURATION) {
-      // Cache expired
-      return null;
-    }
-    
-    return JSON.parse(cached);
-  } catch {
-    return null;
-  }
-};
-
-// Helper: save branches to cache
-const setCachedBranches = (branches: Branch[]) => {
-  try {
-    safeStorage.setItem(BRANCHES_CACHE_KEY, JSON.stringify(branches));
-    safeStorage.setItem(CACHE_TIMESTAMP_KEY, Date.now().toString());
-  } catch {
-    // Unable to cache branches
-  }
-};
-
-// Helper: clear cached branches
-const clearCachedBranches = () => {
-  try {
-    safeStorage.removeItem(BRANCHES_CACHE_KEY);
-    safeStorage.removeItem(CACHE_TIMESTAMP_KEY);
-  } catch {
-    // Unable to clear cache
-  }
-};
-
-// Verplaats alle state en logica naar binnen in BranchProvider
 export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
   const { user, authLoading } = useAuth();
+  const queryClient = useQueryClient();
   
-  // Initialize with cached data to prevent loading screen on tab switch
-  const cachedBranches = getCachedBranches();
-  const [branches, setBranches] = useState<Branch[]>(cachedBranches || []);
-  const [activeBranch, setActiveBranchState] = useState<Branch | null>(() => {
-    // Try to restore active branch from cache immediately
-    if (cachedBranches && cachedBranches.length > 0) {
-      const storedId = getBranchIdFromStorage();
-      const found = storedId ? cachedBranches.find(b => b.branch_id === storedId) : null;
-      return found || cachedBranches.find(b => b.is_main) || cachedBranches[0];
-    }
-    return null;
-  });
-  
-  // Only show loading on initial load when no cache exists
-  const [loading, setLoading] = useState<boolean>(!cachedBranches);
-  const [hasNoBranches, setHasNoBranches] = useState<boolean>(false);
-  const [hasFetched, setHasFetched] = useState<boolean>(false);
-  const tabHiddenAtRef = React.useRef<number | null>(null);
+  const [activeBranch, setActiveBranchState] = useState<Branch | null>(null);
 
-  // Synchroniseer branch tussen tabbladen
-  useEffect(() => {
-    const onStorage = (e: StorageEvent) => {
-      if (e.key === BRANCH_STORAGE_KEY && e.newValue !== activeBranch?.branch_id) {
-        // Zoek branch object bij id
-        const found = branches.find(b => b.branch_id === e.newValue);
-        if (found) setActiveBranchState(found);
-      }
-    };
-    window.addEventListener('storage', onStorage);
-    return () => window.removeEventListener('storage', onStorage);
-  }, [branches, activeBranch]);
-
-  // Handle tab visibility changes - invalidate cache if idle for >5 minutes
-  useEffect(() => {
-    const handleVisibilityChange = () => {
-      if (document.hidden) {
-        tabHiddenAtRef.current = Date.now();
-      } else if (tabHiddenAtRef.current && user) {
-        const hiddenDuration = Date.now() - tabHiddenAtRef.current;
-        const hiddenMinutes = hiddenDuration / (1000 * 60);
-        
-        console.log('[useBranches] Tab visible after', hiddenMinutes.toFixed(2), 'minutes');
-        
-        // If idle for more than 5 minutes, invalidate cache and refetch
-        if (hiddenMinutes > 5) {
-          console.log('[useBranches] Long idle detected, invalidating cache and refetching...');
-          clearCachedBranches();
-          setHasFetched(false);
-          // Trigger refetch
-          fetchBranches();
-        }
-        
-        tabHiddenAtRef.current = null;
-      }
-    };
-
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
-  }, [user]);
-
-  const createDefaultBranch = async (userId: string) => {
-    try {
-      console.log('Creating default branch for user:', userId);
-      
-      // Probeer eerst met alle kolommen
-      let branchData, branchError;
-      
-      try {
-        const result = await supabase
-          .from('branches')
-          .insert({
-            name: 'Hoofdvestiging',
-            address: '',
-            phone: '',
-            email: '',
-            is_main: true,
-            is_active: true,
-            user_id: userId,
-          })
-          .select()
-          .single();
-        
-        branchData = result.data;
-        branchError = result.error;
-      } catch (err) {
-        console.log('First attempt failed, trying without is_active...');
-        // Probeer zonder is_active kolom
-        const result = await supabase
-          .from('branches')
-          .insert({
-            name: 'Hoofdvestiging',
-            address: '',
-            phone: '',
-            email: '',
-            is_main: true,
-            user_id: userId,
-          })
-          .select()
-          .single();
-        
-        branchData = result.data;
-        branchError = result.error;
+  // Fetch branches using React Query
+  const {
+    data: branches = [],
+    isLoading: queryLoading,
+    refetch,
+  } = useQuery<Branch[]>({
+    queryKey: ['branches', user?.id],
+    queryFn: async () => {
+      if (!user || !user.id) {
+        return [];
       }
 
-      if (branchError || !branchData) {
-        console.error('Error creating default branch:', branchError);
-        return null;
-      }
-
-      // Koppel gebruiker aan branch - probeer dit in een aparte transactie
-      try {
-        const { error: assignError } = await supabase.from('branch_users').insert({
-          branch_id: branchData.id,
-          user_id: userId,
-          role: 'admin',
-          granted_by: userId,
-        });
-
-        if (assignError) {
-          console.error('Error assigning user to branch:', assignError);
-          // Als de assignment faalt, kunnen we nog steeds de branch gebruiken
-          // De gebruiker kan later handmatig worden toegevoegd
-        }
-      } catch (assignErr) {
-        console.error('Exception assigning user to branch:', assignErr);
-        // Ga door, de branch is wel aangemaakt
-      }
-
-      console.log('Default branch created successfully:', branchData);
-      return {
-        branch_id: branchData.id,
-        branch_name: branchData.name,
-        is_main: branchData.is_main || true,
-        user_role: 'admin',
-      };
-    } catch (error) {
-      console.error('Exception creating default branch:', error);
-      return null;
-    }
-  };
-
-  const fetchBranches = async (cancelled?: { current: boolean }) => {
-    console.debug('[fetchBranches] Starting fetch, user:', user?.id);
-    
-    if (!user || !user.id) {
-      console.debug('[fetchBranches] No user, clearing state');
-      if (!cancelled?.current) {
-        setBranches([]);
-        setActiveBranchState(null);
-        setHasNoBranches(false);
-        setLoading(false);
-        setBranchIdToStorage(null);
-      }
-      return;
-    }
-
-    try {
       console.debug('[fetchBranches] Calling get_user_branches RPC for user:', user.id);
-      // Fetching branches for user
+      
       const { data, error } = await supabase.rpc('get_user_branches', {
         user_id: user.id
       });
@@ -292,11 +107,7 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
 
         if (directError) {
           console.error('Direct query also failed:', directError);
-          if (!cancelled?.current) {
-            setLoading(false);
-            setHasNoBranches(true);
-          }
-          return;
+          throw directError;
         }
 
         // Transform direct data to match expected format
@@ -307,182 +118,77 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
           user_role: branch.branch_users?.[0]?.role || 'admin'
         })) || [];
 
-        if (transformedData.length === 0) {
-          console.log('No branches found via direct query, user needs to create first branch...');
-          if (!cancelled?.current) {
-            setBranches([]);
-            setActiveBranchState(null);
-            setBranchIdToStorage(null);
-            setHasNoBranches(true);
-          }
-        } else {
-          if (!cancelled?.current) {
-            setBranches(transformedData);
-            setHasNoBranches(false);
-            // Set active branch
-            const mainBranch = transformedData.find(b => b.is_main) || transformedData[0];
-            if (mainBranch) {
-              setActiveBranchState(mainBranch);
-              setBranchIdToStorage(mainBranch.branch_id);
-            }
-          }
-        }
-        return;
+        return transformedData;
       }
 
-      if (data && !cancelled?.current) {
-        console.debug('[fetchBranches] Received branches data:', data.length, 'branches');
-        // Cache the branches data
-        setCachedBranches(data);
-        setBranches(data);
-        setHasNoBranches(data.length === 0);
-        
-        // Als er geen branches zijn, gebruiker moet eerst een branch aanmaken
-        if (data.length === 0) {
-          console.log('[fetchBranches] No branches found, user needs to create first branch...');
-          setBranches([]);
-          setActiveBranchState(null);
-          setBranchIdToStorage(null);
-          setHasNoBranches(true);
-        } else {
-          // We have branches, make sure hasNoBranches is false
-          setHasNoBranches(false);
-          
-          // Probeer branch uit localStorage te herstellen
-          const storedId = getBranchIdFromStorage();
-          const found = storedId ? data.find(b => b.branch_id === storedId) : null;
-          if (found) {
-            console.log('[fetchBranches] Restoring branch from localStorage:', found.branch_name);
-            setActiveBranchState(found);
-          } else {
-            // Altijd hoofdvestiging als fallback
-            const mainBranch = data.find(b => b.is_main) || data[0];
-            if (mainBranch) {
-              console.log('[fetchBranches] No stored branch found, using main branch:', mainBranch.branch_name);
-              setActiveBranchState(mainBranch);
-              setBranchIdToStorage(mainBranch.branch_id);
-            } else {
-              console.log('[fetchBranches] No branches available');
-              setActiveBranchState(null);
-              setBranchIdToStorage(null);
-            }
-          }
-        }
-      }
-    } catch (error) {
-      if (!cancelled?.current) {
-        console.error('[fetchBranches] Exception fetching branches:', error);
-        setHasNoBranches(true);
-      }
-    } finally {
-      if (!cancelled?.current) {
-        console.debug('[fetchBranches] Setting loading to false');
-        setLoading(false);
-      }
-    }
-  };
+      return data || [];
+    },
+    enabled: !!user && !authLoading,
+    staleTime: Infinity, // Never stale - data persists until manually invalidated
+  });
 
+  // Computed value for hasNoBranches
+  const hasNoBranches = !queryLoading && branches.length === 0;
+
+  // Only show loading when there's no cached data
+  const loading = queryLoading && branches.length === 0;
+
+  // Initialize or restore active branch from storage
   useEffect(() => {
-    const cancelled = { current: false };
-    
-    console.debug('[useBranches] useEffect triggered - authLoading:', authLoading, 'user:', !!user, 'hasFetched:', hasFetched);
-    
-    // Add safety timeout to prevent infinite loading
-    const safetyTimeout = setTimeout(() => {
-      if (!cancelled.current && loading) {
-        console.error('[useBranches] SAFETY TIMEOUT REACHED after 5 seconds - forcing loading to false');
-        console.error('[useBranches] State at timeout - authLoading:', authLoading, 'user:', !!user, 'branches:', branches.length);
-        setLoading(false);
-        // DON'T set hasNoBranches here - only the actual fetch should determine that
-        // The timeout is just to stop showing the loading spinner
-      }
-    }, 5000); // 5 seconds max loading time (reduced from 10)
-    
-    const initBranches = async () => {
-      console.debug('[useBranches] initBranches called - authLoading:', authLoading, 'user:', !!user);
-      
-      if (authLoading) {
-        console.debug('[useBranches] Waiting for auth to complete...');
-        // If auth is still loading, set a shorter timeout and check again
-        setTimeout(() => {
-          if (!cancelled.current && authLoading) {
-            console.warn('[useBranches] Auth still loading after 2s, proceeding anyway');
-            setLoading(false);
-          }
-        }, 2000);
-        return;
-      }
-      
-      if (user) {
-        // Check cache freshness each time, not just on mount
-        const currentCache = getCachedBranches();
-        const shouldFetch = !hasFetched || !currentCache;
-        
-        console.debug('[useBranches] User logged in - shouldFetch:', shouldFetch, 'hasFetched:', hasFetched, 'has cache:', !!currentCache, 'cache length:', currentCache?.length);
-        
-        if (shouldFetch) {
-          console.debug('[useBranches] Fetching branches from server...');
-          await fetchBranches(cancelled);
-          if (!cancelled.current) {
-            setHasFetched(true);
-          }
-        } else {
-          // We have cache, just set loading to false
-          console.debug('[useBranches] Using cached branches, setting loading to false');
-          if (!cancelled.current) {
-            setLoading(false);
-            // Make sure hasNoBranches is correctly set based on cache
-            if (currentCache && currentCache.length > 0) {
-              setHasNoBranches(false);
-            }
-          }
-          
-          // Fetch in background without blocking UI
-          fetchBranches(cancelled).then(() => {
-            if (!cancelled.current) {
-              setHasFetched(true);
-            }
-          });
-        }
-      } else {
-        console.debug('[useBranches] No user, clearing branches');
-        if (!cancelled.current) {
-          setBranches([]);
-          setActiveBranchState(null);
-          setHasNoBranches(false);
-          setLoading(false);
-          setBranchIdToStorage(null);
-        }
-      }
-    };
-    initBranches();
-    return () => {
-      cancelled.current = true;
-      clearTimeout(safetyTimeout);
-    };
-  }, [user, authLoading]);
-
-  // Additional effect to restore branch from localStorage on mount
-  useEffect(() => {
-    if (!authLoading && user && branches.length > 0 && !activeBranch) {
+    if (branches.length > 0 && !activeBranch) {
       const storedId = getBranchIdFromStorage();
-      if (storedId) {
-        const found = branches.find(b => b.branch_id === storedId);
-        if (found) {
-          console.log('Restoring branch from localStorage:', found);
-          setActiveBranchState(found);
-        } else {
-          // Stored branch ID not found, use main branch or first available
-          const mainBranch = branches.find(b => b.is_main) || branches[0];
-          if (mainBranch) {
-            console.log('Stored branch not found, using fallback:', mainBranch);
-            setActiveBranchState(mainBranch);
-            setBranchIdToStorage(mainBranch.branch_id);
-          }
+      const found = storedId ? branches.find(b => b.branch_id === storedId) : null;
+      
+      if (found) {
+        console.log('[useBranches] Restoring branch from localStorage:', found.branch_name);
+        setActiveBranchState(found);
+      } else {
+        // Altijd hoofdvestiging als fallback
+        const mainBranch = branches.find(b => b.is_main) || branches[0];
+        if (mainBranch) {
+          console.log('[useBranches] No stored branch found, using main branch:', mainBranch.branch_name);
+          setActiveBranchState(mainBranch);
+          setBranchIdToStorage(mainBranch.branch_id);
+        }
+      }
+    } else if (branches.length === 0 && activeBranch) {
+      // Clear active branch if branches list becomes empty
+      setActiveBranchState(null);
+      setBranchIdToStorage(null);
+    }
+  }, [branches, activeBranch]);
+
+  // Update active branch when branches data changes (e.g., after refetch)
+  useEffect(() => {
+    if (activeBranch && branches.length > 0) {
+      // Check if current active branch still exists in updated branches list
+      const stillExists = branches.find(b => b.branch_id === activeBranch.branch_id);
+      if (stillExists) {
+        // Update active branch with latest data
+        setActiveBranchState(stillExists);
+      } else {
+        // Active branch no longer exists, select a new one
+        const mainBranch = branches.find(b => b.is_main) || branches[0];
+        if (mainBranch) {
+          setActiveBranchState(mainBranch);
+          setBranchIdToStorage(mainBranch.branch_id);
         }
       }
     }
-  }, [authLoading, user, branches, activeBranch]);
+  }, [branches]);
+
+  // Synchroniseer branch tussen tabbladen
+  useEffect(() => {
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === BRANCH_STORAGE_KEY && e.newValue !== activeBranch?.branch_id) {
+        // Zoek branch object bij id
+        const found = branches.find(b => b.branch_id === e.newValue);
+        if (found) setActiveBranchState(found);
+      }
+    };
+    window.addEventListener('storage', onStorage);
+    return () => window.removeEventListener('storage', onStorage);
+  }, [branches, activeBranch]);
 
   // Real-time updates voor branches
   useEffect(() => {
@@ -500,7 +206,7 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
         },
         () => {
           console.log('Branch wijziging gedetecteerd, refresh branches...');
-          fetchBranches();
+          refetch();
         }
       )
       .on(
@@ -512,7 +218,7 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
         },
         () => {
           console.log('Branch user wijziging gedetecteerd, refresh branches...');
-          fetchBranches();
+          refetch();
         }
       )
       .subscribe();
@@ -520,8 +226,7 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
     return () => {
       supabase.removeChannel(branchesChannel);
     };
-  }, [user?.id]);
-
+  }, [user?.id, refetch]);
 
   const setActiveBranch = (branch: Branch) => {
     setActiveBranchState(branch);
@@ -529,13 +234,7 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const refreshBranches = async () => {
-    // Refresh without showing loading screen (background refresh)
-    const originalLoading = loading;
-    await fetchBranches();
-    // Don't set loading back if we're doing a background refresh
-    if (!originalLoading) {
-      setLoading(false);
-    }
+    await refetch();
   };
 
   if (typeof window !== 'undefined') {
@@ -563,6 +262,7 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
       );
     }
   }
+
   return (
     <BranchContext.Provider
       value={{

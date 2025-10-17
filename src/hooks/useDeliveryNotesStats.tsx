@@ -46,7 +46,7 @@ export const useDeliveryNotesStats = () => {
       };
     },
     enabled: !!user,
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: Infinity, // Never mark as stale - persist until invalidated
     refetchOnWindowFocus: false,
   });
 };

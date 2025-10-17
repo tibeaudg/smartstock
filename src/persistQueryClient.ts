@@ -5,15 +5,21 @@ import { QueryClient } from '@tanstack/react-query';
 export function setupPersistedQueryClient(queryClient: QueryClient) {
   const persister = createSyncStoragePersister({
     storage: window.localStorage,
-    // Only persist essential queries to reduce localStorage usage
+    // Persist all critical queries for instant app loading
     serialize: (data) => {
-      // Filter out real-time subscriptions and temporary data
+      // Filter to persist only important queries, exclude real-time temporary data
       const filteredData = Object.fromEntries(
         Object.entries(data).filter(([key]) => 
+          key.includes('branches') || 
           key.includes('dashboardData') || 
           key.includes('products') || 
           key.includes('basicDashboardMetrics') ||
-          key.includes('productCount')
+          key.includes('productCount') ||
+          key.includes('user-subscription') ||
+          key.includes('onboarding-status') ||
+          key.includes('pricing-tiers') ||
+          key.includes('stockTransactions') ||
+          key.includes('delivery-notes')
         )
       );
       return JSON.stringify(filteredData);
@@ -30,7 +36,7 @@ export function setupPersistedQueryClient(queryClient: QueryClient) {
   persistQueryClient({
     queryClient,
     persister,
-    maxAge: 1000 * 60 * 60 * 12, // 12 hours - shorter for better performance
-    buster: 'v1', // Version busting for cache invalidation
+    maxAge: Infinity, // Never expire cache - persist indefinitely
+    buster: 'v2', // Version busting for cache invalidation - increment when schema changes
   });
 }

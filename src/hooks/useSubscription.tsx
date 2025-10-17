@@ -70,7 +70,7 @@ export const useSubscription = () => {
       if (result.error) throw result.error;
       return result.data || [];
     },
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: Infinity, // Never mark as stale - persist until invalidated
     retry: 1, // Only retry once to prevent infinite loops
     retryDelay: 2000, // 2 second delay between retries
   });
@@ -106,7 +106,7 @@ export const useSubscription = () => {
       return result.data || null;
     },
     enabled: !!user,
-    staleTime: 1000 * 60 * 2, // 2 minutes
+    staleTime: Infinity, // Never mark as stale - persist until invalidated
     retry: 1, // Only retry once to prevent infinite loops
     retryDelay: 2000, // 2 second delay between retries
   });
@@ -138,7 +138,7 @@ export const useSubscription = () => {
       return result.data || null;
     },
     enabled: !!user,
-    staleTime: 1000 * 30, // 30 seconds
+    staleTime: Infinity, // Never mark as stale - persist until invalidated
     retry: 1, // Only retry once to prevent infinite loops
     retryDelay: 2000, // 2 second delay between retries
   });
