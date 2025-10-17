@@ -151,7 +151,7 @@ export default function ScanPage() {
           await handleSubmit(new Event('submit') as any, newProduct);
         } else {
           // Show form for manual input
-          toast.info('Add new product');
+          toast.info('Add Product');
           
           // Reset form for new product
           setFormData(prev => ({
@@ -614,7 +614,7 @@ export default function ScanPage() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Package className="w-5 h-5 text-green-600" />
-                {transactionType === 'incoming' ? 'Add New Product' : 'Remove Product from Stock'}
+                {transactionType === 'incoming' ? 'Add Product' : 'Remove Product from Stock'}
               </CardTitle>
               <CardDescription>
                 {transactionType === 'incoming' 

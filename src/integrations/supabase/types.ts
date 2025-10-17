@@ -748,6 +748,9 @@ export type Database = {
           variant_attributes: Json | null
           variant_sku: string | null
           variant_barcode: string | null
+          image_url: string | null
+          location: string | null
+          is_favorite: boolean | null
         }
         Insert: {
           branch_id?: string | null
@@ -773,6 +776,9 @@ export type Database = {
           variant_attributes?: Json | null
           variant_sku?: string | null
           variant_barcode?: string | null
+          image_url?: string | null
+          location?: string | null
+          is_favorite?: boolean | null
         }
         Update: {
           branch_id?: string | null
@@ -798,6 +804,9 @@ export type Database = {
           variant_attributes?: Json | null
           variant_sku?: string | null
           variant_barcode?: string | null
+          image_url?: string | null
+          location?: string | null
+          is_favorite?: boolean | null
         }
         Relationships: [
           {

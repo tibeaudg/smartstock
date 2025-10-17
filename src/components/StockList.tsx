@@ -667,7 +667,7 @@ const ProductRow: React.FC<ProductRowProps> = ({
                   <img
                     src={product.image_url}
                     alt={`${product.name} product image`}
-                    className="max-w-full max-h-full object-contain cursor-pointer hover:opacity-80 transition-opacity"
+                    className="max-w-full max-h-full object-contain cursor-pointer hover:opacity-80 transition-opacity "
                     onClick={() => onImagePreview(product.image_url!)}
                   />
                 </div>
@@ -1459,14 +1459,30 @@ const fetchProducts = async (branchId: string) => {
     }
 
     // Type fix: specify product type so TS knows about category_id and supplier_id
-    type Product = {
-      category_id?: string | null;
-      supplier_id?: string | null;
-      // add other relevant product fields here if needed
+    const typedProducts = products as Array<{
+      id: string;
+      name: string;
+      description: string | null;
+      quantity_in_stock: number;
+      minimum_stock_level: number;
+      unit_price: number;
+      purchase_price: number;
+      sale_price: number;
+      status: string | null;
+      category_id: string | null;
+      supplier_id: string | null;
+      branch_id: string;
+      image_url: string | null;
+      location: string | null;
+      is_variant: boolean;
+      parent_product_id: string | null;
+      variant_name: string | null;
+      variant_attributes: Record<string, unknown> | null;
+      variant_sku: string | null;
+      variant_barcode: string | null;
+      is_favorite: boolean;
       [key: string]: any;
-    };
-
-    const typedProducts = products as Product[];
+    }>;
 
     // Haal de unieke Category en leverancier IDs op
     const categoryIds = [
@@ -2637,7 +2653,7 @@ export const StockList = () => {
                   className="flex-1 h-10 bg-blue-700 hover:bg-blue-700/80 text-white"
                 >
                   <Plus className="w-5 h-5 mr-2" />
-                  Add New Product
+                  Add Product
                 </Button>
               </div>
             </div>
@@ -3142,19 +3158,6 @@ export const StockList = () => {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56">
             <DropdownMenuItem disabled className="font-semibold">
-              View Options
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => setViewMode('list')}>
-              <List className="w-4 h-4 mr-2" />
-              List View
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setViewMode('card')}>
-              <Grid3x3 className="w-4 h-4 mr-2" />
-              Card View
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem disabled className="font-semibold">
               Column Visibility
             </DropdownMenuItem>
             <DropdownMenuSeparator />
@@ -3218,23 +3221,26 @@ export const StockList = () => {
             >
               Actions
             </DropdownMenuCheckboxItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => setIsBulkImportModalOpen(true)}>
-              <Upload className="w-4 h-4 mr-2" />
-              Import Excel
-            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+        <Button 
+          onClick={() => setIsBulkImportModalOpen(true)} 
+          variant="outline"
+          className="h-9"
+        >
+          <Upload className="w-4 h-4 mr-2" />
+          Import Excel
+        </Button>
         <Button 
           onClick={() => setIsAddModalOpen(true)} 
           className="h-9 bg-blue-600 hover:bg-blue-700 text-white"
         >
           <Plus className="w-4 h-4 mr-2" />
-          Add New Product
+          Add Product
         </Button>
       </div>
 
-      {/* Filter Header */}
+      {/* Filter Header - Active Filters Display */}
       {((filters.categoryFilter && filters.categoryFilter !== 'all' && filters.categoryFilter !== '') || 
         (filters.supplierFilter && filters.supplierFilter !== 'all' && filters.supplierFilter !== '') ||
         (filters.searchTerm && filters.searchTerm !== '') ||
@@ -3246,11 +3252,11 @@ export const StockList = () => {
         (filters.maxPriceFilter && filters.maxPriceFilter !== '') ||
         (filters.minStockFilter && filters.minStockFilter !== '') ||
         (filters.maxStockFilter && filters.maxStockFilter !== '')) && (
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4 filter-header">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <span className="text-sm font-medium text-blue-900">
-                Filtered on:
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-2 mb-2">
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="text-xs font-medium text-blue-900">
+                Active filters:
               </span>
               {filters.categoryFilter && filters.categoryFilter !== 'all' && filters.categoryFilter !== '' && (
                 <Badge variant="secondary" className="bg-blue-100 text-blue-800">
@@ -3304,135 +3310,75 @@ export const StockList = () => {
               variant="outline"
               size="sm"
               onClick={clearAllFilters}
-              className="text-blue-700 border-blue-300 hover:bg-blue-100"
+              className="text-blue-700 border-blue-300 hover:bg-blue-100 h-7 text-xs shrink-0"
             >
-              <X className="w-4 h-4 mr-1" />
-              Filters wissen
+              <X className="w-3 h-3 mr-1" />
+              Clear
             </Button>
           </div>
         </div>
       )}
 
-      {/* Quick Filters */}
-      <div className="flex gap-2 items-center mb-4">
-        <Button
-          variant={filters.favoritesFilter ? "default" : "outline"}
-          size="sm"
-          onClick={() => setFilters(prev => ({ 
-            ...prev, 
-            favoritesFilter: !prev.favoritesFilter,
-            categoryFilter: 'all',
-            supplierFilter: 'all',
-            searchTerm: '',
-            stockStatusFilter: 'all',
-            locationFilter: 'all',
-            minPriceFilter: '',
-            maxPriceFilter: '',
-            minStockFilter: '',
-            maxStockFilter: '',
-            selectedSizes: [],
-            selectedColors: [],
-          }))}
-        >
-          <Heart className={`w-4 h-4 mr-2 ${filters.favoritesFilter ? "fill-current" : ""}`} />
-          Favorites
-        </Button>
-        
-        <Select
-          value={filters.categoryFilter}
-          onValueChange={(value) => setFilters(prev => ({ 
-            ...prev, 
-            categoryFilter: value,
-            supplierFilter: 'all',
-            searchTerm: '',
-            stockStatusFilter: 'all',
-            locationFilter: 'all',
-            minPriceFilter: '',
-            maxPriceFilter: '',
-            minStockFilter: '',
-            maxStockFilter: '',
-            selectedSizes: [],
-            selectedColors: [],
-            favoritesFilter: false,
-          }))}
-        >
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="All Categories" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Categories</SelectItem>
-            {categories.map(cat => (
-              <SelectItem key={cat.id} value={cat.id}>{cat.name}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        
-        <Select
-          value={filters.supplierFilter}
-          onValueChange={(value) => setFilters(prev => ({ 
-            ...prev, 
-            supplierFilter: value,
-            categoryFilter: 'all',
-            searchTerm: '',
-            stockStatusFilter: 'all',
-            locationFilter: 'all',
-            minPriceFilter: '',
-            maxPriceFilter: '',
-            minStockFilter: '',
-            maxStockFilter: '',
-            selectedSizes: [],
-            selectedColors: [],
-            favoritesFilter: false,
-          }))}
-        >
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="All Suppliers" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Suppliers</SelectItem>
-            {suppliers.map(sup => (
-              <SelectItem key={sup.id} value={sup.id}>{sup.name}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-
-      <div className="filter-area">
-        <EnhancedProductFilters
-          filters={filters}
-          onFiltersChange={(newFilters) => {
-            setFilters(newFilters);
-            // Update category and supplier names when filters change
-            if (newFilters.categoryFilter && newFilters.categoryFilter !== 'all') {
-              const category = categories.find(cat => cat.id === newFilters.categoryFilter);
-              setCategoryFilterName(category?.name || 'Gefilterd');
-            } else {
-              setCategoryFilterName('');
-            }
-            if (newFilters.supplierFilter && newFilters.supplierFilter !== 'all') {
-              const supplier = suppliers.find(sup => sup.id === newFilters.supplierFilter);
-              setSupplierFilterName(supplier?.name || '');
-            } else {
-              setSupplierFilterName('');
-            }
+      {/* Consolidated Search and Filter Row */}
+      <div className="flex items-center gap-2 py-2">
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <Input
+            type="text"
+            placeholder="Search products..."
+            value={filters.searchTerm}
+            onChange={(e) => setFilters(prev => ({ ...prev, searchTerm: e.target.value }))}
+            className="pl-9 h-9"
+          />
+        </div>
+        <Button 
+          variant="outline" 
+          size="sm" 
+          className="h-9 shrink-0"
+          onClick={() => {
+            // This button will trigger a filter panel (to be implemented separately)
+            toast.info('Advanced filter panel coming soon');
           }}
-          onClearFilters={clearAllFilters}
-          activeFiltersCount={activeFilterCount}
-        />
-      </div>
-
-      {/* Row Count Display */}
-      <div className="flex items-center justify-between mb-4 px-4 py-2 bg-gray-50 rounded-lg">
-        <div className="text-sm text-gray-600">
-          Showing <span className="font-medium text-gray-900">{grouped.parents.length}</span> of <span className="font-medium text-gray-900">{productsTyped.length}</span> products
+        >
+          <Filter className="w-4 h-4" />
           {activeFilterCount > 0 && (
-            <span className="ml-2 text-blue-600">
-              (filtered from {productsTyped.length} total)
+            <span className="ml-1.5 px-1.5 py-0.5 bg-blue-600 text-white text-xs rounded-full">
+              {activeFilterCount}
             </span>
           )}
+        </Button>
+        
+        {/* View Options Dropdown */}
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="sm" className="h-9 shrink-0">
+              {viewMode === 'list' ? <List className="w-4 h-4" /> : <Grid3x3 className="w-4 h-4" />}
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-48">
+            <DropdownMenuItem disabled className="font-semibold">
+              View Options
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={() => setViewMode('list')}>
+              <List className="w-4 h-4 mr-2" />
+              List View
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setViewMode('card')}>
+              <Grid3x3 className="w-4 h-4 mr-2" />
+              Card View
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+
+      {/* Status Bar - Repositioned */}
+      <div className="flex items-center justify-between py-1 px-1">
+        <div className="text-xs text-gray-500">
+          Showing <span className="font-medium">{grouped.parents.length}</span> of <span className="font-medium">{productsTyped.length}</span> products
         </div>
         {selectedProductIds.length > 0 && (
-          <div className="text-sm text-blue-600 font-medium">
+          <div className="text-xs text-blue-600 font-medium">
             {selectedProductIds.length} selected
           </div>
         )}

@@ -530,7 +530,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className={`w-full max-w-full mx-auto p-0 ${isMobile ? 'h-full max-h-full rounded-none bg-white' : 'bg-white md:w-auto md:max-w-4xl md:max-h-[90vh] md:p-6 md:rounded-lg'}`}>
         <DialogHeader className={`${isMobile ? 'p-4 border-b' : ''}`}>
-          <DialogTitle>Add New Product</DialogTitle>
+          <DialogTitle>Add Product</DialogTitle>
         </DialogHeader>
 
         <div className={`${isMobile ? 'flex-1 overflow-y-auto p-4' : 'max-h-[calc(90vh-120px)] overflow-y-auto'}`}>
