@@ -72,6 +72,7 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButton
               {onNavigate && (
                 <nav className="hidden md:flex items-center gap-6 text-sm">
                   <Link to="/features" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Features</Link>
+                  <Link to="/integrations" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Integrations</Link>
                   <Link to="/pricing" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Pricing</Link>
                 </nav>
               )}
@@ -182,6 +183,13 @@ export const Header = ({ onLoginClick, onNavigate, simplifiedNav, hideAuthButton
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       Features
+                    </Link>
+                    <Link 
+                      to="/integrations"
+                      className="block w-full text-left text-gray-700 hover:text-blue-700 py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors font-medium" 
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      Integrations
                     </Link>
                     <Link 
                       to="/pricing"

@@ -21,6 +21,7 @@ import { LicenseOverview } from './components/settings/LicenseOverview';
 import { InvoicingOverview } from './components/settings/InvoicingOverview';
 import { InvoiceList } from './components/payments/InvoiceList';
 import IntegrationsSettings from './components/settings/Integrations';
+import IntegrationsPage from './pages/integrations';
 import { useAuth, AuthProvider } from "./hooks/useAuth";
 import { useBranches, BranchProvider } from "./hooks/useBranches";
 import { CurrencyProvider } from "./hooks/useCurrency";
@@ -423,6 +424,7 @@ const AppRouter = () => {
         <Route path="/auth" element={<AuthRoute />} />
         <Route path="/pricing" element={<PricingPage />} />
         <Route path="/nl/pricing" element={<NlPricingPage />} />
+        <Route path="/integrations" element={<IntegrationsPage />} />
         <Route path="/dead-stock-calculator" element={<DeadStockCalculatorPage />} />
         <Route path="/contact" element={<SEOContactPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />

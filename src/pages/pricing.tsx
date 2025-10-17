@@ -166,27 +166,12 @@ export default function PricingPage() {
       <div className="container mx-auto px-4 py-16">
         {/* Header */}
         <div className="text-center mb-16">
-          {/* Trust Badges */}
-          <div className="flex flex-wrap justify-center items-center gap-4 mb-6">
-            <div className="flex items-center bg-green-100 px-4 py-2 rounded-full">
-              <Users className="w-5 h-5 text-green-600 mr-2" />
-              <span className="text-green-700 font-semibold text-sm">Trusted by 10,000+ businesses</span>
-            </div>
-            <div className="flex items-center bg-blue-100 px-4 py-2 rounded-full">
-              <Star className="w-5 h-5 text-blue-600 mr-2" />
-              <span className="text-blue-700 font-semibold text-sm">4.9/5 rating</span>
-            </div>
-            <div className="flex items-center bg-purple-100 px-4 py-2 rounded-full">
-              <Clock className="w-5 h-5 text-purple-600 mr-2" />
-              <span className="text-purple-700 font-semibold text-sm">500+ signed up this month</span>
-            </div>
-          </div>
           
           <h1 className="text-5xl md:text-7xl font-light text-gray-800 mb-6">
               Start Free, Upgrade When You Grow
           </h1>
           <p className="text-xl text-gray-600 mb-8">
-            No hidden fees. Cancel anytime. 14-day free trial on all plans. <strong>Join 500+ companies who signed up this month.</strong>
+            No hidden fees. Cancel anytime. 14-day free trial on all plans.
           </p>
           
           {/* Billing Toggle */}
@@ -317,60 +302,6 @@ export default function PricingPage() {
           ))}
         </div>
 
-        {/* Social Proof Section */}
-        <div className="mt-16 text-center">
-          <div className="bg-white rounded-lg shadow-lg p-8 max-w-6xl mx-auto">
-            <h3 className="text-2xl font-semibold text-gray-900 mb-8">Trusted by Businesses Worldwide</h3>
-            
-            {/* Customer Testimonials */}
-            <div className="grid md:grid-cols-3 gap-8 mb-8">
-              <div className="text-center">
-                <div className="flex justify-center mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
-                  ))}
-                </div>
-                <p className="text-gray-600 mb-4">"StockFlow reduced our inventory costs by 40% in just 3 months. The best investment we've made."</p>
-                <div className="font-semibold">Sarah Johnson</div>
-                <div className="text-sm text-gray-500">CEO, Retail Plus</div>
-              </div>
-              
-              <div className="text-center">
-                <div className="flex justify-center mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
-                  ))}
-                </div>
-                <p className="text-gray-600 mb-4">"Finally, inventory management that actually works. We save 20 hours per week on manual tracking."</p>
-                <div className="font-semibold">Mike Rodriguez</div>
-                <div className="text-sm text-gray-500">Operations Manager, Global Supply</div>
-              </div>
-              
-              <div className="text-center">
-                <div className="flex justify-center mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
-                  ))}
-                </div>
-                <p className="text-gray-600 mb-4">"The real-time tracking and analytics are game-changers. Our team loves how intuitive it is."</p>
-                <div className="font-semibold">David Chen</div>
-                <div className="text-sm text-gray-500">CEO, TechStart Solutions</div>
-              </div>
-            </div>
-            
-            {/* Customer Logos */}
-            <div className="border-t pt-8">
-              <p className="text-gray-500 mb-6">Join these companies using StockFlow</p>
-              <div className="flex flex-wrap justify-center items-center gap-8 opacity-60">
-                <div className="text-2xl font-bold text-gray-400">Company A</div>
-                <div className="text-2xl font-bold text-gray-400">Company B</div>
-                <div className="text-2xl font-bold text-gray-400">Company C</div>
-                <div className="text-2xl font-bold text-gray-400">Company D</div>
-                <div className="text-2xl font-bold text-gray-400">Company E</div>
-              </div>
-            </div>
-          </div>
-        </div>
 
         {/* Free Trial Info */}
         <div className="mt-16 text-center">
@@ -405,73 +336,6 @@ export default function PricingPage() {
                   <p className="text-sm text-gray-600">Start directly with your inventory management</p>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Competitor Comparison Section */}
-        <div className="mt-16">
-          <h3 className="text-4xl md:text-6xl font-light text-center text-gray-800 mb-8">
-            How We Compare
-          </h3>
-          <div className="bg-white rounded-lg shadow-lg overflow-hidden max-w-6xl mx-auto">
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Feature</th>
-                    <th className="px-6 py-4 text-center text-sm font-semibold text-blue-600">StockFlow</th>
-                    <th className="px-6 py-4 text-center text-sm font-semibold text-gray-600">Competitor A</th>
-                    <th className="px-6 py-4 text-center text-sm font-semibold text-gray-600">Competitor B</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200">
-                  <tr className="bg-white">
-                    <td className="px-6 py-4 text-sm text-gray-900">Free Plan</td>
-                    <td className="px-6 py-4 text-center text-sm text-green-600 font-semibold">✓ 30 products</td>
-                    <td className="px-6 py-4 text-center text-sm text-gray-600">✗</td>
-                    <td className="px-6 py-4 text-center text-sm text-gray-600">✗</td>
-                  </tr>
-                  <tr className="bg-gray-50">
-                    <td className="px-6 py-4 text-sm text-gray-900">Real-time tracking</td>
-                    <td className="px-6 py-4 text-center text-sm text-green-600 font-semibold">✓</td>
-                    <td className="px-6 py-4 text-center text-sm text-gray-600">Limited</td>
-                    <td className="px-6 py-4 text-center text-sm text-gray-600">Premium only</td>
-                  </tr>
-                  <tr className="bg-white">
-                    <td className="px-6 py-4 text-sm text-gray-900">Mobile access</td>
-                    <td className="px-6 py-4 text-center text-sm text-green-600 font-semibold">✓</td>
-                    <td className="px-6 py-4 text-center text-sm text-gray-600">Extra cost</td>
-                    <td className="px-6 py-4 text-center text-sm text-gray-600">Limited</td>
-                  </tr>
-                  <tr className="bg-gray-50">
-                    <td className="px-6 py-4 text-sm text-gray-900">Barcode scanning</td>
-                    <td className="px-6 py-4 text-center text-sm text-green-600 font-semibold">✓</td>
-                    <td className="px-6 py-4 text-center text-sm text-gray-600">Premium only</td>
-                    <td className="px-6 py-4 text-center text-sm text-gray-600">Extra cost</td>
-                  </tr>
-                  <tr className="bg-white">
-                    <td className="px-6 py-4 text-sm text-gray-900">24/7 Support</td>
-                    <td className="px-6 py-4 text-center text-sm text-green-600 font-semibold">✓</td>
-                    <td className="px-6 py-4 text-center text-sm text-gray-600">Business hours</td>
-                    <td className="px-6 py-4 text-center text-sm text-gray-600">Email only</td>
-                  </tr>
-                  <tr className="bg-gray-50">
-                    <td className="px-6 py-4 text-sm text-gray-900">Starting Price</td>
-                    <td className="px-6 py-4 text-center text-sm text-green-600 font-semibold">Free</td>
-                    <td className="px-6 py-4 text-center text-sm text-gray-600">$29/month</td>
-                    <td className="px-6 py-4 text-center text-sm text-gray-600">$49/month</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div className="bg-blue-50 px-6 py-4 text-center">
-              <p className="text-sm text-gray-600">
-                <strong>Save up to $600/year</strong> compared to competitors. 
-                <a href="/best-inventory-management-software" className="text-blue-600 hover:underline ml-1">
-                  See detailed comparison →
-                </a>
-              </p>
             </div>
           </div>
         </div>

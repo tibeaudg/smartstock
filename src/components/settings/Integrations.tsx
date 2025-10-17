@@ -25,6 +25,8 @@ import {
   Shield
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import IntegrationConfigModal from './IntegrationConfigModal';
+import { Header } from '@/components/HeaderPublic';
 
 const integrations = [
   {
@@ -121,28 +123,15 @@ export default function IntegrationsSettings() {
   const [activeTab, setActiveTab] = useState('integrations');
   const [connectedIntegrations, setConnectedIntegrations] = useState<string[]>([]);
   const [isConnecting, setIsConnecting] = useState<string | null>(null);
+  const [configModalOpen, setConfigModalOpen] = useState(false);
+  const [selectedIntegration, setSelectedIntegration] = useState<any>(null);
 
   const handleConnect = async (integrationName: string) => {
-    setIsConnecting(integrationName);
-    
-    try {
-      if (integrationName === 'Shopify' || integrationName === 'Square') {
-        // Navigate to CSV import guide
-        navigate('/integrations');
-      } else {
-        // Simulate connection process
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        
-        // Add to connected integrations
-        setConnectedIntegrations(prev => [...prev, integrationName]);
-        
-        // Show success message
-        console.log(`Successfully connected to ${integrationName}`);
-      }
-    } catch (error) {
-      console.error(`Failed to connect to ${integrationName}:`, error);
-    } finally {
-      setIsConnecting(null);
+    // Find the integration object
+    const integration = integrations.find(int => int.name === integrationName);
+    if (integration) {
+      setSelectedIntegration(integration);
+      setConfigModalOpen(true);
     }
   };
 
@@ -187,6 +176,8 @@ export default function IntegrationsSettings() {
         <meta name="description" content="Manage your StockFlow integrations with external services and platforms." />
       </Helmet>
 
+      <Header onNavigate={() => {}} hideNotifications={true} />
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
@@ -196,8 +187,8 @@ export default function IntegrationsSettings() {
           </p>
         </div>
 
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-3">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full bg-white rounded-lg shadow-md p-4">
+          <TabsList className="grid w-full grid-cols-3 rounded-lg">
             <TabsTrigger value="integrations">Integrations</TabsTrigger>
             <TabsTrigger value="webhooks">Webhooks</TabsTrigger>
             <TabsTrigger value="api">API Keys</TabsTrigger>
@@ -306,19 +297,14 @@ export default function IntegrationsSettings() {
                         <Button 
                           className="w-full"
                           onClick={() => handleConnect(integration.name)}
-                          disabled={integration.comingSoon || isConnecting === integration.name}
+                          disabled={integration.comingSoon}
                         >
-                          {isConnecting === integration.name ? (
-                            <>
-                              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                              Connecting...
-                            </>
-                          ) : integration.comingSoon ? (
+                          {integration.comingSoon ? (
                             'Coming Soon'
                           ) : (
                             'Connect'
                           )}
-                          {!isConnecting && !integration.comingSoon && (
+                          {!integration.comingSoon && (
                             <ArrowRight className="ml-2 h-4 w-4" />
                           )}
                         </Button>
@@ -439,6 +425,15 @@ export default function IntegrationsSettings() {
           </TabsContent>
         </Tabs>
 
+        {/* Integration Configuration Modal */}
+        <IntegrationConfigModal
+          isOpen={configModalOpen}
+          onClose={() => {
+            setConfigModalOpen(false);
+            setSelectedIntegration(null);
+          }}
+          integration={selectedIntegration}
+        />
       </div>
     </div>
   );
