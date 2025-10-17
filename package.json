@@ -12,7 +12,7 @@
     "dev:api": "node server-dev.cjs",
     "dev:all": "concurrently \"npm run dev:api\" \"npm run dev:vite\" --names \"API,VITE\" --prefix-colors \"blue,green\"",
     "prebuild": "npm run generate:sitemap || echo 'Sitemap generation failed, continuing with build'",
-    "build": "vite build",
+    "build": "vite build --outDir dist",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",
