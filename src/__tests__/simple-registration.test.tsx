@@ -15,9 +15,9 @@ describe('FirstBranchSetup Component', () => {
       </AuthProvider>
     )
     
-    expect(screen.getByText('Welkom bij StockFlow!')).toBeInTheDocument()
-    expect(screen.getByText('Laten we beginnen door je eerste vestiging aan te maken. Je kunt later altijd meer vestigingen toevoegen.')).toBeInTheDocument()
-    expect(screen.getByLabelText('Bedrijfsnaam *')).toBeInTheDocument()
+      expect(screen.getByText('Welcome to StockFlow!')).toBeInTheDocument()
+    expect(screen.getByText('Let\'s get started by creating your first branch. You can always add more branches later.')).toBeInTheDocument()
+    expect(screen.getByLabelText('Company name *')).toBeInTheDocument()
   })
 
   it('has required form fields', () => {
@@ -31,9 +31,9 @@ describe('FirstBranchSetup Component', () => {
     
     // Check that all expected fields are present
     expect(screen.getByLabelText('Bedrijfsnaam *')).toBeInTheDocument()
-    expect(screen.getByLabelText(/Adres/)).toBeInTheDocument()
-    expect(screen.getByLabelText(/Telefoonnummer/)).toBeInTheDocument()
-    expect(screen.getByLabelText(/E-mailadres/)).toBeInTheDocument()
+    expect(screen.getByLabelText(/Address/)).toBeInTheDocument()
+    expect(screen.getByLabelText(/Phone number/)).toBeInTheDocument()
+    expect(screen.getByLabelText(/Email address/)).toBeInTheDocument()
   })
 
   it('has submit button', () => {
@@ -45,7 +45,7 @@ describe('FirstBranchSetup Component', () => {
       </AuthProvider>
     )
     
-    const submitButton = screen.getByRole('button', { name: 'Vestiging aanmaken' })
+    const submitButton = screen.getByRole('button', { name: 'Create branch' })
     expect(submitButton).toBeInTheDocument()
   })
 })

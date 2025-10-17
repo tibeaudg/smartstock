@@ -77,17 +77,17 @@ describe('Registration and First Login Flow Integration', () => {
     )
 
     // Verify the setup screen is shown
-    expect(screen.getByText('Welkom bij StockFlow!')).toBeInTheDocument()
-    expect(screen.getByText('Laten we beginnen door je eerste vestiging aan te maken. Je kunt later altijd meer vestigingen toevoegen.')).toBeInTheDocument()
+    expect(screen.getByText('Welcome to StockFlow!')).toBeInTheDocument()
+    expect(screen.getByText('Let\'s get started by creating your first branch. You can always add more branches later.')).toBeInTheDocument()
     
     // Verify form fields are present
-    expect(screen.getByLabelText('Bedrijfsnaam *')).toBeInTheDocument()
-    expect(screen.getByLabelText(/Adres/)).toBeInTheDocument()
-    expect(screen.getByLabelText(/Telefoonnummer/)).toBeInTheDocument()
-    expect(screen.getByLabelText(/E-mailadres/)).toBeInTheDocument()
+    expect(screen.getByLabelText('Company name *')).toBeInTheDocument()
+    expect(screen.getByLabelText(/Address/)).toBeInTheDocument()
+    expect(screen.getByLabelText(/Phone number/)).toBeInTheDocument()
+    expect(screen.getByLabelText(/Email address/)).toBeInTheDocument()
     
     // Verify submit button is present but disabled initially
-    const submitButton = screen.getByRole('button', { name: 'Vestiging aanmaken' })
+    const submitButton = screen.getByRole('button', { name: 'Create branch' })
     expect(submitButton).toBeInTheDocument()
     expect(submitButton).toBeDisabled()
   })
@@ -105,8 +105,8 @@ describe('Registration and First Login Flow Integration', () => {
       </BrowserRouter>
     )
 
-    const branchNameInput = screen.getByLabelText('Bedrijfsnaam *')
-    const submitButton = screen.getByRole('button', { name: 'Vestiging aanmaken' })
+    const branchNameInput = screen.getByLabelText('Company name *')
+    const submitButton = screen.getByRole('button', { name: 'Create branch' })
 
     // Initially disabled
     expect(submitButton).toBeDisabled()
@@ -131,15 +131,15 @@ describe('Registration and First Login Flow Integration', () => {
       </BrowserRouter>
     )
 
-    const submitButton = screen.getByRole('button', { name: 'Vestiging aanmaken' })
+    const submitButton = screen.getByRole('button', { name: 'Create branch' })
 
     // Should be disabled without branch name
     expect(submitButton).toBeDisabled()
 
     // Fill only optional fields
-    await user.type(screen.getByLabelText(/Adres/), '123 Main St')
-    await user.type(screen.getByLabelText(/Telefoonnummer/), '+31 6 12345678')
-    await user.type(screen.getByLabelText(/E-mailadres/), 'info@company.com')
+    await user.type(screen.getByLabelText(/Address/), '123 Main St')
+    await user.type(screen.getByLabelText(/Phone number/), '+31 6 12345678')
+    await user.type(screen.getByLabelText(/Email address/), 'info@company.com')
 
     // Should still be disabled
     expect(submitButton).toBeDisabled()
@@ -173,11 +173,11 @@ describe('Registration and First Login Flow Integration', () => {
     )
 
     // Fill and submit form
-    await user.type(screen.getByLabelText('Bedrijfsnaam *'), 'My Company')
-    await user.click(screen.getByRole('button', { name: 'Vestiging aanmaken' }))
+    await user.type(screen.getByLabelText('Company name *'), 'My Company')
+    await user.click(screen.getByRole('button', { name: 'Create branch' }))
 
     // Check loading state
-    expect(screen.getByRole('button', { name: 'Aanmaken...' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Creating...' })).toBeInTheDocument()
     expect(screen.getByRole('button')).toBeDisabled()
   })
 
@@ -209,13 +209,11 @@ describe('Registration and First Login Flow Integration', () => {
     )
 
     // Fill all form fields
-    await user.type(screen.getByLabelText('Bedrijfsnaam *'), 'My Company')
-    await user.type(screen.getByLabelText(/Adres/), '123 Main St')
-    await user.type(screen.getByLabelText(/Telefoonnummer/), '+31 6 12345678')
-    await user.type(screen.getByLabelText(/E-mailadres/), 'info@company.com')
+    await user.type(screen.getByLabelText('Company name *'), 'My Company')
+
 
     // Submit form
-    await user.click(screen.getByRole('button', { name: 'Vestiging aanmaken' }))
+    await user.click(screen.getByRole('button', { name: 'Create branch' }))
 
     // Wait for async operations
     await waitFor(() => {
@@ -231,7 +229,7 @@ describe('Registration and First Login Flow Integration', () => {
     })
 
     expect(mockRefreshBranches).toHaveBeenCalled()
-    expect(mockToast.success).toHaveBeenCalledWith('Je eerste vestiging is succesvol aangemaakt!')
+    expect(mockToast.success).toHaveBeenCalledWith('Your first branch has been successfully created!')
   })
 
   it('handles branch creation errors', async () => {
@@ -260,13 +258,13 @@ describe('Registration and First Login Flow Integration', () => {
     )
 
     // Fill and submit form
-    await user.type(screen.getByLabelText('Bedrijfsnaam *'), 'My Company')
-    await user.click(screen.getByRole('button', { name: 'Vestiging aanmaken' }))
+    await user.type(screen.getByLabelText('Company name *'), 'My Company')
+    await user.click(screen.getByRole('button', { name: 'Create branch' }))
 
     // Wait for error handling
     await waitFor(() => {
       expect(mockToast.error).toHaveBeenCalledWith(
-        'Er is een fout opgetreden: Database connection failed'
+        'An error occurred: Database connection failed'
       )
     })
   })
@@ -285,12 +283,12 @@ describe('Registration and First Login Flow Integration', () => {
     )
 
     // Fill branch name (required)
-    await user.type(screen.getByLabelText('Bedrijfsnaam *'), 'My Company')
+    await user.type(screen.getByLabelText('Company name *'), 'My Company')
     
     // Fill invalid email (should not prevent submission)
-    await user.type(screen.getByLabelText(/E-mailadres/), 'invalid-email')
+    await user.type(screen.getByLabelText(/Email address/), 'invalid-email')
     
-    const submitButton = screen.getByRole('button', { name: 'Vestiging aanmaken' })
+    const submitButton = screen.getByRole('button', { name: 'Create branch' })
     expect(submitButton).not.toBeDisabled()
   })
 })

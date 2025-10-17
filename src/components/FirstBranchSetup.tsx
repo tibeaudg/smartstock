@@ -77,11 +77,11 @@ export const FirstBranchSetup = () => {
         });
       }
 
-      toast.success('Je eerste vestiging is succesvol aangemaakt!');
+      toast.success('Your first branch has been successfully created!');
       await refreshBranches();
     } catch (err: any) {
-      console.error('Fout bij het aanmaken van vestiging:', err);
-      toast.error('Er is een fout opgetreden: ' + err.message);
+      console.error('Error creating branch:', err);
+      toast.error('An error occurred: ' + err.message);
     } finally {
       setLoading(false);
     }
@@ -94,21 +94,21 @@ export const FirstBranchSetup = () => {
           <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-blue-100">
             <Building2 className="h-6 w-6 text-blue-600" />
           </div>
-          <CardTitle className="text-2xl">Welkom bij StockFlow!</CardTitle>
+          <CardTitle className="text-2xl">Welcome to StockFlow!</CardTitle> 
           <CardDescription>
-            Laten we beginnen door je eerste vestiging aan te maken. Je kunt later altijd meer vestigingen toevoegen.
+            Let's get started by creating your first branch. You can always add more branches later.
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="branchName" className="text-sm font-medium">
-                Bedrijfsnaam *
+                Company name *
               </Label>
               <Input
                 id="branchName"
                 type="text"
-                placeholder="Bijv. Mijn Bedrijf"
+                placeholder="For example: My Company"
                 value={formData.branchName}
                 onChange={(e) => handleInputChange('branchName', e.target.value)}
                 required
@@ -119,12 +119,12 @@ export const FirstBranchSetup = () => {
             <div className="space-y-2">
               <Label htmlFor="address" className="text-sm font-medium flex items-center gap-2">
                 <MapPin className="h-4 w-4" />
-                Adres
+                Address
               </Label>
               <Input
                 id="address"
                 type="text"
-                placeholder="Straat, huisnummer, postcode, plaats"
+                placeholder="Street, house number, postal code, city"
                 value={formData.address}
                 onChange={(e) => handleInputChange('address', e.target.value)}
                 className="w-full"
@@ -134,12 +134,12 @@ export const FirstBranchSetup = () => {
             <div className="space-y-2">
               <Label htmlFor="phone" className="text-sm font-medium flex items-center gap-2">
                 <Phone className="h-4 w-4" />
-                Telefoonnummer
+                Phone number
               </Label>
               <Input
                 id="phone"
                 type="tel"
-                placeholder="+31 6 12345678"
+                placeholder="+31 6 123456789"
                 value={formData.phone}
                 onChange={(e) => handleInputChange('phone', e.target.value)}
                 className="w-full"
@@ -149,12 +149,12 @@ export const FirstBranchSetup = () => {
             <div className="space-y-2">
               <Label htmlFor="email" className="text-sm font-medium flex items-center gap-2">
                 <Mail className="h-4 w-4" />
-                E-mailadres
+                Email address
               </Label>
               <Input
                 id="email"
                 type="email"
-                placeholder="info@bedrijf.nl"
+                placeholder="info@company.com"
                 value={formData.email}
                 onChange={(e) => handleInputChange('email', e.target.value)}
                 className="w-full"
@@ -166,7 +166,7 @@ export const FirstBranchSetup = () => {
               className="w-full" 
               disabled={loading || !formData.branchName.trim()}
             >
-              {loading ? 'Aanmaken...' : 'Vestiging aanmaken'}
+              {loading ? 'Creating...' : 'Create branch'}
             </Button>
           </form>
         </CardContent>

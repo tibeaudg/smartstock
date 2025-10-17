@@ -28,6 +28,7 @@ interface AddProductModalProps {
   isOpen: boolean;
   onClose: () => void;
   onProductAdded: () => void;
+  preFilledSKU?: string;
 }
 
 interface FormData {
@@ -45,7 +46,7 @@ interface FormData {
   sku: string;
 }
 
-export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductModalProps) => {
+export const AddProductModal = ({ isOpen, onClose, onProductAdded, preFilledSKU }: AddProductModalProps) => {
   const { user } = useAuth();
   const { activeBranch, loading: branchLoading } = useBranches();
   const queryClient = useQueryClient();
@@ -99,6 +100,13 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
       sku: '',
     },
   });
+
+  // Handle pre-filled SKU
+  useEffect(() => {
+    if (preFilledSKU && isOpen) {
+      form.setValue('sku', preFilledSKU);
+    }
+  }, [preFilledSKU, isOpen]);
 
 
   // Check for duplicate product name

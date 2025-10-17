@@ -40,7 +40,8 @@ import {
   PackageOpen,
   Grid3x3,
   List,
-  Heart
+  Heart,
+  Scan
 } from 'lucide-react';
 import { ProductActionModal } from './ProductActionModal';
 import { EditProductModal } from './EditProductModal';
@@ -54,6 +55,9 @@ import { EditProductStockModal } from './EditProductStockModal';
 import { VariantSelectionModal } from './VariantSelectionModal';
 import { AddVariantModal } from './AddVariantModal';
 import { BulkImportModal } from './BulkImportModal';
+import { ManualStockAdjustModal } from './ManualStockAdjustModal';
+import { ScanStockModal } from './ScanStockModal';
+import { StockOperationModal } from './StockOperationModal';
 import { SupplierPreviewPopover } from './SupplierPreviewPopover';
 import { ProductCard } from './ProductCard';
 import { useMobile } from '@/hooks/use-mobile';
@@ -1398,8 +1402,13 @@ export const StockList = () => {
   const [isProductActionModalOpen, setIsProductActionModalOpen] = useState(false);
   const [isAddVariantModalOpen, setIsAddVariantModalOpen] = useState(false);
   const [isVariantSelectionModalOpen, setIsVariantSelectionModalOpen] = useState(false);
+  const [isScanStockModalOpen, setIsScanStockModalOpen] = useState(false);
+  const [isManualStockModalOpen, setIsManualStockModalOpen] = useState(false);
+  const [isStockOperationModalOpen, setIsStockOperationModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [selectedAction, setSelectedAction] = useState<StockAction>('in');
+  const [scannedSKU, setScannedSKU] = useState<string>('');
+  const [selectedOperationType, setSelectedOperationType] = useState<'scan' | 'manual'>('scan');
   const [productVariants, setProductVariants] = useState<Product[]>([]);
   const [selectedVariant, setSelectedVariant] = useState<Product | null>(null);
 
@@ -2090,6 +2099,43 @@ export const StockList = () => {
       } else {
         setIsEditModalOpen(true);
       }
+    }
+  };
+
+  // New handlers for scan and manual modals
+  const handleOpenAddProductModal = (sku?: string) => {
+    setScannedSKU(sku || '');
+    setIsAddModalOpen(true);
+  };
+
+  const handleOpenStockAdjustModal = (product: Product) => {
+    setSelectedProduct(product);
+    setSelectedAction('in');
+    setIsEditModalOpen(true);
+  };
+
+  // Event listener for custom event from ManualStockAdjustModal
+  useEffect(() => {
+    const handleOpenAddProductModalEvent = () => {
+      setIsAddModalOpen(true);
+    };
+
+    window.addEventListener('openAddProductModal', handleOpenAddProductModalEvent);
+    
+    return () => {
+      window.removeEventListener('openAddProductModal', handleOpenAddProductModalEvent);
+    };
+  }, []);
+
+  // Handler for stock operation selection
+  const handleStockOperationSelect = (operation: 'in' | 'out', type: 'scan' | 'manual') => {
+    setSelectedAction(operation);
+    setSelectedOperationType(type);
+    
+    if (type === 'scan') {
+      setIsScanStockModalOpen(true);
+    } else {
+      setIsManualStockModalOpen(true);
     }
   };
 
@@ -2915,6 +2961,36 @@ export const StockList = () => {
             refetch();
             setIsAddModalOpen(false);
           }}
+          preFilledSKU={scannedSKU}
+        />
+        <ScanStockModal
+          isOpen={isScanStockModalOpen}
+          onClose={() => setIsScanStockModalOpen(false)}
+          onProductUpdated={() => {
+            queryClient.invalidateQueries({ queryKey: ['products'] });
+            refetch();
+          }}
+          onOpenAddProductModal={handleOpenAddProductModal}
+          onOpenStockAdjustModal={(product, action) => {
+            setSelectedProduct(product);
+            setSelectedAction(action);
+            setIsEditModalOpen(true);
+          }}
+          defaultAction={selectedAction}
+        />
+        <ManualStockAdjustModal
+          isOpen={isManualStockModalOpen}
+          onClose={() => setIsManualStockModalOpen(false)}
+          onProductUpdated={() => {
+            queryClient.invalidateQueries({ queryKey: ['products'] });
+            refetch();
+          }}
+          defaultAction={selectedAction}
+        />
+        <StockOperationModal
+          isOpen={isStockOperationModalOpen}
+          onClose={() => setIsStockOperationModalOpen(false)}
+          onSelectOperation={handleStockOperationSelect}
         />
         <VariantSelectionModal
           isOpen={isVariantSelectionModalOpen}
@@ -2950,11 +3026,19 @@ export const StockList = () => {
       {/* Top Right Actions - Compact Header */}
       <div className="flex justify-end items-center gap-2 py-2">
         <Button 
-          onClick={() => setIsAddModalOpen(true)} 
+          onClick={() => setIsStockOperationModalOpen(true)} 
+          variant="outline"
+          className="h-9"
+        >
+          <Scan className="w-4 h-4 mr-2" />
+          Scan
+        </Button>
+        <Button 
+          onClick={() => setIsStockOperationModalOpen(true)} 
           className="h-9 bg-blue-600 hover:bg-blue-700 text-white"
         >
           <Plus className="w-4 h-4 mr-2" />
-          Add Product
+          Manual
         </Button>
       </div>
 

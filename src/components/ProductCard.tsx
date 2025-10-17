@@ -5,7 +5,8 @@ import {
   Heart, 
   Tag, 
   Package, 
-  Palette 
+  Palette,
+  Edit
 } from 'lucide-react';
 import { PhotoUploadPlaceholder } from './StockList';
 
@@ -146,15 +147,26 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         </div>
       </div>
       
-      {/* Action button at bottom */}
+      {/* Action buttons at bottom */}
       <div className="p-3">
-        <Button
-          variant="outline"
-          className="w-full"
-          onClick={() => onStockAction(product, 'in')}
-        >
-          Adjust Stock
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            className="flex-1"
+            onClick={() => onStockAction(product, 'in')}
+          >
+            Adjust Stock
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            className="px-3"
+            onClick={() => onEdit(product)}
+            title="Edit product"
+          >
+            <Edit className="w-4 h-4" />
+          </Button>
+        </div>
       </div>
     </div>
   );
