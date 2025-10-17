@@ -513,13 +513,13 @@ export default function AdminPage() {
           </div>
 
           {/* Main content area */}
-          <div className="w-full flex-1 px-2 sm:px-4 md:px-6 space-y-6 mt-6 mb-24">
+          <div className="w-full flex-1 space-y-2 mt-6 mb-24">
 
             {activeTab === 'notifications' && (
               <AdminNotificationManager />
             )}
             {activeTab === 'users' && (
-              <div className="space-y-6">
+              <div className="space-y-2">
                 {/* Registration Chart */}
                 <Card>
                   <CardHeader>

@@ -118,15 +118,13 @@ export const SubscriptionManagement = () => {
   // Show loading state if data is still loading
   if (isLoading) {
     return (
-      <div className="space-y-6">
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-center">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-              <span className="ml-2 text-gray-600">Loading subscription data...</span>
-            </div>
-          </CardContent>
-        </Card>
+      <div className="space-y-2">
+        <div className="flex items-center justify-center py-12">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading subscription data...</p>
+          </div>
+        </div>
       </div>
     );
   }
@@ -134,7 +132,7 @@ export const SubscriptionManagement = () => {
   // Show error state if there's an error
   if (error) {
     return (
-      <div className="space-y-6">
+      <div className="space-y-2">
         <Card className="border-red-200 bg-red-50">
           <CardContent className="p-6">
             <div className="text-red-600">
@@ -148,7 +146,7 @@ export const SubscriptionManagement = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-2">
       {/* Current Plan */}
       <Card className={`${getTierColor()} border-2`}>
         <CardHeader>

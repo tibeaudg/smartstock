@@ -300,7 +300,63 @@ export const UserManagement = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-2">
+      {/* Header Section with Title and Actions */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Manage Users</h1>
+          <p className="text-gray-600">Manage users and their access to branches.</p>
+        </div>
+        
+        {/* Action Button */}
+        <div className="flex items-center gap-2">
+          <Button 
+            onClick={handleInviteUser} 
+            disabled={inviting || !inviteEmail || !selectedBranchId}
+            className="h-9 bg-blue-600 hover:bg-blue-700 text-white"
+          >
+            {inviting && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+            {inviting ? 'Inviting...' : 'Invite User'}
+          </Button>
+        </div>
+      </div>
+
+      {/* Invite User Form */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Invite User</CardTitle>
+          <CardDescription>Add a new or existing user to a branch.</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid gap-4 md:grid-cols-3">
+            <div>
+              <Label htmlFor="email">Email</Label>
+              <Input id="email" value={inviteEmail} onChange={e => setInviteEmail(e.target.value)} placeholder="user@email.com" />
+            </div>
+            <div>
+              <Label>Role</Label>
+              <Select value={inviteRole} onValueChange={setInviteRole}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="staff">Staff</SelectItem>
+                  <SelectItem value="admin">Admin</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label>Branch</Label>
+              <Select value={selectedBranchId} onValueChange={setSelectedBranchId} disabled={branches.length === 0}>
+                <SelectTrigger><SelectValue placeholder="Select a branch" /></SelectTrigger>
+                <SelectContent>
+                  {branches.map(branch => (
+                    <SelectItem key={branch.branch_id} value={branch.branch_id}>{branch.branch_name}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Check if branches are available */}
       {(!branches || !Array.isArray(branches)) ? (
@@ -309,91 +365,62 @@ export const UserManagement = () => {
         </div>
       ) : (
         <>
-          <Card>
-            <CardHeader>
-              <CardTitle>Invite User</CardTitle>
-              <CardDescription>Add a new or existing user to a branch.</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid gap-4 md:grid-cols-3">
-                <div>
-                  <Label htmlFor="email">Email</Label>
-                  <Input id="email" value={inviteEmail} onChange={e => setInviteEmail(e.target.value)} placeholder="user@email.com" />
-                </div>
-                <div>
-                  <Label>Role</Label>
-                  <Select value={inviteRole} onValueChange={setInviteRole}>
-                    <SelectTrigger><SelectValue /></SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="staff">Staff</SelectItem>
-                      <SelectItem value="admin">Admin</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <Label>Branch</Label>
-                  <Select value={selectedBranchId} onValueChange={setSelectedBranchId} disabled={branches.length === 0}>
-                    <SelectTrigger><SelectValue placeholder="Select a branch" /></SelectTrigger>
-                    <SelectContent>
-                      {branches.map(branch => (
-                        <SelectItem key={branch.branch_id} value={branch.branch_id}>{branch.branch_name}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+
+          {/* Users List */}
+          <div className="space-y-2">
+            {loading || isFetching ? (
+              <div className="flex items-center justify-center py-12">
+                <div className="text-center">
+                  <Loader2 className="w-8 h-8 animate-spin text-blue-600 mx-auto mb-4" />
+                  <p className="text-gray-600">Loading users...</p>
                 </div>
               </div>
-              <Button type="button" onClick={handleInviteUser} disabled={inviting || !inviteEmail || !selectedBranchId}>
-                {inviting && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-                {inviting ? 'Inviting...' : 'Send Invitation'}
-              </Button>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Users in Branch</CardTitle>
-              <CardDescription>Overview of users in the selected branch.</CardDescription>
-            </CardHeader>
-            <CardContent>
-              {users.length === 0 && (loading || isFetching) ? (
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Loading users...</CardTitle>
-                  </CardHeader>
-                  <CardContent className="flex flex-col items-center justify-center py-12">
-                    <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
-                    <span className="mt-2 text-gray-600">Users are loading...</span>
-                  </CardContent>
-                </Card>
-              ) : (
-                <ul className="space-y-2">
-                  {users.length > 0 ? users.map(u => (
-                    <li key={u.id} className="flex justify-between items-center border p-3 rounded-md">
-                      <div>
-                        <p className="font-medium">{u.email}</p>
-                        <p className="text-sm text-gray-500 capitalize">{u.role}</p>
+            ) : users.length === 0 ? (
+              <div className="flex items-center justify-center py-12">
+                <div className="text-center">
+                  <Users className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">No users found</h3>
+                  <p className="text-gray-600">No users found in this branch.</p>
+                </div>
+              </div>
+            ) : (
+              users.map(u => (
+                <Card key={u.id}>
+                  <CardContent className="p-6">
+                    <div className="flex items-center justify-between">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-2">
+                          <h3 className="text-lg font-semibold text-gray-900">{u.email}</h3>
+                          <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded-full capitalize">
+                            {u.role}
+                          </span>
+                        </div>
                       </div>
                       <div className="flex gap-2">
                         {/* Hide 'Manage Branches' button for admin himself */}
                         {!(u.userId === user?.id && u.role === 'admin') && (
                           <Button variant="outline" size="sm" onClick={() => handleOpenManageBranches(u)}>
-                              Manage Branches
+                            Manage Branches
                           </Button>
                         )}
                         {u.userId !== user?.id && (
-                          <Button variant="destructive" size="sm" onClick={() => handleDeleteUserCompletely(u.userId)} disabled={deletingUserId === u.userId}>
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            onClick={() => handleDeleteUserCompletely(u.userId)} 
+                            disabled={deletingUserId === u.userId}
+                            className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                          >
                             {deletingUserId === u.userId ? 'Deleting...' : 'Delete'}
                           </Button>
                         )}
                       </div>
-                    </li>
-                  )) : (
-                    <div className="text-center text-gray-500 py-4">No users found in this branch.</div>
-                  )}
-                </ul>
-              )}
-            </CardContent>
-          </Card>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))
+            )}
+          </div>
 
           {/* Modal for managing branches */}
           <Dialog open={!!manageBranchesUser} onOpenChange={open => !open && setManageBranchesUser(null)}>

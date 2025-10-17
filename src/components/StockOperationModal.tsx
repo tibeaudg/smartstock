@@ -10,20 +10,21 @@ interface StockOperationModalProps {
   onClose: () => void;
   onSelectOperation: (operation: 'in' | 'out', type: 'scan' | 'manual') => void;
   onBack?: () => void;
+  defaultType?: 'scan' | 'manual';
 }
 
 export const StockOperationModal = ({
   isOpen,
   onClose,
   onSelectOperation,
-  onBack
+  onBack,
+  defaultType = 'scan'
 }: StockOperationModalProps) => {
   const { isMobile } = useMobile();
   const [selectedOperation, setSelectedOperation] = useState<'in' | 'out'>('in');
-  const [selectedType, setSelectedType] = useState<'scan' | 'manual'>('scan');
 
   const handleContinue = () => {
-    onSelectOperation(selectedOperation, selectedType);
+    onSelectOperation(selectedOperation, defaultType);
     onClose();
   };
 
@@ -83,48 +84,12 @@ export const StockOperationModal = ({
               </div>
             </div>
 
-            {/* Method Selection */}
-            <div className="space-y-3">
-              <Label className="text-lg font-medium">How would you like to find the product?</Label>
-              <div className="grid grid-cols-2 gap-3">
-                <button
-                  type="button"
-                  onClick={() => setSelectedType('scan')}
-                  className={`p-4 rounded-lg border-2 transition-colors ${
-                    selectedType === 'scan' 
-                      ? 'border-blue-500 bg-blue-50 text-blue-700' 
-                      : 'border-gray-200 bg-white text-gray-700 hover:border-blue-300'
-                  }`}
-                >
-                  <div className="flex flex-col items-center gap-2">
-                    <Scan className="w-6 h-6" />
-                    <span className="font-medium">Scan Barcode</span>
-                    <span className="text-xs text-center">Use camera to scan product barcode</span>
-                  </div>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setSelectedType('manual')}
-                  className={`p-4 rounded-lg border-2 transition-colors ${
-                    selectedType === 'manual' 
-                      ? 'border-blue-500 bg-blue-50 text-blue-700' 
-                      : 'border-gray-200 bg-white text-gray-700 hover:border-blue-300'
-                  }`}
-                >
-                  <div className="flex flex-col items-center gap-2">
-                    <Search className="w-6 h-6" />
-                    <span className="font-medium">Search by Name</span>
-                    <span className="text-xs text-center">Type product name to search</span>
-                  </div>
-                </button>
-              </div>
-            </div>
 
             {/* Summary */}
             <div className="p-4 bg-gray-50 rounded-lg">
               <div className="text-sm text-gray-600 mb-2">You selected:</div>
               <div className="font-medium">
-                {selectedOperation === 'in' ? 'Add Stock' : 'Remove Stock'} via {selectedType === 'scan' ? 'Barcode Scan' : 'Manual Search'}
+                {selectedOperation === 'in' ? 'Add Stock' : 'Remove Stock'} via {defaultType === 'scan' ? 'Barcode Scan' : 'Manual Search'}
               </div>
             </div>
           </div>

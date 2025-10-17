@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { Card, CardContent } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Plus, Edit, Trash2, Truck, Mail, Phone, MapPin, Package, Tag, Search, Upload, Download, CheckSquare, Square, Loader2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
@@ -106,12 +107,12 @@ export default function SuppliersPage() {
   });
 
   // Filter suppliers based on search term
-  const filteredSuppliers = suppliers.filter(supplier =>
+  const filteredSuppliers = Array.isArray(suppliers) ? suppliers.filter((supplier: Supplier) =>
     supplier.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     supplier.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     supplier.company?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     supplier.municipality?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  ) : [];
 
   // Mobile tab switcher state
   const [activeTab, setActiveTab] = useState<'products' | 'categories' | 'suppliers'>('suppliers');
@@ -181,8 +182,8 @@ export default function SuppliersPage() {
     }
 
     try {
-      const { data, error } = await supabase
-        .from('suppliers')
+      const { data, error } = await (supabase
+        .from('suppliers') as any)
         .insert({
           name: formData.name.trim(),
           email: formData.email.trim() || null,
@@ -221,8 +222,8 @@ export default function SuppliersPage() {
     }
 
     try {
-      const { error } = await supabase
-        .from('suppliers')
+      const { error } = await (supabase
+        .from('suppliers') as any)
         .update({
           name: formData.name.trim(),
           email: formData.email.trim() || null,
@@ -370,58 +371,10 @@ export default function SuppliersPage() {
   }
 
   return (
-    <div className={`${isMobile ? 'px-2 py-4' : 'container mx-auto px-4 py-8'}`}>
-      <div className={`${isMobile ? 'w-full' : 'max-w-7xl mx-auto'}`}>
-        {/* Mobile Tab Switcher - Only show on mobile */}
-        {isMobile && (
-          <div className="mb-4">
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-1">
-              <div className="flex space-x-1">
-                <button
-                  onClick={() => handleTabChange('products')}
-                  className={`flex-1 flex items-center justify-center gap-1.5 px-2 py-2.5 rounded-md text-xs font-medium transition-colors ${
-                    activeTab === 'products'
-                      ? 'bg-blue-100 text-blue-700 border border-blue-200'
-                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
-                  }`}
-                >
-                  <Package className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">Products</span>
-                  <span className="sm:hidden">Prod</span>
-                </button>
-                <button
-                  onClick={() => handleTabChange('categories')}
-                  className={`flex-1 flex items-center justify-center gap-1.5 px-2 py-2.5 rounded-md text-xs font-medium transition-colors ${
-                    activeTab === 'categories'
-                      ? 'bg-blue-100 text-blue-700 border border-blue-200'
-                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
-                  }`}
-                >
-                  <Tag className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">Categories</span>
-                  <span className="sm:hidden">Cat</span>
-                </button>
-                <button
-                  onClick={() => handleTabChange('suppliers')}
-                  className={`flex-1 flex items-center justify-center gap-1.5 px-2 py-2.5 rounded-md text-xs font-medium transition-colors ${
-                    activeTab === 'suppliers'
-                      ? 'bg-blue-100 text-blue-700 border border-blue-200'
-                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
-                  }`}
-                >
-                  <Truck className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">Suppliers</span>
-                  <span className="sm:hidden">Sup</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Header Section */}
-        <div className="flex items-center justify-between mb-6">
-        {/* Header */}
-        <div className={`${isMobile ? 'mb-6' : 'mb-8'}`}>
+    <div className="space-y-2">
+      {/* Header Section with Title and Actions */}
+      <div className="flex items-center justify-between">
+        <div>
           <h1 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-gray-900 mb-2`}>
             Manage Suppliers
           </h1>
@@ -429,56 +382,59 @@ export default function SuppliersPage() {
             Manage your suppliers for better organization of your stock
           </p>
         </div>
-          <div className="flex gap-2">
-            <Button 
-              variant="outline"
-              className="text-blue-600 border-blue-200 hover:bg-blue-50"
-            >
-              <Upload className="w-4 h-4 mr-2" />
-              Import
-            </Button>
-            <Button 
-              variant="outline"
-              className="text-blue-600 border-blue-200 hover:bg-blue-50"
-            >
-              <Download className="w-4 h-4 mr-2" />
-              Export
-            </Button>
-            <Button 
-              onClick={() => setShowAddModal(true)}
-              className="bg-blue-600 hover:bg-blue-700 text-white"
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Add
-            </Button>
-          </div>
+        
+        {/* Action Buttons */}
+        <div className="flex items-center gap-2">
+          <Button 
+            variant="outline"
+            className="h-9 text-blue-600 border-blue-200 hover:bg-blue-50"
+          >
+            <Upload className="w-4 h-4 mr-2" />
+            Import
+          </Button>
+          <Button 
+            variant="outline"
+            className="h-9 text-blue-600 border-blue-200 hover:bg-blue-50"
+          >
+            <Download className="w-4 h-4 mr-2" />
+            Export
+          </Button>
+          <Button 
+            onClick={() => setShowAddModal(true)}
+            className="h-9 bg-blue-600 hover:bg-blue-700 text-white"
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            Add Supplier
+          </Button>
         </div>
+      </div>
 
-        {/* Search Section */}
-        <div className="bg-white rounded-lg border border-gray-200 p-4 mb-6">
-          <div className="flex gap-4 items-center">
-            <div className="flex-1 relative">
-              <Input
-                placeholder="Search"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pr-10"
-              />
-              <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-            </div>
-
-          </div>
+      {/* Search Section */}
+      <div className="flex items-center gap-2 py-2">
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <Input
+            type="text"
+            placeholder="Search suppliers..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-9 h-9"
+          />
         </div>
+      </div>
 
-        {/* Suppliers Table */}
-        <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-          {loading ? (
-            <div className="p-8 text-center">
+      {/* Suppliers List */}
+      <div className="space-y-2">
+        {loading ? (
+          <div className="flex items-center justify-center py-12">
+            <div className="text-center">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
               <p className="text-gray-600">Loading suppliers...</p>
             </div>
-          ) : filteredSuppliers.length === 0 ? (
-            <div className="p-8 text-center">
+          </div>
+        ) : filteredSuppliers.length === 0 ? (
+          <div className="flex items-center justify-center py-12">
+            <div className="text-center">
               <Truck className="w-12 h-12 text-gray-400 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-gray-900 mb-2">
                 No suppliers found
@@ -494,79 +450,77 @@ export default function SuppliersPage() {
                 Add Supplier
               </Button>
             </div>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-gray-50 border-b border-gray-200">
-                  <tr>
-                    <th className="px-4 py-3 text-left">
-                      <button
-                        onClick={handleSelectAll}
-                        className="flex items-center"
-                      >
-                        {selectedSuppliers.length === filteredSuppliers.length ? (
-                          <CheckSquare className="w-4 h-4 text-gray-600" />
-                        ) : (
-                          <Square className="w-4 h-4 text-gray-400" />
-                        )}
-                      </button>
-                    </th>
-                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-900">Name</th>
-                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-900">E-mail</th>
-                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-900">Phone</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200">
-                  {filteredSuppliers.map((supplier, index) => (
-                    <tr key={supplier.id} className="hover:bg-gray-50">
-                      <td className="px-4 py-3">
-                        <button
-                          onClick={() => handleSelectSupplier(supplier.id)}
-                          className="flex items-center"
-                        >
-                          {selectedSuppliers.includes(supplier.id) ? (
-                            <CheckSquare className="w-4 h-4 text-gray-600" />
-                          ) : (
-                            <Square className="w-4 h-4 text-gray-400" />
-                          )}
-                        </button>
-                      </td>
-                      <td className="px-4 py-3 text-sm text-gray-900 font-medium">{supplier.name}</td>
-                      <td className="px-4 py-3 text-sm text-gray-900">{supplier.email || '-'}</td>
-                      <td className="px-4 py-3 text-sm text-gray-900">{supplier.phone || '-'}</td>
-                      <td className="px-4 py-3">
-                        <div className="flex gap-2">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => navigate('/dashboard/purchase-orders', { 
-                              state: { 
-                                preSelectedVendor: supplier.id,
-                                preSelectedVendorName: supplier.name 
-                              } 
-                            })}
-                            className="bg-green-600 hover:bg-green-700 text-white border-green-600"
-                            title="Create Purchase Order"
-                          >
-                            <Plus className="w-4 h-4" />
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => openEditModal(supplier)}
-                            className="bg-blue-600 hover:bg-blue-700 text-white border-blue-600"
-                          >
-                            <Edit className="w-4 h-4" />
-                          </Button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </div>
+          </div>
+        ) : (
+          filteredSuppliers.map((supplier) => (
+            <Card 
+              key={supplier.id} 
+              className="cursor-pointer hover:shadow-md transition-shadow"
+            >
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        {supplier.name}
+                      </h3>
+                      <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded-full">
+                        {supplier.product_count || 0} product{(supplier.product_count || 0) !== 1 ? 's' : ''}
+                      </span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4 text-sm text-gray-600">
+                      <div className="flex items-center gap-2">
+                        <Mail className="w-4 h-4" />
+                        <span>{supplier.email || 'No email'}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Phone className="w-4 h-4" />
+                        <span>{supplier.phone || 'No phone'}</span>
+                      </div>
+                    </div>
+                    {supplier.address && (
+                      <div className="flex items-center gap-2 text-sm text-gray-600 mt-2">
+                        <MapPin className="w-4 h-4" />
+                        <span>{supplier.address}</span>
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => navigate('/dashboard/purchase-orders', { 
+                        state: { 
+                          preSelectedVendor: supplier.id,
+                          preSelectedVendorName: supplier.name 
+                        } 
+                      })}
+                      className="bg-green-600 hover:bg-green-700 text-white border-green-600"
+                      title="Create Purchase Order"
+                    >
+                      <Plus className="w-4 h-4" />
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => openEditModal(supplier)}
+                    >
+                      <Edit className="w-4 h-4" />
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => openDeleteModal(supplier)}
+                      className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))
+        )}
       </div>
 
       {/* Add Supplier Modal */}

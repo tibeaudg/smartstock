@@ -169,20 +169,21 @@ export default function IntegrationsSettings() {
   };
 
   return (
-    <div className="min-h-screen">
+    <>
       <Helmet>
         <title>Integrations Settings | StockFlow</title>
         <meta name="description" content="Manage your StockFlow integrations with external services and platforms." />
       </Helmet>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        {/* Header */}
-        <div className="mb-8">
+      {/* Header Section with Title and Actions */}
+      <div className="flex items-center justify-between">
+        <div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Integrations</h1>
           <p className="text-gray-600">
             Connect StockFlow with your favorite tools and services for a complete business solution
           </p>
         </div>
+      </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full bg-white rounded-lg shadow-md p-4">
           <TabsList className="grid w-full grid-cols-3 rounded-lg">
@@ -431,7 +432,6 @@ export default function IntegrationsSettings() {
           }}
           integration={selectedIntegration}
         />
-      </div>
-    </div>
+    </>
   );
 }

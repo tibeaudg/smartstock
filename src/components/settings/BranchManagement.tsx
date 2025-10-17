@@ -279,22 +279,24 @@ export const BranchManagement = () => {
   }
 
   return (
-    <div className="space-y-6">
-
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900">Manage Branches</h1>
-        <p className="text-gray-600 mt-2">Manage your branches and adjust the names as you wish.</p>
-      </div>
-      
-      <div className="flex justify-between items-center">
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogTrigger asChild>
-            <Button onClick={handleCreateNew}>
-              <Plus className="w-4 h-4 mr-2" />
-              New Branch
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
+    <div className="space-y-2">
+      {/* Header Section with Title and Actions */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Manage Branches</h1>
+          <p className="text-gray-600">Manage your branches and adjust the names as you wish.</p>
+        </div>
+        
+        {/* Action Button */}
+        <div className="flex items-center gap-2">
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogTrigger asChild>
+              <Button onClick={handleCreateNew} className="h-9 bg-blue-600 hover:bg-blue-700 text-white">
+                <Plus className="w-4 h-4 mr-2" />
+                New Branch
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
             <DialogHeader>
               <DialogTitle>{editingBranch ? 'Edit Branch' : 'New Branch'}</DialogTitle>
               <DialogDescription>
@@ -341,75 +343,79 @@ export const BranchManagement = () => {
                 </Button>
               </div>
             </form>
-          </DialogContent>
-        </Dialog>
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-2">
+      {/* Branches List */}
+      <div className="space-y-2">
         {userBranches.map((branch) => (
           <Card key={branch.branch_id}>
-            <CardHeader>
-              <CardTitle className="flex justify-between items-center">
-                <div className="flex items-center gap-2">
-                  <Building2 className="w-4 h-4" />
-                  <span>{branch.branch_name}</span>
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Building2 className="w-4 h-4" />
+                    <h3 className="text-lg font-semibold text-gray-900">{branch.branch_name}</h3>
+                    {branch.is_main && (
+                      <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded-full">
+                        Main Branch
+                      </span>
+                    )}
+                  </div>
+                  <div className="grid grid-cols-2 gap-4 text-sm text-gray-600">
+                    <div className="flex items-center gap-2">
+                      <Users className="w-4 h-4" />
+                      <span>{branch.user_count} users</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Calendar className="w-4 h-4" />
+                      <span>{new Date(branch.created_at).toLocaleDateString('en-US')}</span>
+                    </div>
+                  </div>
                 </div>
-                {branch.is_main && (
-                  <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
-                      Main Branch
-                  </span>
-                )}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="flex items-center gap-2 text-sm text-gray-600">
-                <Users className="w-4 h-4" />
-                <span>{branch.user_count} users</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm text-gray-600">
-                <Calendar className="w-4 h-4" />
-                <span>{new Date(branch.created_at).toLocaleDateString('en-US')}</span>
-              </div>
-              <div className="flex gap-2">
-                <Button onClick={() => handleEditBranch(branch)} size="sm" variant="outline" className="w-full">
-                  <Edit className="w-4 h-4 mr-2" />
-                  Edit
-                </Button>
+                <div className="flex gap-2">
+                  <Button onClick={() => handleEditBranch(branch)} size="sm" variant="outline">
+                    <Edit className="w-4 h-4" />
+                  </Button>
                   <Button
                     onClick={() => deleteBranch(branch.branch_id)}
                     size="sm"
-                    variant="destructive"
-                    className="w-full"
+                    variant="outline"
+                    className="text-red-600 hover:text-red-700 hover:bg-red-50"
                     disabled={branch.is_main}
                   >
                     Delete
                   </Button>
-
+                </div>
               </div>
             </CardContent>
           </Card>
         ))}
       </div>
 
-      {userBranches.length === 0 && (isLoading || isFetching) ? (
-        <div className="flex flex-col items-center justify-center py-8">
-          <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
-          <span className="mt-2 text-gray-600">Loading branches...</span>
+      {(isLoading || isFetching) && (
+        <div className="flex items-center justify-center py-12">
+          <div className="text-center">
+            <Loader2 className="w-8 h-8 animate-spin text-blue-600 mx-auto mb-4" />
+            <p className="text-gray-600">Loading branches...</p>
+          </div>
         </div>
-      ) : (
-        userBranches.length === 0 && (
-          <Card>
-            <CardContent className="text-center py-8">
-              <Building2 className="w-12 h-12 mx-auto text-gray-400 mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">No branches found</h3>
-              <p className="text-gray-600 mb-4">Begin with creating your first branch.</p>
-              <Button onClick={handleCreateNew}>
-                <Plus className="w-4 h-4 mr-2" />
-                Create First Branch
-              </Button>
-            </CardContent>
-          </Card>
-        )
+      )}
+
+      {userBranches.length === 0 && !isLoading && !isFetching && (
+        <div className="flex items-center justify-center py-12">
+          <div className="text-center">
+            <Building2 className="w-12 h-12 mx-auto text-gray-400 mb-4" />
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">No branches found</h3>
+            <p className="text-gray-600 mb-4">Begin with creating your first branch.</p>
+            <Button onClick={handleCreateNew} className="bg-blue-600 hover:bg-blue-700 text-white">
+              <Plus className="w-4 h-4 mr-2" />
+              Create First Branch
+            </Button>
+          </div>
+        </div>
       )}
     </div>
   );

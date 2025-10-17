@@ -218,160 +218,115 @@ export default function PurchaseOrdersPage() {
   }
 
   return (
-    <div className={`${isMobile ? 'px-2 py-4' : 'container mx-auto px-4 py-8'}`}>
-      <div className={`${isMobile ? 'w-full' : 'max-w-7xl mx-auto'}`}>
-        {/* Header Section */}
-        <div className="flex items-center justify-between mb-6">
-          <div className={`${isMobile ? 'mb-6' : 'mb-8'}`}>
-            <h1 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-gray-900 mb-2`}>
-              Purchase Orders
-            </h1>
-            <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600`}>
-              Manage your purchase orders and track deliveries
-            </p>
-          </div>
-          <div className="flex gap-2">
-            <Button 
-              variant="outline"
-              className="text-blue-600 border-blue-200 hover:bg-blue-50"
-            >
-              <Upload className="w-4 h-4 mr-2" />
-              Import
-            </Button>
-            <Button 
-              variant="outline"
-              className="text-blue-600 border-blue-200 hover:bg-blue-50"
-            >
-              <Download className="w-4 h-4 mr-2" />
-              Export
-            </Button>
-            <Button 
-              onClick={() => setShowAddModal(true)}
-              className="bg-blue-600 hover:bg-blue-700 text-white"
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              New Purchase
-            </Button>
-          </div>
+    <div className="space-y-2">
+      {/* Header Section with Title and Actions */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-gray-900 mb-2`}>
+            Purchase Orders
+          </h1>
+          <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600`}>
+            Manage your purchase orders and track deliveries
+          </p>
         </div>
-
-        {/* Search and Filters */}
-        <div className="bg-white rounded-lg border border-gray-200 p-4 mb-6">
-          <div className="flex gap-4 items-center mb-4">
-            <div className="flex-1 relative">
-              <Input
-                placeholder="Search product..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pr-10"
-              />
-              <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-            </div>
-            <Button
-              variant="outline"
-              onClick={resetFilters}
-              className="text-gray-600 border-gray-200 hover:bg-gray-50"
-            >
-              <X className="w-4 h-4 mr-2" />
-              Reset Filters
-            </Button>
-          </div>
-
-          {/* Status Filters */}
-          <div className="flex flex-wrap gap-2 mb-4">
-            <Button
-              variant={statusFilter === 'all' ? 'default' : 'outline'}
-              size="sm"
-              onClick={() => setStatusFilter('all')}
-              className={statusFilter === 'all' ? 'bg-blue-600 text-white' : ''}
-            >
-              All ({statusCounts.all})
-            </Button>
-            <Button
-              variant={statusFilter === 'quote' ? 'default' : 'outline'}
-              size="sm"
-              onClick={() => setStatusFilter('quote')}
-              className={statusFilter === 'quote' ? 'bg-blue-600 text-white' : ''}
-            >
-              Quote ({statusCounts.quote})
-            </Button>
-            <Button
-              variant={statusFilter === 'shipped' ? 'default' : 'outline'}
-              size="sm"
-              onClick={() => setStatusFilter('shipped')}
-              className={statusFilter === 'shipped' ? 'bg-orange-600 text-white' : ''}
-            >
-              Shipped ({statusCounts.shipped})
-            </Button>
-            <Button
-              variant={statusFilter === 'received' ? 'default' : 'outline'}
-              size="sm"
-              onClick={() => setStatusFilter('received')}
-              className={statusFilter === 'received' ? 'bg-blue-600 text-white' : ''}
-            >
-              Received ({statusCounts.received})
-            </Button>
-          </div>
-
-          {/* Additional Filters */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div>
-              <Label htmlFor="payment-status">Payment Status</Label>
-              <select
-                id="payment-status"
-                value={paymentStatusFilter}
-                onChange={(e) => setPaymentStatusFilter(e.target.value)}
-                className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="all">All</option>
-                <option value="unpaid">Unpaid</option>
-                <option value="paid">Paid</option>
-                <option value="partial">Partial</option>
-              </select>
-            </div>
-            <div>
-              <Label htmlFor="min-amount">Min Amount</Label>
-              <Input
-                id="min-amount"
-                type="number"
-                placeholder="$0.00"
-                value={minAmount}
-                onChange={(e) => setMinAmount(e.target.value)}
-              />
-            </div>
-            <div>
-              <Label htmlFor="max-amount">Max Amount</Label>
-              <Input
-                id="max-amount"
-                type="number"
-                placeholder="$1000.00"
-                value={maxAmount}
-                onChange={(e) => setMaxAmount(e.target.value)}
-              />
-            </div>
-            <div>
-              <Label htmlFor="location">Location</Label>
-              <select
-                id="location"
-                className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="">All Locations</option>
-                <option value="warehouse">Warehouse</option>
-                <option value="store">Store</option>
-              </select>
-            </div>
-          </div>
+        
+        {/* Action Buttons */}
+        <div className="flex items-center gap-2">
+          <Button 
+            variant="outline"
+            className="h-9 text-blue-600 border-blue-200 hover:bg-blue-50"
+          >
+            <Upload className="w-4 h-4 mr-2" />
+            Import
+          </Button>
+          <Button 
+            variant="outline"
+            className="h-9 text-blue-600 border-blue-200 hover:bg-blue-50"
+          >
+            <Download className="w-4 h-4 mr-2" />
+            Export
+          </Button>
+          <Button 
+            onClick={() => setShowAddModal(true)}
+            className="h-9 bg-blue-600 hover:bg-blue-700 text-white"
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            New Purchase Order
+          </Button>
         </div>
+      </div>
 
-        {/* Purchase Orders List */}
-        <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-          {loading ? (
-            <div className="p-8 text-center">
+      {/* Search and Filters */}
+      <div className="flex items-center gap-2 py-2">
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <Input
+            type="text"
+            placeholder="Search purchase orders..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-9 h-9"
+          />
+        </div>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={resetFilters}
+          className="h-9 shrink-0"
+        >
+          <X className="w-4 h-4 mr-2" />
+          Reset
+        </Button>
+      </div>
+
+      {/* Status Filters */}
+      <div className="flex flex-wrap gap-2">
+        <Button
+          variant={statusFilter === 'all' ? 'default' : 'outline'}
+          size="sm"
+          onClick={() => setStatusFilter('all')}
+          className={statusFilter === 'all' ? 'bg-blue-600 text-white' : ''}
+        >
+          All ({statusCounts.all})
+        </Button>
+        <Button
+          variant={statusFilter === 'quote' ? 'default' : 'outline'}
+          size="sm"
+          onClick={() => setStatusFilter('quote')}
+          className={statusFilter === 'quote' ? 'bg-blue-600 text-white' : ''}
+        >
+          Quote ({statusCounts.quote})
+        </Button>
+        <Button
+          variant={statusFilter === 'shipped' ? 'default' : 'outline'}
+          size="sm"
+          onClick={() => setStatusFilter('shipped')}
+          className={statusFilter === 'shipped' ? 'bg-orange-600 text-white' : ''}
+        >
+          Shipped ({statusCounts.shipped})
+        </Button>
+        <Button
+          variant={statusFilter === 'received' ? 'default' : 'outline'}
+          size="sm"
+          onClick={() => setStatusFilter('received')}
+          className={statusFilter === 'received' ? 'bg-green-600 text-white' : ''}
+        >
+          Received ({statusCounts.received})
+        </Button>
+      </div>
+
+      {/* Purchase Orders List */}
+      <div className="space-y-2">
+        {loading ? (
+          <div className="flex items-center justify-center py-12">
+            <div className="text-center">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
               <p className="text-gray-600">Loading purchase orders...</p>
             </div>
-          ) : filteredPurchaseOrders.length === 0 ? (
-            <div className="p-8 text-center">
+          </div>
+        ) : filteredPurchaseOrders.length === 0 ? (
+          <div className="flex items-center justify-center py-12">
+            <div className="text-center">
               <Package className="w-12 h-12 text-gray-400 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-gray-900 mb-2">
                 No purchase orders found
@@ -387,25 +342,23 @@ export default function PurchaseOrdersPage() {
                 New Purchase Order
               </Button>
             </div>
-          ) : (
-            <div className="space-y-4 p-4">
-              {filteredPurchaseOrders.map((purchaseOrder) => (
-                <PurchaseOrderCard
-                  key={purchaseOrder.id}
-                  purchaseOrder={purchaseOrder}
-                  onEdit={() => {
-                    // TODO: Implement edit functionality
-                    console.log('Edit purchase order:', purchaseOrder.id);
-                  }}
-                  onDelete={() => {
-                    // TODO: Implement delete functionality
-                    console.log('Delete purchase order:', purchaseOrder.id);
-                  }}
-                />
-              ))}
-            </div>
-          )}
-        </div>
+          </div>
+        ) : (
+          filteredPurchaseOrders.map((purchaseOrder) => (
+            <PurchaseOrderCard
+              key={purchaseOrder.id}
+              purchaseOrder={purchaseOrder}
+              onEdit={() => {
+                // TODO: Implement edit functionality
+                console.log('Edit purchase order:', purchaseOrder.id);
+              }}
+              onDelete={() => {
+                // TODO: Implement delete functionality
+                console.log('Delete purchase order:', purchaseOrder.id);
+              }}
+            />
+          ))
+        )}
       </div>
 
       {/* Add Purchase Order Modal */}

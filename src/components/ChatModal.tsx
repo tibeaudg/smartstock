@@ -276,7 +276,7 @@ const ChatContent: React.FC<ChatContentProps> = ({
             <h2 className="text-sm font-semibold text-gray-800">
               Support Chat
             </h2>
-            <p className="text-xs text-gray-500">We helpen je graag</p>
+            <p className="text-xs text-gray-500">We'd like to help you with any questions you have.</p> 
           </div>
         </div>
         <Button

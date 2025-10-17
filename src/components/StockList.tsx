@@ -6,6 +6,7 @@ import { useBranches } from '@/hooks/useBranches';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator, DropdownMenuCheckboxItem } from '@/components/ui/dropdown-menu';
@@ -56,8 +57,8 @@ import { VariantSelectionModal } from './VariantSelectionModal';
 import { AddVariantModal } from './AddVariantModal';
 import { BulkImportModal } from './BulkImportModal';
 import { ManualStockAdjustModal } from './ManualStockAdjustModal';
-import { ScanStockModal } from './ScanStockModal';
 import { StockOperationModal } from './StockOperationModal';
+import { BarcodeScanner } from './BarcodeScanner';
 import { SupplierPreviewPopover } from './SupplierPreviewPopover';
 import { ProductCard } from './ProductCard';
 import { useMobile } from '@/hooks/use-mobile';
@@ -65,6 +66,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useTranslation } from 'react-i18next';
 import { Upload as UploadIcon } from 'lucide-react';
+import { useScannerSettings } from '@/hooks/useScannerSettings';
 
 const getStockStatus = (quantity: number, minLevel: number) => {
   // Ensure we're working with numbers
@@ -313,6 +315,7 @@ export const PhotoUploadPlaceholder: React.FC<PhotoUploadPlaceholderProps> = ({
 
   return (
     <TooltipProvider>
+      
       <Tooltip>
         <TooltipTrigger asChild>
           <div
@@ -400,7 +403,9 @@ const ProductDetailDrawer: React.FC<ProductDetailDrawerProps> = ({ product, isOp
 
   return (
     <tr className="bg-gray-50 border-t border-b border-gray-200">
+      
       <td colSpan={columnCount} className="px-4 py-4">
+        
         <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Left Column - Product Details */}
@@ -608,6 +613,7 @@ const ProductRow: React.FC<ProductRowProps> = ({
 
   return (
     <tr 
+    
       className={`${getRowBackgroundColor()} hover:bg-gray-100 hover:shadow-sm transition-all duration-200 cursor-pointer group border-b-2 border-gray-100`}
     >
       {/* Selection checkbox */}
@@ -1330,6 +1336,7 @@ export const StockList = () => {
   const { isMobile } = useMobile();
   const navigate = useNavigate();
   const location = useLocation();
+  const { settings: scannerSettings, onScanSuccess } = useScannerSettings();
 
   // Check if user is admin
   const isAdmin = userProfile?.is_owner === true;
@@ -1370,9 +1377,10 @@ export const StockList = () => {
   const [isProductActionModalOpen, setIsProductActionModalOpen] = useState(false);
   const [isAddVariantModalOpen, setIsAddVariantModalOpen] = useState(false);
   const [isVariantSelectionModalOpen, setIsVariantSelectionModalOpen] = useState(false);
-  const [isScanStockModalOpen, setIsScanStockModalOpen] = useState(false);
   const [isManualStockModalOpen, setIsManualStockModalOpen] = useState(false);
+  // Test state variable
   const [isStockOperationModalOpen, setIsStockOperationModalOpen] = useState(false);
+  const [isBarcodeScannerOpen, setIsBarcodeScannerOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [selectedAction, setSelectedAction] = useState<StockAction>('in');
   const [scannedSKU, setScannedSKU] = useState<string>('');
@@ -2093,15 +2101,56 @@ export const StockList = () => {
     };
   }, []);
 
+
   // Handler for stock operation selection
   const handleStockOperationSelect = (operation: 'in' | 'out', type: 'scan' | 'manual') => {
     setSelectedAction(operation);
     setSelectedOperationType(type);
     
     if (type === 'scan') {
-      setIsScanStockModalOpen(true);
+      setIsBarcodeScannerOpen(true);
     } else {
       setIsManualStockModalOpen(true);
+    }
+  };
+
+  // Handler for barcode detection
+  const handleBarcodeDetected = async (barcode: string) => {
+    try {
+      if (!activeBranch) {
+        toast.error('No active branch selected');
+        return;
+      }
+
+      // Search for product by SKU
+      const { data: products, error } = await supabase
+        .from('products')
+        .select('*')
+        .eq('branch_id', activeBranch.branch_id)
+        .eq('sku', barcode)
+        .limit(1);
+
+      if (error) {
+        console.error('Error searching for product:', error);
+        toast.error('Error searching for product');
+        return;
+      }
+
+      if (products && products.length > 0) {
+        // Product found - open stock adjustment modal
+        const foundProduct = products[0] as Product;
+        setSelectedProduct(foundProduct);
+        setIsEditModalOpen(true);
+        toast.success(`Product found: ${foundProduct.name}`);
+      } else {
+        // Product not found - open add product modal with pre-filled SKU
+        setScannedSKU(barcode);
+        setIsAddModalOpen(true);
+        toast.info('Product not found - will create new product');
+      }
+    } catch (error) {
+      console.error('Error processing scanned barcode:', error);
+      toast.error('Error processing scanned barcode');
     }
   };
 
@@ -2357,6 +2406,14 @@ export const StockList = () => {
   if (isMobile) {
     return (
       <div className="space-y-3 sm:space-y-4 pt-3 sm:pt-4 px-2 sm:px-4">
+        <div className="space-y-4">
+                  <h1 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-gray-900 mb-2`}>
+              Stock List
+            </h1>
+            <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600`}>
+              Manage your stock list and track deliveries
+            </p>
+          </div>
 
         {/* Only show products content when on products tab */}
         {activeTab === 'products' && (
@@ -2449,11 +2506,34 @@ export const StockList = () => {
               </DropdownMenu>
               <div className="flex gap-2">
                 <Button 
+                  onClick={() => {
+                    setSelectedOperationType('scan');
+                    setIsStockOperationModalOpen(true);
+                  }} 
+                  variant="outline"
+                  className="flex-1 h-10"
+                >
+                  <Scan className="w-4 h-4 mr-2" />
+                  Scan
+                </Button>
+                <Button 
+                  onClick={() => {
+                    setSelectedOperationType('manual');
+                    setIsStockOperationModalOpen(true);
+                  }} 
+                  className="flex-1 h-10 bg-blue-600 hover:bg-blue-700 text-white"
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Manual
+                </Button>
+              </div>
+              <div className="flex gap-2">
+                <Button 
                   onClick={() => setIsAddModalOpen(true)} 
                   className="flex-1 h-10 bg-blue-700 hover:bg-blue-700/80 text-white"
                 >
                   <Plus className="w-5 h-5 mr-2" />
-                  Add New
+                  Add New Product
                 </Button>
               </div>
             </div>
@@ -2918,21 +2998,7 @@ export const StockList = () => {
           }}
           preFilledSKU={scannedSKU}
         />
-        <ScanStockModal
-          isOpen={isScanStockModalOpen}
-          onClose={() => setIsScanStockModalOpen(false)}
-          onProductUpdated={() => {
-            queryClient.invalidateQueries({ queryKey: ['products'] });
-            refetch();
-          }}
-          onOpenAddProductModal={handleOpenAddProductModal}
-          onOpenStockAdjustModal={(product, action) => {
-            setSelectedProduct(product);
-            setSelectedAction(action);
-            setIsEditModalOpen(true);
-          }}
-          defaultAction={selectedAction}
-        />
+        
         <ManualStockAdjustModal
           isOpen={isManualStockModalOpen}
           onClose={() => setIsManualStockModalOpen(false)}
@@ -2946,7 +3012,16 @@ export const StockList = () => {
           isOpen={isStockOperationModalOpen}
           onClose={() => setIsStockOperationModalOpen(false)}
           onSelectOperation={handleStockOperationSelect}
+          defaultType={selectedOperationType}
         />
+        {isBarcodeScannerOpen && (
+          <BarcodeScanner
+            onBarcodeDetected={handleBarcodeDetected}
+            onClose={() => setIsBarcodeScannerOpen(false)}
+            onScanSuccess={onScanSuccess}
+            settings={scannerSettings}
+          />
+        )}
         <VariantSelectionModal
           isOpen={isVariantSelectionModalOpen}
           onClose={() => {
@@ -2978,34 +3053,43 @@ export const StockList = () => {
   // Desktop table view
   return (
     <div className="space-y-2">
-      {/* Top Right Actions - Compact Header */}
-      <div className="flex justify-end items-center gap-2 py-2">
-        <Button 
-          onClick={() => {
-            console.log('Scan button clicked');
-            setSelectedAction('in');
-            setSelectedOperationType('scan');
-            setIsScanStockModalOpen(true);
-          }} 
-          variant="outline"
-          className="h-9"
-        >
-          <Scan className="w-4 h-4 mr-2" />
-          Scan
-        </Button>
-        <Button 
-          onClick={() => {
-            console.log('Manual button clicked');
-            setSelectedAction('in');
-            setSelectedOperationType('manual');
-            setIsManualStockModalOpen(true);
-          }} 
-          className="h-9 bg-blue-600 hover:bg-blue-700 text-white"
-        >
-          <Plus className="w-4 h-4 mr-2" />
-          Manual
-        </Button>
+      {/* Header Section with Title and Actions */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-gray-900 mb-2`}>
+            Stock List
+          </h1>
+          <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600`}>
+            Manage your stock list and track deliveries
+          </p>
+        </div>
+        
+        {/* Action Buttons */}
+        <div className="flex items-center gap-2">
+          <Button 
+            onClick={() => {
+              setSelectedOperationType('scan');
+              setIsStockOperationModalOpen(true);
+            }} 
+            variant="outline"
+            className="h-9"
+          >
+            <Scan className="w-4 h-4 mr-2" />
+            Scan
+          </Button>
+          <Button 
+            onClick={() => {
+              setSelectedOperationType('manual');
+              setIsStockOperationModalOpen(true);
+            }} 
+            className="h-9 bg-blue-600 hover:bg-blue-700 text-white"
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            Manual
+          </Button>
+        </div>
       </div>
+
 
       {/* Filter Header - Active Filters Display */}
       {((filters.categoryFilter && filters.categoryFilter !== 'all' && filters.categoryFilter !== '') || 

@@ -308,56 +308,10 @@ export default function CategorysPage() {
   }
 
   return (
-    <div className={`${isMobile ? 'px-2 py-4' : 'container mx-auto px-4 py-8'}`}>
-      <div className={`${isMobile ? 'w-full' : 'max-w-6xl mx-auto'}`}>
-        {/* Mobile Tab Switcher - Only show on mobile */}
-        {isMobile && (
-          <div className="mb-4">
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-1">
-              <div className="flex space-x-1">
-                <button
-                  onClick={() => handleTabChange('products')}
-                  className={`flex-1 flex items-center justify-center gap-1.5 px-2 py-2.5 rounded-md text-xs font-medium transition-colors ${
-                    activeTab === 'products'
-                      ? 'bg-blue-100 text-blue-700 border border-blue-200'
-                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
-                  }`}
-                >
-                  <Package className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">Producten</span>
-                  <span className="sm:hidden">Prod</span>
-                </button>
-                <button
-                  onClick={() => handleTabChange('categories')}
-                  className={`flex-1 flex items-center justify-center gap-1.5 px-2 py-2.5 rounded-md text-xs font-medium transition-colors ${
-                    activeTab === 'categories'
-                      ? 'bg-blue-100 text-blue-700 border border-blue-200'
-                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
-                  }`}
-                >
-                  <Tag className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">Categoryën</span>
-                  <span className="sm:hidden">Cat</span>
-                </button>
-                <button
-                  onClick={() => handleTabChange('suppliers')}
-                  className={`flex-1 flex items-center justify-center gap-1.5 px-2 py-2.5 rounded-md text-xs font-medium transition-colors ${
-                    activeTab === 'suppliers'
-                      ? 'bg-blue-100 text-blue-700 border border-blue-200'
-                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
-                  }`}
-                >
-                  <Truck className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">Leveranciers</span>
-                  <span className="sm:hidden">Lev</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Header */}
-        <div className={`${isMobile ? 'mb-6' : 'mb-8'}`}>
+    <div className="space-y-2">
+      {/* Header Section with Title and Actions */}
+      <div className="flex items-center justify-between">
+        <div>
           <h1 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-gray-900 mb-2`}>
             Manage Categories
           </h1>
@@ -365,109 +319,102 @@ export default function CategorysPage() {
             Manage your product categories for better organization of your stock
           </p>
         </div>
-
-        {/* Add Category Button */}
-        <div className={`${isMobile ? 'mb-4' : 'mb-6'}`}>
+        
+        {/* Action Button */}
+        <div className="flex items-center gap-2">
           <Button 
             onClick={() => setShowAddModal(true)} 
-            className={`flex items-center gap-2 ${isMobile ? 'w-full' : ''}`}
+            className="h-9 bg-blue-600 hover:bg-blue-700 text-white"
           >
-            <Plus className="w-4 h-4" />
+            <Plus className="w-4 h-4 mr-2" />
             New Category
           </Button>
         </div>
+      </div>
 
-        {/* categories List */}
-        <div className={`grid gap-3 ${isMobile ? '' : 'gap-4'}`}>
-          {loading ? (
-            <Card>
-              <CardContent className={`${isMobile ? 'p-6' : 'p-8'}`}>
-                <div className="text-center">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                  <p className="text-gray-600">categories loading...</p>
-                </div>
-              </CardContent>
-            </Card>
-          ) : categories.length === 0 ? (
-            <Card>
-              <CardContent className={`${isMobile ? 'p-6' : 'p-8'}`}>
-                <div className="text-center">
-                  <Package className={`${isMobile ? 'w-10 h-10' : 'w-12 h-12'} text-gray-400 mx-auto mb-4`} />
-                  <h3 className={`${isMobile ? 'text-base' : 'text-lg'} font-medium text-gray-900 mb-2`}>
-                    No categories
-                  </h3>
-                  <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600 mb-4`}>
-                    You have no categories yet. Create your first category to get started.
-                  </p>
-                  <Button 
-                    onClick={() => setShowAddModal(true)}
-                    className={isMobile ? 'w-full' : ''}
-                  >
-                    <Plus className="w-4 h-4 mr-2" />
-                    First Category
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ) : (
-            categories.map((category) => (
-              <Card 
-                key={category.id} 
-                className="cursor-pointer hover:shadow-md transition-shadow"
-                onClick={() => handleCategoryClick(category)}
+      {/* Categories List */}
+      <div className="space-y-2">
+        {loading ? (
+          <div className="flex items-center justify-center py-12">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+              <p className="text-gray-600">Categories loading...</p>
+            </div>
+          </div>
+        ) : categories.length === 0 ? (
+          <div className="flex items-center justify-center py-12">
+            <div className="text-center">
+              <Package className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-gray-900 mb-2">
+                No categories
+              </h3>
+              <p className="text-base text-gray-600 mb-4">
+                You have no categories yet. Create your first category to get started.
+              </p>
+              <Button 
+                onClick={() => setShowAddModal(true)}
+                className="bg-blue-600 hover:bg-blue-700 text-white"
               >
-                <CardContent className={`${isMobile ? 'p-4' : 'p-6'}`}>
-                  <div className="flex items-center justify-between">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <h3 className={`${isMobile ? 'text-base' : 'text-lg'} font-semibold text-gray-900`}>
-                          {category.name}
-                        </h3>
-                        <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded-full">
-                          {category.product_count || 0} product{category.product_count !== 1 ? 'en' : ''}
-                        </span>
-                      </div>
-                      {category.description && (
-                        <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600`}>
-                          {category.description}
-                        </p>
-                      )}
-                      <p className="text-xs text-gray-500 mt-2">
-                        Aangemaakt op {new Date(category.created_at).toLocaleDateString('nl-NL')}
+                <Plus className="w-4 h-4 mr-2" />
+                First Category
+              </Button>
+            </div>
+          </div>
+        ) : (
+          categories.map((category) => (
+            <Card 
+              key={category.id} 
+              className="cursor-pointer hover:shadow-md transition-shadow"
+              onClick={() => handleCategoryClick(category)}
+            >
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        {category.name}
+                      </h3>
+                      <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded-full">
+                        {category.product_count || 0} product{category.product_count !== 1 ? 'en' : ''}
+                      </span>
+                    </div>
+                    {category.description && (
+                      <p className="text-base text-gray-600">
+                        {category.description}
                       </p>
-                    </div>
-                    <div className={`flex gap-2 ${isMobile ? 'ml-3' : ''}`}>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          openEditModal(category);
-                        }}
-                        className={isMobile ? 'px-2 py-1' : ''}
-                      >
-                        <Edit className="w-4 h-4" />
-                        {!isMobile && <span className="ml-1">Edit</span>}
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          openDeleteModal(category);
-                        }}
-                        className={`${isMobile ? 'px-2 py-1' : ''} text-red-600 hover:text-red-700 hover:bg-red-50`}
-                      >
-                        <Trash2 className="w-4 h-4" />
-                        {!isMobile && <span className="ml-1">Delete</span>}
-                      </Button>
-                    </div>
+                    )}
+                    <p className="text-xs text-gray-500 mt-2">
+                      Aangemaakt op {new Date(category.created_at).toLocaleDateString('nl-NL')}
+                    </p>
                   </div>
-                </CardContent>
-              </Card>
-            ))
-          )}
-        </div>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        openEditModal(category);
+                      }}
+                    >
+                      <Edit className="w-4 h-4" />
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        openDeleteModal(category);
+                      }}
+                      className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))
+        )}
       </div>
 
       {/* Add Category Modal */}
