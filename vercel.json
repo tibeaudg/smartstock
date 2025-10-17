@@ -23,7 +23,7 @@
     { "source": "/api/:path*", "destination": "/api/:path*" },
     { "source": "/sitemap.xml", "destination": "/api/sitemap" },
     { "source": "/ads.txt", "destination": "/api/ads" },
-    { "source": "/:path((?!api).*)", "destination": "/index.html" }
+    { "source": "/((?!api).*)", "destination": "/index.html" }
   ],
   "headers": [
     {
