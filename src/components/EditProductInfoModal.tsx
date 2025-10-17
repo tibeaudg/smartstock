@@ -6,7 +6,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Trash2, ArrowLeft, Check, ChevronsUpDown, Plus } from 'lucide-react';
+import { Trash2, ArrowLeft, Check, ChevronsUpDown, Plus, Scan } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
@@ -16,6 +16,8 @@ import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
+import { BarcodeScanner } from './BarcodeScanner';
+import { useScannerSettings } from '@/hooks/useScannerSettings';
 
 interface Product {
   id: string;
@@ -34,6 +36,7 @@ interface Product {
   category_name?: string | null;
   supplier_name?: string | null;
   location?: string | null;
+  sku?: string | null;
 }
 
 interface EditProductInfoModalProps {
@@ -57,6 +60,10 @@ export const EditProductInfoModal = ({
   const { isMobile } = useMobile();
   const [loading, setLoading] = useState(false);
   const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
+  const [showScanner, setShowScanner] = useState(false);
+  
+  // Get scanner settings
+  const { settings: scannerSettings, onScanSuccess } = useScannerSettings();
   
   // State voor Categoryën en leveranciers
   const [categories, setCategorys] = useState<Array<{ id: string; name: string }>>([]);
@@ -90,6 +97,13 @@ export const EditProductInfoModal = ({
   
   // Gebruik de page refresh hook
   usePageRefresh();
+  
+  // Handle barcode scanning
+  const handleBarcodeDetected = (barcode: string) => {
+    setForm(prev => ({ ...prev, sku: barcode }));
+    setShowScanner(false);
+    toast.success(`SKU scanned: ${barcode}`);
+  };
   const [form, setForm] = useState({
     name: product.name,
     description: product.description || '',
@@ -103,6 +117,7 @@ export const EditProductInfoModal = ({
     category_name: product.category_name || '',
     supplier_name: product.supplier_name || '',
     location: product.location || '',
+    sku: product.sku || '',
   });
 
   useEffect(() => {
@@ -120,6 +135,7 @@ export const EditProductInfoModal = ({
         category_name: product.category_name || '',
         supplier_name: product.supplier_name || '',
         location: product.location || '',
+        sku: product.sku || '',
       });
     }
   }, [isOpen, product]);
@@ -446,6 +462,7 @@ export const EditProductInfoModal = ({
             category_name: form.category_name.trim() || null,
             supplier_name: form.supplier_name.trim() || null,
             location: form.location.trim() || null,
+            sku: form.sku.trim() || null,
             updated_at: new Date().toISOString(),
           })
           .eq('id', product.id);
@@ -477,6 +494,7 @@ export const EditProductInfoModal = ({
             category_name: form.category_name.trim() || null,
             supplier_name: form.supplier_name.trim() || null,
             location: form.location.trim() || null,
+            sku: form.sku.trim() || null,
             is_variant: false,
             parent_product_id: null,
             variant_name: null,
@@ -611,6 +629,31 @@ export const EditProductInfoModal = ({
                     required 
                     className="py-3 px-3 text-base border-blue-200 focus:border-blue-500"
                   />
+                </div>
+
+                {/* SKU Field */}
+                <div>
+                  <Label className="text-blue-700 font-medium">SKU</Label>
+                  <div className="flex gap-2">
+                    <Input 
+                      name="sku" 
+                      value={form.sku} 
+                      onChange={handleChange} 
+                      disabled={loading} 
+                      placeholder="Enter SKU or scan barcode"
+                      className="py-3 px-3 text-base border-blue-200 focus:border-blue-500 flex-1"
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => setShowScanner(true)}
+                      disabled={loading}
+                      className="px-4 py-3 border-blue-200 hover:border-blue-500"
+                    >
+                      <Scan className="w-4 h-4 mr-2" />
+                      Scan
+                    </Button>
+                  </div>
                 </div>
 
                 {!hasExistingVariants && (
@@ -1351,6 +1394,16 @@ export const EditProductInfoModal = ({
           </div>
         </div>
       </DialogContent>
+      
+      {/* Barcode Scanner Modal */}
+      {showScanner && (
+        <BarcodeScanner
+          onBarcodeDetected={handleBarcodeDetected}
+          onClose={() => setShowScanner(false)}
+          onScanSuccess={onScanSuccess}
+          settings={scannerSettings}
+        />
+      )}
     </Dialog>
   );
 };

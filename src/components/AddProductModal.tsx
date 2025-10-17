@@ -11,7 +11,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
 import { toast } from 'sonner';
 import { SuggestionInput } from './SuggestionInput';
-import { AlertCircle, Check, ChevronsUpDown, Plus } from 'lucide-react';
+import { AlertCircle, Check, ChevronsUpDown, Plus, Scan } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Info } from 'lucide-react';
 import { useQueryClient } from '@tanstack/react-query';
@@ -21,6 +21,8 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Switch } from '@/components/ui/switch';
 import { cn } from '@/lib/utils';
+import { BarcodeScanner } from './BarcodeScanner';
+import { useScannerSettings } from '@/hooks/useScannerSettings';
 
 interface AddProductModalProps {
   isOpen: boolean;
@@ -40,6 +42,7 @@ interface FormData {
   purchasePrice: number;
   salePrice: number;
   location: string;
+  sku: string;
 }
 
 export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductModalProps) => {
@@ -52,8 +55,12 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [showUpgradeNotice, setShowUpgradeNotice] = useState(false);
   const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
+  const [showScanner, setShowScanner] = useState(false);
   const navigate = useNavigate();
   const { isMobile } = useMobile();
+  
+  // Get scanner settings
+  const { settings: scannerSettings, onScanSuccess } = useScannerSettings();
   
   // State voor Categoryën en leveranciers
   const [categories, setCategorys] = useState<Array<{ id: string; name: string }>>([]);
@@ -89,6 +96,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
       purchasePrice: 0,
       salePrice: 0,
       location: '',
+      sku: '',
     },
   });
 
@@ -187,6 +195,13 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
     } else {
       setImagePreview(null);
     }
+  };
+
+  // Handle barcode scanning
+  const handleBarcodeDetected = (barcode: string) => {
+    form.setValue('sku', barcode);
+    setShowScanner(false);
+    toast.success(`SKU scanned: ${barcode}`);
   };
 
   const handleSubmit = async (data: FormData) => {
@@ -354,6 +369,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
           supplier_id: supplierId,
           category_id: categoryId,
           location: data.location.trim() || null,
+          sku: data.sku.trim() || null,
           is_variant: false,
           parent_product_id: null,
           variant_name: null,
@@ -565,6 +581,38 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
                       This product name already exists in this branch.
                     </div>
                   )}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* SKU Field */}
+            <FormField
+              control={form.control}
+              name="sku"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-blue-700 font-medium">SKU</FormLabel>
+                  <FormControl>
+                    <div className="flex gap-2">
+                      <Input 
+                        {...field} 
+                        placeholder="Enter SKU or scan barcode" 
+                        disabled={loading} 
+                        className="py-3 px-3 text-base border-blue-200 focus:border-blue-500 flex-1" 
+                      />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => setShowScanner(true)}
+                        disabled={loading}
+                        className="px-4 py-3 border-blue-200 hover:border-blue-500"
+                      >
+                        <Scan className="w-4 h-4 mr-2" />
+                        Scan
+                      </Button>
+                    </div>
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
@@ -1288,6 +1336,16 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded }: AddProductM
     </div>
   </div>
 )}
+
+      {/* Barcode Scanner Modal */}
+      {showScanner && (
+        <BarcodeScanner
+          onBarcodeDetected={handleBarcodeDetected}
+          onClose={() => setShowScanner(false)}
+          onScanSuccess={onScanSuccess}
+          settings={scannerSettings}
+        />
+      )}
     </Dialog>
   );
 };

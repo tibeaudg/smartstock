@@ -2374,14 +2374,22 @@ export const StockList = () => {
                   <DropdownMenuTrigger asChild>
                     <Button variant="outline" className="flex-1 h-10 text-sm">
                       <Settings className="w-4 h-4 mr-2" />
-                      Columns
+                      Settings
                     </Button>
                   </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">
                   <DropdownMenuItem disabled className="font-semibold">
-                    Column Visibility
+                    Import & Settings
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => setIsBulkImportModalOpen(true)}>
+                    <Upload className="w-4 h-4 mr-2" />
+                    Import Excel
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem disabled className="font-semibold">
+                    Column Visibility
+                  </DropdownMenuItem>
                   <DropdownMenuCheckboxItem
                     checked={columnVisibility.product}
                     onCheckedChange={() => toggleColumnVisibility('product')}
@@ -2440,19 +2448,11 @@ export const StockList = () => {
               </DropdownMenu>
               <div className="flex gap-2">
                 <Button 
-                  onClick={() => setIsBulkImportModalOpen(true)} 
-                  variant="outline"
-                  className="flex-1 h-10 text-sm"
-                >
-                  <Upload className="w-4 h-4 mr-2" />
-                  Import Excel
-                </Button>
-                <Button 
                   onClick={() => setIsAddModalOpen(true)} 
                   className="flex-1 h-10 bg-blue-700 hover:bg-blue-700/80 text-white"
                 >
                   <Plus className="w-5 h-5 mr-2" />
-                  Add Product
+                  Add New
                 </Button>
               </div>
             </div>
@@ -2949,87 +2949,6 @@ export const StockList = () => {
     <div className="space-y-2">
       {/* Top Right Actions - Compact Header */}
       <div className="flex justify-end items-center gap-2 py-2">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="sm" className="h-9">
-              <Settings className="w-4 h-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-56">
-            <DropdownMenuItem disabled className="font-semibold">
-              Column Visibility
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuCheckboxItem
-              checked={columnVisibility.product}
-              onCheckedChange={() => toggleColumnVisibility('product')}
-            >
-              Product
-            </DropdownMenuCheckboxItem>
-            <DropdownMenuCheckboxItem
-              checked={columnVisibility.location}
-              onCheckedChange={() => toggleColumnVisibility('location')}
-            >
-              Locations
-            </DropdownMenuCheckboxItem>
-            <DropdownMenuCheckboxItem
-              checked={columnVisibility.current}
-              onCheckedChange={() => toggleColumnVisibility('current')}
-            >
-              Current Stock
-            </DropdownMenuCheckboxItem>
-            <DropdownMenuCheckboxItem
-              checked={columnVisibility.minimum}
-              onCheckedChange={() => toggleColumnVisibility('minimum')}
-            >
-              Minimum Stock Level
-            </DropdownMenuCheckboxItem>
-            <DropdownMenuCheckboxItem
-              checked={columnVisibility.category}
-              onCheckedChange={() => toggleColumnVisibility('category')}
-            >
-              Category
-            </DropdownMenuCheckboxItem>
-            <DropdownMenuCheckboxItem
-              checked={columnVisibility.supplier}
-              onCheckedChange={() => toggleColumnVisibility('supplier')}
-            >
-              Supplier
-            </DropdownMenuCheckboxItem>
-            <DropdownMenuCheckboxItem
-              checked={columnVisibility.purchasePrice}
-              onCheckedChange={() => toggleColumnVisibility('purchasePrice')}
-            >
-              Purchase Price
-            </DropdownMenuCheckboxItem>
-            <DropdownMenuCheckboxItem
-              checked={columnVisibility.salePrice}
-              onCheckedChange={() => toggleColumnVisibility('salePrice')}
-            >
-              Sale Price
-            </DropdownMenuCheckboxItem>
-            <DropdownMenuCheckboxItem
-              checked={columnVisibility.status}
-              onCheckedChange={() => toggleColumnVisibility('status')}
-            >
-              Status
-            </DropdownMenuCheckboxItem>
-            <DropdownMenuCheckboxItem
-              checked={columnVisibility.actions}
-              onCheckedChange={() => toggleColumnVisibility('actions')}
-            >
-              Actions
-            </DropdownMenuCheckboxItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-        <Button 
-          onClick={() => setIsBulkImportModalOpen(true)} 
-          variant="outline"
-          className="h-9"
-        >
-          <Upload className="w-4 h-4 mr-2" />
-          Import Excel
-        </Button>
         <Button 
           onClick={() => setIsAddModalOpen(true)} 
           className="h-9 bg-blue-600 hover:bg-blue-700 text-white"
@@ -3167,6 +3086,89 @@ export const StockList = () => {
               <Grid3x3 className="w-4 h-4 mr-2" />
               Card View
             </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+        
+        {/* Settings Dropdown */}
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="sm" className="h-9 shrink-0">
+              <Settings className="w-4 h-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-56">
+            <DropdownMenuItem disabled className="font-semibold">
+              Import & Settings
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={() => setIsBulkImportModalOpen(true)}>
+              <Upload className="w-4 h-4 mr-2" />
+              Import Excel
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem disabled className="font-semibold">
+              Column Visibility
+            </DropdownMenuItem>
+            <DropdownMenuCheckboxItem
+              checked={columnVisibility.product}
+              onCheckedChange={() => toggleColumnVisibility('product')}
+            >
+              Product
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem
+              checked={columnVisibility.location}
+              onCheckedChange={() => toggleColumnVisibility('location')}
+            >
+              Locations
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem
+              checked={columnVisibility.current}
+              onCheckedChange={() => toggleColumnVisibility('current')}
+            >
+              Current Stock
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem
+              checked={columnVisibility.minimum}
+              onCheckedChange={() => toggleColumnVisibility('minimum')}
+            >
+              Minimum Stock Level
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem
+              checked={columnVisibility.category}
+              onCheckedChange={() => toggleColumnVisibility('category')}
+            >
+              Category
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem
+              checked={columnVisibility.supplier}
+              onCheckedChange={() => toggleColumnVisibility('supplier')}
+            >
+              Supplier
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem
+              checked={columnVisibility.purchasePrice}
+              onCheckedChange={() => toggleColumnVisibility('purchasePrice')}
+            >
+              Purchase Price
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem
+              checked={columnVisibility.salePrice}
+              onCheckedChange={() => toggleColumnVisibility('salePrice')}
+            >
+              Sale Price
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem
+              checked={columnVisibility.status}
+              onCheckedChange={() => toggleColumnVisibility('status')}
+            >
+              Status
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem
+              checked={columnVisibility.actions}
+              onCheckedChange={() => toggleColumnVisibility('actions')}
+            >
+              Actions
+            </DropdownMenuCheckboxItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

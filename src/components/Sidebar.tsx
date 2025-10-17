@@ -83,7 +83,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
   // Check specific feature access based on subscription tier
   const hasDeliveryNotes = canUseFeature('delivery-notes');
   const hasScanner = true; // Scanner is now available for all users
-  const hasAnalytics = canUseFeature('analytics');
+  const hasAnalytics = true; // Analytics is now available for all users
 
   // If blocked, only show settings/invoicing
   const isBlocked = userProfile?.blocked;
@@ -121,12 +121,8 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
   ];
 
   const analyticsSubItems = [
-    { id: 'dashboard', label: 'Dashboard', path: '/dashboard/analytics' },
-    { id: 'predictions', label: 'Predictions', path: '/dashboard/analytics/predictions' },
     { id: 'reports', label: 'Reports', path: '/dashboard/analytics/reports' },
     { id: 'export', label: 'Export', path: '/dashboard/analytics/export' },
-    { id: 'api', label: 'API', path: '/dashboard/analytics/api' },
-    { id: 'filtering', label: 'Filtering', path: '/dashboard/analytics/filtering' },
   ];
 
   const menuItems = isBlocked
@@ -141,8 +137,6 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
       ]
     : [
         { id: 'dashboard', label: 'Dashboard', icon: BarChart3, path: '/dashboard', end: true },
-
-        { id: 'scanner', label: 'Scanner', icon: Scan, path: '/dashboard/scan' },
 
         { 
           id: 'stock', 
@@ -226,7 +220,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
         {/* Navigation */}
         <nav className="flex-1 px-2 sm:px-3 py-3 sm:py-4 text-xs sm:text-sm pb-40 sm:pb-60 overflow-hidden">
           <ul className="space-y-1">
-            {menuItems.map((item) => {
+            {menuItems.map((item, index) => {
               const Icon = item.icon;
               let label = item.label;
               if (item.id === 'stock') {
@@ -247,7 +241,8 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
               const isExpanded = isSubmenuOpen || isAnySubItemActive;
 
               return (
-                <li key={item.id} className="space-y-1">
+                <React.Fragment key={item.id}>
+                  <li className="space-y-1">
                   <NavLink
                     to={hasSubItems ? '#' : item.path}
                     end={item.end}
@@ -316,7 +311,22 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
                       ))}
                     </ul>
                   )}
-                </li>
+                  </li>
+                  
+                  {/* Add separator after Dashboard */}
+                  {item.id === 'dashboard' && (
+                    <li className="mt-3 mb-3">
+                      <div className="border-t border-gray-200 mx-2"></div>
+                    </li>
+                  )}
+                  
+                  {/* Add separator before Purchase Orders */}
+                  {item.id === 'purchase-orders' && (
+                    <li className="mt-3 mb-3">
+                      <div className="border-b border-gray-200 mx-2"></div>
+                    </li>
+                  )}
+                </React.Fragment>
               );
             })}
           </ul>

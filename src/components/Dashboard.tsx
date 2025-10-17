@@ -1,22 +1,55 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NotificationButton } from './NotificationButton';
 import { useNotifications } from '../hooks/useNotifications';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { CalendarIcon, DollarSign, Package, TrendingUp, TrendingDown, AlertTriangle, Euro } from 'lucide-react';
+import { CalendarIcon, DollarSign, Package, TrendingUp, TrendingDown, AlertTriangle, Euro, Users, ShoppingCart, RefreshCw, BarChart3, PieChart, LineChart } from 'lucide-react';
 import { format, addDays, startOfWeek, startOfMonth, startOfQuarter, startOfYear, endOfToday } from 'date-fns';
 import { cn } from '@/lib/utils';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, BarChart, Bar, Area, AreaChart } from 'recharts';
+import { LineChart as RechartsLineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart as RechartsPieChart, Pie, Cell, BarChart, Bar, Area, AreaChart } from 'recharts';
 import { useDashboardData, useBasicDashboardMetrics } from '@/hooks/useDashboardData';
 import { useMobile } from '@/hooks/use-mobile';
 import { useBranches } from '@/hooks/useBranches';
 import { useCurrency } from '@/hooks/useCurrency';
+import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
+import { Badge } from '@/components/ui/badge';
 
 
 interface DashboardProps {
   userRole: 'admin' | 'staff';
+}
+
+interface AnalyticsData {
+  totalProducts: number;
+  totalTransactions: number;
+  totalRevenue: number;
+  activeUsers: number;
+  topProducts: Array<{
+    id: string;
+    name: string;
+    quantity: number;
+    revenue: number;
+  }>;
+  salesTrend: Array<{
+    date: string;
+    sales: number;
+    revenue: number;
+  }>;
+  categoryDistribution: Array<{
+    category: string;
+    count: number;
+    percentage: number;
+  }>;
+  recentActivity: Array<{
+    id: string;
+    type: string;
+    description: string;
+    timestamp: string;
+    user: string;
+  }>;
 }
 
 export const Dashboard = ({ userRole }: DashboardProps) => {
@@ -29,6 +62,134 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
   };
   const { isMobile } = useMobile();
   const [rangeType, setRangeType] = useState<'week' | 'month' | 'quarter' | 'year' | 'all'>('month');
+  
+  // Analytics state
+  const { user } = useAuth();
+  const [analyticsData, setAnalyticsData] = useState<AnalyticsData | null>(null);
+  const [analyticsLoading, setAnalyticsLoading] = useState(true);
+  const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
+  const [timeRange, setTimeRange] = useState<'7d' | '30d' | '90d' | '1y'>('30d');
+
+  // Analytics data fetching function
+  const fetchAnalyticsData = async () => {
+    if (!user) return;
+    
+    setAnalyticsLoading(true);
+    try {
+      // Fetch basic counts
+      const [productsResult, transactionsResult, usersResult] = await Promise.all([
+        supabase.from('products').select('id', { count: 'exact' }).eq('user_id', user.id),
+        supabase.from('stock_transactions').select('id', { count: 'exact' }).eq('user_id', user.id),
+        supabase.from('profiles').select('id', { count: 'exact' })
+      ]);
+
+      // Calculate total revenue from sales transactions
+      const { data: revenueData, error: revenueError } = await supabase
+        .from('stock_transactions')
+        .select(`
+          quantity,
+          products!inner(unit_price)
+        `)
+        .eq('user_id', user.id)
+        .eq('transaction_type', 'out');
+
+      const totalRevenue = revenueData?.reduce((sum, transaction) => {
+        const price = transaction.products?.unit_price || 0;
+        return sum + (transaction.quantity * price);
+      }, 0) || 0;
+
+      // Get top products using the database function
+      const days = timeRange === '7d' ? 7 : timeRange === '30d' ? 30 : timeRange === '90d' ? 90 : 365;
+      const { data: topProductsData, error: topProductsError } = await supabase
+        .rpc('calculate_top_products', {
+          p_user_id: user.id,
+          p_days: days,
+          p_limit: 5
+        });
+
+      const topProducts = topProductsData?.map(product => ({
+        id: product.product_id,
+        name: product.product_name,
+        quantity: product.total_quantity,
+        revenue: product.total_revenue
+      })) || [];
+
+      // Get sales trend data using the database function
+      const { data: salesTrendData, error: salesTrendError } = await supabase
+        .rpc('calculate_sales_trend', {
+          p_user_id: user.id,
+          p_days: days
+        });
+
+      const salesTrend = salesTrendData?.map(trend => ({
+        date: trend.date,
+        sales: trend.sales_count,
+        revenue: trend.total_revenue
+      })) || [];
+
+      // Get category distribution using the database function
+      const { data: categoryData, error: categoryError } = await supabase
+        .rpc('calculate_category_distribution', {
+          p_user_id: user.id
+        });
+
+      const categoryDistribution = categoryData?.map(cat => ({
+        category: cat.category_name,
+        count: cat.product_count,
+        percentage: cat.percentage
+      })) || [];
+
+      // Get recent activity from the view
+      const { data: activityData, error: activityError } = await supabase
+        .from('recent_activity_view')
+        .select('*')
+        .limit(5);
+
+      const recentActivity = activityData?.map(activity => ({
+        id: activity.id,
+        type: activity.type,
+        description: activity.description,
+        timestamp: formatTimeAgo(activity.timestamp),
+        user: activity.user_name || 'Onbekend'
+      })) || [];
+
+      setAnalyticsData({
+        totalProducts: productsResult.count || 0,
+        totalTransactions: transactionsResult.count || 0,
+        totalRevenue: totalRevenue,
+        activeUsers: usersResult.count || 0,
+        topProducts,
+        salesTrend,
+        categoryDistribution,
+        recentActivity
+      });
+
+      setLastUpdated(new Date());
+    } catch (error) {
+      console.error('Error fetching analytics data:', error);
+    } finally {
+      setAnalyticsLoading(false);
+    }
+  };
+
+  const formatTimeAgo = (timestamp: string) => {
+    const now = new Date();
+    const time = new Date(timestamp);
+    const diffInSeconds = Math.floor((now.getTime() - time.getTime()) / 1000);
+    
+    if (diffInSeconds < 60) {
+      return `${diffInSeconds} seconden geleden`;
+    } else if (diffInSeconds < 3600) {
+      const minutes = Math.floor(diffInSeconds / 60);
+      return `${minutes} minuten geleden`;
+    } else if (diffInSeconds < 86400) {
+      const hours = Math.floor(diffInSeconds / 3600);
+      return `${hours} uur geleden`;
+    } else {
+      const days = Math.floor(diffInSeconds / 86400);
+      return `${days} dagen geleden`;
+    }
+  };
 
   // Bepaal start- en einddatum op basis van selectie
   const today = new Date();
@@ -63,6 +224,11 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
   });
 
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8'];
+
+  // Fetch analytics data on component mount and when timeRange changes
+  useEffect(() => {
+    fetchAnalyticsData();
+  }, [user, timeRange]);
 
   // Show basic metrics immediately if available, otherwise show loading
   const displayMetrics = metrics || basicMetrics;
@@ -172,6 +338,122 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
           </CardContent>
         </Card>
       </div>
+
+      {/* Analytics Dashboard Content */}
+      {analyticsData && (
+        <>
+
+
+          {/* Analytics Charts Row */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+            {/* Sales Trend */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Sales Trend</CardTitle>
+                <CardDescription>Sales and revenue over time</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="h-64 flex items-center justify-center bg-gray-50 rounded-lg">
+                  <div className="text-center">
+                    <LineChart className="w-12 h-12 text-gray-400 mx-auto mb-2" />
+                    <p className="text-gray-500">Sales trend graph</p>
+                    <p className="text-sm text-gray-400">Last {timeRange === '7d' ? '7 days' : timeRange === '30d' ? '30 days' : timeRange === '90d' ? '90 days' : 'year'}</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Category Distribution */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Category Distribution</CardTitle>
+                <CardDescription>Distribution of products per category</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {analyticsData.categoryDistribution.map((category, index) => (
+                    <div key={category.category} className="flex items-center justify-between">
+                      <div className="flex items-center space-x-2">
+                        <div className={`w-3 h-3 rounded-full ${
+                          index === 0 ? 'bg-blue-500' :
+                          index === 1 ? 'bg-green-500' :
+                          index === 2 ? 'bg-yellow-500' :
+                          index === 3 ? 'bg-red-500' : 'bg-purple-500'
+                        }`} />
+                        <span className="text-sm font-medium">{category.category}</span>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <span className="text-sm text-gray-600">{category.count}</span>
+                        <Badge variant="secondary">{category.percentage}%</Badge>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Top Products and Recent Activity */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+            {/* Top Products */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Top Products</CardTitle>
+                <CardDescription>Best selling products</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {analyticsData.topProducts.map((product, index) => (
+                    <div key={product.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                          <span className="text-sm font-bold text-blue-600">#{index + 1}</span>
+                        </div>
+                        <div>
+                          <p className="font-medium">{product.name}</p>
+                          <p className="text-sm text-gray-600">{product.quantity} sold</p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-medium">{formatPrice(product.revenue)}</p>
+                        <p className="text-sm text-gray-600">revenue</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Recent Activity */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Recent Activity</CardTitle>
+                <CardDescription>Recent transactions and movements</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {analyticsData.recentActivity.map((activity) => (
+                    <div key={activity.id} className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
+                      <div className={`w-2 h-2 rounded-full mt-2 ${
+                        activity.type === 'sale' ? 'bg-green-500' :
+                        activity.type === 'stock_in' ? 'bg-blue-500' : 'bg-orange-500'
+                      }`} />
+                      <div className="flex-1">
+                        <p className="text-sm font-medium">{activity.description}</p>
+                        <div className="flex items-center space-x-2 mt-1">
+                          <span className="text-xs text-gray-500">{activity.timestamp}</span>
+                          <span className="text-xs text-gray-400">•</span>
+                          <span className="text-xs text-gray-500">{activity.user}</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </>
+      )}
 
       {/* Stock Movement Chart */}
       <div className="bg-white rounded-lg shadow p-4 sm:p-6 mt-4 sm:mt-6">
