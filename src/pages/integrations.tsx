@@ -35,12 +35,28 @@ const integrations = [
     features: ['Real-time updates', 'User authentication', 'Data storage']
   },
   {
-    name: 'E-commerce Platforms',
-    description: 'Connect with popular e-commerce solutions',
+    name: 'Shopify',
+    description: 'Import inventory data from Shopify stores',
+    icon: <ShoppingCart className="h-8 w-8" />,
+    category: 'E-commerce',
+    status: 'CSV Support',
+    features: ['CSV import/export', 'Product sync', 'Inventory updates', 'Order tracking']
+  },
+  {
+    name: 'Square',
+    description: 'Connect with Square POS systems',
+    icon: <ShoppingCart className="h-8 w-8" />,
+    category: 'POS',
+    status: 'CSV Support',
+    features: ['CSV import/export', 'Product sync', 'Sales data import', 'Multi-location support']
+  },
+  {
+    name: 'WooCommerce',
+    description: 'WordPress e-commerce integration',
     icon: <ShoppingCart className="h-8 w-8" />,
     category: 'E-commerce',
     status: 'Coming Soon',
-    features: ['Shopify integration', 'WooCommerce sync', 'Inventory sync']
+    features: ['API integration', 'Real-time sync', 'Order management', 'Inventory sync']
   },
   {
     name: 'Email Marketing',
@@ -68,7 +84,7 @@ const integrations = [
   }
 ];
 
-const categories = ['All', 'Payments', 'Database', 'E-commerce', 'Marketing', 'Analytics', 'Mobile'];
+const categories = ['All', 'Payments', 'Database', 'E-commerce', 'POS', 'Marketing', 'Analytics', 'Mobile'];
 
 export default function IntegrationsPage() {
   const [selectedCategory, setSelectedCategory] = React.useState('All');
@@ -144,7 +160,13 @@ export default function IntegrationsPage() {
                   </div>
                   <Badge 
                     variant={integration.status === 'Available' ? 'default' : 'secondary'}
-                    className={integration.status === 'Available' ? 'bg-green-100 text-green-800' : ''}
+                    className={
+                      integration.status === 'Available' 
+                        ? 'bg-green-100 text-green-800' 
+                        : integration.status === 'CSV Support'
+                        ? 'bg-blue-100 text-blue-800'
+                        : ''
+                    }
                   >
                     {integration.status}
                   </Badge>
@@ -172,6 +194,12 @@ export default function IntegrationsPage() {
                   {integration.status === 'Available' && (
                     <Button className="w-full mt-4" variant="outline">
                       Connect
+                      <ExternalLink className="ml-2 h-4 w-4" />
+                    </Button>
+                  )}
+                  {integration.status === 'CSV Support' && (
+                    <Button className="w-full mt-4" variant="outline">
+                      View CSV Guide
                       <ExternalLink className="ml-2 h-4 w-4" />
                     </Button>
                   )}

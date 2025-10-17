@@ -112,6 +112,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
     { id: 'branches', label: 'Branches', path: '/dashboard/settings/branches' },
     { id: 'users', label: 'Users', path: '/dashboard/settings/users' },
     { id: 'subscription', label: 'Subscription', path: '/dashboard/settings/subscription' },
+    { id: 'integrations', label: 'Integrations', path: '/dashboard/settings/integrations' },
   ];
 
   const adminSubItems = [

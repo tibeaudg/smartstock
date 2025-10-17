@@ -1,5 +1,6 @@
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { SuggestionInput } from "@/components/SuggestionInput";
 import SEO from '../components/SEO';
 import { usePageRefresh } from '@/hooks/usePageRefresh';

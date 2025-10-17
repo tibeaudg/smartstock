@@ -7,7 +7,7 @@ import {
   Package, BarChart3, Users, Shield, Check, TrendingUp, Zap, Star, Clock, Euro, Target, 
   ChevronLeft, ChevronRight, Scan, Truck, ArrowRight, Play, Award, Globe, Smartphone, 
   CheckCircle, Rocket, Crown, Sparkles, Timer, Facebook, Twitter, Linkedin, Instagram,
-  Repeat, Camera, Building
+  Repeat, Camera, Building, ShoppingCart, CreditCard, Mail
 } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
 import SEO from './SEO';
@@ -1896,6 +1896,157 @@ export const HomePage = () => {
           </FadeInWhenVisible>
       </section>
 
+      {/* Integrations Section */}
+      <section className="py-16 sm:py-20 md:py-24 lg:py-28 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Header */}
+          <FadeInWhenVisible>
+            <div className="text-center mb-12 sm:mb-16 md:mb-20">
+              <div className="inline-block mb-4 sm:mb-6">
+                <span className="px-4 py-2 bg-green-100 text-green-700 text-sm font-semibold rounded-full">
+                  CONNECT YOUR TOOLS
+                </span>
+              </div>
+              <h2 className="text-[clamp(2.5rem,4vw,4rem)] font-light text-gray-800 mb-3 leading-tight px-2">
+                Connect StockFlow with <br className="hidden sm:block" />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-blue-600">
+                  Your Business Tools
+                </span>
+              </h2>
+              <p className="text-lg sm:text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto px-4 leading-relaxed">
+                Seamlessly integrate with your existing systems and streamline your workflow
+              </p>
+            </div>
+          </FadeInWhenVisible>
+
+          {/* Integration Cards */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            {/* Shopify */}
+            <FadeInWhenVisible delay={100}>
+              <div className="bg-white border-2 border-gray-200 rounded-2xl p-6 sm:p-8 hover:border-green-300 hover:shadow-lg transition-all duration-300">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+                    <ShoppingCart className="h-6 w-6 text-green-600" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900">Shopify</h3>
+                    <p className="text-sm text-gray-600">E-commerce platform</p>
+                  </div>
+                </div>
+                <p className="text-gray-600 mb-4">Import your Shopify products and sync inventory levels automatically.</p>
+                <div className="flex items-center justify-between">
+                </div>
+              </div>
+            </FadeInWhenVisible>
+
+            {/* Square */}
+            <FadeInWhenVisible delay={200}>
+              <div className="bg-white border-2 border-gray-200 rounded-2xl p-6 sm:p-8 hover:border-blue-300 hover:shadow-lg transition-all duration-300">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+                    <CreditCard className="h-6 w-6 text-blue-600" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900">Square</h3>
+                    <p className="text-sm text-gray-600">POS system</p>
+                  </div>
+                </div>
+                <p className="text-gray-600 mb-4">Sync your Square POS sales data and manage multi-location inventory.</p>
+                <div className="flex items-center justify-between">
+
+                </div>
+              </div>
+            </FadeInWhenVisible>
+
+            {/* WooCommerce */}
+            <FadeInWhenVisible delay={300}>
+              <div className="bg-white border-2 border-gray-200 rounded-2xl p-6 sm:p-8 hover:border-purple-300 hover:shadow-lg transition-all duration-300">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
+                    <Globe className="h-6 w-6 text-purple-600" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900">WooCommerce</h3>
+                    <p className="text-sm text-gray-600">WordPress e-commerce</p>
+                  </div>
+                </div>
+                <p className="text-gray-600 mb-4">Connect your WordPress store and automate inventory management.</p>
+                <div className="flex items-center justify-between">
+                </div>
+              </div>
+            </FadeInWhenVisible>
+
+            {/* Mailchimp */}
+            <FadeInWhenVisible delay={400}>
+              <div className="bg-white border-2 border-gray-200 rounded-2xl p-6 sm:p-8 hover:border-orange-300 hover:shadow-lg transition-all duration-300">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center">
+                    <Mail className="h-6 w-6 text-orange-600" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900">Mailchimp</h3>
+                    <p className="text-sm text-gray-600">Email marketing</p>
+                  </div>
+                </div>
+                <p className="text-gray-600 mb-4">Sync customer data and create targeted email campaigns.</p>
+                <div className="flex items-center justify-between">
+
+                </div>
+              </div>
+            </FadeInWhenVisible>
+
+            {/* QuickBooks */}
+            <FadeInWhenVisible delay={500}>
+              <div className="bg-white border-2 border-gray-200 rounded-2xl p-6 sm:p-8 hover:border-blue-300 hover:shadow-lg transition-all duration-300">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+                    <BarChart3 className="h-6 w-6 text-blue-600" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900">QuickBooks</h3>
+                    <p className="text-sm text-gray-600">Accounting software</p>
+                  </div>
+                </div>
+                <p className="text-gray-600 mb-4">Sync financial data and streamline your accounting workflow.</p>
+                <div className="flex items-center justify-between">
+                </div>
+              </div>
+            </FadeInWhenVisible>
+
+            {/* Zapier */}
+            <FadeInWhenVisible delay={600}>
+              <div className="bg-white border-2 border-gray-200 rounded-2xl p-6 sm:p-8 hover:border-yellow-300 hover:shadow-lg transition-all duration-300">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center">
+                    <Zap className="h-6 w-6 text-yellow-600" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900">Zapier</h3>
+                    <p className="text-sm text-gray-600">Automation platform</p>
+                  </div>
+                </div>
+                <p className="text-gray-600 mb-4">Connect with 5000+ apps and automate your workflows.</p>
+                <div className="flex items-center justify-between">
+                </div>
+              </div>
+            </FadeInWhenVisible>
+          </div>
+
+          {/* CTA */}
+          <FadeInWhenVisible delay={700}>
+            <div className="text-center mt-12 sm:mt-16">
+              <Button 
+                size="lg" 
+                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4"
+                onClick={() => navigate('/pricing')}
+              >
+                Try StockFlow for Free
+              </Button>
+              <p className="text-sm text-gray-500 mt-4">No credit card required</p>
+            </div>
+          </FadeInWhenVisible>
+        </div>
+      </section>
 
       {/* FAQ Section */}
       <section className="py-16 sm:py-20 md:py-24 lg:py-28 bg-gradient-to-b from-blue-50/30 to-white">

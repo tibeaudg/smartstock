@@ -20,6 +20,7 @@ import { UserManagement } from './components/settings/UserManagement';
 import { LicenseOverview } from './components/settings/LicenseOverview';
 import { InvoicingOverview } from './components/settings/InvoicingOverview';
 import { InvoiceList } from './components/payments/InvoiceList';
+import IntegrationsSettings from './components/settings/Integrations';
 import { useAuth, AuthProvider } from "./hooks/useAuth";
 import { useBranches, BranchProvider } from "./hooks/useBranches";
 import { CurrencyProvider } from "./hooks/useCurrency";
@@ -644,6 +645,7 @@ const AppRouter = () => {
             <Route path="branches" element={<BranchManagement />} />
             <Route path="users" element={<UserManagement />} />
             <Route path="subscription" element={<SubscriptionManagement />} />
+            <Route path="integrations" element={<IntegrationsSettings />} />
             <Route path="invoices" element={<InvoiceList />} />
             <Route path="license" element={<LicenseOverview />} />
             <Route path="invoicing" element={<InvoicingOverview />} />
