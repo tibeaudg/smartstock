@@ -119,10 +119,10 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
       const today = new Date();
       today.setHours(0, 0, 0, 0);
       const incomingToday = transactions
-        ?.filter(t => t.transaction_type === 'incoming' && new Date(t.created_at) >= today)
+        ?.filter(t => (t.transaction_type === 'incoming' || t.transaction_type === 'in') && new Date(t.created_at) >= today)
         .reduce((sum, t) => sum + t.quantity, 0) || 0;
       const outgoingToday = transactions
-        ?.filter(t => t.transaction_type === 'outgoing' && new Date(t.created_at) >= today)
+        ?.filter(t => (t.transaction_type === 'outgoing' || t.transaction_type === 'out') && new Date(t.created_at) >= today)
         .reduce((sum, t) => sum + t.quantity, 0) || 0;
 
       // Generate daily activity data for chart
@@ -200,9 +200,9 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
       const dateStr = new Date(transaction.created_at).toISOString().split('T')[0];
       const existing = activityMap.get(dateStr) || { incoming: 0, outgoing: 0 };
       
-      if (transaction.transaction_type === 'incoming') {
+      if (transaction.transaction_type === 'incoming' || transaction.transaction_type === 'in') {
         existing.incoming += transaction.quantity;
-      } else if (transaction.transaction_type === 'outgoing') {
+      } else if (transaction.transaction_type === 'outgoing' || transaction.transaction_type === 'out') {
         existing.outgoing += transaction.quantity;
       }
       
@@ -217,12 +217,13 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
     }));
   };
 
-  // Real-time updates voor dashboard data
+  // Real-time updates for dashboard data
   useEffect(() => {
     if (!user?.id || !activeBranch?.branch_id) return;
 
+    const channelName = `dashboard-changes-${activeBranch.branch_id}-${Date.now()}`;
     const dashboardChannel = supabase
-      .channel('dashboard-changes-' + activeBranch.branch_id)
+      .channel(channelName)
       .on(
         'postgres_changes',
         {
@@ -232,9 +233,16 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
           filter: `branch_id=eq.${activeBranch.branch_id}`,
         },
         () => {
-          console.log('Product wijziging gedetecteerd, refresh dashboard...');
+          console.log('Product change detected, refreshing dashboard...');
+          // Invalidate all dashboard-related queries
           queryClient.invalidateQueries({ 
             queryKey: ['dashboardData', activeBranch.branch_id, dateFrom, dateTo] 
+          });
+          queryClient.invalidateQueries({ 
+            queryKey: ['dashboardData'] 
+          });
+          queryClient.invalidateQueries({ 
+            queryKey: ['basicDashboardMetrics', activeBranch.branch_id] 
           });
         }
       )
@@ -247,15 +255,29 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
           filter: `branch_id=eq.${activeBranch.branch_id}`,
         },
         () => {
-          console.log('Stock transaction wijziging gedetecteerd, refresh dashboard...');
+          console.log('Stock transaction change detected, refreshing dashboard...');
+          // Invalidate all dashboard-related queries
           queryClient.invalidateQueries({ 
             queryKey: ['dashboardData', activeBranch.branch_id, dateFrom, dateTo] 
           });
+          queryClient.invalidateQueries({ 
+            queryKey: ['dashboardData'] 
+          });
+          queryClient.invalidateQueries({ 
+            queryKey: ['basicDashboardMetrics', activeBranch.branch_id] 
+          });
         }
       )
-      .subscribe();
+      .subscribe((status) => {
+        if (status === 'SUBSCRIBED') {
+          console.log('Dashboard real-time subscription active');
+        } else if (status === 'CHANNEL_ERROR') {
+          console.error('Dashboard real-time subscription error');
+        }
+      });
 
     return () => {
+      console.log('Cleaning up dashboard real-time subscription');
       supabase.removeChannel(dashboardChannel);
     };
   }, [user?.id, activeBranch?.branch_id, queryClient, dateFrom, dateTo]);
@@ -264,13 +286,14 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
     data: dashboardData,
     isLoading,
     error,
+    isFetching,
   } = useQuery<DashboardData>({
     queryKey: ['dashboardData', activeBranch?.branch_id, dateFrom, dateTo],
     queryFn: fetchDashboardData,
     enabled: !!user && !!activeBranch,
-    refetchOnWindowFocus: false, // Disabled - show cached data immediately
-    refetchOnMount: false, // Use cached data when available for instant loading
-    staleTime: Infinity, // Never mark as stale - data persists until manually invalidated
+    refetchOnWindowFocus: true, // Enable to get fresh data when user returns
+    refetchOnMount: true, // Always fetch fresh data on mount for real-time updates
+    staleTime: 30000, // Consider data stale after 30 seconds for better real-time updates
     // @ts-expect-error: keepPreviousData is supported in v5, type mismatch workaround
     keepPreviousData: true, // Keep previous data while loading new data
     onError: (error) => {
@@ -282,6 +305,7 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
     data: dashboardData,
     isLoading,
     error,
+    isFetching,
   };
 };
 
@@ -290,7 +314,7 @@ export const useBasicDashboardMetrics = () => {
   const { user } = useAuth();
   const { activeBranch } = useBranches();
 
-  return useQuery({
+  const queryResult = useQuery({
     queryKey: ['basicDashboardMetrics', activeBranch?.branch_id],
     queryFn: async () => {
       if (!user || !activeBranch) throw new Error('Geen gebruiker of filiaal');
@@ -324,11 +348,11 @@ export const useBasicDashboardMetrics = () => {
       ).length;
 
       const incomingToday = transactions
-        .filter(t => t.transaction_type === 'incoming')
+        .filter(t => t.transaction_type === 'incoming' || t.transaction_type === 'in')
         .reduce((sum, t) => sum + t.quantity, 0);
       
       const outgoingToday = transactions
-        .filter(t => t.transaction_type === 'outgoing')
+        .filter(t => t.transaction_type === 'outgoing' || t.transaction_type === 'out')
         .reduce((sum, t) => sum + t.quantity, 0);
 
       return {
@@ -346,6 +370,13 @@ export const useBasicDashboardMetrics = () => {
     // @ts-expect-error: keepPreviousData is supported in v5, type mismatch workaround
     keepPreviousData: true,
   });
+
+  return {
+    data: queryResult.data,
+    isLoading: queryResult.isLoading,
+    isFetching: queryResult.isFetching,
+    error: queryResult.error,
+  };
 };
 
 // Extra hook voor alleen het aantal producten
@@ -427,9 +458,9 @@ const calculateTopMovingProducts = (transactions: any[]) => {
     const productName = transaction.product_name || 'Unknown Product';
     const existing = productMovementMap.get(productName) || { incoming: 0, outgoing: 0, total_movement: 0 };
     
-    if (transaction.transaction_type === 'incoming') {
+    if (transaction.transaction_type === 'incoming' || transaction.transaction_type === 'in') {
       existing.incoming += transaction.quantity;
-    } else if (transaction.transaction_type === 'outgoing') {
+    } else if (transaction.transaction_type === 'outgoing' || transaction.transaction_type === 'out') {
       existing.outgoing += transaction.quantity;
     }
     
@@ -475,9 +506,9 @@ const calculateStockValueTrend = (transactions: any[], products: any[], dateFrom
     sortedDates.forEach(date => {
       const dayTransactions = transactionsByDate.get(date) || [];
       dayTransactions.forEach(transaction => {
-        if (transaction.transaction_type === 'incoming') {
+        if (transaction.transaction_type === 'incoming' || transaction.transaction_type === 'in') {
           runningValue -= transaction.quantity * (transaction.unit_price || 0);
-        } else if (transaction.transaction_type === 'outgoing') {
+        } else if (transaction.transaction_type === 'outgoing' || transaction.transaction_type === 'out') {
           runningValue += transaction.quantity * (transaction.unit_price || 0);
         }
       });

@@ -91,23 +91,23 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
           products!inner(unit_price)
         `)
         .eq('user_id', user.id)
-        .eq('transaction_type', 'out');
+        .in('transaction_type', ['out', 'outgoing']);
 
-      const totalRevenue = revenueData?.reduce((sum, transaction) => {
+      const totalRevenue = revenueData?.reduce((sum: number, transaction: any) => {
         const price = transaction.products?.unit_price || 0;
         return sum + (transaction.quantity * price);
       }, 0) || 0;
 
       // Get top products using the database function
       const days = timeRange === '7d' ? 7 : timeRange === '30d' ? 30 : timeRange === '90d' ? 90 : 365;
-      const { data: topProductsData, error: topProductsError } = await supabase
+      const { data: topProductsData, error: topProductsError } = await (supabase as any)
         .rpc('calculate_top_products', {
           p_user_id: user.id,
           p_days: days,
           p_limit: 5
         });
 
-      const topProducts = topProductsData?.map(product => ({
+      const topProducts = (topProductsData || [])?.map((product: any) => ({
         id: product.product_id,
         name: product.product_name,
         quantity: product.total_quantity,
@@ -115,25 +115,25 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
       })) || [];
 
       // Get sales trend data using the database function
-      const { data: salesTrendData, error: salesTrendError } = await supabase
+      const { data: salesTrendData, error: salesTrendError } = await (supabase as any)
         .rpc('calculate_sales_trend', {
           p_user_id: user.id,
           p_days: days
         });
 
-      const salesTrend = salesTrendData?.map(trend => ({
+      const salesTrend = (salesTrendData || [])?.map((trend: any) => ({
         date: trend.date,
         sales: trend.sales_count,
         revenue: trend.total_revenue
       })) || [];
 
       // Get category distribution using the database function
-      const { data: categoryData, error: categoryError } = await supabase
+      const { data: categoryData, error: categoryError } = await (supabase as any)
         .rpc('calculate_category_distribution', {
           p_user_id: user.id
         });
 
-      const categoryDistribution = categoryData?.map(cat => ({
+      const categoryDistribution = (categoryData || [])?.map((cat: any) => ({
         category: cat.category_name,
         count: cat.product_count,
         percentage: cat.percentage
@@ -145,12 +145,12 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
         .select('*')
         .limit(5);
 
-      const recentActivity = activityData?.map(activity => ({
+      const recentActivity = activityData?.map((activity: any) => ({
         id: activity.id,
         type: activity.type,
         description: activity.description,
         timestamp: formatTimeAgo(activity.timestamp),
-        user: activity.user_name || 'Onbekend'
+        user: activity.user_name || 'Unknown'
       })) || [];
 
       setAnalyticsData({
@@ -209,6 +209,8 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
 
   // State voor grafiek-periode
   const [chartRangeType, setChartRangeType] = useState<'week' | 'month' | 'quarter' | 'year' | 'all'>('month');
+  
+  // Calculate chart date range based on selected period
   let chartDateFrom: Date | undefined;
   const chartDateTo: Date | undefined = endOfToday();
   if (chartRangeType === 'week') chartDateFrom = startOfWeek(today, { weekStartsOn: 1 });
@@ -218,7 +220,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
   else chartDateFrom = undefined;
 
   // Haal alleen de grafiekdata op voor het gekozen bereik - use separate hook to avoid duplicate queries
-  const { data: chartData, isLoading: chartLoading } = useDashboardData({ 
+  const { data: chartData, isLoading: chartLoading, isFetching: chartFetching } = useDashboardData({ 
     dateFrom: chartDateFrom, 
     dateTo: chartDateTo 
   });
@@ -338,127 +340,14 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
           </CardContent>
         </Card>
       </div>
-
-      {/* Analytics Dashboard Content */}
-      {analyticsData && (
-        <>
-
-
-          {/* Analytics Charts Row */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-            {/* Sales Trend */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Sales Trend</CardTitle>
-                <CardDescription>Sales and revenue over time</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="h-64 flex items-center justify-center bg-gray-50 rounded-lg">
-                  <div className="text-center">
-                    <LineChart className="w-12 h-12 text-gray-400 mx-auto mb-2" />
-                    <p className="text-gray-500">Sales trend graph</p>
-                    <p className="text-sm text-gray-400">Last {timeRange === '7d' ? '7 days' : timeRange === '30d' ? '30 days' : timeRange === '90d' ? '90 days' : 'year'}</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Category Distribution */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Category Distribution</CardTitle>
-                <CardDescription>Distribution of products per category</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {analyticsData.categoryDistribution.map((category, index) => (
-                    <div key={category.category} className="flex items-center justify-between">
-                      <div className="flex items-center space-x-2">
-                        <div className={`w-3 h-3 rounded-full ${
-                          index === 0 ? 'bg-blue-500' :
-                          index === 1 ? 'bg-green-500' :
-                          index === 2 ? 'bg-yellow-500' :
-                          index === 3 ? 'bg-red-500' : 'bg-purple-500'
-                        }`} />
-                        <span className="text-sm font-medium">{category.category}</span>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <span className="text-sm text-gray-600">{category.count}</span>
-                        <Badge variant="secondary">{category.percentage}%</Badge>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Top Products and Recent Activity */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-            {/* Top Products */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Top Products</CardTitle>
-                <CardDescription>Best selling products</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {analyticsData.topProducts.map((product, index) => (
-                    <div key={product.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                      <div className="flex items-center space-x-3">
-                        <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                          <span className="text-sm font-bold text-blue-600">#{index + 1}</span>
-                        </div>
-                        <div>
-                          <p className="font-medium">{product.name}</p>
-                          <p className="text-sm text-gray-600">{product.quantity} sold</p>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <p className="font-medium">{formatPrice(product.revenue)}</p>
-                        <p className="text-sm text-gray-600">revenue</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Recent Activity */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Recent Activity</CardTitle>
-                <CardDescription>Recent transactions and movements</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {analyticsData.recentActivity.map((activity) => (
-                    <div key={activity.id} className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
-                      <div className={`w-2 h-2 rounded-full mt-2 ${
-                        activity.type === 'sale' ? 'bg-green-500' :
-                        activity.type === 'stock_in' ? 'bg-blue-500' : 'bg-orange-500'
-                      }`} />
-                      <div className="flex-1">
-                        <p className="text-sm font-medium">{activity.description}</p>
-                        <div className="flex items-center space-x-2 mt-1">
-                          <span className="text-xs text-gray-500">{activity.timestamp}</span>
-                          <span className="text-xs text-gray-400">•</span>
-                          <span className="text-xs text-gray-500">{activity.user}</span>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </>
-      )}
-
+      
       {/* Stock Movement Chart */}
       <div className="bg-white rounded-lg shadow p-4 sm:p-6 mt-4 sm:mt-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-2">
-          <h2 className="text-lg sm:text-xl font-semibold text-gray-800">Stock Movements</h2>
+          <div className="flex items-center gap-2">
+            <h2 className="text-lg sm:text-xl font-semibold text-gray-800">Stock Movements</h2>
+            {chartFetching && <RefreshCw className="h-4 w-4 animate-spin text-blue-600" />}
+          </div>
           <select
             className="border rounded px-3 py-2 text-sm w-full sm:w-fit"
             value={chartRangeType}
@@ -471,16 +360,30 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
             <option value="all">All Time</option>
           </select>
         </div>
-        <ResponsiveContainer width="100%" height={isMobile ? 250 : 300}>
-          <BarChart data={safeMetrics.dailyActivity || []} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="date" fontSize={isMobile ? 10 : 12} />
-            <YAxis fontSize={isMobile ? 10 : 12} />
-            <Tooltip />
-            <Bar dataKey="incoming" fill="#4ade80" name="Incoming" />
-            <Bar dataKey="outgoing" fill="#f87171" name="Outgoing" />
-          </BarChart>
-        </ResponsiveContainer>
+        {chartLoading && !(chartData as any)?.dailyActivity && !safeMetrics.dailyActivity ? (
+          <div className="flex items-center justify-center h-[250px] sm:h-[300px]">
+            <div className="flex items-center gap-2 text-gray-500">
+              <RefreshCw className="h-5 w-5 animate-spin" />
+              Loading chart data...
+            </div>
+          </div>
+        ) : (
+          <ResponsiveContainer width="100%" height={isMobile ? 250 : 300}>
+            <RechartsLineChart data={(chartData as any)?.dailyActivity || safeMetrics.dailyActivity || []} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="date" fontSize={isMobile ? 10 : 12} />
+              <YAxis fontSize={isMobile ? 10 : 12} />
+              <Tooltip />
+              <Line type="monotone" dataKey="incoming" stroke="#4ade80" strokeWidth={2} name="Incoming" dot={{ fill: "#4ade80" }} />
+              <Line type="monotone" dataKey="outgoing" stroke="#f87171" strokeWidth={2} name="Outgoing" dot={{ fill: "#f87171" }} />
+            </RechartsLineChart>
+          </ResponsiveContainer>
+        )}
+        {(!(chartData as any)?.dailyActivity && !safeMetrics.dailyActivity && !chartLoading) && (
+          <div className="flex items-center justify-center h-[250px] sm:h-[300px] text-gray-500">
+            No stock movement data available for the selected period
+          </div>
+        )}
       </div>
 
       {/* New Charts Grid */}
@@ -512,15 +415,15 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
         {/* Stock Value Trend Line Chart */}
         <div className="bg-white rounded-lg shadow p-4 sm:p-6">
           <h2 className="text-lg sm:text-xl font-semibold text-gray-800 mb-4">Stock Value Trend</h2>
-          <ResponsiveContainer width="100%" height={isMobile ? 250 : 300}>
-            <AreaChart data={safeMetrics.stockValueTrend || []} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="date" fontSize={isMobile ? 10 : 12} />
-              <YAxis fontSize={isMobile ? 10 : 12} />
-              <Tooltip formatter={(value) => [formatPrice(value as number), 'Stock Value']} />
-              <Area type="monotone" dataKey="total_value" stroke="#8884d8" fill="#8884d8" fillOpacity={0.3} />
-            </AreaChart>
-          </ResponsiveContainer>
+        <ResponsiveContainer width="100%" height={isMobile ? 250 : 300}>
+          <AreaChart data={(chartData as any)?.stockValueTrend || safeMetrics.stockValueTrend || []} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="date" fontSize={isMobile ? 10 : 12} />
+            <YAxis fontSize={isMobile ? 10 : 12} />
+            <Tooltip formatter={(value) => [formatPrice(value as number), 'Stock Value']} />
+            <Area type="monotone" dataKey="total_value" stroke="#8884d8" fill="#8884d8" fillOpacity={0.3} />
+          </AreaChart>
+        </ResponsiveContainer>
         </div>
       </div>
 
@@ -530,7 +433,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
         <div className="bg-white rounded-lg shadow p-4 sm:p-6">
           <h2 className="text-lg sm:text-xl font-semibold text-gray-800 mb-4">Top Moving Products</h2>
           <div className="space-y-3">
-            {(safeMetrics.topMovingProducts || []).slice(0, 5).map((product, index) => (
+            {((chartData as any)?.topMovingProducts || safeMetrics.topMovingProducts || []).slice(0, 5).map((product, index) => (
               <div key={index} className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
                 <div className="flex-1">
                   <p className="font-medium text-gray-900 truncate">{product.product_name}</p>
@@ -544,7 +447,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
                 </div>
               </div>
             ))}
-            {(!safeMetrics.topMovingProducts || safeMetrics.topMovingProducts.length === 0) && (
+            {(!(chartData as any)?.topMovingProducts && !safeMetrics.topMovingProducts || ((chartData as any)?.topMovingProducts || safeMetrics.topMovingProducts || []).length === 0) && (
               <p className="text-gray-500 text-center py-4">No product movements in selected period</p>
             )}
           </div>

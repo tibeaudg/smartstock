@@ -218,7 +218,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
         )}
 
         {/* Navigation */}
-        <nav className="flex-1 px-2 sm:px-3 py-3 sm:py-4 text-xs sm:text-sm pb-40 sm:pb-60 overflow-hidden">
+        <nav className="flex-1 px-2 sm:px-3 py-3 sm:py-4 text-xs sm:text-sm overflow-y-auto pb-4">
           <ul className="space-y-1">
             {menuItems.map((item, index) => {
               const Icon = item.icon;
