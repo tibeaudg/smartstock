@@ -2633,28 +2633,16 @@ export const StockList = () => {
             
             {/* View Mode and Settings Buttons for Mobile */}
             <div className="flex items-center gap-2">
-              {/* View Options Dropdown */}
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm" className="h-9 shrink-0">
-                    {viewMode === 'list' ? <List className="w-4 h-4" /> : <Grid3x3 className="w-4 h-4" />}
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48">
-                  <DropdownMenuItem disabled className="font-semibold">
-                    View Options
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => setViewMode('list')}>
-                    <List className="w-4 h-4 mr-2" />
-                    List View
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setViewMode('card')}>
-                    <Grid3x3 className="w-4 h-4 mr-2" />
-                    Card View
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              {/* View Toggle Button */}
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="h-9 shrink-0"
+                onClick={() => setViewMode(viewMode === 'list' ? 'card' : 'list')}
+                title={viewMode === 'list' ? 'Switch to Card View' : 'Switch to List View'}
+              >
+                {viewMode === 'list' ? <List className="w-4 h-4" /> : <Grid3x3 className="w-4 h-4" />}
+              </Button>
               
               {/* Settings Dropdown */}
               <DropdownMenu>
@@ -3211,33 +3199,21 @@ export const StockList = () => {
             
             {/* View Mode and Settings Buttons */}
             <div className="flex items-center gap-2">
-              {/* View Options Dropdown */}
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm" className="h-9 shrink-0">
-                    {viewMode === 'list' ? <List className="w-4 h-4" /> : <Grid3x3 className="w-4 h-4" />}
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48">
-                  <DropdownMenuItem disabled className="font-semibold">
-                    View Options
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => setViewMode('list')}>
-                    <List className="w-4 h-4 mr-2" />
-                    List View
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setViewMode('card')}>
-                    <Grid3x3 className="w-4 h-4 mr-2" />
-                    Card View
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              {/* View Toggle Button */}
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="h-9 shrink-0 border-gray-300 hover:border-gray-400 focus:border-gray-400"
+                onClick={() => setViewMode(viewMode === 'list' ? 'card' : 'list')}
+                title={viewMode === 'list' ? 'Switch to Card View' : 'Switch to List View'}
+              >
+                {viewMode === 'list' ? <List className="w-4 h-4" /> : <Grid3x3 className="w-4 h-4" />}
+              </Button>
               
               {/* Settings Dropdown */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm" className="h-9 shrink-0">
+                  <Button variant="outline" size="sm" className="h-9 shrink-0 border-gray-300 hover:border-gray-400 focus:border-gray-400 mr-2">
                     <Settings className="w-4 h-4" />
                   </Button>
                 </DropdownMenuTrigger>
@@ -3315,8 +3291,9 @@ export const StockList = () => {
               setSelectedOperationType('scan');
               setIsStockOperationModalOpen(true);
             }} 
-            variant="outline"
-            className="h-9"
+            variant="default"
+            size="sm"
+            className="h-9 border-gray-300 hover:border-gray-400 focus:border-gray-400"
           >
             <Scan className="w-4 h-4 mr-2" />
             Scan
@@ -3326,7 +3303,9 @@ export const StockList = () => {
               setSelectedAction('in'); // Default to 'in' for manual
               setIsManualStockModalOpen(true);
             }} 
-            className="h-9 bg-blue-600 hover:bg-blue-700 text-white"
+            variant="default"
+            size="sm"
+            className="h-9 border-gray-300 hover:border-gray-400 focus:border-gray-400"
           >
             <Plus className="w-4 h-4 mr-2" />
             Manual
