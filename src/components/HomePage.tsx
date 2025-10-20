@@ -1208,30 +1208,31 @@ export const HomePage = () => {
               </BounceInWhenVisible>
               
               <SlideUpWhenVisible delay={400}>
-                  <p className="lg:pb-12 text-xs sm:text-sm md:text-base lg:text-lg text-gray-700 mb-6 sm:mb-8 md:mb-10 lg:mb-12 max-w-4xl mx-auto px-4 leading-relaxed">
+                  <p className=" text-xs sm:text-sm md:text-base lg:text-lg text-gray-700 mb-6 sm:mb-8 md:mb-10 lg:mb-12 max-w-4xl mx-auto px-4 leading-relaxed">
                     Stop wasting capital on overstock and dead inventory. Track stock, reduce waste, and optimize ordering. All in one simple platform.
                 </p>
               </SlideUpWhenVisible>
 
               
-              <ScaleInWhenVisible delay={600}>
-                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-6 justify-center items-stretch sm:items-center mb-6 sm:mb-8 md:mb-10 lg:mb-12 px-4 max-w-md sm:max-w-none mx-auto">
-                  <Button
-                    onClick={handleLoginClick}
-                    className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white
-                    px-8 py-4 text-base sm:px-10 sm:py-5 sm:text-lg md:px-12 md:py-6 md:text-xl
-                    font-semibold rounded-full transform hover:scale-105
-                    transition-all duration-300
-                    shadow-xl hover:shadow-2xl hover:shadow-blue-500/50
-                    ring-2 ring-blue-500/0 focus:ring-4 focus:ring-blue-500/50 focus:outline-none
-                    min-h-[52px] sm:min-h-[56px]"
-                  >
-                    Start For Free
-                  </Button>
-                  
-
-                </div>
-              </ScaleInWhenVisible>
+          {/* CTA */}
+          <FadeInWhenVisible delay={700}>
+            <div className="text-center mt-6 mb-6 sm:mt-6">
+              <Button 
+                size="lg" 
+                className="w-full sm:w-auto bg-blue-600 text-white hover:bg-blue-700
+                px-10 py-5 sm:px-12 sm:py-6 md:px-14 md:py-7
+                text-lg sm:text-xl md:text-2xl
+                font-bold rounded-lg transform hover:scale-105
+                transition-all duration-300
+                shadow-2xl hover:shadow-3xl
+                ring-0 focus:ring-4 focus:ring-white/50 focus:outline-none
+                min-h-[56px] sm:min-h-[64px]"                
+                onClick={() => navigate('/pricing')}
+              >
+                Create a Free Account
+              </Button>
+            </div>
+          </FadeInWhenVisible>
               
               <FadeInWhenVisible delay={800}>
                 <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 md:gap-6 justify-center items-center text-xs sm:text-sm text-gray-600 px-4">
@@ -1438,18 +1439,24 @@ export const HomePage = () => {
             </SlideUpWhenVisible>
           </div>
         </div>
-          {/* CTA Button */}
-          <FadeInWhenVisible delay={400}>
-            <div className="text-center mt-10 sm:mt-12 md:mt-16">
-              <Button
-                onClick={handleLoginClick}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-16 py-6 sm:px-10 sm:py-5 md:px-12 md:py-6 text-base sm:text-lg font-bold rounded-full shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
+          {/* CTA */}
+          <FadeInWhenVisible delay={700}>
+            <div className="text-center mt-12 sm:mt-16">
+              <Button 
+                size="lg" 
+                className="w-full sm:w-auto bg-blue-600 text-white hover:bg-blue-700
+                px-10 py-5 sm:px-12 sm:py-6 md:px-14 md:py-7
+                text-lg sm:text-xl md:text-2xl
+                font-bold rounded-lg transform hover:scale-105
+                transition-all duration-300
+                shadow-2xl hover:shadow-3xl
+                ring-0 focus:ring-4 focus:ring-white/50 focus:outline-none
+                min-h-[56px] sm:min-h-[64px]"       
+                onClick={() => navigate('/pricing')}
               >
-                Start Free Today
+                Create a Free Account
               </Button>
-              <p className="text-xs sm:text-sm text-gray-500 mt-3 sm:mt-4 px-4">
-                Free plan forever • Set up in 10 minutes • No credit card
-              </p>
+              <p className="text-sm text-gray-500 mt-4">No credit card required</p>
             </div>
           </FadeInWhenVisible>
       </section>
@@ -1547,18 +1554,24 @@ export const HomePage = () => {
             </SlideInWhenVisible>
           </div>
         </div>
-          {/* CTA Button */}
-          <FadeInWhenVisible delay={400}>
-            <div className="text-center mt-10 sm:mt-12 md:mt-16">
-              <Button
-                onClick={handleLoginClick}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-16 py-6 sm:px-10 sm:py-5 md:px-12 md:py-6 text-base sm:text-lg font-bold rounded-full shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
+          {/* CTA */}
+          <FadeInWhenVisible delay={700}>
+            <div className="text-center mt-12 sm:mt-16">
+              <Button 
+                size="lg" 
+                className="w-full sm:w-auto bg-blue-600 text-white hover:bg-blue-700
+                px-10 py-5 sm:px-12 sm:py-6 md:px-14 md:py-7
+                text-lg sm:text-xl md:text-2xl
+                font-bold rounded-lg transform hover:scale-105
+                transition-all duration-300
+                shadow-2xl hover:shadow-3xl
+                ring-0 focus:ring-4 focus:ring-white/50 focus:outline-none
+                min-h-[56px] sm:min-h-[64px]"       
+                onClick={() => navigate('/pricing')}
               >
-                Start Free Today
+                Create a Free Account
               </Button>
-              <p className="text-xs sm:text-sm text-gray-500 mt-3 sm:mt-4 px-4">
-                Free plan forever • Set up in 10 minutes • No credit card
-              </p>
+              <p className="text-sm text-gray-500 mt-4">No credit card required</p>
             </div>
           </FadeInWhenVisible>
       </section>
@@ -1789,18 +1802,24 @@ export const HomePage = () => {
             </div>
           )}
 
-          {/* CTA Button */}
-          <FadeInWhenVisible delay={400}>
-            <div className="text-center mt-10 sm:mt-12 md:mt-16">
-              <Button
-                onClick={handleLoginClick}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-16 py-6 sm:px-10 sm:py-5 md:px-12 md:py-6 text-base sm:text-lg font-bold rounded-full shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
+          {/* CTA */}
+          <FadeInWhenVisible delay={700}>
+            <div className="text-center mt-12 sm:mt-16">
+              <Button 
+                size="lg" 
+                className="w-full sm:w-auto bg-blue-600 text-white hover:bg-blue-700
+                px-10 py-5 sm:px-12 sm:py-6 md:px-14 md:py-7
+                text-lg sm:text-xl md:text-2xl
+                font-bold rounded-lg transform hover:scale-105
+                transition-all duration-300
+                shadow-2xl hover:shadow-3xl
+                ring-0 focus:ring-4 focus:ring-white/50 focus:outline-none
+                min-h-[56px] sm:min-h-[64px]"       
+                onClick={() => navigate('/pricing')}
               >
-                Start Free Today
+                Create a Free Account
               </Button>
-              <p className="text-xs sm:text-sm text-gray-500 mt-3 sm:mt-4 px-4">
-                Free plan forever • Set up in 10 minutes • No credit card
-              </p>
+              <p className="text-sm text-gray-500 mt-4">No credit card required</p>
             </div>
           </FadeInWhenVisible>
         </div>
@@ -1880,18 +1899,24 @@ export const HomePage = () => {
           </div>
           
         </div>
-                  {/* CTA Button */}
-                  <FadeInWhenVisible delay={400}>
-            <div className="text-center mt-12 sm:mt-16 md:mt-20">
-              <Button
-                onClick={handleLoginClick}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-16 py-6 sm:px-10 sm:py-5 md:px-12 md:py-6 text-base sm:text-lg font-bold rounded-full shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
+          {/* CTA */}
+          <FadeInWhenVisible delay={700}>
+            <div className="text-center mt-12 sm:mt-16">
+              <Button 
+                size="lg" 
+                className="w-full sm:w-auto bg-blue-600 text-white hover:bg-blue-700
+                px-10 py-5 sm:px-12 sm:py-6 md:px-14 md:py-7
+                text-lg sm:text-xl md:text-2xl
+                font-bold rounded-lg transform hover:scale-105
+                transition-all duration-300
+                shadow-2xl hover:shadow-3xl
+                ring-0 focus:ring-4 focus:ring-white/50 focus:outline-none
+                min-h-[56px] sm:min-h-[64px]"       
+                onClick={() => navigate('/pricing')}
               >
-                Start Free Today
+                Create a Free Account
               </Button>
-              <p className="text-xs sm:text-sm text-gray-500 mt-3 sm:mt-4 px-4">
-                Free plan forever • Set up in 10 minutes • No credit card
-              </p>
+              <p className="text-sm text-gray-500 mt-4">No credit card required</p>
             </div>
           </FadeInWhenVisible>
       </section>
@@ -2037,10 +2062,17 @@ export const HomePage = () => {
             <div className="text-center mt-12 sm:mt-16">
               <Button 
                 size="lg" 
-                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4"
+                className="w-full sm:w-auto bg-blue-600 text-white hover:bg-blue-700
+                px-10 py-5 sm:px-12 sm:py-6 md:px-14 md:py-7
+                text-lg sm:text-xl md:text-2xl
+                font-bold rounded-lg transform hover:scale-105
+                transition-all duration-300
+                shadow-2xl hover:shadow-3xl
+                ring-0 focus:ring-4 focus:ring-white/50 focus:outline-none
+                min-h-[56px] sm:min-h-[64px]"       
                 onClick={() => navigate('/pricing')}
               >
-                Try StockFlow for Free
+                Create a Free Account
               </Button>
               <p className="text-sm text-gray-500 mt-4">No credit card required</p>
             </div>
@@ -2220,12 +2252,20 @@ export const HomePage = () => {
               </p>
               <Button
                 onClick={() => navigate('/contact')}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-lg font-semibold rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+                className="w-full sm:w-auto bg-blue-600 text-white hover:bg-blue-700
+                px-10 py-5 sm:px-12 sm:py-6 md:px-14 md:py-7
+                text-lg sm:text-xl md:text-2xl
+                font-bold rounded-lg transform hover:scale-105
+                transition-all duration-300
+                shadow-2xl hover:shadow-3xl
+                ring-0 focus:ring-4 focus:ring-white/50 focus:outline-none
+                min-h-[56px] sm:min-h-[64px]"       
               >
                 Contact Support
               </Button>
             </div>
           </FadeInWhenVisible>
+
         </div>
       </section>
 
@@ -2322,7 +2362,7 @@ export const HomePage = () => {
                       className="w-full sm:w-auto bg-white text-blue-600 hover:bg-gray-50
                       px-10 py-5 sm:px-12 sm:py-6 md:px-14 md:py-7
                       text-lg sm:text-xl md:text-2xl
-                      font-bold rounded-full transform hover:scale-105
+                      font-bold rounded-lg transform hover:scale-105
                       transition-all duration-300
                       shadow-2xl hover:shadow-3xl
                       ring-0 focus:ring-4 focus:ring-white/50 focus:outline-none
