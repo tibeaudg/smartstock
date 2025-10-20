@@ -179,7 +179,7 @@ export default function IntegrationsPage() {
               <CardContent>
                 <div className="space-y-3">
                   <div>
-                    <Badge variant="outline" className="mb-3">
+                    <Badge variant="secondary" className="mb-3">
                       {integration.category}
                     </Badge>
                   </div>

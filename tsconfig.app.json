@@ -21,7 +21,6 @@
     "noUnusedParameters": false,
     "noImplicitAny": false,
     "noFallthroughCasesInSwitch": false,
-    "noUnusedLabels": false,
 
     "baseUrl": ".",
     "paths": {

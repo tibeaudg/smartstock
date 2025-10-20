@@ -3,33 +3,44 @@ import { Header } from './HeaderPublic';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Carousel from './ui/carousel';
+import BlurText from "./BlurText";
+import AnimatedContent from './AnimatedContent'
+import AnimatedList from './AnimatedList'
+import ScrollStack, { ScrollStackItem } from './ScrollStack'
+import GlareHover from './GlareHover'
+import GradualBlur from './GradualBlur'
+import StarBorder from './StarBorder'
+
+
+
+
+
+
 import { 
   Package, BarChart3, Users, Shield, Check, TrendingUp, Zap, Star, Clock, Euro, Target, 
   ChevronLeft, ChevronRight, Scan, Truck, ArrowRight, Play, Award, Globe, Smartphone, 
   CheckCircle, Rocket, Crown, Sparkles, Timer, Facebook, Twitter, Linkedin, Instagram,
-  Repeat, Camera, Building, ShoppingCart, CreditCard, Mail
+  Repeat, Camera, Building, ShoppingCart, CreditCard, Mail, Utensils, Coffee, 
+  Wrench, Hammer, Heart, Stethoscope, BookOpen, Gamepad2, Car, Plane, 
+  Shirt, Laptop, Home, Briefcase, Music, Paintbrush
 } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
 import SEO from './SEO';
 import { motion } from 'framer-motion';
-import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { Helmet } from 'react-helmet-async';
 import { logger } from '../lib/logger';
-import { useCurrency } from '@/hooks/useCurrency';
 import { generateComprehensiveStructuredData } from '../lib/structuredData';
 import { useAuth } from '@/hooks/useAuth';
-import { useSubscription } from '@/hooks/useSubscription';
 import { useIsMobile } from '@/hooks/useWindowSize';
 import { supabase } from '@/integrations/supabase/client';
 // import { useWebsiteTracking } from '@/hooks/useWebsiteTracking';
 // import { usePerformanceOptimization } from '@/hooks/usePerformanceOptimization';
 import { GoogleAdsTracking } from '@/utils/googleAdsTracking';
-import { ConversionTrackingTest } from './ConversionTrackingTest';
-import { SavingsCalculator } from './SavingsCalculator';
 import Footer from './Footer';
-import { ContactForm } from './ContactForm';
 
-
+  const handleAnimationComplete = () => {
+    console.log('Animation completed!');
+  };
 
   const FadeInWhenVisible = ({ children, delay = 0, direction = 'up', duration = 700 }) => {
   const [isVisible, setIsVisible] = React.useState(false);
@@ -82,6 +93,9 @@ import { ContactForm } from './ContactForm';
       </div>
     );
   };
+
+
+
 
 const SlideInWhenVisible = ({ children, delay = 0, direction = 'left' }) => {
   const [isVisible, setIsVisible] = React.useState(false);
@@ -194,7 +208,7 @@ const BounceInWhenVisible = ({ children, delay = 0 }) => {
   return (
     <div 
       ref={ref} 
-      className={`transition-all duration-1000 ease-out ${
+      className={`transition-all duration-500 ease-out ${
         isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-75'
       }`}
       style={{
@@ -344,6 +358,95 @@ const MobileCarousel = ({ items, renderItem }) => {
   );
 };
 
+// Auto-scrolling horizontal marquee component for industry badges
+const IndustryBadgeMarquee = ({ badges, speed = 30 }) => {
+  const [isPaused, setIsPaused] = useState(false);
+  const marqueeRef = useRef(null);
+  const positionRef = useRef(0);
+
+  // Duplicate badges for seamless scrolling
+  const duplicatedBadges = [...badges, ...badges];
+
+  React.useEffect(() => {
+    if (!marqueeRef.current) return;
+
+    const marquee = marqueeRef.current;
+    let animationId;
+    const scrollSpeed = 0.5; // pixels per frame
+
+    const animate = () => {
+      if (!isPaused) {
+        positionRef.current -= scrollSpeed;
+        marquee.style.transform = `translateX(${positionRef.current}px)`;
+        
+        // Reset position when we've scrolled past half the content (since we duplicated it)
+        const marqueeWidth = marquee.scrollWidth / 2; // Half because we duplicated
+        if (Math.abs(positionRef.current) >= marqueeWidth) {
+          positionRef.current = 0;
+        }
+      }
+      animationId = requestAnimationFrame(animate);
+    };
+
+    animationId = requestAnimationFrame(animate);
+
+    return () => {
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+      }
+    };
+  }, [isPaused]);
+
+  return (
+    <div className="relative overflow-hidden py-4 w-full">
+      <div 
+        ref={marqueeRef}
+        className="flex gap-8 items-center whitespace-nowrap"
+        style={{ width: 'max-content' }}
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+      >
+        {duplicatedBadges.map((badge, index) => (
+          <div key={index} className="flex flex-col items-center gap-2 flex-shrink-0">
+            <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center drop-shadow-lg border-2 border-white shadow-lg hover:scale-105 transition-transform duration-200">
+              <badge.icon className="h-8 w-8 text-white" />
+            </div>
+            <span className="text-sm font-medium text-gray-700 text-center whitespace-nowrap">
+              {badge.label}
+            </span>
+          </div>
+        ))}
+      </div>
+      
+      {/* Gradient fade edges */}
+      <div className="absolute top-0 left-0 w-20 h-full bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
+      <div className="absolute top-0 right-0 w-20 h-full bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
+    </div>
+  );
+};
+
+// Industry badges data with expanded niches (all blue as requested)
+const industryBadges = [
+  { icon: Building, label: 'Retail' },
+  { icon: Package, label: 'Food & Beverage' },
+  { icon: Truck, label: 'Wholesale' },
+  { icon: BarChart3, label: 'Manufacturing' },
+  { icon: Utensils, label: 'Restaurants' },
+  { icon: Coffee, label: 'Cafes' },
+  { icon: Stethoscope, label: 'Healthcare' },
+  { icon: Heart, label: 'Pharmacy' },
+  { icon: Car, label: 'Automotive' },
+  { icon: Wrench, label: 'Hardware' },
+  { icon: Shirt, label: 'Fashion' },
+  { icon: BookOpen, label: 'Education' },
+  { icon: Gamepad2, label: 'Electronics' },
+  { icon: Laptop, label: 'IT Services' },
+  { icon: Home, label: 'Furniture' },
+  { icon: Briefcase, label: 'Office Supplies' },
+  { icon: Music, label: 'Entertainment' },
+  { icon: Paintbrush, label: 'Arts & Crafts' }
+];
+
 export const HomePage = () => {
   const navigate = useNavigate();
   
@@ -415,8 +518,6 @@ export const HomePage = () => {
   // FAQ search state
   const [faqSearchTerm, setFaqSearchTerm] = useState('');
   
-  // Feature tab state
-  const [selectedFeature, setSelectedFeature] = useState(0);
   
   // Modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -644,33 +745,6 @@ export const HomePage = () => {
       borderColor: 'border-green-200/50'
     }
   ];
-
-
- 
-
-
-  // --- BEGIN CAPABILITIES DATA ---
-  const capabilities = [
-    {
-      icon: <Users className="h-12 w-12" />,
-      title: "Your whole team can use it",
-      desc: "Everyone sees the same stock numbers, no more asking around or confusion.",
-      learnMore: "#",
-    },
-    {
-      icon: <BarChart3 className="h-12 w-12" />,
-      title: "See what's selling",
-      desc: "Know which products sell fast and which ones don't move.",
-      learnMore: "#",
-    },
-    {
-      icon: <Shield className="h-12 w-12" />,
-      title: "Your data stays safe",
-      desc: "Automatic daily backups mean you won't lose your inventory records.",
-      learnMore: "#",
-    },
-  ];
-  // --- EINDE CAPABILITIES DATA ---
 
 
   // Enhanced structured data for better search engine understanding
@@ -981,7 +1055,7 @@ export const HomePage = () => {
   ];
 
   return (
-    <div className="gradient-background text-gray-900 font-sans">
+    <div className="gradient-background text-gray-900 font-sans" style={{position: 'relative', overflow: 'hidden'}}>
       <Helmet>
         {/* Non-render-blocking resource optimization */}
         
@@ -1170,6 +1244,18 @@ export const HomePage = () => {
 
 
       {/* Hero Section - Redesigned according to proposal */}
+      <AnimatedContent
+          distance={150}
+          direction="horizontal"
+          reverse={false}
+          duration={1}
+          ease="power3.out"
+          initialOpacity={0.2}
+          animateOpacity
+          scale={1.1}
+          threshold={0.2}
+          delay={0.3}
+        >
       <section className="relative py-10 sm:py-14 md:py-20 lg:py-24 px-4 sm:px-6 overflow-hidden bg-gradient-to-b from-blue-50/30 to-white">
         {/* Subtle geometric pattern overlay */}
         <div 
@@ -1202,8 +1288,9 @@ export const HomePage = () => {
               <BounceInWhenVisible delay={200}>
                 <div className="text-center mb-6 sm:mb-10 md:mb-14 lg:mb-16">
                   <h1 className="lg:pl-24 lg:pr-24 lg:pt-6 lg:pb-6 text-[clamp(3rem,5vw,5rem)] font-light text-gray-800 mb-3 leading-tight px-2">
-                  <strong className="text-blue-600">Cloud‑based</strong> Inventory <strong className="text-blue-600">Management</strong> Platform
-              </h1>
+                  <BlurText className="justify-center" text="Cloud‑based Inventory Management Platform" onComplete={handleAnimationComplete} /> 
+                  </h1>
+          
             </div>
               </BounceInWhenVisible>
               
@@ -1217,20 +1304,26 @@ export const HomePage = () => {
           {/* CTA */}
           <FadeInWhenVisible delay={700}>
             <div className="text-center mt-6 mb-6 sm:mt-6">
-              <Button 
-                size="lg" 
-                className="w-full sm:w-auto bg-blue-600 text-white hover:bg-blue-700
+              
+            <StarBorder
+              as="button"
+              className="w-full sm:w-auto bg-blue-600 text-white hover:bg-blue-700
                 px-10 py-5 sm:px-12 sm:py-6 md:px-14 md:py-7
                 text-lg sm:text-xl md:text-2xl
                 font-bold rounded-lg transform hover:scale-105
                 transition-all duration-300
                 shadow-2xl hover:shadow-3xl
                 ring-0 focus:ring-4 focus:ring-white/50 focus:outline-none
-                min-h-[56px] sm:min-h-[64px]"                
+                min-h-[56px] sm:min-h-[64px]"
+              color="cyan"
+              speed="5s"
+
+            
                 onClick={() => navigate('/pricing')}
-              >
+                >
+              
                 Create a Free Account
-              </Button>
+              </StarBorder>
             </div>
           </FadeInWhenVisible>
               
@@ -1307,62 +1400,63 @@ export const HomePage = () => {
 
         </div>
       </section>
+      </AnimatedContent>
+
+
+
 
       {/* Social Proof Bar - Immediately Below Hero */}
+      <AnimatedContent
+          distance={150}
+          direction="horizontal"
+          reverse={false}
+          duration={1}
+          ease="power3.out"
+          initialOpacity={0.2}
+          animateOpacity
+          scale={1.1}
+          threshold={0.2}
+          delay={0.3}
+        >
+
       <section className="py-6 sm:py-8 md:py-10 bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4">
           <FadeInWhenVisible>
             <div className="text-center">
 
               
-              {/* Company Logos or Industry Icons */}
-              <div className="flex flex-wrap justify-center gap-3 sm:gap-6 lg:gap-24 max-w-5xl mx-auto">
-                <div className="flex flex-col items-center gap-1.5 sm:gap-2">
-                  <div className="w-12 h-12 sm:w-16 sm:h-16 bg-blue-600 rounded-full flex items-center justify-center drop-shadow-lg border border-gray-200">
-                    <Building className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
-                  </div>
-                  <span className="text-xs sm:text-sm font-medium text-gray-700 text-center">Retail</span>
-                </div>
-                
-                <div className="flex flex-col items-center gap-1.5 sm:gap-2">
-                  <div className="w-12 h-12 sm:w-16 sm:h-16 bg-blue-600 rounded-full flex items-center justify-center drop-shadow-lg border border-gray-200">
-                    <Package className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
-                  </div>
-                  <span className="text-xs sm:text-sm font-medium text-gray-700 text-center">Food & Beverage</span>
-                </div>
-                
-                <div className="flex flex-col items-center gap-1.5 sm:gap-2">
-                  <div className="w-12 h-12 sm:w-16 sm:h-16 bg-blue-600 rounded-full flex items-center justify-center drop-shadow-lg border border-gray-200">
-                    <Truck className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
-                  </div>
-                  <span className="text-xs sm:text-sm font-medium text-gray-700 text-center">Wholesale</span>
-                </div>
-                
-                <div className="flex flex-col items-center gap-1.5 sm:gap-2">
-                  <div className="w-12 h-12 sm:w-16 sm:h-16 bg-blue-600 rounded-full flex items-center justify-center drop-shadow-lg border border-gray-200">
-                    <BarChart3 className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
-                  </div>
-                  <span className="text-xs sm:text-sm font-medium text-gray-700 text-center">Manufacturing</span>
-                </div>
-              </div>
+              {/* Industry Badge Marquee */}
+              <IndustryBadgeMarquee badges={industryBadges} speed={40} />
               
 
             </div>
           </FadeInWhenVisible>
         </div>
       </section>
+      </AnimatedContent>
 
       {/* Problem → Solution Section */}
+      <AnimatedContent
+          distance={150}
+          direction="horizontal"
+          reverse={false}
+          duration={1}
+          ease="power3.out"
+          initialOpacity={0.2}
+          animateOpacity
+          scale={1.1}
+          threshold={0.2}
+          delay={0.3}
+        >
+
       <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <FadeInWhenVisible>
             <div className="text-center mb-10 sm:mb-12 md:mb-16 lg:mb-20">
             <h2 className="lg:pl-24 lg:pr-24 lg:pt-6 lg:pb-6 text-[clamp(3rem,5vw,5rem)] font-light text-gray-800 mb-3 leading-tight px-2">
-            Stop Losing Money On <br className="hidden sm:block" />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-600">
-                Inventory Mistakes
-                </span>
+            <BlurText className="justify-center" text="Stop Losing Money On Inventory Mistakes!" onComplete={handleAnimationComplete} /> 
+
               </h2>
               <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-4 sm:mb-6 max-w-2xl mx-auto px-4">
                 Get a clear picture of your inventory and make better decisions.
@@ -1460,10 +1554,24 @@ export const HomePage = () => {
             </div>
           </FadeInWhenVisible>
       </section>
+      </AnimatedContent>
 
+
+      <AnimatedContent
+          distance={150}
+          direction="horizontal"
+          reverse={false}
+          duration={1}
+          ease="power3.out"
+          initialOpacity={0.2}
+          animateOpacity
+          scale={1.1}
+          threshold={0.2}
+          delay={0.3}
+        >
       {/* Key Features Section - Alternating Layout */}
       <section className="py-16 sm:py-20 md:py-24 lg:py-28 xl:py-32 bg-gradient-to-b from-blue-50/30 to-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 border-b border-gray-400">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 ">
           {/* Header */}
           <FadeInWhenVisible>
             <div className="text-center mb-16 sm:mb-20 md:mb-24 lg:mb-28">
@@ -1473,10 +1581,8 @@ export const HomePage = () => {
                 </span>
               </div>
               <h2 className="lg:pl-24 lg:pr-24 lg:pt-6 lg:pb-6 text-[clamp(3rem,5vw,5rem)] font-light text-gray-800 mb-3 leading-tight px-2">
-              Everything You Need To <br className="hidden sm:block" />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-600">
-                  Manage Inventory
-                </span>
+              <BlurText className="justify-center" text="Everything You Need To Manage Inventory" onComplete={handleAnimationComplete} /> 
+
               </h2>
               <p className="text-lg sm:text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto px-4 leading-relaxed">
                 Keep track of your inventory, see what's selling, and get alerts when you need to reorder.
@@ -1484,76 +1590,71 @@ export const HomePage = () => {
             </div>
           </FadeInWhenVisible>
 
-          
-
-          {/* Feature Tab Menu */}
-          <FadeInWhenVisible delay={100}>
-            <div className="flex flex-row justify-center gap-2 sm:gap-4 mb-16 sm:mb-20 overflow-x-auto pb-2">
-              {featuresData.map((feature, index) => (
-                <button
+          <ScrollStack useWindowScroll={true}>
+            {featuresData.map((feature, index) => {
+              // Alternating layout: even indices have content left, odd indices have content right
+              const isEvenIndex = index % 2 === 0;
+              const contentOrder = isEvenIndex ? "order-1" : "order-1 lg:order-2";
+              const imageOrder = isEvenIndex ? "order-2 lg:order-1" : "order-2";
+              
+              return (
+                <ScrollStackItem 
                   key={feature.id}
-                  onClick={() => setSelectedFeature(index)}
-                  className={`px-4 py-3 sm:px-8 sm:py-4 rounded-full font-semibold text-xs sm:text-base transition-all duration-300 transform hover:scale-105 whitespace-nowrap flex-shrink-0 ${
-                    selectedFeature === index
-                      ? 'bg-gradient-to-r from-blue-600 to-blue-600 text-white shadow-lg'
-                      : 'bg-white text-gray-700 hover:bg-gray-50 border-2 border-gray-200'
-                  }`}
+                  itemClassName={`bg-gradient-to-br ${feature.bgGradient} backdrop-blur-sm`}
                 >
-                  {feature.title}
-                </button>
-              ))}
-            </div>
-          </FadeInWhenVisible>
-
-          {/* Selected Feature Display */}
-          <div key={selectedFeature} className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 md:gap-12 lg:gap-16 items-center border-t border-gray-400 pt-6">
-            <SlideInWhenVisible direction="right" delay={200}>
-              <div className="order-1 lg:order-2">
-                <div className="space-y-5 sm:space-y-6 md:space-y-8">
-                  <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r ${featuresData[selectedFeature].badgeColor} text-white text-xs font-bold uppercase tracking-wide shadow-md`}>
-                    <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
-                    {featuresData[selectedFeature].badge}
-                  </div>
-                  <div>
-                    <h3 className="text-3xl sm:text-4xl md:text-5xl font-light leading-tight text-gray-900 mb-4">
-                      {featuresData[selectedFeature].subtitle}
-                    </h3>
-                    <div className={`w-20 h-1.5 bg-gradient-to-r ${featuresData[selectedFeature].badgeColor} rounded-full mb-6`}></div>
-                  </div>
-
-                  <div className="space-y-4 pt-4">
-                    {featuresData[selectedFeature].benefits.map((benefit, idx) => (
-                      <div key={idx} className="flex items-center gap-4">
-                        <div className="flex-shrink-0 w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
-                          <Check className="h-3 w-3 text-green-600" />
-                        </div>
-                        <span className="text-gray-900 font-medium text-md">{benefit}</span>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 md:gap-12 lg:gap-16 items-center h-full">
+                    {/* Feature Content */}
+                    <div className={`${contentOrder} space-y-6 sm:space-y-8`}>
+                      <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r ${feature.badgeColor} text-white text-xs font-bold uppercase tracking-wide shadow-md`}>
+                        <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
+                        {feature.badge}
                       </div>
-                    ))}
+                      
+                      <div>
+                        <h3 className="text-3xl sm:text-4xl md:text-5xl font-light leading-tight text-gray-900 mb-4">
+                          {feature.subtitle}
+                        </h3>
+                        <div className={`w-20 h-1.5 bg-gradient-to-r ${feature.badgeColor} rounded-full mb-6`}></div>
+                      </div>
+
+                      <p className="text-base sm:text-lg text-gray-600 leading-relaxed mb-6">
+                        {feature.description}
+                      </p>
+
+                      <div className="space-y-4">
+                        {feature.benefits.map((benefit, idx) => (
+                          <div key={idx} className="flex items-center gap-4">
+                            <div className="flex-shrink-0 w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
+                              <Check className="h-3 w-3 text-green-600" />
+                            </div>
+                            <span className="text-gray-900 font-medium text-md">{benefit}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    {/* Feature Image */}
+                    <div className={imageOrder}>
+                      <div className="relative group">
+                        <div className={`absolute -inset-1 rounded-3xl blur-xl opacity-25 group-hover:opacity-40 transition-opacity duration-500 bg-gradient-to-r ${feature.glowColor}`}></div>
+                        <div className={`relative p-8 sm:p-10 md:p-12 ${feature.borderColor} bg-white rounded-3xl flex items-center justify-center min-h-[300px] sm:min-h-[350px] lg:min-h-[400px]`}>
+                          <img
+                            src={feature.image}
+                            alt={feature.imageAlt}
+                            className="w-full h-auto max-w-[250px] sm:max-w-[300px] lg:max-w-[350px] object-contain rounded-2xl transform group-hover:scale-105 transition-transform duration-500"
+                            loading="lazy"
+                            width={600}
+                            height={400}
+                          />
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            </SlideInWhenVisible>
-            
-            <SlideInWhenVisible direction="left" delay={100}>
-              <div className="order-2 lg:order-1">
-                <div className="relative group">
-                  <div className={`absolute -inset-1 bg-gradient-to-br ${featuresData[selectedFeature].glowColor} rounded-3xl blur-xl opacity-25 group-hover:opacity-40 transition-opacity duration-500`}></div>
-                  <div className={`relative bg-gradient-to-br ${featuresData[selectedFeature].bgGradient} rounded-3xl p-8 sm:p-10 md:p-12 shadow-xl border ${featuresData[selectedFeature].borderColor} flex items-center justify-center min-h-[400px] sm:min-h-[450px] lg:min-h-[550px]`}>
-                    <img
-                      src={featuresData[selectedFeature].image}
-                      alt={featuresData[selectedFeature].imageAlt}
-                      className="w-full h-auto max-w-[300px] sm:max-w-[340px] lg:max-w-full max-h-[320px] sm:max-h-[380px] lg:max-h-[450px] object-contain rounded-2xl transform group-hover:scale-105 transition-transform duration-500"
-                      loading="lazy"
-                      width={800}
-                      height={600}
-                    />
-                  </div>
-                </div>
-              </div>
-            </SlideInWhenVisible>
-          </div>
-        </div>
+                </ScrollStackItem>
+              );
+            })}
+          </ScrollStack>
+          
           {/* CTA */}
           <FadeInWhenVisible delay={700}>
             <div className="text-center mt-12 sm:mt-16">
@@ -1574,8 +1675,23 @@ export const HomePage = () => {
               <p className="text-sm text-gray-500 mt-4">No credit card required</p>
             </div>
           </FadeInWhenVisible>
+        </div>
       </section>
+</AnimatedContent>
 
+
+<AnimatedContent
+          distance={150}
+          direction="horizontal"
+          reverse={false}
+          duration={1}
+          ease="power3.out"
+          initialOpacity={0.2}
+          animateOpacity
+          scale={1.1}
+          threshold={0.2}
+          delay={0.3}
+        >
       {/* Start Tracking in 3 Simple Steps - New Section */}
       <section className="py-12 sm:py-16 md:py-20 lg:py-24 xl:py-28 bg-gradient-to-b from-blue-50/30 to-white relative overflow-hidden">
         {/* Subtle background decoration */}
@@ -1589,10 +1705,8 @@ export const HomePage = () => {
           <FadeInWhenVisible>
             <div className="text-center mb-10 sm:mb-12 md:mb-16 lg:mb-20">
             <h2 className="lg:pl-24 lg:pr-24 lg:pt-6 lg:pb-6 text-[clamp(3rem,5vw,5rem)] font-light text-gray-800 mb-3 leading-tight px-2">
-            Start Tracking In <br className="hidden sm:block" />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-600">
-                  3 Simple Steps
-                </span>
+            <BlurText className="justify-center" text="Start Tracking In 3 Simple Steps" onComplete={handleAnimationComplete} /> 
+
               </h2>
               <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-4 sm:mb-5 md:mb-6 max-w-2xl mx-auto px-4">
                 Get up and running in under 10 minutes.
@@ -1824,9 +1938,21 @@ export const HomePage = () => {
           </FadeInWhenVisible>
         </div>
       </section>
+      </AnimatedContent>
 
 
-
+      <AnimatedContent
+          distance={150}
+          direction="horizontal"
+          reverse={false}
+          duration={1}
+          ease="power3.out"
+          initialOpacity={0.2}
+          animateOpacity
+          scale={1.1}
+          threshold={0.2}
+          delay={0.3}
+        >
       {/* Why Choose Us Section */}
       <section className="py-16 sm:py-20 md:py-24 lg:py-28 bg-gradient-to-b from-blue-50/30 to-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1839,10 +1965,8 @@ export const HomePage = () => {
                 </span>
               </div>
               <h2 className="lg:pl-24 lg:pr-24 lg:pt-6 lg:pb-6 text-[clamp(3rem,5vw,5rem)] font-light text-gray-800 mb-3 leading-tight px-2">
-              Why Choose <br className="hidden sm:block" />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-600">
-                  StockFlow?
-                </span>
+              <BlurText className="justify-center" text="Why Choose Stockflow" onComplete={handleAnimationComplete} /> 
+
               </h2>
               <p className="text-lg sm:text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto px-4 leading-relaxed">
                 The smart choice for inventory management
@@ -1920,7 +2044,20 @@ export const HomePage = () => {
             </div>
           </FadeInWhenVisible>
       </section>
+      </AnimatedContent>
 
+      <AnimatedContent
+          distance={150}
+          direction="horizontal"
+          reverse={false}
+          duration={1}
+          ease="power3.out"
+          initialOpacity={0.2}
+          animateOpacity
+          scale={1.1}
+          threshold={0.2}
+          delay={0.3}
+        >
       {/* Integrations Section */}
       <section className="py-16 sm:py-20 md:py-24 lg:py-28 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -2079,7 +2216,21 @@ export const HomePage = () => {
           </FadeInWhenVisible>
         </div>
       </section>
+      </AnimatedContent>
 
+
+      <AnimatedContent
+          distance={150}
+          direction="horizontal"
+          reverse={false}
+          duration={1}
+          ease="power3.out"
+          initialOpacity={0.2}
+          animateOpacity
+          scale={1.1}
+          threshold={0.2}
+          delay={0.3}
+        >
       {/* FAQ Section */}
       <section className="py-16 sm:py-20 md:py-24 lg:py-28 bg-gradient-to-b from-blue-50/30 to-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -2167,13 +2318,7 @@ export const HomePage = () => {
                         </p>
                       )}
                     </div>
-                    
-                    {/* Answer (always visible on mobile) */}
-                    <div className="px-6 pb-5">
-                      <p className="text-base text-gray-600 leading-relaxed">
-                        {faq.answer}
-                      </p>
-                    </div>
+                  
                   </div>
                 </FadeInWhenVisible>
                 )}
@@ -2268,12 +2413,24 @@ export const HomePage = () => {
 
         </div>
       </section>
+      </AnimatedContent>
 
 
       
 
 
-
+      <AnimatedContent
+          distance={150}
+          direction="horizontal"
+          reverse={false}
+          duration={1}
+          ease="power3.out"
+          initialOpacity={0.2}
+          animateOpacity
+          scale={1.1}
+          threshold={0.2}
+          delay={0.3}
+        >
       {/* Trust Badges Section */}
       <section className="py-12 md:py-16 bg-white border-t border-gray-200">
         <div className="max-w-7xl mx-auto px-4">
@@ -2330,10 +2487,22 @@ export const HomePage = () => {
           </FadeInWhenVisible>
         </div>
       </section>
+      </AnimatedContent>
 
 
 
-
+      <AnimatedContent
+          distance={150}
+          direction="horizontal"
+          reverse={false}
+          duration={1}
+          ease="power3.out"
+          initialOpacity={0.2}
+          animateOpacity
+          scale={1.1}
+          threshold={0.2}
+          delay={0.3}
+        >
           {/* Final Call-to-Action Section */}
           <FadeInWhenVisible delay={600}>
             <section className="bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800  shadow-2xl overflow-hidden">
@@ -2386,6 +2555,7 @@ export const HomePage = () => {
               </div>
             </section>
           </FadeInWhenVisible>
+          </AnimatedContent>
 
       <Footer />
 
@@ -2417,6 +2587,17 @@ export const HomePage = () => {
 
       {/* Floating Chat Widget - Separate from logged-in user chat */}
 
+      {/* Viewport-wide GradualBlur effect */}
+      <GradualBlur
+        target="window"
+        position="bottom"
+        height="8rem"
+        strength={3}
+        divCount={8}
+        curve="bezier"
+        exponential={true}
+        opacity={0.8}
+      />
 
   </div>
   );
