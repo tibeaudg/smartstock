@@ -28,15 +28,25 @@ const AnimatedItem: React.FC<AnimatedItemProps> = ({ children, delay = 0, index,
   );
 };
 
+export interface FAQItem {
+  question: string;
+  answer: string;
+  category?: string;
+  benefit?: string;
+}
+
 interface AnimatedListProps {
-  items?: string[];
-  onItemSelect?: (item: string, index: number) => void;
+  items?: string[] | FAQItem[];
+  onItemSelect?: (item: string | FAQItem, index: number) => void;
   showGradients?: boolean;
   enableArrowNavigation?: boolean;
   className?: string;
   itemClassName?: string;
   displayScrollbar?: boolean;
   initialSelectedIndex?: number;
+  isFAQMode?: boolean;
+  selectedFAQIndex?: number;
+  onFAQSelect?: (index: number) => void;
 }
 
 const AnimatedList: React.FC<AnimatedListProps> = ({
@@ -63,13 +73,19 @@ const AnimatedList: React.FC<AnimatedListProps> = ({
   className = '',
   itemClassName = '',
   displayScrollbar = true,
-  initialSelectedIndex = -1
+  initialSelectedIndex = -1,
+  isFAQMode = false,
+  selectedFAQIndex,
+  onFAQSelect
 }) => {
   const listRef = useRef<HTMLDivElement>(null);
   const [selectedIndex, setSelectedIndex] = useState<number>(initialSelectedIndex);
   const [keyboardNav, setKeyboardNav] = useState<boolean>(false);
   const [topGradientOpacity, setTopGradientOpacity] = useState<number>(0);
   const [bottomGradientOpacity, setBottomGradientOpacity] = useState<number>(1);
+  
+  // Use selectedFAQIndex for FAQ mode, otherwise use internal selectedIndex
+  const currentSelectedIndex = isFAQMode && selectedFAQIndex !== undefined ? selectedFAQIndex : selectedIndex;
 
   const handleScroll = (e: UIEvent<HTMLDivElement>) => {
     const { scrollTop, scrollHeight, clientHeight } = e.target as HTMLDivElement;
@@ -84,16 +100,26 @@ const AnimatedList: React.FC<AnimatedListProps> = ({
       if (e.key === 'ArrowDown' || (e.key === 'Tab' && !e.shiftKey)) {
         e.preventDefault();
         setKeyboardNav(true);
-        setSelectedIndex(prev => Math.min(prev + 1, items.length - 1));
+        const nextIndex = Math.min(currentSelectedIndex + 1, items.length - 1);
+        if (isFAQMode && onFAQSelect) {
+          onFAQSelect(nextIndex);
+        } else {
+          setSelectedIndex(nextIndex);
+        }
       } else if (e.key === 'ArrowUp' || (e.key === 'Tab' && e.shiftKey)) {
         e.preventDefault();
         setKeyboardNav(true);
-        setSelectedIndex(prev => Math.max(prev - 1, 0));
+        const prevIndex = Math.max(currentSelectedIndex - 1, 0);
+        if (isFAQMode && onFAQSelect) {
+          onFAQSelect(prevIndex);
+        } else {
+          setSelectedIndex(prevIndex);
+        }
       } else if (e.key === 'Enter') {
-        if (selectedIndex >= 0 && selectedIndex < items.length) {
+        if (currentSelectedIndex >= 0 && currentSelectedIndex < items.length) {
           e.preventDefault();
           if (onItemSelect) {
-            onItemSelect(items[selectedIndex], selectedIndex);
+            onItemSelect(items[currentSelectedIndex], currentSelectedIndex);
           }
         }
       }
@@ -101,12 +127,12 @@ const AnimatedList: React.FC<AnimatedListProps> = ({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [items, selectedIndex, onItemSelect, enableArrowNavigation]);
+  }, [items, currentSelectedIndex, onItemSelect, enableArrowNavigation, isFAQMode, onFAQSelect]);
 
   useEffect(() => {
-    if (!keyboardNav || selectedIndex < 0 || !listRef.current) return;
+    if (!keyboardNav || currentSelectedIndex < 0 || !listRef.current) return;
     const container = listRef.current;
-    const selectedItem = container.querySelector(`[data-index="${selectedIndex}"]`) as HTMLElement | null;
+    const selectedItem = container.querySelector(`[data-index="${currentSelectedIndex}"]`) as HTMLElement | null;
     if (selectedItem) {
       const extraMargin = 50;
       const containerScrollTop = container.scrollTop;
@@ -123,21 +149,28 @@ const AnimatedList: React.FC<AnimatedListProps> = ({
       }
     }
     setKeyboardNav(false);
-  }, [selectedIndex, keyboardNav]);
+  }, [currentSelectedIndex, keyboardNav]);
+
+  // Helper function to check if item is FAQ
+  const isFAQItem = (item: string | FAQItem): item is FAQItem => {
+    return typeof item === 'object' && 'question' in item;
+  };
 
   return (
-    <div className={`relative w-[500px] ${className}`}>
+    <div className={`relative ${isFAQMode ? 'w-full max-w-4xl mx-auto' : 'w-[500px]'} ${className}`}>
       <div
         ref={listRef}
         className={`max-h-[400px] overflow-y-auto p-4 ${
           displayScrollbar
-            ? '[&::-webkit-scrollbar]:w-[8px] [&::-webkit-scrollbar-track]:bg-[#060010] [&::-webkit-scrollbar-thumb]:bg-[#222] [&::-webkit-scrollbar-thumb]:rounded-[4px]'
+            ? isFAQMode 
+              ? '[&::-webkit-scrollbar]:w-[8px] [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-thumb]:rounded-[4px]'
+              : '[&::-webkit-scrollbar]:w-[8px] [&::-webkit-scrollbar-track]:bg-[#060010] [&::-webkit-scrollbar-thumb]:bg-[#222] [&::-webkit-scrollbar-thumb]:rounded-[4px]'
             : 'scrollbar-hide'
         }`}
         onScroll={handleScroll}
         style={{
           scrollbarWidth: displayScrollbar ? 'thin' : 'none',
-          scrollbarColor: '#222 #060010'
+          scrollbarColor: isFAQMode ? '#d1d5db #f3f4f6' : '#222 #060010'
         }}
       >
         {items.map((item, index) => (
@@ -145,28 +178,53 @@ const AnimatedList: React.FC<AnimatedListProps> = ({
             key={index}
             delay={0.1}
             index={index}
-            onMouseEnter={() => setSelectedIndex(index)}
+            onMouseEnter={() => {
+              if (isFAQMode && onFAQSelect) {
+                onFAQSelect(index);
+              } else {
+                setSelectedIndex(index);
+              }
+            }}
             onClick={() => {
-              setSelectedIndex(index);
+              if (isFAQMode && onFAQSelect) {
+                onFAQSelect(index);
+              } else {
+                setSelectedIndex(index);
+              }
               if (onItemSelect) {
                 onItemSelect(item, index);
               }
             }}
           >
-            <div className={`p-4 bg-[#111] rounded-lg ${selectedIndex === index ? 'bg-[#222]' : ''} ${itemClassName}`}>
-              <p className="text-white m-0">{item}</p>
-            </div>
+            {isFAQItem(item) ? (
+              <div className={`p-6 bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 ${currentSelectedIndex === index ? 'ring-2 ring-blue-500 shadow-lg' : ''} ${itemClassName}`}>
+                <div className="flex-1 pr-4">
+                  <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-1">
+                    {item.question}
+                  </h3>
+                  {item.benefit && (
+                    <p className="text-sm text-blue-600 font-medium">
+                      {item.benefit}
+                    </p>
+                  )}
+                </div>
+              </div>
+            ) : (
+              <div className={`p-4 ${isFAQMode ? 'bg-white border border-gray-200' : 'bg-[#111]'} rounded-lg ${currentSelectedIndex === index ? (isFAQMode ? 'ring-2 ring-blue-500' : 'bg-[#222]') : ''} ${itemClassName}`}>
+                <p className={`${isFAQMode ? 'text-gray-900' : 'text-white'} m-0`}>{item}</p>
+              </div>
+            )}
           </AnimatedItem>
         ))}
       </div>
       {showGradients && (
         <>
           <div
-            className="absolute top-0 left-0 right-0 h-[50px] bg-gradient-to-b from-[#060010] to-transparent pointer-events-none transition-opacity duration-300 ease"
+            className={`absolute top-0 left-0 right-0 h-[50px] bg-gradient-to-b pointer-events-none transition-opacity duration-300 ease ${isFAQMode ? 'from-gray-50 to-transparent' : 'from-[#060010] to-transparent'}`}
             style={{ opacity: topGradientOpacity }}
           ></div>
           <div
-            className="absolute bottom-0 left-0 right-0 h-[100px] bg-gradient-to-t from-[#060010] to-transparent pointer-events-none transition-opacity duration-300 ease"
+            className={`absolute bottom-0 left-0 right-0 h-[100px] bg-gradient-to-t pointer-events-none transition-opacity duration-300 ease ${isFAQMode ? 'from-gray-50 to-transparent' : 'from-[#060010] to-transparent'}`}
             style={{ opacity: bottomGradientOpacity }}
           ></div>
         </>

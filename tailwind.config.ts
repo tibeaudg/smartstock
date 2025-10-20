@@ -75,14 +75,22 @@ export default {
 				sm: 'calc(var(--radius) - 4px)'
 			},
 			keyframes: {
-			'star-movement-bottom': {
-           '0%': { transform: 'translate(0%, 0%)', opacity: '1' },
-           '100%': { transform: 'translate(-100%, 0%)', opacity: '0' },
-			},
-			'star-movement-top': {
-			'0%': { transform: 'translate(0%, 0%)', opacity: '1' },
-			'100%': { transform: 'translate(100%, 0%)', opacity: '0' },
-			},
+				'star-movement-bottom': {
+					'0%': { 
+						transform: 'rotate(0deg)',
+					},
+					'100%': { 
+						transform: 'rotate(360deg)',
+					},
+				},
+				'star-movement-top': {
+					'0%': { 
+						transform: 'translateX(-100%)',
+					},
+					'100%': { 
+						transform: 'translateX(100%)',
+					},
+				},
 		
 
 	
@@ -109,8 +117,8 @@ export default {
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
-				'star-movement-bottom': 'star-movement-bottom linear infinite alternate',
-				'star-movement-top': 'star-movement-top linear infinite alternate'
+				'star-movement-bottom': 'star-movement-bottom 6s linear infinite',
+				'star-movement-top': 'star-movement-top 3s linear infinite'
 			}
 		}
 	},

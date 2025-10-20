@@ -518,6 +518,9 @@ export const HomePage = () => {
   // FAQ search state
   const [faqSearchTerm, setFaqSearchTerm] = useState('');
   
+  // FAQ selected state for AnimatedList
+  const [selectedFAQ, setSelectedFAQ] = useState<number>(-1);
+  
   
   // Modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -1315,15 +1318,12 @@ export const HomePage = () => {
                 shadow-2xl hover:shadow-3xl
                 ring-0 focus:ring-4 focus:ring-white/50 focus:outline-none
                 min-h-[56px] sm:min-h-[64px]"
-              color="cyan"
+              color="#06b6d4"
               speed="5s"
-
-            
-                onClick={() => navigate('/pricing')}
-                >
-              
-                Create a Free Account
-              </StarBorder>
+              onClick={() => navigate('/pricing')}
+            >
+              Create a Free Account
+            </StarBorder>
             </div>
           </FadeInWhenVisible>
               
@@ -2330,58 +2330,51 @@ export const HomePage = () => {
             )}
           </div>
 
-          {/* Desktop Accordion - Only visible on desktop */}
-          <div className="hidden md:block space-y-4">
+          {/* Desktop AnimatedList FAQ - Only visible on desktop */}
+          <div className="hidden md:block">
             {filteredFaqData.length > 0 ? (
-              filteredFaqData.map((faq, index) => (
-              <FadeInWhenVisible key={index} delay={index * 50}>
-                <div className="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300">
-                  <button
-                    onClick={() => setOpenFAQ(openFAQ === index ? null : index)}
-                    className="w-full text-left px-6 py-5 flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-xl"
-                  >
-                    <div className="flex-1 pr-4">
-                      <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-1">
-                        {faq.question}
-                      </h3>
-                      {faq.benefit && (
-                        <p className="text-sm text-blue-600 font-medium">
-                          {faq.benefit}
-                        </p>
-                      )}
-                    </div>
-                    <div className={`flex-shrink-0 transform transition-transform duration-300 ${openFAQ === index ? 'rotate-180' : ''}`}>
-                      <svg
-                        className="w-5 h-5 text-gray-500"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M19 9l-7 7-7-7"
-                        />
-                      </svg>
-                    </div>
-                  </button>
-                  
-                  {/* Answer (collapsible) */}
-                  <div
-                    className={`overflow-hidden transition-all duration-300 ${
-                      openFAQ === index ? 'max-h-96' : 'max-h-0'
-                    }`}
-                  >
-                    <div className="px-6 pb-5 pt-2">
-                      <p className="text-base text-gray-600 leading-relaxed">
-                        {faq.answer}
-                      </p>
-                    </div>
-                  </div>
+              <div className="flex gap-8">
+                <div className="flex-1">
+                  <AnimatedList
+                    items={filteredFaqData}
+                    onItemSelect={(item, index) => {
+                      setSelectedFAQ(selectedFAQ === index ? -1 : index);
+                      setOpenFAQ(index);
+                    }}
+                    showGradients={true}
+                    enableArrowNavigation={true}
+                    displayScrollbar={true}
+                    isFAQMode={true}
+                    selectedFAQIndex={selectedFAQ === -1 ? undefined : selectedFAQ}
+                    onFAQSelect={(index) => {
+                      setSelectedFAQ(selectedFAQ === index ? -1 : index);
+                      setOpenFAQ(index);
+                    }}
+                    className="w-full"
+                  />
                 </div>
-              </FadeInWhenVisible>
-              ))
+                
+                {/* FAQ Answer Panel */}
+                {selectedFAQ >= 0 && filteredFaqData[selectedFAQ] && (
+                  <div className="flex-1">
+                    <FadeInWhenVisible delay={100}>
+                      <div className="bg-white rounded-xl border border-gray-200 shadow-lg p-6 sticky top-4">
+                        <h3 className="text-lg font-semibold text-gray-900 mb-3">
+                          {filteredFaqData[selectedFAQ].question}
+                        </h3>
+                        {filteredFaqData[selectedFAQ].benefit && (
+                          <p className="text-sm text-blue-600 font-medium mb-4">
+                            {filteredFaqData[selectedFAQ].benefit}
+                          </p>
+                        )}
+                        <p className="text-base text-gray-600 leading-relaxed">
+                          {filteredFaqData[selectedFAQ].answer}
+                        </p>
+                      </div>
+                    </FadeInWhenVisible>
+                  </div>
+                )}
+              </div>
             ) : (
               <div className="text-center py-8">
                 <p className="text-gray-500">No FAQs found matching your search.</p>
