@@ -4,7 +4,7 @@ import SeoPageLayout from '../../components/SeoPageLayout';
 import Footer from '../../components/Footer';
 import { Check, Star, Smartphone, Bell, Zap, Shield, Users, TrendingUp } from 'lucide-react';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
-import { Header } from '@/components/HeaderPublic';
+import Header from '@/components/HeaderPublic';
 
 import { StructuredData } from '../../components/StructuredData';
 export default function VoorraadbeheerSoftwareVergelijken() {

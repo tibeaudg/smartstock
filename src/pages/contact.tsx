@@ -8,7 +8,7 @@ import { MessageCircle, Mail, Phone, MapPin } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { logger } from '../lib/logger';
-import { Header } from '@/components/HeaderPublic';
+import Header from '@/components/HeaderPublic';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import SEO from '@/components/SEO';
 import { generateComprehensiveStructuredData } from '@/lib/structuredData';

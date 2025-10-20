@@ -1,5 +1,5 @@
 import React from 'react';
-import { Header } from '../HeaderPublic';
+import Header from '../HeaderPublic';
 import { useNavigate } from 'react-router-dom';
 
 interface RegionalPageLayoutProps {

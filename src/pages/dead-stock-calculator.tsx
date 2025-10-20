@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Header } from '@/components/HeaderPublic';
+import Header from '@/components/HeaderPublic';
 import { Button } from '@/components/ui/button';
 import { 
   Check, CheckCircle, Shield, Clock, Euro, TrendingUp, Zap, 

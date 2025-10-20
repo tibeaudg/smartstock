@@ -1,7 +1,7 @@
 import React from 'react';
 import { Package, BarChart3, Scan, Truck, CheckCircle, ArrowRight, Users, Shield, TrendingUp, Zap, Star, Clock, Euro, Target, ChevronLeft, ChevronRight, Play, Award, Globe, Smartphone, CheckCircle as CheckCircleIcon, Rocket, Crown, Sparkles, Timer, Facebook, Twitter, Linkedin, Instagram, Repeat, Camera, Bell } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Header } from './HeaderPublic';
+import Header from './HeaderPublic';
 import { motion } from 'framer-motion';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import SEO from './SEO';

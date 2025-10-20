@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/hooks/useAuth';
 import { useSubscription } from '@/hooks/useSubscription';
 import { useTranslation } from 'react-i18next';
-import { Header } from '@/components/HeaderPublic';
+import Header from '@/components/HeaderPublic';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import SEO from '@/components/SEO';
 import { generateComprehensiveStructuredData } from '@/lib/structuredData';

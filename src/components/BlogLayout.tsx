@@ -1,5 +1,5 @@
 import React from 'react';
-import { Header } from './HeaderPublic';
+import Header from './HeaderPublic';
 import Footer from './Footer';
 
 interface BlogLayoutProps {

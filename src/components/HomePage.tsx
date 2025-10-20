@@ -1,5 +1,5 @@
 import React, { useState, useRef, lazy } from 'react';
-import { Header } from './HeaderPublic';
+import Header from './HeaderPublic';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Carousel from './ui/carousel';
@@ -9,7 +9,7 @@ import AnimatedList from './AnimatedList'
 import ScrollStack, { ScrollStackItem } from './ScrollStack'
 import GlareHover from './GlareHover'
 import GradualBlur from './GradualBlur'
-import StarBorder from './StarBorder'
+import ScrollTriggeredButton from './ScrollTriggeredButton'
 
 
 
@@ -1259,7 +1259,7 @@ export const HomePage = () => {
           threshold={0.2}
           delay={0.3}
         >
-      <section className="relative py-10 sm:py-14 md:py-20 lg:py-24 px-4 sm:px-6 overflow-hidden bg-gradient-to-b from-blue-50/30 to-white">
+      <section className="relative py-10 sm:py-14 md:py-20 lg:py-24 px-4 sm:px-6 overflow-hidden bg-gradient-to-b from-blue-50/30 to-white mt-20">
         {/* Subtle geometric pattern overlay */}
         <div 
           className="absolute inset-0 pointer-events-none opacity-[0.03]"
@@ -1308,7 +1308,7 @@ export const HomePage = () => {
           <FadeInWhenVisible delay={700}>
             <div className="text-center mt-6 mb-6 sm:mt-6">
               
-            <StarBorder
+            <ScrollTriggeredButton
               as="button"
               className="w-full sm:w-auto bg-blue-600 text-white hover:bg-blue-700
                 px-10 py-5 sm:px-12 sm:py-6 md:px-14 md:py-7
@@ -1318,12 +1318,10 @@ export const HomePage = () => {
                 shadow-2xl hover:shadow-3xl
                 ring-0 focus:ring-4 focus:ring-white/50 focus:outline-none
                 min-h-[56px] sm:min-h-[64px]"
-              color="#06b6d4"
-              speed="5s"
               onClick={() => navigate('/pricing')}
             >
               Create a Free Account
-            </StarBorder>
+              </ScrollTriggeredButton>
             </div>
           </FadeInWhenVisible>
               
@@ -1406,18 +1404,7 @@ export const HomePage = () => {
 
 
       {/* Social Proof Bar - Immediately Below Hero */}
-      <AnimatedContent
-          distance={150}
-          direction="horizontal"
-          reverse={false}
-          duration={1}
-          ease="power3.out"
-          initialOpacity={0.2}
-          animateOpacity
-          scale={1.1}
-          threshold={0.2}
-          delay={0.3}
-        >
+
 
       <section className="py-6 sm:py-8 md:py-10 bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4">
@@ -1433,7 +1420,6 @@ export const HomePage = () => {
           </FadeInWhenVisible>
         </div>
       </section>
-      </AnimatedContent>
 
       {/* Problem → Solution Section */}
       <AnimatedContent
@@ -1557,18 +1543,7 @@ export const HomePage = () => {
       </AnimatedContent>
 
 
-      <AnimatedContent
-          distance={150}
-          direction="horizontal"
-          reverse={false}
-          duration={1}
-          ease="power3.out"
-          initialOpacity={0.2}
-          animateOpacity
-          scale={1.1}
-          threshold={0.2}
-          delay={0.3}
-        >
+
       {/* Key Features Section - Alternating Layout */}
       <section className="py-16 sm:py-20 md:py-24 lg:py-28 xl:py-32 bg-gradient-to-b from-blue-50/30 to-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 ">
@@ -1677,7 +1652,6 @@ export const HomePage = () => {
           </FadeInWhenVisible>
         </div>
       </section>
-</AnimatedContent>
 
 
 <AnimatedContent
@@ -2409,93 +2383,9 @@ export const HomePage = () => {
       </AnimatedContent>
 
 
-      
-
-
-      <AnimatedContent
-          distance={150}
-          direction="horizontal"
-          reverse={false}
-          duration={1}
-          ease="power3.out"
-          initialOpacity={0.2}
-          animateOpacity
-          scale={1.1}
-          threshold={0.2}
-          delay={0.3}
-        >
-      {/* Trust Badges Section */}
-      <section className="py-12 md:py-16 bg-white border-t border-gray-200">
-        <div className="max-w-7xl mx-auto px-4">
-          <FadeInWhenVisible>
-            <div className="text-center">
-
-              
-              <style>
-                {`
-                  .trust-badges {
-                    display: grid;
-                    grid-template-columns: repeat(2, 1fr);
-                    gap: 1.5rem;
-                  }
-                  @media (min-width: 640px) {
-                    .trust-badges {
-                      grid-template-columns: repeat(4, 1fr) !important;
-                    }
-                  }
-                `}
-              </style>
-              <div className="trust-badges mx-auto">
-                <div className="flex flex-col items-center gap-2">
-                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
-                    <Shield className="h-8 w-8 text-green-600" />
-                  </div>
-                  <span className="text-sm font-medium text-gray-700">GDPR Compliant</span>
-                </div>
-                
-                <div className="flex flex-col items-center gap-2">
-                  <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
-                    <Globe className="h-8 w-8 text-blue-600" />
-                  </div>
-                  <span className="text-sm font-medium text-gray-700">99.9% Uptime</span>
-                </div>
-                
-
-                
-                <div className="flex flex-col items-center gap-2">
-                  <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center">
-                    <Shield className="h-8 w-8 text-orange-600" />
-                  </div>
-                  <span className="text-sm font-medium text-gray-700">SSL Encrypted</span>
-                </div>
-                
-                <div className="flex flex-col items-center gap-2">
-                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
-                    <CheckCircle className="h-8 w-8 text-green-600" />
-                  </div>
-                  <span className="text-sm font-medium text-gray-700">Secure Payments</span>
-                </div>
-              </div>
-            </div>
-          </FadeInWhenVisible>
-        </div>
-      </section>
-      </AnimatedContent>
 
 
 
-      <AnimatedContent
-          distance={150}
-          direction="horizontal"
-          reverse={false}
-          duration={1}
-          ease="power3.out"
-          initialOpacity={0.2}
-          animateOpacity
-          scale={1.1}
-          threshold={0.2}
-          delay={0.3}
-        >
           {/* Final Call-to-Action Section */}
           <FadeInWhenVisible delay={600}>
             <section className="bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800  shadow-2xl overflow-hidden">
@@ -2548,7 +2438,6 @@ export const HomePage = () => {
               </div>
             </section>
           </FadeInWhenVisible>
-          </AnimatedContent>
 
       <Footer />
 
@@ -2577,20 +2466,6 @@ export const HomePage = () => {
           </div>
         </div>
       )}
-
-      {/* Floating Chat Widget - Separate from logged-in user chat */}
-
-      {/* Viewport-wide GradualBlur effect */}
-      <GradualBlur
-        target="window"
-        position="bottom"
-        height="8rem"
-        strength={3}
-        divCount={8}
-        curve="bezier"
-        exponential={true}
-        opacity={0.8}
-      />
 
   </div>
   );

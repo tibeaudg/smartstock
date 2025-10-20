@@ -11,7 +11,9 @@ export const ScrollStackItem: React.FC<ScrollStackItemProps> = ({ children, item
     className={`scroll-stack-card relative w-full h-80 my-8 p-12 rounded-[40px] shadow-[0_0_30px_rgba(0,0,0,0.1)] box-border origin-top will-change-transform ${itemClassName}`.trim()}
     style={{
       backfaceVisibility: 'hidden',
-      transformStyle: 'preserve-3d'
+      transformStyle: 'preserve-3d',
+      opacity: 0,
+      pointerEvents: 'auto'
     }}
   >
     {children}
@@ -101,10 +103,9 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
 
   const updateCardTransforms = useCallback(() => {
     if (!cardsRef.current.length || isUpdatingRef.current) return;
-
     isUpdatingRef.current = true;
 
-    const { scrollTop, containerHeight, scrollContainer } = getScrollData();
+    const { scrollTop, containerHeight } = getScrollData();
     const stackPositionPx = parsePercentage(stackPosition, containerHeight);
     const scaleEndPositionPx = parsePercentage(scaleEndPosition, containerHeight);
 
@@ -113,6 +114,25 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
       : (scrollerRef.current?.querySelector('.scroll-stack-end') as HTMLElement | null);
 
     const endElementTop = endElement ? getElementOffset(endElement) : 0;
+
+    // Determine which card should be active (only one visible at a time)
+    let activeCardIndex = 0;
+    let minDistance = Infinity;
+    
+    for (let i = 0; i < cardsRef.current.length; i++) {
+      const card = cardsRef.current[i];
+      if (!card) continue;
+      
+      const cardTop = getElementOffset(card);
+      const triggerStart = cardTop - stackPositionPx - itemStackDistance * i;
+      const distanceFromTrigger = Math.abs(scrollTop - triggerStart);
+      
+      // Find the card closest to its trigger position
+      if (distanceFromTrigger < minDistance && scrollTop >= triggerStart - containerHeight * 0.5) {
+        minDistance = distanceFromTrigger;
+        activeCardIndex = i;
+      }
+    }
 
     cardsRef.current.forEach((card, i) => {
       if (!card) return;
@@ -123,58 +143,90 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
       const pinStart = cardTop - stackPositionPx - itemStackDistance * i;
       const pinEnd = endElementTop - containerHeight / 2;
 
+      // Determine visibility and active state
+      const isActiveCard = i === activeCardIndex;
+      const isNextCard = i === activeCardIndex + 1;
+      const isPreviousCard = i === activeCardIndex - 1;
+      
+      // Show active card, next card for preview, and previous card during transition
+      const shouldBeVisible = isActiveCard || isNextCard || (isPreviousCard && i === 0);
+
+      // Hide cards that have passed completely
+      if (!shouldBeVisible && i < activeCardIndex - 1) {
+        card.style.transform = `translate3d(0, ${containerHeight}px, 0) scale(${baseScale})`;
+        card.style.opacity = '0';
+        card.style.filter = 'blur(10px)';
+        card.style.pointerEvents = 'none';
+        return;
+      }
+
       const scaleProgress = calculateProgress(scrollTop, triggerStart, triggerEnd);
       const targetScale = baseScale + i * itemScale;
-      const scale = 1 - scaleProgress * (1 - targetScale);
-      const rotation = rotationAmount ? i * rotationAmount * scaleProgress : 0;
+      const scale = shouldBeVisible ? (1 - scaleProgress * (1 - targetScale)) : baseScale;
+      const rotation = rotationAmount && shouldBeVisible ? i * rotationAmount * scaleProgress : 0;
+
+      // Better opacity control for smoother transitions
+      let opacity = 1;
+      if (isActiveCard) {
+        opacity = 1; // Full opacity for active card
+      } else if (isNextCard) {
+        opacity = Math.max(0.3, 1 - scaleProgress * 0.7); // Preview opacity for next card
+      } else if (isPreviousCard && i === 0) {
+        opacity = Math.max(0.1, scaleProgress); // Fade out previous cards
+      } else if (i > activeCardIndex) {
+        opacity = 0;
+      }
 
       let blur = 0;
-      if (blurAmount) {
-        let topCardIndex = 0;
-        for (let j = 0; j < cardsRef.current.length; j++) {
-          const jCardTop = getElementOffset(cardsRef.current[j]);
-          const jTriggerStart = jCardTop - stackPositionPx - itemStackDistance * j;
-          if (scrollTop >= jTriggerStart) {
-            topCardIndex = j;
-          }
-        }
-
-        if (i < topCardIndex) {
-          const depthInStack = topCardIndex - i;
-          blur = Math.max(0, depthInStack * blurAmount);
-        }
+      if (blurAmount && !isActiveCard) {
+        const depthInStack = Math.abs(i - activeCardIndex);
+        blur = Math.max(0, depthInStack * blurAmount * 2);
       }
 
       let translateY = 0;
       const isPinned = scrollTop >= pinStart && scrollTop <= pinEnd;
 
-      if (isPinned) {
+      if (isPinned && shouldBeVisible) {
         translateY = scrollTop - cardTop + stackPositionPx + itemStackDistance * i;
-      } else if (scrollTop > pinEnd) {
+      } else if (scrollTop > pinEnd && shouldBeVisible) {
         translateY = pinEnd - cardTop + stackPositionPx + itemStackDistance * i;
+      } else if (!shouldBeVisible) {
+        translateY = containerHeight; // Move out of view
       }
 
       const newTransform = {
         translateY: Math.round(translateY * 100) / 100,
         scale: Math.round(scale * 1000) / 1000,
         rotation: Math.round(rotation * 100) / 100,
-        blur: Math.round(blur * 100) / 100
+        blur: Math.round(blur * 100) / 100,
+        opacity: Math.round(opacity * 100) / 100
       };
 
       const lastTransform = lastTransformsRef.current.get(i);
       const hasChanged =
         !lastTransform ||
-        Math.abs(lastTransform.translateY - newTransform.translateY) > 0.1 ||
-        Math.abs(lastTransform.scale - newTransform.scale) > 0.001 ||
-        Math.abs(lastTransform.rotation - newTransform.rotation) > 0.1 ||
-        Math.abs(lastTransform.blur - newTransform.blur) > 0.1;
+        Math.abs(lastTransform.translateY - newTransform.translateY) > 0.5 ||
+        Math.abs(lastTransform.scale - newTransform.scale) > 0.01 ||
+        Math.abs(lastTransform.rotation - newTransform.rotation) > 0.5 ||
+        Math.abs(lastTransform.blur - newTransform.blur) > 0.1 ||
+        Math.abs((lastTransform.opacity || 0) - newTransform.opacity) > 0.05;
 
-      if (hasChanged) {
+      // Always update opacity changes for smooth transitions
+      const opacityChanged = !lastTransform || 
+        Math.abs((lastTransform.opacity || 0) - newTransform.opacity) > 0.001;
+
+      if (hasChanged || opacityChanged) {
         const transform = `translate3d(0, ${newTransform.translateY}px, 0) scale(${newTransform.scale}) rotate(${newTransform.rotation}deg)`;
         const filter = newTransform.blur > 0 ? `blur(${newTransform.blur}px)` : '';
-
+        
         card.style.transform = transform;
         card.style.filter = filter;
+        
+        // Always update opacity for smooth transitions
+        if (opacityChanged) {
+          card.style.opacity = newTransform.opacity.toString();
+          card.style.pointerEvents = newTransform.opacity > 0.3 ? 'auto' : 'none';
+        }
 
         lastTransformsRef.current.set(i, newTransform);
       }
@@ -208,7 +260,14 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
   ]);
 
   const handleScroll = useCallback(() => {
-    updateCardTransforms();
+    // Throttle scroll updates to prevent stuttering
+    if (animationFrameRef.current) {
+      cancelAnimationFrame(animationFrameRef.current);
+    }
+    
+    animationFrameRef.current = requestAnimationFrame(() => {
+      updateCardTransforms();
+    });
   }, [updateCardTransforms]);
 
   const setupLenis = useCallback(() => {
@@ -282,18 +341,35 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
       if (i < cards.length - 1) {
         card.style.marginBottom = `${itemDistance}px`;
       }
-      card.style.willChange = 'transform, filter';
+      card.style.willChange = 'transform, filter, opacity';
       card.style.transformOrigin = 'top center';
       card.style.backfaceVisibility = 'hidden';
       card.style.transform = 'translateZ(0)';
       card.style.webkitTransform = 'translateZ(0)';
       card.style.perspective = '1000px';
       card.style.webkitPerspective = '1000px';
+      // Add smooth transitions for opacity and filter
+      card.style.transition = 'opacity 0.3s ease-out, filter 0.3s ease-out';
+      
+      // Initialize visibility - first card should be visible, others hidden
+      if (i === 0) {
+        card.style.opacity = '1';
+      } else {
+        card.style.opacity = '0';
+      }
     });
 
     setupLenis();
 
-    updateCardTransforms();
+    // Ensure first card is visible and properly positioned
+    if (cards.length > 0 && cards[0]) {
+      cards[0].style.opacity = '1';
+    }
+
+    // Use a small delay to ensure DOM is ready
+    requestAnimationFrame(() => {
+      updateCardTransforms();
+    });
 
     return () => {
       if (animationFrameRef.current) {

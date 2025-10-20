@@ -16,7 +16,7 @@ export type HeaderNavItem = {
   links: HeaderLink[];
 };
 
-export interface HeaderProps {
+export interface FreeStandingHeaderProps {
   className?: string;
   ease?: string;
   baseColor?: string;
@@ -27,7 +27,7 @@ export interface HeaderProps {
   onRegisterClick?: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({
+const FreeStandingHeader: React.FC<FreeStandingHeaderProps> = ({
   className = '',
   ease = 'power3.out',
   baseColor = '#fff',
@@ -202,7 +202,7 @@ const Header: React.FC<HeaderProps> = ({
 
   return (
     <div
-      className={`card-nav-container fixed left-1/2 -translate-x-1/2 w-[90%] max-w-[800px] z-[99] top-[1.2em] md:top-[2em] ${className}`}
+      className={`card-nav-container absolute left-1/2 -translate-x-1/2 w-[90%] max-w-[800px] z-[99] top-[1.2em] md:top-[2em] ${className}`}
     >
       <nav
         ref={navRef}
@@ -304,4 +304,4 @@ const Header: React.FC<HeaderProps> = ({
   );
 };
 
-export default Header;
+export default FreeStandingHeader;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Header } from './HeaderPublic';
+import Header from './HeaderPublic';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { BreadcrumbNav } from './seo/BreadcrumbNav';
 import { getBreadcrumbPath } from '@/config/topicClusters';
