@@ -618,7 +618,7 @@ const ProductRow: React.FC<ProductRowProps> = ({
     >
       {/* Selection checkbox */}
       {isAdmin && (
-        <td className="px-3 py-3 text-center" onClick={(e) => e.stopPropagation()}>
+        <td className="px-3 py-3 text-center" style={{ minWidth: '60px' }} onClick={(e) => e.stopPropagation()}>
           <input
             type="checkbox"
             checked={isSelected}
@@ -630,7 +630,7 @@ const ProductRow: React.FC<ProductRowProps> = ({
 
       {/* Product column */}
       {columnVisibility.product && (
-        <td className="px-4 py-3">
+        <td className="px-4 py-3" style={{ minWidth: '200px' }}>
           <div className="flex items-center gap-3">
             {/* Expand/Collapse indicator for variants */}
             {hasChildren && (
@@ -722,7 +722,7 @@ const ProductRow: React.FC<ProductRowProps> = ({
 
       {/* Location column */}
       {columnVisibility.location && (
-        <td className="px-4 py-3 text-center">
+        <td className="px-4 py-3 text-center" style={{ minWidth: '120px' }}>
           {!hasChildren && (
             <div className="flex items-center justify-center gap-1">
               <MapPin className="w-3 h-3 text-gray-400" />
@@ -736,7 +736,7 @@ const ProductRow: React.FC<ProductRowProps> = ({
 
       {/* Stock column with Status */}
       {columnVisibility.current && (
-        <td className="px-4 py-3 text-center">
+        <td className="px-4 py-3 text-center" style={{ minWidth: '120px' }}>
           {!hasChildren && (
             <TooltipProvider>
               <Tooltip>
@@ -781,7 +781,7 @@ const ProductRow: React.FC<ProductRowProps> = ({
 
       {/* Category column */}
       {columnVisibility.category && (
-        <td className="px-4 py-3 text-center">
+        <td className="px-4 py-3 text-center" style={{ minWidth: '120px' }}>
           {!hasChildren && (
             <span className="text-sm text-gray-600">
               {product.category_name || '-'}
@@ -792,7 +792,7 @@ const ProductRow: React.FC<ProductRowProps> = ({
 
       {/* Supplier column */}
       {columnVisibility.supplier && (
-        <td className="px-4 py-3 text-center">
+        <td className="px-4 py-3 text-center" style={{ minWidth: '120px' }}>
           {!hasChildren && (
             product.supplier_id && product.supplier_name ? (
               <SupplierPreviewPopover
@@ -814,7 +814,7 @@ const ProductRow: React.FC<ProductRowProps> = ({
 
       {/* Combined Pricing column */}
       {(columnVisibility.purchasePrice || columnVisibility.salePrice) && (
-        <td className="px-4 py-3 text-center">
+        <td className="px-4 py-3 text-center" style={{ minWidth: '120px' }}>
           {!hasChildren && (
             <div className="space-y-1">
               {columnVisibility.purchasePrice && (
@@ -834,7 +834,7 @@ const ProductRow: React.FC<ProductRowProps> = ({
 
       {/* Actions column */}
       {columnVisibility.actions && (
-        <td className="px-4 py-3 text-center" onClick={(e) => e.stopPropagation()}>
+        <td className="px-4 py-3 text-center" style={{ minWidth: '100px' }} onClick={(e) => e.stopPropagation()}>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="sm" className="h-8 w-8 p-0">
@@ -2749,7 +2749,7 @@ export const StockList = () => {
         {activeTab === 'products' && (
 
           
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+          <div className="">
 
             
 
@@ -3395,8 +3395,8 @@ export const StockList = () => {
 
       {/* Consolidated Search and Filter Row */}
       <div className="flex items-center gap-2 py-2">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+        <div className="relative flex-1 ">
+          <Search className="bg-white absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
           <Input
             type="text"
             placeholder="Search products..."
@@ -3529,12 +3529,12 @@ export const StockList = () => {
         </div>
       ) : (
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-          <div className="overflow-x-auto" style={{ minWidth: '100%' }}>
+          <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
             <table className="min-w-full divide-y divide-gray-200" style={{ minWidth: 'max-content' }}>
             <thead className="bg-gray-50 sticky top-0 z-10">
               <tr>
                 {isAdmin && (
-                  <th className="px-3 py-4 text-center">
+                  <th className="px-3 py-4 text-center" style={{ minWidth: '60px' }}>
                     <input
                       type="checkbox"
                       checked={selectAll && filteredProducts.length > 0}
@@ -3544,38 +3544,38 @@ export const StockList = () => {
                   </th>
                 )}
                 {columnVisibility.product && (
-                  <th className="px-4 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-4 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap" style={{ minWidth: '200px' }}>
                     Product
                   </th>
                 )}
                 {columnVisibility.location && (
-                  <th className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap" style={{ minWidth: '120px' }}>
                     Location
                   </th>
                 )}
                 {columnVisibility.current && (
-                  <th className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap" style={{ minWidth: '120px' }}>
                     Stock Level
                   </th>
                 )}
 
                 {columnVisibility.category && (
-                  <th className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap" style={{ minWidth: '120px' }}>
                     Category
                   </th>
                 )}
                 {columnVisibility.supplier && (
-                  <th className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap" style={{ minWidth: '120px' }}>
                     Supplier
                   </th>
                 )}
                 {(columnVisibility.purchasePrice || columnVisibility.salePrice) && (
-                  <th className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap" style={{ minWidth: '120px' }}>
                     Pricing
                   </th>
                 )}
                 {columnVisibility.actions && (
-                  <th className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap" style={{ minWidth: '100px' }}>
                     Actions
                   </th>
                 )}    
