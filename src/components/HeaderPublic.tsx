@@ -202,7 +202,7 @@ const Header: React.FC<HeaderProps> = ({
 
   return (
     <div
-      className={`card-nav-container fixed left-1/2 -translate-x-1/2 w-[90%] max-w-[800px] z-[99] top-[1.2em] md:top-[2em] ${className}`}
+      className={`card-nav-container fixed left-1/2 -translate-x-1/2 w-[90%] max-w-[800px] lg:max-w-[1200px] xl:max-w-[1400px] z-[99] top-[1.2em] md:top-[2em] ${className}`}
     >
       <nav
         ref={navRef}
@@ -243,7 +243,7 @@ const Header: React.FC<HeaderProps> = ({
             <button
               type="button"
               onClick={handleLoginClick}
-              className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-4 py-2 rounded-full font-medium transition-all duration-300"
+              className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-4 py-2 rounded-lg font-medium transition-all duration-300"
             >
               Login
             </button>

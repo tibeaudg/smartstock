@@ -17,6 +17,7 @@ const ScrollTriggeredButton = <T extends React.ElementType = 'button'>({
   const [hasTriggered, setHasTriggered] = React.useState(false);
   const [isAnimating, setIsAnimating] = React.useState(false);
   const ref = React.useRef(null);
+  const intervalRef = React.useRef<NodeJS.Timeout | null>(null);
   const isMobile = useIsMobile();
   const Component = as || 'button';
 
@@ -30,6 +31,17 @@ const ScrollTriggeredButton = <T extends React.ElementType = 'button'>({
           setHasTriggered(true);
           setIsAnimating(true);
           
+          // Set up interval to retrigger animation every 10 seconds with proper cleanup
+          const startInterval = () => {
+            if (intervalRef.current) clearInterval(intervalRef.current);
+            
+            intervalRef.current = setInterval(() => {
+              setIsAnimating(false);
+              setTimeout(() => setIsAnimating(true), 100);
+            }, 5000);
+          };
+          
+          startInterval();
         }
         
       },
@@ -40,23 +52,50 @@ const ScrollTriggeredButton = <T extends React.ElementType = 'button'>({
       observer.observe(ref.current);
     }
 
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
   }, [hasTriggered, isMobile]);
+
+  // Cleanup interval on unmount
+  React.useEffect(() => {
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, []);
 
   return (
     <Component
       ref={ref}
-      className={`relative overflow-hidden ${className} ${
-        isAnimating ? 'animate-pulse' : ''
-      }`}
+      className={`relative overflow-hidden ${className}`}
       {...(rest as any)}
     >
-      {children}
-      
-      {/* Attention-grabbing overlay animation */}
+      {/* Pulsation effect */}
       {isAnimating && (
         <motion.div
-          className="absolute inset-0 bg-gradient-to-r from-blue-400/20 via-white/30 to-blue-400/20"
+          className="absolute inset-0 rounded-lg"
+          animate={{
+            scale: [1, 1.02, 1],
+          }}
+          transition={{
+            duration: 2,
+            repeat: Infinity,
+            ease: 'easeInOut'
+          }}
+        />
+      )}
+      
+      {children}
+      
+      {/* Shimmer effect */}
+      {isAnimating && (
+        <motion.div
+          className="absolute inset-0"
           initial={{ x: '-100%' }}
           animate={{ x: '200%' }}
           transition={{
@@ -70,20 +109,21 @@ const ScrollTriggeredButton = <T extends React.ElementType = 'button'>({
         />
       )}
       
-      {/* Subtle glow effect */}
+      {/* Enhanced shadow and glow effect */}
       {isAnimating && (
         <motion.div
-          className="absolute inset-0 rounded-lg"
-          initial={{ boxShadow: '0 0 0px rgba(59, 130, 246, 0.5)' }}
+          className="absolute inset-0 rounded-lg pointer-events-none"
           animate={{ 
             boxShadow: [
-              '0 0 0px rgba(59, 130, 246, 0.5)',
-              '0 0 20px rgba(59, 130, 246, 0.8)',
-              '0 0 0px rgba(59, 130, 246, 0.5)',
+              '0 0 0px rgba(59, 130, 246, 0)',
+              '0 0 15px rgba(59, 130, 246, 0.4)',
+              '0 0 25px rgba(59, 130, 246, 0.6)',
+              '0 0 15px rgba(59, 130, 246, 0.4)',
+              '0 0 0px rgba(59, 130, 246, 0)',
             ]
           }}
           transition={{
-            duration: 2,
+            duration: 3,
             repeat: Infinity,
             ease: 'easeInOut'
           }}

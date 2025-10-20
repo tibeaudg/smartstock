@@ -3,10 +3,9 @@ import Header from './HeaderPublic';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Carousel, { CarouselItem } from './Carousel';
+import HorizontalScrollCarousel from './HorizontalScrollCarousel';
 import BlurText from "./BlurText";
-import AnimatedContent from './AnimatedContent'
 import AnimatedList from './AnimatedList'
-import ScrollStack, { ScrollStackItem } from './ScrollStack'
 import GlareHover from './GlareHover'
 import GradualBlur from './GradualBlur'
 import ScrollTriggeredButton from './ScrollTriggeredButton'
@@ -38,9 +37,9 @@ import { supabase } from '@/integrations/supabase/client';
 // import { usePerformanceOptimization } from '@/hooks/usePerformanceOptimization';
 import { GoogleAdsTracking } from '@/utils/googleAdsTracking';
 import Footer from './Footer';
+import { Card } from './ui/card';
 
   const handleAnimationComplete = () => {
-    console.log('Animation completed!');
   };
 
   const FadeInWhenVisible = ({ children, delay = 0, direction = 'up', duration = 700 }) => {
@@ -792,19 +791,19 @@ export const HomePage = () => {
       id: 1,
       title: "Lost Capital",
       description: "€3,200 tied up in slow-moving stock. Money sitting on shelves instead of working for your business.",
-      icon: <Euro className="h-[16px] w-[16px] text-white" />
+      icon: <Euro className="h-8 w-8" />
     },
     {
       id: 2,
       title: "Wasted Time", 
       description: "8 hours/week counting stock with clipboard. Manual counting that could be spent serving customers.",
-      icon: <Clock className="h-[16px] w-[16px] text-white" />
+      icon: <Clock className="h-8 w-8" />
     },
     {
       id: 3,
       title: "Guessing Game",
       description: "Don't know what's selling vs. sitting. Making reorder decisions without data.",
-      icon: <BarChart3 className="h-[16px] w-[16px] text-white" />
+      icon: <BarChart3 className="h-8 w-8" />
     }
   ];
 
@@ -814,25 +813,53 @@ export const HomePage = () => {
       id: 1,
       title: "Don't Wait, Start Now",
       description: "Unlike competitors with complex onboarding, our patented Smart Setup gets you running in minutes, not days. See results from day one.",
-      icon: <Zap className="h-[16px] w-[16px] text-white" />
+      icon: <Zap className="h-6 w-6" />
     },
     {
       id: 2,
       title: "Built Exclusively for SMEs",
       description: "We don't try to serve everyone. Our deep expertise in small business inventory means we understand your challenges better than enterprise-focused solutions.",
-      icon: <Target className="h-[16px] w-[16px] text-white" />
+      icon: <Target className="h-6 w-6" />
     },
     {
       id: 3,
       title: "100% Satisfaction Guarantee",
       description: "We stand behind our work. If you're not completely satisfied with StockFlow, we'll refund your subscription and help you migrate your data.",
-      icon: <Shield className="h-[16px] w-[16px] text-white" />
+      icon: <Shield className="h-6 w-6" />
     },
     {
       id: 4,
       title: "Proprietary AI-Powered Insights",
       description: "Leverage our exclusive machine learning algorithms to optimize your inventory 24/7, something manual tracking simply can't match.",
-      icon: <Rocket className="h-[16px] w-[16px] text-white" />
+      icon: <Rocket className="h-6 w-6" />
+    }
+  ];
+
+  // Feature cards for "Everything You Need" section
+  const featureCards = [
+    {
+      id: 1,
+      title: "Scan Barcodes with Phone",
+      description: "Skip the clipboard. Use your phone camera to scan barcodes and update stock from anywhere in your shop.",
+      badge: "Core Feature",
+      icon: <Scan className="h-8 w-8 text-white" />,
+      details: ["Works offline", "No special hardware", "iOS & Android"]
+    },
+    {
+      id: 2,
+      title: "Dead Stock Liquidation Optimizer",
+      description: "Automatically identify inventory draining your capital. Flag items with zero sales for 30, 60, or 90 days.",
+      badge: "Unique Feature",
+      icon: <BarChart3 className="h-8 w-8 text-white" />,
+      details: ["Automatic detection", "Custom thresholds", "Revenue optimization"]
+    },
+    {
+      id: 3,
+      title: "Multi-Location Management",
+      description: "Track inventory across multiple stores, warehouses, or stockrooms. See stock levels at each location in real-time.",
+      badge: "Advanced Feature",
+      icon: <Building className="h-8 w-8 text-white" />,
+      details: ["Real-time stock levels", "Transfer items between locations", "Low stock alerts per location"]
     }
   ];
 
@@ -856,63 +883,6 @@ export const HomePage = () => {
       )
     : faqData;
 
-  // Feature tabs data
-  const featuresData = [
-    {
-      id: 'mobile-scanning',
-      title: 'Scanning',
-      subtitle: 'Scan Barcodes with Phone',
-      badge: 'Core Feature',
-      badgeColor: 'from-blue-500 to-blue-600',
-      description: 'Skip the clipboard. Use your phone camera to scan barcodes and update stock from anywhere in your shop.',
-      benefits: [
-        'Works offline',
-        'No special hardware',
-        'iOS & Android'
-      ],
-      image: '/scanner.png',
-      imageAlt: 'Mobile phone scanning barcodes for inventory management',
-      bgGradient: 'from-blue-50 via-blue-100 to-blue-50',
-      glowColor: 'from-blue-500 to-blue-600',
-      borderColor: 'border-blue-200/50'
-    },
-    {
-      id: 'dead-stock',
-      title: 'Optimizer',
-      subtitle: 'Dead Stock Liquidation Optimizer',
-      badge: 'Unique Feature',
-      badgeColor: 'from-blue-500 to-blue-600',
-      description: 'Automatically identify inventory draining your capital. Flag items with zero sales for 30, 60, or 90 days.',
-      benefits: [
-        'Auto-flag non-movers',
-        'Calculate tied-up capital',
-        'Get liquidation recommendations'
-      ],
-      image: '/deadstock.png',
-      imageAlt: 'Dead stock liquidation optimizer dashboard showing slow-moving inventory',
-      bgGradient: 'from-blue-50 via-blue-100 to-blue-50',
-      glowColor: 'from-blue-500 to-blue-600',
-      borderColor: 'border-blue-200/50'
-    },
-    {
-      id: 'multi-location',
-      title: 'Multi-Location',
-      subtitle: 'Multi-Location Management',
-      badge: 'Advanced Feature',
-      badgeColor: 'from-green-500 to-emerald-600',
-      description: 'Track inventory across multiple stores, warehouses, or stockrooms. See stock levels at each location in real-time.',
-      benefits: [
-        'Real-time stock levels',
-        'Transfer items between locations',
-        'Low stock alerts per location'
-      ],
-      image: '/branches.png',
-      imageAlt: 'Multi-location inventory tracking across multiple stores',
-      bgGradient: 'from-green-50 via-green-100 to-emerald-50',
-      glowColor: 'from-green-500 to-emerald-600',
-      borderColor: 'border-green-200/50'
-    }
-  ];
 
 
   // Enhanced structured data for better search engine understanding
@@ -1404,14 +1374,11 @@ export const HomePage = () => {
 
       <Header 
         onLoginClick={() => navigate('/auth?mode=login')}
-        onNavigate={() => {}}
-        simplifiedNav={false}
-        hideNotifications={true}
       />
 
 
 
-      <section className="relative py-10 sm:py-14 md:py-20 lg:py-24 px-4 sm:px-6 overflow-hidden bg-gradient-to-b from-blue-50/30 to-white mt-20">
+      <section className="relative py-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 overflow-hidden bg-gradient-to-b from-blue-50/30 to-white pt-20 sm:pt-24 md:pt-28 lg:pt-24">
         {/* Subtle geometric pattern overlay */}
         <div 
           className="absolute inset-0 pointer-events-none opacity-[0.03] "
@@ -1429,7 +1396,7 @@ export const HomePage = () => {
         
         <div className="max-w-7xl mx-auto relative z-10">
           {/* Text Content */}
-          <div className="text-center mb-6 sm:mb-10 md:mb-14 lg:mb-16">
+          <div className="text-center mb-6 sm:mb-10 md:mb-14 lg:mb-16 mt-20">
           
               {/* Micro-badge for social proof */}
               <FadeInWhenVisible delay={100}>
@@ -1442,7 +1409,7 @@ export const HomePage = () => {
           
               <BounceInWhenVisible delay={200}>
                 <div className="text-center mb-6 sm:mb-10 md:mb-14 lg:mb-16">
-                  <h1 className="lg:pl-24 lg:pr-24 lg:pt-6 lg:pb-6 text-[clamp(3rem,5vw,5rem)] font-light text-gray-800 mb-3 leading-tight px-2">
+                  <h1 className="lg:pl-24 lg:pr-24 lg:pt-6 lg:pb-6 text-[clamp(3rem,5vw,4rem)] font-light text-gray-800 mb-3 leading-tight px-2">
                   <BlurText className="justify-center" text="Cloud‑based Inventory Management Platform" onComplete={handleAnimationComplete} /> 
                   </h1>
           
@@ -1477,7 +1444,7 @@ export const HomePage = () => {
           </FadeInWhenVisible>
               
               <FadeInWhenVisible delay={800}>
-                <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 md:gap-6 justify-center items-center text-xs sm:text-sm text-gray-600 px-4">
+                <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 md:gap-6 justify-center items-center text-xs sm:text-sm text-gray-600 px-4 pb-24">
                   <div className="flex items-center gap-1.5 sm:gap-2">
                     <Check className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-green-500 flex-shrink-0" />
                     <span>No credit card</span>
@@ -1571,87 +1538,131 @@ export const HomePage = () => {
         </div>
       </section>
 
-      {/* Problem → Solution Section */}
-      <AnimatedContent
-          distance={150}
-          direction="horizontal"
-          reverse={false}
-          duration={1}
-          ease="power3.out"
-          initialOpacity={0.2}
-          animateOpacity
-          scale={1.1}
-          threshold={0.2}
-          delay={0.3}
-        >
 
-      <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-white">
+
+      <section className="py-12 sm:py-14 md:py-16 lg:py-18 bg-blue-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Main White Card */}
+          <div className="bg-white rounded-3xl shadow-xl p-8 sm:p-12 md:p-16">
+            {/* Header Section */}
+            <FadeInWhenVisible>
+              <div className="mb-12 sm:mb-16">
+                <div className="flex flex-col lg:flex-row lg:items-center lg:justify-center gap-8">
+                  {/* Left side - Label and Heading */}
+                  <div className="flex flex-col items-center justify-center">
+                    <div className="text-sm font-semibold text-blue-600 uppercase tracking-wide mb-4">
+                      INVENTORY PROBLEMS
+                    </div>
+                    <h2 className="lg:pl-24 lg:pr-24 lg:pt-6 lg:pb-6 text-[clamp(3rem,5vw,4rem)] font-light text-gray-800 mb-3 leading-tight px-2">                      <BlurText className="justify-center" text="Stop Losing Money On Inventory Mistakes!" onComplete={handleAnimationComplete} />
+                    </h2>
+                  </div>
+                  <div className="flex lg:max-w-lg justify-center items-center">
+                    <p className="text-base justify-center text-center sm:text-lg text-gray-600 leading-relaxed">
+                      Get a clear picture of your inventory and make better decisions with real-time insights and automated tracking.
+                    </p>
+                  </div>
+                  <div className="inline-flex items-center p-12 gap-2 bg-blue-600 px-16 py-1 rounded-lg"></div>
+
+                </div>
+              </div>
+            </FadeInWhenVisible>
+            
+            {/* Features Section */}
+            <FadeInWhenVisible delay={200}>
+              {/* Desktop: Three column grid */}
+              <div className="hidden md:grid md:grid-cols-3 md:gap-8 lg:gap-12">
+                {inventoryProblemsCarousel.map((item, index) => (
+                  <motion.div
+                    key={item.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    className="text-center"
+                  >
+                    {/* Icon */}
+                    <div className="flex items-center justify-center mb-6">
+                      <div className="w-16 h-16 border-2 border-blue-500 rounded-xl flex items-center justify-center bg-transparent">
+                        <div className="[&>svg]:text-blue-500 text-blue-500">
+                          {item.icon}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Content */}
+                    <div className="text-center">
+                      <h3 className="text-xl font-bold text-gray-900 mb-4 leading-tight">
+                        {item.title}
+                      </h3>
+                      <p className="text-gray-600 leading-relaxed text-center">
+                        {item.description}
+                      </p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Mobile: Horizontal carousel */}
+              <div className="md:hidden">
+                <HorizontalScrollCarousel
+                  desktopCardsVisible={3}
+                  mobileCardsVisible={1}
+                  cardSpacing={24}
+                  showArrows={true}
+                  showDots={true}
+                  autoplay={true}
+                  autoplayDelay={4000}
+                  className="mb-8"
+                  cardClassName="h-full"
+                >
+                  {inventoryProblemsCarousel.map((item, index) => (
+                    <div
+                      key={item.id}
+                      className="text-center"
+                    >
+                      {/* Icon */}
+                      <div className="flex items-center justify-center mb-6">
+                        <div className="w-14 h-14 border-2 border-blue-500 rounded-xl flex items-center justify-center bg-transparent">
+                          <div className="[&>svg]:text-blue-500 text-blue-500">
+                            {item.icon}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Content */}
+                      <div className="text-center">
+                        <h3 className="text-lg font-bold text-gray-900 mb-4 leading-tight">
+                          {item.title}
+                        </h3>
+                        <p className="text-gray-600 leading-relaxed text-sm text-left">
+                          {item.description}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </HorizontalScrollCarousel>
+              </div>
+            </FadeInWhenVisible>
+          </div>
+        </div>
+      </section>
+
+
+
+
+
+
+      {/* Everything You Need Section */}
+      <section className="py-12 sm:py-14 md:py-16 lg:py-18 bg-blue-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <FadeInWhenVisible>
-            <div className="text-center mb-10 sm:mb-12 md:mb-16 lg:mb-20">
-            <h2 className="lg:pl-24 lg:pr-24 lg:pt-6 lg:pb-6 text-[clamp(3rem,5vw,5rem)] font-light text-gray-800 mb-3 leading-tight px-2">
-            <BlurText className="justify-center" text="Stop Losing Money On Inventory Mistakes!" onComplete={handleAnimationComplete} /> 
-
-              </h2>
-              <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-4 sm:mb-6 max-w-2xl mx-auto px-4">
-                Get a clear picture of your inventory and make better decisions.
-              </p>
-            </div>
-          </FadeInWhenVisible>
-          
-          {/* Carousel for Inventory Problems */}
-          <div className="flex justify-center">
-            <div style={{ height: '600px', position: 'relative' }}>
-              <Carousel
-                items={inventoryProblemsCarousel}
-                baseWidth={300}
-                autoplay={true}
-                autoplayDelay={3000}
-                pauseOnHover={true}
-                loop={true}
-                round={false}
-              />
-            </div>
-          </div>
-        </div>
-          {/* CTA */}
-          <FadeInWhenVisible delay={700}>
-            <div className="text-center mt-12 sm:mt-16">
-              <Button 
-                size="lg" 
-                className="w-full sm:w-auto bg-blue-600 text-white hover:bg-blue-700
-                px-10 py-5 sm:px-12 sm:py-6 md:px-14 md:py-7
-                text-lg sm:text-xl md:text-2xl
-                font-bold rounded-lg transform hover:scale-105
-                transition-all duration-300
-                shadow-2xl hover:shadow-3xl
-                ring-0 focus:ring-4 focus:ring-white/50 focus:outline-none
-                min-h-[56px] sm:min-h-[64px]"       
-                onClick={() => navigate('/pricing')}
-              >
-                Create a Free Account
-              </Button>
-              <p className="text-sm text-gray-500 mt-4">No credit card required</p>
-            </div>
-          </FadeInWhenVisible>
-      </section>
-      </AnimatedContent>
-
-
-
-      {/* Key Features Section - Alternating Layout */}
-      <section className="py-16 sm:py-20 md:py-24 lg:py-28 xl:py-32 bg-gradient-to-b from-blue-50/30 to-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 ">
-          {/* Header */}
-          <FadeInWhenVisible>
-            <div className="text-center mb-16 sm:mb-20 md:mb-24 lg:mb-28">
+            <div className="text-center mb-8 sm:mb-10 md:mb-12 lg:mb-14">
               <div className="inline-block mb-4 sm:mb-6">
                 <span className="px-4 py-2 bg-blue-100 text-blue-700 text-sm font-semibold rounded-full">
                   POWERFUL FEATURES
                 </span>
               </div>
-              <h2 className="lg:pl-24 lg:pr-24 lg:pt-6 lg:pb-6 text-[clamp(3rem,5vw,5rem)] font-light text-gray-800 mb-3 leading-tight px-2">
+              <h2 className="lg:pl-24 lg:pr-24 lg:pt-6 lg:pb-6 text-[clamp(3rem,5vw,4rem)] font-light text-gray-800 mb-3 leading-tight px-2">
               <BlurText className="justify-center" text="Everything You Need To Manage Inventory" onComplete={handleAnimationComplete} /> 
 
               </h2>
@@ -1661,242 +1672,121 @@ export const HomePage = () => {
             </div>
           </FadeInWhenVisible>
 
-          <ScrollStack useWindowScroll={true}>
-            {/* Card 1 - Mobile Scanning */}
-            <ScrollStackItem 
-              key="mobile-scanning"
-              itemClassName="bg-gradient-to-br from-blue-50 via-blue-100 to-blue-50 backdrop-blur-sm"
-            >
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 md:gap-12 lg:gap-16 items-center h-full">
-                {/* Feature Content */}
-                <div className="order-1 space-y-6 sm:space-y-8">
-                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 text-white text-xs font-bold uppercase tracking-wide shadow-md">
-                    <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
-                    Core Feature
+          {/* Features - Desktop Grid / Mobile Carousel */}
+          <FadeInWhenVisible delay={200}>
+            {/* Desktop: Full width grid showing all cards */}
+            <div className="hidden md:grid md:grid-cols-3 md:gap-8 lg:gap-10 mb-8">
+              {featureCards.map((feature, index) => (
+                <motion.div
+                  key={feature.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  className="bg-white rounded-2xl p-8 h-full flex flex-col shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300 hover:scale-105"
+                >
+                  {/* Badge */}
+                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-100 text-blue-700 text-sm font-medium mb-6 w-fit">
+                    <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
+                    {feature.badge}
                   </div>
-                  
-                  <div>
-                    <h3 className="text-3xl sm:text-4xl md:text-5xl font-light leading-tight text-gray-900 mb-4">
-                      Scan Barcodes with Phone
+
+                  {/* Icon */}
+                  <div className="flex items-center justify-center mb-6">
+                    <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg">
+                      {feature.icon}
+                    </div>
+                  </div>
+
+                  {/* Content */}
+                  <div className="flex-1 flex flex-col">
+                    <h3 className="text-xl font-bold text-gray-900 mb-4 leading-tight">
+                      {feature.title}
                     </h3>
-                    <div className="w-20 h-1.5 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full mb-6"></div>
+                    <p className="text-gray-600 mb-6 flex-1 leading-relaxed">
+                      {feature.description}
+                    </p>
+                    
+                    {/* Details */}
+                    <div className="space-y-2">
+                      {feature.details.map((detail, detailIndex) => (
+                        <div key={detailIndex} className="flex items-center gap-2 text-sm text-gray-500">
+                          <div className="w-1.5 h-1.5 bg-blue-500 rounded-full"></div>
+                          {detail}
+                        </div>
+                      ))}
+                    </div>
                   </div>
+                </motion.div>
+              ))}
+            </div>
 
-                  <p className="text-base sm:text-lg text-gray-600 leading-relaxed mb-6">
-                    Skip the clipboard. Use your phone camera to scan barcodes and update stock from anywhere in your shop.
-                  </p>
-
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-4">
-                      <div className="flex-shrink-0 w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
-                        <Check className="h-3 w-3 text-green-600" />
-                      </div>
-                      <span className="text-gray-900 font-medium text-md">Works offline</span>
-                    </div>
-                    <div className="flex items-center gap-4">
-                      <div className="flex-shrink-0 w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
-                        <Check className="h-3 w-3 text-green-600" />
-                      </div>
-                      <span className="text-gray-900 font-medium text-md">No special hardware</span>
-                    </div>
-                    <div className="flex items-center gap-4">
-                      <div className="flex-shrink-0 w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
-                        <Check className="h-3 w-3 text-green-600" />
-                      </div>
-                      <span className="text-gray-900 font-medium text-md">iOS & Android</span>
-                    </div>
-                  </div>
-                </div>
-                
-                {/* Feature Image */}
-                <div className="order-2 lg:order-1">
-                  <div className="relative group">
-                    <div className="absolute -inset-1 rounded-3xl blur-xl opacity-25 group-hover:opacity-40 transition-opacity duration-500 bg-gradient-to-r from-blue-500 to-blue-600"></div>
-                    <div className="relative p-8 sm:p-10 md:p-12 border-blue-200/50 bg-white rounded-3xl flex items-center justify-center min-h-[300px] sm:min-h-[350px] lg:min-h-[400px]">
-                      <img
-                        src="/scanner.png"
-                        alt="Mobile phone scanning barcodes for inventory management"
-                        className="w-full h-auto max-w-[250px] sm:max-w-[300px] lg:max-w-[350px] object-contain rounded-2xl transform group-hover:scale-105 transition-transform duration-500"
-                        loading="lazy"
-                        width={600}
-                        height={400}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </ScrollStackItem>
-
-            {/* Card 2 - Dead Stock Liquidation */}
-            <ScrollStackItem 
-              key="dead-stock"
-              itemClassName="bg-gradient-to-br from-blue-50 via-blue-100 to-blue-50 backdrop-blur-sm"
-            >
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 md:gap-12 lg:gap-16 items-center h-full">
-                {/* Feature Content */}
-                <div className="order-1 lg:order-2 space-y-6 sm:space-y-8">
-                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 text-white text-xs font-bold uppercase tracking-wide shadow-md">
-                    <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
-                    Unique Feature
-                  </div>
-                  
-                  <div>
-                    <h3 className="text-3xl sm:text-4xl md:text-5xl font-light leading-tight text-gray-900 mb-4">
-                      Dead Stock Liquidation Optimizer
-                    </h3>
-                    <div className="w-20 h-1.5 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full mb-6"></div>
-                  </div>
-
-                  <p className="text-base sm:text-lg text-gray-600 leading-relaxed mb-6">
-                    Automatically identify inventory draining your capital. Flag items with zero sales for 30, 60, or 90 days.
-                  </p>
-
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-4">
-                      <div className="flex-shrink-0 w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
-                        <Check className="h-3 w-3 text-green-600" />
-                      </div>
-                      <span className="text-gray-900 font-medium text-md">Auto-flag non-movers</span>
-                    </div>
-                    <div className="flex items-center gap-4">
-                      <div className="flex-shrink-0 w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
-                        <Check className="h-3 w-3 text-green-600" />
-                      </div>
-                      <span className="text-gray-900 font-medium text-md">Calculate tied-up capital</span>
-                    </div>
-                    <div className="flex items-center gap-4">
-                      <div className="flex-shrink-0 w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
-                        <Check className="h-3 w-3 text-green-600" />
-                      </div>
-                      <span className="text-gray-900 font-medium text-md">Get liquidation recommendations</span>
-                    </div>
-                  </div>
-                </div>
-                
-                {/* Feature Image */}
-                <div className="order-2">
-                  <div className="relative group">
-                    <div className="absolute -inset-1 rounded-3xl blur-xl opacity-25 group-hover:opacity-40 transition-opacity duration-500 bg-gradient-to-r from-blue-500 to-blue-600"></div>
-                    <div className="relative p-8 sm:p-10 md:p-12 border-blue-200/50 bg-white rounded-3xl flex items-center justify-center min-h-[300px] sm:min-h-[350px] lg:min-h-[400px]">
-                      <img
-                        src="/deadstock.png"
-                        alt="Dead stock liquidation optimizer dashboard showing slow-moving inventory"
-                        className="w-full h-auto max-w-[250px] sm:max-w-[300px] lg:max-w-[350px] object-contain rounded-2xl transform group-hover:scale-105 transition-transform duration-500"
-                        loading="lazy"
-                        width={600}
-                        height={400}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </ScrollStackItem>
-
-            {/* Card 3 - Multi-Location Management */}
-            <ScrollStackItem 
-              key="multi-location"
-              itemClassName="bg-gradient-to-br from-green-50 via-green-100 to-emerald-50 backdrop-blur-sm"
-            >
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 md:gap-12 lg:gap-16 items-center h-full">
-                {/* Feature Content */}
-                <div className="order-1 space-y-6 sm:space-y-8">
-                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 text-white text-xs font-bold uppercase tracking-wide shadow-md">
-                    <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
-                    Advanced Feature
-                  </div>
-                  
-                  <div>
-                    <h3 className="text-3xl sm:text-4xl md:text-5xl font-light leading-tight text-gray-900 mb-4">
-                      Multi-Location Management
-                    </h3>
-                    <div className="w-20 h-1.5 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full mb-6"></div>
-                  </div>
-
-                  <p className="text-base sm:text-lg text-gray-600 leading-relaxed mb-6">
-                    Track inventory across multiple stores, warehouses, or stockrooms. See stock levels at each location in real-time.
-                  </p>
-
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-4">
-                      <div className="flex-shrink-0 w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
-                        <Check className="h-3 w-3 text-green-600" />
-                      </div>
-                      <span className="text-gray-900 font-medium text-md">Real-time stock levels</span>
-                    </div>
-                    <div className="flex items-center gap-4">
-                      <div className="flex-shrink-0 w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
-                        <Check className="h-3 w-3 text-green-600" />
-                      </div>
-                      <span className="text-gray-900 font-medium text-md">Transfer items between locations</span>
-                    </div>
-                    <div className="flex items-center gap-4">
-                      <div className="flex-shrink-0 w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
-                        <Check className="h-3 w-3 text-green-600" />
-                      </div>
-                      <span className="text-gray-900 font-medium text-md">Low stock alerts per location</span>
-                    </div>
-                  </div>
-                </div>
-                
-                {/* Feature Image */}
-                <div className="order-2 lg:order-1">
-                  <div className="relative group">
-                    <div className="absolute -inset-1 rounded-3xl blur-xl opacity-25 group-hover:opacity-40 transition-opacity duration-500 bg-gradient-to-r from-green-500 to-emerald-600"></div>
-                    <div className="relative p-8 sm:p-10 md:p-12 border-green-200/50 bg-white rounded-3xl flex items-center justify-center min-h-[300px] sm:min-h-[350px] lg:min-h-[400px]">
-                      <img
-                        src="/branches.png"
-                        alt="Multi-location inventory tracking across multiple stores"
-                        className="w-full h-auto max-w-[250px] sm:max-w-[300px] lg:max-w-[350px] object-contain rounded-2xl transform group-hover:scale-105 transition-transform duration-500"
-                        loading="lazy"
-                        width={600}
-                        height={400}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </ScrollStackItem>
-          </ScrollStack>
-          
-          {/* CTA */}
-          <FadeInWhenVisible delay={700}>
-            <div className="text-center mt-12 sm:mt-16">
-              <Button 
-                size="lg" 
-                className="w-full sm:w-auto bg-blue-600 text-white hover:bg-blue-700
-                px-10 py-5 sm:px-12 sm:py-6 md:px-14 md:py-7
-                text-lg sm:text-xl md:text-2xl
-                font-bold rounded-lg transform hover:scale-105
-                transition-all duration-300
-                shadow-2xl hover:shadow-3xl
-                ring-0 focus:ring-4 focus:ring-white/50 focus:outline-none
-                min-h-[56px] sm:min-h-[64px]"       
-                onClick={() => navigate('/pricing')}
+            {/* Mobile: Horizontal carousel */}
+            <div className="md:hidden">
+              <HorizontalScrollCarousel
+                desktopCardsVisible={3}
+                mobileCardsVisible={1}
+                cardSpacing={24}
+                showArrows={true}
+                showDots={true}
+                autoplay={false}
+                className="mb-8"
+                cardClassName="h-full"
               >
-                Create a Free Account
-              </Button>
-              <p className="text-sm text-gray-500 mt-4">No credit card required</p>
+                {featureCards.map((feature, index) => (
+                  <div
+                    key={feature.id}
+                    className="bg-white rounded-2xl p-6 h-full flex flex-col shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300"
+                  >
+                    {/* Badge */}
+                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-100 text-blue-700 text-sm font-medium mb-6 w-fit">
+                      <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
+                      {feature.badge}
+                    </div>
+
+                    {/* Icon */}
+                    <div className="flex items-center justify-center mb-6">
+                      <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg">
+                        {feature.icon}
+                      </div>
+                    </div>
+
+                    {/* Content */}
+                    <div className="flex-1 flex flex-col">
+                      <h3 className="text-lg font-bold text-gray-900 mb-4 leading-tight">
+                        {feature.title}
+                      </h3>
+                      <p className="text-gray-600 mb-6 flex-1 leading-relaxed text-sm">
+                        {feature.description}
+                      </p>
+                      
+                      {/* Details */}
+                      <div className="space-y-2">
+                        {feature.details.map((detail, detailIndex) => (
+                          <div key={detailIndex} className="flex items-center gap-2 text-xs text-gray-500">
+                            <div className="w-1 h-1 bg-blue-500 rounded-full"></div>
+                            {detail}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </HorizontalScrollCarousel>
             </div>
           </FadeInWhenVisible>
         </div>
       </section>
 
 
-<AnimatedContent
-          distance={150}
-          direction="horizontal"
-          reverse={false}
-          duration={1}
-          ease="power3.out"
-          initialOpacity={0.2}
-          animateOpacity
-          scale={1.1}
-          threshold={0.2}
-          delay={0.3}
-        >
+
+
+
+
       {/* Start Tracking in 3 Simple Steps - New Section */}
-      <section className="py-12 sm:py-16 md:py-20 lg:py-24 xl:py-28 bg-gradient-to-b from-blue-50/30 to-white relative overflow-hidden">
-        {/* Subtle background decoration */}
+      <section className="py-12 sm:py-16 md:py-20 lg:py-24 xl:py-28 bg-blue-50 relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Main White Card */}
+          <div className="bg-white rounded-3xl shadow-xl p-8 sm:p-12 md:p-16">        {/* Subtle background decoration */}
         <div className="absolute inset-0 opacity-5">
           <div className="absolute top-20 left-1/4 w-96 h-96 bg-blue-400 rounded-full blur-3xl"></div>
           <div className="absolute bottom-20 right-1/4 w-96 h-96 bg-blue-400 rounded-full blur-3xl"></div>
@@ -1906,7 +1796,7 @@ export const HomePage = () => {
           {/* Header */}
           <FadeInWhenVisible>
             <div className="text-center mb-10 sm:mb-12 md:mb-16 lg:mb-20">
-            <h2 className="lg:pl-24 lg:pr-24 lg:pt-6 lg:pb-6 text-[clamp(3rem,5vw,5rem)] font-light text-gray-800 mb-3 leading-tight px-2">
+            <h2 className="lg:pl-24 lg:pr-24 lg:pt-6 lg:pb-6 text-[clamp(3rem,5vw,4rem)] font-light text-gray-800 mb-3 leading-tight px-2">
             <BlurText className="justify-center" text="Start Tracking In 3 Simple Steps" onComplete={handleAnimationComplete} /> 
 
               </h2>
@@ -1995,118 +1885,16 @@ export const HomePage = () => {
               </Step>
             </Stepper>
           </div>
-
-          {/* CTA */}
-          <FadeInWhenVisible delay={700}>
-            <div className="text-center mt-12 sm:mt-16">
-              <Button 
-                size="lg" 
-                className="w-full sm:w-auto bg-blue-600 text-white hover:bg-blue-700
-                px-10 py-5 sm:px-12 sm:py-6 md:px-14 md:py-7
-                text-lg sm:text-xl md:text-2xl
-                font-bold rounded-lg transform hover:scale-105
-                transition-all duration-300
-                shadow-2xl hover:shadow-3xl
-                ring-0 focus:ring-4 focus:ring-white/50 focus:outline-none
-                min-h-[56px] sm:min-h-[64px]"       
-                onClick={() => navigate('/pricing')}
-              >
-                Create a Free Account
-              </Button>
-              <p className="text-sm text-gray-500 mt-4">No credit card required</p>
-            </div>
-          </FadeInWhenVisible>
         </div>
-      </section>
-      </AnimatedContent>
+      </div>
+    </div>
+  </section>
 
 
-      <AnimatedContent
-          distance={150}
-          direction="horizontal"
-          reverse={false}
-          duration={1}
-          ease="power3.out"
-          initialOpacity={0.2}
-          animateOpacity
-          scale={1.1}
-          threshold={0.2}
-          delay={0.3}
-        >
-      {/* Why Choose Us Section */}
-      <section className="py-16 sm:py-20 md:py-24 lg:py-28 bg-gradient-to-b from-blue-50/30 to-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Header */}
-          <FadeInWhenVisible>
-            <div className="text-center mb-12 sm:mb-16 md:mb-20">
-              <div className="inline-block mb-4 sm:mb-6">
-                <span className="px-4 py-2 bg-blue-100 text-blue-700 text-sm font-semibold rounded-full">
-                  WHY STOCKFLOW
-                </span>
-              </div>
-              <h2 className="lg:pl-24 lg:pr-24 lg:pt-6 lg:pb-6 text-[clamp(3rem,5vw,5rem)] font-light text-gray-800 mb-3 leading-tight px-2">
-              <BlurText className="justify-center" text="Why Choose Stockflow" onComplete={handleAnimationComplete} /> 
 
-              </h2>
-              <p className="text-lg sm:text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto px-4 leading-relaxed">
-                The smart choice for inventory management
-              </p>
-            </div>
-          </FadeInWhenVisible>
-
-          {/* Why Choose Us - Carousel */}
-          <div className="flex justify-center">
-            <div style={{ height: '600px', position: 'relative' }}>
-              <Carousel
-                items={whyChooseUsCarousel}
-                baseWidth={300}
-                autoplay={true}
-                autoplayDelay={3000}
-                pauseOnHover={true}
-                loop={true}
-                round={false}
-              />
-            </div>
-          </div>
-          
-        </div>
-          {/* CTA */}
-          <FadeInWhenVisible delay={700}>
-            <div className="text-center mt-12 sm:mt-16">
-              <Button 
-                size="lg" 
-                className="w-full sm:w-auto bg-blue-600 text-white hover:bg-blue-700
-                px-10 py-5 sm:px-12 sm:py-6 md:px-14 md:py-7
-                text-lg sm:text-xl md:text-2xl
-                font-bold rounded-lg transform hover:scale-105
-                transition-all duration-300
-                shadow-2xl hover:shadow-3xl
-                ring-0 focus:ring-4 focus:ring-white/50 focus:outline-none
-                min-h-[56px] sm:min-h-[64px]"       
-                onClick={() => navigate('/pricing')}
-              >
-                Create a Free Account
-              </Button>
-              <p className="text-sm text-gray-500 mt-4">No credit card required</p>
-            </div>
-          </FadeInWhenVisible>
-      </section>
-      </AnimatedContent>
-
-      <AnimatedContent
-          distance={150}
-          direction="horizontal"
-          reverse={false}
-          duration={1}
-          ease="power3.out"
-          initialOpacity={0.2}
-          animateOpacity
-          scale={1.1}
-          threshold={0.2}
-          delay={0.3}
-        >
+      
       {/* Integrations Section */}
-      <section className="py-16 sm:py-20 md:py-24 lg:py-28 bg-white">
+      <section className="py-16 sm:py-20 md:py-24 lg:py-28 bg-blue-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <FadeInWhenVisible>
@@ -2146,47 +1934,101 @@ export const HomePage = () => {
                 </div>
               ))}
             />
-          </FadeInWhenVisible>
-
-          {/* CTA */}
-          <FadeInWhenVisible delay={700}>
-            <div className="text-center mt-12 sm:mt-16">
-              <Button 
-                size="lg" 
-                className="w-full sm:w-auto bg-blue-600 text-white hover:bg-blue-700
-                px-10 py-5 sm:px-12 sm:py-6 md:px-14 md:py-7
-                text-lg sm:text-xl md:text-2xl
-                font-bold rounded-lg transform hover:scale-105
-                transition-all duration-300
-                shadow-2xl hover:shadow-3xl
-                ring-0 focus:ring-4 focus:ring-white/50 focus:outline-none
-                min-h-[56px] sm:min-h-[64px]"       
-                onClick={() => navigate('/pricing')}
-              >
-                Create a Free Account
-              </Button>
-              <p className="text-sm text-gray-500 mt-4">No credit card required</p>
-            </div>
-          </FadeInWhenVisible>
+          </FadeInWhenVisible>        
         </div>
       </section>
-      </AnimatedContent>
 
 
-      <AnimatedContent
-          distance={150}
-          direction="horizontal"
-          reverse={false}
-          duration={1}
-          ease="power3.out"
-          initialOpacity={0.2}
-          animateOpacity
-          scale={1.1}
-          threshold={0.2}
-          delay={0.3}
-        >
+
+
+
+
+
+      {/* Why Choose Us Section */}
+      <section className="py-12 sm:py-14 md:py-16 lg:py-18 bg-blue-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Main White Card */}
+          <div className="bg-white rounded-3xl shadow-xl p-8 sm:p-12 md:p-16">
+          {/* Header */}
+          <FadeInWhenVisible>
+            <div className="text-center mb-10 sm:mb-12 md:mb-16 lg:mb-20">
+            <h2 className="lg:pl-24 lg:pr-24 lg:pt-6 lg:pb-6 text-[clamp(3rem,5vw,4rem)] font-light text-gray-800 mb-3 leading-tight px-2">
+            <BlurText className="justify-center" text="Why Choose Stockflow" onComplete={handleAnimationComplete} /> 
+
+              </h2>
+              <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-4 sm:mb-5 md:mb-6 max-w-2xl mx-auto px-4">
+                The smart choice for inventory management
+              </p>
+              <div className="inline-flex items-center p-12 gap-2 bg-blue-600 px-16 py-1 rounded-lg"></div>
+            </div>
+          </FadeInWhenVisible>
+
+            {/* Two Column Layout */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 lg:items-end">
+              {/* Left Column - Feature Cards */}
+              <div className="flex flex-col">
+                <FadeInWhenVisible delay={200}>
+                  <div className="space-y-6">
+                    {whyChooseUsCarousel.map((item, index) => (
+                      <motion.div
+                        key={item.id}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                        className="bg-white border border-gray-200 rounded-2xl p-6 hover:shadow-lg transition-all duration-300"
+                      >
+                        <div className="flex items-start gap-4">
+                          {/* Icon with colored background */}
+                          <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${
+                            index === 0 ? 'bg-blue-400' : 
+                            index === 1 ? 'bg-purple-500' : 
+                            index === 2 ? 'bg-red-500' : 'bg-green-500'
+                          }`}>
+                            <div className="text-white [&>svg]:text-white">
+                              {item.icon}
+                            </div>
+                          </div>
+                          
+                          {/* Content */}
+                          <div className="flex-1">
+                            <h3 className="text-lg font-bold text-gray-900 mb-2">
+                              {item.title}
+                            </h3>
+                            <p className="text-gray-600 leading-relaxed text-sm">
+                              {item.description}
+                            </p>
+                          </div>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </FadeInWhenVisible>
+              </div>
+
+              {/* Right Column - Image */}
+              <div className="flex flex-col">
+                <FadeInWhenVisible delay={400}>
+                  <div className="w-full rounded-2xl overflow-hidden border-2 border-gray-200 relative">
+                    <img
+                      src="/mobile.png"
+                      alt="StockFlow Dashboard - Modern inventory management interface showing real-time analytics, product tracking, and business insights"
+                      className="w-full h-auto object-cover hover:scale-105 transition-transform duration-300 block"
+                    />
+                    {/* Optional overlay or badge */}
+                    <div className="absolute -top-4 -right-4 bg-blue-600 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg z-10">
+                      Live Demo
+                    </div>
+                  </div>
+                </FadeInWhenVisible>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
       {/* FAQ Section */}
-      <section className="py-16 sm:py-20 md:py-24 lg:py-28 bg-gradient-to-b from-blue-50/30 to-white">
+      <section className="py-16 sm:py-20 md:py-24 lg:py-28 bg-blue-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <FadeInWhenVisible>
@@ -2196,7 +2038,7 @@ export const HomePage = () => {
                   FREQUENTLY ASKED QUESTIONS
                 </span>
               </div>
-              <h2 className="lg:pl-24 lg:pr-24 lg:pt-6 lg:pb-6 text-[clamp(3rem,5vw,5rem)] font-light text-gray-800 mb-3 leading-tight px-2">
+              <h2 className="lg:pl-24 lg:pr-24 lg:pt-6 lg:pb-6 text-[clamp(3rem,5vw,4rem)] font-light text-gray-800 mb-3 leading-tight px-2">
               Got Questions? <br className="hidden sm:block" />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-600">
                   We've Got Answers
@@ -2360,7 +2202,6 @@ export const HomePage = () => {
 
         </div>
       </section>
-      </AnimatedContent>
 
 
 
