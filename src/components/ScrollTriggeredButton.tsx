@@ -30,16 +30,8 @@ const ScrollTriggeredButton = <T extends React.ElementType = 'button'>({
           setHasTriggered(true);
           setIsAnimating(true);
           
-          // Stop animation after a few seconds
-          setTimeout(() => {
-            setIsAnimating(false);
-          }, 3000);
         }
         
-        // Reset when scrolled back into view
-        if (entry.isIntersecting && hasTriggered) {
-          setHasTriggered(false);
-        }
       },
       { threshold: 0.1, rootMargin: '-10% 0px -10% 0px' }
     );
@@ -69,7 +61,7 @@ const ScrollTriggeredButton = <T extends React.ElementType = 'button'>({
           animate={{ x: '200%' }}
           transition={{
             duration: 1.5,
-            repeat: 2,
+            repeat: Infinity,
             ease: 'easeInOut'
           }}
           style={{
@@ -92,7 +84,7 @@ const ScrollTriggeredButton = <T extends React.ElementType = 'button'>({
           }}
           transition={{
             duration: 2,
-            repeat: 1,
+            repeat: Infinity,
             ease: 'easeInOut'
           }}
         />

@@ -205,7 +205,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
               const updateData: Database['public']['Tables']['profiles']['Update'] = { 
                 last_login: new Date().toISOString() 
               };
-              await supabase.from('profiles').update(updateData).eq('id', newSession.user.id);
+              const { error: updateError } = await supabase.from('profiles').update(updateData).eq('id', newSession.user.id);
+              if (updateError) {
+                console.error('Error updating last_login:', updateError);
+              }
             } catch (error) {
               console.error('Error updating last_login:', error);
             }
@@ -235,7 +238,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
                 updated_at: new Date().toISOString(),
                 last_login: new Date().toISOString(),
               };
-              const { error: profileError } = await supabase.from('profiles').upsert(profileData, { onConflict: 'id' });
+              const { error: profileError } = await supabase.from('profiles').upsert(profileData, { 
+                onConflict: 'id',
+                ignoreDuplicates: false 
+              });
 
               if (profileError) {
                 console.error('Error creating profile for Google user:', profileError);
@@ -307,7 +313,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         const updateData: Database['public']['Tables']['profiles']['Update'] = { 
           last_login: new Date().toISOString() 
         };
-        await supabase.from('profiles').update(updateData).eq('id', data.user.id);
+        const { error: updateError } = await supabase.from('profiles').update(updateData).eq('id', data.user.id);
+        if (updateError) {
+          console.error('Error updating last_login:', updateError);
+        }
       }
       return { error };
     } catch (error: any) {
@@ -355,7 +364,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         is_owner: false, // Nieuwe gebruikers zijn standaard GEEN eigenaar
         updated_at: new Date().toISOString(),
       };
-      const { error: profileError } = await supabase.from('profiles').upsert(profileData, { onConflict: 'id' }); // Zorgt dat upsert op basis van primary key 'id' werkt
+      const { error: profileError } = await supabase.from('profiles').upsert(profileData, { 
+        onConflict: 'id',
+        ignoreDuplicates: false 
+      }); // Zorgt dat upsert op basis van primary key 'id' werkt
       
 
       if (profileError) {

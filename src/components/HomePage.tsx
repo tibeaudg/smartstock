@@ -2,7 +2,7 @@ import React, { useState, useRef, lazy } from 'react';
 import Header from './HeaderPublic';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import Carousel from './ui/carousel';
+import Carousel, { CarouselItem } from './Carousel';
 import BlurText from "./BlurText";
 import AnimatedContent from './AnimatedContent'
 import AnimatedList from './AnimatedList'
@@ -10,6 +10,7 @@ import ScrollStack, { ScrollStackItem } from './ScrollStack'
 import GlareHover from './GlareHover'
 import GradualBlur from './GradualBlur'
 import ScrollTriggeredButton from './ScrollTriggeredButton'
+import Stepper, { Step } from './Stepper';
 
 
 
@@ -425,6 +426,68 @@ const IndustryBadgeMarquee = ({ badges, speed = 30 }) => {
   );
 };
 
+// Auto-scrolling horizontal marquee component for integration cards
+const IntegrationCardMarquee = ({ cards, speed = 60 }) => {
+  const [isPaused, setIsPaused] = useState(false);
+  const marqueeRef = useRef(null);
+  const positionRef = useRef(0);
+
+  // Duplicate cards for seamless scrolling
+  const duplicatedCards = [...cards, ...cards];
+
+  React.useEffect(() => {
+    if (!marqueeRef.current) return;
+
+    const marquee = marqueeRef.current;
+    let animationId;
+    const scrollSpeed = speed / 200; // Convert speed parameter to pixels per frame
+
+    const animate = () => {
+      if (!isPaused) {
+        positionRef.current -= scrollSpeed;
+        marquee.style.transform = `translateX(${positionRef.current}px)`;
+        
+        // Reset position when we've scrolled past half the content (since we duplicated it)
+        const marqueeWidth = marquee.scrollWidth / 2; // Half because we duplicated
+        if (Math.abs(positionRef.current) >= marqueeWidth) {
+          positionRef.current = 0;
+        }
+      }
+      animationId = requestAnimationFrame(animate);
+    };
+
+    animationId = requestAnimationFrame(animate);
+
+    return () => {
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+      }
+    };
+  }, [isPaused, speed]);
+
+  return (
+    <div className="relative overflow-hidden py-4 w-full">
+      <div 
+        ref={marqueeRef}
+        className="flex gap-6 items-stretch whitespace-nowrap"
+        style={{ width: 'max-content' }}
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+      >
+        {duplicatedCards.map((card, index) => (
+          <div key={index} className="flex-shrink-0 w-72 sm:w-80">
+            {card}
+          </div>
+        ))}
+      </div>
+      
+      {/* Gradient fade edges */}
+      <div className="absolute top-0 left-0 w-20 h-full bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
+      <div className="absolute top-0 right-0 w-20 h-full bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
+    </div>
+  );
+};
+
 // Industry badges data with expanded niches (all blue as requested)
 const industryBadges = [
   { icon: Building, label: 'Retail' },
@@ -445,6 +508,58 @@ const industryBadges = [
   { icon: Briefcase, label: 'Office Supplies' },
   { icon: Music, label: 'Entertainment' },
   { icon: Paintbrush, label: 'Arts & Crafts' }
+];
+
+// Integration cards data
+const integrationCardsData = [
+  {
+    icon: ShoppingCart,
+    title: 'Shopify',
+    subtitle: 'E-commerce platform',
+    colorClass: 'hover:border-green-300',
+    iconBgClass: 'bg-green-100',
+    iconColorClass: 'text-green-600'
+  },
+  {
+    icon: CreditCard,
+    title: 'Square',
+    subtitle: 'POS system',
+    colorClass: 'hover:border-blue-300',
+    iconBgClass: 'bg-blue-100',
+    iconColorClass: 'text-blue-600'
+  },
+  {
+    icon: Globe,
+    title: 'WooCommerce',
+    subtitle: 'WordPress e-commerce',
+    colorClass: 'hover:border-purple-300',
+    iconBgClass: 'bg-purple-100',
+    iconColorClass: 'text-purple-600'
+  },
+  {
+    icon: Mail,
+    title: 'Mailchimp',
+    subtitle: 'Email marketing',
+    colorClass: 'hover:border-orange-300',
+    iconBgClass: 'bg-orange-100',
+    iconColorClass: 'text-orange-600'
+  },
+  {
+    icon: BarChart3,
+    title: 'QuickBooks',
+    subtitle: 'Accounting software',
+    colorClass: 'hover:border-blue-300',
+    iconBgClass: 'bg-blue-100',
+    iconColorClass: 'text-blue-600'
+  },
+  {
+    icon: Zap,
+    title: 'Zapier',
+    subtitle: 'Automation platform',
+    colorClass: 'hover:border-yellow-300',
+    iconBgClass: 'bg-yellow-100',
+    iconColorClass: 'text-yellow-600'
+  }
 ];
 
 export const HomePage = () => {
@@ -668,6 +783,56 @@ export const HomePage = () => {
       icon: <Rocket className="h-8 w-8" />,
       title: "Proprietary AI-Powered Insights",
       description: "Leverage our exclusive machine learning algorithms to optimize your inventory 24/7, something manual tracking simply can't match."
+    }
+  ];
+
+  // Inventory problems for carousel
+  const inventoryProblemsCarousel: CarouselItem[] = [
+    {
+      id: 1,
+      title: "Lost Capital",
+      description: "€3,200 tied up in slow-moving stock. Money sitting on shelves instead of working for your business.",
+      icon: <Euro className="h-[16px] w-[16px] text-white" />
+    },
+    {
+      id: 2,
+      title: "Wasted Time", 
+      description: "8 hours/week counting stock with clipboard. Manual counting that could be spent serving customers.",
+      icon: <Clock className="h-[16px] w-[16px] text-white" />
+    },
+    {
+      id: 3,
+      title: "Guessing Game",
+      description: "Don't know what's selling vs. sitting. Making reorder decisions without data.",
+      icon: <BarChart3 className="h-[16px] w-[16px] text-white" />
+    }
+  ];
+
+  // Why choose us for carousel
+  const whyChooseUsCarousel: CarouselItem[] = [
+    {
+      id: 1,
+      title: "Don't Wait, Start Now",
+      description: "Unlike competitors with complex onboarding, our patented Smart Setup gets you running in minutes, not days. See results from day one.",
+      icon: <Zap className="h-[16px] w-[16px] text-white" />
+    },
+    {
+      id: 2,
+      title: "Built Exclusively for SMEs",
+      description: "We don't try to serve everyone. Our deep expertise in small business inventory means we understand your challenges better than enterprise-focused solutions.",
+      icon: <Target className="h-[16px] w-[16px] text-white" />
+    },
+    {
+      id: 3,
+      title: "100% Satisfaction Guarantee",
+      description: "We stand behind our work. If you're not completely satisfied with StockFlow, we'll refund your subscription and help you migrate your data.",
+      icon: <Shield className="h-[16px] w-[16px] text-white" />
+    },
+    {
+      id: 4,
+      title: "Proprietary AI-Powered Insights",
+      description: "Leverage our exclusive machine learning algorithms to optimize your inventory 24/7, something manual tracking simply can't match.",
+      icon: <Rocket className="h-[16px] w-[16px] text-white" />
     }
   ];
 
@@ -1246,23 +1411,10 @@ export const HomePage = () => {
 
 
 
-      {/* Hero Section - Redesigned according to proposal */}
-      <AnimatedContent
-          distance={150}
-          direction="horizontal"
-          reverse={false}
-          duration={1}
-          ease="power3.out"
-          initialOpacity={0.2}
-          animateOpacity
-          scale={1.1}
-          threshold={0.2}
-          delay={0.3}
-        >
       <section className="relative py-10 sm:py-14 md:py-20 lg:py-24 px-4 sm:px-6 overflow-hidden bg-gradient-to-b from-blue-50/30 to-white mt-20">
         {/* Subtle geometric pattern overlay */}
         <div 
-          className="absolute inset-0 pointer-events-none opacity-[0.03]"
+          className="absolute inset-0 pointer-events-none opacity-[0.03] "
           style={{
             backgroundImage: `
               linear-gradient(30deg, #2563EB 12%, transparent 12.5%, transparent 87%, #2563EB 87.5%, #2563EB),
@@ -1311,13 +1463,12 @@ export const HomePage = () => {
             <ScrollTriggeredButton
               as="button"
               className="w-full sm:w-auto bg-blue-600 text-white hover:bg-blue-700
-                px-10 py-5 sm:px-12 sm:py-6 md:px-14 md:py-7
+                px-10 py-5 sm:px-12 sm:py-6 md:px-14 md:py-4
                 text-lg sm:text-xl md:text-2xl
                 font-bold rounded-lg transform hover:scale-105
                 transition-all duration-300
                 shadow-2xl hover:shadow-3xl
-                ring-0 focus:ring-4 focus:ring-white/50 focus:outline-none
-                min-h-[56px] sm:min-h-[64px]"
+                ring-0 focus:ring-4 focus:ring-white/50 focus:outline-none"
               onClick={() => navigate('/pricing')}
             >
               Create a Free Account
@@ -1398,7 +1549,6 @@ export const HomePage = () => {
 
         </div>
       </section>
-      </AnimatedContent>
 
 
 
@@ -1450,73 +1600,19 @@ export const HomePage = () => {
             </div>
           </FadeInWhenVisible>
           
-          {/* 3-Column Problem → Solution Layout */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10 xl:gap-12">
-            {/* Lost Capital */}
-            <SlideUpWhenVisible delay={100}>
-              <div className="text-center bg-white border border-gray-200 rounded-xl sm:rounded-2xl p-5 sm:p-6 md:p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-                <div className="w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-5 md:mb-6">
-                  <Euro className="h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 text-red-600" />
-                </div>
-                <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-4">Lost Capital</h3>
-                <div className="bg-red-50 border border-red-200 rounded-lg sm:rounded-xl p-4 sm:p-5 md:p-6 mb-4 sm:mb-5 md:mb-6">
-                  <p className="text-sm sm:text-base text-gray-700 font-medium mb-2">
-                    "€3,200 tied up in slow-moving stock"
-                  </p>
-                  <p className="text-xs sm:text-sm text-gray-600">
-                    Money sitting on shelves instead of working for your business
-                  </p>
-                </div>
-                <div className="flex items-center justify-center gap-2 text-green-600 font-semibold text-sm sm:text-base">
-                  <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
-                  <span>Free up cash for bestsellers</span>
-                </div>
-              </div>
-            </SlideUpWhenVisible>
-            
-            {/* Wasted Time */}
-            <SlideUpWhenVisible delay={200}>
-              <div className="text-center bg-white border border-gray-200 rounded-xl sm:rounded-2xl p-5 sm:p-6 md:p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-                <div className="w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-5 md:mb-6">
-                  <Clock className="h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 text-orange-600" />
-                </div>
-                <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-4">Wasted Time</h3>
-                <div className="bg-orange-50 border border-orange-200 rounded-lg sm:rounded-xl p-4 sm:p-5 md:p-6 mb-4 sm:mb-5 md:mb-6">
-                  <p className="text-sm sm:text-base text-gray-700 font-medium mb-2">
-                    "8 hours/week counting stock with clipboard"
-                  </p>
-                  <p className="text-xs sm:text-sm text-gray-600">
-                    Manual counting that could be spent serving customers
-                  </p>
-                </div>
-                <div className="flex items-center justify-center gap-2 text-green-600 font-semibold text-sm sm:text-base">
-                  <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
-                  <span>Count in 10 minutes with phone</span>
-                </div>
-              </div>
-            </SlideUpWhenVisible>
-            
-            {/* Guessing Game */}
-            <SlideUpWhenVisible delay={300}>
-              <div className="text-center bg-white border border-gray-200 rounded-xl sm:rounded-2xl p-5 sm:p-6 md:p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 sm:col-span-2 lg:col-span-1">
-                <div className="w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-5 md:mb-6">
-                  <BarChart3 className="h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 text-blue-600" />
-                </div>
-                <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-4">Guessing Game</h3>
-                <div className="bg-blue-50 border border-blue-200 rounded-lg sm:rounded-xl p-4 sm:p-5 md:p-6 mb-4 sm:mb-5 md:mb-6">
-                  <p className="text-sm sm:text-base text-gray-700 font-medium mb-2">
-                    "Don't know what's selling vs. sitting"
-                  </p>
-                  <p className="text-xs sm:text-sm text-gray-600">
-                    Making reorder decisions without data
-                  </p>
-                </div>
-                <div className="flex items-center justify-center gap-2 text-green-600 font-semibold text-sm sm:text-base">
-                  <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
-                  <span>See exactly what to reorder</span>
-                </div>
-              </div>
-            </SlideUpWhenVisible>
+          {/* Carousel for Inventory Problems */}
+          <div className="flex justify-center">
+            <div style={{ height: '600px', position: 'relative' }}>
+              <Carousel
+                items={inventoryProblemsCarousel}
+                baseWidth={300}
+                autoplay={true}
+                autoplayDelay={3000}
+                pauseOnHover={true}
+                loop={true}
+                round={false}
+              />
+            </div>
           </div>
         </div>
           {/* CTA */}
@@ -1566,68 +1662,200 @@ export const HomePage = () => {
           </FadeInWhenVisible>
 
           <ScrollStack useWindowScroll={true}>
-            {featuresData.map((feature, index) => {
-              // Alternating layout: even indices have content left, odd indices have content right
-              const isEvenIndex = index % 2 === 0;
-              const contentOrder = isEvenIndex ? "order-1" : "order-1 lg:order-2";
-              const imageOrder = isEvenIndex ? "order-2 lg:order-1" : "order-2";
-              
-              return (
-                <ScrollStackItem 
-                  key={feature.id}
-                  itemClassName={`bg-gradient-to-br ${feature.bgGradient} backdrop-blur-sm`}
-                >
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 md:gap-12 lg:gap-16 items-center h-full">
-                    {/* Feature Content */}
-                    <div className={`${contentOrder} space-y-6 sm:space-y-8`}>
-                      <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r ${feature.badgeColor} text-white text-xs font-bold uppercase tracking-wide shadow-md`}>
-                        <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
-                        {feature.badge}
-                      </div>
-                      
-                      <div>
-                        <h3 className="text-3xl sm:text-4xl md:text-5xl font-light leading-tight text-gray-900 mb-4">
-                          {feature.subtitle}
-                        </h3>
-                        <div className={`w-20 h-1.5 bg-gradient-to-r ${feature.badgeColor} rounded-full mb-6`}></div>
-                      </div>
+            {/* Card 1 - Mobile Scanning */}
+            <ScrollStackItem 
+              key="mobile-scanning"
+              itemClassName="bg-gradient-to-br from-blue-50 via-blue-100 to-blue-50 backdrop-blur-sm"
+            >
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 md:gap-12 lg:gap-16 items-center h-full">
+                {/* Feature Content */}
+                <div className="order-1 space-y-6 sm:space-y-8">
+                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 text-white text-xs font-bold uppercase tracking-wide shadow-md">
+                    <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
+                    Core Feature
+                  </div>
+                  
+                  <div>
+                    <h3 className="text-3xl sm:text-4xl md:text-5xl font-light leading-tight text-gray-900 mb-4">
+                      Scan Barcodes with Phone
+                    </h3>
+                    <div className="w-20 h-1.5 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full mb-6"></div>
+                  </div>
 
-                      <p className="text-base sm:text-lg text-gray-600 leading-relaxed mb-6">
-                        {feature.description}
-                      </p>
+                  <p className="text-base sm:text-lg text-gray-600 leading-relaxed mb-6">
+                    Skip the clipboard. Use your phone camera to scan barcodes and update stock from anywhere in your shop.
+                  </p>
 
-                      <div className="space-y-4">
-                        {feature.benefits.map((benefit, idx) => (
-                          <div key={idx} className="flex items-center gap-4">
-                            <div className="flex-shrink-0 w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
-                              <Check className="h-3 w-3 text-green-600" />
-                            </div>
-                            <span className="text-gray-900 font-medium text-md">{benefit}</span>
-                          </div>
-                        ))}
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-4">
+                      <div className="flex-shrink-0 w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
+                        <Check className="h-3 w-3 text-green-600" />
                       </div>
+                      <span className="text-gray-900 font-medium text-md">Works offline</span>
                     </div>
-                    
-                    {/* Feature Image */}
-                    <div className={imageOrder}>
-                      <div className="relative group">
-                        <div className={`absolute -inset-1 rounded-3xl blur-xl opacity-25 group-hover:opacity-40 transition-opacity duration-500 bg-gradient-to-r ${feature.glowColor}`}></div>
-                        <div className={`relative p-8 sm:p-10 md:p-12 ${feature.borderColor} bg-white rounded-3xl flex items-center justify-center min-h-[300px] sm:min-h-[350px] lg:min-h-[400px]`}>
-                          <img
-                            src={feature.image}
-                            alt={feature.imageAlt}
-                            className="w-full h-auto max-w-[250px] sm:max-w-[300px] lg:max-w-[350px] object-contain rounded-2xl transform group-hover:scale-105 transition-transform duration-500"
-                            loading="lazy"
-                            width={600}
-                            height={400}
-                          />
-                        </div>
+                    <div className="flex items-center gap-4">
+                      <div className="flex-shrink-0 w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
+                        <Check className="h-3 w-3 text-green-600" />
                       </div>
+                      <span className="text-gray-900 font-medium text-md">No special hardware</span>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <div className="flex-shrink-0 w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
+                        <Check className="h-3 w-3 text-green-600" />
+                      </div>
+                      <span className="text-gray-900 font-medium text-md">iOS & Android</span>
                     </div>
                   </div>
-                </ScrollStackItem>
-              );
-            })}
+                </div>
+                
+                {/* Feature Image */}
+                <div className="order-2 lg:order-1">
+                  <div className="relative group">
+                    <div className="absolute -inset-1 rounded-3xl blur-xl opacity-25 group-hover:opacity-40 transition-opacity duration-500 bg-gradient-to-r from-blue-500 to-blue-600"></div>
+                    <div className="relative p-8 sm:p-10 md:p-12 border-blue-200/50 bg-white rounded-3xl flex items-center justify-center min-h-[300px] sm:min-h-[350px] lg:min-h-[400px]">
+                      <img
+                        src="/scanner.png"
+                        alt="Mobile phone scanning barcodes for inventory management"
+                        className="w-full h-auto max-w-[250px] sm:max-w-[300px] lg:max-w-[350px] object-contain rounded-2xl transform group-hover:scale-105 transition-transform duration-500"
+                        loading="lazy"
+                        width={600}
+                        height={400}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ScrollStackItem>
+
+            {/* Card 2 - Dead Stock Liquidation */}
+            <ScrollStackItem 
+              key="dead-stock"
+              itemClassName="bg-gradient-to-br from-blue-50 via-blue-100 to-blue-50 backdrop-blur-sm"
+            >
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 md:gap-12 lg:gap-16 items-center h-full">
+                {/* Feature Content */}
+                <div className="order-1 lg:order-2 space-y-6 sm:space-y-8">
+                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 text-white text-xs font-bold uppercase tracking-wide shadow-md">
+                    <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
+                    Unique Feature
+                  </div>
+                  
+                  <div>
+                    <h3 className="text-3xl sm:text-4xl md:text-5xl font-light leading-tight text-gray-900 mb-4">
+                      Dead Stock Liquidation Optimizer
+                    </h3>
+                    <div className="w-20 h-1.5 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full mb-6"></div>
+                  </div>
+
+                  <p className="text-base sm:text-lg text-gray-600 leading-relaxed mb-6">
+                    Automatically identify inventory draining your capital. Flag items with zero sales for 30, 60, or 90 days.
+                  </p>
+
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-4">
+                      <div className="flex-shrink-0 w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
+                        <Check className="h-3 w-3 text-green-600" />
+                      </div>
+                      <span className="text-gray-900 font-medium text-md">Auto-flag non-movers</span>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <div className="flex-shrink-0 w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
+                        <Check className="h-3 w-3 text-green-600" />
+                      </div>
+                      <span className="text-gray-900 font-medium text-md">Calculate tied-up capital</span>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <div className="flex-shrink-0 w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
+                        <Check className="h-3 w-3 text-green-600" />
+                      </div>
+                      <span className="text-gray-900 font-medium text-md">Get liquidation recommendations</span>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Feature Image */}
+                <div className="order-2">
+                  <div className="relative group">
+                    <div className="absolute -inset-1 rounded-3xl blur-xl opacity-25 group-hover:opacity-40 transition-opacity duration-500 bg-gradient-to-r from-blue-500 to-blue-600"></div>
+                    <div className="relative p-8 sm:p-10 md:p-12 border-blue-200/50 bg-white rounded-3xl flex items-center justify-center min-h-[300px] sm:min-h-[350px] lg:min-h-[400px]">
+                      <img
+                        src="/deadstock.png"
+                        alt="Dead stock liquidation optimizer dashboard showing slow-moving inventory"
+                        className="w-full h-auto max-w-[250px] sm:max-w-[300px] lg:max-w-[350px] object-contain rounded-2xl transform group-hover:scale-105 transition-transform duration-500"
+                        loading="lazy"
+                        width={600}
+                        height={400}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ScrollStackItem>
+
+            {/* Card 3 - Multi-Location Management */}
+            <ScrollStackItem 
+              key="multi-location"
+              itemClassName="bg-gradient-to-br from-green-50 via-green-100 to-emerald-50 backdrop-blur-sm"
+            >
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 md:gap-12 lg:gap-16 items-center h-full">
+                {/* Feature Content */}
+                <div className="order-1 space-y-6 sm:space-y-8">
+                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 text-white text-xs font-bold uppercase tracking-wide shadow-md">
+                    <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
+                    Advanced Feature
+                  </div>
+                  
+                  <div>
+                    <h3 className="text-3xl sm:text-4xl md:text-5xl font-light leading-tight text-gray-900 mb-4">
+                      Multi-Location Management
+                    </h3>
+                    <div className="w-20 h-1.5 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full mb-6"></div>
+                  </div>
+
+                  <p className="text-base sm:text-lg text-gray-600 leading-relaxed mb-6">
+                    Track inventory across multiple stores, warehouses, or stockrooms. See stock levels at each location in real-time.
+                  </p>
+
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-4">
+                      <div className="flex-shrink-0 w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
+                        <Check className="h-3 w-3 text-green-600" />
+                      </div>
+                      <span className="text-gray-900 font-medium text-md">Real-time stock levels</span>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <div className="flex-shrink-0 w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
+                        <Check className="h-3 w-3 text-green-600" />
+                      </div>
+                      <span className="text-gray-900 font-medium text-md">Transfer items between locations</span>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <div className="flex-shrink-0 w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
+                        <Check className="h-3 w-3 text-green-600" />
+                      </div>
+                      <span className="text-gray-900 font-medium text-md">Low stock alerts per location</span>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Feature Image */}
+                <div className="order-2 lg:order-1">
+                  <div className="relative group">
+                    <div className="absolute -inset-1 rounded-3xl blur-xl opacity-25 group-hover:opacity-40 transition-opacity duration-500 bg-gradient-to-r from-green-500 to-emerald-600"></div>
+                    <div className="relative p-8 sm:p-10 md:p-12 border-green-200/50 bg-white rounded-3xl flex items-center justify-center min-h-[300px] sm:min-h-[350px] lg:min-h-[400px]">
+                      <img
+                        src="/branches.png"
+                        alt="Multi-location inventory tracking across multiple stores"
+                        className="w-full h-auto max-w-[250px] sm:max-w-[300px] lg:max-w-[350px] object-contain rounded-2xl transform group-hover:scale-105 transition-transform duration-500"
+                        loading="lazy"
+                        width={600}
+                        height={400}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ScrollStackItem>
           </ScrollStack>
           
           {/* CTA */}
@@ -1692,203 +1920,81 @@ export const HomePage = () => {
             </div>
           </FadeInWhenVisible>
 
-          {/* Three Steps - Mobile Carousel / Desktop Grid */}
-          {useIsMobile() ? (
-            // Mobile Carousel
-            <div className="max-w-md mx-auto">
-              <MobileCarousel
-                items={[
-                  {
-                    stepNumber: 1,
-                    icon: <Package className="h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 text-blue-600" />,
-                    title: "Import Products",
-                    description: "Upload Excel or type in your products. Your data imports in seconds.",
-                    footerIcon: <Timer className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600 flex-shrink-0" />,
-                    footerText: "Takes 5 minutes"
-                  },
-                  {
-                    stepNumber: 2,
-                    icon: <Smartphone className="h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 text-blue-600" />,
-                    title: "Scan & Count",
-                    description: "Use your phone camera to scan barcodes. Update stock from anywhere in your shop.",
-                    footerIcon: <Smartphone className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600 flex-shrink-0" />,
-                    footerText: "Works on any phone"
-                  },
-                  {
-                    stepNumber: 3,
-                    icon: <Target className="h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 text-blue-600" />,
-                    title: "Track & Optimize",
-                    description: "See low stock alerts, track what's selling, and optimize your inventory automatically.",
-                    footerIcon: <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600 flex-shrink-0" />,
-                    footerText: "Automatic updates"
-                  }
-                ]}
-                renderItem={(item: any) => (
-                  <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 h-full flex flex-col">
-                    {/* Step Number */}
-                    <div className="flex justify-center mb-4">
-                      <div className="w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center text-white text-xl font-bold shadow-md">
-                        {item.stepNumber}
-                      </div>
-                    </div>
-
-                    {/* Icon */}
-                    <div className="flex justify-center mb-4">
-                      <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
-                        {item.icon}
-                      </div>
-                    </div>
-
-                    {/* Content */}
-                    <div className="flex-1">
-                      <h3 className="text-xl font-bold text-gray-900 mb-3 text-center">
-                        {item.title}
-                      </h3>
-                      <p className="text-sm text-gray-600 text-center leading-relaxed mb-4">
-                        {item.description}
-                      </p>
-                    </div>
-
-                    {/* Footer indicator */}
-                    <div className="pt-4 border-t border-gray-200">
-                      <div className="flex items-center justify-center gap-2 text-gray-600">
-                        {item.footerIcon}
-                        <span className="font-medium text-sm">{item.footerText}</span>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              />
-            </div>
-          ) : (
-            // Desktop Grid
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-6 xl:gap-8 max-w-6xl mx-auto relative">
-              {/* Arrow between Step 1 and 2 - Large Desktop only */}
-              <div className="hidden lg:block absolute top-1/2 left-1/3 -translate-x-1/2 -translate-y-1/2 z-10">
-                <div className="bg-blue-600 text-white rounded-full p-2.5 lg:p-3 shadow-lg">
-                  <ArrowRight className="h-5 w-5 lg:h-6 lg:w-6" />
-                </div>
-              </div>
-
-              {/* Arrow between Step 2 and 3 - Large Desktop only */}
-              <div className="hidden lg:block absolute top-1/2 left-2/3 -translate-x-1/2 -translate-y-1/2 z-10">
-                <div className="bg-blue-600 text-white rounded-full p-2.5 lg:p-3 shadow-lg">
-                  <ArrowRight className="h-5 w-5 lg:h-6 lg:w-6" />
-                </div>
-              </div>
-
-              {/* Step 1: Import Products */}
-              <FadeInWhenVisible delay={100}>
-                <div className="bg-white rounded-xl sm:rounded-2xl p-6 sm:p-7 md:p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 h-full flex flex-col sm:col-span-2 lg:col-span-1">
-                  {/* Step Number */}
-                  <div className="flex justify-center mb-4 sm:mb-5 md:mb-6">
-                    <div className="w-14 h-14 sm:w-16 sm:h-16 bg-blue-600 rounded-full flex items-center justify-center text-white text-xl sm:text-2xl font-bold shadow-md">
-                      1
-                    </div>
-                  </div>
+          {/* Three Steps - New Stepper Component */}
+          <div className="max-w-4xl mx-auto">
+            <Stepper
+              initialStep={1}
+              onStepChange={(step) => {
+                console.log('Step changed to:', step);
+              }}
+              onFinalStepCompleted={() => console.log("All steps completed!")}
+              backButtonText="Previous"
+              nextButtonText="Next"
+              stepCircleContainerClassName="bg-white border-gray-200"
+              stepContainerClassName="bg-gradient-to-r from-blue-50 to-indigo-50"
+              contentClassName="!px-12 py-8"
+              footerClassName="bg-gradient-to-r from-blue-50 to-indigo-50 items-center justify-center"
+            >
+              <Step>
+                <div className="text-center">
 
                   {/* Icon */}
-                  <div className="flex justify-center mb-4 sm:mb-5 md:mb-6">
-                    <div className="w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 bg-blue-100 rounded-full flex items-center justify-center">
-                      <Package className="h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 text-blue-600" />
+                  <div className="flex justify-center mb-6 mt-6">
+                    <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center">
+                      <Package className="h-10 w-10 text-blue-600" />
                     </div>
                   </div>
 
                   {/* Content */}
-                  <div className="flex-1">
-                    <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-4 text-center">
-                      Import Products
-                    </h3>
-                    <p className="text-sm sm:text-base text-gray-600 text-center leading-relaxed mb-4 sm:mb-6">
-                      Upload Excel or type in your products. Your data imports in seconds.
-                    </p>
-                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4">Import Products</h3>
+                  <p className="text-base text-gray-600 leading-relaxed mb-6">
+                    Upload Excel or type in your products. Your data imports in seconds.
+                  </p>
 
-                  {/* Footer indicator */}
-                  <div className="pt-4 sm:pt-5 md:pt-6 border-t border-gray-200">
-                    <div className="flex items-center justify-center gap-2 text-gray-600">
-                      <Timer className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600 flex-shrink-0" />
-                      <span className="font-medium text-sm sm:text-base">Takes 5 minutes</span>
-                    </div>
-                  </div>
                 </div>
-              </FadeInWhenVisible>
+              </Step>
+              
+              <Step>
+                <div className="text-center items-center justify-center">
 
-              {/* Step 2: Scan & Count */}
-              <FadeInWhenVisible delay={200}>
-                <div className="bg-white rounded-xl sm:rounded-2xl p-6 sm:p-7 md:p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 h-full flex flex-col">
-                  {/* Step Number */}
-                  <div className="flex justify-center mb-4 sm:mb-5 md:mb-6">
-                    <div className="w-14 h-14 sm:w-16 sm:h-16 bg-blue-600 rounded-full flex items-center justify-center text-white text-xl sm:text-2xl font-bold shadow-md">
-                      2
-                    </div>
-                  </div>
 
                   {/* Icon */}
-                  <div className="flex justify-center mb-4 sm:mb-5 md:mb-6">
-                    <div className="w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 bg-blue-100 rounded-full flex items-center justify-center">
-                      <Smartphone className="h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 text-blue-600" />
+                  <div className="flex justify-center mb-6 mt-6">
+                    <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center">
+                      <Smartphone className="h-10 w-10 text-blue-600" />
                     </div>
                   </div>
 
                   {/* Content */}
-                  <div className="flex-1">
-                    <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-4 text-center">
-                      Scan & Count
-                    </h3>
-                    <p className="text-sm sm:text-base text-gray-600 text-center leading-relaxed mb-4 sm:mb-6">
-                      Use your phone camera to scan barcodes. Update stock from anywhere in your shop.
-                    </p>
-                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4">Scan & Count</h3>
+                  <p className="text-base text-gray-600 leading-relaxed mb-6">
+                    Use your phone camera to scan barcodes. Update stock from anywhere in your shop.
+                  </p>
 
-                  {/* Footer indicator */}
-                  <div className="pt-4 sm:pt-5 md:pt-6 border-t border-gray-200">
-                    <div className="flex items-center justify-center gap-2 text-gray-600">
-                      <Smartphone className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600 flex-shrink-0" />
-                      <span className="font-medium text-sm sm:text-base">Works on any phone</span>
-                    </div>
-                  </div>
                 </div>
-              </FadeInWhenVisible>
-
-              {/* Step 3: Track & Optimize */}
-              <FadeInWhenVisible delay={300}>
-                <div className="bg-white rounded-xl sm:rounded-2xl p-6 sm:p-7 md:p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 h-full flex flex-col sm:col-span-2 lg:col-span-1">
-                  {/* Step Number */}
-                  <div className="flex justify-center mb-4 sm:mb-5 md:mb-6">
-                    <div className="w-14 h-14 sm:w-16 sm:h-16 bg-blue-600 rounded-full flex items-center justify-center text-white text-xl sm:text-2xl font-bold shadow-md">
-                      3
-                    </div>
-                  </div>
+              </Step>
+              
+              <Step>
+                <div className="text-center">
+    
 
                   {/* Icon */}
-                  <div className="flex justify-center mb-4 sm:mb-5 md:mb-6">
-                    <div className="w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 bg-blue-100 rounded-full flex items-center justify-center">
-                      <Target className="h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 text-blue-600" />
+                  <div className="flex justify-center mb-6 mt-6">
+                    <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center">
+                      <Target className="h-10 w-10 text-blue-600" />
                     </div>
                   </div>
 
                   {/* Content */}
-                  <div className="flex-1">
-                    <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-4 text-center">
-                      Track & Optimize
-                    </h3>
-                    <p className="text-sm sm:text-base text-gray-600 text-center leading-relaxed mb-4 sm:mb-6">
-                      See low stock alerts, track what's selling, and optimize your inventory automatically.
-                    </p>
-                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4">Track & Optimize</h3>
+                  <p className="text-base text-gray-600 leading-relaxed mb-6">
+                    See low stock alerts, track what's selling, and optimize your inventory automatically.
+                  </p>
 
-                  {/* Footer indicator */}
-                  <div className="pt-4 sm:pt-5 md:pt-6 border-t border-gray-200">
-                    <div className="flex items-center justify-center gap-2 text-gray-600">
-                      <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600 flex-shrink-0" />
-                      <span className="font-medium text-sm sm:text-base">Automatic updates</span>
-                    </div>
-                  </div>
                 </div>
-              </FadeInWhenVisible>
-            </div>
-          )}
+              </Step>
+            </Stepper>
+          </div>
 
           {/* CTA */}
           <FadeInWhenVisible delay={700}>
@@ -1948,52 +2054,19 @@ export const HomePage = () => {
             </div>
           </FadeInWhenVisible>
 
-          {/* Why Choose Us - Mobile Carousel / Desktop Grid */}
-          {/* Mobile Carousel - Only visible on mobile */}
-          <div className="md:hidden">
-            <MobileCarousel 
-              items={whyChooseUs}
-              renderItem={(reason, index) => (
-                <ScaleInWhenVisible key={index} delay={index * 100}>
-                  <div className="bg-gradient-to-br from-white to-gray-50 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-blue-200 h-full">
-                    {/* Icon */}
-                    <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600 mb-6">
-                      {reason.icon}
-                    </div>
-                    
-                    {/* Content */}
-                    <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">
-                      {reason.title}
-                    </h3>
-                    <p className="text-base sm:text-lg text-gray-600 leading-relaxed">
-                      {reason.description}
-                    </p>
-                  </div>
-                </ScaleInWhenVisible>
-              )}
-            />
-          </div>
-
-          {/* Desktop Grid - Only visible on desktop */}
-          <div className="hidden md:grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10 max-w-6xl mx-auto">
-            {whyChooseUs.map((reason, index) => (
-              <ScaleInWhenVisible key={index} delay={index * 100}>
-                <div className="bg-gradient-to-br from-white to-gray-50 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-blue-200 h-full">
-                  {/* Icon */}
-                  <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600 mb-6">
-                    {reason.icon}
-                  </div>
-                  
-                  {/* Content */}
-                  <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">
-                    {reason.title}
-                  </h3>
-                  <p className="text-base sm:text-lg text-gray-600 leading-relaxed">
-                    {reason.description}
-                  </p>
-                </div>
-              </ScaleInWhenVisible>
-            ))}
+          {/* Why Choose Us - Carousel */}
+          <div className="flex justify-center">
+            <div style={{ height: '600px', position: 'relative' }}>
+              <Carousel
+                items={whyChooseUsCarousel}
+                baseWidth={300}
+                autoplay={true}
+                autoplayDelay={3000}
+                pauseOnHover={true}
+                loop={true}
+                round={false}
+              />
+            </div>
           </div>
           
         </div>
@@ -2039,13 +2112,13 @@ export const HomePage = () => {
           <FadeInWhenVisible>
             <div className="text-center mb-12 sm:mb-16 md:mb-20">
               <div className="inline-block mb-4 sm:mb-6">
-                <span className="px-4 py-2 bg-green-100 text-green-700 text-sm font-semibold rounded-full">
+                <span className="px-4 py-2 bg-blue-100 text-blue-700 text-sm font-semibold rounded-full">
                   CONNECT YOUR TOOLS
                 </span>
               </div>
               <h2 className="text-[clamp(2.5rem,4vw,4rem)] font-light text-gray-800 mb-3 leading-tight px-2">
                 Connect StockFlow with <br className="hidden sm:block" />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-blue-600">
+                <span className="text-transparent bg-clip-text bg-blue-600">
                   Your Business Tools
                 </span>
               </h2>
@@ -2055,118 +2128,25 @@ export const HomePage = () => {
             </div>
           </FadeInWhenVisible>
 
-          {/* Integration Cards */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            {/* Shopify */}
-            <FadeInWhenVisible delay={100}>
-              <div className="bg-white border-2 border-gray-200 rounded-2xl p-6 sm:p-8 hover:border-green-300 hover:shadow-lg transition-all duration-300">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
-                    <ShoppingCart className="h-6 w-6 text-green-600" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900">Shopify</h3>
-                    <p className="text-sm text-gray-600">E-commerce platform</p>
-                  </div>
-                </div>
-                <p className="text-gray-600 mb-4">Import your Shopify products and sync inventory levels automatically.</p>
-                <div className="flex items-center justify-between">
-                </div>
-              </div>
-            </FadeInWhenVisible>
-
-            {/* Square */}
-            <FadeInWhenVisible delay={200}>
-              <div className="bg-white border-2 border-gray-200 rounded-2xl p-6 sm:p-8 hover:border-blue-300 hover:shadow-lg transition-all duration-300">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
-                    <CreditCard className="h-6 w-6 text-blue-600" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900">Square</h3>
-                    <p className="text-sm text-gray-600">POS system</p>
+          {/* Integration Cards Marquee */}
+          <FadeInWhenVisible delay={100}>
+            <IntegrationCardMarquee 
+              speed={420}
+              cards={integrationCardsData.map((card, index) => (
+                <div key={index} className={`bg-white border-2 border-gray-200 rounded-2xl p-6 sm:p-8 ${card.colorClass} hover:shadow-lg transition-all duration-300 h-full`}>
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className={`w-12 h-12 ${card.iconBgClass} rounded-xl flex items-center justify-center`}>
+                      <card.icon className={`h-6 w-6 ${card.iconColorClass}`} />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900">{card.title}</h3>
+                      <p className="text-sm text-gray-600">{card.subtitle}</p>
+                    </div>
                   </div>
                 </div>
-                <p className="text-gray-600 mb-4">Sync your Square POS sales data and manage multi-location inventory.</p>
-                <div className="flex items-center justify-between">
-
-                </div>
-              </div>
-            </FadeInWhenVisible>
-
-            {/* WooCommerce */}
-            <FadeInWhenVisible delay={300}>
-              <div className="bg-white border-2 border-gray-200 rounded-2xl p-6 sm:p-8 hover:border-purple-300 hover:shadow-lg transition-all duration-300">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
-                    <Globe className="h-6 w-6 text-purple-600" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900">WooCommerce</h3>
-                    <p className="text-sm text-gray-600">WordPress e-commerce</p>
-                  </div>
-                </div>
-                <p className="text-gray-600 mb-4">Connect your WordPress store and automate inventory management.</p>
-                <div className="flex items-center justify-between">
-                </div>
-              </div>
-            </FadeInWhenVisible>
-
-            {/* Mailchimp */}
-            <FadeInWhenVisible delay={400}>
-              <div className="bg-white border-2 border-gray-200 rounded-2xl p-6 sm:p-8 hover:border-orange-300 hover:shadow-lg transition-all duration-300">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center">
-                    <Mail className="h-6 w-6 text-orange-600" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900">Mailchimp</h3>
-                    <p className="text-sm text-gray-600">Email marketing</p>
-                  </div>
-                </div>
-                <p className="text-gray-600 mb-4">Sync customer data and create targeted email campaigns.</p>
-                <div className="flex items-center justify-between">
-
-                </div>
-              </div>
-            </FadeInWhenVisible>
-
-            {/* QuickBooks */}
-            <FadeInWhenVisible delay={500}>
-              <div className="bg-white border-2 border-gray-200 rounded-2xl p-6 sm:p-8 hover:border-blue-300 hover:shadow-lg transition-all duration-300">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
-                    <BarChart3 className="h-6 w-6 text-blue-600" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900">QuickBooks</h3>
-                    <p className="text-sm text-gray-600">Accounting software</p>
-                  </div>
-                </div>
-                <p className="text-gray-600 mb-4">Sync financial data and streamline your accounting workflow.</p>
-                <div className="flex items-center justify-between">
-                </div>
-              </div>
-            </FadeInWhenVisible>
-
-            {/* Zapier */}
-            <FadeInWhenVisible delay={600}>
-              <div className="bg-white border-2 border-gray-200 rounded-2xl p-6 sm:p-8 hover:border-yellow-300 hover:shadow-lg transition-all duration-300">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center">
-                    <Zap className="h-6 w-6 text-yellow-600" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900">Zapier</h3>
-                    <p className="text-sm text-gray-600">Automation platform</p>
-                  </div>
-                </div>
-                <p className="text-gray-600 mb-4">Connect with 5000+ apps and automate your workflows.</p>
-                <div className="flex items-center justify-between">
-                </div>
-              </div>
-            </FadeInWhenVisible>
-          </div>
+              ))}
+            />
+          </FadeInWhenVisible>
 
           {/* CTA */}
           <FadeInWhenVisible delay={700}>

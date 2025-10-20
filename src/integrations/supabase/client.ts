@@ -106,7 +106,10 @@ export async function addBlogPost(post: Omit<BlogPost, 'id'>): Promise<BlogPost>
     published: post.published,
     excerpt: null,
   };
-  const { data, error } = await supabase.from('blogposts').insert([insertData]).select();
+  const { data, error } = await supabase
+    .from('blogposts')
+    .insert([insertData])
+    .select();
   if (error) throw error;
   return data?.[0] as BlogPost;
 }
