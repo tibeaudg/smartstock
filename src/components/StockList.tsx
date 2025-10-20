@@ -1088,6 +1088,231 @@ const MobileProductDetailDrawer: React.FC<MobileProductDetailDrawerProps> = ({ p
   );
 };
 
+// Mobile Product List Item Component
+interface MobileProductListItemProps {
+  product: Product;
+  isVariant?: boolean;
+  isSelected?: boolean;
+  hasChildren?: boolean;
+  isExpanded?: boolean;
+  variantCount?: number;
+  onToggleExpand?: () => void;
+  onSelect?: (id: string) => void;
+  onStockAction: (product: Product, action: StockAction) => void;
+  onEdit: (product: Product) => void;
+  onAddVariant?: (product: Product) => void;
+  onImagePreview: (url: string) => void;
+  isAdmin?: boolean;
+  isDetailExpanded?: boolean;
+  onToggleDetailExpand?: () => void;
+  onImageUpload?: () => void;
+  onDuplicate?: (product: Product) => void;
+  onArchive?: (product: Product) => void;
+  onMoveToLocation?: (product: Product) => void;
+}
+
+const MobileProductListItem: React.FC<MobileProductListItemProps> = ({
+  product,
+  isVariant = false,
+  isSelected = false,
+  hasChildren = false,
+  isExpanded = false,
+  variantCount = 0,
+  onToggleExpand,
+  onSelect,
+  onStockAction,
+  onEdit,
+  onAddVariant,
+  onImagePreview,
+  isAdmin = false,
+  isDetailExpanded = false,
+  onToggleDetailExpand,
+  onImageUpload,
+  onDuplicate,
+  onArchive,
+  onMoveToLocation
+}) => {
+  const stockStatus = getStockStatus(product.quantity_in_stock, product.minimum_stock_level);
+  const variantAttributes = formatVariantAttributes(product.variant_attributes);
+
+  return (
+    <div className={`${isVariant ? 'ml-4' : ''}`}>
+      <div className="bg-white border-b border-gray-200 px-4 py-3 hover:bg-gray-50 transition-colors">
+        <div className="flex items-center gap-3">
+          {/* Selection checkbox */}
+          {isAdmin && (
+            <div onClick={(e) => e.stopPropagation()}>
+              <input
+                type="checkbox"
+                checked={isSelected}
+                onChange={() => onSelect?.(product.id)}
+                className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+              />
+            </div>
+          )}
+
+          {/* Expand/Collapse indicator for variants */}
+          {hasChildren && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onToggleExpand?.();
+              }}
+              className="p-1 flex-shrink-0 hover:bg-blue-50 rounded transition-colors"
+            >
+              {isExpanded ? <ChevronDown className="w-4 h-4 text-blue-600" /> : <ChevronRight className="w-4 h-4 text-blue-600" />}
+            </button>
+          )}
+
+          {/* Product image */}
+          <div className="flex-shrink-0" onClick={(e) => e.stopPropagation()}>
+            {product.image_url ? (
+              <div className="w-12 h-12 bg-gray-50 rounded-lg border flex items-center justify-center overflow-hidden">
+                <img
+                  src={product.image_url}
+                  alt={`${product.name} product image`}
+                  className="max-w-full max-h-full object-contain cursor-pointer hover:opacity-80 transition-opacity"
+                  onClick={() => onImagePreview(product.image_url!)}
+                />
+              </div>
+            ) : (
+              <PhotoUploadPlaceholder
+                productId={product.id}
+                size="medium"
+                onUploadSuccess={() => onImageUpload?.()}
+              />
+            )}
+          </div>
+
+          {/* Product info */}
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 mb-1">
+              <h3 className="text-sm font-medium text-gray-900 truncate">
+                {product.name}
+                {isVariant && product.variant_name && (
+                  <span className="text-gray-600"> - {product.variant_name}</span>
+                )}
+              </h3>
+              
+              {hasChildren && !isExpanded && variantCount > 0 && (
+                <Badge className="bg-blue-100 text-blue-700 border border-blue-200 text-xs">
+                  {variantCount} {variantCount === 1 ? 'variant' : 'variants'}
+                </Badge>
+              )}
+            </div>
+            
+            {/* Variant attributes */}
+            {isVariant && variantAttributes.length > 0 && (
+              <div className="flex flex-wrap gap-1 mb-1">
+                {variantAttributes.map((attr, index) => (
+                  <Badge key={index} variant="secondary" className="text-xs bg-gray-50">
+                    {attr}
+                  </Badge>
+                ))}
+              </div>
+            )}
+            
+            {/* Description */}
+            {product.description && (
+              <p className="text-xs text-gray-500 truncate">
+                {product.description}
+              </p>
+            )}
+
+            {/* Additional info row */}
+            <div className="flex items-center justify-between mt-2">
+              <div className="flex items-center gap-4 text-xs text-gray-500">
+                {/* Stock status */}
+                {!hasChildren && (
+                  <div className="flex items-center gap-1">
+                    <div className={`w-2 h-2 rounded-full ${getStockStatusDotColor(product.quantity_in_stock, product.minimum_stock_level)}`} />
+                    <span className="font-medium">{product.quantity_in_stock}</span>
+                    <span className="text-gray-400">in stock</span>
+                  </div>
+                )}
+                
+                {/* Category */}
+                {product.category_name && (
+                  <span>{product.category_name}</span>
+                )}
+              </div>
+
+              {/* Price */}
+              {product.sale_price && (
+                <div className="text-sm font-medium text-green-600">
+                  ${Number(product.sale_price).toFixed(2)}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Stock action button */}
+          {!hasChildren && (
+            <div className="flex-shrink-0" onClick={(e) => e.stopPropagation()}>
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-8 px-3 text-xs"
+                onClick={() => onStockAction(product, 'in')}
+              >
+                <span className="hidden sm:inline">Adjust</span>
+                <Plus className="w-3 h-3 sm:hidden" />
+              </Button>
+            </div>
+          )}
+
+          {/* Actions dropdown for products with children */}
+          {hasChildren && (
+            <div className="flex-shrink-0" onClick={(e) => e.stopPropagation()}>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="sm" className="h-8 w-8 p-0">
+                    <MoreVertical className="w-4 h-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48">
+                  {onAddVariant && (
+                    <DropdownMenuItem onClick={() => onAddVariant(product)}>
+                      <Plus className="w-4 h-4 mr-2 text-blue-600" />
+                      <span className="flex-1">Add Variant</span>
+                    </DropdownMenuItem>
+                  )}
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => onEdit(product)}>
+                    <Edit className="w-4 h-4 mr-2 text-blue-600" />
+                    <span className="flex-1">Edit</span>
+                  </DropdownMenuItem>
+                  {onDuplicate && (
+                    <DropdownMenuItem onClick={() => onDuplicate(product)}>
+                      <Copy className="w-4 h-4 mr-2 text-purple-600" />
+                      <span className="flex-1">Duplicate</span>
+                    </DropdownMenuItem>
+                  )}
+                  <DropdownMenuSeparator />
+                  {onArchive && (
+                    <DropdownMenuItem onClick={() => onArchive(product)}>
+                      <Archive className="w-4 h-4 mr-2 text-gray-600" />
+                      <span className="flex-1">Archive</span>
+                    </DropdownMenuItem>
+                  )}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          )}
+        </div>
+      </div>
+      
+      {/* Product Detail Drawer */}
+      {hasChildren && (
+        <MobileProductDetailDrawer
+          product={product}
+          isOpen={isDetailExpanded}
+        />
+      )}
+    </div>
+  );
+};
+
 // Mobile Product Card Component
 interface MobileProductCardProps {
   product: Product;
@@ -2404,17 +2629,49 @@ export const StockList = () => {
             </p>
           </div>
 
+                        {/* Secondary action buttons row - better spacing */}
+                        <div className="flex gap-2">
+                <Button 
+                  onClick={() => {
+                    setSelectedOperationType('scan');
+                    setIsStockOperationModalOpen(true);
+                  }} 
+                  variant="outline"
+                  className="flex-1 h-10 text-xs sm:text-sm px-2"
+                >
+                  <Scan className="w-4 h-4 sm:mr-2" />
+                  <span className="truncate">Scan</span>
+                </Button>
+                <Button 
+                  onClick={() => {
+                    setSelectedAction('in'); // Default to 'in' for manual
+                    setIsManualStockModalOpen(true);
+                  }} 
+                  className="flex-1 h-10 bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm px-2"
+                >
+                  <Plus className="w-4 h-4 sm:mr-2" />
+                  <span className="truncate">Manual</span>
+                </Button>
+              </div>
+
+              
+
         {/* Only show products content when on products tab */}
         {activeTab === 'products' && (
+
+          
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
-            {/* Action Buttons for Mobile */}
-            <div className="space-y-2">
+
+            
+            {/* Action Buttons for Mobile - Optimized for mobile screens */}
+            <div className="space-y-3">
+              {/* Primary action buttons row */}
               <div className="flex gap-2">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="outline" className="flex-1 h-10 text-sm">
-                      {viewMode === 'list' ? <List className="w-4 h-4 mr-2" /> : <Grid3x3 className="w-4 h-4 mr-2" />}
-                      View
+                    <Button variant="outline" className="flex-1 h-10 text-xs sm:text-sm px-2">
+                      {viewMode === 'list' ? <List className="w-4 h-4 sm:mr-2" /> : <Grid3x3 className="w-4 h-4 sm:mr-2" />}
+                      <span className="hidden sm:inline">View</span>
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
@@ -2430,101 +2687,71 @@ export const StockList = () => {
                 </DropdownMenu>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="outline" className="flex-1 h-10 text-sm">
-                      <Settings className="w-4 h-4 mr-2" />
-                      Settings
+                    <Button variant="outline" className="flex-1 h-10 text-xs sm:text-sm px-2">
+                      <Settings className="w-4 h-4 sm:mr-2" />
+                      <span className="hidden sm:inline">Settings</span>
                     </Button>
                   </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56">
-                  <DropdownMenuItem disabled className="font-semibold">
-                    Import & Settings
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => setIsBulkImportModalOpen(true)}>
-                    <Upload className="w-4 h-4 mr-2" />
-                    Import Excel
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem disabled className="font-semibold">
-                    Column Visibility
-                  </DropdownMenuItem>
-                  <DropdownMenuCheckboxItem
-                    checked={columnVisibility.product}
-                    onCheckedChange={() => toggleColumnVisibility('product')}
-                  >
-                    Product
-                  </DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem
-                    checked={columnVisibility.location}
-                    onCheckedChange={() => toggleColumnVisibility('location')}
-                  >
-                    Locations
-                  </DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem
-                    checked={columnVisibility.current}
-                    onCheckedChange={() => toggleColumnVisibility('current')}
-                  >
-                    Current Stock
-                  </DropdownMenuCheckboxItem>
+                  <DropdownMenuContent align="end" className="w-56">
+                    <DropdownMenuItem disabled className="font-semibold">
+                      Import & Settings
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={() => setIsBulkImportModalOpen(true)}>
+                      <Upload className="w-4 h-4 mr-2" />
+                      Import Excel
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem disabled className="font-semibold">
+                      Column Visibility
+                    </DropdownMenuItem>
+                    <DropdownMenuCheckboxItem
+                      checked={columnVisibility.product}
+                      onCheckedChange={() => toggleColumnVisibility('product')}
+                    >
+                      Product
+                    </DropdownMenuCheckboxItem>
+                    <DropdownMenuCheckboxItem
+                      checked={columnVisibility.location}
+                      onCheckedChange={() => toggleColumnVisibility('location')}
+                    >
+                      Locations
+                    </DropdownMenuCheckboxItem>
+                    <DropdownMenuCheckboxItem
+                      checked={columnVisibility.current}
+                      onCheckedChange={() => toggleColumnVisibility('current')}
+                    >
+                      Current Stock
+                    </DropdownMenuCheckboxItem>
+                    <DropdownMenuCheckboxItem
+                      checked={columnVisibility.category}
+                      onCheckedChange={() => toggleColumnVisibility('category')}
+                    >
+                      Category
+                    </DropdownMenuCheckboxItem>
+                    <DropdownMenuCheckboxItem
+                      checked={columnVisibility.supplier}
+                      onCheckedChange={() => toggleColumnVisibility('supplier')}
+                    >
+                      Supplier
+                    </DropdownMenuCheckboxItem>
+                    <DropdownMenuCheckboxItem
+                      checked={columnVisibility.purchasePrice}
+                      onCheckedChange={() => toggleColumnVisibility('purchasePrice')}
+                    >
+                      Purchase Price
+                    </DropdownMenuCheckboxItem>
+                    <DropdownMenuCheckboxItem
+                      checked={columnVisibility.salePrice}
+                      onCheckedChange={() => toggleColumnVisibility('salePrice')}
+                    >
+                      Sale Price
+                    </DropdownMenuCheckboxItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+              
 
-                  <DropdownMenuCheckboxItem
-                    checked={columnVisibility.category}
-                    onCheckedChange={() => toggleColumnVisibility('category')}
-                  >
-                    Category
-                  </DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem
-                    checked={columnVisibility.supplier}
-                    onCheckedChange={() => toggleColumnVisibility('supplier')}
-                  >
-                    Supplier
-                  </DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem
-                    checked={columnVisibility.purchasePrice}
-                    onCheckedChange={() => toggleColumnVisibility('purchasePrice')}
-                  >
-                    Purchase Price
-                  </DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem
-                    checked={columnVisibility.salePrice}
-                    onCheckedChange={() => toggleColumnVisibility('salePrice')}
-                  >
-                    Sale Price
-                  </DropdownMenuCheckboxItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-              <div className="flex gap-2">
-                <Button 
-                  onClick={() => {
-                    setSelectedOperationType('scan');
-                    setIsStockOperationModalOpen(true);
-                  }} 
-                  variant="outline"
-                  className="flex-1 h-10"
-                >
-                  <Scan className="w-4 h-4 mr-2" />
-                  Scan
-                </Button>
-                <Button 
-                  onClick={() => {
-                    setSelectedAction('in'); // Default to 'in' for manual
-                    setIsManualStockModalOpen(true);
-                  }} 
-                  className="flex-1 h-10 bg-blue-600 hover:bg-blue-700 text-white"
-                >
-                  <Plus className="w-4 h-4 mr-2" />
-                  Manual
-                </Button>
-              </div>
-              <div className="flex gap-2">
-                <Button 
-                  onClick={() => setIsAddModalOpen(true)} 
-                  className="flex-1 h-10 bg-blue-700 hover:bg-blue-700/80 text-white"
-                >
-                  <Plus className="w-5 h-5 mr-2" />
-                  Add New Product
-                </Button>
-              </div>
             </div>
 
             {/* Filter Header */}
@@ -2606,91 +2833,6 @@ export const StockList = () => {
               </div>
             )}
 
-            {/* Quick Filters for Mobile */}
-            <div className="flex gap-2 items-center mb-4">
-              <Button
-                variant={filters.favoritesFilter ? "default" : "outline"}
-                size="sm"
-                onClick={() => setFilters(prev => ({ 
-                  ...prev, 
-                  favoritesFilter: !prev.favoritesFilter,
-                  categoryFilter: 'all',
-                  supplierFilter: 'all',
-                  searchTerm: '',
-                  stockStatusFilter: 'all',
-                  locationFilter: 'all',
-                  minPriceFilter: '',
-                  maxPriceFilter: '',
-                  minStockFilter: '',
-                  maxStockFilter: '',
-                  selectedSizes: [],
-                  selectedColors: [],
-                }))}
-                className="flex-1"
-              >
-                <Heart className={`w-4 h-4 mr-2 ${filters.favoritesFilter ? "fill-current" : ""}`} />
-                Favorites
-              </Button>
-              
-              <Select
-                value={filters.categoryFilter}
-                onValueChange={(value) => setFilters(prev => ({ 
-                  ...prev, 
-                  categoryFilter: value,
-                  supplierFilter: 'all',
-                  searchTerm: '',
-                  stockStatusFilter: 'all',
-                  locationFilter: 'all',
-                  minPriceFilter: '',
-                  maxPriceFilter: '',
-                  minStockFilter: '',
-                  maxStockFilter: '',
-                  selectedSizes: [],
-                  selectedColors: [],
-                  favoritesFilter: false,
-                }))}
-              >
-                <SelectTrigger className="flex-1">
-                  <SelectValue placeholder="Categories" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Categories</SelectItem>
-                  {categories.map(cat => (
-                    <SelectItem key={cat.id} value={cat.id}>{cat.name}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              
-              <Select
-                value={filters.supplierFilter}
-                onValueChange={(value) => setFilters(prev => ({ 
-                  ...prev, 
-                  supplierFilter: value,
-                  categoryFilter: 'all',
-                  searchTerm: '',
-                  stockStatusFilter: 'all',
-                  locationFilter: 'all',
-                  minPriceFilter: '',
-                  maxPriceFilter: '',
-                  minStockFilter: '',
-                  maxStockFilter: '',
-                  selectedSizes: [],
-                  selectedColors: [],
-                  favoritesFilter: false,
-                }))}
-              >
-                <SelectTrigger className="flex-1">
-                  <SelectValue placeholder="Suppliers" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Suppliers</SelectItem>
-                  {suppliers.map(sup => (
-                    <SelectItem key={sup.id} value={sup.id}>{sup.name}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
             {/* Search and Advanced Filters - Right above table */}
             <div className="mb-4">
               <EnhancedProductFilters
@@ -2701,7 +2843,7 @@ export const StockList = () => {
               />
             </div>
 
-            {/* Mobile Product Cards */}
+            {/* Mobile Product Views */}
             {viewMode === 'card' ? (
               <div className="grid grid-cols-1 gap-4">
                 {getStockableProducts(filteredProducts).map(product => (
@@ -2723,151 +2865,152 @@ export const StockList = () => {
                 ))}
               </div>
             ) : (
-              <div className="space-y-3">
+              <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
                 {grouped.parents.length === 0 ? (
-                <div className="bg-white rounded-lg border border-gray-200 p-12 text-center">
-                  <div className="flex flex-col items-center gap-6">
-                    {/* Empty state illustration */}
-                    <div className="relative">
-                      <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center">
-                        <Package className="w-12 h-12 text-gray-400" />
+                  <div className="p-12 text-center">
+                    <div className="flex flex-col items-center gap-6">
+                      {/* Empty state illustration */}
+                      <div className="relative">
+                        <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center">
+                          <Package className="w-12 h-12 text-gray-400" />
+                        </div>
+                        <div className="absolute -top-2 -right-2 w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center">
+                          <Search className="w-3 h-3 text-blue-600" />
+                        </div>
                       </div>
-                      <div className="absolute -top-2 -right-2 w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center">
-                        <Search className="w-3 h-3 text-blue-600" />
+                      
+                      {/* Content */}
+                      <div className="space-y-2">
+                        <h3 className="text-lg font-medium text-gray-900">
+                          {productsTyped.length === 0 ? 'No products yet' : 'No matching products'}
+                        </h3>
+                        <p className="text-sm text-gray-500 max-w-sm">
+                          {productsTyped.length === 0 
+                            ? 'Get started by adding your first product to track inventory and manage stock levels.'
+                            : 'Try adjusting your filters or search terms to find what you\'re looking for.'
+                          }
+                        </p>
                       </div>
-                    </div>
-                    
-                    {/* Content */}
-                    <div className="space-y-2">
-                      <h3 className="text-lg font-medium text-gray-900">
-                        {productsTyped.length === 0 ? 'No products yet' : 'No matching products'}
-                      </h3>
-                      <p className="text-sm text-gray-500 max-w-sm">
-                        {productsTyped.length === 0 
-                          ? 'Get started by adding your first product to track inventory and manage stock levels.'
-                          : 'Try adjusting your filters or search terms to find what you\'re looking for.'
-                        }
-                      </p>
-                    </div>
-                    
-                    {/* Action buttons */}
-                    <div className="flex gap-3">
-                      {productsTyped.length === 0 ? (
-                        <Button onClick={() => setIsAddModalOpen(true)} className="px-6">
-                          <Plus className="w-4 h-4 mr-2" />
-                          Add First Product
-                        </Button>
-                      ) : (
-                        <Button variant="outline" onClick={clearAllFilters}>
-                          <X className="w-4 h-4 mr-2" />
-                          Clear Filters
-                        </Button>
-                      )}
+                      
+                      {/* Action buttons */}
+                      <div className="flex gap-3">
+                        {productsTyped.length === 0 ? (
+                          <Button onClick={() => setIsAddModalOpen(true)} className="px-6">
+                            <Plus className="w-4 h-4 mr-2" />
+                            Add First Product
+                          </Button>
+                        ) : (
+                          <Button variant="outline" onClick={clearAllFilters}>
+                            <X className="w-4 h-4 mr-2" />
+                            Clear Filters
+                          </Button>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              ) : (
-                grouped.parents.map((parent) => {
-                  const parentChecked = selectedProductIds.includes(parent.id);
-                  const hasChildren = (grouped.children[parent.id]?.length || 0) > 0;
-                  const variantCount = grouped.children[parent.id]?.length || 0;
-                  const isExpanded = expandedParents[parent.id] || false;
-                  const parentDetailExpanded = expandedDetails[parent.id] || false;
-                  
-                  return (
-                    <React.Fragment key={parent.id}>
-                      <MobileProductCard
-                        product={parent}
-                        isSelected={parentChecked}
-                        hasChildren={hasChildren}
-                        isExpanded={isExpanded}
-                        variantCount={variantCount}
-                        onToggleExpand={() => toggleExpand(parent.id)}
-                        onSelect={handleSelectProduct}
-                        onStockAction={handleStockAction}
-                        onEdit={(product) => {
-                          setSelectedProduct(product);
-                          setIsEditInfoModalOpen(true);
-                        }}
-                        onAddVariant={handleAddVariant}
-                        onImagePreview={(url) => {
-                          setPreviewImageUrl(url);
-                          setIsImagePreviewOpen(true);
-                        }}
-                        isAdmin={isAdmin}
-                        isDetailExpanded={parentDetailExpanded}
-                        onToggleDetailExpand={hasChildren ? () => toggleDetailExpand(parent.id) : undefined}
-                        onImageUpload={() => refetch()}
-                        onDuplicate={handleDuplicateProduct}
-                        onArchive={handleArchiveProduct}
-                        onMoveToLocation={handleMoveToLocation}
-                      />
+                ) : (
+                  <div>
+                    {grouped.parents.map((parent) => {
+                      const parentChecked = selectedProductIds.includes(parent.id);
+                      const hasChildren = (grouped.children[parent.id]?.length || 0) > 0;
+                      const variantCount = grouped.children[parent.id]?.length || 0;
+                      const isExpanded = expandedParents[parent.id] || false;
+                      const parentDetailExpanded = expandedDetails[parent.id] || false;
                       
-                      {isExpanded && hasChildren && (
-                        grouped.children[parent.id].map((child) => {
-                          const childChecked = selectedProductIds.includes(child.id);
-                          const childDetailExpanded = expandedDetails[child.id] || false;
-                          return (
-                            <MobileProductCard
-                              key={child.id}
-                              product={child}
-                              isVariant={true}
-                              isSelected={childChecked}
-                              onSelect={handleSelectProduct}
-                              onStockAction={handleStockAction}
-                              onEdit={(product) => {
-                                setSelectedProduct(product);
-                                setIsEditInfoModalOpen(true);
-                              }}
-                              onImagePreview={(url) => {
-                                setPreviewImageUrl(url);
-                                setIsImagePreviewOpen(true);
-                              }}
-                              isAdmin={isAdmin}
-                              isDetailExpanded={childDetailExpanded}
-                              onToggleDetailExpand={() => toggleDetailExpand(child.id)}
-                              onImageUpload={() => refetch()}
-                              onDuplicate={handleDuplicateProduct}
-                              onArchive={handleArchiveProduct}
-                              onMoveToLocation={handleMoveToLocation}
-                            />
-                          );
-                        })
-                      )}
-                      
-                      {/* Empty state for no variants */}
-                      {isExpanded && !hasChildren && (
-                        <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 ml-8 mt-2">
-                          <div className="flex flex-col items-center gap-3">
-                            <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
-                              <Package className="w-6 h-6 text-gray-400" />
+                      return (
+                        <React.Fragment key={parent.id}>
+                          <MobileProductListItem
+                            product={parent}
+                            isSelected={parentChecked}
+                            hasChildren={hasChildren}
+                            isExpanded={isExpanded}
+                            variantCount={variantCount}
+                            onToggleExpand={() => toggleExpand(parent.id)}
+                            onSelect={handleSelectProduct}
+                            onStockAction={handleStockAction}
+                            onEdit={(product) => {
+                              setSelectedProduct(product);
+                              setIsEditInfoModalOpen(true);
+                            }}
+                            onAddVariant={handleAddVariant}
+                            onImagePreview={(url) => {
+                              setPreviewImageUrl(url);
+                              setIsImagePreviewOpen(true);
+                            }}
+                            isAdmin={isAdmin}
+                            isDetailExpanded={parentDetailExpanded}
+                            onToggleDetailExpand={hasChildren ? () => toggleDetailExpand(parent.id) : undefined}
+                            onImageUpload={() => refetch()}
+                            onDuplicate={handleDuplicateProduct}
+                            onArchive={handleArchiveProduct}
+                            onMoveToLocation={handleMoveToLocation}
+                          />
+                          
+                          {isExpanded && hasChildren && (
+                            grouped.children[parent.id].map((child) => {
+                              const childChecked = selectedProductIds.includes(child.id);
+                              const childDetailExpanded = expandedDetails[child.id] || false;
+                              return (
+                                <MobileProductListItem
+                                  key={child.id}
+                                  product={child}
+                                  isVariant={true}
+                                  isSelected={childChecked}
+                                  onSelect={handleSelectProduct}
+                                  onStockAction={handleStockAction}
+                                  onEdit={(product) => {
+                                    setSelectedProduct(product);
+                                    setIsEditInfoModalOpen(true);
+                                  }}
+                                  onImagePreview={(url) => {
+                                    setPreviewImageUrl(url);
+                                    setIsImagePreviewOpen(true);
+                                  }}
+                                  isAdmin={isAdmin}
+                                  isDetailExpanded={childDetailExpanded}
+                                  onToggleDetailExpand={() => toggleDetailExpand(child.id)}
+                                  onImageUpload={() => refetch()}
+                                  onDuplicate={handleDuplicateProduct}
+                                  onArchive={handleArchiveProduct}
+                                  onMoveToLocation={handleMoveToLocation}
+                                />
+                              );
+                            })
+                          )}
+                          
+                          {/* Empty state for no variants */}
+                          {isExpanded && !hasChildren && (
+                            <div className="bg-gray-50 border-b border-gray-200 px-4 py-6 ml-8">
+                              <div className="flex flex-col items-center gap-3">
+                                <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
+                                  <Package className="w-6 h-6 text-gray-400" />
+                                </div>
+                                <div className="text-center">
+                                  <p className="text-sm font-medium text-gray-900">No variants yet</p>
+                                  <p className="text-xs text-gray-500">Add variants to organize different sizes, colors, or options</p>
+                                </div>
+                                <Button 
+                                  variant="outline" 
+                                  size="sm" 
+                                  onClick={() => {
+                                    setSelectedProduct(parent);
+                                    setIsAddVariantModalOpen(true);
+                                  }}
+                                  className="text-xs"
+                                >
+                                  <Plus className="w-3 h-3 mr-1" />
+                                  Add Variant
+                                </Button>
+                              </div>
                             </div>
-                            <div className="text-center">
-                              <p className="text-sm font-medium text-gray-900">No variants yet</p>
-                              <p className="text-xs text-gray-500">Add variants to organize different sizes, colors, or options</p>
-                            </div>
-                            <Button 
-                              variant="outline" 
-                              size="sm" 
-                              onClick={() => {
-                                setSelectedProduct(parent);
-                                setIsAddVariantModalOpen(true);
-                              }}
-                              className="text-xs"
-                            >
-                              <Plus className="w-3 h-3 mr-1" />
-                              Add Variant
-                            </Button>
-                          </div>
-                        </div>
-                      )}
-                    </React.Fragment>
-                  );
-                })
-              )}
+                          )}
+                        </React.Fragment>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
             )}
-          </div>
           </div>
         )}
 
