@@ -1,4 +1,4 @@
-import React, { useState, useRef, lazy } from 'react';
+import React, { useState, useRef, lazy, useEffect } from 'react';
 import Header from './HeaderPublic';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -567,6 +567,9 @@ export const HomePage = () => {
   // Pricing-related state and hooks
   const { user } = useAuth();
   
+  // Scroll progress tracking state
+  const [scrollProgress, setScrollProgress] = useState(0);
+  
   // Initialize tracking with comprehensive error suppression
   React.useEffect(() => {
     // Comprehensive global error handler for all tracking services
@@ -652,6 +655,37 @@ export const HomePage = () => {
     window.addEventListener('resize', checkScreenSize);
     
     return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
+  
+  // Scroll progress tracking effect
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+      setScrollProgress(Math.min(100, Math.max(0, progress)));
+    };
+
+    // Initial calculation
+    handleScroll();
+    
+    // Add scroll event listener with throttling for better performance
+    let ticking = false;
+    const throttledHandleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener('scroll', throttledHandleScroll, { passive: true });
+    
+    return () => {
+      window.removeEventListener('scroll', throttledHandleScroll);
+    };
   }, []);
   
   // Pricing toggle state
@@ -1378,6 +1412,14 @@ export const HomePage = () => {
 
 
 
+      {/* Scroll Progress Tracker */}
+      <div className="fixed top-0 left-0 right-0 z-50 h-1 bg-gray-200/50">
+        <div 
+          className="h-full bg-gradient-to-r from-blue-500 to-blue-600 transition-all duration-150 ease-out"
+          style={{ width: `${scrollProgress}%` }}
+        />
+      </div>
+
       <section className="relative py-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 overflow-hidden bg-gradient-to-b from-blue-50/30 to-white pt-20 sm:pt-24 md:pt-28 lg:pt-24">
         {/* Subtle geometric pattern overlay */}
         <div 
@@ -1964,11 +2006,11 @@ export const HomePage = () => {
           </FadeInWhenVisible>
 
             {/* Two Column Layout */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 lg:items-end">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 lg:items-stretch">
               {/* Left Column - Feature Cards */}
-              <div className="flex flex-col">
+              <div className="flex flex-col h-full">
                 <FadeInWhenVisible delay={200}>
-                  <div className="space-y-6">
+                  <div className="space-y-6 h-full">
                     {whyChooseUsCarousel.map((item, index) => (
                       <motion.div
                         key={item.id}
@@ -2006,13 +2048,13 @@ export const HomePage = () => {
               </div>
 
               {/* Right Column - Image */}
-              <div className="flex flex-col">
+              <div className="flex flex-col h-full">
                 <FadeInWhenVisible delay={400}>
-                  <div className="w-full rounded-2xl overflow-hidden border-2 border-gray-200 relative">
+                  <div className="w-full h-full rounded-2xl overflow-hidden border-2 border-gray-200 relative flex">
                     <img
                       src="/mobile.png"
                       alt="StockFlow Dashboard - Modern inventory management interface showing real-time analytics, product tracking, and business insights"
-                      className="w-full h-auto object-cover hover:scale-105 transition-transform duration-300 block"
+                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                     />
                     {/* Optional overlay or badge */}
                     <div className="absolute -top-4 -right-4 bg-blue-600 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg z-10">
