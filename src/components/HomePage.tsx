@@ -2007,26 +2007,6 @@ export const HomePage = () => {
               </FadeInWhenVisible>
             </div>
 
-            {/* Progress Bar */}
-            <FadeInWhenVisible delay={800}>
-              <div className="mt-8 sm:mt-12 md:mt-16 mb-8 sm:mb-12">
-                <div className="max-w-2xl mx-auto px-4">
-                  <div className="flex justify-between items-center mb-3 sm:mb-4">
-                    <span className="text-xs sm:text-sm font-medium text-gray-600">Progress</span>
-                    <span className="text-xs sm:text-sm font-medium text-gray-600">3 steps to success</span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-1.5 sm:h-2">
-                    <motion.div 
-                      className="bg-gradient-to-r from-blue-500 to-blue-600 h-1.5 sm:h-2 rounded-full"
-                      initial={{ width: "0%" }}
-                      animate={{ width: "100%" }}
-                      transition={{ duration: 2, delay: 1 }}
-                    />
-                  </div>
-                </div>
-              </div>
-            </FadeInWhenVisible>
-
             {/* CTA */}
             <FadeInWhenVisible delay={700}>
               <div className="text-center mt-8 sm:mt-12 md:mt-16 mb-6 sm:mb-8">
