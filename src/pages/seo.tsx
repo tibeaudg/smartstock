@@ -27,7 +27,7 @@ export default function SEOOverviewPage() {
         { name: "Free Inventory Management", url: "/free-inventory-management" },
         { name: "Free Inventory App", url: "/free-inventory-app" },
         { name: "Inventory Management", url: "/inventory-management" },
-        { name: "Inventory Management SMB", url: "/inventory-management-SMB" },
+        { name: "Inventory Management SMB", url: "/inventory-management-smb" },
         { name: "Inventory Management Tips", url: "/inventory-management-tips" },
         { name: "Inventory Tracker", url: "/inventory-tracker" },
         { name: "Inventory App", url: "/inventory-app" },

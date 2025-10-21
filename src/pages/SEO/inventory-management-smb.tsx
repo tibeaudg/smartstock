@@ -103,9 +103,9 @@ export default function InventoryManagementSME() {
         title="Inventory Management Software for SMEs | Affordable & Scalable | StockFlow"
         description="Inventory management software specially for SMEs and small businesses. Start free, implement in 1 day and save 70% time. Perfect for growing businesses."
         keywords="inventory management SMB, inventory management small business, inventory software SMB, SMB inventory management, stock management SMB, inventory for small businesses, affordable inventory management, inventory management startups"
-        url="https://www.stockflow.be/inventory-management-SMB"
+        url="https://www.stockflow.be/inventory-management-smb"
         hreflang={[
-          { lang: "en", url: "https://www.stockflow.be/inventory-management-SMB" },
+          { lang: "en", url: "https://www.stockflow.be/inventory-management-smb" },
           { lang: "nl", url: "https://www.stockflow.be/voorraadbeheer-kmo" }
         ]}
       />
@@ -387,7 +387,7 @@ export default function InventoryManagementSME() {
               "url": "https://www.stockflow.be/logo.png"
             }
           },
-          "url": "https://www.stockflow.be/inventory-management-SMB",
+          "url": "https://www.stockflow.be/inventory-management-smb",
           "inLanguage": "en",
           "availableLanguage": ["en", "nl"]
         }

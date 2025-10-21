@@ -196,7 +196,7 @@ const Footer = () => {
           <Link to="/inventory-management-software" className="block text-gray-400 hover:text-white underline">
             Inventory Software
           </Link>
-          <Link to="/inventory-management-SMB" className="block text-gray-400 hover:text-white underline">
+          <Link to="/inventory-management-smb" className="block text-gray-400 hover:text-white underline">
             For SMB
           </Link>
           <Link to="/warehouse-management-system" className="block text-gray-400 hover:text-white underline">

@@ -122,7 +122,7 @@ export default function VoorraadbeheerKMO() {
         locale="nl"
         alternateLanguages={[
           { lang: 'nl-BE', url: 'https://www.stockflow.be/voorraadbeheer-kmo' },
-          { lang: 'en-US', url: 'https://www.stockflow.be/inventory-management-SMB' }
+          { lang: 'en-US', url: 'https://www.stockflow.be/inventory-management-smb' }
         ]}
       />
 
