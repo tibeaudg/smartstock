@@ -1546,7 +1546,7 @@ export const HomePage = () => {
         {/* Fade to white at the bottom */}
         <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white via-white/60 to-transparent" />
         
-        <div className="max-w-7xl mx-auto relative z-10 w-full px-4 sm:px-6">
+        <div className=" relative z-10 w-screen px-0 sm:px-6">
           <div className="flex flex-col items-center text-center min-h-[60vh] sm:min-h-[70vh] lg:min-h-[80vh]">
             
             {/* Text Content - Enhanced with Better Hierarchy */}
@@ -1562,7 +1562,7 @@ export const HomePage = () => {
 
               {/* Enhanced headline with better contrast and flow */}
               <BounceInWhenVisible delay={200}>
-                <div className="mb-6 sm:mb-8 md:mb-12">
+                <div className="mb-6 mt-6 sm:mb-8 md:mb-12">
                   <h1 className="text-[clamp(2.8rem,7.5vw,8.5rem)] sm:text-[clamp(2.5rem,7vw,5rem)] md:text-[clamp(3.5rem,6vw,5.5rem)] mb-3 sm:mb-4 md:mb-6 leading-tight tracking-tight sm:px-0">
                     <span className="block text-white drop-shadow-lg mb-1 sm:mb-2 md:mb-3">Inventory Chaos</span>
                     <span className="block text-white drop-shadow-lg mb-1 sm:mb-2 md:mb-3">Ends Here.</span>
