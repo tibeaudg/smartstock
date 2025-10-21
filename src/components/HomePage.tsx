@@ -1546,24 +1546,32 @@ export const HomePage = () => {
         {/* Fade to white at the bottom */}
         <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white via-white/60 to-transparent" />
         
-        <div className="max-w-7xl mx-auto relative z-10 w-full">
-          <div className="flex flex-col items-center text-center min-h-[70vh] lg:min-h-[80vh]">
+        <div className="max-w-7xl mx-auto relative z-10 w-full px-4 sm:px-6">
+          <div className="flex flex-col items-center text-center min-h-[60vh] sm:min-h-[70vh] lg:min-h-[80vh]">
             
             {/* Text Content - Enhanced with Better Hierarchy */}
-            <div className="mb-12 lg:mb-16 mt-24">
-          
+            <div className="mb-6 sm:mb-8 md:mb-12 lg:mb-16 mt-12 sm:mt-16 md:mt-20 lg:mt-24 px-0">
+
+
+              {/* Build For SMB's Badge */}
+              <div className="mb-4 sm:mb-6 flex justify-center">
+                <div className="inline-flex items-center px-4 py-2 bg-white border border-blue-200 rounded-full shadow-sm">
+                  <span className="text-sm font-medium text-blue-600">Build For SMB's</span>
+                </div>
+              </div>
+
               {/* Enhanced headline with better contrast and flow */}
               <BounceInWhenVisible delay={200}>
-                <div className="mb-8 sm:mb-12 md:mb-16">
-                  <h1 className="text-[clamp(3rem,6vw,5.5rem)] mb-6 leading-rela tracking-relaxed">
-                    <span className="block text-white drop-shadow-lg">Inventory Chaos Ends Here.</span>
+                <div className="mb-6 sm:mb-8 md:mb-12">
+                  <h1 className="text-[clamp(2.8rem,7.5vw,8.5rem)] sm:text-[clamp(2.5rem,7vw,5rem)] md:text-[clamp(3.5rem,6vw,5.5rem)] mb-3 sm:mb-4 md:mb-6 leading-tight tracking-tight sm:px-0">
+                    <span className="block text-white drop-shadow-lg mb-1 sm:mb-2 md:mb-3">Inventory Chaos</span>
+                    <span className="block text-white drop-shadow-lg mb-1 sm:mb-2 md:mb-3">Ends Here.</span>
                     <span className="block">
-                      <span className="bg-white bg-clip-text text-transparent drop-shadow-lg">
-                        Meet 
-                      </span>{' '}
-                      <span className="text-white drop-shadow-lg" style={{
-                        WebkitTextStroke: '2px white',
-                        textShadow: '0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.3), 0 0 30px rgba(255, 255, 255, 0.2)'
+                      <span className="hidden sm:inline"> </span>
+                      <span className="block sm:inline text-white drop-shadow-lg" style={{
+                        WebkitTextStroke: '1px white',
+                        textShadow: '0 0 8px rgba(255, 255, 255, 0.6), 0 0 16px rgba(255, 255, 255, 0.4), 0 0 24px rgba(255, 255, 255, 0.2)',
+                        letterSpacing: '0.1em'
                       }}>
                         Stockflow
                       </span>
@@ -1574,70 +1582,61 @@ export const HomePage = () => {
               
               {/* Enhanced subtitle with more visceral messaging */}
               <SlideUpWhenVisible delay={400}>
-                <div className="mb-10 sm:mb-12 max-w-4xl mx-auto">
+                <div className="mb-8 sm:mb-10 md:mb-12 max-w-5xl mx-auto px-2">
 
-                  <p className="text-lg sm:text-xl md:text-2xl text-white leading-relaxed max-w-3xl mx-auto">
-                  Stop losing money on inventory mistakes. Manage your stock, suppliers, and orders — all in one simple, visual tool that actually works.
+                  <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl text-white leading-relaxed max-w-4xl mx-auto px-2">
+                  Manage your stock, in one simple, visual tool that actually works.
                   </p>
                 </div>
               </SlideUpWhenVisible>
 
               {/* Enhanced CTA Section */}
               <FadeInWhenVisible delay={600}>
-                <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center mb-10 sm:mb-12">
+                <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center mb-6 sm:mb-8 md:mb-10 px-4">
                   <ScrollTriggeredButton
                     as="button"
-                  className="group w-full sm:w-auto bg-white   text-blue-600 hover:bg-blue-50
-                      px-10 sm:px-12 py-4 sm:py-5 flex items-center justify-center gap-3
-                      text-lg sm:text-xl font-bold rounded-2xl
+                  className="group w-full sm:w-auto bg-white text-blue-600 hover:bg-blue-50
+                      px-6 sm:px-8 md:px-10 lg:px-12 py-4 sm:py-5 md:py-6 flex items-center justify-center gap-2 sm:gap-3
+                      text-sm sm:text-base md:text-lg lg:text-xl font-bold rounded-2xl
                       transition-all duration-500 shadow-2xl hover:shadow-3xl hover:shadow-blue-500/25
-                      transform hover:scale-105 border border-blue-500/20"
+                      transform hover:scale-105 border border-blue-500/20 min-h-[48px] sm:min-h-[56px] touch-manipulation"
                     onClick={() => navigate('/pricing')}
                   >
-                    <Rocket className="w-6 h-6 group-hover:animate-bounce" />
+                    <Rocket className="w-5 h-5 sm:w-6 sm:h-6 group-hover:animate-bounce" />
                     Start Managing Smarter
-                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
+                    <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform duration-300" />
                   </ScrollTriggeredButton>
                 </div>
-              </FadeInWhenVisible>
-              
-              {/* Enhanced trust indicators with better visual hierarchy */}
-              <FadeInWhenVisible delay={800}>
-                <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 justify-center items-center text-sm sm:text-base">
-                  <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm px-4 py-3 rounded-xl border border-white/20">
-                    <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
-                      <Check className="h-5 w-5 text-white" />
+                
+                {/* Features with checkmarks */}
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 justify-center items-center mt-6 sm:mt-8">
+                  <div className="flex items-center gap-1">
+                    <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+                      <Check className="h-3 w-3 text-white" />
                     </div>
-                    <div className="text-white font-medium">
-                      <div className="font-bold">No credit card</div>
-                      <div className="text-xs text-blue-200">Free forever plan</div>
-                    </div>
+                    <span className="text-white text-sm ">No credit card</span>
                   </div>
-                  <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm px-4 py-3 rounded-xl border border-white/20">
-                    <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
-                      <Timer className="h-5 w-5 text-white" />
+                  <div className="flex items-center gap-1">
+                    <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+                      <Check className="h-3 w-3 text-white" />
                     </div>
-                    <div className="text-white font-medium">
-                      <div className="font-bold">Setup in 10 min</div>
-                      <div className="text-xs text-blue-200">Ready to use</div>
-                    </div>
+                    <span className="text-white text-sm ">Free forever plan</span>
                   </div>
-                  <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm px-4 py-3 rounded-xl border border-white/20">
-                    <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
-                      <Users className="h-5 w-5 text-white" />
+                  <div className="flex items-center gap-1">
+                    <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+                      <Check className="h-3 w-3 text-white" />
                     </div>
-                    <div className="text-white font-medium">
-                      <div className="font-bold">1,200+ SMBs</div>
-                      <div className="text-xs text-blue-200">Trust us daily</div>
-                    </div>
+                    <span className="text-white text-sm ">Setup in 10 min</span>
                   </div>
                 </div>
               </FadeInWhenVisible>
+
+              
             </div>
 
             {/* Mobile mockup with floating cards - Centered underneath */}
-            <div className="flex items-center justify-center">
-              <div className="relative w-full max-w-md">
+            <div className="flex items-center justify-center mt-8 sm:mt-12 md:mt-16">
+              <div className="relative w-full max-w-sm sm:max-w-md px-4">
                 
                 {/* Floating Feature Cards - Hidden on mobile for better performance */}
                 <div className="hidden md:block">
@@ -1707,7 +1706,7 @@ export const HomePage = () => {
       <section className="py-12 sm:py-14 md:py-16 lg:py-18 bg-blue-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Main White Card */}
-          <div className="bg-white rounded-3xl shadow-xl p-8 sm:p-12 md:p-16">
+          <div className="bg-white rounded-3xl shadow-xl p-2 pt-8 sm:p-12 md:p-16">
             {/* Header Section */}
             <FadeInWhenVisible>
               <div className="mb-12 sm:mb-16">
@@ -1717,7 +1716,7 @@ export const HomePage = () => {
                     <div className="text-sm font-semibold text-blue-600 uppercase tracking-wide mb-4">
                       INVENTORY PROBLEMS
                     </div>
-                    <h2 className="lg:pl-24 lg:pr-24 lg:pt-6 lg:pb-6 text-[clamp(3rem,5vw,4rem)] font-light text-gray-800 mb-3 leading-tight px-2">                      
+                    <h2 className="lg:pl-24 lg:pr-24 lg:pt-6 lg:pb-6 text-[clamp(2rem,4vw,3.5rem)] sm:text-[clamp(2.5rem,5vw,3rem)] tracking-tight text-gray-800 mb-3 leading-tight px-4 text-center">                      
                       <BlurText className="justify-center" text="Stop Losing Money On Inventory Mistakes!" onAnimationComplete={handleAnimationComplete} />
                     </h2>
                   </div>
@@ -1825,11 +1824,11 @@ export const HomePage = () => {
                   POWERFUL FEATURES
                 </span>
               </div>
-              <h2 className="lg:pl-24 lg:pr-24 lg:pt-6 lg:pb-6 text-[clamp(3rem,5vw,4rem)] font-light text-gray-800 mb-3 leading-tight px-2">
+              <h2 className="lg:pl-24 lg:pr-24 lg:pt-6 lg:pb-6 text-[clamp(2rem,4vw,3.5rem)] sm:text-[clamp(2.5rem,5vw,4rem)] text-gray-800 mb-3 leading-tight px-4 text-center">
               <BlurText className="justify-center" text="Everything You Need To Manage Inventory" onAnimationComplete={handleAnimationComplete} /> 
 
               </h2>
-              <p className="text-lg sm:text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto px-4 leading-relaxed">
+              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 max-w-3xl mx-auto px-4 leading-relaxed">
                 Keep track of your inventory, see what's selling, and get alerts when you need to reorder.
               </p>
             </div>
@@ -1949,7 +1948,7 @@ export const HomePage = () => {
           <FadeInWhenVisible>
             <div className="text-center mb-12 sm:mb-16 md:mb-20">
               {/* Main Title */}
-              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 sm:mb-6 leading-tight">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-gray-900 mb-4 sm:mb-6 leading-tight">
                 Start Tracking In 3 Simple Steps
               </h2>
               
@@ -1968,7 +1967,7 @@ export const HomePage = () => {
             </div>
 
             {/* Steps Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16 max-w-6xl mx-auto relative z-10">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 sm:gap-12 lg:gap-16 max-w-6xl mx-auto relative z-10 px-4 sm:px-6">
               
               {/* Step 1 - Register Online */}
               <FadeInWhenVisible delay={200}>
@@ -1992,8 +1991,6 @@ export const HomePage = () => {
 
                   </p>
 
-                  {/* Vertical connecting line for mobile */}
-                  <div className="lg:hidden absolute -bottom-6 left-1/2 transform -translate-x-1/2 w-0.5 h-12 bg-gray-300"></div>
                 </div>
               </FadeInWhenVisible>
 
@@ -2020,8 +2017,6 @@ export const HomePage = () => {
 
                   </p>
 
-                  {/* Vertical connecting line for mobile */}
-                  <div className="lg:hidden absolute -bottom-6 left-1/2 transform -translate-x-1/2 w-0.5 h-12 bg-gray-300"></div>
                 </div>
               </FadeInWhenVisible>
 
@@ -2066,13 +2061,13 @@ export const HomePage = () => {
                   CONNECT YOUR TOOLS
                 </span>
               </div>
-              <h2 className="text-[clamp(2.5rem,4vw,4rem)] font-light text-gray-800 mb-3 leading-tight px-2">
+              <h2 className="text-[clamp(1.8rem,3.5vw,3.5rem)] sm:text-[clamp(2rem,4vw,4rem)] text-gray-800 mb-3 leading-tight px-4 text-center">
                 Connect StockFlow with <br className="hidden sm:block" />
                 <span className="text-transparent bg-clip-text bg-blue-600">
                   Your Business Tools
                 </span>
               </h2>
-              <p className="text-lg sm:text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto px-4 leading-relaxed">
+              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 max-w-3xl mx-auto px-4 leading-relaxed">
                 Seamlessly integrate with your existing systems and streamline your workflow
               </p>
             </div>
@@ -2114,7 +2109,7 @@ export const HomePage = () => {
           {/* Header */}
           <FadeInWhenVisible>
             <div className="text-center mb-10 sm:mb-12 md:mb-16 lg:mb-20">
-            <h2 className="lg:pl-24 lg:pr-24 lg:pt-6 lg:pb-6 text-[clamp(3rem,5vw,4rem)] font-light text-gray-800 mb-3 leading-tight px-2">
+            <h2 className="lg:pl-24 lg:pr-24 lg:pt-6 lg:pb-6 text-[clamp(2rem,4vw,3.5rem)] sm:text-[clamp(2.5rem,5vw,4rem)] text-gray-800 mb-3 leading-tight px-4 text-center">
             <BlurText className="justify-center" text="Why Choose Stockflow" onAnimationComplete={handleAnimationComplete} /> 
 
               </h2>
@@ -2125,9 +2120,9 @@ export const HomePage = () => {
             </div>
           </FadeInWhenVisible>
 
-            {/* 2x2 Grid Layout */}
+            {/* Desktop: 2x2 Grid Layout */}
             <FadeInWhenVisible delay={200}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-4xl mx-auto">
+              <div className="hidden md:grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-4xl mx-auto">
                 {whyChooseUsCarousel.map((item, index) => (
                   <motion.div
                     key={item.id}
@@ -2159,6 +2154,49 @@ export const HomePage = () => {
                   </motion.div>
                 ))}
               </div>
+
+              {/* Mobile: Horizontal carousel */}
+              <div className="md:hidden">
+                <HorizontalScrollCarousel
+                  desktopCardsVisible={2}
+                  mobileCardsVisible={1}
+                  cardSpacing={24}
+                  showArrows={true}
+                  showDots={true}
+                  autoplay={true}
+                  autoplayDelay={4000}
+                  className="mb-8"
+                  cardClassName="h-full"
+                >
+                  {whyChooseUsCarousel.map((item, index) => (
+                    <div
+                      key={item.id}
+                      className="bg-white border-2 border-gray-200 shadow-lg rounded-2xl p-6 hover:shadow-lg transition-all duration-300"
+                    >
+                      <div className="text-center">
+                        {/* Icon */}
+                        <div className={`w-16 h-16 mx-auto mb-4 rounded-xl flex items-center justify-center ${
+                          index === 0 ? 'bg-blue-400' : 
+                          index === 1 ? 'bg-purple-500' : 
+                          index === 2 ? 'bg-red-500' : 'bg-green-500'
+                        }`}>
+                          <div className="text-white">
+                            {item.icon}
+                          </div>
+                        </div>
+                        
+                        {/* Content */}
+                        <h3 className="text-lg font-bold text-gray-900 mb-3">
+                          {item.title}
+                        </h3>
+                        <p className="text-gray-600 leading-relaxed text-sm">
+                          {item.description}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </HorizontalScrollCarousel>
+              </div>
             </FadeInWhenVisible>
           </div>
         </div>
@@ -2176,13 +2214,13 @@ export const HomePage = () => {
                   FREQUENTLY ASKED QUESTIONS
                 </span>
               </div>
-              <h2 className="lg:pl-24 lg:pr-24 lg:pt-6 lg:pb-6 text-[clamp(3rem,5vw,4rem)] font-light text-gray-800 mb-3 leading-tight px-2">
+              <h2 className="lg:pl-24 lg:pr-24 lg:pt-6 lg:pb-6 text-[clamp(2rem,4vw,3.5rem)] sm:text-[clamp(2.5rem,5vw,4rem)] text-gray-800 mb-3 leading-tight px-4 text-center">
               Got Questions? <br className="hidden sm:block" />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-600">
                   We've Got Answers
                 </span>
               </h2>
-              <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+              <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto px-4 leading-relaxed">
                 Everything you need to know about StockFlow
               </p>
             </div>
@@ -2357,29 +2395,30 @@ export const HomePage = () => {
                 {/* Content */}
                 <div className="relative z-10 text-center max-w-4xl mx-auto">
                   {/* Main Headline */}
-                  <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 sm:mb-6 leading-tight">
-                    Ready to simplify your stock management?
+                  <h2 className="text-[clamp(1.5rem,4vw,2rem)] sm:text-3xl md:text-4xl lg:text-5xl xl:text-5xl text-white mb-4 sm:mb-6 leading-tight px-4">
+                    Ready to simplify your stock management
                   </h2>
                   
                   {/* Subheadline */}
-                  <p className="text-lg sm:text-xl md:text-2xl text-blue-100 mb-8 sm:mb-10 md:mb-12 max-w-3xl mx-auto leading-relaxed">
+                  <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-blue-100 mb-6 sm:mb-8 md:mb-10 max-w-3xl mx-auto px-4 leading-relaxed">
                     Start your free trial today and see how StockFlow saves you time and money.
                   </p>
                   
                   {/* CTA Buttons */}
-                  <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 justify-center items-stretch sm:items-center mb-6 sm:mb-8">
+                  <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 justify-center items-stretch sm:items-center mb-6 sm:mb-8 px-4">
                   <ScrollTriggeredButton
                     as="button"
                     className="w-full sm:w-auto bg-white text-blue-600 hover:bg-blue-50
-                      px-10 py-5 sm:px-12 sm:py-6 md:px-14 md:py-4
-                      text-lg sm:text-xl md:text-2xl
+                      px-6 py-4 sm:px-8 sm:py-5 md:px-10 md:py-6 lg:px-12
+                      text-base sm:text-lg md:text-xl lg:text-2xl
                       font-bold rounded-lg transform hover:scale-105
                       transition-all duration-300
                       shadow-2xl hover:shadow-3xl
-                      ring-0 focus:ring-4 focus:ring-white/50 focus:outline-none"
+                      ring-0 focus:ring-4 focus:ring-white/50 focus:outline-none
+                      min-h-[48px] sm:min-h-[56px] touch-manipulation"
                     onClick={() => navigate('/pricing')}
               >
-                Start Importing
+                Create a Free Account
                 </ScrollTriggeredButton>
 
                   </div>
