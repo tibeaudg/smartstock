@@ -2666,13 +2666,14 @@ export const StockList = () => {
                 {viewMode === 'list' ? <List className="w-4 h-4" /> : <Grid3x3 className="w-4 h-4" />}
               </Button>
               
-              {/* Settings Dropdown */}
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm" className="h-9 shrink-0">
-                    <Settings className="w-4 h-4" />
-                  </Button>
-                </DropdownMenuTrigger>
+              {/* Settings Dropdown - Hidden on mobile */}
+              {!isMobile && (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="sm" className="h-9 shrink-0">
+                      <Settings className="w-4 h-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">
                   <DropdownMenuItem disabled className="font-semibold">
                     Import & Settings
@@ -2736,6 +2737,7 @@ export const StockList = () => {
                   </DropdownMenuCheckboxItem>
                 </DropdownMenuContent>
               </DropdownMenu>
+              )}
             </div>
           </div>
         </div>
