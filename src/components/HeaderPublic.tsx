@@ -13,6 +13,10 @@ export interface HeaderProps {
   buttonTextColor?: string;
   onLoginClick?: () => void;
   onRegisterClick?: () => void;
+  simplifiedNav?: boolean;
+  hideNotifications?: boolean;
+  onNavigate?: () => void;
+  hideAuthButtons?: boolean;
 }
 
 const Header: React.FC<HeaderProps> = ({
@@ -21,7 +25,11 @@ const Header: React.FC<HeaderProps> = ({
   buttonBgColor,
   buttonTextColor,
   onLoginClick,
-  onRegisterClick
+  onRegisterClick,
+  simplifiedNav,
+  hideNotifications,
+  onNavigate,
+  hideAuthButtons
 }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const isMobile = useIsMobile();
