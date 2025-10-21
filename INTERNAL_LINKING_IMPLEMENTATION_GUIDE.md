@@ -55,7 +55,7 @@ Focus on pages with existing traffic or strategic keywords:
 - magazijnbeheer
 
 **English Pages:**
-- inventory-management-sme
+- inventory-management-SMB
 - best-inventory-management-software
 - inventory-software-for-small-business
 - warehouse-management
@@ -155,7 +155,7 @@ const relatedPages = getRelatedPages('/stockflow-vs-competitor', 6);
 
 ### English Main Cluster (Pillar: inventory-management-software)
 - **Pillar:** /inventory-management-software ✅
-- **Industry:** inventory-management-sme, inventory-for-hospitality, inventory-for-ecommerce
+- **Industry:** inventory-management-SMB, inventory-for-hospitality, inventory-for-ecommerce
 - **Features:** best-inventory-management-software, inventory-software-for-small-business
 - **Solutions:** warehouse-management-system, inventory-tracker
 - **Total:** 35+ pages

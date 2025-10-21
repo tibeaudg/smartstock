@@ -25,7 +25,7 @@ const pagesToCreate = [
     description: 'Professional stock management software designed for SMEs. Track inventory, optimize stock levels, and streamline operations.',
     h1: 'Stock Management Software',
     subtitle: 'All-in-One Solution for Business Growth',
-    keywords: 'stock management software, inventory software, stock control, warehouse software, SME stock',
+    keywords: 'stock management software, inventory software, stock control, warehouse software, SMB stock',
     url: '/stock-management-software'
   },
   {

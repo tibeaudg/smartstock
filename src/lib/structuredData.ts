@@ -371,7 +371,7 @@ export function generateComprehensiveStructuredData(
       "Stock Control",
       "Warehouse Management",
       "Business Software",
-      "SME Solutions"
+      "SMB Solutions"
     ]
   };
 

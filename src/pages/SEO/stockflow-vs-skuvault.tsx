@@ -27,7 +27,7 @@ export default function StockFlowVsSkuVault() {
       <section className="bg-gradient-to-br from-blue-50 to-white py-12 md:py-20 px-4">
         <div className="max-w-6xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-            StockFlow vs SkuVault: <span className="text-blue-600">The Affordable SME Alternative</span>
+            StockFlow vs SkuVault: <span className="text-blue-600">The Affordable SMB Alternative</span>
           </h1>
           <p className="text-xl text-gray-600 mb-8">
             SkuVault is powerful but enterprise-priced at $499/month. StockFlow delivers essentials for small businesses, starting free.

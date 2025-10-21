@@ -135,7 +135,7 @@ export default function StockFlowVsVisma() {
             <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
               Choosing between StockFlow and Visma for inventory management? 
               See why Belgian businesses choose StockFlow for its better pricing, 
-              local support, and SME-focused features.
+              local support, and SMB-focused features.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link 

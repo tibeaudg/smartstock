@@ -18,12 +18,12 @@ export default function InventoryManagementSME() {
       answer: "StockFlow offers a completely free version for SMEs up to 30 products. For growing SMEs, paid plans start from €29 per month. This makes it accessible for businesses of any size without large initial investment."
     },
     {
-      question: "How quickly can an SME implement inventory management software?",
+      question: "How quickly can an SMB implement inventory management software?",
       answer: "Most SMEs can be fully operational within 1-2 days with inventory management software. StockFlow is specifically designed for quick implementation without technical knowledge. You can start immediately without long training or complex setup."
     },
     {
       question: "Is inventory management software scalable for growing SMEs?",
-      answer: "Yes, good inventory management software grows with your SME. You can start with basic features and gradually expand with more advanced features like multi-location management, automation and integrations as your business grows."
+      answer: "Yes, good inventory management software grows with your SMB. You can start with basic features and gradually expand with more advanced features like multi-location management, automation and integrations as your business grows."
     },
     {
       question: "What ROI can SMEs expect from inventory management software?",
@@ -35,7 +35,7 @@ export default function InventoryManagementSME() {
     {
       icon: DollarSign,
       title: "Affordable & Transparent",
-      description: "Start free or choose an affordable plan without hidden costs. Perfect for SME budgets.",
+      description: "Start free or choose an affordable plan without hidden costs. Perfect for SMB budgets.",
       color: "green"
     },
     {
@@ -102,10 +102,10 @@ export default function InventoryManagementSME() {
       <SEO
         title="Inventory Management Software for SMEs | Affordable & Scalable | StockFlow"
         description="Inventory management software specially for SMEs and small businesses. Start free, implement in 1 day and save 70% time. Perfect for growing businesses."
-        keywords="inventory management sme, inventory management small business, inventory software sme, sme inventory management, stock management sme, inventory for small businesses, affordable inventory management, inventory management startups"
-        url="https://www.stockflow.be/inventory-management-sme"
+        keywords="inventory management SMB, inventory management small business, inventory software SMB, SMB inventory management, stock management SMB, inventory for small businesses, affordable inventory management, inventory management startups"
+        url="https://www.stockflow.be/inventory-management-SMB"
         hreflang={[
-          { lang: "en", url: "https://www.stockflow.be/inventory-management-sme" },
+          { lang: "en", url: "https://www.stockflow.be/inventory-management-SMB" },
           { lang: "nl", url: "https://www.stockflow.be/voorraadbeheer-kmo" }
         ]}
       />
@@ -198,7 +198,7 @@ export default function InventoryManagementSME() {
               Why do <span className="text-blue-600">SMEs</span> need specific inventory management software?
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              As an SME, you face unique challenges. You need to be agile, work with limited resources and still grow professionally. 
+              As an SMB, you face unique challenges. You need to be agile, work with limited resources and still grow professionally. 
               Standard inventory management software is often too complex or too expensive. StockFlow is different.
             </p>
           </div>
@@ -225,7 +225,7 @@ export default function InventoryManagementSME() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Built for <span className="text-blue-600">SME Success</span>
+              Built for <span className="text-blue-600">SMB Success</span>
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
               All features you need to professionally manage your inventory without enterprise complexity
@@ -271,7 +271,7 @@ export default function InventoryManagementSME() {
             <div className="text-center p-6">
               <div className="text-5xl font-bold text-blue-600 mb-2">70%</div>
               <p className="text-gray-600 font-medium">Time Savings</p>
-              <p className="text-sm text-gray-500 mt-2">Average across all SME customers</p>
+              <p className="text-sm text-gray-500 mt-2">Average across all SMB customers</p>
             </div>
             <div className="text-center p-6">
               <div className="text-5xl font-bold text-green-600 mb-2">25%</div>
@@ -306,7 +306,7 @@ export default function InventoryManagementSME() {
       <section className="py-20 px-4 bg-gradient-to-r from-blue-600 to-blue-800 text-white">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            Ready to Transform Your SME's Inventory Management?
+            Ready to Transform Your SMB's Inventory Management?
           </h2>
           <p className="text-xl mb-10 leading-relaxed">
             Join 500+ SMEs that already optimized their inventory management with StockFlow. 
@@ -387,7 +387,7 @@ export default function InventoryManagementSME() {
               "url": "https://www.stockflow.be/logo.png"
             }
           },
-          "url": "https://www.stockflow.be/inventory-management-sme",
+          "url": "https://www.stockflow.be/inventory-management-SMB",
           "inLanguage": "en",
           "availableLanguage": ["en", "nl"]
         }

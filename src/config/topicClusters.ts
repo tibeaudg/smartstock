@@ -371,8 +371,8 @@ export const englishMainCluster: TopicCluster = {
   clusters: [
     // Industry-specific
     {
-      path: '/inventory-management-sme',
-      title: 'Inventory Management for SME',
+      path: '/inventory-management-SMB',
+      title: 'Inventory Management for SMB',
       language: 'en',
       category: 'Inventory Management',
       description: 'Affordable inventory management for small and medium enterprises',

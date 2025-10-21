@@ -21,7 +21,7 @@ export default function StockManagementSoftware() {
       <SEO
         title="Stock Management Software for Small Business | StockFlow"
         description="Professional stock management software designed for SMEs. Track inventory, optimize stock levels, and streamline operations."
-        keywords="stock management software, inventory software, stock control, warehouse software, SME stock"
+        keywords="stock management software, inventory software, stock control, warehouse software, SMB stock"
         url="https://www.stockflow.be/stock-management-software"
       />
 

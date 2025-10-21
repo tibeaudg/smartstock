@@ -53,7 +53,7 @@ const Footer = () => {
       "Stock Control",
       "Warehouse Management",
       "Business Software",
-      "SME Solutions",
+      "SMB Solutions",
       "Voorraadbeheer",
       "Magazijnbeheer"
     ],
@@ -196,8 +196,8 @@ const Footer = () => {
           <Link to="/inventory-management-software" className="block text-gray-400 hover:text-white underline">
             Inventory Software
           </Link>
-          <Link to="/inventory-management-sme" className="block text-gray-400 hover:text-white underline">
-            For SME
+          <Link to="/inventory-management-SMB" className="block text-gray-400 hover:text-white underline">
+            For SMB
           </Link>
           <Link to="/warehouse-management-system" className="block text-gray-400 hover:text-white underline">
             Warehouse Management

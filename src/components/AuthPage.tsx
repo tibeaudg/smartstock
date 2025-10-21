@@ -254,7 +254,7 @@ export const AuthPage = () => {
       />
       <div className="flex-1 flex flex-col lg:flex-row">
         {/* Left side - Auth Form */}
-        <div className="w-full lg:w-1/2 xl:w-2/5 bg-white flex items-center justify-center p-4 sm:p-6 lg:p-8">
+        <div className="w-full mt-20 lg:w-1/2 xl:w-2/5 bg-white flex items-center justify-center p-4 sm:p-6 lg:p-8">
           <div className="w-full max-w-md">
 
             {/* Mode Switcher Tabs */}

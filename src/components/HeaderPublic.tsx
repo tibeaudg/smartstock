@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { Package } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useIsMobile } from '../hooks/useWindowSize';
+import { useLocation } from "react-router-dom";
+
+
 
 export interface HeaderProps {
   className?: string;
@@ -23,6 +26,13 @@ const Header: React.FC<HeaderProps> = ({
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const isMobile = useIsMobile();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const isAuthPage = location.pathname.startsWith("/auth");
+
+  if (isAuthPage) {
+    return null;
+  }
 
   const handleLoginClick = () => {
     if (onLoginClick) {
@@ -55,8 +65,8 @@ const Header: React.FC<HeaderProps> = ({
         style={{ backgroundColor: baseColor }}
       >
         {/* Header Bar */}
-        <div className="absolute inset-x-0 top-0 h-[60px] flex items-center justify-between p-2 pl-[1.1rem] z-[10]">
-          {/* Left side - Desktop buttons */}
+        <div className="absolute inset-x-0 top-0 h-[60px] flex items-center justify-end p-2 pl-[1.1rem] z-[10]">
+          {/* Right side - Desktop buttons */}
           <div className="flex items-center">
             {!isMobile && (
               <div className="flex items-center space-x-3">
@@ -94,7 +104,7 @@ const Header: React.FC<HeaderProps> = ({
             {isMobile && (
               <button
                 onClick={toggleMobileMenu}
-                className="h-12 w-12 flex flex-col items-center justify-center cursor-pointer gap-[6px] bg-gray-100 border border-gray-300 rounded"
+                className="h-12 w-12 flex flex-col items-center justify-center cursor-pointer gap-[6px]  rounded"
                 aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
               >
                 <div

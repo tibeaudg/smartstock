@@ -66,7 +66,7 @@ import VoorraadbeheerSoftware from "./pages/SEO/voorraadbeheer-software";
 import VoorraadbeheerKMO from "./pages/SEO/voorraadbeheer-kmo";
 import Magazijnbeheer from "./pages/SEO/magazijnbeheer";
 import WarehouseManagement from "./pages/SEO/warehouse-management";
-import InventoryManagementSME from "./pages/SEO/inventory-management-sme";
+import InventoryManagementSME from "./pages/SEO/inventory-management-SMB";
 import Stockbeheer from "./pages/SEO/stockbeheer";
 import SimpelStockbeheer from "./pages/SEO/simpelstockbeheer";
 import GratisVoorraadbeheer from "./pages/SEO/gratis-voorraadbeheer";
@@ -462,8 +462,8 @@ const AppRouter = () => {
         
         <Route path="/voorraadbeheer-kmo" element={<VoorraadbeheerKMO />} />
         <Route path="/nl/voorraadbeheer-kmo" element={<VoorraadbeheerKMO />} />
-        <Route path="/inventory-management-sme" element={<InventoryManagementSME />} />
-        <Route path="/en/inventory-management-sme" element={<InventoryManagementSME />} />
+        <Route path="/inventory-management-SMB" element={<InventoryManagementSME />} />
+        <Route path="/en/inventory-management-SMB" element={<InventoryManagementSME />} />
         
         <Route path="/magazijnbeheer" element={<Magazijnbeheer />} />
         <Route path="/nl/magazijnbeheer" element={<Magazijnbeheer />} />

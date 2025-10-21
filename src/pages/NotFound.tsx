@@ -174,7 +174,7 @@ const NotFound = () => {
         <SEO
           title="Page Not Found (404) | StockFlow"
           description="This page doesn't exist. Find the right inventory management information, tips and solutions for SMEs here."
-          keywords="404, page not found, inventory management, stock management, tips, SME"
+          keywords="404, page not found, inventory management, stock management, tips, SMB"
           url={`https://www.stockflow.be${location.pathname}`}
           structuredData={structuredData}
           noindex={true}

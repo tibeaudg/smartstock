@@ -1445,7 +1445,7 @@ export const HomePage = () => {
               <FadeInWhenVisible delay={100}>
                 <div className="flex justify-center mb-4 sm:mb-5 md:mb-6">
                   <span className="inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium bg-blue-50 text-blue-700 border border-blue-200/50 shadow-sm">
-                    Build For SME's
+                    Build For SMB's
                   </span>
                 </div>
               </FadeInWhenVisible>

@@ -95,7 +95,7 @@ export default function Contact() {
         "Stock Control",
         "Warehouse Management",
         "Business Software",
-        "SME Solutions"
+        "SMB Solutions"
       ],
       "makesOffer": {
         "@type": "Offer",
