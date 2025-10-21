@@ -23,7 +23,7 @@ import {
   Repeat, Camera, Building, ShoppingCart, CreditCard, Mail, Utensils, Coffee, 
   Wrench, Hammer, Heart, Stethoscope, BookOpen, Gamepad2, Car, Plane, 
   Shirt, Laptop, Home, Briefcase, Music, Paintbrush, Upload, FileSpreadsheet, 
-  Minus, Plus, Download
+  Minus, Plus, Download, FileText, Phone
 } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
 import SEO from './SEO';
@@ -1824,216 +1824,107 @@ export const HomePage = () => {
 
 
 
-      {/* Start Tracking in 3 Simple Steps - Redesigned Section */}
-      <section className="py-8 sm:py-12 md:py-20 lg:py-28 bg-gradient-to-br from-blue-50 via-white to-blue-50 relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 relative z-10">
-          {/* Main Container */}
-          <div className="bg-white rounded-2xl sm:rounded-3xl shadow-2xl border border-gray-100 p-4 sm:p-8 md:p-12 lg:p-20">
-            
-            {/* Header Section */}
-            <FadeInWhenVisible>
-              <div className="text-center mb-8 sm:mb-12 md:mb-16 lg:mb-20">
-                {/* Badge above title */}
-                <div className="inline-block mb-4 sm:mb-6">
-                  <span className="px-3 py-2 sm:px-4 bg-blue-100 text-blue-700 text-xs sm:text-sm font-semibold rounded-full">
-                    GET STARTED IN 10 MIN
-                  </span>
-                </div>
-
-                {/* Strong headline hierarchy */}
-                <div className="mb-4 sm:mb-6">
-                  <h2 className="px-2 text-[clamp(1.8rem,8vw,4rem)] sm:text-[clamp(2.5rem,5vw,4rem)] font-light text-gray-800 mb-2 sm:mb-3 leading-tight">
-                    <BlurText className="justify-center" text="Start Tracking in 3 Simple Steps" onAnimationComplete={handleAnimationComplete} /> 
-                  </h2>
-                </div>
-
-                {/* Trust microtext */}
-                <div className="flex flex-col sm:flex-row flex-wrap justify-center items-center gap-3 sm:gap-4 text-xs sm:text-sm text-gray-600 px-2">
-                  <div className="flex items-center gap-2">
-                    <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-green-500 flex-shrink-0" />
-                    <span className="text-center sm:text-left">No tech skills required</span>
-                  </div>
-                  <div className="hidden sm:block w-px h-4 bg-gray-300"></div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-green-500 flex-shrink-0" />
-                    <span className="text-center sm:text-left">Works with Excel & Google Sheets</span>
-                  </div>
-                </div>
-              </div>
-            </FadeInWhenVisible>
-
-            {/* Three Steps Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 lg:gap-12 max-w-6xl mx-auto">
+      {/* Why Travelers Love Booking With Us - Section */}
+      <section className="py-16 sm:py-20 md:py-24 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          {/* Header Section */}
+          <FadeInWhenVisible>
+            <div className="text-center mb-12 sm:mb-16 md:mb-20">
+              {/* Main Title */}
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 sm:mb-6 leading-tight">
+                Why Travelers Love Booking With Us
+              </h2>
               
-              {/* Step 1 */}
-              <FadeInWhenVisible delay={200}>
-                <motion.div 
-                  className="relative group"
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2, duration: 0.6 }}
-                  whileHover={{ y: -5 }}
-                >
-                  {/* Progress indicator */}
-                  <div className="absolute -top-8 sm:-top-12 md:-top-16 left-1/2 transform -translate-x-1/2 z-10">
-                    <div className="w-6 h-6 sm:w-8 sm:h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs sm:text-sm font-bold shadow-lg">
-                      1
-                    </div>
-                  </div>
-                  
-                  {/* Card */}
-                  <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 group-hover:border-blue-200 h-full mt-4 sm:mt-8 md:mt-0">
-                    {/* Icon with UI mock snippet context */}
-                    <div className="flex justify-center mb-4 sm:mb-6">
-                      <div className="relative">
-                        <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                          <Upload className="h-8 w-8 sm:h-10 sm:w-10 text-white" />
-                        </div>
-                        {/* UI mock snippet - file upload indicator */}
-                        <div className="absolute -bottom-1 sm:-bottom-2 -right-1 sm:-right-2 w-5 h-5 sm:w-6 sm:h-6 bg-green-500 rounded-full flex items-center justify-center">
-                          <Plus className="h-2 w-2 sm:h-3 sm:w-3 text-white" />
-                        </div>
-                      </div>
-                    </div>
+              {/* Subtitle */}
+              <p className="text-lg sm:text-xl md:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
+                Develop a tailored content roadmap aligned with your brand goals.
+              </p>
+            </div>
+          </FadeInWhenVisible>
 
-                    {/* Content */}
-                    <div className="text-center">
-                      <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 sm:mb-3">Import Products</h3>
-                      <p className="text-sm sm:text-base text-gray-600 leading-relaxed mb-3 sm:mb-4">
-                        Import your products in seconds — no setup needed. Upload Excel files or add manually.
-                      </p>
-                      {/* Benefit-focused microcopy */}
-                      <div className="text-xs sm:text-sm text-blue-600 font-medium bg-blue-50 px-2 py-2 sm:px-3 rounded-lg">
-                        <FileSpreadsheet className="h-3 w-3 sm:h-4 sm:w-4 inline mr-1" />
-                        Drag & drop Excel files
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              </FadeInWhenVisible>
-
-              {/* Step 2 */}
-              <FadeInWhenVisible delay={400}>
-                <motion.div 
-                  className="relative group"
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4, duration: 0.6 }}
-                  whileHover={{ y: -5 }}
-                >
-                  {/* Progress indicator */}
-                  <div className="absolute -top-8 sm:-top-12 md:-top-16 left-1/2 transform -translate-x-1/2 z-10">
-                    <div className="w-6 h-6 sm:w-8 sm:h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs sm:text-sm font-bold shadow-lg">
-                      2
-                    </div>
-                  </div>
-                  
-                  {/* Card */}
-                  <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 group-hover:border-blue-200 h-full mt-4 sm:mt-8 md:mt-0">
-                    {/* Icon with UI mock snippet context */}
-                    <div className="flex justify-center mb-4 sm:mb-6">
-                      <div className="relative">
-                        <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-green-500 to-green-600 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                          <Scan className="h-8 w-8 sm:h-10 sm:w-10 text-white" />
-                        </div>
-                        {/* UI mock snippet - barcode scanner indicator */}
-                        <div className="absolute -bottom-1 sm:-bottom-2 -right-1 sm:-right-2 w-5 h-5 sm:w-6 sm:h-6 bg-white border-2 border-green-500 rounded-full flex items-center justify-center">
-                          <Camera className="h-2 w-2 sm:h-3 sm:w-3 text-green-500" />
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Content */}
-                    <div className="text-center">
-                      <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 sm:mb-3">Scan & Count</h3>
-                      <p className="text-sm sm:text-base text-gray-600 leading-relaxed mb-3 sm:mb-4">
-                        Use your phone camera to scan barcodes instantly. Update stock from anywhere in your shop.
-                      </p>
-                      {/* Benefit-focused microcopy */}
-                      <div className="text-xs sm:text-sm text-green-600 font-medium bg-green-50 px-2 py-2 sm:px-3 rounded-lg">
-                        <Smartphone className="h-3 w-3 sm:h-4 sm:w-4 inline mr-1" />
-                        Works on any smartphone
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              </FadeInWhenVisible>
-
-              {/* Step 3 */}
-              <FadeInWhenVisible delay={600}>
-                <motion.div 
-                  className="relative group"
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.6, duration: 0.6 }}
-                  whileHover={{ y: -5 }}
-                >
-                  {/* Progress indicator */}
-                  <div className="absolute -top-8 sm:-top-12 md:-top-16 left-1/2 transform -translate-x-1/2 z-10">
-                    <div className="w-6 h-6 sm:w-8 sm:h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs sm:text-sm font-bold shadow-lg">
-                      3
-                    </div>
-                  </div>
-                  
-                  {/* Card */}
-                  <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 group-hover:border-blue-200 h-full mt-4 sm:mt-8 md:mt-0">
-                    {/* Icon with UI mock snippet context */}
-                    <div className="flex justify-center mb-4 sm:mb-6">
-                      <div className="relative">
-                        <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                          <BarChart3 className="h-8 w-8 sm:h-10 sm:w-10 text-white" />
-                        </div>
-                        {/* UI mock snippet - analytics indicator */}
-                        <div className="absolute -bottom-1 sm:-bottom-2 -right-1 sm:-right-2 w-5 h-5 sm:w-6 sm:h-6 bg-purple-100 rounded-full flex items-center justify-center">
-                          <TrendingUp className="h-2 w-2 sm:h-3 sm:w-3 text-purple-600" />
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Content */}
-                    <div className="text-center">
-                      <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 sm:mb-3">Track & Optimize</h3>
-                      <p className="text-sm sm:text-base text-gray-600 leading-relaxed mb-3 sm:mb-4">
-                        Get low stock alerts, track what's selling, and optimize your inventory automatically.
-                      </p>
-                      {/* Benefit-focused microcopy */}
-                      <div className="text-xs sm:text-sm text-purple-600 font-medium bg-purple-50 px-2 py-2 sm:px-3 rounded-lg">
-                        <Target className="h-3 w-3 sm:h-4 sm:w-4 inline mr-1" />
-                        Automatic insights & alerts
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              </FadeInWhenVisible>
+          {/* Three Steps with Connecting Line */}
+          <div className="relative">
+            {/* Horizontal connecting line for desktop */}
+            <div className="hidden lg:block absolute top-10 left-1/2 transform -translate-x-1/2 w-full max-w-3xl mt-2 z-0">
+              <div className="border-t-2 border-dashed border-gray-300"></div>
             </div>
 
-            {/* CTA */}
-            <FadeInWhenVisible delay={700}>
-              <div className="text-center mt-8 sm:mt-12 md:mt-16 mb-6 sm:mb-8">
-                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center max-w-2xl mx-auto px-4">
-                  <ScrollTriggeredButton
-                    as="button"
-                    className="w-full sm:w-auto bg-blue-600 text-white hover:bg-blue-700
-                      px-6 py-4 sm:px-10 sm:py-5 md:px-12 md:py-6
-                      text-base sm:text-lg md:text-xl lg:text-2xl
-                      font-bold rounded-lg transform hover:scale-105
-                      transition-all duration-300
-                      shadow-2xl hover:shadow-3xl
-                      ring-0 focus:ring-4 focus:ring-white/50 focus:outline-none
-                      min-h-[48px] sm:min-h-[56px]"
-                    onClick={() => navigate('/pricing')}
-                  >
-                    Start Importing
-                  </ScrollTriggeredButton>
+            {/* Steps Grid */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16 max-w-6xl mx-auto relative z-10">
+              
+              {/* Step 1 - Register Online */}
+              <FadeInWhenVisible delay={200}>
+                <div className="text-center relative">
+                  {/* Icon */}
+                  <div className="flex justify-center mb-6 relative z-20">
+                    <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-blue-200 to-blue-300 rounded-full flex items-center justify-center shadow-lg">
+                      <p className="h-10 w-10 sm:h-12 sm:w-12 text-white">1</p>
+                    </div>
+                  </div>
+                  
+                  {/* Content */}
+                  <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">
+                    Register Online
+                  </h3>
+                  <p className="text-base sm:text-lg text-gray-600 leading-relaxed">
+                    With lots of unique blocks, you<br />
+                    can easily build a page easily<br />
+                    without any coding
+                  </p>
+
+                  {/* Vertical connecting line for mobile */}
+                  <div className="lg:hidden absolute -bottom-6 left-1/2 transform -translate-x-1/2 w-0.5 h-12 bg-gray-300"></div>
                 </div>
-                
-                <div className="mt-4 sm:mt-6 space-y-1 sm:space-y-2 px-4">
-                  <p className="text-xs sm:text-sm text-gray-600 text-center">
-                    Get up and running in under 10 minutes. No tech skills required.
+              </FadeInWhenVisible>
+
+              {/* Step 2 - Assessment Session */}
+              <FadeInWhenVisible delay={400}>
+                <div className="text-center relative">
+                  {/* Icon */}
+                  <div className="flex justify-center mb-6 relative z-20">
+                    <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full flex items-center justify-center shadow-lg">
+                      <Zap className="h-10 w-10 sm:h-12 sm:w-12 text-white" />
+                    </div>
+                  </div>
+                  
+                  {/* Content */}
+                  <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">
+                    Assessment Session
+                  </h3>
+                  <p className="text-base sm:text-lg text-gray-600 leading-relaxed">
+                    With lots of unique blocks, you<br />
+                    can easily build a page easily<br />
+                    without any coding
+                  </p>
+
+                  {/* Vertical connecting line for mobile */}
+                  <div className="lg:hidden absolute -bottom-6 left-1/2 transform -translate-x-1/2 w-0.5 h-12 bg-gray-300"></div>
+                </div>
+              </FadeInWhenVisible>
+
+              {/* Step 3 - 24/7 Live Support */}
+              <FadeInWhenVisible delay={600}>
+                <div className="text-center relative">
+                  {/* Icon */}
+                  <div className="flex justify-center mb-6 relative z-20">
+                    <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-full flex items-center justify-center shadow-lg">
+                      <Phone className="h-10 w-10 sm:h-12 sm:w-12 text-white" />
+                    </div>
+                  </div>
+                  
+                  {/* Content */}
+                  <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">
+                    24/7 Live Support
+                  </h3>
+                  <p className="text-base sm:text-lg text-gray-600 leading-relaxed">
+                    With lots of unique blocks, you<br />
+                    can easily build a page easily<br />
+                    without any coding.
                   </p>
                 </div>
-              </div>
-            </FadeInWhenVisible>
+              </FadeInWhenVisible>
+            </div>
           </div>
         </div>
       </section>
