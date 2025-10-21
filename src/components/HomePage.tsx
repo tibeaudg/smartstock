@@ -1454,6 +1454,24 @@ export const HomePage = () => {
           /* Loading states to prevent layout shift */
           .loading { opacity: 0.7; }
           .loaded { opacity: 1; transition: opacity 0.3s ease-in-out; }
+          
+          /* Hero section flow animation */
+          @keyframes flow {
+            0% {
+              transform: translateX(-100%) skewX(-15deg);
+            }
+            50% {
+              transform: translateX(0%) skewX(0deg);
+            }
+            100% {
+              transform: translateX(100%) skewX(15deg);
+            }
+          }
+          
+          /* Enhanced backdrop blur and glassmorphism effects */
+          .backdrop-blur-sm {
+            backdrop-filter: blur(4px);
+          }
         `}</style>
         
         {/* Non-render-blocking JavaScript loading strategy */}
@@ -1482,8 +1500,8 @@ export const HomePage = () => {
         `}</script>
       </Helmet>
       <SEO
-        title="StockFlow - Cloud-based Inventory Management Platform"
-        description="Track stock with your phone. Stop stockouts, reduce overstock, count inventory in minutes. Built for small retail stores."
+        title="StockFlow - Stop Losing Money on Inventory Mistakes"
+        description="Stop losing money on inventory mistakes. Simple inventory management for SMBs. Track stock, prevent stockouts, optimize dead stock. Free forever plan available."
         keywords="stockflow, stock flow, stockflow app, stockflow software, stockflow inventory, retail inventory management, inventory for retail shops, retail stock management, small retail inventory, shop inventory software, retail store inventory, inventory tracking for retailers, retail inventory app, barcode scanning retail, mobile inventory retail, shop floor inventory, backroom inventory tracking, retail stock control, point of sale inventory, POS inventory integration, retail inventory system, small shop inventory, local store inventory, boutique inventory management, independent retailer inventory, retail inventory software, multi-location retail inventory, inventory management for stores, retail stocktaking, retail inventory counting, retail reorder alerts, retail stock alerts, prevent stockouts retail, reduce overstock retail, retail cash flow, retail inventory free, free retail inventory software, inventory app for shops, retail business software, small business retail inventory, inventory for small retailers, retail inventory Belgium, shop inventory management, store stock management, retail merchandise tracking, retail product tracking, inventory management small retail"
         url="https://www.stockflow.be/"
         hreflang={[
@@ -1507,78 +1525,111 @@ export const HomePage = () => {
       </div>
 
       <section className="relative py-16 sm:py-20 md:py-24 lg:py-32 px-4 sm:px-6 overflow-hidden pt-20 sm:pt-24 md:pt-28 lg:pt-24 min-h-[90vh] flex items-center">
-        {/* Blue Sky Background Image */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat bg-gradient-to-b from-blue-400 to-white"
-        />
+        {/* Enhanced Background with Dynamic Gradients */}
+        <div className="absolute inset-0">
+          {/* Base gradient */}
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-700 via-blue-600 to-white" />
+          
+          {/* Animated flowing overlay */}
+          <div className="absolute inset-0 opacity-90" 
+               style={{
+                 background: 'linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%)',
+                 animation: 'flow 8s ease-in-out infinite',
+                 transform: 'translateX(-100%)'
+               }} />
+
+        </div>
         
-        {/* Subtle overlay for minimal text support while preserving image clarity */}
-        <div className="absolute inset-0" />
+        {/* Subtle overlay for text readability */}
+        <div className="absolute inset-0 " />
         
         {/* Fade to white at the bottom */}
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white via-white/80 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white via-white/60 to-transparent" />
         
         <div className="max-w-7xl mx-auto relative z-10 w-full">
           <div className="flex flex-col items-center text-center min-h-[70vh] lg:min-h-[80vh]">
             
-            {/* Text Content - Centered */}
-            <div className="mb-12 lg:mb-16 mt-12">
-              {/* Micro-badge for social proof */}
-              <FadeInWhenVisible delay={100}>
-                <div className="flex justify-center mb-4 sm:mb-5 md:mb-6">
-                  <span className="inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium bg-blue-50 text-blue-700 border border-blue-200/50 shadow-sm">
-                    Build For SMB's
-                  </span>
-                </div>
-              </FadeInWhenVisible>
+            {/* Text Content - Enhanced with Better Hierarchy */}
+            <div className="mb-12 lg:mb-16 mt-24">
           
+              {/* Enhanced headline with better contrast and flow */}
               <BounceInWhenVisible delay={200}>
-                <div className="mb-6 sm:mb-10 md:mb-14">
-                  <h1 className="text-[clamp(3rem,6vw,5rem)] font-light mb-6 leading-tight" style={{
-                  }}>
-                    <span className="block text-white">From Stock Problems </span>
-                    <span className="block text-blue-600">To Stockflow</span>
+                <div className="mb-8 sm:mb-12 md:mb-16">
+                  <h1 className="text-[clamp(3rem,6vw,5.5rem)] mb-6 leading-rela tracking-relaxed">
+                    <span className="block text-white drop-shadow-lg">Inventory Chaos Ends Here.</span>
+                    <span className="block">
+                      <span className="bg-white bg-clip-text text-transparent drop-shadow-lg">
+                        Meet 
+                      </span>{' '}
+                      <span className="text-white drop-shadow-lg" style={{
+                        WebkitTextStroke: '2px white',
+                        textShadow: '0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.3), 0 0 30px rgba(255, 255, 255, 0.2)'
+                      }}>
+                        Stockflow
+                      </span>
+                    </span>
                   </h1>
                 </div>
               </BounceInWhenVisible>
               
+              {/* Enhanced subtitle with more visceral messaging */}
               <SlideUpWhenVisible delay={400}>
-                <p className="text-lg sm:text-xl md:text-2xl text-white mb-8 sm:mb-10 max-w-3xl mx-auto leading-relaxed">
-                Master Your Inventory with Ease. Online Inventory Management That Works.
-                </p>
+                <div className="mb-10 sm:mb-12 max-w-4xl mx-auto">
+
+                  <p className="text-lg sm:text-xl md:text-2xl text-white leading-relaxed max-w-3xl mx-auto">
+                  Stop losing money on inventory mistakes. Manage your stock, suppliers, and orders — all in one simple, visual tool that actually works.
+                  </p>
+                </div>
               </SlideUpWhenVisible>
 
-              {/* Dual CTA Buttons */}
+              {/* Enhanced CTA Section */}
               <FadeInWhenVisible delay={600}>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+                <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center mb-10 sm:mb-12">
                   <ScrollTriggeredButton
                     as="button"
-                    className="w-full sm:w-auto bg-blue-600 text-white hover:bg-blue-800
-                      px-8 py-4 flex items-center justify-center gap-3
-                      text-base sm:text-lg font-semibold rounded-xl
-                      transition-all duration-300 shadow-lg hover:shadow-xl"
+                  className="group w-full sm:w-auto bg-white   text-blue-600 hover:bg-blue-50
+                      px-10 sm:px-12 py-4 sm:py-5 flex items-center justify-center gap-3
+                      text-lg sm:text-xl font-bold rounded-2xl
+                      transition-all duration-500 shadow-2xl hover:shadow-3xl hover:shadow-blue-500/25
+                      transform hover:scale-105 border border-blue-500/20"
                     onClick={() => navigate('/pricing')}
                   >
-                    <ArrowRight className="w-5 h-5" />
-                    Create A Free Account
+                    <Rocket className="w-6 h-6 group-hover:animate-bounce" />
+                    Start Managing Smarter
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
                   </ScrollTriggeredButton>
-
                 </div>
               </FadeInWhenVisible>
               
+              {/* Enhanced trust indicators with better visual hierarchy */}
               <FadeInWhenVisible delay={800}>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center text-sm">
-                  <div className="flex items-center justify-center gap-2">
-                    <Check className="h-4 w-4 text-green-700 flex-shrink-0" />
-                    <span>No credit card</span>
+                <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 justify-center items-center text-sm sm:text-base">
+                  <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm px-4 py-3 rounded-xl border border-white/20">
+                    <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                      <Check className="h-5 w-5 text-white" />
+                    </div>
+                    <div className="text-white font-medium">
+                      <div className="font-bold">No credit card</div>
+                      <div className="text-xs text-blue-200">Free forever plan</div>
+                    </div>
                   </div>
-                  <div className="flex items-center justify-center gap-2">
-                    <Check className="h-4 w-4 text-green-700 flex-shrink-0" />
-                    <span>Free forever plan</span>
+                  <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm px-4 py-3 rounded-xl border border-white/20">
+                    <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                      <Timer className="h-5 w-5 text-white" />
+                    </div>
+                    <div className="text-white font-medium">
+                      <div className="font-bold">Setup in 10 min</div>
+                      <div className="text-xs text-blue-200">Ready to use</div>
+                    </div>
                   </div>
-                  <div className="flex items-center justify-center gap-2">
-                    <Check className="h-4 w-4 text-green-700 flex-shrink-0" />
-                    <span>Setup in 10 min</span>
+                  <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm px-4 py-3 rounded-xl border border-white/20">
+                    <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                      <Users className="h-5 w-5 text-white" />
+                    </div>
+                    <div className="text-white font-medium">
+                      <div className="font-bold">1,200+ SMBs</div>
+                      <div className="text-xs text-blue-200">Trust us daily</div>
+                    </div>
                   </div>
                 </div>
               </FadeInWhenVisible>
@@ -2083,7 +2134,7 @@ export const HomePage = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1 }}
-                    className="bg-white border border-2 border-gray-200 shadow-lg rounded-2xl p-6 hover:shadow-lg transition-all duration-300"
+                    className="bg-white border-2 border-gray-200 shadow-lg rounded-2xl p-6 hover:shadow-lg transition-all duration-300"
                   >
                     <div className="text-center">
                       {/* Icon */}

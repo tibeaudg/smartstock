@@ -693,7 +693,7 @@ const ProductRow: React.FC<ProductRowProps> = ({
                 </h3>
 
                 {hasChildren && !isExpanded && variantCount > 0 && (
-                  <Badge className="bg-blue-100 text-blue-700 border border-blue-200 text-xs">
+                  <Badge className="bg-blue-100 text-blue-700 border border-blue-200 text-xs hidden md:inline-flex">
                     {variantCount} {variantCount === 1 ? 'variant' : 'variants'}
                   </Badge>
                 )}
@@ -1196,7 +1196,7 @@ const MobileProductListItem: React.FC<MobileProductListItemProps> = ({
               </h3>
               
               {hasChildren && !isExpanded && variantCount > 0 && (
-                <Badge className="bg-blue-100 text-blue-700 border border-blue-200 text-xs">
+                <Badge className="bg-blue-100 text-blue-700 border border-blue-200 text-xs hidden md:inline-flex">
                   {variantCount} {variantCount === 1 ? 'variant' : 'variants'}
                 </Badge>
               )}
