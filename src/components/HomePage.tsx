@@ -23,7 +23,7 @@ import {
   Repeat, Camera, Building, ShoppingCart, CreditCard, Mail, Utensils, Coffee, 
   Wrench, Hammer, Heart, Stethoscope, BookOpen, Gamepad2, Car, Plane, 
   Shirt, Laptop, Home, Briefcase, Music, Paintbrush, Upload, FileSpreadsheet, 
-  Minus, Plus, Download, FileText, Phone
+  Minus, Plus, Download, FileText, Phone, Bell, MapPin
 } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
 import SEO from './SEO';
@@ -408,9 +408,9 @@ const IndustryBadgeMarquee = ({ badges, speed = 30 }) => {
         onMouseLeave={() => setIsPaused(false)}
       >
         {duplicatedBadges.map((badge, index) => (
-          <div key={index} className="flex flex-col items-center gap-2 flex-shrink-0">
-            <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center drop-shadow-lg border-2 border-white shadow-lg hover:scale-105 transition-transform duration-200">
-              <badge.icon className="h-8 w-8 text-white" />
+          <div key={index} className="flex flex-col items-center gap-4 flex-shrink-0">
+            <div className="w-16 h-16  rounded-full flex items-center justify-center drop-shadow-lg border-2 border-white shadow-lg">
+              <badge.icon className="h-8 w-8 text-blue-600" />
             </div>
             <span className="text-sm font-medium text-gray-700 text-center whitespace-nowrap">
               {badge.label}
@@ -485,6 +485,116 @@ const IntegrationCardMarquee = ({ cards, speed = 60 }) => {
       <div className="absolute top-0 left-0 w-20 h-full bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
       <div className="absolute top-0 right-0 w-20 h-full bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
     </div>
+  );
+};
+
+// Floating Feature Cards Component for Hero Section
+const FloatingFeatureCard = ({ icon: Icon, title, subtitle, metric, position, delay = 0 }) => {
+  const [isVisible, setIsVisible] = React.useState(false);
+  const ref = React.useRef(null);
+
+  React.useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => setIsVisible(true), delay);
+        }
+      },
+      { threshold: 0.1, rootMargin: '50px' }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => observer.disconnect();
+  }, [delay]);
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 20, scale: 0.9 }}
+      animate={{ 
+        opacity: isVisible ? 1 : 0, 
+        y: isVisible ? 0 : 20,
+        scale: isVisible ? 1 : 0.9
+      }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      className={`absolute ${position} z-20`}
+      whileHover={{ y: -5, scale: 1.02 }}
+    >
+      <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-xl border border-white/50 p-4 w-64">
+        <div className="flex items-center gap-3 mb-3">
+          <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+            <Icon className="w-5 h-5 text-blue-600" />
+          </div>
+          <div className="flex-1">
+            <h4 className="font-semibold text-gray-900 text-sm">{title}</h4>
+            <p className="text-xs text-gray-600">{subtitle}</p>
+          </div>
+        </div>
+        {metric && (
+          <div className="text-2xl font-bold text-blue-600">
+            {metric}
+          </div>
+        )}
+      </div>
+    </motion.div>
+  );
+};
+
+// Mobile Phone Mockup Component
+const MobilePhoneMockup = () => {
+  const [isVisible, setIsVisible] = React.useState(false);
+  const ref = React.useRef(null);
+
+  React.useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => setIsVisible(true), 1200);
+        }
+      },
+      { threshold: 0.1, rootMargin: '50px' }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 30, scale: 0.9 }}
+      animate={{ 
+        opacity: isVisible ? 1 : 0, 
+        y: isVisible ? 0 : 30,
+        scale: isVisible ? 1 : 0.9
+      }}
+      transition={{ duration: 0.8, ease: "easeOut", type: "spring", bounce: 0.4 }}
+      className="relative mx-auto z-10"
+      whileHover={{ scale: 1.02 }}
+    >
+      <div className="relative w-[240px] h-[480px] sm:w-[260px] sm:h-[520px] md:w-[280px] md:h-[580px] mx-auto">
+        {/* Phone frame */}
+        <div className="absolute inset-0 bg-gray-900 rounded-[2.5rem] sm:rounded-[2.8rem] md:rounded-[3rem] shadow-2xl border-4 sm:border-6 md:border-8 border-gray-900">
+          {/* Notch */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 sm:w-28 md:w-32 h-4 sm:h-5 md:h-6 bg-gray-900 rounded-b-2xl sm:rounded-b-3xl z-10" />
+          {/* Screen content */}
+          <div className="absolute inset-1 sm:inset-1.5 md:inset-2 bg-black rounded-[2rem] sm:rounded-[2.3rem] md:rounded-[2.5rem] overflow-hidden">
+            <img 
+              src="/mobile.png" 
+              alt="StockFlow mobile dashboard" 
+              className="w-full h-full object-cover"
+              loading="lazy"
+            />
+          </div>
+        </div>
+      </div>
+    </motion.div>
   );
 };
 
@@ -794,31 +904,6 @@ export const HomePage = () => {
 
 
 
-
-
-  // Why choose us reasons - Value-focused approach
-  const whyChooseUs = [
-    {
-      icon: <Zap className="h-8 w-8" />,
-      title: "Don't Wait, Start Now",
-      description: "Unlike competitors with complex onboarding, our patented Smart Setup gets you running in minutes, not days. See results from day one."
-    },
-    {
-      icon: <Target className="h-8 w-8" />,
-      title: "Built Exclusively for SMEs",
-      description: "We don't try to serve everyone. Our deep expertise in small business inventory means we understand your challenges better than enterprise-focused solutions."
-    },
-    {
-      icon: <Shield className="h-8 w-8" />,
-      title: "100% Satisfaction Guarantee",
-      description: "We stand behind our work. If you're not completely satisfied with StockFlow, we'll refund your subscription and help you migrate your data."
-    },
-    {
-      icon: <Rocket className="h-8 w-8" />,
-      title: "Proprietary AI-Powered Insights",
-      description: "Leverage our exclusive machine learning algorithms to optimize your inventory 24/7, something manual tracking simply can't match."
-    }
-  ];
 
   // Inventory problems for carousel
   const inventoryProblemsCarousel: CarouselItem[] = [
@@ -1421,26 +1506,23 @@ export const HomePage = () => {
         />
       </div>
 
-      <section className="relative py-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 overflow-hidden bg-gradient-to-b from-blue-50/30 to-white pt-20 sm:pt-24 md:pt-28 lg:pt-24">
-        {/* Subtle geometric pattern overlay */}
+      <section className="relative py-16 sm:py-20 md:py-24 lg:py-32 px-4 sm:px-6 overflow-hidden pt-20 sm:pt-24 md:pt-28 lg:pt-24 min-h-[90vh] flex items-center">
+        {/* Blue Sky Background Image */}
         <div 
-          className="absolute inset-0 pointer-events-none opacity-[0.03] "
-          style={{
-            backgroundImage: `
-              linear-gradient(30deg, #2563EB 12%, transparent 12.5%, transparent 87%, #2563EB 87.5%, #2563EB),
-              linear-gradient(150deg, #2563EB 12%, transparent 12.5%, transparent 87%, #2563EB 87.5%, #2563EB),
-              linear-gradient(30deg, #2563EB 12%, transparent 12.5%, transparent 87%, #2563EB 87.5%, #2563EB),
-              linear-gradient(150deg, #2563EB 12%, transparent 12.5%, transparent 87%, #2563EB 87.5%, #2563EB)
-            `,
-            backgroundSize: '80px 140px',
-            backgroundPosition: '0 0, 0 0, 40px 70px, 40px 70px'
-          }}
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat bg-gradient-to-b from-blue-400 to-white"
         />
         
-        <div className="max-w-7xl mx-auto relative z-10">
-          {/* Text Content */}
-          <div className="text-center mb-6 sm:mb-10 md:mb-14 lg:mb-16 mt-20">
-          
+        {/* Subtle overlay for minimal text support while preserving image clarity */}
+        <div className="absolute inset-0" />
+        
+        {/* Fade to white at the bottom */}
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white via-white/80 to-transparent" />
+        
+        <div className="max-w-7xl mx-auto relative z-10 w-full">
+          <div className="flex flex-col items-center text-center min-h-[70vh] lg:min-h-[80vh]">
+            
+            {/* Text Content - Centered */}
+            <div className="mb-12 lg:mb-16 mt-12">
               {/* Micro-badge for social proof */}
               <FadeInWhenVisible delay={100}>
                 <div className="flex justify-center mb-4 sm:mb-5 md:mb-6">
@@ -1451,114 +1533,102 @@ export const HomePage = () => {
               </FadeInWhenVisible>
           
               <BounceInWhenVisible delay={200}>
-                <div className="text-center mb-6 sm:mb-10 md:mb-14 lg:mb-16">
-                  <h1 className="lg:pl-24 lg:pr-24 lg:pt-6 lg:pb-6 text-[clamp(3rem,5vw,4rem)] font-light text-gray-800 mb-3 leading-tight px-2">
-                  <BlurText className="justify-center" text="Cloud‑based Inventory Management Platform" onAnimationComplete={handleAnimationComplete} /> 
+                <div className="mb-6 sm:mb-10 md:mb-14">
+                  <h1 className="text-[clamp(3rem,6vw,5rem)] font-light mb-6 leading-tight" style={{
+                  }}>
+                    <span className="block text-white">From Stock Problems </span>
+                    <span className="block text-blue-600">To Stockflow</span>
                   </h1>
-          
-            </div>
+                </div>
               </BounceInWhenVisible>
               
               <SlideUpWhenVisible delay={400}>
-                  <p className=" text-xs sm:text-sm md:text-base lg:text-lg text-gray-700 mb-6 sm:mb-8 md:mb-10 lg:mb-12 max-w-4xl mx-auto px-4 leading-relaxed">
-                    Stop wasting capital on overstock and dead inventory. Track stock, reduce waste, and optimize ordering. All in one simple platform.
+                <p className="text-lg sm:text-xl md:text-2xl text-white mb-8 sm:mb-10 max-w-3xl mx-auto leading-relaxed">
+                Master Your Inventory with Ease. Online Inventory Management That Works.
                 </p>
               </SlideUpWhenVisible>
 
-              
-          {/* CTA */}
-          <FadeInWhenVisible delay={700}>
-            <div className="text-center mt-6 mb-6 sm:mt-6">
-              
-            <ScrollTriggeredButton
-              as="button"
-              className="w-full sm:w-auto bg-blue-600 text-white hover:bg-blue-700
-                px-10 py-5 sm:px-12 sm:py-6 md:px-14 md:py-4
-                text-lg sm:text-xl md:text-2xl
-                font-bold rounded-lg transform hover:scale-105
-                transition-all duration-300
-                shadow-2xl hover:shadow-3xl
-                ring-0 focus:ring-4 focus:ring-white/50 focus:outline-none"
-              onClick={() => navigate('/pricing')}
-            >
-              Create a Free Account
-              </ScrollTriggeredButton>
-            </div>
-          </FadeInWhenVisible>
+              {/* Dual CTA Buttons */}
+              <FadeInWhenVisible delay={600}>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+                  <ScrollTriggeredButton
+                    as="button"
+                    className="w-full sm:w-auto bg-blue-600 text-white hover:bg-blue-800
+                      px-8 py-4 flex items-center justify-center gap-3
+                      text-base sm:text-lg font-semibold rounded-xl
+                      transition-all duration-300 shadow-lg hover:shadow-xl"
+                    onClick={() => navigate('/pricing')}
+                  >
+                    <ArrowRight className="w-5 h-5" />
+                    Create A Free Account
+                  </ScrollTriggeredButton>
+
+                </div>
+              </FadeInWhenVisible>
               
               <FadeInWhenVisible delay={800}>
-                <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 md:gap-6 justify-center items-center text-xs sm:text-sm text-gray-600 px-4 pb-24">
-                  <div className="flex items-center gap-1.5 sm:gap-2">
-                    <Check className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-green-500 flex-shrink-0" />
+                <div className="flex flex-col sm:flex-row gap-4 justify-center text-sm">
+                  <div className="flex items-center justify-center gap-2">
+                    <Check className="h-4 w-4 text-green-700 flex-shrink-0" />
                     <span>No credit card</span>
                   </div>
-                  <div className="flex items-center gap-1.5 sm:gap-2">
-                    <Check className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-green-500 flex-shrink-0" />
+                  <div className="flex items-center justify-center gap-2">
+                    <Check className="h-4 w-4 text-green-700 flex-shrink-0" />
                     <span>Free forever plan</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Check className="h-4 w-4 text-green-500" />
+                  <div className="flex items-center justify-center gap-2">
+                    <Check className="h-4 w-4 text-green-700 flex-shrink-0" />
                     <span>Setup in 10 min</span>
                   </div>
                 </div>
               </FadeInWhenVisible>
             </div>
-            
-          {/* Hero Visual: Responsive Dashboard Images */}
-          <SlideUpWhenVisible delay={1000}>
-            <div className="relative max-w-6xl mx-auto px-2 sm:px-4">
-              {/* Mobile Image - Only visible on mobile */}
-              {isMobile && (
-                <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-white border border-gray-200">
-                  <img
-                    src="/mobile.png"
-                    alt="StockFlow mobile dashboard showing inventory management on mobile"
-                    className="w-full h-auto object-contain cursor-pointer hover:opacity-95 transition-opacity"
-                    loading="lazy"
-                    onClick={() => openModal('/mobile.png')}
-                    width={400}
-                    height={600}
-                  />
-                  {/* Mobile overlay */}
-                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
-                    <h3 className="text-white font-semibold text-sm">
-                      Mobile Dashboard
-                    </h3>
-                    <p className="text-white/80 text-xs">
-                      Inventory management on the go with your phone
-                    </p>
-                  </div>
-                </div>
-              )}
 
-              {/* Desktop Image - Only visible on desktop */}
-              {!isMobile && (
-                <div className="relative rounded-3xl overflow-hidden shadow-2xl bg-white border border-gray-200">
-                  <img
-                    src="/dashboard.png"
-                    alt="StockFlow desktop dashboard showing inventory management interface"
-                    className="w-full h-auto object-contain cursor-pointer hover:opacity-95 transition-opacity"
-                    loading="lazy"
-                    onClick={() => openModal('/dashboard.png')}
-                    width={1200}
-                    height={800}
+            {/* Mobile mockup with floating cards - Centered underneath */}
+            <div className="flex items-center justify-center">
+              <div className="relative w-full max-w-md">
+                
+                {/* Floating Feature Cards - Hidden on mobile for better performance */}
+                <div className="hidden md:block">
+                  <FloatingFeatureCard
+                    icon={Scan}
+                    title="Track Your Progress"
+                    subtitle="Barcode Scanner"
+                    metric="+247%"
+                    position="top-0 right-60"
+                    delay={900}
                   />
-                  {/* Desktop overlay */}
-                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
-                    <h3 className="text-white font-semibold text-base">
-                      Desktop Dashboard
-                    </h3>
-                    <p className="text-white/80 text-sm">
-                      Full-featured inventory management on desktop
-                    </p>
-                  </div>
+                  
+
+                  
+                  <FloatingFeatureCard
+                    icon={Users}
+                    title="Track your inventory journey effortlessly"
+                    subtitle="Reports & Analytics"
+                    metric="12,450.00/month"
+                    position="top-32 left-60"
+                    delay={1100}
+                  />
+                  
+                  <FloatingFeatureCard
+                    icon={Bell}
+                    title="Low Stock Alerts"
+                    subtitle="Smart Notifications"
+                    metric="3 alerts"
+                    position="bottom-32 right-60"
+                    delay={1200}
+                  />
                 </div>
-              )}
+
+                {/* Central Mobile Phone Mockup */}
+                <div className="relative z-10">
+                  <MobilePhoneMockup />
+                </div>
+              </div>
             </div>
-          </SlideUpWhenVisible>
-
+          </div>
         </div>
-      </section>
+        </section>
 
 
 
@@ -1821,10 +1891,6 @@ export const HomePage = () => {
 
 
 
-
-
-
-      {/* Why Travelers Love Booking With Us - Section */}
       <section className="py-16 sm:py-20 md:py-24 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           
@@ -1833,12 +1899,12 @@ export const HomePage = () => {
             <div className="text-center mb-12 sm:mb-16 md:mb-20">
               {/* Main Title */}
               <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 sm:mb-6 leading-tight">
-                Why Travelers Love Booking With Us
+                Start Tracking In 3 Simple Steps
               </h2>
               
               {/* Subtitle */}
               <p className="text-lg sm:text-xl md:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
-                Develop a tailored content roadmap aligned with your brand goals.
+                  Get started in minutes with our easy-to-use platform.
               </p>
             </div>
           </FadeInWhenVisible>
@@ -1859,18 +1925,20 @@ export const HomePage = () => {
                   {/* Icon */}
                   <div className="flex justify-center mb-6 relative z-20">
                     <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-blue-200 to-blue-300 rounded-full flex items-center justify-center shadow-lg">
-                      <p className="h-10 w-10 sm:h-12 sm:w-12 text-white">1</p>
+                      <p className="h-10 w-10 sm:h-12 sm:w-12 text-white font-bold text-4xl items-center justify-center">1</p>
                     </div>
                   </div>
                   
                   {/* Content */}
                   <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">
-                    Register Online
+                  Import Products
                   </h3>
                   <p className="text-base sm:text-lg text-gray-600 leading-relaxed">
-                    With lots of unique blocks, you<br />
-                    can easily build a page easily<br />
-                    without any coding
+                  Import your products in seconds<br />
+                  no setup needed.<br />
+                  Upload Excel files or add manually.
+
+
                   </p>
 
                   {/* Vertical connecting line for mobile */}
@@ -1883,19 +1951,22 @@ export const HomePage = () => {
                 <div className="text-center relative">
                   {/* Icon */}
                   <div className="flex justify-center mb-6 relative z-20">
-                    <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full flex items-center justify-center shadow-lg">
-                      <Zap className="h-10 w-10 sm:h-12 sm:w-12 text-white" />
+                    <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-blue-400 to-blue-500 rounded-full flex items-center justify-center shadow-lg">
+                    <p className="h-10 w-10 sm:h-12 sm:w-12 text-white font-bold text-4xl items-center justify-center">2</p>
                     </div>
                   </div>
                   
                   {/* Content */}
                   <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">
-                    Assessment Session
+                  Scan & Count
+
                   </h3>
                   <p className="text-base sm:text-lg text-gray-600 leading-relaxed">
-                    With lots of unique blocks, you<br />
-                    can easily build a page easily<br />
-                    without any coding
+                  Use your phone camera to scan<br />
+                  barcodes instantly. Update stock from<br />
+                  anywhere in your shop.
+
+
                   </p>
 
                   {/* Vertical connecting line for mobile */}
@@ -1908,19 +1979,20 @@ export const HomePage = () => {
                 <div className="text-center relative">
                   {/* Icon */}
                   <div className="flex justify-center mb-6 relative z-20">
-                    <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-full flex items-center justify-center shadow-lg">
-                      <Phone className="h-10 w-10 sm:h-12 sm:w-12 text-white" />
+                    <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full flex items-center justify-center shadow-lg">
+                    <p className="h-10 w-10 sm:h-12 sm:w-12 text-white font-bold text-4xl items-center justify-center">3</p>
                     </div>
                   </div>
                   
                   {/* Content */}
                   <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">
-                    24/7 Live Support
+                  Track & Optimize
+
                   </h3>
                   <p className="text-base sm:text-lg text-gray-600 leading-relaxed">
-                    With lots of unique blocks, you<br />
+                  Get low stock alerts, track what's<br />
                     can easily build a page easily<br />
-                    without any coding.
+                    automatically.
                   </p>
                 </div>
               </FadeInWhenVisible>
@@ -2002,95 +2074,41 @@ export const HomePage = () => {
             </div>
           </FadeInWhenVisible>
 
-            {/* Two Column Layout */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 lg:items-stretch">
-              {/* Left Column - Feature Cards */}
-              <div className="flex flex-col h-full">
-                <FadeInWhenVisible delay={200}>
-                  <div className="space-y-6 h-full">
-                    {whyChooseUsCarousel.map((item, index) => (
-                      <motion.div
-                        key={item.id}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                        className="bg-white border border-gray-200 rounded-2xl p-6 hover:shadow-lg transition-all duration-300"
-                      >
-                        <div className="flex items-start gap-4">
-                          {/* Icon with colored background */}
-                          <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${
-                            index === 0 ? 'bg-blue-400' : 
-                            index === 1 ? 'bg-purple-500' : 
-                            index === 2 ? 'bg-red-500' : 'bg-green-500'
-                          }`}>
-                            <div className="text-white [&>svg]:text-white">
-                              {item.icon}
-                            </div>
-                          </div>
-                          
-                          {/* Content */}
-                          <div className="flex-1">
-                            <h3 className="text-lg font-bold text-gray-900 mb-2">
-                              {item.title}
-                            </h3>
-                            <p className="text-gray-600 leading-relaxed text-sm">
-                              {item.description}
-                            </p>
-                          </div>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </div>
-                </FadeInWhenVisible>
-                
-            {/* CTA */}
-            <FadeInWhenVisible delay={700}>
-              <div className="text-center mt-16 mb-8">
-                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-2xl mx-auto">
-                  <ScrollTriggeredButton
-                    as="button"
-                    className="w-full sm:w-auto bg-blue-600 text-white hover:bg-blue-700
-                      px-10 py-5 sm:px-12 sm:py-6 md:px-14 md:py-4
-                      text-lg sm:text-xl md:text-2xl
-                      font-bold rounded-lg transform hover:scale-105
-                      transition-all duration-300
-                      shadow-2xl hover:shadow-3xl
-                      ring-0 focus:ring-4 focus:ring-white/50 focus:outline-none"
-                    onClick={() => navigate('/pricing')}
+            {/* 2x2 Grid Layout */}
+            <FadeInWhenVisible delay={200}>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-4xl mx-auto">
+                {whyChooseUsCarousel.map((item, index) => (
+                  <motion.div
+                    key={item.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    className="bg-white border border-2 border-gray-200 shadow-lg rounded-2xl p-6 hover:shadow-lg transition-all duration-300"
                   >
-                    Get Started Today
-                  </ScrollTriggeredButton>
-                  
-                </div>
-                
-                <div className="mt-6 space-y-2">
-                  <p className="text-sm text-gray-600 text-center">
-                    Get up and running in under 10 minutes. No tech skills required.
-                  </p>
-                </div>
+                    <div className="text-center">
+                      {/* Icon */}
+                      <div className={`w-16 h-16 mx-auto mb-4 rounded-xl flex items-center justify-center ${
+                        index === 0 ? 'bg-blue-400' : 
+                        index === 1 ? 'bg-purple-500' : 
+                        index === 2 ? 'bg-red-500' : 'bg-green-500'
+                      }`}>
+                        <div className="text-white">
+                          {item.icon}
+                        </div>
+                      </div>
+                      
+                      {/* Content */}
+                      <h3 className="text-lg font-bold text-gray-900 mb-3">
+                        {item.title}
+                      </h3>
+                      <p className="text-gray-600 leading-relaxed text-sm">
+                        {item.description}
+                      </p>
+                    </div>
+                  </motion.div>
+                ))}
               </div>
             </FadeInWhenVisible>
-              </div>
-
-              {/* Right Column - Image */}
-              {!isMobile && (
-                <div className="flex flex-col h-full">
-                  <FadeInWhenVisible delay={400}>
-                    <div className="w-full h-full rounded-2xl overflow-hidden border-2 border-gray-200 relative flex">
-                      <img
-                        src="/mobile.png"
-                        alt="StockFlow Dashboard - Modern inventory management interface showing real-time analytics, product tracking, and business insights"
-                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                      />
-                      {/* Optional overlay or badge */}
-                      <div className="absolute -top-4 -right-4 bg-blue-600 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg z-10">
-                        Live Demo
-                      </div>
-                    </div>
-                  </FadeInWhenVisible>
-                </div>
-              )}
-            </div>
           </div>
         </div>
       </section>
