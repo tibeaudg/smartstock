@@ -247,10 +247,6 @@ export const AuthPage = () => {
       />
       <Header 
         onLoginClick={handleLoginClick}
-        onNavigate={undefined}
-        simplifiedNav={false}
-        hideAuthButtons={true}
-        hideNotifications={true}
       />
       <div className="flex-1 flex flex-col lg:flex-row">
         {/* Left side - Auth Form */}

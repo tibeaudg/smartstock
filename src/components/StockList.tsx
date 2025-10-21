@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import type { Database, TablesUpdate } from '@/integrations/supabase/types';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -256,9 +257,9 @@ export const PhotoUploadPlaceholder: React.FC<PhotoUploadPlaceholderProps> = ({
         .getPublicUrl(fileName);
 
       // Update product with new image URL
-      const { error: updateError } = await supabase
-        .from('products')
-        .update({ image_url: publicUrl } as any)
+      const { error: updateError } = await (supabase
+        .from('products') as any)
+        .update({ image_url: publicUrl })
         .eq('id', productId);
 
       if (updateError) throw updateError;
@@ -1503,7 +1504,7 @@ const fetchProducts = async (branchId: string) => {
         .in('id', categoryIds);
       
       if (!categoryError && categoryData) {
-        categories = categoryData.reduce((acc, cat) => {
+        categories = categoryData.reduce((acc: { [key: string]: string }, cat: { id: string; name: string }) => {
           acc[cat.id] = cat.name;
           return acc;
         }, {} as { [key: string]: string });
@@ -1519,7 +1520,7 @@ const fetchProducts = async (branchId: string) => {
         .in('id', supplierIds);
       
       if (!supplierError && supplierData) {
-        suppliers = supplierData.reduce((acc, sup) => {
+        suppliers = supplierData.reduce((acc: { [key: string]: string }, sup: { id: string; name: string }) => {
           acc[sup.id] = sup.name;
           return acc;
         }, {} as { [key: string]: string });
@@ -2137,10 +2138,10 @@ export const StockList = () => {
   // Bulk action handlers
   const handleBulkArchive = async () => {
     try {
-      // Archive all selected products (set status to discontinued)
-      const { error } = await supabase
-        .from('products')
-        .update({ status: 'discontinued' } as any)
+      // Archive all selected products (set status to out_of_stock for discontinued)
+      const { error } = await (supabase
+        .from('products') as any)
+        .update({ status: 'out_of_stock' })
         .in('id', selectedProductIds)
         .eq('branch_id', activeBranch?.branch_id);
       
@@ -2441,9 +2442,9 @@ export const StockList = () => {
   // Archive product handler
   const handleArchiveProduct = async (product: Product) => {
     try {
-      const { error } = await supabase
-        .from('products')
-        .update({ status: 'discontinued' } as any)
+      const { error } = await (supabase
+        .from('products') as any)
+        .update({ status: 'out_of_stock' })
         .eq('id', product.id);
 
       if (error) throw error;
@@ -2467,8 +2468,8 @@ export const StockList = () => {
     if (newLocation === null) return; // User cancelled
     
     try {
-      const { error } = await supabase
-        .from('products')
+      const { error } = await (supabase
+        .from('products') as any)
         .update({ location: newLocation } as any)
         .eq('id', product.id);
 
@@ -2488,8 +2489,8 @@ export const StockList = () => {
   // Favorite toggle handler
   const handleFavoriteToggle = async (productId: string, isFavorite: boolean) => {
     try {
-      const { error } = await supabase
-        .from('products')
+      const { error } = await (supabase
+        .from('products') as any)
         .update({ is_favorite: isFavorite } as any)
         .eq('id', productId);
       
