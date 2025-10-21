@@ -1238,27 +1238,30 @@ const MobileProductListItem: React.FC<MobileProductListItemProps> = ({
                 )}
               </div>
 
-              {/* Price */}
-              {product.sale_price && (
-                <div className="text-sm font-medium text-green-600">
-                  ${Number(product.sale_price).toFixed(2)}
-                </div>
-              )}
             </div>
           </div>
 
-          {/* Stock action button */}
+          {/* Actions dropdown for non-variant items */}
           {!hasChildren && (
             <div className="flex-shrink-0" onClick={(e) => e.stopPropagation()}>
-              <Button
-                variant="outline"
-                size="sm"
-                className="h-8 px-3 text-xs"
-                onClick={() => onStockAction(product, 'in')}
-              >
-                <span className="hidden sm:inline">Adjust</span>
-                <Plus className="w-3 h-3 sm:hidden" />
-              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="sm" className="h-8 w-8 p-0">
+                    <MoreVertical className="w-4 h-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48">
+                  <DropdownMenuItem onClick={() => onEdit(product)}>
+                    <Edit className="w-4 h-4 mr-2 text-blue-600" />
+                    <span className="flex-1">Edit</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => onStockAction(product, 'in')}>
+                    <Plus className="w-4 h-4 mr-2 text-green-600" />
+                    <span className="flex-1">Adjust Stock</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           )}
 
@@ -1407,10 +1410,6 @@ const MobileProductCard: React.FC<MobileProductCardProps> = ({
             </p>
             <div className="flex items-center gap-3 text-sm">
               <span className="flex items-center gap-1">
-                <Tag className="w-4 h-4" />
-                from ${product.sale_price ? Number(product.sale_price).toFixed(2) : '0.00'}
-              </span>
-              <span className="flex items-center gap-1">
                 <Package className="w-4 h-4" />
                 {product.quantity_in_stock} in stock
               </span>
@@ -1418,15 +1417,37 @@ const MobileProductCard: React.FC<MobileProductCardProps> = ({
           </div>
         </div>
         
-        {/* Action button at bottom center */}
+        {/* Actions dropdown at bottom center */}
         <div className="p-4 flex justify-center">
-          <Button
-            variant="outline"
-            className="px-6 py-2 bg-white border-gray-300 text-gray-700 hover:bg-gray-50"
-            onClick={() => onStockAction(product, 'in')}
-          >
-            Adjust Stock
-          </Button>
+          {!hasChildren ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="px-6 py-2 bg-white border-gray-300 text-gray-700 hover:bg-gray-50">
+                  <MoreVertical className="w-4 h-4 mr-2" />
+                  Actions
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="center" className="w-48">
+                <DropdownMenuItem onClick={() => onEdit(product)}>
+                  <Edit className="w-4 h-4 mr-2 text-blue-600" />
+                  <span className="flex-1">Edit</span>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => onStockAction(product, 'in')}>
+                  <Plus className="w-4 h-4 mr-2 text-green-600" />
+                  <span className="flex-1">Adjust Stock</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Button
+              variant="outline"
+              className="px-6 py-2 bg-white border-gray-300 text-gray-700 hover:bg-gray-50"
+              onClick={() => onStockAction(product, 'in')}
+            >
+              Adjust Stock
+            </Button>
+          )}
         </div>
       </div>
       
@@ -2625,10 +2646,10 @@ export const StockList = () => {
           <div className="flex items-center justify-between">
             <div>
               <h1 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-gray-900 mb-2`}>
-                Stock List
+                Products
               </h1>
               <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600`}>
-                Manage your stock list and track deliveries
+                Manage your products and track deliveries
               </p>
             </div>
             
@@ -3191,10 +3212,10 @@ export const StockList = () => {
           <div className="flex items-center gap-4">
             <div>
               <h1 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-gray-900 mb-2`}>
-                Stock List
+                Products
               </h1>
               <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600`}>
-                Manage your stock list and track deliveries
+                Manage your products and track deliveries
               </p>
             </div>
             

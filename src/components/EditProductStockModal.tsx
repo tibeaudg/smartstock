@@ -125,28 +125,18 @@ export const EditProductStockModal = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className={`${isMobile ? 'w-full max-w-full mx-auto p-0 h-full max-h-full rounded-none' : 'max-w-xs mx-auto px-14'}`}>
-        <DialogHeader className={`${isMobile ? 'p-4 border-b' : ''}`}>
-          {isMobile && onBack && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={onBack}
-              className="absolute left-4 top-4 z-10"
-            >
-              <ArrowLeft className="h-4 w-4" />
-            </Button>
-          )}
+      <DialogContent className={`${isMobile ? 'w-full max-w-full mx-auto p-6 h-full max-h-full rounded-none bg-gray-50' : 'max-w-xs mx-auto px-14'}`}>
+        <DialogHeader className={`${isMobile ? 'p-4 ' : ''}`}>
+          
           <DialogTitle className={`flex items-center gap-2 ${isMobile ? 'text-center pr-8' : ''}`}>
             <span className={actionColor}>{actionTitle}: {product.name}</span>
           </DialogTitle>
         </DialogHeader>
         
-        <div className={`${isMobile ? 'flex-1 overflow-y-auto p-4' : 'py-4'}`}>
+        <div className={`${isMobile ? 'flex-1 overflow-y-auto p-4 bg-white rounded-lg' : 'py-4'}`}>
           <div className="grid gap-4">
             {/* Action Type Switcher */}
             <div className="grid gap-2">
-              <Label>Stock Operation</Label>
               <div className={`flex rounded-lg border-2 ${currentActionType === 'in' ? 'border-green-200 bg-green-50' : 'border-red-200 bg-red-50'}`}>
                 <button
                   type="button"
@@ -157,7 +147,7 @@ export const EditProductStockModal = ({
                       : 'text-green-700 hover:bg-green-100'
                   }`}
                 >
-                  <Plus className="w-4 h-4" />
+                  <Plus className="w-4 h-4 " />
                   <span className="font-medium">Add Stock</span>
                 </button>
                 <button
@@ -204,16 +194,8 @@ export const EditProductStockModal = ({
           </div>
         </div>
 
-        <div className={`${isMobile ? 'p-4 border-t bg-gray-50' : ''}`}>
+        <div className={`${isMobile ? 'p-4 bg-gray-50' : ''}`}>
           <div className={`flex gap-2 ${isMobile ? 'flex-col' : 'justify-end'}`}>
-            <Button 
-              variant="outline" 
-              onClick={onClose} 
-              disabled={loading}
-              className={isMobile ? 'w-full' : ''}
-            >
-              Cancel
-            </Button>
             <Button
               onClick={handleSubmit}
               disabled={loading}

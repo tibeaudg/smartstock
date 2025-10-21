@@ -586,9 +586,9 @@ const MobilePhoneMockup = () => {
           {/* Screen content */}
           <div className="absolute inset-1 sm:inset-1.5 md:inset-2 bg-black rounded-[2rem] sm:rounded-[2.3rem] md:rounded-[2.5rem] overflow-hidden">
             <img 
-              src="/mobile.png" 
+              src="/newmobile.png" 
               alt="StockFlow mobile dashboard" 
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain"
               loading="lazy"
             />
           </div>
@@ -1565,7 +1565,7 @@ export const HomePage = () => {
                 <div className="mb-6 mt-6 sm:mb-8 md:mb-12">
                   <h1 className="text-[clamp(2.8rem,7.5vw,8.5rem)] sm:text-[clamp(2.5rem,7vw,5rem)] md:text-[clamp(3.5rem,6vw,5.5rem)] mb-3 sm:mb-4 md:mb-6 leading-tight tracking-tight sm:px-0">
                     <span className="block text-white drop-shadow-lg mb-1 sm:mb-2 md:mb-3">Inventory Chaos</span>
-                    <span className="block text-white drop-shadow-lg mb-1 sm:mb-2 md:mb-3">Ends Here.</span>
+                    <span className="block text-white drop-shadow-lg mb-1 sm:mb-2 md:mb-3">Ends With</span>
                     <span className="block">
                       <span className="hidden sm:inline"> </span>
                       <span className="block sm:inline text-white drop-shadow-lg" style={{
@@ -1609,7 +1609,7 @@ export const HomePage = () => {
                 </div>
                 
                 {/* Features with checkmarks */}
-                <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 justify-center items-center mt-6 sm:mt-8">
+                <div className="flex flex-col sm:flex-row gap-6 sm:gap-6 justify-center items-center mt-6 sm:mt-8">
                   <div className="flex items-center gap-1">
                     <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
                       <Check className="h-3 w-3 text-white" />

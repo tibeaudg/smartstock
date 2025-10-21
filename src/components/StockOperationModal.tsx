@@ -63,7 +63,7 @@ export const StockOperationModal = ({
                       : 'border-gray-200 bg-white text-gray-700 hover:border-green-300'
                   }`}
                 >
-                  <div className="flex items-center justify-center gap-2">
+                  <div className="flex items-center justify-center gap-2 mt-6">
                     <Plus className="w-5 h-5" />
                     <span className="font-medium">Add Stock</span>
                   </div>
