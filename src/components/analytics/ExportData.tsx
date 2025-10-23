@@ -86,30 +86,30 @@ export const ExportData = () => {
 
   const availableColumns = {
     products: [
-      'ID', 'Naam', 'Beschrijving', 'Category', 'Voorraad', 'Min. Voorraad', 
-      'Prijs', 'Kostprijs', 'Leverancier', 'Locations', 'Barcode', 'Gemaakt op'
+      'ID', 'Name', 'Description', 'Category', 'Inventory', 'Min. Inventory', 
+      'Price', 'Cost Price', 'Supplier', 'Locations', 'Barcode', 'Created at'
     ],
     transactions: [
-      'ID', 'Datum', 'Type', 'Product', 'Aantal', 'Prijs', 'Totaal', 
-      'Gebruiker', 'Filial', 'Referentie', 'Notities'
+      'ID', 'Date', 'Type', 'Product', 'Quantity', 'Price', 'Total', 
+      'User', 'Branch', 'Reference', 'Notes'
     ],
     inventory: [
-      'Product ID', 'Product Naam', 'Category', 'Huidige Voorraad', 
-      'Min. Voorraad', 'Max. Voorraad', 'Locations', 'Laatste Beweging', 
-      'Status', 'Waarde'
+      'Product ID', 'Product Name', 'Category', 'Current Inventory', 
+      'Min. Inventory', 'Max. Inventory', 'Locations', 'Last Movement', 
+      'Status', 'Value'
     ],
     financial: [
-      'Periode', 'Omzet', 'Kosten', 'Winst', 'Marges', 'Belastingen', 
-      'Transacties', 'Gem. Transactie Waarde', 'Top Producten'
+      'Period', 'Revenue', 'Costs', 'Profit', 'Margins', 'Taxes', 
+      'Transactions', 'Average Transaction Value', 'Top Products'
     ],
-    custom: ['Alle beschikbare velden']
+    custom: ['All available fields']
   };
 
   const formatOptions = [
-    { value: 'excel', label: 'Excel (.xlsx)', icon: FileSpreadsheet, description: 'Voor analyse en rapportage' },
-    { value: 'csv', label: 'CSV (.csv)', icon: FileText, description: 'Voor import in andere systemen' },
-    { value: 'pdf', label: 'PDF (.pdf)', icon: FileText, description: 'Voor presentatie en archivering' },
-    { value: 'json', label: 'JSON (.json)', icon: Database, description: 'Voor API integraties' }
+    { value: 'excel', label: 'Excel (.xlsx)', icon: FileSpreadsheet, description: 'For analysis and reporting' },
+    { value: 'csv', label: 'CSV (.csv)', icon: FileText, description: 'For import in other systems' },
+    { value: 'pdf', label: 'PDF (.pdf)', icon: FileText, description: 'For presentation and archiving' },
+    { value: 'json', label: 'JSON (.json)', icon: Database, description: 'For API integrations' }
   ];
 
   const fetchData = async () => {
@@ -154,31 +154,31 @@ export const ExportData = () => {
       const templates: ExportTemplate[] = [
         {
           id: '1',
-          name: 'Standaard Producten Export',
-          description: 'Basis producten export met alle belangrijke velden',
+          name: 'Standard Products Export',
+          description: 'Basic products export with all important fields',
           type: 'products',
           format: 'excel',
-          columns: ['ID', 'Naam', 'Category', 'Voorraad', 'Prijs'],
+          columns: ['ID', 'Name', 'Category', 'Inventory', 'Price'],
           filters: { dateRange: '30d' },
           isDefault: true
         },
         {
           id: '2',
-          name: 'Transacties Maandoverzicht',
-          description: 'Maandelijkse transacties voor financiële analyse',
+          name: 'Monthly Transactions Overview',
+          description: 'Monthly transactions for financial analysis',
           type: 'transactions',
           format: 'csv',
-          columns: ['Datum', 'Type', 'Product', 'Aantal', 'Prijs', 'Totaal'],
+          columns: ['Date', 'Type', 'Product', 'Quantity', 'Price', 'Total'],
           filters: { dateRange: '30d' },
           isDefault: false
         },
         {
           id: '3',
-          name: 'Voorraad Audit',
-          description: 'Volledige voorraad status voor auditing',
+          name: 'Inventory Audit',
+          description: 'Complete inventory status for auditing',
           type: 'inventory',
           format: 'pdf',
-          columns: ['Product', 'Voorraad', 'Min. Voorraad', 'Status', 'Locations'],
+          columns: ['Product', 'Inventory', 'Min. Inventory', 'Status', 'Locations'],
           filters: { dateRange: '7d' },
           isDefault: false
         }
@@ -289,16 +289,16 @@ export const ExportData = () => {
 
         exportData = productsData?.map(product => ({
           ID: product.id,
-          Naam: product.name,
-          Beschrijving: product.description,
-          Voorraad: product.current_stock,
-          'Min. Voorraad': product.min_stock,
-          Prijs: product.unit_price,
+          Name: product.name,
+          Description: product.description,
+          Inventory: product.current_stock,
+          'Min. Inventory': product.min_stock,
+          Price: product.unit_price,
           Status: product.status,
           Locations: product.location,
-          Category: product.categories?.name || 'Geen Category',
-          Leverancier: product.suppliers?.name || 'Geen leverancier',
-          'Aangemaakt': new Date(product.created_at).toLocaleDateString('nl-NL')
+          Category: product.categories?.name || 'No Category',
+          Supplier: product.suppliers?.name || 'No Supplier',
+          'Created at': new Date(product.created_at).toLocaleDateString('nl-NL')
         })) || [];
       } else if (jobData.export_type === 'transactions') {
         const days = jobData.filters?.dateRange === '7d' ? 7 : 
@@ -322,14 +322,14 @@ export const ExportData = () => {
 
         exportData = transactionsData?.map(transaction => ({
           ID: transaction.id,
-          Datum: new Date(transaction.created_at).toLocaleDateString('nl-NL'),
+          Date: new Date(transaction.created_at).toLocaleDateString('nl-NL'),
           Type: transaction.transaction_type,
-          Product: transaction.products?.name || 'Onbekend',
-          Aantal: transaction.quantity,
-          Prijs: transaction.products?.unit_price || 0,
-          Totaal: transaction.quantity * (transaction.products?.unit_price || 0),
-          Reden: transaction.reason,
-          Referentie: transaction.reference
+          Product: transaction.products?.name || 'Unknown',
+          Quantity: transaction.quantity,
+          Price: transaction.products?.unit_price || 0,
+          Total: transaction.quantity * (transaction.products?.unit_price || 0),
+          Reason: transaction.reason,
+          Reference: transaction.reference
         })) || [];
       } else if (jobData.export_type === 'inventory') {
         const { data: inventoryData } = await supabase
@@ -349,14 +349,14 @@ export const ExportData = () => {
 
         exportData = inventoryData?.map(product => ({
           'Product ID': product.id,
-          'Product Naam': product.name,
-          'Huidige Voorraad': product.current_stock,
-          'Min. Voorraad': product.min_stock,
-          'Max. Voorraad': product.max_stock,
+          'Product Name': product.name,
+          'Current Inventory': product.current_stock,
+          'Min. Inventory': product.min_stock,
+          'Max. Inventory': product.max_stock,
           'Locations': product.location,
-          'Status': product.current_stock <= product.min_stock ? 'Laag' : 
-                   product.current_stock <= product.min_stock * 1.5 ? 'Waarschuwing' : 'OK',
-          'Category': product.categories?.name || 'Geen Category'
+          'Status': product.current_stock <= product.min_stock ? 'Low' : 
+                   product.current_stock <= product.min_stock * 1.5 ? 'Warning' : 'OK',
+          'Category': product.categories?.name || 'No Category'
         })) || [];
       }
 
@@ -451,7 +451,7 @@ export const ExportData = () => {
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
           <Download className="w-12 h-12 text-blue-600 animate-pulse mx-auto mb-4" />
-          <p className="text-gray-600">Export data laden...</p>
+          <p className="text-gray-600">Loading export data...</p>
         </div>
       </div>
     );
@@ -464,12 +464,12 @@ export const ExportData = () => {
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Export Data</h1>
           <p className="text-gray-600 mt-1">
-            Exporteer je voorraad en verkoop data in verschillende formaten
+            Export your inventory and sales data in different formats
           </p>
         </div>
         <Button onClick={() => setShowCreateForm(true)} disabled={processing}>
           <Download className="w-4 h-4 mr-2" />
-          Nieuwe Export
+          New Export
         </Button>
       </div>
 
@@ -477,25 +477,25 @@ export const ExportData = () => {
       {showCreateForm && (
         <Card>
           <CardHeader>
-            <CardTitle>Nieuwe Data Export</CardTitle>
+            <CardTitle>New Data Export</CardTitle>
             <CardDescription>
-              Configureer je export met filters en opties
+              Configure your export with filters and options
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             {/* Basic Info */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="name">Export Naam</Label>
+                <Label htmlFor="name">Export Name</Label>
                 <Input
                   id="name"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  placeholder="Bijv. Producten Export Jan 2024"
+                  placeholder="e.g. Products Export Jan 2024"
                 />
               </div>
               <div>
-                <Label htmlFor="type">Data Type</Label>
+                <Label htmlFor="type">Export Type</Label>
                 <Select
                   value={formData.type}
                   onValueChange={(value: any) => setFormData({ ...formData, type: value })}
@@ -504,11 +504,11 @@ export const ExportData = () => {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="products">Producten</SelectItem>
-                    <SelectItem value="transactions">Transacties</SelectItem>
-                    <SelectItem value="inventory">Voorraad</SelectItem>
-                    <SelectItem value="financial">Financieel</SelectItem>
-                    <SelectItem value="custom">Aangepast</SelectItem>
+                    <SelectItem value="products">Products</SelectItem>
+                    <SelectItem value="transactions">Transactions</SelectItem>
+                    <SelectItem value="inventory">Inventory</SelectItem>
+                    <SelectItem value="financial">Financial</SelectItem>
+                    <SelectItem value="custom">Custom</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -543,7 +543,7 @@ export const ExportData = () => {
             {/* Filters */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="dateRange">Tijdsperiode</Label>
+                <Label htmlFor="dateRange">Date Range</Label>
                 <Select
                   value={formData.dateRange}
                   onValueChange={(value) => setFormData({ ...formData, dateRange: value })}
@@ -552,16 +552,16 @@ export const ExportData = () => {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="7d">Laatste 7 dagen</SelectItem>
-                    <SelectItem value="30d">Laatste 30 dagen</SelectItem>
-                    <SelectItem value="90d">Laatste 90 dagen</SelectItem>
-                    <SelectItem value="1y">Laatste jaar</SelectItem>
-                    <SelectItem value="all">Alle data</SelectItem>
+                    <SelectItem value="7d">Last 7 days</SelectItem>
+                    <SelectItem value="30d">Last 30 days</SelectItem>
+                    <SelectItem value="90d">Last 90 days</SelectItem>
+                    <SelectItem value="1y">Last year</SelectItem>
+                    <SelectItem value="all">All data</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               <div>
-                <Label htmlFor="columns">Kolommen</Label>
+                <Label htmlFor="columns">Columns</Label>
                 <Select
                   value=""
                   onValueChange={(value) => {
@@ -571,7 +571,7 @@ export const ExportData = () => {
                   }}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Selecteer kolommen..." />
+                    <SelectValue placeholder="Select columns..." />
                   </SelectTrigger>
                   <SelectContent>
                     {availableColumns[formData.type].map((column) => (
@@ -586,7 +586,7 @@ export const ExportData = () => {
 
             {formData.columns.length > 0 && (
               <div>
-                <Label>Geselecteerde Kolommen</Label>
+                <Label>Selected Columns</Label>
                 <div className="flex flex-wrap gap-2 mt-2">
                   {formData.columns.map((column, index) => (
                     <Badge key={index} variant="secondary" className="flex items-center space-x-1">
@@ -609,7 +609,7 @@ export const ExportData = () => {
             {/* Custom Query */}
             {formData.type === 'custom' && (
               <div>
-                <Label htmlFor="customQuery">Aangepaste Query (SQL)</Label>
+                <Label htmlFor="customQuery">Custom Query (SQL)</Label>
                 <Textarea
                   id="customQuery"
                   value={formData.customQuery}
@@ -622,7 +622,7 @@ export const ExportData = () => {
 
             {/* Options */}
             <div className="space-y-3">
-              <Label>Export Opties</Label>
+              <Label>Export Options</Label>
               <div className="space-y-2">
                 <label className="flex items-center space-x-2">
                   <Checkbox
@@ -631,7 +631,7 @@ export const ExportData = () => {
                       setFormData({ ...formData, includeSummary: checked as boolean })
                     }
                   />
-                  <span className="text-sm">Inclusief samenvatting</span>
+                  <span className="text-sm">Include summary</span>
                 </label>
                 {formData.format === 'excel' && (
                   <label className="flex items-center space-x-2">
@@ -641,7 +641,7 @@ export const ExportData = () => {
                         setFormData({ ...formData, includeCharts: checked as boolean })
                       }
                     />
-                    <span className="text-sm">Inclusief grafieken</span>
+                    <span className="text-sm">Include charts</span>
                   </label>
                 )}
               </div>
@@ -649,7 +649,7 @@ export const ExportData = () => {
 
             {/* Email Notification */}
             <div>
-              <Label htmlFor="email">E-mail Notificatie (Optioneel)</Label>
+              <Label htmlFor="email">Email Notification (Optional)</Label>
               <Input
                 id="email"
                 type="email"
@@ -662,18 +662,18 @@ export const ExportData = () => {
             {/* Actions */}
             <div className="flex justify-end space-x-3">
               <Button variant="outline" onClick={() => setShowCreateForm(false)}>
-                Annuleren
+                    Cancel
               </Button>
               <Button onClick={handleCreateExport} disabled={processing}>
                 {processing ? (
                   <>
                     <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
-                    Verwerken...
+                    Processing...
                   </>
                 ) : (
                   <>
                     <Download className="w-4 h-4 mr-2" />
-                    Export Starten
+                    Start Export
                   </>
                 )}
               </Button>
@@ -687,7 +687,7 @@ export const ExportData = () => {
         <CardHeader>
           <CardTitle>Export Templates</CardTitle>
           <CardDescription>
-            Gebruik voorgedefinieerde templates voor snelle exports
+            Use predefined templates for quick exports
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -700,14 +700,14 @@ export const ExportData = () => {
                     <p className="text-sm text-gray-600">{template.description}</p>
                   </div>
                   {template.isDefault && (
-                    <Badge variant="secondary">Standaard</Badge>
+                    <Badge variant="secondary">Standard</Badge>
                   )}
                 </div>
                 <div className="flex items-center space-x-2 text-sm text-gray-500 mb-3">
                   {getFormatIcon(template.format)}
                   <span>{template.format.toUpperCase()}</span>
                   <span>•</span>
-                  <span>{template.columns.length} kolommen</span>
+                  <span>{template.columns.length} columns</span>
                 </div>
                 <Button 
                   size="sm" 
@@ -716,7 +716,7 @@ export const ExportData = () => {
                   onClick={() => handleUseTemplate(template)}
                 >
                   <Eye className="w-4 h-4 mr-2" />
-                  Gebruiken
+                  Use
                 </Button>
               </div>
             ))}
@@ -729,7 +729,7 @@ export const ExportData = () => {
         <CardHeader>
           <CardTitle>Export Jobs</CardTitle>
           <CardDescription>
-            Huidige en voltooide export taken
+            Current and completed export jobs
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -746,7 +746,7 @@ export const ExportData = () => {
                         <span>•</span>
                         <span>{job.format.toUpperCase()}</span>
                         <span>•</span>
-                        <span>{job.columns.length} kolommen</span>
+                        <span>{job.columns.length} columns</span>
                       </div>
                     </div>
                   </div>
@@ -764,7 +764,7 @@ export const ExportData = () => {
                 {job.status === 'processing' && (
                   <div className="mb-3">
                     <div className="flex items-center justify-between text-sm mb-1">
-                      <span>Verwerken...</span>
+                      <span>Processing...</span>
                       <span>{Math.round(job.progress)}%</span>
                     </div>
                     <Progress value={job.progress} className="h-2" />
@@ -773,19 +773,19 @@ export const ExportData = () => {
 
                 <div className="flex items-center justify-between text-sm text-gray-500">
                   <div className="flex items-center space-x-4">
-                    <span>Gemaakt: {new Date(job.createdAt).toLocaleString('nl-NL')}</span>
+                    <span>Created: {new Date(job.createdAt).toLocaleString('nl-NL')}</span>
                     {job.completedAt && (
-                      <span>Voltooid: {new Date(job.completedAt).toLocaleString('nl-NL')}</span>
+                      <span>Completed: {new Date(job.completedAt).toLocaleString('nl-NL')}</span>
                     )}
                     {job.fileSize && (
-                      <span>Grootte: {job.fileSize}</span>
+                      <span>Size: {job.fileSize}</span>
                     )}
                   </div>
                   <div className="flex items-center space-x-2">
                     {job.status === 'completed' && job.downloadUrl && (
                       <Button size="sm" variant="outline">
                         <Download className="w-4 h-4 mr-2" />
-                        Download
+                        Download File
                       </Button>
                     )}
                     {job.emailNotification && (

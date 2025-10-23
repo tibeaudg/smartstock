@@ -86,16 +86,16 @@ export const CustomReports = () => {
   });
 
   const availableColumns = {
-    sales: ['Datum', 'Product', 'Aantal', 'Omzet', 'Klant', 'Filial'],
-    inventory: ['Product', 'Category', 'Voorraad', 'Min. Voorraad', 'Locations', 'Laatste Beweging'],
-    financial: ['Periode', 'Omzet', 'Kosten', 'Winst', 'Marges', 'Belastingen'],
-    custom: ['Alle beschikbare velden']
+    sales: ['Date', 'Product', 'Quantity', 'Revenue', 'Customer', 'Branch'],
+    inventory: ['Product', 'Category', 'Inventory', 'Min. Inventory', 'Locations', 'Last Movement'],
+    financial: ['Period', 'Revenue', 'Costs', 'Profit', 'Margins', 'Taxes'],
+    custom: ['All available fields']
   };
 
   const chartTypes = [
-    { value: 'bar', label: 'Staafdiagram', icon: BarChart3 },
-    { value: 'line', label: 'Lijndiagram', icon: LineChart },
-    { value: 'pie', label: 'Cirkeldiagram', icon: PieChart }
+      { value: 'bar', label: 'Bar Chart', icon: BarChart3 },
+    { value: 'line', label: 'Line Chart', icon: LineChart },
+    { value: 'pie', label: 'Pie Chart', icon: PieChart }
   ];
 
   const fetchTemplates = async () => {
@@ -128,7 +128,7 @@ export const CustomReports = () => {
           products: [],
           branches: []
         },
-        columns: ['Datum', 'Product', 'Aantal', 'Omzet'], // Default columns
+        columns: ['Date', 'Product', 'Quantity', 'Revenue'], // Default columns
         createdAt: template.created_at.split('T')[0],
         lastRun: template.updated_at.split('T')[0]
       })) || [];
@@ -455,14 +455,14 @@ export const CustomReports = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Custom Rapporten</h1>
+          <h1 className="text-3xl font-bold text-gray-900">Custom Reports</h1>
           <p className="text-gray-600 mt-1">
-            Maak en beheer aangepaste rapporten voor je voorraad en verkoop
+            Create and manage custom reports for your inventory and sales
           </p>
         </div>
         <Button onClick={() => setShowCreateForm(true)}>
           <Plus className="w-4 h-4 mr-2" />
-          Nieuw Rapport
+          New Report
         </Button>
       </div>
 
@@ -471,26 +471,26 @@ export const CustomReports = () => {
         <Card>
           <CardHeader>
             <CardTitle>
-              {editingTemplate ? 'Rapport Bewerken' : 'Nieuw Rapport Maken'}
+              {editingTemplate ? 'Edit Report' : 'Create New Report'}
             </CardTitle>
             <CardDescription>
-              Configureer je aangepaste rapport met filters en opties
+              Configure your custom report with filters and options
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             {/* Basic Info */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="name">Rapport Naam</Label>
+                <Label htmlFor="name">Report Name</Label>
                 <Input
                   id="name"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  placeholder="Bijv. Maandelijkse Verkoop Rapport"
+                  placeholder="e.g. Monthly Sales Report"
                 />
               </div>
               <div>
-                <Label htmlFor="type">Rapport Type</Label>
+                <Label htmlFor="type">Report Type</Label>
                 <Select
                   value={formData.type}
                   onValueChange={(value: any) => setFormData({ ...formData, type: value })}
@@ -499,22 +499,22 @@ export const CustomReports = () => {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="sales">Verkoop</SelectItem>
-                    <SelectItem value="inventory">Voorraad</SelectItem>
-                    <SelectItem value="financial">Financieel</SelectItem>
-                    <SelectItem value="custom">Aangepast</SelectItem>
+                    <SelectItem value="sales">Sales</SelectItem>
+                    <SelectItem value="inventory">Inventory</SelectItem>
+                    <SelectItem value="financial">Financial</SelectItem>
+                    <SelectItem value="custom">Custom</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
             </div>
 
             <div>
-              <Label htmlFor="description">Beschrijving</Label>
+                <Label htmlFor="description">Description</Label>
               <Textarea
                 id="description"
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                placeholder="Beschrijf wat dit rapport bevat..."
+                placeholder="Describe what this report contains..."
                 rows={3}
               />
             </div>
@@ -522,7 +522,7 @@ export const CustomReports = () => {
             {/* Format Options */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <Label>Rapport Format</Label>
+                <Label>Report Format</Label>
                 <div className="flex space-x-4 mt-2">
                   <label className="flex items-center space-x-2">
                     <Checkbox
@@ -531,7 +531,7 @@ export const CustomReports = () => {
                         checked && setFormData({ ...formData, format: 'table' })
                       }
                     />
-                    <span className="text-sm">Tabel</span>
+                    <span className="text-sm">Table</span>
                   </label>
                   <label className="flex items-center space-x-2">
                     <Checkbox
@@ -540,7 +540,7 @@ export const CustomReports = () => {
                         checked && setFormData({ ...formData, format: 'chart' })
                       }
                     />
-                    <span className="text-sm">Grafiek</span>
+                    <span className="text-sm">Chart</span>
                   </label>
                   <label className="flex items-center space-x-2">
                     <Checkbox
@@ -549,14 +549,14 @@ export const CustomReports = () => {
                         checked && setFormData({ ...formData, format: 'both' })
                       }
                     />
-                    <span className="text-sm">Beide</span>
+                    <span className="text-sm">Both</span>
                   </label>
                 </div>
               </div>
 
               {formData.format !== 'table' && (
                 <div>
-                  <Label>Grafiek Type</Label>
+                  <Label>Chart Type</Label>
                   <Select
                     value={formData.chartType}
                     onValueChange={(value: any) => setFormData({ ...formData, chartType: value })}
@@ -584,7 +584,7 @@ export const CustomReports = () => {
               <Label>Filters</Label>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
                 <div>
-                  <Label htmlFor="dateRange">Tijdsperiode</Label>
+                  <Label htmlFor="dateRange">Date Range</Label>
                   <Select
                     value={formData.dateRange}
                     onValueChange={(value) => setFormData({ ...formData, dateRange: value })}
@@ -593,15 +593,15 @@ export const CustomReports = () => {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="7d">Laatste 7 dagen</SelectItem>
-                      <SelectItem value="30d">Laatste 30 dagen</SelectItem>
-                      <SelectItem value="90d">Laatste 90 dagen</SelectItem>
-                      <SelectItem value="1y">Laatste jaar</SelectItem>
+                      <SelectItem value="7d">Last 7 days</SelectItem>
+                      <SelectItem value="30d">Last 30 days</SelectItem>
+                      <SelectItem value="90d">Last 90 days</SelectItem>
+                      <SelectItem value="1y">Last year</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div>
-                  <Label htmlFor="columns">Kolommen</Label>
+                  <Label htmlFor="columns">Columns</Label>
                   <Select
                     value=""
                     onValueChange={(value) => {
@@ -611,7 +611,7 @@ export const CustomReports = () => {
                     }}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Selecteer kolommen..." />
+                      <SelectValue placeholder="Select columns..." />
                     </SelectTrigger>
                     <SelectContent>
                       {availableColumns[formData.type].map((column) => (
@@ -648,10 +648,10 @@ export const CustomReports = () => {
 
             {/* Schedule */}
             <div>
-              <Label>Automatische Planning (Optioneel)</Label>
+                <Label>Automatic Planning (Optional)</Label>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
                 <div>
-                  <Label htmlFor="frequency">Frequentie</Label>
+                  <Label htmlFor="frequency">Frequency</Label>
                   <Select
                     value={formData.schedule.frequency}
                     onValueChange={(value: any) => 
@@ -665,14 +665,14 @@ export const CustomReports = () => {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="daily">Dagelijks</SelectItem>
-                      <SelectItem value="weekly">Wekelijks</SelectItem>
-                      <SelectItem value="monthly">Maandelijks</SelectItem>
+                      <SelectItem value="daily">Daily</SelectItem>
+                      <SelectItem value="weekly">Weekly</SelectItem>
+                      <SelectItem value="monthly">Monthly</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div>
-                  <Label htmlFor="time">Tijd</Label>
+                  <Label htmlFor="time">Time</Label>
                   <Input
                     id="time"
                     type="time"
@@ -686,7 +686,7 @@ export const CustomReports = () => {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="email">E-mail</Label>
+                  <Label htmlFor="email">Email</Label>
                   <Input
                     id="email"
                     type="email"
@@ -710,11 +710,11 @@ export const CustomReports = () => {
                 setEditingTemplate(null);
                 resetForm();
               }}>
-                Annuleren
+                Cancel
               </Button>
               <Button onClick={editingTemplate ? handleUpdateTemplate : handleCreateTemplate}>
                 <Save className="w-4 h-4 mr-2" />
-                {editingTemplate ? 'Bijwerken' : 'Opslaan'}
+                {editingTemplate ? 'Update' : 'Save'}
               </Button>
             </div>
           </CardContent>
@@ -747,7 +747,7 @@ export const CustomReports = () => {
                     <span className="font-medium">{template.format}</span>
                   </div>
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-500">Kolommen:</span>
+                    <span className="text-gray-500">Columns:</span>
                     <span className="font-medium">{template.columns.length}</span>
                   </div>
                   {template.schedule && (
@@ -758,7 +758,7 @@ export const CustomReports = () => {
                   )}
                   {template.lastRun && (
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-500">Laatste run:</span>
+                      <span className="text-gray-500">Last run:</span>
                       <span className="font-medium">
                         {new Date(template.lastRun).toLocaleDateString('nl-NL')}
                       </span>
@@ -774,7 +774,7 @@ export const CustomReports = () => {
                     onClick={() => handleRunReport(template)}
                   >
                     <Play className="w-4 h-4 mr-2" />
-                    Uitvoeren
+                    Run
                   </Button>
                   <Button 
                     size="sm" 
@@ -801,9 +801,9 @@ export const CustomReports = () => {
       {savedReports.length > 0 && (
         <Card>
           <CardHeader>
-            <CardTitle>Opgeslagen Rapporten</CardTitle>
+              <CardTitle>Saved Reports</CardTitle>
             <CardDescription>
-              Recent gegenereerde rapporten
+              Recent generated reports
             </CardDescription>
           </CardHeader>
           <CardContent>
