@@ -110,11 +110,12 @@ export default function PurchaseOrdersPage() {
   const [minAmount, setMinAmount] = useState('');
   const [maxAmount, setMaxAmount] = useState('');
 
-  // Use React Query for caching
+  // Use React Query for caching with improved error handling
   const {
     data: purchaseOrders = [],
     isLoading: loading,
     error: purchaseOrdersError,
+    refetch,
   } = useQuery<PurchaseOrder[]>({
     queryKey: ['purchase-orders', user?.id],
     queryFn: () => user ? fetchPurchaseOrders(user.id) : [],
@@ -122,10 +123,36 @@ export default function PurchaseOrdersPage() {
     refetchOnWindowFocus: false,
     staleTime: 1000 * 60 * 5, // 5 minutes cache
     gcTime: 1000 * 60 * 30, // 30 minutes garbage collect
+    retry: 2, // Retry failed requests twice
+    retryDelay: 1000, // 1 second delay between retries
   });
 
+  // Handle errors with useEffect
+  useEffect(() => {
+    if (purchaseOrdersError) {
+      console.error('Purchase orders fetch error:', purchaseOrdersError);
+    }
+  }, [purchaseOrdersError]);
+
+  // Add timeout fallback for loading states
+  const [loadingTimeout, setLoadingTimeout] = useState(false);
+  
+  useEffect(() => {
+    if (loading) {
+      const timeout = setTimeout(() => {
+        setLoadingTimeout(true);
+        console.warn('[PurchaseOrders] Loading timeout - attempting refetch');
+        refetch();
+      }, 10000); // 10 second timeout
+      
+      return () => clearTimeout(timeout);
+    } else {
+      setLoadingTimeout(false);
+    }
+  }, [loading, refetch]);
+
   // Filter purchase orders based on search and filters
-  const filteredPurchaseOrders = purchaseOrders.filter(po => {
+  const filteredPurchaseOrders = (purchaseOrders as PurchaseOrder[]).filter(po => {
     const matchesSearch = 
       po.po_number.toLowerCase().includes(searchTerm.toLowerCase()) ||
       po.vendor?.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -192,13 +219,13 @@ export default function PurchaseOrdersPage() {
 
   const getStatusCounts = () => {
     const counts = {
-      all: purchaseOrders.length,
+      all: (purchaseOrders as PurchaseOrder[]).length,
       quote: 0,
       shipped: 0,
       received: 0,
     };
 
-    purchaseOrders.forEach(po => {
+    (purchaseOrders as PurchaseOrder[]).forEach(po => {
       if (po.status === 'quote') counts.quote++;
       if (po.status === 'shipped') counts.shipped++;
       if (po.status === 'received') counts.received++;
@@ -318,7 +345,37 @@ export default function PurchaseOrdersPage() {
           <div className="flex items-center justify-center py-12">
             <div className="text-center">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-              <p className="text-gray-600">Loading purchase orders...</p>
+              <p className="text-gray-600">
+                {loadingTimeout ? 'Taking longer than expected...' : 'Loading purchase orders...'}
+              </p>
+              {loadingTimeout && (
+                <Button 
+                  onClick={() => refetch()} 
+                  variant="outline" 
+                  size="sm" 
+                  className="mt-2"
+                >
+                  Retry
+                </Button>
+              )}
+            </div>
+          </div>
+        ) : purchaseOrdersError ? (
+          <div className="flex items-center justify-center py-12">
+            <div className="text-center">
+              <AlertCircle className="w-12 h-12 text-red-400 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-gray-900 mb-2">
+                Error loading purchase orders
+              </h3>
+              <p className="text-base text-gray-600 mb-4">
+                There was a problem loading your purchase orders. Please try again.
+              </p>
+              <Button 
+                onClick={() => refetch()} 
+                className="bg-blue-600 hover:bg-blue-700 text-white"
+              >
+                Try Again
+              </Button>
             </div>
           </div>
         ) : filteredPurchaseOrders.length === 0 ? (

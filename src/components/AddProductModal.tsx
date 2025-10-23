@@ -28,6 +28,7 @@ interface AddProductModalProps {
   isOpen: boolean;
   onClose: () => void;
   onProductAdded: () => void;
+  onFirstProductAdded?: () => void;
   preFilledSKU?: string;
 }
 
@@ -46,7 +47,12 @@ interface FormData {
   sku: string;
 }
 
-export const AddProductModal = ({ isOpen, onClose, onProductAdded, preFilledSKU }: AddProductModalProps) => {
+export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProductAdded, preFilledSKU }: AddProductModalProps) => {
+  console.log('[AddProductModal] Props received:', { 
+    isOpen, 
+    onProductAdded: !!onProductAdded, 
+    onFirstProductAdded: !!onFirstProductAdded 
+  });
   const { user } = useAuth();
   const { activeBranch, loading: branchLoading } = useBranches();
   const queryClient = useQueryClient();
@@ -240,6 +246,29 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, preFilledSKU 
       console.error('No active branch selected');
       toast.error('No active branch selected. Select a branch and try again');
       return;
+    }
+
+    // Check if this is the first product (for feedback modal) - simplified logic
+    let wasFirstProduct = false;
+    if (onFirstProductAdded) {
+      try {
+        const { count } = await supabase
+          .from('products')
+          .select('id', { count: 'exact', head: true })
+          .eq('branch_id', activeBranch.branch_id);
+        wasFirstProduct = (count || 0) === 0;
+        console.log('[AddProductModal] Product count before adding:', count, 'wasFirstProduct:', wasFirstProduct);
+        
+        // TEMPORARY: Force trigger for testing (remove this after testing)
+        if (count === 1) {
+          console.log('[AddProductModal] TEMPORARY: Overriding to trigger modal for testing');
+          wasFirstProduct = true;
+        }
+      } catch (error) {
+        console.error('Error checking product count:', error);
+        // If we can't check, assume it's not the first product to be safe
+        wasFirstProduct = false;
+      }
     }
 
     // Validatie voor varianten
@@ -526,6 +555,15 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, preFilledSKU 
       // Skip license check for now - function doesn't exist
       // TODO: Implement proper license checking if needed
       console.log('[AddProductModal] user.id:', user.id, 'product added successfully');
+      
+      // Trigger first product callback if this was the first product
+      if (wasFirstProduct && onFirstProductAdded) {
+        console.log('[AddProductModal] Triggering first product callback');
+        onFirstProductAdded();
+      } else {
+        console.log('[AddProductModal] Not triggering callback - wasFirstProduct:', wasFirstProduct, 'onFirstProductAdded exists:', !!onFirstProductAdded);
+      }
+      
       onProductAdded();
       onClose();
     } catch (error) {

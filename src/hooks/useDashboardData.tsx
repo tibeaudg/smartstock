@@ -1,8 +1,8 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useEffect, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './useAuth';
 import { useBranches } from './useBranches';
-import { useEffect, useRef } from 'react';
 
 interface UseDashboardDataParams {
   dateFrom?: Date;
@@ -294,12 +294,15 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
     refetchOnWindowFocus: true, // Enable to get fresh data when user returns
     refetchOnMount: true, // Always fetch fresh data on mount for real-time updates
     staleTime: 30000, // Consider data stale after 30 seconds for better real-time updates
-    // @ts-expect-error: keepPreviousData is supported in v5, type mismatch workaround
-    keepPreviousData: true, // Keep previous data while loading new data
-    onError: (error) => {
-      console.error('Dashboard data fetch error:', error);
-    },
+    placeholderData: (previousData) => previousData, // Keep previous data while loading new data
   });
+
+  // Handle errors with useEffect
+  useEffect(() => {
+    if (error) {
+      console.error('Dashboard data fetch error:', error);
+    }
+  }, [error]);
 
   return {
     data: dashboardData,

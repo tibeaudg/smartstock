@@ -26,9 +26,9 @@ export const useSessionRevalidation = (onSessionChange?: (valid: boolean) => voi
       try {
         console.log('[SessionRevalidation] Tab became visible, checking session validity...');
         
-        // Add timeout to prevent hanging - increased to 10 seconds for slower connections
+        // Add timeout to prevent hanging - reduced to 5 seconds for better responsiveness
         const timeoutPromise = new Promise<null>((_, reject) => {
-          setTimeout(() => reject(new Error('Session check timeout')), 10000);
+          setTimeout(() => reject(new Error('Session check timeout')), 5000);
         });
 
         const sessionPromise = supabase.auth.getSession();
@@ -80,7 +80,9 @@ export const useSessionRevalidation = (onSessionChange?: (valid: boolean) => voi
         console.error('[SessionRevalidation] Unexpected error:', error);
         onSessionChange?.(false);
       } finally {
+        // Always reset the checking flag, even if there was an error or timeout
         isCheckingRef.current = false;
+        console.log('[SessionRevalidation] Session check completed, flag reset');
       }
     };
 

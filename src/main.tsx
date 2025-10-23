@@ -253,11 +253,12 @@ async function init() {
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: Infinity, // Never mark data as stale automatically - rely on manual invalidation
+      staleTime: 1000 * 60 * 5, // 5 minutes - data becomes stale after 5 minutes
       gcTime: 1000 * 60 * 60 * 24 * 7, // 7 days - keep unused data in cache for a week
       refetchOnWindowFocus: false, // Disabled - show cached data immediately on focus
-      refetchOnMount: false, // Disabled - use cached data when available for instant loading
+      refetchOnMount: false, // Use cached data when available for instant loading
       refetchOnReconnect: true, // Always refetch when network reconnects
+      networkMode: 'online', // Only run queries when online
       retry: (failureCount, error) => {
         // Retry logic: try 3 times, except for 4xx errors
         if (failureCount < 3) {
@@ -276,11 +277,12 @@ const queryClient = new QueryClient({
     mutations: {
       retry: 1, // Only retry mutations once
       retryDelay: 1000,
+      networkMode: 'online', // Only run mutations when online
     },
   },
 });
 
-// Make queryClient available globally for usePageRefresh
+// Make queryClient available globally for tab switching optimization
 (window as { queryClient?: QueryClient }).queryClient = queryClient;
 
 if (typeof window !== 'undefined') {

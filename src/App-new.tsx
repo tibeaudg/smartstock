@@ -123,7 +123,7 @@ const AppRouter = () => {
   // Protected Route Component
   const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     const { user, loading, userProfile } = useAuth();
-    const { branches, hasNoBranches, loading: branchesLoading } = useBranches();
+    const { branches, hasNoBranches, loading: branchesLoading, hasError } = useBranches();
     const location = useLocation();
     const [showOnboarding, setShowOnboarding] = useState(false);
 
@@ -165,7 +165,7 @@ const AppRouter = () => {
     }
 
     // Check if user has no branches and needs to create their first branch
-    if (hasNoBranches && branches.length === 0) {
+    if (hasNoBranches && branches.length === 0 && !hasError) {
       console.debug('[ProtectedRoute] No branches found, showing FirstBranchSetup');
       return <FirstBranchSetup />;
     }

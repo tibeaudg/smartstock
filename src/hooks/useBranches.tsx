@@ -17,6 +17,7 @@ interface BranchContextType {
   loading: boolean;
   refreshBranches: () => Promise<void>;
   hasNoBranches: boolean;
+  hasError: boolean;
 }
 
 const BranchContext = createContext<BranchContextType | undefined>(undefined);
@@ -78,6 +79,7 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
     data: branches = [],
     isLoading: queryLoading,
     refetch,
+    isError: queryError,
   } = useQuery<Branch[]>({
     queryKey: ['branches', user?.id],
     queryFn: async () => {
@@ -144,7 +146,9 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
   });
 
   // Computed value for hasNoBranches
-  const hasNoBranches = !queryLoading && branches.length === 0;
+  // Only consider it "no branches" if we've successfully loaded and got an empty result
+  // Don't show "no branches" if we're still loading or if there was an error/timeout
+  const hasNoBranches = !queryLoading && !queryError && branches.length === 0;
 
   // Only show loading when there's no cached data
   const loading = queryLoading && branches.length === 0;
@@ -288,6 +292,7 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
         loading,
         refreshBranches,
         hasNoBranches,
+        hasError: queryError,
       }}
     >
       {children}

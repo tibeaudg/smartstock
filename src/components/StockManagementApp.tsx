@@ -20,7 +20,7 @@ function isLocalStorageAvailable() {
 
 export const StockManagementApp: React.FC = () => {
   const { userProfile, loading } = useAuth();
-  const { hasNoBranches } = useBranches();
+  const { hasNoBranches, hasError } = useBranches();
   const location = useLocation();
 
   // Show loading state while auth is being determined
@@ -91,7 +91,7 @@ export const StockManagementApp: React.FC = () => {
         </Layout>
 
         <CreateBranchModal
-          open={hasNoBranches}
+          open={hasNoBranches && !hasError}
           onOpenChange={() => {
           }}
           onBranchCreated={() => {

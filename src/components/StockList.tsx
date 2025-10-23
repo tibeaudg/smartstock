@@ -63,6 +63,7 @@ import { StockOperationModal } from './StockOperationModal';
 import { BarcodeScanner } from './BarcodeScanner';
 import { SupplierPreviewPopover } from './SupplierPreviewPopover';
 import { ProductCard } from './ProductCard';
+import { FirstProductFeedbackModal } from './FirstProductFeedbackModal';
 import { useMobile } from '@/hooks/use-mobile';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -1635,6 +1636,14 @@ export const StockList = () => {
 
   // State voor add modal
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  
+  // State for feedback modal
+  const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
+  
+  // Debug feedback modal state changes
+  useEffect(() => {
+    console.log('[StockList] Feedback modal state changed to:', isFeedbackModalOpen);
+  }, [isFeedbackModalOpen]);
 
   // State voor bulk import modal
   const [isBulkImportModalOpen, setIsBulkImportModalOpen] = useState(false);
@@ -1908,6 +1917,12 @@ export const StockList = () => {
     setSupplierFilterName('');
   }, []);
 
+  // Handle first product added callback - simplified
+  const handleFirstProductAdded = useCallback(() => {
+    console.log('[StockList] First product added callback triggered - showing modal');
+    setIsFeedbackModalOpen(true);
+  }, []);
+
   // Save view mode to localStorage when it changes
   useEffect(() => {
     localStorage.setItem('stockViewMode', viewMode);
@@ -1944,12 +1959,15 @@ export const StockList = () => {
     refetchOnWindowFocus: false, // Disabled for better tab switching performance
     staleTime: 1000 * 60 * 5, // 5 minutes cache for better performance
     gcTime: 1000 * 60 * 60 * 24, // 24 hours garbage collect
-    // @ts-expect-error: keepPreviousData is supported in v5, type mismatch workaround
-    keepPreviousData: true,
-    onError: (error) => {
-      console.error('Products fetch error:', error);
-    },
+    placeholderData: (previousData) => previousData, // Keep previous data while loading
   });
+
+  // Handle errors with useEffect
+  useEffect(() => {
+    if (productsError) {
+      console.error('Products fetch error:', productsError);
+    }
+  }, [productsError]);
 
   // Real-time updates voor producten - throttled to prevent excessive updates
   useEffect(() => {
@@ -3287,6 +3305,10 @@ export const StockList = () => {
             refetch();
             setIsAddModalOpen(false);
           }}
+          onFirstProductAdded={() => {
+            console.log('[StockList] onFirstProductAdded callback called directly');
+            handleFirstProductAdded();
+          }}
           preFilledSKU={scannedSKU}
         />
         
@@ -3632,7 +3654,7 @@ export const StockList = () => {
                   onClick={() => {
                     // Bulk delete functionality
                     const confirmDelete = window.confirm(
-                      `Are you sure you want to delete ${selectedProductIds.length} product${selectedProductIds.length !== 1 ? 's' : ''}? This action cannot be undone.`
+                      `Are you sure you want to delete ${selectedProductIds.length} product${selectedProductIds.length !== 1 ? 's' : ''}? This will also delete all related transactions and purchase order items. This action cannot be undone.`
                     );
                     if (confirmDelete) {
                       handleBulkDelete();
@@ -4048,6 +4070,14 @@ export const StockList = () => {
           settings={scannerSettings}
         />
       )}
+        <FirstProductFeedbackModal
+          isOpen={isFeedbackModalOpen}
+          onClose={() => {
+            console.log('[StockList] Closing feedback modal');
+            setIsFeedbackModalOpen(false);
+          }}
+        />
+        
     </div>
   );
 };

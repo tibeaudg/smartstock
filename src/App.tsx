@@ -29,6 +29,7 @@ import { FirstBranchSetup } from "./components/FirstBranchSetup";
 import { OnboardingModal } from "./components/OnboardingModal";
 import { Suspense, useState, useEffect } from "react";
 import { useOptimizedTabSwitching } from "./hooks/useOptimizedTabSwitching";
+import { useNavigationQueryReset } from "./hooks/useNavigationQueryReset";
 import { ContentWrapper } from "./ContentWrapper";
 import AdminUserDetailPage from './pages/AdminUserDetailPage';
 import AdminNotificationsPage from './pages/AdminNotificationsPage';
@@ -173,6 +174,9 @@ const LoadingScreen = () => (
 
 // Router component that contains the route definitions
 const AppRouter = () => {
+  // Reset query state on navigation to prevent hanging loading states
+  // This must be inside the Router context
+  useNavigationQueryReset();
 
   
   // Protected Route Component (without branch logic)
@@ -310,7 +314,7 @@ const AppRouter = () => {
 
   // Branch-aware route component (must be used inside BranchProvider)
   const BranchAwareRoute = ({ children }: { children: React.ReactNode }) => {
-    const { branches, hasNoBranches, loading: branchesLoading } = useBranches();
+    const { branches, hasNoBranches, loading: branchesLoading, hasError } = useBranches();
     const { authLoading } = useAuth();
     const [forceRender, setForceRender] = useState(false);
     const [retryCount, setRetryCount] = useState(0);
@@ -379,10 +383,36 @@ const AppRouter = () => {
     }
 
     // Check if user has no branches and needs to create their first branch
-    // Only show this if we're certain (not loading and explicitly hasNoBranches)
-    if (hasNoBranches && branches.length === 0 && !branchesLoading) {
+    // Only show this if we're certain (not loading, no error, and explicitly hasNoBranches)
+    if (hasNoBranches && branches.length === 0 && !branchesLoading && !hasError) {
       console.debug('[BranchAwareRoute] No branches found, showing FirstBranchSetup');
       return <FirstBranchSetup />;
+    }
+
+    // If there's an error loading branches, show error state instead of continuing
+    if (hasError && !branchesLoading) {
+      console.debug('[BranchAwareRoute] Error loading branches, showing error state');
+      return (
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+          <div className="max-w-md bg-white rounded-lg shadow-lg p-8 text-center">
+            <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Clock className="h-8 w-8 text-red-600" />
+            </div>
+            <h2 className="text-xl font-bold text-gray-900 mb-2">Unable to load workspace</h2>
+            <p className="text-gray-600 mb-6">
+              We encountered an issue loading your workspace. This might be due to a connection problem.
+            </p>
+            <div className="flex gap-3 justify-center">
+              <Button
+                onClick={() => window.location.reload()}
+                className="bg-blue-600 hover:bg-blue-700"
+              >
+                Refresh Page
+              </Button>
+            </div>
+          </div>
+        </div>
+      );
     }
 
     console.debug('[BranchAwareRoute] Rendering children (branches:', branches?.length, ')');

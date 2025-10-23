@@ -326,7 +326,7 @@ export const EditProductInfoModal = ({
       return;
     }
     const confirmMessage = 'Are you sure you want to delete this product?\n\n' +
-      'WARNING: This will also delete all related transactions!';
+      'WARNING: This will also delete all related transactions and purchase order items!';
     if (!confirm(confirmMessage)) return;
     
     setLoading(true);
@@ -594,16 +594,7 @@ export const EditProductInfoModal = ({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className={`w-full max-w-full mx-auto p-0 ${isMobile ? 'h-full max-h-full rounded-none bg-white' : 'bg-white md:w-auto md:max-w-4xl md:max-h-[90vh] md:p-6 md:rounded-lg'}`}>
         <DialogHeader className={`${isMobile ? 'p-4 border-b' : ''}`}>
-          {isMobile && onBack && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={onBack}
-              className="absolute left-4 top-4 z-10"
-            >
-              <ArrowLeft className="h-4 w-4" />
-            </Button>
-          )}
+
           <DialogTitle className={`${isMobile ? 'text-center pr-8' : ''}`}>
             Edit Product Information: {product.name}
           </DialogTitle>
@@ -1373,15 +1364,7 @@ export const EditProductInfoModal = ({
               Delete
             </Button>
             <div className={`flex gap-2 ${isMobile ? 'flex-col' : 'flex-row'}`}>
-              <Button 
-                type="button" 
-                variant="outline" 
-                onClick={onClose} 
-                disabled={loading}
-                className={isMobile ? 'w-full' : 'w-full sm:w-auto'}
-              >
-                Cancel
-              </Button>
+
               <Button 
                 type="submit" 
                 disabled={loading}

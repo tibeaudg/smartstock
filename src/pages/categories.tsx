@@ -86,8 +86,7 @@ export default function CategorysPage() {
     refetchOnWindowFocus: false, // Don't refetch on tab switch
     staleTime: 1000 * 60 * 5, // 5 minutes cache
     gcTime: 1000 * 60 * 30, // 30 minutes garbage collect
-    // @ts-expect-error: keepPreviousData is supported in v5
-    keepPreviousData: true,
+    placeholderData: (previousData) => previousData, // Keep previous data while loading
   });
 
   // Mobile tab switcher state

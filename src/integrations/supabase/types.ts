@@ -50,6 +50,16 @@ export type AuthConversionAnalytics = {
   avg_time_on_page_seconds?: number;
 };
 
+// User feedback types
+export type UserFeedback = {
+  id: string;
+  user_id: string;
+  recommendation_score: number;
+  feedback_text?: string;
+  trigger_context: string;
+  created_at: string;
+};
+
 export type AuthConversionFunnel = {
   date: string;
   page_views: number;
