@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
+
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Plus, Search, Upload, Download, Filter, Package, Truck, CheckCircle, Clock, AlertCircle, X } from 'lucide-react';
@@ -225,6 +227,14 @@ export default function PurchaseOrdersPage() {
           <h1 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-gray-900 mb-2`}>
             Purchase Orders
           </h1>
+
+          
+          <Badge className="text-xs bg-blue-100 text-blue-700 border border-blue-700">
+                      Beta
+                    </Badge>
+
+
+          
           <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600`}>
             Manage your purchase orders and track deliveries
           </p>
@@ -232,20 +242,7 @@ export default function PurchaseOrdersPage() {
         
         {/* Action Buttons */}
         <div className="flex items-center gap-2">
-          <Button 
-            variant="outline"
-            className="h-9 text-blue-600 border-blue-200 hover:bg-blue-50"
-          >
-            <Upload className="w-4 h-4 mr-2" />
-            Import
-          </Button>
-          <Button 
-            variant="outline"
-            className="h-9 text-blue-600 border-blue-200 hover:bg-blue-50"
-          >
-            <Download className="w-4 h-4 mr-2" />
-            Export
-          </Button>
+
           <Button 
             onClick={() => setShowAddModal(true)}
             className="h-9 bg-blue-600 hover:bg-blue-700 text-white"
