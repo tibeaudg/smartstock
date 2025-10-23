@@ -43,7 +43,8 @@ import {
   Grid3x3,
   List,
   Heart,
-  Scan
+  Scan,
+  Download
 } from 'lucide-react';
 import { ProductActionModal } from './ProductActionModal';
 import { EditProductModal } from './EditProductModal';
@@ -619,7 +620,7 @@ const ProductRow: React.FC<ProductRowProps> = ({
     >
       {/* Selection checkbox */}
       {isAdmin && (
-        <td className="px-3 py-3 text-center" style={{ minWidth: '60px' }} onClick={(e) => e.stopPropagation()}>
+        <td className="px-3 py-3 text-center w-12" onClick={(e) => e.stopPropagation()}>
           <input
             type="checkbox"
             checked={isSelected}
@@ -631,7 +632,7 @@ const ProductRow: React.FC<ProductRowProps> = ({
 
       {/* Product column */}
       {columnVisibility.product && (
-        <td className="px-4 py-3" style={{ minWidth: '200px' }}>
+        <td className="px-4 py-3 w-1/3">
           <div className="flex items-center gap-3">
             {/* Expand/Collapse indicator for variants */}
             {hasChildren && (
@@ -723,7 +724,7 @@ const ProductRow: React.FC<ProductRowProps> = ({
 
       {/* Location column */}
       {columnVisibility.location && (
-        <td className="px-4 py-3 text-center" style={{ minWidth: '120px' }}>
+        <td className="px-4 py-3 text-center w-1/8">
           {!hasChildren && (
             <div className="flex items-center justify-center gap-1">
               <MapPin className="w-3 h-3 text-gray-400" />
@@ -737,7 +738,7 @@ const ProductRow: React.FC<ProductRowProps> = ({
 
       {/* Stock column with Status */}
       {columnVisibility.current && (
-        <td className="px-4 py-3 text-center" style={{ minWidth: '120px' }}>
+        <td className="px-4 py-3 text-center w-1/8">
           {!hasChildren && (
             <TooltipProvider>
               <Tooltip>
@@ -782,7 +783,7 @@ const ProductRow: React.FC<ProductRowProps> = ({
 
       {/* Category column */}
       {columnVisibility.category && (
-        <td className="px-4 py-3 text-center" style={{ minWidth: '120px' }}>
+        <td className="px-4 py-3 text-center w-1/8">
           {!hasChildren && (
             <span className="text-sm text-gray-600">
               {product.category_name || '-'}
@@ -793,7 +794,7 @@ const ProductRow: React.FC<ProductRowProps> = ({
 
       {/* Supplier column */}
       {columnVisibility.supplier && (
-        <td className="px-4 py-3 text-center" style={{ minWidth: '120px' }}>
+        <td className="px-4 py-3 text-center w-1/8">
           {!hasChildren && (
             product.supplier_id && product.supplier_name ? (
               <SupplierPreviewPopover
@@ -815,7 +816,7 @@ const ProductRow: React.FC<ProductRowProps> = ({
 
       {/* Combined Pricing column */}
       {(columnVisibility.purchasePrice || columnVisibility.salePrice) && (
-        <td className="px-4 py-3 text-center" style={{ minWidth: '120px' }}>
+        <td className="px-4 py-3 text-center w-1/8">
           {!hasChildren && (
             <div className="space-y-1">
               {columnVisibility.purchasePrice && (
@@ -835,7 +836,7 @@ const ProductRow: React.FC<ProductRowProps> = ({
 
       {/* Actions column */}
       {columnVisibility.actions && (
-        <td className="px-4 py-3 text-center" style={{ minWidth: '100px' }} onClick={(e) => e.stopPropagation()}>
+        <td className="px-4 py-3 text-center w-1/12" onClick={(e) => e.stopPropagation()}>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="sm" className="h-8 w-8 p-0">
@@ -2742,41 +2743,56 @@ export const StockList = () => {
           </div>
         </div>
 
-                        {/* Secondary action buttons row - better spacing */}
-                        <div className="flex gap-2">
-                <Button 
-                  onClick={() => {
-                    setSelectedOperationType('scan');
-                    setIsStockOperationModalOpen(true);
-                  }} 
-                  variant="outline"
-                  className="flex-1 h-10 text-xs sm:text-sm px-2"
-                >
-                  <Scan className="w-4 h-4 sm:mr-2" />
-                  <span className="truncate">Scan</span>
-                </Button>
-                <Button 
-                  onClick={() => {
-                    setSelectedAction('in'); // Default to 'in' for manual
-                    setIsManualStockModalOpen(true);
-                  }} 
-                  className="flex-1 h-10 bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm px-2"
-                >
-                  <Plus className="w-4 h-4 sm:mr-2" />
-                  <span className="truncate">Manual</span>
-                </Button>
-              </div>
-
-              
-
+        {/* Secondary action buttons - two rows on mobile */}
+        <div className="flex flex-col gap-2">
+          {/* First row: Scan and Manual */}
+          <div className="flex gap-2">
+            <Button 
+              onClick={() => {
+                setSelectedOperationType('scan');
+                setIsStockOperationModalOpen(true);
+              }} 
+              variant="outline"
+              className="flex-1 h-10 text-xs sm:text-sm px-2"
+            >
+              <Scan className="w-4 h-4 sm:mr-2" />
+              <span className="truncate">Scan</span>
+            </Button>
+            <Button 
+              onClick={() => {
+                setSelectedAction('in'); // Default to 'in' for manual
+                setIsManualStockModalOpen(true);
+              }} 
+              className="flex-1 h-10 bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm px-2"
+            >
+              <Plus className="w-4 h-4 sm:mr-2" />
+              <span className="truncate">Manual</span>
+            </Button>
+          </div>
+          
+          {/* Second row: Import and Export */}
+          <div className="flex gap-2">
+            <Button 
+              variant="outline"
+              className="flex-1 h-10 text-blue-600 border-blue-200 hover:bg-blue-50 text-xs sm:text-sm px-2"
+            >
+              <Upload className="w-4 h-4 sm:mr-2" />
+              <span className="truncate">Import</span>
+            </Button>
+            <Button 
+              variant="outline"
+              className="flex-1 h-10 text-blue-600 border-blue-200 hover:bg-blue-50 text-xs sm:text-sm px-2"
+            >
+              <Download className="w-4 h-4 sm:mr-2" />
+              <span className="truncate">Export</span>
+            </Button>
+          </div>
+        </div>
+                   
         {/* Only show products content when on products tab */}
         {activeTab === 'products' && (
-
-          
-          <div className="">
-
-            
-
+        
+          <div className="">        
             {/* Filter Header */}
             {((filters.categoryFilter && filters.categoryFilter !== 'all' && filters.categoryFilter !== '') || 
               (filters.supplierFilter && filters.supplierFilter !== 'all' && filters.supplierFilter !== '') ||
@@ -3334,7 +3350,25 @@ export const StockList = () => {
             <Plus className="w-4 h-4 mr-2" />
             Manual
           </Button>
+          <Button 
+            variant="outline"
+            className="h-9 text-blue-600 border-blue-200 hover:bg-blue-50"
+          >
+            <Upload className="w-4 h-4 mr-2" />
+            Import
+          </Button>
+          <Button 
+            variant="outline"
+            className="h-9 text-blue-600 border-blue-200 hover:bg-blue-50"
+          >
+            <Download className="w-4 h-4 mr-2" />
+            Export
+          </Button>
         </div>
+
+
+
+
       </div>
 
 
@@ -3554,11 +3588,11 @@ export const StockList = () => {
       ) : (
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
           <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
-            <table className="min-w-full divide-y divide-gray-200" style={{ minWidth: 'max-content' }}>
+            <table className="w-full table-fixed divide-y divide-gray-200">
             <thead className="bg-gray-50 sticky top-0 z-10">
               <tr>
                 {isAdmin && (
-                  <th className="px-3 py-4 text-center" style={{ minWidth: '60px' }}>
+                  <th className="px-3 py-4 text-center w-12">
                     <input
                       type="checkbox"
                       checked={selectAll && filteredProducts.length > 0}
@@ -3568,38 +3602,38 @@ export const StockList = () => {
                   </th>
                 )}
                 {columnVisibility.product && (
-                  <th className="px-4 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap" style={{ minWidth: '200px' }}>
+                  <th className="px-4 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/3">
                     Product
                   </th>
                 )}
                 {columnVisibility.location && (
-                  <th className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap" style={{ minWidth: '120px' }}>
+                  <th className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8">
                     Location
                   </th>
                 )}
                 {columnVisibility.current && (
-                  <th className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap" style={{ minWidth: '120px' }}>
+                  <th className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8">
                     Stock Level
                   </th>
                 )}
 
                 {columnVisibility.category && (
-                  <th className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap" style={{ minWidth: '120px' }}>
+                  <th className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8">
                     Category
                   </th>
                 )}
                 {columnVisibility.supplier && (
-                  <th className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap" style={{ minWidth: '120px' }}>
+                  <th className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8">
                     Supplier
                   </th>
                 )}
                 {(columnVisibility.purchasePrice || columnVisibility.salePrice) && (
-                  <th className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap" style={{ minWidth: '120px' }}>
+                  <th className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8">
                     Pricing
                   </th>
                 )}
                 {columnVisibility.actions && (
-                  <th className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap" style={{ minWidth: '100px' }}>
+                  <th className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/12">
                     Actions
                   </th>
                 )}    
