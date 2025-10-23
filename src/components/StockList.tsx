@@ -69,6 +69,7 @@ import { toast } from 'sonner';
 import { useTranslation } from 'react-i18next';
 import { Upload as UploadIcon } from 'lucide-react';
 import { useScannerSettings } from '@/hooks/useScannerSettings';
+import * as XLSX from 'xlsx';
 
 const getStockStatus = (quantity: number, minLevel: number) => {
   // Ensure we're working with numbers
@@ -258,8 +259,8 @@ export const PhotoUploadPlaceholder: React.FC<PhotoUploadPlaceholderProps> = ({
         .getPublicUrl(fileName);
 
       // Update product with new image URL
-      const { error: updateError } = await (supabase
-        .from('products') as any)
+      const { error: updateError } = await supabase
+        .from('products')
         .update({ image_url: publicUrl })
         .eq('id', productId);
 
@@ -1505,7 +1506,7 @@ const fetchProducts = async (branchId: string) => {
       variant_sku: string | null;
       variant_barcode: string | null;
       is_favorite: boolean;
-      [key: string]: any;
+      [key: string]: unknown;
     }>;
 
     // Haal de unieke Category en leverancier IDs op
@@ -1773,10 +1774,10 @@ export const StockList = () => {
     
     // Log wanneer filters daadwerkelijk worden toegepast
     if (filters.categoryFilter !== 'all' && filters.categoryFilter !== '') {
-      
+      // Category filter applied
     }
     if (filters.supplierFilter !== 'all' && filters.supplierFilter !== '') {
-      
+      // Supplier filter applied
     }
   }, [filters, categoryFilterName, supplierFilterName]);
 
@@ -1788,9 +1789,9 @@ export const StockList = () => {
       // Check if filters are actually set after a delay
       setTimeout(() => {
         if (filterType === 'category' && filters.categoryFilter === filterValue) {
-          
+          // Category filter correctly applied
         } else if (filterType === 'supplier' && filters.supplierFilter === filterValue) {
-          
+          // Supplier filter correctly applied
         } else {
           console.log('❌ Filter not applied correctly:', {
             filterType,
@@ -2161,8 +2162,8 @@ export const StockList = () => {
   const handleBulkArchive = async () => {
     try {
       // Archive all selected products (set status to out_of_stock for discontinued)
-      const { error } = await (supabase
-        .from('products') as any)
+      const { error } = await supabase
+        .from('products')
         .update({ status: 'out_of_stock' })
         .in('id', selectedProductIds)
         .eq('branch_id', activeBranch?.branch_id);
@@ -2236,6 +2237,123 @@ export const StockList = () => {
     } catch (error) {
       console.error('Error exporting products:', error);
       toast.error('Error exporting products');
+    }
+  };
+
+  // Export all products to Excel
+  const handleExportToExcel = () => {
+    try {
+      const exportData = filteredProducts.map(product => ({
+        Name: product.name,
+        Description: product.description || '',
+        Category: product.category_name || '',
+        Supplier: product.supplier_name || '',
+        Location: product.location || '',
+        'Stock Level': product.quantity_in_stock,
+        'Minimum Stock': product.minimum_stock_level,
+        'Purchase Price': product.purchase_price,
+        'Sale Price': product.unit_price,
+        Status: getStockStatus(product.quantity_in_stock, product.minimum_stock_level),
+        'Variant Name': product.variant_name || '',
+        'Variant SKU': product.variant_sku || '',
+        'Variant Barcode': product.variant_barcode || '',
+        'Is Variant': product.is_variant ? 'Yes' : 'No',
+        'Parent Product ID': product.parent_product_id || '',
+        'Is Favorite': product.is_favorite ? 'Yes' : 'No'
+      }));
+
+      const ws = XLSX.utils.json_to_sheet(exportData);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Products');
+      
+      // Set column widths
+      ws['!cols'] = [
+        { wch: 25 }, // Name
+        { wch: 30 }, // Description
+        { wch: 15 }, // Category
+        { wch: 20 }, // Supplier
+        { wch: 15 }, // Location
+        { wch: 12 }, // Stock Level
+        { wch: 15 }, // Minimum Stock
+        { wch: 15 }, // Purchase Price
+        { wch: 12 }, // Sale Price
+        { wch: 12 }, // Status
+        { wch: 20 }, // Variant Name
+        { wch: 15 }, // Variant SKU
+        { wch: 15 }, // Variant Barcode
+        { wch: 10 }, // Is Variant
+        { wch: 20 }, // Parent Product ID
+        { wch: 10 }, // Is Favorite
+      ];
+
+      XLSX.writeFile(wb, `products_export_${new Date().toISOString().split('T')[0]}.xlsx`);
+      toast.success(`Successfully exported ${filteredProducts.length} products to Excel`);
+    } catch (error) {
+      console.error('Error exporting to Excel:', error);
+      toast.error('Error exporting to Excel');
+    }
+  };
+
+  // Export all products to CSV
+  const handleExportToCSV = () => {
+    try {
+      const csvHeaders = [
+        'Name',
+        'Description',
+        'Category',
+        'Supplier',
+        'Location',
+        'Stock Level',
+        'Minimum Stock',
+        'Purchase Price',
+        'Sale Price',
+        'Status',
+        'Variant Name',
+        'Variant SKU',
+        'Variant Barcode',
+        'Is Variant',
+        'Parent Product ID',
+        'Is Favorite'
+      ];
+      
+      const csvData = filteredProducts.map(product => [
+        product.name,
+        product.description || '',
+        product.category_name || '',
+        product.supplier_name || '',
+        product.location || '',
+        product.quantity_in_stock,
+        product.minimum_stock_level,
+        product.purchase_price,
+        product.unit_price,
+        getStockStatus(product.quantity_in_stock, product.minimum_stock_level),
+        product.variant_name || '',
+        product.variant_sku || '',
+        product.variant_barcode || '',
+        product.is_variant ? 'Yes' : 'No',
+        product.parent_product_id || '',
+        product.is_favorite ? 'Yes' : 'No'
+      ]);
+      
+      // Create and download CSV
+      const csvContent = [csvHeaders, ...csvData]
+        .map(row => row.map(cell => `"${cell}"`).join(','))
+        .join('\n');
+      
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', `products_export_${new Date().toISOString().split('T')[0]}.csv`);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      toast.success(`Successfully exported ${filteredProducts.length} products to CSV`);
+    } catch (error) {
+      console.error('Error exporting to CSV:', error);
+      toast.error('Error exporting to CSV');
     }
   };
 
@@ -2446,7 +2564,7 @@ export const StockList = () => {
 
       const { error } = await supabase
         .from('products')
-        .insert([duplicatedProduct] as any);
+        .insert([duplicatedProduct]);
 
       if (error) throw error;
 
@@ -2464,8 +2582,8 @@ export const StockList = () => {
   // Archive product handler
   const handleArchiveProduct = async (product: Product) => {
     try {
-      const { error } = await (supabase
-        .from('products') as any)
+      const { error } = await supabase
+        .from('products')
         .update({ status: 'out_of_stock' })
         .eq('id', product.id);
 
@@ -2490,9 +2608,9 @@ export const StockList = () => {
     if (newLocation === null) return; // User cancelled
     
     try {
-      const { error } = await (supabase
-        .from('products') as any)
-        .update({ location: newLocation } as any)
+      const { error } = await supabase
+        .from('products')
+        .update({ location: newLocation })
         .eq('id', product.id);
 
       if (error) throw error;
@@ -2511,9 +2629,9 @@ export const StockList = () => {
   // Favorite toggle handler
   const handleFavoriteToggle = async (productId: string, isFavorite: boolean) => {
     try {
-      const { error } = await (supabase
-        .from('products') as any)
-        .update({ is_favorite: isFavorite } as any)
+      const { error } = await supabase
+        .from('products')
+        .update({ is_favorite: isFavorite })
         .eq('id', productId);
       
       if (error) throw error;
@@ -2772,20 +2890,22 @@ export const StockList = () => {
           
           {/* Second row: Import and Export */}
           <div className="flex gap-2">
-            <Button 
-              variant="outline"
-              className="flex-1 h-10 text-blue-600 border-blue-200 hover:bg-blue-50 text-xs sm:text-sm px-2"
-            >
-              <Upload className="w-4 h-4 sm:mr-2" />
-              <span className="truncate">Import</span>
-            </Button>
-            <Button 
-              variant="outline"
-              className="flex-1 h-10 text-blue-600 border-blue-200 hover:bg-blue-50 text-xs sm:text-sm px-2"
-            >
-              <Download className="w-4 h-4 sm:mr-2" />
-              <span className="truncate">Export</span>
-            </Button>
+                <Button 
+                  onClick={() => setIsBulkImportModalOpen(true)}
+                  variant="outline"
+                  className="flex-1 h-10 text-blue-600 border-blue-200 hover:bg-blue-50 text-xs sm:text-sm px-2"
+                >
+                  <Upload className="w-4 h-4 sm:mr-2" />
+                  <span className="truncate">Import</span>
+                </Button>
+                <Button 
+                  onClick={handleExportToExcel}
+                  variant="outline"
+                  className="flex-1 h-10 text-blue-600 border-blue-200 hover:bg-blue-50 text-xs sm:text-sm px-2"
+                >
+                  <Download className="w-4 h-4 sm:mr-2" />
+                  <span className="truncate">Export</span>
+                </Button>
           </div>
         </div>
                    
@@ -3351,6 +3471,7 @@ export const StockList = () => {
             Manual
           </Button>
           <Button 
+            onClick={() => setIsBulkImportModalOpen(true)}
             variant="outline"
             className="h-9 text-blue-600 border-blue-200 hover:bg-blue-50"
           >
@@ -3358,6 +3479,7 @@ export const StockList = () => {
             Import
           </Button>
           <Button 
+            onClick={handleExportToExcel}
             variant="outline"
             className="h-9 text-blue-600 border-blue-200 hover:bg-blue-50"
           >
@@ -3453,7 +3575,7 @@ export const StockList = () => {
 
       {/* Consolidated Search and Filter Row */}
       <div className="flex items-center gap-2 py-2">
-        <div className="relative flex-1 ">
+        <div className="relative flex-1">
           <Search className="bg-white absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
           <Input
             type="text"

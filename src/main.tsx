@@ -11,7 +11,7 @@ if (typeof window !== 'undefined') {
 import * as Sentry from "@sentry/react";
 
 // Prevent multiple Sentry initializations during HMR (Hot Module Reload)
-if (!(window as any).__SENTRY_INITIALIZED__) {
+if (!(window as { __SENTRY_INITIALIZED__?: boolean }).__SENTRY_INITIALIZED__) {
   try {
     // DSN is just a string, not a script URL - no need for Trusted Types
     const dsn: string = "https://e491b26fa2d97550098be3eb6fb44715@o4510186798776320.ingest.us.sentry.io/4510186800283648";
@@ -42,7 +42,7 @@ if (!(window as any).__SENTRY_INITIALIZED__) {
         return null; // Don't send events in development
       },
     });
-    (window as any).__SENTRY_INITIALIZED__ = true;
+    (window as { __SENTRY_INITIALIZED__?: boolean }).__SENTRY_INITIALIZED__ = true;
     console.log('[Sentry] Successfully initialized');
   } catch (error) {
     console.warn('[Sentry] Failed to initialize Sentry:', error);
@@ -76,7 +76,7 @@ if (!rootElement) {
 }
 
 // Store root instance globally to prevent multiple createRoot() calls
-let appRoot: Root | null = (window as any).__APP_ROOT__ || null;
+let appRoot: Root | null = (window as { __APP_ROOT__?: Root }).__APP_ROOT__ || null;
 
 // ErrorBoundary wordt nu geïmporteerd vanuit components/ErrorBoundary.tsx
 
@@ -148,10 +148,10 @@ async function init() {
       } else {
         console.warn('[StockFlow] Supabase connection failed, continuing in offline mode');
         // Set a flag to indicate offline mode
-        (window as any).__STOCKFLOW_OFFLINE__ = true;
+        (window as { __STOCKFLOW_OFFLINE__?: boolean }).__STOCKFLOW_OFFLINE__ = true;
       }
-    } catch (error: any) {
-      console.warn('[StockFlow] Supabase connection error:', error.message);
+    } catch (error: unknown) {
+      console.warn('[StockFlow] Supabase connection error:', error instanceof Error ? error.message : String(error));
       console.warn('[StockFlow] Continuing in offline mode - some features may be limited');
       // Don't throw - continue with app initialization
       // The app should work with limited functionality
@@ -163,7 +163,7 @@ async function init() {
     // Create or reuse the root instance
     if (!appRoot) {
       appRoot = createRoot(rootElement);
-      (window as any).__APP_ROOT__ = appRoot;
+      (window as { __APP_ROOT__?: Root }).__APP_ROOT__ = appRoot;
     }
     
     const AppTree = (
@@ -183,13 +183,13 @@ async function init() {
       </ErrorBoundary>
     );
     appRoot.render(AppTree);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('App initialization failed:', error);
 
     // Create or reuse the root instance for error UI
     if (!appRoot) {
       appRoot = createRoot(rootElement);
-      (window as any).__APP_ROOT__ = appRoot;
+      (window as { __APP_ROOT__?: Root }).__APP_ROOT__ = appRoot;
     }
     
     // Show connection error UI with retry option
@@ -233,7 +233,7 @@ async function init() {
                     </ErrorBoundary>
                   );
                   appRoot!.render(AppTree);
-                } catch (fallbackError: any) {
+                } catch (fallbackError: unknown) {
                   console.error('Fallback initialization failed:', fallbackError);
                   window.location.reload();
                 }
@@ -261,7 +261,7 @@ const queryClient = new QueryClient({
       retry: (failureCount, error) => {
         // Retry logic: try 3 times, except for 4xx errors
         if (failureCount < 3) {
-          const status = (error as any)?.status || (error as any)?.response?.status;
+          const status = (error as { status?: number; response?: { status?: number } })?.status || (error as { status?: number; response?: { status?: number } })?.response?.status;
           if (status >= 400 && status < 500) {
             return false; // No retry for client errors (bad request, unauthorized, etc.)
           }
@@ -281,7 +281,7 @@ const queryClient = new QueryClient({
 });
 
 // Make queryClient available globally for usePageRefresh
-(window as any).queryClient = queryClient;
+(window as { queryClient?: QueryClient }).queryClient = queryClient;
 
 if (typeof window !== 'undefined') {
   setupPersistedQueryClient(queryClient);

@@ -141,8 +141,8 @@ export const initializeTrustedTypes = () => {
           const dangerousPatterns = [
             /eval\s*\(/i,
             /Function\s*\(/i,
-            /setTimeout\s*\(\s*["\']/i,
-            /setInterval\s*\(\s*["\']/i,
+            /setTimeout\s*\(\s*["']/i,
+            /setInterval\s*\(\s*["']/i,
           ];
           
           for (const pattern of dangerousPatterns) {
@@ -211,8 +211,8 @@ export const initializeDefaultPolicy = () => {
           const dangerousPatterns = [
             /eval\s*\(/i,
             /Function\s*\(/i,
-            /setTimeout\s*\(\s*["\']/i,
-            /setInterval\s*\(\s*["\']/i,
+            /setTimeout\s*\(\s*["']/i,
+            /setInterval\s*\(\s*["']/i,
           ];
           
           for (const pattern of dangerousPatterns) {

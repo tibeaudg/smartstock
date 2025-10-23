@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Sidebar } from './Sidebar';
 import { Header } from './ui/Header';
 import { useMobile } from '@/hooks/use-mobile';
@@ -21,7 +21,25 @@ interface LayoutProps {
 export const Layout = ({ children, currentTab, onTabChange, userRole, userProfile, variant = 'default' }: LayoutProps) => {
   const { isMobile } = useMobile();
   const { user } = useAuth();
-  const [sidebarOpen, setSidebarOpen] = useState(!isMobile); // Start closed on mobile, open on desktop
+  // Ensure sidebar starts closed on mobile, open on desktop
+  // Use a more explicit check to handle any timing issues
+  const [sidebarOpen, setSidebarOpen] = useState(() => {
+    // Default to closed on mobile, open on desktop
+    // This ensures proper initial state regardless of timing
+    return !isMobile;
+  });
+
+  // Only set initial state when mobile detection changes, don't override user actions
+  useEffect(() => {
+    // Only set initial state, don't continuously override user actions
+    if (isMobile) {
+      // On mobile, start with sidebar closed but allow user to open it
+      setSidebarOpen(false);
+    } else {
+      // On desktop, start with sidebar open
+      setSidebarOpen(true);
+    }
+  }, [isMobile]); // Remove sidebarOpen from dependencies to prevent loops
 
   const handleTabChange = (tab: string) => {
     onTabChange(tab);

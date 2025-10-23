@@ -16,7 +16,7 @@ interface ImportMeta {
 // Google Tag Manager types
 declare global {
   interface Window {
-    dataLayer: any[];
-    gtag: (...args: any[]) => void;
+    dataLayer: unknown[];
+    gtag: (...args: unknown[]) => void;
   }
 }

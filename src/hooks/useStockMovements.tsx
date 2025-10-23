@@ -57,11 +57,22 @@ export const useStockMovements = (): {
       const now = new Date();
       const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
       switch (filters.dateRange) {
-        case 'today': return { start: today.toISOString() };
-        case 'week': const weekAgo = new Date(today); weekAgo.setDate(weekAgo.getDate() - 7); return { start: weekAgo.toISOString() };
-        case 'month': const monthAgo = new Date(today); monthAgo.setMonth(monthAgo.getMonth() - 1); return { start: monthAgo.toISOString() };
-        case 'custom': return { start: filters.startDate?.toISOString(), end: filters.endDate?.toISOString() };
-        default: return {};
+        case 'today': 
+          return { start: today.toISOString() };
+        case 'week': {
+          const weekAgo = new Date(today); 
+          weekAgo.setDate(weekAgo.getDate() - 7); 
+          return { start: weekAgo.toISOString() };
+        }
+        case 'month': {
+          const monthAgo = new Date(today); 
+          monthAgo.setMonth(monthAgo.getMonth() - 1); 
+          return { start: monthAgo.toISOString() };
+        }
+        case 'custom': 
+          return { start: filters.startDate?.toISOString(), end: filters.endDate?.toISOString() };
+        default: 
+          return {};
       }
     };
     const dateRange = getDateRange();
@@ -75,7 +86,7 @@ export const useStockMovements = (): {
     }
     const { data, error } = await query;
     if (error) throw new Error(error.message);
-    return (data || []).map((row: any) => ({
+    return (data || []).map((row: Record<string, unknown>) => ({
       ...row,
       email: row.profiles?.email ?? null,
       first_name: row.profiles?.first_name ?? null,
@@ -114,7 +125,6 @@ export const useStockMovements = (): {
           filter: `branch_id=eq.${activeBranch.branch_id}`,
         },
         () => {
-          console.log('Stock transaction wijziging gedetecteerd, refresh transactions...');
           queryClient.invalidateQueries({ 
             queryKey: ['stockTransactions', activeBranch.branch_id, filtersKey] 
           });

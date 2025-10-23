@@ -1,7 +1,16 @@
 import { useState, useEffect } from 'react';
 
 export function useMobile() {
-  const [isMobile, setIsMobile] = useState(false);
+  // Initialize with immediate mobile detection to avoid timing issues
+  const getInitialMobileState = () => {
+    if (typeof window === 'undefined') return false;
+    const ua = navigator.userAgent || navigator.vendor || (window as { opera?: string }).opera;
+    const mobileRegex = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i;
+    return mobileRegex.test(ua.toLowerCase());
+  };
+
+  const [isMobile, setIsMobile] = useState(getInitialMobileState);
+  const [mobileDetectionComplete, setMobileDetectionComplete] = useState(false);
   const [isIOS, setIsIOS] = useState(false);
   const [isSafari, setIsSafari] = useState(false);
   const [cameraSupported, setCameraSupported] = useState(false);
@@ -9,16 +18,19 @@ export function useMobile() {
 
   useEffect(() => {
     const checkDevice = () => {
-      const ua = navigator.userAgent || navigator.vendor || (window as any).opera;
+      const ua = navigator.userAgent || navigator.vendor || (window as { opera?: string }).opera;
       setUserAgent(ua);
 
-      // Check if mobile device
-      const mobileRegex = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i;
-      const isMobileDevice = mobileRegex.test(ua.toLowerCase());
-      setIsMobile(isMobileDevice);
+      // Check if mobile device - only set once to prevent state changes
+      if (!mobileDetectionComplete) {
+        const mobileRegex = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i;
+        const isMobileDevice = mobileRegex.test(ua.toLowerCase());
+        setIsMobile(isMobileDevice);
+        setMobileDetectionComplete(true);
+      }
 
       // Check if iOS (more specific detection)
-      const isIOSDevice = /iPad|iPhone|iPod/.test(ua) && !(window as any).MSStream;
+      const isIOSDevice = /iPad|iPhone|iPod/.test(ua) && !(window as { MSStream?: unknown }).MSStream;
       setIsIOS(isIOSDevice);
 
       // Check if Safari (more specific detection)
@@ -29,37 +41,18 @@ export function useMobile() {
       const hasCameraSupport = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
       setCameraSupported(hasCameraSupport);
 
-      // Log device info for debugging
-      console.log('Device Info:', {
-        userAgent: ua,
-        isMobile: isMobileDevice,
-        isIOS: isIOSDevice,
-        isSafari: isSafariBrowser,
-        cameraSupported: hasCameraSupport,
-        mediaDevices: !!navigator.mediaDevices,
-        getUserMedia: !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia),
-        permissions: !!navigator.permissions,
-        secureContext: window.isSecureContext
-      });
+      // Device info available for debugging if needed
 
-      // Additional iOS specific checks
-      if (isIOSDevice) {
-        console.log('iOS Device detected:', {
-          isSafari: isSafariBrowser,
-          isChrome: /CriOS/.test(ua),
-          isFirefox: /FxiOS/.test(ua),
-          isSecureContext: window.isSecureContext,
-          hasMediaDevices: !!navigator.mediaDevices,
-          hasPermissions: !!navigator.permissions
-        });
-      }
+      // Additional iOS specific checks available if needed
     };
 
     checkDevice();
 
-    // Re-check on focus (useful for permission changes)
+    // Re-check on focus only for camera support changes, not mobile detection
     const handleFocus = () => {
-      setTimeout(checkDevice, 1000);
+      // Only re-check camera support, not mobile detection
+      const hasCameraSupport = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+      setCameraSupported(hasCameraSupport);
     };
 
     window.addEventListener('focus', handleFocus);

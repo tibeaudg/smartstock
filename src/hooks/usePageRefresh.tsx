@@ -27,10 +27,10 @@ export const usePageRefresh = () => {
         
         console.log('Page visible again after', timeHidden, 'ms');
         
-        // Only refresh if user was away for more than 10 minutes
-        // This prevents unnecessary refreshes for quick tab switches
-        if (timeHiddenMinutes > 10) {
-          console.log('User was away for more than 10 minutes, refreshing...');
+        // Only refresh if user was away for more than 30 minutes
+        // This prevents unnecessary refreshes for quick tab switches and sidebar interactions
+        if (timeHiddenMinutes > 30) {
+          console.log('User was away for more than 30 minutes, refreshing...');
           // Use a more graceful refresh with a slight delay
           setTimeout(() => {
             window.location.reload();

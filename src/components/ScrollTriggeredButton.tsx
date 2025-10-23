@@ -73,7 +73,7 @@ const ScrollTriggeredButton = <T extends React.ElementType = 'button'>({
     <Component
       ref={ref}
       className={`relative overflow-hidden ${className}`}
-      {...(rest as any)}
+      {...(rest as Record<string, unknown>)}
     >
       {/* Pulsation effect */}
       {isAnimating && (

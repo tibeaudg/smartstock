@@ -4,7 +4,7 @@ const CONSENT_KEY = 'stockflow_cookie_consent';
 const PREFERENCES_KEY = 'stockflow_cookie_preferences';
 
 // Singleton policy instance to avoid recreating
-let trustedTypesPolicy: any = null;
+let trustedTypesPolicy: unknown = null;
 
 /**
  * Create or get Trusted Types policy for script loading
@@ -126,13 +126,11 @@ export const canUseFunctional = (): boolean => {
  */
 export const loadGoogleAds = (): void => {
   if (!canUseMarketing()) {
-    console.log('[Cookie Consent] Marketing cookies not allowed - Google Ads not loaded');
     return;
   }
 
   // Check if already loaded
   if (document.querySelector('script[src*="googletagmanager.com/gtag"]')) {
-    console.log('[Cookie Consent] Google Ads already loaded');
     return;
   }
 
@@ -143,18 +141,18 @@ export const loadGoogleAds = (): void => {
   // @ts-expect-error - TypeScript doesn't recognize TrustedScriptURL yet
   script.src = trustedUrl;
   script.onload = () => {
-    // @ts-expect-error
+    // @ts-expect-error - Google Tag Manager types not available
     window.dataLayer = window.dataLayer || [];
-    // @ts-expect-error
-    function gtag(...args: any[]){window.dataLayer.push(args);}
-    // @ts-expect-error
+    // @ts-expect-error - Google Tag Manager types not available
+    function gtag(...args: unknown[]){window.dataLayer.push(args);}
+    // @ts-expect-error - Google Tag Manager types not available
     gtag('js', new Date());
-    // @ts-expect-error
+    // @ts-expect-error - Google Tag Manager types not available
     gtag('config', 'AW-17574614935', {
       'anonymize_ip': true, // Anonymize IP for privacy
       'allow_ad_personalization_signals': canUseMarketing(),
     });
-    // @ts-expect-error
+    // @ts-expect-error - Google Tag Manager types not available
     window.gtag = gtag;
     console.log('[Cookie Consent] Google Ads loaded successfully');
   };
@@ -171,7 +169,7 @@ export const loadFacebookPixel = (): void => {
   }
 
   // Check if already loaded
-  // @ts-expect-error
+  // @ts-expect-error - Facebook Pixel types not available
   if (window.fbq) {
     console.log('[Cookie Consent] Facebook Pixel already loaded');
     return;
@@ -179,12 +177,13 @@ export const loadFacebookPixel = (): void => {
 
   // Initialize Facebook Pixel stub BEFORE loading the script
   // This prevents "fbq is not defined" errors
-  // @ts-expect-error
-  !function(f: any,b: any,e: any,v: any,n: any,t: any,s: any)
-  {if(f.fbq)return;n=f.fbq=function(...args: any[]){n.callMethod?
-  n.callMethod(...args):n.queue.push(args)};
-  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-  n.queue=[]}(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  // @ts-expect-error - Facebook Pixel initialization code
+  (function(f: unknown,b: unknown,e: unknown,v: unknown,n: unknown,t: unknown,s: unknown) {
+    if(f.fbq)return;
+    n=f.fbq=function(...args: unknown[]){n.callMethod?n.callMethod(...args):n.queue.push(args)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];
+  })(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');
   
   // Now load the actual Facebook Pixel script
   const fbScript = document.createElement('script');
@@ -195,13 +194,13 @@ export const loadFacebookPixel = (): void => {
   
   fbScript.onload = () => {
     // Initialize and track after script loads
-    // @ts-expect-error
+    // @ts-expect-error - Facebook Pixel types not available
     if (window.fbq) {
-      // @ts-expect-error
+      // @ts-expect-error - Facebook Pixel types not available
       fbq('init', '1788618995199125', {
         external_id: undefined, // Don't track external IDs without consent
       });
-      // @ts-expect-error
+      // @ts-expect-error - Facebook Pixel types not available
       fbq('track', 'PageView');
       console.log('[Cookie Consent] Facebook Pixel loaded successfully');
     }
@@ -268,18 +267,18 @@ export const removeTrackingScripts = (): void => {
   }
 
   // Clear dataLayer
-  // @ts-expect-error
+  // @ts-expect-error - Google Tag Manager types not available
   if (window.dataLayer) {
-    // @ts-expect-error
+    // @ts-expect-error - Google Tag Manager types not available
     window.dataLayer = [];
   }
 
   // Clear Facebook Pixel
-  // @ts-expect-error
+  // @ts-expect-error - Facebook Pixel types not available
   if (window.fbq) {
-    // @ts-expect-error
+    // @ts-expect-error - Facebook Pixel types not available
     delete window.fbq;
-    // @ts-expect-error
+    // @ts-expect-error - Facebook Pixel types not available
     delete window._fbq;
   }
 
@@ -294,12 +293,12 @@ export const onConsentChange = (callback: (preferences: CookiePreferences) => vo
     callback(event.detail);
   };
 
-  // @ts-expect-error
+  // @ts-expect-error - Custom event types not available
   window.addEventListener('cookieConsentChanged', handler);
 
   // Return cleanup function
   return () => {
-    // @ts-expect-error
+    // @ts-expect-error - Custom event types not available
     window.removeEventListener('cookieConsentChanged', handler);
   };
 };

@@ -20,7 +20,7 @@ export const useErrorHandler = () => {
     return logError(error, errorContext);
   }, [user?.id, activeBranch?.branch_id]);
 
-  const handleAsyncError = useCallback(async <T>(
+  const handleAsyncError = useCallback(async <T,>(
     operation: () => Promise<T>,
     context?: string
   ): Promise<T | null> => {
