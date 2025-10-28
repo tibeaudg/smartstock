@@ -10,6 +10,8 @@ export interface PricingTier {
   price_monthly: number;
   price_yearly: number;
   yearly_discount_percentage: number;
+  price_per_product_monthly: number | null;
+  included_products: number | null;
   max_products: number | null;
   max_orders_per_month: number | null;
   max_users: number | null;
@@ -41,6 +43,8 @@ export interface UsageTracking {
   current_branches: number;
   orders_this_month: number;
   last_reset_date: string;
+  billing_anchor_date: string | null;
+  next_billing_date: string | null;
 }
 
 export const useSubscription = () => {
@@ -325,6 +329,10 @@ export const useSubscription = () => {
     }
   };
 
+  const shouldContactSales = () => {
+    return usageTracking && usageTracking.current_products >= 10000;
+  };
+
   return {
     // Data
     pricingTiers,
@@ -355,6 +363,7 @@ export const useSubscription = () => {
     isSubscriptionActive: isSubscriptionActive(),
     canUseFeature,
     isWithinLimits,
-    getRemainingLimit
+    getRemainingLimit,
+    shouldContactSales
   };
 };

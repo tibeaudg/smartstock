@@ -10,6 +10,7 @@ const corsHeaders = {
 
 const eventHandlers = {
   'checkout.session.completed': handleCheckoutSessionCompleted,
+  'invoice.created': handleInvoiceCreated,
   'invoice.payment_succeeded': handleInvoicePaymentSucceeded,
   'invoice.payment_failed': handleInvoicePaymentFailed,
   'customer.subscription.updated': handleSubscriptionUpdated,
@@ -162,7 +163,11 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session, 
     throw error;
   }
 
-  // Initialize usage tracking
+  // Initialize usage tracking with billing dates
+  const now = new Date();
+  const nextBillingDate = new Date(now);
+  nextBillingDate.setDate(nextBillingDate.getDate() + 30);
+
   const { error: usageError } = await supabase
     .from('usage_tracking')
     .upsert({
@@ -172,7 +177,9 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session, 
       current_users: 1, // User themselves
       current_branches: 1, // Default branch
       orders_this_month: 0,
-      last_reset_date: new Date().toISOString(),
+      last_reset_date: now.toISOString(),
+      billing_anchor_date: now.toISOString(),
+      next_billing_date: nextBillingDate.toISOString(),
     }, {
       onConflict: 'user_id'
     });
@@ -184,13 +191,59 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session, 
   console.log(`Subscription created successfully for user ${userId}, tier ${tier.id}`);
 }
 
+async function handleInvoiceCreated(invoice: Stripe.Invoice, supabase: any) {
+  console.log('Processing invoice created:', invoice.id);
+  
+  const subscriptionId = invoice.subscription;
+  if (!subscriptionId) return;
+
+  // Get subscription to find user_id
+  const { data: subscription } = await supabase
+    .from('user_subscriptions')
+    .select('user_id')
+    .eq('stripe_subscription_id', subscriptionId)
+    .single();
+
+  if (!subscription) {
+    console.error('Subscription not found for invoice:', invoice.id);
+    return;
+  }
+
+  // Find corresponding billing snapshot by date (should be the most recent pending one)
+  const { data: snapshot, error: snapshotError } = await supabase
+    .from('billing_snapshots')
+    .select('id')
+    .eq('user_id', subscription.user_id)
+    .eq('status', 'pending')
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .single();
+
+  if (snapshot && !snapshotError) {
+    // Update snapshot with invoice ID and mark as invoiced
+    const { error: updateError } = await supabase
+      .from('billing_snapshots')
+      .update({
+        stripe_invoice_id: invoice.id,
+        status: 'invoiced',
+        updated_at: new Date().toISOString()
+      })
+      .eq('id', snapshot.id);
+
+    if (updateError) {
+      console.error('Error updating billing snapshot:', updateError);
+    }
+  }
+}
+
 async function handleInvoicePaymentSucceeded(invoice: Stripe.Invoice, supabase: any) {
   console.log('Processing invoice payment succeeded:', invoice.id);
   
   const subscriptionId = invoice.subscription;
   if (!subscriptionId) return;
 
-  const { error } = await supabase
+  // Update subscription status
+  const { error: subscriptionError } = await supabase
     .from('user_subscriptions')
     .update({
       status: 'active',
@@ -198,9 +251,22 @@ async function handleInvoicePaymentSucceeded(invoice: Stripe.Invoice, supabase: 
     })
     .eq('stripe_subscription_id', subscriptionId);
 
-  if (error) {
-    console.error('Error updating subscription status:', error);
-    throw error;
+  if (subscriptionError) {
+    console.error('Error updating subscription status:', subscriptionError);
+    throw subscriptionError;
+  }
+
+  // Update billing snapshot status to 'paid'
+  const { error: snapshotError } = await supabase
+    .from('billing_snapshots')
+    .update({
+      status: 'paid',
+      updated_at: new Date().toISOString()
+    })
+    .eq('stripe_invoice_id', invoice.id);
+
+  if (snapshotError) {
+    console.error('Error updating billing snapshot status:', snapshotError);
   }
 }
 

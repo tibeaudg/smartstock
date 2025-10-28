@@ -11,6 +11,7 @@ import Header from '@/components/HeaderPublic';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import SEO from '@/components/SEO';
 import { generateComprehensiveStructuredData } from '@/lib/structuredData';
+import PricingCalculator from '@/components/pricing/PricingCalculator';
 
 
 
@@ -44,48 +45,30 @@ const getTierColor = (tierName: string) => {
 
 export default function PricingPage() {
   usePageRefresh();
-  const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly');
   const { user } = useAuth();
   const { pricingTiers, isLoading } = useSubscription();
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const handleSelectPlan = (tierId: string, isBusinessTier: boolean = false) => {
-    // Find the selected tier to check if it's free
-    const selectedTier = pricingTiers.find(t => t.name === tierId);
-    const isFree = selectedTier?.price_monthly === 0;
-    
-    // For free tier, redirect to register/dashboard
-    if (isFree) {
-      if (!user) {
-        navigate('/auth?mode=register');
-        return;
-      }
-      // If user is already logged in, redirect to dashboard (they already have free access)
-      navigate('/dashboard');
+  const handleSelectPlan = (plan: 'free' | 'business' | 'enterprise') => {
+    if (plan === 'enterprise') {
+      navigate('/contact?subject=enterprise-pricing');
       return;
     }
     
-    // For paid tiers, require authentication
     if (!user) {
-      navigate('/auth');
+      navigate('/auth?mode=register');
       return;
     }
     
-    // For business tier, redirect to contact page
-    if (isBusinessTier) {
-      navigate('/contact?subject=business-tier');
-      return;
-    }
-    
-    // Navigate to checkout for paid tiers
-    navigate(`/checkout?tier=${tierId}&cycle=${billingCycle}`);
+    // Navigate to dashboard (usage-based billing starts automatically)
+    navigate('/dashboard');
   };
 
   const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat('en-EU', {
       style: 'currency',
-      currency: 'USD'
+      currency: 'EUR'
     }).format(price);
   };
 
@@ -163,156 +146,149 @@ export default function PricingPage() {
         simplifiedNav={false}
         hideNotifications={true}
       />
-      <div className="container mx-auto px-4 py-16">
+      <div className="container mx-auto px-4 py-32">
         {/* Header */}
         <div className="text-center mb-16">
           
           <h1 className="text-5xl md:text-7xl font-light text-gray-800 mb-6">
-              Start Free, Upgrade When You Grow
+              Usage-Based Pricing
           </h1>
           <p className="text-xl text-gray-600 mb-8">
-            No hidden fees. Cancel anytime. 14-day free trial on all plans.
+            Pay only for what you use. Start with 100 free products.
           </p>
-          
-          {/* Billing Toggle */}
-          <div className="flex items-center justify-center space-x-4 mb-8">
-            <span className={`text-sm font-medium ${billingCycle === 'monthly' ? 'text-gray-900' : 'text-gray-500'}`}>
-              Monthly
-            </span>
-            <button
-              onClick={() => setBillingCycle(billingCycle === 'monthly' ? 'yearly' : 'monthly')}
-              className="relative inline-flex h-6 w-11 items-center rounded-full bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-            >
-              <span
-                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                  billingCycle === 'yearly' ? 'translate-x-6' : 'translate-x-1'
-                }`}
-              />
-            </button>
-            <span className={`text-sm font-medium ${billingCycle === 'yearly' ? 'text-gray-900' : 'text-gray-500'}`}>
-              Yearly
-            </span>
-            {billingCycle === 'yearly' && (
-              <Badge variant="secondary" className="ml-2">
-                Save 20%
+        </div>
+
+        {/* Pricing Calculator */}
+        <div className="mb-16">
+          <PricingCalculator onSelectPlan={handleSelectPlan} />
+        </div>
+
+        {/* Pricing Tiers Summary */}
+        <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto mb-16">
+          {/* Free Tier */}
+          <Card className="relative shadow-lg">
+            <CardHeader className="text-center pb-4">
+              <div className="mx-auto mb-4 text-gray-600">
+                <Package className="h-8 w-8 mx-auto" />
+              </div>
+              <CardTitle className="text-2xl font-semibold">Free</CardTitle>
+              <CardDescription className="text-gray-600">
+                Perfect for testing & small shops
+              </CardDescription>
+              <div className="mt-4">
+                <div className="text-4xl font-bold text-gray-900">€0</div>
+                <div className="text-sm text-gray-500">per month</div>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <h4 className="font-semibold text-gray-900 mb-3">Included:</h4>
+              <ul className="space-y-2">
+                <li className="flex items-start"><Check className="h-4 w-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" /><span className="text-sm text-gray-600">Up to 100 products</span></li>
+                <li className="flex items-start"><Check className="h-4 w-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" /><span className="text-sm text-gray-600">Basic inventory management</span></li>
+                <li className="flex items-start"><Check className="h-4 w-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" /><span className="text-sm text-gray-600">Mobile app access</span></li>
+                <li className="flex items-start"><Check className="h-4 w-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" /><span className="text-sm text-gray-600">Email support</span></li>
+              </ul>
+            </CardContent>
+            <CardFooter>
+              <Button 
+                className="w-full rounded-full"
+                onClick={() => handleSelectPlan('free')}
+              >
+                Get Started
+              </Button>
+            </CardFooter>
+          </Card>
+
+          {/* Business Tier */}
+          <Card className="relative ring-2 ring-blue-500 shadow-xl scale-105">
+            <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+              <Badge className="bg-blue-500 text-white px-4 py-1">
+                <Star className="h-3 w-3 mr-1" />
+                Most Popular
               </Badge>
-            )}
-          </div>
-        </div>
+            </div>
+            <CardHeader className="text-center pb-4">
+              <div className="mx-auto mb-4 text-blue-600">
+                <Zap className="h-8 w-8 mx-auto" />
+              </div>
+              <CardTitle className="text-2xl font-semibold">Business</CardTitle>
+              <CardDescription className="text-gray-600">
+                Pay-as-you-grow pricing
+              </CardDescription>
+              <div className="mt-4">
+                <div className="text-4xl font-bold text-gray-900">€0.008</div>
+                <div className="text-sm text-gray-500">per product/month</div>
+                <div className="text-xs text-gray-400 mt-1">(products 101+)</div>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <h4 className="font-semibold text-gray-900 mb-3">Included:</h4>
+              <ul className="space-y-2">
+                <li className="flex items-start"><Check className="h-4 w-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" /><span className="text-sm text-gray-600">100+ products (€0.008 each)</span></li>
+                <li className="flex items-start"><Check className="h-4 w-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" /><span className="text-sm text-gray-600">All Free features</span></li>
+                <li className="flex items-start"><Check className="h-4 w-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" /><span className="text-sm text-gray-600">Advanced analytics</span></li>
+                <li className="flex items-start"><Check className="h-4 w-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" /><span className="text-sm text-gray-600">Barcode scanner</span></li>
+                <li className="flex items-start"><Check className="h-4 w-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" /><span className="text-sm text-gray-600">API access</span></li>
+                <li className="flex items-start"><Check className="h-4 w-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" /><span className="text-sm text-gray-600">Priority support</span></li>
+              </ul>
+            </CardContent>
+            <CardFooter>
+              <Button 
+                className="w-full rounded-full bg-blue-600 hover:bg-blue-700"
+                onClick={() => handleSelectPlan('business')}
+              >
+                Start Free, Pay When You Grow
+              </Button>
+            </CardFooter>
+          </Card>
 
-        {/* Pricing Cards */}
-        <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto">
-          {pricingTiers.map((tier) => (
-            <Card 
-              key={tier.id} 
-              className={`relative ${tier.is_popular ? 'ring-2 ring-blue-500 shadow-xl scale-105' : 'shadow-lg'}`}
-            >
-              {tier.is_popular && (
-                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                  <Badge className="bg-blue-500 text-white px-4 py-1">
-                    <Star className="h-3 w-3 mr-1" />
-                    Most popular
-                  </Badge>
-                </div>
-              )}
-              
-              {/* Money-back guarantee badge for paid tiers */}
-              {tier.price_monthly > 0 && tier.name !== 'business' && (
-                <div className="absolute -top-2 right-4">
-                  <Badge variant="secondary" className="bg-green-50 text-green-700 border-green-200 text-xs">
-                    30-day guarantee
-                  </Badge>
-                </div>
-              )}
-
-              <CardHeader className="text-center pb-4">
-                <div className={`mx-auto mb-4 ${getTierColor(tier.name)}`}>
-                  {getTierIcon(tier.name)}
-                </div>
-                <CardTitle className="text-2xl font-semibold">{tier.display_name}</CardTitle>
-                <CardDescription className="text-gray-600">
-                  {tier.description}
-                </CardDescription>
-                <div className="mt-4">
-                  <div className="text-4xl font-bold text-gray-900">
-                    {tier.name === 'business' 
-                      ? 'On Demand' 
-                      : tier.price_monthly === 0 
-                        ? '$0' 
-                        : formatPrice(billingCycle === 'monthly' ? tier.price_monthly : tier.price_yearly)}
-                  </div>
-                  {tier.price_monthly > 0 && tier.name !== 'business' && (
-                    <div className="text-sm text-gray-500">
-                      {billingCycle === 'yearly' ? 'per year' : 'per month'}
-                    </div>
-                  )}
-                  {tier.name === 'business' && (
-                    <div className="text-sm text-gray-500">
-                      Custom pricing
-                    </div>
-                  )}
-                </div>
-              </CardHeader>
-
-              <CardContent className="space-y-6">
-                {/* Limits */}
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600">Products</span>
-                    <span className="text-sm font-medium">{getLimitText(tier.max_products, 'products')}</span>
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600">Users</span>
-                    <span className="text-sm font-medium">{getLimitText(tier.max_users, 'users')}</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600">Branches</span>
-                      <span className="text-sm font-medium">{getLimitText(tier.max_branches, 'branches')}</span>
-                  </div>
-                </div>
-
-                {/* Features */}
-                <div className="space-y-3">
-                  <h4 className="font-semibold text-gray-900">Included:</h4>
-                  <ul className="space-y-2">
-                    {tier.features.map((feature, index) => (
-                      <li key={index} className="flex items-start">
-                        <Check className="h-4 w-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
-                        <span className="text-sm text-gray-600">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </CardContent>
-
-              <CardFooter>
-                <Button 
-                  className="w-full rounded-full transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl }"
-                  onClick={() => handleSelectPlan(tier.name, tier.name === 'business')}
-                >
-                  {tier.name === 'business' 
-                    ? 'Contact Sales' 
-                    : tier.price_monthly === 0 
-                      ? 'Get Started' 
-                      : 'Start 14-day trial'}
-                </Button>
-              </CardFooter>
-            </Card>
-          ))}
+          {/* Enterprise Tier */}
+          <Card className="relative shadow-lg">
+            <CardHeader className="text-center pb-4">
+              <div className="mx-auto mb-4 text-purple-600">
+                <Crown className="h-8 w-8 mx-auto" />
+              </div>
+              <CardTitle className="text-2xl font-semibold">Enterprise</CardTitle>
+              <CardDescription className="text-gray-600">
+                Custom pricing for high-volume
+              </CardDescription>
+              <div className="mt-4">
+                <div className="text-4xl font-bold text-gray-900">Custom</div>
+                <div className="text-sm text-gray-500">pricing</div>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <h4 className="font-semibold text-gray-900 mb-3">Included:</h4>
+              <ul className="space-y-2">
+                <li className="flex items-start"><Check className="h-4 w-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" /><span className="text-sm text-gray-600">10,000+ products</span></li>
+                <li className="flex items-start"><Check className="h-4 w-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" /><span className="text-sm text-gray-600">All Business features</span></li>
+                <li className="flex items-start"><Check className="h-4 w-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" /><span className="text-sm text-gray-600">Dedicated support</span></li>
+                <li className="flex items-start"><Check className="h-4 w-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" /><span className="text-sm text-gray-600">Custom onboarding</span></li>
+                <li className="flex items-start"><Check className="h-4 w-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" /><span className="text-sm text-gray-600">SLA guarantee</span></li>
+              </ul>
+            </CardContent>
+            <CardFooter>
+              <Button 
+                className="w-full rounded-full bg-purple-600 hover:bg-purple-700"
+                onClick={() => handleSelectPlan('enterprise')}
+              >
+                Contact Sales
+              </Button>
+            </CardFooter>
+          </Card>
         </div>
 
 
-        {/* Free Trial Info */}
+        {/* Billing Info */}
         <div className="mt-16 text-center">
           <div className="bg-white rounded-lg shadow-lg p-8 max-w-4xl mx-auto">
             <div className="flex items-center justify-center mb-4">
               <Clock className="h-8 w-8 text-blue-600 mr-3" />
-                <h3 className="text-2xl font-semibold text-gray-900">14-day free trial</h3>
+                <h3 className="text-2xl font-semibold text-gray-900">Simple Billing</h3>
             </div>
             <p className="text-gray-600 mb-6">
-              Try all premium features 14 days free. No credit card required, 
-              cancel anytime.
+              Get 100 products free forever. Pay only for what you use above that. 
+              Billed monthly based on your product count. Cancel anytime.
             </p>
             <div className="grid md:grid-cols-3 gap-6 text-left">
               <div className="flex items-start">
@@ -347,21 +323,21 @@ export default function PricingPage() {
           </h3>
           <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
             <div>
-              <h4 className="font-semibold text-gray-900 mb-2">Can I change plans anytime?</h4>
+              <h4 className="font-semibold text-gray-900 mb-2">How does the billing work?</h4>
               <p className="text-gray-600 text-sm">
-                Yes, you can upgrade or downgrade at any time. Changes are made immediately and you'll be charged or credited proportionally.
+                You get 100 products free. After that, you pay €0.008 per product per month. We count your products at the end of each 30-day billing cycle and bill you automatically.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold text-gray-900 mb-2">What happens after my trial ends?</h4>
+              <h4 className="font-semibold text-gray-900 mb-2">When will I be charged?</h4>
               <p className="text-gray-600 text-sm">
-                After 14 days, your account will automatically downgrade to the Free plan. You can upgrade anytime to keep premium features.
+                Billing is monthly, starting 30 days after account creation. Each cycle, we take a snapshot of your product count and bill accordingly. You can add or remove products anytime.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold text-gray-900 mb-2">Do you offer refunds?</h4>
+              <h4 className="font-semibold text-gray-900 mb-2">What if I exceed 10,000 products?</h4>
               <p className="text-gray-600 text-sm">
-                Yes, we offer a 30-day money-back guarantee. If you're not satisfied, contact us for a full refund.
+                If you need more than 10,000 products, contact our sales team for custom Enterprise pricing with dedicated support and SLA guarantees.
               </p>
             </div>
             <div>
@@ -373,7 +349,7 @@ export default function PricingPage() {
             <div>
               <h4 className="font-semibold text-gray-900 mb-2">Is my data secure?</h4>
               <p className="text-gray-600 text-sm">
-                Yes, your data is encrypted and stored securely in EU data centers. We're GDPR compliant, SOC 2 certified, and use bank-level security with daily backups.
+                Yes, your data is encrypted and stored securely in EU data centers. We're GDPR compliant, and use bank-level security with daily backups.
               </p>
             </div>
             <div>
@@ -389,9 +365,9 @@ export default function PricingPage() {
               </p>
             </div>
             <div>
-              <h4 className="font-semibold text-gray-900 mb-2">Can I add more users later?</h4>
+              <h4 className="font-semibold text-gray-900 mb-2">Can I cancel anytime?</h4>
               <p className="text-gray-600 text-sm">
-                Yes, you can add users anytime. Additional users are charged at €10/month per user on Growth and Premium plans.
+                Yes! Cancel anytime with no fees. You can continue using your account until the end of your current billing period.
               </p>
             </div>
           </div>
@@ -425,10 +401,6 @@ export default function PricingPage() {
                 <div className="flex items-center bg-blue-100 px-3 py-1 rounded-full">
                   <Shield className="w-4 h-4 text-blue-600 mr-2" />
                   <span className="text-blue-700 text-sm font-medium">GDPR Compliant</span>
-                </div>
-                <div className="flex items-center bg-purple-100 px-3 py-1 rounded-full">
-                  <Shield className="w-4 h-4 text-purple-600 mr-2" />
-                  <span className="text-purple-700 text-sm font-medium">SOC 2 Certified</span>
                 </div>
               </div>
               <div className="flex space-x-4">

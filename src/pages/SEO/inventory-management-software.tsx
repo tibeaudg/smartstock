@@ -397,10 +397,6 @@ export default function InventoryManagementSoftware() {
                 <Shield className="w-6 h-6 text-blue-600" />
                 <span className="font-medium">SSL Encrypted</span>
               </div>
-              <div className="flex items-center space-x-2 text-gray-600">
-                <Shield className="w-6 h-6 text-purple-600" />
-                <span className="font-medium">SOC 2 Certified</span>
-              </div>
             </div>
           </div>
         </div>
@@ -691,11 +687,6 @@ export default function InventoryManagementSoftware() {
               <Shield className="w-12 h-12 text-purple-600 mx-auto mb-4" />
               <h3 className="text-lg font-semibold mb-2">Daily Backups</h3>
               <p className="text-gray-600 text-sm">Automated daily backups with 99.9% uptime</p>
-            </div>
-            <div className="text-center">
-              <Shield className="w-12 h-12 text-orange-600 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold mb-2">SOC 2 Certified</h3>
-              <p className="text-gray-600 text-sm">Enterprise-grade security and compliance standards</p>
             </div>
           </div>
         </div>

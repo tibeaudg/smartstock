@@ -17,12 +17,27 @@ import {
   ShoppingCart,
   TrendingUp,
   Clock,
-  AlertTriangle
+  AlertTriangle,
+  Euro,
+  ExternalLink,
+  Download,
+  Info
 } from 'lucide-react';
 import { useSubscription } from '@/hooks/useSubscription';
 import { useNavigate } from 'react-router-dom';
 import { UsageLimits } from '@/components/UsageLimits';
 import { UpgradePrompt, UpgradeOptions, AllUpgradeOptions, TierUpgradeCard } from '@/components/UpgradePrompt';
+import { supabase } from '@/integrations/supabase/client';
+import { useQuery } from '@tanstack/react-query';
+
+interface BillingSnapshot {
+  id: string;
+  snapshot_date: string;
+  product_count: number;
+  calculated_amount: number;
+  status: 'pending' | 'invoiced' | 'paid' | 'failed';
+  stripe_invoice_id: string | null;
+}
 
 export const SubscriptionManagement = () => {
   const { user } = useAuth();
@@ -40,8 +55,37 @@ export const SubscriptionManagement = () => {
     error
   } = useSubscription();
 
+  // Fetch billing history
+  const { data: billingHistory = [] } = useQuery({
+    queryKey: ['billing-history', user?.id],
+    queryFn: async () => {
+      if (!user) return [];
+
+      const { data, error } = await supabase
+        .from('billing_snapshots')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false })
+        .limit(12);
+
+      if (error) throw error;
+      return data as BillingSnapshot[];
+    },
+    enabled: !!user
+  });
 
   const [showUpgradePrompt, setShowUpgradePrompt] = useState(false);
+
+  // Calculate monthly cost based on current usage
+  const calculateMonthlyCost = () => {
+    if (!usageTracking) return 0;
+    const FREE_PRODUCTS = 100;
+    const PRICE_PER_PRODUCT = 0.008;
+    const billableProducts = Math.max(0, usageTracking.current_products - FREE_PRODUCTS);
+    return billableProducts * PRICE_PER_PRODUCT;
+  };
+
+  const monthlyCost = calculateMonthlyCost();
 
   const handleUpgrade = () => {
     navigate('/pricing');
@@ -163,36 +207,86 @@ export const SubscriptionManagement = () => {
         </CardHeader>
         
         <CardContent className="space-y-4">
-          {/* Pricing Info */}
-          <div className="flex items-center justify-between">
-            <div>
-              <div className="text-2xl font-bold text-gray-900">
-                {(() => {
-                  const tier = currentTier || pricingTiers.find(t => t.name === 'basic');
-                  return tier?.price_monthly === 0 ? 'Free' : formatPrice(tier?.price_monthly || 0);
-                })()}
+          {/* Pricing Info - Usage-Based */}
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="text-2xl font-bold text-gray-900 flex items-center gap-2">
+                  <Euro className="h-6 w-6 text-gray-600" />
+                  {formatPrice(monthlyCost)}
+                </div>
+                <div className="text-sm text-gray-500">
+                  Current monthly estimate
+                </div>
               </div>
-              <div className="text-sm text-gray-500">
-                {(() => {
-                  const tier = currentTier || pricingTiers.find(t => t.name === 'basic');
-                  return tier?.price_monthly === 0 ? 'Forever free' : 'per month';
-                })()}
+              
+              <div className="text-right">
+                <div className="text-lg font-semibold text-gray-900 flex items-center justify-end gap-2">
+                  <Package className="h-5 w-5 text-blue-600" />
+                  {usageTracking?.current_products || 0} products
+                </div>
+                <div className="text-sm text-gray-500">
+                  {usageTracking && usageTracking.current_products > 100 
+                    ? `${usageTracking.current_products - 100} billable` 
+                    : 'All products free'}
+                </div>
               </div>
             </div>
-            
-            {currentSubscription && (
-              <div className="text-right">
-                <div className="text-sm text-gray-600">
-                  {currentSubscription.billing_cycle === 'monthly' ? 'Monthly' : 'Yearly'}
+
+            {/* Next Billing Date */}
+            {usageTracking?.next_billing_date && (
+              <div className="bg-gray-50 border border-gray-200 rounded-lg p-3">
+                <div className="flex items-center gap-2 text-sm">
+                  <Calendar className="h-4 w-4 text-gray-600" />
+                  <span className="text-gray-600">Next billing date:</span>
+                  <span className="font-semibold text-gray-900">
+                    {new Date(usageTracking.next_billing_date).toLocaleDateString('nl-NL', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric'
+                    })}
+                  </span>
                 </div>
-                {getNextBillingDate() && (
-                  <div className="text-sm text-gray-500">
-                    Next payment: {getNextBillingDate()}
-                  </div>
-                )}
               </div>
             )}
           </div>
+
+          {/* Usage-Based Pricing Info */}
+          {monthlyCost > 0 && (
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <div className="flex items-start space-x-3">
+                <Info className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                <div>
+                  <h4 className="font-medium text-blue-900">
+                    Usage-Based Billing
+                  </h4>
+                  <p className="text-sm text-blue-700 mt-1">
+                    You get the first 100 products free forever. You're currently using {usageTracking?.current_products || 0} products, 
+                    so you're being charged €0.008 per month for each product over 100. 
+                    You can add or remove products anytime - charges are calculated at the end of each 30-day billing cycle.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Free Tier Info */}
+          {monthlyCost === 0 && usageTracking && usageTracking.current_products <= 100 && (
+            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+              <div className="flex items-start space-x-3">
+                <Package className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
+                <div>
+                  <h4 className="font-medium text-green-900">
+                    You're on the Free Plan
+                  </h4>
+                  <p className="text-sm text-green-700 mt-1">
+                    Your first 100 products are completely free forever. After that, pay only €0.008 per product per month. 
+                    No hidden fees, cancel anytime.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Features */}
           <div className="space-y-3">
@@ -329,22 +423,84 @@ export const SubscriptionManagement = () => {
       })()}
 
       {/* Billing History */}
-      {currentSubscription && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Billing history</CardTitle>
-            <CardDescription>
-              View your previous payments and downloads invoices
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
+      <Card>
+        <CardHeader>
+          <CardTitle>Billing History</CardTitle>
+          <CardDescription>
+            Your past invoices and payment history
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          {billingHistory.length === 0 ? (
             <div className="text-center py-8 text-gray-500">
               <Calendar className="h-12 w-12 mx-auto mb-4 text-gray-300" />
-              <p>Billing history will be added soon</p>
+              <p>No billing history yet</p>
+              <p className="text-sm mt-1">Your first bill will appear here after your first billing cycle</p>
             </div>
-          </CardContent>
-        </Card>
-      )}
+          ) : (
+            <div className="space-y-3">
+              {billingHistory.map((snapshot) => (
+                <div
+                  key={snapshot.id}
+                  className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+                >
+                  <div className="flex-1">
+                    <div className="flex items-center space-x-3">
+                      <div className="flex items-center gap-2">
+                        <Package className="h-5 w-5 text-gray-400" />
+                        <div>
+                          <p className="font-medium text-gray-900">
+                            {new Date(snapshot.snapshot_date).toLocaleDateString('nl-NL', {
+                              year: 'numeric',
+                              month: 'long',
+                              day: 'numeric'
+                            })}
+                          </p>
+                          <p className="text-sm text-gray-500">
+                            {snapshot.product_count.toLocaleString()} products • {snapshot.product_count > 100 ? `${snapshot.product_count - 100} billable` : 'All products free'}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center space-x-4">
+                    <div className="text-right">
+                      <p className="font-semibold text-gray-900">
+                        {formatPrice(snapshot.calculated_amount)}
+                      </p>
+                      {snapshot.stripe_invoice_id && (
+                        <a
+                          href={`https://dashboard.stripe.com/invoices/${snapshot.stripe_invoice_id}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs text-blue-600 hover:text-blue-800 flex items-center justify-end gap-1"
+                        >
+                          Invoice
+                          <ExternalLink className="h-3 w-3" />
+                        </a>
+                      )}
+                    </div>
+                    <Badge 
+                      className={
+                        snapshot.status === 'paid' ? 'bg-green-100 text-green-800' :
+                        snapshot.status === 'failed' ? 'bg-red-100 text-red-800' :
+                        snapshot.status === 'invoiced' ? 'bg-blue-100 text-blue-800' :
+                        'bg-yellow-100 text-yellow-800'
+                      }
+                    >
+                      {snapshot.status === 'paid' ? 'Paid' :
+                       snapshot.status === 'failed' ? 'Failed' :
+                       snapshot.status === 'invoiced' ? 'Invoiced' :
+                       'Pending'}
+                    </Badge>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 };

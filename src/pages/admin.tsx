@@ -40,26 +40,25 @@ interface UserStats {
   statsLastUpdated?: string;
 }
 
-// Plan information for price calculation (new subscription tiers)
+// Plan information for usage-based pricing
 const plans = {
-  'free': { price: 0, limit: 50, displayName: 'Free / Basic' },
-  'basic': { price: 0, limit: 50, displayName: 'Basic' },
-  'starter': { price: 24.99, limit: 1000, displayName: 'Starter' },
-  'growth': { price: 24.99, limit: 1000, displayName: 'Growth' },
-  'business': { price: 0, limit: null, displayName: 'Business (On Demand)' },
-  'premium': { price: 0, limit: null, displayName: 'Premium' }
+  'free': { price: 0, limit: 100, displayName: 'Free', pricePerProduct: 0, includedProducts: 100 },
+  'basic': { price: 0, limit: 100, displayName: 'Free', pricePerProduct: 0, includedProducts: 100 },
+  'growth': { price: 0, limit: 10000, displayName: 'Business', pricePerProduct: 0.008, includedProducts: 100 },
+  'business': { price: 0, limit: 10000, displayName: 'Business', pricePerProduct: 0.008, includedProducts: 100 },
+  'premium': { price: 0, limit: null, displayName: 'Enterprise', pricePerProduct: 0, includedProducts: 10000 }
 };
 
-// Simulate price calculation for a user (new subscription model)
-function calculateUserLicenseCost(planId: string | null, stats: Omit<UserStats, 'userId' | 'licenseCost' | 'statsLastUpdated'>): number {
+// Calculate user license cost based on usage-based pricing
+function calculateUserLicenseCost(
+  planId: string | null, 
+  stats: Omit<UserStats, 'userId' | 'licenseCost' | 'statsLastUpdated'>
+): number {
   const plan = plans[planId as keyof typeof plans] || plans.basic;
-  const price = plan.price;
   
-  // In the new model, all limits are included in the tier price
-  // No extra costs for users, branches or products
-  // Premium plan has unlimited limits
-  
-  return price;
+  // Usage-based pricing: €0.008 per product above included amount
+  const billableProducts = Math.max(0, stats.productCount - plan.includedProducts);
+  return billableProducts * plan.pricePerProduct;
 }
 
 // User management functions
@@ -658,7 +657,7 @@ export default function AdminPage() {
                                   {loadingStats ? <Loader2 className="w-4 h-4 animate-spin mx-auto" /> : stats?.linkedUserCount || 0}
                                 </td>
                                 <td className="px-4 py-2 text-center font-mono">
-                                  {loadingStats ? <Loader2 className="w-4 h-4 animate-spin mx-auto" /> : `$${(stats?.licenseCost || 0).toFixed(2)}`}
+                                  {loadingStats ? <Loader2 className="w-4 h-4 animate-spin mx-auto" /> : `€${(stats?.licenseCost || 0).toFixed(2)}`}
                                 </td>
                                 <td className="px-4 py-2">{user.blocked ? 'Yes' : 'No'}</td>
                                 <td className="px-4 py-2">{new Date(user.created_at).toLocaleDateString('en-US')}</td>
@@ -736,8 +735,8 @@ export default function AdminPage() {
                                       <span className="font-medium">Linked users:</span> {stats.linkedUserCount}
                                     </div>
                                     <div>
-                                      <span className="font-medium">Monthly license cost:</span> 
-                                      <span className="ml-2 font-mono text-blue-600">${stats.licenseCost.toFixed(2)}</span>
+                                      <span className="font-medium">Monthly cost:</span> 
+                                      <span className="ml-2 font-mono text-blue-600">€{stats.licenseCost.toFixed(2)}</span>
                                     </div>
                                   </div>
                                 </div>

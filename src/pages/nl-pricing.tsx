@@ -232,7 +232,7 @@ export default function NlPricingPage() {
               {/* Money-back guarantee badge for paid tiers */}
               {tier.price_monthly > 0 && tier.name !== 'business' && (
                 <div className="absolute -top-2 right-4">
-                  <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 text-xs">
+                  <Badge variant="success" className="text-xs">
                     30-dagen garantie
                   </Badge>
                 </div>
@@ -437,12 +437,7 @@ export default function NlPricingPage() {
                 Absoluut! Je kunt importeren vanuit Excel, CSV of andere voorraadsystemen. Ons supportteam helpt bij de migratie.
               </p>
             </div>
-            <div>
-              <h4 className="font-semibold text-gray-900 mb-2">Is mijn data veilig?</h4>
-              <p className="text-gray-600 text-sm">
-                Ja, je data is versleuteld en veilig opgeslagen in EU datacenters. We zijn GDPR-compliant, SOC 2 gecertificeerd en gebruiken bankniveau beveiliging met dagelijkse backups.
-              </p>
-            </div>
+
             <div>
               <h4 className="font-semibold text-gray-900 mb-2">Heb ik speciale hardware nodig?</h4>
               <p className="text-gray-600 text-sm">
@@ -492,10 +487,6 @@ export default function NlPricingPage() {
                 <div className="flex items-center bg-blue-100 px-3 py-1 rounded-full">
                   <Shield className="w-4 h-4 text-blue-600 mr-2" />
                   <span className="text-blue-700 text-sm font-medium">GDPR Compliant</span>
-                </div>
-                <div className="flex items-center bg-purple-100 px-3 py-1 rounded-full">
-                  <Shield className="w-4 h-4 text-purple-600 mr-2" />
-                  <span className="text-purple-700 text-sm font-medium">SOC 2 Gecertificeerd</span>
                 </div>
               </div>
               <div className="flex space-x-4">

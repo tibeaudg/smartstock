@@ -1,5 +1,5 @@
 import React from 'react';
-import { AlertTriangle, Users, Package, Building, ShoppingCart, TrendingUp } from 'lucide-react';
+import { AlertTriangle, Users, Package, Building, ShoppingCart, TrendingUp, Info } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -26,6 +26,23 @@ export const UsageLimits: React.FC<UsageLimitsProps> = ({
 
   if (!currentTier || !usageTracking) return null;
 
+  // Calculate monthly cost based on usage-based pricing
+  const calculateMonthlyCost = (): number => {
+    const productCount = usageTracking.current_products;
+    const FREE_PRODUCTS = 100;
+    const PRICE_PER_PRODUCT = 0.008;
+    
+    if (productCount <= FREE_PRODUCTS) {
+      return 0;
+    }
+    
+    const billableProducts = productCount - FREE_PRODUCTS;
+    return billableProducts * PRICE_PER_PRODUCT;
+  };
+
+  const monthlyCost = calculateMonthlyCost();
+  const shouldShowUpgrade = usageTracking.current_products >= 10000;
+
   const limits = [
     {
       type: 'products' as const,
@@ -33,7 +50,9 @@ export const UsageLimits: React.FC<UsageLimitsProps> = ({
       label: 'Products',
       current: usageTracking.current_products,
       max: currentTier.max_products,
-      color: 'text-blue-600'
+      color: 'text-blue-600',
+      showCost: monthlyCost > 0,
+      estimatedCost: monthlyCost
     },
     {
       type: 'users' as const,
@@ -161,6 +180,11 @@ export const UsageLimits: React.FC<UsageLimitsProps> = ({
                     <h4 className="font-medium text-gray-900">{limit.label}</h4>
                     <p className="text-sm text-gray-500">
                       {limit.current} of {limit.max || 'unlimited'} used
+                      {(limit as any).showCost && (
+                        <span className="ml-2 font-semibold text-blue-600">
+                          • €{(limit as any).estimatedCost.toFixed(2)}/month
+                        </span>
+                      )}
                     </p>
                   </div>
                 </div>
@@ -207,6 +231,46 @@ export const UsageLimits: React.FC<UsageLimitsProps> = ({
           );
         })}
         
+        {/* Enterprise Warning */}
+        {shouldShowUpgrade && (
+          <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+            <div className="flex items-start space-x-3">
+              <AlertTriangle className="h-5 w-5 text-purple-600 mt-0.5" />
+              <div>
+                <h4 className="font-medium text-purple-900">
+                  Enterprise Plan Required
+                </h4>
+                <p className="text-sm text-purple-700 mt-1">
+                  You've reached the 10,000 product limit. Contact sales for custom Enterprise pricing.
+                </p>
+                <a 
+                  href="/contact?subject=enterprise-pricing" 
+                  className="text-sm font-medium text-purple-600 hover:text-purple-800 mt-2 inline-block"
+                >
+                  Contact Sales →
+                </a>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Usage-Based Pricing Info */}
+        {monthlyCost > 0 && !shouldShowUpgrade && (
+          <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+            <div className="flex items-start space-x-3">
+              <Info className="h-5 w-5 text-green-600 mt-0.5" />
+              <div>
+                <h4 className="font-medium text-green-900">
+                  Usage-Based Billing
+                </h4>
+                <p className="text-sm text-green-700 mt-1">
+                  First 100 products are free. You're paying €0.008 per product per month for the remaining {usageTracking.current_products - 100} products.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Trial/Subscription Info */}
         {(isTrialActive || isSubscriptionActive) && (
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
@@ -214,7 +278,7 @@ export const UsageLimits: React.FC<UsageLimitsProps> = ({
               <TrendingUp className="h-5 w-5 text-blue-600 mt-0.5" />
               <div>
                 <h4 className="font-medium text-blue-900">
-                  {isTrialActive ? 'Free trial active' : 'Premium plan active'}
+                  {isTrialActive ? 'Free trial active' : 'Active subscription'}
                 </h4>
                 <p className="text-sm text-blue-700 mt-1">
                   {isTrialActive 
