@@ -157,13 +157,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
           icon: Truck,
           path: '/dashboard/delivery-notes'
         }] : []),
-        ...(hasAnalytics ? [{
-          id: 'analytics',
-          label: 'Advanced Analytics',
-          icon: TrendingUp,
-          path: '/dashboard/analytics',
-          subItems: analyticsSubItems
-        }] : []),
+
 
         { 
           id: 'settings', 
@@ -194,7 +188,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
       
       {/* Sidebar */}
       <div className={`
-        fixed left-0 top-0 h-screen bg-white border-r border-gray-200 transition-all duration-300 z-50 flex flex-col
+        fixed left-0 top-0 h-screen bg-gray-100  transition-all duration-300 z-50 flex flex-col
         ${isMobile 
           ? (isOpen ? 'w-64 translate-x-0' : 'w-16 -translate-x-full') 
           : (isOpen ? 'w-64' : 'w-16')
@@ -262,9 +256,9 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
                     className={`
                       w-full font-semibold flex items-center px-2 sm:px-3 py-2 rounded-lg text-left transition-colors
                       ${isParentActive
-                        ? 'bg-blue-50 text-blue-700 border border-blue-200' 
+                        ? 'bg-white text-black border border-gray-200' 
                         : isExpanded
-                        ? 'bg-gray-50 text-gray-700'
+                        ? 'bg-gray-100 text-gray-700'
                         : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                       }
                     `}
@@ -285,13 +279,18 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
                   </NavLink>
 
                   {/* Submenu */}
-                  {isOpen && hasSubItems && isSubmenuOpen && (
+                  {isOpen && hasSubItems && isExpanded && (
                     <ul className="ml-3 sm:ml-4 space-y-1 border-l-2 border-gray-200 pl-3">
                       {item.subItems.map((subItem) => (
                         <li key={subItem.id}>
                           <NavLink
                             to={subItem.path}
                             onClick={() => {
+                              // Ensure the parent menu stays open when clicking a subitem
+                              setOpenSubmenus(prev => ({
+                                ...prev,
+                                [item.id]: true
+                              }));
                               // Auto-close sidebar on mobile when submenu item is clicked
                               if (isMobile) {
                                 onToggle();
@@ -300,7 +299,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
                             className={({ isActive }) => `
                               w-full flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 py-2 rounded-lg text-left font-medium transition-colors text-xs sm:text-sm
                               ${isActive 
-                                ? 'bg-blue-50 text-blue-700' 
+                                ? 'bg-white text-black' 
                                 : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                               }
                             `}
@@ -312,20 +311,6 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
                     </ul>
                   )}
                   </li>
-                  
-                  {/* Add separator after Dashboard */}
-                  {item.id === 'dashboard' && (
-                    <li className="mt-3 mb-3">
-                      <div className="border-t border-gray-200 mx-2"></div>
-                    </li>
-                  )}
-                  
-                  {/* Add separator before Purchase Orders */}
-                  {item.id === 'purchase-orders' && (
-                    <li className="mt-3 mb-3">
-                      <div className="border-b border-gray-200 mx-2"></div>
-                    </li>
-                  )}
                 </React.Fragment>
               );
             })}
