@@ -256,15 +256,20 @@ const queryClient = new QueryClient({
       staleTime: 1000 * 60 * 5, // 5 minutes - data becomes stale after 5 minutes
       gcTime: 1000 * 60 * 60 * 24 * 7, // 7 days - keep unused data in cache for a week
       refetchOnWindowFocus: false, // Disabled - show cached data immediately on focus
-      refetchOnMount: false, // Use cached data when available for instant loading
+      refetchOnMount: true, // Refetch on mount to fix remount issues, individual queries can override
       refetchOnReconnect: true, // Always refetch when network reconnects
+      refetchIntervalInBackground: false, // Prevent unnecessary background fetches
       networkMode: 'online', // Only run queries when online
       retry: (failureCount, error) => {
-        // Retry logic: try 3 times, except for 4xx errors
+        // Retry logic: try 3 times, except for 4xx errors and timeouts
         if (failureCount < 3) {
           const status = (error as { status?: number; response?: { status?: number } })?.status || (error as { status?: number; response?: { status?: number } })?.response?.status;
           if (status >= 400 && status < 500) {
             return false; // No retry for client errors (bad request, unauthorized, etc.)
+          }
+          // Don't retry on timeout errors
+          if (error instanceof Error && error.message.includes('timeout')) {
+            return false;
           }
           return true;
         }

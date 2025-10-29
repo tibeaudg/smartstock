@@ -35,6 +35,9 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+// Export AuthContext for direct access when needed (e.g., during hot reload)
+export { AuthContext };
+
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
   if (!context) throw new Error('useAuth must be used within an AuthProvider');
@@ -157,28 +160,68 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   useEffect(() => {
     const cancelled = { current: false };
     const initializeAuth = async () => {
-      try {
-        const {
-          data: { session: currentSession },
-          error,
-        } = await supabase.auth.getSession();
+      // Safety timeout: force loading to false after 8 seconds to prevent indefinite blocking
+      const safetyTimeout = setTimeout(() => {
+        if (!cancelled.current) {
+          console.warn('[AuthProvider] Auth initialization timeout - forcing loading to false');
+          setLoading(false);
+        }
+      }, 8000);
 
-        if (error) {
-          console.error('Error getting session:', error.message);
+      try {
+        // Add timeout to session fetch
+        const sessionTimeoutPromise = new Promise((_, reject) => {
+          setTimeout(() => reject(new Error('Session fetch timeout')), 5000);
+        });
+
+        const sessionPromise = supabase.auth.getSession();
+        
+        const result = await Promise.race([sessionPromise, sessionTimeoutPromise]) as any;
+
+        if (result?.error) {
+          console.error('Error getting session:', result.error.message);
           if (!cancelled.current) setLoading(false);
+          clearTimeout(safetyTimeout);
           return;
         }
+
+        const { data: { session: currentSession } } = result || { data: { session: null } };
 
         if (currentSession && !cancelled.current) {
           setSession(currentSession);
           setUser(currentSession.user);
 
-          const profile = await fetchUserProfile(currentSession.user.id);
-          if (!cancelled.current) setUserProfile(profile);
+          // Fetch profile with timeout protection
+          try {
+            const profile = await fetchUserProfile(currentSession.user.id);
+            if (!cancelled.current) setUserProfile(profile);
+          } catch (profileError) {
+            console.error('Error fetching profile during init:', profileError);
+            // Continue without blocking - profile can be fetched later
+            if (!cancelled.current) {
+              // Set a basic profile to prevent blocking
+              setUserProfile({
+                id: currentSession.user.id,
+                email: currentSession.user.email || '',
+                first_name: null,
+                last_name: null,
+                role: 'staff' as const,
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString(),
+                selected_plan: null,
+                blocked: false,
+                last_login: null,
+                is_owner: false,
+              });
+            }
+          }
         }
       } catch (error) {
         console.error('Error during auth initialization:', error);
+        // Don't block on error - set loading to false
+        if (!cancelled.current) setLoading(false);
       } finally {
+        clearTimeout(safetyTimeout);
         if (!cancelled.current) setLoading(false);
       }
     };

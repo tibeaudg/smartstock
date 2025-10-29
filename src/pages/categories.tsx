@@ -314,9 +314,6 @@ export default function CategorysPage() {
           <h1 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-gray-900 mb-2`}>
             Manage Categories
           </h1>
-          <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600`}>
-            Manage your product categories for better organization of your stock
-          </p>
         </div>
         
         {/* Action Button */}

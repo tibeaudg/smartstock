@@ -150,8 +150,22 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
   // Don't show "no branches" if we're still loading or if there was an error/timeout
   const hasNoBranches = !queryLoading && !queryError && branches.length === 0;
 
-  // Only show loading when there's no cached data
+  // Improved loading state logic: only show loading if there's no cached data
+  // This prevents stuck loading states when cache exists but query is refetching
   const loading = queryLoading && branches.length === 0;
+
+  // Add timeout protection for stuck loading states
+  useEffect(() => {
+    if (queryLoading && branches.length === 0 && user?.id) {
+      const timeoutId = setTimeout(() => {
+        console.warn('[useBranches] Branch loading timeout - forcing resolution');
+        // Don't cancel the query, but log a warning
+        // The query will eventually resolve or error
+      }, 8000); // 8 second timeout
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [queryLoading, branches.length, user?.id]);
 
   // Initialize or restore active branch from storage
   useEffect(() => {

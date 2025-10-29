@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
-import { useAuth } from './useAuth';
+import { AuthContext } from './useAuth';
 import { supabase } from '@/integrations/supabase/client';
 
 interface UnreadMessagesContextType {
@@ -12,7 +12,10 @@ const UnreadMessagesContext = createContext<UnreadMessagesContextType | undefine
 
 export const UnreadMessagesProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [unreadCount, setUnreadCount] = useState(0);
-  const { user } = useAuth();
+  
+  // Safely access auth context - use useContext directly to avoid throwing errors during hot reload
+  const authContext = useContext(AuthContext);
+  const user = authContext?.user || null;
 
   const refreshUnreadCount = useCallback(async () => {
     if (!user) {

@@ -377,9 +377,6 @@ export default function SuppliersPage() {
           <h1 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-gray-900 mb-2`}>
             Manage Suppliers
           </h1>
-          <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600`}>
-            Manage your suppliers for better organization of your stock
-          </p>
         </div>
         
         {/* Action Buttons */}

@@ -3,6 +3,8 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
 import { StripeProvider } from "@/components/providers/StripeProvider";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { Clock } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { StockManagementApp } from "./components/StockManagementApp";
 import { HomePage } from "./components/HomePage";
 import { HomePageNL } from "./components/HomePageNL";

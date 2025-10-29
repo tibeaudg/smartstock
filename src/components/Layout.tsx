@@ -53,7 +53,7 @@ export const Layout = ({ children, currentTab, onTabChange, userRole, userProfil
   };
 
   return (
-    <div className="h-screen flex flex-col bg-gray-100">
+    <div className="h-screen flex flex-col bg-white">
       {/* Header with sidebar toggle */}
       <Header 
         title="Dashboard" 

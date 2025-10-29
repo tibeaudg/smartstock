@@ -259,9 +259,14 @@ export const initializeDefaultPolicy = () => {
         },
       });
       console.log('[TrustedTypes] Default policy initialized for third-party libraries');
-    } catch (e) {
-      // Policy already exists, that's fine
-      console.log('[TrustedTypes] Default policy creation failed, may already exist');
+    } catch (e: any) {
+      // Policy already exists or CSP doesn't allow duplicates
+      // This is fine - another library (like Angular) may have created it
+      if (e?.message?.includes('already exists') || e?.message?.includes('allow-duplicates')) {
+        console.log('[TrustedTypes] Default policy already exists (created by another library)');
+      } else {
+        console.warn('[TrustedTypes] Could not create default policy:', e?.message || e);
+      }
     }
   }
 };

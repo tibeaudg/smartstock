@@ -1013,6 +1013,9 @@ export type Database = {
           user_id: string | null
           contact_person: string | null
           updated_at: string | null
+          municipality: string | null
+          group: string | null
+          peppol_enabled: boolean
         }
         Insert: {
           address?: string | null
@@ -1024,6 +1027,9 @@ export type Database = {
           user_id?: string | null
           contact_person?: string | null
           updated_at?: string | null
+          municipality?: string | null
+          group?: string | null
+          peppol_enabled?: boolean
         }
         Update: {
           address?: string | null
@@ -1035,6 +1041,9 @@ export type Database = {
           user_id?: string | null
           contact_person?: string | null
           updated_at?: string | null
+          municipality?: string | null
+          group?: string | null
+          peppol_enabled?: boolean
         }
         Relationships: []
       }

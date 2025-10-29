@@ -308,7 +308,6 @@ export const UserManagement = () => {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Manage Users</h1>
-          <p className="text-gray-600">Manage users and their access to branches.</p>
         </div>
         
         {/* Action Button */}

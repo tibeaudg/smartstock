@@ -123,9 +123,6 @@ export default function IntegrationsPage() {
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
               Powerful Integrations
             </h1>
-            <p className="text-xl md:text-2xl text-blue-100 mb-8 max-w-3xl mx-auto">
-              Connect StockFlow with your favorite tools and services for a complete business solution
-            </p>
             <Button size="lg" className="bg-white text-blue-600 hover:bg-gray-100">
               Get Started
               <ArrowRight className="ml-2 h-5 w-5" />

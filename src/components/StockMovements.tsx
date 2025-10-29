@@ -73,12 +73,9 @@ export const StockMovements = () => {
 
     <div className="space-y-4">
       <div className="space-y-4">
-                  <h1 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-gray-900 mb-2`}>
+            <h1 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-gray-900 mb-2`}>
               Stock Movements
             </h1>
-            <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600`}>
-              Manage your stock movements and track deliveries
-            </p>
           </div>
 
 

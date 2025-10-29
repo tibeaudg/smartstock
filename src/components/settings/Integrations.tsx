@@ -179,9 +179,6 @@ export default function IntegrationsSettings() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Integrations</h1>
-          <p className="text-gray-600">
-            Connect StockFlow with your favorite tools and services for a complete business solution
-          </p>
         </div>
       </div>
 

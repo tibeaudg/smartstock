@@ -1957,6 +1957,8 @@ export const StockList = () => {
     queryFn: () => activeBranch && user ? fetchProducts(activeBranch.branch_id) : [],
     enabled: !!user && !!activeBranch && !!activeBranch.branch_id,
     refetchOnWindowFocus: false, // Disabled for better tab switching performance
+    refetchOnMount: 'always', // Always refetch on mount to ensure fresh data
+    networkMode: 'offlineFirst', // Show cached data immediately while revalidating
     staleTime: 1000 * 60 * 5, // 5 minutes cache for better performance
     gcTime: 1000 * 60 * 60 * 24, // 24 hours garbage collect
     placeholderData: (previousData) => previousData, // Keep previous data while loading
@@ -1968,6 +1970,25 @@ export const StockList = () => {
       console.error('Products fetch error:', productsError);
     }
   }, [productsError]);
+
+  // Force resolve stuck loading state after 10 seconds
+  useEffect(() => {
+    if (loading && products.length === 0) {
+      const timeoutId = setTimeout(() => {
+        console.warn('[StockList] Loading state stuck for 10 seconds, forcing resolution');
+        // Cancel the query to show cached data if available
+        queryClient.cancelQueries({ 
+          queryKey: ['products', activeBranch?.branch_id] 
+        });
+        // If still no data, try to refetch once more
+        if (products.length === 0) {
+          refetch();
+        }
+      }, 10000);
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [loading, products.length, activeBranch?.branch_id, queryClient, refetch]);
 
   // Real-time updates voor producten - throttled to prevent excessive updates
   useEffect(() => {
@@ -2785,9 +2806,6 @@ export const StockList = () => {
               <h1 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-gray-900 mb-2`}>
                 Products
               </h1>
-              <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600`}>
-                Manage your products and track deliveries
-              </p>
             </div>
             
             {/* View Mode and Settings Buttons for Mobile */}
@@ -3198,9 +3216,6 @@ export const StockList = () => {
               <h3 className="text-lg font-medium text-gray-900 mb-2">
                 Manage Categories
               </h3>
-              <p className="text-base text-gray-600 mb-4">
-                Manage your product categories for better organization of your stock
-              </p>
               <Button onClick={() => navigate('/dashboard/categories')}>
                 <Tag className="w-4 h-4 mr-2" />
                 To categories
@@ -3374,9 +3389,6 @@ export const StockList = () => {
               <h1 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-gray-900 mb-2`}>
                 Products
               </h1>
-              <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600`}>
-                Manage your products and track deliveries
-              </p>
             </div>
             
             {/* View Mode and Settings Buttons */}
