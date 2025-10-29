@@ -150,14 +150,6 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
           ]
         },
         { id: 'transactions', label: 'Movements', icon: ShoppingCart, path: '/dashboard/transactions' },
-        { id: 'purchase-orders', label: 'Purchase Orders', icon: ShoppingBag, path: '/dashboard/purchase-orders' },
-        ...(hasDeliveryNotes ? [{
-          id: 'delivery-notes',
-          label: 'Delivery Notes',
-          icon: Truck,
-          path: '/dashboard/delivery-notes'
-        }] : []),
-
 
         { 
           id: 'settings', 

@@ -488,20 +488,6 @@ export default function SuppliersPage() {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => navigate('/dashboard/purchase-orders', { 
-                        state: { 
-                          preSelectedVendor: supplier.id,
-                          preSelectedVendorName: supplier.name 
-                        } 
-                      })}
-                      className="bg-green-600 hover:bg-green-700 text-white border-green-600"
-                      title="Create Purchase Order"
-                    >
-                      <Plus className="w-4 h-4" />
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
                       onClick={() => openEditModal(supplier)}
                     >
                       <Edit className="w-4 h-4" />

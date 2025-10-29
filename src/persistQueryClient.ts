@@ -16,7 +16,6 @@ export function setupPersistedQueryClient(queryClient: QueryClient) {
           key.includes('basicDashboardMetrics') ||
           key.includes('productCount') ||
           key.includes('user-subscription') ||
-          key.includes('onboarding-status') ||
           key.includes('pricing-tiers') ||
           key.includes('stockTransactions') ||
           key.includes('delivery-notes')

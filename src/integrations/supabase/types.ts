@@ -841,8 +841,6 @@ export type Database = {
           blocked: boolean | null
           last_login: string | null
           is_owner: boolean | null
-          onboarding_completed: boolean | null
-          onboarding_data: Json | null
         }
         Insert: {
           created_at?: string | null
@@ -856,8 +854,6 @@ export type Database = {
           blocked?: boolean | null
           last_login?: string | null
           is_owner?: boolean | null
-          onboarding_completed?: boolean | null
-          onboarding_data?: Json | null
         }
         Update: {
           created_at?: string | null
@@ -871,8 +867,6 @@ export type Database = {
           blocked?: boolean | null
           last_login?: string | null
           is_owner?: boolean | null
-          onboarding_completed?: boolean | null
-          onboarding_data?: Json | null
         }
         Relationships: []
       }

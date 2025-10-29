@@ -26,7 +26,6 @@ import { useAuth, AuthProvider } from "./hooks/useAuth";
 import { useBranches, BranchProvider } from "./hooks/useBranches";
 import { CurrencyProvider } from "./hooks/useCurrency";
 import { FirstBranchSetup } from "./components/FirstBranchSetup";
-import { OnboardingModal } from "./components/OnboardingModal";
 import { Suspense, useState, useEffect } from "react";
 import { useOptimizedTabSwitching } from "./hooks/useOptimizedTabSwitching";
 import { useNavigationQueryReset } from "./hooks/useNavigationQueryReset";
@@ -150,7 +149,6 @@ import StockFlowVsVismaNL from "./pages/SEO/stockflow-vs-visma-nl";
 
 import CategorysPage from './pages/categories';
 import SuppliersPage from './pages/suppliers';
-import PurchaseOrdersPage from './pages/purchase-orders';
 import AdminPage from './pages/admin';
 import { PaymentTestPage } from './pages/PaymentTest';
 import { DeliveryNotesManagement } from './components/delivery-notes/DeliveryNotesManagement';
@@ -183,7 +181,6 @@ const AppRouter = () => {
   const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     const { user, loading, userProfile } = useAuth();
     const location = useLocation();
-    const [showOnboarding, setShowOnboarding] = useState(false);
     const [forceRender, setForceRender] = useState(false);
 
     // Safety timeout - force render after 10 seconds if still loading
@@ -258,19 +255,6 @@ const AppRouter = () => {
       return <Navigate to="/auth" state={{ from: location }} replace />;
     }
 
-    // Check if user needs onboarding
-    if (userProfile && !(userProfile as any).onboarding_completed) {
-      console.debug('[ProtectedRoute] User needs onboarding');
-      return (
-        <>
-          <OnboardingModal 
-            isOpen={true} 
-            onClose={() => setShowOnboarding(false)} 
-          />
-          {children}
-        </>
-      );
-    }
 
     // BLOCKED USER HANDLING
     if (userProfile.blocked) {
@@ -423,7 +407,7 @@ const AppRouter = () => {
   const AuthRoute = () => {
     const { user, loading, userProfile } = useAuth();
     const location = useLocation();
-    const from = (location.state as any)?.from?.pathname || "/dashboard";
+    const from = (location.state as { from?: { pathname: string } })?.from?.pathname || "/dashboard";
 
     if (loading) {
       return <LoadingScreen />;
@@ -656,7 +640,6 @@ const AppRouter = () => {
           <Route path="stock" element={<StockList />} />
           <Route path="categories" element={<CategorysPage />} />
           <Route path="suppliers" element={<SuppliersPage />} />
-          <Route path="purchase-orders" element={<PurchaseOrdersPage />} />
           <Route path="transactions" element={<StockMovements />} />
           <Route path="delivery-notes" element={<DeliveryNotesManagement />}>
             <Route index element={<IncomingDeliveryNotes />} />

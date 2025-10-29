@@ -28,7 +28,6 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
 import { toast } from 'sonner';
-import { ProductSearch } from './purchase-orders/ProductSearch';
 import { useMobile } from '@/hooks/use-mobile';
 
 interface PurchaseOrderModalProps {

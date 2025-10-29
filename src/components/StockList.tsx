@@ -3732,7 +3732,7 @@ export const StockList = () => {
       ) : (
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
           <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
-            <table className="w-full table-fixed divide-y divide-gray-200">
+            <table className="w-full divide-y divide-gray-200">
             <thead className="bg-gray-50 sticky top-0 z-10">
               <tr>
                 {isAdmin && (

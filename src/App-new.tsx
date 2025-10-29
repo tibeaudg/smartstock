@@ -22,7 +22,6 @@ import { useAuth, AuthProvider } from "./hooks/useAuth";
 import { useBranches, BranchProvider } from "./hooks/useBranches";
 import { CurrencyProvider } from "./hooks/useCurrency";
 import { FirstBranchSetup } from "./components/FirstBranchSetup";
-import { OnboardingModal } from "./components/OnboardingModal";
 import { Suspense, useState, useEffect } from "react";
 import { ContentWrapper } from "./ContentWrapper";
 import AdminUserDetailPage from './pages/AdminUserDetailPage';
@@ -125,7 +124,6 @@ const AppRouter = () => {
     const { user, loading, userProfile } = useAuth();
     const { branches, hasNoBranches, loading: branchesLoading, hasError } = useBranches();
     const location = useLocation();
-    const [showOnboarding, setShowOnboarding] = useState(false);
 
     // Debug: log auth state and location
     console.debug('[ProtectedRoute] user:', user);
@@ -150,19 +148,6 @@ const AppRouter = () => {
       return <Navigate to="/auth" state={{ from: location }} replace />;
     }
 
-    // Check if user needs onboarding
-    if (userProfile && !userProfile.onboarding_completed) {
-      console.debug('[ProtectedRoute] User needs onboarding');
-      return (
-        <>
-          <OnboardingModal 
-            isOpen={true} 
-            onClose={() => setShowOnboarding(false)} 
-          />
-          {children}
-        </>
-      );
-    }
 
     // Check if user has no branches and needs to create their first branch
     if (hasNoBranches && branches.length === 0 && !hasError) {
@@ -214,7 +199,7 @@ const AppRouter = () => {
   const AuthRoute = () => {
     const { user, loading, userProfile } = useAuth();
     const location = useLocation();
-    const from = (location.state as any)?.from?.pathname || "/dashboard";
+    const from = (location.state as { from?: { pathname: string } })?.from?.pathname || "/dashboard";
 
     if (loading) {
       return <LoadingScreen />;

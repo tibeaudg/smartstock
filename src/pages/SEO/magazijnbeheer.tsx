@@ -307,7 +307,7 @@ export default function Magazijnbeheer() {
                 <div>
                   <h3 className="text-xl font-bold mb-2">Receiving (Ontvangst)</h3>
                   <p className="text-gray-700 mb-3">
-                    Scan inkomende goederen, verifieer tegen purchase orders en registreer direct in het systeem. 
+                    Scan inkomende goederen en registreer direct in het systeem. 
                     Automatische quality checks en discrepancy alerts.
                   </p>
                   <div className="flex flex-wrap gap-2">

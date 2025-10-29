@@ -336,7 +336,7 @@ export default function AdminPage() {
   const { user, userProfile } = useAuth();
   const { isMobile } = useMobile();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<'users' | 'features' | 'chats' | 'notifications' | 'onboarding'>('users');
+  const [activeTab, setActiveTab] = useState<'users' | 'features' | 'chats' | 'notifications'>('users');
   const [selectedUser, setSelectedUser] = useState<UserProfile | null>(null);
   const [companyTypes, setCompanyTypes] = useState<Record<string, { type: string; custom_type: string | null }>>({});
   const [userStats, setUserStats] = useState<UserStats[]>([]);
@@ -426,11 +426,10 @@ export default function AdminPage() {
     };
   }, [user?.id, queryClient]);
 
-  const sidebarNavItems: { id: 'users' | 'features' | 'chats' | 'notifications' | 'onboarding'; label: string }[] = [
+  const sidebarNavItems: { id: 'users' | 'features' | 'chats' | 'notifications'; label: string }[] = [
     { id: 'users', label: 'User Management' },
     { id: 'chats', label: 'Chats' },
     { id: 'notifications', label: 'Notifications' },
-    { id: 'onboarding', label: 'Onboarding Tracking' },
   ];
   
   // Access control - only owners can view the admin page
@@ -757,9 +756,6 @@ export default function AdminPage() {
               <AdminChatList />
             )}
 
-            {activeTab === 'onboarding' && (
-              <OnboardingTracking />
-            )}
           </div>
         </div>
       </Layout>

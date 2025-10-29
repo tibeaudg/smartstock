@@ -113,8 +113,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           blocked: false,
           last_login: null,
           is_owner: false,
-          onboarding_completed: false,
-          onboarding_data: null
         };
       }
       
@@ -133,8 +131,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           blocked: false,
           last_login: null,
           is_owner: false,
-          onboarding_completed: false,
-          onboarding_data: null
         };
       }
       
@@ -154,8 +150,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         blocked: false,
         last_login: null,
         is_owner: false,
-        onboarding_completed: false,
-        onboarding_data: null
       };
     }
   };
