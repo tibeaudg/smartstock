@@ -25,7 +25,7 @@ type ProfileFormData = z.infer<typeof profileSchema>;
 
 // Schema for password data validation
 const passwordSchema = z.object({
-  newPassword: z.string().min(8, 'Password must be at least 8 characters long.'),
+  newPassword: z.string().min(8, 'Password must be at least 6 characters long.'),
   confirmPassword: z.string(),
 }).refine((data) => data.newPassword === data.confirmPassword, {
   message: "Passwords do not match",

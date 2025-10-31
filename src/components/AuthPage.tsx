@@ -138,11 +138,11 @@ export const AuthPage = () => {
         }
         
         // Enhanced password validation
-        if (password.length < 12) {
+        if (password.length < 6) {
           if (isTrackingReady) {
             await trackFormAbandonment('password_too_short');
           }
-          toast.error('Password must be at least 12 characters long');
+          toast.error('Password must be at least 6 characters long');
           return;
         }
         
@@ -363,11 +363,11 @@ export const AuthPage = () => {
                         required 
                         disabled={isSubmitting}
                         className="mt-1 h-10 sm:h-10 text-base border-gray-300 focus:border-blue-500 focus:ring-blue-500"
-                        placeholder={mode === 'register' ? "At least 8 characters" : "Your password"}
+                        placeholder={mode === 'register' ? "At least 6 characters" : "Your password"}
                       />
                       {mode === 'register' && (
                         <p className="text-xs text-gray-500 mt-1">
-                          At least 8 characters for security
+                          At least 6 characters for security
                         </p>
                       )}
                     </div>
