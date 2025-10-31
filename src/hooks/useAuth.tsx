@@ -178,15 +178,82 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
 
     const initializeAuth = async () => {
+      // If hash tokens are present, manually parse and set session if Supabase doesn't auto-process
+      if (hasAuthTokensInHash && typeof window !== 'undefined') {
+        try {
+          const hash = window.location.hash.substring(1); // Remove #
+          const params = new URLSearchParams(hash);
+          const accessToken = params.get('access_token');
+          const refreshToken = params.get('refresh_token');
+          const type = params.get('type');
+
+          if (accessToken && type === 'signup') {
+            console.log('[AuthProvider] Manually processing email verification tokens from hash...');
+            // Set the session manually
+            const { data: sessionData, error: sessionError } = await supabase.auth.setSession({
+              access_token: accessToken,
+              refresh_token: refreshToken || '',
+            });
+
+            if (sessionData?.session && !sessionError) {
+              console.log('[AuthProvider] Successfully set session from hash tokens');
+              setSession(sessionData.session);
+              setUser(sessionData.session.user);
+              hashTokenProcessed.current = true;
+              waitingForHashTokens.current = false;
+              
+              // Initialize previous email verification status
+              previousEmailVerified = !!sessionData.session.user.email_confirmed_at;
+
+              // Fetch profile
+              try {
+                const profile = await fetchUserProfile(sessionData.session.user.id);
+                if (!cancelled.current) setUserProfile(profile);
+              } catch (profileError) {
+                console.error('Error fetching profile:', profileError);
+                // Set basic profile
+                if (!cancelled.current) {
+                  setUserProfile({
+                    id: sessionData.session.user.id,
+                    email: sessionData.session.user.email || '',
+                    first_name: null,
+                    last_name: null,
+                    role: 'staff' as const,
+                    created_at: new Date().toISOString(),
+                    updated_at: new Date().toISOString(),
+                    selected_plan: null,
+                    blocked: false,
+                    last_login: null,
+                    is_owner: false,
+                  });
+                }
+              }
+
+              // Clear hash
+              const newUrl = window.location.pathname + window.location.search;
+              window.history.replaceState({}, '', newUrl);
+              console.log('[AuthProvider] Cleared hash tokens after manual processing');
+              
+              if (!cancelled.current) setLoading(false);
+              return;
+            } else if (sessionError) {
+              console.error('[AuthProvider] Error setting session from hash tokens:', sessionError);
+            }
+          }
+        } catch (hashError) {
+          console.error('[AuthProvider] Error processing hash tokens:', hashError);
+        }
+      }
+
       // If hash tokens are present, give Supabase time to process them before checking session
-      if (hasAuthTokensInHash) {
-        // Wait longer for Supabase to process hash tokens through detectSessionInUrl
-        await new Promise(resolve => setTimeout(resolve, 1500));
+      if (hasAuthTokensInHash && !hashTokenProcessed.current) {
+        // Wait for Supabase to process hash tokens through detectSessionInUrl
+        await new Promise(resolve => setTimeout(resolve, 2000));
       }
 
       // Safety timeout: force loading to false after 10 seconds to prevent indefinite blocking
       // Longer timeout if hash tokens are present
-      const safetyTimeoutMs = hasAuthTokensInHash ? 10000 : 8000;
+      const safetyTimeoutMs = hasAuthTokensInHash ? 12000 : 8000;
       const safetyTimeout = setTimeout(() => {
         if (!cancelled.current) {
           console.warn('[AuthProvider] Auth initialization timeout - forcing loading to false');
@@ -197,7 +264,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       try {
         // Add timeout to session fetch
         const sessionTimeoutPromise = new Promise((_, reject) => {
-          setTimeout(() => reject(new Error('Session fetch timeout')), hasAuthTokensInHash ? 6000 : 5000);
+          setTimeout(() => reject(new Error('Session fetch timeout')), hasAuthTokensInHash ? 8000 : 5000);
         });
 
         const sessionPromise = supabase.auth.getSession();
@@ -477,6 +544,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         email,
         password,
         options: {
+          // Allow user to access dashboard immediately without email confirmation
+          // emailRedirectTo is still set for when they do verify their email
           emailRedirectTo: `${window.location.origin}/dashboard/settings`,
           data: {
             first_name: firstName,
@@ -484,6 +553,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           },
         },
       });
+
+      // After signup, user should be able to access dashboard immediately
+      // Supabase should allow unconfirmed users to sign in (this needs to be configured in Supabase dashboard)
 
       if (signUpError) return { error: signUpError };
 
