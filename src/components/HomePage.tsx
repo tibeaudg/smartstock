@@ -1524,110 +1524,58 @@ export const HomePage = () => {
         />
       </div>
 
-      <section className="relative py-16 sm:py-20 md:py-24 lg:py-32 px-4 sm:px-6 overflow-hidden pt-20 sm:pt-24 md:pt-28 lg:pt-24 min-h-[90vh] flex items-center">
-        {/* Enhanced Background with Dynamic Gradients */}
+      <section className="relative px-4 sm:px-6 overflow-hidden pt-24 sm:pt-28 md:pt-32 lg:pt-28 pb-16 sm:pb-20 md:pb-24 min-h-[50vh] flex items-center">
+        {/* Light Blue Gradient Background */}
         <div className="absolute inset-0">
-          {/* Base gradient */}
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-700 via-blue-600 to-white" />
+          {/* Base gradient - light blue to white */}
+          <div className="absolute inset-0 bg-gradient-to-b from-blue-50/80 via-white/90 to-white" />
           
-          {/* Animated flowing overlay */}
-          <div className="absolute inset-0 opacity-90" 
-               style={{
-                 background: 'linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%)',
-                 animation: 'flow 8s ease-in-out infinite',
-                 transform: 'translateX(-100%)'
-               }} />
-
+          {/* Subtle radial gradients at top center */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_center,rgba(59,130,246,0.1)_0%,transparent_50%)]" />
         </div>
         
-        {/* Subtle overlay for text readability */}
-        <div className="absolute inset-0 " />
-        
-        {/* Fade to white at the bottom */}
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white via-white/60 to-transparent" />
-        
-        <div className=" relative z-10 w-screen px-0 sm:px-6">
-          <div className="flex flex-col items-center text-center min-h-[60vh] sm:min-h-[70vh] lg:min-h-[80vh]">
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="flex flex-col items-center text-center py-12 sm:py-16 md:py-20">
             
-            {/* Text Content - Enhanced with Better Hierarchy */}
-            <div className="mb-6 sm:mb-8 md:mb-12 lg:mb-16 mt-12 sm:mt-16 md:mt-20 lg:mt-24 px-0">
+            {/* Text Content */}
+            <div className="w-full px-0">
 
 
-              {/* Build For SMB's Badge */}
-              <div className="mb-4 sm:mb-6 flex justify-center">
-                <div className="inline-flex items-center px-4 py-2 bg-white border border-blue-200 rounded-full shadow-sm">
-                  <span className="text-sm font-medium text-blue-600">Build For SMB's</span>
+              {/* Pill-shaped Badge */}
+              <div className="mb-4 sm:mb-6 flex justify-center ">
+                <div className="inline-flex items-center rounded-full overflow-hidden shadow-lg border-1 border-white">
+                  <span className="px-3 py-1.5 bg-blue-600 text-white text-xs font-medium">New</span>
+                  <span className="px-3 py-1.5 bg-gray-100 text-gray-700 text-xs font-medium">Next-Gen Inventory Solution</span>
                 </div>
               </div>
 
-              {/* Enhanced headline with better contrast and flow */}
+              {/* Main Headline */}
               <BounceInWhenVisible delay={200}>
                 <div className="mb-6 mt-6 sm:mb-8 md:mb-12">
-                  <h1 className="text-[clamp(2.8rem,7.5vw,8.5rem)] sm:text-[clamp(2.5rem,7vw,5rem)] md:text-[clamp(3.5rem,6vw,5.5rem)] mb-3 sm:mb-4 md:mb-6 leading-tight tracking-tight sm:px-0">
-                    <span className="block text-white drop-shadow-lg mb-1 sm:mb-2 md:mb-3">Inventory Chaos</span>
-                    <span className="block text-white drop-shadow-lg mb-1 sm:mb-2 md:mb-3">Ends With</span>
-                    <span className="block">
-                      <span className="hidden sm:inline"> </span>
-                      <span className="block sm:inline text-white drop-shadow-lg" style={{
-                        WebkitTextStroke: '1px white',
-                        textShadow: '0 0 8px rgba(255, 255, 255, 0.6), 0 0 16px rgba(255, 255, 255, 0.4), 0 0 24px rgba(255, 255, 255, 0.2)',
-                        letterSpacing: '0.1em'
-                      }}>
-                        Stockflow
-                      </span>
-                    </span>
+                  <h1 className="text-[clamp(2.5rem,5vw,4.5rem)] sm:text-[clamp(3rem,6vw,5rem)] md:text-[clamp(3.5rem,7vw,5.5rem)] font-bold text-gray-900 leading-tight tracking-tight">
+                    Inventory Chaos Ends With StockFlow
                   </h1>
                 </div>
               </BounceInWhenVisible>
               
-              {/* Enhanced subtitle with more visceral messaging */}
+              {/* Subtitle */}
               <SlideUpWhenVisible delay={400}>
-                <div className="mb-8 sm:mb-10 md:mb-12 max-w-5xl mx-auto px-2">
-
-                  <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl text-white leading-relaxed max-w-4xl mx-auto px-2">
-                  Manage your stock, in one simple, visual tool that actually works.
+                <div className="mb-8 sm:mb-10 md:mb-12 max-w-3xl mx-auto px-4">
+                  <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed">
+                    Stop losing money on inventory mistakes. Simple inventory management for SMBs. Track stock, prevent stockouts, optimize dead stock. Free forever plan available.
                   </p>
                 </div>
               </SlideUpWhenVisible>
 
-              {/* Enhanced CTA Section */}
+              {/* CTA Button */}
               <FadeInWhenVisible delay={600}>
-                <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center mb-6 sm:mb-8 md:mb-10 px-4">
-                  <ScrollTriggeredButton
-                    as="button"
-                  className="group w-full sm:w-auto bg-white text-blue-600 hover:bg-blue-50
-                      px-6 sm:px-8 md:px-10 lg:px-12 py-4 sm:py-5 md:py-6 flex items-center justify-center gap-2 sm:gap-3
-                      text-sm sm:text-base md:text-lg lg:text-xl font-bold rounded-2xl
-                      transition-all duration-500 shadow-2xl hover:shadow-3xl hover:shadow-blue-500/25
-                      transform hover:scale-105 border border-blue-500/20 min-h-[48px] sm:min-h-[56px] touch-manipulation"
+                <div className="flex justify-center mb-6 sm:mb-8 md:mb-10 px-4">
+                  <button
                     onClick={() => navigate('/pricing')}
+                    className="bg-blue-600 text-white hover:bg-blue-700 px-8 py-3 rounded-lg font-medium transition-all duration-300 shadow-md hover:shadow-lg"
                   >
-                    <Rocket className="w-5 h-5 sm:w-6 sm:h-6 group-hover:animate-bounce" />
-                    Start Managing Smarter
-                    <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform duration-300" />
-                  </ScrollTriggeredButton>
-                </div>
-                
-                {/* Features with checkmarks */}
-                <div className="flex flex-col sm:flex-row gap-6 sm:gap-6 justify-center items-center mt-6 sm:mt-8">
-                  <div className="flex items-center gap-1">
-                    <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
-                      <Check className="h-3 w-3 text-white" />
-                    </div>
-                    <span className="text-white text-sm ">No credit card</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
-                      <Check className="h-3 w-3 text-white" />
-                    </div>
-                    <span className="text-white text-sm ">Free forever plan</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
-                      <Check className="h-3 w-3 text-white" />
-                    </div>
-                    <span className="text-white text-sm ">Setup in 10 min</span>
-                  </div>
+                    Try for free
+                  </button>
                 </div>
               </FadeInWhenVisible>
 
