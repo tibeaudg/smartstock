@@ -20,6 +20,7 @@ interface AuthContextType {
   userProfile: UserProfile | null;
   loading: boolean;
   authLoading: boolean; // Alias for loading for clarity
+  emailVerified: boolean; // Email verification status
   signIn: (email: string, password: string) => Promise<{ error: AuthError | null }>;
   signUp: (
     email: string,
@@ -30,6 +31,7 @@ interface AuthContextType {
   ) => Promise<{ error: AuthError | null }>;
   signInWithGoogle: () => Promise<{ error: AuthError | null }>;
   resetPassword: (email: string) => Promise<{ error: AuthError | null }>;
+  resendVerificationEmail: () => Promise<{ error: AuthError | null }>;
   signOut: () => Promise<void>;
 }
 
@@ -159,7 +161,23 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   useEffect(() => {
     const cancelled = { current: false };
+    // Track previous user email verification status for detection
+    let previousEmailVerified: boolean | null = null;
+
     const initializeAuth = async () => {
+      // Check if there are auth tokens in the URL hash (from email verification, OAuth, etc.)
+      const hasAuthTokensInHash = typeof window !== 'undefined' && 
+        window.location.hash.includes('access_token') && 
+        window.location.hash.includes('type=');
+
+      // If we detect auth tokens in hash, wait a bit longer for Supabase to process them
+      const initDelay = hasAuthTokensInHash ? 1000 : 0;
+      
+      if (hasAuthTokensInHash) {
+        console.log('[AuthProvider] Detected auth tokens in URL hash, waiting for processing...');
+        await new Promise(resolve => setTimeout(resolve, initDelay));
+      }
+
       // Safety timeout: force loading to false after 8 seconds to prevent indefinite blocking
       const safetyTimeout = setTimeout(() => {
         if (!cancelled.current) {
@@ -190,6 +208,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         if (currentSession && !cancelled.current) {
           setSession(currentSession);
           setUser(currentSession.user);
+          
+          // Initialize previous email verification status
+          previousEmailVerified = !!currentSession.user.email_confirmed_at;
 
           // Fetch profile with timeout protection
           try {
@@ -215,6 +236,17 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
               });
             }
           }
+        } else {
+          // No session initially
+          previousEmailVerified = null;
+        }
+
+        // If we processed hash tokens and have a session, clear the hash to prevent reprocessing
+        if (hasAuthTokensInHash && currentSession && typeof window !== 'undefined') {
+          // Clear the hash after processing to prevent issues
+          const newUrl = window.location.pathname + window.location.search;
+          window.history.replaceState({}, '', newUrl);
+          console.log('[AuthProvider] Cleared auth tokens from URL hash after successful processing');
         }
       } catch (error) {
         console.error('Error during auth initialization:', error);
@@ -232,8 +264,35 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       async (event, newSession) => {
         if (cancelled.current) return;
 
+        console.log('[AuthProvider] Auth state change:', event, newSession?.user?.id);
+
+        // Check if this is an email verification completion
+        const currentEmailVerified = newSession?.user?.email_confirmed_at ? true : false;
+        const isEmailVerification = previousEmailVerified === false && 
+          currentEmailVerified === true &&
+          (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED');
+
+        if (isEmailVerification) {
+          console.log('[AuthProvider] Email verification completed!');
+        }
+
+        // Update previous state for next check
+        previousEmailVerified = currentEmailVerified;
+
         setSession(newSession);
         setUser(newSession?.user ?? null);
+
+        // Clear loading state when we get a session from hash tokens (email verification, OAuth)
+        if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') && newSession && !cancelled.current) {
+          setLoading(false);
+          
+          // Clear the hash after successful sign-in from URL tokens (email verification, OAuth)
+          if (typeof window !== 'undefined' && window.location.hash.includes('access_token')) {
+            const newUrl = window.location.pathname + window.location.search;
+            window.history.replaceState({}, '', newUrl);
+            console.log('[AuthProvider] Cleared auth tokens from URL hash after', event, 'event');
+          }
+        }
 
         if (newSession?.user) {
           // Update last_login for any sign-in event
@@ -381,6 +440,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         password,
         options: {
           emailRedirectTo: `${window.location.origin}/dashboard/settings`,
+          data: {
+            first_name: firstName,
+            last_name: lastName,
+          },
         },
       });
 
@@ -462,6 +525,23 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
 
+  const resendVerificationEmail = async () => {
+    if (!user?.email) {
+      return { error: new Error('No user email available') as AuthError };
+    }
+    
+    try {
+      const { error } = await supabase.auth.resend({
+        type: 'signup',
+        email: user.email,
+      });
+      return { error };
+    } catch (error: any) {
+      console.error('Exception during resend verification email:', error);
+      return { error };
+    }
+  };
+
   const signOut = async () => {
     setLoading(true);
     try {
@@ -480,6 +560,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
 
+  // Compute email verification status
+  // In Supabase, email is verified if email_confirmed_at is not null
+  const emailVerified = user ? !!user.email_confirmed_at : false;
+
   return (
     <AuthContext.Provider
       value={{
@@ -488,10 +572,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         userProfile,
         loading,
         authLoading: loading, // Alias for clarity
+        emailVerified,
         signIn,
         signUp,
         signInWithGoogle,
         resetPassword,
+        resendVerificationEmail,
         signOut,
       }}
     >

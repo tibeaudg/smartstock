@@ -6,6 +6,7 @@ import { UserProfile, useAuth } from '@/hooks/useAuth';
 import { BranchSelector } from './BranchSelector';
 import { NotificationButton } from './NotificationButton';
 import { useNotifications } from '../hooks/useNotifications';
+import { EmailVerificationBanner } from './EmailVerificationBanner';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -86,6 +87,7 @@ export const Layout = ({ children, currentTab, onTabChange, userRole, userProfil
           }`}
         >
           <div className={`${isMobile ? 'w-full' : variant === 'admin' ? 'w-full' : 'mx-auto w-full max-w-7xl px-4 md:px-6'}`}>
+            <EmailVerificationBanner />
             {children}
           </div>
         </main>
