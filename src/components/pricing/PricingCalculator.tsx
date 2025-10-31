@@ -12,12 +12,12 @@ interface PricingCalculatorProps {
 
 export const PricingCalculator: React.FC<PricingCalculatorProps> = ({ 
   onSelectPlan, 
-  defaultProducts = 100 
+  defaultProducts = 0 
 }) => {
   const [productCount, setProductCount] = useState<number>(defaultProducts);
   const navigate = useNavigate();
 
-  const PRICE_PER_PRODUCT = 0.008; // €0.008 per product per month
+  const PRICE_PER_PRODUCT = 0.004;
   const FREE_PRODUCTS = 100;
   const ENTERPRISE_THRESHOLD = 10000;
 
@@ -63,7 +63,7 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
 
   const getTierDescription = (): string => {
     if (productCount <= FREE_PRODUCTS) {
-      return 'Perfect for testing and small shops';
+      return '100 products - Perfect for testing';
     } else if (productCount < ENTERPRISE_THRESHOLD) {
       const billableProducts = productCount - FREE_PRODUCTS;
       return `€${(billableProducts * PRICE_PER_PRODUCT).toFixed(2)}/month for ${billableProducts} billable products`;
@@ -100,17 +100,17 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
             value={[productCount]}
             onValueChange={(value) => setProductCount(value[0])}
             min={0}
-            max={15000}
+            max={10000}
             step={10}
             className="w-full"
           />
           
           {/* Scale markers */}
           <div className="flex justify-between text-xs text-gray-500 px-1">
-            <span>0</span>
-            <span>5,000</span>
+            <span>100</span>
+            <span>3,000</span>
+            <span>6,000</span>
             <span>10,000</span>
-            <span>15,000</span>
           </div>
         </div>
 
@@ -133,7 +133,7 @@ export const PricingCalculator: React.FC<PricingCalculatorProps> = ({
           {/* Tier Badge */}
           <div className="mt-4 flex justify-center">
             <Badge 
-              variant={cost.tier === 'free' ? 'secondary' : cost.tier === 'business' ? 'default' : 'outline'}
+              variant={cost.tier === 'free' ? 'secondary' : cost.tier === 'business' ? 'default' : 'default'}
               className={`${
                 cost.tier === 'free' ? 'bg-green-100 text-green-700' :
                 cost.tier === 'business' ? 'bg-blue-600 text-white' :

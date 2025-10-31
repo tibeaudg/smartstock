@@ -162,8 +162,8 @@ export default function InventoryManagementSoftware() {
   return (
     <SeoPageLayout title="Inventory Management Software">
       <SEO
-        title="Inventory Management Software - Automate Your Stock Control | StockFlow"
-        description="Professional inventory management software for growing businesses. Track stock levels, manage suppliers, and grow your business with our powerful yet simple platform. Free trial available."
+        title="Inventory Management Software 2025: Free Trial"
+        description="Automate stock control & save 35% costs! Professional software for growing businesses. Real-time tracking, barcode scanning, multi-location. 10,000+ users. Start FREE today!"
         keywords="stockflow, stock flow, stockflow app, stockflow software, inventory management software, stock management, inventory control, warehouse management, inventory tracking, stock management software, inventory system, warehouse software, inventory optimization, stock control software, inventory management system, warehouse management system, inventory tracking software, stock management system, inventory software, warehouse tracking, inventory control system, stock tracking software, inventory management solution, warehouse inventory software, inventory management platform"
         url="https://www.stockflow.be/inventory-management-software"
         locale="en"

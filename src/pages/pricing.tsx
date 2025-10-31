@@ -216,7 +216,7 @@ export default function PricingPage() {
                 Pay-as-you-grow pricing
               </CardDescription>
               <div className="mt-4">
-                <div className="text-4xl font-bold text-gray-900">€0.008</div>
+                <div className="text-4xl font-bold text-gray-900">€0.004</div>
                 <div className="text-sm text-gray-500">per product/month</div>
                 <div className="text-xs text-gray-400 mt-1">(products 101+)</div>
               </div>
@@ -224,7 +224,7 @@ export default function PricingPage() {
             <CardContent className="space-y-3">
               <h4 className="font-semibold text-gray-900 mb-3">Included:</h4>
               <ul className="space-y-2">
-                <li className="flex items-start"><Check className="h-4 w-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" /><span className="text-sm text-gray-600">100+ products (€0.008 each)</span></li>
+                <li className="flex items-start"><Check className="h-4 w-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" /><span className="text-sm text-gray-600">100+ products (€0.004 each)</span></li>
                 <li className="flex items-start"><Check className="h-4 w-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" /><span className="text-sm text-gray-600">All Free features</span></li>
                 <li className="flex items-start"><Check className="h-4 w-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" /><span className="text-sm text-gray-600">Advanced analytics</span></li>
                 <li className="flex items-start"><Check className="h-4 w-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" /><span className="text-sm text-gray-600">Barcode scanner</span></li>
@@ -325,7 +325,7 @@ export default function PricingPage() {
             <div>
               <h4 className="font-semibold text-gray-900 mb-2">How does the billing work?</h4>
               <p className="text-gray-600 text-sm">
-                You get 100 products free. After that, you pay €0.008 per product per month. We count your products at the end of each 30-day billing cycle and bill you automatically.
+                You get 100 products free. After that, you pay €0.004 per product per month. We count your products at the end of each 30-day billing cycle and bill you automatically.
               </p>
             </div>
             <div>

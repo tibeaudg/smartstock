@@ -189,7 +189,7 @@ export default function Contact() {
 
 
       {/* Contact Form Section */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-16 bg-gray-50 pt-36">
         <div className="max-w-4xl mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-6">Send us a Message</h2>

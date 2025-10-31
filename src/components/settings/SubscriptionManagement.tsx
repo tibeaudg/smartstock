@@ -262,7 +262,7 @@ export const SubscriptionManagement = () => {
                   </h4>
                   <p className="text-sm text-blue-700 mt-1">
                     You get the first 100 products free forever. You're currently using {usageTracking?.current_products || 0} products, 
-                    so you're being charged €0.008 per month for each product over 100. 
+                    so you're being charged €0.004 per month for each product over 100. 
                     You can add or remove products anytime - charges are calculated at the end of each 30-day billing cycle.
                   </p>
                 </div>
@@ -280,7 +280,7 @@ export const SubscriptionManagement = () => {
                     You're on the Free Plan
                   </h4>
                   <p className="text-sm text-green-700 mt-1">
-                    Your first 100 products are completely free forever. After that, pay only €0.008 per product per month. 
+                    Your first 100 products are completely free forever. After that, pay only €0.004 per product per month. 
                     No hidden fees, cancel anytime.
                   </p>
                 </div>

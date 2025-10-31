@@ -34,8 +34,8 @@ export default function VoorraadbeheerHoreca() {
   return (
     <SeoPageLayout title="Voorraadbeheer voor Horeca">
       <SEO
-        title="Voorraadbeheer Horeca 2024 | Voorkom Verspilling & Bespaar 20% | stockflow"
-        description="⭐ Horeca voorraadbeheer software die verspilling voorkomt. Houdbaarheidsdata tracking, menuplanning & automatische meldingen. Gratis starten!"
+        title="Voorraadbeheer Horeca 2025: Bespaar 20%"
+        description="Voorkom voedselverspilling! Horeca software met houdbaarheidsdata & menuplanning. Bespaar 20% op kosten. Gratis starten - 10.000+ restaurants gebruiken StockFlow!"
         keywords="voorraadbeheer horeca, horeca voorraadbeheer, voorraadbeheer restaurant, voorraadbeheer café, voorraadbeheer hotel, horeca software, restaurant software, voedselverspilling voorkomen, menuplanning, houdbaarheidsdata, stockflow, gratis voorraadbeheer horeca"
         url="https://www.stockflow.be/voorraadbeheer-horeca"
       />

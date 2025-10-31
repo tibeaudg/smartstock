@@ -225,8 +225,8 @@ export default function BestInventoryManagementSoftware() {
   return (
     <SeoPageLayout title="Best Inventory Management Software">
       <SEO
-        title="Best Inventory Management Software 2024 - Free Trial | 10,000+ Users | StockFlow"
-        description="Join 10,000+ businesses using the #1 rated inventory software. Real-time tracking, 35% cost reduction, 15 hours saved weekly. Start free trial - no credit card required!"
+        title="Best Inventory Software 2025: Free Trial | StockFlow"
+        description="Save 35% costs & 15 hours/week! Join 10,000+ businesses using award-winning inventory software. Real-time tracking, automated alerts, barcode scanning. Start FREE trial now - no credit card!"
         keywords="best inventory management software, top inventory management software, best inventory software, best stock management software, best inventory system, best inventory tracking software, best inventory management system, best inventory software 2024, top rated inventory software, best inventory management solution, best inventory software for small business, best inventory software for ecommerce, best inventory management software comparison, best inventory software reviews, best inventory management software features, best inventory software pricing, best inventory software demo, best inventory software trial"
         url="https://www.stockflow.be/best-inventory-management-software"
       />
@@ -262,7 +262,7 @@ export default function BestInventoryManagementSoftware() {
             </div>
             
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light mb-8 text-white leading-tight">
-              The <span className="text-blue-400 font-semibold">Best Inventory Management Software</span> of 2024
+              <span className="text-blue-400 font-semibold">Best Inventory Management Software</span> 2025: Save 35% Costs & 15 Hours Weekly
             </h1>
             <p className="text-xl md:text-2xl text-gray-100 mb-8 max-w-5xl mx-auto leading-relaxed">
               <strong>Save 35% on inventory costs</strong> and <strong>15 hours weekly</strong> with real-time tracking, automated alerts, and powerful analytics. Join 10,000+ businesses who chose StockFlow.
@@ -668,73 +668,123 @@ export default function BestInventoryManagementSoftware() {
             }
           }))
         },
-        {"@context": "https://schema.org",
-                "@type": "SoftwareApplication",
-                "name": "StockFlow - Best Inventory Management Software",
-                "description": "Discover the best inventory management software for your business. Real-time tracking, barcode scanning, automated alerts, and more.",
-                "applicationCategory": "BusinessApplication",
-                "operatingSystem": "Web Browser",
-                "offers": [
-                  {
-                    "@type": "Offer",
-                    "price": "0",
-                    "priceCurrency": "EUR",
-                    "description": "Free plan - Up to 30 products",
-                    "availability": "https://schema.org/InStock"
-                  },
-                  {
-                    "@type": "Offer",
-                    "price": "29",
-                    "priceCurrency": "EUR",
-                    "description": "Growth plan - Unlimited products with advanced features",
-                    "availability": "https://schema.org/InStock"
-                  },
-                  {
-                    "@type": "Offer",
-                    "price": "99",
-                    "priceCurrency": "EUR",
-                    "description": "Enterprise plan - Advanced features for large businesses",
-                    "availability": "https://schema.org/InStock"
-                  }
-                ],
-                "aggregateRating": {
-                  "@type": "AggregateRating",
-                  "ratingValue": "4.9",
-                  "ratingCount": "1000",
-                  "bestRating": "5",
-                  "worstRating": "1"
-                },
-                "author": {
-                  "@type": "Organization",
-                  "name": "StockFlow"
-                },
-                "publisher": {
-                  "@type": "Organization",
-                  "name": "StockFlow",
-                  "logo": {
-                    "@type": "ImageObject",
-                    "url": "https://www.stockflow.be/logo.png"
-                  }
-                },
-                "image": "https://www.stockflow.be/Inventory-Management.png",
-                "mainEntityOfPage": {
-                  "@type": "WebPage",
-                  "@id": "https://www.stockflow.be/best-inventory-management-software"
-                },
-                "award": [
-                  "Best Inventory Software 2024",
-                  "Top Rated by Users",
-                  "Best Value for Money",
-                  "Easiest to Use"
-                ],
-                "featureList": [
-                  "Real-time inventory tracking",
-                  "Advanced barcode scanning",
-                  "Automated reorder points",
-                  "Comprehensive analytics",
-                  "Multi-user collaboration",
-                  "Enterprise security"
-                ]
+        {
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "@id": "https://www.stockflow.be/best-inventory-management-software",
+          "name": "Best Inventory Management Software 2025",
+          "description": "Save 35% costs & 15 hours/week! Join 10,000+ businesses using award-winning inventory software. Real-time tracking, automated alerts, barcode scanning. Start FREE trial now - no credit card!",
+          "url": "https://www.stockflow.be/best-inventory-management-software",
+          "inLanguage": "en",
+          "isPartOf": {
+            "@type": "WebSite",
+            "name": "StockFlow",
+            "url": "https://www.stockflow.be"
+          },
+          "datePublished": "2024-01-15",
+          "dateModified": new Date().toISOString().split('T')[0],
+          "primaryImageOfPage": {
+            "@type": "ImageObject",
+            "url": "https://www.stockflow.be/Inventory-Management.png"
+          },
+          "breadcrumb": {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://www.stockflow.be"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Best Inventory Management Software",
+                "item": "https://www.stockflow.be/best-inventory-management-software"
+              }
+            ]
+          }
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          "name": "StockFlow - Best Inventory Management Software",
+          "description": "Save 35% costs & 15 hours/week! Join 10,000+ businesses using award-winning inventory software. Real-time tracking, automated alerts, barcode scanning.",
+          "applicationCategory": "BusinessApplication",
+          "applicationSubCategory": "Inventory Management Software",
+          "operatingSystem": "Web Browser",
+          "softwareVersion": "2.0",
+          "offers": [
+            {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "EUR",
+              "description": "Free plan - Up to 30 products",
+              "availability": "https://schema.org/InStock",
+              "priceValidUntil": "2026-12-31"
+            },
+            {
+              "@type": "Offer",
+              "price": "29",
+              "priceCurrency": "EUR",
+              "description": "Growth plan - Unlimited products with advanced features",
+              "availability": "https://schema.org/InStock",
+              "priceValidUntil": "2026-12-31"
+            },
+            {
+              "@type": "Offer",
+              "price": "99",
+              "priceCurrency": "EUR",
+              "description": "Enterprise plan - Advanced features for large businesses",
+              "availability": "https://schema.org/InStock",
+              "priceValidUntil": "2026-12-31"
+            }
+          ],
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.9",
+            "ratingCount": "1000",
+            "bestRating": "5",
+            "worstRating": "1"
+          },
+          "author": {
+            "@type": "Organization",
+            "name": "StockFlow",
+            "url": "https://www.stockflow.be"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "StockFlow",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://www.stockflow.be/logo.png"
+            }
+          },
+          "image": "https://www.stockflow.be/Inventory-Management.png",
+          "screenshot": "https://www.stockflow.be/Inventory-Management.png",
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://www.stockflow.be/best-inventory-management-software"
+          },
+          "award": [
+            "Best Inventory Software 2024",
+            "Top Rated by Users",
+            "Best Value for Money",
+            "Easiest to Use"
+          ],
+          "featureList": [
+            "Real-time inventory tracking",
+            "Advanced barcode scanning",
+            "Automated reorder points",
+            "Comprehensive analytics",
+            "Multi-user collaboration",
+            "Enterprise security"
+          ],
+          "downloadUrl": "https://www.stockflow.be/auth",
+          "softwareHelp": {
+            "@type": "CreativeWork",
+            "url": "https://www.stockflow.be/contact"
+          }
         }
       ]} />
     </SeoPageLayout>

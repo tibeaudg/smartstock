@@ -160,8 +160,8 @@ export default function InventoryManagement() {
   return (
     <SeoPageLayout title="Inventory Management">
       <SEO
-        title="Inventory Management - Complete Guide & Best Practices | StockFlow"
-        description="Master inventory management with our comprehensive guide. Learn best practices, benefits, and how to optimize your stock levels for maximum profitability. Free tools included."
+        title="Inventory Management 2025: Complete Guide"
+        description="Master inventory management! Learn proven strategies to reduce costs by 35%, save 15 hours/week, and boost profits. Free guide + software trial. Trusted by 10,000+ businesses."
         keywords="inventory management, stock management, inventory control, inventory tracking, stock control, inventory optimization, inventory planning, stock planning, inventory forecasting, inventory analysis, inventory management system, stock management system, inventory management software, stock management software, inventory management best practices, inventory management techniques, inventory management strategies, inventory management solutions, inventory management tools, inventory management methods"
         url="https://www.stockflow.be/inventory-management"
       />

@@ -75,7 +75,7 @@ export const UsageLimits: React.FC<UsageLimitsProps> = ({
       icon: <ShoppingCart className="h-4 w-4" />,
       label: 'Orders this month',
       current: usageTracking.orders_this_month,
-      max: currentTier.max_orders,
+      max: currentTier.max_orders_per_month,
       color: 'text-orange-600'
     }
   ];
@@ -98,7 +98,7 @@ export const UsageLimits: React.FC<UsageLimitsProps> = ({
     if (isSubscriptionActive) {
       return <Badge variant="secondary" className="bg-green-100 text-green-800">Active</Badge>;
     }
-    return <Badge variant="outline" className="bg-gray-100 text-gray-800">Basic Plan</Badge>;
+    return <Badge variant="secondary" className="bg-gray-100 text-gray-800">Basic Plan</Badge>;
   };
 
   if (compact) {
@@ -264,7 +264,7 @@ export const UsageLimits: React.FC<UsageLimitsProps> = ({
                   Usage-Based Billing
                 </h4>
                 <p className="text-sm text-green-700 mt-1">
-                  First 100 products are free. You're paying €0.008 per product per month for the remaining {usageTracking.current_products - 100} products.
+                  First 100 products are free. You're paying €0.004 per product per month for the remaining {usageTracking.current_products - 100} products.
                 </p>
               </div>
             </div>

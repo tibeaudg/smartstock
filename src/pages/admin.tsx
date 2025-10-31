@@ -12,7 +12,7 @@ import SEO from '../components/SEO';
 import { AdminNotificationManager } from '@/components/AdminNotificationManager';
 import { AdminChatList } from '@/components/AdminChatList';
 import { AdminSubscriptionManagement } from '@/components/admin/SubscriptionManagement';
-import { OnboardingTracking } from '@/components/admin/OnboardingTracking';
+import { SEOKeywordOptimizer } from '@/components/seo/SEOKeywordOptimizer';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -40,6 +40,14 @@ interface UserStats {
   statsLastUpdated?: string;
 }
 
+interface AdminBranch {
+  branch_id: string;
+  branch_name: string;
+  is_main: boolean;
+  user_count: number;
+  created_at: string;
+}
+
 // Plan information for usage-based pricing
 const plans = {
   'free': { price: 0, limit: 100, displayName: 'Free', pricePerProduct: 0, includedProducts: 100 },
@@ -56,7 +64,6 @@ function calculateUserLicenseCost(
 ): number {
   const plan = plans[planId as keyof typeof plans] || plans.basic;
   
-  // Usage-based pricing: €0.008 per product above included amount
   const billableProducts = Math.max(0, stats.productCount - plan.includedProducts);
   return billableProducts * plan.pricePerProduct;
 }
@@ -244,9 +251,11 @@ function RegistrationChart({ users, timeRange, onTimeRangeChange }: {
 async function fetchUserStats(userId: string): Promise<UserStats> {
   try {
     // Gebruik de database functie get_admin_branches om alle filialen en gebruikers op te halen
-    const { data: adminBranches, error: branchesError } = await supabase.rpc('get_admin_branches', {
+    const result = await (supabase.rpc as any)('get_admin_branches', {
       admin_id: userId
     });
+    const adminBranches = result.data as AdminBranch[] | null;
+    const branchesError = result.error;
 
     if (branchesError) throw branchesError;
 
@@ -272,10 +281,12 @@ async function fetchUserStats(userId: string): Promise<UserStats> {
     if (productsError) throw productsError;
 
     // Tel alle unieke gebruikers die toegang hebben tot de filialen van deze gebruiker
-    const { data: linkedUsers, error: linkedUsersError } = await supabase
+    const linkedUsersResult = await supabase
       .from('branch_users')
       .select('user_id')
       .in('branch_id', branchIds);
+    const linkedUsers = linkedUsersResult.data as { user_id: string }[] | null;
+    const linkedUsersError = linkedUsersResult.error;
 
     if (linkedUsersError) throw linkedUsersError;
 
@@ -296,11 +307,12 @@ async function fetchUserStats(userId: string): Promise<UserStats> {
     };
 
     // Bereken licentie kosten
-    const { data: userData } = await supabase
+    const userDataResult = await supabase
       .from('profiles')
       .select('selected_plan')
       .eq('id', userId)
       .maybeSingle();
+    const userData = userDataResult.data as { selected_plan: string | null } | null;
 
     if (userData) {
       stats.licenseCost = calculateUserLicenseCost(userData.selected_plan, {
@@ -325,8 +337,7 @@ async function fetchUserStats(userId: string): Promise<UserStats> {
 }
 
 async function blockUser(id: string, blocked: boolean) {
-  const { error } = await supabase
-    .from('profiles')
+  const { error } = await (supabase.from('profiles') as any)
     .update({ blocked: !blocked })
     .eq('id', id);
   if (error) throw new Error(error.message);
@@ -336,7 +347,7 @@ export default function AdminPage() {
   const { user, userProfile } = useAuth();
   const { isMobile } = useMobile();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<'users' | 'features' | 'chats' | 'notifications'>('users');
+  const [activeTab, setActiveTab] = useState<'users' | 'features' | 'chats' | 'notifications' | 'seo'>('users');
   const [selectedUser, setSelectedUser] = useState<UserProfile | null>(null);
   const [companyTypes, setCompanyTypes] = useState<Record<string, { type: string; custom_type: string | null }>>({});
   const [userStats, setUserStats] = useState<UserStats[]>([]);
@@ -426,10 +437,11 @@ export default function AdminPage() {
     };
   }, [user?.id, queryClient]);
 
-  const sidebarNavItems: { id: 'users' | 'features' | 'chats' | 'notifications'; label: string }[] = [
+  const sidebarNavItems: { id: 'users' | 'features' | 'chats' | 'notifications' | 'seo'; label: string }[] = [
     { id: 'users', label: 'User Management' },
     { id: 'chats', label: 'Chats' },
     { id: 'notifications', label: 'Notifications' },
+    { id: 'seo', label: 'SEO Optimization' },
   ];
   
   // Access control - only owners can view the admin page
@@ -754,6 +766,10 @@ export default function AdminPage() {
 
             {activeTab === 'chats' && (
               <AdminChatList />
+            )}
+
+            {activeTab === 'seo' && (
+              <SEOKeywordOptimizer />
             )}
 
           </div>

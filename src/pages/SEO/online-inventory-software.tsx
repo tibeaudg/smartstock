@@ -34,8 +34,8 @@ export default function OnlineInventorySoftware() {
   return (
     <SeoPageLayout title="Online Inventory Software">
       <SEO
-        title="Best Online Inventory Software 2024 | Real-time Stock Management | stockflow"
-        description="Discover the best online inventory software for your business. Real-time tracking, automated alerts, and seamless integration. Get Started Free today with stockflow."
+        title="Online Inventory Software 2025: Free Trial | StockFlow"
+        description="Track inventory in real-time from anywhere! Cloud-based software trusted by 10,000+ businesses. Automated alerts, barcode scanning, multi-location. Start FREE today - no credit card required!"
         keywords="online inventory software, inventory management software, stock management software, cloud inventory software, inventory tracking software, warehouse management software, inventory control software, stock control software, real-time inventory software, cloud-based inventory management, stockflow"
         url="https://www.stockflow.be/online-inventory-software"
       />
@@ -47,7 +47,7 @@ export default function OnlineInventorySoftware() {
             {/* Left Side - Text Content */}
             <div className="lg:col-span-2">
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6">
-                <span className="text-blue-600">Online Inventory Software</span> That Works
+                <span className="text-blue-600">Online Inventory Software</span> 2025: Real-Time Tracking from Anywhere
               </h1>
               <p className="text-sm sm:text-base md:text-lg text-gray-700 mb-6 sm:mb-8 leading-relaxed">
                 Streamline your inventory management with powerful online inventory software designed for modern businesses. Track stock levels in real-time, automate reorder processes, and eliminate stockouts with our comprehensive cloud-based solution. Perfect for businesses looking to optimize their operations and reduce costs.
@@ -311,29 +311,111 @@ export default function OnlineInventorySoftware() {
             }
           }))
         },
-        {"@context": "https://schema.org",
-                "@type": "Article",
-                "headline": "Best Online Inventory Software 2024 | Real-time Stock Management",
-                "description": "Discover the best online inventory software for your business. Real-time tracking, automated alerts, and seamless integration. Get Started Free today with stockflow.",
-                "image": "https://www.stockflow.be/optimized/Inventory-Management.png",
-                "author": {
-                  "@type": "Organization",
-                  "name": "stockflow"
-                },
-                "publisher": {
-                  "@type": "Organization",
-                  "name": "stockflow",
-                  "logo": {
-                    "@type": "ImageObject",
-                    "url": "https://www.stockflow.be/logo.png"
-                  }
-                },
-                "mainEntityOfPage": {
-                  "@type": "WebPage",
-                  "@id": "https://www.stockflow.be/online-inventory-software"
-                },
-                "datePublished": "2024-06-01",
-                "dateModified": "2024-12-19"        }      ]} />
+        {
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "@id": "https://www.stockflow.be/online-inventory-software",
+          "name": "Online Inventory Software 2025",
+          "description": "Track inventory in real-time from anywhere! Cloud-based software trusted by 10,000+ businesses. Automated alerts, barcode scanning, multi-location. Start FREE today - no credit card required!",
+          "url": "https://www.stockflow.be/online-inventory-software",
+          "inLanguage": "en",
+          "isPartOf": {
+            "@type": "WebSite",
+            "name": "StockFlow",
+            "url": "https://www.stockflow.be"
+          },
+          "datePublished": "2024-06-01",
+          "dateModified": new Date().toISOString().split('T')[0],
+          "primaryImageOfPage": {
+            "@type": "ImageObject",
+            "url": "https://www.stockflow.be/Inventory-Management.png"
+          },
+          "breadcrumb": {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://www.stockflow.be"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Online Inventory Software",
+                "item": "https://www.stockflow.be/online-inventory-software"
+              }
+            ]
+          }
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          "name": "StockFlow - Online Inventory Software",
+          "description": "Track inventory in real-time from anywhere! Cloud-based software trusted by 10,000+ businesses. Automated alerts, barcode scanning, multi-location.",
+          "applicationCategory": "BusinessApplication",
+          "applicationSubCategory": "Cloud Inventory Management Software",
+          "operatingSystem": "Web Browser",
+          "softwareVersion": "2.0",
+          "offers": [
+            {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "EUR",
+              "description": "Free plan - Up to 30 products",
+              "availability": "https://schema.org/InStock",
+              "priceValidUntil": "2026-12-31"
+            },
+            {
+              "@type": "Offer",
+              "price": "29",
+              "priceCurrency": "EUR",
+              "description": "Growth plan - Unlimited products with advanced features",
+              "availability": "https://schema.org/InStock",
+              "priceValidUntil": "2026-12-31"
+            }
+          ],
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.9",
+            "ratingCount": "1000",
+            "bestRating": "5",
+            "worstRating": "1"
+          },
+          "author": {
+            "@type": "Organization",
+            "name": "StockFlow",
+            "url": "https://www.stockflow.be"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "StockFlow",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://www.stockflow.be/logo.png"
+            }
+          },
+          "image": "https://www.stockflow.be/Inventory-Management.png",
+          "screenshot": "https://www.stockflow.be/Inventory-Management.png",
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://www.stockflow.be/online-inventory-software"
+          },
+          "featureList": [
+            "Real-time inventory tracking",
+            "Cloud-based access",
+            "Automated alerts",
+            "Barcode scanning",
+            "Multi-location support",
+            "Mobile access"
+          ],
+          "downloadUrl": "https://www.stockflow.be/auth",
+          "softwareHelp": {
+            "@type": "CreativeWork",
+            "url": "https://www.stockflow.be/contact"
+          }
+        }
+      ]} />
     </SeoPageLayout>
   );
 }

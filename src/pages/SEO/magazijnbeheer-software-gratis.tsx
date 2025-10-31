@@ -122,8 +122,8 @@ export default function MagazijnbeheerSoftwareGratis() {
   return (
     <SeoPageLayout title="Magazijnbeheer Software Gratis - Professioneel Magazijnbeheer">
       <SEO
-        title="Magazijnbeheer Software Gratis | Professioneel Magazijnbeheer | stockflow"
-        description="Ontdek de beste magazijnbeheer software gratis voor KMO's. Professioneel magazijnbeheer met real-time rapportages, Locationsbeheer en 100% gratis. Start vandaag!"
+        title="Magazijnbeheer Software Gratis 2025 | StockFlow"
+        description="100% GRATIS magazijnbeheer voor KMO's! Real-time tracking, automatische meldingen, barcode scanning. 10.000+ bedrijven gebruiken StockFlow. Start NU - geen creditcard nodig!"
         keywords="magazijnbeheer software gratis, gratis magazijnbeheer software, magazijnbeheer software gratis download, magazijnbeheer software gratis KMO, magazijnbeheer software gratis belgië, magazijnbeheer software gratis vlaanderen, magazijnbeheer software gratis horeca, magazijnbeheer software gratis webshop, magazijnbeheer software gratis detailhandel, magazijnbeheer software gratis starters, magazijnbeheer software gratis kleine bedrijven, magazijnbeheer software gratis stockflow"
         url="https://www.stockflow.be/magazijnbeheer-software-gratis"
       />
@@ -135,7 +135,7 @@ export default function MagazijnbeheerSoftwareGratis() {
             <div>
               <h1 className="text-4xl md:text-5xl font-bold mb-6">
                 <span className="block">Magazijnbeheer Software Gratis</span>
-                <span className="block text-indigo-100">voor Professioneel Beheer</span>
+                <span className="block text-indigo-100">2025: 100% GRATIS voor KMO's</span>
               </h1>
               <p className="text-xl mb-8 leading-relaxed">
                 De enige magazijnbeheer software gratis die specifiek ontwikkeld is voor Vlaamse bedrijven. 

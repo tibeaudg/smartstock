@@ -305,7 +305,7 @@ export const useSubscription = () => {
       case 'branches':
         return tier.max_branches === null || usageTracking.current_branches < tier.max_branches;
       case 'orders':
-        return tier.max_orders === null || usageTracking.orders_this_month < tier.max_orders;
+        return tier.max_orders_per_month === null || usageTracking.orders_this_month < tier.max_orders_per_month;
       default:
         return true;
     }
@@ -323,7 +323,7 @@ export const useSubscription = () => {
       case 'branches':
         return tier.max_branches ? tier.max_branches - usageTracking.current_branches : null;
       case 'orders':
-        return tier.max_orders ? tier.max_orders - usageTracking.orders_this_month : null;
+        return tier.max_orders_per_month ? tier.max_orders_per_month - usageTracking.orders_this_month : null;
       default:
         return null;
     }

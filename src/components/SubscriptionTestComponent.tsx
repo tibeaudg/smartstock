@@ -84,7 +84,7 @@ export const SubscriptionTestComponent: React.FC = () => {
                 <div>Products: {currentTier?.max_products || 'Unlimited'}</div>
                 <div>Users: {currentTier?.max_users || 'Unlimited'}</div>
                 <div>Branches: {currentTier?.max_branches || 'Unlimited'}</div>
-                <div>Orders: {currentTier?.max_orders || 'Unlimited'}</div>
+                <div>Orders: {currentTier?.max_orders_per_month || 'Unlimited'}</div>
               </div>
             </div>
           </div>
