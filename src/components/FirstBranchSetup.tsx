@@ -7,13 +7,10 @@ import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Building2, MapPin, Phone, Mail } from 'lucide-react';
+import { Building2} from 'lucide-react';
 
 interface FormData {
   branchName: string;
-  address: string;
-  phone: string;
-  email: string;
 }
 
 export const FirstBranchSetup = () => {
@@ -22,9 +19,6 @@ export const FirstBranchSetup = () => {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     branchName: '',
-    address: '',
-    phone: '',
-    email: '',
   });
 
   const handleInputChange = (field: keyof FormData, value: string) => {
@@ -46,9 +40,6 @@ export const FirstBranchSetup = () => {
         .from('branches')
         .insert({
           name: formData.branchName.trim(),
-          address: formData.address.trim() || null,
-          phone: formData.phone.trim() || null,
-          email: formData.email.trim() || null,
           is_main: true,
           is_active: true,
           user_id: user.id,
@@ -116,50 +107,7 @@ export const FirstBranchSetup = () => {
               />
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="address" className="text-sm font-medium flex items-center gap-2">
-                <MapPin className="h-4 w-4" />
-                Address
-              </Label>
-              <Input
-                id="address"
-                type="text"
-                placeholder="Street, house number, postal code, city"
-                value={formData.address}
-                onChange={(e) => handleInputChange('address', e.target.value)}
-                className="w-full"
-              />
-            </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="phone" className="text-sm font-medium flex items-center gap-2">
-                <Phone className="h-4 w-4" />
-                Phone number
-              </Label>
-              <Input
-                id="phone"
-                type="tel"
-                placeholder="+31 6 123456789"
-                value={formData.phone}
-                onChange={(e) => handleInputChange('phone', e.target.value)}
-                className="w-full"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="email" className="text-sm font-medium flex items-center gap-2">
-                <Mail className="h-4 w-4" />
-                Email address
-              </Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="info@company.com"
-                value={formData.email}
-                onChange={(e) => handleInputChange('email', e.target.value)}
-                className="w-full"
-              />
-            </div>
 
             <Button 
               type="submit" 
