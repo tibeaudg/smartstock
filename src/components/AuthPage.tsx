@@ -150,13 +150,12 @@ export const AuthPage = () => {
         const hasUpperCase = /[A-Z]/.test(password);
         const hasLowerCase = /[a-z]/.test(password);
         const hasNumbers = /\d/.test(password);
-        const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
         
-        if (!hasUpperCase || !hasLowerCase || !hasNumbers || !hasSpecialChar) {
+        if (!hasUpperCase || !hasLowerCase || !hasNumbers) {
           if (isTrackingReady) {
             await trackFormAbandonment('password_too_weak');
           }
-          toast.error('Password must contain uppercase, lowercase, numbers, and special characters');
+          toast.error('Password must contain uppercase AND lowercase characters');
           return;
         }
         if (!acceptTerms) {
