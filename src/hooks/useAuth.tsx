@@ -164,32 +164,40 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     // Track previous user email verification status for detection
     let previousEmailVerified: boolean | null = null;
 
-    const initializeAuth = async () => {
-      // Check if there are auth tokens in the URL hash (from email verification, OAuth, etc.)
-      const hasAuthTokensInHash = typeof window !== 'undefined' && 
-        window.location.hash.includes('access_token') && 
-        window.location.hash.includes('type=');
+    // Check if there are auth tokens in the URL hash (from email verification, OAuth, etc.)
+    const hasAuthTokensInHash = typeof window !== 'undefined' && 
+      window.location.hash.includes('access_token') && 
+      window.location.hash.includes('type=');
 
-      // If we detect auth tokens in hash, wait a bit longer for Supabase to process them
-      const initDelay = hasAuthTokensInHash ? 1000 : 0;
-      
+    // Flags to track hash token processing state (use refs so they're accessible in callbacks)
+    const waitingForHashTokens = { current: hasAuthTokensInHash };
+    const hashTokenProcessed = { current: false };
+
+    if (hasAuthTokensInHash) {
+      console.log('[AuthProvider] Detected auth tokens in URL hash, will wait for processing...');
+    }
+
+    const initializeAuth = async () => {
+      // If hash tokens are present, give Supabase time to process them before checking session
       if (hasAuthTokensInHash) {
-        console.log('[AuthProvider] Detected auth tokens in URL hash, waiting for processing...');
-        await new Promise(resolve => setTimeout(resolve, initDelay));
+        // Wait longer for Supabase to process hash tokens through detectSessionInUrl
+        await new Promise(resolve => setTimeout(resolve, 1500));
       }
 
-      // Safety timeout: force loading to false after 8 seconds to prevent indefinite blocking
+      // Safety timeout: force loading to false after 10 seconds to prevent indefinite blocking
+      // Longer timeout if hash tokens are present
+      const safetyTimeoutMs = hasAuthTokensInHash ? 10000 : 8000;
       const safetyTimeout = setTimeout(() => {
         if (!cancelled.current) {
           console.warn('[AuthProvider] Auth initialization timeout - forcing loading to false');
           setLoading(false);
         }
-      }, 8000);
+      }, safetyTimeoutMs);
 
       try {
         // Add timeout to session fetch
         const sessionTimeoutPromise = new Promise((_, reject) => {
-          setTimeout(() => reject(new Error('Session fetch timeout')), 5000);
+          setTimeout(() => reject(new Error('Session fetch timeout')), hasAuthTokensInHash ? 6000 : 5000);
         });
 
         const sessionPromise = supabase.auth.getSession();
@@ -198,7 +206,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
         if (result?.error) {
           console.error('Error getting session:', result.error.message);
-          if (!cancelled.current) setLoading(false);
+          if (!cancelled.current) {
+            // If we have hash tokens, don't give up yet - wait for auth state change
+            if (!hasAuthTokensInHash) {
+              setLoading(false);
+            }
+          }
           clearTimeout(safetyTimeout);
           return;
         }
@@ -211,6 +224,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           
           // Initialize previous email verification status
           previousEmailVerified = !!currentSession.user.email_confirmed_at;
+
+          // Mark hash tokens as processed if we got a session
+          if (hasAuthTokensInHash) {
+            hashTokenProcessed.current = true;
+            waitingForHashTokens.current = false;
+          }
 
           // Fetch profile with timeout protection
           try {
@@ -236,25 +255,37 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
               });
             }
           }
+
+          // If we processed hash tokens and have a session, clear the hash
+          if (hasAuthTokensInHash && typeof window !== 'undefined') {
+            const newUrl = window.location.pathname + window.location.search;
+            window.history.replaceState({}, '', newUrl);
+            console.log('[AuthProvider] Cleared auth tokens from URL hash after successful processing');
+          }
         } else {
           // No session initially
           previousEmailVerified = null;
-        }
-
-        // If we processed hash tokens and have a session, clear the hash to prevent reprocessing
-        if (hasAuthTokensInHash && currentSession && typeof window !== 'undefined') {
-          // Clear the hash after processing to prevent issues
-          const newUrl = window.location.pathname + window.location.search;
-          window.history.replaceState({}, '', newUrl);
-          console.log('[AuthProvider] Cleared auth tokens from URL hash after successful processing');
+          
+          // If we have hash tokens but no session yet, keep waiting for auth state change
+          if (hasAuthTokensInHash && !hashTokenProcessed.current) {
+            console.log('[AuthProvider] Hash tokens detected but no session yet, waiting for auth state change...');
+            // Don't set loading to false yet - wait for onAuthStateChange
+            clearTimeout(safetyTimeout);
+            return;
+          }
         }
       } catch (error) {
         console.error('Error during auth initialization:', error);
-        // Don't block on error - set loading to false
-        if (!cancelled.current) setLoading(false);
+        // If we have hash tokens, keep waiting for auth state change
+        if (!hasAuthTokensInHash || hashTokenProcessed.current) {
+          if (!cancelled.current) setLoading(false);
+        }
       } finally {
         clearTimeout(safetyTimeout);
-        if (!cancelled.current) setLoading(false);
+        // Only set loading to false if we're not waiting for hash tokens
+        if (!waitingForHashTokens.current && !cancelled.current) {
+          setLoading(false);
+        }
       }
     };
 
@@ -284,6 +315,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
         // Clear loading state when we get a session from hash tokens (email verification, OAuth)
         if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') && newSession && !cancelled.current) {
+          // If this is from hash tokens, mark as processed and clear loading
+          if (hasAuthTokensInHash && !hashTokenProcessed.current) {
+            hashTokenProcessed.current = true;
+            waitingForHashTokens.current = false;
+            console.log('[AuthProvider] Hash tokens processed via', event, 'event');
+          }
+          
           setLoading(false);
           
           // Clear the hash after successful sign-in from URL tokens (email verification, OAuth)
