@@ -23,7 +23,7 @@ import {
   Repeat, Camera, Building, ShoppingCart, CreditCard, Mail, Utensils, Coffee, 
   Wrench, Hammer, Heart, Stethoscope, BookOpen, Gamepad2, Car, Plane, 
   Shirt, Laptop, Home, Briefcase, Music, Paintbrush, Upload, FileSpreadsheet, 
-  Minus, Plus, Download, FileText, Phone, Bell, MapPin
+  Minus, Plus, Download, FileText, Phone, Bell, MapPin, Trophy, Gift, Cloud
 } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
 import SEO from './SEO';
@@ -2150,6 +2150,118 @@ export const HomePage = () => {
         </div>
       </section>
 
+      {/* Commercial Solutions Section - Internal Linking to SEO Pages */}
+      <section className="py-12 sm:py-14 md:py-16 lg:py-18 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <FadeInWhenVisible>
+            <div className="text-center mb-8 sm:mb-10 md:mb-12">
+              <div className="inline-block mb-4 sm:mb-6">
+                <span className="px-4 py-2 bg-blue-100 text-blue-700 text-sm font-semibold rounded-full">
+                  EXPLORE OUR SOLUTIONS
+                </span>
+              </div>
+              <h2 className="text-[clamp(2rem,4vw,3.5rem)] sm:text-[clamp(2.5rem,5vw,4rem)] text-gray-800 mb-3 leading-tight">
+                Find the Perfect Inventory Solution
+              </h2>
+              <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                Compare top software options, discover cloud solutions, try free plans, and explore industry-specific tools
+              </p>
+            </div>
+          </FadeInWhenVisible>
+
+          <FadeInWhenVisible delay={200}>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+              {/* Best Software Link */}
+              <Link 
+                to="/best-inventory-management-software"
+                className="group bg-white border-2 border-gray-200 rounded-2xl p-6 hover:border-blue-500 hover:shadow-xl transition-all duration-300 flex flex-col"
+              >
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center">
+                    <Trophy className="w-6 h-6 text-white" />
+                  </div>
+                  <Star className="w-5 h-5 text-yellow-400 fill-current" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                  Compare Top 10 Software
+                </h3>
+                <p className="text-gray-600 text-sm mb-4 flex-1">
+                  See pricing, features & reviews for the best inventory management solutions in 2025
+                </p>
+                <span className="text-blue-600 font-semibold text-sm inline-flex items-center group-hover:translate-x-1 transition-transform">
+                  Compare now →
+                </span>
+              </Link>
+
+              {/* Online Software Link */}
+              <Link 
+                to="/online-inventory-software"
+                className="group bg-white border-2 border-gray-200 rounded-2xl p-6 hover:border-blue-500 hover:shadow-xl transition-all duration-300 flex flex-col"
+              >
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center">
+                    <Globe className="w-6 h-6 text-white" />
+                  </div>
+                  <Cloud className="w-5 h-5 text-green-500" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                  Cloud-Based Management
+                </h3>
+                <p className="text-gray-600 text-sm mb-4 flex-1">
+                  Discover online inventory solutions with real-time sync and mobile access
+                </p>
+                <span className="text-blue-600 font-semibold text-sm inline-flex items-center group-hover:translate-x-1 transition-transform">
+                  Explore cloud solutions →
+                </span>
+              </Link>
+
+              {/* Free Software Link */}
+              <Link 
+                to="/magazijnbeheer-software-gratis"
+                className="group bg-white border-2 border-gray-200 rounded-2xl p-6 hover:border-blue-500 hover:shadow-xl transition-all duration-300 flex flex-col"
+              >
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center">
+                    <Gift className="w-6 h-6 text-white" />
+                  </div>
+                  <span className="text-2xl">🎁</span>
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                  Free Up to 30 Products
+                </h3>
+                <p className="text-gray-600 text-sm mb-4 flex-1">
+                  Start with our free warehouse management software for small businesses
+                </p>
+                <span className="text-blue-600 font-semibold text-sm inline-flex items-center group-hover:translate-x-1 transition-transform">
+                  Start free today →
+                </span>
+              </Link>
+
+              {/* Horeca Software Link */}
+              <Link 
+                to="/voorraadbeheer-horeca"
+                className="group bg-white border-2 border-gray-200 rounded-2xl p-6 hover:border-blue-500 hover:shadow-xl transition-all duration-300 flex flex-col"
+              >
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center">
+                    <Utensils className="w-6 h-6 text-white" />
+                  </div>
+                  <span className="text-2xl">🍽️</span>
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                  Restaurant & Café Tools
+                </h3>
+                <p className="text-gray-600 text-sm mb-4 flex-1">
+                  Specialized inventory management for hospitality - reduce food waste by 40%
+                </p>
+                <span className="text-blue-600 font-semibold text-sm inline-flex items-center group-hover:translate-x-1 transition-transform">
+                  Learn more →
+                </span>
+              </Link>
+            </div>
+          </FadeInWhenVisible>
+        </div>
+      </section>
 
       {/* FAQ Section */}
       <section className="py-16 sm:py-20 md:py-24 lg:py-28 bg-blue-50">

@@ -101,10 +101,15 @@ export default function VoorraadbeheerFoutenVoorkomen() {
     >
       <SEO
         title="Fouten in Voorraadbeheer Voorkomen | Best Practices | stockflow"
-        description="Veelgemaakte fouten in voorraadbeheer voorkomen? Complete gids met tips en best practices voor een foutloos voorraadbeheer in je bedrijf. Leer hoe je voorraadbeheer fouten kunt voorkomen."
+        description="Veelgemaakte fouten in voorraadbeheer voorkomen? Complete gids met tips en best practices voor een foutloos voorraadbeheer. Voorkom fouten die 10-20% van je voorraadwaarde kosten en optimaliseer je processen."
         keywords="voorraadbeheer fouten, voorraadbeheer tips, voorraadbeheer best practices, fouten voorkomen voorraad, stockbeheer fouten, voorraadbeheer fouten voorkomen, voorraadbeheer problemen, voorraadbeheer optimalisatie, voorraadbeheer automatiseren, voorraadbeheer software, voorraadbeheer app, voorraadbeheer systeem"
         url="https://www.stockflow.be/voorraadbeheer-fouten-voorkomen"
         image="/logo.png"
+        locale="nl"
+        alternateLanguages={[
+          { lang: 'nl-BE', url: 'https://www.stockflow.be/voorraadbeheer-fouten-voorkomen' },
+          { lang: 'en-US', url: 'https://www.stockflow.be/avoid-inventory-mistakes' }
+        ]}
       />
 
       {/* Hero Section */}

@@ -122,8 +122,8 @@ export default function MagazijnbeheerSoftwareGratis() {
   return (
     <SeoPageLayout title="Magazijnbeheer Software Gratis - Professioneel Magazijnbeheer">
       <SEO
-        title="Magazijnbeheer Software Gratis 2025: 100% GRATIS | StockFlow"
-        description="100% GRATIS magazijnbeheer software voor KMO's! Real-time tracking, automatische meldingen, barcode scanning. Voorkom overstock en tekorten. 10.000+ bedrijven gebruiken StockFlow. Start NU gratis!"
+        title="Gratis Magazijnbeheer Software 2025: Tot 30 Producten | StockFlow"
+        description="Magazijnbeheer software GRATIS tot 30 producten! Voor KMO's. Real-time tracking, automatische meldingen, ERP-integratie. Geen creditcard. Start vandaag!"
         keywords="magazijnbeheer software gratis, gratis magazijnbeheer software, magazijnbeheer software gratis download, magazijnbeheer software gratis KMO, magazijnbeheer software gratis belgië, magazijnbeheer software gratis vlaanderen, magazijnbeheer software gratis horeca, magazijnbeheer software gratis webshop, magazijnbeheer software gratis detailhandel, magazijnbeheer software gratis starters, magazijnbeheer software gratis kleine bedrijven, magazijnbeheer software gratis stockflow, magazijnbeheer gratis, gratis magazijnbeheer, magazijnbeheer software"
         url="https://www.stockflow.be/magazijnbeheer-software-gratis"
       />
@@ -314,6 +314,36 @@ export default function MagazijnbeheerSoftwareGratis() {
                 >
                   Upgrade Nu
                 </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* Important Limitations Callout */}
+          <div className="mt-12 bg-yellow-50 border-l-4 border-yellow-400 p-6 rounded-lg">
+            <div className="flex items-start">
+              <div className="flex-shrink-0">
+                <svg className="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <div className="ml-3">
+                <h3 className="text-lg font-bold text-gray-900 mb-2">
+                  Belangrijk: Gratis Versie Limiet
+                </h3>
+                <div className="text-gray-700">
+                  <p className="mb-2">
+                    De gratis versie is beperkt tot <strong>30 producten</strong>. Dit is perfect voor:
+                  </p>
+                  <ul className="list-disc list-inside space-y-1 mb-3">
+                    <li>Startende ondernemingen</li>
+                    <li>Kleine winkels en webshops</li>
+                    <li>Bedrijven die willen testen voordat ze upgraden</li>
+                    <li>Side businesses en hobby projecten</li>
+                  </ul>
+                  <p>
+                    Als je meer dan 30 producten hebt, upgrade eenvoudig naar het Premium abonnement (€29/maand) voor onbeperkte producten en geavanceerde functies.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
