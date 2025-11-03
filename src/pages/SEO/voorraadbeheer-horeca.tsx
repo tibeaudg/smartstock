@@ -35,9 +35,9 @@ export default function VoorraadbeheerHoreca() {
   return (
     <SeoPageLayout title="Voorraadbeheer voor Horeca">
       <SEO
-        title="Horeca Voorraadbeheer Software: Voedselverspilling -40% | Receptbeheer"
-        description="Horeca voorraadbeheer software: Reduceer voedselverspilling tot 40%. Houdbaarheidsdata, receptbeheer, kostenanalyse. Speciaal voor restaurants/cafés. Gratis!"
-        keywords="voorraadbeheer horeca, horeca voorraadbeheer, voorraadbeheer restaurant, voorraadbeheer café, voorraadbeheer hotel, horeca software, restaurant software, voedselverspilling voorkomen, menuplanning, houdbaarheidsdata, stockflow, gratis voorraadbeheer horeca, horeca voorraadbeheer software, restaurant voorraadbeheer"
+        title="Horeca Voorraadbeheer Software 2025: Gratis | Verspilling -40%"
+        description="Reduceer voedselverspilling tot 40% en bespaar 20% op kosten! Horeca voorraadbeheer software met houdbaarheidsdata & receptbeheer. Speciaal voor restaurants/cafés. Start gratis - geen creditcard!"
+        keywords="voorraadbeheer horeca, horeca voorraadbeheer, voorraadbeheer restaurant, voorraadbeheer café, voorraadbeheer hotel, horeca software, restaurant software, voedselverspilling voorkomen, menuplanning, houdbaarheidsdata, stockflow, gratis voorraadbeheer horeca, horeca voorraadbeheer software, restaurant voorraadbeheer, voorraadbeheer software gratis"
         url="https://www.stockflow.be/voorraadbeheer-horeca"
       />
 
