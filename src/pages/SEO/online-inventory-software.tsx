@@ -34,9 +34,9 @@ export default function OnlineInventorySoftware() {
   return (
     <SeoPageLayout title="Online Inventory Software">
       <SEO
-        title="Online Inventory Software 2025: Free Trial | StockFlow"
-        description="Track inventory in real-time from anywhere! Cloud-based software trusted by 10,000+ businesses. Automated alerts, barcode scanning, multi-location. Start FREE today - no credit card required!"
-        keywords="online inventory software, inventory management software, stock management software, cloud inventory software, inventory tracking software, warehouse management software, inventory control software, stock control software, real-time inventory software, cloud-based inventory management, stockflow"
+        title="Online Inventory Software 2025: Inventory Management Online | StockFlow"
+        description="Inventory management online made easy! Track stock in real-time from anywhere. Cloud-based software trusted by 10,000+ businesses. Automated alerts, barcode scanning. Start FREE today!"
+        keywords="inventory management online, online inventory software, inventory management software, stock management software, cloud inventory software, inventory tracking software, warehouse management software, inventory control software, stock control software, real-time inventory software, cloud-based inventory management, online inventory management system, inventory management online free, best inventory management online, inventory management software online, stockflow"
         url="https://www.stockflow.be/online-inventory-software"
       />
 
@@ -47,10 +47,10 @@ export default function OnlineInventorySoftware() {
             {/* Left Side - Text Content */}
             <div className="lg:col-span-2">
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6">
-                <span className="text-blue-600">Online Inventory Software</span> 2025: Real-Time Tracking from Anywhere
+                <span className="text-blue-600">Inventory Management Online</span> 2025: Real-Time Tracking from Anywhere
               </h1>
               <p className="text-sm sm:text-base md:text-lg text-gray-700 mb-6 sm:mb-8 leading-relaxed">
-                Streamline your inventory management with powerful online inventory software designed for modern businesses. Track stock levels in real-time, automate reorder processes, and eliminate stockouts with our comprehensive cloud-based solution. Perfect for businesses looking to optimize their operations and reduce costs.
+                Streamline your inventory management online with powerful cloud-based software designed for modern businesses. Track stock levels in real-time, automate reorder processes, and eliminate stockouts with our comprehensive inventory management online solution. Perfect for businesses looking to optimize their operations and reduce costs.
               </p>
             </div>
             {/* Right Side - Image */}
@@ -84,10 +84,10 @@ export default function OnlineInventorySoftware() {
             {/* Right Side - Text Content */}
             <div className="lg:col-span-2">
               <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 sm:mb-6">
-                Why Choose Online Inventory Software Over Traditional Methods
+                Why Choose Inventory Management Online Over Traditional Methods
               </h2>
               <p className="text-sm sm:text-base md:text-lg text-gray-700 mb-4 sm:mb-6 leading-relaxed">
-                Online inventory software revolutionizes how businesses manage their stock. Unlike traditional spreadsheet-based systems, it provides real-time updates, cloud accessibility, and automated processes that eliminate manual errors and improve efficiency.
+                <strong>Inventory management online</strong> revolutionizes how businesses manage their stock. Unlike traditional spreadsheet-based systems, <strong>online inventory software</strong> provides real-time updates, cloud accessibility, and automated processes that eliminate manual errors and improve efficiency. When you manage your <strong>inventory management online</strong>, you gain access from anywhere, anytime.
               </p>
               <div className="space-y-3 sm:space-y-4">
                 <div className="bg-blue-50 p-3 sm:p-4 rounded-lg">

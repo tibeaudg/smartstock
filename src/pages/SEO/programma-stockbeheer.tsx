@@ -67,9 +67,9 @@ export default function ProgrammaStockbeheer() {
   return (
     <SeoPageLayout title="Programma Stockbeheer voor Kleine Bedrijven">
       <SEO
-        title="Gratis Programma Stockbeheer voor KMO's | StockFlow"
-        description="Eenvoudig programma stockbeheer voor kleine bedrijven. Beheer voorraad, leveringen en producten in één online dashboard. Gratis te proberen."
-        keywords="programma stockbeheer, stockbeheer programma, gratis stockbeheer, voorraadbeheer programma, magazijnbeheer programma, inventarisatie programma, KMO programma"
+        title="Programma Stockbeheer 2025: Gratis voor KMO's | StockFlow"
+        description="Eenvoudig programma stockbeheer voor kleine bedrijven. Beheer voorraad, leveringen en producten in één online dashboard. Real-time tracking, automatische meldingen. Gratis te proberen - geen creditcard nodig!"
+        keywords="programma stockbeheer, stockbeheer programma, gratis stockbeheer, voorraadbeheer programma, magazijnbeheer programma, inventarisatie programma, KMO programma, programma stockbeheer gratis, stockbeheer software, software stockbeheer"
         url="https://www.stockflow.be/programma-stockbeheer"
         structuredData={structuredData}
       />

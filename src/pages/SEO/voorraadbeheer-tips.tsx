@@ -34,9 +34,9 @@ export default function VoorraadbeheerTips() {
   return (
     <SeoPageLayout title="Voorraadbeheer Tips voor KMO's">
       <SEO
-        title="Voorraadbeheer Tips 2025: Bespaar 70% Tijd"
-        description="5 bewezen tips die direct werken! Bespaar 70% tijd, voorkom voorraadtekorten & groei je KMO. Gratis gids van experts - 10.000+ bedrijven volgen deze tips!"
-        keywords="voorraadbeheer, stockbeheer, magazijnbeheer, inventarisatie, voorraad optimaliseren, KMO, kleine onderneming, voorraad tips, voorraadbeheer software, voorraadbeheer app, stockflow, gratis voorraadbeheer, voorraadbeheer automatiseren, voorraadbeheer 2024, voorraadbeheer tips KMO"
+        title="Voorraadbeheer Tips 2025: Bespaar 70% Tijd & Verhoog Winst | StockFlow"
+        description="5 bewezen voorraadbeheer tips die direct werken! Bespaar 70% tijd, voorkom voorraadtekorten & groei je KMO. Praktische gids van experts - 10.000+ bedrijven volgen deze tips. Gratis download!"
+        keywords="voorraadbeheer tips, voorraadbeheer, stockbeheer, magazijnbeheer, inventarisatie, voorraad optimaliseren, KMO, kleine onderneming, voorraad tips, voorraadbeheer software, voorraadbeheer app, stockflow, gratis voorraadbeheer, voorraadbeheer automatiseren, voorraadbeheer 2025, voorraadbeheer tips KMO, voorraadbeheer best practices"
         url="https://www.stockflow.be/voorraadbeheer-tips"
       />
 

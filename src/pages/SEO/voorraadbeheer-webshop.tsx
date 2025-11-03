@@ -34,9 +34,9 @@ export default function VoorraadbeheerWebshop() {
   return (
     <SeoPageLayout title="Voorraadbeheer voor Webshops">
       <SEO
-        title="Voorraadbeheer Webshop 2024 | Voorkom Uitverkochte Producten & Verhoog Omzet | stockflow"
-        description="🛒 Webshop voorraadbeheer software die uitverkochte producten voorkomt. Real-time sync, automatische updates & omzet optimalisatie. Gratis starten!"
-        keywords="voorraadbeheer webshop, webshop voorraadbeheer, voorraadbeheer e-commerce, webshop software, e-commerce software, uitverkochte producten voorkomen, real-time voorraad, webshop automatisering, stockflow, gratis voorraadbeheer webshop, webshop optimalisatie"
+        title="Voorraadbeheer Webshop 2025: Voorkom Uitverkochte Producten & Verhoog Omzet | StockFlow"
+        description="Webshop voorraadbeheer software die uitverkochte producten voorkomt! Real-time sync, automatische updates & omzet optimalisatie. Bespaar tijd en verhoog klantentevredenheid. Gratis starten - geen creditcard nodig!"
+        keywords="voorraadbeheer webshop, webshop voorraadbeheer, voorraadbeheer e-commerce, webshop software, e-commerce software, uitverkochte producten voorkomen, real-time voorraad, webshop automatisering, stockflow, gratis voorraadbeheer webshop, webshop optimalisatie, voorraadbeheer online, webshop voorraadbeheer software, e-commerce voorraadbeheer"
         url="https://www.stockflow.be/voorraadbeheer-webshop"
       />
 
@@ -47,7 +47,7 @@ export default function VoorraadbeheerWebshop() {
             {/* Left Side - Text Content */}
             <div className="lg:col-span-2">
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6">
-                <span className="text-blue-600">Voorraadbeheer voor Webshops</span> - Voorkom uitverkochte producten, verhoog omzet
+                <span className="text-blue-600">Voorraadbeheer voor Webshops</span> 2025: Voorkom Uitverkochte Producten & Verhoog Omzet
               </h1>
               <p className="text-sm sm:text-base md:text-lg text-gray-700 mb-6 sm:mb-8 leading-relaxed">
                 Optimaliseer je webshop voorraadbeheer met onze gratis software. Voorkom uitverkochte producten, verhoog je omzet en verbeter je klantentevredenheid. Speciaal ontwikkeld voor e-commerce bedrijven om je voorraadbeheer naar het volgende niveau te tillen.

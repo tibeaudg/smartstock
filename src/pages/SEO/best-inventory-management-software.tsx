@@ -225,9 +225,9 @@ export default function BestInventoryManagementSoftware() {
   return (
     <SeoPageLayout title="Best Inventory Management Software">
       <SEO
-        title="Best Inventory Software 2025: Free Trial | StockFlow"
-        description="Save 35% costs & 15 hours/week! Join 10,000+ businesses using award-winning inventory software. Real-time tracking, automated alerts, barcode scanning. Start FREE trial now - no credit card!"
-        keywords="best inventory management software, top inventory management software, best inventory software, best stock management software, best inventory system, best inventory tracking software, best inventory management system, best inventory software 2024, top rated inventory software, best inventory management solution, best inventory software for small business, best inventory software for ecommerce, best inventory management software comparison, best inventory software reviews, best inventory management software features, best inventory software pricing, best inventory software demo, best inventory software trial"
+        title="Best Inventory Management Software 2025: Free Trial | StockFlow"
+        description="Find the best inventory management software! Compare top solutions. Real-time tracking, automated alerts, barcode scanning. Join 10,000+ businesses. Start FREE trial - no credit card required!"
+        keywords="best inventory management software, inventory management software best, top inventory management software, best inventory software, best stock management software, best inventory system, best inventory tracking software, best inventory management system, best inventory software 2025, top rated inventory software, best inventory management solution, best inventory software for small business, best inventory software for ecommerce, best inventory management software comparison, best inventory software reviews, best inventory management software features, best inventory software pricing, best inventory software demo, best inventory software trial, inventory management software provider, inventory management software online"
         url="https://www.stockflow.be/best-inventory-management-software"
       />
 
@@ -262,10 +262,10 @@ export default function BestInventoryManagementSoftware() {
             </div>
             
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light mb-8 text-white leading-tight">
-              <span className="text-blue-400 font-semibold">Best Inventory Management Software</span> 2025: Save 35% Costs & 15 Hours Weekly
+              <span className="text-blue-400 font-semibold">Best Inventory Management Software</span> 2025: Compare Top Solutions & Save 35% Costs
             </h1>
             <p className="text-xl md:text-2xl text-gray-100 mb-8 max-w-5xl mx-auto leading-relaxed">
-              <strong>Save 35% on inventory costs</strong> and <strong>15 hours weekly</strong> with real-time tracking, automated alerts, and powerful analytics. Join 10,000+ businesses who chose StockFlow.
+              Looking for the <strong>best inventory management software</strong>? Compare top solutions and find the perfect fit. <strong>Save 35% on inventory costs</strong> and <strong>15 hours weekly</strong> with real-time tracking, automated alerts, and powerful analytics. Join 10,000+ businesses who chose StockFlow as their <strong>best inventory management software</strong> solution.
             </p>
             
             {/* Value Props */}
@@ -302,10 +302,10 @@ export default function BestInventoryManagementSoftware() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Why StockFlow is the <span className="text-blue-600">Best Choice</span>
+              Why StockFlow is the <span className="text-blue-600">Best Inventory Management Software</span>
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Recognized by industry experts and loved by users worldwide.
+              When searching for the <strong>best inventory management software</strong>, StockFlow consistently ranks at the top. Recognized by industry experts and loved by users worldwide for being the most comprehensive and affordable solution.
             </p>
           </div>
 

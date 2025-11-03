@@ -122,9 +122,9 @@ export default function MagazijnbeheerSoftwareGratis() {
   return (
     <SeoPageLayout title="Magazijnbeheer Software Gratis - Professioneel Magazijnbeheer">
       <SEO
-        title="Magazijnbeheer Software Gratis 2025 | StockFlow"
-        description="100% GRATIS magazijnbeheer voor KMO's! Real-time tracking, automatische meldingen, barcode scanning. 10.000+ bedrijven gebruiken StockFlow. Start NU - geen creditcard nodig!"
-        keywords="magazijnbeheer software gratis, gratis magazijnbeheer software, magazijnbeheer software gratis download, magazijnbeheer software gratis KMO, magazijnbeheer software gratis belgië, magazijnbeheer software gratis vlaanderen, magazijnbeheer software gratis horeca, magazijnbeheer software gratis webshop, magazijnbeheer software gratis detailhandel, magazijnbeheer software gratis starters, magazijnbeheer software gratis kleine bedrijven, magazijnbeheer software gratis stockflow"
+        title="Magazijnbeheer Software Gratis 2025: 100% GRATIS | StockFlow"
+        description="100% GRATIS magazijnbeheer software voor KMO's! Real-time tracking, automatische meldingen, barcode scanning. Voorkom overstock en tekorten. 10.000+ bedrijven gebruiken StockFlow. Start NU gratis!"
+        keywords="magazijnbeheer software gratis, gratis magazijnbeheer software, magazijnbeheer software gratis download, magazijnbeheer software gratis KMO, magazijnbeheer software gratis belgië, magazijnbeheer software gratis vlaanderen, magazijnbeheer software gratis horeca, magazijnbeheer software gratis webshop, magazijnbeheer software gratis detailhandel, magazijnbeheer software gratis starters, magazijnbeheer software gratis kleine bedrijven, magazijnbeheer software gratis stockflow, magazijnbeheer gratis, gratis magazijnbeheer, magazijnbeheer software"
         url="https://www.stockflow.be/magazijnbeheer-software-gratis"
       />
 
