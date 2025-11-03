@@ -121,21 +121,49 @@ export const SEO: React.FC<SEOProps> = ({
         <link rel="alternate" hrefLang="x-default" href={url} />
       )}
       
-      {/* Robots */}
-      {noindex && <meta name="robots" content="noindex" />}
-      {nofollow && <meta name="robots" content="nofollow" />}
-      
       {/* Additional SEO meta tags */}
       <meta name="author" content="StockFlow" />
-      <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-      <meta name="googlebot" content="index, follow" />
-      <meta name="bingbot" content="index, follow" />
+      <meta name="revisit-after" content="7 days" />
+      
+      {/* Robots - Enhanced with proper handling */}
+      {noindex || nofollow ? (
+        <>
+          {noindex && <meta name="robots" content="noindex" />}
+          {nofollow && <meta name="robots" content="nofollow" />}
+          {noindex && nofollow && <meta name="robots" content="noindex, nofollow" />}
+        </>
+      ) : (
+        <>
+          <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+          <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+          <meta name="bingbot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+        </>
+      )}
       
       {/* Mobile optimization */}
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <meta name="mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+      <meta name="theme-color" content="#2563eb" />
+      
+      {/* Performance & Resource Hints */}
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+      <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+      
+      {/* Enhanced Image SEO */}
+      {image && (
+        <>
+          <meta property="og:image:secure_url" content={image.startsWith('http') ? image : `${defaultUrl}${image}`} />
+          <meta name="twitter:image:src" content={image.startsWith('http') ? image : `${defaultUrl}${image}`} />
+        </>
+      )}
+      
+      {/* Content Security & Validation */}
+      <meta httpEquiv="x-dns-prefetch-control" content="on" />
+      
       
       {/* Structured Data */}
       {structuredData && (() => {

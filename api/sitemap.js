@@ -12,13 +12,51 @@ function xmlEscape(str) {
     .replace(/'/g, '&apos;');
 }
 
-function buildUrlTag(loc, lastmod) {
+function getPriorityForRoute(route) {
+  // Homepage has highest priority
+  if (route === '/' || route === '/nl') return '1.0';
+  // Main category pages
+  if (route.includes('inventory-management-software') || route.includes('voorraadbeheer-software')) return '0.9';
+  // Important SEO pages
+  if (route.includes('tips') || route.includes('software') || route.includes('management')) return '0.8';
+  // Regular pages
+  if (route.includes('/blog/')) return '0.7';
+  // Default
+  return '0.6';
+}
+
+function getChangeFreqForRoute(route) {
+  // Homepage and main pages change frequently
+  if (route === '/' || route === '/nl') return 'daily';
+  // SEO pages updated regularly
+  if (route.includes('software') || route.includes('management')) return 'weekly';
+  // Blog posts change less frequently
+  if (route.includes('/blog/')) return 'monthly';
+  // Default
+  return 'monthly';
+}
+
+function buildUrlTag(loc, lastmod, priority, changefreq, imageUrl) {
   const parts = [
     '  <url>',
     `    <loc>${xmlEscape(loc)}</loc>`,
   ];
   if (lastmod) {
     parts.push(`    <lastmod>${new Date(lastmod).toISOString()}</lastmod>`);
+  }
+  if (priority) {
+    parts.push(`    <priority>${priority}</priority>`);
+  }
+  if (changefreq) {
+    parts.push(`    <changefreq>${changefreq}</changefreq>`);
+  }
+  // Add image if provided
+  if (imageUrl) {
+    parts.push('    <image:image>');
+    parts.push(`      <image:loc>${xmlEscape(imageUrl)}</image:loc>`);
+    parts.push(`      <image:title>StockFlow - Inventory Management</image:title>`);
+    parts.push(`      <image:caption>Professional inventory management software</image:caption>`);
+    parts.push('    </image:image>');
   }
   parts.push('  </url>');
   return parts.join('\n');
@@ -153,8 +191,17 @@ module.exports = async (req, res) => {
     const deduped = Array.from(new Map(urls.map((u) => [u.loc, u])).values());
     const xml = [
       '<?xml version="1.0" encoding="UTF-8"?>',
-      '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-      ...deduped.map((u) => buildUrlTag(u.loc, u.lastmod)),
+      '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">',
+      ...deduped.map((u) => {
+        const route = u.loc.replace(BASE_URL, '');
+        const priority = getPriorityForRoute(route);
+        const changefreq = getChangeFreqForRoute(route);
+        // Add main image for homepage and important pages
+        const imageUrl = (route === '/' || route === '/nl') 
+          ? `${BASE_URL}/Inventory-Management.png`
+          : null;
+        return buildUrlTag(u.loc, u.lastmod, priority, changefreq, imageUrl);
+      }),
       '</urlset>'
     ].join('\n');
 

@@ -4,16 +4,21 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { BreadcrumbNav } from './seo/BreadcrumbNav';
 import { getBreadcrumbPath } from '@/config/topicClusters';
 import Footer from './Footer';
+import { SeoSidebar, SidebarContent } from './seo/SeoSidebar';
 
 interface SeoPageLayoutProps {
   title: string;
   children: React.ReactNode;
   showBreadcrumbs?: boolean;
+  showSidebar?: boolean;
+  sidebarContent?: SidebarContent;
 }
 
 const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({ 
   children, 
-  showBreadcrumbs = true 
+  showBreadcrumbs = true,
+  showSidebar = false,
+  sidebarContent
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -41,7 +46,21 @@ const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({
           </div>
         )}
         
-        {children}
+        {/* Main Content with Optional Sidebar */}
+        {showSidebar && sidebarContent ? (
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div className="lg:grid lg:grid-cols-[300px_1fr] lg:gap-8">
+              <SeoSidebar content={sidebarContent} />
+              <div className="lg:col-start-2">
+                {children}
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            {children}
+          </div>
+        )}
       </main>
       <Footer />
     </div>

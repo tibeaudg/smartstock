@@ -14,7 +14,7 @@ interface BreadcrumbNavProps {
 }
 
 export const BreadcrumbNav: React.FC<BreadcrumbNavProps> = ({ items, className = '' }) => {
-  // Generate Schema.org BreadcrumbList structured data
+  // Generate enhanced Schema.org BreadcrumbList structured data
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",

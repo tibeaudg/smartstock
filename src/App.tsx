@@ -101,6 +101,7 @@ import InventorySoftware from "./pages/SEO/inventory-software";
 import WarehouseSoftware from "./pages/SEO/warehouse-software";
 import InventoryTracker from "./pages/SEO/inventory-tracker";
 import BestInventoryManagementSoftware from "./pages/SEO/best-inventory-management-software";
+import AllSeoArticles from "./pages/SEO/all-seo-articles";
 import NlPricingPage from "./pages/nl-pricing";
 import InventorySoftwareForSmallBusiness from "./pages/SEO/inventory-software-for-small-business";
 import InventorySoftwareManagement from "./pages/SEO/inventory-software-management";
@@ -442,6 +443,7 @@ const AppRouter = () => {
         <Route path="/contact" element={<SEOContactPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/seo" element={<SEOOverviewPage />} />
+        <Route path="/all-seo-articles" element={<AllSeoArticles />} />
         {/* Dutch SEO Pages - Both original paths and /nl/ paths */}
         <Route path="/voorraadbeheer-tips" element={<VoorraadbeheerTips />} />
         <Route path="/nl/voorraadbeheer-tips" element={<VoorraadbeheerTips />} />

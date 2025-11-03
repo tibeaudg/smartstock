@@ -232,12 +232,7 @@ export default function InventoryTracker() {
               >
                 Start Free Trial
               </Link>
-              <Link
-                to="/demo"
-                className="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition shadow-lg"
-              >
-                Watch Demo
-              </Link>
+
             </div>
             <p className="text-sm text-gray-200">Trusted by 500+ businesses for inventory tracking</p>
           </div>
@@ -452,12 +447,7 @@ export default function InventoryTracker() {
             >
               Start Free Trial
             </Link>
-            <Link
-              to="/demo"
-              className="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-blue-600 transition"
-            >
-              Watch Demo
-            </Link>
+
           </div>
           <div className="flex flex-wrap justify-center items-center gap-6 text-sm opacity-75">
             <div className="flex items-center">

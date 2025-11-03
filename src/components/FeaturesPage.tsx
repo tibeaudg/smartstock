@@ -346,12 +346,6 @@ const FeaturesPage: React.FC = () => {
                 >
                   Get Started Free →
                 </Link>
-                <Link
-                  to="/demo"
-                  className="inline-flex items-center border-2 border-blue-300 text-blue-600 hover:bg-blue-50 hover:border-blue-400 px-8 py-4 text-lg font-semibold rounded-full transition-all duration-300 shadow-sm hover:shadow-md transform hover:scale-105"
-                >
-                  Watch Demo
-                </Link>
               </div>
             </ScaleInWhenVisible>
           </div>
@@ -470,12 +464,6 @@ const FeaturesPage: React.FC = () => {
                 className="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-12 py-6 text-xl font-bold rounded-full shadow-2xl hover:shadow-blue-500/25 transform hover:scale-110 transition-all duration-300 border border-blue-500/20"
               >
                 Start Free Trial →
-              </Link>
-              <Link
-                to="/demo"
-                className="inline-flex items-center border-2 border-blue-300 text-blue-600 hover:bg-blue-50 hover:border-blue-400 px-8 py-4 text-lg font-semibold rounded-full transition-all duration-300 shadow-sm hover:shadow-md transform hover:scale-105"
-              >
-                Watch Demo
               </Link>
             </div>
             <p className="text-sm text-gray-500">
