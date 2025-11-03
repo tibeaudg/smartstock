@@ -161,9 +161,6 @@ const Footer = () => {
           <Link to="/features" className="block text-gray-400 hover:text-white underline">
             Features
           </Link>
-          <Link to="/demo" className="block text-gray-400 hover:text-white underline">
-            Demo
-          </Link>
         </div>
       </div>
 

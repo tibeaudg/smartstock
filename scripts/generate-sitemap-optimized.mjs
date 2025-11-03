@@ -102,9 +102,7 @@ async function generateOptimizedSitemap() {
     { path: '/', priority: '1.0', changefreq: 'daily' },          // Homepage
     { path: '/features', priority: '0.9', changefreq: 'weekly' }, // Features page
     { path: '/pricing', priority: '0.9', changefreq: 'weekly' },  // Pricing page
-    { path: '/demo', priority: '0.8', changefreq: 'monthly' },    // Demo page
     { path: '/contact', priority: '0.7', changefreq: 'monthly' }, // Contact page
-    { path: '/blog', priority: '0.8', changefreq: 'daily' },      // Blog index
     { path: '/about', priority: '0.6', changefreq: 'monthly' },   // About page
     { path: '/privacy-policy', priority: '0.3', changefreq: 'yearly' },
     { path: '/terms-conditions', priority: '0.3', changefreq: 'yearly' },

@@ -204,12 +204,7 @@ export default function InventoryManagementSoftware() {
                 >
                   Start Your Free Trial
                 </Link>
-                <Link
-                  to="/demo"
-                  className="border-2 border-white text-white hover:bg-white hover:text-blue-900 px-10 py-5 rounded-xl font-bold text-xl transition-all duration-300 text-center"
-                >
-                  Watch 2-Min Demo
-                </Link>
+         
               </div>
               
               <div className="flex flex-wrap items-center gap-6 text-blue-200">
@@ -731,52 +726,7 @@ export default function InventoryManagementSoftware() {
               </div>
             </div>
             
-            {/* Right Side - Demo Preview */}
-            <div className="relative">
-              <div className="bg-white rounded-2xl shadow-2xl p-6">
-                {/* Demo Video Placeholder */}
-                <div className="bg-gray-900 rounded-xl aspect-video mb-4 relative overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center">
-                    <div className="text-center text-white">
 
-                      <h3 className="text-xl font-bold mb-2 mt-32">Demo Video</h3>
-                      <p className="text-blue-100">2-minute walkthrough</p>
-                    </div>
-                  </div>
-                  
-                  {/* Play Button Overlay */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <Link
-                      to="/demo"
-                      className="w-20 h-20 bg-white bg-opacity-90 hover:bg-opacity-100 rounded-full flex items-center justify-center transition-all duration-300 transform hover:scale-110 shadow-2xl"
-                    >
-                      <div className="w-0 h-0 border-l-[12px] border-l-blue-600 border-y-[8px] border-y-transparent ml-1"></div>
-                    </Link>
-                  </div>
-                </div>
-                
-                {/* Demo Stats */}
-                <div className="grid grid-cols-3 gap-4">
-                  <div className="text-center p-3 bg-blue-50 rounded-lg">
-                    <div className="text-2xl font-bold text-blue-600">2min</div>
-                    <div className="text-sm text-gray-600">Duration</div>
-                  </div>
-                  <div className="text-center p-3 bg-green-50 rounded-lg">
-                    <div className="text-2xl font-bold text-green-600">100%</div>
-                    <div className="text-sm text-gray-600">Free</div>
-                  </div>
-                  <div className="text-center p-3 bg-purple-50 rounded-lg">
-                    <div className="text-2xl font-bold text-purple-600">Live</div>
-                    <div className="text-sm text-gray-600">Demo</div>
-                  </div>
-                </div>
-              </div>
-              
-              {/* Floating Elements */}
-              <div className="absolute -top-4 -right-4 bg-green-500 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg animate-pulse">
-                ✓ No Signup Required
-              </div>
-            </div>
           </div>
         </div>
       </section>

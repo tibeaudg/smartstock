@@ -128,12 +128,7 @@ export default function Magazijnbeheer() {
                 >
                   Start Gratis Trial
                 </Link>
-                <Link
-                  to="/demo"
-                  className="border-2 border-white text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-white hover:text-purple-600 transition text-center"
-                >
-                  Bekijk Demo
-                </Link>
+              
               </div>
               <div className="flex flex-wrap gap-4 text-sm">
                 <div className="flex items-center">
@@ -547,12 +542,7 @@ export default function Magazijnbeheer() {
             >
               Start Gratis Trial
             </Link>
-            <Link
-              to="/demo"
-              className="border-2 border-purple-600 text-purple-600 px-10 py-4 rounded-lg font-bold text-lg hover:bg-purple-50 transition"
-            >
-              Bekijk Demo
-            </Link>
+       
           </div>
           <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-600">
             <div className="flex items-center">

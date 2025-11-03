@@ -10,7 +10,6 @@ import { HomePage } from "./components/HomePage";
 import { HomePageNL } from "./components/HomePageNL";
 import { AuthPage } from "./components/AuthPage";
 import NotFound from "./pages/NotFound";
-import DemoPage from './pages/demo';
 import SEOOverviewPage from './pages/seo';
 import { Dashboard } from './components/Dashboard';
 import { StockList } from './components/StockList';
@@ -49,12 +48,10 @@ import { useCookieConsent } from './hooks/useCookieConsent';
 // Import all SEO pages
 import VoorraadbeheerTips from './pages/SEO/voorraadbeheer-tips';
 import VoorraadbeheerSoftwareVergelijken from './pages/SEO/voorraadbeheer-software-vergelijken';
-import VoorraadbeheerWebshop from './pages/SEO/voorraadbeheer-webshop';
 import VoorraadbeheerBakkerij from './pages/SEO/voorraadbeheer-bakkerij';
 import BlogListPage from './pages/blog';
 import BlogPostPage from './pages/blog/[slug]';
 import VoorraadbeheerFoutenVoorkomen from './pages/SEO/voorraadbeheer-fouten-voorkomen';
-import VoorraadbeheerAutomatiseren from './pages/SEO/voorraadbeheer-automatiseren';
 import VoorraadbeheerHoreca from './pages/SEO/voorraadbeheer-horeca';
 import VoorraadbeheerExcelVsSoftware from './pages/SEO/voorraadbeheer-excel-vs-software';
 import VoorraadbeheerVoorStarters from './pages/SEO/voorraadbeheer-voor-starters';
@@ -81,7 +78,6 @@ import ProgrammaStockbeheerGratis from "./pages/SEO/programma-stockbeheer-gratis
 import StockbeheerApp from "./pages/SEO/stockbeheer-app";
 import MagazijnbeheerSoftwareGratis from "./pages/SEO/magazijnbeheer-software-gratis";
 import VoorraadSoftwareGratis from "./pages/SEO/voorraad-software-gratis";
-import BoekhoudprogrammaMetVoorraadbeheer from "./pages/SEO/boekhoudprogramma-met-voorraadbeheer";
 import OnlineInventoryManagement from "./pages/SEO/online-inventory-management";
 import OnlineInventorySoftware from "./pages/SEO/online-inventory-software";
 import BestOnlineInventorySoftware from "./pages/SEO/best-online-inventory-software";
@@ -89,7 +85,6 @@ import BestOnlineInventorySystem from "./pages/SEO/best-online-inventory-system"
 import AppVoorraadbeheerThuis from "./pages/SEO/app-voorraadbeheer-thuis";
 import VoorraadbeheerApp from "./pages/SEO/voorraadbeheer-app";
 import VoorraadbeheerExcelTemplateGratis from "./pages/SEO/voorraadbeheer-excel-template-gratis";
-import VoorraadbeheerExcelZelfMaken from "./pages/SEO/voorraadbeheer-excel-zelf-maken";
 import WarehouseManagementSystem from "./pages/SEO/warehouse-management-system";
 import AboutPage from "./pages/SEO/about";
 import PrivacyPolicyPage from "./pages/SEO/privacy-policy";
@@ -109,8 +104,6 @@ import SoftwareForInventoryManagement from "./pages/SEO/software-for-inventory-m
 import SoftwaresForInventoryManagement from "./pages/SEO/softwares-for-inventory-management";
 import WatIsVoorraadbeheerSoftware from "./pages/SEO/wat-is-voorraadbeheer-software";
 import ExcelVsVoorraadbeheerSoftware from "./pages/SEO/excel-vs-voorraadbeheer-software";
-import ChecklistVoorraadbeheerSoftwareGereed from "./pages/SEO/checklist-voorraadbeheer-software-gereed";
-import VoorraadbeheerAutomatiseren5Stappen from "./pages/SEO/voorraadbeheer-automatiseren-5-stappen";
 
 // Import new SEO keyword pages
 import SoftwareStockbeheer from "./pages/SEO/software-stockbeheer";
@@ -120,33 +113,21 @@ import MagazijnbeheerSoftware from "./pages/SEO/magazijnbeheer-software";
 
 // Import comparison pages - Phase 1
 import StockFlowVsSortly from "./pages/SEO/stockflow-vs-sortly";
-import StockFlowVsSortlyNL from "./pages/SEO/stockflow-vs-sortly-nl";
 import StockFlowVsExactOnline from "./pages/SEO/stockflow-vs-exact-online";
 import StockFlowVsExactOnlineNL from "./pages/SEO/stockflow-vs-exact-online-nl";
 import BestVoorraadbeheerSoftwareKMO from "./pages/SEO/best-voorraadbeheer-software-kmo";
 
 // Import comparison pages - Phase 2 International
-import StockFlowVsFishbowl from "./pages/SEO/stockflow-vs-fishbowl";
 import StockFlowVsZohoInventory from "./pages/SEO/stockflow-vs-zoho-inventory";
 import StockFlowVsInFlow from "./pages/SEO/stockflow-vs-inflow";
-import StockFlowVsCin7 from "./pages/SEO/stockflow-vs-cin7";
 import StockFlowVsTradeGecko from "./pages/SEO/stockflow-vs-tradegecko";
 import StockFlowVsKatana from "./pages/SEO/stockflow-vs-katana";
-import StockFlowVsDearSystems from "./pages/SEO/stockflow-vs-dear-systems";
-import StockFlowVsUnleashed from "./pages/SEO/stockflow-vs-unleashed";
-import StockFlowVsSKULabs from "./pages/SEO/stockflow-vs-skulabs";
-import StockFlowVsOrdoro from "./pages/SEO/stockflow-vs-ordoro";
-import StockFlowVsInventoryPlanner from "./pages/SEO/stockflow-vs-inventory-planner";
-import StockFlowVsSkuVault from "./pages/SEO/stockflow-vs-skuvault";
-import StockFlowVsBrightpearl from "./pages/SEO/stockflow-vs-brightpearl";
-import StockFlowVsLinnworks from "./pages/SEO/stockflow-vs-linnworks";
 
 // Import comparison pages - Phase 3 Regional
 import StockFlowVsTeamleader from "./pages/SEO/stockflow-vs-teamleader";
 
 // Import new Benelux competitor pages
 import StockFlowVsVisma from "./pages/SEO/stockflow-vs-visma";
-import StockFlowVsVismaNL from "./pages/SEO/stockflow-vs-visma-nl";
 
 
 
@@ -433,7 +414,6 @@ const AppRouter = () => {
         <Route path="/nl" element={<HomePageNL />} />
         
         <Route path="/features" element={<FeaturesPage />} />
-        <Route path="/demo" element={<DemoPage />} />
         <Route path="/error-test" element={<ErrorTestComponent />} />
         <Route path="/auth" element={<AuthRoute />} />
         <Route path="/pricing" element={<PricingPage />} />
@@ -451,17 +431,11 @@ const AppRouter = () => {
         <Route path="/voorraadbeheer-software-vergelijken" element={<VoorraadbeheerSoftwareVergelijken />} />
         <Route path="/nl/voorraadbeheer-software-vergelijken" element={<VoorraadbeheerSoftwareVergelijken />} />
         
-        <Route path="/voorraadbeheer-webshop" element={<VoorraadbeheerWebshop />} />
-        <Route path="/nl/voorraadbeheer-webshop" element={<VoorraadbeheerWebshop />} />
         
-        <Route path="/voorraadbeheer-bakkerij" element={<VoorraadbeheerBakkerij />} />
-        <Route path="/nl/voorraadbeheer-bakkerij" element={<VoorraadbeheerBakkerij />} />
         
         <Route path="/voorraadbeheer-fouten-voorkomen" element={<VoorraadbeheerFoutenVoorkomen />} />
         <Route path="/nl/voorraadbeheer-fouten-voorkomen" element={<VoorraadbeheerFoutenVoorkomen />} />
         
-        <Route path="/voorraadbeheer-automatiseren" element={<VoorraadbeheerAutomatiseren />} />
-        <Route path="/nl/voorraadbeheer-automatiseren" element={<VoorraadbeheerAutomatiseren />} />
         
         <Route path="/voorraadbeheer-horeca" element={<VoorraadbeheerHoreca />} />
         <Route path="/nl/voorraadbeheer-horeca" element={<VoorraadbeheerHoreca />} />
@@ -516,11 +490,7 @@ const AppRouter = () => {
         <Route path="/excel-vs-voorraadbeheer-software" element={<ExcelVsVoorraadbeheerSoftware />} />
         <Route path="/nl/excel-vs-voorraadbeheer-software" element={<ExcelVsVoorraadbeheerSoftware />} />
         
-        <Route path="/checklist-voorraadbeheer-software-gereed" element={<ChecklistVoorraadbeheerSoftwareGereed />} />
-        <Route path="/nl/checklist-voorraadbeheer-software-gereed" element={<ChecklistVoorraadbeheerSoftwareGereed />} />
         
-        <Route path="/voorraadbeheer-automatiseren-5-stappen" element={<VoorraadbeheerAutomatiseren5Stappen />} />
-        <Route path="/nl/voorraadbeheer-automatiseren-5-stappen" element={<VoorraadbeheerAutomatiseren5Stappen />} />
         
         <Route path="/stockbeheer" element={<Stockbeheer />} />
         <Route path="/nl/stockbeheer" element={<Stockbeheer />} />
@@ -560,8 +530,6 @@ const AppRouter = () => {
         <Route path="/voorraad-software-gratis" element={<VoorraadSoftwareGratis />} />
         <Route path="/nl/voorraad-software-gratis" element={<VoorraadSoftwareGratis />} />
         
-        <Route path="/boekhoudprogramma-met-voorraadbeheer" element={<BoekhoudprogrammaMetVoorraadbeheer />} />
-        <Route path="/nl/boekhoudprogramma-met-voorraadbeheer" element={<BoekhoudprogrammaMetVoorraadbeheer />} />
         <Route path="/online-inventory-management" element={<OnlineInventoryManagement />} />
         <Route path="/online-inventory-software" element={<OnlineInventorySoftware />} />
         <Route path="/best-online-inventory-software" element={<BestOnlineInventorySoftware />} />
@@ -575,8 +543,6 @@ const AppRouter = () => {
         <Route path="/voorraadbeheer-excel-template-gratis" element={<VoorraadbeheerExcelTemplateGratis />} />
         <Route path="/nl/voorraadbeheer-excel-template-gratis" element={<VoorraadbeheerExcelTemplateGratis />} />
         
-        <Route path="/voorraadbeheer-excel-zelf-maken" element={<VoorraadbeheerExcelZelfMaken />} />
-        <Route path="/nl/voorraadbeheer-excel-zelf-maken" element={<VoorraadbeheerExcelZelfMaken />} />
         <Route path="/warehouse-management-system" element={<WarehouseManagementSystem />} />
         <Route path="/inventory-management-software" element={<InventoryManagementSoftware />} />
         <Route path="/inventory-management" element={<InventoryManagement />} />
@@ -594,35 +560,16 @@ const AppRouter = () => {
 
         {/* Comparison Pages - Phase 1 */}
         <Route path="/stockflow-vs-sortly" element={<StockFlowVsSortly />} />
-        <Route path="/nl/stockflow-vs-sortly" element={<StockFlowVsSortlyNL />} />
         <Route path="/stockflow-vs-exact-online" element={<StockFlowVsExactOnline />} />
         <Route path="/nl/stockflow-vs-exact-online" element={<StockFlowVsExactOnlineNL />} />
         <Route path="/best-voorraadbeheer-software-kmo" element={<BestVoorraadbeheerSoftwareKMO />} />
         <Route path="/nl/best-voorraadbeheer-software-kmo" element={<BestVoorraadbeheerSoftwareKMO />} />
 
         {/* Comparison Pages - Phase 2 International */}
-        <Route path="/stockflow-vs-fishbowl" element={<StockFlowVsFishbowl />} />
         <Route path="/stockflow-vs-zoho-inventory" element={<StockFlowVsZohoInventory />} />
         <Route path="/stockflow-vs-inflow" element={<StockFlowVsInFlow />} />
-        <Route path="/stockflow-vs-cin7" element={<StockFlowVsCin7 />} />
         <Route path="/stockflow-vs-tradegecko" element={<StockFlowVsTradeGecko />} />
         <Route path="/stockflow-vs-katana" element={<StockFlowVsKatana />} />
-        <Route path="/stockflow-vs-dear-systems" element={<StockFlowVsDearSystems />} />
-        <Route path="/stockflow-vs-unleashed" element={<StockFlowVsUnleashed />} />
-        <Route path="/stockflow-vs-skulabs" element={<StockFlowVsSKULabs />} />
-        <Route path="/stockflow-vs-ordoro" element={<StockFlowVsOrdoro />} />
-        <Route path="/stockflow-vs-inventory-planner" element={<StockFlowVsInventoryPlanner />} />
-        <Route path="/stockflow-vs-skuvault" element={<StockFlowVsSkuVault />} />
-        <Route path="/stockflow-vs-brightpearl" element={<StockFlowVsBrightpearl />} />
-        <Route path="/stockflow-vs-linnworks" element={<StockFlowVsLinnworks />} />
-
-        {/* Comparison Pages - Phase 3 Regional */}
-        <Route path="/stockflow-vs-teamleader" element={<StockFlowVsTeamleader />} />
-        <Route path="/nl/stockflow-vs-teamleader" element={<StockFlowVsTeamleader />} />
-
-        {/* New Benelux Competitor Pages */}
-        <Route path="/stockflow-vs-visma" element={<StockFlowVsVisma />} />
-        <Route path="/nl/stockflow-vs-visma" element={<StockFlowVsVismaNL />} />
 
 
         {/* Beschermde dashboard routes */}
