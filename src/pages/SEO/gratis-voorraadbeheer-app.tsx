@@ -119,12 +119,7 @@ export default function GratisVoorraadbeheerApp() {
                 >
                   Start Gratis Nu
                 </Link>
-                <Link
-                  to="/demo-aanvragen"
-                  className="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-green-600 transition text-center"
-                >
-                  Demo Aanvragen
-                </Link>
+           
               </div>
             </div>
             <div className="text-center">
@@ -349,12 +344,7 @@ export default function GratisVoorraadbeheerApp() {
             >
               Start Gratis Nu
             </Link>
-            <Link
-              to="/demo-aanvragen"
-              className="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-green-600 transition text-center"
-            >
-              Demo Aanvragen
-            </Link>
+  
           </div>
           <p className="text-sm mt-6 opacity-75">
             Geen creditcard vereist • Direct toegang • Nederlandse support

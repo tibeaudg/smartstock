@@ -871,6 +871,29 @@ export function getRelatedPages(currentPath: string, limit: number = 6): PageMet
   return relatedPages.sort(() => 0.5 - Math.random()).slice(0, limit);
 }
 
+// Helper function to get ALL SEO pages from all clusters
+export function getAllSeoPages(): PageMetadata[] {
+  const allPages: PageMetadata[] = [];
+  
+  for (const cluster of allClusters) {
+    // Add pillar page
+    allPages.push(cluster.pillar);
+    // Add all cluster pages
+    allPages.push(...cluster.clusters);
+  }
+  
+  // Remove duplicates (in case a page appears in multiple clusters)
+  const uniquePages = new Map<string, PageMetadata>();
+  for (const page of allPages) {
+    if (!uniquePages.has(page.path)) {
+      uniquePages.set(page.path, page);
+    }
+  }
+  
+  // Sort by title for consistency
+  return Array.from(uniquePages.values()).sort((a, b) => a.title.localeCompare(b.title));
+}
+
 // Helper function to get breadcrumb path
 export function getBreadcrumbPath(pagePath: string): Array<{ name: string; path: string }> {
   const cluster = findClusterForPage(pagePath);

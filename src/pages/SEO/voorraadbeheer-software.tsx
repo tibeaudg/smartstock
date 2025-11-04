@@ -180,12 +180,7 @@ export default function VoorraadbeheerSoftware() {
                 >
                   Start Gratis Nu
                 </Link>
-                <Link
-                  to="/demo"
-                  className="border-2 border-white text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-white hover:text-blue-600 transition text-center"
-                >
-                  Bekijk Demo
-                </Link>
+      
               </div>
               <div className="flex flex-wrap gap-4 text-sm">
                 <div className="flex items-center">
@@ -631,12 +626,7 @@ export default function VoorraadbeheerSoftware() {
             >
               Start Gratis Account
             </Link>
-            <Link
-              to="/demo"
-              className="border-2 border-white text-white px-10 py-4 rounded-lg font-bold text-lg hover:bg-white hover:text-blue-600 transition"
-            >
-              Bekijk Demo
-            </Link>
+ 
           </div>
           <div className="flex flex-wrap justify-center gap-6 text-sm opacity-90">
             <div className="flex items-center">

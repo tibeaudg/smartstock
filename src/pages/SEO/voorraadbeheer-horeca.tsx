@@ -2,6 +2,7 @@ import SEO from '../../components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '../../components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
+import { Check } from 'lucide-react';
 
 import { StructuredData } from '../../components/StructuredData';
 export default function VoorraadbeheerHoreca() {
@@ -34,9 +35,9 @@ export default function VoorraadbeheerHoreca() {
   return (
     <SeoPageLayout title="Voorraadbeheer voor Horeca">
       <SEO
-        title="Voorraadbeheer Horeca 2025: Bespaar 20%"
-        description="Voorkom voedselverspilling! Horeca software met houdbaarheidsdata & menuplanning. Bespaar 20% op kosten. Gratis starten - 10.000+ restaurants gebruiken StockFlow!"
-        keywords="voorraadbeheer horeca, horeca voorraadbeheer, voorraadbeheer restaurant, voorraadbeheer café, voorraadbeheer hotel, horeca software, restaurant software, voedselverspilling voorkomen, menuplanning, houdbaarheidsdata, stockflow, gratis voorraadbeheer horeca"
+        title="Horeca Voorraadbeheer Software 2025: Gratis | Verspilling -40%"
+        description="Reduceer voedselverspilling tot 40% en bespaar 20% op kosten! Horeca voorraadbeheer software met houdbaarheidsdata & receptbeheer. Speciaal voor restaurants/cafés. Start gratis - geen creditcard!"
+        keywords="voorraadbeheer horeca, horeca voorraadbeheer, voorraadbeheer restaurant, voorraadbeheer café, voorraadbeheer hotel, horeca software, restaurant software, voedselverspilling voorkomen, menuplanning, houdbaarheidsdata, stockflow, gratis voorraadbeheer horeca, horeca voorraadbeheer software, restaurant voorraadbeheer, voorraadbeheer software gratis"
         url="https://www.stockflow.be/voorraadbeheer-horeca"
       />
 
@@ -218,6 +219,121 @@ export default function VoorraadbeheerHoreca() {
               <h3 className="text-xl font-semibold mb-4">4. Train je personeel</h3>
               <p className="text-gray-700">
                 Zorg dat al je medewerkers weten hoe ze de voorraadbeheer software moeten gebruiken. Dit voorkomt fouten en zorgt voor consistente data.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Horeca Comparison Section */}
+      <section className="py-16 px-4 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-4">
+              StockFlow vs Andere <span className="text-blue-600">Horeca Software</span>
+            </h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              Waarom kiezen restaurants en cafés voor StockFlow boven gespecialiseerde horeca software?
+            </p>
+          </div>
+
+          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-8 border border-blue-100">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+              <div className="bg-white p-6 rounded-lg">
+                <h3 className="text-xl font-bold text-gray-900 mb-3">StockFlow</h3>
+                <div className="space-y-3">
+                  <div className="flex items-center">
+                    <Check className="w-5 h-5 text-green-500 mr-2" />
+                    <span className="text-sm">Houdbaarheidsdata tracking</span>
+                  </div>
+                  <div className="flex items-center">
+                    <Check className="w-5 h-5 text-green-500 mr-2" />
+                    <span className="text-sm">Receptbeheer & menuplanning</span>
+                  </div>
+                  <div className="flex items-center">
+                    <Check className="w-5 h-5 text-green-500 mr-2" />
+                    <span className="text-sm">Afval tracking & verspilling</span>
+                  </div>
+                  <div className="flex items-center">
+                    <Check className="w-5 h-5 text-green-500 mr-2" />
+                    <span className="text-sm">Multi-locatie voor keuken/bar/opslag</span>
+                  </div>
+                  <div className="flex items-center">
+                    <Check className="w-5 h-5 text-green-500 mr-2" />
+                    <span className="text-sm">Kostenanalyse per gerecht</span>
+                  </div>
+                  <div className="flex items-center">
+                    <Check className="w-5 h-5 text-green-500 mr-2" />
+                    <span className="text-sm">Vanaf €0/maand</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white p-6 rounded-lg border border-gray-200">
+                <h3 className="text-xl font-bold text-gray-900 mb-3">Horeca Software A</h3>
+                <div className="space-y-3">
+                  <div className="flex items-center">
+                    <Check className="w-5 h-5 text-green-500 mr-2" />
+                    <span className="text-sm">Houdbaarheidsdata</span>
+                  </div>
+                  <div className="flex items-center">
+                    <Check className="w-5 h-5 text-green-500 mr-2" />
+                    <span className="text-sm">Basis menuplanning</span>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="text-red-500 mr-2">✗</span>
+                    <span className="text-sm">Beperkt afval tracking</span>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="text-red-500 mr-2">✗</span>
+                    <span className="text-sm">Geen multi-locatie</span>
+                  </div>
+                  <div className="flex items-center">
+                    <Check className="w-5 h-5 text-green-500 mr-2" />
+                    <span className="text-sm">Basis kostenanalyse</span>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="text-sm font-bold">Vanaf €100+/maand</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white p-6 rounded-lg border border-gray-200">
+                <h3 className="text-xl font-bold text-gray-900 mb-3">Generic Software</h3>
+                <div className="space-y-3">
+                  <div className="flex items-center">
+                    <span className="text-red-500 mr-2">✗</span>
+                    <span className="text-sm">Geen houdbaarheidsdata</span>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="text-red-500 mr-2">✗</span>
+                    <span className="text-sm">Geen receptbeheer</span>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="text-red-500 mr-2">✗</span>
+                    <span className="text-sm">Geen afval tracking</span>
+                  </div>
+                  <div className="flex items-center">
+                    <Check className="w-5 h-5 text-green-500 mr-2" />
+                    <span className="text-sm">Multi-locatie mogelijk</span>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="text-red-500 mr-2">✗</span>
+                    <span className="text-sm">Geen kostenanalyse</span>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="text-sm font-bold">Vanaf €50-200/maand</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-lg p-6 border border-blue-200">
+              <h3 className="text-xl font-bold text-gray-900 mb-3 text-center">
+                Waarom Horeca Bedrijven voor StockFlow Kiezen
+              </h3>
+              <p className="text-gray-700 text-center max-w-3xl mx-auto">
+                StockFlow biedt alle horeca-specifieke functies die restaurants, cafés en hotels nodig hebben - tegen een fractie van de prijs van gespecialiseerde horeca software. Geen gesloten ecosystemen, geen forse abonnementskosten. Start gratis en scaleer met je business.
               </p>
             </div>
           </div>

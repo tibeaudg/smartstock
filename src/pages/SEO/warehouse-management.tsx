@@ -128,12 +128,7 @@ export default function WarehouseManagement() {
                 >
                   Start Free Trial
                 </Link>
-                <Link
-                  to="/demo"
-                  className="border-2 border-white text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-white hover:text-purple-600 transition text-center"
-                >
-                  Watch Demo
-                </Link>
+        
               </div>
               <div className="flex flex-wrap gap-4 text-sm">
                 <div className="flex items-center">

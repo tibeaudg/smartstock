@@ -193,10 +193,15 @@ export default function InventoryTracker() {
   return (
     <SeoPageLayout title="Inventory Tracker">
       <SEO
-        title="Best Inventory Tracker 2024 - Real-time Stock Monitoring | StockFlow"
-        description="Track your inventory in real-time with the best inventory tracker. Barcode scanning, movement tracking, and automated alerts. Start free trial today!"
+        title="Best Inventory Tracker 2025 - Real-time Stock Monitoring | StockFlow"
+        description="Track your inventory in real-time with the best inventory tracker. Barcode scanning, movement tracking, automated alerts, and 99.9% accuracy. Start free trial today - no credit card required."
         keywords="inventory tracker, stock tracker, inventory tracking, stock tracking, inventory monitoring, stock monitoring, inventory tracking software, stock tracking software, inventory tracking app, stock tracking app, real-time inventory tracking, inventory movement tracking, stock movement tracking, inventory tracking system, stock tracking system, inventory tracker app, stock tracker app, inventory tracking tool, stock tracking tool, inventory tracking solution, stock tracking solution"
         url="https://www.stockflow.be/inventory-tracker"
+        locale="en"
+        alternateLanguages={[
+          { lang: 'en-US', url: 'https://www.stockflow.be/inventory-tracker' },
+          { lang: 'nl-BE', url: 'https://www.stockflow.be/voorraadbeheer-app' }
+        ]}
         structuredData={structuredData}
       />
 
@@ -227,12 +232,7 @@ export default function InventoryTracker() {
               >
                 Start Free Trial
               </Link>
-              <Link
-                to="/demo"
-                className="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition shadow-lg"
-              >
-                Watch Demo
-              </Link>
+
             </div>
             <p className="text-sm text-gray-200">Trusted by 500+ businesses for inventory tracking</p>
           </div>
@@ -447,12 +447,7 @@ export default function InventoryTracker() {
             >
               Start Free Trial
             </Link>
-            <Link
-              to="/demo"
-              className="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-blue-600 transition"
-            >
-              Watch Demo
-            </Link>
+
           </div>
           <div className="flex flex-wrap justify-center items-center gap-6 text-sm opacity-75">
             <div className="flex items-center">

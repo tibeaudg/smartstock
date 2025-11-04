@@ -139,12 +139,7 @@ export default function WatIsVoorraadbeheerSoftware() {
                 >
                   Start Gratis Trial
                 </Link>
-                <Link
-                  to="/demo"
-                  className="border-2 border-white text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-white hover:text-blue-600 transition text-center"
-                >
-                  Bekijk Demo
-                </Link>
+ 
               </div>
               <div className="flex flex-wrap gap-4 text-sm">
                 <div className="flex items-center">
@@ -470,12 +465,7 @@ export default function WatIsVoorraadbeheerSoftware() {
               Stockflow is een moderne cloud-based oplossing speciaal ontworpen voor <Link to="/voorraadbeheer-kmo" className="underline hover:text-yellow-300">KMO's</Link>. 
               Begin klein en groei mee zonder systeem te wisselen.
             </p>
-            <Link
-              to="/demo"
-              className="inline-block bg-white text-blue-600 px-8 py-3 rounded-lg font-bold hover:bg-blue-50 transition"
-            >
-              Bekijk Demo
-            </Link>
+
           </div>
         </div>
       </section>
@@ -572,12 +562,7 @@ export default function WatIsVoorraadbeheerSoftware() {
             >
               Start je gratis proefperiode
             </Link>
-            <Link
-              to="/demo"
-              className="border-2 border-blue-600 text-blue-600 px-10 py-4 rounded-lg font-bold text-lg hover:bg-blue-50 transition"
-            >
-              Bekijk Demo
-            </Link>
+
           </div>
           <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-600">
             <div className="flex items-center">

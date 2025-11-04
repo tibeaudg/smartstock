@@ -34,10 +34,15 @@ export default function OnlineInventorySoftware() {
   return (
     <SeoPageLayout title="Online Inventory Software">
       <SEO
-        title="Online Inventory Software 2025: Free Trial | StockFlow"
-        description="Track inventory in real-time from anywhere! Cloud-based software trusted by 10,000+ businesses. Automated alerts, barcode scanning, multi-location. Start FREE today - no credit card required!"
-        keywords="online inventory software, inventory management software, stock management software, cloud inventory software, inventory tracking software, warehouse management software, inventory control software, stock control software, real-time inventory software, cloud-based inventory management, stockflow"
+        title="Online Inventory Software 2025: Free Trial | Cloud-Based | No Credit Card"
+        description="Track inventory in real-time from anywhere! Cloud-based software trusted by 10,000+ businesses. Automated alerts, barcode scanning, multi-location. Start FREE trial today - no credit card required!"
+        keywords="inventory management online, online inventory software, inventory management software, stock management software, cloud inventory software, inventory tracking software, warehouse management software, inventory control software, stock control software, real-time inventory software, cloud-based inventory management, online inventory management system, inventory management online free, best inventory management online, inventory management software online, stockflow, stock flow"
         url="https://www.stockflow.be/online-inventory-software"
+        locale="en"
+        alternateLanguages={[
+          { lang: 'en-US', url: 'https://www.stockflow.be/online-inventory-software' },
+          { lang: 'nl-BE', url: 'https://www.stockflow.be/online-voorraadbeheer-software' }
+        ]}
       />
 
       {/* Hero Section - Split Layout */}
@@ -47,10 +52,10 @@ export default function OnlineInventorySoftware() {
             {/* Left Side - Text Content */}
             <div className="lg:col-span-2">
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6">
-                <span className="text-blue-600">Online Inventory Software</span> 2025: Real-Time Tracking from Anywhere
+                <span className="text-blue-600">Inventory Management Online</span> 2025: Real-Time Tracking from Anywhere
               </h1>
               <p className="text-sm sm:text-base md:text-lg text-gray-700 mb-6 sm:mb-8 leading-relaxed">
-                Streamline your inventory management with powerful online inventory software designed for modern businesses. Track stock levels in real-time, automate reorder processes, and eliminate stockouts with our comprehensive cloud-based solution. Perfect for businesses looking to optimize their operations and reduce costs.
+                Streamline your inventory management online with powerful cloud-based software designed for modern businesses. Track stock levels in real-time, automate reorder processes, and eliminate stockouts with our comprehensive inventory management online solution. Perfect for businesses looking to optimize their operations and reduce costs.
               </p>
             </div>
             {/* Right Side - Image */}
@@ -84,10 +89,10 @@ export default function OnlineInventorySoftware() {
             {/* Right Side - Text Content */}
             <div className="lg:col-span-2">
               <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 sm:mb-6">
-                Why Choose Online Inventory Software Over Traditional Methods
+                Why Choose Inventory Management Online Over Traditional Methods
               </h2>
               <p className="text-sm sm:text-base md:text-lg text-gray-700 mb-4 sm:mb-6 leading-relaxed">
-                Online inventory software revolutionizes how businesses manage their stock. Unlike traditional spreadsheet-based systems, it provides real-time updates, cloud accessibility, and automated processes that eliminate manual errors and improve efficiency.
+                <strong>Inventory management online</strong> revolutionizes how businesses manage their stock. Unlike traditional spreadsheet-based systems, <strong>online inventory software</strong> provides real-time updates, cloud accessibility, and automated processes that eliminate manual errors and improve efficiency. When you manage your <strong>inventory management online</strong>, you gain access from anywhere, anytime.
               </p>
               <div className="space-y-3 sm:space-y-4">
                 <div className="bg-blue-50 p-3 sm:p-4 rounded-lg">
@@ -229,6 +234,88 @@ export default function OnlineInventorySoftware() {
                 Cloud-based online inventory software grows with your business. Easily add new locations, products, and users without the need for expensive hardware upgrades or complex installations.
               </p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Online Software Comparison Section */}
+      <section className="py-16 px-4 bg-gray-50">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-4">
+              Compare Cloud-Based <span className="text-blue-600">Inventory Management Solutions</span>
+            </h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              See how StockFlow stacks up against other online inventory management platforms
+            </p>
+          </div>
+
+          <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Feature</th>
+                    <th className="px-6 py-4 text-center text-sm font-semibold text-blue-600">StockFlow</th>
+                    <th className="px-6 py-4 text-center text-sm font-semibold text-gray-600">Cloud Alternative A</th>
+                    <th className="px-6 py-4 text-center text-sm font-semibold text-gray-600">Cloud Alternative B</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                  <tr className="bg-white">
+                    <td className="px-6 py-4 text-sm text-gray-900">Cloud Access</td>
+                    <td className="px-6 py-4 text-center text-sm text-green-600 font-semibold">✓ Anytime, anywhere</td>
+                    <td className="px-6 py-4 text-center text-sm text-gray-600">Regional only</td>
+                    <td className="px-6 py-4 text-center text-sm text-gray-600">Limited features</td>
+                  </tr>
+                  <tr className="bg-gray-50">
+                    <td className="px-6 py-4 text-sm text-gray-900">Real-time Sync</td>
+                    <td className="px-6 py-4 text-center text-sm text-green-600 font-semibold">✓ Instant updates</td>
+                    <td className="px-6 py-4 text-center text-sm text-gray-600">Delayed sync</td>
+                    <td className="px-6 py-4 text-center text-sm text-gray-600">Manual refresh</td>
+                  </tr>
+                  <tr className="bg-white">
+                    <td className="px-6 py-4 text-sm text-gray-900">Mobile App</td>
+                    <td className="px-6 py-4 text-center text-sm text-green-600 font-semibold">✓ Full features</td>
+                    <td className="px-6 py-4 text-center text-sm text-gray-600">✓ Basic only</td>
+                    <td className="px-6 py-4 text-center text-sm text-gray-600">✗ Extra cost</td>
+                  </tr>
+                  <tr className="bg-gray-50">
+                    <td className="px-6 py-4 text-sm text-gray-900">Multi-Device Support</td>
+                    <td className="px-6 py-4 text-center text-sm text-green-600 font-semibold">✓ Unlimited</td>
+                    <td className="px-6 py-4 text-center text-sm text-gray-600">Limited to 5</td>
+                    <td className="px-6 py-4 text-center text-sm text-gray-600">Limited to 3</td>
+                  </tr>
+                  <tr className="bg-white">
+                    <td className="px-6 py-4 text-sm text-gray-900">Starting Price</td>
+                    <td className="px-6 py-4 text-center text-sm text-green-600 font-semibold">€0/month</td>
+                    <td className="px-6 py-4 text-center text-sm text-gray-600">€50/month</td>
+                    <td className="px-6 py-4 text-center text-sm text-gray-600">€75/month</td>
+                  </tr>
+                  <tr className="bg-gray-50">
+                    <td className="px-6 py-4 text-sm text-gray-900">Data Security</td>
+                    <td className="px-6 py-4 text-center text-sm text-green-600 font-semibold">Bank-level + GDPR</td>
+                    <td className="px-6 py-4 text-center text-sm text-gray-600">Standard</td>
+                    <td className="px-6 py-4 text-center text-sm text-gray-600">Basic encryption</td>
+                  </tr>
+                  <tr className="bg-white">
+                    <td className="px-6 py-4 text-sm text-gray-900">Offline Access</td>
+                    <td className="px-6 py-4 text-center text-sm text-green-600 font-semibold">✓ Available</td>
+                    <td className="px-6 py-4 text-center text-sm text-gray-600">✗ Not available</td>
+                    <td className="px-6 py-4 text-center text-sm text-gray-600">✗ Not available</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div className="mt-8 bg-blue-50 rounded-xl p-6 text-center">
+            <h3 className="text-xl font-bold text-gray-900 mb-3">
+              Why StockFlow is the Best Cloud Inventory Software Choice
+            </h3>
+            <p className="text-gray-700 max-w-3xl mx-auto">
+              StockFlow offers complete cloud accessibility with real-time synchronization, full mobile app functionality, and bank-level security - all starting at €0/month. Unlike competitors with hidden costs and limited features, StockFlow provides everything you need from day one.
+            </p>
           </div>
         </div>
       </section>

@@ -161,13 +161,7 @@ export default function FeaturesPage() {
               >
                 Start Free Trial
               </Button>
-              <Button
-                variant="outline"
-                className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-8 py-4 text-lg font-semibold rounded-full flex items-center gap-2"
-              >
-                <Play className="h-5 w-5" />
-                Watch Demo
-              </Button>
+
             </div>
           </div>
         </div>

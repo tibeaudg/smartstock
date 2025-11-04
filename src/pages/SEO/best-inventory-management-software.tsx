@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
 import SeoPageLayout from '../../components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { useCurrency } from '@/hooks/useCurrency';
+import { SeoPageHero } from '../../components/seo/SeoPageHero';
+import { useLocation } from 'react-router-dom';
+import { generateSidebarContent } from '@/utils/seoPageHelpers';
 import { 
   BarChart3, 
   Zap, 
@@ -17,8 +20,8 @@ import {
 
 import { StructuredData } from '../../components/StructuredData';
 export default function BestInventoryManagementSoftware() {
-  // Gebruik de page refresh hook
   usePageRefresh();
+  const location = useLocation();
   const { formatPrice } = useCurrency();
   
   const faqData = [
@@ -31,12 +34,16 @@ export default function BestInventoryManagementSoftware() {
       answer: "Consider factors like your business size, inventory complexity, budget, integration needs, and required features. Look for software with real-time tracking, mobile access, barcode scanning, reporting capabilities, and good customer support. StockFlow offers a free trial to test all features."
     },
     {
+      question: "How does StockFlow compare to Exact and Visma Net?",
+      answer: "StockFlow offers the best value for SMBs. It starts at €0/month (vs €255-€450 for competitors), includes all essential features in the free plan, provides 24/7 support (vs business hours/email only), and has no hidden setup fees. While enterprise solutions like Exact and Visma offer advanced features, StockFlow provides everything most businesses need at a fraction of the cost."
+    },
+    {
       question: "What features should the best inventory management software have?",
       answer: "The best inventory management software should include real-time tracking, barcode scanning, automated reorder points, multi-location support, mobile access, reporting and analytics, integration capabilities, user role management, and excellent customer support."
     },
     {
       question: "Is there Cloud-based Inventory Management Platform?",
-      answer: "Yes, StockFlow offers a free plan for small businesses with up to 30 products. This allows you to test the software and see if it meets your needs before upgrading to a paid plan with advanced features."
+      answer: "Yes, StockFlow offers a free plan for small businesses with up to 100 products. This allows you to test the software and see if it meets your needs before upgrading to a paid plan with advanced features."
     },
     {
       question: "What makes StockFlow the best inventory management software?",
@@ -92,38 +99,50 @@ export default function BestInventoryManagementSoftware() {
     {
       feature: "Real-time tracking",
       stockflow: "✓",
-      competitor1: "Limited",
-      competitor2: "Premium only"
+      exact: "Limited",
+      visma: "Premium only (€450+)"
     },
     {
       feature: "Mobile access",
-      stockflow: "✓",
-      competitor1: "Extra cost",
-      competitor2: "Limited"
+      stockflow: "✓ Free",
+      exact: "Extra cost (€50+/month)",
+      visma: "Limited features"
     },
     {
       feature: "Barcode scanning",
-      stockflow: "✓",
-      competitor1: "Premium only",
-      competitor2: "Extra cost"
+      stockflow: "✓ Included",
+      exact: "Premium only (€255+/month)",
+      visma: "Extra module (€200+/month)"
     },
     {
       feature: "Multi-location",
-      stockflow: "✓",
-      competitor1: "Enterprise only",
-      competitor2: "Limited"
+      stockflow: "✓ All plans",
+      exact: "Enterprise only (€500+/month)",
+      visma: "Limited (€450+/month)"
     },
     {
       feature: "Free plan",
-      stockflow: "✓",
-      competitor1: "✗",
-      competitor2: "✗"
+      stockflow: "✓ (100 products)",
+      exact: "✗ No free plan",
+      visma: "✗ No free plan"
     },
     {
       feature: "Customer support",
-      stockflow: "24/7",
-      competitor1: "Business hours",
-      competitor2: "Email only"
+      stockflow: "24/7 included",
+      exact: "Business hours only",
+      visma: "Email only"
+    },
+    {
+      feature: "Starting price",
+      stockflow: "€0/month",
+      exact: "€255/month",
+      visma: "€450/month"
+    },
+    {
+      feature: "Setup & onboarding",
+      stockflow: "Free + guided",
+      exact: "Extra cost (€500+)",
+      visma: "Extra cost (€1000+)"
     }
   ];
 
@@ -176,11 +195,11 @@ export default function BestInventoryManagementSoftware() {
       name: "Free Plan",
       price: formatPrice(0),
       period: "/month",
-      description: "Perfect for small businesses getting started",
+      description: "Perfect for testing & small shops",
       features: [
-        "Up to 30 products",
-        "Basic inventory tracking",
-        "Mobile access",
+        "Up to 100 products",
+        "Basic inventory management",
+        "Mobile app access",
         "Email support"
       ],
       cta: "Get Started",
@@ -188,32 +207,33 @@ export default function BestInventoryManagementSoftware() {
       isFree: true
     },
     {
-      name: "Growth Plan",
-      price: formatPrice(29),
-      period: "/month",
-      description: "Best for growing businesses",
+      name: "Business Plan",
+      price: "€0.004",
+      period: "/product/month",
+      description: "Pay-as-you-grow pricing",
       features: [
-        "Unlimited products",
+        "100+ products (€0.004 each)",
+        "All Free features",
         "Advanced analytics",
-        "Barcode scanning",
-        "Priority support",
-        "Multi-location support"
+        "Barcode scanner",
+        "API access",
+        "Priority support"
       ],
-      cta: "Start 14-day trial",
+      cta: "Start Free, Pay When You Grow",
       popular: true,
       isFree: false
     },
     {
       name: "Enterprise Plan",
-      price: "On Demand",
-      period: "",
-      description: "For large businesses with complex needs",
+      price: "Custom",
+      period: "pricing",
+      description: "Custom pricing for high-volume",
       features: [
-        "Everything in Growth",
-        "Custom integrations",
-        "Dedicated account manager",
-        "Advanced reporting",
-        "API access"
+        "10,000+ products",
+        "All Business features",
+        "Dedicated support",
+        "Custom onboarding",
+        "SLA guarantee"
       ],
       cta: "Contact Sales",
       popular: false,
@@ -222,90 +242,53 @@ export default function BestInventoryManagementSoftware() {
     }
   ];
 
+  // Generate sidebar content
+  const sidebarContent = generateSidebarContent(location.pathname, [
+    { id: 'awards', title: 'Why StockFlow is the Best', level: 1 },
+    { id: 'quick-wins', title: 'Why Businesses Choose StockFlow', level: 1 },
+    { id: 'features', title: 'Features', level: 1 },
+    { id: 'benefits', title: 'Benefits', level: 1 },
+    { id: 'comparison', title: 'StockFlow vs Competitors', level: 1 },
+    { id: 'testimonials', title: 'What Our Customers Say', level: 1 },
+    { id: 'pricing', title: 'Choose Your Plan', level: 1 },
+    { id: 'faq', title: 'FAQ', level: 1 }
+  ]);
+
   return (
-    <SeoPageLayout title="Best Inventory Management Software">
+    <SeoPageLayout 
+      title="Best Inventory Management Software"
+      showSidebar={true}
+      sidebarContent={sidebarContent}
+    >
       <SEO
-        title="Best Inventory Software 2025: Free Trial | StockFlow"
-        description="Save 35% costs & 15 hours/week! Join 10,000+ businesses using award-winning inventory software. Real-time tracking, automated alerts, barcode scanning. Start FREE trial now - no credit card!"
-        keywords="best inventory management software, top inventory management software, best inventory software, best stock management software, best inventory system, best inventory tracking software, best inventory management system, best inventory software 2024, top rated inventory software, best inventory management solution, best inventory software for small business, best inventory software for ecommerce, best inventory management software comparison, best inventory software reviews, best inventory management software features, best inventory software pricing, best inventory software demo, best inventory software trial"
+        title="Best Inventory Management Software 2025: Free Trial + No Credit Card"
+        description="Save 35% costs & 15 hours/week! Compare top 10 inventory management software 2025. StockFlow rated #1 for SMBs - 4.9/5 stars. Start FREE trial today - no credit card required!"
+        keywords="best inventory management software, inventory management software best, top inventory management software, best inventory software, best stock management software, best inventory system, best inventory tracking software, best inventory management system, best inventory software 2025, top rated inventory software, best inventory management solution, best inventory software for small business, best inventory software for ecommerce, best inventory management software comparison, best inventory software reviews, best inventory management software features, best inventory software pricing, best inventory software demo, best inventory software trial, inventory management software provider, inventory management software online, stockflow, stock flow, stocks flow"
         url="https://www.stockflow.be/best-inventory-management-software"
       />
 
-      {/* Hero Section with Background */}
-      <section 
-        className="relative py-16 sm:py-20 md:py-24 px-4 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: 'url(/image.png)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
-        }}
-      >
-        <div className="absolute inset-0 bg-black bg-opacity-40"></div>
-        
-        <div className="relative max-w-6xl mx-auto">
-          <div className="text-center mb-8">
-            {/* Trust Badges */}
-            <div className="flex flex-wrap justify-center items-center gap-4 mb-6">
-              <div className="flex items-center bg-yellow-400 bg-opacity-20 px-4 py-2 rounded-full">
-                <Trophy className="w-6 h-6 text-yellow-400 mr-2" />
-                <span className="text-yellow-400 font-semibold text-sm">#1 Rated 2024</span>
-              </div>
-              <div className="flex items-center bg-green-400 bg-opacity-20 px-4 py-2 rounded-full">
-                <Star className="w-6 h-6 text-green-400 mr-2" />
-                <span className="text-green-400 font-semibold text-sm">4.9/5 Rating</span>
-              </div>
-              <div className="flex items-center bg-blue-400 bg-opacity-20 px-4 py-2 rounded-full">
-                <Users className="w-6 h-6 text-blue-400 mr-2" />
-                <span className="text-blue-400 font-semibold text-sm">10,000+ Users</span>
-              </div>
-            </div>
-            
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light mb-8 text-white leading-tight">
-              <span className="text-blue-400 font-semibold">Best Inventory Management Software</span> 2025: Save 35% Costs & 15 Hours Weekly
-            </h1>
-            <p className="text-xl md:text-2xl text-gray-100 mb-8 max-w-5xl mx-auto leading-relaxed">
-              <strong>Save 35% on inventory costs</strong> and <strong>15 hours weekly</strong> with real-time tracking, automated alerts, and powerful analytics. Join 10,000+ businesses who chose StockFlow.
-            </p>
-            
-            {/* Value Props */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 max-w-5xl mx-auto">
-              <div className="bg-white bg-opacity-15 backdrop-blur-sm rounded-xl p-6 border border-white border-opacity-20">
-                <div className="text-3xl font-bold text-white mb-2">35%</div>
-                <div className="text-base text-gray-200 font-medium">Cost Reduction</div>
-              </div>
-              <div className="bg-white bg-opacity-15 backdrop-blur-sm rounded-xl p-6 border border-white border-opacity-20">
-                <div className="text-3xl font-bold text-white mb-2">15h</div>
-                <div className="text-base text-gray-200 font-medium">Hours Saved/Week</div>
-              </div>
-              <div className="bg-white bg-opacity-15 backdrop-blur-sm rounded-xl p-6 border border-white border-opacity-20">
-                <div className="text-3xl font-bold text-white mb-2">24/7</div>
-                <div className="text-base text-gray-200 font-medium">Support</div>
-              </div>
-            </div>
-            
-            <div className="flex justify-center mb-8">
-              <Link
-                to="/auth"
-                className="bg-blue-600 text-white px-12 py-5 rounded-xl font-semibold text-xl hover:bg-blue-700 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105"
-              >
-                Start Free - No Credit Card
-              </Link>
-            </div>
-            <p className="text-sm text-gray-200">✓ No credit card required ✓ 14-day free trial ✓ Cancel anytime</p>
-          </div>
-        </div>
-      </section>
+      <SeoPageHero
+        title="Best Inventory Management Software 2025: Compare Top Solutions & Save 35% Costs"
+        description="Looking for the best inventory management software? Compare top solutions and find the perfect fit. Save 35% on inventory costs and 15 hours weekly with real-time tracking, automated alerts, and powerful analytics. Join 10,000+ businesses who chose StockFlow as their best inventory management software solution."
+        badges={[
+          { icon: <Trophy className="w-6 h-6" />, text: "#1 Rated 2024", variant: 'warning' },
+          { icon: <Star className="w-6 h-6" />, text: "4.9/5 Rating", variant: 'success' },
+          { icon: <Users className="w-6 h-6" />, text: "10,000+ Users", variant: 'info' }
+        ]}
+        ctaText="Start Free - No Credit Card"
+        ctaLink="/auth"
+        backgroundImage="/image.png"
+      />
 
       {/* Awards Section */}
-      <section className="py-16 px-4 bg-white">
+      <section id="awards" className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Why StockFlow is the <span className="text-blue-600">Best Choice</span>
+              Why StockFlow is the <span className="text-blue-600">Best Inventory Management Software</span>
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Recognized by industry experts and loved by users worldwide.
+              When searching for the <strong>best inventory management software</strong>, StockFlow consistently ranks at the top. Recognized by industry experts and loved by users worldwide for being the most comprehensive and affordable solution.
             </p>
           </div>
 
@@ -322,7 +305,7 @@ export default function BestInventoryManagementSoftware() {
       </section>
 
       {/* Quick Wins Section */}
-      <section className="py-16 px-4 bg-white">
+      <section id="quick-wins" className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
@@ -378,7 +361,7 @@ export default function BestInventoryManagementSoftware() {
       </section>
 
       {/* Features Section */}
-      <section className="py-16 px-4 bg-gray-50">
+      <section id="features" className="py-16 px-4 bg-gray-50">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
@@ -402,7 +385,7 @@ export default function BestInventoryManagementSoftware() {
       </section>
 
       {/* Benefits Section */}
-      <section className="py-16 px-4 bg-white">
+      <section id="benefits" className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
@@ -427,7 +410,7 @@ export default function BestInventoryManagementSoftware() {
       </section>
 
       {/* Comparison Section */}
-      <section className="py-16 px-4 bg-gray-50">
+      <section id="comparison" className="py-16 px-4 bg-gray-50">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
@@ -445,8 +428,8 @@ export default function BestInventoryManagementSoftware() {
                   <tr>
                     <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Feature</th>
                     <th className="px-6 py-4 text-center text-sm font-semibold text-blue-600">StockFlow</th>
-                    <th className="px-6 py-4 text-center text-sm font-semibold text-gray-600">Competitor A</th>
-                    <th className="px-6 py-4 text-center text-sm font-semibold text-gray-600">Competitor B</th>
+                    <th className="px-6 py-4 text-center text-sm font-semibold text-gray-600">Exact</th>
+                    <th className="px-6 py-4 text-center text-sm font-semibold text-gray-600">Visma Net</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
@@ -454,19 +437,71 @@ export default function BestInventoryManagementSoftware() {
                     <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
                       <td className="px-6 py-4 text-sm text-gray-900">{item.feature}</td>
                       <td className="px-6 py-4 text-center text-sm text-green-600 font-semibold">{item.stockflow}</td>
-                      <td className="px-6 py-4 text-center text-sm text-gray-600">{item.competitor1}</td>
-                      <td className="px-6 py-4 text-center text-sm text-gray-600">{item.competitor2}</td>
+                      <td className="px-6 py-4 text-center text-sm text-gray-600">{item.exact}</td>
+                      <td className="px-6 py-4 text-center text-sm text-gray-600">{item.visma}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
           </div>
+
+          {/* Why StockFlow Wins Section */}
+          <div className="mt-12 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-8 border border-blue-100">
+            <h3 className="text-2xl font-bold text-gray-900 mb-4 text-center">
+              Why StockFlow Wins for Small & Medium Businesses
+            </h3>
+            <p className="text-lg text-gray-700 mb-6 text-center max-w-3xl mx-auto">
+              Based on our comprehensive comparison, here's why thousands of SMBs choose StockFlow over more expensive enterprise solutions:
+            </p>
+            
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="bg-white p-6 rounded-lg">
+                <h4 className="text-xl font-semibold text-blue-600 mb-3 flex items-center">
+                  <Trophy className="w-6 h-6 mr-2" />
+                  Best Value Proposition
+                </h4>
+                <p className="text-gray-700">
+                  Start free with 100 products - that's €255-€450 less per month than competitors require to start. No hidden setup fees, no surprise costs.
+                </p>
+              </div>
+              
+              <div className="bg-white p-6 rounded-lg">
+                <h4 className="text-xl font-semibold text-blue-600 mb-3 flex items-center">
+                  <Zap className="w-6 h-6 mr-2" />
+                  Complete Features From Day One
+                </h4>
+                <p className="text-gray-700">
+                  Real-time tracking, mobile access, and barcode scanning included at €0. Competitors charge extra for these essential features.
+                </p>
+              </div>
+
+              <div className="bg-white p-6 rounded-lg">
+                <h4 className="text-xl font-semibold text-blue-600 mb-3 flex items-center">
+                  <Shield className="w-6 h-6 mr-2" />
+                  24/7 Support Included
+                </h4>
+                <p className="text-gray-700">
+                  Get expert help whenever you need it. Unlike competitors' limited support, our team is always available.
+                </p>
+              </div>
+
+              <div className="bg-white p-6 rounded-lg">
+                <h4 className="text-xl font-semibold text-blue-600 mb-3 flex items-center">
+                  <Users className="w-6 h-6 mr-2" />
+                  Built for Business Growth
+                </h4>
+                <p className="text-gray-700">
+                  Scale seamlessly from startup to enterprise. No expensive migrations or data loss - just smooth upgrades.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-16 px-4 bg-white">
+      <section id="testimonials" className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
@@ -497,7 +532,7 @@ export default function BestInventoryManagementSoftware() {
       </section>
 
       {/* Pricing Section */}
-      <section className="py-16 px-4 bg-blue-50">
+      <section id="pricing" className="py-16 px-4 bg-blue-50">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
@@ -533,7 +568,7 @@ export default function BestInventoryManagementSoftware() {
                   <p className="text-gray-600 mb-4">{plan.description}</p>
                   <div className="mt-4">
                     <div className="text-4xl font-bold text-gray-900">
-                      {plan.isBusiness ? 'On Demand' : plan.price}
+                      {plan.isBusiness ? 'Custom' : plan.price}
                     </div>
                     {!plan.isBusiness && (
                       <div className="text-sm text-gray-500">
@@ -542,8 +577,11 @@ export default function BestInventoryManagementSoftware() {
                     )}
                     {plan.isBusiness && (
                       <div className="text-sm text-gray-500">
-                        Custom pricing
+                        {plan.period}
                       </div>
+                    )}
+                    {!plan.isBusiness && !plan.isFree && (
+                      <div className="text-xs text-gray-400 mt-1">(products 101+)</div>
                     )}
                   </div>
                 </div>
@@ -615,7 +653,7 @@ export default function BestInventoryManagementSoftware() {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-16 px-4 bg-white">
+      <section id="faq" className="py-16 px-4 bg-white">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">Frequently Asked Questions</h2>
@@ -632,27 +670,6 @@ export default function BestInventoryManagementSoftware() {
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="bg-gray-900 text-gray-200 py-12 md:py-16">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <img
-            src="/logo.png"
-            alt="StockFlow"
-            className="h-10 md:h-12 mx-auto mb-6"
-          />
-          <p className="text-gray-400 text-base md:text-lg mb-8 leading-relaxed max-w-2xl mx-auto">
-            The best inventory management software for growing businesses. Simple, powerful, and designed for success.
-          </p>
-
-          <div className="border-t border-gray-700 pt-6">
-            <p className="text-gray-500 text-xs md:text-sm">
-              &copy; {new Date().getFullYear()} StockFlow. All rights reserved.
-              Best inventory management software for modern businesses.
-            </p>
-          </div>
-        </div>
-      </footer>
 
       {/* Schema.org Structured Data */}
       <StructuredData data={[
@@ -719,23 +736,23 @@ export default function BestInventoryManagementSoftware() {
               "@type": "Offer",
               "price": "0",
               "priceCurrency": "EUR",
-              "description": "Free plan - Up to 30 products",
+              "description": "Free plan - Up to 100 products",
               "availability": "https://schema.org/InStock",
               "priceValidUntil": "2026-12-31"
             },
             {
               "@type": "Offer",
-              "price": "29",
+              "price": "0.004",
               "priceCurrency": "EUR",
-              "description": "Growth plan - Unlimited products with advanced features",
+              "description": "Business plan - Pay-as-you-grow pricing, €0.004 per product/month (products 101+)",
               "availability": "https://schema.org/InStock",
               "priceValidUntil": "2026-12-31"
             },
             {
               "@type": "Offer",
-              "price": "99",
+              "price": "0",
               "priceCurrency": "EUR",
-              "description": "Enterprise plan - Advanced features for large businesses",
+              "description": "Enterprise plan - Custom pricing for high-volume businesses (10,000+ products)",
               "availability": "https://schema.org/InStock",
               "priceValidUntil": "2026-12-31"
             }

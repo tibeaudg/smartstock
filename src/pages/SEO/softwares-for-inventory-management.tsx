@@ -168,9 +168,9 @@ export default function SoftwaresForInventoryManagement() {
   return (
     <SeoPageLayout title="Softwares for Inventory Management">
       <SEO
-        title="Best Softwares for Inventory Management 2024 | StockFlow"
-        description="Discover the best softwares for inventory management. Compare options, features, and find the perfect solution for your business. Start free trial today!"
-        keywords="softwares for inventory management, inventory management softwares, best softwares for inventory management, inventory management software options, softwares for inventory tracking, inventory management software solutions, softwares for stock management, inventory management software comparison, softwares for inventory control, inventory management software alternatives, softwares for inventory optimization, inventory management software reviews, softwares for inventory planning, inventory management software selection, softwares for inventory analysis, inventory management software evaluation, softwares for inventory automation, inventory management software recommendations"
+        title="Best Softwares for Inventory Management 2025: Free Trial | Compare"
+        description="Compare the best softwares for inventory management 2025! Find your perfect solution. Trusted by 10,000+ businesses. Compare features, pricing & reviews. Start FREE trial - no credit card!"
+        keywords="softwares for inventory management, inventory management softwares, best softwares for inventory management, inventory management software options, softwares for inventory tracking, inventory management software solutions, softwares for stock management, inventory management software comparison, softwares for inventory control, inventory management software alternatives, softwares for inventory optimization, inventory management software reviews, softwares for inventory planning, inventory management software selection, softwares for inventory analysis, inventory management software evaluation, softwares for inventory automation, inventory management software recommendations, best inventory management software, stockflow, inventory management software, stock flow"
         url="https://www.stockflow.be/softwares-for-inventory-management"
       />
 
@@ -201,12 +201,7 @@ export default function SoftwaresForInventoryManagement() {
               >
                 Start Free Trial
               </Link>
-              <Link
-                to="/demo"
-                className="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition shadow-lg"
-              >
-                Watch Demo
-              </Link>
+         
             </div>
             <p className="text-sm text-gray-200">Compare the best softwares for inventory management</p>
           </div>
@@ -434,12 +429,7 @@ export default function SoftwaresForInventoryManagement() {
             >
               Start Free Trial
             </Link>
-            <Link
-              to="/demo"
-              className="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-blue-600 transition"
-            >
-              Watch Demo
-            </Link>
+   
           </div>
           <div className="flex flex-wrap justify-center items-center gap-6 text-sm opacity-75">
             <div className="flex items-center">
