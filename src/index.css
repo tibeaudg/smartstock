@@ -196,7 +196,7 @@
   body {
     @apply text-foreground min-h-screen m-0 p-0 overflow-x-hidden;
     width: 100%;
-    background: radial-gradient(ellipse at top center, #FFFFFF 0%, #F0F6FF 50%, #E6EFF8 100%);
+    background: #f3f4f6;
     background-attachment: fixed;
   }
 
@@ -274,6 +274,6 @@ body>* {
 
 /* Subtle gradient background for StockFlow */
 .gradient-background {
-  background: radial-gradient(ellipse at top center, #FFFFFF 0%, #F0F6FF 50%, #E6EFF8 100%);
+  background: #f3f4f6;
   min-height: 100vh;
 }

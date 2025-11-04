@@ -50,6 +50,8 @@ interface SidebarProps {
   userProfile?: UserProfile;
   isOpen: boolean;
   onToggle: () => void;
+  profileDropdownOpen?: boolean;
+  onProfileDropdownChange?: (open: boolean) => void;
 }
 
 interface MenuItem {
@@ -65,7 +67,7 @@ interface MenuItem {
   }[];
 }
 
-export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProps) => {
+export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, profileDropdownOpen: externalProfileDropdownOpen, onProfileDropdownChange }: SidebarProps) => {
   const { productCount, isLoading } = useProductCount();
   const { isMobile } = useMobile();
   const { signOut } = useAuth();
@@ -75,7 +77,14 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
   const [chatOpen, setChatOpen] = useState(false);
   const { unreadCount: unreadMessages, resetUnreadCount } = useUnreadMessages();
   const [openSubmenus, setOpenSubmenus] = useState<Record<string, boolean>>({});
-  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+  const [internalProfileDropdownOpen, setInternalProfileDropdownOpen] = useState(false);
+  const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
+  
+  // Use external state if provided, otherwise use internal state
+  const profileDropdownOpen = externalProfileDropdownOpen !== undefined ? externalProfileDropdownOpen : internalProfileDropdownOpen;
+  const setProfileDropdownOpen = onProfileDropdownChange 
+    ? (open: boolean) => onProfileDropdownChange(open)
+    : setInternalProfileDropdownOpen;
   
   // Check subscription-based feature access
   const { canUseFeature, currentTier } = useSubscription();
@@ -171,21 +180,181 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
           : []),
       ];
 
+  // Mobile Bottom Navbar - render separately for mobile
+  if (isMobile) {
+    return (
+      <>
+        {/* Mobile Bottom Navbar */}
+        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 md:hidden safe-area-bottom">
+          <div className="flex items-center justify-around h-16 px-1">
+            {menuItems.map((item) => {
+              const Icon = item.icon;
+              const hasSubItems = item.subItems && item.subItems.length > 0;
+              const isParentActive = location.pathname === item.path && 
+                (!hasSubItems || !item.subItems.some(sub => sub.path === item.path));
+              const isAnySubItemActive = hasSubItems && item.subItems.some(sub => location.pathname === sub.path);
+              const isActive = isParentActive || isAnySubItemActive;
+
+              return (
+                <React.Fragment key={item.id}>
+                  {hasSubItems ? (
+                    <button
+                      onClick={() => {
+                        setActiveSubmenu(item.id);
+                      }}
+                      className={`
+                        flex flex-col items-center justify-center flex-1 h-full px-1 transition-colors min-w-0
+                        ${isActive ? 'text-blue-600' : 'text-gray-600'}
+                      `}
+                    >
+                      <Icon className="w-5 h-5 mb-0.5 flex-shrink-0" />
+                      <span className="text-[10px] font-medium truncate w-full text-center leading-tight">
+                        {item.id === 'stock' 
+                          ? isLoading 
+                            ? 'Products' 
+                            : `Products${productCount > 0 ? ` (${productCount})` : ''}`
+                          : item.label.length > 10 ? item.label.substring(0, 8) + '..' : item.label
+                        }
+                      </span>
+                    </button>
+                  ) : (
+                    <NavLink
+                      to={item.path}
+                      end={item.end}
+                      className={({ isActive: navIsActive }) => `
+                        flex flex-col items-center justify-center flex-1 h-full px-1 transition-colors min-w-0
+                        ${navIsActive || isActive ? 'text-blue-600' : 'text-gray-600'}
+                      `}
+                    >
+                      <Icon className="w-5 h-5 mb-0.5 flex-shrink-0" />
+                      <span className="text-[10px] font-medium truncate w-full text-center leading-tight">
+                        {item.id === 'stock' 
+                          ? isLoading 
+                            ? 'Products' 
+                            : `Products${productCount > 0 ? ` (${productCount})` : ''}`
+                          : item.label.length > 10 ? item.label.substring(0, 8) + '..' : item.label
+                        }
+                      </span>
+                    </NavLink>
+                  )}
+                </React.Fragment>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Submenu Modal for mobile */}
+        {activeSubmenu && (() => {
+          const menuItem = menuItems.find(item => item.id === activeSubmenu);
+          if (!menuItem || !menuItem.subItems) return null;
+          
+          return (
+            <div className="fixed inset-0 bg-black bg-opacity-50 z-[60] md:hidden" onClick={() => setActiveSubmenu(null)}>
+              <div className="fixed bottom-20 left-0 right-0 bg-white rounded-t-xl shadow-lg max-h-[60vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+                <div className="p-4">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="font-semibold text-gray-900">{menuItem.label}</h3>
+                    <button
+                      onClick={() => setActiveSubmenu(null)}
+                      className="text-gray-500 hover:text-gray-700"
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
+                  </div>
+                  <div className="space-y-2">
+                    {menuItem.subItems.map((subItem) => (
+                      <NavLink
+                        key={subItem.id}
+                        to={subItem.path}
+                        onClick={() => {
+                          setActiveSubmenu(null);
+                        }}
+                        className={({ isActive }) => `
+                          block px-4 py-3 rounded-lg transition-colors
+                          ${isActive 
+                            ? 'bg-blue-50 text-blue-600 font-medium' 
+                            : 'text-gray-700 hover:bg-gray-50'
+                          }
+                        `}
+                      >
+                        {subItem.label}
+                      </NavLink>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        })()}
+
+        {/* Profile Modal for mobile */}
+        {profileDropdownOpen && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 z-[60] md:hidden" onClick={() => setProfileDropdownOpen(false)}>
+            <div className="fixed bottom-20 left-0 right-0 bg-white rounded-t-xl shadow-lg" onClick={(e) => e.stopPropagation()}>
+              <div className="p-4">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="rounded-full bg-blue-600 w-10 h-10 flex items-center justify-center">
+                      <span className="text-white font-semibold">
+                        {userProfile?.first_name?.[0] || userProfile?.email?.[0] || 'U'}
+                      </span>
+                    </div>
+                    <div>
+                      <div className="font-semibold text-gray-900">
+                        {userProfile?.first_name && userProfile?.last_name 
+                          ? `${userProfile.first_name} ${userProfile.last_name}`
+                          : userProfile?.first_name || userProfile?.email?.split('@')[0] || 'User'}
+                      </div>
+                      <div className="text-xs text-gray-500">
+                        {userProfile?.email || 'No email'}
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setProfileDropdownOpen(false)}
+                    className="text-gray-500 hover:text-gray-700"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+                <div className="space-y-2">
+                  <button
+                    onClick={() => {
+                      navigate('/dashboard/settings/profile');
+                      setProfileDropdownOpen(false);
+                    }}
+                    className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+                  >
+                    <User className="w-5 h-5" />
+                    <span>Profile Settings</span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      handleSignOut();
+                      setProfileDropdownOpen(false);
+                    }}
+                    className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-red-600 hover:bg-red-50 transition-colors"
+                  >
+                    <LogOut className="w-5 h-5" />
+                    <span>Logout</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </>
+    );
+  }
+
+  // Desktop Sidebar
   return (
     <>
-      {/* Mobile overlay */}
-      {isMobile && isOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-40" onClick={onToggle} />
-      )}
-      
       {/* Sidebar */}
       <div className={`
-        fixed left-0 top-0 h-screen bg-gray-100  transition-all duration-300 z-50 flex flex-col
-        ${isMobile 
-          ? (isOpen ? 'w-64 translate-x-0' : 'w-16 -translate-x-full') 
-          : (isOpen ? 'w-64' : 'w-16')
-        }
-        ${!isMobile ? 'md:relative md:translate-x-0' : ''}
+        fixed left-0 top-0 h-screen bg-gray-50 transition-all duration-300 z-50 flex flex-col
+        ${isOpen ? 'w-64' : 'w-16'}
+        md:relative md:translate-x-0
       `}>
         <div className="flex items-center pl-3 sm:pl-5 space-x-2 sm:space-x-3 h-[60px] sm:h-[70px] flex-shrink-0">
           <div className="w-7 h-7 sm:w-8 sm:h-8 bg-blue-600 rounded-lg flex items-center justify-center">

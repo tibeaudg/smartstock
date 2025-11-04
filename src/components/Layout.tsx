@@ -52,9 +52,15 @@ export const Layout = ({ children, currentTab, onTabChange, userRole, userProfil
     setShowNotifications((prev) => !prev);
     if (unreadCount > 0) markAllAsRead();
   };
+  
+  // Profile modal state for mobile
+  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+  const handleProfileClick = () => {
+    setProfileDropdownOpen(!profileDropdownOpen);
+  };
 
   return (
-    <div className="h-screen flex flex-col bg-white">
+    <div className="h-screen flex flex-col bg-gray-50">
       {/* Header with sidebar toggle */}
       <Header 
         title="Dashboard" 
@@ -62,25 +68,43 @@ export const Layout = ({ children, currentTab, onTabChange, userRole, userProfil
         onNotificationClick={handleNotificationClick}
         sidebarOpen={sidebarOpen}
         onSidebarToggle={() => setSidebarOpen(!sidebarOpen)}
+        userProfile={userProfile}
+        onProfileClick={handleProfileClick}
       />
       
       <div className="flex flex-1 overflow-hidden pt-6">
-        {/* Sidebar - now always rendered but with different behavior on mobile */}
-        <div className={`${isMobile ? 'fixed' : 'fixed'} left-0 top-0 h-full z-20`}>
+        {/* Sidebar - hidden on mobile, shown on desktop */}
+        {!isMobile && (
+          <div className="fixed left-0 top-0 h-full z-20">
+            <Sidebar
+              currentTab={currentTab}
+              onTabChange={handleTabChange}
+              userRole={userRole}
+              userProfile={userProfile}
+              isOpen={sidebarOpen}
+              onToggle={() => setSidebarOpen(!sidebarOpen)}
+            />
+          </div>
+        )}
+        
+        {/* Mobile Bottom Navbar - rendered inside Sidebar component */}
+        {isMobile && (
           <Sidebar
             currentTab={currentTab}
             onTabChange={handleTabChange}
             userRole={userRole}
             userProfile={userProfile}
-            isOpen={sidebarOpen}
-            onToggle={() => setSidebarOpen(!sidebarOpen)}
+            isOpen={false}
+            onToggle={() => {}}
+            profileDropdownOpen={profileDropdownOpen}
+            onProfileDropdownChange={setProfileDropdownOpen}
           />
-        </div>
+        )}
 
         <main
           className={`flex-1 ${variant === 'admin' ? 'pt-0 md:pt-0 md:pl-0 overflow-y-auto' : 'p-4 pt-8 md:pt-20 overflow-y-auto'} ${
             isMobile 
-              ? 'ml-0' // On mobile, main content takes full width
+              ? 'ml-0 pb-20' // On mobile, add bottom padding for navbar
               : sidebarOpen 
                 ? 'md:pl-64' 
                 : 'md:pl-16'

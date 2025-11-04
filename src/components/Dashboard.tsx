@@ -1,21 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { NotificationButton } from './NotificationButton';
 import { useNotifications } from '../hooks/useNotifications';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { CalendarIcon, DollarSign, Package, TrendingUp, TrendingDown, AlertTriangle, Euro, Users, ShoppingCart, RefreshCw, BarChart3, PieChart, LineChart } from 'lucide-react';
 import { format, addDays, startOfWeek, startOfMonth, startOfQuarter, startOfYear, endOfToday } from 'date-fns';
-import { cn } from '@/lib/utils';
 import { LineChart as RechartsLineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart as RechartsPieChart, Pie, Cell, BarChart, Bar, Area, AreaChart } from 'recharts';
 import { useDashboardData, useBasicDashboardMetrics } from '@/hooks/useDashboardData';
 import { useMobile } from '@/hooks/use-mobile';
-import { useBranches } from '@/hooks/useBranches';
 import { useCurrency } from '@/hooks/useCurrency';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
-import { Badge } from '@/components/ui/badge';
+
 
 
 interface DashboardProps {
@@ -242,7 +236,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
 
   if (isStillLoading) {
     return (
-      <div className="space-y-8 max-w-[1600px] mx-auto pt-24 pb-64 md:pt-0">
+      <div className="space-y-8 max-w-[1600px] mx-auto pt-24 pb-64 md:pt-0 ">
         <div className="flex justify-between items-center">
           <h1 className="text-4xl font-bold text-gray-900">Dashboard</h1>
         </div>
@@ -277,7 +271,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
   };
 
   return (
-    <div className="space-y-4 sm:space-y-6 max-w-[1600px] mx-auto relative pt-4 sm:pt-6 pb-16 sm:pb-24 md:pt-0 px-4 sm:px-6">
+    <div className="space-y-4 sm:space-y-6 max-w-[1600px] mx-auto relative pt-4 sm:pt-6 pb-16 sm:pb-24 md:pt-0 px-4 sm:px-6 ">
   {/* ...existing code... (removed duplicate header and notification bell, now handled globally) */}
 
       {/* Metrics Cards */}
