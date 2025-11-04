@@ -837,13 +837,138 @@ export const comparisonCluster: TopicCluster = {
   ]
 };
 
+// Industry Vertical Cluster
+export const industryVerticalCluster: TopicCluster = {
+  pillar: {
+    path: '/inventory-management-software',
+    title: 'Inventory Management Software by Industry',
+    language: 'en',
+    category: 'Industries',
+    description: 'Industry-specific inventory management solutions',
+    image: '/dashboard.png'
+  },
+  clusters: [
+    { path: '/inventory-management-healthcare', title: 'Healthcare Inventory Management', language: 'en', category: 'Industries', description: 'Medical supplies and healthcare inventory software', image: '/dashboard.png' },
+    { path: '/inventory-management-manufacturing', title: 'Manufacturing Inventory Management', language: 'en', category: 'Industries', description: 'Manufacturing inventory control and tracking', image: '/dashboard.png' },
+    { path: '/inventory-management-food', title: 'Food & Beverage Inventory Management', language: 'en', category: 'Industries', description: 'Food service inventory tracking and expiry management', image: '/dashboard.png' },
+    { path: '/inventory-management-fashion', title: 'Fashion & Apparel Inventory Management', language: 'en', category: 'Industries', description: 'Fashion retail inventory and stock control', image: '/dashboard.png' },
+    { path: '/inventory-management-electronics', title: 'Electronics Inventory Management', language: 'en', category: 'Industries', description: 'Electronics and tech inventory tracking', image: '/dashboard.png' },
+    { path: '/inventory-management-construction', title: 'Construction Inventory Management', language: 'en', category: 'Industries', description: 'Construction materials and equipment tracking', image: '/dashboard.png' },
+    { path: '/inventory-management-automotive', title: 'Automotive Inventory Management', language: 'en', category: 'Industries', description: 'Auto parts and automotive inventory control', image: '/dashboard.png' },
+    { path: '/inventory-management-pharmaceutical', title: 'Pharmaceutical Inventory Management', language: 'en', category: 'Industries', description: 'Pharma inventory and compliance tracking', image: '/dashboard.png' },
+    { path: '/inventory-management-agriculture', title: 'Agriculture Inventory Management', language: 'en', category: 'Industries', description: 'Agricultural supplies and farm inventory software', image: '/dashboard.png' },
+    { path: '/inventory-management-wine', title: 'Wine Inventory Management', language: 'en', category: 'Industries', description: 'Wine cellar and beverage inventory tracking', image: '/dashboard.png' },
+    { path: '/inventory-management-pets', title: 'Pet Store Inventory Management', language: 'en', category: 'Industries', description: 'Pet supplies and animal product inventory', image: '/dashboard.png' },
+    { path: '/inventory-management-beauty', title: 'Beauty & Cosmetics Inventory Management', language: 'en', category: 'Industries', description: 'Beauty products and cosmetics inventory', image: '/dashboard.png' },
+    { path: '/inventory-management-sports', title: 'Sports & Recreation Inventory Management', language: 'en', category: 'Industries', description: 'Sports equipment and recreation inventory', image: '/dashboard.png' },
+    { path: '/inventory-management-jewelry', title: 'Jewelry Inventory Management', language: 'en', category: 'Industries', description: 'Jewelry and precious metals inventory tracking', image: '/dashboard.png' },
+    { path: '/inventory-management-books', title: 'Bookstore Inventory Management', language: 'en', category: 'Industries', description: 'Book and media inventory control', image: '/dashboard.png' },
+    { path: '/inventory-management-hardware', title: 'Hardware Store Inventory Management', language: 'en', category: 'Industries', description: 'Hardware and tools inventory tracking', image: '/dashboard.png' },
+    { path: '/inventory-management-hvac', title: 'HVAC Inventory Management', language: 'en', category: 'Industries', description: 'HVAC parts and equipment inventory', image: '/dashboard.png' },
+    { path: '/inventory-management-furniture', title: 'Furniture Inventory Management', language: 'en', category: 'Industries', description: 'Furniture and home goods inventory', image: '/dashboard.png' },
+    { path: '/inventory-management-toys', title: 'Toy Store Inventory Management', language: 'en', category: 'Industries', description: 'Toys and games inventory tracking', image: '/dashboard.png' },
+    { path: '/inventory-management-office', title: 'Office Supply Inventory Management', language: 'en', category: 'Industries', description: 'Office supplies and stationery inventory', image: '/dashboard.png' }
+  ]
+};
+
+// Feature Cluster
+export const featureCluster: TopicCluster = {
+  pillar: {
+    path: '/inventory-management-features',
+    title: 'Inventory Management Features',
+    language: 'en',
+    category: 'Features',
+    description: 'Key features and capabilities of inventory management software',
+    image: '/dashboard.png'
+  },
+  clusters: [
+    { path: '/barcode-scanning-inventory', title: 'Barcode Scanning for Inventory', language: 'en', category: 'Features', description: 'Mobile barcode scanning and inventory tracking', image: '/dashboard.png' },
+    { path: '/multi-location-inventory', title: 'Multi-Location Inventory Management', language: 'en', category: 'Features', description: 'Manage inventory across multiple locations', image: '/dashboard.png' },
+    { path: '/inventory-api', title: 'Inventory Management API', language: 'en', category: 'Features', description: 'RESTful API for inventory system integration', image: '/dashboard.png' },
+    { path: '/automated-reordering', title: 'Automated Reordering System', language: 'en', category: 'Features', description: 'Automatic purchase order generation', image: '/dashboard.png' },
+    { path: '/real-time-inventory-tracking', title: 'Real-Time Inventory Tracking', language: 'en', category: 'Features', description: 'Live stock levels and instant updates', image: '/dashboard.png' },
+    { path: '/inventory-analytics', title: 'Inventory Analytics & Reporting', language: 'en', category: 'Features', description: 'Advanced inventory reports and insights', image: '/dashboard.png' },
+    { path: '/inventory-alerts', title: 'Inventory Alerts & Notifications', language: 'en', category: 'Features', description: 'Low stock and expiry date alerts', image: '/dashboard.png' },
+    { path: '/batch-tracking', title: 'Batch & Lot Tracking', language: 'en', category: 'Features', description: 'Track products by batch or lot number', image: '/dashboard.png' },
+    { path: '/purchase-order-management', title: 'Purchase Order Management', language: 'en', category: 'Features', description: 'PO creation and supplier management', image: '/dashboard.png' },
+    { path: '/inventory-forecasting', title: 'Inventory Forecasting & Planning', language: 'en', category: 'Features', description: 'Demand forecasting and inventory planning', image: '/dashboard.png' },
+    { path: '/mobile-inventory-app', title: 'Mobile Inventory App', language: 'en', category: 'Features', description: 'Mobile inventory management on iOS and Android', image: '/dashboard.png' },
+    { path: '/inventory-valuation', title: 'Inventory Valuation Methods', language: 'en', category: 'Features', description: 'FIFO, LIFO, and weighted average costing', image: '/dashboard.png' },
+    { path: '/supplier-management', title: 'Supplier Management System', language: 'en', category: 'Features', description: 'Supplier database and relationship management', image: '/dashboard.png' },
+    { path: '/inventory-returns', title: 'Inventory Returns Management', language: 'en', category: 'Features', description: 'Handle returns and reverse logistics', image: '/dashboard.png' },
+    { path: '/inventory-kitting', title: 'Inventory Kitting & Assembly', language: 'en', category: 'Features', description: 'Bundle products and manage assembly', image: '/dashboard.png' }
+  ]
+};
+
+// Buyer Intent Cluster
+export const buyerIntentCluster: TopicCluster = {
+  pillar: {
+    path: '/inventory-management-guides',
+    title: 'Inventory Management Guides',
+    language: 'en',
+    category: 'Guides',
+    description: 'Comprehensive guides for choosing and implementing inventory software',
+    image: '/dashboard.png'
+  },
+  clusters: [
+    { path: '/how-to-choose-inventory-management-software', title: 'How to Choose Inventory Management Software', language: 'en', category: 'Guides', description: 'Complete buyer guide for selecting inventory software', image: '/dashboard.png' },
+    { path: '/free-inventory-management-software', title: 'Free Inventory Management Software', language: 'en', category: 'Guides', description: 'Best free inventory management solutions', image: '/dashboard.png' },
+    { path: '/inventory-management-software-cost', title: 'Inventory Management Software Cost Guide', language: 'en', category: 'Guides', description: 'Pricing comparison and cost breakdown', image: '/dashboard.png' },
+    { path: '/small-business-inventory-software', title: 'Small Business Inventory Software', language: 'en', category: 'Guides', description: 'Best inventory solutions for small businesses', image: '/dashboard.png' },
+    { path: '/inventory-management-implementation', title: 'Inventory Management Implementation Guide', language: 'en', category: 'Guides', description: 'Step-by-step implementation process', image: '/dashboard.png' },
+    { path: '/inventory-management-alternatives', title: 'Inventory Management Software Alternatives', language: 'en', category: 'Guides', description: 'Alternative solutions to traditional inventory systems', image: '/dashboard.png' },
+    { path: '/cloud-inventory-software', title: 'Cloud Inventory Management Software', language: 'en', category: 'Guides', description: 'Best cloud-based inventory solutions', image: '/dashboard.png' },
+    { path: '/inventory-management-integration', title: 'Inventory Management Integration Guide', language: 'en', category: 'Guides', description: 'Integrating inventory with other business systems', image: '/dashboard.png' },
+    { path: '/inventory-management-roi', title: 'Inventory Management ROI Calculator', language: 'en', category: 'Guides', description: 'Calculate return on investment for inventory software', image: '/dashboard.png' },
+    { path: '/replacing-excel-inventory', title: 'Replacing Excel for Inventory Management', language: 'en', category: 'Guides', description: 'Move from spreadsheets to inventory software', image: '/dashboard.png' },
+    { path: '/inventory-management-checklist', title: 'Inventory Management Software Checklist', language: 'en', category: 'Guides', description: 'Essential features checklist for buyers', image: '/dashboard.png' },
+    { path: '/inventory-management-migration', title: 'Inventory Management Migration Guide', language: 'en', category: 'Guides', description: 'How to migrate from one system to another', image: '/dashboard.png' },
+    { path: '/inventory-management-training', title: 'Inventory Management Training Resources', language: 'en', category: 'Guides', description: 'Training materials and best practices', image: '/dashboard.png' },
+    { path: '/inventory-management-security', title: 'Inventory Management Security Best Practices', language: 'en', category: 'Guides', description: 'Data security and compliance for inventory systems', image: '/dashboard.png' },
+    { path: '/inventory-management-pitfalls', title: 'Common Inventory Management Mistakes', language: 'en', category: 'Guides', description: 'Avoid common pitfalls when implementing inventory software', image: '/dashboard.png' }
+  ]
+};
+
+// Extended Comparison Cluster
+export const extendedComparisonCluster: TopicCluster = {
+  pillar: {
+    path: '/inventory-software-comparison',
+    title: 'Inventory Software Comparison',
+    language: 'en',
+    category: 'Comparisons',
+    description: 'Compare inventory management software solutions',
+    image: '/dashboard.png'
+  },
+  clusters: [
+    { path: '/stockflow-vs-quickbooks-commerce', title: 'StockFlow vs QuickBooks Commerce', language: 'en', category: 'Comparisons', description: 'Compare StockFlow and QuickBooks Commerce', image: '/dashboard.png' },
+    { path: '/stockflow-vs-netsuite', title: 'StockFlow vs NetSuite', language: 'en', category: 'Comparisons', description: 'StockFlow vs NetSuite inventory comparison', image: '/dashboard.png' },
+    { path: '/stockflow-vs-sap', title: 'StockFlow vs SAP', language: 'en', category: 'Comparisons', description: 'Compare StockFlow and SAP inventory solutions', image: '/dashboard.png' },
+    { path: '/stockflow-vs-odoo', title: 'StockFlow vs Odoo', language: 'en', category: 'Comparisons', description: 'StockFlow vs Odoo inventory management', image: '/dashboard.png' },
+    { path: '/stockflow-vs-monday', title: 'StockFlow vs Monday.com', language: 'en', category: 'Comparisons', description: 'Compare StockFlow and Monday.com', image: '/dashboard.png' },
+    { path: '/stockflow-vs-airtable', title: 'StockFlow vs Airtable', language: 'en', category: 'Comparisons', description: 'StockFlow vs Airtable for inventory', image: '/dashboard.png' },
+    { path: '/stockflow-vs-shipstation', title: 'StockFlow vs ShipStation', language: 'en', category: 'Comparisons', description: 'Compare StockFlow and ShipStation', image: '/dashboard.png' },
+    { path: '/stockflow-vs-shopify', title: 'StockFlow vs Shopify', language: 'en', category: 'Comparisons', description: 'StockFlow vs Shopify inventory features', image: '/dashboard.png' },
+    { path: '/stockflow-vs-square', title: 'StockFlow vs Square', language: 'en', category: 'Comparisons', description: 'Compare StockFlow and Square inventory', image: '/dashboard.png' },
+    { path: '/stockflow-vs-lightspeed', title: 'StockFlow vs Lightspeed', language: 'en', category: 'Comparisons', description: 'StockFlow vs Lightspeed POS comparison', image: '/dashboard.png' },
+    { path: '/stockflow-vs-vend', title: 'StockFlow vs Vend', language: 'en', category: 'Comparisons', description: 'Compare StockFlow and Vend', image: '/dashboard.png' },
+    { path: '/stockflow-vs-clover', title: 'StockFlow vs Clover', language: 'en', category: 'Comparisons', description: 'StockFlow vs Clover inventory management', image: '/dashboard.png' },
+    { path: '/stockflow-vs-tradegecko', title: 'StockFlow vs TradeGecko', language: 'en', category: 'Comparisons', description: 'Compare StockFlow and TradeGecko', image: '/dashboard.png' },
+    { path: '/stockflow-vs-megaventory', title: 'StockFlow vs Megaventory', language: 'en', category: 'Comparisons', description: 'StockFlow vs Megaventory comparison', image: '/dashboard.png' },
+    { path: '/stockflow-vs-finale', title: 'StockFlow vs Finale Inventory', language: 'en', category: 'Comparisons', description: 'Compare StockFlow and Finale Inventory', image: '/dashboard.png' }
+  ]
+};
+
 // All clusters
 export const allClusters: TopicCluster[] = [
   dutchMainCluster,
   dutchStockbeheerCluster,
   dutchMagazijnbeheerCluster,
   englishMainCluster,
-  comparisonCluster
+  comparisonCluster,
+  industryVerticalCluster,
+  featureCluster,
+  buyerIntentCluster,
+  extendedComparisonCluster
 ];
 
 // Helper function to find cluster for a given page

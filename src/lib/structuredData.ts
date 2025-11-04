@@ -416,3 +416,163 @@ export function generateComprehensiveStructuredData(
   
   return validSchemas;
 }
+
+// Generate VideoObject Schema for video content
+export function generateVideoObjectSchema(config: {
+  name: string;
+  description: string;
+  thumbnailUrl: string;
+  contentUrl: string;
+  embedUrl?: string;
+  duration?: string;
+  uploadDate?: string;
+  publisher?: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
+    "name": config.name,
+    "description": config.description,
+    "thumbnailUrl": config.thumbnailUrl,
+    "contentUrl": config.contentUrl,
+    "embedUrl": config.embedUrl || config.contentUrl,
+    ...(config.duration && { "duration": config.duration }),
+    ...(config.uploadDate && { "uploadDate": config.uploadDate }),
+    "publisher": {
+      "@type": "Organization",
+      "name": config.publisher || "StockFlow",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.stockflow.be/logo.png"
+      }
+    }
+  };
+}
+
+// Generate Product Schema for product pages
+export function generateProductSchema(config: {
+  name: string;
+  description: string;
+  image?: string;
+  sku?: string;
+  brand?: string;
+  offers?: {
+    price: string;
+    priceCurrency: string;
+    availability?: string;
+    url?: string;
+  };
+  aggregateRating?: {
+    ratingValue: string;
+    ratingCount: string;
+  };
+  baseUrl?: string;
+}) {
+  const baseUrl = config.baseUrl || "https://www.stockflow.be";
+  return {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": config.name,
+    "description": config.description,
+    ...(config.image && {
+      "image": config.image.startsWith('http') ? config.image : `${baseUrl}${config.image}`
+    }),
+    ...(config.sku && { "sku": config.sku }),
+    "brand": {
+      "@type": "Brand",
+      "name": config.brand || "StockFlow"
+    },
+    ...(config.offers && {
+      "offers": {
+        "@type": "Offer",
+        "price": config.offers.price,
+        "priceCurrency": config.offers.priceCurrency,
+        "availability": config.offers.availability || "https://schema.org/InStock",
+        ...(config.offers.url && { "url": config.offers.url })
+      }
+    }),
+    ...(config.aggregateRating && {
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": config.aggregateRating.ratingValue,
+        "ratingCount": config.aggregateRating.ratingCount,
+        "bestRating": "5",
+        "worstRating": "1"
+      }
+    })
+  };
+}
+
+// Generate Course Schema for educational content
+export function generateCourseSchema(config: {
+  name: string;
+  description: string;
+  provider?: string;
+  courseCode?: string;
+  educationalCredentialAwarded?: string;
+  timeRequired?: string;
+  image?: string;
+  baseUrl?: string;
+  courseUrl?: string;
+}) {
+  const baseUrl = config.baseUrl || "https://www.stockflow.be";
+  return {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    "name": config.name,
+    "description": config.description,
+    "provider": {
+      "@type": "Organization",
+      "name": config.provider || "StockFlow",
+      "url": baseUrl
+    },
+    ...(config.courseCode && { "courseCode": config.courseCode }),
+    ...(config.educationalCredentialAwarded && {
+      "educationalCredentialAwarded": config.educationalCredentialAwarded
+    }),
+    ...(config.timeRequired && { "timeRequired": config.timeRequired }),
+    ...(config.image && {
+      "image": config.image.startsWith('http') ? config.image : `${baseUrl}${config.image}`
+    }),
+    ...(config.courseUrl && {
+      "url": config.courseUrl.startsWith('http') ? config.courseUrl : `${baseUrl}${config.courseUrl}`
+    })
+  };
+}
+
+// Generate Review Schema for product/service reviews
+export function generateReviewSchema(config: {
+  itemReviewed: {
+    "@type": string;
+    name: string;
+  };
+  reviewRating: {
+    ratingValue: string;
+    bestRating?: string;
+    worstRating?: string;
+  };
+  author: {
+    name: string;
+    type?: string;
+  };
+  reviewBody?: string;
+  datePublished?: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Review",
+    "itemReviewed": config.itemReviewed,
+    "reviewRating": {
+      "@type": "Rating",
+      "ratingValue": config.reviewRating.ratingValue,
+      "bestRating": config.reviewRating.bestRating || "5",
+      "worstRating": config.reviewRating.worstRating || "1"
+    },
+    "author": {
+      "@type": config.author.type || "Person",
+      "name": config.author.name
+    },
+    ...(config.reviewBody && { "reviewBody": config.reviewBody }),
+    ...(config.datePublished && { "datePublished": config.datePublished })
+  };
+}

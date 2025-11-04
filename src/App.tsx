@@ -54,6 +54,9 @@ import BlogPostPage from './pages/blog/[slug]';
 import VoorraadbeheerFoutenVoorkomen from './pages/SEO/voorraadbeheer-fouten-voorkomen';
 import VoorraadbeheerHoreca from './pages/SEO/voorraadbeheer-horeca';
 import VoorraadbeheerExcelVsSoftware from './pages/SEO/voorraadbeheer-excel-vs-software';
+import InventoryManagementHealthcare from './pages/SEO/inventory-management-healthcare';
+import BarcodeScanningInventory from './pages/SEO/barcode-scanning-inventory';
+import HowToChooseInventoryManagementSoftware from './pages/SEO/how-to-choose-inventory-management-software';
 import VoorraadbeheerVoorStarters from './pages/SEO/voorraadbeheer-voor-starters';
 import MobielVoorraadbeheer from './pages/SEO/mobiel-voorraadbeheer';
 import GratisStockbeheer from './pages/SEO/gratis-stockbeheer';
@@ -441,6 +444,15 @@ const AppRouter = () => {
         <Route path="/nl/voorraadbeheer-horeca" element={<VoorraadbeheerHoreca />} />
         
         <Route path="/voorraadbeheer-excel-vs-software" element={<VoorraadbeheerExcelVsSoftware />} />
+        
+        {/* New Industry Pages */}
+        <Route path="/inventory-management-healthcare" element={<InventoryManagementHealthcare />} />
+        
+        {/* New Feature Pages */}
+        <Route path="/barcode-scanning-inventory" element={<BarcodeScanningInventory />} />
+        
+        {/* New Buyer Intent / Guide Pages */}
+        <Route path="/how-to-choose-inventory-management-software" element={<HowToChooseInventoryManagementSoftware />} />
         <Route path="/nl/voorraadbeheer-excel-vs-software" element={<VoorraadbeheerExcelVsSoftware />} />
         
         <Route path="/voorraadbeheer-voor-starters" element={<VoorraadbeheerVoorStarters />} />

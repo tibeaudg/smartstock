@@ -14,6 +14,12 @@ interface SEOProps {
   locale?: string;
   noindex?: boolean;
   nofollow?: boolean;
+  publishedTime?: string;
+  modifiedTime?: string;
+  category?: string;
+  productPrice?: string;
+  productCurrency?: string;
+  appUrl?: string;
 }
 
 const defaultTitle = 'StockFlow - Smart Inventory Management';
@@ -33,6 +39,12 @@ export const SEO: React.FC<SEOProps> = ({
   locale = 'en',
   noindex = false,
   nofollow = false,
+  publishedTime,
+  modifiedTime,
+  category,
+  productPrice,
+  productCurrency = 'EUR',
+  appUrl,
 }) => {
   // Detect browser language for SEO
   const getBrowserLanguage = () => {
@@ -44,6 +56,7 @@ export const SEO: React.FC<SEOProps> = ({
   
   const currentLang = getBrowserLanguage();
   const actualLocale = locale === 'en' ? currentLang : locale;
+  const currentModifiedTime = modifiedTime || new Date().toISOString();
 
   return (
     <Helmet>
@@ -67,7 +80,31 @@ export const SEO: React.FC<SEOProps> = ({
       <meta property="og:type" content="website" />
       <meta property="og:locale" content={actualLocale} />
       <meta property="og:site_name" content="StockFlow" />
-      <meta property="og:updated_time" content={new Date().toISOString()} />
+      <meta property="og:updated_time" content={currentModifiedTime} />
+      {publishedTime && <meta property="article:published_time" content={publishedTime} />}
+      {modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
+      {category && <meta property="article:section" content={category} />}
+      {category && <meta property="article:tag" content={category} />}
+      
+      {/* Product pricing meta tags */}
+      {productPrice && (
+        <>
+          <meta property="product:price:amount" content={productPrice} />
+          <meta property="product:price:currency" content={productCurrency} />
+        </>
+      )}
+      
+      {/* App linking meta tags */}
+      {appUrl && (
+        <>
+          <meta property="al:web:url" content={appUrl} />
+          <meta property="al:ios:url" content={appUrl} />
+          <meta property="al:android:url" content={appUrl} />
+        </>
+      )}
+      
+      {/* Category meta tag */}
+      {category && <meta name="category" content={category} />}
       
       {/* Business-specific Open Graph */}
       <meta property="business:contact_data:street_address" content="Belgium" />
