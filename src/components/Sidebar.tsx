@@ -209,12 +209,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, profileDropdo
                     >
                       <Icon className="w-5 h-5 mb-0.5 flex-shrink-0" />
                       <span className="text-[10px] font-medium truncate w-full text-center leading-tight">
-                        {item.id === 'stock' 
-                          ? isLoading 
-                            ? 'Products' 
-                            : `Products${productCount > 0 ? ` (${productCount})` : ''}`
-                          : item.label.length > 10 ? item.label.substring(0, 8) + '..' : item.label
-                        }
+                        {item.label.length > 10 ? item.label.substring(0, 8) + '..' : item.label}
                       </span>
                     </button>
                   ) : (
@@ -228,12 +223,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, profileDropdo
                     >
                       <Icon className="w-5 h-5 mb-0.5 flex-shrink-0" />
                       <span className="text-[10px] font-medium truncate w-full text-center leading-tight">
-                        {item.id === 'stock' 
-                          ? isLoading 
-                            ? 'Products' 
-                            : `Products${productCount > 0 ? ` (${productCount})` : ''}`
-                          : item.label.length > 10 ? item.label.substring(0, 8) + '..' : item.label
-                        }
+                        {item.label.length > 10 ? item.label.substring(0, 8) + '..' : item.label}
                       </span>
                     </NavLink>
                   )}
