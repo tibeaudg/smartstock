@@ -446,8 +446,8 @@ export const HomePageNL = () => {
       </Helmet>
 
       <SEO
-        title="StockFlow - Voorraadbeheer dat je Geld Bespaart | Belgische KMO's"
-        description="Stop met geld verspillen aan overstock en dode voorraad. Beheer voorraad, verminder verspilling en optimaliseer bestellingen. Alles in één eenvoudig platform."
+        title="Voorraadbeheer Software: Gratis Starten | StockFlow 2025"
+        description="Bespaar 20% op kosten & voorkom verspilling! Professionele voorraadbeheer software voor KMO's. Real-time tracking, barcode scanning, automatische meldingen. 500+ Belgische bedrijven gebruiken StockFlow. Start gratis nu - geen creditcard vereist!"
         keywords="voorraadbeheer, voorraadbeheer software, voorraad beheren, magazijnbeheer, KMO software België, voorraad optimalisatie, barcode scanner"
         url="https://www.stockflow.be/nl"
       />

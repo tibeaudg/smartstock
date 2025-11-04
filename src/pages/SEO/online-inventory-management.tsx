@@ -67,9 +67,9 @@ export default function OnlineInventoryManagement() {
   return (
     <SeoPageLayout title="Online Inventory Management">
       <SEO
-        title="Inventory Management Online 2025: Free Trial"
-        description="Manage inventory online from anywhere! Cloud-based software trusted by 10,000+ businesses. Real-time tracking, automated alerts, barcode scanning. Start FREE - no credit card!"
-        keywords="inventory management online, online inventory management, online stock management, cloud inventory management, web based inventory, real-time inventory tracking, inventory management system"
+        title="Inventory Management Online 2025: Best Cloud Solution | Free Trial"
+        description="Manage inventory online from anywhere! Best online inventory management software trusted by 10,000+ businesses. Real-time cloud tracking, automated alerts, barcode scanning, multi-location. Start FREE today - no credit card required! Perfect for remote teams."
+        keywords="inventory management online, online inventory management, inventory management software online, online inventory management software, online stock management, cloud inventory management, web based inventory, real-time inventory tracking, inventory management system, cloud inventory software, online inventory system, web inventory management"
         url="https://www.stockflow.be/online-inventory-management"
         structuredData={structuredData}
       />

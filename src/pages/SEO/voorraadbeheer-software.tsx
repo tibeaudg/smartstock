@@ -147,9 +147,9 @@ export default function VoorraadbeheerSoftware() {
   return (
     <SeoPageLayout title="Voorraadbeheer Software voor KMO's">
       <SEO
-        title="Voorraadbeheer Software | Gratis Starten | Professioneel & Gebruiksvriendelijk | stockflow"
-        description="Complete voorraadbeheer software voor moderne bedrijven. Van KMO tot webshop - beheer je voorraad professioneel. Start gratis, geen creditcard nodig. 500+ tevreden gebruikers."
-        keywords="voorraadbeheer software, gratis voorraadbeheer, stockbeheer software, voorraadbeheer programma, magazijnbeheer software, inventarisatie software, voorraadbeheer app, stockbeheer app, stockflow, gratis stockbeheer, KMO software, kleine onderneming software, voorraad software, inventory software"
+        title="Voorraadbeheer Software: Stockbeheer Programma | Gratis Starten | stockflow"
+        description="Zoek je een stockbeheer programma? StockFlow is het beste voorraadbeheer programma voor KMO's. Gratis starten, professioneel & gebruiksvriendelijk. Beheer voorraad online, real-time tracking, barcode scanning. 500+ tevreden gebruikers. Start gratis nu!"
+        keywords="stockbeheer programma, voorraadbeheer programma, voorraadbeheer software, gratis voorraadbeheer, stockbeheer software, magazijnbeheer software, inventarisatie software, voorraadbeheer app, stockbeheer app, stockflow, gratis stockbeheer, KMO software, kleine onderneming software, voorraad software, inventory software, programma voor voorraadbeheer, stockbeheer programma gratis"
         url="https://www.stockflow.be/voorraadbeheer-software"
         locale="nl"
         alternateLanguages={[
@@ -726,6 +726,30 @@ export default function VoorraadbeheerSoftware() {
                 </h3>
                 <p className="text-gray-600 text-sm mb-3">
                   Complete gids om je voorraadbeheer te automatiseren en 70% tijd te besparen.
+                </p>
+                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
+              </div>
+            </Link>
+
+            <Link to="/voorraadbeheer-horeca" className="group">
+              <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition">
+                <h3 className="font-semibold text-lg mb-2 group-hover:text-blue-600 transition">
+                  Voorraadbeheer voor Horeca
+                </h3>
+                <p className="text-gray-600 text-sm mb-3">
+                  Speciaal voorraadbeheer software voor restaurants, cafés en hotels met houdbaarheidsdata tracking.
+                </p>
+                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
+              </div>
+            </Link>
+
+            <Link to="/voorraadbeheer-tips" className="group">
+              <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition">
+                <h3 className="font-semibold text-lg mb-2 group-hover:text-blue-600 transition">
+                  Voorraadbeheer Tips
+                </h3>
+                <p className="text-gray-600 text-sm mb-3">
+                  Praktische voorraadbeheer tips die je direct kunt toepassen. Bespaar 70% tijd en verhoog winst.
                 </p>
                 <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
               </div>

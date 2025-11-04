@@ -162,9 +162,9 @@ export default function InventoryManagementSoftware() {
   return (
     <SeoPageLayout title="Inventory Management Software">
       <SEO
-        title="Inventory Management Software 2025: Free Trial"
-        description="Automate stock control & save 35% costs! Professional software for growing businesses. Real-time tracking, barcode scanning, multi-location. 10,000+ users. Start FREE today!"
-        keywords="stockflow, stock flow, stockflow app, stockflow software, inventory management software, stock management, inventory control, warehouse management, inventory tracking, stock management software, inventory system, warehouse software, inventory optimization, stock control software, inventory management system, warehouse management system, inventory tracking software, stock management system, inventory software, warehouse tracking, inventory control system, stock tracking software, inventory management solution, warehouse inventory software, inventory management platform"
+        title="Best Inventory Management Software 2025: Top Provider | Free Trial | StockFlow"
+        description="Looking for the best inventory management provider? StockFlow is the #1 choice for growing businesses. Online inventory management software with real-time tracking, barcode scanning & multi-location. Save 35% costs & 10+ hours weekly. 10,000+ users trust us. Start FREE trial - no credit card!"
+        keywords="inventory management provider, best inventory management software, inventory management software best, inventory management online, inventory management software online, online inventory management software, inventory management software solutions, stockflow, stock flow, stockflow app, stockflow software, inventory management software, stock management, inventory control, warehouse management, inventory tracking, stock management software, inventory system, warehouse software, inventory optimization, stock control software, inventory management system, warehouse management system, inventory tracking software, stock management system, inventory software, warehouse tracking, inventory control system, stock tracking software, inventory management solution, warehouse inventory software, inventory management platform"
         url="https://www.stockflow.be/inventory-management-software"
         locale="en"
         alternateLanguages={[
@@ -926,6 +926,19 @@ export default function InventoryManagementSoftware() {
                   Why switch from Excel to professional software.
                 </p>
                 <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
+              </div>
+            </Link>
+
+            <Link to="/" className="group">
+              <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition">
+                <div className="text-sm text-blue-600 font-semibold mb-2">🏠 Homepage</div>
+                <h3 className="font-semibold text-lg mb-2 group-hover:text-blue-600 transition">
+                  StockFlow Homepage
+                </h3>
+                <p className="text-gray-600 text-sm mb-3">
+                  Discover StockFlow - free inventory management software for growing businesses.
+                </p>
+                <div className="text-blue-600 text-sm font-semibold">Visit homepage →</div>
               </div>
             </Link>
           </div>

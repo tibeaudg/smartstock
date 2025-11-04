@@ -715,6 +715,30 @@ export default function VoorraadbeheerKMO() {
               </div>
             </Link>
 
+            <Link to="/voorraadbeheer-horeca" className="group">
+              <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition">
+                <h3 className="font-semibold text-lg mb-2 group-hover:text-blue-600 transition">
+                  Horeca Voorraadbeheer
+                </h3>
+                <p className="text-gray-600 text-sm mb-3">
+                  Voorraadbeheer software speciaal voor horeca met houdbaarheidsdata en verspilling -40%.
+                </p>
+                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
+              </div>
+            </Link>
+
+            <Link to="/voorraadbeheer-tips" className="group">
+              <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition">
+                <h3 className="font-semibold text-lg mb-2 group-hover:text-blue-600 transition">
+                  Voorraadbeheer Tips voor KMO's
+                </h3>
+                <p className="text-gray-600 text-sm mb-3">
+                  Bewezen voorraadbeheer tips die je direct kunt toepassen. Bespaar 70% tijd en verhoog winst.
+                </p>
+                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
+              </div>
+            </Link>
+
             <Link to="/inventory-management-software" className="group">
               <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition">
                 <h3 className="font-semibold text-lg mb-2 group-hover:text-blue-600 transition">
