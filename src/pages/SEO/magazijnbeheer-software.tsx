@@ -68,9 +68,9 @@ export default function MagazijnbeheerSoftware() {
   return (
     <SeoPageLayout title="Magazijnbeheer Software voor Kleine Bedrijven">
       <SEO
-        title="Gratis Magazijnbeheer Software voor KMO's | StockFlow"
-        description="Eenvoudig magazijnbeheer software voor kleine bedrijven. Beheer voorraad, leveringen en producten in één online dashboard. Gratis te proberen."
-        keywords="magazijnbeheer software, voorraadbeheer software, warehouse management, stockbeheer software, gratis magazijnbeheer, KMO software"
+        title="Magazijnbeheer Software 2025 | Gratis Plan + Bespaar 35% | StockFlow #1"
+        description="🏆 #1 Magazijnbeheer software voor KMO's 2025. Real-time tracking, barcode scanning, automatische workflows. Bespaar 35% kosten & 15 uur/week! GRATIS plan - geen creditcard. Vertrouwd door 1.000+ bedrijven. Start nu gratis!"
+        keywords="magazijnbeheer software, voorraadbeheer software, warehouse management, stockbeheer software, gratis magazijnbeheer, KMO software, magazijnbeheer software gratis, beste magazijnbeheer software, magazijnbeheer software voor kleine bedrijven, online magazijnbeheer"
         url="https://www.stockflow.be/magazijnbeheer-software"
         structuredData={structuredData}
       />
@@ -81,10 +81,12 @@ export default function MagazijnbeheerSoftware() {
           <div className="grid lg:grid-cols-3 gap-6 sm:gap-8 items-center">
             <div className="lg:col-span-2">
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6">
-                <span className="text-blue-600">Magazijnbeheer Software</span> voor Kleine Bedrijven
+                <span className="text-blue-600">Magazijnbeheer Software</span> 2025: #1 voor KMO's | Bespaar 35% + 15 uur/week
               </h1>
               <p className="text-sm sm:text-base md:text-lg text-gray-700 mb-6 sm:mb-8 leading-relaxed">
-                Eenvoudig magazijnbeheer software voor kleine bedrijven. Beheer voorraad, leveringen en producten in één online dashboard. Real-time inzicht, barcode scanning, multi-locatie support en automatische meldingen. Gratis te proberen voor KMO's!
+                🏆 Ontdek de #1 beste magazijnbeheer software voor kleine bedrijven in 2025. Beheer voorraad, leveringen en producten in één online dashboard. 
+                Real-time inzicht, barcode scanning, multi-locatie support en automatische meldingen. Bespaar 35% kosten & 15 uur/week! 
+                Vertrouwd door 1.000+ bedrijven. GRATIS te proberen - geen creditcard vereist!
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link

@@ -1518,9 +1518,9 @@ export const HomePage = () => {
         `}</script>
       </Helmet>
       <SEO
-        title="StockFlow - Best Inventory Management Software 2025 | Free Trial"
-        description="Best inventory management software for SMBs. Real-time tracking, barcode scanning, automated alerts. Start FREE trial - no credit card. Trusted by 500+ businesses."
-        keywords="inventory management software, stockbeheer software, best inventory management software, inventory management online, stock management software, warehouse management system, inventory tracking, stock control, voorraadbeheer software, inventory software, stockflow, stock flow"
+        title="StockFlow - Best Inventory Management Software 2025 | Free Forever Plan"
+        description="Cloud-based inventory management software for SMBs. Track stock in real-time, prevent stockouts, optimize dead stock. Free forever plan available. Trusted by 500+ businesses. Start free today - no credit card required!"
+        keywords="inventory management software, stockbeheer software, best inventory management software, inventory management online, stock management software, warehouse management system, inventory tracking, stock control, voorraadbeheer software, inventory software, stockflow, stock flow, free inventory management, cloud inventory software, inventory management system, stock management system, warehouse software, inventory control software"
         url="https://www.stockflow.be/"
         hreflang={[
           { lang: 'en', url: 'https://www.stockflow.be/' },
@@ -1531,6 +1531,7 @@ export const HomePage = () => {
           { lang: 'nl-BE', url: 'https://www.stockflow.be/nl' }
         ]}
         structuredData={structuredData}
+        modifiedTime={new Date().toISOString()}
       />
 
       <Header 
@@ -1576,8 +1577,9 @@ export const HomePage = () => {
               <BounceInWhenVisible delay={200}>
                 <div className="mb-6 mt-6 sm:mb-8 md:mb-12">
                   <h1 className="text-[clamp(2.5rem,5vw,4.5rem)] sm:text-[clamp(3rem,6vw,5rem)] md:text-[clamp(3.5rem,7vw,5.5rem)] font-bold text-gray-900 leading-tight tracking-tight">
-                    Best Inventory Management Software 2025 | StockFlow - Free Trial
+                    Best Inventory Management Software 2025
                   </h1>
+    
                 </div>
               </BounceInWhenVisible>
               

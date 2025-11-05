@@ -34,15 +34,16 @@ export default function OnlineInventorySoftware() {
   return (
     <SeoPageLayout title="Online Inventory Software">
       <SEO
-        title="Inventory Management Online 2025 | Free Trial | StockFlow"
-        description="Best inventory management online for SMBs. Cloud-based software with real-time tracking, automated alerts, barcode scanning. Start FREE - no credit card. Trusted by 500+ businesses."
-        keywords="inventory management online, online inventory software, inventory management software, stock management software, cloud inventory software, inventory tracking software, warehouse management software, inventory control software, stock control software, real-time inventory software, cloud-based inventory management, online inventory management system, inventory management online free, best inventory management online, inventory management software online, stockflow, stock flow"
+        title="Online Inventory Software 2025 | Cloud-Based | Free Trial | StockFlow"
+        description="Best online inventory management software for SMBs 2025. Cloud-based solution with real-time tracking, automated alerts, barcode scanning, multi-location support. Start FREE - no credit card required. Trusted by 500+ businesses worldwide."
+        keywords="online inventory software, inventory management online, cloud inventory software, inventory management software, stock management software, inventory tracking software, warehouse management software, inventory control software, stock control software, real-time inventory software, cloud-based inventory management, online inventory management system, inventory management online free, best inventory management online, inventory management software online, web-based inventory software, SaaS inventory management, inventory software cloud, online stock management, inventory management system online, stockflow, stock flow"
         url="https://www.stockflow.be/online-inventory-software"
         locale="en"
         alternateLanguages={[
           { lang: 'en-US', url: 'https://www.stockflow.be/online-inventory-software' },
           { lang: 'nl-BE', url: 'https://www.stockflow.be/online-voorraadbeheer-software' }
         ]}
+        modifiedTime={new Date().toISOString()}
       />
 
       {/* Hero Section - Split Layout */}
@@ -413,6 +414,11 @@ export default function OnlineInventorySoftware() {
           },
           "datePublished": "2024-06-01",
           "dateModified": new Date().toISOString().split('T')[0],
+          "author": {
+            "@type": "Organization",
+            "name": "StockFlow",
+            "url": "https://www.stockflow.be"
+          },
           "primaryImageOfPage": {
             "@type": "ImageObject",
             "url": "https://www.stockflow.be/Inventory-Management.png"

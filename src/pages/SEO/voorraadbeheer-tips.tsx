@@ -57,10 +57,11 @@ export default function VoorraadbeheerTips() {
       }}
     >
       <SEO
-        title="Stockbeheer Tips: Voorraadbeheer Tips | Bespaar 70% Tijd | Gratis"
-        description="Zoek je stockbeheer tips? Ontdek 5 bewezen voorraadbeheer tips die direct werken. Bespaar 70% tijd & verhoog winst! Praktische gids voor KMO's - 10.000+ bedrijven volgen deze tips. Gratis download beschikbaar. Lees de tips nu!"
-        keywords="stockbeheer tips, voorraadbeheer tips, voorraadbeheer, stockbeheer, magazijnbeheer, inventarisatie, voorraad optimaliseren, KMO, kleine onderneming, voorraad tips, voorraadbeheer software, voorraadbeheer app, stockflow, gratis voorraadbeheer, voorraadbeheer automatiseren, voorraadbeheer 2025, voorraadbeheer tips KMO, voorraadbeheer best practices, voorraadbeheer software gratis, stockbeheer software, tips voor stockbeheer"
+        title="Voorraadbeheer Tips 2025: 5 Bewezen Strategieën | Bespaar 70% Tijd | Gratis"
+        description="Ontdek 5 bewezen voorraadbeheer tips die je vandaag nog kunt toepassen. Bespaar 70% tijd, voorkom tekorten en groei je KMO. Praktische gids voor KMO's - 10.000+ bedrijven volgen deze tips. Gratis tips van experts. Start nu!"
+        keywords="voorraadbeheer tips, stockbeheer tips, voorraadbeheer best practices, voorraadbeheer strategieën, voorraad optimaliseren, KMO voorraadbeheer, voorraadbeheer automatiseren, voorraadbeheer 2025, voorraadbeheer tips KMO, voorraadbeheer software, voorraadbeheer app, stockflow, gratis voorraadbeheer, magazijnbeheer tips, inventarisatie tips, voorraadbeheer optimalisatie, efficiënt voorraadbeheer, voorraadbeheer kosten besparen, stockbeheer software, tips voor stockbeheer, voorraadbeheer best practices 2025"
         url="https://www.stockflow.be/voorraadbeheer-tips"
+        modifiedTime={new Date().toISOString()}
       />
 
       <SeoPageHero
@@ -108,7 +109,7 @@ export default function VoorraadbeheerTips() {
             "@id": "https://www.stockflow.be/voorraadbeheer-tips"
           },
           "datePublished": "2024-06-01",
-          "dateModified": "2024-12-19"
+          "dateModified": new Date().toISOString().split('T')[0]
         }
       ]} />
     </SeoPageLayout>

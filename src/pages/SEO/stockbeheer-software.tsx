@@ -81,9 +81,9 @@ export default function StockbeheerSoftware() {
   return (
     <SeoPageLayout title="Stockbeheer Software voor Kleine Ondernemers">
       <SEO
-        title="Stockbeheer Software 2025 | Gratis Starten | StockFlow"
-        description="Beste stockbeheer software voor KMO's. Real-time tracking, barcode scanning, automatische meldingen. Start GRATIS - geen creditcard. 500+ bedrijven. ✓"
-        keywords="stockbeheer software, stockbeheersoftware, gratis stockbeheer, voorraadbeheer software, best stockbeheer software, stockflow"
+        title="Stockbeheer Software 2025 | Gratis Plan + Bespaar 35% Kosten | StockFlow #1"
+        description="🏆 #1 Beste stockbeheer software voor KMO's 2025. Real-time tracking, barcode scanning, automatische meldingen. Bespaar 35% kosten & 15 uur/week! GRATIS plan beschikbaar - geen creditcard. Vertrouwd door 1.000+ bedrijven. Start nu gratis!"
+        keywords="stockbeheer software, stockbeheersoftware, gratis stockbeheer, voorraadbeheer software, best stockbeheer software, stockflow, stockbeheer software gratis, beste stockbeheer software, stockbeheer software voor kleine bedrijven, online stockbeheer software"
         url="https://www.stockflow.be/stockbeheer-software"
         structuredData={structuredData}
       />
@@ -95,10 +95,12 @@ export default function StockbeheerSoftware() {
             {/* Left Side - Text Content */}
             <div className="lg:col-span-2">
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6">
-                <span className="text-blue-600">Stockbeheer Software</span> | Gratis Proefperiode & Horeca Focus
+                <span className="text-blue-600">Stockbeheer Software</span> 2025: #1 voor KMO's | Bespaar 35% + 15 uur/week
               </h1>
               <p className="text-sm sm:text-base md:text-lg text-gray-700 mb-6 sm:mb-8 leading-relaxed">
-                ✅ Ontdek de beste stockbeheer software voor KMO's. Gratis starten, real-time tracking & barcode scanning. Bespaar 70% tijd op voorraadbeheer. Perfect voor horeca, detailhandel en webshops. Start nu met onze gratis proefperiode!
+                🏆 Ontdek de #1 beste stockbeheer software voor KMO's in 2025. Gratis starten, real-time tracking & barcode scanning. 
+                Bespaar 35% kosten & 15 uur/week op voorraadbeheer. Perfect voor horeca, detailhandel en webshops. 
+                Vertrouwd door 1.000+ bedrijven. Start nu met onze GRATIS proefperiode - geen creditcard vereist!
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link

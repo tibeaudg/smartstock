@@ -11,7 +11,20 @@ export default function VoorraadbeheerSoftwareVergelijken() {
   // Gebruik de page refresh hook
   usePageRefresh();
   
-
+  const faqData = [
+    {
+      question: "Wat is het verschil tussen stockbeheer software en voorraadbeheer software?",
+      answer: "Beide termen verwijzen naar dezelfde type software. Stockbeheer software is de Nederlandse term, terwijl voorraadbeheer software ook veel gebruikt wordt. Beide helpen je bij het beheren van je voorraad."
+    },
+    {
+      question: "Welke stockbeheer software is het beste voor kleine bedrijven?",
+      answer: "Voor kleine bedrijven is stockflow aan te raden vanwege de gratis versie, gebruiksvriendelijkheid en betaalbare premium opties. Het is perfect voor starters die willen groeien."
+    },
+    {
+      question: "Kun je stockbeheer software gratis proberen?",
+      answer: "Ja, veel stockbeheer software biedt gratis versies aan. stockflow biedt bijvoorbeeld een gratis versie aan voor maximaal 30 producten, perfect om te testen of het bij je past."
+    }
+  ];
   
   const comparisonData = [
     {
@@ -54,10 +67,12 @@ export default function VoorraadbeheerSoftwareVergelijken() {
       title="Voorraadbeheer Software Vergelijken"
     >
       <SEO
-        title="Voorraadbeheer Software Vergelijken 2025: Gratis Plan + Top 3"
-        description="Bespaar tot €450/maand! Vergelijk de 3 beste voorraadbeheer software 2025: StockFlow vs Exact vs Visma. StockFlow #1 voor KMO's - 100% gratis plan. Start gratis - geen creditcard!"
-        keywords="software stockbeheer, stockbeheer software, programma stockbeheer, voorraadbeheer software, stockbeheer programma, software vergelijken, beste voorraadbeheer software, voorraadbeheer software kiezen, voorraadbeheersoftware, bedrijfssoftware vergelijken, voorraadbeheer app, programma voorraadbeheer, software voor voorraadbeheer, voorraad app, app voorraadbeheer, beste voorraadbeheer app, voorraadbeheer programma, software stockbeheer 2024, voorraadbeheer software gratis"
-        url="https://www.stockflow.be/voorraadbeheer-software-vergelijken" />
+        title="Voorraadbeheer Software Vergelijken 2025: Gratis Plan + Top 3 Vergelijking"
+        description="Bespaar tot €450/maand! Vergelijk de 3 beste voorraadbeheer software 2025: StockFlow vs Exact vs Visma. StockFlow #1 voor KMO's - 100% gratis plan. Onafhankelijke vergelijking met prijzen, features en reviews. Start gratis - geen creditcard!"
+        keywords="voorraadbeheer software vergelijken, software stockbeheer vergelijken, beste voorraadbeheer software, stockbeheer software vergelijken, voorraadbeheer software kiezen, voorraadbeheer software 2025, software voor voorraadbeheer, voorraadbeheersoftware vergelijking, bedrijfssoftware vergelijken, voorraadbeheer app vergelijken, programma voorraadbeheer, software stockbeheer, stockbeheer programma, voorraad app, app voorraadbeheer, beste voorraadbeheer app, voorraadbeheer programma, software stockbeheer 2025, voorraadbeheer software gratis, StockFlow vs Exact, StockFlow vs Visma"
+        url="https://www.stockflow.be/voorraadbeheer-software-vergelijken"
+        modifiedTime={new Date().toISOString()}
+      />
 
       <Header 
         simplifiedNav={false}
@@ -67,11 +82,11 @@ export default function VoorraadbeheerSoftwareVergelijken() {
       <div className="bg-gradient-to-br from-blue-300 to-indigo-500 rounded-2xl p-8 mb-8">
         <div className="max-w-7xl mx-auto text-center">
           <h1 className="text-5xl font-bold text-gray-900 mb-4">
-            Stockbeheer Software Vergelijken
+            Voorraadbeheer Software Vergelijken 2025
           </h1>
           <p className="text-xl text-gray-600 mb-6 max-w-5xl mx-auto">
             Vergelijk de beste <strong>stockbeheer software</strong> en <strong>voorraadbeheer programma's</strong> voor KMO's.
-            Ontdek welke <strong>software voor voorraadbeheer</strong> het beste past bij jouw bedrijf in 2024.
+            Ontdek welke <strong>software voor voorraadbeheer</strong> het beste past bij jouw bedrijf in 2025.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm">
@@ -391,36 +406,48 @@ export default function VoorraadbeheerSoftwareVergelijken() {
       </section>
 
       {/* Structured Data */}
-
       {/* Schema.org Structured Data */}
       <StructuredData data={[
-        {"@context": "https://schema.org",
-                "@type": "Article",
-                "headline": "Stockbeheer Software Vergelijken 2024",
-                "description": "Vergelijk de beste stockbeheer software en voorraadbeheer programma's voor KMO's in 2024. Ontdek welke software voor voorraadbeheer het beste past bij jouw bedrijf met onze uitgebreide vergelijking.",
-                "author": { 
-                  "@type": "Organization", 
-                  "name": "stockflow",
-                  "url": "https://www.stockflow.be"
-                },
-                "publisher": { 
-                  "@type": "Organization", 
-                  "name": "stockflow", 
-                  "logo": { 
-                    "@type": "ImageObject", 
-                    "url": "https://www.stockflow.be/logo.png" 
-                  } 
-                },
-                "mainEntityOfPage": { 
-                  "@type": "WebPage", 
-                  "@id": "https://www.stockflow.be/voorraadbeheer-software-vergelijken" 
-                },
-                "datePublished": "2024-01-15",
-                "dateModified": "2024-01-15",
-                "image": "https://www.stockflow.be/logo.png",
-                  "articleSection": "Voorraadbeheer",
-                  "keywords": "stockbeheer software, software stockbeheer, programma stockbeheer, voorraadbeheer software, stockbeheer programma, software vergelijken, beste voorraadbeheer software, voorraadbeheer software kiezen, voorraadbeheersoftware, bedrijfssoftware vergelijken, voorraadbeheer app, programma voorraadbeheer, software voor voorraadbeheer, voorraad app, app voorraadbeheer, beste voorraadbeheer app, voorraadbeheer programma"
-                }
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": faqData.map(faq => ({
+            "@type": "Question",
+            "name": faq.question,
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": faq.answer
+            }
+          }))
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "Article",
+          "headline": "Voorraadbeheer Software Vergelijken 2025",
+          "description": "Vergelijk de beste stockbeheer software en voorraadbeheer programma's voor KMO's in 2025. Ontdek welke software voor voorraadbeheer het beste past bij jouw bedrijf met onze uitgebreide vergelijking.",
+          "author": { 
+            "@type": "Organization", 
+            "name": "stockflow",
+            "url": "https://www.stockflow.be"
+          },
+          "publisher": { 
+            "@type": "Organization", 
+            "name": "stockflow", 
+            "logo": { 
+              "@type": "ImageObject", 
+              "url": "https://www.stockflow.be/logo.png" 
+            } 
+          },
+          "mainEntityOfPage": { 
+            "@type": "WebPage", 
+            "@id": "https://www.stockflow.be/voorraadbeheer-software-vergelijken" 
+          },
+          "datePublished": "2024-01-15",
+          "dateModified": new Date().toISOString().split('T')[0],
+          "image": "https://www.stockflow.be/Inventory-Management.png",
+          "articleSection": "Voorraadbeheer",
+          "keywords": "voorraadbeheer software vergelijken, software stockbeheer vergelijken, beste voorraadbeheer software, stockbeheer software vergelijken, voorraadbeheer software kiezen, voorraadbeheer software 2025"
+        }
       ]} />
       </SeoPageLayout><Footer /></>
 
