@@ -37,19 +37,46 @@ export default function HorizontalScrollCarousel({
   const containerRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Update container width and responsive settings
+  // Update container width and responsive settings - optimized with RAF and debouncing
   useEffect(() => {
+    let rafId: number | null = null;
+    let resizeTimeout: NodeJS.Timeout;
+    
     const updateDimensions = () => {
+      // Debounce resize events
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        // Batch layout reads in RAF
+        if (rafId) {
+          cancelAnimationFrame(rafId);
+        }
+        rafId = requestAnimationFrame(() => {
+          if (containerRef.current) {
+            const width = containerRef.current.offsetWidth;
+            setContainerWidth(width);
+            setIsMobile(width < 768);
+          }
+        });
+      }, 150); // Debounce for 150ms
+    };
+
+    // Initial calculation with RAF
+    rafId = requestAnimationFrame(() => {
       if (containerRef.current) {
         const width = containerRef.current.offsetWidth;
         setContainerWidth(width);
         setIsMobile(width < 768);
       }
+    });
+    
+    window.addEventListener('resize', updateDimensions, { passive: true });
+    return () => {
+      window.removeEventListener('resize', updateDimensions);
+      clearTimeout(resizeTimeout);
+      if (rafId) {
+        cancelAnimationFrame(rafId);
+      }
     };
-
-    updateDimensions();
-    window.addEventListener('resize', updateDimensions);
-    return () => window.removeEventListener('resize', updateDimensions);
   }, []);
 
   // Update card width based on container and cards visible
@@ -105,15 +132,21 @@ export default function HorizontalScrollCarousel({
   const handleMouseDown = (e: React.MouseEvent) => {
     if (!scrollRef.current) return;
     setIsDragging(true);
-    setStartX(e.pageX - scrollRef.current.offsetLeft);
-    setScrollLeft(scrollRef.current.scrollLeft);
+    // Batch layout reads in RAF
+    requestAnimationFrame(() => {
+      if (scrollRef.current) {
+        setStartX(e.pageX - scrollRef.current.offsetLeft);
+        setScrollLeft(scrollRef.current.scrollLeft);
+      }
+    });
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!isDragging || !scrollRef.current) return;
     e.preventDefault();
-    const x = e.pageX - scrollRef.current.offsetLeft;
-    const walk = (x - startX) * 2;
+    // Use cached startX (which already includes offsetLeft) to avoid layout read
+    // Calculate relative movement without reading offsetLeft again
+    const walk = (e.pageX - startX) * 2;
     scrollRef.current.scrollLeft = scrollLeft - walk;
   };
 
@@ -124,15 +157,21 @@ export default function HorizontalScrollCarousel({
   const handleTouchStart = (e: React.TouchEvent) => {
     if (!scrollRef.current) return;
     const touch = e.touches[0];
-    setStartX(touch.pageX - scrollRef.current.offsetLeft);
-    setScrollLeft(scrollRef.current.scrollLeft);
+    // Batch layout reads in RAF
+    requestAnimationFrame(() => {
+      if (scrollRef.current) {
+        setStartX(touch.pageX - scrollRef.current.offsetLeft);
+        setScrollLeft(scrollRef.current.scrollLeft);
+      }
+    });
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
     if (!scrollRef.current) return;
     const touch = e.touches[0];
-    const x = touch.pageX - scrollRef.current.offsetLeft;
-    const walk = (x - startX) * 2;
+    // Use cached startX (which already includes offsetLeft) to avoid layout read
+    // Calculate relative movement without reading offsetLeft again
+    const walk = (touch.pageX - startX) * 2;
     scrollRef.current.scrollLeft = scrollLeft - walk;
   };
 
@@ -142,22 +181,38 @@ export default function HorizontalScrollCarousel({
     if (e.key === 'ArrowRight') nextSlide();
   };
 
-  // Scroll snap effect
+  // Scroll snap effect - optimized with RAF batching
   useEffect(() => {
+    let rafId: number | null = null;
+    
     const handleScroll = () => {
       if (!scrollRef.current) return;
       
-      const scrollLeft = scrollRef.current.scrollLeft;
-      const index = Math.round(scrollLeft / (cardWidth + cardSpacing));
-      if (index !== currentIndex && index >= 0 && index <= maxIndex) {
-        setCurrentIndex(index);
+      // Cancel any pending animation frame
+      if (rafId) {
+        cancelAnimationFrame(rafId);
       }
+      
+      // Batch layout reads in RAF
+      rafId = requestAnimationFrame(() => {
+        if (!scrollRef.current) return;
+        const scrollLeft = scrollRef.current.scrollLeft;
+        const index = Math.round(scrollLeft / (cardWidth + cardSpacing));
+        if (index !== currentIndex && index >= 0 && index <= maxIndex) {
+          setCurrentIndex(index);
+        }
+      });
     };
 
     const scrollElement = scrollRef.current;
     if (scrollElement) {
       scrollElement.addEventListener('scroll', handleScroll, { passive: true });
-      return () => scrollElement.removeEventListener('scroll', handleScroll);
+      return () => {
+        scrollElement.removeEventListener('scroll', handleScroll);
+        if (rafId) {
+          cancelAnimationFrame(rafId);
+        }
+      };
     }
   }, [cardWidth, cardSpacing, currentIndex, maxIndex]);
 

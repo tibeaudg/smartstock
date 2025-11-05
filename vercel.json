@@ -18,7 +18,7 @@
     { "source": "/api/:path*", "destination": "/api/:path*" },
     { "source": "/sitemap.xml", "destination": "/api/sitemap" },
     { "source": "/ads.txt", "destination": "/api/ads" },
-    { "source": "/((?!api).*)", "destination": "/index.html" }
+    { "source": "/((?!api|sw.js).*)", "destination": "/index.html" }
   ],
   "headers": [
     {
@@ -44,6 +44,23 @@
         {
           "key": "Cache-Control",
           "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/sw.js",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/javascript; charset=utf-8"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        },
+        {
+          "key": "Service-Worker-Allowed",
+          "value": "/"
         }
       ]
     },

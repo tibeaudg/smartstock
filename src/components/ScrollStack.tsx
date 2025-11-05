@@ -111,12 +111,14 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
   );
 
   // Simplified and more performant card transform update
+  // Optimized to batch all layout reads before any writes
   const updateCardTransforms = useCallback(() => {
     if (!cardsRef.current.length || isUpdatingRef.current) return;
     
     isUpdatingRef.current = true;
     
     try {
+      // Batch all layout reads first (before any DOM writes)
       const { scrollTop, containerHeight } = getScrollData();
       const stackPositionPx = parsePercentage(stackPosition, containerHeight);
       const scaleEndPositionPx = parsePercentage(scaleEndPosition, containerHeight);
@@ -127,11 +129,17 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
         : (scrollerRef.current?.querySelector('.scroll-stack-end') as HTMLElement | null);
       const endElementTop = endElement ? getElementOffset(endElement) : 0;
 
-      // Process each card
-      cardsRef.current.forEach((card, i) => {
-        if (!card) return;
+      // Batch all card position reads together
+      const cardPositions = cardsRef.current.map((card) => {
+        if (!card) return null;
+        return {
+          element: card,
+          cardTop: getElementOffset(card)
+        };
+      }).filter(Boolean) as Array<{ element: HTMLElement; cardTop: number }>;
 
-        const cardTop = getElementOffset(card);
+      // Process each card using pre-read positions
+      cardPositions.forEach(({ element: card, cardTop }, i) => {
         const triggerStart = cardTop - stackPositionPx - (itemStackDistance * i);
         const triggerEnd = cardTop - scaleEndPositionPx;
         const pinStart = triggerStart;

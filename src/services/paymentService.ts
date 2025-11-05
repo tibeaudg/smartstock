@@ -17,7 +17,10 @@ export const getStripe = () => {
 
   if (!stripePromise) {
     if (!STRIPE_PUBLISHABLE_KEY || STRIPE_PUBLISHABLE_KEY.includes('test_51234567890abcdef')) {
-      console.warn('Stripe publishable key not configured or using placeholder. Stripe functionality will be disabled.');
+      // Only warn in production or when explicitly enabled (suppress in development)
+      if (import.meta.env.PROD || import.meta.env.VITE_ENABLE_STRIPE_WARNINGS === 'true') {
+        console.warn('Stripe publishable key not configured or using placeholder. Stripe functionality will be disabled.');
+      }
       stripePromise = Promise.resolve(null);
     } else {
       console.log('[Cookie Consent] Loading Stripe with user consent');

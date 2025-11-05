@@ -103,7 +103,7 @@ const Footer = () => {
         
         {/* Social Media Follow Buttons */}
         <div className="mb-6">
-          <h4 className="text-white font-semibold mb-3">Follow Us</h4>
+          <h3 className="text-white font-semibold mb-3">Follow Us</h3>
           <div className="flex gap-3">
             <a 
               href="https://www.facebook.com/profile.php?id=61578067034898"
@@ -387,7 +387,7 @@ const Footer = () => {
     </div>
 
     <div className="border-t border-gray-700 pt-6 text-center">
-      <p className="text-gray-500 text-xs md:text-sm">
+      <p className="text-gray-300 text-xs md:text-sm">
         &copy; {new Date().getFullYear()} stockflow. All rights reserved. 
       </p>
     </div>

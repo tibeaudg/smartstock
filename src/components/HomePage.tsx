@@ -374,6 +374,19 @@ const IndustryBadgeMarquee = ({ badges, speed = 30 }) => {
     const marquee = marqueeRef.current;
     let animationId;
     const scrollSpeed = 0.5; // pixels per frame
+    
+    // Cache scrollWidth to avoid repeated layout reads during animation
+    let cachedMarqueeWidth = 0;
+    const updateMarqueeWidth = () => {
+      cachedMarqueeWidth = marquee.scrollWidth / 2;
+    };
+    updateMarqueeWidth();
+    
+    // Update cached width on resize using ResizeObserver
+    const resizeObserver = new ResizeObserver(() => {
+      requestAnimationFrame(updateMarqueeWidth);
+    });
+    resizeObserver.observe(marquee);
 
     const animate = () => {
       if (!isPaused) {
@@ -381,8 +394,8 @@ const IndustryBadgeMarquee = ({ badges, speed = 30 }) => {
         marquee.style.transform = `translateX(${positionRef.current}px)`;
         
         // Reset position when we've scrolled past half the content (since we duplicated it)
-        const marqueeWidth = marquee.scrollWidth / 2; // Half because we duplicated
-        if (Math.abs(positionRef.current) >= marqueeWidth) {
+        // Use cached width to avoid layout read during animation
+        if (Math.abs(positionRef.current) >= cachedMarqueeWidth) {
           positionRef.current = 0;
         }
       }
@@ -392,6 +405,7 @@ const IndustryBadgeMarquee = ({ badges, speed = 30 }) => {
     animationId = requestAnimationFrame(animate);
 
     return () => {
+      resizeObserver.disconnect();
       if (animationId) {
         cancelAnimationFrame(animationId);
       }
@@ -441,6 +455,19 @@ const IntegrationCardMarquee = ({ cards, speed = 60 }) => {
     const marquee = marqueeRef.current;
     let animationId;
     const scrollSpeed = speed / 200; // Convert speed parameter to pixels per frame
+    
+    // Cache scrollWidth to avoid repeated layout reads during animation
+    let cachedMarqueeWidth = 0;
+    const updateMarqueeWidth = () => {
+      cachedMarqueeWidth = marquee.scrollWidth / 2;
+    };
+    updateMarqueeWidth();
+    
+    // Update cached width on resize using ResizeObserver
+    const resizeObserver = new ResizeObserver(() => {
+      requestAnimationFrame(updateMarqueeWidth);
+    });
+    resizeObserver.observe(marquee);
 
     const animate = () => {
       if (!isPaused) {
@@ -448,8 +475,8 @@ const IntegrationCardMarquee = ({ cards, speed = 60 }) => {
         marquee.style.transform = `translateX(${positionRef.current}px)`;
         
         // Reset position when we've scrolled past half the content (since we duplicated it)
-        const marqueeWidth = marquee.scrollWidth / 2; // Half because we duplicated
-        if (Math.abs(positionRef.current) >= marqueeWidth) {
+        // Use cached width to avoid layout read during animation
+        if (Math.abs(positionRef.current) >= cachedMarqueeWidth) {
           positionRef.current = 0;
         }
       }
@@ -459,6 +486,7 @@ const IntegrationCardMarquee = ({ cards, speed = 60 }) => {
     animationId = requestAnimationFrame(animate);
 
     return () => {
+      resizeObserver.disconnect();
       if (animationId) {
         cancelAnimationFrame(animationId);
       }
@@ -529,7 +557,7 @@ const FloatingFeatureCard = ({ icon: Icon, title, subtitle, metric, position, de
             <Icon className="w-5 h-5 text-blue-600" />
           </div>
           <div className="flex-1">
-            <h4 className="font-semibold text-gray-900 text-sm">{title}</h4>
+            <p className="font-semibold text-gray-900 text-sm">{title}</p>
             <p className="text-xs text-gray-600">{subtitle}</p>
           </div>
         </div>
@@ -545,36 +573,74 @@ const FloatingFeatureCard = ({ icon: Icon, title, subtitle, metric, position, de
 
 // Mobile Phone Mockup Component
 const MobilePhoneMockup = () => {
-  const [isVisible, setIsVisible] = React.useState(false);
+  // Start visible for LCP optimization - will hide only if below fold
+  const [isVisible, setIsVisible] = React.useState(true);
   const ref = React.useRef(null);
 
   React.useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setTimeout(() => setIsVisible(true), 1200);
+    let observer: IntersectionObserver | null = null;
+    let timeoutId: NodeJS.Timeout | null = null;
+
+    // Check if element is below the fold on mount
+    const checkInitialVisibility = () => {
+      if (ref.current) {
+        const rect = ref.current.getBoundingClientRect();
+        const isInViewport = rect.top < window.innerHeight && rect.bottom > 0;
+        // If not in viewport initially, hide it and use animation
+        if (!isInViewport) {
+          setIsVisible(false);
+          return false;
         }
-      },
-      { threshold: 0.1, rootMargin: '50px' }
-    );
+        // If in viewport, keep it visible (already true)
+        return true;
+      }
+      return true; // Default to visible if we can't check
+    };
 
-    if (ref.current) {
-      observer.observe(ref.current);
-    }
+    // Use requestAnimationFrame to ensure DOM is ready
+    requestAnimationFrame(() => {
+      // Check and adjust visibility if needed
+      const isInViewport = checkInitialVisibility();
+      
+      if (!isInViewport) {
+        // Only set up observer if element is below fold
+        observer = new IntersectionObserver(
+          ([entry]) => {
+            if (entry.isIntersecting) {
+              // Reduced delay for better LCP (was 1200ms)
+              timeoutId = setTimeout(() => setIsVisible(true), 200);
+            }
+          },
+          { threshold: 0.1, rootMargin: '50px' }
+        );
 
-    return () => observer.disconnect();
+        if (ref.current) {
+          observer.observe(ref.current);
+        }
+      }
+    });
+
+    // Cleanup function
+    return () => {
+      if (observer) {
+        observer.disconnect();
+      }
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
   }, []);
 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 30, scale: 0.9 }}
+      initial={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 30, scale: isVisible ? 1 : 0.9 }}
       animate={{ 
         opacity: isVisible ? 1 : 0, 
         y: isVisible ? 0 : 30,
         scale: isVisible ? 1 : 0.9
       }}
-      transition={{ duration: 0.8, ease: "easeOut", type: "spring", bounce: 0.4 }}
+      transition={{ duration: isVisible ? 0 : 0.8, ease: "easeOut", type: "spring", bounce: 0.4 }}
       className="relative mx-auto z-10"
       whileHover={{ scale: 1.02 }}
     >
@@ -589,7 +655,13 @@ const MobilePhoneMockup = () => {
               src="/newmobile.png" 
               alt="StockFlow mobile dashboard" 
               className="w-full h-full object-contain"
-              loading="lazy"
+              style={{ opacity: 1 }}
+              loading="eager"
+              // @ts-ignore - fetchpriority is a valid HTML attribute but not in TypeScript definitions yet
+              fetchpriority="high"
+              decoding="async"
+              width="280"
+              height="580"
             />
           </div>
         </div>
@@ -768,34 +840,49 @@ export const HomePage = () => {
     return () => window.removeEventListener('resize', checkScreenSize);
   }, []);
   
-  // Scroll progress tracking effect
+  // Scroll progress tracking effect - optimized to batch layout reads
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = window.scrollY || document.documentElement.scrollTop;
-      const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
-      setScrollProgress(Math.min(100, Math.max(0, progress)));
-    };
-
-    // Initial calculation
-    handleScroll();
+    let cachedScrollHeight = 0;
+    let rafId: number | null = null;
     
-    // Add scroll event listener with throttling for better performance
-    let ticking = false;
-    const throttledHandleScroll = () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          handleScroll();
-          ticking = false;
-        });
-        ticking = true;
+    // Cache scroll height and update on resize
+    const updateScrollHeight = () => {
+      // Batch all layout reads together
+      cachedScrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    };
+    
+    updateScrollHeight();
+    window.addEventListener('resize', updateScrollHeight, { passive: true });
+    
+    const handleScroll = () => {
+      // Cancel any pending animation frame
+      if (rafId) {
+        cancelAnimationFrame(rafId);
       }
+      
+      // Batch all layout reads in RAF
+      rafId = requestAnimationFrame(() => {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const progress = cachedScrollHeight > 0 ? (scrollTop / cachedScrollHeight) * 100 : 0;
+        setScrollProgress(Math.min(100, Math.max(0, progress)));
+      });
     };
 
-    window.addEventListener('scroll', throttledHandleScroll, { passive: true });
+    // Initial calculation with RAF
+    rafId = requestAnimationFrame(() => {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const progress = cachedScrollHeight > 0 ? (scrollTop / cachedScrollHeight) * 100 : 0;
+      setScrollProgress(Math.min(100, Math.max(0, progress)));
+    });
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
     
     return () => {
-      window.removeEventListener('scroll', throttledHandleScroll);
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', updateScrollHeight);
+      if (rafId) {
+        cancelAnimationFrame(rafId);
+      }
     };
   }, []);
   
@@ -1336,6 +1423,8 @@ export const HomePage = () => {
         {/* Non-render-blocking resource optimization */}
         
         {/* Critical images preload with high priority */}
+        {/* @ts-ignore - fetchpriority is a valid HTML attribute but not in TypeScript definitions yet */}
+        <link rel="preload" as="image" href="/newmobile.png" fetchpriority="high" />
         <link rel="preload" as="image" href="/optimized/desktop.png" media="(min-width: 1024px)" />
         <link rel="preload" as="image" href="/optimized/mobile.png" media="(max-width: 1023px)" />
         <link rel="preload" as="image" href="/optimized/image.png" media="(min-width: 1024px)" />

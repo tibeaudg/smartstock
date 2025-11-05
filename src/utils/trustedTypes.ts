@@ -190,20 +190,35 @@ export const initializeDefaultPolicy = () => {
           
           // Allow style injections from UI libraries (needed for Radix UI)
           // but validate for critical XSS patterns
-          const criticalPatterns = [
-            /<script[^>]*>/i,
-            /javascript:/i,
-            /on\w+\s*=/i,
-          ];
           
-          for (const pattern of criticalPatterns) {
-            if (pattern.test(input)) {
-              console.warn('[TrustedTypes] Blocked dangerous pattern:', pattern);
+          // Check if this is CSS-only content (style tags)
+          const isStyleTag = /^<style[^>]*>[\s\S]*<\/style>$/i.test(input.trim());
+          
+          // Block script tags and javascript: URLs in all cases
+          if (/<script[^>]*>/i.test(input) || /javascript:/i.test(input)) {
+            if (process.env.NODE_ENV === 'development') {
+              console.warn('[TrustedTypes] Blocked dangerous pattern: script tag or javascript: URL');
+            }
+            return '';
+          }
+          
+          // For non-style content, check for event handler attributes in HTML tags
+          // This pattern specifically matches HTML attributes like onclick=, onload=, etc.
+          // but avoids false positives from CSS or other content
+          if (!isStyleTag) {
+            // Match HTML tags with event handler attributes (onclick, onload, etc.)
+            // Pattern: <tag ... on[word]= ...> or <tag ... on[word]="..." ...>
+            const eventHandlerPattern = /<[^>]*\s+on[a-z]+\s*=\s*["']?/i;
+            if (eventHandlerPattern.test(input)) {
+              // Only warn in development to reduce console noise
+              if (process.env.NODE_ENV === 'development') {
+                console.warn('[TrustedTypes] Blocked HTML with event handler attributes');
+              }
               return '';
             }
           }
           
-          // Allow the content (typically CSS from UI libraries)
+          // Allow the content (typically CSS from UI libraries or safe HTML)
           return input;
         },
         createScript: (input: string) => {

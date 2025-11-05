@@ -50,14 +50,18 @@
   <link rel="dns-prefetch" href="//www.googletagmanager.com">
   <link rel="dns-prefetch" href="//www.google-analytics.com">
   <link rel="dns-prefetch" href="//js.stripe.com">
+  <link rel="dns-prefetch" href="//m.stripe.network">
+  
+  <!-- Preconnect to Stripe domains for faster connection establishment -->
+  <link rel="preconnect" href="https://js.stripe.com" crossorigin>
+  <link rel="preconnect" href="https://m.stripe.network" crossorigin>
   
   <!-- Preload critical images -->
   <link rel="preload" as="image" href="/logo.png" fetchpriority="high">
   <link rel="preload" as="image" href="/Inventory-Management.png" fetchpriority="high" imagesrcset="/Inventory-Management.webp" imagesizes="100vw">
+  <link rel="preload" as="image" href="/newmobile.png" fetchpriority="high">
   
-  <!-- Modulepreload for critical JavaScript -->
-  <link rel="modulepreload" href="/src/main.tsx">
-  <link rel="modulepreload" href="/src/App.tsx">
+  <!-- Note: Modulepreload removed - these are source files and will be handled by Vite's build process -->
   
   <!-- Font preloading removed - fonts will load on-demand to avoid unused preload warnings -->
   

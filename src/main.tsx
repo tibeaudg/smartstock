@@ -124,6 +124,28 @@ async function init() {
     // Initialize performance optimizations
     initializePerformanceOptimizations();
     
+    // Register service worker for caching external resources (Stripe, etc.)
+    if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
+      navigator.serviceWorker.register('/sw.js')
+        .then((registration) => {
+          console.log('[SW] Service Worker registered:', registration.scope);
+          // Check for updates
+          registration.addEventListener('updatefound', () => {
+            const newWorker = registration.installing;
+            if (newWorker) {
+              newWorker.addEventListener('statechange', () => {
+                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                  console.log('[SW] New service worker available');
+                }
+              });
+            }
+          });
+        })
+        .catch((error) => {
+          console.warn('[SW] Service Worker registration failed:', error);
+        });
+    }
+    
     // Initialize performance monitoring in development
     if (process.env.NODE_ENV === 'development') {
       initPerformanceMonitoring();

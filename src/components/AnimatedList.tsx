@@ -87,11 +87,19 @@ const AnimatedList: React.FC<AnimatedListProps> = ({
   // Use selectedFAQIndex for FAQ mode, otherwise use internal selectedIndex
   const currentSelectedIndex = isFAQMode && selectedFAQIndex !== undefined ? selectedFAQIndex : selectedIndex;
 
+  // Optimized scroll handler - batches layout reads in RAF
   const handleScroll = (e: UIEvent<HTMLDivElement>) => {
-    const { scrollTop, scrollHeight, clientHeight } = e.target as HTMLDivElement;
-    setTopGradientOpacity(Math.min(scrollTop / 50, 1));
-    const bottomDistance = scrollHeight - (scrollTop + clientHeight);
-    setBottomGradientOpacity(scrollHeight <= clientHeight ? 0 : Math.min(bottomDistance / 50, 1));
+    const container = e.target as HTMLDivElement;
+    requestAnimationFrame(() => {
+      // Batch all layout reads together
+      const scrollTop = container.scrollTop;
+      const scrollHeight = container.scrollHeight;
+      const clientHeight = container.clientHeight;
+      
+      setTopGradientOpacity(Math.min(scrollTop / 50, 1));
+      const bottomDistance = scrollHeight - (scrollTop + clientHeight);
+      setBottomGradientOpacity(scrollHeight <= clientHeight ? 0 : Math.min(bottomDistance / 50, 1));
+    });
   };
 
   useEffect(() => {
@@ -131,24 +139,33 @@ const AnimatedList: React.FC<AnimatedListProps> = ({
 
   useEffect(() => {
     if (!keyboardNav || currentSelectedIndex < 0 || !listRef.current) return;
-    const container = listRef.current;
-    const selectedItem = container.querySelector(`[data-index="${currentSelectedIndex}"]`) as HTMLElement | null;
-    if (selectedItem) {
-      const extraMargin = 50;
-      const containerScrollTop = container.scrollTop;
-      const containerHeight = container.clientHeight;
-      const itemTop = selectedItem.offsetTop;
-      const itemBottom = itemTop + selectedItem.offsetHeight;
-      if (itemTop < containerScrollTop + extraMargin) {
-        container.scrollTo({ top: itemTop - extraMargin, behavior: 'smooth' });
-      } else if (itemBottom > containerScrollTop + containerHeight - extraMargin) {
-        container.scrollTo({
-          top: itemBottom - containerHeight + extraMargin,
-          behavior: 'smooth'
-        });
+    
+    // Batch all layout reads in RAF to avoid forced synchronous layout
+    requestAnimationFrame(() => {
+      const container = listRef.current;
+      if (!container) return;
+      
+      const selectedItem = container.querySelector(`[data-index="${currentSelectedIndex}"]`) as HTMLElement | null;
+      if (selectedItem) {
+        const extraMargin = 50;
+        // Batch all layout reads together
+        const containerScrollTop = container.scrollTop;
+        const containerHeight = container.clientHeight;
+        const itemTop = selectedItem.offsetTop;
+        const itemBottom = itemTop + selectedItem.offsetHeight;
+        
+        // Then perform scroll (write) after all reads
+        if (itemTop < containerScrollTop + extraMargin) {
+          container.scrollTo({ top: itemTop - extraMargin, behavior: 'smooth' });
+        } else if (itemBottom > containerScrollTop + containerHeight - extraMargin) {
+          container.scrollTo({
+            top: itemBottom - containerHeight + extraMargin,
+            behavior: 'smooth'
+          });
+        }
       }
-    }
-    setKeyboardNav(false);
+      setKeyboardNav(false);
+    });
   }, [currentSelectedIndex, keyboardNav]);
 
   // Helper function to check if item is FAQ
