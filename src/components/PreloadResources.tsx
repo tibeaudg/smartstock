@@ -16,44 +16,35 @@ export const PreloadResources: React.FC<PreloadResourcesProps> = ({
 }) => {
   return (
     <Helmet>
-      {/* Preload critical images with modern formats */}
-      {criticalImages.map((image, index) => {
-        const avifPath = image.replace(/\.(jpg|jpeg|png|webp)$/i, '.avif');
-        const webpPath = image.replace(/\.(jpg|jpeg|png)$/i, '.webp');
-        
-        return (
-          <React.Fragment key={`image-${index}`}>
-            <link
-              rel="preload"
-              as="image"
-              href={avifPath}
-              type="image/avif"
-              imageSrcset={`${avifPath} 1x`}
-            />
-            <link
-              rel="preload"
-              as="image"
-              href={webpPath}
-              type="image/webp"
-              imageSrcset={`${webpPath} 1x`}
-            />
-          </React.Fragment>
-        );
-      })}
+      {/* Preload critical images - only preload if they're not already in index.html */}
+      {/* Note: logo.png and newmobile.png are already preloaded in index.html */}
+      {criticalImages
+        .filter(img => !['/logo.png', '/newmobile.png'].includes(img))
+        .map((image, index) => (
+          <link
+            key={`image-${index}`}
+            rel="preload"
+            as="image"
+            href={image}
+          />
+        ))}
       
-      {/* Preload critical fonts */}
-      {criticalFonts.map((font, index) => (
-        <link
-          key={`font-${index}`}
-          rel="preload"
-          href={font}
-          as="font"
-          type="font/woff2"
-          crossOrigin="anonymous"
-        />
-      ))}
+      {/* Preload critical fonts - only if they exist and are used */}
+      {/* Note: Google Fonts CSS files should use preconnect instead of preload */}
+      {criticalFonts
+        .filter(font => font.endsWith('.woff2') || font.endsWith('.woff'))
+        .map((font, index) => (
+          <link
+            key={`font-${index}`}
+            rel="preload"
+            href={font}
+            as="font"
+            type="font/woff2"
+            crossOrigin="anonymous"
+          />
+        ))}
       
-      {/* Preload critical CSS */}
+      {/* Preload critical CSS - only if it exists as a static file */}
       {criticalCSS.map((css, index) => (
         <link
           key={`css-${index}`}
@@ -73,9 +64,6 @@ export const PreloadResources: React.FC<PreloadResourcesProps> = ({
       {prefetchRoutes.map((route, index) => (
         <link key={`route-${index}`} rel="prefetch" href={route} />
       ))}
-      
-      {/* Prerender for authenticated dashboard (low priority) */}
-      <link rel="prerender" href="/dashboard" />
     </Helmet>
   );
 };

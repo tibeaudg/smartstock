@@ -87,9 +87,18 @@ export default defineConfig(({ mode }) => ({
             'recharts',
             'react-simple-maps',
           ],
-          // Other large libraries
-          'utils-vendor': [
+          // Large animation library - separate chunk
+          'animation-vendor': [
             'framer-motion',
+          ],
+          // Barcode and QR code libraries - separate chunk
+          'barcode-vendor': [
+            '@zxing/library',
+            'qrcode.react',
+            'react-qr-code',
+          ],
+          // Date and utility libraries
+          'utils-vendor': [
             'date-fns',
             'clsx',
             'tailwind-merge',
@@ -99,13 +108,10 @@ export default defineConfig(({ mode }) => ({
             'vaul',
             'cmdk',
             'input-otp',
-            'qrcode.react',
-            'react-qr-code',
             'react-day-picker',
             'react-resizable-panels',
             'embla-carousel-react',
             'xlsx',
-            '@zxing/library',
           ],
         },
       },
@@ -118,8 +124,9 @@ export default defineConfig(({ mode }) => ({
       drop: mode === 'production' ? ['console', 'debugger'] : [],
     },
     
-    // Disable source maps in production to reduce size
-    sourcemap: false,
+    // Enable source maps for better debugging and Lighthouse compliance
+    // Source maps are generated as separate .map files, which are only loaded when needed
+    sourcemap: true,
     
     // Optimize CSS
     cssCodeSplit: true,

@@ -326,13 +326,17 @@ const MobileCarousel = ({ items, renderItem }) => {
           <button
             key={index}
             onClick={() => setCurrentIndex(index)}
-            className={`w-2 h-2 rounded-full transition-colors ${
-              index === currentIndex ? 'bg-blue-600' : 'bg-gray-300'
-            }`}
+            className="flex items-center justify-center min-w-[44px] min-h-[44px] sm:min-w-0 sm:min-h-0 p-2 sm:p-0 rounded-full transition-all duration-200"
             role="tab"
             aria-selected={index === currentIndex}
             aria-label={`Go to slide ${index + 1}`}
-          />
+          >
+            <span
+              className={`w-3 h-3 sm:w-2 sm:h-2 rounded-full transition-colors ${
+                index === currentIndex ? 'bg-blue-600' : 'bg-gray-300'
+              }`}
+            />
+          </button>
         ))}
       </div>
 
@@ -1422,17 +1426,9 @@ export const HomePage = () => {
       <Helmet>
         {/* Non-render-blocking resource optimization */}
         
-        {/* Critical images preload with high priority */}
+        {/* Critical images preload with high priority - only images used on homepage */}
         {/* @ts-ignore - fetchpriority is a valid HTML attribute but not in TypeScript definitions yet */}
         <link rel="preload" as="image" href="/newmobile.png" fetchpriority="high" />
-        <link rel="preload" as="image" href="/optimized/desktop.png" media="(min-width: 1024px)" />
-        <link rel="preload" as="image" href="/optimized/mobile.png" media="(max-width: 1023px)" />
-        <link rel="preload" as="image" href="/optimized/image.png" media="(min-width: 1024px)" />
-        <link rel="preload" as="image" href="/optimized/image-mobile.png" media="(max-width: 1023px)" />
-        <link rel="preload" as="image" href="/optimized/analytics.png" media="(min-width: 1024px)" />
-        <link rel="preload" as="image" href="/optimized/analytics-mobile.png" media="(max-width: 1023px)" />
-        <link rel="preload" as="image" href="/logo.png" />
-        <link rel="preload" as="image" href="/Inventory-Management.png" />
         
         {/* Resource hints managed in index.html to avoid duplicates and stay within recommended limits */}
         
@@ -1445,11 +1441,7 @@ export const HomePage = () => {
         <meta name="format-detection" content="telephone=no" />
         <meta name="color-scheme" content="light" />
         
-        {/* Non-render-blocking CSS loading */}
-        <link rel="preload" as="style" href="/index.css" onLoad={() => {}} />
-        <noscript>
-          {`<link rel="stylesheet" href="/index.css" />`}
-        </noscript>
+        {/* CSS is bundled by Vite and loaded automatically - no need to preload */}
         
         {/* Non-render-blocking JavaScript loading */}
         {/* Note: JavaScript files are handled by Vite bundler automatically */}

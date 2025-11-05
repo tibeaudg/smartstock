@@ -119,19 +119,29 @@ export const Carousel: React.FC<CarouselProps> = ({
     if (!showDots || totalSlides <= 1) return null;
 
     return (
-      <div className="flex justify-center space-x-2 mt-6">
-        {Array.from({ length: totalSlides }, (_, index) => (
-          <button
-            key={index}
-            onClick={() => goToSlide(index)}
-            className={cn(
-              'w-2 h-2 rounded-full transition-all duration-300',
-              index === Math.floor(currentIndex / currentItemsPerView)
-                ? 'bg-blue-600 w-8'
-                : 'bg-gray-300 hover:bg-gray-400'
-            )}
-          />
-        ))}
+      <div className="flex justify-center space-x-2 mt-6" role="tablist" aria-label="Carousel navigation">
+        {Array.from({ length: totalSlides }, (_, index) => {
+          const isActive = index === Math.floor(currentIndex / currentItemsPerView);
+          return (
+            <button
+              key={index}
+              onClick={() => goToSlide(index)}
+              className="flex items-center justify-center min-w-[44px] min-h-[44px] sm:min-w-0 sm:min-h-0 p-2 sm:p-0 rounded-full transition-all duration-300"
+              role="tab"
+              aria-selected={isActive}
+              aria-label={`Go to slide ${index + 1}`}
+            >
+              <span
+                className={cn(
+                  'w-3 h-3 sm:w-2 sm:h-2 rounded-full transition-all duration-300',
+                  isActive
+                    ? 'bg-blue-600 sm:w-8 sm:h-2'
+                    : 'bg-gray-300 sm:hover:bg-gray-400'
+                )}
+              />
+            </button>
+          );
+        })}
       </div>
     );
   };

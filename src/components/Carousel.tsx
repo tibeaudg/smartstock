@@ -240,26 +240,42 @@ export default function Carousel({
         ))}
       </motion.div>
       <div className={`flex w-full justify-center ${round ? 'absolute z-20 bottom-12 left-1/2 -translate-x-1/2' : ''}`}>
-        <div className="mt-4 flex w-[150px] justify-between px-8">
-          {items.map((_, index) => (
-            <motion.div
-              key={index}
-              className={`h-2 w-2 rounded-full cursor-pointer transition-colors duration-150 ${
-                currentIndex % items.length === index
-                  ? round
-                    ? 'bg-white'
-                    : 'bg-[#333333]'
-                  : round
-                    ? 'bg-[#555]'
-                    : 'bg-[rgba(51,51,51,0.4)]'
-              }`}
-              animate={{
-                scale: currentIndex % items.length === index ? 1.2 : 1
-              }}
-              onClick={() => setCurrentIndex(index)}
-              transition={{ duration: 0.15 }}
-            />
-          ))}
+        <div className="mt-4 flex w-[150px] justify-between px-8" role="tablist" aria-label="Carousel navigation">
+          {items.map((_, index) => {
+            const isActive = currentIndex % items.length === index;
+            return (
+              <motion.button
+                key={index}
+                className={`flex items-center justify-center min-w-[44px] min-h-[44px] sm:min-w-0 sm:min-h-0 p-2 sm:p-0 rounded-full transition-colors duration-150 ${
+                  isActive
+                    ? round
+                      ? ''
+                      : ''
+                    : ''
+                }`}
+                animate={{
+                  scale: isActive ? 1.2 : 1
+                }}
+                onClick={() => setCurrentIndex(index)}
+                transition={{ duration: 0.15 }}
+                role="tab"
+                aria-selected={isActive}
+                aria-label={`Go to slide ${index + 1}`}
+              >
+                <span
+                  className={`h-2 w-2 sm:h-2 sm:w-2 rounded-full transition-colors duration-150 ${
+                    isActive
+                      ? round
+                        ? 'bg-white'
+                        : 'bg-[#333333]'
+                      : round
+                        ? 'bg-[#555]'
+                        : 'bg-[rgba(51,51,51,0.4)]'
+                  }`}
+                />
+              </motion.button>
+            );
+          })}
         </div>
       </div>
     </div>

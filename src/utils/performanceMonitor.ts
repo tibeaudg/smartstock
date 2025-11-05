@@ -86,10 +86,15 @@ class PerformanceMonitor {
       const observer = new PerformanceObserver((list) => {
         for (const entry of list.getEntries()) {
           const duration = entry.duration;
-          if (duration > 50) { // Tasks longer than 50ms
+          // Only warn about significant long tasks (>100ms) to reduce noise
+          // Tasks 50-100ms are tracked but not logged
+          if (duration > 100) {
             this.metrics.longTasks++;
             console.warn(`[Performance] Long task detected: ${duration}ms`, entry);
             this.metrics.warnings.push(`Long task: ${duration}ms at ${entry.startTime}ms`);
+          } else if (duration > 50) {
+            // Track but don't log tasks between 50-100ms
+            this.metrics.longTasks++;
           }
         }
       });

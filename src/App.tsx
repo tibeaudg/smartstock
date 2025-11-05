@@ -626,14 +626,9 @@ export default function App() {
   return (
     <ErrorBoundary>
       <SEO structuredData={localBusinessSchema} />
+      {/* logo.png and Inventory-Management.png are already preloaded in index.html */}
       <PreloadResources 
-        criticalImages={[
-          '/logo.png',
-          '/Inventory-Management.png'
-        ]}
-        criticalFonts={[
-          'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap'
-        ]}
+        criticalFonts={[]}
       />
       {/* QueryClientProvider wordt nu beheerd in main.tsx */}
       <AuthProvider>
@@ -642,7 +637,12 @@ export default function App() {
             <TooltipProvider>
               <Toaster />
               <Sonner />
-              <BrowserRouter>
+              <BrowserRouter
+                future={{
+                  v7_startTransition: true,
+                  v7_relativeSplatPath: true,
+                }}
+              >
                 <AppRouter />
               </BrowserRouter>
               <CookieConsent />

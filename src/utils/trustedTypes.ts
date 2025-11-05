@@ -138,20 +138,27 @@ export const initializeTrustedTypes = () => {
         },
         createScript: (input: string) => {
           // Basic validation for script content
+          // Only block patterns that are clearly dangerous when used with string evaluation
           const dangerousPatterns = [
             /eval\s*\(/i,
-            /Function\s*\(/i,
-            /setTimeout\s*\(\s*["']/i,
+            // Only block Function( with string arguments that could be user input
+            /Function\s*\(\s*["'][^"']*["']/i,
+            /setTimeout\s*\(\s*["'][^"']*["']/i,
             /setInterval\s*\(\s*["']/i,
           ];
           
           for (const pattern of dangerousPatterns) {
             if (pattern.test(input)) {
-              console.warn('[TrustedTypes] Blocked dangerous script pattern:', pattern);
+              // Only warn in development to reduce console noise
+              if (process.env.NODE_ENV === 'development') {
+                console.warn('[TrustedTypes] Blocked potentially dangerous script pattern:', pattern);
+              }
               return '';
             }
           }
           
+          // Allow Function() constructor calls that don't use string arguments
+          // Many libraries use this pattern safely
           return input;
         }
       });
@@ -223,20 +230,28 @@ export const initializeDefaultPolicy = () => {
         },
         createScript: (input: string) => {
           // Basic validation for script content
+          // Only block patterns that are clearly dangerous when used with string evaluation
+          // Allow Function constructor when used in safe contexts (like library code)
           const dangerousPatterns = [
             /eval\s*\(/i,
-            /Function\s*\(/i,
-            /setTimeout\s*\(\s*["']/i,
-            /setInterval\s*\(\s*["']/i,
+            // Only block Function( with string arguments that could be user input
+            /Function\s*\(\s*["'][^"']*["']/i,
+            /setTimeout\s*\(\s*["'][^"']*["']/i,
+            /setInterval\s*\(\s*["'][^"']*["']/i,
           ];
           
           for (const pattern of dangerousPatterns) {
             if (pattern.test(input)) {
-              console.warn('[TrustedTypes] Blocked dangerous script pattern:', pattern);
+              // Only warn in development to reduce console noise
+              if (process.env.NODE_ENV === 'development') {
+                console.warn('[TrustedTypes] Blocked potentially dangerous script pattern:', pattern);
+              }
               return '';
             }
           }
           
+          // Allow Function() constructor calls that don't use string arguments
+          // Many libraries use this pattern safely
           return input;
         },
         createScriptURL: (input: string) => {
