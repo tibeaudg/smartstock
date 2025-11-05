@@ -261,8 +261,8 @@ export default function BestInventoryManagementSoftware() {
       sidebarContent={sidebarContent}
     >
       <SEO
-        title="Best Inventory Management Software 2025: #1 Rated | Free Trial | StockFlow"
-        description="Looking for the best inventory management software? StockFlow is rated #1 for SMBs - 4.9/5 stars. Save 35% costs & 15 hours/week! Real-time tracking, barcode scanning, automated alerts. 10,000+ businesses trust us. Start FREE trial - no credit card required!"
+        title="Best Inventory Management Software 2025 | Top 10 Compared | StockFlow"
+        description="Compare the best inventory management software solutions. StockFlow rated #1 for SMBs. Real-time tracking, barcode scanning, automated alerts. Start FREE trial - no credit card. Join 500+ businesses."
         keywords="best inventory management software, inventory management software best, top inventory management software, best inventory software, best stock management software, best inventory system, best inventory tracking software, best inventory management system, best inventory software 2025, top rated inventory software, best inventory management solution, best inventory software for small business, best inventory software for ecommerce, best inventory management software comparison, best inventory software reviews, best inventory management software features, best inventory software pricing, best inventory software demo, best inventory software trial, inventory management software provider, inventory management software online, stockflow, stock flow, stocks flow"
         url="https://www.stockflow.be/best-inventory-management-software"
       />
@@ -802,7 +802,26 @@ export default function BestInventoryManagementSoftware() {
             "@type": "CreativeWork",
             "url": "https://www.stockflow.be/contact"
           }
-        }
+        },
+        ...testimonials.map((testimonial) => ({
+          "@context": "https://schema.org",
+          "@type": "Review",
+          "itemReviewed": {
+            "@type": "SoftwareApplication",
+            "name": "StockFlow"
+          },
+          "author": {
+            "@type": "Person",
+            "name": testimonial.name
+          },
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": testimonial.rating.toString(),
+            "bestRating": "5",
+            "worstRating": "1"
+          },
+          "reviewBody": testimonial.content
+        }))
       ]} />
     </SeoPageLayout>
   );

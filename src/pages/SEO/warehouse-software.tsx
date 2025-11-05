@@ -480,6 +480,48 @@ export default function WarehouseSoftware() {
         </div>
       </section>
 
+      {/* Related Articles */}
+      <section className="py-16 px-4 bg-gray-50">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl font-bold mb-8 text-center">Related Articles</h2>
+          <div className="grid md:grid-cols-3 gap-6">
+            <Link to="/warehouse-management-system" className="group">
+              <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition">
+                <h3 className="font-semibold text-lg mb-2 group-hover:text-blue-600 transition">
+                  Warehouse Management System
+                </h3>
+                <p className="text-gray-600 text-sm mb-3">
+                  Complete WMS solutions for enterprise warehouse operations.
+                </p>
+                <div className="text-blue-600 text-sm font-semibold">Read more →</div>
+              </div>
+            </Link>
+            <Link to="/warehouse-management" className="group">
+              <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition">
+                <h3 className="font-semibold text-lg mb-2 group-hover:text-blue-600 transition">
+                  Warehouse Management
+                </h3>
+                <p className="text-gray-600 text-sm mb-3">
+                  Best practices and strategies for effective warehouse operations.
+                </p>
+                <div className="text-blue-600 text-sm font-semibold">Read more →</div>
+              </div>
+            </Link>
+            <Link to="/magazijnbeheer-software" className="group">
+              <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition">
+                <h3 className="font-semibold text-lg mb-2 group-hover:text-blue-600 transition">
+                  Magazijnbeheer Software (Dutch)
+                </h3>
+                <p className="text-gray-600 text-sm mb-3">
+                  Nederlandse versie - magazijnbeheer software voor Belgische bedrijven.
+                </p>
+                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
+              </div>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="bg-gray-900 text-gray-200 py-12 md:py-16">
         <div className="max-w-4xl mx-auto px-6 text-center">

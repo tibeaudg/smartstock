@@ -34,8 +34,8 @@ export default function OnlineInventorySoftware() {
   return (
     <SeoPageLayout title="Online Inventory Software">
       <SEO
-        title="Online Inventory Software 2025: Free Trial | Cloud-Based | No Credit Card"
-        description="Track inventory in real-time from anywhere! Cloud-based software trusted by 10,000+ businesses. Automated alerts, barcode scanning, multi-location. Start FREE trial today - no credit card required!"
+        title="Inventory Management Online 2025 | Free Trial | StockFlow"
+        description="Best inventory management online for SMBs. Cloud-based software with real-time tracking, automated alerts, barcode scanning. Start FREE - no credit card. Trusted by 500+ businesses."
         keywords="inventory management online, online inventory software, inventory management software, stock management software, cloud inventory software, inventory tracking software, warehouse management software, inventory control software, stock control software, real-time inventory software, cloud-based inventory management, online inventory management system, inventory management online free, best inventory management online, inventory management software online, stockflow, stock flow"
         url="https://www.stockflow.be/online-inventory-software"
         locale="en"

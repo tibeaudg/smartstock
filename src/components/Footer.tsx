@@ -81,7 +81,7 @@ const Footer = () => {
       </Helmet>
       <footer className="bg-gray-900 text-gray-200 py-12 md:py-16">
   <div className="max-w-7xl mx-auto px-6">
-    <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-8 mb-8">
+    <div className="grid md:grid-cols-2 lg:grid-cols-6 gap-8 mb-8">
       {/* Company Info */}
       <div className="md:col-span-2">
         <img
@@ -161,6 +161,9 @@ const Footer = () => {
           <Link to="/features" className="block text-gray-400 hover:text-white underline">
             Features
           </Link>
+          <Link to="/all-seo-articles" className="block text-gray-400 hover:text-white underline">
+            All Articles
+          </Link>
         </div>
       </div>
 
@@ -182,6 +185,21 @@ const Footer = () => {
           </Link>
           <Link to="/magazijnbeheer-software" className="block text-gray-400 hover:text-white underline">
             Magazijnbeheer
+          </Link>
+          <Link to="/programma-stockbeheer" className="block text-gray-400 hover:text-white underline">
+            Programma Stockbeheer
+          </Link>
+          <Link to="/stockbeheer" className="block text-gray-400 hover:text-white underline">
+            Stockbeheer
+          </Link>
+          <Link to="/software-stockbeheer" className="block text-gray-400 hover:text-white underline">
+            Software Stockbeheer
+          </Link>
+          <Link to="/gratis-voorraadbeheer" className="block text-gray-400 hover:text-white underline">
+            Gratis Voorraadbeheer
+          </Link>
+          <Link to="/voorraadbeheer-voor-horeca" className="block text-gray-400 hover:text-white underline">
+            Voorraadbeheer Horeca
           </Link>
         </div>
       </div>
@@ -205,9 +223,55 @@ const Footer = () => {
           <Link to="/inventory-software-for-small-business" className="block text-gray-400 hover:text-white underline">
             For Small Business
           </Link>
+          <Link to="/stock-management" className="block text-gray-400 hover:text-white underline">
+            Stock Management
+          </Link>
+          <Link to="/inventory-management" className="block text-gray-400 hover:text-white underline">
+            Inventory Management
+          </Link>
+          <Link to="/warehouse-software" className="block text-gray-400 hover:text-white underline">
+            Warehouse Software
+          </Link>
+          <Link to="/inventory-software" className="block text-gray-400 hover:text-white underline">
+            Inventory Software
+          </Link>
+          <Link to="/online-inventory-management" className="block text-gray-400 hover:text-white underline">
+            Online Inventory
+          </Link>
         </div>
       </div>
       
+      {/* Features & Resources */}
+      <div>
+        <h3 className="text-lg font-semibold mb-4">Features & Resources</h3>
+        <div className="space-y-2">
+          <Link to="/barcode-scanning-inventory" className="block text-gray-400 hover:text-white underline">
+            Barcode Scanning
+          </Link>
+          <Link to="/mobile-inventory-management" className="block text-gray-400 hover:text-white underline">
+            Mobile Inventory
+          </Link>
+          <Link to="/inventory-app" className="block text-gray-400 hover:text-white underline">
+            Inventory App
+          </Link>
+          <Link to="/free-inventory-app" className="block text-gray-400 hover:text-white underline">
+            Free Inventory App
+          </Link>
+          <Link to="/inventory-tracker" className="block text-gray-400 hover:text-white underline">
+            Inventory Tracker
+          </Link>
+          <Link to="/retail-pos-integration" className="block text-gray-400 hover:text-white underline">
+            POS Integration
+          </Link>
+          <Link to="/inventory-management-healthcare" className="block text-gray-400 hover:text-white underline">
+            Healthcare Inventory
+          </Link>
+          <Link to="/avoid-inventory-mistakes" className="block text-gray-400 hover:text-white underline">
+            Avoid Mistakes
+          </Link>
+        </div>
+      </div>
+
       {/* Legal & Company Links */}
       <div>
         <h3 className="text-lg font-semibold mb-4">Legal & Company</h3>
@@ -227,6 +291,97 @@ const Footer = () => {
           <a href="/sitemap.xml" className="block text-gray-400 hover:text-white underline">
             Sitemap
           </a>
+        </div>
+      </div>
+    </div>
+
+    {/* Additional Resources Row */}
+    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8 border-t border-gray-700 pt-8">
+      {/* Comparison Pages */}
+      <div>
+        <h3 className="text-lg font-semibold mb-4">Comparisons</h3>
+        <div className="space-y-2">
+          <Link to="/stockflow-vs-tradegecko" className="block text-gray-400 hover:text-white underline text-sm">
+            StockFlow vs TradeGecko
+          </Link>
+          <Link to="/stockflow-vs-zoho-inventory" className="block text-gray-400 hover:text-white underline text-sm">
+            StockFlow vs Zoho
+          </Link>
+          <Link to="/stockflow-vs-visma" className="block text-gray-400 hover:text-white underline text-sm">
+            StockFlow vs Visma
+          </Link>
+          <Link to="/stockflow-vs-sortly" className="block text-gray-400 hover:text-white underline text-sm">
+            StockFlow vs Sortly
+          </Link>
+          <Link to="/stockflow-vs-exact-online" className="block text-gray-400 hover:text-white underline text-sm">
+            StockFlow vs Exact
+          </Link>
+        </div>
+      </div>
+
+      {/* Dutch Resources */}
+      <div>
+        <h3 className="text-lg font-semibold mb-4">Nederlandse Resources</h3>
+        <div className="space-y-2">
+          <Link to="/voorraadbeheer-tips" className="block text-gray-400 hover:text-white underline text-sm">
+            Voorraadbeheer Tips
+          </Link>
+          <Link to="/voorraadbeheer-excel-vs-software" className="block text-gray-400 hover:text-white underline text-sm">
+            Excel vs Software
+          </Link>
+          <Link to="/wat-is-voorraadbeheer-software" className="block text-gray-400 hover:text-white underline text-sm">
+            Wat is Voorraadbeheer
+          </Link>
+          <Link to="/voorraadbeheer-voor-starters" className="block text-gray-400 hover:text-white underline text-sm">
+            Voor Starters
+          </Link>
+          <Link to="/mobiel-voorraadbeheer" className="block text-gray-400 hover:text-white underline text-sm">
+            Mobiel Voorraadbeheer
+          </Link>
+        </div>
+      </div>
+
+      {/* English Resources */}
+      <div>
+        <h3 className="text-lg font-semibold mb-4">English Resources</h3>
+        <div className="space-y-2">
+          <Link to="/inventory-management-tips" className="block text-gray-400 hover:text-white underline text-sm">
+            Inventory Tips
+          </Link>
+          <Link to="/inventory-excel-vs-software" className="block text-gray-400 hover:text-white underline text-sm">
+            Excel vs Software
+          </Link>
+          <Link to="/how-to-choose-inventory-management-software" className="block text-gray-400 hover:text-white underline text-sm">
+            How to Choose
+          </Link>
+          <Link to="/inventory-for-starters" className="block text-gray-400 hover:text-white underline text-sm">
+            For Starters
+          </Link>
+          <Link to="/stock-management-software" className="block text-gray-400 hover:text-white underline text-sm">
+            Stock Software
+          </Link>
+        </div>
+      </div>
+
+      {/* More Links */}
+      <div>
+        <h3 className="text-lg font-semibold mb-4">More</h3>
+        <div className="space-y-2">
+          <Link to="/software-for-inventory-management" className="block text-gray-400 hover:text-white underline text-sm">
+            Software for Inventory
+          </Link>
+          <Link to="/softwares-for-inventory-management" className="block text-gray-400 hover:text-white underline text-sm">
+            Softwares for Inventory
+          </Link>
+          <Link to="/best-online-inventory-software" className="block text-gray-400 hover:text-white underline text-sm">
+            Best Online Software
+          </Link>
+          <Link to="/best-online-inventory-system" className="block text-gray-400 hover:text-white underline text-sm">
+            Best Online System
+          </Link>
+          <Link to="/online-inventory-software" className="block text-gray-400 hover:text-white underline text-sm">
+            Online Software
+          </Link>
         </div>
       </div>
     </div>

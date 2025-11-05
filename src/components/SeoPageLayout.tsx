@@ -5,6 +5,7 @@ import { BreadcrumbNav } from './seo/BreadcrumbNav';
 import { getBreadcrumbPath } from '@/config/topicClusters';
 import Footer from './Footer';
 import { SeoSidebar, SidebarContent } from './seo/SeoSidebar';
+import InternalLinkingWidget from './seo/InternalLinkingWidget';
 
 interface SeoPageLayoutProps {
   title: string;
@@ -53,12 +54,26 @@ const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({
               <SeoSidebar content={sidebarContent} />
               <div className="lg:col-start-2">
                 {children}
+                {/* Internal Linking Widget */}
+                <InternalLinkingWidget
+                  currentPath={location.pathname}
+                  variant="inline"
+                  limit={6}
+                  className="my-12"
+                />
               </div>
             </div>
           </div>
         ) : (
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             {children}
+            {/* Internal Linking Widget */}
+            <InternalLinkingWidget
+              currentPath={location.pathname}
+              variant="inline"
+              limit={6}
+              className="my-12"
+            />
           </div>
         )}
       </main>

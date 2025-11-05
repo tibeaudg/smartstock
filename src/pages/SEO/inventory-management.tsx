@@ -457,7 +457,47 @@ export default function InventoryManagement() {
         </div>
       </footer>
 
-            
+      {/* Related Articles */}
+      <section className="py-16 px-4 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl font-bold mb-8 text-center">Related Articles</h2>
+          <div className="grid md:grid-cols-3 gap-6">
+            <Link to="/inventory-management-software" className="group">
+              <div className="bg-gray-50 p-6 rounded-xl shadow-sm hover:shadow-lg transition">
+                <h3 className="font-semibold text-lg mb-2 group-hover:text-blue-600 transition">
+                  Inventory Management Software
+                </h3>
+                <p className="text-gray-600 text-sm mb-3">
+                  Complete software solutions for modern inventory management needs.
+                </p>
+                <div className="text-blue-600 text-sm font-semibold">Read more →</div>
+              </div>
+            </Link>
+            <Link to="/stock-management" className="group">
+              <div className="bg-gray-50 p-6 rounded-xl shadow-sm hover:shadow-lg transition">
+                <h3 className="font-semibold text-lg mb-2 group-hover:text-blue-600 transition">
+                  Stock Management
+                </h3>
+                <p className="text-gray-600 text-sm mb-3">
+                  Best practices and strategies for effective stock control and optimization.
+                </p>
+                <div className="text-blue-600 text-sm font-semibold">Read more →</div>
+              </div>
+            </Link>
+            <Link to="/inventory-management-smb" className="group">
+              <div className="bg-gray-50 p-6 rounded-xl shadow-sm hover:shadow-lg transition">
+                <h3 className="font-semibold text-lg mb-2 group-hover:text-blue-600 transition">
+                  Inventory for SMB
+                </h3>
+                <p className="text-gray-600 text-sm mb-3">
+                  Tailored inventory management solutions for small and medium businesses.
+                </p>
+                <div className="text-blue-600 text-sm font-semibold">Read more →</div>
+              </div>
+            </Link>
+          </div>
+        </div>
+      </section>
 
       {/* Schema.org Structured Data */}
       <StructuredData data={[

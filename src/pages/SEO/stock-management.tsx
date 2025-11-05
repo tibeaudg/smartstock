@@ -226,6 +226,48 @@ export default function StockManagement() {
         </div>
       </section>
 
+      {/* Related Articles */}
+      <section className="py-16 px-4 bg-gray-50">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl font-bold mb-8 text-center">Related Articles</h2>
+          <div className="grid md:grid-cols-3 gap-6">
+            <Link to="/stockbeheer" className="group">
+              <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition">
+                <h3 className="font-semibold text-lg mb-2 group-hover:text-blue-600 transition">
+                  Stockbeheer (Dutch)
+                </h3>
+                <p className="text-gray-600 text-sm mb-3">
+                  Nederlandse versie - complete stockbeheer gids voor kleine bedrijven.
+                </p>
+                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
+              </div>
+            </Link>
+            <Link to="/stock-management-software" className="group">
+              <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition">
+                <h3 className="font-semibold text-lg mb-2 group-hover:text-blue-600 transition">
+                  Stock Management Software
+                </h3>
+                <p className="text-gray-600 text-sm mb-3">
+                  Complete software solutions for effective stock control and management.
+                </p>
+                <div className="text-blue-600 text-sm font-semibold">Read more →</div>
+              </div>
+            </Link>
+            <Link to="/inventory-management" className="group">
+              <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition">
+                <h3 className="font-semibold text-lg mb-2 group-hover:text-blue-600 transition">
+                  Inventory Management
+                </h3>
+                <p className="text-gray-600 text-sm mb-3">
+                  Comprehensive guide to inventory management systems and best practices.
+                </p>
+                <div className="text-blue-600 text-sm font-semibold">Read more →</div>
+              </div>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Schema.org Structured Data */}
       <StructuredData data={[
         {
