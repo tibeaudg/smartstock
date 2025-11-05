@@ -30,7 +30,7 @@ const defaultUrl = 'https://www.stockflow.be';
 export const SEO: React.FC<SEOProps> = ({
   title = defaultTitle,
   description = defaultDescription,
-  keywords = 'stockflow, stock flow, stockflow app, stockflow software, warehouse management system, WMS, inventory management, stock control, warehouse software, inventory tracking, warehouse automation, stock management software, warehouse operations, inventory control system',
+  keywords = 'stockflow, stock flow, stockflow app, stockflow software, warehouse management system, WMS, inventory management, stock control, warehouse software, inventory tracking, warehouse automation, stock management software, warehouse operations, inventory control system, inventory tracking programs, softwares for inventory management, inventory and stock management software, manage inventory, inventory planning software',
   image = defaultImage,
   url = defaultUrl,
   structuredData,

@@ -92,6 +92,7 @@ import NlPricingPage from "./pages/nl-pricing";
 import InventorySoftwareManagement from "./pages/SEO/inventory-software-management";
 import SoftwareForInventoryManagement from "./pages/SEO/software-for-inventory-management";
 import WatIsVoorraadbeheerSoftware from "./pages/SEO/wat-is-voorraadbeheer-software";
+import InventoryTurnoverRatio from "./pages/SEO/inventory-turnover-ratio";
 
 // Import new SEO keyword pages
 import SoftwareStockbeheer from "./pages/SEO/software-stockbeheer";
@@ -510,6 +511,7 @@ const AppRouter = () => {
         <Route path="/best-inventory-management-software" element={<BestInventoryManagementSoftware />} />
         <Route path="/inventory-software-management" element={<InventorySoftwareManagement />} />
         <Route path="/software-for-inventory-management" element={<SoftwareForInventoryManagement />} />
+        <Route path="/inventory-turnover-ratio" element={<InventoryTurnoverRatio />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
         <Route path="/terms-conditions" element={<TermsConditionsPage />} />

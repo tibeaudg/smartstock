@@ -164,7 +164,7 @@ export default function InventoryManagementSoftware() {
       <SEO
         title="Inventory Management Software 2025 | Free Trial | StockFlow"
         description="Best inventory management software for SMBs. Real-time tracking, automated alerts, barcode scanning. Start FREE - no credit card. Join 500+ businesses. ✓"
-        keywords="inventory management software, stock management software, inventory tracking, stock control, warehouse management, inventory system, best inventory management software, inventory management online, stockflow, stock flow"
+        keywords="inventory management software, inventory software management, software for inventory management, softwares for inventory management, inventory management software best, stock management software, inventory tracking, stock control, warehouse management, inventory system, best inventory management software, inventory management online, inventory tracking programs, inventory software, inventory management system, stockflow, stock flow"
         url="https://www.stockflow.be/inventory-management-software"
         locale="en"
         alternateLanguages={[
@@ -1054,7 +1054,7 @@ export default function InventoryManagementSoftware() {
                   "Team collaboration",
                   "Integration capabilities"
                   ],
-                  "keywords": "inventory management software, stock management, inventory control, warehouse management, inventory tracking, stock management software, inventory system, warehouse software, inventory optimization, stock control software, inventory management system, warehouse management system, inventory tracking software, stock management system, inventory software, warehouse tracking, inventory control system, stock tracking software, inventory management solution, warehouse inventory software, inventory management platform"
+                  "keywords": "inventory management software, stock management, inventory control, warehouse management, inventory tracking, stock management software, inventory system, warehouse software, inventory optimization, stock control software, inventory management system, warehouse management system, inventory tracking software, stock management system, inventory software, warehouse tracking, inventory control system, stock tracking software, inventory management solution, warehouse inventory software, inventory management platform, inventory tracking programs, softwares for inventory management, inventory and stock management software, manage inventory, inventory planning software"
         },
         {
           "@context": "https://schema.org",

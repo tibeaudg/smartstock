@@ -29,7 +29,14 @@ const BarcodeScanningInventory = () => {
     'barcode inventory management',
     'mobile barcode app',
     'inventory scanner app',
-    'barcode stock management'
+    'barcode stock management',
+    'generating a barcode',
+    'how is barcode generated',
+    'how to generate barcode',
+    'barcode generation',
+    'generate barcode',
+    'create barcode',
+    'barcode generator'
   ].join(', ');
 
   const faqData = [
@@ -43,7 +50,15 @@ const BarcodeScanningInventory = () => {
     },
     {
       question: 'What types of barcodes are supported?',
-      answer: 'StockFlow supports all major barcode formats including UPC, EAN, Code 128, Code 39, QR codes, and Data Matrix. The system automatically recognizes and processes the barcode format.'
+      answer: 'StockFlow supports all major barcode formats including UPC, EAN, Code 128, Code 39, QR codes, and Data Matrix. The system automatically recognizes and processes the barcode format. When generating a barcode, StockFlow automatically selects the best format for your product.'
+    },
+    {
+      question: 'How is barcode generated in StockFlow?',
+      answer: 'When you add a product to StockFlow, a barcode is automatically generated for that product. The system uses your product SKU or creates a unique identifier, then generates a barcode in the appropriate format (UPC, EAN, Code 128, or QR code). You can then print the barcode label or use it for scanning.'
+    },
+    {
+      question: 'Can I generate barcodes for existing products?',
+      answer: 'Yes, StockFlow can generate barcodes for all your existing products. When generating a barcode, the system uses your product information to create unique, scannable barcodes that integrate seamlessly with your inventory management.'
     },
     {
       question: 'Is barcode scanning accurate for inventory counts?',
@@ -80,8 +95,8 @@ const BarcodeScanningInventory = () => {
   return (
     <div className="min-h-screen bg-white">
       <SEO
-        title="Barcode Scanning for Inventory Management | Mobile Scanner App | StockFlow"
-        description="Mobile barcode scanning for inventory management. Use your smartphone to scan products and update stock levels instantly. Supports QR codes and all major barcode formats. Free trial available."
+        title="Barcode Scanning for Inventory Management | Generating a Barcode | How is Barcode Generated | StockFlow"
+        description="Mobile barcode scanning for inventory management. Learn how is barcode generated and start generating a barcode for your products. Use your smartphone to scan products and update stock levels instantly. Supports QR codes and all major barcode formats. Free trial available."
         keywords={expandedKeywords}
         url="https://www.stockflow.be/barcode-scanning-inventory"
         locale="en"
@@ -99,6 +114,7 @@ const BarcodeScanningInventory = () => {
           
           <p className="text-xl text-gray-600 mb-8">
             Use your smartphone to scan barcodes and update inventory in real-time. 
+            Learn how is barcode generated and start generating a barcode for your products. 
             Eliminate manual data entry, reduce errors, and speed up inventory operations with mobile barcode scanning.
           </p>
 
