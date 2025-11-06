@@ -65,9 +65,9 @@ const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({
                 />
               </div>
               {(hasTableOfContents || hasRelatedArticles) && sidebarContent && (
-                <aside className="w-full lg:w-80 xl:w-96 flex-shrink-0 space-y-10 mt-12 lg:mt-0">
+                <aside className="w-full lg:w-80 xl:w-96 flex-shrink-0 space-y-10 pt-16 lg:mt-0">
                   {hasTableOfContents && sidebarContent.tableOfContents && (
-                    <div className="rounded-xl border border-gray-200 bg-gray-50 p-6 shadow-sm">
+                    <div className="rounded-xl border border-gray-200 bg-gray-50 p-6 shadow-sm ">
                       <h2 className="text-lg font-semibold text-gray-900">
                         On this page
                       </h2>

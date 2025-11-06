@@ -5,565 +5,601 @@
         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
   <url>
     <loc>https://www.stockflow.be/</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/features</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/pricing</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/magazijnbeheer-software</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/programma-stockbeheer</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/software-stockbeheer</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/stockbeheer</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/stockbeheer-programma</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/stockbeheer-software</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/voorraadbeheer-software</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/best-inventory-management-software</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/inventory-management</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/inventory-management-online</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/inventory-management-software</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/online-inventory-management</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/contact</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.stockflow.be/alerts</loc>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/all-seo-articles</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.stockflow.be/asset-tracking</loc>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/avoid-inventory-mistakes</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/barcode-scanning-inventory</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.stockflow.be/barcoding</loc>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/best-online-inventory-software</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/best-online-inventory-system</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/best-voorraadbeheer-software-kmo</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/bigcommerce-inventory-management</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/bill-of-material-management-software-free</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/capacity-requirement-planning</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/cloud-stock-management</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/compare-inventory-software</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/contractor-inventory-management</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/crm-inventory-management</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/cross-dock-warehouse</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/cycle-count</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/ecommerce-inventory-management</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/enterprise-inventory-management</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/erp-software</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/gratis-stockbeheer</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/gratis-voorraadbeheer</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/gratis-voorraadbeheer-app</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/gratis-voorraadbeheer-software</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/how-to-choose-inventory-management-software</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/how-to-generate-barcode</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/inventory-app</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/inventory-for-ecommerce</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/inventory-management-provider</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/inventory-management-software-solutions</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/inventory-management-systems-solutions</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/inventory-management-tips</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.stockflow.be/inventory-photos</loc>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/inventory-platform</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/inventory-scanning-system</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/inventory-software</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/inventory-software-management</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/inventory-system-for-small-business</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/inventory-tracker</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/inventory-tracking-programs</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/inventory-turnover-ratio</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/jit-management</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/magazijnbeheer</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/mobiel-voorraadbeheer</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/mobile-inventory-management</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/online-inventory-software</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/order-management-platforms</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/ordering-management-system</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/packing-slip-template</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/programma-stockbeheer-gratis</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/purchase-order-form</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/purchasing-inventory-software</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/raw-materials-inventory</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.stockflow.be/reporting</loc>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/retail-inventory-management</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/shopify-inventory-management</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/simpelstockbeheer</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/simple-stock-management</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/software-for-inventory-management</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/stock-management</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/stock-management-app</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/stock-management-software</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.stockflow.be/stockflow-vs-sortly</loc>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/stockflow-vs-zoho-inventory</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/storing-inventory</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/voorraadbeheer</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/voorraadbeheer-app</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/voorraadbeheer-fouten-voorkomen</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/voorraadbeheer-horeca</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/voorraadbeheer-software-vergelijken</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/voorraadbeheer-tips</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/voorraadbeheer-voor-starters</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/warehouse-execution-system</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/warehouse-logistics</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/warehouse-management</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/warehouse-management-system</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/warehouse-software</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/wat-is-voorraadbeheer-software</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/what-is-lead-time</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/what-is-retail-price</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/wholesaler-inventory-management</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/wix-inventory-management</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/about</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -587,13 +623,13 @@
   </url>
   <url>
     <loc>https://www.stockflow.be/privacy-policy</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/terms-conditions</loc>
-    <lastmod>2025-11-06T15:17:33.001Z</lastmod>
+    <lastmod>2025-11-06T20:24:12.550Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>

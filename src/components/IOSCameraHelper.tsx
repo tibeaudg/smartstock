@@ -115,9 +115,9 @@ export const IOSCameraHelper: React.FC<IOSCameraHelperProps> = ({ onRetry, onClo
                       <div className="flex items-start gap-2">
                         <Info className="w-4 h-4 text-blue-600 mt-0.5" />
                         <div className="text-sm text-blue-700">
-                          <p className="font-medium">Waarom Safari?</p>
+                          <p className="font-medium">Why Safari?</p>
                           <p className="text-xs mt-1">
-                            Safari heeft betere ondersteuning voor camera toegang op iPhone dan andere browsers.
+                            Safari has better support for camera access on iPhone than other browsers.
                           </p>
                         </div>
                       </div>
@@ -131,9 +131,9 @@ export const IOSCameraHelper: React.FC<IOSCameraHelperProps> = ({ onRetry, onClo
                       <div className="flex items-start gap-2">
                         <AlertCircle className="w-4 h-4 text-yellow-600 mt-0.5" />
                         <div className="text-sm text-yellow-700">
-                          <p className="font-medium">Camera Toegang</p>
+                          <p className="font-medium">Camera Access</p>
                           <p className="text-xs mt-1">
-                            Klik op "Toestaan" wanneer de browser om camera toegang vraagt.
+                            Click "Allow" when the browser asks for camera access.
                           </p>
                         </div>
                       </div>
@@ -147,12 +147,12 @@ export const IOSCameraHelper: React.FC<IOSCameraHelperProps> = ({ onRetry, onClo
                       <div className="flex items-start gap-2">
                         <Settings className="w-4 h-4 text-orange-600 mt-0.5" />
                         <div className="text-sm text-orange-700">
-                          <p className="font-medium">Safari Instellingen</p>
+                          <p className="font-medium">Safari Settings</p>
                           <p className="text-xs mt-1">
-                            1. Ga naar Instellingen op je iPhone<br/>
-                            2. Scroll naar beneden en tik op "Safari"<br/>
-                            3. Scroll naar beneden en tik op "Camera"<br/>
-                            4. Zorg dat "Toestaan" is geselecteerd
+                            1. Go to Settings on your iPhone<br/>
+                            2. Scroll down and tap on "Safari"<br/>
+                            3. Scroll down and tap on "Camera"<br/>
+                            4. Make sure "Allow" is selected
                           </p>
                         </div>
                       </div>
@@ -163,7 +163,7 @@ export const IOSCameraHelper: React.FC<IOSCameraHelperProps> = ({ onRetry, onClo
                       className="w-full"
                     >
                       <ExternalLink className="w-4 h-4 mr-2" />
-                      Ik heb de instellingen gecontroleerd
+                      I have checked the settings
                     </Button>
                   </div>
                 )}
@@ -174,9 +174,9 @@ export const IOSCameraHelper: React.FC<IOSCameraHelperProps> = ({ onRetry, onClo
                       <div className="flex items-start gap-2">
                         <CheckCircle className="w-4 h-4 text-green-600 mt-0.5" />
                         <div className="text-sm text-green-700">
-                          <p className="font-medium">Klaar om te testen!</p>
+                          <p className="font-medium">Ready to test!</p>
                           <p className="text-xs mt-1">
-                            Nu gaan we de camera opnieuw proberen te starten.
+                            Now we will try to restart the camera.
                           </p>
                         </div>
                       </div>
@@ -204,10 +204,10 @@ export const IOSCameraHelper: React.FC<IOSCameraHelperProps> = ({ onRetry, onClo
               <div className="text-sm text-gray-700">
                 <p className="font-medium mb-1">Extra Tips:</p>
                 <ul className="space-y-1 text-xs">
-                  <li>• Zorg dat je HTTPS gebruikt (niet HTTP)</li>
-                  <li>• Sluit andere apps die de camera gebruiken</li>
-                  <li>• Probeer de pagina te verversen na het geven van toestemming</li>
-                  <li>• Houd de camera ongeveer 10-15cm van de barcode</li>
+                  <li>• Make sure you use HTTPS (not HTTP)</li>
+                  <li>• Close other apps that use the camera</li>
+                  <li>• Try to refresh the page after giving permission</li>
+                  <li>• Hold the camera about 10-15cm from the barcode</li>
                 </ul>
               </div>
             </div>

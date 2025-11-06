@@ -155,10 +155,19 @@ export default defineConfig(({ mode }) => ({
   },
   
   // Performance optimizations
+  // Ensure built asset URLs remain absolute so that deep-linked routes and
+  // visibility-triggered reloads still resolve the correct files.
+  // Returning the filename directly caused Vite to emit relative URLs such as
+  // "assets/index-*.js", which browsers resolve against the current route
+  // (e.g. "/dashboard/assets/index-*.js"). On servers that rewrite unknown
+  // paths back to `index.html`, those requests returned HTML, leading to
+  // `Unexpected token '<'` parse errors when the app reloaded in production.
   experimental: {
-    renderBuiltUrl(filename) {
-      // Use CDN for static assets if configured
-      return filename;
+    renderBuiltUrl(filename, { hostType }) {
+      if (hostType === 'js' || hostType === 'css' || hostType === 'html') {
+        return { relative: false, href: `/${filename}` };
+      }
+      return { relative: false, href: `/${filename}` };
     },
   },
 }));

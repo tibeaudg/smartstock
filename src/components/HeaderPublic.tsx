@@ -135,13 +135,13 @@ const Header: React.FC<HeaderProps> = ({
                 {
                   label: 'Inventory Photos',
                   description: 'Add images to every item for visual clarity and faster picking.',
-                  to: '/features?section=inventory-photos',
+                  to: '/inventory-photos',
                   icon: ImageIcon
                 },
                 {
                   label: 'Alerts',
                   description: 'Simplify reordering with low stock and date-based notifications.',
-                  to: '/features?section=alerts',
+                  to: '/alerts',
                   icon: Bell
                 }
               ]
@@ -151,7 +151,7 @@ const Header: React.FC<HeaderProps> = ({
                 {
                   label: 'Barcoding',
                   description: 'Save time with built-in barcode & QR scanning.',
-                  to: '/scan',
+                  to: '/barcoding',
                   icon: Barcode
                 },
                 {
@@ -163,7 +163,7 @@ const Header: React.FC<HeaderProps> = ({
                 {
                   label: 'Reporting',
                   description: 'Generate powerful, data-driven insights instantly.',
-                  to: '/features?section=reporting',
+                  to: '/reporting',
                   icon: BarChart3
                 }
               ]
@@ -200,7 +200,7 @@ const Header: React.FC<HeaderProps> = ({
                 {
                   label: 'Asset Tracking',
                   description: 'Keep tabs on critical tools, equipment, and spare parts.',
-                  to: '/features?section=asset-tracking',
+                  to: '/asset-tracking',
                   icon: Wrench
                 }
               ]
@@ -279,18 +279,6 @@ const Header: React.FC<HeaderProps> = ({
                   description: 'See how growing teams succeed with StockFlow.',
                   to: '/case-studies',
                   icon: Users
-                },
-                {
-                  label: 'StockFlow vs. Spreadsheets',
-                  description: 'Understand the difference and save hours each week.',
-                  to: '/blog/wine-expiry-tracking-without-spreadsheets',
-                  icon: Sparkles
-                },
-                {
-                  label: 'Customer Testimonials',
-                  description: 'Hear from customers using StockFlow daily.',
-                  to: '/customers',
-                  icon: PenSquare
                 }
               ]
             },
@@ -302,33 +290,6 @@ const Header: React.FC<HeaderProps> = ({
                   description: 'Fresh tips and inventory best practices.',
                   to: '/blog',
                   icon: FileText
-                },
-                {
-                  label: 'StockFlow University',
-                  description: 'Expert tutorials to get more from StockFlow.',
-                  to: '/help-center',
-                  icon: PlayCircle
-                },
-                {
-                  label: 'Guides Library',
-                  description: 'Master the language of inventory and stock control.',
-                  to: '/seo/inventory-management-tips',
-                  icon: BookOpen
-                }
-              ]
-            },
-            {
-              title: 'Guides',
-              cards: [
-                {
-                  label: '8 Common Inventory Mistakes',
-                  description: 'Learn how to avoid costly errors in your stock process.',
-                  to: '/seo/avoid-inventory-mistakes'
-                },
-                {
-                  label: 'Barcodes vs. QR Codes',
-                  description: 'Choose the right scanning workflow for your team.',
-                  to: '/seo/how-to-generate-barcode'
                 }
               ]
             }

@@ -257,7 +257,7 @@ export default function ScanPage() {
     });
   };
 
-  const handleSubmit = async (e: React.FormEvent, productData?: any) => {
+  const handleSubmit = async (e: React.FormEvent, productData?: ProductFormData) => {
     e.preventDefault();
     
     if (!user || !activeBranch) {
@@ -266,7 +266,7 @@ export default function ScanPage() {
     }
 
     // Use productData if available, otherwise formData
-    const dataToUse = productData || formData;
+    const dataToUse: ProductFormData = productData ?? formData;
 
     if (transactionType === 'incoming' && !dataToUse.name.trim()) {
       toast.error('Product name is required');
@@ -331,11 +331,11 @@ export default function ScanPage() {
 
         // Handle supplier
         let supplierId = null;
-        if (formData.supplierName.trim()) {
+        if (dataToUse.supplierName.trim()) {
           const { data: existingSupplier } = await supabase
             .from('suppliers')
             .select('id')
-            .eq('name', formData.supplierName.trim())
+            .eq('name', dataToUse.supplierName.trim())
             .single();
 
           if (existingSupplier) {
@@ -343,7 +343,7 @@ export default function ScanPage() {
           } else {
             const { data: newSupplier, error: supplierError } = await supabase
               .from('suppliers')
-              .insert({ name: formData.supplierName.trim() })
+              .insert({ name: dataToUse.supplierName.trim() })
               .select('id')
               .single();
 
@@ -359,11 +359,11 @@ export default function ScanPage() {
 
         // Handle category
         let categoryId = null;
-        if (formData.categoryName.trim()) {
+        if (dataToUse.categoryName.trim()) {
           const { data: existingCategory } = await supabase
             .from('categories')
             .select('id')
-            .eq('name', formData.categoryName.trim())
+            .eq('name', dataToUse.categoryName.trim())
             .eq('user_id', user.id)
             .single();
 
@@ -372,7 +372,7 @@ export default function ScanPage() {
           } else {
             const { data: newCategory, error: categoryError } = await supabase
               .from('categories')
-              .insert({ name: formData.categoryName.trim(), user_id: user.id })
+              .insert({ name: dataToUse.categoryName.trim(), user_id: user.id })
               .select('id')
               .single();
 
@@ -392,10 +392,10 @@ export default function ScanPage() {
           description: dataToUse.description.trim() || null,
           category_id: categoryId,
           supplier_id: supplierId,
-          quantity_in_stock: formData.quantityInStock,
-          minimum_stock_level: formData.minimumStockLevel,
-          purchase_price: formData.purchasePrice,
-          sale_price: formData.salePrice,
+          quantity_in_stock: dataToUse.quantityInStock,
+          minimum_stock_level: dataToUse.minimumStockLevel,
+          purchase_price: dataToUse.purchasePrice,
+          sale_price: dataToUse.salePrice,
           barcode: dataToUse.barcode || null,
           branch_id: activeBranch.branch_id
         };
@@ -423,7 +423,7 @@ export default function ScanPage() {
         }
 
         // Check if enough stock is available
-        if (existingProduct.quantity_in_stock < formData.quantityInStock) {
+        if (existingProduct.quantity_in_stock < dataToUse.quantityInStock) {
           toast.error(`Not enough stock available. Current stock: ${existingProduct.quantity_in_stock}`);
           setLoading(false);
           return;
@@ -438,8 +438,8 @@ export default function ScanPage() {
         product_id: productId,
         product_name: productName,
         transaction_type: transactionType === 'incoming' ? 'incoming' : 'outgoing',
-        quantity: formData.quantityInStock,
-        unit_price: transactionType === 'incoming' ? formData.purchasePrice : formData.salePrice,
+        quantity: dataToUse.quantityInStock,
+        unit_price: transactionType === 'incoming' ? dataToUse.purchasePrice : dataToUse.salePrice,
         user_id: user.id, // Keep user_id for backward compatibility
         created_by: user.id, // New column for relationships
         branch_id: activeBranch.branch_id,

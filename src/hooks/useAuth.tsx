@@ -261,10 +261,15 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         }
       }, safetyTimeoutMs);
 
+      let sessionTimeoutId: ReturnType<typeof setTimeout> | null = null;
+
       try {
         // Add timeout to session fetch
         const sessionTimeoutPromise = new Promise((_, reject) => {
-          setTimeout(() => reject(new Error('Session fetch timeout')), hasAuthTokensInHash ? 15000 : 25000);
+          sessionTimeoutId = setTimeout(
+            () => reject(new Error('Session fetch timeout')),
+            hasAuthTokensInHash ? 15000 : 25000
+          );
         });
 
         const sessionPromise = supabase.auth.getSession();
@@ -348,6 +353,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           if (!cancelled.current) setLoading(false);
         }
       } finally {
+        if (sessionTimeoutId) {
+          clearTimeout(sessionTimeoutId);
+        }
         clearTimeout(safetyTimeout);
         // Only set loading to false if we're not waiting for hash tokens
         if (!waitingForHashTokens.current && !cancelled.current) {

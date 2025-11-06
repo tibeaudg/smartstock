@@ -24,11 +24,11 @@ export default function BestInventoryManagementSoftware() {
   
   const faqData = [
     {
-      question: "What is the Cross-dock Warehouse?",
-      answer: "The Cross-dock Warehouse depends on your business needs, but StockFlow consistently ranks as the top choice for small to medium businesses. It offers real-time tracking, barcode scanning, automated alerts, and excellent customer support at an affordable price."
+      question: "What is the StockFlow vs Sortly?",
+      answer: "The StockFlow vs Sortly depends on your business needs, but StockFlow consistently ranks as the top choice for small to medium businesses. It offers real-time tracking, barcode scanning, automated alerts, and excellent customer support at an affordable price."
     },
     {
-      question: "How do I choose the Cross-dock Warehouse for my business?",
+      question: "How do I choose the StockFlow vs Sortly for my business?",
       answer: "Consider factors like your business size, inventory complexity, budget, integration needs, and required features. Look for software with real-time tracking, mobile access, barcode scanning, reporting capabilities, and good customer support. StockFlow offers a free trial to test all features."
     },
     {
@@ -36,16 +36,16 @@ export default function BestInventoryManagementSoftware() {
       answer: "StockFlow offers the best value for SMBs. It starts at €0/month (vs €255-€450 for competitors), includes all essential features in the free plan, provides 24/7 support (vs business hours/email only), and has no hidden setup fees. While enterprise solutions like Exact and Visma offer advanced features, StockFlow provides everything most businesses need at a fraction of the cost."
     },
     {
-      question: "What features should the Cross-dock Warehouse have?",
-      answer: "The Cross-dock Warehouse should include real-time tracking, barcode scanning, automated reorder points, multi-location support, mobile access, reporting and analytics, integration capabilities, user role management, and excellent customer support."
+      question: "What features should the StockFlow vs Sortly have?",
+      answer: "The StockFlow vs Sortly should include real-time tracking, barcode scanning, automated reorder points, multi-location support, mobile access, reporting and analytics, integration capabilities, user role management, and excellent customer support."
     },
     {
       question: "Is there Cloud-based Inventory Management Platform?",
       answer: "Yes, StockFlow offers a free plan for small businesses with up to 100 products. This allows you to test the software and see if it meets your needs before upgrading to a paid plan with advanced features."
     },
     {
-      question: "What makes StockFlow the Cross-dock Warehouse?",
-      answer: "StockFlow stands out as the Cross-dock Warehouse due to its user-friendly interface, comprehensive features, excellent customer support, affordable pricing, real-time tracking capabilities, and ability to scale with your business growth."
+      question: "What makes StockFlow the StockFlow vs Sortly?",
+      answer: "StockFlow stands out as the StockFlow vs Sortly due to its user-friendly interface, comprehensive features, excellent customer support, affordable pricing, real-time tracking capabilities, and ability to scale with your business growth."
     }
   ];
 
@@ -203,14 +203,14 @@ export default function BestInventoryManagementSoftware() {
 
   return (
     <SeoPageLayout 
-      title="Cross-dock Warehouse"
+      title="StockFlow vs Sortly"
       showSidebar={true}
       sidebarContent={sidebarContent}
     >
       <SEO
-        title="Cross-dock Warehouse"
+        title="StockFlow vs Sortly"
         description="Real-time tracking, barcode scanning, automated alerts. FREE plan available - no credit card. Trusted by 10,000+ businesses"
-        keywords="Cross-dock Warehouse, popular inventory management software, inventory management software, inventory software management, software for inventory management, softwares for inventory management, inventory management software best, top inventory management software, best inventory software, best stock management software, best inventory system, best inventory tracking software, best inventory management system, inventory tracking programs, best inventory software 2025, top rated inventory software, best inventory management solution, best inventory software for small business, best inventory software for ecommerce, Cross-dock Warehouse comparison, best inventory software reviews, Cross-dock Warehouse features, best inventory software pricing, best inventory software demo, best inventory software trial, inventory management software provider, inventory management software online, stockflow"
+        keywords="StockFlow vs Sortly, popular inventory management software, inventory management software, inventory software management, software for inventory management, softwares for inventory management, inventory management software best, top inventory management software, best inventory software, best stock management software, best inventory system, best inventory tracking software, best inventory management system, inventory tracking programs, best inventory software 2025, top rated inventory software, best inventory management solution, best inventory software for small business, best inventory software for ecommerce, StockFlow vs Sortly comparison, best inventory software reviews, StockFlow vs Sortly features, best inventory software pricing, best inventory software demo, best inventory software trial, inventory management software provider, inventory management software online, stockflow"
         url="https://www.stockflow.be/best-inventory-management-software"
       />
 
@@ -220,7 +220,7 @@ export default function BestInventoryManagementSoftware() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
           <h1 className="text-6xl md:text-7xl font-extrabold tracking-tight mb-8">
-          Cross-dock Warehouse
+          StockFlow vs Sortly
             </h1>
           </div>
 
@@ -230,46 +230,71 @@ export default function BestInventoryManagementSoftware() {
 
 
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-
-            A cross-dock warehouse is a logistics center where goods are transferred directly from incoming trucks to outgoing trucks, with minimal or no storage. The goal is to accelerate turnaround time and reduce storage costs by moving products directly from receiving to shipping. These facilities are often designed with an incoming and outgoing dock side and have little to no storage space.
-<br />
-<br />
-<b className="text-3xl font-bold ">Features of a cross-dock warehouse</b>
-<br />
-<br />
-<b>Direct transfer:</b> Products are unloaded and loaded onto another vehicle almost immediately.
-<br />
-<br />
-<b>Minimal storage:</b> Goods remain in the warehouse for only hours, not days or longer.
-<br />
-<br />
-Optimized infrastructure: The design is focused on speed, with separate docking areas for incoming and outgoing shipments.
-<br />
-<br />
-<b>Efficient sorting:</b> Goods are sorted based on their final destination rather than product type.
-<br />
-<br />
-"Just-in-time" approach: It is a form of "just-in-time" warehouse management, which streamlines the logistics chain.
-<br />
-<br />
-<b className="text-3xl font-bold ">Benefits</b>
-<br />
-<br />
-Lower costs: Reduced storage and handling costs. Faster delivery: Shorter lead times lead to faster deliveries and higher customer satisfaction.
-<br />
-<br />
-Less inventory: The need for large inventories is reduced, which lowers the risk of stock losses.
-<br />
-<br />
-Increased productivity: The focus on speed and efficiency leads to higher throughput and lower labor costs.
-<br />
-<br />
-Improved customer service: Faster delivery times and more reliable service can enhance customer satisfaction.
-<br />
-<br />
-Scalability: Cross-dock facilities can handle large volumes of goods with minimal investment in storage space.
-
-
+              <b className="text-3xl font-bold">StockFlow vs Sortly (2025): which inventory app fits your team?</b>
+              <br />
+              <br />
+              Choosing between <b>StockFlow</b> and <b>Sortly</b> comes down to the kind of inventory work you do every day. Both are modern, cloud‑based inventory management platforms with mobile apps and barcode/QR support, but they prioritize different things. This guide highlights the practical differences so you can decide faster.
+              <br />
+              <br />
+              <b className="text-2xl">Quick summary</b>
+              <br />
+              • <b>StockFlow</b>: built for teams that want simple, barcode‑first workflows, multi‑location control, low‑stock alerts, and clear pricing that scales with you. Great for shops, field teams, contractors, and SMB warehouses that need speed and collaboration. 
+              <br />
+              • <b>Sortly</b>: known for a visual, folder‑style catalog and item labels. Useful when you mainly need an easy way to browse items with photos and basic activity history.
+              <br />
+              <br />
+              <b className="text-2xl">Key differences</b>
+              <br />
+              • <b>Barcoding & speed</b>: StockFlow emphasizes scanning from day one (barcode and QR), quick add/adjust, and fast cycle counts for teams on the move. Sortly supports barcodes but is more catalog‑oriented. 
+              <br />
+              • <b>Multi‑location & permissions</b>: StockFlow includes multiple locations/branches, role‑based permissions, and user management designed for growing teams. 
+              <br />
+              • <b>Purchasing workflow</b>: StockFlow offers low‑stock alerts, reorder points, and purchase‑order flows to prevent stockouts. 
+              <br />
+              • <b>Reporting</b>: StockFlow provides out‑of‑the‑box dashboards and exports for stock valuation, movement history, and audits; Sortly focuses more on item logs and lists. 
+              <br />
+              • <b>Pricing & scalability</b>: StockFlow has a transparent, SMB‑friendly model with a <b>free tier</b> to get started, then scales as you add products and users. Sortly uses tiered plans based on features and limits. 
+              <br />
+              <br />
+              <b className="text-2xl">Feature comparison at a glance</b>
+              <br />
+              • <b>Mobile app</b>: iOS/Android for both. StockFlow optimizes for scanning and quick actions in the field. 
+              <br />
+              • <b>Item photos & documents</b>: Both support images; StockFlow adds structured attributes and fast import/export. 
+              <br />
+              • <b>Stock moves</b>: StockFlow tracks receipts, issues, transfers, and adjustments with full history by user and location. 
+              <br />
+              • <b>Alerts & automation</b>: StockFlow includes low‑stock and date‑based notifications to keep reordering on time. 
+              <br />
+              • <b>Integrations</b>: StockFlow focuses on pragmatic exports, email/PDF docs, and accounting integrations many SMBs already use. 
+              <br />
+              • <b>Security</b>: Both use modern cloud infrastructure; StockFlow adds role‑based access for teams and auditors. 
+              <br />
+              <br />
+              <b className="text-2xl">When to choose StockFlow</b>
+              <br />
+              • You need <b>fast barcode workflows</b> for receiving, counting, and picking. 
+              <br />
+              • You operate across <b>multiple locations</b> or vans and want clear permissions per user. 
+              <br />
+              • You want <b>reorder points</b>, POs, and <b>alerts</b> that actually prevent stockouts. 
+              <br />
+              • You prefer <b>simple pricing</b> with a free tier to start and scale smoothly. 
+              <br />
+              <br />
+              <b className="text-2xl">When Sortly can fit</b>
+              <br />
+              • You primarily need a <b>visual catalog</b> to browse items with photos and labels. 
+              <br />
+              • Your process is light on purchasing or multi‑location controls and heavier on tagging and finding items. 
+              <br />
+              <br />
+              <b className="text-2xl">Bottom line</b>
+              <br />
+              If your priority is <b>day‑to‑day inventory operations</b>—barcode scanning, fast counts, accurate stock across locations, and proactive reordering—<b>StockFlow</b> is the better fit for most SMB teams. If you mainly want a simple visual catalog with basic tracking, <b>Sortly</b> can work. 
+              <br />
+              <br />
+              Ready to try it? Start with StockFlow’s free tier and see how quickly your team can organize inventory, prevent stockouts, and ship faster.
             </p>
     
     

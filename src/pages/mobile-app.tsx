@@ -2,6 +2,10 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import Header from '@/components/HeaderPublic';
+import Footer from '@/components/Footer';
+
+
 import { Badge } from '@/components/ui/badge';
 import {
   Smartphone,
@@ -52,19 +56,23 @@ const features = [
 const screenshots = [
   {
     title: 'Dashboard',
-    description: 'Overview of your inventory at a glance'
+    description: 'Overview of your inventory at a glance',
+    image: '/mobile-app.png'
   },
   {
     title: 'Scanner',
-    description: 'Quick barcode scanning for fast updates'
+    description: 'Quick barcode scanning for fast updates',
+    image: '/scanner2.png'
   },
   {
     title: 'Analytics',
-    description: 'Detailed reports and insights'
+    description: 'Detailed reports and insights',
+    image: '/analytics.png'
   },
   {
     title: 'Settings',
-    description: 'Customize your experience'
+    description: 'Customize your experience',
+    image: '/settings.png'
   }
 ];
 
@@ -116,7 +124,8 @@ export default function MobileAppPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 pt-16">
+      <Header />
       <SEO
         title="Mobile App - StockFlow"
         description="Access the StockFlow progressive web app on any device. Manage inventory with barcode scanning, real-time sync, and offline capabilities without app store installs."
@@ -126,7 +135,7 @@ export default function MobileAppPage() {
       />
 
       {/* Hero Section */}
-      <div className="bg-gradient-to-br from-purple-600 to-blue-600 text-white py-20">
+      <div className="bg-gradient-to-br from-blue-600 to-blue-700 text-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -138,19 +147,8 @@ export default function MobileAppPage() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button size="lg" className="bg-white text-purple-600 hover:bg-gray-100" asChild>
-                  <a href="https://app.stockflow.be" target="_blank" rel="noopener noreferrer">
+                  <a href="https://app.stockflow.be/auth?mode=register" target="_blank" rel="noopener noreferrer">
                     Launch Web App
-                  </a>
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="text-white border-white hover:bg-white/10"
-                  asChild
-                >
-                  <a href="#install">
-                    How to Install
-                    <ArrowRight className="ml-2 h-5 w-5" />
                   </a>
                 </Button>
               </div>
@@ -169,12 +167,14 @@ export default function MobileAppPage() {
                 </Badge>
               </div>
             </div>
-            <div className="relative">
-              <div className="relative z-10">
-                <Smartphone className="h-96 w-48 mx-auto text-white/20" />
-              </div>
-              <div className="absolute inset-0 flex items-center justify-center">
-                <QrCode className="h-32 w-32 text-white/30" />
+            <div className="relative flex items-center justify-center">
+              <div className="relative w-full max-w-xl">
+                <div className="absolute -inset-4 rounded-3xl bg-white/10 blur-2xl" aria-hidden="true" />
+                <img
+                  src="/mobile-app.png"
+                  alt="StockFlow mobile app preview"
+                  className="relative rounded-3xl shadow-2xl ring-1 h-94 w-64 ring-white/20"
+                />
               </div>
             </div>
           </div>
@@ -222,9 +222,11 @@ export default function MobileAppPage() {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {screenshots.map((screenshot, index) => (
               <Card key={index} className="overflow-hidden">
-                <div className="aspect-[9/16] bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
-                  <Smartphone className="h-32 w-16 text-gray-400" />
-                </div>
+                <img
+                  src={screenshot.image}
+                  alt={screenshot.title}
+                  className="w-full h-68 object-cover rounded-3xl"
+                />
                 <CardContent className="p-4">
                   <h3 className="font-semibold mb-1">{screenshot.title}</h3>
                   <p className="text-sm text-gray-600">{screenshot.description}</p>
@@ -371,6 +373,7 @@ export default function MobileAppPage() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }
