@@ -4,6 +4,7 @@ import { initializeTrustedTypes, initializeDefaultPolicy } from './utils/trusted
 // Initialize Trusted Types policies early
 if (typeof window !== 'undefined') {
   initializeTrustedTypes();
+  // Create a default policy exactly once; utils guards duplicates + CSP noise
   initializeDefaultPolicy();
 }
 

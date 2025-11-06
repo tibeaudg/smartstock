@@ -29,20 +29,19 @@ export const useSessionRevalidation = (onSessionChange?: (valid: boolean) => voi
       setTimeout(async () => {
         try {
           
-          // Reduced timeout from 5s to 3s for better responsiveness
-          const timeoutPromise = new Promise<null>((_, reject) => {
-            setTimeout(() => reject(new Error('Session check timeout')), 3000);
+          // Reduced timeout from 5s to 3s for better responsiveness (non-throwing)
+          const timeoutPromise = new Promise<{ __timedOut: true }>((resolve) => {
+            setTimeout(() => resolve({ __timedOut: true }), 3000);
           });
 
           const sessionPromise = supabase.auth.getSession();
           
-          const result = await Promise.race([sessionPromise, timeoutPromise]);
+          const result: any = await Promise.race([sessionPromise, timeoutPromise]);
           
-          if (!result || 'message' in result) {
-            // Timeout or error occurred - don't block UI, just log warning
-            console.warn('[SessionRevalidation] Session check failed or timed out');
-            // Callback is non-blocking - don't pass false to prevent UI blocking
-            onSessionChange?.(true); // Assume valid to prevent blocking
+          // Gracefully handle timeout without throwing
+          if (result && result.__timedOut) {
+            console.warn('[SessionRevalidation] Session check timed out');
+            onSessionChange?.(true);
             return;
           }
 
@@ -56,9 +55,17 @@ export const useSessionRevalidation = (onSessionChange?: (valid: boolean) => voi
           }
 
           if (!data.session) {
-            console.warn('[SessionRevalidation] No active session found');
-            // Only call callback if explicitly needed - don't block
-            onSessionChange?.(false);
+            console.warn('[SessionRevalidation] No active session found, attempting silent refresh');
+            // Try a silent refresh; if it succeeds, treat as valid
+            try {
+              const { data: refreshed, error: refreshError } = await supabase.auth.refreshSession();
+              if (refreshed?.session && !refreshError) {
+                onSessionChange?.(true);
+                return;
+              }
+            } catch {}
+            // If refresh did not yield a session, still avoid blocking UI
+            onSessionChange?.(true);
             return;
           }
 

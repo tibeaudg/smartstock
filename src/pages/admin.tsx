@@ -12,7 +12,6 @@ import SEO from '../components/SEO';
 import { AdminNotificationManager } from '@/components/AdminNotificationManager';
 import { AdminChatList } from '@/components/AdminChatList';
 import { AdminSubscriptionManagement } from '@/components/admin/SubscriptionManagement';
-import { SEOKeywordOptimizer } from '@/components/seo/SEOKeywordOptimizer';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -441,7 +440,6 @@ export default function AdminPage() {
     { id: 'users', label: 'User Management' },
     { id: 'chats', label: 'Chats' },
     { id: 'notifications', label: 'Notifications' },
-    { id: 'seo', label: 'SEO Optimization' },
   ];
   
   // Access control - only owners can view the admin page
@@ -766,10 +764,6 @@ export default function AdminPage() {
 
             {activeTab === 'chats' && (
               <AdminChatList />
-            )}
-
-            {activeTab === 'seo' && (
-              <SEOKeywordOptimizer />
             )}
 
           </div>

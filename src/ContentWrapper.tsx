@@ -1,9 +1,9 @@
 
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Header } from './components/ui/Header';
 import { useNotifications } from './hooks/useNotifications';
-import { useAuth } from './hooks/useAuth';
+import { AuthContext } from './hooks/useAuth';
 
 const getPageTitle = (pathname: string) => {
   // Don't show header for dashboard pages as they use Layout component
@@ -17,7 +17,9 @@ const getPageTitle = (pathname: string) => {
 
 export const ContentWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
-  const { user } = useAuth();
+  // Use context directly to avoid hard failure if provider is not mounted yet
+  const auth = useContext(AuthContext);
+  const user = auth?.user || null;
   const { notifications, loading, unreadCount, markAllAsRead } = useNotifications();
   const [showNotifications, setShowNotifications] = useState(false);
   const title = getPageTitle(location.pathname);

@@ -103,8 +103,6 @@ export const useOptimizedTabSwitching = () => {
                 const key = query.queryKey[0];
                 return typeof key === 'string' && (
                   key.includes('profile') || 
-                  key.includes('branches') || 
-                  key.includes('branch') ||
                   key.includes('dashboard') || 
                   key.includes('products') || 
                   key.includes('stock') ||

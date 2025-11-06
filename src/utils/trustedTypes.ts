@@ -173,15 +173,19 @@ export const initializeTrustedTypes = () => {
 // This policy handles innerHTML assignments from libraries that don't use named policies
 export const initializeDefaultPolicy = () => {
   if (typeof window !== 'undefined' && 'trustedTypes' in window) {
-    // Check if default policy already exists to avoid duplicate creation
+    // Prevent duplicate attempts across HMR or multiple initializations
+    const globalAny = window as unknown as { __TT_DEFAULT_INITIALIZED__?: boolean };
+    if (globalAny.__TT_DEFAULT_INITIALIZED__) return;
+
+    // Check if default policy already exists to avoid duplicate creation (best-effort)
     try {
-      const existingPolicy = window.trustedTypes.getExposedPolicy('default');
+      const existingPolicy = (window.trustedTypes as any).getExposedPolicy?.('default');
       if (existingPolicy) {
-        console.log('[TrustedTypes] Default policy already exists, skipping creation');
+        globalAny.__TT_DEFAULT_INITIALIZED__ = true;
         return;
       }
-    } catch (e) {
-      // Policy doesn't exist, continue with creation
+    } catch {
+      // Some browsers may not expose getExposedPolicy; continue
     }
     
     try {
@@ -288,15 +292,11 @@ export const initializeDefaultPolicy = () => {
           return '';
         },
       });
-      console.log('[TrustedTypes] Default policy initialized for third-party libraries');
+      globalAny.__TT_DEFAULT_INITIALIZED__ = true;
     } catch (e: any) {
-      // Policy already exists or CSP doesn't allow duplicates
-      // This is fine - another library (like Angular) may have created it
-      if (e?.message?.includes('already exists') || e?.message?.includes('allow-duplicates')) {
-        console.log('[TrustedTypes] Default policy already exists (created by another library)');
-      } else {
-        console.warn('[TrustedTypes] Could not create default policy:', e?.message || e);
-      }
+      // If a policy already exists (created by another library) or CSP disallows duplicates,
+      // mark as initialized to avoid repeated attempts; suppress noisy logs.
+      globalAny.__TT_DEFAULT_INITIALIZED__ = true;
     }
   }
 };

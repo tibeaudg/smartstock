@@ -89,9 +89,13 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
 
       console.debug('[fetchBranches] Calling get_user_branches RPC for user:', user.id);
       
-      // Add timeout to prevent hanging requests
-      const timeoutPromise = new Promise((_, reject) => {
-        setTimeout(() => reject(new Error('Request timeout')), 5000);
+      // Previous cached data to preserve UI if network fails
+      const previous =
+        (queryClient.getQueryData<Branch[]>(['branches', user.id]) as Branch[] | undefined) || [];
+
+      // Add timeout to prevent hanging requests (background refetch-friendly)
+      const timeoutPromise = new Promise((resolve) => {
+        setTimeout(() => resolve({ __timedOut: true }), 10000);
       });
       
       const rpcPromise = supabase.rpc('get_user_branches', {
@@ -99,7 +103,15 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
       });
 
       try {
-        const { data, error } = await Promise.race([rpcPromise, timeoutPromise]) as any;
+        const raced: any = await Promise.race([rpcPromise, timeoutPromise]);
+
+        // If we timed out, serve previous data and let background refetch retry later
+        if (raced && raced.__timedOut) {
+          console.warn('Branch fetch timed out, serving cached data');
+          return previous;
+        }
+
+        const { data, error } = raced as any;
 
         if (error) {
           console.error('Error fetching branches with RPC, trying direct query:', error);
@@ -117,8 +129,8 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
 
           if (directError) {
             console.error('Direct query also failed:', directError);
-            // Return empty array instead of throwing to prevent infinite loading
-            return [];
+            // Preserve previous data on failure
+            return previous;
           }
 
           // Transform direct data to match expected format
@@ -132,15 +144,21 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
           return transformedData;
         }
 
-        return data || [];
+        return (data as Branch[]) || previous;
       } catch (timeoutError) {
-        console.error('Branch fetch timeout:', timeoutError);
-        // Return empty array instead of throwing to prevent infinite loading
-        return [];
+        console.warn('Branch fetch failed, serving cached data', timeoutError);
+        // Preserve previous data instead of empty array
+        return previous;
       }
     },
     enabled: !!user && !authLoading,
-    staleTime: Infinity, // Never stale - data persists until manually invalidated
+    // Keep previous data visible while refetching, refresh on focus/reconnect
+    // Use finite stale time so background refetches run, but do not block UI
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 30,
+    refetchOnWindowFocus: true,
+    refetchOnReconnect: true,
+    placeholderData: (prev) => prev as Branch[] | undefined,
     retry: 1, // Only retry once to prevent infinite loops
     retryDelay: 2000, // 2 second delay between retries
   });

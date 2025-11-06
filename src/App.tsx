@@ -306,7 +306,11 @@ const AppRouter = () => {
 
   // Auth Route Component
   const AuthRoute = () => {
-    const { user, loading, userProfile } = useAuth();
+    // Use safe context read to avoid HMR/BFCache race throwing
+    const authCtx = React.useContext(require('./hooks/useAuth').AuthContext);
+    const user = authCtx?.user || null;
+    const loading = authCtx?.loading ?? true;
+    const userProfile = authCtx?.userProfile || null;
     const location = useLocation();
     const from = (location.state as { from?: { pathname: string } })?.from?.pathname || "/dashboard";
 

@@ -61,14 +61,26 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   // Session revalidation on tab visibility change
   useSessionRevalidation(async (isValid) => {
     if (!isValid && user) {
-      console.log('[AuthProvider] Session invalid, refreshing auth state...');
-      // Try to refresh the session
+      console.log('[AuthProvider] Session possibly invalid, attempting silent refresh...');
+      // First check current session
       const { data } = await supabase.auth.getSession();
       if (!data.session) {
-        // Session is truly expired, clear auth state
-        setUser(null);
-        setSession(null);
-        setUserProfile(null);
+        // Attempt a silent refresh before altering UI/auth state
+        try {
+          const { data: refreshed, error } = await supabase.auth.refreshSession();
+          if (refreshed?.session && !error) {
+            setSession(refreshed.session);
+            setUser(refreshed.session.user);
+            const profile = await fetchUserProfile(refreshed.session.user.id);
+            setUserProfile(profile);
+            console.log('[AuthProvider] Silent session refresh succeeded');
+          } else {
+            console.warn('[AuthProvider] Silent session refresh failed; preserving previous auth state');
+            // Preserve current auth state to avoid forcing logout; onAuthStateChange will handle real sign-outs
+          }
+        } catch (e) {
+          console.warn('[AuthProvider] Silent session refresh threw; preserving previous auth state', e);
+        }
       }
     }
   });
@@ -278,9 +290,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
         if (result?.error) {
           console.error('Error getting session:', result.error.message);
+          // If it's a timeout or transient network error, keep loading to avoid false logout
+          const msg = String(result.error?.message || '').toLowerCase();
+          const isTimeout = msg.includes('timeout') || msg.includes('network');
           if (!cancelled.current) {
-            // If we have hash tokens, don't give up yet - wait for auth state change
-            if (!hasAuthTokensInHash) {
+            if (!hasAuthTokensInHash && !isTimeout) {
               setLoading(false);
             }
           }
@@ -346,11 +360,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             return;
           }
         }
-      } catch (error) {
+      } catch (error: any) {
         console.error('Error during auth initialization:', error);
+        const msg = String(error?.message || '').toLowerCase();
+        const isTimeout = msg.includes('timeout') || msg.includes('network');
         // If we have hash tokens, keep waiting for auth state change
         if (!hasAuthTokensInHash || hashTokenProcessed.current) {
-          if (!cancelled.current) setLoading(false);
+          if (!cancelled.current && !isTimeout) setLoading(false);
+          // For timeouts, keep loading; ProtectedRoute will show a timed fallback UI
         }
       } finally {
         if (sessionTimeoutId) {
