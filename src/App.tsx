@@ -47,9 +47,8 @@ import { useCookieConsent } from './hooks/useCookieConsent';
 
 // Import all SEO pages
 import VoorraadbeheerTips from './pages/SEO/voorraadbeheer-tips';
+import InventoryManagementOnline from './pages/SEO/inventory-management-online';
 import VoorraadbeheerSoftwareVergelijken from './pages/SEO/voorraadbeheer-software-vergelijken';
-import BlogListPage from './pages/blog';
-import BlogPostPage from './pages/blog/[slug]';
 import VoorraadbeheerFoutenVoorkomen from './pages/SEO/voorraadbeheer-fouten-voorkomen';
 import BarcodeScanningInventory from './pages/SEO/barcode-scanning-inventory';
 import HowToChooseInventoryManagementSoftware from './pages/SEO/how-to-choose-inventory-management-software';
@@ -74,7 +73,6 @@ import OnlineInventoryManagement from "./pages/SEO/online-inventory-management";
 import OnlineInventorySoftware from "./pages/SEO/online-inventory-software";
 import BestOnlineInventorySoftware from "./pages/SEO/best-online-inventory-software";
 import BestOnlineInventorySystem from "./pages/SEO/best-online-inventory-system";
-import AppVoorraadbeheerThuis from "./pages/SEO/app-voorraadbeheer-thuis";
 import VoorraadbeheerApp from "./pages/SEO/voorraadbeheer-app";
 import WarehouseManagementSystem from "./pages/SEO/warehouse-management-system";
 import AboutPage from "./pages/SEO/about";
@@ -407,10 +405,12 @@ const AppRouter = () => {
         {/* Dutch SEO Pages - Both original paths and /nl/ paths */}
         <Route path="/voorraadbeheer-tips" element={<VoorraadbeheerTips />} />
         <Route path="/nl/voorraadbeheer-tips" element={<VoorraadbeheerTips />} />
+
         
         <Route path="/voorraadbeheer-software-vergelijken" element={<VoorraadbeheerSoftwareVergelijken />} />
         <Route path="/nl/voorraadbeheer-software-vergelijken" element={<VoorraadbeheerSoftwareVergelijken />} />
-        
+        <Route path="/inventory-management-online" element={<InventoryManagementOnline />} />
+        <Route path="/inventory-management-online" element={<InventoryManagementOnline />} />
         
         
         <Route path="/voorraadbeheer-fouten-voorkomen" element={<VoorraadbeheerFoutenVoorkomen />} />
@@ -502,8 +502,6 @@ const AppRouter = () => {
         <Route path="/online-inventory-software" element={<OnlineInventorySoftware />} />
         <Route path="/best-online-inventory-software" element={<BestOnlineInventorySoftware />} />
         <Route path="/best-online-inventory-system" element={<BestOnlineInventorySystem />} />
-        <Route path="/app-voorraadbeheer-thuis" element={<AppVoorraadbeheerThuis />} />
-        <Route path="/nl/app-voorraadbeheer-thuis" element={<AppVoorraadbeheerThuis />} />
         
         <Route path="/voorraadbeheer-app" element={<VoorraadbeheerApp />} />
         <Route path="/nl/voorraadbeheer-app" element={<VoorraadbeheerApp />} />
@@ -567,6 +565,7 @@ const AppRouter = () => {
             <Route path="users" element={<UserManagement />} />
             <Route path="subscription" element={<SubscriptionManagement />} />
             <Route path="integrations" element={<IntegrationsSettings />} />
+
             <Route path="invoices" element={<InvoiceList />} />
             <Route path="license" element={<LicenseOverview />} />
             <Route path="invoicing" element={<InvoicingOverview />} />
@@ -601,6 +600,7 @@ const AppRouter = () => {
             <Route path="seo" element={<SEO />} />
             <Route path="payment-test" element={<PaymentTestPage />} />
             <Route path="subscriptions" element={<AdminSubscriptionManagement />} />
+
             <Route path="user/:id" element={<AdminUserDetailPage />} />
           </Route>
         </Route>

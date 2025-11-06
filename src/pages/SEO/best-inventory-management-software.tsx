@@ -1,9 +1,7 @@
 import SEO from '../../components/SEO';
-import { Link } from 'react-router-dom';
 import SeoPageLayout from '../../components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { useCurrency } from '@/hooks/useCurrency';
-import { SeoPageHero } from '../../components/seo/SeoPageHero';
 import { useLocation } from 'react-router-dom';
 import { generateSidebarContent } from '@/utils/seoPageHelpers';
 import { 
@@ -190,57 +188,6 @@ export default function BestInventoryManagementSoftware() {
     }
   ];
 
-  const pricingPlans = [
-    {
-      name: "Free Plan",
-      price: formatPrice(0),
-      period: "/month",
-      description: "Perfect for testing & small shops",
-      features: [
-        "Up to 100 products",
-        "Basic inventory management",
-        "Mobile app access",
-        "Email support"
-      ],
-      cta: "Get Started",
-      popular: false,
-      isFree: true
-    },
-    {
-      name: "Business Plan",
-      price: "€0.004",
-      period: "/product/month",
-      description: "Pay-as-you-grow pricing",
-      features: [
-        "100+ products (€0.004 each)",
-        "All Free features",
-        "Advanced analytics",
-        "Barcode scanner",
-        "API access",
-        "Priority support"
-      ],
-      cta: "Start Free, Pay When You Grow",
-      popular: true,
-      isFree: false
-    },
-    {
-      name: "Enterprise Plan",
-      price: "Custom",
-      period: "pricing",
-      description: "Custom pricing for high-volume",
-      features: [
-        "10,000+ products",
-        "All Business features",
-        "Dedicated support",
-        "Custom onboarding",
-        "SLA guarantee"
-      ],
-      cta: "Contact Sales",
-      popular: false,
-      isFree: false,
-      isBusiness: true
-    }
-  ];
 
   // Generate sidebar content
   const sidebarContent = generateSidebarContent(location.pathname, [
@@ -416,30 +363,7 @@ export default function BestInventoryManagementSoftware() {
         </div>
       </section>
 
-      {/* Benefits Section */}
-      <section id="benefits" className="py-16 px-4 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Transform Your Business with the <span className="text-blue-600">Best Software</span>
-            </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              See why thousands of businesses choose StockFlow as their inventory management solution.
-            </p>
-          </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {benefits.map((benefit, index) => (
-              <div key={index} className="bg-blue-50 p-4 rounded-lg">
-                <div className="flex items-center">
-                  <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
-                  <span className="text-gray-700">{benefit}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Comparison Section */}
       <section id="comparison" className="py-16 px-4 bg-gray-50">
@@ -512,126 +436,6 @@ export default function BestInventoryManagementSoftware() {
         </div>
       </section>
 
-      {/* Pricing Section */}
-      <section id="pricing" className="py-16 px-4 bg-blue-50">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Choose Your <span className="text-blue-600">Best Plan</span>
-            </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Flexible pricing options to fit your business needs and budget.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {pricingPlans.map((plan, index) => (
-              <div key={index} className={`bg-white p-8 rounded-lg shadow-lg relative ${plan.popular ? 'ring-2 ring-blue-500 shadow-xl scale-105' : 'shadow-lg'}`}>
-                {plan.popular && (
-                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    <div className="bg-blue-500 text-white px-4 py-1 rounded-full text-sm font-semibold">
-                      Most Popular
-                    </div>
-                  </div>
-                )}
-                
-                {/* Money-back guarantee badge for paid tiers */}
-                {!plan.isFree && !plan.isBusiness && (
-                  <div className="absolute -top-2 right-4">
-                    <div className="bg-green-50 text-green-700 border border-green-200 px-2 py-1 rounded-full text-xs">
-                      30-day guarantee
-                    </div>
-                  </div>
-                )}
-
-                <div className="text-center pb-4">
-                  <h3 className="text-2xl font-semibold mb-4">{plan.name}</h3>
-                  <p className="text-gray-600 mb-4">{plan.description}</p>
-                  <div className="mt-4">
-                    <div className="text-4xl font-bold text-gray-900">
-                      {plan.isBusiness ? 'Custom' : plan.price}
-                    </div>
-                    {!plan.isBusiness && (
-                      <div className="text-sm text-gray-500">
-                        {plan.period}
-                      </div>
-                    )}
-                    {plan.isBusiness && (
-                      <div className="text-sm text-gray-500">
-                        {plan.period}
-                      </div>
-                    )}
-                    {!plan.isBusiness && !plan.isFree && (
-                      <div className="text-xs text-gray-400 mt-1">(products 101+)</div>
-                    )}
-                  </div>
-                </div>
-
-                <div className="space-y-6">
-                  <div className="space-y-3">
-                    <h4 className="font-semibold text-gray-900">Included:</h4>
-                    <ul className="space-y-2">
-                      {plan.features.map((feature, featureIndex) => (
-                        <li key={featureIndex} className="flex items-start">
-                          <CheckCircle className="h-4 w-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
-                          <span className="text-sm text-gray-600">{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-
-                <div className="mt-8">
-                  <Link
-                    to={plan.isBusiness ? "/contact?subject=business-tier" : "/auth"}
-                    className={`w-full py-3 rounded-lg font-semibold text-center block transition transform hover:scale-105 shadow-lg hover:shadow-xl ${
-                      plan.popular 
-                        ? 'bg-blue-600 text-white hover:bg-blue-700' 
-                        : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
-                    }`}
-                  >
-                    {plan.cta}
-                  </Link>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="bg-blue-600 text-white py-16 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Experience the Best Inventory Management Software
-          </h2>
-          <p className="text-lg md:text-xl mb-8 opacity-90">
-            Join thousands of businesses who chose StockFlow as their inventory management solution.
-          </p>
-          <div className="flex justify-center mb-8">
-            <Link
-              to="/auth"
-              className="bg-white text-blue-600 px-12 py-5 rounded-xl font-semibold text-xl hover:bg-gray-100 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105"
-            >
-              Start Free Trial
-            </Link>
-          </div>
-          <div className="flex flex-wrap justify-center items-center gap-6 text-sm opacity-75">
-            <div className="flex items-center">
-              <CheckCircle className="w-4 h-4 mr-2" />
-              No credit card required
-            </div>
-            <div className="flex items-center">
-              <CheckCircle className="w-4 h-4 mr-2" />
-              Instant access
-            </div>
-            <div className="flex items-center">
-              <CheckCircle className="w-4 h-4 mr-2" />
-              Free trial
-            </div>
-          </div>
-        </div>
-      </section>
 
 
 

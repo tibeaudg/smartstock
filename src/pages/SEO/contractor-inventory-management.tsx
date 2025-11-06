@@ -17,7 +17,7 @@ import {
   Trophy,
   Database,
   Hammer,
-  Tool,
+  Wrench,
   Building
 } from 'lucide-react';
 
@@ -75,7 +75,7 @@ export default function ContractorInventoryManagement() {
       description: "Scan tools and equipment with your smartphone to quickly check items in and out, reducing manual errors."
     },
     {
-      icon: Tool,
+      icon: Wrench,
       title: "Tool Checkout System",
       description: "Track who has which tools, when they were checked out, and when they're due back. Prevent equipment loss."
     },

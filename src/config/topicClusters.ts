@@ -17,6 +17,26 @@ export interface TopicCluster {
   clusters: PageMetadata[];
 }
 
+const seoPageModules = import.meta.glob('../pages/SEO/*.tsx');
+
+const existingSeoPagePaths = new Set<string>(
+  Object.keys(seoPageModules)
+    .map((filePath) => {
+      const match = filePath.match(/\/([^/]+)\.tsx$/);
+      if (!match) return undefined;
+      const slug = match[1];
+
+      if (slug === 'index') {
+        return '/seo';
+      }
+
+      return `/${slug}`;
+    })
+    .filter((path): path is string => Boolean(path))
+);
+
+const isExistingSeoPath = (path: string) => existingSeoPagePaths.has(path);
+
 // Dutch Main Cluster - Voorraadbeheer Software
 export const dutchMainCluster: TopicCluster = {
   pillar: {
@@ -126,14 +146,7 @@ export const dutchMainCluster: TopicCluster = {
       description: 'Volledig gratis voorraadbeheer software oplossing',
       image: '/dashboard.png'
     },
-    {
-      path: '/app-voorraadbeheer-thuis',
-      title: 'App Voorraadbeheer Thuis',
-      language: 'nl',
-      category: 'Voorraadbeheer',
-      description: 'Beheer je thuisvoorraad met handige app',
-      image: '/mobile.png'
-    },
+
     // Guides & Resources
     {
       path: '/voorraadbeheer-tips',
@@ -1022,7 +1035,9 @@ export function getRelatedPages(currentPath: string, limit: number = 6): PageMet
   if (!cluster) return [];
 
   const allPages = [cluster.pillar, ...cluster.clusters];
-  const relatedPages = allPages.filter(page => page.path !== currentPath);
+  const relatedPages = allPages.filter(
+    (page) => page.path !== currentPath && isExistingSeoPath(page.path)
+  );
   
   // Shuffle and limit
   return relatedPages.sort(() => 0.5 - Math.random()).slice(0, limit);
@@ -1034,9 +1049,15 @@ export function getAllSeoPages(): PageMetadata[] {
   
   for (const cluster of allClusters) {
     // Add pillar page
-    allPages.push(cluster.pillar);
+    if (isExistingSeoPath(cluster.pillar.path)) {
+      allPages.push(cluster.pillar);
+    }
     // Add all cluster pages
-    allPages.push(...cluster.clusters);
+    for (const page of cluster.clusters) {
+      if (isExistingSeoPath(page.path)) {
+        allPages.push(page);
+      }
+    }
   }
   
   // Remove duplicates (in case a page appears in multiple clusters)

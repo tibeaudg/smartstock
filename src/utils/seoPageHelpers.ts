@@ -1,5 +1,10 @@
 import { getRelatedPages, getAllSeoPages, type PageMetadata } from '@/config/topicClusters';
-import type { SidebarContent } from '@/components/seo/SeoSidebar';
+
+export interface SidebarContent {
+  relatedArticles?: PageMetadata[];
+  tableOfContents?: Array<{ id: string; title: string; level: number }>;
+  language: 'nl' | 'en';
+}
 
 /**
  * Detect page language based on pathname

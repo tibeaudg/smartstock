@@ -18,7 +18,7 @@ import {
   Database,
   Settings,
   Workflow,
-  Integration
+  GitMerge
 } from 'lucide-react';
 
 import { StructuredData } from '../../components/StructuredData';
@@ -90,7 +90,7 @@ export default function ErpSoftware() {
       description: "Production planning, work order management, bill of materials, and manufacturing resource planning."
     },
     {
-      icon: Integration,
+      icon: GitMerge,
       title: "Business Intelligence",
       description: "Advanced reporting, analytics, and business intelligence tools that pull data from all business modules."
     }

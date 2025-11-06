@@ -85,7 +85,6 @@ export default function SEOOverviewPage() {
         { name: "Checklist Voorraadbeheer Software Gereed", url: "/checklist-voorraadbeheer-software-gereed" },
         { name: "Best Voorraadbeheer Software KMO", url: "/best-voorraadbeheer-software-kmo" },
         { name: "Mobiel Voorraadbeheer", url: "/mobiel-voorraadbeheer" },
-        { name: "App Voorraadbeheer Thuis", url: "/app-voorraadbeheer-thuis" }
       ]
     },
     {

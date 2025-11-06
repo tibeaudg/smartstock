@@ -20,7 +20,7 @@ import {
   Calculator,
   Target,
   Calendar,
-  Planning
+  ClipboardCheck
 } from 'lucide-react';
 
 import { StructuredData } from '../../components/StructuredData';
@@ -67,7 +67,7 @@ export default function CapacityRequirementPlanning() {
 
   const features = [
     {
-      icon: Planning,
+      icon: ClipboardCheck,
       title: "Demand Forecasting",
       description: "Analyze historical sales data and trends to accurately forecast future demand and capacity requirements."
     },

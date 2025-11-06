@@ -89,12 +89,7 @@ function getSeoRoutes() {
     'stockbeheer-app',
     'magazijnbeheer-software-gratis',
     'voorraad-software-gratis',
-    'boekhoudprogramma-met-voorraadbeheer',
-    'app-voorraadbeheer-thuis',
     'voorraadbeheer-app',
-    'voorraadbeheer-excel-template-gratis',
-    'voorraadbeheer-excel-zelf-maken',
-    'voorraadbeheer-excel'
   ];
 
   const staticFallback = [

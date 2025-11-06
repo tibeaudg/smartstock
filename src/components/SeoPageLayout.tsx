@@ -1,11 +1,11 @@
 import React from 'react';
 import Header from './HeaderPublic';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { BreadcrumbNav } from './seo/BreadcrumbNav';
 import { getBreadcrumbPath } from '@/config/topicClusters';
 import Footer from './Footer';
-import { SeoSidebar, SidebarContent } from './seo/SeoSidebar';
 import InternalLinkingWidget from './seo/InternalLinkingWidget';
+import type { SidebarContent } from '@/utils/seoPageHelpers';
 
 interface SeoPageLayoutProps {
   title: string;
@@ -30,6 +30,9 @@ const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({
 
   // Get breadcrumb path for current page
   const breadcrumbItems = getBreadcrumbPath(location.pathname);
+  const hasSidebar = showSidebar && Boolean(sidebarContent);
+  const hasTableOfContents = Boolean(sidebarContent?.tableOfContents?.length);
+  const hasRelatedArticles = Boolean(sidebarContent?.relatedArticles?.length);
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
@@ -48,11 +51,10 @@ const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({
         )}
         
         {/* Main Content with Optional Sidebar */}
-        {showSidebar && sidebarContent ? (
+        {hasSidebar ? (
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div className="lg:grid lg:grid-cols-[300px_1fr] lg:gap-8">
-              <SeoSidebar content={sidebarContent} />
-              <div className="lg:col-start-2">
+            <div className="flex flex-col lg:flex-row lg:items-start gap-10">
+              <div className="flex-1 min-w-0">
                 {children}
                 {/* Internal Linking Widget */}
                 <InternalLinkingWidget
@@ -62,6 +64,52 @@ const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({
                   className="my-12"
                 />
               </div>
+              {(hasTableOfContents || hasRelatedArticles) && sidebarContent && (
+                <aside className="w-full lg:w-80 xl:w-96 flex-shrink-0 space-y-10 mt-12 lg:mt-0">
+                  {hasTableOfContents && sidebarContent.tableOfContents && (
+                    <div className="rounded-xl border border-gray-200 bg-gray-50 p-6 shadow-sm">
+                      <h2 className="text-lg font-semibold text-gray-900">
+                        On this page
+                      </h2>
+                      <nav className="mt-4">
+                        <ul className="space-y-3">
+                          {sidebarContent.tableOfContents.map((item) => (
+                            <li key={item.id} className="text-sm text-gray-700">
+                              <a
+                                href={`#${item.id}`}
+                                className="block transition-colors hover:text-indigo-600"
+                                style={{ paddingLeft: `${Math.max(0, item.level - 1) * 12}px` }}
+                              >
+                                {item.title}
+                              </a>
+                            </li>
+                          ))}
+                        </ul>
+                      </nav>
+                    </div>
+                  )}
+
+                  {hasRelatedArticles && sidebarContent.relatedArticles && (
+                    <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+                      <h2 className="text-lg font-semibold text-gray-900">
+                        Related articles
+                      </h2>
+                      <ul className="mt-4 space-y-3">
+                        {sidebarContent.relatedArticles.map((article) => (
+                          <li key={article.path}>
+                            <Link
+                              to={article.path}
+                              className="text-sm text-gray-700 transition-colors hover:text-indigo-600"
+                            >
+                              {article.title}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </aside>
+              )}
             </div>
           </div>
         ) : (

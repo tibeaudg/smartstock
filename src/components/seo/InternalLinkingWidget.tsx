@@ -54,7 +54,7 @@ export const InternalLinkingWidget: React.FC<InternalLinkingWidgetProps> = ({
   };
 
   return (
-    <div className={`${variantStyles[variant]} ${className}`}>
+    <div className={`${variantStyles[variant]} ${className} hidden`}>
       <div className="flex items-center gap-2 mb-4">
         {(variant === 'sidebar' || variant === 'inline') && (
           <TrendingUp className="h-5 w-5 text-blue-600" />
