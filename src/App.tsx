@@ -102,6 +102,7 @@ import VoorraadbeheerHorecaPage from "./pages/SEO/voorraadbeheer-horeca";
 import InventoryManagementProviderPage from "./pages/SEO/inventory-management-provider";
 import InventoryManagementSoftwareSolutionsPage from "./pages/SEO/inventory-management-software-solutions";
 import InventoryManagementSystemsSolutionsPage from "./pages/SEO/inventory-management-systems-solutions";
+import MobileAppPage from "./pages/mobile-app";
 
 
 // Import comparison pages - Phase 2 International
@@ -410,18 +411,19 @@ const AppRouter = () => {
         <Route path="/voorraadbeheer-software-vergelijken" element={<VoorraadbeheerSoftwareVergelijken />} />
         <Route path="/nl/voorraadbeheer-software-vergelijken" element={<VoorraadbeheerSoftwareVergelijken />} />
         <Route path="/inventory-management-online" element={<InventoryManagementOnline />} />
-        <Route path="/inventory-management-online" element={<InventoryManagementOnline />} />
         
         
         <Route path="/voorraadbeheer-fouten-voorkomen" element={<VoorraadbeheerFoutenVoorkomen />} />
         <Route path="/nl/voorraadbeheer-fouten-voorkomen" element={<VoorraadbeheerFoutenVoorkomen />} />
         
    
-        
+        <Route path="/mobile-app" element={<MobileAppPage />} />
         
         
         {/* New Feature Pages */}
         <Route path="/barcode-scanning-inventory" element={<BarcodeScanningInventory />} />
+
+
         
         {/* New Buyer Intent / Guide Pages */}
         <Route path="/how-to-choose-inventory-management-software" element={<HowToChooseInventoryManagementSoftware />} />
