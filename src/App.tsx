@@ -99,6 +99,11 @@ import SoftwareStockbeheer from "./pages/SEO/software-stockbeheer";
 import StockbeheerProgramma from "./pages/SEO/stockbeheer-programma";
 import ProgrammaStockbeheer from "./pages/SEO/programma-stockbeheer";
 import MagazijnbeheerSoftware from "./pages/SEO/magazijnbeheer-software";
+import BillOfMaterialManagementSoftwareFreePage from "./pages/SEO/bill-of-material-management-software-free";
+import VoorraadbeheerHorecaPage from "./pages/SEO/voorraadbeheer-horeca";
+import InventoryManagementProviderPage from "./pages/SEO/inventory-management-provider";
+import InventoryManagementSoftwareSolutionsPage from "./pages/SEO/inventory-management-software-solutions";
+import InventoryManagementSystemsSolutionsPage from "./pages/SEO/inventory-management-systems-solutions";
 
 
 // Import comparison pages - Phase 2 International
@@ -459,6 +464,9 @@ const AppRouter = () => {
         
         <Route path="/wat-is-voorraadbeheer-software" element={<WatIsVoorraadbeheerSoftware />} />
         <Route path="/nl/wat-is-voorraadbeheer-software" element={<WatIsVoorraadbeheerSoftware />} />
+
+        <Route path="/voorraadbeheer-horeca" element={<VoorraadbeheerHorecaPage />} />
+        <Route path="/nl/voorraadbeheer-horeca" element={<VoorraadbeheerHorecaPage />} />
         
         
         
@@ -511,6 +519,10 @@ const AppRouter = () => {
         <Route path="/best-inventory-management-software" element={<BestInventoryManagementSoftware />} />
         <Route path="/inventory-software-management" element={<InventorySoftwareManagement />} />
         <Route path="/software-for-inventory-management" element={<SoftwareForInventoryManagement />} />
+        <Route path="/inventory-management-provider" element={<InventoryManagementProviderPage />} />
+        <Route path="/inventory-management-software-solutions" element={<InventoryManagementSoftwareSolutionsPage />} />
+        <Route path="/inventory-management-systems-solutions" element={<InventoryManagementSystemsSolutionsPage />} />
+        <Route path="/bill-of-material-management-software-free" element={<BillOfMaterialManagementSoftwareFreePage />} />
         <Route path="/inventory-turnover-ratio" element={<InventoryTurnoverRatio />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />

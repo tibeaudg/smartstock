@@ -476,6 +476,38 @@ export const englishMainCluster: TopicCluster = {
       image: '/dashboard.png'
     },
     {
+      path: '/inventory-management-provider',
+      title: 'Inventory Management Provider',
+      language: 'en',
+      category: 'Inventory Management',
+      description: 'Partner with StockFlow for software, onboarding, and support',
+      image: '/dashboard.png'
+    },
+    {
+      path: '/inventory-management-software-solutions',
+      title: 'Inventory Management Software Solutions',
+      language: 'en',
+      category: 'Inventory Management',
+      description: 'Explore StockFlow’s inventory software solutions for growing brands',
+      image: '/dashboard.png'
+    },
+    {
+      path: '/inventory-management-systems-solutions',
+      title: 'Inventory Management Systems Solutions',
+      language: 'en',
+      category: 'Inventory Management',
+      description: 'Connected inventory system with hardware, barcode, and cloud workflows',
+      image: '/dashboard.png'
+    },
+    {
+      path: '/bill-of-material-management-software-free',
+      title: 'Bill of Material Management Software Free',
+      language: 'en',
+      category: 'Inventory Management',
+      description: 'Free BOM software for manufacturing and assembly teams',
+      image: '/dashboard.png'
+    },
+    {
       path: '/inventory-software',
       title: 'Inventory Software',
       language: 'en',
