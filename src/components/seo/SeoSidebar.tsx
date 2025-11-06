@@ -24,7 +24,7 @@ export const SeoSidebar: React.FC<SeoSidebarProps> = ({
 }) => {
   const location = useLocation();
   const language = content?.language || 'nl';
-  const maxArticles = content?.maxArticles || 10; // Default to showing 10 articles
+  const maxArticles = content?.maxArticles || 20; // Default to showing 10 articles
 
   // If no content provided, return null
   if (!content || (!content.relatedArticles && !content.tableOfContents && !content.navigationLinks)) {
@@ -37,34 +37,7 @@ export const SeoSidebar: React.FC<SeoSidebarProps> = ({
   return (
     <aside className={`hidden lg:block lg:sticky lg:top-8 lg:self-start ${className}`}>
       <div className="space-y-8">
-        {/* Table of Contents */}
-        {content.tableOfContents && content.tableOfContents.length > 0 && (
-          <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
-            <div className="flex items-center gap-2 mb-4">
-              <List className="w-5 h-5 text-blue-600" />
-              <h3 className="text-lg font-semibold text-gray-900">
-                {language === 'nl' ? 'Inhoudsopgave' : 'Table of Contents'}
-              </h3>
-            </div>
-            <nav className="space-y-2">
-              {content.tableOfContents.map((item) => (
-                <a
-                  key={item.id}
-                  href={`#${item.id}`}
-                  className={`block py-2 px-3 rounded-lg text-sm transition-colors hover:bg-blue-50 hover:text-blue-700 ${
-                    item.level === 1
-                      ? 'font-semibold text-gray-900'
-                      : item.level === 2
-                      ? 'pl-6 text-gray-700'
-                      : 'pl-9 text-gray-600 text-xs'
-                  }`}
-                >
-                  {item.title}
-                </a>
-              ))}
-            </nav>
-          </div>
-        )}
+
 
         {/* Navigation Links */}
         {content.navigationLinks && content.navigationLinks.length > 0 && (
@@ -97,7 +70,7 @@ export const SeoSidebar: React.FC<SeoSidebarProps> = ({
         {content.relatedArticles && content.relatedArticles.length > 0 && (
           <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">
-              {language === 'nl' ? 'Alle SEO Pagina\'s' : 'All SEO Pages'}
+              {language === 'nl' ? 'Alle Artikels' : 'All Articles'}
             </h3>
             <nav className="space-y-3">
               {displayedArticles.map((article) => (

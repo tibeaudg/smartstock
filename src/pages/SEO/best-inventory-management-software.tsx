@@ -261,48 +261,80 @@ export default function BestInventoryManagementSoftware() {
       sidebarContent={sidebarContent}
     >
       <SEO
-        title="Best Inventory Management Software 2025 | Save 35% Costs + 15h/Week | StockFlow #1"
-        description="🏆 #1 Best inventory management software 2025. Save 35% costs & 15 hours/week! Real-time tracking, barcode scanning, automated alerts. FREE plan available - no credit card. Trusted by 10,000+ businesses. Start free trial now!"
-        keywords="best inventory management software, popular inventory management software, inventory management software, inventory software management, software for inventory management, softwares for inventory management, inventory management software best, top inventory management software, best inventory software, best stock management software, best inventory system, best inventory tracking software, best inventory management system, inventory tracking programs, best inventory software 2025, top rated inventory software, best inventory management solution, best inventory software for small business, best inventory software for ecommerce, best inventory management software comparison, best inventory software reviews, best inventory management software features, best inventory software pricing, best inventory software demo, best inventory software trial, inventory management software provider, inventory management software online, stockflow, stock flow, stocks flow"
+        title="Best Inventory Management Software"
+        description="Real-time tracking, barcode scanning, automated alerts. FREE plan available - no credit card. Trusted by 10,000+ businesses"
+        keywords="best inventory management software, popular inventory management software, inventory management software, inventory software management, software for inventory management, softwares for inventory management, inventory management software best, top inventory management software, best inventory software, best stock management software, best inventory system, best inventory tracking software, best inventory management system, inventory tracking programs, best inventory software 2025, top rated inventory software, best inventory management solution, best inventory software for small business, best inventory software for ecommerce, best inventory management software comparison, best inventory software reviews, best inventory management software features, best inventory software pricing, best inventory software demo, best inventory software trial, inventory management software provider, inventory management software online, stockflow"
         url="https://www.stockflow.be/best-inventory-management-software"
       />
 
-      <SeoPageHero
-        title="Best Inventory Management Software 2025: Save 35% Costs + 15 Hours/Week | #1 Rated"
-        description="🏆 Discover the #1 best inventory management software trusted by 10,000+ businesses. Compare top solutions side-by-side. Save 35% on inventory costs and 15 hours weekly with real-time tracking, automated alerts, and powerful analytics. FREE plan available - start your free trial today, no credit card required!"
-        badges={[
-          { icon: <Trophy className="w-6 h-6" />, text: "#1 Rated 2025", variant: 'warning' },
-          { icon: <Star className="w-6 h-6" />, text: "4.9/5 Rating", variant: 'success' },
-          { icon: <Users className="w-6 h-6" />, text: "10,000+ Users", variant: 'info' }
-        ]}
-        ctaText="Start Free Trial - No Credit Card"
-        ctaLink="/auth"
-        backgroundImage="/image.png"
-      />
 
       {/* Awards Section */}
       <section id="awards" className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Why StockFlow is the <span className="text-blue-600">Best Inventory Management Software</span>
-            </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              When searching for the <strong>best inventory management software</strong>, StockFlow consistently ranks at the top. Recognized by industry experts and loved by users worldwide for being the most comprehensive and affordable solution.
-            </p>
+          <h1 className="text-6xl md:text-7xl font-extrabold tracking-tight mb-8">
+          Best Inventory Management Software
+            </h1>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {awards.map((award, index) => (
-              <div key={index} className="text-center">
-                <div className="text-4xl mb-4">{award.icon}</div>
-                <h3 className="text-lg font-semibold mb-2">{award.title}</h3>
-                <p className="text-sm text-gray-600">{award.organization}</p>
-              </div>
-            ))}
+          <div className="text-center mb-8 border-b border-gray-200 pb-8">
+          <span className="text-center text-gray-600 text-sm">published: 06/11/2025</span>
           </div>
+
+
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            The best inventory management software depends on your specific needs, with top options including NetSuite for comprehensive ERP, Cin7 for multichannel sales, inFlow Inventory for wholesale businesses, and Zoho Inventory for small businesses with a free plan available. Other popular and highly-rated choices include Odoo, Katana (especially for manufacturing), Sortly (for its intuitive interface), and Unleashed (for scaling businesses). 
+<br />
+<br />
+<b className="text-3xl font-bold ">Software recommendations by category:</b>
+<br />
+<br />
+<b>- For comprehensive ERP:</b> NetSuite is a popular choice that integrates various business functions. Microsoft Dynamics 365 Business Central is also a strong contender for scalable ERP solutions.
+<br />
+<br />
+<b>- For multichannel e-commerce:</b> Cin7 is a leading option for managing inventory across multiple sales channels. Ordoro is another strong choice specifically for e-commerce.
+<br />
+<br />
+<b>- For wholesale and B2B:</b> inFlow Inventory is highly recommended for its suitability for B2B and wholesale operations.
+<br />
+<br />
+<b>- For small businesses:</b> Zoho Inventory offers a robust free plan to start with, making it a great entry point for small businesses.
+<br />
+<br />
+<b>- For manufacturing:</b> Katana is specifically recommended for manufacturing businesses. Open Source Integrators notes that Odoo is also a powerful option in this area.
+<br />
+<br />
+<b>- For ease of use:</b> Sortly is recognized for its intuitive and user-friendly interface.
+<br />
+<br />
+<b>- For QuickBooks users:</b> Fishbowl Inventory and Acctivate are often recommended for their strong integration with QuickBooks.
+<br />
+<br />
+<b>- For scaling up:</b> Unleashed is a good choice for businesses that are expecting to grow.
+<br />
+<br />
+<b>- Free or low-cost options:</b> Besides Zoho Inventory, other options include the free plan for Veeqo and using tools like Google Sheets for very basic tracking. 
+<br />
+<br />
+<b className="text-3xl font-bold ">How to choose the right software:</b>
+<br />
+<br />
+<b>- Identify your core needs:</b> Consider if you need to manage e-commerce sales, wholesale orders, or manufacturing processes.
+<br />
+<br />
+<b>- Evaluate your size and budget:</b> Some software is better for small businesses just starting out, while others are designed for larger enterprises.
+<br />
+<br />
+<b>- Check for integrations:</b> Ensure the software integrates well with your existing e-commerce platforms, accounting software, or other business tools.
+<br />
+<br />
+<b>- Consider long-term growth:</b> If you plan to scale, choose a system that can grow with you rather than one you'll need to replace later. 
+
+            </p>
         </div>
       </section>
+
+
 
       {/* Quick Wins Section */}
       <section id="quick-wins" className="py-16 px-4 bg-white">
@@ -446,57 +478,6 @@ export default function BestInventoryManagementSoftware() {
             </div>
           </div>
 
-          {/* Why StockFlow Wins Section */}
-          <div className="mt-12 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-8 border border-blue-100">
-            <h3 className="text-2xl font-bold text-gray-900 mb-4 text-center">
-              Why StockFlow Wins for Small & Medium Businesses
-            </h3>
-            <p className="text-lg text-gray-700 mb-6 text-center max-w-3xl mx-auto">
-              Based on our comprehensive comparison, here's why thousands of SMBs choose StockFlow over more expensive enterprise solutions:
-            </p>
-            
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="bg-white p-6 rounded-lg">
-                <h4 className="text-xl font-semibold text-blue-600 mb-3 flex items-center">
-                  <Trophy className="w-6 h-6 mr-2" />
-                  Best Value Proposition
-                </h4>
-                <p className="text-gray-700">
-                  Start free with 100 products - that's €255-€450 less per month than competitors require to start. No hidden setup fees, no surprise costs.
-                </p>
-              </div>
-              
-              <div className="bg-white p-6 rounded-lg">
-                <h4 className="text-xl font-semibold text-blue-600 mb-3 flex items-center">
-                  <Zap className="w-6 h-6 mr-2" />
-                  Complete Features From Day One
-                </h4>
-                <p className="text-gray-700">
-                  Real-time tracking, mobile access, and barcode scanning included at €0. Competitors charge extra for these essential features.
-                </p>
-              </div>
-
-              <div className="bg-white p-6 rounded-lg">
-                <h4 className="text-xl font-semibold text-blue-600 mb-3 flex items-center">
-                  <Shield className="w-6 h-6 mr-2" />
-                  24/7 Support Included
-                </h4>
-                <p className="text-gray-700">
-                  Get expert help whenever you need it. Unlike competitors' limited support, our team is always available.
-                </p>
-              </div>
-
-              <div className="bg-white p-6 rounded-lg">
-                <h4 className="text-xl font-semibold text-blue-600 mb-3 flex items-center">
-                  <Users className="w-6 h-6 mr-2" />
-                  Built for Business Growth
-                </h4>
-                <p className="text-gray-700">
-                  Scale seamlessly from startup to enterprise. No expensive migrations or data loss - just smooth upgrades.
-                </p>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -652,30 +633,7 @@ export default function BestInventoryManagementSoftware() {
         </div>
       </section>
 
-      {/* Related Pages Section - Internal Linking for SEO */}
-      <section className="py-16 px-4 bg-gray-50">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Explore More Inventory Management Resources</h2>
-            <p className="text-lg text-gray-600">Discover additional guides and comparisons to help you choose the best solution</p>
-          </div>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <Link to="/warehouse-management-system" className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition">
-              <h3 className="text-xl font-semibold mb-2 text-blue-600">Warehouse Management System</h3>
-              <p className="text-gray-600">Learn about comprehensive WMS solutions for modern businesses</p>
-            </Link>
-            <Link to="/inventory-management-software" className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition">
-              <h3 className="text-xl font-semibold mb-2 text-blue-600">Inventory Management Software</h3>
-              <p className="text-gray-600">Discover features and benefits of inventory management solutions</p>
-            </Link>
-            <Link to="/how-to-choose-inventory-management-software" className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition">
-              <h3 className="text-xl font-semibold mb-2 text-blue-600">How to Choose Inventory Software</h3>
-              <p className="text-gray-600">Expert guide to selecting the right inventory management solution</p>
-            </Link>
-          </div>
-        </div>
-      </section>
+
 
       {/* FAQ Section */}
       <section id="faq" className="py-16 px-4 bg-white">
@@ -714,7 +672,7 @@ export default function BestInventoryManagementSoftware() {
           "@context": "https://schema.org",
           "@type": "WebPage",
           "@id": "https://www.stockflow.be/best-inventory-management-software",
-          "name": "Best Inventory Management Software 2025",
+          "name": "Best Inventory Management Software",
           "description": "Save 35% costs & 15 hours/week! Join 10,000+ businesses using award-winning inventory software. Real-time tracking, automated alerts, barcode scanning. Start FREE trial now - no credit card!",
           "url": "https://www.stockflow.be/best-inventory-management-software",
           "inLanguage": "en",
@@ -723,7 +681,7 @@ export default function BestInventoryManagementSoftware() {
             "name": "StockFlow",
             "url": "https://www.stockflow.be"
           },
-          "datePublished": "2024-01-15",
+          "datePublished": "2025-11-06",
           "dateModified": new Date().toISOString().split('T')[0],
           "primaryImageOfPage": {
             "@type": "ImageObject",
@@ -750,8 +708,8 @@ export default function BestInventoryManagementSoftware() {
         {
           "@context": "https://schema.org",
           "@type": "SoftwareApplication",
-          "name": "StockFlow - Best Inventory Management Software",
-          "description": "Save 35% costs & 15 hours/week! Join 10,000+ businesses using award-winning inventory software. Real-time tracking, automated alerts, barcode scanning.",
+          "name": "Best Inventory Management Software",
+          "description": "The best inventory management software depends on your specific needs, with top options including NetSuite for comprehensive ERP, Cin7 for multichannel sales, inFlow Inventory for wholesale businesses, and Zoho Inventory for small businesses with a free plan available. Other popular and highly-rated choices include Odoo, Katana (especially for manufacturing), Sortly (for its intuitive interface), and Unleashed (for scaling businesses).",
           "applicationCategory": "BusinessApplication",
           "applicationSubCategory": "Inventory Management Software",
           "operatingSystem": "Web Browser",
