@@ -4,11 +4,28 @@
     <loc>https://www.stockflow.be/</loc>
   </url>
   <url>
+    <loc>https://www.stockflow.be/checkout</loc>
+  </url>
+  <url>
     <loc>https://www.stockflow.be/features</loc>
   </url>
   <url>
+    <loc>https://www.stockflow.be/integrations</loc>
+  </url>
+  <url>
+    <loc>https://www.stockflow.be/mobile-app</loc>
+  </url>
+  <url>
+    <loc>https://www.stockflow.be/nl</loc>
+  </url>
+  <url>
+    <loc>https://www.stockflow.be/nl/pricing</loc>
+  </url>
+  <url>
     <loc>https://www.stockflow.be/pricing</loc>
-
+  </url>
+  <url>
+    <loc>https://www.stockflow.be/seo</loc>
   </url>
   <url>
     <loc>https://www.stockflow.be/magazijnbeheer-software</loc>
@@ -45,9 +62,6 @@
   </url>
   <url>
     <loc>https://www.stockflow.be/online-inventory-management</loc>
-  </url>
-  <url>
-    <loc>https://www.stockflow.be/contact</loc>
   </url>
   <url>
     <loc>https://www.stockflow.be/alerts</loc>
@@ -90,6 +104,9 @@
   </url>
   <url>
     <loc>https://www.stockflow.be/compare-inventory-software</loc>
+  </url>
+  <url>
+    <loc>https://www.stockflow.be/contact</loc>
   </url>
   <url>
     <loc>https://www.stockflow.be/contractor-inventory-management</loc>
@@ -300,15 +317,6 @@
       </url>
   <url>
     <loc>https://www.stockflow.be/about</loc>
-  </url>
-  <url>
-    <loc>https://www.stockflow.be/blog/voorraadbeheer-tips</loc>
-  </url>
-  <url>
-    <loc>https://www.stockflow.be/blog/excel-vs-software-voorraadbeheer</loc>
-  </url>
-  <url>
-    <loc>https://www.stockflow.be/blog/horeca-voorraadbeheer-tips</loc>
   </url>
   <url>
     <loc>https://www.stockflow.be/privacy-policy</loc>
