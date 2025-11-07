@@ -12,4 +12,3 @@ Disallow: /admin/*
 
 # Sitemaps
 Sitemap: https://www.stockflow.be/sitemap.xml
-Sitemap: https://www.stockflow.be/sitemap-index.xml

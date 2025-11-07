@@ -11,6 +11,9 @@ const SEO_PAGES_DIR = path.join(repoRoot, 'src', 'pages', 'SEO');
 const BLOG_JSON_FALLBACK = path.join(repoRoot, 'src', 'lib', 'blogposts.json');
 const OUTPUT_SITEMAP = path.join(repoRoot, 'public', 'sitemap.xml');
 const OUTPUT_SITEMAP_INDEX = path.join(repoRoot, 'public', 'sitemap-index.xml');
+const OUTPUT_SITEMAP_CORE = path.join(repoRoot, 'public', 'sitemap-core.xml');
+const OUTPUT_SITEMAP_SEO = path.join(repoRoot, 'public', 'sitemap-seo.xml');
+const OUTPUT_SITEMAP_BLOG = path.join(repoRoot, 'public', 'sitemap-blog.xml');
 
 // Read actual SEO page routes
 function readSeoRoutes() {
@@ -109,15 +112,20 @@ async function generateOptimizedSitemap() {
   ];
 
   const urls = [];
+  const coreUrls = [];
+  const seoUrls = [];
+  const blogUrls = [];
 
   // Add static routes
   for (const route of staticRoutes) {
-    urls.push({
+    const entry = {
       loc: `${BASE_URL}${route.path}`,
       lastmod: today,
       changefreq: route.changefreq,
       priority: route.priority,
-    });
+    };
+    urls.push(entry);
+    coreUrls.push(entry);
   }
 
   // Add SEO pages (all the keyword-focused landing pages)
@@ -148,47 +156,61 @@ async function generateOptimizedSitemap() {
       changefreq = 'monthly';
     }
 
-    urls.push({
+    const entry = {
       loc: `${BASE_URL}${route}`,
       lastmod: today,
       changefreq,
       priority,
-    });
+    };
+    urls.push(entry);
+    seoUrls.push(entry);
   }
 
   // Add blog posts
   const blogPosts = await readBlogPosts();
   for (const post of blogPosts) {
-    urls.push({
+    const entry = {
       loc: `${BASE_URL}/blog/${post.slug}`,
       lastmod: post.date_published || today,
       changefreq: 'monthly',
       priority: '0.6',
-    });
+    };
+    urls.push(entry);
+    blogUrls.push(entry);
   }
 
   // Sort by priority (highest first) for better crawling
   urls.sort((a, b) => parseFloat(b.priority) - parseFloat(a.priority));
 
-  // Generate sitemap XML
-  const xml = [
+  // Helper to build minimal sitemap xml
+  const buildSitemap = (entries) => [
     '<?xml version="1.0" encoding="UTF-8"?>',
-    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"',
-    '        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"',
-    '        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9',
-    '        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">',
-    ...urls.map((u) => buildUrlTag(u.loc, u.lastmod, u.changefreq, u.priority)),
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    ...entries.map((u) => buildUrlTag(u.loc, u.lastmod, u.changefreq, u.priority)),
     '</urlset>',
   ].join('\n');
 
-  fs.writeFileSync(OUTPUT_SITEMAP, xml + '\n', 'utf8');
+  // Write a small combined sitemap.xml for backwards compatibility (core only)
+  fs.writeFileSync(OUTPUT_SITEMAP, buildSitemap(coreUrls) + '\n', 'utf8');
+  // Write split sitemaps
+  fs.writeFileSync(OUTPUT_SITEMAP_CORE, buildSitemap(coreUrls) + '\n', 'utf8');
+  fs.writeFileSync(OUTPUT_SITEMAP_SEO, buildSitemap(seoUrls) + '\n', 'utf8');
+  fs.writeFileSync(OUTPUT_SITEMAP_BLOG, buildSitemap(blogUrls) + '\n', 'utf8');
 
   // Generate sitemap index
   const sitemapIndex = [
     '<?xml version="1.0" encoding="UTF-8"?>',
     '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
     '  <sitemap>',
-    `    <loc>${BASE_URL}/sitemap.xml</loc>`,
+    `    <loc>${BASE_URL}/sitemap-core.xml</loc>`,
+    `    <lastmod>${today}</lastmod>`,
+    '  </sitemap>',
+    '  <sitemap>',
+    `    <loc>${BASE_URL}/sitemap-seo.xml</loc>`,
+    `    <lastmod>${today}</lastmod>`,
+    '  </sitemap>',
+    '  <sitemap>',
+    `    <loc>${BASE_URL}/sitemap-blog.xml</loc>`,
     `    <lastmod>${today}</lastmod>`,
     '  </sitemap>',
     '</sitemapindex>',
@@ -196,11 +218,12 @@ async function generateOptimizedSitemap() {
 
   fs.writeFileSync(OUTPUT_SITEMAP_INDEX, sitemapIndex + '\n', 'utf8');
 
-  console.log(`✅ Optimized sitemap generated with ${urls.length} URLs`);
-  console.log(`   - Static routes: ${staticRoutes.length}`);
-  console.log(`   - SEO pages: ${seoRoutes.length}`);
-  console.log(`   - Blog posts: ${blogPosts.length}`);
-  console.log(`   - Output: ${OUTPUT_SITEMAP}`);
+  console.log(`✅ Optimized sitemaps generated`);
+  console.log(`   - Total URLs: ${urls.length}`);
+  console.log(`   - Core URLs: ${coreUrls.length} -> ${OUTPUT_SITEMAP_CORE}`);
+  console.log(`   - SEO URLs: ${seoUrls.length} -> ${OUTPUT_SITEMAP_SEO}`);
+  console.log(`   - Blog URLs: ${blogUrls.length} -> ${OUTPUT_SITEMAP_BLOG}`);
+  console.log(`   - Index: ${OUTPUT_SITEMAP_INDEX}`);
   
   return urls;
 }

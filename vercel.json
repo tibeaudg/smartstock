@@ -16,11 +16,31 @@
   ],
   "rewrites": [
     { "source": "/api/:path*", "destination": "/api/:path*" },
-    { "source": "/sitemap.xml", "destination": "/api/sitemap" },
     { "source": "/ads.txt", "destination": "/api/ads" },
     { "source": "/((?!api|sw.js).*)", "destination": "/index.html" }
   ],
   "headers": [
+    {
+      "source": "/:path*.xml",
+      "headers": [
+        { "key": "Content-Type", "value": "application/xml; charset=utf-8" },
+        { "key": "Cache-Control", "value": "public, s-maxage=600, stale-while-revalidate=86400" }
+      ]
+    },
+    {
+      "source": "/sitemap.xml",
+      "headers": [
+        { "key": "Content-Type", "value": "application/xml; charset=utf-8" },
+        { "key": "Cache-Control", "value": "public, s-maxage=600, stale-while-revalidate=86400" }
+      ]
+    },
+    {
+      "source": "/sitemap-index.xml",
+      "headers": [
+        { "key": "Content-Type", "value": "application/xml; charset=utf-8" },
+        { "key": "Cache-Control", "value": "public, s-maxage=600, stale-while-revalidate=86400" }
+      ]
+    },
     {
       "source": "/ads.txt",
       "headers": [
