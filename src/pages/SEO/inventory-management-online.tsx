@@ -13,10 +13,12 @@ import {
   CheckCircle,
   Star,
   Trophy,
-  Database
+  Database,
+  ChevronDown
 } from 'lucide-react';
 
 import { StructuredData } from '../../components/StructuredData';
+import { Accordion, AccordionTrigger, AccordionContent, AccordionItem } from '@/components/ui/accordion';
 export default function BestInventoryManagementSoftware() {
   usePageRefresh();
   const location = useLocation();
@@ -331,6 +333,77 @@ Real-time tracking, barcode scanning, automated alerts, multi-location support
 
 
 
+      
+      <Accordion type="single" collapsible className="space-y-4">
+
+        <AccordionItem value="item-1" className="border-b border-gray-200">
+        <AccordionTrigger className="flex items-center justify-between px-6 py-5 text-left text-xl font-semibold hover:text-primary transition-colors">
+
+        <span>What is online inventory management?</span>
+          </AccordionTrigger>
+
+          <AccordionContent className="px-6 pb-5 text-gray-600 text-lg leading-relaxed">
+          <p>Online inventory management systems allow you to track stock levels throughout many sales channels without being left explaining how the product is out of stock. These systems also automate things such as pulling data from e-commerce platforms and shipping tools, meaning order fulfilment becomes quicker and simpler.</p>
+          </AccordionContent>
+        </AccordionItem>
+
+
+
+        <AccordionItem value="item-3" className="border-b border-gray-200">
+        <AccordionTrigger className="flex items-center justify-between px-6 py-5 text-left text-xl font-semibold hover:text-primary transition-colors">
+
+        <span>What is the 80/20 rule in inventory?</span>
+          </AccordionTrigger>
+
+          <AccordionContent className="px-6 pb-5 text-gray-600 text-lg leading-relaxed">
+          <p>With the 80/20 inventory rule, you are supposing that: 80% of your sales come from 20% of your inventory; 80% of your customers only want 20% of your products; and. 80% of your storage is waste, and 20% of your storage contains items that sell.</p>
+          </AccordionContent>
+        </AccordionItem>
+
+
+        <AccordionItem value="item-4" className="border-b border-gray-200">
+        <AccordionTrigger className="flex items-center justify-between px-6 py-5 text-left text-xl font-semibold hover:text-primary transition-colors">
+
+        <span>Which free software is best for inventory management?</span>
+          </AccordionTrigger>
+
+          <AccordionContent className="px-6 pb-5 text-gray-600 text-lg leading-relaxed">
+          <p>Stockflow is a free inventory management software designed to help small and growing businesses effortlessly manage their inventory across multiple channels and devices.</p>
+          </AccordionContent>
+        </AccordionItem>
+
+
+        
+        <AccordionItem value="item-5" className="border-b border-gray-200">
+        <AccordionTrigger className="flex items-center justify-between px-6 py-5 text-left text-xl font-semibold hover:text-primary transition-colors">
+
+        <span>What are the 4 types of inventory management?</span>
+          </AccordionTrigger>
+
+          <AccordionContent className="px-6 pb-5 text-gray-600 text-lg leading-relaxed">
+          <p>Four major inventory management methods include just-in-time management (JIT), materials requirement planning (MRP), economic order quantity (EOQ), and days sales of inventory (DSI).
+          </p>
+          </AccordionContent>
+        </AccordionItem>
+
+
+        <AccordionItem value="item-2" className="border-b border-gray-200">
+        <AccordionTrigger className="flex items-center justify-between px-6 py-5 text-left text-xl font-semibold hover:text-primary transition-colors">
+
+        <span>What is meant by inventory management?</span>
+          </AccordionTrigger>
+
+          <AccordionContent className="px-6 pb-5 text-gray-600 text-lg leading-relaxed">
+          <p>Inventory management is the process of overseeing and controlling supply levels to ensure the right products are available at the right time. Done well, it cuts costs, prevents stockouts, and boosts overall business efficiency. Published on August 28, 202413 minutes.
+          </p>
+          </AccordionContent>
+        </AccordionItem>
+
+
+
+      </Accordion>
+    
+
       {/* Quick Wins Section */}
       <section id="quick-wins" className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
@@ -486,25 +559,6 @@ Real-time tracking, barcode scanning, automated alerts, multi-location support
 
 
 
-
-      {/* FAQ Section */}
-      <section id="faq" className="py-16 px-4 bg-white">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Frequently Asked Questions</h2>
-            <p className="text-lg text-gray-600">Everything you need to know about the best inventory management software</p>
-          </div>
-          
-          <div className="space-y-6">
-            {faqData.map((faq, index) => (
-              <div key={index} className="bg-gray-50 p-6 rounded-lg">
-                <h3 className="text-lg font-semibold mb-3">{faq.question}</h3>
-                <p className="text-gray-700">{faq.answer}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Schema.org Structured Data */}
       <StructuredData data={[
