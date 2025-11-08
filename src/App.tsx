@@ -6,6 +6,7 @@ import {
   Navigate,
   Link,
   useLocation,
+  useNavigate,
 } from 'react-router-dom';
 
 /**
@@ -16,10 +17,6 @@ import {
  * server-side validation endpoint (/api/auth/me) if available. No import('./auth') or require() is used,
  * so the bundler will not attempt to resolve a non-existent module at build time and the browser will not
  * encounter "require is not defined".
- *
- * Customize:
- * - If you use a different token key, change AUTH_TOKEN_KEY.
- * - If you have an auth verification endpoint, keep or change /api/auth/me accordingly.
  */
 
 const AUTH_TOKEN_KEY = 'auth_token';
@@ -123,7 +120,7 @@ function AuthRoute({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
 
-/* ---------- Restored app components (unchanged structure) ---------- */
+/* ---------- Restored app components with working Login UI ---------- */
 
 function Home() {
   return (
@@ -141,19 +138,101 @@ function Home() {
 
 function Login() {
   const location = useLocation();
+  const navigate = useNavigate();
   const params = new URLSearchParams(location.search);
   const mode = params.get('mode') || 'login';
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    try {
+      const resp = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (!resp.ok) {
+        const txt = await resp.text();
+        throw new Error(txt || 'Login failed');
+      }
+
+      const data = await resp.json();
+      // Expect the backend to return { token: string } or { authenticated: true, token }
+      const token = data?.token || (data?.authenticated && data?.token) || null;
+
+      if (token) {
+        try {
+          localStorage.setItem(AUTH_TOKEN_KEY, token);
+        } catch {
+          // ignore storage errors
+        }
+      }
+
+      // Redirect to originally requested page or dashboard
+      const redirectTo = params.get('redirect') || '/dashboard';
+      navigate(redirectTo, { replace: true });
+    } catch (err: any) {
+      setError(err?.message || 'Login failed');
+      setLoading(false);
+    }
+  };
 
   return (
     <div style={{ padding: 24 }}>
       <h1>{mode === 'login' ? 'Sign in' : 'Auth'}</h1>
-      <p>This is a placeholder login page. Implement your real login UI here.</p>
-      <p>
-        After successful sign-in, set localStorage/sessionStorage 'auth_token' (or adapt to your auth flow)
-        and navigate to your protected area.
-      </p>
-      <p>
-        <Link to="/">Back home</Link>
+      <form onSubmit={handleSubmit} style={{ maxWidth: 360 }}>
+        <div style={{ marginBottom: 12 }}>
+          <label style={{ display: 'block', marginBottom: 6 }}>Email</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            style={{ width: '100%', padding: 8 }}
+          />
+        </div>
+
+        <div style={{ marginBottom: 12 }}>
+          <label style={{ display: 'block', marginBottom: 6 }}>Password</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            style={{ width: '100%', padding: 8 }}
+          />
+        </div>
+
+        {error && (
+          <div style={{ color: 'red', marginBottom: 12 }}>{error}</div>
+        )}
+
+        <div>
+          <button type="submit" disabled={loading} style={{ padding: '8px 12px' }}>
+            {loading ? 'Signing...' : 'Sign in'}
+          </button>
+          <button
+            type="button"
+            onClick={() => navigate('/')}
+            style={{ marginLeft: 8, padding: '8px 12px' }}
+          >
+            Back
+          </button>
+        </div>
+      </form>
+
+      <p style={{ marginTop: 16 }}>
+        If your backend uses cookie-based auth only, no token will be returned and the server-side session
+        will be used. Make sure /api/auth/login sets a cookie when appropriate.
       </p>
     </div>
   );
