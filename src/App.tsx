@@ -11,19 +11,37 @@ import {
 /**
  * AuthRoute (in-file)
  *
- * Prevents any runtime `require(...)` from running in the browser by dynamically
- * importing the auth module only at runtime. This avoids "ReferenceError: require is not defined".
+ * This implementation avoids any runtime `require(...)` or dynamic import that
+ * would make the bundler try to resolve a missing `./auth` module at build time.
  *
- * Notes:
- * - Adjust the import path ('./auth') below if your auth helper lives elsewhere
- *   (e.g. '../auth' or './lib/auth').
- * - The implementation supports several export shapes:
- *   - named export: export function isAuthenticated() { ... }
- *   - default export function: export default function isAuthenticated() { ... }
- *   - export const isAuthenticated = true|false
- * - If the dynamic import fails (for example the module uses Node-only APIs),
- *   the route treats the user as unauthenticated and redirects to /auth?mode=login.
+ * Strategy:
+ * 1. First use a fast client-side check (localStorage / sessionStorage / cookie).
+ * 2. If client-side check is inconclusive, optionally call a server endpoint
+ *    (/api/auth/me) to verify the session. This fetch is optional and safe:
+ *    - If you do not have an endpoint, the code will gracefully fallback and treat
+ *      the user as unauthenticated.
+ * 3. No require() or import('./auth') is used, so bundlers won't fail when a file
+ *    named ./auth is not present.
+ *
+ * Customize:
+ * - If your app uses a different token key, change AUTH_TOKEN_KEY.
+ * - If you have a server endpoint to validate sessions, keep /api/auth/me or
+ *   change to the correct path.
  */
+
+const AUTH_TOKEN_KEY = 'auth_token'; // adjust if your app uses a different key
+
+function getCookie(name: string) {
+  try {
+    const match = document.cookie.match(
+      new RegExp('(^| )' + name.replace(/([.*+?^=!:${}()|[\]\\/\\])/g, '\\$1') + '=([^;]+)')
+    );
+    return match ? decodeURIComponent(match[2]) : null;
+  } catch {
+    return null;
+  }
+}
+
 function AuthRoute({ children }: { children: React.ReactNode }) {
   const [ready, setReady] = useState(false);
   const [authed, setAuthed] = useState(false);
@@ -33,50 +51,67 @@ function AuthRoute({ children }: { children: React.ReactNode }) {
 
     (async () => {
       try {
-        // IMPORTANT: change this path if your auth module lives somewhere else.
-        const mod: any = await import('./auth');
-
-        // Determine the exported "isAuthenticated" thing:
-        // - named export isAuthenticated (function or boolean)
-        // - default export may be a function or an object with isAuthenticated
-        const exportedIsAuth =
-          typeof mod.isAuthenticated === 'function'
-            ? mod.isAuthenticated
-            : mod.default && typeof mod.default.isAuthenticated === 'function'
-            ? mod.default.isAuthenticated
-            : typeof mod.default === 'function'
-            ? mod.default
-            : mod.isAuthenticated;
-
-        let result = false;
-        if (typeof exportedIsAuth === 'function') {
-          // support sync or async functions
-          result = Boolean(await exportedIsAuth());
-        } else {
-          result = Boolean(exportedIsAuth);
+        // 1) Quick client-side checks
+        let token = null;
+        try {
+          token = localStorage.getItem(AUTH_TOKEN_KEY) || sessionStorage.getItem(AUTH_TOKEN_KEY);
+        } catch {
+          token = null;
         }
 
+        // Also allow cookie-based session detection (optional)
+        const sessionCookie = getCookie('session') || getCookie('connect.sid') || null;
+
+        if (token || sessionCookie) {
+          if (mounted) {
+            setAuthed(true);
+            setReady(true);
+          }
+          return;
+        }
+
+        // 2) Fallback: call server endpoint to validate session (if available).
+        //    If you don't have this endpoint, the fetch will likely 404/500 and we'll treat user as unauthenticated.
+        try {
+          const resp = await fetch('/api/auth/me', {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+              'Accept': 'application/json',
+            },
+          });
+
+          if (!mounted) return;
+
+          if (resp.ok) {
+            // Expect a JSON response like { authenticated: true } or user data
+            const json = await resp.json();
+            // If the endpoint returns an object/user, treat as authenticated
+            const isAuth =
+              (typeof json === 'object' && json !== null && (json.authenticated === true || json.user)) ||
+              json === true;
+            setAuthed(Boolean(isAuth));
+            setReady(true);
+            return;
+          }
+          // not ok (401/403/404/etc) => treat as not authenticated
+        } catch (err) {
+          // network / endpoint not present: silent fallback below
+          // eslint-disable-next-line no-console
+          console.warn('AuthRoute: session verification failed or endpoint missing', err);
+        }
+
+        // 3) Final fallback: treat as unauthenticated
         if (mounted) {
-          setAuthed(result);
+          setAuthed(false);
           setReady(true);
         }
       } catch (err) {
-        // If import fails, log and fallback to a safe client-only heuristic.
+        // Catch-all: ensure we never throw inside the browser render path
         // eslint-disable-next-line no-console
-        console.error('AuthRoute: failed to load auth module', err);
-
-        // Fallback: try a lightweight client-side check so pages that rely on
-        // simple tokens still work. Customize this to match your app's auth.
-        const token = (() => {
-          try {
-            return localStorage.getItem('auth_token') || sessionStorage.getItem('auth_token');
-          } catch {
-            return null;
-          }
-        })();
-
+        console.error('AuthRoute unexpected error', err);
         if (mounted) {
-          setAuthed(Boolean(token));
+          setAuthed(false);
           setReady(true);
         }
       }
@@ -88,12 +123,12 @@ function AuthRoute({ children }: { children: React.ReactNode }) {
   }, []);
 
   if (!ready) {
-    // Render nothing while checking auth. You can replace this with a spinner.
+    // Render a minimal placeholder; replace with spinner if you like.
     return null;
   }
 
   if (!authed) {
-    // Redirect to login page. Keep the query param used by your app.
+    // Redirect to your auth page. Keep query param if your app expects it.
     return <Navigate to="/auth?mode=login" replace />;
   }
 
@@ -126,8 +161,8 @@ function Login() {
       <h1>{mode === 'login' ? 'Sign in' : 'Auth'}</h1>
       <p>This is a placeholder login page. Implement your real login UI here.</p>
       <p>
-        After successful sign-in, set localStorage/sessionStorage 'auth_token' (or adapt
-        to your auth flow) and navigate to your protected area.
+        After successful sign-in, set localStorage/sessionStorage 'auth_token' (or adapt to your auth flow)
+        and navigate to your protected area.
       </p>
       <p>
         <Link to="/">Back home</Link>
@@ -159,7 +194,7 @@ export default function App() {
         {/* Auth route (login/signup) */}
         <Route path="/auth" element={<Login />} />
 
-        {/* Protected route example — wrap with AuthRoute to prevent runtime require */}
+        {/* Protected route example — wrap with AuthRoute */}
         <Route
           path="/dashboard"
           element={
