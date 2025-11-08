@@ -61,6 +61,8 @@ import CheckoutPage from './pages/checkout';
 import { SubscriptionManagement } from './components/settings/SubscriptionManagement';
 import { AdminSubscriptionManagement } from './components/admin/SubscriptionManagement';
 
+import { AuthContext } from './hooks/useAuth';
+
 // Loading Screen Component
 const LoadingScreen = () => (
   <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -305,10 +307,10 @@ const AppRouter = () => {
   };
 
   // Auth Route Component
-  const AuthRoute = () => {
-    // Use safe context read to avoid HMR/BFCache race throwing
-    const authCtx = React.useContext(require('./hooks/useAuth').AuthContext);
-    const user = authCtx?.user || null;
+const AuthRoute = () => {
+  const authCtx = React.useContext(AuthContext);
+  const user = authCtx?.user || null;
+
     const loading = authCtx?.loading ?? true;
     const userProfile = authCtx?.userProfile || null;
     const location = useLocation();
