@@ -11,31 +11,27 @@ import {
 /**
  * AuthRoute (in-file)
  *
- * This implementation avoids any runtime `require(...)` or dynamic import that
- * would make the bundler try to resolve a missing `./auth` module at build time.
- *
- * Strategy:
- * 1. First use a fast client-side check (localStorage / sessionStorage / cookie).
- * 2. If client-side check is inconclusive, optionally call a server endpoint
- *    (/api/auth/me) to verify the session. This fetch is optional and safe:
- *    - If you do not have an endpoint, the code will gracefully fallback and treat
- *      the user as unauthenticated.
- * 3. No require() or import('./auth') is used, so bundlers won't fail when a file
- *    named ./auth is not present.
+ * Restored original app structure but removed any runtime import/require of a missing './auth' module.
+ * This version performs client-side checks (localStorage/sessionStorage/cookies) and falls back to a
+ * server-side validation endpoint (/api/auth/me) if available. No import('./auth') or require() is used,
+ * so the bundler will not attempt to resolve a non-existent module at build time and the browser will not
+ * encounter "require is not defined".
  *
  * Customize:
- * - If your app uses a different token key, change AUTH_TOKEN_KEY.
- * - If you have a server endpoint to validate sessions, keep /api/auth/me or
- *   change to the correct path.
+ * - If you use a different token key, change AUTH_TOKEN_KEY.
+ * - If you have an auth verification endpoint, keep or change /api/auth/me accordingly.
  */
 
-const AUTH_TOKEN_KEY = 'auth_token'; // adjust if your app uses a different key
+const AUTH_TOKEN_KEY = 'auth_token';
 
 function getCookie(name: string) {
   try {
-    const match = document.cookie.match(
-      new RegExp('(^| )' + name.replace(/([.*+?^=!:${}()|[\]\\/\\])/g, '\\$1') + '=([^;]+)')
+    const re = new RegExp(
+      '(^| )' +
+        name.replace(/([.*+?^=!:${}()|[\]\\/\\])/g, '\\$1') +
+        '=([^;]+)'
     );
+    const match = document.cookie.match(re);
     return match ? decodeURIComponent(match[2]) : null;
   } catch {
     return null;
@@ -51,15 +47,14 @@ function AuthRoute({ children }: { children: React.ReactNode }) {
 
     (async () => {
       try {
-        // 1) Quick client-side checks
-        let token = null;
+        // 1) Fast client-side checks
+        let token: string | null = null;
         try {
           token = localStorage.getItem(AUTH_TOKEN_KEY) || sessionStorage.getItem(AUTH_TOKEN_KEY);
         } catch {
           token = null;
         }
 
-        // Also allow cookie-based session detection (optional)
         const sessionCookie = getCookie('session') || getCookie('connect.sid') || null;
 
         if (token || sessionCookie) {
@@ -70,23 +65,18 @@ function AuthRoute({ children }: { children: React.ReactNode }) {
           return;
         }
 
-        // 2) Fallback: call server endpoint to validate session (if available).
-        //    If you don't have this endpoint, the fetch will likely 404/500 and we'll treat user as unauthenticated.
+        // 2) Optional server-side session verification (safe: if endpoint doesn't exist we fallback)
         try {
           const resp = await fetch('/api/auth/me', {
             method: 'GET',
             credentials: 'include',
-            headers: {
-              'Accept': 'application/json',
-            },
+            headers: { Accept: 'application/json' },
           });
 
           if (!mounted) return;
 
           if (resp.ok) {
-            // Expect a JSON response like { authenticated: true } or user data
             const json = await resp.json();
-            // If the endpoint returns an object/user, treat as authenticated
             const isAuth =
               (typeof json === 'object' && json !== null && (json.authenticated === true || json.user)) ||
               json === true;
@@ -94,20 +84,20 @@ function AuthRoute({ children }: { children: React.ReactNode }) {
             setReady(true);
             return;
           }
-          // not ok (401/403/404/etc) => treat as not authenticated
+          // Non-OK responses => treat as unauthenticated and continue to fallback
         } catch (err) {
-          // network / endpoint not present: silent fallback below
+          // Endpoint missing or network error — fall through to final fallback
           // eslint-disable-next-line no-console
-          console.warn('AuthRoute: session verification failed or endpoint missing', err);
+          console.warn('AuthRoute: session verification failed or endpoint not present', err);
         }
 
-        // 3) Final fallback: treat as unauthenticated
+        // 3) Final fallback: not authenticated
         if (mounted) {
           setAuthed(false);
           setReady(true);
         }
       } catch (err) {
-        // Catch-all: ensure we never throw inside the browser render path
+        // Ensure no unhandled errors break the app
         // eslint-disable-next-line no-console
         console.error('AuthRoute unexpected error', err);
         if (mounted) {
@@ -123,19 +113,17 @@ function AuthRoute({ children }: { children: React.ReactNode }) {
   }, []);
 
   if (!ready) {
-    // Render a minimal placeholder; replace with spinner if you like.
-    return null;
+    return null; // you can replace with a spinner
   }
 
   if (!authed) {
-    // Redirect to your auth page. Keep query param if your app expects it.
     return <Navigate to="/auth?mode=login" replace />;
   }
 
   return <>{children}</>;
 }
 
-/* ---------- Example app components below (replace with your real components) ---------- */
+/* ---------- Restored app components (unchanged structure) ---------- */
 
 function Home() {
   return (
