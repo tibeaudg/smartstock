@@ -625,7 +625,7 @@ const ProductRow: React.FC<ProductRowProps> = ({
   return (
     <tr 
     
-      className={`${getRowBackgroundColor()} hover:bg-gray-100 hover:shadow-sm transition-all duration-200 cursor-pointer group border-b-2 border-gray-100`}
+      className={`${getRowBackgroundColor()} hover:bg-gray-100 hover:shadow-sm transition-all duration-200 cursor-pointer border-b-2 border-gray-100`}
     >
       {/* Selection checkbox */}
       {isAdmin && (
@@ -3749,8 +3749,8 @@ export const StockList = () => {
           ))}
         </div>
       ) : (
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-          <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-visible">
+          <div className="overflow-x-auto overflow-y-visible scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
             <table className="w-full divide-y divide-gray-200">
             <thead className="bg-gray-50 sticky top-0 z-10">
               <tr>

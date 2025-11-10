@@ -106,7 +106,7 @@
 /* Design Tokens */
 @layer base {
   :root {
-    --background: 255 255 255;
+    --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
 
     --card: 0 0% 100%;
@@ -162,7 +162,7 @@
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
 
-    --muted: 217.2 32.6% 17.5%;
+    --muted: 217.2 32.6% 10%;
     --muted-foreground: 215 20.2% 65.1%;
 
     --accent: 217.2 32.6% 17.5%;
@@ -194,10 +194,21 @@
 
   html,
   body {
-    @apply text-foreground min-h-screen m-0 p-0 overflow-x-hidden;
+    @apply text-foreground bg-background min-h-screen m-0 p-0 overflow-x-hidden transition-colors;
     width: 100%;
-    background: #f3f4f6;
+    color: hsl(var(--foreground));
+    background-color: hsl(var(--background));
     background-attachment: fixed;
+  }
+
+  .main-content-surface {
+    background-color: hsl(var(--muted)) !important;
+    color: hsl(var(--foreground)) !important;
+  }
+
+  .dark .main-content-surface {
+    background-color: hsl(var(--muted)) !important;
+    color: hsl(var(--foreground)) !important;
   }
 
   /* Autofill & unwanted yellow cleanup */
@@ -208,12 +219,72 @@
     color: inherit;
   }
 
+  .dark select {
+    background-color: hsl(var(--card)) !important;
+    color: hsl(var(--foreground)) !important;
+    border-color: hsl(var(--border)) !important;
+  }
+
+  .dark select option {
+    background-color: hsl(var(--card)) !important;
+    color: hsl(var(--foreground)) !important;
+  }
+
   input:-webkit-autofill,
   input:-webkit-autofill:hover,
   input:-webkit-autofill:focus,
   input:-webkit-autofill:active {
     -webkit-box-shadow: 0 0 0 30px white inset !important;
     box-shadow: 0 0 0 30px white inset !important;
+  }
+
+  /* Ensure common light-mode utility classes adapt in dark mode */
+  .dark .bg-white {
+    background-color: hsl(var(--card)) !important;
+  }
+
+  .dark .bg-gray-50 {
+    background-color: hsl(var(--muted)) !important;
+  }
+
+  .dark .hover\:bg-gray-50:hover {
+    background-color: hsl(var(--muted)) !important;
+  }
+
+  .dark .border-gray-200 {
+    border-color: hsl(var(--border)) !important;
+  }
+
+  .dark .bg-white,
+  .dark .dropdown-content {
+    background-color: hsl(var(--card)) !important;
+  }
+
+  .dark .border-gray-200,
+  .dark .dropdown-content {
+    border-color: hsl(var(--border)) !important;
+  }
+
+  .dark .text-gray-900,
+  .dark .text-gray-800,
+  .dark .text-gray-700 {
+    color: hsl(var(--foreground)) !important;
+  }
+
+  .dark .text-gray-600 {
+    color: hsl(var(--muted-foreground)) !important;
+  }
+
+  .dark .text-white,
+  .dark .text-slate-50,
+  .dark .text-gray-50,
+  .dark .text-gray-100,
+  .dark .text-gray-200 {
+    color: hsl(var(--muted-foreground)) !important;
+  }
+
+  .dark .hover\:text-white:hover {
+    color: hsl(var(--muted-foreground)) !important;
   }
 
   /* Remove yellow utility classes */

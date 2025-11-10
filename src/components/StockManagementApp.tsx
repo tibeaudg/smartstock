@@ -5,6 +5,7 @@ import { CreateBranchModal } from './CreateBranchModal';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches, BranchProvider } from '@/hooks/useBranches';
 import { UnreadMessagesProvider } from '@/hooks/UnreadMessagesContext';
+import { ThemeProvider } from '@/hooks/useTheme';
 
 function isLocalStorageAvailable() {
   try {
@@ -73,7 +74,8 @@ export const StockManagementApp: React.FC = () => {
 
   return (
     <UnreadMessagesProvider>
-      <div className="w-screen h-screen overflow-hidden overflow-x-hidden m-0 p-0">
+      <ThemeProvider>
+        <div className="w-screen h-screen overflow-hidden overflow-x-hidden m-0 p-0 bg-background text-foreground transition-colors">
         {/* Sidebar and Layout are assumed to be part of Layout component */}
         <Layout
           currentTab={getCurrentTab()}
@@ -85,7 +87,7 @@ export const StockManagementApp: React.FC = () => {
           variant={location.pathname.startsWith('/admin') ? 'admin' : 'default'}
         >
           {/* Main scrollable content */}
-          <div className="flex-1 h-full overflow-y-auto">
+          <div className="flex-1 h-full overflow-y-auto transition-colors">
             <Outlet />
           </div>
         </Layout>
@@ -98,7 +100,8 @@ export const StockManagementApp: React.FC = () => {
             // New branch created successfully
           }}
         />
-      </div>
+        </div>
+      </ThemeProvider>
     </UnreadMessagesProvider>
   );
 };

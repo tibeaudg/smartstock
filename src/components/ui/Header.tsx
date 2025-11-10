@@ -35,7 +35,7 @@ export const Header: React.FC<HeaderProps> = ({ title, unreadCount = 0, onNotifi
     <>
 
       {/* Desktop Header */}
-        <header className="hidden lg:flex fixed top-0 left-0 right-0 z-40 items-center justify-between px-8 h-[70px] bg-white border border-gray">
+        <header className="hidden lg:flex fixed top-0 left-0 right-0 z-40 items-center justify-between px-8 h-[70px] bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800 transition-colors">
           {/* Left side - Sidebar toggle */}
         <div className="flex items-center">
           {onSidebarToggle && (
@@ -56,7 +56,7 @@ export const Header: React.FC<HeaderProps> = ({ title, unreadCount = 0, onNotifi
           <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
             <Package className="w-5 h-5 text-white" />
           </div>
-          <h1 className="text-lg font-semibold text-gray-900">stockflow</h1>
+          <h1 className="text-lg font-semibold text-gray-900 dark:text-gray-100">stockflow</h1>
         </div>
         
         {/* Right side - Notifications, language switcher and user menu */}
@@ -66,15 +66,15 @@ export const Header: React.FC<HeaderProps> = ({ title, unreadCount = 0, onNotifi
           )}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="w-10 h-10 hover:bg-gray-100">
-                <div className="rounded-full bg-white w-8 h-8 flex items-center justify-center">
+              <Button variant="ghost" size="icon" className="w-10 h-10 hover:bg-gray-100 dark:hover:bg-gray-800">
+                <div className="rounded-full bg-blue-600 w-8 h-8 flex items-center justify-center">
                   <span className="text-white text-xs font-semibold">
                     {user?.email?.[0]?.toUpperCase() || 'U'}
                   </span>
                 </div>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48">
+            <DropdownMenuContent align="end" className="w-48 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200">
               <DropdownMenuItem onClick={() => navigate('/dashboard/settings/profile')}>
                 <User className="mr-2 h-4 w-4 " />
                 <span>Profile</span>
@@ -100,8 +100,8 @@ export const Header: React.FC<HeaderProps> = ({ title, unreadCount = 0, onNotifi
       </header>
 
       {/* Mobile Header */}
-      <header className="lg:hidden fixed top-0 left-0 right-0 z-40 bg-white shadow-sm">
-        <div className="flex items-center justify-between px-4 h-[60px] border-b border-gray-100">
+      <header className="lg:hidden fixed top-0 left-0 right-0 z-40 bg-white dark:bg-gray-950 shadow-sm transition-colors">
+        <div className="flex items-center justify-between px-4 h-[60px] border-b border-gray-100 dark:border-gray-800">
           {/* Left side - Notifications (moved from right) */}
           <div className="flex items-center">
             {user && onNotificationClick && (
@@ -114,7 +114,7 @@ export const Header: React.FC<HeaderProps> = ({ title, unreadCount = 0, onNotifi
             <div className="w-7 h-7 bg-blue-600 rounded-lg flex items-center justify-center">
               <Package className="w-4 h-4 text-white" />
             </div>
-            <span className="text-base font-semibold text-gray-900">stockflow</span>
+            <span className="text-base font-semibold text-gray-900 dark:text-gray-100">stockflow</span>
           </div>
           
           {/* Right side - Profile button (moved from bottom navbar) */}
@@ -124,7 +124,7 @@ export const Header: React.FC<HeaderProps> = ({ title, unreadCount = 0, onNotifi
                 variant="ghost" 
                 size="icon" 
                 onClick={onProfileClick}
-                className="w-10 h-10 hover:bg-gray-100"
+                className="w-10 h-10 hover:bg-gray-100 dark:hover:bg-gray-800"
                 aria-label="Profile"
               >
                 <div className="rounded-full bg-blue-600 w-8 h-8 flex items-center justify-center">

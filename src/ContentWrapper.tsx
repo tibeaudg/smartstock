@@ -37,19 +37,19 @@ export const ContentWrapper: React.FC<{ children: React.ReactNode }> = ({ childr
       )}
       {/* Notification Overlay (internal pages only) */}
       {title && user && showNotifications && (
-        <div className="fixed top-20 right-4 z-[100] bg-white border border-gray-200 rounded-lg shadow-xl p-4 w-80 max-h-[60vh] overflow-y-auto">
-          <h4 className="font-semibold mb-2">Notifications</h4>
+        <div className="fixed top-20 right-4 z-[100] bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl p-4 w-80 max-h-[60vh] overflow-y-auto transition-colors">
+          <h4 className="font-semibold mb-2 text-gray-900 dark:text-gray-100">Notifications</h4>
           {loading ? (
-            <div className="text-gray-500 text-sm">Loading...</div>
+            <div className="text-gray-500 dark:text-gray-400 text-sm">Loading...</div>
           ) : notifications.length === 0 ? (
-            <div className="text-gray-700 text-sm">No notifications.</div>
+            <div className="text-gray-700 dark:text-gray-300 text-sm">No notifications.</div>
           ) : (
             <ul className="divide-y divide-gray-200">
               {notifications.map((n) => (
-                <li key={n.id} className={`py-2 ${!n.read ? 'bg-blue-50' : ''}`}>
-                  <div className="font-medium text-gray-900 text-sm">{n.title}</div>
-                  <div className="text-gray-700 text-xs mb-1">{n.message}</div>
-                  <div className="text-gray-400 text-xs">{new Date(n.created_at).toLocaleString()}</div>
+                <li key={n.id} className={`py-2 ${!n.read ? 'bg-blue-50 dark:bg-blue-500/10' : ''}`}>
+                  <div className="font-medium text-gray-900 dark:text-gray-100 text-sm">{n.title}</div>
+                  <div className="text-gray-700 dark:text-gray-300 text-xs mb-1">{n.message}</div>
+                  <div className="text-gray-400 dark:text-gray-500 text-xs">{new Date(n.created_at).toLocaleString()}</div>
                 </li>
               ))}
             </ul>
