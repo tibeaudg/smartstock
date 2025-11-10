@@ -5,7 +5,6 @@ import { CreateBranchModal } from './CreateBranchModal';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches, BranchProvider } from '@/hooks/useBranches';
 import { UnreadMessagesProvider } from '@/hooks/UnreadMessagesContext';
-import { ThemeProvider } from '@/hooks/useTheme';
 
 function isLocalStorageAvailable() {
   try {
@@ -74,7 +73,6 @@ export const StockManagementApp: React.FC = () => {
 
   return (
     <UnreadMessagesProvider>
-      <ThemeProvider>
         <div className="w-screen h-screen overflow-hidden overflow-x-hidden m-0 p-0 bg-background text-foreground transition-colors">
         {/* Sidebar and Layout are assumed to be part of Layout component */}
         <Layout
@@ -101,7 +99,6 @@ export const StockManagementApp: React.FC = () => {
           }}
         />
         </div>
-      </ThemeProvider>
     </UnreadMessagesProvider>
   );
 };

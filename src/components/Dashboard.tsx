@@ -331,7 +331,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
       <div className="bg-white rounded-lg shadow p-4 sm:p-6 mt-4 sm:mt-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-2">
           <div className="flex items-center gap-2">
-            <h2 className="text-lg sm:text-xl font-semibold text-gray-800">Stock Movements</h2>
+            <h2 className="text-lg sm:text-xl font-semibold text-gray-800">History</h2>
             {chartFetching && <RefreshCw className="h-4 w-4 animate-spin text-blue-600" />}
           </div>
           <select

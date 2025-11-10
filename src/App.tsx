@@ -45,6 +45,7 @@ import FeaturesPage from './components/FeaturesPage';
 import CookieConsent from './components/CookieConsent';
 import { useCookieConsent } from './hooks/useCookieConsent';
 import { getSeoRoutes } from './routes/seoRoutes';
+import { ThemeProvider } from './hooks/useTheme';
 
 // (SEO pages are auto-imported via getSeoRoutes)
 
@@ -328,6 +329,7 @@ const AuthRoute = () => {
   };
 
   return (
+    <ThemeProvider>
     <ContentWrapper>
       <Routes>
         {/* Openbare routes */}
@@ -454,6 +456,7 @@ const AuthRoute = () => {
         <Route path="*" element={<NotFound />} />
       </Routes>
     </ContentWrapper>
+    </ThemeProvider>
   );
 };
 

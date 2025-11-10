@@ -162,7 +162,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, profileDropdo
             { id: 'suppliers', label: 'Suppliers', path: '/dashboard/suppliers' }
           ]
         },
-        { id: 'transactions', label: 'Movements', icon: ShoppingCart, path: '/dashboard/transactions' },
+        { id: 'transactions', label: 'History', icon: ShoppingCart, path: '/dashboard/transactions' },
 
         { 
           id: 'settings', 
@@ -256,6 +256,26 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, profileDropdo
                     </button>
                   </div>
                   <div className="space-y-2">
+                    {menuItem.id === 'settings' && (
+                      <div className="flex items-center justify-between px-4 py-3 rounded-lg bg-gray-100 dark:bg-gray-800 transition-colors">
+                        <div className="flex items-center gap-2">
+                          {theme === 'dark' ? (
+                            <Moon className="w-4 h-4 text-gray-600 dark:text-gray-200" />
+                          ) : (
+                            <Sun className="w-4 h-4 text-gray-600 dark:text-gray-200" />
+                          )}
+                          <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
+                            {theme === 'dark' ? 'Dark mode' : 'Light mode'}
+                          </span>
+                        </div>
+                        <button
+                          onClick={toggleTheme}
+                          className="text-xs font-medium text-blue-600 dark:text-blue-400"
+                        >
+                          Switch
+                        </button>
+                      </div>
+                    )}
                     {menuItem.subItems.map((subItem) => (
                       <NavLink
                         key={subItem.id}
