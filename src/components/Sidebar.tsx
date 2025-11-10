@@ -342,7 +342,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, profileDropdo
     <>
       {/* Sidebar */}
       <div className={`
-        fixed left-0 top-0 h-screen bg-gray-50 transition-all duration-300 z-50 flex flex-col
+        fixed left-0 top-0 h-screen bg-white transition-all border border-gray duration-300 z-50 flex flex-col
         ${isOpen ? 'w-64' : 'w-16'}
         md:relative md:translate-x-0
       `}>
@@ -384,6 +384,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, profileDropdo
                 (!hasSubItems || !item.subItems.some(sub => sub.path === item.path));
               const isAnySubItemActive = hasSubItems && item.subItems.some(sub => location.pathname === sub.path);
               const isExpanded = isSubmenuOpen || isAnySubItemActive;
+              const isActive = isParentActive;
 
               return (
                 <React.Fragment key={item.id}>
@@ -405,23 +406,31 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, profileDropdo
                       }
                     }}
                     className={`
-                      w-full font-semibold flex items-center px-2 sm:px-3 py-2 rounded-lg text-left transition-colors
-                      ${isParentActive
-                        ? 'bg-white text-black border border-gray-200' 
+                      relative group w-full font-semibold flex items-center px-2 sm:px-3 py-2 rounded-xl text-left
+                      transition-all duration-200
+                      ${isActive
+                        ? 'bg-blue-50 text-blue-700 border border-blue-200'
                         : isExpanded
-                        ? 'bg-gray-100 text-gray-700'
-                        : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                          ? 'text-gray-600'
+                          : 'text-gray-600 hover:bg-blue-50 hover:text-blue-700' 
                       }
+                      ${!isOpen ? 'justify-center' : ''}
                     `}
                   >
                     <div className="flex items-center w-full">
-                      <Icon className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
+                      <Icon
+                        className={`w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 transition-colors
+                          ${isParentActive ? 'text-blue-600' : 'text-gray-500 group-hover:text-blue-700'}
+                        `}
+                      />
                       {isOpen && (
                         <div className="flex items-center justify-between flex-1 ml-2 sm:ml-3">
-                          <span className="text-xs sm:text-sm">{label}</span>
+                          <span className={`text-xs sm:text-sm transition-colors ${isParentActive ? 'text-blue-700' : 'group-hover:text-blue-700'}`}>   
+                            {label}
+                          </span>
                           {hasSubItems && (
                             <ChevronDown 
-                              className={`w-3 h-3 sm:w-4 sm:h-4 transform transition-transform ${isSubmenuOpen ? 'rotate-180' : ''}`} 
+                              className={`w-3 h-3 sm:w-4 sm:h-4 transform transition-transform ${isSubmenuOpen ? 'rotate-180' : ''} ${isParentActive ? 'text-blue-500' : ''}`} 
                             />
                           )}
                         </div>
@@ -448,14 +457,19 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, profileDropdo
                               }
                             }}
                             className={({ isActive }) => `
-                              w-full flex items-center space-x-2 sm:space-x-3 px-2 sm:px-3 py-2 rounded-lg text-left font-medium transition-colors text-xs sm:text-sm
-                              ${isActive 
-                                ? 'bg-white text-black' 
-                                : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                              relative w-full flex items-center px-3 sm:px-4 py-2 rounded-lg
+                              text-left font-medium text-xs sm:text-sm transition-all duration-200
+                              ${isActive
+                                ? 'bg-blue-50 text-blue-700 border border-blue-200'
+                                : 'text-gray-600 hover:bg-blue-50 hover:text-blue-600'
                               }
                             `}
                           >
-                            <span>{subItem.label}</span>
+                            {({ isActive }) => (
+                              <>
+                                <span className="relative z-10 whitespace-nowrap">{subItem.label}</span>
+                              </>
+                            )}
                           </NavLink>
                         </li>
                       ))}

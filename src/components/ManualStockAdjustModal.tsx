@@ -151,7 +151,9 @@ export const ManualStockAdjustModal = ({
       return;
     }
 
-    if (!quantity || parseInt(quantity) <= 0) {
+    const numericQuantity = Number(quantity);
+
+    if (!quantity || Number.isNaN(numericQuantity) || numericQuantity <= 0) {
       toast.error('Enter a valid quantity');
       return;
     }
@@ -161,10 +163,10 @@ export const ManualStockAdjustModal = ({
       const { data: { user: currentUser } } = await supabase.auth.getUser();
       if (!currentUser) throw new Error('Not logged in');
       
-      const numericQuantity = parseInt(quantity);
+      const currentQuantity = Number(selectedProduct.quantity_in_stock) || 0;
       const newQuantity = actionType === 'in'
-        ? selectedProduct.quantity_in_stock + numericQuantity
-        : selectedProduct.quantity_in_stock - numericQuantity;
+        ? currentQuantity + numericQuantity
+        : currentQuantity - numericQuantity;
       
       if (actionType === 'out' && newQuantity < 0) {
         toast.error('Not enough stock available');
@@ -368,12 +370,18 @@ export const ManualStockAdjustModal = ({
                 {/* Current Stock Display */}
                 <div className={`p-4 rounded-lg ${actionType === 'in' ? 'bg-green-50' : 'bg-red-50'}`}>
                   <div className="text-sm text-gray-600 mb-2">Current stock</div>
-                  <div className="text-2xl font-bold">{selectedProduct.quantity_in_stock}</div>
+                  <div className="text-2xl font-bold">{Number(selectedProduct.quantity_in_stock) || 0}</div>
                   <div className={`text-sm mt-1 ${actionType === 'in' ? 'text-green-700' : 'text-red-700'}`}>
-                    {actionType === 'in' 
-                      ? `After adding: ${selectedProduct.quantity_in_stock + (parseInt(quantity) || 0)}`
-                      : `After removing: ${selectedProduct.quantity_in_stock - (parseInt(quantity) || 0)}`
-                    }
+                    {(() => {
+                      const currentStock = Number(selectedProduct.quantity_in_stock) || 0;
+                      const inputQuantity = Number(quantity) || 0;
+                      const result = actionType === 'in'
+                        ? currentStock + inputQuantity
+                        : currentStock - inputQuantity;
+                      return actionType === 'in'
+                        ? `After adding: ${result}`
+                        : `After removing: ${result}`;
+                    })()}
                   </div>
                 </div>
               </>

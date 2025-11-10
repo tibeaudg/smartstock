@@ -1666,8 +1666,8 @@ export const HomePage = () => {
               {/* Main Headline */}
               <BounceInWhenVisible delay={200}>
                 <div className="mb-6 mt-6 sm:mb-8 md:mb-12">
-                  <h2 className="text-[clamp(2.5rem,5vw,4.5rem)] sm:text-[clamp(3rem,6vw,5rem)] md:text-[clamp(3.5rem,7vw,5.5rem)] font-bold text-gray-900 leading-tight tracking-tight">
-                  Best Inventory Automation Tool for 2025
+                  <h2 className="text-[clamp(2.5rem,5vw,4.5rem)] sm:text-[clamp(3rem,6vw,5rem)] md:text-[clamp(3.5rem,7vw,5.5rem)] font-bold text-gray-900 leading-tight tracking-tight pl-24 pr-24">
+                  Best Inventory Software For 2025
     
                   </h2>
                 </div>

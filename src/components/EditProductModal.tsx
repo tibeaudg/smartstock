@@ -59,7 +59,9 @@ export const EditProductModal = ({
   });
 
   const handleSubmit = async () => {
-    if (!quantity || parseInt(quantity) <= 0) {
+    const numericQuantity = Number(quantity);
+
+    if (!quantity || Number.isNaN(numericQuantity) || numericQuantity <= 0) {
       toast.error('Enter a valid quantity');
       return;
     }
@@ -74,10 +76,10 @@ export const EditProductModal = ({
         throw new Error('Not logged in');
       }
 
-      const numericQuantity = parseInt(quantity);
+      const currentQuantity = Number(product.quantity_in_stock) || 0;
       const newQuantity = currentActionType === 'in' 
-        ? product.quantity_in_stock + numericQuantity
-        : product.quantity_in_stock - numericQuantity;
+        ? currentQuantity + numericQuantity
+        : currentQuantity - numericQuantity;
 
       // Validate stock levels
       if (currentActionType === 'out' && newQuantity < 0) {

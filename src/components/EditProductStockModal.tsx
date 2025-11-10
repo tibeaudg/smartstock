@@ -63,7 +63,8 @@ export const EditProductStockModal = ({
   const actionColor = currentActionType === 'in' ? 'text-green-600' : 'text-red-600';
 
   const handleSubmit = async () => {
-    if (!quantity || parseInt(quantity) <= 0) {
+    const numericQuantity = Number(quantity);
+    if (!quantity || Number.isNaN(numericQuantity) || numericQuantity <= 0) {
       toast.error('Enter a valid quantity');
       return;
     }
@@ -71,10 +72,10 @@ export const EditProductStockModal = ({
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('Not logged in');
-      const numericQuantity = parseInt(quantity);
+      const currentQuantity = Number(product.quantity_in_stock) || 0;
       const newQuantity = currentActionType === 'in'
-        ? product.quantity_in_stock + numericQuantity
-        : product.quantity_in_stock - numericQuantity;
+        ? currentQuantity + numericQuantity
+        : currentQuantity - numericQuantity;
       if (currentActionType === 'out' && newQuantity < 0) {
         toast.error('Not enough stock available');
         setLoading(false);
@@ -186,15 +187,15 @@ export const EditProductStockModal = ({
                 <div className={`text-sm mt-1 ${currentActionType === 'in' ? 'text-green-700' : 'text-red-700'}`}>
                   {/* Explicitly cast quantity_in_stock to a number for calculation */}
                   {(() => {
-                    const currentStock = Math.floor(Number(product.quantity_in_stock));
-                    const inputQuantity = parseInt(quantity) || 0;
+                  const currentStock = Number(product.quantity_in_stock) || 0;
+                  const inputQuantity = Number(quantity) || 0;
                     const result = currentActionType === 'in'
-                      ? currentStock + inputQuantity
-                      : currentStock - inputQuantity;
+                    ? currentStock + inputQuantity
+                    : currentStock - inputQuantity;
 
                     return currentActionType === 'in'
-                      ? `After adding: ${result}`
-                      : `After removing: ${result}`;
+                    ? `After adding: ${result}`
+                    : `After removing: ${result}`;
                   })()}
                 </div>
               </div>

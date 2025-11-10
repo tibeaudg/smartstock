@@ -48,15 +48,17 @@ export const useStockMovement = (
       return;
     }
 
-    const quantityNum = parseInt(quantity, 10);
+    const quantityNum = Number(quantity);
 
     // Validation
-    if (isNaN(quantityNum) || quantityNum <= 0) {
+    if (Number.isNaN(quantityNum) || quantityNum <= 0) {
       toast.error('Please enter a valid quantity');
       return;
     }
 
-    if (transactionType === 'outgoing' && quantityNum > product.quantity_in_stock) {
+    const currentQuantity = Number(product.quantity_in_stock) || 0;
+
+    if (transactionType === 'outgoing' && quantityNum > currentQuantity) {
       toast.error('Cannot remove more stock than available');
       return;
     }
@@ -65,8 +67,8 @@ export const useStockMovement = (
     try {
       // Calculate new stock level
       const newQuantity = transactionType === 'incoming'
-        ? product.quantity_in_stock + quantityNum
-        : product.quantity_in_stock - quantityNum;
+        ? currentQuantity + quantityNum
+        : currentQuantity - quantityNum;
 
       const transactionData = {
         product_id: product.id,

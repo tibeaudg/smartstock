@@ -115,6 +115,13 @@ const formatVariantAttributes = (attributes: Record<string, unknown> | null): st
   return formatted;
 };
 
+// Helper function to normalize quantity display
+const formatStockQuantity = (quantity: number | string): string => {
+  const parsed = Number(quantity);
+  if (Number.isNaN(parsed)) return '0';
+  return parsed.toLocaleString('en-US');
+};
+
 // Helper function to get stock level percentage for visual bar
 const getStockLevelPercentage = (current: number, minimum: number): number => {
   if (minimum === 0) return 100;
@@ -577,7 +584,7 @@ interface ProductRowProps {
   onToggleDetailExpand?: () => void;
   onImageUpload?: () => void;
   onDuplicate?: (product: Product) => void;
-  onArchive?: (product: Product) => void;
+  onDelete?: (product: Product) => void;
   onMoveToLocation?: (product: Product) => void;
   rowIndex?: number;
 }
@@ -600,8 +607,8 @@ const ProductRow: React.FC<ProductRowProps> = ({
   isDetailExpanded = false,
   onToggleDetailExpand,
   onImageUpload,
-  onDuplicate,
-  onArchive,
+  onDuplicate,  
+  onDelete,
   onMoveToLocation,
   rowIndex = 0
 }) => {
@@ -643,7 +650,7 @@ const ProductRow: React.FC<ProductRowProps> = ({
                   e.stopPropagation();
                   onToggleExpand?.();
                 }}
-                className="p-1 flex-shrink-0 hover:bg-blue-50 rounded transition-colors"
+                className="p-1 flex-shrink-0 hover:bg-blue-100 rounded transition-colors"
                 title="Toggle variants"
               >
                 {isExpanded ? <ChevronDown className="w-4 h-4 text-blue-600" /> : <ChevronRight className="w-4 h-4 text-blue-600" />}
@@ -742,32 +749,41 @@ const ProductRow: React.FC<ProductRowProps> = ({
       {columnVisibility.current && (
         <td className="px-4 py-3 text-center w-1/8">
           {!hasChildren && (
-            <TooltipProvider>
+            <TooltipProvider delayDuration={150}>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <div 
-                    className="space-y-1 cursor-pointer hover:bg-gray-50 rounded-md p-2 transition-colors" 
+                  <div
+                    className="space-y-1 cursor-pointer rounded-md p-2 transition-colors group hover:bg-blue-600"
                     onClick={(e) => {
                       e.stopPropagation();
                       onStockAction(product, 'in');
                     }}
                   >
                     <div className="flex items-center justify-center gap-2">
-                      <div className={`w-2 h-2 rounded-full ${getStockStatusDotColor(product.quantity_in_stock, product.minimum_stock_level)} ${Number(product.quantity_in_stock) === 0 ? 'animate-pulse' : ''}`} />
-                      <span className={`text-sm font-semibold text-gray-900 ${Number(product.quantity_in_stock) === 0 ? 'animate-pulse text-red-600' : ''}`}>
-                        {product.quantity_in_stock}
+                      <div
+                        className={`w-2 h-2 rounded-full ${getStockStatusDotColor(product.quantity_in_stock, product.minimum_stock_level)} ${Number(product.quantity_in_stock) === 0 ? 'animate-pulse' : ''} group-hover:ring group-hover:ring-white/80`}
+                      />
+                      <span
+                        className={`text-sm font-semibold transition-colors ${Number(product.quantity_in_stock) === 0 ? 'animate-pulse text-red-600 group-hover:text-white' : 'text-gray-900 group-hover:text-white'}`}
+                      >
+                        {formatStockQuantity(product.quantity_in_stock)}
                       </span>
                     </div>
-                    
+
                     {/* Status label */}
-                    <div className="text-xs font-medium text-gray-600">
+                    <div className="text-xs font-medium text-gray-600 transition-colors group-hover:text-white/90">
                       {stockStatus}
                     </div>
                   </div>
                 </TooltipTrigger>
-                <TooltipContent>
+                <TooltipContent
+                  side="top"
+                  align="center"
+                  sideOffset={8}
+                  className="z-[200000] max-w-xs shadow-lg"
+                >
                   <p className="font-medium">
-                    {product.quantity_in_stock} in stock. Minimum: {product.minimum_stock_level}
+                    {formatStockQuantity(product.quantity_in_stock)} in stock. Minimum: {formatStockQuantity(product.minimum_stock_level)}
                   </p>
                   {Number(product.quantity_in_stock) === 0 && (
                     <p className="text-xs text-red-400 mt-1">⚠️ Out of stock!</p>
@@ -886,10 +902,10 @@ const ProductRow: React.FC<ProductRowProps> = ({
               <DropdownMenuSeparator />
               
               {/* Destructive Actions */}
-              {onArchive && (
-                <DropdownMenuItem onClick={() => onArchive(product)}>
-                  <Archive className="w-4 h-4 mr-2 text-gray-600" />
-                  <span className="flex-1">Archive</span>
+              {onDelete && (
+                <DropdownMenuItem onClick={() => onDelete(product)}>
+                  <Trash2 className="w-4 h-4 mr-2 text-gray-600" />
+                  <span className="flex-1">Delete</span>
                 </DropdownMenuItem>
               )}
             </DropdownMenuContent>
@@ -1111,7 +1127,7 @@ interface MobileProductListItemProps {
   onToggleDetailExpand?: () => void;
   onImageUpload?: () => void;
   onDuplicate?: (product: Product) => void;
-  onArchive?: (product: Product) => void;
+  onDelete?: (product: Product) => void;
   onMoveToLocation?: (product: Product) => void;
 }
 
@@ -1133,7 +1149,7 @@ const MobileProductListItem: React.FC<MobileProductListItemProps> = ({
   onToggleDetailExpand,
   onImageUpload,
   onDuplicate,
-  onArchive,
+  onDelete,
   onMoveToLocation
 }) => {
   const stockStatus = getStockStatus(product.quantity_in_stock, product.minimum_stock_level);
@@ -1230,7 +1246,7 @@ const MobileProductListItem: React.FC<MobileProductListItemProps> = ({
                 {!hasChildren && (
                   <div className="flex items-center gap-1">
                     <div className={`w-2 h-2 rounded-full ${getStockStatusDotColor(product.quantity_in_stock, product.minimum_stock_level)}`} />
-                    <span className="font-medium">{product.quantity_in_stock}</span>
+                    <span className="font-medium">{formatStockQuantity(product.quantity_in_stock)}</span>
                     <span className="text-gray-400">in stock</span>
                   </div>
                 )}
@@ -1296,10 +1312,10 @@ const MobileProductListItem: React.FC<MobileProductListItemProps> = ({
                     </DropdownMenuItem>
                   )}
                   <DropdownMenuSeparator />
-                  {onArchive && (
-                    <DropdownMenuItem onClick={() => onArchive(product)}>
-                      <Archive className="w-4 h-4 mr-2 text-gray-600" />
-                      <span className="flex-1">Archive</span>
+                  {onDelete && (
+                    <DropdownMenuItem onClick={() => onDelete(product)}>
+                      <Trash2 className="w-4 h-4 mr-2 text-gray-600" />
+                      <span className="flex-1">Delete</span>
                     </DropdownMenuItem>
                   )}
                 </DropdownMenuContent>
@@ -1339,7 +1355,7 @@ interface MobileProductCardProps {
   onToggleDetailExpand?: () => void;
   onImageUpload?: () => void;
   onDuplicate?: (product: Product) => void;
-  onArchive?: (product: Product) => void;
+  onDelete?: (product: Product) => void;
   onMoveToLocation?: (product: Product) => void;
 }
 
@@ -1361,7 +1377,7 @@ const MobileProductCard: React.FC<MobileProductCardProps> = ({
   onToggleDetailExpand,
   onImageUpload,
   onDuplicate,
-  onArchive,
+  onDelete,
   onMoveToLocation
 }) => {
   const stockStatus = getStockStatus(product.quantity_in_stock, product.minimum_stock_level);
@@ -1414,7 +1430,7 @@ const MobileProductCard: React.FC<MobileProductCardProps> = ({
             <div className="flex items-center gap-3 text-sm">
               <span className="flex items-center gap-1">
                 <Package className="w-4 h-4" />
-                {product.quantity_in_stock} in stock
+                {formatStockQuantity(product.quantity_in_stock)} in stock
               </span>
             </div>
           </div>
@@ -2198,32 +2214,7 @@ export const StockList = () => {
   }, [clearAllFilters]);
 
   // Bulk action handlers
-  const handleBulkArchive = async () => {
-    try {
-      // Archive all selected products (set status to out_of_stock for discontinued)
-      const { error } = await supabase
-        .from('products')
-        .update({ status: 'out_of_stock' })
-        .in('id', selectedProductIds)
-        .eq('branch_id', activeBranch?.branch_id);
-      
-      if (error) {
-        console.error('Error archiving products:', error);
-        toast.error('Error archiving products');
-        return;
-      }
-      
-      toast.success(`Successfully archived ${selectedProductIds.length} product${selectedProductIds.length !== 1 ? 's' : ''}`);
-      setSelectedProductIds([]);
-      
-      // Refresh data
-      queryClient.invalidateQueries({ queryKey: ['products'] });
-      refetch();
-    } catch (error) {
-      console.error('Error archiving products:', error);
-      toast.error('Error archiving products');
-    }
-  };
+
 
   const handleBulkExport = () => {
     try {
@@ -2636,6 +2627,39 @@ export const StockList = () => {
     } catch (error) {
       console.error('Error archiving product:', error);
       toast.error('Failed to archive product');
+    }
+  };
+
+  const handleDeleteProduct = async (product: Product) => {
+    if (!product) return;
+
+    const confirmed = window.confirm(
+      `Delete "${product.name}"? This action cannot be undone.`,
+    );
+
+    if (!confirmed) return;
+
+    try {
+      const { error } = await supabase
+        .from('products')
+        .delete()
+        .eq('id', product.id);
+
+      if (error) throw error;
+
+      toast.success('Product deleted successfully');
+
+      setSelectedProductIds((prev) => prev.filter((id) => id !== product.id));
+      setSelectAll(false);
+
+      queryClient.invalidateQueries({ queryKey: ['dashboardData', activeBranch?.branch_id] });
+      queryClient.invalidateQueries({ queryKey: ['productCount', activeBranch?.branch_id] });
+      queryClient.invalidateQueries({ queryKey: ['products'] });
+
+      refetch();
+    } catch (error) {
+      console.error('Error deleting product:', error);
+      toast.error('Failed to delete product');
     }
   };
 
@@ -3137,7 +3161,7 @@ export const StockList = () => {
                             onToggleDetailExpand={hasChildren ? () => toggleDetailExpand(parent.id) : undefined}
                             onImageUpload={() => refetch()}
                             onDuplicate={handleDuplicateProduct}
-                            onArchive={handleArchiveProduct}
+                            onDelete={handleDeleteProduct}
                             onMoveToLocation={handleMoveToLocation}
                           />
                           
@@ -3166,7 +3190,7 @@ export const StockList = () => {
                                   onToggleDetailExpand={() => toggleDetailExpand(child.id)}
                                   onImageUpload={() => refetch()}
                                   onDuplicate={handleDuplicateProduct}
-                                  onArchive={handleArchiveProduct}
+                                  onDelete={handleDeleteProduct}
                                   onMoveToLocation={handleMoveToLocation}
                                 />
                               );
@@ -3681,23 +3705,6 @@ export const StockList = () => {
                   variant="outline"
                   size="sm"
                   onClick={() => {
-                    // Bulk archive functionality
-                    const confirmArchive = window.confirm(
-                      `Are you sure you want to archive ${selectedProductIds.length} product${selectedProductIds.length !== 1 ? 's' : ''}?`
-                    );
-                    if (confirmArchive) {
-                      handleBulkArchive();
-                    }
-                  }}
-                  className="text-orange-600 border-orange-300 hover:bg-orange-50"
-                >
-                  <Archive className="w-4 h-4 mr-1" />
-                  Archive Selected
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => {
                     // Bulk export functionality
                     handleBulkExport();
                   }}
@@ -3879,7 +3886,7 @@ export const StockList = () => {
                         onToggleDetailExpand={hasChildren ? () => toggleDetailExpand(parent.id) : undefined}
                         onImageUpload={() => refetch()}
                         onDuplicate={handleDuplicateProduct}
-                        onArchive={handleArchiveProduct}
+                        onDelete={handleDeleteProduct}
                         onMoveToLocation={handleMoveToLocation}
                         rowIndex={parentIndex}
                       />
@@ -3919,7 +3926,7 @@ export const StockList = () => {
                                 onToggleDetailExpand={() => toggleDetailExpand(child.id)}
                                 onImageUpload={() => refetch()}
                                 onDuplicate={handleDuplicateProduct}
-                                onArchive={handleArchiveProduct}
+                                onDelete={handleDeleteProduct}
                                 onMoveToLocation={handleMoveToLocation}
                                 rowIndex={parentIndex + childIndex + 1}
                               />

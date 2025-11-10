@@ -35,8 +35,8 @@ export const Header: React.FC<HeaderProps> = ({ title, unreadCount = 0, onNotifi
     <>
 
       {/* Desktop Header */}
-      <header className="hidden lg:flex fixed top-0 left-0 right-0 z-40 items-center justify-between px-8 h-[70px] bg-white shadow-sm">
-        {/* Left side - Sidebar toggle */}
+        <header className="hidden lg:flex fixed top-0 left-0 right-0 z-40 items-center justify-between px-8 h-[70px] bg-white border border-gray">
+          {/* Left side - Sidebar toggle */}
         <div className="flex items-center">
           {onSidebarToggle && (
             <Button
