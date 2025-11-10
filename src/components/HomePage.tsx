@@ -441,7 +441,7 @@ const IndustryBadgeMarquee = ({ badges, speed = 30 }) => {
 };
 
 // Auto-scrolling horizontal marquee component for integration cards
-const IntegrationCardMarquee = ({ cards, speed = 60 }) => {
+const IntegrationCardMarquee = ({ cards, speed = 600 }) => {
   const [isPaused, setIsPaused] = useState(false);
   const marqueeRef = useRef(null);
   const positionRef = useRef(0);
@@ -631,43 +631,6 @@ const MobilePhoneMockup = () => {
     };
   }, []);
 
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 30, scale: isVisible ? 1 : 0.9 }}
-      animate={{ 
-        opacity: isVisible ? 1 : 0, 
-        y: isVisible ? 0 : 30,
-        scale: isVisible ? 1 : 0.9
-      }}
-      transition={{ duration: isVisible ? 0 : 0.8, ease: "easeOut", type: "spring", bounce: 0.4 }}
-      className="relative mx-auto z-10"
-      whileHover={{ scale: 1.02 }}
-    >
-      <div className="relative w-[240px] h-[480px] sm:w-[260px] sm:h-[520px] md:w-[280px] md:h-[580px] mx-auto">
-        {/* Phone frame */}
-        <div className="absolute inset-0 bg-gray-900 rounded-[2.5rem] sm:rounded-[2.8rem] md:rounded-[3rem] shadow-2xl border-4 sm:border-6 md:border-8 border-gray-900">
-          {/* Notch */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 sm:w-28 md:w-32 h-4 sm:h-5 md:h-6 bg-gray-900 rounded-b-2xl sm:rounded-b-3xl z-10" />
-          {/* Screen content */}
-          <div className="absolute inset-1 sm:inset-1.5 md:inset-2 bg-black rounded-[2rem] sm:rounded-[2.3rem] md:rounded-[2.5rem] overflow-hidden">
-            <img 
-              src="/newmobile.png" 
-              alt="StockFlow mobile dashboard" 
-              className="w-full h-full object-contain"
-              style={{ opacity: 1 }}
-              loading="eager"
-              // @ts-ignore - fetchpriority is a valid HTML attribute but not in TypeScript definitions yet
-              fetchpriority="high"
-              decoding="async"
-              width="280"
-              height="580"
-            />
-          </div>
-        </div>
-      </div>
-    </motion.div>
-  );
 };
 
 // Industry badges data with expanded niches (all blue as requested)
@@ -1609,7 +1572,7 @@ export const HomePage = () => {
       <SEO
         title="StockFlow - Best Inventory Management Software 2025 | Free Forever Plan"
         description="Cloud-based inventory management software for SMBs. Track stock in real-time, prevent stockouts, optimize dead stock. Free forever plan available. Trusted by 500+ businesses. Start free today - no credit card required!"
-        keywords="inventory management software, stockbeheer software, best inventory management software, inventory management online, stock management software, warehouse management system, inventory tracking, stock control, voorraadbeheer software, inventory software, stockflow, stock flow, free inventory management, cloud inventory software, inventory management system, stock management system, warehouse software, inventory control software"
+        keywords="inventory management software, stockbeer software, best inventory management software, inventory management online, stock management software, warehouse management system, inventory tracking, stock control, voorraadbeheer software, inventory software, stockflow, stock flow, free inventory management, cloud inventory software, inventory management system, stock management system, warehouse software, inventory control software"
         url="https://www.stockflow.be/"
         hreflang={[
           { lang: 'en', url: 'https://www.stockflow.be/' },
@@ -1629,19 +1592,11 @@ export const HomePage = () => {
 
 
 
-      {/* Scroll Progress Tracker */}
-      <div className="fixed top-0 left-0 right-0 z-50 h-1 bg-gray-200/50">
-        <div 
-          className="h-full bg-gradient-to-r from-blue-500 to-blue-600 transition-all duration-150 ease-out"
-          style={{ width: `${scrollProgress}%` }}
-        />
-      </div>
-
-      <section className="relative px-4 sm:px-6 overflow-hidden pt-24 sm:pt-28 md:pt-32 lg:pt-28 pb-16 sm:pb-20 md:pb-24 min-h-[50vh] flex items-center">
+      <section className="relative px-4 sm:px-6 overflow-hidden pt-24 sm:pt-28 md:pt-32 lg:pt-28 min-h-[50vh] flex items-center">
         {/* Light Blue Gradient Background */}
         <div className="absolute inset-0">
           {/* Base gradient - light blue to white */}
-          <div className="absolute inset-0 bg-gradient-to-b from-blue-50/80 via-white/90 to-white" />
+          <div className="absolute inset-0 bg-gradient-to-b from-blue-500 via-white/50 to-white" />
           
           {/* Subtle radial gradients at top center */}
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_center,rgba(59,130,246,0.1)_0%,transparent_50%)]" />
@@ -1666,25 +1621,25 @@ export const HomePage = () => {
               {/* Main Headline */}
               <BounceInWhenVisible delay={200}>
                 <div className="mb-6 mt-6 sm:mb-8 md:mb-12">
-                  <h2 className="text-[clamp(2.5rem,5vw,4.5rem)] sm:text-[clamp(3rem,6vw,5rem)] md:text-[clamp(3.5rem,7vw,5.5rem)] font-bold text-gray-900 leading-tight tracking-tight pl-24 pr-24">
-                  Best Inventory Software For 2025
+                  <h1 className="text-[clamp(2.5rem,5vw,4.5rem)] sm:text-[clamp(3rem,6vw,5rem)] md:text-[clamp(3.5rem,7vw,5.5rem)] font-bold text-gray-900 leading-tight tracking-tight pl-24 pr-24">
+                  <strong className="text-blue-600">Best </strong>Inventory Management Software
     
-                  </h2>
+                  </h1>
                 </div>
               </BounceInWhenVisible>
               
               {/* Subtitle */}
               <SlideUpWhenVisible delay={400}>
                 <div className="mb-8 sm:mb-10 md:mb-12 max-w-3xl mx-auto px-4">
-                  <h3 className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed">
-                  Best Inventory Management Software of 2025 – Compare Features, Pricing & Reviews. Systems for Efficiency & Real-Time Control.
-                  </h3>
+                  <h2 className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed">
+                  Best <strong className="text-blue-600">Inventory Management</strong> Software of 2025 – <strong className="text-blue-600">Compare Features, Pricing & Reviews</strong>. Systems for Efficiency & Real-Time Control.
+                  </h2>
                 </div>
               </SlideUpWhenVisible>
 
               {/* CTA Button */}
               <FadeInWhenVisible delay={600}>
-                <div className="flex justify-center mb-6 sm:mb-8 md:mb-10 px-4">
+                <div className="flex justify-center px-4">
                   <button
                     onClick={() => navigate('/pricing')}
                     className="bg-blue-600 text-white hover:bg-blue-700 px-8 py-3 rounded-lg font-medium transition-all duration-300 shadow-md hover:shadow-lg"
@@ -1693,51 +1648,6 @@ export const HomePage = () => {
                   </button>
                 </div>
               </FadeInWhenVisible>
-
-              
-            </div>
-
-            {/* Mobile mockup with floating cards - Centered underneath */}
-            <div className="flex items-center justify-center mt-8 sm:mt-12 md:mt-16">
-              <div className="relative w-full max-w-sm sm:max-w-md px-4">
-                
-                {/* Floating Feature Cards - Hidden on mobile for better performance */}
-                <div className="hidden md:block">
-                  <FloatingFeatureCard
-                    icon={Scan}
-                    title="Track Your Progress"
-                    subtitle="Barcode Scanner"
-                    metric="+247%"
-                    position="top-0 right-60"
-                    delay={900}
-                  />
-                  
-
-                  
-                  <FloatingFeatureCard
-                    icon={Users}
-                    title="Track your inventory journey effortlessly"
-                    subtitle="Reports & Analytics"
-                    metric="12,450.00/month"
-                    position="top-32 left-60"
-                    delay={1100}
-                  />
-                  
-                  <FloatingFeatureCard
-                    icon={Bell}
-                    title="Low Stock Alerts"
-                    subtitle="Smart Notifications"
-                    metric="3 alerts"
-                    position="bottom-32 right-60"
-                    delay={1200}
-                  />
-                </div>
-
-                {/* Central Mobile Phone Mockup */}
-                <div className="relative z-10">
-                  <MobilePhoneMockup />
-                </div>
-              </div>
             </div>
           </div>
         </div>
