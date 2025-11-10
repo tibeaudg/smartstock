@@ -1571,7 +1571,7 @@ export const HomePage = () => {
       </Helmet>
       <SEO
         title="StockFlow - Best Inventory Management Software 2025 | Free Forever Plan"
-        description="Cloud-based inventory management software for SMBs. Track stock in real-time, prevent stockouts, optimize dead stock. Free forever plan available. Trusted by 500+ businesses. Start free today - no credit card required!"
+        description="Cloud-based inventory management software. Track stock in real-time, prevent stockouts, optimize dead stock. Free forever plan available. Trusted by 500+ businesses. Start free today - no credit card required!"
         keywords="inventory management software, stockbeer software, best inventory management software, inventory management online, stock management software, warehouse management system, inventory tracking, stock control, voorraadbeheer software, inventory software, stockflow, stock flow, free inventory management, cloud inventory software, inventory management system, stock management system, warehouse software, inventory control software"
         url="https://www.stockflow.be/"
         hreflang={[
@@ -1613,7 +1613,7 @@ export const HomePage = () => {
               <div className="mb-4 sm:mb-6 flex justify-center ">
               <div className="inline-block mb-4 sm:mb-6">
                 <h1 className="px-4 py-2 bg-blue-100 text-blue-700 text-sm font-semibold rounded-full">
-                  Smart Inventory Management Software
+                  Next-Gen Solution
                 </h1>
               </div>
               </div>
@@ -1621,8 +1621,8 @@ export const HomePage = () => {
               {/* Main Headline */}
               <BounceInWhenVisible delay={200}>
                 <div className="mb-6 mt-6 sm:mb-8 md:mb-12">
-                  <h1 className="text-[clamp(2.5rem,5vw,4.5rem)] sm:text-[clamp(3rem,6vw,5rem)] md:text-[clamp(3.5rem,7vw,5.5rem)] font-bold text-gray-900 leading-tight tracking-tight pl-24 pr-24">
-                  <strong className="text-blue-600">Best </strong>Inventory Management Software
+                  <h1 className="text-[clamp(3.5rem,5vw,4.5rem)] sm:text-[clamp(3rem,6vw,5rem)] md:text-[clamp(3.5rem,7vw,5.5rem)] font-bold text-gray-900 leading-tight tracking-tight text-center justify-center items-center">
+                  Best Inventory Management Software
     
                   </h1>
                 </div>
@@ -1631,9 +1631,8 @@ export const HomePage = () => {
               {/* Subtitle */}
               <SlideUpWhenVisible delay={400}>
                 <div className="mb-8 sm:mb-10 md:mb-12 max-w-3xl mx-auto px-4">
-                  <h2 className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed">
-                  Best <strong className="text-blue-600">Inventory Management</strong> Software of 2025 – <strong className="text-blue-600">Compare Features, Pricing & Reviews</strong>. Systems for Efficiency & Real-Time Control.
-                  </h2>
+                  <h2 className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed text-sm px-6">
+                  Reduce errors, automate workflows, and gain real-time visibility across every SKU.                  </h2>
                 </div>
               </SlideUpWhenVisible>
 
