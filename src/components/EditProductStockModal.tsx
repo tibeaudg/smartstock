@@ -179,18 +179,27 @@ export const EditProductStockModal = ({
               />
             </div>
             
-              {isMobile && (
+            {isMobile && (
               <div className={`p-4 rounded-lg ${currentActionType === 'in' ? 'bg-green-50' : 'bg-red-50'}`}>
                 <div className="text-sm text-gray-600 mb-2">Current stock</div>
-                <div className="text-2xl font-bold">{product.quantity_in_stock}</div>
+                <div className="text-2xl font-bold">{Math.floor(Number(product.quantity_in_stock))}</div>
                 <div className={`text-sm mt-1 ${currentActionType === 'in' ? 'text-green-700' : 'text-red-700'}`}>
-                  {currentActionType === 'in' 
-                    ? `After adding: ${product.quantity_in_stock + (parseInt(quantity) || 0)}`
-                    : `After removing: ${product.quantity_in_stock - (parseInt(quantity) || 0)}`
-                  }
+                  {/* Explicitly cast quantity_in_stock to a number for calculation */}
+                  {(() => {
+                    const currentStock = Math.floor(Number(product.quantity_in_stock));
+                    const inputQuantity = parseInt(quantity) || 0;
+                    const result = currentActionType === 'in'
+                      ? currentStock + inputQuantity
+                      : currentStock - inputQuantity;
+
+                    return currentActionType === 'in'
+                      ? `After adding: ${result}`
+                      : `After removing: ${result}`;
+                  })()}
                 </div>
               </div>
             )}
+
 
           </div>
         </div>
