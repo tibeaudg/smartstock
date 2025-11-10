@@ -179,7 +179,7 @@ export const EditProductStockModal = ({
               />
             </div>
             
-            {isMobile && (
+              {isMobile && (
               <div className={`p-4 rounded-lg ${currentActionType === 'in' ? 'bg-green-50' : 'bg-red-50'}`}>
                 <div className="text-sm text-gray-600 mb-2">Current stock</div>
                 <div className="text-2xl font-bold">{product.quantity_in_stock}</div>
@@ -191,6 +191,7 @@ export const EditProductStockModal = ({
                 </div>
               </div>
             )}
+
           </div>
         </div>
 
