@@ -23,7 +23,7 @@ import {
   Repeat, Camera, Building, ShoppingCart, CreditCard, Mail, Utensils, Coffee, 
   Wrench, Hammer, Heart, Stethoscope, BookOpen, Gamepad2, Car, Plane, 
   Shirt, Laptop, Home, Briefcase, Music, Paintbrush, Upload, FileSpreadsheet, 
-  Minus, Plus, Download, FileText, Phone, Bell, MapPin, Trophy, Gift, Cloud, X
+  Minus, Plus, Download, FileText, Phone, Bell, MapPin, Trophy, Gift, Cloud
 } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
 import SEO from './SEO';
@@ -326,17 +326,13 @@ const MobileCarousel = ({ items, renderItem }) => {
           <button
             key={index}
             onClick={() => setCurrentIndex(index)}
-            className="flex items-center justify-center min-w-[44px] min-h-[44px] sm:min-w-0 sm:min-h-0 p-2 sm:p-0 rounded-full transition-all duration-200"
+            className={`w-2 h-2 rounded-full transition-colors ${
+              index === currentIndex ? 'bg-blue-600' : 'bg-gray-300'
+            }`}
             role="tab"
             aria-selected={index === currentIndex}
             aria-label={`Go to slide ${index + 1}`}
-          >
-            <span
-              className={`w-3 h-3 sm:w-2 sm:h-2 rounded-full transition-colors ${
-                index === currentIndex ? 'bg-blue-600' : 'bg-gray-300'
-              }`}
-            />
-          </button>
+          />
         ))}
       </div>
 
@@ -572,266 +568,6 @@ const FloatingFeatureCard = ({ icon: Icon, title, subtitle, metric, position, de
         )}
       </div>
     </motion.div>
-  );
-};
-
-// Feature Illustration Component - Creates mockup illustrations for each feature
-const FeatureIllustration = ({ featureId, isMobile = false }: { featureId: number; isMobile?: boolean }) => {
-  // Mock data for charts
-  const reportingData = [
-    { date: 'Jan 1', value: 12 },
-    { date: 'Jan 8', value: 2 },
-    { date: 'Jan 15', value: 8 },
-    { date: 'Jan 22', value: 8 },
-    { date: 'Feb 1', value: 7 },
-    { date: 'Feb 8', value: 7 },
-    { date: 'Feb 15', value: 7 },
-    { date: 'Feb 28', value: 7 },
-  ];
-
-  const locationData = [
-    { location: 'Main Store', value: 450 },
-    { location: 'Warehouse', value: 320 },
-    { location: 'Outlet', value: 180 },
-  ];
-
-  const scanData = [
-    { time: '9:00', scans: 45 },
-    { time: '10:00', scans: 78 },
-    { time: '11:00', scans: 120 },
-    { time: '12:00', scans: 95 },
-    { time: '13:00', scans: 140 },
-  ];
-
-  const containerHeight = isMobile ? '400px' : '500px';
-  
-  // Render different illustrations based on feature
-  if (featureId === 2) {
-    // Dead Stock Liquidation Optimizer - Reporting/Analytics mockup
-    return (
-      <div className={`w-full bg-white rounded-lg shadow-xl border border-gray-200 overflow-hidden ${isMobile ? 'transform scale-90 origin-top' : ''}`} style={{ height: containerHeight }}>
-        {/* Header */}
-        <div className="h-12 bg-gray-50 border-b border-gray-200 flex items-center px-4">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-blue-600 rounded flex items-center justify-center">
-              <span className="text-white font-bold text-sm">S</span>
-            </div>
-            <span className="text-sm font-medium text-gray-700">Reports</span>
-          </div>
-        </div>
-        
-        {/* Main Content */}
-        <div className="h-[calc(100%-3rem)] flex">
-          {/* Left Panel - Table */}
-          <div className="flex-1 p-4 bg-gray-50">
-            <div className="mb-4">
-              <h3 className="text-sm font-semibold text-gray-700 mb-2">Reports &gt; Quantity changes by Item</h3>
-              <div className="flex gap-2 mb-3">
-                <button className="px-3 py-1.5 bg-white border border-gray-300 rounded text-xs text-gray-700 flex items-center gap-1">
-                  <FileText className="w-3 h-3" />
-                  Any item
-                </button>
-                <button className="px-3 py-1.5 bg-white border border-gray-300 rounded text-xs text-gray-700 flex items-center gap-1">
-                  <Package className="w-3 h-3" />
-                  Any folder
-                </button>
-              </div>
-            </div>
-            
-            {/* Table */}
-            <div className="bg-white rounded border border-gray-200 overflow-hidden">
-              <div className="grid grid-cols-4 gap-4 p-3 bg-gray-100 border-b border-gray-200 text-xs font-semibold text-gray-600">
-                <div>NAME</div>
-                <div>FOLDER</div>
-                <div>START QTY</div>
-                <div>END QTY</div>
-              </div>
-              <div className="grid grid-cols-4 gap-4 p-3 text-xs text-gray-700 border-b border-gray-100">
-                <div>Simple Green Lemon - 1 Gallon</div>
-                <div>Cleaning Supplies</div>
-                <div>12 units</div>
-                <div>7 units</div>
-              </div>
-              {/* Placeholder rows */}
-              {[1, 2, 3].map((i) => (
-                <div key={i} className="grid grid-cols-4 gap-4 p-3 border-b border-gray-100">
-                  <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-                  <div className="h-4 bg-gray-200 rounded w-2/3"></div>
-                  <div className="h-4 bg-gray-200 rounded w-1/4"></div>
-                  <div className="h-4 bg-gray-200 rounded w-1/4"></div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Right Panel - Chart */}
-          <div className="w-80 bg-white border-l border-gray-200 p-4">
-            <div className="flex justify-between items-center mb-4">
-              <div>
-                <h4 className="text-sm font-semibold text-gray-900">Simple Green Lemon - 1</h4>
-                <p className="text-xs text-gray-500">Jan 1, 2022 - Feb 28, 2022</p>
-              </div>
-              <X className="w-4 h-4 text-gray-400" />
-            </div>
-            
-            {/* Chart */}
-            <div className="h-48 mb-4 bg-gray-50 rounded p-2 border border-gray-200">
-              <svg width="100%" height="100%" viewBox="0 0 300 150" className="overflow-visible">
-                {/* Y-axis */}
-                {[0, 2, 4, 6, 8, 10, 12].map((tick) => (
-                  <g key={tick}>
-                    <line x1="20" y1={120 - tick * 10} x2="280" y2={120 - tick * 10} stroke="#e5e7eb" strokeWidth="1" />
-                    <text x="15" y={120 - tick * 10 + 4} fontSize="10" fill="#6b7280" textAnchor="end">{tick}</text>
-                  </g>
-                ))}
-                {/* X-axis */}
-                <line x1="20" y1="120" x2="280" y2="120" stroke="#d1d5db" strokeWidth="2" />
-                <text x="150" y="145" fontSize="10" fill="#6b7280" textAnchor="middle">Jan 1</text>
-                
-                {/* Step chart line */}
-                <path
-                  d="M 40 0 L 40 0 L 80 100 L 120 80 L 160 80 L 200 90 L 240 90 L 280 90"
-                  fill="none"
-                  stroke="#ef4444"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </div>
-
-            {/* Stats */}
-            <div className="space-y-2 mb-4">
-              {['Total QTY change:', 'Start QTY:', 'QTY increase:', 'QTY decrease:', 'End QTY:', 'Total transactions:'].map((label, i) => (
-                <div key={i} className="flex justify-between text-xs">
-                  <span className="text-gray-500">{label}</span>
-                  <div className="h-3 w-16 bg-gray-200 rounded"></div>
-                </div>
-              ))}
-            </div>
-
-            <div className="pt-4 border-t border-gray-200">
-              <button className="w-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium py-2 rounded">
-                OPEN ITEM
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (featureId === 1) {
-    // Scan Barcodes - Mobile scanning mockup
-    return (
-      <div className={`w-full bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg shadow-xl border border-gray-200 overflow-hidden flex items-center justify-center ${isMobile ? 'transform scale-90 origin-top' : ''}`} style={{ height: containerHeight }}>
-        <div className="relative w-64 h-96 bg-white rounded-3xl shadow-2xl border-8 border-gray-900 overflow-hidden">
-          {/* Phone notch */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-6 bg-gray-900 rounded-b-2xl z-10"></div>
-          
-          {/* Screen content */}
-          <div className="h-full bg-white pt-8 pb-4 px-4">
-            <div className="h-full bg-gray-50 rounded-2xl p-4 flex flex-col">
-              {/* Header */}
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-sm font-semibold text-gray-900">Scan Barcode</h3>
-                <X className="w-4 h-4 text-gray-400" />
-              </div>
-              
-              {/* Camera viewfinder */}
-              <div className="flex-1 bg-gray-900 rounded-lg relative overflow-hidden mb-4">
-                {/* Grid overlay */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-48 h-48 border-2 border-white rounded-lg"></div>
-                </div>
-                {/* Corner brackets */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48">
-                  <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-blue-500"></div>
-                  <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-blue-500"></div>
-                  <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-blue-500"></div>
-                  <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-blue-500"></div>
-                </div>
-                {/* Scanning line animation */}
-                <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-blue-500 animate-pulse"></div>
-              </div>
-              
-              {/* Bottom info */}
-              <div className="bg-white rounded-lg p-3">
-                <div className="flex items-center gap-2 mb-2">
-                  <Scan className="w-4 h-4 text-blue-600" />
-                  <span className="text-xs font-medium text-gray-700">Position barcode in frame</span>
-                </div>
-                <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
-                  <div className="h-full bg-blue-600 w-3/4"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (featureId === 3) {
-    // Multi-Location Management - Location dashboard mockup
-    return (
-      <div className={`w-full bg-white rounded-lg shadow-xl border border-gray-200 overflow-hidden ${isMobile ? 'transform scale-90 origin-top' : ''}`} style={{ height: containerHeight }}>
-        {/* Header */}
-        <div className="h-14 bg-gray-50 border-b border-gray-200 flex items-center justify-between px-6">
-          <div className="flex items-center gap-3">
-            <Building className="w-5 h-5 text-blue-600" />
-            <h3 className="text-base font-semibold text-gray-900">Multi-Location Dashboard</h3>
-          </div>
-          <div className="flex gap-2">
-            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-            <span className="text-xs text-gray-600">Live</span>
-          </div>
-        </div>
-        
-        {/* Main Content */}
-        <div className="h-[calc(100%-3.5rem)] p-6">
-          <div className="grid grid-cols-3 gap-4 mb-6">
-            {locationData.map((loc, i) => (
-              <div key={i} className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                <div className="flex items-center gap-2 mb-2">
-                  <MapPin className="w-4 h-4 text-blue-600" />
-                  <span className="text-sm font-medium text-gray-900">{loc.location}</span>
-                </div>
-                <div className="text-2xl font-bold text-gray-900">{loc.value}</div>
-                <div className="text-xs text-gray-500 mt-1">items in stock</div>
-              </div>
-            ))}
-          </div>
-          
-          {/* Chart */}
-          <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-            <h4 className="text-sm font-semibold text-gray-700 mb-4">Stock Levels by Location</h4>
-            <div className="h-48 flex items-end gap-4">
-              {locationData.map((loc, i) => (
-                <div key={i} className="flex-1 flex flex-col items-center">
-                  <div 
-                    className="w-full bg-gradient-to-t from-blue-600 to-blue-400 rounded-t mb-2"
-                    style={{ height: `${(loc.value / 450) * 100}%` }}
-                  ></div>
-                  <span className="text-xs text-gray-600">{loc.location}</span>
-                  <span className="text-xs font-semibold text-gray-900">{loc.value}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // Default placeholder
-  return (
-    <div className={`w-full bg-gray-200 rounded-lg flex items-center justify-center border-2 border-dashed border-gray-300 ${isMobile ? 'transform scale-90 origin-top' : ''}`} style={{ height: containerHeight }}>
-      <div className="text-center text-gray-400">
-        <Camera className="w-16 h-16 mx-auto mb-4" />
-        <p className="text-sm font-medium">Image Placeholder</p>
-      </div>
-    </div>
   );
 };
 
@@ -1686,9 +1422,17 @@ export const HomePage = () => {
       <Helmet>
         {/* Non-render-blocking resource optimization */}
         
-        {/* Critical images preload with high priority - only images used on homepage */}
+        {/* Critical images preload with high priority */}
         {/* @ts-ignore - fetchpriority is a valid HTML attribute but not in TypeScript definitions yet */}
         <link rel="preload" as="image" href="/newmobile.png" fetchpriority="high" />
+        <link rel="preload" as="image" href="/optimized/desktop.png" media="(min-width: 1024px)" />
+        <link rel="preload" as="image" href="/optimized/mobile.png" media="(max-width: 1023px)" />
+        <link rel="preload" as="image" href="/optimized/image.png" media="(min-width: 1024px)" />
+        <link rel="preload" as="image" href="/optimized/image-mobile.png" media="(max-width: 1023px)" />
+        <link rel="preload" as="image" href="/optimized/analytics.png" media="(min-width: 1024px)" />
+        <link rel="preload" as="image" href="/optimized/analytics-mobile.png" media="(max-width: 1023px)" />
+        <link rel="preload" as="image" href="/logo.png" />
+        <link rel="preload" as="image" href="/Inventory-Management.png" />
         
         {/* Resource hints managed in index.html to avoid duplicates and stay within recommended limits */}
         
@@ -1701,7 +1445,11 @@ export const HomePage = () => {
         <meta name="format-detection" content="telephone=no" />
         <meta name="color-scheme" content="light" />
         
-        {/* CSS is bundled by Vite and loaded automatically - no need to preload */}
+        {/* Non-render-blocking CSS loading */}
+        <link rel="preload" as="style" href="/index.css" onLoad={() => {}} />
+        <noscript>
+          {`<link rel="stylesheet" href="/index.css" />`}
+        </noscript>
         
         {/* Non-render-blocking JavaScript loading */}
         {/* Note: JavaScript files are handled by Vite bundler automatically */}
@@ -1893,7 +1641,7 @@ export const HomePage = () => {
         {/* Light Blue Gradient Background */}
         <div className="absolute inset-0">
           {/* Base gradient - light blue to white */}
-          <div className="absolute inset-0 bg-gradient-to-b from-blue-200 via-blue-100 to-white" />
+          <div className="absolute inset-0 bg-gradient-to-b from-blue-50/80 via-white/90 to-white" />
           
           {/* Subtle radial gradients at top center */}
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_center,rgba(59,130,246,0.1)_0%,transparent_50%)]" />
@@ -1908,36 +1656,88 @@ export const HomePage = () => {
 
               {/* Pill-shaped Badge */}
               <div className="mb-4 sm:mb-6 flex justify-center ">
-                <div className="inline-flex items-center rounded-full overflow-hidden shadow-lg border-1 border-white">
-                <span className="px-4 py-2 bg-blue-100 text-blue-700 text-sm font-semibold rounded-full">
-                    Next-Gen Inventory Solution
-                    </span>
-                </div>
+              <div className="inline-block mb-4 sm:mb-6">
+                <h1 className="px-4 py-2 bg-blue-100 text-blue-700 text-sm font-semibold rounded-full">
+                  Smart Inventory Management Software
+                </h1>
+              </div>
               </div>
 
               {/* Main Headline */}
-                <div className="mb-6 mt-6 sm:mb-8 md:mb-12 pl-24 pr-24">
-                  <h1 className="text-[clamp(2.5rem,5vw,4.5rem)] sm:text-[clamp(3rem,6vw,5rem)] md:text-[clamp(3.5rem,7vw,5.5rem)] font-bold text-gray-900 leading-tight tracking-tight">
-                    <strong className="text-blue-600">Simple</strong> Inventory Management Platform
-                  </h1>
+              <BounceInWhenVisible delay={200}>
+                <div className="mb-6 mt-6 sm:mb-8 md:mb-12">
+                  <h2 className="text-[clamp(2.5rem,5vw,4.5rem)] sm:text-[clamp(3rem,6vw,5rem)] md:text-[clamp(3.5rem,7vw,5.5rem)] font-bold text-gray-900 leading-tight tracking-tight">
+                  Best Inventory Automation Tool for 2025
+    
+                  </h2>
                 </div>
+              </BounceInWhenVisible>
               
               {/* Subtitle */}
+              <SlideUpWhenVisible delay={400}>
                 <div className="mb-8 sm:mb-10 md:mb-12 max-w-3xl mx-auto px-4">
-                  <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed">
-                    Stop losing money on inventory mistakes. Simple inventory management for SMBs. Track stock, prevent stockouts, optimize dead stock. Free forever plan available.
-                  </p>
+                  <h3 className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed">
+                  Best Inventory Management Software of 2025 – Compare Features, Pricing & Reviews. Systems for Efficiency & Real-Time Control.
+                  </h3>
                 </div>
+              </SlideUpWhenVisible>
 
               {/* CTA Button */}
+              <FadeInWhenVisible delay={600}>
                 <div className="flex justify-center mb-6 sm:mb-8 md:mb-10 px-4">
                   <button
                     onClick={() => navigate('/pricing')}
                     className="bg-blue-600 text-white hover:bg-blue-700 px-8 py-3 rounded-lg font-medium transition-all duration-300 shadow-md hover:shadow-lg"
                   >
-                    Try for free
+                    Try Free Forever Plan
                   </button>
                 </div>
+              </FadeInWhenVisible>
+
+              
+            </div>
+
+            {/* Mobile mockup with floating cards - Centered underneath */}
+            <div className="flex items-center justify-center mt-8 sm:mt-12 md:mt-16">
+              <div className="relative w-full max-w-sm sm:max-w-md px-4">
+                
+                {/* Floating Feature Cards - Hidden on mobile for better performance */}
+                <div className="hidden md:block">
+                  <FloatingFeatureCard
+                    icon={Scan}
+                    title="Track Your Progress"
+                    subtitle="Barcode Scanner"
+                    metric="+247%"
+                    position="top-0 right-60"
+                    delay={900}
+                  />
+                  
+
+                  
+                  <FloatingFeatureCard
+                    icon={Users}
+                    title="Track your inventory journey effortlessly"
+                    subtitle="Reports & Analytics"
+                    metric="12,450.00/month"
+                    position="top-32 left-60"
+                    delay={1100}
+                  />
+                  
+                  <FloatingFeatureCard
+                    icon={Bell}
+                    title="Low Stock Alerts"
+                    subtitle="Smart Notifications"
+                    metric="3 alerts"
+                    position="bottom-32 right-60"
+                    delay={1200}
+                  />
+                </div>
+
+                {/* Central Mobile Phone Mockup */}
+                <div className="relative z-10">
+                  <MobilePhoneMockup />
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -1969,106 +1769,151 @@ export const HomePage = () => {
 
 
 
+      {/* Everything You Need Section */}
+      <section className="py-12 sm:py-14 md:py-16 lg:py-18 bg-blue-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Header */}
+          <FadeInWhenVisible>
+            <div className="text-center mb-8 sm:mb-10 md:mb-12 lg:mb-14">
+              <div className="inline-block mb-4 sm:mb-6">
+                <span className="px-4 py-2 bg-blue-100 text-blue-700 text-sm font-semibold rounded-full">
+                  Powerful Features
+                </span>
+              </div>
+              <h2 className="lg:pl-24 lg:pr-24 lg:pt-6 lg:pb-6 text-[clamp(2rem,4vw,3.5rem)] sm:text-[clamp(2.5rem,5vw,4rem)] text-gray-800 mb-3 leading-tight px-4 text-center">
+              <BlurText className="justify-center" text="Everything You Need To Manage Inventory" onAnimationComplete={handleAnimationComplete} /> 
 
+              </h2>
+              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 max-w-3xl mx-auto px-4 leading-relaxed">
+                Keep track of your inventory, see what's selling, and get alerts when you need to reorder.
+              </p>
+            </div>
+          </FadeInWhenVisible>
 
-
-
-      {/* Everything You Need Section - Multiple Feature Sections */}
-      {featureCards.map((feature, sectionIndex) => {
-        // Alternate layout: even indices (0, 2) have text left/image right, odd indices (1) have image left/text right
-        const isImageLeft = sectionIndex % 2 === 1;
-        
-        return (
-          <section key={feature.id} className="py-12 sm:py-14 md:py-16 lg:py-18 bg-blue-50">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <FadeInWhenVisible delay={sectionIndex * 100}>
-                {/* Two-column layout: alternating based on sectionIndex */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-                  
-                  {/* Feature Illustration - Desktop (shown first when image is on left) */}
-                  {isImageLeft && (
-                    <div className="hidden lg:block">
-                      <FeatureIllustration featureId={feature.id} isMobile={false} />
-                    </div>
-                  )}
-
-                  {/* Feature Content */}
-                  <div className="flex flex-col">
-                    {/* Header with icon and badge */}
-                    <div className="flex items-center gap-2 mb-6">
-                    <div className="inline-block mb-4 sm:mb-6">
-                      <Plus className="w-3 h-3 text-white" />
-                    </div>
-                    <span className="px-4 py-2 bg-blue-100 text-blue-700 text-sm font-semibold rounded-full">
+          {/* Features - Desktop Grid / Mobile Carousel */}
+          <FadeInWhenVisible delay={200}>
+            {/* Desktop: Full width grid showing all cards */}
+            <div className="hidden md:grid md:grid-cols-3 md:gap-8 lg:gap-10 mb-8">
+              {featureCards.map((feature, index) => (
+                <motion.div
+                  key={feature.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  className="bg-white rounded-2xl p-8 h-full flex flex-col shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300 hover:scale-105"
+                >
+                  {/* Badge */}
+                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-100 text-blue-700 text-sm font-medium mb-6 w-fit">
+                    <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
                     {feature.badge}
-                    </span>
+                  </div>
+
+                  {/* Icon */}
+                  <div className="flex items-center justify-center mb-6">
+                    <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg">
+                      {feature.icon}
                     </div>
+                  </div>
 
-                    {/* Main Title */}
-                    <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-8 leading-tight">
+                  {/* Content */}
+                  <div className="flex-1 flex flex-col">
+                    <h3 className="text-xl font-bold text-gray-900 mb-4 leading-tight">
                       {feature.title}
-                    </h2>
-
-                    {/* Feature List - Vertical Stack using details */}
-                    <div className="space-y-6 mb-8">
+                    </h3>
+                    <p className="text-gray-600 mb-6 flex-1 leading-relaxed">
+                      {feature.description}
+                    </p>
+                    
+                    {/* Details */}
+                    <div className="space-y-2">
                       {feature.details.map((detail, detailIndex) => (
-                        <div key={detailIndex} className="flex items-start gap-4">
-                          {/* Small Icon on Left */}
-                          <div className="flex-shrink-0 w-5 h-5 text-gray-500 mt-1">
-                            {React.cloneElement(feature.icon, { className: "w-5 h-5 text-gray-500" })}
-                          </div>
-                          {/* Text on Right */}
-                          <div className="flex-1">
-                            <p className="text-base sm:text-lg text-gray-700 leading-relaxed">
-                              {detail}
-                            </p>
-                          </div>
+                        <div key={detailIndex} className="flex items-center gap-2 text-sm text-gray-500">
+                          <div className="w-1.5 h-1.5 bg-blue-500 rounded-full"></div>
+                          {detail}
                         </div>
                       ))}
                     </div>
-
-                    {/* CTA Section */}
-                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                      <Button
-                        onClick={() => navigate('/auth')}
-                        className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300"
-                      >
-                        Start Free Trial
-                      </Button>
-                      <Link
-                        to="/features"
-                        className="text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1 transition-colors duration-300"
-                      >
-                        See All Features <ArrowRight className="w-4 h-4" />
-                      </Link>
-                    </div>
                   </div>
-
-                  {/* Feature Illustration - Desktop (shown after text when image is on right) */}
-                  {!isImageLeft && (
-                    <div className="hidden lg:block">
-                      <FeatureIllustration featureId={feature.id} isMobile={false} />
-                    </div>
-                  )}
-
-                  {/* Mobile: Feature Illustration */}
-                  <div className="lg:hidden mt-8">
-                    <div className="w-full overflow-hidden rounded-lg">
-                      <FeatureIllustration featureId={feature.id} isMobile={true} />
-                    </div>
-                  </div>
-
-                </div>
-              </FadeInWhenVisible>
+                </motion.div>
+              ))}
             </div>
-          </section>
-        );
-      })}
+
+            {/* Mobile: Horizontal carousel */}
+            <div className="md:hidden">
+              <HorizontalScrollCarousel
+                desktopCardsVisible={3}
+                mobileCardsVisible={1}
+                cardSpacing={24}
+                showArrows={true}
+                showDots={true}
+                autoplay={false}
+                className="mb-8"
+                cardClassName="h-full"
+              >
+                {featureCards.map((feature, index) => (
+                  <div
+                    key={feature.id}
+                    className="bg-white rounded-2xl p-6 h-full flex flex-col shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300"
+                  >
+                    {/* Badge */}
+                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-100 text-blue-700 text-sm font-medium mb-6 w-fit">
+                      <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
+                      {feature.badge}
+                    </div>
+
+                    {/* Icon */}
+                    <div className="flex items-center justify-center mb-6">
+                      <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg">
+                        {feature.icon}
+                      </div>
+                    </div>
+
+                    {/* Content */}
+                    <div className="flex-1 flex flex-col">
+                      <h3 className="text-lg font-bold text-gray-900 mb-4 leading-tight">
+                        {feature.title}
+                      </h3>
+                      <p className="text-gray-600 mb-6 flex-1 leading-relaxed text-sm">
+                        {feature.description}
+                      </p>
+                      
+                      {/* Details */}
+                      <div className="space-y-2">
+                        {feature.details.map((detail, detailIndex) => (
+                          <div key={detailIndex} className="flex items-center gap-2 text-xs text-gray-500">
+                            <div className="w-1 h-1 bg-blue-500 rounded-full"></div>
+                            {detail}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </HorizontalScrollCarousel>
+            </div>
+          </FadeInWhenVisible>
+        </div>
+      </section>
 
 
 
-      <section className="py-16 sm:py-20 md:py-24 bg-blue-50">
+      <section className="py-16 sm:py-20 md:py-24 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          {/* Header Section */}
+          <FadeInWhenVisible>
+            <div className="text-center mb-12 sm:mb-16 md:mb-20">
+              {/* Main Title */}
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-gray-900 mb-4 sm:mb-6 leading-tight">
+                Start Tracking In 3 Simple Steps
+              </h2>
+              
+              {/* Subtitle */}
+              <p className="text-lg sm:text-xl md:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
+                  Get started in minutes with our easy-to-use platform.
+              </p>
+            </div>
+          </FadeInWhenVisible>
 
           {/* Three Steps with Connecting Line */}
           <div className="relative">
@@ -2178,6 +2023,9 @@ export const HomePage = () => {
                   Your Business Tools
                 </span>
               </h2>
+              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 max-w-3xl mx-auto px-4 leading-relaxed">
+                Seamlessly integrate with your existing systems and streamline your workflow
+              </p>
             </div>
           </FadeInWhenVisible>
 
@@ -2207,8 +2055,224 @@ export const HomePage = () => {
 
 
 
+
+
+      {/* Why Choose Us Section */}
+      <section className="py-12 sm:py-14 md:py-16 lg:py-18 bg-blue-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Main White Card */}
+          <div className="bg-white rounded-3xl shadow-xl p-8 sm:p-12 md:p-16">
+          {/* Header */}
+          <FadeInWhenVisible>
+            <div className="text-center mb-10 sm:mb-12 md:mb-16 lg:mb-20">
+            <h2 className="lg:pl-24 lg:pr-24 lg:pt-6 lg:pb-6 text-[clamp(2rem,4vw,3.5rem)] sm:text-[clamp(2.5rem,5vw,4rem)] text-gray-800 mb-3 leading-tight px-4 text-center">
+            <BlurText className="justify-center" text="Why Choose Stockflow" onAnimationComplete={handleAnimationComplete} /> 
+
+              </h2>
+              <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-4 sm:mb-5 md:mb-6 max-w-2xl mx-auto px-4">
+                The smart choice for inventory management
+              </p>
+              <div className="inline-flex items-center p-12 gap-2 bg-blue-600 px-16 py-1 rounded-lg"></div>
+            </div>
+          </FadeInWhenVisible>
+
+            {/* Desktop: 2x2 Grid Layout */}
+            <FadeInWhenVisible delay={200}>
+              <div className="hidden md:grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-4xl mx-auto">
+                {whyChooseUsCarousel.map((item, index) => (
+                  <motion.div
+                    key={item.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    className="bg-white border-2 border-gray-200 shadow-lg rounded-2xl p-6 hover:shadow-lg transition-all duration-300"
+                  >
+                    <div className="text-center">
+                      {/* Icon */}
+                      <div className={`w-16 h-16 mx-auto mb-4 rounded-xl flex items-center justify-center ${
+                        index === 0 ? 'bg-blue-400' : 
+                        index === 1 ? 'bg-purple-500' : 
+                        index === 2 ? 'bg-red-500' : 'bg-green-500'
+                      }`}>
+                        <div className="text-white">
+                          {item.icon}
+                        </div>
+                      </div>
+                      
+                      {/* Content */}
+                      <h3 className="text-lg font-bold text-gray-900 mb-3">
+                        {item.title}
+                      </h3>
+                      <p className="text-gray-600 leading-relaxed text-sm">
+                        {item.description}
+                      </p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Mobile: Horizontal carousel */}
+              <div className="md:hidden">
+                <HorizontalScrollCarousel
+                  desktopCardsVisible={2}
+                  mobileCardsVisible={1}
+                  cardSpacing={24}
+                  showArrows={true}
+                  showDots={true}
+                  autoplay={true}
+                  autoplayDelay={4000}
+                  className="mb-8"
+                  cardClassName="h-full"
+                >
+                  {whyChooseUsCarousel.map((item, index) => (
+                    <div
+                      key={item.id}
+                      className="bg-white border-2 border-gray-200 shadow-lg rounded-2xl p-6 hover:shadow-lg transition-all duration-300"
+                    >
+                      <div className="text-center">
+                        {/* Icon */}
+                        <div className={`w-16 h-16 mx-auto mb-4 rounded-xl flex items-center justify-center ${
+                          index === 0 ? 'bg-blue-400' : 
+                          index === 1 ? 'bg-purple-500' : 
+                          index === 2 ? 'bg-red-500' : 'bg-green-500'
+                        }`}>
+                          <div className="text-white">
+                            {item.icon}
+                          </div>
+                        </div>
+                        
+                        {/* Content */}
+                        <h3 className="text-lg font-bold text-gray-900 mb-3">
+                          {item.title}
+                        </h3>
+                        <p className="text-gray-600 leading-relaxed text-sm">
+                          {item.description}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </HorizontalScrollCarousel>
+              </div>
+            </FadeInWhenVisible>
+          </div>
+        </div>
+      </section>
+
+      {/* Commercial Solutions Section - Internal Linking to SEO Pages */}
+      <section className="py-12 sm:py-14 md:py-16 lg:py-18 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <FadeInWhenVisible>
+            <div className="text-center mb-8 sm:mb-10 md:mb-12">
+              <div className="inline-block mb-4 sm:mb-6">
+                <span className="px-4 py-2 bg-blue-100 text-blue-700 text-sm font-semibold rounded-full">
+                  EXPLORE OUR SOLUTIONS
+                </span>
+              </div>
+              <h2 className="text-[clamp(2rem,4vw,3.5rem)] sm:text-[clamp(2.5rem,5vw,4rem)] text-gray-800 mb-3 leading-tight">
+                Find the Perfect Inventory Solution
+              </h2>
+              <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                Compare top software options, discover cloud solutions, try free plans, and explore industry-specific tools
+              </p>
+            </div>
+          </FadeInWhenVisible>
+
+          <FadeInWhenVisible delay={200}>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+              {/* Best Software Link */}
+              <Link 
+                to="/best-inventory-management-software"
+                className="group bg-white border-2 border-gray-200 rounded-2xl p-6 hover:border-blue-500 hover:shadow-xl transition-all duration-300 flex flex-col"
+              >
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center">
+                    <Trophy className="w-6 h-6 text-white" />
+                  </div>
+                  <Star className="w-5 h-5 text-yellow-400 fill-current" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                  Compare Top 10 Software
+                </h3>
+                <p className="text-gray-600 text-sm mb-4 flex-1">
+                  See pricing, features & reviews for the best inventory management solutions in 2025
+                </p>
+                <span className="text-blue-600 font-semibold text-sm inline-flex items-center group-hover:translate-x-1 transition-transform">
+                  Compare now →
+                </span>
+              </Link>
+
+              {/* Online Software Link */}
+              <Link 
+                to="/online-inventory-software"
+                className="group bg-white border-2 border-gray-200 rounded-2xl p-6 hover:border-blue-500 hover:shadow-xl transition-all duration-300 flex flex-col"
+              >
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center">
+                    <Globe className="w-6 h-6 text-white" />
+                  </div>
+                  <Cloud className="w-5 h-5 text-green-500" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                  Cloud-Based Management
+                </h3>
+                <p className="text-gray-600 text-sm mb-4 flex-1">
+                  Discover online inventory solutions with real-time sync and mobile access
+                </p>
+                <span className="text-blue-600 font-semibold text-sm inline-flex items-center group-hover:translate-x-1 transition-transform">
+                  Explore cloud solutions →
+                </span>
+              </Link>
+
+              {/* Free Software Link */}
+              <Link 
+                to="/magazijnbeheer-software-gratis"
+                className="group bg-white border-2 border-gray-200 rounded-2xl p-6 hover:border-blue-500 hover:shadow-xl transition-all duration-300 flex flex-col"
+              >
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center">
+                    <Gift className="w-6 h-6 text-white" />
+                  </div>
+                  <span className="text-2xl">🎁</span>
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                  Free Up to 30 Products
+                </h3>
+                <p className="text-gray-600 text-sm mb-4 flex-1">
+                  Start with our free warehouse management software for small businesses
+                </p>
+                <span className="text-blue-600 font-semibold text-sm inline-flex items-center group-hover:translate-x-1 transition-transform">
+                  Start free today →
+                </span>
+              </Link>
+
+              {/* Horeca Software Link */}
+              <Link 
+                to="/voorraadbeheer-horeca"
+                className="group bg-white border-2 border-gray-200 rounded-2xl p-6 hover:border-blue-500 hover:shadow-xl transition-all duration-300 flex flex-col"
+              >
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center">
+                    <Utensils className="w-6 h-6 text-white" />
+                  </div>
+                  <span className="text-2xl">🍽️</span>
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                  Restaurant & Café Tools
+                </h3>
+                <p className="text-gray-600 text-sm mb-4 flex-1">
+                  Specialized inventory management for hospitality - reduce food waste by 40%
+                </p>
+                <span className="text-blue-600 font-semibold text-sm inline-flex items-center group-hover:translate-x-1 transition-transform">
+                  Learn more →
+                </span>
+              </Link>
+            </div>
+          </FadeInWhenVisible>
+        </div>
+      </section>
+
       {/* Resources Section - Internal Linking to Orphan Pages */}
-      <section className="py-12 sm:py-14 md:py-16 lg:py-18 bg-blue-50 hidden">
+      <section className="py-12 sm:py-14 md:py-16 lg:py-18 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <FadeInWhenVisible>
             <div className="text-center mb-8 sm:mb-10 md:mb-12">
@@ -2381,6 +2445,183 @@ export const HomePage = () => {
           </FadeInWhenVisible>
         </div>
       </section>
+
+      {/* FAQ Section */}
+      <section className="py-16 sm:py-20 md:py-24 lg:py-28 bg-blue-50">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Header */}
+          <FadeInWhenVisible>
+            <div className="text-center mb-12 sm:mb-16">
+              <div className="inline-block mb-4 sm:mb-6">
+                <span className="px-4 py-2 bg-blue-100 text-blue-700 text-sm font-semibold rounded-full">
+                  FREQUENTLY ASKED QUESTIONS
+                </span>
+              </div>
+              <h2 className="lg:pl-24 lg:pr-24 lg:pt-6 lg:pb-6 text-[clamp(2rem,4vw,3.5rem)] sm:text-[clamp(2.5rem,5vw,4rem)] text-gray-800 mb-3 leading-tight px-4 text-center">
+              Got Questions? <br className="hidden sm:block" />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-600">
+                  We've Got Answers
+                </span>
+              </h2>
+              <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto px-4 leading-relaxed">
+                Everything you need to know about StockFlow
+              </p>
+            </div>
+          </FadeInWhenVisible>
+
+          {/* FAQ Search Bar */}
+          <FadeInWhenVisible delay={100}>
+            <div className="max-w-md mx-auto mb-8 sm:mb-10">
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                </div>
+                <input
+                  type="text"
+                  placeholder="Search FAQs..."
+                  value={faqSearchTerm}
+                  onChange={(e) => setFaqSearchTerm(e.target.value)}
+                  className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-xl leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base"
+                />
+                {faqSearchTerm && (
+                  <button
+                    onClick={() => setFaqSearchTerm('')}
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                  >
+                    <svg className="h-5 w-5 text-gray-400 hover:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                )}
+              </div>
+            </div>
+          </FadeInWhenVisible>
+
+          {/* Search Results Info */}
+          {faqSearchTerm && (
+            <FadeInWhenVisible delay={150}>
+              <div className="text-center mb-6">
+                <p className="text-sm text-gray-600">
+                  {filteredFaqData.length > 0 
+                    ? `Found ${filteredFaqData.length} FAQ${filteredFaqData.length === 1 ? '' : 's'} matching "${faqSearchTerm}"`
+                    : `No FAQs found matching "${faqSearchTerm}"`
+                  }
+                </p>
+              </div>
+            </FadeInWhenVisible>
+          )}
+
+          {/* FAQ - Mobile Carousel / Desktop Accordion */}
+          {/* Mobile Carousel - Only visible on mobile */}
+          <div className="md:hidden">
+            {filteredFaqData.length > 0 ? (
+              <MobileCarousel 
+                items={filteredFaqData}
+                renderItem={(faq, index) => (
+                <FadeInWhenVisible key={index} delay={index * 50}>
+                  <div className="bg-white rounded-xl border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 h-full">
+                    {/* Question Header */}
+                    <div className="px-6 py-5">
+                      <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">
+                        {faq.question}
+                      </h3>
+                      {faq.benefit && (
+                        <p className="text-sm text-blue-600 font-medium mb-3">
+                          {faq.benefit}
+                        </p>
+                      )}
+                    </div>
+                  
+                  </div>
+                </FadeInWhenVisible>
+                )}
+              />
+            ) : (
+              <div className="text-center py-8">
+                <p className="text-gray-500">No FAQs found matching your search.</p>
+              </div>
+            )}
+          </div>
+
+          {/* Desktop AnimatedList FAQ - Only visible on desktop */}
+          <div className="hidden md:block">
+            {filteredFaqData.length > 0 ? (
+              <div className="flex gap-8">
+                <div className="flex-1">
+                  <AnimatedList
+                    items={filteredFaqData}
+                    onItemSelect={(item, index) => {
+                      setSelectedFAQ(selectedFAQ === index ? -1 : index);
+                      setOpenFAQ(index);
+                    }}
+                    showGradients={true}
+                    enableArrowNavigation={true}
+                    displayScrollbar={true}
+                    isFAQMode={true}
+                    selectedFAQIndex={selectedFAQ === -1 ? undefined : selectedFAQ}
+                    onFAQSelect={(index) => {
+                      setSelectedFAQ(selectedFAQ === index ? -1 : index);
+                      setOpenFAQ(index);
+                    }}
+                    className="w-full"
+                  />
+                </div>
+                
+                {/* FAQ Answer Panel */}
+                {selectedFAQ >= 0 && filteredFaqData[selectedFAQ] && (
+                  <div className="flex-1">
+                    <FadeInWhenVisible delay={100}>
+                      <div className="bg-white rounded-xl border border-gray-200 shadow-lg p-6 sticky top-4">
+                        <h3 className="text-lg font-semibold text-gray-900 mb-3">
+                          {filteredFaqData[selectedFAQ].question}
+                        </h3>
+                        {filteredFaqData[selectedFAQ].benefit && (
+                          <p className="text-sm text-blue-600 font-medium mb-4">
+                            {filteredFaqData[selectedFAQ].benefit}
+                          </p>
+                        )}
+                        <p className="text-base text-gray-600 leading-relaxed">
+                          {filteredFaqData[selectedFAQ].answer}
+                        </p>
+                      </div>
+                    </FadeInWhenVisible>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="text-center py-8">
+                <p className="text-gray-500">No FAQs found matching your search.</p>
+              </div>
+            )}
+          </div>
+
+          {/* CTA after FAQ */}
+          <FadeInWhenVisible delay={400}>
+            <div className="text-center mt-12 sm:mt-16">
+              <p className="text-lg text-gray-600 mb-6">
+                Still have questions? We're here to help!
+              </p>
+              <Button
+                onClick={() => navigate('/contact')}
+                className="w-full sm:w-auto bg-blue-600 text-white hover:bg-blue-700
+                px-10 py-5 sm:px-12 sm:py-6 md:px-14 md:py-7
+                text-lg sm:text-xl md:text-2xl
+                font-bold rounded-lg transform hover:scale-105
+                transition-all duration-300
+                shadow-2xl hover:shadow-3xl
+                ring-0 focus:ring-4 focus:ring-white/50 focus:outline-none
+                min-h-[56px] sm:min-h-[64px]"       
+              >
+                Contact Support
+              </Button>
+            </div>
+          </FadeInWhenVisible>
+
+        </div>
+      </section>
+
 
 
 
