@@ -162,9 +162,9 @@ export default function InventoryManagementSoftware() {
   return (
     <SeoPageLayout title="Inventory Management Software">
       <SEO
-        title="Inventory Management Software 2025 | Free Trial | StockFlow"
-        description="Best inventory management software for SMBs. Real-time tracking, automated alerts, barcode scanning. Start FREE - no credit card. Join 500+ businesses. ✓"
-        keywords="inventory management software, inventory software management, software for inventory management, softwares for inventory management, inventory management software best, stock management software, inventory tracking, stock control, warehouse management, inventory system, best inventory management software, inventory management online, inventory tracking programs, inventory software, inventory management system, stockflow, stock flow"
+        title="Inventory Management Software 2025: Best Cloud Solution | Free Trial"
+        description="Discover the best inventory management software for your business. Real-time tracking, automated alerts, barcode scanning. Start FREE - no credit card. Join 500+ businesses. ✓"
+        keywords="inventory management software, inventory software management, software for inventory management, softwares for inventory management, inventory management software best, stock management software, inventory tracking, stock control, warehouse management, inventory system, inventory management software best, inventory management online, inventory tracking programs, inventory software, inventory management system, stockflow, stock flow"
         url="https://www.stockflow.be/inventory-management-software"
         locale="en"
         alternateLanguages={[
