@@ -194,9 +194,11 @@ const AppRouter = () => {
     }
 
     return (
-      <Suspense fallback={<LoadingScreen />}>
-        {children}
-      </Suspense>
+      <ThemeProvider>
+        <Suspense fallback={<LoadingScreen />}>
+          {children}
+        </Suspense>
+      </ThemeProvider>
     );
   };
 
@@ -329,7 +331,6 @@ const AuthRoute = () => {
   };
 
   return (
-    <ThemeProvider>
     <ContentWrapper>
       <Routes>
         {/* Openbare routes */}
@@ -456,7 +457,6 @@ const AuthRoute = () => {
         <Route path="*" element={<NotFound />} />
       </Routes>
     </ContentWrapper>
-    </ThemeProvider>
   );
 };
 
