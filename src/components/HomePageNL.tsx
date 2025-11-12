@@ -1,4 +1,4 @@
-import React, { useState, useRef, lazy } from 'react';
+import React, { useState } from 'react';
 import Header from './HeaderPublic';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
@@ -21,8 +21,6 @@ import { generateComprehensiveStructuredData } from '../lib/structuredData';
 import { useAuth } from '@/hooks/useAuth';
 import { useSubscription } from '@/hooks/useSubscription';
 import { useIsMobile } from '@/hooks/useWindowSize';
-import { GoogleAdsTracking } from '@/utils/googleAdsTracking';
-import { ConversionTrackingTest } from './ConversionTrackingTest';
 import { SavingsCalculator } from './SavingsCalculator';
 import Footer from './Footer';
 import { ContactForm } from './ContactForm';
@@ -328,80 +326,8 @@ export const HomePageNL = () => {
   const { formatPrice } = useCurrency();
   const { user } = useAuth();
 
-  // Initialize tracking with comprehensive error suppression
-  React.useEffect(() => {
-    const handleTrackingError = (event: ErrorEvent) => {
-      const errorMessage = event.message || '';
-      const errorSource = event.filename || '';
-      
-      if (errorMessage.includes('facebook.com') || errorSource.includes('fbevents')) {
-        event.preventDefault();
-        return false;
-      }
-      
-      if (errorMessage.includes('googleadservices') || errorMessage.includes('googleads')) {
-        event.preventDefault();
-        return false;
-      }
-      
-      if (errorMessage.includes('CORS') || errorMessage.includes('Access-Control-Allow-Origin')) {
-        event.preventDefault();
-        return false;
-      }
-    };
-
-    window.addEventListener('error', handleTrackingError);
-    window.addEventListener('unhandledrejection', (event) => {
-      if (event.reason && event.reason.toString().includes('googleadservices')) {
-        event.preventDefault();
-      }
-    });
-
-    if (process.env.NODE_ENV === 'production') {
-      const timer = setTimeout(() => {
-        try {
-          GoogleAdsTracking.initializeGoogleAdsTracking();
-          GoogleAdsTracking.trackPageViewConversion('homepage-nl', 1, {
-            page_type: 'landing_page',
-            language: 'nl',
-            conversion_type: 'page_view'
-          });
-        } catch (error) {
-          // Silently fail
-        }
-      }, 1000);
-      
-      return () => {
-        clearTimeout(timer);
-        window.removeEventListener('error', handleTrackingError);
-      };
-    }
-    
-    return () => {
-      window.removeEventListener('error', handleTrackingError);
-    };
-  }, []);
-
   const handleLoginClick = () => {
     logger.info('CTA click NL', { id: 'start-nu' });
-    
-    try {
-      GoogleAdsTracking.trackCustomConversion(
-        'start_now_click_nl',
-        'AW-17574614935',
-        1,
-        {
-          cta_location: 'hero_section',
-          cta_type: 'primary_button',
-          language: 'nl',
-          conversion_type: 'registration_intent'
-        }
-      );
-    } catch (error) {
-      if (process.env.NODE_ENV === 'development') {
-        console.warn('Google Ads tracking failed:', error);
-      }
-    }
     
     navigate('/pricing');
   };

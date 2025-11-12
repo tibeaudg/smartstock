@@ -7,7 +7,10 @@ const __dirname = path.dirname(__filename);
 const repoRoot = path.resolve(__dirname, '..');
 
 const BASE_URL = process.env.SITE_URL?.replace(/\/$/, '') || 'https://www.stockflow.be';
-const SEO_PAGES_DIR = path.join(repoRoot, 'src', 'pages', 'SEO');
+const SEO_PAGES_DIRS = [
+  path.join(repoRoot, 'src', 'pages', 'SEO'),
+  path.join(repoRoot, 'src', 'pages', 'seo'),
+];
 const BLOG_JSON_FALLBACK = path.join(repoRoot, 'src', 'lib', 'blogposts.json');
 const OUTPUT_SITEMAP = path.join(repoRoot, 'public', 'sitemap.xml');
 const OUTPUT_SITEMAP_INDEX = path.join(repoRoot, 'public', 'sitemap-index.xml');
@@ -16,18 +19,56 @@ const OUTPUT_SITEMAP_SEO = path.join(repoRoot, 'public', 'sitemap-seo.xml');
 const OUTPUT_SITEMAP_BLOG = path.join(repoRoot, 'public', 'sitemap-blog.xml');
 
 // Read actual SEO page routes
-function readSeoRoutes() {
-  try {
-    const entries = fs.readdirSync(SEO_PAGES_DIR, { withFileTypes: true });
-    const routes = entries
-      .filter((e) => e.isFile() && e.name.endsWith('.tsx'))
-      .map((e) => `/${e.name.replace(/\.tsx$/, '')}`)
-      .sort();
+function collectRoutesFromDir(dirPath, baseDir = dirPath) {
+  const routes = [];
+  if (!fs.existsSync(dirPath)) {
     return routes;
-  } catch (err) {
-    console.error('Error reading SEO routes:', err);
-    return [];
   }
+
+  const entries = fs.readdirSync(dirPath, { withFileTypes: true });
+  for (const entry of entries) {
+    if (entry.isDirectory()) {
+      const childRoutes = collectRoutesFromDir(
+        path.join(dirPath, entry.name),
+        baseDir
+      );
+      routes.push(...childRoutes);
+      continue;
+    }
+
+    if (!entry.isFile() || !entry.name.endsWith('.tsx')) {
+      continue;
+    }
+
+    const fullPath = path.join(dirPath, entry.name);
+    const relative = path
+      .relative(baseDir, fullPath)
+      .replace(/\\/g, '/')
+      .replace(/index\.tsx$/i, '')
+      .replace(/\.tsx$/, '')
+      .replace(/\/+$/, '');
+
+    if (!relative || relative === '.') {
+      // Skip empty slugs that could occur if an index.tsx is at root
+      continue;
+    }
+
+    routes.push(`/${relative}`);
+  }
+
+  return routes;
+}
+
+function readSeoRoutes() {
+  const collected = SEO_PAGES_DIRS
+    .flatMap((dir) => collectRoutesFromDir(dir))
+    // Guard against case-insensitive filesystems returning duplicates
+    .reduce((acc, route) => {
+      acc.add(route);
+      return acc;
+    }, new Set());
+
+  return Array.from(collected).sort();
 }
 
 // Read blog posts from Supabase or JSON fallback
@@ -102,13 +143,19 @@ async function generateOptimizedSitemap() {
   
   // Define all public static routes with their priorities and change frequencies
   const staticRoutes = [
-    { path: '/', priority: '1.0', changefreq: 'daily' },          // Homepage
-    { path: '/features', priority: '0.9', changefreq: 'weekly' }, // Features page
-    { path: '/pricing', priority: '0.9', changefreq: 'weekly' },  // Pricing page
-    { path: '/contact', priority: '0.7', changefreq: 'monthly' }, // Contact page
-    { path: '/about', priority: '0.6', changefreq: 'monthly' },   // About page
+    { path: '/', priority: '1.0', changefreq: 'daily' },              // Homepage
+    { path: '/nl', priority: '0.9', changefreq: 'weekly' },           // Dutch homepage
+    { path: '/features', priority: '0.9', changefreq: 'weekly' },     // Features page
+    { path: '/pricing', priority: '0.9', changefreq: 'weekly' },      // Pricing page
+    { path: '/nl/pricing', priority: '0.8', changefreq: 'weekly' },   // Dutch pricing page
+    { path: '/auth', priority: '0.6', changefreq: 'monthly' },        // Auth landing
+    { path: '/integrations', priority: '0.6', changefreq: 'monthly' },
+    { path: '/mobile-app', priority: '0.6', changefreq: 'monthly' },
+    { path: '/seo', priority: '0.5', changefreq: 'monthly' },
+    { path: '/contact', priority: '0.7', changefreq: 'monthly' },
     { path: '/privacy-policy', priority: '0.3', changefreq: 'yearly' },
     { path: '/terms-conditions', priority: '0.3', changefreq: 'yearly' },
+    { path: '/checkout', priority: '0.4', changefreq: 'monthly' },
   ];
 
   const urls = [];
@@ -191,7 +238,13 @@ async function generateOptimizedSitemap() {
   ].join('\n');
 
   // Write a small combined sitemap.xml for backwards compatibility (core only)
-  fs.writeFileSync(OUTPUT_SITEMAP, buildSitemap(coreUrls) + '\n', 'utf8');
+  const combinedUrls = Array.from(
+    new Map(
+      [...coreUrls, ...seoUrls, ...blogUrls].map((entry) => [entry.loc, entry])
+    ).values()
+  ).sort((a, b) => parseFloat(b.priority) - parseFloat(a.priority));
+
+  fs.writeFileSync(OUTPUT_SITEMAP, buildSitemap(combinedUrls) + '\n', 'utf8');
   // Write split sitemaps
   fs.writeFileSync(OUTPUT_SITEMAP_CORE, buildSitemap(coreUrls) + '\n', 'utf8');
   fs.writeFileSync(OUTPUT_SITEMAP_SEO, buildSitemap(seoUrls) + '\n', 'utf8');

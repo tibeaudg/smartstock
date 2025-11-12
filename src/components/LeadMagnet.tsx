@@ -72,7 +72,6 @@ const LeadMagnet: React.FC<LeadMagnetProps> = ({
       // In a real implementation, you would:
       // 1. Send the PDF via email
       // 2. Add to email marketing list
-      // 3. Track conversion analytics
       
     } catch (err) {
       console.error('Error submitting lead:', err);

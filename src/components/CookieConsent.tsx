@@ -247,7 +247,7 @@ export const CookieConsent = () => {
                   relevant and engaging. They may be set by us or third-party advertising partners.
                 </p>
                 <p className="text-xs text-gray-500">
-                  Services: Google Ads, Facebook Pixel
+                  Services: Facebook Pixel
                 </p>
               </div>
               <Switch

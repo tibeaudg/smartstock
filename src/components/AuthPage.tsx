@@ -12,11 +12,9 @@ import { Loader2, CheckCircle, Shield, Zap, Users, Star, ArrowRight, Package } f
 import Header from './HeaderPublic';
 import { cn } from '@/lib/utils';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
-import { useAuthConversionTracking } from '@/hooks/useAuthConversionTracking';
 import { useWebsiteTracking } from '@/hooks/useWebsiteTracking';
-import { GoogleAdsTracking } from '@/utils/googleAdsTracking';
 import SEO from '@/components/SEO';
-import { generateBreadcrumbSchema, generateComprehensiveStructuredData } from '@/lib/structuredData';
+import { generateComprehensiveStructuredData } from '@/lib/structuredData';
 
 export const AuthPage = () => {
   const [mode, setMode] = useState<'login' | 'register' | 'reset'>('login');
@@ -52,19 +50,6 @@ export const AuthPage = () => {
   
   // Use website tracking
   useWebsiteTracking();
-
-
-  // Conversie tracking hook
-  const {
-    trackRegistrationStarted,
-    trackRegistrationCompleted,
-    trackLoginAttempt,
-    trackLoginSuccess,
-    trackFormAbandonment,
-    trackError,
-    isTrackingReady
-  } = useAuthConversionTracking({ email });
-
   const clearForm = () => {
     setEmail('');
     setPassword('');
@@ -80,88 +65,44 @@ export const AuthPage = () => {
 
     try {
       if (mode === 'login') {
-        // Track login attempt
-        if (isTrackingReady) {
-          await trackLoginAttempt();
-        }
-
         const { error } = await signIn(email, password);
 
         if (error) {
-          // Track login error
-          if (isTrackingReady) {
-            await trackError(error.message, 'login_attempt');
-          }
-          toast.error(error?.message === 'Invalid login credentials' ? 'Invalid email address or password' : error?.message || 'Login failed');
+          toast.error(
+            error?.message === 'Invalid login credentials'
+              ? 'Invalid email address or password'
+              : error?.message || 'Login failed'
+          );
           return;
         }
-
-        // Track successful login
-        if (isTrackingReady) {
-          await trackLoginSuccess();
-        }
-        
-        // Track Google Ads login conversion
-        GoogleAdsTracking.trackLoginConversion(
-          undefined, // userId will be available after login
-          email,
-          10 // Higher value for successful login
-        );
-
       } else if (mode === 'register') {
-        // Track registration started
-        if (isTrackingReady) {
-          await trackRegistrationStarted();
-        }
-
-        // Validate required fields
         if (!firstName.trim()) {
-          if (isTrackingReady) {
-            await trackFormAbandonment('missing_first_name');
-          }
           toast.error('First name is required');
           return;
         }
         if (!lastName.trim()) {
-          if (isTrackingReady) {
-            await trackFormAbandonment('missing_last_name');
-          }
           toast.error('Last name is required');
           return;
         }
         if (password !== confirmPassword) {
-          if (isTrackingReady) {
-            await trackFormAbandonment('password_mismatch');
-          }
           toast.error('Passwords do not match');
           return;
         }
-        
-        // Enhanced password validation
+
         if (password.length < 6) {
-          if (isTrackingReady) {
-            await trackFormAbandonment('password_too_short');
-          }
           toast.error('Password must be at least 6 characters long');
           return;
         }
-        
-        // Check password complexity
+
         const hasUpperCase = /[A-Z]/.test(password);
         const hasLowerCase = /[a-z]/.test(password);
         const hasNumbers = /\d/.test(password);
-        
+
         if (!hasUpperCase || !hasLowerCase || !hasNumbers) {
-          if (isTrackingReady) {
-            await trackFormAbandonment('password_too_weak');
-          }
           toast.error('Password must contain uppercase AND lowercase characters');
           return;
         }
         if (!acceptTerms) {
-          if (isTrackingReady) {
-            await trackFormAbandonment('terms_not_accepted');
-          }
           toast.error('You must accept the terms and conditions');
           return;
         }
@@ -169,32 +110,20 @@ export const AuthPage = () => {
         const { error } = await signUp(email, password, firstName, lastName, 'admin');
 
         if (error) {
-          // Track registration error
-          if (isTrackingReady) {
-            await trackError(error.message, 'registration_started');
-          }
-          toast.error(error.message.includes('User already registered') ? 'An account with this email address already exists' : error.message);
+          toast.error(
+            error.message.includes('User already registered')
+              ? 'An account with this email address already exists'
+              : error.message
+          );
           return;
         }
 
-        // Track successful registration
-        if (isTrackingReady) {
-          await trackRegistrationCompleted();
-        }
-        
-        // Track Google Ads registration conversion
-        GoogleAdsTracking.trackRegistrationConversion(
-          undefined, // userId will be available after registration
-          email,
-          15 // Highest value for registration completion
-        );
-
-        toast.success('Account created!', { description: 'Check your inbox to confirm your email address' });
+        toast.success('Account created!', {
+          description: 'Check your inbox to confirm your email address',
+        });
         setMode('login');
         clearForm();
-
       } else if (mode === 'reset') {
-        // Dit is de AANVRAAG voor een reset, niet de reset zelf.
         const { error } = await resetPassword(email);
 
         if (error) {
@@ -202,11 +131,13 @@ export const AuthPage = () => {
           return;
         }
 
-        toast.success('Reset instructions sent!', { description: `If an account exists for ${email}, an email has been sent` });
+        toast.success('Reset instructions sent!', {
+          description: `If an account exists for ${email}, an email has been sent`,
+        });
         setMode('login');
       }
     } catch (err: any) {
-      console.error('Onverwachte Auth fout:', err);
+      console.error('Unexpected auth error:', err);
       toast.error(err.message || 'An unknown error occurred');
     } finally {
       setIsSubmitting(false);
@@ -272,9 +203,6 @@ export const AuthPage = () => {
                   onClick={() => { 
                     setMode('register'); 
                     clearForm(); 
-                    if (isTrackingReady) {
-                      trackRegistrationStarted();
-                    }
                   }}
                   disabled={isSubmitting}
                   className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all duration-200 ${
@@ -482,18 +410,8 @@ export const AuthPage = () => {
                         const { error } = await signInWithGoogle();
                         if (error) {
                           toast.error(error.message || 'Google sign-in failed');
-                        } else {
-                          // Track Google sign-in conversion (successful redirect to Google)
-                          GoogleAdsTracking.trackCustomConversion(
-                            'google_signin_initiated',
-                            'AW-17574614935',
-                            8,
-                            {
-                              signin_method: 'google',
-                              conversion_type: 'oauth_signin'
-                            }
-                          );
-                        }
+                        } 
+                        
                         // If successful, user will be redirected to Google and then back to dashboard
                       } catch (err: any) {
                         console.error('Google sign-in error:', err);

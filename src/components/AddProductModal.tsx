@@ -32,6 +32,7 @@ interface AddProductModalProps {
   onProductAdded: () => void;
   onFirstProductAdded?: () => void;
   preFilledSKU?: string;
+  preFilledName?: string;
 }
 
 interface VariantData {
@@ -77,7 +78,7 @@ const productSchema = z.object({
 });
 
 
-export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProductAdded, preFilledSKU }: AddProductModalProps) => {
+export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProductAdded, preFilledSKU, preFilledName }: AddProductModalProps) => {
   console.log('[AddProductModal] Initialization: Component mounted with props.');
 
   // --- Hooks and State ---
@@ -133,6 +134,13 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
       form.setValue('sku', preFilledSKU);
     }
   }, [preFilledSKU, isOpen, form]);
+
+  useEffect(() => {
+    if (preFilledName && isOpen) {
+      console.log(`[AddProductModal] Setting pre-filled product name: ${preFilledName}`);
+      form.setValue('name', preFilledName, { shouldDirty: true });
+    }
+  }, [preFilledName, isOpen, form]);
 
   // Check for duplicate product name - debounced
   useEffect(() => {

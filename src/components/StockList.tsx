@@ -1638,6 +1638,7 @@ export const StockList = () => {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [selectedAction, setSelectedAction] = useState<StockAction>('in');
   const [scannedSKU, setScannedSKU] = useState<string>('');
+  const [preFilledProductName, setPreFilledProductName] = useState<string>('');
   const [selectedOperationType, setSelectedOperationType] = useState<'scan' | 'manual'>('scan');
   const [productVariants, setProductVariants] = useState<Product[]>([]);
   const [selectedVariant, setSelectedVariant] = useState<Product | null>(null);
@@ -2462,12 +2463,6 @@ export const StockList = () => {
     }
   };
 
-  // New handlers for scan and manual modals
-  const handleOpenAddProductModal = (sku?: string) => {
-    setScannedSKU(sku || '');
-    setIsAddModalOpen(true);
-  };
-
   const handleOpenStockAdjustModal = (product: Product) => {
     setSelectedProduct(product);
     setSelectedAction('in');
@@ -2476,7 +2471,9 @@ export const StockList = () => {
 
   // Event listener for custom event from ManualStockAdjustModal
   useEffect(() => {
-    const handleOpenAddProductModalEvent = () => {
+    const handleOpenAddProductModalEvent = (event: Event) => {
+      const detail = (event as CustomEvent<{ name?: string }>).detail;
+      setPreFilledProductName(detail?.name?.trim() || '');
       setIsAddModalOpen(true);
     };
 
@@ -2530,6 +2527,7 @@ export const StockList = () => {
       } else {
         // Product not found - open add product modal with pre-filled SKU
         setScannedSKU(barcode);
+        setPreFilledProductName('');
         setIsAddModalOpen(true);
         toast.info('Product not found - will create new product');
       }
@@ -3114,7 +3112,13 @@ export const StockList = () => {
                       {/* Action buttons */}
                       <div className="flex gap-3">
                         {productsTyped.length === 0 ? (
-                          <Button onClick={() => setIsAddModalOpen(true)} className="px-6">
+                          <Button
+                            onClick={() => {
+                              setPreFilledProductName('');
+                              setIsAddModalOpen(true);
+                            }}
+                            className="px-6"
+                          >
                             <Plus className="w-4 h-4 mr-2" />
                             Add First Product
                           </Button>
@@ -3334,7 +3338,10 @@ export const StockList = () => {
         )}
         <AddProductModal
           isOpen={isAddModalOpen}
-          onClose={() => setIsAddModalOpen(false)}
+          onClose={() => {
+            setIsAddModalOpen(false);
+            setPreFilledProductName('');
+          }}
           onProductAdded={() => {
             // Clear filters when new product is added to show all products
             clearAllFilters();
@@ -3343,12 +3350,14 @@ export const StockList = () => {
             queryClient.invalidateQueries({ queryKey: ['products'] });
             refetch();
             setIsAddModalOpen(false);
+            setPreFilledProductName('');
           }}
           onFirstProductAdded={() => {
             console.log('[StockList] onFirstProductAdded callback called directly');
             handleFirstProductAdded();
           }}
           preFilledSKU={scannedSKU}
+          preFilledName={preFilledProductName}
         />
         
         <ManualStockAdjustModal
@@ -3836,7 +3845,13 @@ export const StockList = () => {
                       {/* Action buttons */}
                       <div className="flex gap-3">
                         {productsTyped.length === 0 ? (
-                          <Button onClick={() => setIsAddModalOpen(true)} className="px-6">
+                          <Button
+                            onClick={() => {
+                              setPreFilledProductName('');
+                              setIsAddModalOpen(true);
+                            }}
+                            className="px-6"
+                          >
                             <Plus className="w-4 h-4 mr-2" />
                             Add First Product
                           </Button>

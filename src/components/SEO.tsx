@@ -188,7 +188,6 @@ export const SEO: React.FC<SEOProps> = ({
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       <link rel="dns-prefetch" href="https://www.google-analytics.com" />
-      <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
       
       {/* Enhanced Image SEO */}
       {image && (

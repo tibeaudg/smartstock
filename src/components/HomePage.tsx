@@ -1,4 +1,4 @@
-import React, { useState, useRef, lazy, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Header from './HeaderPublic';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -36,7 +36,6 @@ import { useIsMobile } from '@/hooks/useWindowSize';
 import { supabase } from '@/integrations/supabase/client';
 // import { useWebsiteTracking } from '@/hooks/useWebsiteTracking';
 // import { usePerformanceOptimization } from '@/hooks/usePerformanceOptimization';
-import { GoogleAdsTracking } from '@/utils/googleAdsTracking';
 import Footer from './Footer';
 import { Card } from './ui/card';
 
@@ -716,65 +715,6 @@ export const HomePage = () => {
   // Scroll progress tracking state
   const [scrollProgress, setScrollProgress] = useState(0);
   
-  // Initialize tracking with comprehensive error suppression
-  React.useEffect(() => {
-    // Comprehensive global error handler for all tracking services
-    const handleTrackingError = (event: ErrorEvent) => {
-      const errorMessage = event.message || '';
-      const errorSource = event.filename || '';
-      
-      // Suppress Facebook Pixel errors
-      if (errorMessage.includes('facebook.com') || errorSource.includes('fbevents')) {
-        event.preventDefault();
-        return false;
-      }
-      
-      // Suppress Google Ads errors
-      if (errorMessage.includes('googleadservices') || errorMessage.includes('googleads')) {
-        event.preventDefault();
-        return false;
-      }
-      
-      // Suppress CORS errors
-      if (errorMessage.includes('CORS') || errorMessage.includes('Access-Control-Allow-Origin')) {
-        event.preventDefault();
-        return false;
-      }
-    };
-
-    // Add error listeners
-    window.addEventListener('error', handleTrackingError);
-    window.addEventListener('unhandledrejection', (event) => {
-      if (event.reason && event.reason.toString().includes('googleadservices')) {
-        event.preventDefault();
-      }
-    });
-
-    // Only initialize tracking in production
-    if (process.env.NODE_ENV === 'production') {
-      const timer = setTimeout(() => {
-        try {
-          GoogleAdsTracking.initializeGoogleAdsTracking();
-          GoogleAdsTracking.trackPageViewConversion('homepage', 1, {
-            page_type: 'landing_page',
-            conversion_type: 'page_view'
-          });
-        } catch (error) {
-          // Silently fail
-        }
-      }, 1000);
-      
-      return () => {
-        clearTimeout(timer);
-        window.removeEventListener('error', handleTrackingError);
-      };
-    }
-    
-    return () => {
-      window.removeEventListener('error', handleTrackingError);
-    };
-  }, []);
-
   // FAQ accordion state
   const [openFAQ, setOpenFAQ] = useState<number | null>(null);
   
@@ -860,25 +800,6 @@ export const HomePage = () => {
 
   const handleLoginClick = async () => {
     logger.info('CTA click', { id: 'start-now' });
-    
-    // Track Google Ads conversion for registration intent with error handling
-    try {
-      GoogleAdsTracking.trackCustomConversion(
-        'start_now_click',
-        'AW-17574614935',
-        1,
-        {
-          cta_location: 'hero_section',
-          cta_type: 'primary_button',
-          conversion_type: 'registration_intent'
-        }
-      );
-    } catch (error) {
-      // Silently fail in production, only log in development
-      if (process.env.NODE_ENV === 'development') {
-        console.warn('Google Ads tracking failed:', error);
-      }
-    }
     
     // If user is already logged in (has session), go directly to dashboard
     // But first check if session is valid

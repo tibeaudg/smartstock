@@ -53,8 +53,6 @@ export const ManualStockAdjustModal = ({
   const [quantity, setQuantity] = useState<string>('');
   const [loading, setLoading] = useState(false);
   const [actionType, setActionType] = useState<'in' | 'out'>(defaultAction);
-  const [showCreateNew, setShowCreateNew] = useState(false);
-
   // Close suggestions when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -84,7 +82,6 @@ export const ManualStockAdjustModal = ({
       setSelectedProduct(null);
       setQuantity('');
       setActionType(defaultAction);
-      setShowCreateNew(false);
     }
   }, [isOpen, defaultAction]);
 
@@ -119,16 +116,17 @@ export const ManualStockAdjustModal = ({
 
   // Filter and format products for display
   const filteredProducts = products
-    .filter(product => {
-      // Only show variants, never show parent products
-      return product.is_variant === true;
+    .map(product => {
+      const displayName =
+        product.is_variant && product.variant_name
+          ? `${product.name} (${product.variant_name})`
+          : product.name;
+
+      return {
+        ...product,
+        displayName
+      };
     })
-    .map(product => ({
-      ...product,
-      displayName: product.variant_name 
-        ? `${product.name} (${product.variant_name})`
-        : product.name
-    }))
     .filter(product =>
       product.displayName.toLowerCase().includes(searchValue.toLowerCase())
     );
@@ -137,12 +135,19 @@ export const ManualStockAdjustModal = ({
     setSelectedProduct(product);
     setSearchValue(product.displayName);
     setSearchOpen(false);
-    setShowCreateNew(false);
   };
 
   const handleCreateNew = () => {
-    setShowCreateNew(true);
+    const trimmedValue = searchValue.trim();
     setSearchOpen(false);
+    onClose();
+    window.dispatchEvent(
+      new CustomEvent('openAddProductModal', {
+        detail: {
+          name: trimmedValue || undefined
+        }
+      })
+    );
   };
 
   const handleSubmit = async () => {
@@ -300,27 +305,8 @@ export const ManualStockAdjustModal = ({
               </div>
             </div>
 
-            {/* Show Create New Product option */}
-            {showCreateNew && (
-              <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                <div className="text-sm text-blue-700 mb-2">
-                  No matching product found. Would you like to create a new product?
-                </div>
-                <Button
-                  onClick={() => {
-                    onClose();
-                    // Emit custom event to open AddProductModal
-                    window.dispatchEvent(new CustomEvent('openAddProductModal'));
-                  }}
-                  className="w-full"
-                >
-                  Create New Product
-                </Button>
-              </div>
-            )}
-
             {/* Stock Adjustment UI - Only show if product is selected */}
-            {selectedProduct && !showCreateNew && (
+            {selectedProduct && (
               <>
                 {/* Action Type Switcher */}
                 <div className="space-y-2">
@@ -400,7 +386,7 @@ export const ManualStockAdjustModal = ({
             >
               Cancel
             </Button>
-            {selectedProduct && !showCreateNew && (
+            {selectedProduct && (
               <Button
                 onClick={handleSubmit}
                 disabled={loading || !quantity}
