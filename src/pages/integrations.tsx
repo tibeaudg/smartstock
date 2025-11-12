@@ -16,6 +16,8 @@ import {
   ExternalLink
 } from 'lucide-react';
 import SEO from '@/components/SEO';
+import Header from '@/components/HeaderPublic';
+import Footer from '@/components/Footer';
 
 const integrations = [
   {
@@ -116,8 +118,10 @@ export default function IntegrationsPage() {
         structuredData={structuredData}
       />
 
+      <Header />
+
       {/* Hero Section */}
-      <div className="bg-gradient-to-br from-blue-600 to-blue-800 text-white py-20">
+      <div className="pt-40 bg-gradient-to-br from-blue-600 to-blue-800 text-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
@@ -231,6 +235,8 @@ export default function IntegrationsPage() {
           </div>
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 }

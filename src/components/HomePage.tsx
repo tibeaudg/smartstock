@@ -10,12 +10,6 @@ import GlareHover from './GlareHover'
 import GradualBlur from './GradualBlur'
 import ScrollTriggeredButton from './ScrollTriggeredButton'
 import Stepper, { Step } from './Stepper';
-
-
-
-
-
-
 import { 
   Package, BarChart3, Users, Shield, Check, TrendingUp, Zap, Star, Clock, Euro, Target, 
   ChevronLeft, ChevronRight, Scan, Truck, ArrowRight, Play, Award, Globe, Smartphone, 
@@ -27,7 +21,6 @@ import {
 } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
 import SEO from './SEO';
-import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import { logger } from '../lib/logger';
 import { generateComprehensiveStructuredData } from '../lib/structuredData';
@@ -37,106 +30,9 @@ import { supabase } from '@/integrations/supabase/client';
 // import { useWebsiteTracking } from '@/hooks/useWebsiteTracking';
 // import { usePerformanceOptimization } from '@/hooks/usePerformanceOptimization';
 import Footer from './Footer';
-import { Card } from './ui/card';
-
-  const handleAnimationComplete = () => {
-  };
-
-  const FadeInWhenVisible = ({ children, delay = 0, direction = 'up', duration = 700 }) => {
-  const [isVisible, setIsVisible] = React.useState(false);
-  const ref = React.useRef(null);
-  const isMobile = useIsMobile();
-
-  React.useEffect(() => {
-      // Reduce animations on mobile for better performance
-      if (isMobile) {
-        setIsVisible(true);
-        return;
-      }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setTimeout(() => setIsVisible(true), delay);
-        }
-      },
-      { threshold: 0.1, rootMargin: '50px' }
-    );
-
-    if (ref.current) {
-      observer.observe(ref.current);
-    }
-
-    return () => observer.disconnect();
-  }, [delay, isMobile]);
-
-    const getTransform = () => {
-      if (isMobile) return 'translate-y-0';
-      
-      switch (direction) {
-        case 'left': return isVisible ? 'translate-x-0' : '-translate-x-8';
-        case 'right': return isVisible ? 'translate-x-0' : 'translate-x-8';
-        case 'up': return isVisible ? 'translate-y-0' : 'translate-y-8';
-        case 'down': return isVisible ? 'translate-y-0' : '-translate-y-8';
-        default: return isVisible ? 'translate-y-0' : 'translate-y-4';
-      }
-    };
-
-  return (
-      <div 
-        ref={ref} 
-        className={`transition-all duration-${duration} ease-out ${
-          isVisible ? 'opacity-100' : 'opacity-0'
-        } ${getTransform()}`}
-      >
-        {children}
-      </div>
-    );
-  };
+import { motion } from 'framer-motion';
 
 
-
-
-const SlideInWhenVisible = ({ children, delay = 0, direction = 'left' }) => {
-  const [isVisible, setIsVisible] = React.useState(false);
-  const ref = React.useRef(null);
-
-  React.useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setTimeout(() => setIsVisible(true), delay);
-        }
-      },
-      { threshold: 0.1, rootMargin: '50px' }
-    );
-
-    if (ref.current) {
-      observer.observe(ref.current);
-    }
-
-    return () => observer.disconnect();
-  }, [delay]);
-
-  const getTransform = () => {
-    switch (direction) {
-      case 'left': return isVisible ? 'translate-x-0' : '-translate-x-12';
-      case 'right': return isVisible ? 'translate-x-0' : 'translate-x-12';
-      default: return isVisible ? 'translate-x-0' : '-translate-x-12';
-    }
-  };
-
-  return (
-    <div 
-      ref={ref} 
-      className={`transition-all duration-1000 ease-out ${
-        isVisible ? 'opacity-100' : 'opacity-0'
-      } ${getTransform()}`}
-    >
-      {children}
-    </div>
-  );
-};
 
 const ScaleInWhenVisible = ({ children, delay = 0, duration = 700 }) => {
   const [isVisible, setIsVisible] = React.useState(false);
@@ -177,48 +73,6 @@ const ScaleInWhenVisible = ({ children, delay = 0, duration = 700 }) => {
   );
 };
 
-
-const BounceInWhenVisible = ({ children, delay = 0 }) => {
-  const [isVisible, setIsVisible] = React.useState(false);
-  const ref = React.useRef(null);
-
-  React.useEffect(() => {
-    const isMobile = window.innerWidth < 768;
-    if (isMobile) {
-      setIsVisible(true);
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setTimeout(() => setIsVisible(true), delay);
-        }
-      },
-      { threshold: 0.1, rootMargin: '50px' }
-    );
-
-    if (ref.current) {
-      observer.observe(ref.current);
-    }
-
-    return () => observer.disconnect();
-  }, [delay]);
-
-  return (
-    <div 
-      ref={ref} 
-      className={`transition-all duration-500 ease-out ${
-        isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-75'
-      }`}
-      style={{
-        transitionTimingFunction: isVisible ? 'cubic-bezier(0.68, -0.55, 0.265, 1.55)' : 'ease-out'
-      }}
-    >
-      {children}
-    </div>
-  );
-};
 
 const SlideUpWhenVisible = ({ children, delay = 0, duration = 800 }) => {
   const [isVisible, setIsVisible] = React.useState(false);
@@ -1540,34 +1394,28 @@ export const HomePage = () => {
               </div>
 
               {/* Main Headline */}
-              <BounceInWhenVisible delay={200}>
                 <div className="mb-6 mt-6 sm:mb-8 md:mb-12">
                   <h1 className="text-[clamp(3.5rem,5vw,4.5rem)] sm:text-[clamp(3rem,6vw,5rem)] md:text-[clamp(3.5rem,7vw,5.5rem)] font-bold text-gray-900 leading-tight tracking-tight text-center justify-center items-center">
                   Best Inventory Management Software
     
                   </h1>
                 </div>
-              </BounceInWhenVisible>
               
               {/* Subtitle */}
-              <SlideUpWhenVisible delay={400}>
                 <div className="mb-8 sm:mb-10 md:mb-12 max-w-3xl mx-auto px-4">
                   <h2 className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed text-sm px-6">
                   Reduce errors, automate workflows, and gain real-time visibility across every SKU.                  </h2>
                 </div>
-              </SlideUpWhenVisible>
 
               {/* CTA Button */}
-              <FadeInWhenVisible delay={600}>
                 <div className="flex justify-center px-4">
                   <button
                     onClick={() => navigate('/pricing')}
-                    className="bg-blue-600 text-white hover:bg-blue-700 px-8 py-3 rounded-lg font-medium transition-all duration-300 shadow-md hover:shadow-lg"
+                    className="bg-blue-600 text-white hover:bg-blue-700 px-8 py-3 rounded-lg font-medium  shadow-md hover:shadow-lg"
                   >
                     Try Free Forever Plan
                   </button>
                 </div>
-              </FadeInWhenVisible>
             </div>
           </div>
         </div>
@@ -1581,7 +1429,6 @@ export const HomePage = () => {
 
       <section className="py-6 sm:py-8 md:py-10 bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4">
-          <FadeInWhenVisible>
             <div className="text-center">
 
               
@@ -1590,7 +1437,6 @@ export const HomePage = () => {
               
 
             </div>
-          </FadeInWhenVisible>
         </div>
       </section>
 
@@ -1603,7 +1449,6 @@ export const HomePage = () => {
       <section className="py-12 sm:py-14 md:py-16 lg:py-18 bg-blue-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
-          <FadeInWhenVisible>
             <div className="text-center mb-8 sm:mb-10 md:mb-12 lg:mb-14">
               <div className="inline-block mb-4 sm:mb-6">
                 <span className="px-4 py-2 bg-blue-100 text-blue-700 text-sm font-semibold rounded-full">
@@ -1611,17 +1456,15 @@ export const HomePage = () => {
                 </span>
               </div>
               <h2 className="lg:pl-24 lg:pr-24 lg:pt-6 lg:pb-6 text-[clamp(2rem,4vw,3.5rem)] sm:text-[clamp(2.5rem,5vw,4rem)] text-gray-800 mb-3 leading-tight px-4 text-center">
-              <BlurText className="justify-center" text="Everything You Need To Manage Inventory" onAnimationComplete={handleAnimationComplete} /> 
+              <BlurText className="justify-center" text="Everything You Need To Manage Inventory" /> 
 
               </h2>
               <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 max-w-3xl mx-auto px-4 leading-relaxed">
                 Keep track of your inventory, see what's selling, and get alerts when you need to reorder.
               </p>
             </div>
-          </FadeInWhenVisible>
 
           {/* Features - Desktop Grid / Mobile Carousel */}
-          <FadeInWhenVisible delay={200}>
             {/* Desktop: Full width grid showing all cards */}
             <div className="hidden md:grid md:grid-cols-3 md:gap-8 lg:gap-10 mb-8">
               {featureCards.map((feature, index) => (
@@ -1630,7 +1473,7 @@ export const HomePage = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
-                  className="bg-white rounded-2xl p-8 h-full flex flex-col shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300 hover:scale-105"
+                  className="bg-white rounded-2xl p-8 h-full flex flex-col shadow-lg border border-gray-200 hover:shadow-xl  hover:scale-105"
                 >
                   {/* Badge */}
                   <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-100 text-blue-700 text-sm font-medium mb-6 w-fit">
@@ -1683,7 +1526,7 @@ export const HomePage = () => {
                 {featureCards.map((feature, index) => (
                   <div
                     key={feature.id}
-                    className="bg-white rounded-2xl p-6 h-full flex flex-col shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300"
+                    className="bg-white rounded-2xl p-6 h-full flex flex-col shadow-lg border border-gray-200 hover:shadow-xl "
                   >
                     {/* Badge */}
                     <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-100 text-blue-700 text-sm font-medium mb-6 w-fit">
@@ -1721,7 +1564,6 @@ export const HomePage = () => {
                 ))}
               </HorizontalScrollCarousel>
             </div>
-          </FadeInWhenVisible>
         </div>
       </section>
 
@@ -1731,7 +1573,6 @@ export const HomePage = () => {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           
           {/* Header Section */}
-          <FadeInWhenVisible>
             <div className="text-center mb-12 sm:mb-16 md:mb-20">
               {/* Main Title */}
               <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-gray-900 mb-4 sm:mb-6 leading-tight">
@@ -1743,7 +1584,6 @@ export const HomePage = () => {
                   Get started in minutes with our easy-to-use platform.
               </p>
             </div>
-          </FadeInWhenVisible>
 
           {/* Three Steps with Connecting Line */}
           <div className="relative">
@@ -1756,7 +1596,6 @@ export const HomePage = () => {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 sm:gap-12 lg:gap-16 max-w-6xl mx-auto relative z-10 px-4 sm:px-6">
               
               {/* Step 1 - Register Online */}
-              <FadeInWhenVisible delay={200}>
                 <div className="text-center relative">
                   {/* Icon */}
                   <div className="flex justify-center mb-6 relative z-20">
@@ -1773,15 +1612,10 @@ export const HomePage = () => {
                   Import your products in seconds<br />
                   no setup needed.<br />
                   Upload Excel files or add manually.
-
-
                   </p>
-
                 </div>
-              </FadeInWhenVisible>
 
               {/* Step 2 - Assessment Session */}
-              <FadeInWhenVisible delay={400}>
                 <div className="text-center relative">
                   {/* Icon */}
                   <div className="flex justify-center mb-6 relative z-20">
@@ -1804,10 +1638,8 @@ export const HomePage = () => {
                   </p>
 
                 </div>
-              </FadeInWhenVisible>
 
               {/* Step 3 - 24/7 Live Support */}
-              <FadeInWhenVisible delay={600}>
                 <div className="text-center relative">
                   {/* Icon */}
                   <div className="flex justify-center mb-6 relative z-20">
@@ -1827,7 +1659,6 @@ export const HomePage = () => {
                     automatically.
                   </p>
                 </div>
-              </FadeInWhenVisible>
             </div>
           </div>
         </div>
@@ -1840,7 +1671,6 @@ export const HomePage = () => {
       <section className="py-16 sm:py-20 md:py-24 lg:py-28 bg-blue-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
-          <FadeInWhenVisible>
             <div className="text-center mb-12 sm:mb-16 md:mb-20">
               <div className="inline-block mb-4 sm:mb-6">
                 <span className="px-4 py-2 bg-blue-100 text-blue-700 text-sm font-semibold rounded-full">
@@ -1857,14 +1687,12 @@ export const HomePage = () => {
                 Seamlessly integrate with your existing systems and streamline your workflow
               </p>
             </div>
-          </FadeInWhenVisible>
 
           {/* Integration Cards Marquee */}
-          <FadeInWhenVisible delay={100}>
             <IntegrationCardMarquee 
               speed={420}
               cards={integrationCardsData.map((card, index) => (
-                <div key={index} className={`bg-white border-2 border-gray-200 rounded-2xl p-6 sm:p-8 ${card.colorClass} hover:shadow-lg transition-all duration-300 h-full`}>
+                <div key={index} className={`bg-white border-2 border-gray-200 rounded-2xl p-6 sm:p-8 ${card.colorClass} hover:shadow-lg  h-full`}>
                   <div className="flex items-center gap-4 mb-4">
                     <div className={`w-12 h-12 ${card.iconBgClass} rounded-xl flex items-center justify-center`}>
                       <card.icon className={`h-6 w-6 ${card.iconColorClass}`} />
@@ -1877,7 +1705,6 @@ export const HomePage = () => {
                 </div>
               ))}
             />
-          </FadeInWhenVisible>        
         </div>
       </section>
 
@@ -1893,10 +1720,9 @@ export const HomePage = () => {
           {/* Main White Card */}
           <div className="bg-white rounded-3xl shadow-xl p-8 sm:p-12 md:p-16">
           {/* Header */}
-          <FadeInWhenVisible>
             <div className="text-center mb-10 sm:mb-12 md:mb-16 lg:mb-20">
             <h2 className="lg:pl-24 lg:pr-24 lg:pt-6 lg:pb-6 text-[clamp(2rem,4vw,3.5rem)] sm:text-[clamp(2.5rem,5vw,4rem)] text-gray-800 mb-3 leading-tight px-4 text-center">
-            <BlurText className="justify-center" text="Why Choose Stockflow" onAnimationComplete={handleAnimationComplete} /> 
+            <BlurText className="justify-center" text="Why Choose Stockflow"/> 
 
               </h2>
               <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-4 sm:mb-5 md:mb-6 max-w-2xl mx-auto px-4">
@@ -1904,10 +1730,8 @@ export const HomePage = () => {
               </p>
               <div className="inline-flex items-center p-12 gap-2 bg-blue-600 px-16 py-1 rounded-lg"></div>
             </div>
-          </FadeInWhenVisible>
 
             {/* Desktop: 2x2 Grid Layout */}
-            <FadeInWhenVisible delay={200}>
               <div className="hidden md:grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-4xl mx-auto">
                 {whyChooseUsCarousel.map((item, index) => (
                   <motion.div
@@ -1915,7 +1739,7 @@ export const HomePage = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1 }}
-                    className="bg-white border-2 border-gray-200 shadow-lg rounded-2xl p-6 hover:shadow-lg transition-all duration-300"
+                    className="bg-white border-2 border-gray-200 shadow-lg rounded-2xl p-6 hover:shadow-lg "
                   >
                     <div className="text-center">
                       {/* Icon */}
@@ -1957,7 +1781,7 @@ export const HomePage = () => {
                   {whyChooseUsCarousel.map((item, index) => (
                     <div
                       key={item.id}
-                      className="bg-white border-2 border-gray-200 shadow-lg rounded-2xl p-6 hover:shadow-lg transition-all duration-300"
+                      className="bg-white border-2 border-gray-200 shadow-lg rounded-2xl p-6 hover:shadow-lg "
                     >
                       <div className="text-center">
                         {/* Icon */}
@@ -1983,7 +1807,6 @@ export const HomePage = () => {
                   ))}
                 </HorizontalScrollCarousel>
               </div>
-            </FadeInWhenVisible>
           </div>
         </div>
       </section>
@@ -1991,7 +1814,6 @@ export const HomePage = () => {
       {/* Commercial Solutions Section - Internal Linking to SEO Pages */}
       <section className="py-12 sm:py-14 md:py-16 lg:py-18 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <FadeInWhenVisible>
             <div className="text-center mb-8 sm:mb-10 md:mb-12">
               <div className="inline-block mb-4 sm:mb-6">
                 <span className="px-4 py-2 bg-blue-100 text-blue-700 text-sm font-semibold rounded-full">
@@ -2005,14 +1827,12 @@ export const HomePage = () => {
                 Compare top software options, discover cloud solutions, try free plans, and explore industry-specific tools
               </p>
             </div>
-          </FadeInWhenVisible>
 
-          <FadeInWhenVisible delay={200}>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
               {/* Best Software Link */}
               <Link 
                 to="/best-inventory-management-software"
-                className="group bg-white border-2 border-gray-200 rounded-2xl p-6 hover:border-blue-500 hover:shadow-xl transition-all duration-300 flex flex-col"
+                className="group bg-white border-2 border-gray-200 rounded-2xl p-6 hover:border-blue-500 hover:shadow-xl  flex flex-col"
               >
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center">
@@ -2034,7 +1854,7 @@ export const HomePage = () => {
               {/* Online Software Link */}
               <Link 
                 to="/online-inventory-software"
-                className="group bg-white border-2 border-gray-200 rounded-2xl p-6 hover:border-blue-500 hover:shadow-xl transition-all duration-300 flex flex-col"
+                className="group bg-white border-2 border-gray-200 rounded-2xl p-6 hover:border-blue-500 hover:shadow-xl  flex flex-col"
               >
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center">
@@ -2056,7 +1876,7 @@ export const HomePage = () => {
               {/* Free Software Link */}
               <Link 
                 to="/magazijnbeheer-software-gratis"
-                className="group bg-white border-2 border-gray-200 rounded-2xl p-6 hover:border-blue-500 hover:shadow-xl transition-all duration-300 flex flex-col"
+                className="group bg-white border-2 border-gray-200 rounded-2xl p-6 hover:border-blue-500 hover:shadow-xl  flex flex-col"
               >
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center">
@@ -2065,7 +1885,7 @@ export const HomePage = () => {
                   <span className="text-2xl">🎁</span>
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
-                  Free Up to 30 Products
+                  Free Up to 100 Unique Products
                 </h3>
                 <p className="text-gray-600 text-sm mb-4 flex-1">
                   Start with our free warehouse management software for small businesses
@@ -2078,7 +1898,7 @@ export const HomePage = () => {
               {/* Horeca Software Link */}
               <Link 
                 to="/voorraadbeheer-horeca"
-                className="group bg-white border-2 border-gray-200 rounded-2xl p-6 hover:border-blue-500 hover:shadow-xl transition-all duration-300 flex flex-col"
+                className="group bg-white border-2 border-gray-200 rounded-2xl p-6 hover:border-blue-500 hover:shadow-xl  flex flex-col"
               >
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center">
@@ -2097,14 +1917,12 @@ export const HomePage = () => {
                 </span>
               </Link>
             </div>
-          </FadeInWhenVisible>
         </div>
       </section>
 
       {/* Resources Section - Internal Linking to Orphan Pages */}
       <section className="py-12 sm:py-14 md:py-16 lg:py-18 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <FadeInWhenVisible>
             <div className="text-center mb-8 sm:mb-10 md:mb-12">
               <div className="inline-block mb-4 sm:mb-6">
                 <span className="px-4 py-2 bg-blue-100 text-blue-700 text-sm font-semibold rounded-full">
@@ -2118,14 +1936,12 @@ export const HomePage = () => {
                 Explore our comprehensive guides, tips, and resources to optimize your inventory management
               </p>
             </div>
-          </FadeInWhenVisible>
 
-          <FadeInWhenVisible delay={200}>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mb-8">
               {/* Key Resources */}
               <Link 
                 to="/programma-stockbeheer"
-                className="group bg-gradient-to-br from-blue-50 to-white border-2 border-gray-200 rounded-2xl p-6 hover:border-blue-500 hover:shadow-xl transition-all duration-300"
+                className="group bg-gradient-to-br from-blue-50 to-white border-2 border-gray-200 rounded-2xl p-6 hover:border-blue-500 hover:shadow-xl "
               >
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
@@ -2142,7 +1958,7 @@ export const HomePage = () => {
 
               <Link 
                 to="/inventory-management-smb"
-                className="group bg-gradient-to-br from-blue-50 to-white border-2 border-gray-200 rounded-2xl p-6 hover:border-blue-500 hover:shadow-xl transition-all duration-300"
+                className="group bg-gradient-to-br from-blue-50 to-white border-2 border-gray-200 rounded-2xl p-6 hover:border-blue-500 hover:shadow-xl "
               >
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
@@ -2159,7 +1975,7 @@ export const HomePage = () => {
 
               <Link 
                 to="/stock-management"
-                className="group bg-gradient-to-br from-blue-50 to-white border-2 border-gray-200 rounded-2xl p-6 hover:border-blue-500 hover:shadow-xl transition-all duration-300"
+                className="group bg-gradient-to-br from-blue-50 to-white border-2 border-gray-200 rounded-2xl p-6 hover:border-blue-500 hover:shadow-xl "
               >
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
@@ -2176,7 +1992,7 @@ export const HomePage = () => {
 
               <Link 
                 to="/inventory-management"
-                className="group bg-gradient-to-br from-blue-50 to-white border-2 border-gray-200 rounded-2xl p-6 hover:border-blue-500 hover:shadow-xl transition-all duration-300"
+                className="group bg-gradient-to-br from-blue-50 to-white border-2 border-gray-200 rounded-2xl p-6 hover:border-blue-500 hover:shadow-xl "
               >
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
@@ -2193,7 +2009,7 @@ export const HomePage = () => {
 
               <Link 
                 to="/barcode-scanning-inventory"
-                className="group bg-gradient-to-br from-blue-50 to-white border-2 border-gray-200 rounded-2xl p-6 hover:border-blue-500 hover:shadow-xl transition-all duration-300"
+                className="group bg-gradient-to-br from-blue-50 to-white border-2 border-gray-200 rounded-2xl p-6 hover:border-blue-500 hover:shadow-xl "
               >
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
@@ -2210,7 +2026,7 @@ export const HomePage = () => {
 
               <Link 
                 to="/warehouse-software"
-                className="group bg-gradient-to-br from-blue-50 to-white border-2 border-gray-200 rounded-2xl p-6 hover:border-blue-500 hover:shadow-xl transition-all duration-300"
+                className="group bg-gradient-to-br from-blue-50 to-white border-2 border-gray-200 rounded-2xl p-6 hover:border-blue-500 hover:shadow-xl "
               >
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
@@ -2227,7 +2043,6 @@ export const HomePage = () => {
             </div>
 
             {/* Additional Resource Links */}
-            <FadeInWhenVisible delay={300}>
               <div className="bg-gray-50 rounded-2xl p-6 sm:p-8">
                 <h3 className="text-xl font-bold text-gray-900 mb-6 text-center">
                   More Resources
@@ -2271,8 +2086,6 @@ export const HomePage = () => {
                   </Link>
                 </div>
               </div>
-            </FadeInWhenVisible>
-          </FadeInWhenVisible>
         </div>
       </section>
 
@@ -2280,7 +2093,6 @@ export const HomePage = () => {
       <section className="py-16 sm:py-20 md:py-24 lg:py-28 bg-blue-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
-          <FadeInWhenVisible>
             <div className="text-center mb-12 sm:mb-16">
               <div className="inline-block mb-4 sm:mb-6">
                 <span className="px-4 py-2 bg-blue-100 text-blue-700 text-sm font-semibold rounded-full">
@@ -2297,10 +2109,8 @@ export const HomePage = () => {
                 Everything you need to know about StockFlow
               </p>
             </div>
-          </FadeInWhenVisible>
 
           {/* FAQ Search Bar */}
-          <FadeInWhenVisible delay={100}>
             <div className="max-w-md mx-auto mb-8 sm:mb-10">
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -2327,11 +2137,9 @@ export const HomePage = () => {
                 )}
               </div>
             </div>
-          </FadeInWhenVisible>
 
           {/* Search Results Info */}
           {faqSearchTerm && (
-            <FadeInWhenVisible delay={150}>
               <div className="text-center mb-6">
                 <p className="text-sm text-gray-600">
                   {filteredFaqData.length > 0 
@@ -2340,7 +2148,6 @@ export const HomePage = () => {
                   }
                 </p>
               </div>
-            </FadeInWhenVisible>
           )}
 
           {/* FAQ - Mobile Carousel / Desktop Accordion */}
@@ -2350,8 +2157,7 @@ export const HomePage = () => {
               <MobileCarousel 
                 items={filteredFaqData}
                 renderItem={(faq, index) => (
-                <FadeInWhenVisible key={index} delay={index * 50}>
-                  <div className="bg-white rounded-xl border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 h-full">
+                  <div className="bg-white rounded-xl border border-gray-200 shadow-lg hover:shadow-xl h-full">
                     {/* Question Header */}
                     <div className="px-6 py-5">
                       <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">
@@ -2365,7 +2171,6 @@ export const HomePage = () => {
                     </div>
                   
                   </div>
-                </FadeInWhenVisible>
                 )}
               />
             ) : (
@@ -2402,7 +2207,6 @@ export const HomePage = () => {
                 {/* FAQ Answer Panel */}
                 {selectedFAQ >= 0 && filteredFaqData[selectedFAQ] && (
                   <div className="flex-1">
-                    <FadeInWhenVisible delay={100}>
                       <div className="bg-white rounded-xl border border-gray-200 shadow-lg p-6 sticky top-4">
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">
                           {filteredFaqData[selectedFAQ].question}
@@ -2416,7 +2220,6 @@ export const HomePage = () => {
                           {filteredFaqData[selectedFAQ].answer}
                         </p>
                       </div>
-                    </FadeInWhenVisible>
                   </div>
                 )}
               </div>
@@ -2428,7 +2231,6 @@ export const HomePage = () => {
           </div>
 
           {/* CTA after FAQ */}
-          <FadeInWhenVisible delay={400}>
             <div className="text-center mt-12 sm:mt-16">
               <p className="text-lg text-gray-600 mb-6">
                 Still have questions? We're here to help!
@@ -2439,7 +2241,7 @@ export const HomePage = () => {
                 px-10 py-5 sm:px-12 sm:py-6 md:px-14 md:py-7
                 text-lg sm:text-xl md:text-2xl
                 font-bold rounded-lg transform hover:scale-105
-                transition-all duration-300
+                
                 shadow-2xl hover:shadow-3xl
                 ring-0 focus:ring-4 focus:ring-white/50 focus:outline-none
                 min-h-[56px] sm:min-h-[64px]"       
@@ -2447,7 +2249,6 @@ export const HomePage = () => {
                 Contact Support
               </Button>
             </div>
-          </FadeInWhenVisible>
 
         </div>
       </section>
@@ -2457,7 +2258,6 @@ export const HomePage = () => {
 
 
           {/* Final Call-to-Action Section */}
-          <FadeInWhenVisible delay={600}>
             <section className="bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800  shadow-2xl overflow-hidden">
               <div className="relative px-6 sm:px-8 md:px-12 lg:px-16 py-12 sm:py-14 md:py-16 lg:py-20">
                 {/* Decorative background elements */}
@@ -2485,7 +2285,7 @@ export const HomePage = () => {
                       px-6 py-4 sm:px-8 sm:py-5 md:px-10 md:py-6 lg:px-12
                       text-base sm:text-lg md:text-xl lg:text-2xl
                       font-bold rounded-lg transform hover:scale-105
-                      transition-all duration-300
+                      
                       shadow-2xl hover:shadow-3xl
                       ring-0 focus:ring-4 focus:ring-white/50 focus:outline-none
                       min-h-[48px] sm:min-h-[56px] touch-manipulation"
@@ -2508,7 +2308,6 @@ export const HomePage = () => {
                 </div>
               </div>
             </section>
-          </FadeInWhenVisible>
 
       <Footer />
 

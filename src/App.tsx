@@ -22,7 +22,6 @@ import { LicenseOverview } from './components/settings/LicenseOverview';
 import { InvoicingOverview } from './components/settings/InvoicingOverview';
 import { InvoiceList } from './components/payments/InvoiceList';
 import IntegrationsSettings from './components/settings/Integrations';
-import IntegrationsPage from './pages/integrations';
 import { useAuth, AuthProvider } from "./hooks/useAuth";
 import { useBranches, BranchProvider } from "./hooks/useBranches";
 import { CurrencyProvider } from "./hooks/useCurrency";
@@ -52,7 +51,6 @@ import { ThemeProvider } from './hooks/useTheme';
 // Import remaining synchronous pages
 import SubscriptionTestPage from './pages/subscription-test';
 import NlPricingPage from "./pages/nl-pricing";
-import MobileAppPage from "./pages/mobile-app";
 import HelpCenterPage from "./pages/help-center";
 import CategorysPage from './pages/categories';
 import SuppliersPage from './pages/suppliers';
@@ -346,7 +344,6 @@ const AuthRoute = () => {
         <Route path="/auth" element={<AuthRoute />} />
         <Route path="/pricing" element={<PricingPage />} />
         <Route path="/nl/pricing" element={<NlPricingPage />} />
-        <Route path="/integrations" element={<IntegrationsPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/seo" element={<SEOOverviewPage />} />
 
@@ -360,7 +357,6 @@ const AuthRoute = () => {
         <Route path="/nl/voorraadbeheer-software-vergelijken" element={<Navigate to="/voorraadbeheer-software-vergelijken" replace />} />
         <Route path="/nl/voorraadbeheer-fouten-voorkomen" element={<Navigate to="/voorraadbeheer-fouten-voorkomen" replace />} />
 
-        <Route path="/mobile-app" element={<MobileAppPage />} />
         <Route path="/nl/voorraadbeheer-voor-starters" element={<Navigate to="/voorraadbeheer-voor-starters" replace />} />
         <Route path="/nl/mobiel-voorraadbeheer" element={<Navigate to="/mobiel-voorraadbeheer" replace />} />
         <Route path="/nl/voorraadbeheer-software" element={<Navigate to="/voorraadbeheer-software" replace />} />

@@ -188,7 +188,7 @@ const Header: React.FC<HeaderProps> = ({
                 {
                   label: 'Inventory Management',
                   description: 'Manage, organize, and track all inventory in real time.',
-                  to: '/seo/inventory-management',
+                  to: '/inventory-management',
                   icon: Boxes
                 },
                 {
@@ -211,19 +211,19 @@ const Header: React.FC<HeaderProps> = ({
                 {
                   label: 'Construction',
                   description: 'Monitor job-site inventory from anywhere.',
-                  to: '/seo/contractor-inventory-management',
+                  to: '/contractor-inventory-management',
                   icon: HardHat
                 },
                 {
                   label: 'Electrical',
                   description: 'Stay on top of electrical supplies across teams.',
-                  to: '/seo/inventory-management-provider',
+                  to: '/electrical-inventory-management',
                   icon: Zap
                 },
                 {
                   label: 'Medical',
                   description: 'Track medical supplies with full traceability.',
-                  to: '/seo/inventory-management-software-solutions',
+                  to: '/medical-inventory-management',
                   icon: Stethoscope
                 }
               ]
@@ -234,19 +234,19 @@ const Header: React.FC<HeaderProps> = ({
                 {
                   label: 'Interior Design',
                   description: 'Visually manage design inventory across projects.',
-                  to: '/seo/inventory-platform',
+                  to: '/interior-design-inventory-management',
                   icon: Palette
                 },
                 {
                   label: 'Warehouse',
                   description: 'Run smart warehouse operations with automation.',
-                  to: '/seo/warehouse-management',
+                  to: '/warehouse-inventory-management',
                   icon: Warehouse
                 },
                 {
                   label: 'Education',
                   description: 'Effortlessly manage school inventory and supplies.',
-                  to: '/seo/inventory-management-software',
+                  to: '/education-inventory-management',
                   icon: GraduationCap
                 }
               ]
