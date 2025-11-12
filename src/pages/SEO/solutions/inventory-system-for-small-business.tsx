@@ -32,7 +32,7 @@ export default function InventorySystemForSmallBusiness() {
     },
     {
       question: "How much does an inventory system for small business cost?",
-      answer: "Inventory systems for small businesses vary in cost. StockFlow offers a free plan for small businesses with up to 100 products, making it accessible for startups and small operations. Premium plans start at affordable pay-as-you-grow pricing (â‚¬0.004 per product/month), much cheaper than enterprise solutions."
+      answer: "Inventory systems for small businesses vary in cost. StockFlow offers a free plan for small businesses with up to 100 products, making it accessible for startups and small operations. Premium plans start at affordable pay-as-you-grow pricing (€0.004 per product/month), much cheaper than enterprise solutions."
     },
     {
       question: "What features should an inventory system for small business have?",

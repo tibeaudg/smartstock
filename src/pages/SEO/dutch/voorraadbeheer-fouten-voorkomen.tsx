@@ -124,13 +124,13 @@ export default function VoorraadbeheerFoutenVoorkomen() {
           </p>
           <div className="flex justify-center space-x-4">
             <div className="bg-white bg-opacity-20 px-4 py-2 rounded-full">
-              <span className="text-sm text-black font-bold">âœ“ Best practices</span>
+              <span className="text-sm text-black font-bold">✓ Best practices</span>
             </div>
             <div className="bg-white bg-opacity-20 px-4 py-2 rounded-full">
-              <span className="text-sm text-black font-bold">âœ“ Praktische tips</span>
+              <span className="text-sm text-black font-bold">✓ Praktische tips</span>
             </div>
             <div className="bg-white bg-opacity-20 px-4 py-2 rounded-full">
-              <span className="text-sm text-black font-bold">âœ“ Foutpreventie</span>
+              <span className="text-sm text-black font-bold">✓ Foutpreventie</span>
             </div>
           </div>
         </div>

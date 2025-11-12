@@ -140,7 +140,7 @@ export function createGlossaryPage(config: GlossaryPageConfig) {
               >
                 <div className="flex items-start gap-3">
                   <span className="mt-1 inline-flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-white">
-                    âœ“
+                    ✓
                   </span>
                   <p className="text-base text-slate-700">{item}</p>
                 </div>

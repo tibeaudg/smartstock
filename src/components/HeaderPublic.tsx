@@ -29,6 +29,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useIsMobile } from '../hooks/useWindowSize';
 import { useLocation } from "react-router-dom";
 import type { LucideIcon } from 'lucide-react';
+import { Button } from './ui/button';
 
 
 
@@ -508,6 +509,7 @@ const Header: React.FC<HeaderProps> = ({
   };
 
   return (
+    
     <header ref={headerRef} className={`fixed inset-x-0 top-0 z-[99] ${className}`}>
       {!hideNotifications && (
         <div className="bg-slate-900 text-white">
@@ -528,10 +530,10 @@ const Header: React.FC<HeaderProps> = ({
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 lg:py-4">
           <div className="flex items-center gap-8">
             <Link to="/" onClick={handleNavigate} className="flex items-center gap-3">
-              <div className="flex h-8 w-8 items-center justify-center rounded-3xl bg-blue-600 transition-transform duration-300 hover:scale-105">
-                <Package className="h-5 w-5 text-white" />
+              <div className="flex h-7 w-7 items-center justify-center rounded-3xl bg-blue-600 transition-transform duration-300 hover:scale-105">
+                <Package className="h-4 w-4 text-white" />
               </div>
-              <span className="text-2xl font-semibold text-gray-900">stockflow</span>
+              <span className="text-xl font-semibold text-gray-900">stockflow</span>
             </Link>
 
             {!isMobile && (
@@ -614,21 +616,23 @@ const Header: React.FC<HeaderProps> = ({
 
             {!hideAuthButtons && !isMobile && (
               <div className="flex items-center gap-3">
-                <button
-                  type="button"
-                  onClick={handleLoginClick}
-                  className="rounded-full border border-blue-600 px-4 py-2 font-medium text-blue-600 transition-colors hover:bg-blue-600 hover:text-white"
-                >
-                  Login
-                </button>
-                <button
-                  type="button"
-                  onClick={handleRegisterClick}
-                  className="rounded-full px-4 py-2 font-medium text-white transition-colors"
-                  style={{ backgroundColor: buttonBgColor || '#2563eb', color: buttonTextColor || '#fff' }}
-                >
-                  Start Free Trial
-                </button>
+              <Button
+                  asChild
+                  size="sm"
+                  variant="outline"
+                  className="rounded-xl px-5 text-sm">
+                  <Link to="/auth?mode=login">
+                      <span className="text-nowrap">Login</span>
+                  </Link>
+              </Button>
+                <Button
+                    asChild
+                    size="sm"
+                    className="rounded-xl px-5 text-sm bg-blue-700 text-white border border-white">
+                    <Link to="/auth?mode=register">
+                        <span className="text-nowrap">Start Free Trial</span>
+                    </Link>
+                </Button>
               </div>
             )}
           </div>

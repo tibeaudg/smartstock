@@ -163,7 +163,7 @@ export default function InventoryManagementSoftware() {
     <SeoPageLayout title="Inventory Management Software">
       <SEO
         title="Inventory Management Software 2025: Best Cloud Solution | Free Trial"
-        description="Discover the best inventory management software for your business. Real-time tracking, automated alerts, barcode scanning. Start FREE - no credit card. Join 500+ businesses. âœ“"
+        description="Discover the best inventory management software for your business. Real-time tracking, automated alerts, barcode scanning. Start FREE - no credit card. Join 500+ businesses. ✓"
         keywords="inventory management software, inventory software management, software for inventory management, softwares for inventory management, inventory management software best, stock management software, inventory tracking, stock control, warehouse management, inventory system, inventory management software best, inventory management online, inventory tracking programs, inventory software, inventory management system, stockflow, stock flow"
         url="https://www.stockflow.be/inventory-management-software"
         locale="en"
@@ -267,7 +267,7 @@ export default function InventoryManagementSoftware() {
                 
                 {/* Floating Success Badge */}
                 <div className="absolute -top-4 -right-4 bg-green-500 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg animate-bounce">
-                  âœ“ Auto-Reorder Active
+                  ✓ Auto-Reorder Active
                 </div>
               </div>
               
@@ -416,27 +416,27 @@ export default function InventoryManagementSoftware() {
               <p className="text-red-700 mb-6">Too much or too little inventory due to time-consuming, manual purchasing</p>
               <ul className="space-y-3 text-red-700">
                 <li className="flex items-start">
-                  <span className="text-red-500 mr-2">âœ—</span>
+                  <span className="text-red-500 mr-2">✗</span>
                   Manual purchasing based on gut feeling
                 </li>
                 <li className="flex items-start">
-                  <span className="text-red-500 mr-2">âœ—</span>
+                  <span className="text-red-500 mr-2">✗</span>
                   Reactive purchasing when you're often already too late
                 </li>
                 <li className="flex items-start">
-                  <span className="text-red-500 mr-2">âœ—</span>
+                  <span className="text-red-500 mr-2">✗</span>
                   Time spent on what, when, where and how much to purchase
                 </li>
                 <li className="flex items-start">
-                  <span className="text-red-500 mr-2">âœ—</span>
+                  <span className="text-red-500 mr-2">✗</span>
                   Not knowing if inventory is balanced
                 </li>
                 <li className="flex items-start">
-                  <span className="text-red-500 mr-2">âœ—</span>
+                  <span className="text-red-500 mr-2">✗</span>
                   High inventory but still stockouts
                 </li>
                 <li className="flex items-start">
-                  <span className="text-red-500 mr-2">âœ—</span>
+                  <span className="text-red-500 mr-2">✗</span>
                   No clear insight into purchasing needs and moments
                 </li>
               </ul>
@@ -448,27 +448,27 @@ export default function InventoryManagementSoftware() {
               <p className="text-green-700 mb-6">Purchase the right inventory based on all available data and trends</p>
               <ul className="space-y-3 text-green-700">
                 <li className="flex items-start">
-                  <span className="text-green-500 mr-2">âœ“</span>
+                  <span className="text-green-500 mr-2">✓</span>
                   Automatic data-driven purchasing
                 </li>
                 <li className="flex items-start">
-                  <span className="text-green-500 mr-2">âœ“</span>
+                  <span className="text-green-500 mr-2">✓</span>
                   Proactive purchasing based on trends and seasons
                 </li>
                 <li className="flex items-start">
-                  <span className="text-green-500 mr-2">âœ“</span>
+                  <span className="text-green-500 mr-2">✓</span>
                   Optimize purchasing decisions and data
                 </li>
                 <li className="flex items-start">
-                  <span className="text-green-500 mr-2">âœ“</span>
+                  <span className="text-green-500 mr-2">✓</span>
                   Optimal inventory for more revenue and cashflow control
                 </li>
                 <li className="flex items-start">
-                  <span className="text-green-500 mr-2">âœ“</span>
+                  <span className="text-green-500 mr-2">✓</span>
                   More revenue with less inventory
                 </li>
                 <li className="flex items-start">
-                  <span className="text-green-500 mr-2">âœ“</span>
+                  <span className="text-green-500 mr-2">✓</span>
                   Optimize daily purchasing decisions
                 </li>
               </ul>
@@ -561,7 +561,7 @@ export default function InventoryManagementSoftware() {
                           <div className="font-medium text-gray-800">iPhone Case</div>
                           <div className="text-sm text-gray-600">Stock: 45 units</div>
                         </div>
-                        <div className="text-green-600 font-bold">âœ“</div>
+                        <div className="text-green-600 font-bold">✓</div>
                       </div>
                       
                       <div className="flex items-center justify-between p-3 bg-orange-50 rounded-lg">
@@ -860,7 +860,7 @@ export default function InventoryManagementSoftware() {
                 <p className="text-gray-600 text-sm mb-3">
                   Nederlandse gids voor professionele voorraadbeheer software.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">Lees meer â†’</div>
+                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
               </div>
             </Link>
 
@@ -873,7 +873,7 @@ export default function InventoryManagementSoftware() {
                 <p className="text-gray-600 text-sm mb-3">
                   Warehouse management voor Nederlandse en Belgische markt.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">Lees meer â†’</div>
+                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
               </div>
             </Link>
 
@@ -886,7 +886,7 @@ export default function InventoryManagementSoftware() {
                 <p className="text-gray-600 text-sm mb-3">
                   Complete gids voor het automatiseren van je voorraad.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">Lees meer â†’</div>
+                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
               </div>
             </Link>
 
@@ -899,7 +899,7 @@ export default function InventoryManagementSoftware() {
                 <p className="text-gray-600 text-sm mb-3">
                   Affordable inventory solutions voor KMO's.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">Lees meer â†’</div>
+                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
               </div>
             </Link>
 
@@ -912,7 +912,7 @@ export default function InventoryManagementSoftware() {
                 <p className="text-gray-600 text-sm mb-3">
                   Voorraadbeheer speciaal voor webshops en e-commerce.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">Lees meer â†’</div>
+                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
               </div>
             </Link>
 
@@ -925,7 +925,7 @@ export default function InventoryManagementSoftware() {
                 <p className="text-gray-600 text-sm mb-3">
                   Why switch from Excel to professional software.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">Lees meer â†’</div>
+                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
               </div>
             </Link>
 
@@ -938,7 +938,7 @@ export default function InventoryManagementSoftware() {
                 <p className="text-gray-600 text-sm mb-3">
                   Discover StockFlow - free inventory management software for growing businesses.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">Visit homepage â†’</div>
+                <div className="text-blue-600 text-sm font-semibold">Visit homepage →</div>
               </div>
             </Link>
           </div>

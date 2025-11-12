@@ -141,7 +141,7 @@ export default function WarehouseSoftware() {
     {
       title: "Cold Storage",
       description: "Specialized for temperature-controlled warehouse operations.",
-      icon: "â„ï¸",
+      icon: "❄️",
       features: ["Temperature monitoring", "Compliance tracking", "Specialized workflows"]
     }
   ];
@@ -493,7 +493,7 @@ export default function WarehouseSoftware() {
                 <p className="text-gray-600 text-sm mb-3">
                   Complete WMS solutions for enterprise warehouse operations.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">Read more â†’</div>
+                <div className="text-blue-600 text-sm font-semibold">Read more →</div>
               </div>
             </Link>
             <Link to="/warehouse-management" className="group">
@@ -504,7 +504,7 @@ export default function WarehouseSoftware() {
                 <p className="text-gray-600 text-sm mb-3">
                   Best practices and strategies for effective warehouse operations.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">Read more â†’</div>
+                <div className="text-blue-600 text-sm font-semibold">Read more →</div>
               </div>
             </Link>
             <Link to="/magazijnbeheer-software" className="group">
@@ -515,7 +515,7 @@ export default function WarehouseSoftware() {
                 <p className="text-gray-600 text-sm mb-3">
                   Nederlandse versie - magazijnbeheer software voor Belgische bedrijven.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">Lees meer â†’</div>
+                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
               </div>
             </Link>
           </div>

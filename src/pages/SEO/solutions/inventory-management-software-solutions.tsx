@@ -31,7 +31,7 @@ const structuredData = generateComprehensiveStructuredData('software', {
   title: 'Inventory Management Software Solutions | StockFlow',
   url: 'https://www.stockflow.be/inventory-management-software-solutions',
   description:
-    'Explore StockFlowâ€™s inventory management software solutions. Unify purchasing, warehousing, and analytics with barcode automation and multi-location control.',
+    'Explore StockFlow’s inventory management software solutions. Unify purchasing, warehousing, and analytics with barcode automation and multi-location control.',
   breadcrumbs: [
     { name: 'Home', url: 'https://www.stockflow.be/', position: 1 },
     { name: 'Inventory Management Software', url: 'https://www.stockflow.be/inventory-management-software', position: 2 },
@@ -133,14 +133,14 @@ export default function InventoryManagementSoftwareSolutionsPage() {
         <div className="bg-gray-50 border border-gray-200 rounded-2xl p-8">
           <h3 className="text-lg font-semibold text-gray-900">Industries we serve</h3>
           <ul className="mt-5 space-y-3 text-sm text-gray-700">
-            <li>â€¢ Wholesale & distribution</li>
-            <li>â€¢ Ecommerce & omnichannel retail</li>
-            <li>â€¢ Manufacturing & assembly</li>
-            <li>â€¢ Food & beverage</li>
-            <li>â€¢ Health & beauty brands</li>
+            <li>• Wholesale & distribution</li>
+            <li>• Ecommerce & omnichannel retail</li>
+            <li>• Manufacturing & assembly</li>
+            <li>• Food & beverage</li>
+            <li>• Health & beauty brands</li>
           </ul>
           <Link to="/case-studies" className="inline-flex mt-6 text-blue-600 font-semibold hover:underline">
-            See customer results â†’
+            See customer results →
           </Link>
         </div>
       </section>

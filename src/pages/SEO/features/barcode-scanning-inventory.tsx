@@ -126,14 +126,14 @@ const BarcodeScanningInventory = () => {
             </h2>
             <div className="grid md:grid-cols-2 gap-6 mb-6">
               <div className="border border-gray-200 rounded-lg p-6">
-                <h3 className="text-xl font-semibold mb-2">âš¡ Speed & Efficiency</h3>
+                <h3 className="text-xl font-semibold mb-2">⚡ Speed & Efficiency</h3>
                 <p className="text-gray-600">
                   Scan products in seconds instead of manually entering data. Increase inventory counting speed by 10x.
                 </p>
               </div>
               
               <div className="border border-gray-200 rounded-lg p-6">
-                <h3 className="text-xl font-semibold mb-2">âœ“ Accuracy</h3>
+                <h3 className="text-xl font-semibold mb-2">✓ Accuracy</h3>
                 <p className="text-gray-600">
                   Eliminate human error with automated barcode recognition. 99.9% accuracy compared to manual entry.
                 </p>

@@ -88,7 +88,7 @@ export default function SoftwareForInventoryManagement() {
     {
       title: "Cloud-based Software",
       description: "Access your inventory management from anywhere with internet connection.",
-      icon: "â˜ï¸",
+      icon: "☁️",
       features: ["Remote access", "Automatic updates", "Data backup"]
     },
     {
@@ -135,27 +135,27 @@ export default function SoftwareForInventoryManagement() {
   const softwareComparison = [
     {
       feature: "Real-time tracking",
-      stockflow: "âœ“",
+      stockflow: "✓",
       competitor1: "Limited",
       competitor2: "Premium only"
     },
     {
       feature: "Mobile access",
-      stockflow: "âœ“",
+      stockflow: "✓",
       competitor1: "Extra cost",
       competitor2: "Limited"
     },
     {
       feature: "Barcode scanning",
-      stockflow: "âœ“",
+      stockflow: "✓",
       competitor1: "Premium only",
       competitor2: "Extra cost"
     },
     {
       feature: "Free plan",
-      stockflow: "âœ“",
-      competitor1: "âœ—",
-      competitor2: "âœ—"
+      stockflow: "✓",
+      competitor1: "✗",
+      competitor2: "✗"
     },
     {
       feature: "Customer support",

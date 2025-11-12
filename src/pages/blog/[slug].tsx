@@ -6,7 +6,8 @@ import type { BlogPost } from '../../integrations/supabase/types';
 import DOMPurify from 'dompurify';
 
 import { BlogLayout } from '../../components/BlogLayout';
-
+import HeaderPublic from '@/components/HeaderPublic';
+import Footer from '@/components/Footer';
 export default function BlogPostPage() {
   const { slug } = useParams();
   const [post, setPost] = useState<BlogPost | null>(null);
@@ -72,6 +73,7 @@ export default function BlogPostPage() {
         url={canonicalUrl}
         structuredData={structuredData}
       />
+      <HeaderPublic />  
       <div className="mt-8">
         <p className="text-gray-600 text-sm mb-4">
           {new Date(post.date_published).toLocaleDateString('nl-BE', {
@@ -85,6 +87,7 @@ export default function BlogPostPage() {
     ALLOWED_ATTR: ['href', 'src', 'alt', 'title', 'class', 'target', 'rel']
   }) }} />
       </div>
+      <Footer />
     </BlogLayout>
   );
 }

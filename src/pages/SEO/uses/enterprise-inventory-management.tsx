@@ -32,7 +32,7 @@ export default function EnterpriseInventoryManagement() {
     },
     {
       question: "How much does enterprise inventory management software cost?",
-      answer: "Enterprise inventory management software typically costs $10,000+ per month for large deployments. However, StockFlow offers enterprise-level features starting at affordable pay-as-you-grow pricing (â‚¬0.004 per product/month), making enterprise capabilities accessible to growing businesses without massive upfront costs."
+      answer: "Enterprise inventory management software typically costs $10,000+ per month for large deployments. However, StockFlow offers enterprise-level features starting at affordable pay-as-you-grow pricing (€0.004 per product/month), making enterprise capabilities accessible to growing businesses without massive upfront costs."
     },
     {
       question: "Is StockFlow suitable for enterprise inventory management?",
@@ -104,7 +104,7 @@ export default function EnterpriseInventoryManagement() {
 
       <SeoPageHero
         title="Enterprise Inventory Management Software: Complete Enterprise Solution"
-        description="Best enterprise inventory management software for large organizations. Multi-warehouse support, advanced analytics, enterprise security, and scalability. Affordable enterprise solution starting at â‚¬0.004/product/month."
+        description="Best enterprise inventory management software for large organizations. Multi-warehouse support, advanced analytics, enterprise security, and scalability. Affordable enterprise solution starting at €0.004/product/month."
         badges={[
           { icon: <Trophy className="w-6 h-6" />, text: "#1 Enterprise Solution", variant: 'warning' },
           { icon: <Star className="w-6 h-6" />, text: "Enterprise Features", variant: 'success' },

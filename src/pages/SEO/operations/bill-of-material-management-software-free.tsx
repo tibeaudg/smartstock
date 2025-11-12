@@ -92,7 +92,7 @@ export default function BillOfMaterialManagementSoftwareFreePage() {
                 Book BOM Demo
               </Link>
             </div>
-            <p className="text-xs text-gray-500 mt-3">30 products free â€¢ Barcode scanning â€¢ Guided onboarding</p>
+            <p className="text-xs text-gray-500 mt-3">30 products free • Barcode scanning • Guided onboarding</p>
           </div>
           <div className="bg-blue-50 border border-blue-100 rounded-2xl p-6 shadow-sm">
             <h2 className="text-lg font-semibold text-gray-900">BOM features included:</h2>
@@ -130,10 +130,10 @@ export default function BillOfMaterialManagementSoftwareFreePage() {
         <div className="bg-gray-50 border border-gray-200 rounded-2xl p-8">
           <h3 className="text-lg font-semibold text-gray-900">Free plan limits</h3>
           <ul className="mt-5 space-y-3 text-sm text-gray-700">
-            <li>â€¢ Up to 30 active finished products</li>
-            <li>â€¢ Unlimited components and raw materials</li>
-            <li>â€¢ 2 team members with barcode access</li>
-            <li>â€¢ Email support with 24h response time</li>
+            <li>• Up to 30 active finished products</li>
+            <li>• Unlimited components and raw materials</li>
+            <li>• 2 team members with barcode access</li>
+            <li>• Email support with 24h response time</li>
           </ul>
           <p className="text-sm text-gray-600 mt-6">Upgrade to unlock MRP planning, demand forecasting, and API integrations.</p>
         </div>

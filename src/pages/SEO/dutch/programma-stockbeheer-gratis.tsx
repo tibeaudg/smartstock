@@ -121,16 +121,16 @@ export default function ProgrammaStockbeheerGratis() {
               </p>
               <div className="flex flex-wrap gap-4 mb-8">
                 <div className="bg-white bg-opacity-20 px-4 py-2 rounded-full">
-                  <span className="text-sm font-bold">âœ“ 100% Gratis</span>
+                  <span className="text-sm font-bold">✓ 100% Gratis</span>
                 </div>
                 <div className="bg-white bg-opacity-20 px-4 py-2 rounded-full">
-                  <span className="text-sm font-bold">âœ“ Geen </span>
+                  <span className="text-sm font-bold">✓ Geen </span>
                 </div>
                 <div className="bg-white bg-opacity-20 px-4 py-2 rounded-full">
-                  <span className="text-sm font-bold">âœ“ Real-time</span>
+                  <span className="text-sm font-bold">✓ Real-time</span>
                 </div>
                 <div className="bg-white bg-opacity-20 px-4 py-2 rounded-full">
-                  <span className="text-sm font-bold">âœ“ Mobiel</span>
+                  <span className="text-sm font-bold">✓ Mobiel</span>
                 </div>
               </div>
               <div className="flex flex-col sm:flex-row gap-4">
@@ -389,7 +389,7 @@ export default function ProgrammaStockbeheerGratis() {
     
           </div>
           <p className="text-sm mt-6 opacity-75">
-            Geen creditcard vereist â€¢ Direct toegang â€¢ Nederlandse support
+            Geen creditcard vereist • Direct toegang • Nederlandse support
           </p>
         </div>
       </section>

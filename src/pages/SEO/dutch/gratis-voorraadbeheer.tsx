@@ -76,13 +76,13 @@ export default function GratisStockbeheer() {
           </p>
           <div className="flex justify-center space-x-4">
             <div className="bg-white bg-opacity-20 px-4 py-2 rounded-full">
-              <span className="text-sm text-black font-bold">âœ“ 100% Gratis</span>
+              <span className="text-sm text-black font-bold">✓ 100% Gratis</span>
             </div>
             <div className="bg-white bg-opacity-20 px-4 py-2 rounded-full">
-              <span className="text-sm text-black font-bold">âœ“ Direct starten</span>
+              <span className="text-sm text-black font-bold">✓ Direct starten</span>
             </div>
             <div className="bg-white bg-opacity-20 px-4 py-2 rounded-full">
-              <span className="text-sm text-black font-bold">âœ“ Geen verplichtingen</span>
+              <span className="text-sm text-black font-bold">✓ Geen verplichtingen</span>
             </div>
           </div>
         </div>

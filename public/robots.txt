@@ -1,9 +1,15 @@
-User-agent: Bytespider
-Disallow: /
-
+# Robots.txt for StockFlow
 User-agent: *
+Allow: /
+
+# Disallow authenticated pages
+Disallow: /dashboard
+Disallow: /dashboard/*
+Disallow: /auth
+Disallow: /checkout
 Disallow: /admin
 Disallow: /admin/*
 
 # Sitemaps
+Sitemap: https://www.stockflow.be/sitemap.xml
 Sitemap: https://www.stockflow.be/sitemap-index.xml

@@ -59,7 +59,7 @@ export default function GratisStockbeheer() {
     >
       <SEO
         title="Gratis Stockbeheer Software voor Kleine Ondernemers | stockflow"
-        description="Beheer je voorraad eenvoudig online. Gratis stockbeheer software voor winkels, horeca en zelfstandigen. Start direct met stockflow â€“ geen kosten."
+        description="Beheer je voorraad eenvoudig online. Gratis stockbeheer software voor winkels, horeca en zelfstandigen. Start direct met stockflow – geen kosten."
         keywords="gratis stockbeheer, gratis voorraadbeheer, stockbeheer app gratis, voorraadbeheer gratis, gratis stockbeheer software, gratis voorraadbeheer app, stockbeheer zonder kosten, voorraadbeheer KMO, gratis voorraadbeheer software, stockbeheer starters, voorraadbeheer kleine bedrijven, gratis stockbeheer app, voorraadbeheer app gratis, stockflow gratis, gratis voorraadbeheer programma"
         url="https://www.stockflow.be/gratis-stockbeheer"
       />
@@ -76,13 +76,13 @@ export default function GratisStockbeheer() {
           </p>
           <div className="flex justify-center space-x-4">
             <div className="bg-white bg-opacity-20 px-4 py-2 rounded-full">
-              <span className="text-sm text-black font-bold">âœ“ 100% Gratis</span>
+              <span className="text-sm text-black font-bold">✓ 100% Gratis</span>
             </div>
             <div className="bg-white bg-opacity-20 px-4 py-2 rounded-full">
-              <span className="text-sm text-black font-bold">âœ“ Direct starten</span>
+              <span className="text-sm text-black font-bold">✓ Direct starten</span>
             </div>
             <div className="bg-white bg-opacity-20 px-4 py-2 rounded-full">
-              <span className="text-sm text-black font-bold">âœ“ Geen verplichtingen</span>
+              <span className="text-sm text-black font-bold">✓ Geen verplichtingen</span>
             </div>
           </div>
         </div>

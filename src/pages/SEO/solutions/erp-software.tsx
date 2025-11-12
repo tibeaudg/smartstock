@@ -110,8 +110,8 @@ export default function ErpSoftware() {
   const comparison = [
     {
       feature: "Cost",
-      erp: "â‚¬10,000+ per month",
-      stockflow: "Free to start, â‚¬0.004/product/month"
+      erp: "€10,000+ per month",
+      stockflow: "Free to start, €0.004/product/month"
     },
     {
       feature: "Implementation Time",

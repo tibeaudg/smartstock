@@ -33,7 +33,7 @@ export default function BestInventoryManagementSoftware() {
     },
     {
       question: "How does StockFlow compare to Exact and Visma Net?",
-      answer: "StockFlow offers the best value for SMBs. It starts at â‚¬0/month (vs â‚¬255-â‚¬450 for competitors), includes all essential features in the free plan, provides 24/7 support (vs business hours/email only), and has no hidden setup fees. While enterprise solutions like Exact and Visma offer advanced features, StockFlow provides everything most businesses need at a fraction of the cost."
+      answer: "StockFlow offers the best value for SMBs. It starts at €0/month (vs €255-€450 for competitors), includes all essential features in the free plan, provides 24/7 support (vs business hours/email only), and has no hidden setup fees. While enterprise solutions like Exact and Visma offer advanced features, StockFlow provides everything most businesses need at a fraction of the cost."
     },
     {
       question: "What features should the StockFlow vs Sortly have?",
@@ -96,33 +96,33 @@ export default function BestInventoryManagementSoftware() {
   const comparisonData = [
     {
       feature: "Real-time tracking",
-      stockflow: "âœ“",
+      stockflow: "✓",
       exact: "Limited",
-      visma: "Premium only (â‚¬450+)"
+      visma: "Premium only (€450+)"
     },
     {
       feature: "Mobile access",
-      stockflow: "âœ“ Free",
-      exact: "Extra cost (â‚¬50+/month)",
+      stockflow: "✓ Free",
+      exact: "Extra cost (€50+/month)",
       visma: "Limited features"
     },
     {
       feature: "Barcode scanning",
-      stockflow: "âœ“ Included",
-      exact: "Premium only (â‚¬255+/month)",
-      visma: "Extra module (â‚¬200+/month)"
+      stockflow: "✓ Included",
+      exact: "Premium only (€255+/month)",
+      visma: "Extra module (€200+/month)"
     },
     {
       feature: "Multi-location",
-      stockflow: "âœ“ All plans",
-      exact: "Enterprise only (â‚¬500+/month)",
-      visma: "Limited (â‚¬450+/month)"
+      stockflow: "✓ All plans",
+      exact: "Enterprise only (€500+/month)",
+      visma: "Limited (€450+/month)"
     },
     {
       feature: "Free plan",
-      stockflow: "âœ“ (100 products)",
-      exact: "âœ— No free plan",
-      visma: "âœ— No free plan"
+      stockflow: "✓ (100 products)",
+      exact: "✗ No free plan",
+      visma: "✗ No free plan"
     },
     {
       feature: "Customer support",
@@ -132,15 +132,15 @@ export default function BestInventoryManagementSoftware() {
     },
     {
       feature: "Starting price",
-      stockflow: "â‚¬0/month",
-      exact: "â‚¬255/month",
-      visma: "â‚¬450/month"
+      stockflow: "€0/month",
+      exact: "€255/month",
+      visma: "€450/month"
     },
     {
       feature: "Setup & onboarding",
       stockflow: "Free + guided",
-      exact: "Extra cost (â‚¬500+)",
-      visma: "Extra cost (â‚¬1000+)"
+      exact: "Extra cost (€500+)",
+      visma: "Extra cost (€1000+)"
     }
   ];
 
@@ -174,7 +174,7 @@ export default function BestInventoryManagementSoftware() {
     {
       title: "Top Rated by Users",
       organization: "Software Review Platform",
-      icon: "â­"
+      icon: "⭐"
     },
     {
       title: "Best Value for Money",
@@ -238,63 +238,63 @@ export default function BestInventoryManagementSoftware() {
               <br />
               <b className="text-2xl">Quick summary</b>
               <br />
-              â€¢ <b>StockFlow</b>: built for teams that want simple, barcodeâ€‘first workflows, multiâ€‘location control, lowâ€‘stock alerts, and clear pricing that scales with you. Great for shops, field teams, contractors, and SMB warehouses that need speed and collaboration. 
+              • <b>StockFlow</b>: built for teams that want simple, barcodeâ€‘first workflows, multiâ€‘location control, lowâ€‘stock alerts, and clear pricing that scales with you. Great for shops, field teams, contractors, and SMB warehouses that need speed and collaboration. 
               <br />
-              â€¢ <b>Sortly</b>: known for a visual, folderâ€‘style catalog and item labels. Useful when you mainly need an easy way to browse items with photos and basic activity history.
+              • <b>Sortly</b>: known for a visual, folderâ€‘style catalog and item labels. Useful when you mainly need an easy way to browse items with photos and basic activity history.
               <br />
               <br />
               <b className="text-2xl">Key differences</b>
               <br />
-              â€¢ <b>Barcoding & speed</b>: StockFlow emphasizes scanning from day one (barcode and QR), quick add/adjust, and fast cycle counts for teams on the move. Sortly supports barcodes but is more catalogâ€‘oriented. 
+              • <b>Barcoding & speed</b>: StockFlow emphasizes scanning from day one (barcode and QR), quick add/adjust, and fast cycle counts for teams on the move. Sortly supports barcodes but is more catalogâ€‘oriented. 
               <br />
-              â€¢ <b>Multiâ€‘location & permissions</b>: StockFlow includes multiple locations/branches, roleâ€‘based permissions, and user management designed for growing teams. 
+              • <b>Multiâ€‘location & permissions</b>: StockFlow includes multiple locations/branches, roleâ€‘based permissions, and user management designed for growing teams. 
               <br />
-              â€¢ <b>Purchasing workflow</b>: StockFlow offers lowâ€‘stock alerts, reorder points, and purchaseâ€‘order flows to prevent stockouts. 
+              • <b>Purchasing workflow</b>: StockFlow offers lowâ€‘stock alerts, reorder points, and purchaseâ€‘order flows to prevent stockouts. 
               <br />
-              â€¢ <b>Reporting</b>: StockFlow provides outâ€‘ofâ€‘theâ€‘box dashboards and exports for stock valuation, movement history, and audits; Sortly focuses more on item logs and lists. 
+              • <b>Reporting</b>: StockFlow provides outâ€‘ofâ€‘theâ€‘box dashboards and exports for stock valuation, movement history, and audits; Sortly focuses more on item logs and lists. 
               <br />
-              â€¢ <b>Pricing & scalability</b>: StockFlow has a transparent, SMBâ€‘friendly model with a <b>free tier</b> to get started, then scales as you add products and users. Sortly uses tiered plans based on features and limits. 
+              • <b>Pricing & scalability</b>: StockFlow has a transparent, SMBâ€‘friendly model with a <b>free tier</b> to get started, then scales as you add products and users. Sortly uses tiered plans based on features and limits. 
               <br />
               <br />
               <b className="text-2xl">Feature comparison at a glance</b>
               <br />
-              â€¢ <b>Mobile app</b>: iOS/Android for both. StockFlow optimizes for scanning and quick actions in the field. 
+              • <b>Mobile app</b>: iOS/Android for both. StockFlow optimizes for scanning and quick actions in the field. 
               <br />
-              â€¢ <b>Item photos & documents</b>: Both support images; StockFlow adds structured attributes and fast import/export. 
+              • <b>Item photos & documents</b>: Both support images; StockFlow adds structured attributes and fast import/export. 
               <br />
-              â€¢ <b>Stock moves</b>: StockFlow tracks receipts, issues, transfers, and adjustments with full history by user and location. 
+              • <b>Stock moves</b>: StockFlow tracks receipts, issues, transfers, and adjustments with full history by user and location. 
               <br />
-              â€¢ <b>Alerts & automation</b>: StockFlow includes lowâ€‘stock and dateâ€‘based notifications to keep reordering on time. 
+              • <b>Alerts & automation</b>: StockFlow includes lowâ€‘stock and dateâ€‘based notifications to keep reordering on time. 
               <br />
-              â€¢ <b>Integrations</b>: StockFlow focuses on pragmatic exports, email/PDF docs, and accounting integrations many SMBs already use. 
+              • <b>Integrations</b>: StockFlow focuses on pragmatic exports, email/PDF docs, and accounting integrations many SMBs already use. 
               <br />
-              â€¢ <b>Security</b>: Both use modern cloud infrastructure; StockFlow adds roleâ€‘based access for teams and auditors. 
+              • <b>Security</b>: Both use modern cloud infrastructure; StockFlow adds roleâ€‘based access for teams and auditors. 
               <br />
               <br />
               <b className="text-2xl">When to choose StockFlow</b>
               <br />
-              â€¢ You need <b>fast barcode workflows</b> for receiving, counting, and picking. 
+              • You need <b>fast barcode workflows</b> for receiving, counting, and picking. 
               <br />
-              â€¢ You operate across <b>multiple locations</b> or vans and want clear permissions per user. 
+              • You operate across <b>multiple locations</b> or vans and want clear permissions per user. 
               <br />
-              â€¢ You want <b>reorder points</b>, POs, and <b>alerts</b> that actually prevent stockouts. 
+              • You want <b>reorder points</b>, POs, and <b>alerts</b> that actually prevent stockouts. 
               <br />
-              â€¢ You prefer <b>simple pricing</b> with a free tier to start and scale smoothly. 
+              • You prefer <b>simple pricing</b> with a free tier to start and scale smoothly. 
               <br />
               <br />
               <b className="text-2xl">When Sortly can fit</b>
               <br />
-              â€¢ You primarily need a <b>visual catalog</b> to browse items with photos and labels. 
+              • You primarily need a <b>visual catalog</b> to browse items with photos and labels. 
               <br />
-              â€¢ Your process is light on purchasing or multiâ€‘location controls and heavier on tagging and finding items. 
+              • Your process is light on purchasing or multiâ€‘location controls and heavier on tagging and finding items. 
               <br />
               <br />
               <b className="text-2xl">Bottom line</b>
               <br />
-              If your priority is <b>dayâ€‘toâ€‘day inventory operations</b>â€”barcode scanning, fast counts, accurate stock across locations, and proactive reorderingâ€”<b>StockFlow</b> is the better fit for most SMB teams. If you mainly want a simple visual catalog with basic tracking, <b>Sortly</b> can work. 
+              If your priority is <b>dayâ€‘toâ€‘day inventory operations</b>—barcode scanning, fast counts, accurate stock across locations, and proactive reordering—<b>StockFlow</b> is the better fit for most SMB teams. If you mainly want a simple visual catalog with basic tracking, <b>Sortly</b> can work. 
               <br />
               <br />
-              Ready to try it? Start with StockFlowâ€™s free tier and see how quickly your team can organize inventory, prevent stockouts, and ship faster.
+              Ready to try it? Start with StockFlow’s free tier and see how quickly your team can organize inventory, prevent stockouts, and ship faster.
             </p>
     
     
@@ -553,7 +553,7 @@ export default function BestInventoryManagementSoftware() {
               "@type": "Offer",
               "price": "0.004",
               "priceCurrency": "EUR",
-              "description": "Business plan - Pay-as-you-grow pricing, â‚¬0.004 per product/month (products 101+)",
+              "description": "Business plan - Pay-as-you-grow pricing, €0.004 per product/month (products 101+)",
               "availability": "https://schema.org/InStock",
               "priceValidUntil": "2026-12-31"
             },

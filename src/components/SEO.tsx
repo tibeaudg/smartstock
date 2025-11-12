@@ -46,24 +46,54 @@ export const SEO: React.FC<SEOProps> = ({
   productCurrency = 'EUR',
   appUrl,
 }) => {
-  // Detect browser language for SEO
-  const getBrowserLanguage = () => {
-    if (typeof window === 'undefined') return 'en';
-    const browserLang = navigator.language || (navigator as any).userLanguage;
-    const primaryLang = browserLang.split('-')[0];
-    return primaryLang === 'nl' ? 'nl' : 'en';
-  };
-  
-  const currentLang = getBrowserLanguage();
-  const actualLocale = locale === 'en' ? currentLang : locale;
+  const resolvedLocale = locale || 'en';
   const currentModifiedTime = modifiedTime || new Date().toISOString();
+  const localeToHrefLang = (value: string) => {
+    if (!value) {
+      return 'en-US';
+    }
+    switch (value.toLowerCase()) {
+      case 'nl':
+      case 'nl-be':
+        return 'nl-BE';
+      case 'en':
+      case 'en-us':
+        return 'en-US';
+      default:
+        return value.includes('-') ? value : `${value}-${value.toUpperCase()}`;
+    }
+  };
+  const localeToOgLocale = (value: string) => {
+    if (!value) {
+      return 'en_US';
+    }
+    switch (value.toLowerCase()) {
+      case 'nl':
+      case 'nl-be':
+        return 'nl_BE';
+      case 'en':
+      case 'en-us':
+        return 'en_US';
+      default:
+        return value.replace('-', '_');
+    }
+  };
+  const defaultHrefLang = localeToHrefLang(resolvedLocale);
+  const defaultOgLocale = localeToOgLocale(resolvedLocale);
+  const robotsContent = noindex && nofollow
+    ? 'noindex, nofollow'
+    : noindex
+      ? 'noindex'
+      : nofollow
+        ? 'nofollow'
+        : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
 
   return (
     <Helmet>
       <title>{title}</title>
       <meta name="description" content={description} />
       <meta name="keywords" content={keywords} />
-      <meta name="language" content={actualLocale} />
+      <meta name="language" content={resolvedLocale} />
       <meta name="geo.region" content="BE" />
       <meta name="geo.placename" content="Belgium" />
       <meta name="geo.position" content="50.8503;4.3517" />
@@ -78,7 +108,7 @@ export const SEO: React.FC<SEOProps> = ({
       <meta property="og:image:alt" content="StockFlow - Cloud-based Inventory Management Platform for SMEs" />
       <meta property="og:url" content={url} />
       <meta property="og:type" content="website" />
-      <meta property="og:locale" content={actualLocale} />
+      <meta property="og:locale" content={defaultOgLocale} />
       <meta property="og:site_name" content="StockFlow" />
       <meta property="og:updated_time" content={currentModifiedTime} />
       {publishedTime && <meta property="article:published_time" content={publishedTime} />}
@@ -141,7 +171,7 @@ export const SEO: React.FC<SEOProps> = ({
       <link rel="canonical" href={url} />
       
       {/* Self-referencing hreflang */}
-      <link rel="alternate" hrefLang={actualLocale === 'nl' ? 'nl-BE' : 'en-US'} href={url} />
+      <link rel="alternate" hrefLang={defaultHrefLang} href={url} />
       
       {/* Hreflang for international SEO */}
       {hreflang.map((hreflangItem) => (
@@ -163,19 +193,9 @@ export const SEO: React.FC<SEOProps> = ({
       <meta name="revisit-after" content="7 days" />
       
       {/* Robots - Enhanced with proper handling */}
-      {noindex || nofollow ? (
-        <>
-          {noindex && <meta name="robots" content="noindex" />}
-          {nofollow && <meta name="robots" content="nofollow" />}
-          {noindex && nofollow && <meta name="robots" content="noindex, nofollow" />}
-        </>
-      ) : (
-        <>
-          <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-          <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-          <meta name="bingbot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-        </>
-      )}
+      <meta name="robots" content={robotsContent} />
+      <meta name="googlebot" content={robotsContent} />
+      <meta name="bingbot" content={robotsContent} />
       
       {/* Mobile optimization */}
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />

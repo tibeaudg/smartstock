@@ -89,25 +89,25 @@ export default function ShopifyInventoryManagement() {
   const comparisons = [
     {
       feature: "Real-time Shopify sync",
-      stockflow: "âœ“ Included",
+      stockflow: "✓ Included",
       stocky: "Limited",
       shopify: "Basic only"
     },
     {
       feature: "Multi-channel support",
-      stockflow: "âœ“ All platforms",
+      stockflow: "✓ All platforms",
       stocky: "Shopify only",
       shopify: "Shopify only"
     },
     {
       feature: "Advanced analytics",
-      stockflow: "âœ“ Comprehensive",
+      stockflow: "✓ Comprehensive",
       stocky: "Limited",
       shopify: "Basic"
     },
     {
       feature: "Automated reordering",
-      stockflow: "âœ“ Included",
+      stockflow: "✓ Included",
       stocky: "Premium only",
       shopify: "Not available"
     }

@@ -340,7 +340,7 @@ export default function InventoryManagementTips() {
                 <p className="text-gray-600 text-sm mb-3">
                   Nederlandse versie - tips voor efficiÃ«nt voorraadbeheer.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">Lees meer â†’</div>
+                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
               </div>
             </Link>
             <Link to="/avoid-inventory-mistakes" className="group">
@@ -351,7 +351,7 @@ export default function InventoryManagementTips() {
                 <p className="text-gray-600 text-sm mb-3">
                   Learn about common inventory mistakes and how to prevent them.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">Read more â†’</div>
+                <div className="text-blue-600 text-sm font-semibold">Read more →</div>
               </div>
             </Link>
             <Link to="/inventory-management-software" className="group">
@@ -362,7 +362,7 @@ export default function InventoryManagementTips() {
                 <p className="text-gray-600 text-sm mb-3">
                   Software that automates these tips and best practices.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">Read more â†’</div>
+                <div className="text-blue-600 text-sm font-semibold">Read more →</div>
               </div>
             </Link>
           </div>

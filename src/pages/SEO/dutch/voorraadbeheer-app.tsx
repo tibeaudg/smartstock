@@ -228,7 +228,7 @@ export default function VoorraadbeheerApp() {
               Download Voorraadbeheer App
             </Link>
           </div>
-          <p className="text-sm mt-4 opacity-75">Gratis download â€¢ Geen creditcard vereist â€¢ Direct toegang</p>
+          <p className="text-sm mt-4 opacity-75">Gratis download • Geen creditcard vereist • Direct toegang</p>
         </div>
       </section>
 

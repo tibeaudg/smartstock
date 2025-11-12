@@ -23,7 +23,7 @@ export const glossaryEntries: Record<string, GlossaryPageConfig> = {
     path: '/glossary/consignment-inventory',
     title: 'Consignment Inventory',
     definition:
-      'Consignment inventory, or consigned inventory, is a supply chain strategy in which a retailer sells a supplierâ€™s inventory to its customers, but that inventory remains owned by the supplier until the product is sold.',
+      'Consignment inventory, or consigned inventory, is a supply chain strategy in which a retailer sells a supplier’s inventory to its customers, but that inventory remains owned by the supplier until the product is sold.',
   },
   'economic-order-quantity': {
     path: '/glossary/economic-order-quantity',
@@ -71,7 +71,7 @@ export const glossaryEntries: Record<string, GlossaryPageConfig> = {
     path: '/glossary/inventory-optimization',
     title: 'Inventory Optimization',
     definition:
-      'Inventory optimization occurs when a business maintains a â€œjust rightâ€ amount of inventory to satisfy customer demand. By optimizing inventory, a business reduces costs while avoiding stockouts, excess inventory, and inventory obsolescence.',
+      'Inventory optimization occurs when a business maintains a “just right” amount of inventory to satisfy customer demand. By optimizing inventory, a business reduces costs while avoiding stockouts, excess inventory, and inventory obsolescence.',
   },
   'inventory-turnover': {
     path: '/glossary/inventory-turnover',
@@ -119,7 +119,7 @@ export const glossaryEntries: Record<string, GlossaryPageConfig> = {
     path: '/glossary/pick-list',
     title: 'Pick List',
     definition:
-      'A pick list is an essential document that communicates precisely what inventory a warehouse picker will need to pick to fulfill a customerâ€™s order.',
+      'A pick list is an essential document that communicates precisely what inventory a warehouse picker will need to pick to fulfill a customer’s order.',
   },
   'purchase-requisition': {
     path: '/glossary/purchase-requisition',
@@ -143,7 +143,7 @@ export const glossaryEntries: Record<string, GlossaryPageConfig> = {
     path: '/glossary/uom-inventory',
     title: 'UOM Inventory',
     definition:
-      'Inventory units of measure, or UoM, are the standardized, physical units by which your business quantifies its stock. Units of measure help businesses understand how much of a given product they really have in stock and how much theyâ€™re ordering or selling.',
+      'Inventory units of measure, or UoM, are the standardized, physical units by which your business quantifies its stock. Units of measure help businesses understand how much of a given product they really have in stock and how much they’re ordering or selling.',
   },
   'vendor-managed-inventory': {
     path: '/glossary/vendor-managed-inventory',

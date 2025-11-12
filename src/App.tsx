@@ -352,35 +352,6 @@ const AuthRoute = () => {
           <Route key={r.path} path={r.path} element={r.element} />
         ))}
 
-        {/* NL/EN aliases (preserve legacy URLs) */}
-        <Route path="/nl/voorraadbeheer-tips" element={<Navigate to="/voorraadbeheer-tips" replace />} />
-        <Route path="/nl/voorraadbeheer-software-vergelijken" element={<Navigate to="/voorraadbeheer-software-vergelijken" replace />} />
-        <Route path="/nl/voorraadbeheer-fouten-voorkomen" element={<Navigate to="/voorraadbeheer-fouten-voorkomen" replace />} />
-
-        <Route path="/nl/voorraadbeheer-voor-starters" element={<Navigate to="/voorraadbeheer-voor-starters" replace />} />
-        <Route path="/nl/mobiel-voorraadbeheer" element={<Navigate to="/mobiel-voorraadbeheer" replace />} />
-        <Route path="/nl/voorraadbeheer-software" element={<Navigate to="/voorraadbeheer-software" replace />} />
-        <Route path="/nl/magazijnbeheer" element={<Navigate to="/magazijnbeheer" replace />} />
-        <Route path="/en/warehouse-management" element={<Navigate to="/warehouse-management" replace />} />
-        <Route path="/nl/stockbeheer-software" element={<Navigate to="/stockbeheer-software" replace />} />
-        <Route path="/nl/software-stockbeheer" element={<Navigate to="/software-stockbeheer" replace />} />
-        <Route path="/nl/stockbeheer-programma" element={<Navigate to="/stockbeheer-programma" replace />} />
-        <Route path="/nl/programma-stockbeheer" element={<Navigate to="/programma-stockbeheer" replace />} />
-        <Route path="/nl/magazijnbeheer-software" element={<Navigate to="/magazijnbeheer-software" replace />} />
-        <Route path="/nl/voorraadbeheer" element={<Navigate to="/voorraadbeheer" replace />} />
-        <Route path="/nl/wat-is-voorraadbeheer-software" element={<Navigate to="/wat-is-voorraadbeheer-software" replace />} />
-        <Route path="/nl/voorraadbeheer-horeca" element={<Navigate to="/voorraadbeheer-horeca" replace />} />
-        <Route path="/nl/stockbeheer" element={<Navigate to="/stockbeheer" replace />} />
-        <Route path="/nl/simpelstockbeheer" element={<Navigate to="/simpelstockbeheer" replace />} />
-        <Route path="/nl/gratis-voorraadbeheer" element={<Navigate to="/gratis-voorraadbeheer" replace />} />
-        <Route path="/nl/gratis-stockbeheer" element={<Navigate to="/gratis-stockbeheer" replace />} />
-        <Route path="/nl/gratis-voorraadbeheer-app" element={<Navigate to="/gratis-voorraadbeheer-app" replace />} />
-        <Route path="/nl/gratis-voorraadbeheer-software" element={<Navigate to="/gratis-voorraadbeheer-software" replace />} />
-        <Route path="/nl/programma-stockbeheer-gratis" element={<Navigate to="/programma-stockbeheer-gratis" replace />} />
-        <Route path="/nl/voorraadbeheer-app" element={<Navigate to="/voorraadbeheer-app" replace />} />
-
-
-
         {/* Beschermde dashboard routesfefe */}
         <Route
           path="/dashboard"

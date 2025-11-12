@@ -116,7 +116,7 @@ export default function ContractorInventoryManagement() {
     {
       title: "Electrical Contractors",
       description: "Track electrical supplies, tools, and equipment across residential and commercial job sites.",
-      icon: "âš¡"
+      icon: "⚡"
     },
     {
       title: "Plumbing Contractors",
@@ -126,7 +126,7 @@ export default function ContractorInventoryManagement() {
     {
       title: "HVAC Contractors",
       description: "Track HVAC equipment, parts, and tools for installation and maintenance services.",
-      icon: "â„ï¸"
+      icon: "❄️"
     },
     {
       title: "Landscaping Contractors",

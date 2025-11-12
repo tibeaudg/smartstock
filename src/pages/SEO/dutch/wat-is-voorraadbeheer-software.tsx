@@ -210,23 +210,23 @@ export default function WatIsVoorraadbeheerSoftware() {
               </h3>
               <ul className="space-y-3 text-gray-700">
                 <li className="flex items-start">
-                  <span className="mr-2">â€¢</span>
+                  <span className="mr-2">•</span>
                   <span>Handmatig tellen en invoeren in Excel</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="mr-2">â€¢</span>
+                  <span className="mr-2">•</span>
                   <span>Veel tijd kwijt aan administratie</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="mr-2">â€¢</span>
+                  <span className="mr-2">•</span>
                   <span>Regelmatig fouten en discrepanties</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="mr-2">â€¢</span>
+                  <span className="mr-2">•</span>
                   <span>Geen real-time inzicht</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="mr-2">â€¢</span>
+                  <span className="mr-2">•</span>
                   <span>Moeilijk te schalen bij groei</span>
                 </li>
               </ul>
@@ -489,7 +489,7 @@ export default function WatIsVoorraadbeheerSoftware() {
                 Als je online verkoopt via een webshop, is real-time voorraad cruciaal om stockouts te voorkomen.
               </p>
               <Link to="/voorraadbeheer-webshop" className="text-blue-600 font-semibold hover:underline">
-                Lees meer â†’
+                Lees meer →
               </Link>
             </div>
 
@@ -499,7 +499,7 @@ export default function WatIsVoorraadbeheerSoftware() {
                 Voor winkels met meerdere vestigingen of een centrale voorraad is overzicht essentieel.
               </p>
               <Link to="/voorraadbeheer-software" className="text-green-600 font-semibold hover:underline">
-                Lees meer â†’
+                Lees meer →
               </Link>
             </div>
 
@@ -509,7 +509,7 @@ export default function WatIsVoorraadbeheerSoftware() {
                 Als je producten opslaat en distribueert, heb je professioneel magazijnbeheer nodig.
               </p>
               <Link to="/magazijnbeheer" className="text-purple-600 font-semibold hover:underline">
-                Lees meer â†’
+                Lees meer →
               </Link>
             </div>
 
@@ -519,7 +519,7 @@ export default function WatIsVoorraadbeheerSoftware() {
                 Verse producten en ingrediÃ«nten vereisen nauwkeurig voorraadbeheer om verspilling te voorkomen.
               </p>
               <Link to="/voorraadbeheer-horeca" className="text-orange-600 font-semibold hover:underline">
-                Lees meer â†’
+                Lees meer →
               </Link>
             </div>
 
@@ -529,7 +529,7 @@ export default function WatIsVoorraadbeheerSoftware() {
                 Bij productie moet je grondstoffen, work-in-progress en eindproducten bijhouden.
               </p>
               <Link to="/voorraadbeheer-software" className="text-red-600 font-semibold hover:underline">
-                Lees meer â†’
+                Lees meer →
               </Link>
             </div>
 
@@ -539,7 +539,7 @@ export default function WatIsVoorraadbeheerSoftware() {
                 Groei je van Excel naar professioneel? Voorraadbeheer software schaalt mee met je ambities.
               </p>
               <Link to="/voorraadbeheer-kmo" className="text-indigo-600 font-semibold hover:underline">
-                Lees meer â†’
+                Lees meer →
               </Link>
             </div>
           </div>
@@ -615,7 +615,7 @@ export default function WatIsVoorraadbeheerSoftware() {
                 <p className="text-gray-600 text-sm mb-3">
                   Diepgaande uitleg over alle functies en mogelijkheden.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">Lees meer â†’</div>
+                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
               </div>
             </Link>
 
@@ -627,7 +627,7 @@ export default function WatIsVoorraadbeheerSoftware() {
                 <p className="text-gray-600 text-sm mb-3">
                   Praktische gids om te starten met automatisering.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">Lees meer â†’</div>
+                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
               </div>
             </Link>
 
@@ -639,7 +639,7 @@ export default function WatIsVoorraadbeheerSoftware() {
                 <p className="text-gray-600 text-sm mb-3">
                   Specifieke oplossingen voor kleine en middelgrote bedrijven.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">Lees meer â†’</div>
+                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
               </div>
             </Link>
           </div>

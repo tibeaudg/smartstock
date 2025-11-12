@@ -194,15 +194,15 @@ export default function MobielVoorraadbeheer() {
               </p>
               <div className="space-y-3">
                 <div className="flex items-center">
-                  <div className="bg-blue-100 text-blue-600 rounded-full w-8 h-8 flex items-center justify-center mr-3 font-semibold">âœ“</div>
+                  <div className="bg-blue-100 text-blue-600 rounded-full w-8 h-8 flex items-center justify-center mr-3 font-semibold">✓</div>
                   <span>Realtime synchronisatie</span>
                 </div>
                 <div className="flex items-center">
-                  <div className="bg-blue-100 text-blue-600 rounded-full w-8 h-8 flex items-center justify-center mr-3 font-semibold">âœ“</div>
+                  <div className="bg-blue-100 text-blue-600 rounded-full w-8 h-8 flex items-center justify-center mr-3 font-semibold">✓</div>
                   <span>Gedeelde toegang</span>
                 </div>
                 <div className="flex items-center">
-                  <div className="bg-blue-100 text-blue-600 rounded-full w-8 h-8 flex items-center justify-center mr-3 font-semibold">âœ“</div>
+                  <div className="bg-blue-100 text-blue-600 rounded-full w-8 h-8 flex items-center justify-center mr-3 font-semibold">✓</div>
                   <span>Audit trail</span>
                 </div>
               </div>

@@ -124,7 +124,7 @@ export default function WhatIsLeadTime() {
           <div className="bg-blue-50 rounded-lg p-8 mb-8">
             <h3 className="text-2xl font-bold mb-4">Lead Time Formula</h3>
             <div className="text-xl font-semibold text-blue-600 mb-4">
-              Lead Time = Order Date â†’ Receipt Date
+              Lead Time = Order Date → Receipt Date
             </div>
             <p className="text-gray-700">
               Lead time includes order processing time, manufacturing (if applicable), shipping time, and receiving time. Inventory management software like StockFlow tracks lead times automatically to help optimize inventory planning.

@@ -368,7 +368,7 @@ export default function MobileInventoryManagement() {
                 <p className="text-gray-600 text-sm mb-3">
                   Nederlandse versie - voorraadbeheer op je mobiel.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">Lees meer â†’</div>
+                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
               </div>
             </Link>
             <Link to="/inventory-management-software" className="group">
@@ -379,7 +379,7 @@ export default function MobileInventoryManagement() {
                 <p className="text-gray-600 text-sm mb-3">
                   Complete inventory management with mobile access.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">Read more â†’</div>
+                <div className="text-blue-600 text-sm font-semibold">Read more →</div>
               </div>
             </Link>
             <Link to="/mobile-app" className="group">
@@ -390,7 +390,7 @@ export default function MobileInventoryManagement() {
                 <p className="text-gray-600 text-sm mb-3">
                   Learn more about our mobile inventory app features.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">View app â†’</div>
+                <div className="text-blue-600 text-sm font-semibold">View app →</div>
               </div>
             </Link>
           </div>

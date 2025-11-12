@@ -150,7 +150,7 @@ const faqs = [
   {
     question: 'Do I need dedicated hardware to use StockFlow Scan?',
     answer:
-      'No special hardware is required. Any modern device with a cameraâ€”iOS, Android, Zebra, Windows, or macOSâ€”can run the StockFlow scanner securely in the browser.'
+      'No special hardware is required. Any modern device with a camera—iOS, Android, Zebra, Windows, or macOS—can run the StockFlow scanner securely in the browser.'
   },
   {
     question: 'Can the scanner work offline?',
@@ -170,7 +170,7 @@ const faqs = [
   {
     question: 'How quickly can we roll out StockFlow Scan?',
     answer:
-      'Most teams go live in days. Invite your users, configure workflows, and share a secure URLâ€”no app store approvals or device imaging needed.'
+      'Most teams go live in days. Invite your users, configure workflows, and share a secure URL—no app store approvals or device imaging needed.'
   }
 ];
 
@@ -189,7 +189,7 @@ export default function InventoryPhotosPage() {
       <Header />
       <SEO
         title="Asset Tracking for Inventory | StockFlow Asset Tracking"
-        description="Discover StockFlow Asset Trackingâ€”the asset tracking solution that keeps omnichannel inventory accurate. Learn how teams track assets and equipment for maintenance and compliance."
+        description="Discover StockFlow Asset Tracking—the asset tracking solution that keeps omnichannel inventory accurate. Learn how teams track assets and equipment for maintenance and compliance."
         keywords="asset tracking, asset tracking solution, asset tracking system, asset tracking software, asset tracking app, asset tracking platform, asset tracking service, asset tracking tool, asset tracking technology, asset tracking innovation, asset tracking solution for inventory management, asset tracking solution for inventory tracking, asset tracking solution for inventory control, asset tracking solution for inventory optimization, asset tracking solution for inventory visibility, asset tracking solution for inventory accuracy, asset tracking solution for inventory efficiency, asset tracking solution for inventory compliance, asset tracking solution for inventory security, asset tracking solution for inventory cost reduction, asset tracking solution for inventory growth, asset tracking solution for inventory success, asset tracking solution for inventory future"
         url="https://www.stockflow.be/asset-tracking"
         structuredData={structuredData}
@@ -252,7 +252,7 @@ export default function InventoryPhotosPage() {
               Barcode Scanning Built for High-Velocity Operations
             </h2>
             <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
-              StockFlow Scan powers inventory teams with rapid data capture, validation, and automationâ€”without the friction of installing traditional scanning apps.
+              StockFlow Scan powers inventory teams with rapid data capture, validation, and automation—without the friction of installing traditional scanning apps.
             </p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">

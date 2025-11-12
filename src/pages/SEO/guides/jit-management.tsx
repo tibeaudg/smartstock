@@ -216,19 +216,19 @@ export default function JitManagement() {
                 <div className="bg-white p-4 rounded-lg">
                   <h4 className="font-semibold text-blue-800 mb-2">JIT Inventory</h4>
                   <ul className="text-sm text-gray-700 space-y-1">
-                    <li>â€¢ Lower carrying costs</li>
-                    <li>â€¢ Minimal storage needs</li>
-                    <li>â€¢ Better cash flow</li>
-                    <li>â€¢ Requires reliable suppliers</li>
+                    <li>• Lower carrying costs</li>
+                    <li>• Minimal storage needs</li>
+                    <li>• Better cash flow</li>
+                    <li>• Requires reliable suppliers</li>
                   </ul>
                 </div>
                 <div className="bg-white p-4 rounded-lg">
                   <h4 className="font-semibold text-gray-800 mb-2">Traditional Inventory</h4>
                   <ul className="text-sm text-gray-700 space-y-1">
-                    <li>â€¢ Higher safety stock</li>
-                    <li>â€¢ More storage needed</li>
-                    <li>â€¢ Ties up capital</li>
-                    <li>â€¢ More protection from disruptions</li>
+                    <li>• Higher safety stock</li>
+                    <li>• More storage needed</li>
+                    <li>• Ties up capital</li>
+                    <li>• More protection from disruptions</li>
                   </ul>
                 </div>
               </div>

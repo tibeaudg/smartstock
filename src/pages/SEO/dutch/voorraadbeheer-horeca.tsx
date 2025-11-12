@@ -23,7 +23,7 @@ const faqData = [
   },
   {
     question: 'Wat kost voorraadbeheer voor horeca?',
-    answer: 'Je start gratis tot 30 producten. Premium pakketten beginnen vanaf â‚¬49/maand inclusief recepturen, kostprijsanalyse en integraties.'
+    answer: 'Je start gratis tot 30 producten. Premium pakketten beginnen vanaf €49/maand inclusief recepturen, kostprijsanalyse en integraties.'
   }
 ];
 
@@ -87,7 +87,7 @@ export default function VoorraadbeheerHorecaPage() {
               Minder verspilling, hogere marges met StockFlow voor horeca
             </h1>
             <p className="text-base sm:text-lg text-gray-700 mt-5 leading-relaxed">
-              Monitor voorraad van frigo tot tapinstallatie, zie realtime kostprijzen per gerecht en automatiseer bestellingen. StockFlow geeft horecaondernemers volledige controle over ingrediÃ«nten, menuâ€™s en marge.
+              Monitor voorraad van frigo tot tapinstallatie, zie realtime kostprijzen per gerecht en automatiseer bestellingen. StockFlow geeft horecaondernemers volledige controle over ingrediÃ«nten, menu’s en marge.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 mt-8">
               <Link to="/auth" className="bg-orange-600 hover:bg-orange-700 text-white font-semibold px-6 py-3 rounded-lg text-center">
@@ -97,7 +97,7 @@ export default function VoorraadbeheerHorecaPage() {
                 Vraag een Horeca Demo aan
               </Link>
             </div>
-            <p className="text-xs text-gray-500 mt-4">Voor restaurants, cafÃ©s, catering & dark kitchens â€¢ Beschikbaar in het Nederlands en Frans</p>
+            <p className="text-xs text-gray-500 mt-4">Voor restaurants, cafÃ©s, catering & dark kitchens • Beschikbaar in het Nederlands en Frans</p>
           </div>
           <div className="bg-white rounded-2xl shadow-lg p-6 border border-orange-100">
             <h2 className="text-lg font-semibold text-gray-900">Belangrijkste functies</h2>
@@ -115,7 +115,7 @@ export default function VoorraadbeheerHorecaPage() {
         <div className="space-y-6">
           <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">Complete oplossing voor food cost & voorraad</h2>
           <p className="text-gray-700 leading-relaxed">
-            StockFlow koppelt aankoop, voorraad en verkoop zodat je exact weet welke gerechten winstgevend zijn. Plan menuâ€™s, analyseer verspilling en link alles met kassasystemen. Perfect voor drukke horecateams die snel willen schakelen.
+            StockFlow koppelt aankoop, voorraad en verkoop zodat je exact weet welke gerechten winstgevend zijn. Plan menu’s, analyseer verspilling en link alles met kassasystemen. Perfect voor drukke horecateams die snel willen schakelen.
           </p>
           <div className="space-y-4">
             <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
@@ -135,13 +135,13 @@ export default function VoorraadbeheerHorecaPage() {
         <div className="bg-gray-50 border border-gray-200 rounded-2xl p-8">
           <h3 className="text-lg font-semibold text-gray-900">Resultaten bij horecaklanten</h3>
           <ul className="mt-5 space-y-3 text-sm text-gray-700">
-            <li>â€¢ 28% minder voedselverspilling na 60 dagen</li>
-            <li>â€¢ 4 uur minder telwerk per week</li>
-            <li>â€¢ 18% hogere brutomarge op topgerechten</li>
-            <li>â€¢ 100% inzicht in allergenen en traceerbaarheid</li>
+            <li>• 28% minder voedselverspilling na 60 dagen</li>
+            <li>• 4 uur minder telwerk per week</li>
+            <li>• 18% hogere brutomarge op topgerechten</li>
+            <li>• 100% inzicht in allergenen en traceerbaarheid</li>
           </ul>
           <Link to="/case-studies" className="inline-flex mt-6 text-orange-600 font-semibold hover:underline">
-            Lees klantverhalen â†’
+            Lees klantverhalen →
           </Link>
         </div>
       </section>

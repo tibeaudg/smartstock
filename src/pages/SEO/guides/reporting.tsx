@@ -150,7 +150,7 @@ const faqs = [
   {
     question: 'Do I need dedicated hardware to use StockFlow Scan?',
     answer:
-      'No special hardware is required. Any modern device with a cameraâ€”iOS, Android, Zebra, Windows, or macOSâ€”can run the StockFlow scanner securely in the browser.'
+      'No special hardware is required. Any modern device with a camera—iOS, Android, Zebra, Windows, or macOS—can run the StockFlow scanner securely in the browser.'
   },
   {
     question: 'Can the scanner work offline?',
@@ -170,7 +170,7 @@ const faqs = [
   {
     question: 'How quickly can we roll out StockFlow Scan?',
     answer:
-      'Most teams go live in days. Invite your users, configure workflows, and share a secure URLâ€”no app store approvals or device imaging needed.'
+      'Most teams go live in days. Invite your users, configure workflows, and share a secure URL—no app store approvals or device imaging needed.'
   }
 ];
 
@@ -205,7 +205,7 @@ export default function InventoryPhotosPage() {
       <Header />
       <SEO
         title="Reporting for Inventory | StockFlow Reporting"
-        description="Discover StockFlow Inventory Photosâ€”the inventory photo solution that keeps omnichannel inventory accurate. Learn how teams add photos to every item for visual clarity and faster picking."
+        description="Discover StockFlow Inventory Photos—the inventory photo solution that keeps omnichannel inventory accurate. Learn how teams add photos to every item for visual clarity and faster picking."
         keywords="inventory photos, inventory photo solution, inventory photo management, inventory photo system, inventory photo software, inventory photo app, inventory photo platform, inventory photo service, inventory photo tool, inventory photo technology, inventory photo innovation, inventory photo solution for inventory management, inventory photo solution for inventory tracking, inventory photo solution for inventory control, inventory photo solution for inventory optimization, inventory photo solution for inventory visibility, inventory photo solution for inventory accuracy, inventory photo solution for inventory efficiency, inventory photo solution for inventory compliance, inventory photo solution for inventory security, inventory photo solution for inventory cost reduction, inventory photo solution for inventory growth, inventory photo solution for inventory success, inventory photo solution for inventory future"
         url="https://www.stockflow.be/inventory-photos"
         structuredData={structuredData}
@@ -268,7 +268,7 @@ export default function InventoryPhotosPage() {
               Barcode Scanning Built for High-Velocity Operations
             </h2>
             <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
-              StockFlow Scan powers inventory teams with rapid data capture, validation, and automationâ€”without the friction of installing traditional scanning apps.
+              StockFlow Scan powers inventory teams with rapid data capture, validation, and automation—without the friction of installing traditional scanning apps.
             </p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">

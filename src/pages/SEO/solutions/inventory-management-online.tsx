@@ -35,7 +35,7 @@ export default function BestInventoryManagementSoftware() {
     },
     {
       question: "How does StockFlow compare to Exact and Visma Net?",
-      answer: "StockFlow offers the best value for SMBs. It starts at â‚¬0/month (vs â‚¬255-â‚¬450 for competitors), includes all essential features in the free plan, provides 24/7 support (vs business hours/email only), and has no hidden setup fees. While enterprise solutions like Exact and Visma offer advanced features, StockFlow provides everything most businesses need at a fraction of the cost."
+      answer: "StockFlow offers the best value for SMBs. It starts at €0/month (vs €255-€450 for competitors), includes all essential features in the free plan, provides 24/7 support (vs business hours/email only), and has no hidden setup fees. While enterprise solutions like Exact and Visma offer advanced features, StockFlow provides everything most businesses need at a fraction of the cost."
     },
     {
       question: "What features should the best inventory management software have?",
@@ -98,33 +98,33 @@ export default function BestInventoryManagementSoftware() {
   const comparisonData = [
     {
       feature: "Real-time tracking",
-      stockflow: "âœ“",
+      stockflow: "✓",
       exact: "Limited",
-      visma: "Premium only (â‚¬450+)"
+      visma: "Premium only (€450+)"
     },
     {
       feature: "Mobile access",
-      stockflow: "âœ“ Free",
-      exact: "Extra cost (â‚¬50+/month)",
+      stockflow: "✓ Free",
+      exact: "Extra cost (€50+/month)",
       visma: "Limited features"
     },
     {
       feature: "Barcode scanning",
-      stockflow: "âœ“ Included",
-      exact: "Premium only (â‚¬255+/month)",
-      visma: "Extra module (â‚¬200+/month)"
+      stockflow: "✓ Included",
+      exact: "Premium only (€255+/month)",
+      visma: "Extra module (€200+/month)"
     },
     {
       feature: "Multi-location",
-      stockflow: "âœ“ All plans",
-      exact: "Enterprise only (â‚¬500+/month)",
-      visma: "Limited (â‚¬450+/month)"
+      stockflow: "✓ All plans",
+      exact: "Enterprise only (€500+/month)",
+      visma: "Limited (€450+/month)"
     },
     {
       feature: "Free plan",
-      stockflow: "âœ“ (100 products)",
-      exact: "âœ— No free plan",
-      visma: "âœ— No free plan"
+      stockflow: "✓ (100 products)",
+      exact: "✗ No free plan",
+      visma: "✗ No free plan"
     },
     {
       feature: "Customer support",
@@ -134,15 +134,15 @@ export default function BestInventoryManagementSoftware() {
     },
     {
       feature: "Starting price",
-      stockflow: "â‚¬0/month",
-      exact: "â‚¬255/month",
-      visma: "â‚¬450/month"
+      stockflow: "€0/month",
+      exact: "€255/month",
+      visma: "€450/month"
     },
     {
       feature: "Setup & onboarding",
       stockflow: "Free + guided",
-      exact: "Extra cost (â‚¬500+)",
-      visma: "Extra cost (â‚¬1000+)"
+      exact: "Extra cost (€500+)",
+      visma: "Extra cost (€1000+)"
     }
   ];
 
@@ -191,7 +191,7 @@ export default function BestInventoryManagementSoftware() {
         title="Inventory Management Online"
         description="Online inventory management involves using cloud-based software to track stock levels, manage orders, and streamline operations in real-time from any internet-connected device. It replaces manual methods like spreadsheets, offering key benefits such as enhanced accuracy, cost reduction, and scalability for businesses of all sizes."
         keywords="best inventory management software, popular inventory management software, inventory management software, inventory software management, software for inventory management, softwares for inventory management, inventory management software best, top inventory management software, best inventory software, best stock management software, best inventory system, best inventory tracking software, best inventory management system, inventory tracking programs, best inventory software 2025, top rated inventory software, best inventory management solution, best inventory software for small business, best inventory software for ecommerce, best inventory management software comparison, best inventory software reviews, best inventory management software features, best inventory software pricing, best inventory software demo, best inventory software trial, inventory management software provider, inventory management software online, stockflow"
-        url="https://www.stockflow.be/best-inventory-management-software"
+        url="https://www.stockflow.be/inventory-management-online"
       />
 
 
@@ -628,7 +628,7 @@ Real-time tracking, barcode scanning, automated alerts, multi-location support
               "@type": "Offer",
               "price": "0.004",
               "priceCurrency": "EUR",
-              "description": "Business plan - Pay-as-you-grow pricing, â‚¬0.004 per product/month (products 101+)",
+              "description": "Business plan - Pay-as-you-grow pricing, €0.004 per product/month (products 101+)",
               "availability": "https://schema.org/InStock",
             },
             {

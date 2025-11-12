@@ -6,112 +6,250 @@ import Carousel, { CarouselItem } from './Carousel';
 import HorizontalScrollCarousel from './HorizontalScrollCarousel';
 import BlurText from "./BlurText";
 import AnimatedList from './AnimatedList'
-import GlareHover from './GlareHover'
-import GradualBlur from './GradualBlur'
 import ScrollTriggeredButton from './ScrollTriggeredButton'
 import Stepper, { Step } from './Stepper';
+
 import { 
-  Package, BarChart3, Users, Shield, Check, TrendingUp, Zap, Star, Clock, Euro, Target, 
-  ChevronLeft, ChevronRight, Scan, Truck, ArrowRight, Play, Award, Globe, Smartphone, 
+  Package, BarChart3, Zap, 
+  ChevronLeft, ChevronRight, Scan, Truck, ArrowLeft, ArrowRight, Play, Award, Globe, 
   CheckCircle, Rocket, Crown, Sparkles, Timer, Facebook, Twitter, Linkedin, Instagram,
-  Repeat, Camera, Building, ShoppingCart, CreditCard, Mail, Utensils, Coffee, 
-  Wrench, Hammer, Heart, Stethoscope, BookOpen, Gamepad2, Car, Plane, 
-  Shirt, Laptop, Home, Briefcase, Music, Paintbrush, Upload, FileSpreadsheet, 
-  Minus, Plus, Download, FileText, Phone, Bell, MapPin, Trophy, Gift, Cloud
+  Repeat, Camera, Building, ShoppingCart, CreditCard, Mail, Utensils, Upload, FileSpreadsheet, 
+
 } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
 import SEO from './SEO';
 import { Helmet } from 'react-helmet-async';
 import { logger } from '../lib/logger';
-import { generateComprehensiveStructuredData } from '../lib/structuredData';
 import { useAuth } from '@/hooks/useAuth';
-import { useIsMobile } from '@/hooks/useWindowSize';
 import { supabase } from '@/integrations/supabase/client';
-// import { useWebsiteTracking } from '@/hooks/useWebsiteTracking';
-// import { usePerformanceOptimization } from '@/hooks/usePerformanceOptimization';
 import Footer from './Footer';
 import { motion } from 'framer-motion';
+import {
+  Carousel as UICarousel,
+  type CarouselApi,
+  CarouselContent as UICarouselContent,
+  CarouselItem as UICarouselItem,
+} from "@/components/ui/carousel";
+
+import { Logos3 } from "./logos3";
+
+import { AuroraBackground } from "@/components/ui/aurora-background";
+
+import { HeroSection } from "@/components/ui/hero-section-1"
 
 
 
-const ScaleInWhenVisible = ({ children, delay = 0, duration = 700 }) => {
-  const [isVisible, setIsVisible] = React.useState(false);
-  const ref = React.useRef(null);
-  const isMobile = useIsMobile();
 
-  React.useEffect(() => {
-    if (isMobile) {
-      setIsVisible(true);
+
+export interface Gallery4Item {
+  id: string;
+  title: string;
+  description: string;
+  href: string;
+  image: string;
+}
+
+export interface Gallery4Props {
+  title?: string;
+  description?: string;
+  items: Gallery4Item[];
+}
+
+const data = [
+  {
+    id: "inventory-management",
+    title: "Inventory Management",
+    description:
+      "Manage, organize, and track all inventory in real time with centralized StockFlow dashboards built for growing teams.",
+    href: "/inventory-management",
+    image:
+    "/InventoryManagement.png", 
+  },
+  {
+    id: "supplies-tracking",
+    title: "Supplies Tracking",
+    description:
+      "Track materials, consumables, and parts with ease using mobile scanning and automated replenishment rules.",
+    href: "/suppliers",
+    image:
+    "/SuppliesTracking.png", 
+  },
+  {
+    id: "asset-tracking",
+    title: "Asset Tracking",
+    description:
+      "Keep tabs on critical tools, equipment, and spare parts with digital audit trails and location history.",
+    href: "/asset-tracking",
+    image:
+    "/AssetTracking.png", 
+  },
+  {
+    id: "construction",
+    title: "Construction Inventory",
+    description:
+      "Monitor job-site inventory from anywhere with real-time transfers between yards, trucks, and projects.",
+    href: "/contractor-inventory-management",
+    image:
+    "/ConstructionInventory.png", 
+  },
+  {
+    id: "electrical",
+    title: "Electrical Contractors",
+    description:
+      "Stay on top of electrical supplies across teams with van stock visibility and job-ready kitting.",
+    href: "/electrical-inventory-management",
+    image:
+    "/ElectricalInventory.png", 
+  },
+  {
+    id: "medical",
+    title: "Healthcare & Medical",
+    description:
+      "Track medical supplies with full traceability, consumption logging, and expiration alerts in StockFlow.",
+    href: "/medical-inventory-management",
+    image:
+      "/HealthcareInventory.png", 
+  },
+
+  {
+    id: "warehouse",
+    title: "Warehouse Operations",
+    description:
+      "Run smart warehouse operations with automation, barcode workflows, and accurate cycle counting.",
+    href: "/warehouse-inventory-management",
+    image:
+      "/WarehouseInventory.png", 
+  },
+  {
+    id: "education",
+    title: "Education & Schools",
+    description:
+      "Effortlessly manage school inventory and supplies, from classrooms to district-wide distribution.",
+    href: "/education-inventory-management",
+    image:
+      "/education.png", 
+  },
+];
+
+const Gallery4 = ({
+  items = data,
+}: Gallery4Props) => {
+  const [carouselApi, setCarouselApi] = useState<CarouselApi>();
+  const [canScrollPrev, setCanScrollPrev] = useState(false);
+  const [canScrollNext, setCanScrollNext] = useState(false);
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    if (!carouselApi) {
       return;
     }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setTimeout(() => setIsVisible(true), delay);
-        }
-      },
-      { threshold: 0.1, rootMargin: '50px' }
-    );
-
-    if (ref.current) {
-      observer.observe(ref.current);
-    }
-
-    return () => observer.disconnect();
-  }, [delay, isMobile]);
+    const updateSelection = () => {
+      setCanScrollPrev(carouselApi.canScrollPrev());
+      setCanScrollNext(carouselApi.canScrollNext());
+      setCurrentSlide(carouselApi.selectedScrollSnap());
+    };
+    updateSelection();
+    carouselApi.on("select", updateSelection);
+    return () => {
+      carouselApi.off("select", updateSelection);
+    };
+  }, [carouselApi]);
 
   return (
-    <div 
-      ref={ref} 
-      className={`transition-all duration-${duration} ease-out ${
-        isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
-      }`}
-    >
-      {children}
-    </div>
+    <section className="py-32">
+      <div className="container mx-auto">
+        <div className="mb-8 w-full flex items-end justify-between md:mb-14 lg:mb-16">
+          <div className="hidden shrink-0 gap-2 md:flex justify-center items-center bg-gray-100 rounded-2xl p-2 w-full max-w-xs mx-auto">
+            <Button
+              size="icon"
+              variant="ghost"
+              onClick={() => {
+                carouselApi?.scrollPrev();
+              }}
+              disabled={!canScrollPrev}
+              className="disabled:pointer-events-auto"
+            >
+              <ArrowLeft className="size-5" />
+            </Button>
+            <Button
+              size="icon"
+              variant="ghost"
+              onClick={() => {
+                carouselApi?.scrollNext();
+              }}
+              disabled={!canScrollNext}
+              className="disabled:pointer-events-auto"
+            >
+              <ArrowRight className="size-5" />
+            </Button>
+          </div>
+        </div>
+      </div>
+      <div className="w-full">
+        <UICarousel
+          setApi={setCarouselApi}
+          opts={{
+            breakpoints: {
+              "(max-width: 768px)": {
+                dragFree: true,
+              },
+            },
+          }}
+        >
+          <UICarouselContent className="ml-0 2xl:ml-[max(8rem,calc(50vw-700px))] 2xl:mr-[max(0rem,calc(50vw-700px))]">
+            {items.map((item) => (
+              <UICarouselItem
+                key={item.id}
+                className="max-w-[320px] pl-[20px] lg:max-w-[360px]"
+              >
+                <a href={item.href} className="group rounded-xl">
+                  <div className="group relative h-full min-h-[27rem] max-w-full overflow-hidden rounded-xl md:aspect-[5/4] lg:aspect-[16/9]">
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="absolute h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 h-full bg-[linear-gradient(hsl(var(--primary)/0),hsl(var(--primary)/0.4),hsl(var(--primary)/0.8)_100%)] mix-blend-multiply" />
+                    <div className="absolute inset-x-0 bottom-0 flex flex-col items-start p-6 text-primary-foreground md:p-8">
+                      <div className="mb-2 pt-4 text-xl font-semibold md:mb-3 md:pt-4 lg:pt-4">
+                        {item.title}
+                      </div>
+                      <div className="mb-8 line-clamp-2 md:mb-12 lg:mb-9">
+                        {item.description}
+                      </div>
+                      <div className="flex items-center text-sm">
+                        Read more{" "}
+                        <ArrowRight className="ml-2 size-5 transition-transform group-hover:translate-x-1" />
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </UICarouselItem>
+            ))}
+          </UICarouselContent>
+        </UICarousel>
+        <div className="mt-8 flex justify-center gap-2">
+          {items.map((_, index) => (
+            <button
+              key={index}
+              className={`h-2 w-2 rounded-full transition-colors ${
+                currentSlide === index ? "bg-primary" : "bg-primary/20"
+              }`}
+              onClick={() => carouselApi?.scrollTo(index)}
+              aria-label={`Go to slide ${index + 1}`}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
   );
 };
 
+export { Gallery4 };
 
-const SlideUpWhenVisible = ({ children, delay = 0, duration = 800 }) => {
-  const [isVisible, setIsVisible] = React.useState(false);
-  const ref = React.useRef(null);
 
-  React.useEffect(() => {
-    const isMobile = window.innerWidth < 768;
-    if (isMobile) {
-      setIsVisible(true);
-      return;
-    }
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setTimeout(() => setIsVisible(true), delay);
-        }
-      },
-      { threshold: 0.1, rootMargin: '50px' }
-    );
 
-    if (ref.current) {
-      observer.observe(ref.current);
-    }
-
-    return () => observer.disconnect();
-  }, [delay]);
-
-  return (
-    <div 
-      ref={ref} 
-      className={`transition-all duration-${duration} ease-out ${
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
-      }`}
-    >
-      {children}
-    </div>
-  );
-};
 
 // Carousel component for mobile display (with ARIA and swipe)
 const MobileCarousel = ({ items, renderItem }) => {
@@ -208,87 +346,6 @@ const MobileCarousel = ({ items, renderItem }) => {
           </button>
         </>
       )}
-    </div>
-  );
-};
-
-// Auto-scrolling horizontal marquee component for industry badges
-const IndustryBadgeMarquee = ({ badges, speed = 30 }) => {
-  const [isPaused, setIsPaused] = useState(false);
-  const marqueeRef = useRef(null);
-  const positionRef = useRef(0);
-
-  // Duplicate badges for seamless scrolling
-  const duplicatedBadges = [...badges, ...badges];
-
-  React.useEffect(() => {
-    if (!marqueeRef.current) return;
-
-    const marquee = marqueeRef.current;
-    let animationId;
-    const scrollSpeed = 0.5; // pixels per frame
-    
-    // Cache scrollWidth to avoid repeated layout reads during animation
-    let cachedMarqueeWidth = 0;
-    const updateMarqueeWidth = () => {
-      cachedMarqueeWidth = marquee.scrollWidth / 2;
-    };
-    updateMarqueeWidth();
-    
-    // Update cached width on resize using ResizeObserver
-    const resizeObserver = new ResizeObserver(() => {
-      requestAnimationFrame(updateMarqueeWidth);
-    });
-    resizeObserver.observe(marquee);
-
-    const animate = () => {
-      if (!isPaused) {
-        positionRef.current -= scrollSpeed;
-        marquee.style.transform = `translateX(${positionRef.current}px)`;
-        
-        // Reset position when we've scrolled past half the content (since we duplicated it)
-        // Use cached width to avoid layout read during animation
-        if (Math.abs(positionRef.current) >= cachedMarqueeWidth) {
-          positionRef.current = 0;
-        }
-      }
-      animationId = requestAnimationFrame(animate);
-    };
-
-    animationId = requestAnimationFrame(animate);
-
-    return () => {
-      resizeObserver.disconnect();
-      if (animationId) {
-        cancelAnimationFrame(animationId);
-      }
-    };
-  }, [isPaused]);
-
-  return (
-    <div className="relative overflow-hidden py-4 w-full">
-      <div 
-        ref={marqueeRef}
-        className="flex gap-8 items-center whitespace-nowrap"
-        style={{ width: 'max-content' }}
-        onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => setIsPaused(false)}
-      >
-        {duplicatedBadges.map((badge, index) => (
-          <div key={index} className="flex flex-col items-center gap-4 flex-shrink-0">
-            <div className="w-16 h-16  rounded-full flex items-center justify-center drop-shadow-lg border-2 border-white shadow-lg">
-              <badge.icon className="h-8 w-8 text-blue-600" />
-            </div>
-            <span className="text-sm font-medium text-gray-700 text-center whitespace-nowrap">
-              {badge.label}
-            </span>
-          </div>
-        ))}
-      </div>
-      
-      {/* Gradient fade edges */}
-      <div className="absolute top-0 left-0 w-20 h-full bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
-      <div className="absolute top-0 right-0 w-20 h-full bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
     </div>
   );
 };
@@ -424,89 +481,7 @@ const FloatingFeatureCard = ({ icon: Icon, title, subtitle, metric, position, de
   );
 };
 
-// Mobile Phone Mockup Component
-const MobilePhoneMockup = () => {
-  // Start visible for LCP optimization - will hide only if below fold
-  const [isVisible, setIsVisible] = React.useState(true);
-  const ref = React.useRef(null);
 
-  React.useEffect(() => {
-    let observer: IntersectionObserver | null = null;
-    let timeoutId: NodeJS.Timeout | null = null;
-
-    // Check if element is below the fold on mount
-    const checkInitialVisibility = () => {
-      if (ref.current) {
-        const rect = ref.current.getBoundingClientRect();
-        const isInViewport = rect.top < window.innerHeight && rect.bottom > 0;
-        // If not in viewport initially, hide it and use animation
-        if (!isInViewport) {
-          setIsVisible(false);
-          return false;
-        }
-        // If in viewport, keep it visible (already true)
-        return true;
-      }
-      return true; // Default to visible if we can't check
-    };
-
-    // Use requestAnimationFrame to ensure DOM is ready
-    requestAnimationFrame(() => {
-      // Check and adjust visibility if needed
-      const isInViewport = checkInitialVisibility();
-      
-      if (!isInViewport) {
-        // Only set up observer if element is below fold
-        observer = new IntersectionObserver(
-          ([entry]) => {
-            if (entry.isIntersecting) {
-              // Reduced delay for better LCP (was 1200ms)
-              timeoutId = setTimeout(() => setIsVisible(true), 200);
-            }
-          },
-          { threshold: 0.1, rootMargin: '50px' }
-        );
-
-        if (ref.current) {
-          observer.observe(ref.current);
-        }
-      }
-    });
-
-    // Cleanup function
-    return () => {
-      if (observer) {
-        observer.disconnect();
-      }
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-    };
-  }, []);
-
-};
-
-// Industry badges data with expanded niches (all blue as requested)
-const industryBadges = [
-  { icon: Building, label: 'Retail' },
-  { icon: Package, label: 'Food & Beverage' },
-  { icon: Truck, label: 'Wholesale' },
-  { icon: BarChart3, label: 'Manufacturing' },
-  { icon: Utensils, label: 'Restaurants' },
-  { icon: Coffee, label: 'Cafes' },
-  { icon: Stethoscope, label: 'Healthcare' },
-  { icon: Heart, label: 'Pharmacy' },
-  { icon: Car, label: 'Automotive' },
-  { icon: Wrench, label: 'Hardware' },
-  { icon: Shirt, label: 'Fashion' },
-  { icon: BookOpen, label: 'Education' },
-  { icon: Gamepad2, label: 'Electronics' },
-  { icon: Laptop, label: 'IT Services' },
-  { icon: Home, label: 'Furniture' },
-  { icon: Briefcase, label: 'Office Supplies' },
-  { icon: Music, label: 'Entertainment' },
-  { icon: Paintbrush, label: 'Arts & Crafts' }
-];
 
 // Integration cards data
 const integrationCardsData = [
@@ -748,55 +723,7 @@ export const HomePage = () => {
 
 
 
-  // Inventory problems for carousel
-  const inventoryProblemsCarousel: CarouselItem[] = [
-    {
-      id: 1,
-      title: "Lost Capital",
-      description: "€3,200 tied up in slow-moving stock. Money sitting on shelves instead of working for your business.",
-      icon: <Euro className="h-8 w-8" />
-    },
-    {
-      id: 2,
-      title: "Wasted Time", 
-      description: "8 hours/week counting stock with clipboard. Manual counting that could be spent serving customers.",
-      icon: <Clock className="h-8 w-8" />
-    },
-    {
-      id: 3,
-      title: "Guessing Game",
-      description: "Don't know what's selling vs. sitting. Making reorder decisions without data.",
-      icon: <BarChart3 className="h-8 w-8" />
-    }
-  ];
 
-  // Why choose us for carousel
-  const whyChooseUsCarousel: CarouselItem[] = [
-    {
-      id: 1,
-      title: "Don't Wait, Start Now",
-      description: "Unlike competitors with complex onboarding, our patented Smart Setup gets you running in minutes, not days. See results from day one.",
-      icon: <Zap className="h-6 w-6" />
-    },
-    {
-      id: 2,
-      title: "Built Exclusively for SMEs",
-      description: "We don't try to serve everyone. Our deep expertise in small business inventory means we understand your challenges better than enterprise-focused solutions.",
-      icon: <Target className="h-6 w-6" />
-    },
-    {
-      id: 3,
-      title: "100% Satisfaction Guarantee",
-      description: "We stand behind our work. If you're not completely satisfied with StockFlow, we'll refund your subscription and help you migrate your data.",
-      icon: <Shield className="h-6 w-6" />
-    },
-    {
-      id: 4,
-      title: "Proprietary AI-Powered Insights",
-      description: "Leverage our exclusive machine learning algorithms to optimize your inventory 24/7, something manual tracking simply can't match.",
-      icon: <Rocket className="h-6 w-6" />
-    }
-  ];
 
   // Feature cards for "Everything You Need" section
   const featureCards = [
@@ -1155,8 +1082,15 @@ export const HomePage = () => {
     }
   ];
 
+
+
+
+
+
+  
+
   return (
-    <div className="gradient-background text-gray-900 font-sans" style={{position: 'relative', overflow: 'hidden'}}>
+    <div className="bg-white text-gray-900 font-sans" style={{position: 'relative', overflow: 'hidden'}}>
       <Helmet>
         {/* Non-render-blocking resource optimization */}
         
@@ -1366,87 +1300,14 @@ export const HomePage = () => {
       />
 
 
+        <HeroSection />
 
-      <section className="relative px-4 sm:px-6 overflow-hidden pt-24 sm:pt-28 md:pt-32 lg:pt-28 min-h-[50vh] flex items-center">
-        {/* Light Blue Gradient Background */}
-        <div className="absolute inset-0">
-          {/* Base gradient - light blue to white */}
-          <div className="absolute inset-0 bg-gradient-to-b from-blue-500 via-white/50 to-white" />
-          
-          {/* Subtle radial gradients at top center */}
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_center,rgba(59,130,246,0.1)_0%,transparent_50%)]" />
-        </div>
-        
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="flex flex-col items-center text-center py-12 sm:py-16 md:py-20">
             
-            {/* Text Content */}
-            <div className="w-full px-0">
-
-
-              {/* Pill-shaped Badge */}
-              <div className="mb-4 sm:mb-6 flex justify-center ">
-              <div className="inline-block mb-4 sm:mb-6">
-                <h1 className="px-4 py-2 bg-blue-100 text-blue-700 text-sm font-semibold rounded-full">
-                  Next-Gen Solution
-                </h1>
-              </div>
-              </div>
-
-              {/* Main Headline */}
-                <div className="mb-6 mt-6 sm:mb-8 md:mb-12">
-                  <h1 className="text-[clamp(3.5rem,5vw,4.5rem)] sm:text-[clamp(3rem,6vw,5rem)] md:text-[clamp(3.5rem,7vw,5.5rem)] font-bold text-gray-900 leading-tight tracking-tight text-center justify-center items-center">
-                  Best Inventory Management Software
-    
-                  </h1>
-                </div>
-              
-              {/* Subtitle */}
-                <div className="mb-8 sm:mb-10 md:mb-12 max-w-3xl mx-auto px-4">
-                  <h2 className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed text-sm px-6">
-                  Reduce errors, automate workflows, and gain real-time visibility across every SKU.                  </h2>
-                </div>
-
-              {/* CTA Button */}
-                <div className="flex justify-center px-4">
-                  <button
-                    onClick={() => navigate('/pricing')}
-                    className="bg-blue-600 text-white hover:bg-blue-700 px-8 py-3 rounded-lg font-medium  shadow-md hover:shadow-lg"
-                  >
-                    Try Free Forever Plan
-                  </button>
-                </div>
-            </div>
-          </div>
-        </div>
-        </section>
-
-
-
-
-      {/* Social Proof Bar - Immediately Below Hero */}
-
-
-      <section className="py-6 sm:py-8 md:py-10 bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4">
-            <div className="text-center">
-
-              
-              {/* Industry Badge Marquee */}
-              <IndustryBadgeMarquee badges={industryBadges} speed={40} />
-              
-
-            </div>
-        </div>
-      </section>
-
-
-
 
 
 
       {/* Everything You Need Section */}
-      <section className="py-12 sm:py-14 md:py-16 lg:py-18 bg-blue-50">
+      <section className="py-12 sm:py-14 md:py-16 lg:py-18 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
             <div className="text-center mb-8 sm:mb-10 md:mb-12 lg:mb-14">
@@ -1455,11 +1316,11 @@ export const HomePage = () => {
                   Powerful Features
                 </span>
               </div>
-              <h2 className="lg:pl-24 lg:pr-24 lg:pt-6 lg:pb-6 text-[clamp(2rem,4vw,3.5rem)] sm:text-[clamp(2.5rem,5vw,4rem)] text-gray-800 mb-3 leading-tight px-4 text-center">
-              <BlurText className="justify-center" text="Everything You Need To Manage Inventory" /> 
+              <h2 className="max-w-4xl mx-auto text-balance text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-none font-bold"> Everything You Need to Manage Inventory 
+                
+              </h2> 
 
-              </h2>
-              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 max-w-3xl mx-auto px-4 leading-relaxed">
+              <p className="text-md pt-4 text-gray-600 max-w-3xl mx-auto px-4 leading-relaxed">
                 Keep track of your inventory, see what's selling, and get alerts when you need to reorder.
               </p>
             </div>
@@ -1575,12 +1436,12 @@ export const HomePage = () => {
           {/* Header Section */}
             <div className="text-center mb-12 sm:mb-16 md:mb-20">
               {/* Main Title */}
-              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-gray-900 mb-4 sm:mb-6 leading-tight">
+              <h2 className="max-w-3xl mx-auto text-balance text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-none font-bold">
                 Start Tracking In 3 Simple Steps
               </h2>
               
               {/* Subtitle */}
-              <p className="text-lg sm:text-xl md:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
+              <p className="text-md pt-4 text-gray-600 max-w-3xl mx-auto px-4 leading-relaxed">
                   Get started in minutes with our easy-to-use platform.
               </p>
             </div>
@@ -1665,6 +1526,20 @@ export const HomePage = () => {
       </section>
 
 
+      <section>
+        <h2 className="max-w-3xl mx-auto text-balance text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-none font-bold text-center">
+          Case Studies
+        </h2>
+        <p className="text-md pt-4 text-gray-600 max-w-3xl mx-auto px-4 leading-relaxed text-center">
+          See how StockFlow equips inventory teams to prevent stockouts, boost accuracy, and automate replenishment across retail, wholesale, manufacturing, and eCommerce operations.
+        </p>
+
+<Gallery4  
+  items={data as Gallery4Item[]}
+/>
+      </section>
+
+
 
       
       {/* Integrations Section */}
@@ -1677,13 +1552,13 @@ export const HomePage = () => {
                   CONNECT YOUR TOOLS
                 </span>
               </div>
-              <h2 className="text-[clamp(1.8rem,3.5vw,3.5rem)] sm:text-[clamp(2rem,4vw,4rem)] text-gray-800 mb-3 leading-tight px-4 text-center">
-                Connect StockFlow with <br className="hidden sm:block" />
+              <h2 className="max-w-3xl mx-auto text-balance text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-none font-bold text-center">
+                Connect with Your Tools<br className="hidden sm:block" />
                 <span className="text-transparent bg-clip-text bg-blue-600">
-                  Your Business Tools
+                  
                 </span>
               </h2>
-              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 max-w-3xl mx-auto px-4 leading-relaxed">
+              <p className="text-md pt-4 text-gray-600 max-w-3xl mx-auto px-4 leading-relaxed">
                 Seamlessly integrate with your existing systems and streamline your workflow
               </p>
             </div>
@@ -1709,403 +1584,23 @@ export const HomePage = () => {
       </section>
 
 
-
-
-
-
-
-      {/* Why Choose Us Section */}
-      <section className="py-12 sm:py-14 md:py-16 lg:py-18 bg-blue-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Main White Card */}
-          <div className="bg-white rounded-3xl shadow-xl p-8 sm:p-12 md:p-16">
-          {/* Header */}
-            <div className="text-center mb-10 sm:mb-12 md:mb-16 lg:mb-20">
-            <h2 className="lg:pl-24 lg:pr-24 lg:pt-6 lg:pb-6 text-[clamp(2rem,4vw,3.5rem)] sm:text-[clamp(2.5rem,5vw,4rem)] text-gray-800 mb-3 leading-tight px-4 text-center">
-            <BlurText className="justify-center" text="Why Choose Stockflow"/> 
-
-              </h2>
-              <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-4 sm:mb-5 md:mb-6 max-w-2xl mx-auto px-4">
-                The smart choice for inventory management
-              </p>
-              <div className="inline-flex items-center p-12 gap-2 bg-blue-600 px-16 py-1 rounded-lg"></div>
-            </div>
-
-            {/* Desktop: 2x2 Grid Layout */}
-              <div className="hidden md:grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-4xl mx-auto">
-                {whyChooseUsCarousel.map((item, index) => (
-                  <motion.div
-                    key={item.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    className="bg-white border-2 border-gray-200 shadow-lg rounded-2xl p-6 hover:shadow-lg "
-                  >
-                    <div className="text-center">
-                      {/* Icon */}
-                      <div className={`w-16 h-16 mx-auto mb-4 rounded-xl flex items-center justify-center ${
-                        index === 0 ? 'bg-blue-400' : 
-                        index === 1 ? 'bg-purple-500' : 
-                        index === 2 ? 'bg-red-500' : 'bg-green-500'
-                      }`}>
-                        <div className="text-white">
-                          {item.icon}
-                        </div>
-                      </div>
-                      
-                      {/* Content */}
-                      <h3 className="text-lg font-bold text-gray-900 mb-3">
-                        {item.title}
-                      </h3>
-                      <p className="text-gray-600 leading-relaxed text-sm">
-                        {item.description}
-                      </p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-
-              {/* Mobile: Horizontal carousel */}
-              <div className="md:hidden">
-                <HorizontalScrollCarousel
-                  desktopCardsVisible={2}
-                  mobileCardsVisible={1}
-                  cardSpacing={24}
-                  showArrows={true}
-                  showDots={true}
-                  autoplay={true}
-                  autoplayDelay={4000}
-                  className="mb-8"
-                  cardClassName="h-full"
-                >
-                  {whyChooseUsCarousel.map((item, index) => (
-                    <div
-                      key={item.id}
-                      className="bg-white border-2 border-gray-200 shadow-lg rounded-2xl p-6 hover:shadow-lg "
-                    >
-                      <div className="text-center">
-                        {/* Icon */}
-                        <div className={`w-16 h-16 mx-auto mb-4 rounded-xl flex items-center justify-center ${
-                          index === 0 ? 'bg-blue-400' : 
-                          index === 1 ? 'bg-purple-500' : 
-                          index === 2 ? 'bg-red-500' : 'bg-green-500'
-                        }`}>
-                          <div className="text-white">
-                            {item.icon}
-                          </div>
-                        </div>
-                        
-                        {/* Content */}
-                        <h3 className="text-lg font-bold text-gray-900 mb-3">
-                          {item.title}
-                        </h3>
-                        <p className="text-gray-600 leading-relaxed text-sm">
-                          {item.description}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </HorizontalScrollCarousel>
-              </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Commercial Solutions Section - Internal Linking to SEO Pages */}
-      <section className="py-12 sm:py-14 md:py-16 lg:py-18 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-8 sm:mb-10 md:mb-12">
-              <div className="inline-block mb-4 sm:mb-6">
-                <span className="px-4 py-2 bg-blue-100 text-blue-700 text-sm font-semibold rounded-full">
-                  EXPLORE OUR SOLUTIONS
-                </span>
-              </div>
-              <h2 className="text-[clamp(2rem,4vw,3.5rem)] sm:text-[clamp(2.5rem,5vw,4rem)] text-gray-800 mb-3 leading-tight">
-                Find the Perfect Inventory Solution
-              </h2>
-              <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                Compare top software options, discover cloud solutions, try free plans, and explore industry-specific tools
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-              {/* Best Software Link */}
-              <Link 
-                to="/best-inventory-management-software"
-                className="group bg-white border-2 border-gray-200 rounded-2xl p-6 hover:border-blue-500 hover:shadow-xl  flex flex-col"
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center">
-                    <Trophy className="w-6 h-6 text-white" />
-                  </div>
-                  <Star className="w-5 h-5 text-yellow-400 fill-current" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
-                  Compare Top 10 Software
-                </h3>
-                <p className="text-gray-600 text-sm mb-4 flex-1">
-                  See pricing, features & reviews for the best inventory management solutions in 2025
-                </p>
-                <span className="text-blue-600 font-semibold text-sm inline-flex items-center group-hover:translate-x-1 transition-transform">
-                  Compare now →
-                </span>
-              </Link>
-
-              {/* Online Software Link */}
-              <Link 
-                to="/online-inventory-software"
-                className="group bg-white border-2 border-gray-200 rounded-2xl p-6 hover:border-blue-500 hover:shadow-xl  flex flex-col"
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center">
-                    <Globe className="w-6 h-6 text-white" />
-                  </div>
-                  <Cloud className="w-5 h-5 text-green-500" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
-                  Cloud-Based Management
-                </h3>
-                <p className="text-gray-600 text-sm mb-4 flex-1">
-                  Discover online inventory solutions with real-time sync and mobile access
-                </p>
-                <span className="text-blue-600 font-semibold text-sm inline-flex items-center group-hover:translate-x-1 transition-transform">
-                  Explore cloud solutions →
-                </span>
-              </Link>
-
-              {/* Free Software Link */}
-              <Link 
-                to="/magazijnbeheer-software-gratis"
-                className="group bg-white border-2 border-gray-200 rounded-2xl p-6 hover:border-blue-500 hover:shadow-xl  flex flex-col"
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center">
-                    <Gift className="w-6 h-6 text-white" />
-                  </div>
-                  <span className="text-2xl">🎁</span>
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
-                  Free Up to 100 Unique Products
-                </h3>
-                <p className="text-gray-600 text-sm mb-4 flex-1">
-                  Start with our free warehouse management software for small businesses
-                </p>
-                <span className="text-blue-600 font-semibold text-sm inline-flex items-center group-hover:translate-x-1 transition-transform">
-                  Start free today →
-                </span>
-              </Link>
-
-              {/* Horeca Software Link */}
-              <Link 
-                to="/voorraadbeheer-horeca"
-                className="group bg-white border-2 border-gray-200 rounded-2xl p-6 hover:border-blue-500 hover:shadow-xl  flex flex-col"
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center">
-                    <Utensils className="w-6 h-6 text-white" />
-                  </div>
-                  <span className="text-2xl">🍽️</span>
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
-                  Restaurant & Café Tools
-                </h3>
-                <p className="text-gray-600 text-sm mb-4 flex-1">
-                  Specialized inventory management for hospitality - reduce food waste by 40%
-                </p>
-                <span className="text-blue-600 font-semibold text-sm inline-flex items-center group-hover:translate-x-1 transition-transform">
-                  Learn more →
-                </span>
-              </Link>
-            </div>
-        </div>
-      </section>
-
-      {/* Resources Section - Internal Linking to Orphan Pages */}
-      <section className="py-12 sm:py-14 md:py-16 lg:py-18 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-8 sm:mb-10 md:mb-12">
-              <div className="inline-block mb-4 sm:mb-6">
-                <span className="px-4 py-2 bg-blue-100 text-blue-700 text-sm font-semibold rounded-full">
-                  RESOURCES & GUIDES
-                </span>
-              </div>
-              <h2 className="text-[clamp(2rem,4vw,3.5rem)] sm:text-[clamp(2.5rem,5vw,4rem)] text-gray-800 mb-3 leading-tight">
-                Learn More About Inventory Management
-              </h2>
-              <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                Explore our comprehensive guides, tips, and resources to optimize your inventory management
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mb-8">
-              {/* Key Resources */}
-              <Link 
-                to="/programma-stockbeheer"
-                className="group bg-gradient-to-br from-blue-50 to-white border-2 border-gray-200 rounded-2xl p-6 hover:border-blue-500 hover:shadow-xl "
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-                    <Package className="w-5 h-5 text-white" />
-                  </div>
-                  <h3 className="text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
-                    Programma Stockbeheer
-                  </h3>
-                </div>
-                <p className="text-gray-600 text-sm">
-                  Complete guide to stock management software for Belgian businesses
-                </p>
-              </Link>
-
-              <Link 
-                to="/inventory-management-smb"
-                className="group bg-gradient-to-br from-blue-50 to-white border-2 border-gray-200 rounded-2xl p-6 hover:border-blue-500 hover:shadow-xl "
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-                    <Building className="w-5 h-5 text-white" />
-                  </div>
-                  <h3 className="text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
-                    Inventory for SMB
-                  </h3>
-                </div>
-                <p className="text-gray-600 text-sm">
-                  Tailored inventory management solutions for small and medium businesses
-                </p>
-              </Link>
-
-              <Link 
-                to="/stock-management"
-                className="group bg-gradient-to-br from-blue-50 to-white border-2 border-gray-200 rounded-2xl p-6 hover:border-blue-500 hover:shadow-xl "
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-                    <BarChart3 className="w-5 h-5 text-white" />
-                  </div>
-                  <h3 className="text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
-                    Stock Management
-                  </h3>
-                </div>
-                <p className="text-gray-600 text-sm">
-                  Best practices and strategies for effective stock control
-                </p>
-              </Link>
-
-              <Link 
-                to="/inventory-management"
-                className="group bg-gradient-to-br from-blue-50 to-white border-2 border-gray-200 rounded-2xl p-6 hover:border-blue-500 hover:shadow-xl "
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-                    <ShoppingCart className="w-5 h-5 text-white" />
-                  </div>
-                  <h3 className="text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
-                    Inventory Management
-                  </h3>
-                </div>
-                <p className="text-gray-600 text-sm">
-                  Complete overview of modern inventory management systems
-                </p>
-              </Link>
-
-              <Link 
-                to="/barcode-scanning-inventory"
-                className="group bg-gradient-to-br from-blue-50 to-white border-2 border-gray-200 rounded-2xl p-6 hover:border-blue-500 hover:shadow-xl "
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-                    <Scan className="w-5 h-5 text-white" />
-                  </div>
-                  <h3 className="text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
-                    Barcode Scanning
-                  </h3>
-                </div>
-                <p className="text-gray-600 text-sm">
-                  How barcode scanning revolutionizes inventory tracking
-                </p>
-              </Link>
-
-              <Link 
-                to="/warehouse-software"
-                className="group bg-gradient-to-br from-blue-50 to-white border-2 border-gray-200 rounded-2xl p-6 hover:border-blue-500 hover:shadow-xl "
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-                    <Truck className="w-5 h-5 text-white" />
-                  </div>
-                  <h3 className="text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
-                    Warehouse Software
-                  </h3>
-                </div>
-                <p className="text-gray-600 text-sm">
-                  Enterprise-grade warehouse management solutions
-                </p>
-              </Link>
-            </div>
-
-            {/* Additional Resource Links */}
-              <div className="bg-gray-50 rounded-2xl p-6 sm:p-8">
-                <h3 className="text-xl font-bold text-gray-900 mb-6 text-center">
-                  More Resources
-                </h3>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                  <Link to="/mobile-inventory-management" className="text-blue-600 hover:text-blue-800 underline text-sm">
-                    Mobile Inventory
-                  </Link>
-                  <Link to="/inventory-app" className="text-blue-600 hover:text-blue-800 underline text-sm">
-                    Inventory App
-                  </Link>
-                  <Link to="/inventory-tracker" className="text-blue-600 hover:text-blue-800 underline text-sm">
-                    Inventory Tracker
-                  </Link>
-                  <Link to="/inventory-management-tips" className="text-blue-600 hover:text-blue-800 underline text-sm">
-                    Management Tips
-                  </Link>
-                  <Link to="/avoid-inventory-mistakes" className="text-blue-600 hover:text-blue-800 underline text-sm">
-                    Avoid Mistakes
-                  </Link>
-                  <Link to="/inventory-for-starters" className="text-blue-600 hover:text-blue-800 underline text-sm">
-                    For Starters
-                  </Link>
-                  <Link to="/how-to-choose-inventory-management-software" className="text-blue-600 hover:text-blue-800 underline text-sm">
-                    How to Choose
-                  </Link>
-                  <Link to="/stock-management-software" className="text-blue-600 hover:text-blue-800 underline text-sm">
-                    Stock Software
-                  </Link>
-                  <Link to="/inventory-software" className="text-blue-600 hover:text-blue-800 underline text-sm">
-                    Inventory Software
-                  </Link>
-                  <Link to="/online-inventory-management" className="text-blue-600 hover:text-blue-800 underline text-sm">
-                    Online Inventory
-                  </Link>
-                  <Link to="/software-for-inventory-management" className="text-blue-600 hover:text-blue-800 underline text-sm">
-                    Software Guide
-                  </Link>
-                  <Link to="/all-seo-articles" className="text-blue-600 hover:text-blue-800 underline text-sm font-semibold">
-                    View All Articles →
-                  </Link>
-                </div>
-              </div>
-        </div>
-      </section>
-
       {/* FAQ Section */}
-      <section className="py-16 sm:py-20 md:py-24 lg:py-28 bg-blue-50">
+      <section className="py-16 sm:py-20 md:py-24 lg:py-28 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
             <div className="text-center mb-12 sm:mb-16">
               <div className="inline-block mb-4 sm:mb-6">
                 <span className="px-4 py-2 bg-blue-100 text-blue-700 text-sm font-semibold rounded-full">
-                  FREQUENTLY ASKED QUESTIONS
+                  FAQs
                 </span>
               </div>
-              <h2 className="lg:pl-24 lg:pr-24 lg:pt-6 lg:pb-6 text-[clamp(2rem,4vw,3.5rem)] sm:text-[clamp(2.5rem,5vw,4rem)] text-gray-800 mb-3 leading-tight px-4 text-center">
+              <h2 className="max-w-3xl mx-auto text-balance text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-none font-bold text-center">
               Got Questions? <br className="hidden sm:block" />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-600">
                   We've Got Answers
                 </span>
               </h2>
-              <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto px-4 leading-relaxed">
+              <p className="text-md pt-4 text-gray-600 max-w-3xl mx-auto px-4 leading-relaxed">
                 Everything you need to know about StockFlow
               </p>
             </div>
@@ -2268,12 +1763,12 @@ export const HomePage = () => {
                 {/* Content */}
                 <div className="relative z-10 text-center max-w-4xl mx-auto">
                   {/* Main Headline */}
-                  <h2 className="text-[clamp(1.5rem,4vw,2rem)] sm:text-3xl md:text-4xl lg:text-5xl xl:text-5xl text-white mb-4 sm:mb-6 leading-tight px-4">
-                    Ready to simplify your stock management
+                  <h2 className="max-w-3xl mx-auto text-balance text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-none font-bold text-center text-white">
+                    Ready to simplify your stock management?
                   </h2>
                   
                   {/* Subheadline */}
-                  <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-blue-100 mb-6 sm:mb-8 md:mb-10 max-w-3xl mx-auto px-4 leading-relaxed">
+                  <p className="text-md pt-4 pb-8 text-blue-100 max-w-3xl mx-auto px-4 leading-relaxed">
                     Start your free trial today and see how StockFlow saves you time and money.
                   </p>
                   

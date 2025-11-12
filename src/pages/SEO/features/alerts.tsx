@@ -150,7 +150,7 @@ const faqs = [
   {
     question: 'Do I need dedicated hardware to use StockFlow Scan?',
     answer:
-      'No special hardware is required. Any modern device with a cameraâ€”iOS, Android, Zebra, Windows, or macOSâ€”can run the StockFlow scanner securely in the browser.'
+      'No special hardware is required. Any modern device with a camera—iOS, Android, Zebra, Windows, or macOS—can run the StockFlow scanner securely in the browser.'
   },
   {
     question: 'Can the scanner work offline?',
@@ -170,7 +170,7 @@ const faqs = [
   {
     question: 'How quickly can we roll out StockFlow Scan?',
     answer:
-      'Most teams go live in days. Invite your users, configure workflows, and share a secure URLâ€”no app store approvals or device imaging needed.'
+      'Most teams go live in days. Invite your users, configure workflows, and share a secure URL—no app store approvals or device imaging needed.'
   }
 ];
 
@@ -205,7 +205,7 @@ export default function AlertsPage() {
       <Header />
       <SEO
         title="Alerts for Inventory | StockFlow Alerts"
-        description="Discover StockFlow Alertsâ€”the alert solution that keeps omnichannel inventory accurate. Learn how teams get alerts for low stock and date-based notifications."
+        description="Discover StockFlow Alerts—the alert solution that keeps omnichannel inventory accurate. Learn how teams get alerts for low stock and date-based notifications."
         keywords="barcode scanning software, inventory barcode scanner, web barcode scanner, GS1 scanning, stockflow scan, omnichannel inventory accuracy"
         url="https://www.stockflow.be/alerts"
         structuredData={structuredData}
@@ -268,7 +268,7 @@ export default function AlertsPage() {
               Barcode Scanning Built for High-Velocity Operations
             </h2>
             <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
-              StockFlow Scan powers inventory teams with rapid data capture, validation, and automationâ€”without the friction of installing traditional scanning apps.
+              StockFlow Scan powers inventory teams with rapid data capture, validation, and automation—without the friction of installing traditional scanning apps.
             </p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">

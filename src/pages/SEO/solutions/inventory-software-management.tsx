@@ -90,7 +90,7 @@ export default function InventorySoftwareManagement() {
     {
       title: "Real-time Management",
       description: "Monitor inventory levels and movements as they happen with instant updates.",
-      icon: "âš¡",
+      icon: "⚡",
       features: ["Live tracking", "Instant alerts", "Real-time sync"]
     },
     {

@@ -263,12 +263,12 @@ export default function CapacityRequirementPlanning() {
                 Capacity requirement planning is essential for businesses that want to:
               </p>
               <ul className="space-y-2 text-gray-700">
-                <li>âœ“ Prevent stockouts and lost sales</li>
-                <li>âœ“ Avoid excess inventory and carrying costs</li>
-                <li>âœ“ Optimize resource utilization</li>
-                <li>âœ“ Improve customer satisfaction</li>
-                <li>âœ“ Make informed investment decisions</li>
-                <li>âœ“ Scale operations efficiently</li>
+                <li>✓ Prevent stockouts and lost sales</li>
+                <li>✓ Avoid excess inventory and carrying costs</li>
+                <li>✓ Optimize resource utilization</li>
+                <li>✓ Improve customer satisfaction</li>
+                <li>✓ Make informed investment decisions</li>
+                <li>✓ Scale operations efficiently</li>
               </ul>
             </div>
           </div>

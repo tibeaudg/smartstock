@@ -350,7 +350,7 @@ export default function WarehouseManagement() {
               Contact Sales
             </Link>
           </div>
-          <p className="mt-6 text-indigo-200">No credit card required â€¢ Free 14-day trial â€¢ Cancel anytime</p>
+          <p className="mt-6 text-indigo-200">No credit card required • Free 14-day trial • Cancel anytime</p>
         </div>
       </section>
 

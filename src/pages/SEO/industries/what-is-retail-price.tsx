@@ -35,7 +35,7 @@ export default function WhatIsRetailPrice() {
     },
     {
       question: "How do you calculate retail price?",
-      answer: "Retail price is typically calculated by adding a markup percentage to the cost price. Formula: Retail Price = Cost Price Ã— (1 + Markup %). For example, if a product costs â‚¬10 and you want a 50% markup, the retail price would be â‚¬15. Inventory management software like StockFlow can help track and manage retail prices."
+      answer: "Retail price is typically calculated by adding a markup percentage to the cost price. Formula: Retail Price = Cost Price Ã— (1 + Markup %). For example, if a product costs €10 and you want a 50% markup, the retail price would be €15. Inventory management software like StockFlow can help track and manage retail prices."
     },
     {
       question: "What is the difference between retail price and wholesale price?",

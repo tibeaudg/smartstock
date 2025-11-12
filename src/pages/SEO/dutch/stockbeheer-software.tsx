@@ -27,7 +27,7 @@ export default function StockbeheerSoftware() {
     },
     {
       question: "Welke stockbeheer software is het beste voor kleine bedrijven?",
-      answer: "Voor kleine bedrijven is stockflow ideaal omdat het gebruiksvriendelijk is, betaalbaar en schaalbaar. Je kunt gratis starten en meegroeien met je bedrijf zonder complexe implementaties. In tegenstelling tot enterprise oplossingen zoals Exact (vanaf â‚¬255/maand) of complexe systemen zoals Odoo, biedt stockflow een naadloze ervaring zonder technische expertise."
+      answer: "Voor kleine bedrijven is stockflow ideaal omdat het gebruiksvriendelijk is, betaalbaar en schaalbaar. Je kunt gratis starten en meegroeien met je bedrijf zonder complexe implementaties. In tegenstelling tot enterprise oplossingen zoals Exact (vanaf €255/maand) of complexe systemen zoals Odoo, biedt stockflow een naadloze ervaring zonder technische expertise."
     },
     {
       question: "Hoe werkt stockbeheer software?",
@@ -362,7 +362,7 @@ export default function StockbeheerSoftware() {
               <h3 className="text-lg font-semibold mb-2">Exact</h3>
               <p className="text-sm text-gray-600 mb-3">Online voorraadbeheer met apps en WMS-mogelijkheden</p>
               <p className="text-sm text-gray-700">
-                Krachtige enterprise oplossing, maar vaak te duur en complex voor kleine KMO's. Start vanaf â‚¬255/maand.
+                Krachtige enterprise oplossing, maar vaak te duur en complex voor kleine KMO's. Start vanaf €255/maand.
               </p>
             </div>
             
@@ -386,7 +386,7 @@ export default function StockbeheerSoftware() {
               <h3 className="text-lg font-semibold mb-2">Silvasoft</h3>
               <p className="text-sm text-gray-600 mb-3">Betaalbare online oplossing voor webshops</p>
               <p className="text-sm text-gray-700">
-                Betaalbare optie vanaf â‚¬5,45/maand, maar vooral gericht op webshops en minder geschikt voor traditionele retail.
+                Betaalbare optie vanaf €5,45/maand, maar vooral gericht op webshops en minder geschikt voor traditionele retail.
               </p>
             </div>
           </div>
@@ -405,19 +405,19 @@ export default function StockbeheerSoftware() {
                 </p>
                 <div className="grid md:grid-cols-2 gap-4">
                   <div className="bg-white p-4 rounded-lg">
-                    <h4 className="font-semibold text-gray-900 mb-2">âœ“ 100% Gratis plan</h4>
+                    <h4 className="font-semibold text-gray-900 mb-2">✓ 100% Gratis plan</h4>
                     <p className="text-sm text-gray-600">Start gratis met tot 30 producten - geen verborgen kosten of verplichtingen</p>
                   </div>
                   <div className="bg-white p-4 rounded-lg">
-                    <h4 className="font-semibold text-gray-900 mb-2">âœ“ Gebruiksvriendelijk</h4>
+                    <h4 className="font-semibold text-gray-900 mb-2">✓ Gebruiksvriendelijk</h4>
                     <p className="text-sm text-gray-600">Geen technische expertise nodig - start direct zonder complexe implementatie</p>
                   </div>
                   <div className="bg-white p-4 rounded-lg">
-                    <h4 className="font-semibold text-gray-900 mb-2">âœ“ Belgische/Nederlandse focus</h4>
+                    <h4 className="font-semibold text-gray-900 mb-2">✓ Belgische/Nederlandse focus</h4>
                     <p className="text-sm text-gray-600">Ontwikkeld voor de Belgische en Nederlandse markt met lokale support</p>
                   </div>
                   <div className="bg-white p-4 rounded-lg">
-                    <h4 className="font-semibold text-gray-900 mb-2">âœ“ Mobiel-first</h4>
+                    <h4 className="font-semibold text-gray-900 mb-2">✓ Mobiel-first</h4>
                     <p className="text-sm text-gray-600">Volledige mobiele app voor iOS en Android - beheer je voorraad overal</p>
                   </div>
                 </div>
@@ -452,7 +452,7 @@ export default function StockbeheerSoftware() {
               Start Gratis Nu
             </Link>
           </div>
-          <p className="text-sm mt-4 opacity-75">Geen creditcard vereist â€¢ Direct toegang â€¢ Nederlandse support</p>
+          <p className="text-sm mt-4 opacity-75">Geen creditcard vereist • Direct toegang • Nederlandse support</p>
         </div>
       </section>
 

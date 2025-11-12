@@ -35,7 +35,7 @@ export default function WarehouseManagementSystem() {
     <SeoPageLayout title="Warehouse Management System">
       <SEO
         title="Warehouse Management System 2025 | Reduce Costs 35% + Improve Efficiency | StockFlow"
-        description="âš¡ Best warehouse management system (WMS) 2025. Streamline operations, reduce costs by 35%, and improve efficiency. Real-time tracking, barcode scanning, automated workflows. FREE plan available. Trusted by 5,000+ warehouses. Start free trial now!"
+        description="⚡ Best warehouse management system (WMS) 2025. Streamline operations, reduce costs by 35%, and improve efficiency. Real-time tracking, barcode scanning, automated workflows. FREE plan available. Trusted by 5,000+ warehouses. Start free trial now!"
         keywords="warehouse management system, warehousing system, warehousing management software, WMS software, warehouse management, inventory management, warehouse operations, stock management, warehouse automation, warehouse software, WMS platform, warehouse management solution, best warehouse management system, warehouse management software, cloud WMS, warehouse management system for small business, warehousing system software"
         url="https://www.stockflow.be/warehouse-management-system"
       />
@@ -49,7 +49,7 @@ export default function WarehouseManagementSystem() {
                 <span className="text-blue-600">Warehouse Management System</span> & <span className="text-blue-600">Warehousing System</span> 2025: Reduce Costs 35% + Boost Efficiency
               </h1>
               <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-                âš¡ Transform your warehouse operations with StockFlow's award-winning warehouse management system. 
+                ⚡ Transform your warehouse operations with StockFlow's award-winning warehouse management system. 
                 Reduce costs by 35%, improve efficiency by 50%, and gain real-time visibility into your inventory and operations. 
                 Trusted by 5,000+ warehouses worldwide. Start your free trial today - no credit card required!
               </p>

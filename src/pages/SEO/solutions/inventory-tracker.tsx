@@ -123,7 +123,7 @@ export default function InventoryTracker() {
     {
       title: "Real-time Tracking",
       description: "Monitor inventory movements as they happen with instant updates.",
-      icon: "âš¡",
+      icon: "⚡",
       features: ["Live updates", "Instant notifications", "Movement alerts"]
     },
     {

@@ -264,7 +264,7 @@ export default function InventoryForEcommerce() {
                 <p className="text-gray-600 text-sm mb-3">
                   Nederlandse versie - voorraadbeheer voor webshops.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">Lees meer â†’</div>
+                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
               </div>
             </Link>
             <Link to="/inventory-management-software" className="group">
@@ -275,7 +275,7 @@ export default function InventoryForEcommerce() {
                 <p className="text-gray-600 text-sm mb-3">
                   Complete inventory management solution for all business types.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">Read more â†’</div>
+                <div className="text-blue-600 text-sm font-semibold">Read more →</div>
               </div>
             </Link>
             <Link to="/online-inventory-software" className="group">
@@ -286,7 +286,7 @@ export default function InventoryForEcommerce() {
                 <p className="text-gray-600 text-sm mb-3">
                   Cloud-based inventory management accessible from anywhere.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">Read more â†’</div>
+                <div className="text-blue-600 text-sm font-semibold">Read more →</div>
               </div>
             </Link>
           </div>

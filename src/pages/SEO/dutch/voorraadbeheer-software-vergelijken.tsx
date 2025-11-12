@@ -68,7 +68,7 @@ export default function VoorraadbeheerSoftwareVergelijken() {
     >
       <SEO
         title="Voorraadbeheer Software Vergelijken 2025: Gratis Plan + Top 3 Vergelijking"
-        description="Bespaar tot â‚¬450/maand! Vergelijk de 3 beste voorraadbeheer software 2025: StockFlow vs Exact vs Visma. StockFlow #1 voor KMO's - 100% gratis plan. Onafhankelijke vergelijking met prijzen, features en reviews. Start gratis - geen creditcard!"
+        description="Bespaar tot €450/maand! Vergelijk de 3 beste voorraadbeheer software 2025: StockFlow vs Exact vs Visma. StockFlow #1 voor KMO's - 100% gratis plan. Onafhankelijke vergelijking met prijzen, features en reviews. Start gratis - geen creditcard!"
         keywords="voorraadbeheer software vergelijken, software stockbeheer vergelijken, beste voorraadbeheer software, stockbeheer software vergelijken, voorraadbeheer software kiezen, voorraadbeheer software 2025, software voor voorraadbeheer, voorraadbeheersoftware vergelijking, bedrijfssoftware vergelijken, voorraadbeheer app vergelijken, programma voorraadbeheer, software stockbeheer, stockbeheer programma, voorraad app, app voorraadbeheer, beste voorraadbeheer app, voorraadbeheer programma, software stockbeheer 2025, voorraadbeheer software gratis, StockFlow vs Exact, StockFlow vs Visma"
         url="https://www.stockflow.be/voorraadbeheer-software-vergelijken"
         modifiedTime={new Date().toISOString()}

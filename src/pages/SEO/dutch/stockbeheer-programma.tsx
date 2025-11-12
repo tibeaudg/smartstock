@@ -100,7 +100,7 @@ export default function StockbeheerProgramma() {
                 </Link>
               </div>
               <p className="text-xs sm:text-sm text-gray-600 mt-4">
-                Zie ook: <Link to="/software-stockbeheer" className="text-blue-600 hover:underline">Software Stockbeheer</Link> â€¢ <Link to="/programma-stockbeheer" className="text-blue-600 hover:underline">Programma Stockbeheer</Link> â€¢ <Link to="/magazijnbeheer-software" className="text-blue-600 hover:underline">Magazijnbeheer Software</Link>
+                Zie ook: <Link to="/software-stockbeheer" className="text-blue-600 hover:underline">Software Stockbeheer</Link> • <Link to="/programma-stockbeheer" className="text-blue-600 hover:underline">Programma Stockbeheer</Link> • <Link to="/magazijnbeheer-software" className="text-blue-600 hover:underline">Magazijnbeheer Software</Link>
               </p>
             </div>
             <div className="lg:col-span-1">
@@ -271,7 +271,7 @@ export default function StockbeheerProgramma() {
               Start Gratis Nu
             </Link>
           </div>
-          <p className="text-sm mt-4 opacity-75">Geen creditcard vereist â€¢ Direct toegang â€¢ Nederlandse support</p>
+          <p className="text-sm mt-4 opacity-75">Geen creditcard vereist • Direct toegang • Nederlandse support</p>
         </div>
       </section>
 

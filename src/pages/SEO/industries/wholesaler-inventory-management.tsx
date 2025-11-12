@@ -136,7 +136,7 @@ export default function WholesalerInventoryManagement() {
     {
       title: "Specialty Wholesalers",
       description: "Manage specialized product lines, track compliance requirements, and maintain detailed inventory records for regulatory purposes.",
-      icon: "â­"
+      icon: "⭐"
     }
   ];
 

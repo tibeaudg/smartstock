@@ -37,7 +37,7 @@ export default function BestVoorraadbeheerSoftwareKMO() {
         'Geen ingebouwde boekhouding',
         'Relatief nieuw op de markt'
       ],
-      price: 'Gratis - â‚¬49/maand',
+      price: 'Gratis - €49/maand',
       rating: 4.9,
       bestFor: 'KMO\'s die snel willen starten zonder grote investering',
       url: '/auth'
@@ -52,13 +52,13 @@ export default function BestVoorraadbeheerSoftwareKMO() {
         'Goede support'
       ],
       cons: [
-        'Hoge kosten (â‚¬255+/maand)',
+        'Hoge kosten (€255+/maand)',
         'Complexe setup',
         'Steile leercurve',
         'Contract vereist',
         'Overkill voor pure voorraad'
       ],
-      price: 'â‚¬255 - â‚¬500/maand',
+      price: '€255 - €500/maand',
       rating: 4.0,
       bestFor: 'Grotere KMO\'s die volledige ERP nodig hebben',
       url: '/stockflow-vs-exact-online'
@@ -78,7 +78,7 @@ export default function BestVoorraadbeheerSoftwareKMO() {
         'Geen barcode scanning',
         'Desktop-gericht'
       ],
-      price: 'â‚¬50 - â‚¬150/maand',
+      price: '€50 - €150/maand',
       rating: 4.1,
       bestFor: 'Bedrijven die vooral CRM nodig hebben',
       url: '#'
@@ -97,7 +97,7 @@ export default function BestVoorraadbeheerSoftwareKMO() {
         'Geen multi-vestiging',
         'Beperkte rapportages'
       ],
-      price: 'â‚¬8 - â‚¬20/maand',
+      price: '€8 - €20/maand',
       rating: 3.8,
       bestFor: 'Zzp\'ers met minimale voorraad',
       url: '#'
@@ -407,8 +407,8 @@ export default function BestVoorraadbeheerSoftwareKMO() {
             <div className="bg-white p-6 rounded-lg shadow-sm">
               <h3 className="font-semibold text-lg mb-2">Wat kost voorraadbeheer software voor KMO's?</h3>
               <p className="text-gray-600">
-                De prijzen variÃ«ren van gratis (zoals StockFlow tot 30 producten) tot â‚¬500+ per maand 
-                voor uitgebreide systemen. Voor de meeste KMO's is â‚¬0-â‚¬100 per maand voldoende.
+                De prijzen variÃ«ren van gratis (zoals StockFlow tot 30 producten) tot €500+ per maand 
+                voor uitgebreide systemen. Voor de meeste KMO's is €0-€100 per maand voldoende.
               </p>
             </div>
             <div className="bg-white p-6 rounded-lg shadow-sm">

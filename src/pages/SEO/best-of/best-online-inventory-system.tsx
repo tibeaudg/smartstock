@@ -264,7 +264,7 @@ export default function BestOnlineInventorySystem() {
               Start Free Trial
             </Link>
           </div>
-          <p className="text-sm mt-4 opacity-75">No credit card required â€¢ Instant setup â€¢ 24/7 support</p>
+          <p className="text-sm mt-4 opacity-75">No credit card required • Instant setup • 24/7 support</p>
         </div>
       </section>
 

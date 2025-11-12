@@ -239,7 +239,7 @@ export default function StockManagement() {
                 <p className="text-gray-600 text-sm mb-3">
                   Nederlandse versie - complete stockbeheer gids voor kleine bedrijven.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">Lees meer â†’</div>
+                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
               </div>
             </Link>
             <Link to="/stock-management-software" className="group">
@@ -250,7 +250,7 @@ export default function StockManagement() {
                 <p className="text-gray-600 text-sm mb-3">
                   Complete software solutions for effective stock control and management.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">Read more â†’</div>
+                <div className="text-blue-600 text-sm font-semibold">Read more →</div>
               </div>
             </Link>
             <Link to="/inventory-management" className="group">
@@ -261,7 +261,7 @@ export default function StockManagement() {
                 <p className="text-gray-600 text-sm mb-3">
                   Comprehensive guide to inventory management systems and best practices.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">Read more â†’</div>
+                <div className="text-blue-600 text-sm font-semibold">Read more →</div>
               </div>
             </Link>
           </div>

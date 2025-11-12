@@ -224,13 +224,13 @@ export default function RawMaterialsInventory() {
             <div className="bg-blue-50 rounded-lg p-8">
               <h3 className="text-xl font-bold mb-4">Why Raw Materials Management Matters</h3>
               <ul className="space-y-2 text-gray-700">
-                <li>âœ“ Ensures production continuity</li>
-                <li>âœ“ Prevents production delays</li>
-                <li>âœ“ Optimizes cash flow</li>
-                <li>âœ“ Reduces waste and obsolescence</li>
-                <li>âœ“ Maintains quality standards</li>
-                <li>âœ“ Improves supplier relationships</li>
-                <li>âœ“ Controls production costs</li>
+                <li>✓ Ensures production continuity</li>
+                <li>✓ Prevents production delays</li>
+                <li>✓ Optimizes cash flow</li>
+                <li>✓ Reduces waste and obsolescence</li>
+                <li>✓ Maintains quality standards</li>
+                <li>✓ Improves supplier relationships</li>
+                <li>✓ Controls production costs</li>
               </ul>
             </div>
           </div>

@@ -26,7 +26,7 @@ export default function InventoryTurnoverRatio() {
     },
     {
       question: "How do you calculate inventory turnover ratio?",
-      answer: "Inventory turnover ratio is calculated by dividing the cost of goods sold (COGS) by the average inventory value. The formula is: Inventory Turnover Ratio = Cost of Goods Sold / Average Inventory. Average inventory is calculated as (Beginning Inventory + Ending Inventory) / 2. For example, if COGS is â‚¬100,000 and average inventory is â‚¬25,000, the turnover ratio is 4."
+      answer: "Inventory turnover ratio is calculated by dividing the cost of goods sold (COGS) by the average inventory value. The formula is: Inventory Turnover Ratio = Cost of Goods Sold / Average Inventory. Average inventory is calculated as (Beginning Inventory + Ending Inventory) / 2. For example, if COGS is €100,000 and average inventory is €25,000, the turnover ratio is 4."
     },
     {
       question: "What is a good inventory turnover ratio?",
@@ -279,9 +279,9 @@ export default function InventoryTurnoverRatio() {
             <div className="bg-gray-50 p-4 rounded-lg">
               <p className="text-sm text-gray-600 mb-2"><strong>Where:</strong></p>
               <ul className="text-sm text-gray-600 space-y-1">
-                <li>â€¢ <strong>Average Inventory</strong> = (Beginning Inventory + Ending Inventory) Ã· 2</li>
-                <li>â€¢ <strong>COGS</strong> = Total cost of products sold during the period</li>
-                <li>â€¢ <strong>Period</strong> = Usually one year (365 days)</li>
+                <li>• <strong>Average Inventory</strong> = (Beginning Inventory + Ending Inventory) Ã· 2</li>
+                <li>• <strong>COGS</strong> = Total cost of products sold during the period</li>
+                <li>• <strong>Period</strong> = Usually one year (365 days)</li>
               </ul>
             </div>
           </div>
@@ -411,7 +411,7 @@ export default function InventoryTurnoverRatio() {
                 <p className="text-gray-600 text-sm">
                   Complete guide to inventory management strategies and best practices.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold mt-2">Learn more â†’</div>
+                <div className="text-blue-600 text-sm font-semibold mt-2">Learn more →</div>
               </div>
             </Link>
 
@@ -423,7 +423,7 @@ export default function InventoryTurnoverRatio() {
                 <p className="text-gray-600 text-sm">
                   Discover how software can help optimize your inventory turnover ratio.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold mt-2">Learn more â†’</div>
+                <div className="text-blue-600 text-sm font-semibold mt-2">Learn more →</div>
               </div>
             </Link>
 
@@ -435,7 +435,7 @@ export default function InventoryTurnoverRatio() {
                 <p className="text-gray-600 text-sm">
                   Expert tips to improve your inventory management and turnover ratios.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold mt-2">Learn more â†’</div>
+                <div className="text-blue-600 text-sm font-semibold mt-2">Learn more →</div>
               </div>
             </Link>
           </div>

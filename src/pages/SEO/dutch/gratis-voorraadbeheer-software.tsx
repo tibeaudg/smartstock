@@ -94,23 +94,23 @@ export default function GratisVoorraadbeheerSoftware() {
     },
     {
       feature: "Barcode scanning",
-      gratis: "âœ“",
-      premium: "âœ“"
+      gratis: "✓",
+      premium: "✓"
     },
     {
       feature: "Mobiele app",
-      gratis: "âœ“",
-      premium: "âœ“"
+      gratis: "✓",
+      premium: "✓"
     },
     {
       feature: "Email support",
-      gratis: "âœ“",
-      premium: "âœ“"
+      gratis: "✓",
+      premium: "✓"
     },
     {
       feature: "Telefoon support",
-      gratis: "âœ—",
-      premium: "âœ“"
+      gratis: "✗",
+      premium: "✓"
     },
     {
       feature: "Integraties",
@@ -143,16 +143,16 @@ export default function GratisVoorraadbeheerSoftware() {
               </p>
               <div className="flex flex-wrap gap-4 mb-8">
                 <div className="bg-white bg-opacity-20 px-4 py-2 rounded-full">
-                  <span className="text-sm font-bold">âœ“ 100% Gratis</span>
+                  <span className="text-sm font-bold">✓ 100% Gratis</span>
                 </div>
                 <div className="bg-white bg-opacity-20 px-4 py-2 rounded-full">
-                  <span className="text-sm font-bold">âœ“ Real-time Rapportages</span>
+                  <span className="text-sm font-bold">✓ Real-time Rapportages</span>
                 </div>
                 <div className="bg-white bg-opacity-20 px-4 py-2 rounded-full">
-                  <span className="text-sm font-bold">âœ“ Automatische Bestellingen</span>
+                  <span className="text-sm font-bold">✓ Automatische Bestellingen</span>
                 </div>
                 <div className="bg-white bg-opacity-20 px-4 py-2 rounded-full">
-                  <span className="text-sm font-bold">âœ“ Team Samenwerking</span>
+                  <span className="text-sm font-bold">✓ Team Samenwerking</span>
                 </div>
               </div>
               <div className="flex flex-col sm:flex-row gap-4">
@@ -454,7 +454,7 @@ export default function GratisVoorraadbeheerSoftware() {
         
           </div>
           <p className="text-sm mt-6 opacity-75">
-            Geen creditcard vereist â€¢ Direct toegang â€¢ Nederlandse support
+            Geen creditcard vereist • Direct toegang • Nederlandse support
           </p>
         </div>
       </section>

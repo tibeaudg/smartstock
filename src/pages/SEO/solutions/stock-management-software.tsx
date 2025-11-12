@@ -30,7 +30,7 @@ export default function StockManagementSoftware() {
     },
     {
       question: "How much does stock management software cost?",
-      answer: "StockFlow offers free stock management software for up to 100 products. Premium plans start at â‚¬0.004 per additional product per month. Most businesses see ROI within the first month through time savings and error reduction alone. Many solutions offer free trials to test before committing."
+      answer: "StockFlow offers free stock management software for up to 100 products. Premium plans start at €0.004 per additional product per month. Most businesses see ROI within the first month through time savings and error reduction alone. Many solutions offer free trials to test before committing."
     },
     {
       question: "Can stock management software integrate with other business systems?",
@@ -271,12 +271,12 @@ export default function StockManagementSoftware() {
               <div className="text-lg">Error Reduction</div>
             </div>
             <div className="bg-white/10 backdrop-blur p-6 rounded-xl">
-              <div className="text-4xl font-bold mb-2">â‚¬2,000+</div>
+              <div className="text-4xl font-bold mb-2">€2,000+</div>
               <div className="text-lg">Monthly Savings</div>
             </div>
           </div>
           <p className="text-xl opacity-90">
-            Most small businesses see ROI within the first month. At â‚¬50/hour, saving 10 hours weekly = â‚¬2,000/month in time savings alone.
+            Most small businesses see ROI within the first month. At €50/hour, saving 10 hours weekly = €2,000/month in time savings alone.
           </p>
         </div>
       </section>
@@ -311,7 +311,7 @@ export default function StockManagementSoftware() {
                 <p className="text-gray-600 text-sm mb-3">
                   Nederlandse versie - stockbeheer software voor kleine bedrijven.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">Lees meer â†’</div>
+                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
               </div>
             </Link>
             <Link to="/inventory-management-software" className="group">
@@ -322,7 +322,7 @@ export default function StockManagementSoftware() {
                 <p className="text-gray-600 text-sm mb-3">
                   Complete inventory management solution for all business sizes.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">Read more â†’</div>
+                <div className="text-blue-600 text-sm font-semibold">Read more →</div>
               </div>
             </Link>
             <Link to="/stock-management" className="group">
@@ -333,7 +333,7 @@ export default function StockManagementSoftware() {
                 <p className="text-gray-600 text-sm mb-3">
                   Learn best practices for effective stock management.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">Read more â†’</div>
+                <div className="text-blue-600 text-sm font-semibold">Read more →</div>
               </div>
             </Link>
           </div>

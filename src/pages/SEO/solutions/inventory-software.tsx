@@ -138,28 +138,28 @@ export default function InventorySoftware() {
   const comparisonFeatures = [
     {
       feature: "Real-time tracking",
-      stockflow: "âœ“",
+      stockflow: "✓",
       competitors: "Limited"
     },
     {
       feature: "Mobile access",
-      stockflow: "âœ“",
+      stockflow: "✓",
       competitors: "Extra cost"
     },
     {
       feature: "Barcode scanning",
-      stockflow: "âœ“",
+      stockflow: "✓",
       competitors: "Premium only"
     },
     {
       feature: "Multi-location",
-      stockflow: "âœ“",
+      stockflow: "✓",
       competitors: "Enterprise only"
     },
     {
       feature: "Free plan",
-      stockflow: "âœ“",
-      competitors: "âœ—"
+      stockflow: "✓",
+      competitors: "✗"
     }
   ];
 

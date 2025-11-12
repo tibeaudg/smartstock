@@ -595,7 +595,7 @@ export default function Magazijnbeheer() {
                 <p className="text-gray-600 text-sm mb-3">
                   Complete gids over voorraadbeheer software en waarom je het nodig hebt.
                 </p>
-                <div className="text-purple-600 text-sm font-semibold">Lees meer â†’</div>
+                <div className="text-purple-600 text-sm font-semibold">Lees meer →</div>
               </div>
             </Link>
 
@@ -607,7 +607,7 @@ export default function Magazijnbeheer() {
                 <p className="text-gray-600 text-sm mb-3">
                   Betaalbare magazijn en voorraad oplossingen voor kleine bedrijven.
                 </p>
-                <div className="text-purple-600 text-sm font-semibold">Lees meer â†’</div>
+                <div className="text-purple-600 text-sm font-semibold">Lees meer →</div>
               </div>
             </Link>
 
@@ -619,7 +619,7 @@ export default function Magazijnbeheer() {
                 <p className="text-gray-600 text-sm mb-3">
                   E-commerce fulfillment en multi-channel voorraad synchronisatie.
                 </p>
-                <div className="text-purple-600 text-sm font-semibold">Lees meer â†’</div>
+                <div className="text-purple-600 text-sm font-semibold">Lees meer →</div>
               </div>
             </Link>
 
@@ -631,7 +631,7 @@ export default function Magazijnbeheer() {
                 <p className="text-gray-600 text-sm mb-3">
                   Automatiseer je warehouse processen en bespaar 70% tijd.
                 </p>
-                <div className="text-purple-600 text-sm font-semibold">Lees meer â†’</div>
+                <div className="text-purple-600 text-sm font-semibold">Lees meer →</div>
               </div>
             </Link>
 
@@ -643,7 +643,7 @@ export default function Magazijnbeheer() {
                 <p className="text-gray-600 text-sm mb-3">
                   Groei van handmatige Excel sheets naar professioneel magazijnbeheer.
                 </p>
-                <div className="text-purple-600 text-sm font-semibold">Lees meer â†’</div>
+                <div className="text-purple-600 text-sm font-semibold">Lees meer →</div>
               </div>
             </Link>
 
@@ -655,7 +655,7 @@ export default function Magazijnbeheer() {
                 <p className="text-gray-600 text-sm mb-3">
                   English version - warehouse and inventory management solutions.
                 </p>
-                <div className="text-purple-600 text-sm font-semibold">Read more â†’</div>
+                <div className="text-purple-600 text-sm font-semibold">Read more →</div>
               </div>
             </Link>
           </div>

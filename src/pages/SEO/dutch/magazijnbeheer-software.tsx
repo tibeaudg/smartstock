@@ -103,7 +103,7 @@ export default function MagazijnbeheerSoftware() {
                 </Link>
               </div>
               <p className="text-xs sm:text-sm text-gray-600 mt-4">
-                Zie ook: <Link to="/software-stockbeheer" className="text-blue-600 hover:underline">Software Stockbeheer</Link> â€¢ <Link to="/stockbeheer-programma" className="text-blue-600 hover:underline">Stockbeheer Programma</Link> â€¢ <Link to="/voorraadbeheer-software" className="text-blue-600 hover:underline">Voorraadbeheer Software</Link>
+                Zie ook: <Link to="/software-stockbeheer" className="text-blue-600 hover:underline">Software Stockbeheer</Link> • <Link to="/stockbeheer-programma" className="text-blue-600 hover:underline">Stockbeheer Programma</Link> • <Link to="/voorraadbeheer-software" className="text-blue-600 hover:underline">Voorraadbeheer Software</Link>
               </p>
             </div>
             <div className="lg:col-span-1">
@@ -274,7 +274,7 @@ export default function MagazijnbeheerSoftware() {
               Start Gratis Nu
             </Link>
           </div>
-          <p className="text-sm mt-4 opacity-75">Geen creditcard vereist â€¢ Direct toegang â€¢ Nederlandse support</p>
+          <p className="text-sm mt-4 opacity-75">Geen creditcard vereist • Direct toegang • Nederlandse support</p>
         </div>
       </section>
 
