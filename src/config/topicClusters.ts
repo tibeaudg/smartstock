@@ -17,20 +17,49 @@ export interface TopicCluster {
   clusters: PageMetadata[];
 }
 
-const seoPageModules = import.meta.glob('../pages/SEO/*.tsx');
+const seoPageModules = {
+  ...import.meta.glob('../pages/SEO/**/*.tsx'),
+  ...import.meta.glob('../pages/seo/**/*.tsx'),
+};
+
+const legacyTopLevelSlugs = new Set([
+  'asset-tracking',
+  'inventory-management',
+  'what-is-lead-time',
+  'warehouse-management',
+  'warehouse-management-system',
+]);
 
 const existingSeoPagePaths = new Set<string>(
   Object.keys(seoPageModules)
     .map((filePath) => {
-      const match = filePath.match(/\/([^/]+)\.tsx$/);
-      if (!match) return undefined;
-      const slug = match[1];
+      const normalized = filePath
+        .replace(/^(\.\.\/)+/, '')
+        .replace(/^pages\/(SEO|seo)\//, '')
+        .replace(/\.tsx$/, '');
 
-      if (slug === 'index') {
+      const segments = normalized.split('/').filter(Boolean);
+      if (segments.length === 0) return undefined;
+
+      if (segments[segments.length - 1] === 'index') {
+        segments.pop();
+      }
+
+      if (segments.length === 0) {
         return '/seo';
       }
 
-      return `/${slug}`;
+      if (segments[0] === 'glossary') {
+        if (segments.length === 1) {
+          return '/glossary';
+        }
+        if (segments.length === 2 && legacyTopLevelSlugs.has(segments[1])) {
+          return `/${segments[1]}`;
+        }
+        return `/glossary/${segments.slice(1).join('/')}`;
+      }
+
+      return `/${segments[segments.length - 1]}`;
     })
     .filter((path): path is string => Boolean(path))
 );

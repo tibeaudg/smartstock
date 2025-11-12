@@ -1,5 +1,5 @@
-import SEO from '../../components/SEO';
-import SeoPageLayout from '../../components/SeoPageLayout';
+import SEO from '@/components/SEO';
+import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { useCurrency } from '@/hooks/useCurrency';
 import { useLocation } from 'react-router-dom';
@@ -16,7 +16,7 @@ import {
   Database
 } from 'lucide-react';
 
-import { StructuredData } from '../../components/StructuredData';
+import { StructuredData } from '@/components/StructuredData';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@radix-ui/react-accordion';
 
 
