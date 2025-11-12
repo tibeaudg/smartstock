@@ -22,7 +22,6 @@ import {
   BarChart3,
   BookOpen,
   Laptop,
-  Flask,
   Palette
 } from 'lucide-react';
 import { StructuredData } from '@/components/StructuredData';
