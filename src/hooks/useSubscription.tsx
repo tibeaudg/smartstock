@@ -1,3 +1,4 @@
+import { useMemo, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './useAuth';
@@ -47,13 +48,79 @@ export interface UsageTracking {
   next_billing_date: string | null;
 }
 
-export const useSubscription = () => {
+type BillingCycle = 'monthly' | 'yearly';
+
+type StartTrialParams = { tierId: string; billingCycle: BillingCycle };
+
+type SubscribeParams = { tierId: string; billingCycle: BillingCycle; stripeSessionId?: string };
+
+export interface UseSubscriptionReturn {
+  pricingTiers: PricingTier[];
+  currentSubscription: UserSubscription | null;
+  usageTracking: UsageTracking | null;
+  currentTier: PricingTier | null;
+  nextTier: PricingTier | null;
+  productCount: number;
+  isLoading: boolean;
+  error: unknown;
+  startTrial: (params: StartTrialParams) => void;
+  subscribe: (params: SubscribeParams) => void;
+  cancelSubscription: () => void;
+  updateUsage: (updates: Partial<UsageTracking>) => void;
+  isStartingTrial: boolean;
+  isSubscribing: boolean;
+  isCancelling: boolean;
+  isUpdatingUsage: boolean;
+  isTrialActive: boolean;
+  isSubscriptionActive: boolean;
+  canUseFeature: (featureName: string) => boolean;
+  isWithinLimits: (type: 'products' | 'users' | 'branches' | 'orders') => boolean;
+  getRemainingLimit: (type: 'products' | 'users' | 'branches' | 'orders') => number | null;
+  shouldContactSales: () => boolean;
+}
+
+export const useSubscription: () => UseSubscriptionReturn = () => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
 
+  const tierThresholds = [
+    { name: 'free', limit: 100 },
+    { name: 'advanced', limit: 500 },
+    { name: 'ultra', limit: 2000 },
+    { name: 'premium', limit: 5000 },
+    { name: 'enterprise', limit: null },
+  ] as const;
+
+  useEffect(() => {
+    if (!user) return;
+    const productChannel = supabase
+      .channel(`subscription-products-${user.id}`)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'products' }, () => {
+        queryClient.invalidateQueries({ queryKey: ['subscription-product-count', user.id] });
+        queryClient.invalidateQueries({ queryKey: ['usage-tracking', user.id] });
+      })
+      .subscribe();
+
+    const usageChannel = supabase
+      .channel(`subscription-usage-${user.id}`)
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'usage_tracking', filter: `user_id=eq.${user.id}` },
+        () => {
+          queryClient.invalidateQueries({ queryKey: ['usage-tracking', user.id] });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(productChannel);
+      supabase.removeChannel(usageChannel);
+    };
+  }, [user, queryClient]);
+
   // Fetch pricing tiers
   const {
-    data: pricingTiers = [],
+    data: pricingTiersRaw = [],
     isLoading: tiersLoading,
     error: tiersError
   } = useQuery<PricingTier[]>({
@@ -84,6 +151,44 @@ export const useSubscription = () => {
     retry: 1, // Only retry once to prevent infinite loops
     retryDelay: 2000, // 2 second delay between retries
   });
+
+  const renameMap: Record<string, { name: string; display_name: string }> = {
+    basic: { name: 'free', display_name: 'Free' },
+    free: { name: 'free', display_name: 'Free' },
+    growth: { name: 'advanced', display_name: 'Advanced' },
+    business: { name: 'advanced', display_name: 'Advanced' },
+    premium: { name: 'premium', display_name: 'Premium' },
+  };
+
+  const pricingTiers = useMemo(
+    () =>
+      pricingTiersRaw.map(tier => {
+        const rename = renameMap[tier.name];
+        if (!rename) return tier;
+        return {
+          ...tier,
+          name: rename.name,
+          display_name: rename.display_name,
+        };
+      }),
+    [pricingTiersRaw]
+  );
+
+  const sortedTiers = useMemo(
+    () =>
+      [...pricingTiers].sort((a, b) => {
+        const aLimit = a.included_products ?? Number.MAX_SAFE_INTEGER;
+        const bLimit = b.included_products ?? Number.MAX_SAFE_INTEGER;
+        return aLimit - bLimit;
+      }),
+    [pricingTiers]
+  );
+
+  const determineTierByCount = (count: number) => {
+    const threshold = tierThresholds.find(entry => entry.limit === null || count <= (entry.limit ?? Number.MAX_SAFE_INTEGER));
+    if (!threshold) return null;
+    return pricingTiers.find(tier => tier.name === threshold.name) ?? null;
+  };
 
   // Fetch user's current subscription
   const {
@@ -153,9 +258,42 @@ export const useSubscription = () => {
     retryDelay: 2000, // 2 second delay between retries
   });
 
+  const {
+    data: productCountFallback = 0,
+  } = useQuery<number>({
+    queryKey: ['subscription-product-count', user?.id],
+    queryFn: async () => {
+      if (!user) return 0;
+
+      const { data: branches, error: branchesError } = await supabase
+        .from('branches')
+        .select('id')
+        .eq('user_id', user.id);
+
+      if (branchesError || !branches || branches.length === 0) {
+        return 0;
+      }
+
+      const branchIds = branches.map(branch => branch.id);
+      const { count, error: productError } = await supabase
+        .from('products')
+        .select('*', { count: 'exact', head: true })
+        .in('branch_id', branchIds);
+
+      if (productError) {
+        console.warn('[useSubscription] Failed to fetch product count fallback', productError);
+        return 0;
+      }
+
+      return count ?? 0;
+    },
+    enabled: !!user,
+    staleTime: 1000 * 60,
+  });
+
   // Start trial mutation
   const startTrialMutation = useMutation({
-    mutationFn: async ({ tierId, billingCycle }: { tierId: string; billingCycle: 'monthly' | 'yearly' }) => {
+    mutationFn: async ({ tierId, billingCycle }: StartTrialParams) => {
       if (!user) throw new Error('User not authenticated');
 
       const trialEndDate = new Date();
@@ -186,11 +324,7 @@ export const useSubscription = () => {
 
   // Subscribe mutation
   const subscribeMutation = useMutation({
-    mutationFn: async ({ tierId, billingCycle, stripeSessionId }: { 
-      tierId: string; 
-      billingCycle: 'monthly' | 'yearly';
-      stripeSessionId?: string;
-    }) => {
+    mutationFn: async ({ tierId, billingCycle, stripeSessionId }: SubscribeParams) => {
       if (!user) throw new Error('User not authenticated');
 
       const endDate = new Date();
@@ -276,8 +410,31 @@ export const useSubscription = () => {
     return new Date(currentSubscription.end_date) > new Date();
   };
 
+  const getTierById = (id?: string | null) => {
+    if (!id) return null;
+    return pricingTiers.find(tier => tier.id === id) ?? null;
+  };
+
+  const productCount = Math.max(usageTracking?.current_products ?? 0, productCountFallback ?? 0);
+
   const getCurrentTier = () => {
-    return currentSubscription?.tier || pricingTiers.find(tier => tier.name === 'basic');
+    const usageTier = getTierById(usageTracking?.tier_id);
+    if (usageTier) return usageTier;
+    const subscriptionTier = getTierById(currentSubscription?.tier_id);
+    if (subscriptionTier) return subscriptionTier;
+    const tierByCount = determineTierByCount(productCount);
+    if (tierByCount) return tierByCount;
+    return sortedTiers[0] ?? null;
+  };
+
+  const getNextTier = () => {
+    const current = getCurrentTier();
+    if (!current) return null;
+    const thresholdIndex = tierThresholds.findIndex(entry => entry.name === current.name);
+    if (thresholdIndex === -1) return null;
+    const nextThreshold = tierThresholds[thresholdIndex + 1];
+    if (!nextThreshold) return null;
+    return pricingTiers.find(tier => tier.name === nextThreshold.name) ?? null;
   };
 
   const canUseFeature = (featureName: string) => {
@@ -295,17 +452,18 @@ export const useSubscription = () => {
 
   const isWithinLimits = (type: 'products' | 'users' | 'branches' | 'orders') => {
     const tier = getCurrentTier();
-    if (!tier || !usageTracking) return true;
+    if (!tier) return true;
 
     switch (type) {
       case 'products':
-        return tier.max_products === null || usageTracking.current_products < tier.max_products;
+        if (tier.included_products === null) return true;
+        return productCount <= tier.included_products;
       case 'users':
-        return tier.max_users === null || usageTracking.current_users < tier.max_users;
+        return tier.max_users === null || (usageTracking?.current_users ?? 0) < tier.max_users;
       case 'branches':
-        return tier.max_branches === null || usageTracking.current_branches < tier.max_branches;
+        return tier.max_branches === null || (usageTracking?.current_branches ?? 0) < tier.max_branches;
       case 'orders':
-        return tier.max_orders_per_month === null || usageTracking.orders_this_month < tier.max_orders_per_month;
+        return tier.max_orders_per_month === null || (usageTracking?.orders_this_month ?? 0) < tier.max_orders_per_month;
       default:
         return true;
     }
@@ -313,57 +471,62 @@ export const useSubscription = () => {
 
   const getRemainingLimit = (type: 'products' | 'users' | 'branches' | 'orders') => {
     const tier = getCurrentTier();
-    if (!tier || !usageTracking) return null;
+    if (!tier) return null;
 
     switch (type) {
       case 'products':
-        return tier.max_products ? tier.max_products - usageTracking.current_products : null;
+        return tier.included_products ? tier.included_products - productCount : null;
       case 'users':
-        return tier.max_users ? tier.max_users - usageTracking.current_users : null;
+        return tier.max_users ? tier.max_users - (usageTracking?.current_users ?? 0) : null;
       case 'branches':
-        return tier.max_branches ? tier.max_branches - usageTracking.current_branches : null;
+        return tier.max_branches ? tier.max_branches - (usageTracking?.current_branches ?? 0) : null;
       case 'orders':
-        return tier.max_orders_per_month ? tier.max_orders_per_month - usageTracking.orders_this_month : null;
+        return tier.max_orders_per_month ? tier.max_orders_per_month - (usageTracking?.orders_this_month ?? 0) : null;
       default:
         return null;
     }
   };
 
   const shouldContactSales = () => {
-    return usageTracking && usageTracking.current_products >= 10000;
+    const tier = getCurrentTier();
+    return tier?.name === 'enterprise';
   };
 
-  return {
+  const result: UseSubscriptionReturn = {
     // Data
     pricingTiers,
     currentSubscription,
     usageTracking,
     currentTier: getCurrentTier(),
-    
+    nextTier: getNextTier(),
+    productCount,
+
     // Loading states
     isLoading: tiersLoading || subscriptionLoading || usageLoading,
-    
+
     // Errors
     error: tiersError || subscriptionError || usageError,
-    
+
     // Mutations
     startTrial: startTrialMutation.mutate,
     subscribe: subscribeMutation.mutate,
     cancelSubscription: cancelSubscriptionMutation.mutate,
     updateUsage: updateUsageMutation.mutate,
-    
+
     // Mutation states
     isStartingTrial: startTrialMutation.isPending,
     isSubscribing: subscribeMutation.isPending,
     isCancelling: cancelSubscriptionMutation.isPending,
     isUpdatingUsage: updateUsageMutation.isPending,
-    
+
     // Helper functions
     isTrialActive: isTrialActive(),
     isSubscriptionActive: isSubscriptionActive(),
     canUseFeature,
     isWithinLimits,
     getRemainingLimit,
-    shouldContactSales
+    shouldContactSales,
   };
+
+  return result;
 };

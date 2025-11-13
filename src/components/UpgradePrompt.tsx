@@ -57,16 +57,6 @@ export const UpgradePrompt: React.FC<UpgradePromptProps> = ({
         return `You have used ${currentLimit} of ${maxLimit} users. Upgrade for more team members.`;
       case 'branches':
         return `You have used ${currentLimit} of ${maxLimit} branches. Upgrade for more locations.`;
-      case 'orders':
-        return `You have used ${currentLimit} of ${maxLimit} orders this month. Upgrade for more orders.`;
-      case 'analytics':
-        return 'Advanced analytics are only available in higher plans.';
-      case 'scanner':
-        return 'Barcode scanner is only available in higher plans.';
-      case 'delivery-notes':
-        return 'Delivery notes management is only available in higher plans.';
-      case 'api':
-        return 'API access is only available in higher plans.';
       default:
         return `${feature} is only available in higher plans.`;
     }

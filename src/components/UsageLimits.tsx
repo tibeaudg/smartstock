@@ -1,5 +1,5 @@
 import React from 'react';
-import { AlertTriangle, Users, Package, Building, ShoppingCart, TrendingUp, Info } from 'lucide-react';
+import { AlertTriangle, Users, Package, Building, ShoppingCart, TrendingUp } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -18,47 +18,31 @@ export const UsageLimits: React.FC<UsageLimitsProps> = ({
   const { 
     currentTier, 
     usageTracking, 
+    productCount,
     isWithinLimits, 
     getRemainingLimit,
     isTrialActive,
     isSubscriptionActive 
   } = useSubscription();
 
-  if (!currentTier || !usageTracking) return null;
+  if (!currentTier) return null;
 
-  // Calculate monthly cost based on usage-based pricing
-  const calculateMonthlyCost = (): number => {
-    const productCount = usageTracking.current_products;
-    const FREE_PRODUCTS = 100;
-    const PRICE_PER_PRODUCT = 0.008;
-    
-    if (productCount <= FREE_PRODUCTS) {
-      return 0;
-    }
-    
-    const billableProducts = productCount - FREE_PRODUCTS;
-    return billableProducts * PRICE_PER_PRODUCT;
-  };
-
-  const monthlyCost = calculateMonthlyCost();
-  const shouldShowUpgrade = usageTracking.current_products >= 10000;
+  const currentProducts = productCount;
 
   const limits = [
     {
       type: 'products' as const,
       icon: <Package className="h-4 w-4" />,
       label: 'Products',
-      current: usageTracking.current_products,
-      max: currentTier.max_products,
+      current: currentProducts,
+      max: currentTier.included_products,
       color: 'text-blue-600',
-      showCost: monthlyCost > 0,
-      estimatedCost: monthlyCost
     },
     {
       type: 'users' as const,
       icon: <Users className="h-4 w-4" />,
       label: 'Users',
-      current: usageTracking.current_users,
+      current: usageTracking?.current_users ?? 0,
       max: currentTier.max_users,
       color: 'text-green-600'
     },
@@ -66,17 +50,9 @@ export const UsageLimits: React.FC<UsageLimitsProps> = ({
       type: 'branches' as const,
       icon: <Building className="h-4 w-4" />,
       label: 'Branches',
-      current: usageTracking.current_branches,
+      current: usageTracking?.current_branches ?? 0,
       max: currentTier.max_branches,
       color: 'text-purple-600'
-    },
-    {
-      type: 'orders' as const,
-      icon: <ShoppingCart className="h-4 w-4" />,
-      label: 'Orders this month',
-      current: usageTracking.orders_this_month,
-      max: currentTier.max_orders_per_month,
-      color: 'text-orange-600'
     }
   ];
 
@@ -98,7 +74,7 @@ export const UsageLimits: React.FC<UsageLimitsProps> = ({
     if (isSubscriptionActive) {
       return <Badge variant="secondary" className="bg-green-100 text-green-800">Active</Badge>;
     }
-    return <Badge variant="secondary" className="bg-gray-100 text-gray-800">Basic Plan</Badge>;
+    return <Badge variant="secondary" className="bg-gray-100 text-gray-800">{currentTier.display_name}</Badge>;
   };
 
   if (compact) {
@@ -156,9 +132,6 @@ export const UsageLimits: React.FC<UsageLimitsProps> = ({
         <div className="flex items-center justify-between">
           <div>
             <CardTitle className="text-lg">Usage & Limits</CardTitle>
-            <CardDescription>
-              Huidige {currentTier.display_name} plan
-            </CardDescription>
           </div>
           {getStatusBadge()}
         </div>
@@ -180,11 +153,6 @@ export const UsageLimits: React.FC<UsageLimitsProps> = ({
                     <h4 className="font-medium text-gray-900">{limit.label}</h4>
                     <p className="text-sm text-gray-500">
                       {limit.current} of {limit.max || 'unlimited'} used
-                      {(limit as any).showCost && (
-                        <span className="ml-2 font-semibold text-blue-600">
-                          • €{(limit as any).estimatedCost.toFixed(2)}/month
-                        </span>
-                      )}
                     </p>
                   </div>
                 </div>
@@ -230,49 +198,8 @@ export const UsageLimits: React.FC<UsageLimitsProps> = ({
             </div>
           );
         })}
-        
-        {/* Enterprise Warning */}
-        {shouldShowUpgrade && (
-          <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
-            <div className="flex items-start space-x-3">
-              <AlertTriangle className="h-5 w-5 text-purple-600 mt-0.5" />
-              <div>
-                <h4 className="font-medium text-purple-900">
-                  Enterprise Plan Required
-                </h4>
-                <p className="text-sm text-purple-700 mt-1">
-                  You've reached the 10,000 product limit. Contact sales for custom Enterprise pricing.
-                </p>
-                <a 
-                  href="/contact?subject=enterprise-pricing" 
-                  className="text-sm font-medium text-purple-600 hover:text-purple-800 mt-2 inline-block"
-                >
-                  Contact Sales →
-                </a>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Usage-Based Pricing Info */}
-        {monthlyCost > 0 && !shouldShowUpgrade && (
-          <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-            <div className="flex items-start space-x-3">
-              <Info className="h-5 w-5 text-green-600 mt-0.5" />
-              <div>
-                <h4 className="font-medium text-green-900">
-                  Usage-Based Billing
-                </h4>
-                <p className="text-sm text-green-700 mt-1">
-                  First 100 products are free. You're paying €0.004 per product per month for the remaining {usageTracking.current_products - 100} products.
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
-
         {/* Trial/Subscription Info */}
-        {(isTrialActive || isSubscriptionActive) && (
+        {(isTrialActive || isSubscriptionActive && currentTier?.name !== 'free') && (
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
             <div className="flex items-start space-x-3">
               <TrendingUp className="h-5 w-5 text-blue-600 mt-0.5" />

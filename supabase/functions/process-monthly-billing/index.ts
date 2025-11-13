@@ -21,19 +21,29 @@ serve(async (req) => {
     console.log('Starting monthly billing processing...');
 
     // Find users whose billing date has arrived
+    const nowIso = new Date().toISOString();
     const { data: usersToBill, error: fetchError } = await supabase
       .from('usage_tracking')
       .select(`
-        *,
-        user_subscriptions!inner(
+        user_id,
+        current_products,
+        billing_anchor_date,
+        next_billing_date,
+        tier:pricing_tiers!inner(
+          id,
+          name,
+          display_name,
+          price_monthly,
+          included_products
+        ),
+        subscription:user_subscriptions!left(
           id,
           status,
           billing_cycle,
-          tier:pricing_tiers(*)
+          stripe_subscription_id
         )
       `)
-      .lte('next_billing_date', new Date().toISOString())
-      .eq('user_subscriptions.status', 'active');
+      .lte('next_billing_date', nowIso);
 
     if (fetchError) {
       console.error('Error fetching users to bill:', fetchError);
@@ -56,55 +66,48 @@ serve(async (req) => {
     for (const userRecord of usersToBill) {
       try {
         const userId = userRecord.user_id;
-        const subscription = (userRecord as any).user_subscriptions;
-        const tier = subscription.tier;
+        const tier = userRecord.tier;
 
-        // Calculate product count for this user
-        // Count products across all user's branches
-        const { data: branches, error: branchesError } = await supabase
-          .from('branches')
-          .select('id')
-          .eq('user_id', userId);
-
-        if (branchesError || !branches || branches.length === 0) {
-          console.warn(`No branches found for user ${userId}`);
+        if (!tier) {
+          console.warn(`No tier found for user ${userId}, skipping.`);
           continue;
         }
 
-        const branchIds = branches.map(b => b.id);
-        
-        const { count: productCount, error: countError } = await supabase
-          .from('products')
-          .select('*', { count: 'exact', head: true })
-          .in('branch_id', branchIds);
-
-        if (countError) {
-          console.error(`Error counting products for user ${userId}:`, countError);
-          errors.push({ userId, error: countError.message });
-          continue;
-        }
-
-        const productCountActual = productCount || 0;
-        const includedProducts = tier.included_products || 100;
-        const pricePerProduct = tier.price_per_product_monthly || 0;
-        
-        // Calculate billing amount: (products - included) * price_per_product
+        const priceMonthly = tier.price_monthly !== null ? Number(tier.price_monthly) : null;
+        const includedProducts = tier.included_products ?? 0;
+        const productCountActual = userRecord.current_products ?? 0;
         const billableProducts = Math.max(0, productCountActual - includedProducts);
-        const calculatedAmount = billableProducts * pricePerProduct;
 
-        console.log(`User ${userId}: ${productCountActual} products, billable: ${billableProducts}, amount: €${calculatedAmount.toFixed(2)}`);
+        if (priceMonthly === null) {
+          console.warn(`Tier ${tier.name} has no monthly price (enterprise/manual). Skipping automated invoice for user ${userId}.`);
+        }
 
-        // Create billing snapshot
+        const amountToBill = Math.max(0, priceMonthly ?? 0);
+
+        const existingNext = userRecord.next_billing_date
+          ? new Date(userRecord.next_billing_date)
+          : null;
+        const anchorDate = userRecord.billing_anchor_date
+          ? new Date(userRecord.billing_anchor_date)
+          : null;
+
+        const cycleEnd = existingNext ?? (anchorDate ? addMonths(anchorDate, 1) : new Date());
+        const cycleStart = addMonths(new Date(cycleEnd), -1);
+        const newNextBillingDate = addMonths(new Date(cycleEnd), 1);
+
+        console.log(`User ${userId}: ${productCountActual} products, tier ${tier.name}, amount €${amountToBill.toFixed(2)}, next billing ${newNextBillingDate.toISOString()}`);
+
+        // Create billing snapshot (always record usage)
         const { data: snapshot, error: snapshotError } = await supabase
           .from('billing_snapshots')
           .insert({
             user_id: userId,
             snapshot_date: new Date().toISOString(),
             product_count: productCountActual,
-            calculated_amount: calculatedAmount,
-            billing_cycle_start: userRecord.billing_anchor_date,
-            billing_cycle_end: new Date().toISOString(),
-            status: calculatedAmount > 0 ? 'pending' : 'invoiced' // Free users marked as invoiced immediately
+            calculated_amount: amountToBill,
+            billing_cycle_start: cycleStart.toISOString(),
+            billing_cycle_end: cycleEnd.toISOString(),
+            status: amountToBill > 0 ? 'pending' : 'invoiced'
           })
           .select()
           .single();
@@ -116,9 +119,6 @@ serve(async (req) => {
         }
 
         // Update usage_tracking with new next billing date
-        const newNextBillingDate = new Date();
-        newNextBillingDate.setDate(newNextBillingDate.getDate() + 30);
-
         const { error: updateError } = await supabase
           .from('usage_tracking')
           .update({
@@ -137,15 +137,14 @@ serve(async (req) => {
           userId,
           productCount: productCountActual,
           billableProducts,
-          amount: calculatedAmount,
+          amount: amountToBill,
           snapshotId: snapshot.id
         });
 
-        // TODO: Integrate with Stripe to report usage and create invoice
-        // This will be implemented in the Stripe integration step
-        if (calculatedAmount > 0 && subscription.stripe_subscription_id) {
-          console.log(`Would create Stripe invoice for ${calculatedAmount} for user ${userId}`);
-          // Placeholder for Stripe invoice creation
+        // TODO: Integrate with Stripe / invoicing for paid plans
+        const activeSubscription = userRecord.subscription;
+        if (amountToBill > 0 && activeSubscription && activeSubscription.stripe_subscription_id) {
+          console.log(`Would invoice Stripe subscription ${activeSubscription.stripe_subscription_id} for user ${userId} amount €${amountToBill.toFixed(2)}`);
         }
 
       } catch (userError) {
@@ -176,4 +175,10 @@ serve(async (req) => {
     );
   }
 });
+
+function addMonths(date: Date, months: number): Date {
+  const d = new Date(date);
+  d.setMonth(d.getMonth() + months);
+  return d;
+}
 

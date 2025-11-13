@@ -1,34 +1,27 @@
-import React, { useState } from 'react';
+import React, { useMemo } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { toast } from '@/hooks/use-toast';
-import { 
-  Crown, 
-  Zap, 
-  Package, 
-  Check, 
-  ArrowRight, 
-  Calendar, 
-  Users, 
-  Building, 
-  ShoppingCart,
-  TrendingUp,
+import {
+  Package,
+  Check,
+  ArrowRight,
+  Calendar,
   Clock,
-  AlertTriangle,
-  Euro,
   ExternalLink,
-  Download,
-  Info
+  Sparkles,
 } from 'lucide-react';
 import { useSubscription } from '@/hooks/useSubscription';
 import { useNavigate } from 'react-router-dom';
 import { UsageLimits } from '@/components/UsageLimits';
-import { UpgradePrompt, UpgradeOptions, AllUpgradeOptions, TierUpgradeCard } from '@/components/UpgradePrompt';
+import { UpgradeOptions, TierUpgradeCard } from '@/components/UpgradePrompt';
+import { Progress } from '@/components/ui/progress';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery } from '@tanstack/react-query';
+import type { PricingTier } from '@/hooks/useSubscription';
 
 interface BillingSnapshot {
   id: string;
@@ -39,21 +32,80 @@ interface BillingSnapshot {
   stripe_invoice_id: string | null;
 }
 
+const formatCurrency = (value: number) =>
+  new Intl.NumberFormat('en-US', { style: 'currency', currency: 'EUR' }).format(value);
+
 export const SubscriptionManagement = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const { 
-    currentSubscription, 
-    currentTier, 
-    usageTracking, 
-    isTrialActive, 
+  const subscription = useSubscription();
+  const {
+    currentSubscription,
+    currentTier,
+    usageTracking,
+    isTrialActive,
     isSubscriptionActive,
     cancelSubscription,
     isCancelling,
     pricingTiers,
     isLoading,
-    error
-  } = useSubscription();
+    error,
+  } = subscription;
+
+  const { data: fallbackProductCount = 0 } = useQuery<number>({
+    queryKey: ['subscription-management-product-count', user?.id],
+    queryFn: async () => {
+      if (!user) return 0;
+
+      const { data: branches, error: branchesError } = await supabase
+        .from('branches')
+        .select('id')
+        .eq('user_id', user.id);
+      const branchRows = branches as { id: string }[] | null;
+      if (branchesError || !branchRows) return 0;
+      const branchIds = branchRows.map(branch => branch.id);
+
+      const result = (await supabase
+        .from('products')
+        .select('*', { count: 'exact', head: true })
+        .in('branch_id', branchIds)) as { count: number | null; error: unknown };
+      if (result.error) return 0;
+      return result.count ?? 0;
+    },
+    enabled: !!user
+  });
+
+  const currentProducts = usageTracking?.current_products ?? fallbackProductCount;
+
+  const tiersList = subscription.pricingTiers as PricingTier[];
+
+  const sortedTiers = useMemo<PricingTier[]>(
+    () => [...tiersList].sort((a, b) => (a.included_products ?? Number.MAX_SAFE_INTEGER) - (b.included_products ?? Number.MAX_SAFE_INTEGER)),
+    [tiersList]
+  );
+
+  const currentTierIndex = currentTier ? sortedTiers.findIndex(tier => tier.id === currentTier.id) : -1;
+  const nextTier = currentTierIndex >= 0 ? sortedTiers[currentTierIndex + 1] ?? null : null;
+  const currentLimit = currentTier?.included_products ?? null;
+  const nextLimit = nextTier?.included_products ?? null;
+
+  const nextPlanSummary = nextTier
+    ? `${nextTier.display_name} • ${nextLimit?.toLocaleString?.() ?? 'Unlimited'} products • ${formatCurrency(nextTier.price_monthly ?? 0)}`
+    : 'You are on the highest available plan.';
+
+  const progressDenominator = nextLimit ?? currentLimit ?? Math.max(currentProducts, 1);
+  const progressValue = Math.min(100, (currentProducts / progressDenominator) * 100);
+
+  const progressLabel = (() => {
+    if (currentLimit !== null && currentProducts > currentLimit) {
+      const over = currentProducts - currentLimit;
+      return `You are ${over.toLocaleString()} over the ${currentLimit.toLocaleString()}-product limit — we will move you to ${nextTier?.display_name ?? 'the next plan'}.`;
+    }
+    if (nextLimit !== null) {
+      const remaining = Math.max(0, nextLimit - currentProducts);
+    }
+    return '';
+  })();
 
   // Fetch billing history
   const { data: billingHistory = [] } = useQuery({
@@ -74,18 +126,6 @@ export const SubscriptionManagement = () => {
     enabled: !!user
   });
 
-  const [showUpgradePrompt, setShowUpgradePrompt] = useState(false);
-
-  // Calculate monthly cost based on current usage
-  const calculateMonthlyCost = () => {
-    if (!usageTracking) return 0;
-    const FREE_PRODUCTS = 100;
-    const PRICE_PER_PRODUCT = 0.008;
-    const billableProducts = Math.max(0, usageTracking.current_products - FREE_PRODUCTS);
-    return billableProducts * PRICE_PER_PRODUCT;
-  };
-
-  const monthlyCost = calculateMonthlyCost();
 
   const handleUpgrade = () => {
     navigate('/pricing');
@@ -107,56 +147,6 @@ export const SubscriptionManagement = () => {
         variant: 'destructive',
       });
     }
-  };
-
-  const getTierIcon = () => {
-    const tier = currentTier || pricingTiers.find(t => t.name === 'basic');
-    switch (tier?.name) {
-      case 'basic':
-        return <Package className="h-6 w-6 text-gray-600" />;
-      case 'growth':
-        return <Zap className="h-6 w-6 text-blue-600" />;
-      case 'premium':
-        return <Crown className="h-6 w-6 text-purple-600" />;
-      default:
-        return <Package className="h-6 w-6 text-gray-600" />;
-    }
-  };
-
-  const getTierColor = () => {
-    const tier = currentTier || pricingTiers.find(t => t.name === 'basic');
-    switch (tier?.name) {
-      case 'basic':
-        return 'border-gray-200 bg-gray-50';
-      case 'growth':
-        return 'border-blue-200 bg-blue-50';
-      case 'premium':
-        return 'border-purple-200 bg-purple-50';
-      default:
-        return 'border-gray-200 bg-gray-50';
-    }
-  };
-
-  const getStatusBadge = () => {
-    if (isTrialActive) {
-      return <Badge className="bg-blue-100 text-blue-800">Trial Active</Badge>;
-    }
-    if (isSubscriptionActive) {
-      return <Badge className="bg-green-100 text-green-800">Active</Badge>;
-    }
-    return <Badge className="bg-gray-100 text-gray-800">Basic plan</Badge>;
-  };
-
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('nl-NL', {
-      style: 'currency',
-      currency: 'EUR'
-    }).format(price);
-  };
-
-  const getNextBillingDate = () => {
-    if (!currentSubscription) return null;
-    return new Date(currentSubscription.end_date).toLocaleDateString('nl-NL');
   };
 
   // Show loading state if data is still loading
@@ -190,163 +180,45 @@ export const SubscriptionManagement = () => {
   }
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-4">
       {/* Current Plan */}
-      <Card className={`${getTierColor()} border-2`}>
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              {getTierIcon()}
-              <div>
-                <CardTitle className="text-xl">{(currentTier || pricingTiers.find(t => t.name === 'basic'))?.display_name} Plan</CardTitle>
-                <CardDescription>{(currentTier || pricingTiers.find(t => t.name === 'basic'))?.description}</CardDescription>
-              </div>
-            </div>
-            {getStatusBadge()}
-          </div>
-        </CardHeader>
-        
-        <CardContent className="space-y-4">
-          {/* Pricing Info - Usage-Based */}
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-                  <Euro className="h-6 w-6 text-gray-600" />
-                  {formatPrice(monthlyCost)}
-                </div>
-                <div className="text-sm text-gray-500">
-                  Current monthly estimate
-                </div>
-              </div>
-              
-              <div className="text-right">
-                <div className="text-lg font-semibold text-gray-900 flex items-center justify-end gap-2">
-                  <Package className="h-5 w-5 text-blue-600" />
-                  {usageTracking?.current_products || 0} products
-                </div>
-                <div className="text-sm text-gray-500">
-                  {usageTracking && usageTracking.current_products > 100 
-                    ? `${usageTracking.current_products - 100} billable` 
-                    : 'All products free'}
-                </div>
-              </div>
-            </div>
+      <Card className="border border-blue-700 bg-blue-50 p-4 pt-10 shadow-lg">
 
-            {/* Next Billing Date */}
-            {usageTracking?.next_billing_date && (
-              <div className="bg-gray-50 border border-gray-200 rounded-lg p-3">
-                <div className="flex items-center gap-2 text-sm">
-                  <Calendar className="h-4 w-4 text-gray-600" />
-                  <span className="text-gray-600">Next billing date:</span>
-                  <span className="font-semibold text-gray-900">
-                    {new Date(usageTracking.next_billing_date).toLocaleDateString('nl-NL', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric'
-                    })}
-                  </span>
-                </div>
-              </div>
-            )}
+
+        <CardContent className="space-y-6">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p className="text-sm text-muted-foreground">You are currently on</p>
+              <p className="text-xl font-semibold text-foreground">
+                {currentTier?.display_name ?? 'Free'}
+              </p>
+            </div>
+            <div className="text-right">
+              <p className="text-sm text-muted-foreground">Current monthly estimate</p>
+              <p className="text-xl font-semibold text-foreground">
+                {formatCurrency(currentTier?.price_monthly ?? 0)}
+              </p>
+            </div>
           </div>
 
-          {/* Usage-Based Pricing Info */}
-          {monthlyCost > 0 && (
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-              <div className="flex items-start space-x-3">
-                <Info className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
-                <div>
-                  <h4 className="font-medium text-blue-900">
-                    Usage-Based Billing
-                  </h4>
-                  <p className="text-sm text-blue-700 mt-1">
-                    You get the first 100 products free forever. You're currently using {usageTracking?.current_products || 0} products, 
-                    so you're being charged €0.004 per month for each product over 100. 
-                    You can add or remove products anytime - charges are calculated at the end of each 30-day billing cycle.
-                  </p>
-                </div>
+
+
+          {usageTracking?.next_billing_date && (
+            <div className="rounded-lg border border-slate-200 bg-white p-3 text-sm text-muted-foreground">
+              <div className="flex items-center gap-2">
+                <Calendar className="h-4 w-4 text-blue-600" />
+                <span>Next billing date:</span>
+                <span className="font-semibold text-foreground">
+                  {new Date(usageTracking.next_billing_date).toLocaleDateString('nl-NL', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
+                </span>
               </div>
             </div>
           )}
 
-          {/* Free Tier Info */}
-          {monthlyCost === 0 && usageTracking && usageTracking.current_products <= 100 && (
-            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-              <div className="flex items-start space-x-3">
-                <Package className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
-                <div>
-                  <h4 className="font-medium text-green-900">
-                    You're on the Free Plan
-                  </h4>
-                  <p className="text-sm text-green-700 mt-1">
-                    Your first 100 products are completely free forever. After that, pay only €0.004 per product per month. 
-                    No hidden fees, cancel anytime.
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Features */}
-          <div className="space-y-3">
-            <h4 className="font-medium text-gray-900">Included features:</h4>
-            <div className="grid grid-cols-2 gap-2">
-              {(() => {
-                const tier = currentTier || pricingTiers.find(t => t.name === 'basic');
-                const features = tier?.features || [];
-                return features.slice(0, 6).map((feature, index) => (
-                  <div key={index} className="flex items-center text-sm">
-                    <Check className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
-                    <span className="text-gray-600">{feature}</span>
-                  </div>
-                ));
-              })()}
-              {(() => {
-                const tier = currentTier || pricingTiers.find(t => t.name === 'basic');
-                const features = tier?.features || [];
-                return features.length > 6 && (
-                  <div className="text-sm text-gray-500 col-span-2">
-                    +{features.length - 6} more features
-                  </div>
-                );
-              })()}
-            </div>
-          </div>
-
-          {/* Action Buttons */}
-          <div className="flex space-x-3">
-            {(() => {
-              const tier = currentTier || pricingTiers.find(t => t.name === 'basic');
-              return tier?.name === 'basic' && (
-                <Button onClick={handleUpgrade} className="bg-blue-600 hover:bg-blue-700">
-                      Upgrade to Growth
-                  <ArrowRight className="h-4 w-4 ml-2" />
-                </Button>
-              );
-            })()}
-            
-            {(() => {
-              const tier = currentTier || pricingTiers.find(t => t.name === 'basic');
-              return tier?.name === 'growth' && (
-                <Button onClick={handleUpgrade} variant="outline">
-                      Upgrade to Premium
-                  <Crown className="h-4 w-4 ml-2" />
-                </Button>
-              );
-            })()}
-            
-            {isSubscriptionActive && (
-              <Button 
-                onClick={handleCancelSubscription}
-                variant="outline"
-                disabled={isCancelling}
-                className="text-red-600 border-red-200 hover:bg-red-50"
-              >
-                      {isCancelling ? 'Cancelling...' : 'Cancel subscription'}
-              </Button>
-            )}
-          </div>
         </CardContent>
       </Card>
 
@@ -354,7 +226,7 @@ export const SubscriptionManagement = () => {
       <UsageLimits showUpgradePrompts={true} />
 
       {/* Trial/Subscription Info */}
-      {(isTrialActive || isSubscriptionActive) && (
+      {(isTrialActive || isSubscriptionActive && currentTier?.name !== 'free') && (
         <Card className="bg-blue-50 border-blue-200">
           <CardContent className="p-6">
             <div className="flex items-start space-x-3">
@@ -386,40 +258,19 @@ export const SubscriptionManagement = () => {
 
       {/* Upgrade Prompts */}
       {(() => {
-        const tier = currentTier || pricingTiers.find(t => t.name === 'basic');
-        const isBasic = tier?.name === 'basic';
-        const isGrowth = tier?.name === 'growth';
-        
-        if (!isBasic && !isGrowth) return null;
-        
-        return (
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-900">
-              Upgrade for more features
-            </h3>
-            
-            {isBasic ? (
-              <div className="grid md:grid-cols-2 gap-4">
-                <TierUpgradeCard 
-                  tier={pricingTiers.find(t => t.name === 'growth')!}
-                  feature="analytics"
-                  showCloseButton={false}
-                />
-                <TierUpgradeCard 
-                  tier={pricingTiers.find(t => t.name === 'premium')!}
-                  feature="scanner"
-                  showCloseButton={false}
-                />
-              </div>
-            ) : (
-              <UpgradeOptions 
-                feature="premium"
-                showAllOptions={false}
-                showCloseButton={false}
-              />
-            )}
-          </div>
-        );
+        const tier = currentTier || pricingTiers.find(t => t.name === 'free');
+        const tierName = tier?.name ?? 'free';
+
+        const upgradesByTier: Record<string, string[]> = {
+          free: ['advanced', 'ultra'],
+          advanced: ['ultra', 'premium'],
+          ultra: ['premium'],
+          premium: ['enterprise'],
+        };
+
+        const upgradeTargets = upgradesByTier[tierName] ?? [];
+        if (upgradeTargets.length === 0) return null;
+        return null;
       })()}
 
       {/* Billing History */}
@@ -431,6 +282,26 @@ export const SubscriptionManagement = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
+          {usageTracking?.next_billing_date && (
+            <div className="mb-6 flex flex-col gap-3 rounded-lg border border-slate-200 bg-slate-50 p-4 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground">Next bill</p>
+                <p className="text-base font-semibold text-foreground">
+                  {new Date(usageTracking.next_billing_date).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
+                </p>
+              </div>
+              <div className="text-left sm:text-right">
+                <p className="text-sm text-muted-foreground">Estimated amount</p>
+                <p className="text-base font-semibold text-foreground">
+                  {formatCurrency(currentTier?.price_monthly ?? 0)}
+                </p>
+              </div>
+            </div>
+          )}
           {billingHistory.length === 0 ? (
             <div className="text-center py-8 text-gray-500">
               <Calendar className="h-12 w-12 mx-auto mb-4 text-gray-300" />
@@ -457,7 +328,7 @@ export const SubscriptionManagement = () => {
                             })}
                           </p>
                           <p className="text-sm text-gray-500">
-                            {snapshot.product_count.toLocaleString()} products • {snapshot.product_count > 100 ? `${snapshot.product_count - 100} billable` : 'All products free'}
+                            {snapshot.product_count.toLocaleString()} products during this cycle
                           </p>
                         </div>
                       </div>
@@ -467,7 +338,7 @@ export const SubscriptionManagement = () => {
                   <div className="flex items-center space-x-4">
                     <div className="text-right">
                       <p className="font-semibold text-gray-900">
-                        {formatPrice(snapshot.calculated_amount)}
+                        € {snapshot.calculated_amount.toFixed(2)}
                       </p>
                       {snapshot.stripe_invoice_id && (
                         <a
