@@ -10,7 +10,7 @@ import { format } from 'date-fns';
 import { useMobile } from '@/hooks/use-mobile';
 import { useStockMovements } from '@/hooks/useStockMovements';
 import { TransactionFilters } from '@/types/stockTypes';
-import { CalendarIcon, Download, Filter, Search, X } from 'lucide-react';
+import { CalendarIcon, Download, Filter, Search, X, History } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import * as XLSX from 'xlsx';
 import { toast } from 'sonner';
@@ -205,6 +205,25 @@ export const StockMovements = () => {
         </div>
       )}
 
+      {/* Empty state */}
+      {!loading && transactions.length === 0 && (
+        <Card className="border-2 border-dashed border-gray-200 bg-gray-50">
+          <CardContent className="py-12 text-center space-y-3">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 text-blue-600">
+              <History className="h-6 w-6" />
+            </div>
+            <div className="space-y-1">
+              <p className="text-base font-semibold text-gray-900">No stock movements yet</p>
+              <p className="text-sm text-gray-600">
+                Adjust stock levels or record inventory movements to see them listed here.
+              </p>
+            </div>
+            <div className="text-xs text-gray-500">
+              Tip: use the scan button or manual adjust options in Products to create your first history entry.
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
              {/* Transactions Table */}
        <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">

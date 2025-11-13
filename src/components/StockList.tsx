@@ -70,6 +70,8 @@ import { toast } from 'sonner';
 import { useTranslation } from 'react-i18next';
 import { Upload as UploadIcon } from 'lucide-react';
 import { useScannerSettings } from '@/hooks/useScannerSettings';
+import { useProductCount } from '@/hooks/useDashboardData';
+import { useSubscription } from '@/hooks/useSubscription';
 import * as XLSX from 'xlsx';
 
 const getStockStatus = (quantity: number, minLevel: number) => {
@@ -1481,8 +1483,13 @@ const MobileProductCard: React.FC<MobileProductCardProps> = ({
   );
 };
 
-const fetchProducts = async (branchId: string) => {
-  try {
+const fetchProducts = async (
+  branchId: string,
+  previousData: Product[] = [],
+  options: { skipRetry?: boolean; expectedCount?: number } = {}
+) => {
+  const expectedCount = options.expectedCount ?? 0;
+  const performFetch = async (): Promise<Product[]> => {
     
     // Haal eerst de producten op
     const { data: products, error: productsError } = await supabase
@@ -1575,8 +1582,51 @@ const fetchProducts = async (branchId: string) => {
     }));
     
     return transformedData;
+  };
+
+  try {
+    const result = await performFetch();
+
+    if (result.length === 0 && previousData.length > 0 && !options.skipRetry) {
+      console.warn('[StockList] Empty product result despite cached data. Attempting session refresh before retrying.');
+      try {
+        const { data: refreshed, error: refreshError } = await supabase.auth.refreshSession();
+        if (refreshError) {
+          throw refreshError;
+        }
+
+        if (!refreshed?.session) {
+          throw new Error('No session returned after refreshSession');
+        }
+
+        const retryResult = await fetchProducts(branchId, previousData, {
+          skipRetry: true,
+          expectedCount,
+        });
+        if (retryResult.length === 0) {
+          console.warn('[StockList] Retry after session refresh still returned no products. Falling back to cached data.');
+          return previousData;
+        }
+
+        return retryResult;
+      } catch (retryError) {
+        console.error('[StockList] Failed to refresh session or refetch products. Falling back to cached data.', retryError);
+        return previousData;
+      }
+    }
+
+    if (result.length === 0 && expectedCount > 0 && previousData.length > 0) {
+      console.warn('[StockList] DB returned 0 products but usage count indicates data exists. Keeping cached list.');
+      return previousData;
+    }
+
+    return result;
   } catch (error) {
     console.error('Error in fetchProducts:', error);
+    if (previousData.length > 0 && !options.skipRetry) {
+      console.warn('[StockList] Returning cached products because fetch failed.');
+      return previousData;
+    }
     throw error;
   }
 };
@@ -1590,6 +1640,8 @@ export const StockList = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { settings: scannerSettings, onScanSuccess } = useScannerSettings();
+  const { productCount: branchProductCount } = useProductCount();
+  const { productCount: subscriptionProductCount } = useSubscription();
 
   // Check if user is admin
   const isAdmin = userProfile?.is_owner === true;
@@ -1971,7 +2023,18 @@ export const StockList = () => {
     refetch
   } = useQuery<Product[]>({
     queryKey: ['products', activeBranch?.branch_id],
-    queryFn: () => activeBranch && user ? fetchProducts(activeBranch.branch_id) : [],
+    queryFn: async () => {
+      if (!activeBranch || !activeBranch.branch_id || !user) {
+        return [];
+      }
+      const cachedProducts = queryClient.getQueryData<Product[]>(['products', activeBranch.branch_id]) || [];
+      const expectedCount = Math.max(
+        subscriptionProductCount ?? 0,
+        branchProductCount ?? 0,
+        cachedProducts.length
+      );
+      return fetchProducts(activeBranch.branch_id, cachedProducts, { expectedCount });
+    },
     enabled: !!user && !!activeBranch && !!activeBranch.branch_id,
     refetchOnWindowFocus: false, // Disabled for better tab switching performance
     refetchOnMount: 'always', // Always refetch on mount to ensure fresh data
@@ -3342,12 +3405,26 @@ export const StockList = () => {
             setIsAddModalOpen(false);
             setPreFilledProductName('');
           }}
-          onProductAdded={() => {
+          onProductAdded={async () => {
             // Clear filters when new product is added to show all products
             clearAllFilters();
-            
-            // Force refetch to get updated data
-            queryClient.invalidateQueries({ queryKey: ['products'] });
+
+            if (activeBranch?.branch_id) {
+              await queryClient.invalidateQueries({
+                queryKey: ['products', activeBranch.branch_id],
+                refetchType: 'active',
+              });
+              await queryClient.refetchQueries({
+                queryKey: ['products', activeBranch.branch_id],
+                type: 'active',
+              });
+            } else {
+              await queryClient.invalidateQueries({
+                queryKey: ['products'],
+                refetchType: 'active',
+              });
+            }
+
             refetch();
             setIsAddModalOpen(false);
             setPreFilledProductName('');
@@ -3520,7 +3597,7 @@ export const StockList = () => {
             }} 
             variant="default"
             size="sm"
-            className="h-9 border-gray-300 hover:border-gray-400 focus:border-gray-400"
+            className="h-9 bg-blue-600 hover:bg-blue-700"
           >
             <Scan className="w-4 h-4 mr-2" />
             Scan
@@ -3532,7 +3609,7 @@ export const StockList = () => {
             }} 
             variant="default"
             size="sm"
-            className="h-9 border-gray-300 hover:border-gray-400 focus:border-gray-400"
+            className="h-9 bg-blue-600 hover:bg-blue-700"
           >
             <Plus className="w-4 h-4 mr-2" />
             Manual

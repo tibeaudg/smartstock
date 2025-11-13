@@ -96,6 +96,19 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
   const navigate = useNavigate();
   const { isMobile } = useMobile();
   const { settings: scannerSettings, onScanSuccess } = useScannerSettings();
+
+  // Safety: prevent indefinite loading if background/tab-switch caused a stuck request
+  useEffect(() => {
+    if (!loading) return;
+    const timer = setTimeout(async () => {
+      try {
+        await supabase.auth.refreshSession();
+      } catch {}
+      toast.error('Request took too long. Session refreshed, please try again.');
+      setLoading(false);
+    }, 12000); // 12s safety timeout
+    return () => clearTimeout(timer);
+  }, [loading]);
   
   const [categories, setCategorys] = useState<Array<{ id: string; name: string }>>([]);
   const [suppliers, setSuppliers] = useState<Array<{ id: string; name: string }>>([]);
@@ -510,6 +523,33 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
         }
         console.log(`[AddProductModal] Parent product inserted: ID ${parent.id}`);
 
+        // 5a. Log product creation in history (quantity 0 so stats aren't affected)
+        try {
+          const { error: parentTxError } = await supabase
+            .from('stock_transactions')
+            .insert({
+              product_id: parent.id,
+              product_name: validatedData.name,
+              transaction_type: 'incoming' as const,
+              quantity: 0,
+              unit_price: validatedData.purchasePrice || 0,
+              total_value: 0,
+              user_id: user.id,
+              created_by: user.id,
+              branch_id: activeBranch.branch_id,
+              reference_number: 'PRODUCT_CREATED',
+              notes: 'Product created',
+              variant_id: null,
+              variant_name: null,
+            });
+
+          if (parentTxError) {
+            console.warn('[AddProductModal] Failed to log parent product creation:', parentTxError);
+          }
+        } catch (e) {
+          console.warn('[AddProductModal] Exception while logging parent product creation:', e);
+        }
+
         // 5. Create Variants
         const variantRows = variants.filter(v => v.variantName.trim()).map(v => ({
           name: validatedData.name,
@@ -582,9 +622,36 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
       }
 
       // 7. Final Steps
-      queryClient.invalidateQueries({ queryKey: ['products'] });
-      queryClient.invalidateQueries({ queryKey: ['productCount', activeBranch.branch_id, user.id] });
-      queryClient.invalidateQueries({ queryKey: ['stockTransactions'] });
+      const branchId = activeBranch.branch_id;
+      const userId = user.id;
+
+      await queryClient.invalidateQueries({
+        queryKey: ['products', branchId],
+        refetchType: 'active',
+      });
+
+      await queryClient.invalidateQueries({
+        queryKey: ['products'],
+        refetchType: 'active',
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ['productCount', branchId, userId],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ['stockTransactions'],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ['dashboardData', branchId],
+      });
+
+      // Ensure any active product lists refetch immediately
+      await queryClient.refetchQueries({
+        queryKey: ['products', branchId],
+        type: 'active',
+      });
       
       toast.success(hasVariants ? 'Product and variants added.' : 'Product successfully added.');
       

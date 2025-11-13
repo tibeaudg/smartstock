@@ -278,7 +278,7 @@ const queryClient = new QueryClient({
     queries: {
       staleTime: 1000 * 60 * 5, // 5 minutes - data becomes stale after 5 minutes
       gcTime: 1000 * 60 * 60 * 24 * 7, // 7 days - keep unused data in cache for a week
-      refetchOnWindowFocus: false, // Disabled - show cached data immediately on focus
+      refetchOnWindowFocus: true, // Always revalidate on focus to prevent stale UI after tab switch
       refetchOnMount: true, // Refetch on mount to fix remount issues, individual queries can override
       refetchOnReconnect: true, // Always refetch when network reconnects
       refetchIntervalInBackground: false, // Prevent unnecessary background fetches

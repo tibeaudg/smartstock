@@ -41,6 +41,55 @@ export const BulkImportModal: React.FC<BulkImportModalProps> = ({
     errors: string[];
   } | null>(null);
 
+  type InitialStockMovementInput = {
+    productId: string;
+    productName: string;
+    quantity: number;
+    purchasePrice: number;
+    branchId: string;
+    userId: string;
+  };
+
+  const createInitialStockMovement = async ({
+    productId,
+    productName,
+    quantity,
+    purchasePrice,
+    branchId,
+    userId,
+  }: InitialStockMovementInput) => {
+    if (!quantity || quantity <= 0) {
+      return { success: true as const };
+    }
+
+    const unitPrice = Number.isFinite(purchasePrice) ? purchasePrice : 0;
+    const totalValue = unitPrice * quantity;
+
+    const { error } = await supabase.from('stock_transactions').insert({
+      product_id: productId,
+      product_name: productName,
+      transaction_type: 'incoming' as const,
+      quantity,
+      unit_price: unitPrice,
+      total_value: totalValue,
+      reference_number: 'BULK_IMPORT_INITIAL',
+      notes: 'Initial stock from bulk import',
+      user_id: userId,
+      created_by: userId,
+      branch_id: branchId,
+    });
+
+    if (error) {
+      console.error('Error logging initial stock transaction:', error);
+      return {
+        success: false as const,
+        message: error.message || 'Failed to create stock movement',
+      };
+    }
+
+    return { success: true as const };
+  };
+
   // Download template Excel file
   const downloadTemplate = () => {
     const template = [
@@ -203,15 +252,18 @@ export const BulkImportModal: React.FC<BulkImportModalProps> = ({
             }
           }
 
+          const quantity = Number(row.stock) || 0;
+          const purchasePrice = Number(row.purchase_price) || 0;
+
           // Insert product
-          const { error: productError } = await supabase
+          const { data: insertedProduct, error: productError } = await supabase
             .from('products')
             .insert({
               name: row.name.trim(),
               description: row.description?.trim() || null,
-              quantity_in_stock: Number(row.stock) || 0,
+              quantity_in_stock: quantity,
               minimum_stock_level: Number(row.minimum_level) || 0,
-              purchase_price: Number(row.purchase_price) || 0,
+              purchase_price: purchasePrice,
               sale_price: Number(row.sale_price) || 0,
               unit_price: Number(row.sale_price) || 0, // Use sale price as unit price
               location: row.location?.trim() || null,
@@ -220,13 +272,30 @@ export const BulkImportModal: React.FC<BulkImportModalProps> = ({
               branch_id: activeBranch.branch_id,
               user_id: user.id,
               status: 'active',
-            });
+            })
+            .select('id, name')
+            .single();
 
           if (productError) {
             errors.push(`Row ${rowNumber}: ${productError.message}`);
             failedCount++;
           } else {
             successCount++;
+
+            const movementResult = await createInitialStockMovement({
+              productId: insertedProduct.id,
+              productName: insertedProduct.name,
+              quantity,
+              purchasePrice,
+              branchId: activeBranch.branch_id,
+              userId: user.id,
+            });
+
+            if (!movementResult.success) {
+              errors.push(
+                `Row ${rowNumber}: Product imported but stock history failed - ${movementResult.message}`
+              );
+            }
           }
         } catch (error) {
           errors.push(`Row ${rowNumber}: ${error instanceof Error ? error.message : 'Unknown error'}`);

@@ -4,30 +4,26 @@ import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useSubscription } from '@/hooks/useSubscription';
-import { UpgradePrompt } from './UpgradePrompt';
 
 interface UsageLimitsProps {
-  showUpgradePrompts?: boolean;
   compact?: boolean;
 }
 
-export const UsageLimits: React.FC<UsageLimitsProps> = ({ 
-  showUpgradePrompts = true, 
-  compact = false 
-}) => {
-  const { 
-    currentTier, 
-    usageTracking, 
-    productCount,
-    isWithinLimits, 
+export const UsageLimits: React.FC<UsageLimitsProps> = ({ compact = false }) => {
+  const subscription = useSubscription();
+  const {
+    currentTier,
+    usageTracking,
+    isWithinLimits,
     getRemainingLimit,
     isTrialActive,
-    isSubscriptionActive 
-  } = useSubscription();
+    isSubscriptionActive,
+  } = subscription;
 
   if (!currentTier) return null;
 
-  const currentProducts = productCount;
+  const liveProductCount = (subscription as any).productCount as number | undefined;
+  const currentProducts = liveProductCount ?? usageTracking?.current_products ?? 0;
 
   const limits = [
     {
@@ -44,7 +40,7 @@ export const UsageLimits: React.FC<UsageLimitsProps> = ({
       label: 'Users',
       current: usageTracking?.current_users ?? 0,
       max: currentTier.max_users,
-      color: 'text-green-600'
+      color: 'text-green-600',
     },
     {
       type: 'branches' as const,
@@ -52,8 +48,16 @@ export const UsageLimits: React.FC<UsageLimitsProps> = ({
       label: 'Branches',
       current: usageTracking?.current_branches ?? 0,
       max: currentTier.max_branches,
-      color: 'text-purple-600'
-    }
+      color: 'text-purple-600',
+    },
+    {
+      type: 'orders' as const,
+      icon: <ShoppingCart className="h-4 w-4" />,
+      label: 'Orders this month',
+      current: usageTracking?.orders_this_month ?? 0,
+      max: currentTier.max_orders_per_month,
+      color: 'text-orange-600',
+    },
   ];
 
   const getUsagePercentage = (current: number, max: number | null) => {
@@ -84,12 +88,10 @@ export const UsageLimits: React.FC<UsageLimitsProps> = ({
           <h3 className="font-semibold text-sm text-gray-900">Usage</h3>
           {getStatusBadge()}
         </div>
-        
+
         {limits.map((limit) => {
           const percentage = getUsagePercentage(limit.current, limit.max);
-          const isNearLimit = percentage >= 75;
-          const isOverLimit = percentage >= 100;
-          
+
           return (
             <div key={limit.type} className="space-y-1">
               <div className="flex items-center justify-between text-sm">
@@ -98,26 +100,12 @@ export const UsageLimits: React.FC<UsageLimitsProps> = ({
                   <span className="text-gray-600">{limit.label}</span>
                 </div>
                 <span className="text-gray-900 font-medium">
-                  {limit.current} / {limit.max || '∞'}
+                  {limit.current} / {limit.max ?? '∞'}
                 </span>
               </div>
-              
+
               {limit.max && (
-                <Progress 
-                  value={percentage} 
-                  className="h-2"
-                />
-              )}
-              
-              {isOverLimit && showUpgradePrompts && (
-                <div className="mt-2">
-                  <UpgradePrompt 
-                    feature={limit.type}
-                    currentLimit={limit.current}
-                    maxLimit={limit.max}
-                    showCloseButton={false}
-                  />
-                </div>
+                <Progress value={percentage} className="h-2" />
               )}
             </div>
           );
@@ -132,18 +120,17 @@ export const UsageLimits: React.FC<UsageLimitsProps> = ({
         <div className="flex items-center justify-between">
           <div>
             <CardTitle className="text-lg">Usage & Limits</CardTitle>
+            <CardDescription>Huidige {currentTier.display_name} plan</CardDescription>
           </div>
           {getStatusBadge()}
         </div>
       </CardHeader>
-      
+
       <CardContent className="space-y-6">
         {limits.map((limit) => {
           const percentage = getUsagePercentage(limit.current, limit.max);
-          const isNearLimit = percentage >= 75;
-          const isOverLimit = percentage >= 100;
           const remaining = getRemainingLimit(limit.type);
-          
+
           return (
             <div key={limit.type} className="space-y-3">
               <div className="flex items-center justify-between">
@@ -152,54 +139,41 @@ export const UsageLimits: React.FC<UsageLimitsProps> = ({
                   <div>
                     <h4 className="font-medium text-gray-900">{limit.label}</h4>
                     <p className="text-sm text-gray-500">
-                      {limit.current} of {limit.max || 'unlimited'} used
+                      {limit.current} of {limit.max ?? 'unlimited'} used
                     </p>
                   </div>
                 </div>
-                
-                {isOverLimit && (
+
+                {limit.max !== null && percentage >= 100 && (
                   <Badge variant="destructive" className="bg-red-100 text-red-800">
                     <AlertTriangle className="h-3 w-3 mr-1" />
                     Limit reached
                   </Badge>
                 )}
-                {isNearLimit && !isOverLimit && (
+                {limit.max !== null && percentage >= 75 && percentage < 100 && (
                   <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">
                     <AlertTriangle className="h-3 w-3 mr-1" />
                     Almost full
                   </Badge>
                 )}
               </div>
-              
+
               {limit.max && (
                 <div className="space-y-2">
-                  <Progress 
-                    value={percentage} 
-                    className="h-2"
-                  />
+                  <Progress value={percentage} className="h-2" />
                   <div className="flex justify-between text-xs text-gray-500">
-                      <span>{percentage.toFixed(0)}% used</span>
+                    <span>{percentage.toFixed(0)}% used</span>
                     {remaining !== null && (
                       <span>{remaining} remaining</span>
                     )}
                   </div>
                 </div>
               )}
-              
-              {isOverLimit && showUpgradePrompts && (
-                <div className="mt-3">
-                  <UpgradePrompt 
-                    feature={limit.type}
-                    currentLimit={limit.current}
-                    maxLimit={limit.max}
-                  />
-                </div>
-              )}
             </div>
           );
         })}
-        {/* Trial/Subscription Info */}
-        {(isTrialActive || isSubscriptionActive && currentTier?.name !== 'free') && (
+
+        {(isTrialActive || isSubscriptionActive) && (
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
             <div className="flex items-start space-x-3">
               <TrendingUp className="h-5 w-5 text-blue-600 mt-0.5" />
@@ -208,10 +182,9 @@ export const UsageLimits: React.FC<UsageLimitsProps> = ({
                   {isTrialActive ? 'Free trial active' : 'Active subscription'}
                 </h4>
                 <p className="text-sm text-blue-700 mt-1">
-                  {isTrialActive 
+                  {isTrialActive
                     ? 'Your trial is still active. Upgrade to a paid plan to increase your limits.'
-                    : 'You have access to all premium features and higher limits.'
-                  }
+                    : 'You have access to all premium features and higher limits.'}
                 </p>
               </div>
             </div>

@@ -12,13 +12,10 @@ import {
   Calendar,
   Clock,
   ExternalLink,
-  Sparkles,
 } from 'lucide-react';
 import { useSubscription } from '@/hooks/useSubscription';
 import { useNavigate } from 'react-router-dom';
 import { UsageLimits } from '@/components/UsageLimits';
-import { UpgradeOptions, TierUpgradeCard } from '@/components/UpgradePrompt';
-import { Progress } from '@/components/ui/progress';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery } from '@tanstack/react-query';
 import type { PricingTier } from '@/hooks/useSubscription';
@@ -223,7 +220,7 @@ export const SubscriptionManagement = () => {
       </Card>
 
       {/* Usage Limits */}
-      <UsageLimits showUpgradePrompts={true} />
+      <UsageLimits />
 
       {/* Trial/Subscription Info */}
       {(isTrialActive || isSubscriptionActive && currentTier?.name !== 'free') && (

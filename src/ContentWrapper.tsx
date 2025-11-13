@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { Header } from './components/ui/Header';
 import { useNotifications } from './hooks/useNotifications';
 import { AuthContext } from './hooks/useAuth';
+import { useSessionRevalidation } from './hooks/useSessionRevalidation';
 
 const getPageTitle = (pathname: string) => {
   // Don't show header for dashboard pages as they use Layout component
@@ -20,6 +21,9 @@ export const ContentWrapper: React.FC<{ children: React.ReactNode }> = ({ childr
   // Use context directly to avoid hard failure if provider is not mounted yet
   const auth = useContext(AuthContext);
   const user = auth?.user || null;
+
+  // Globally revalidate auth session on tab focus to prevent stale data freezes
+  useSessionRevalidation();
   const { notifications, loading, unreadCount, markAllAsRead } = useNotifications();
   const [showNotifications, setShowNotifications] = useState(false);
   const title = getPageTitle(location.pathname);
