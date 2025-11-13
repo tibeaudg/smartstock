@@ -8,7 +8,7 @@ const {
   createSeoPage,
   getSeoPageSummary,
   getSlugFromRelativePath,
-} = require("./utils/seoFs.cjs");
+} = require("./seoFs.cjs");
 
 const router = express.Router();
 
@@ -183,4 +183,5 @@ router.all("/", (req, res) => {
 
 module.exports = router;
 module.exports.default = router;
+
 

@@ -55,7 +55,7 @@ const visitorChatHandler = loadHandler('./api/visitor-chat.js');
 const contactHandler = loadHandler('./api/contact.js');
 const adsHandler = loadHandler('./api/ads.js');
 const sitemapHandler = loadHandler('./api/sitemap.js');
-const cmsSeoRouterModule = require('./api/cms-seo.cjs');
+const cmsSeoRouterModule = require('./api/utils/cms-seo-router.cjs');
 const cmsSeoRouter = cmsSeoRouterModule.default || cmsSeoRouterModule;
 
 // API routes

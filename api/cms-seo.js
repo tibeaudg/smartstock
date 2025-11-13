@@ -1,4 +1,4 @@
-import router from "./cms-seo.cjs";
+import router from "./utils/cms-seo-router.cjs";
 
 export default router;
 
