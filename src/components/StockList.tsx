@@ -31,6 +31,7 @@ import {
   Settings,
   ChevronRight,
   ChevronDown,
+  ChevronLeft,
   Upload,
   ShoppingBasket,
   Palette,
@@ -1486,17 +1487,22 @@ const MobileProductCard: React.FC<MobileProductCardProps> = ({
 const fetchProducts = async (
   branchId: string,
   previousData: Product[] = [],
-  options: { skipRetry?: boolean; expectedCount?: number } = {}
+  options: { skipRetry?: boolean; expectedCount?: number } = {},
+  page: number = 1,
+  perPage: number = 50
 ) => {
   const expectedCount = options.expectedCount ?? 0;
   const performFetch = async (): Promise<Product[]> => {
     
     // Haal eerst de producten op
+    const from = Math.max(0, (page - 1) * perPage);
+    const to = from + perPage - 1;
     const { data: products, error: productsError } = await supabase
       .from('products')
       .select('*')
       .eq('branch_id', branchId)
-      .order('name');
+      .order('name')
+      .range(from, to);
     
     if (productsError) {
       console.error('Error fetching products:', productsError);
@@ -1634,7 +1640,7 @@ const fetchProducts = async (
 export const StockList = () => {
   const { user, userProfile } = useAuth();
   const { t } = useTranslation();
-  const { activeBranch } = useBranches();
+  const { activeBranch, loading: branchesLoading, hasNoBranches } = useBranches();
   const queryClient = useQueryClient();
   const { isMobile } = useMobile();
   const navigate = useNavigate();
@@ -1645,6 +1651,10 @@ export const StockList = () => {
 
   // Check if user is admin
   const isAdmin = userProfile?.is_owner === true;
+
+  // Pagination
+  const PER_PAGE = 50;
+  const [page, setPage] = useState(1);
 
   // Enhanced filter state
   const [filters, setFilters] = useState({
@@ -1900,6 +1910,11 @@ export const StockList = () => {
     };
   }, []);
 
+  // Reset to first page when branch changes
+  useEffect(() => {
+    setPage(1);
+  }, [activeBranch?.branch_id]);
+
   // Haal Categoryën en leveranciers op
   useEffect(() => {
     if (user) {
@@ -2022,27 +2037,55 @@ export const StockList = () => {
     error: productsError,
     refetch
   } = useQuery<Product[]>({
-    queryKey: ['products', activeBranch?.branch_id],
+    queryKey: ['products', activeBranch?.branch_id, page],
     queryFn: async () => {
       if (!activeBranch || !activeBranch.branch_id || !user) {
         return [];
       }
-      const cachedProducts = queryClient.getQueryData<Product[]>(['products', activeBranch.branch_id]) || [];
+      const cachedProducts = queryClient.getQueryData<Product[]>(['products', activeBranch.branch_id, page]) || [];
       const expectedCount = Math.max(
         subscriptionProductCount ?? 0,
         branchProductCount ?? 0,
         cachedProducts.length
       );
-      return fetchProducts(activeBranch.branch_id, cachedProducts, { expectedCount });
+      return fetchProducts(activeBranch.branch_id, cachedProducts, { expectedCount }, page, PER_PAGE);
     },
     enabled: !!user && !!activeBranch && !!activeBranch.branch_id,
     refetchOnWindowFocus: false, // Disabled for better tab switching performance
-    refetchOnMount: 'always', // Always refetch on mount to ensure fresh data
+    refetchOnMount: false, // Use cache; invalidate explicitly when data changes
     networkMode: 'offlineFirst', // Show cached data immediately while revalidating
-    staleTime: 1000 * 60 * 5, // 5 minutes cache for better performance
+    staleTime: 1000 * 60 * 15, // Keep data fresh for 15 minutes
     gcTime: 1000 * 60 * 60 * 24, // 24 hours garbage collect
     placeholderData: (previousData) => previousData, // Keep previous data while loading
   });
+
+  // Fetch total count for pagination
+  const { data: totalCount = 0 } = useQuery<number>({
+    queryKey: ['products-total-count', activeBranch?.branch_id],
+    queryFn: async () => {
+      if (!activeBranch?.branch_id || !user) return 0;
+      const { count, error } = await supabase
+        .from('products')
+        .select('*', { count: 'exact', head: true })
+        .eq('branch_id', activeBranch.branch_id);
+      if (error) {
+        console.error('Error fetching products count:', error);
+        return 0;
+      }
+      return count ?? 0;
+    },
+    enabled: !!user && !!activeBranch && !!activeBranch.branch_id,
+    staleTime: 1000 * 60 * 5,
+  });
+
+  const totalPages = useMemo(() => Math.max(1, Math.ceil((totalCount || 0) / PER_PAGE)), [totalCount]);
+
+  // Clamp page if totalCount shrinks
+  useEffect(() => {
+    if (page > totalPages) {
+      setPage(totalPages);
+    }
+  }, [totalPages, page]);
 
   // Handle errors with useEffect
   useEffect(() => {
@@ -2845,7 +2888,8 @@ export const StockList = () => {
     }
   }, [location.pathname, filters.categoryFilter, filters.supplierFilter, filters.searchTerm, productsTyped]);
 
-  if (loading) {
+  // Treat branch loading as page loading to avoid flashing "No branch selected"
+  if (branchesLoading || loading) {
     return (
       <div className="flex items-center justify-center py-20">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
@@ -2870,7 +2914,8 @@ export const StockList = () => {
     );
   }
 
-  if (!activeBranch) {
+  // Only show "No branch selected" when branches have finished loading and none is active
+  if (!activeBranch && !branchesLoading && !hasNoBranches) {
     return (
       <div className="flex items-center justify-center py-20">
         <div className="text-center">
@@ -3123,6 +3168,50 @@ export const StockList = () => {
               />
             </div>
 
+              {/* Pagination Controls (Mobile) */}
+              <div className="flex items-center justify-end gap-1 mb-3">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="h-8 w-8 p-0"
+                  disabled={page === 1}
+                  onClick={() => setPage(p => Math.max(1, p - 1))}
+                  title="Previous page"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </Button>
+                {(() => {
+                  const nums: number[] = [];
+                  if (page - 1 >= 1) nums.push(page - 1);
+                  nums.push(page);
+                  if (page + 1 <= totalPages) nums.push(page + 1);
+                  return nums.map(n => (
+                    <button
+                      key={n}
+                      onClick={() => setPage(n)}
+                      className={`h-8 min-w-8 px-3 rounded-md border text-sm ${
+                        n === page ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-700 border-gray-300'
+                      }`}
+                    >
+                      {n}
+                    </button>
+                  ));
+                })()}
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="h-8 w-8 p-0"
+                  disabled={page === totalPages}
+                  onClick={() => setPage(p => Math.min(totalPages, p + 1))}
+                  title="Next page"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </Button>
+                <span className="ml-2 text-xs text-gray-500">
+                  Page {page} of {totalPages}
+                </span>
+              </div>
+
             {/* Mobile Product Views */}
             {viewMode === 'card' ? (
               <div className="grid grid-cols-1 gap-4">
@@ -3297,6 +3386,48 @@ export const StockList = () => {
                 )}
               </div>
             )}
+
+            {/* Bottom Pagination Controls (Mobile) */}
+            <div className="flex items-center justify-center gap-1 py-3">
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-8 w-8 p-0"
+                disabled={page === 1}
+                onClick={() => setPage(p => Math.max(1, p - 1))}
+                title="Previous page"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </Button>
+              {(() => {
+                const nums: number[] = [];
+                if (page - 1 >= 1) nums.push(page - 1);
+                nums.push(page);
+                if (page + 1 <= totalPages) nums.push(page + 1);
+                return nums.map(n => (
+                  <button
+                    key={n}
+                    onClick={() => setPage(n)}
+                    className={`h-8 min-w-8 px-3 rounded-md border text-sm ${n === page ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-700 border-gray-300'}`}
+                  >
+                    {n}
+                  </button>
+                ));
+              })()}
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-8 w-8 p-0"
+                disabled={page === totalPages}
+                onClick={() => setPage(p => Math.min(totalPages, p + 1))}
+                title="Next page"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </Button>
+              <span className="ml-2 text-xs text-gray-500">
+                Page {page} of {totalPages}
+              </span>
+            </div>
           </div>
         )}
 
@@ -3750,13 +3881,55 @@ export const StockList = () => {
       {/* Status Bar - Repositioned */}
       <div className="flex items-center justify-between py-1 px-1">
         <div className="text-xs text-gray-500">
-          Showing <span className="font-medium">{grouped.parents.length}</span> of <span className="font-medium">{productsTyped.length}</span> products
+          Page <span className="font-medium">{page}</span> of <span className="font-medium">{totalPages}</span>
         </div>
-        {selectedProductIds.length > 0 && (
-          <div className="text-xs text-blue-600 font-medium">
-            {selectedProductIds.length} selected
+        <div className="flex items-center gap-2">
+          {selectedProductIds.length > 0 && (
+            <div className="text-xs text-blue-600 font-medium mr-2">
+              {selectedProductIds.length} selected
+            </div>
+          )}
+          {/* Pagination Controls (Desktop) */}
+          <div className="flex items-center gap-1">
+            <Button
+              variant="outline"
+              size="sm"
+              className="h-8 w-8 p-0"
+              disabled={page === 1}
+              onClick={() => setPage(p => Math.max(1, p - 1))}
+              title="Previous page"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </Button>
+            {(() => {
+              const nums: number[] = [];
+              if (page - 1 >= 1) nums.push(page - 1);
+              nums.push(page);
+              if (page + 1 <= totalPages) nums.push(page + 1);
+              return nums.map(n => (
+                <button
+                  key={n}
+                  onClick={() => setPage(n)}
+                  className={`h-8 min-w-8 px-3 rounded-md border text-sm ${
+                    n === page ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-700 border-gray-300'
+                  }`}
+                >
+                  {n}
+                </button>
+              ));
+            })()}
+            <Button
+              variant="outline"
+              size="sm"
+              className="h-8 w-8 p-0"
+              disabled={page === totalPages}
+              onClick={() => setPage(p => Math.min(totalPages, p + 1))}
+              title="Next page"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </Button>
           </div>
-        )}
+        </div>
       </div>
 
       {/* Bulk Actions Toolbar */}
@@ -4074,6 +4247,47 @@ export const StockList = () => {
         </div>
       </div>
       )}
+      {/* Bottom Pagination Controls (Desktop) */}
+      <div className="flex items-center justify-center gap-1 py-3">
+        <Button
+          variant="outline"
+          size="sm"
+          className="h-8 w-8 p-0"
+          disabled={page === 1}
+          onClick={() => setPage(p => Math.max(1, p - 1))}
+          title="Previous page"
+        >
+          <ChevronLeft className="w-4 h-4" />
+        </Button>
+        {(() => {
+          const nums: number[] = [];
+          if (page - 1 >= 1) nums.push(page - 1);
+          nums.push(page);
+          if (page + 1 <= totalPages) nums.push(page + 1);
+          return nums.map(n => (
+            <button
+              key={n}
+              onClick={() => setPage(n)}
+              className={`h-8 min-w-8 px-3 rounded-md border text-sm ${n === page ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-700 border-gray-300'}`}
+            >
+              {n}
+            </button>
+          ));
+        })()}
+        <Button
+          variant="outline"
+          size="sm"
+          className="h-8 w-8 p-0"
+          disabled={page === totalPages}
+          onClick={() => setPage(p => Math.min(totalPages, p + 1))}
+          title="Next page"
+        >
+          <ChevronRight className="w-4 h-4" />
+        </Button>
+        <span className="ml-2 text-xs text-gray-500">
+          Page {page} of {totalPages}
+        </span>
+      </div>
       <ImagePreviewModal
         isOpen={isImagePreviewOpen}
         onClose={() => setIsImagePreviewOpen(false)}

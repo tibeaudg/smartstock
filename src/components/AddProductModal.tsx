@@ -109,6 +109,22 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
     }, 12000); // 12s safety timeout
     return () => clearTimeout(timer);
   }, [loading]);
+
+  // Resume handler on visibility return to avoid stuck modal after tab switch
+  useEffect(() => {
+    const onVisible = () => {
+      if (!document.hidden && loading) {
+        setLoading(false);
+        toast.info('Connection resumed. Please retry adding the product.');
+      }
+    };
+    document.addEventListener('visibilitychange', onVisible);
+    window.addEventListener('focus', onVisible);
+    return () => {
+      document.removeEventListener('visibilitychange', onVisible);
+      window.removeEventListener('focus', onVisible);
+    };
+  }, [loading]);
   
   const [categories, setCategorys] = useState<Array<{ id: string; name: string }>>([]);
   const [suppliers, setSuppliers] = useState<Array<{ id: string; name: string }>>([]);
@@ -154,6 +170,24 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
       form.setValue('name', preFilledName, { shouldDirty: true });
     }
   }, [preFilledName, isOpen, form]);
+
+  // Fallback: if name was persisted in localStorage by the opener, use it once
+  useEffect(() => {
+    if (!isOpen) return;
+    try {
+      if (!preFilledName) {
+        const stored = localStorage.getItem('prefillAddProductName');
+        if (stored && stored.trim()) {
+          console.log('[AddProductModal] Applying localStorage prefill for product name:', stored);
+          form.setValue('name', stored.trim(), { shouldDirty: true });
+        }
+        localStorage.removeItem('prefillAddProductName');
+      } else {
+        // Clear any stale value if prop is present
+        localStorage.removeItem('prefillAddProductName');
+      }
+    } catch {}
+  }, [isOpen, preFilledName, form]);
 
   // Check for duplicate product name - debounced
   useEffect(() => {

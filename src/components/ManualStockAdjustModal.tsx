@@ -32,6 +32,8 @@ interface ManualStockAdjustModalProps {
   onProductUpdated: () => void;
   onBack?: () => void;
   defaultAction?: 'in' | 'out';
+  // Optional: allow parent to directly handle "Create New Product" with a prefilled name
+  onCreateNewProduct?: (name?: string) => void;
 }
 
 export const ManualStockAdjustModal = ({
@@ -39,7 +41,8 @@ export const ManualStockAdjustModal = ({
   onClose,
   onProductUpdated,
   onBack,
-  defaultAction = 'in'
+  defaultAction = 'in',
+  onCreateNewProduct
 }: ManualStockAdjustModalProps) => {
   const { user } = useAuth();
   const { activeBranch } = useBranches();
@@ -141,13 +144,26 @@ export const ManualStockAdjustModal = ({
     const trimmedValue = searchValue.trim();
     setSearchOpen(false);
     onClose();
-    window.dispatchEvent(
-      new CustomEvent('openAddProductModal', {
-        detail: {
-          name: trimmedValue || undefined
-        }
-      })
-    );
+    // Persist intended name so receivers can reliably prefill even if state/event timing differs
+    try {
+      if (trimmedValue) {
+        localStorage.setItem('prefillAddProductName', trimmedValue);
+      } else {
+        localStorage.removeItem('prefillAddProductName');
+      }
+    } catch {}
+    // Prefer direct callback when provided; fall back to global event for backward compatibility
+    if (onCreateNewProduct) {
+      onCreateNewProduct(trimmedValue || undefined);
+    } else {
+      window.dispatchEvent(
+        new CustomEvent('openAddProductModal', {
+          detail: {
+            name: trimmedValue || undefined
+          }
+        })
+      );
+    }
   };
 
   const handleSubmit = async () => {

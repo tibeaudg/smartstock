@@ -27,10 +27,9 @@ export const usePageRefresh = () => {
         
         console.log('Page visible again after', timeHidden, 'ms');
         
-        // Only refresh if user was away for more than 30 minutes
-        // This prevents unnecessary refreshes for quick tab switches and sidebar interactions
-        if (timeHiddenMinutes > 30) {
-          console.log('User was away for more than 30 minutes, refreshing...');
+        // Hard reload if user was away for more than 5 minutes
+        if (timeHiddenMinutes > 5) {
+          console.log('User was away for more than 5 minutes, refreshing...');
           // Use a more graceful refresh with a slight delay
           setTimeout(() => {
             window.location.reload();
@@ -42,8 +41,8 @@ export const usePageRefresh = () => {
             // Invalidate stale queries to trigger background refetch
             window.queryClient.invalidateQueries({
               predicate: (query) => {
-                // Only refetch queries that are older than 5 minutes
-                return query.state.dataUpdatedAt < Date.now() - (1000 * 60 * 5);
+                // Refetch queries that are older than 2 minutes
+                return query.state.dataUpdatedAt < Date.now() - (1000 * 60 * 2);
               }
             });
           }

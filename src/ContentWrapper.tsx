@@ -5,6 +5,7 @@ import { Header } from './components/ui/Header';
 import { useNotifications } from './hooks/useNotifications';
 import { AuthContext } from './hooks/useAuth';
 import { useSessionRevalidation } from './hooks/useSessionRevalidation';
+import { useFocusDataRefresh } from './hooks/useFocusDataRefresh';
 
 const getPageTitle = (pathname: string) => {
   // Don't show header for dashboard pages as they use Layout component
@@ -24,6 +25,8 @@ export const ContentWrapper: React.FC<{ children: React.ReactNode }> = ({ childr
 
   // Globally revalidate auth session on tab focus to prevent stale data freezes
   useSessionRevalidation();
+  // Global focus-based cache refresh (debounced)
+  useFocusDataRefresh();
   const { notifications, loading, unreadCount, markAllAsRead } = useNotifications();
   const [showNotifications, setShowNotifications] = useState(false);
   const title = getPageTitle(location.pathname);

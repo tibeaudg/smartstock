@@ -18,7 +18,10 @@ export function setupPersistedQueryClient(queryClient: QueryClient) {
           key.includes('user-subscription') ||
           key.includes('pricing-tiers') ||
           key.includes('stockTransactions') ||
-          key.includes('delivery-notes')
+          key.includes('delivery-notes') ||
+          key.includes('categories') ||
+          key.includes('suppliers') ||
+          key.includes('scannerSettings')
         )
       );
       return JSON.stringify(filteredData);
