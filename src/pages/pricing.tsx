@@ -678,7 +678,7 @@ export default function PricingPage() {
                   <CardFooter className="flex flex-col gap-3">
               <Button 
                       variant={plan.ctaVariant ?? 'default'}
-                className="w-full rounded-full"
+                className="w-full rounded-full bg-blue-600 hover:bg-blue-700 text-white"
                       onClick={() => handleSelectPlan(plan.id, 'trial')}
                     >
                       {plan.ctaLabel}
@@ -735,7 +735,7 @@ export default function PricingPage() {
                     </tr>
                     {section.features.map(feature => (
                       <tr key={feature.name} className="border-b border-blue-200">
-                        <td className="px-6 py-4 text-sm font-medium text-blue-700">
+                        <td className="px-6 py-4 text-sm font-medium text-gray-900">
                           <div className="flex items-center gap-2">
                             {feature.name}
                             {feature.info && (
