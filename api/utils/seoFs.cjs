@@ -121,6 +121,11 @@ async function writeSeoPage(relativePath, contents) {
   await fs.writeFile(absolute, contents, "utf8");
 }
 
+async function deleteSeoPage(relativePath) {
+  const { absolute } = resolveSeoPath(relativePath);
+  await fs.unlink(absolute);
+}
+
 async function createSeoPage(relativePath, contents) {
   const { absolute } = resolveSeoPath(relativePath);
   try {
@@ -148,6 +153,7 @@ const exportsObject = {
   listSeoPages,
   readSeoPage,
   writeSeoPage,
+  deleteSeoPage,
   createSeoPage,
   getSeoPageSummary,
 };

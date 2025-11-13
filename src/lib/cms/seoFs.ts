@@ -124,6 +124,11 @@ export async function writeSeoPage(relativePath: string, contents: string) {
   await fs.writeFile(absolute, contents, "utf8");
 }
 
+export async function deleteSeoPage(relativePath: string) {
+  const { absolute } = resolveSeoPath(relativePath);
+  await fs.unlink(absolute);
+}
+
 export async function createSeoPage(relativePath: string, contents: string) {
   const { absolute } = resolveSeoPath(relativePath);
   try {

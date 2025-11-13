@@ -10,6 +10,7 @@ import {
   Copy,
   RotateCcw,
   Search,
+  Trash2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -53,6 +54,11 @@ type ListResponse = {
 type DetailResponse = {
   ok: true;
   page: SeoPageDetail;
+};
+
+type DeleteResponse = {
+  ok: true;
+  path: string;
 };
 
 const TEMPLATE_OPTIONS = [
@@ -196,6 +202,34 @@ export default function CMS() {
     },
   });
 
+  const deleteMutation = useMutation({
+    mutationFn: async (relativePath: string) => {
+      return fetchJson<DeleteResponse>("/api/cms/seo", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ path: relativePath }),
+      });
+    },
+    onSuccess: (data) => {
+      toast({
+        title: "Page deleted",
+        description: `${data.path} removed successfully.`,
+      });
+      setSelectedPath(null);
+      setEditorValue("");
+      setIsDirty(false);
+      queryClient.invalidateQueries({ queryKey: ["cms-seo", "pages"] });
+      queryClient.removeQueries({ queryKey: ["cms-seo", "page", data.path], exact: true });
+    },
+    onError: (error: unknown) => {
+      toast({
+        title: "Failed to delete page",
+        description: error instanceof Error ? error.message : "Unknown error",
+        variant: "destructive",
+      });
+    },
+  });
+
   const onEditorChange = useCallback(
     (value: string) => {
       setEditorValue(value);
@@ -229,10 +263,10 @@ export default function CMS() {
 
   const handleSelectPage = useCallback(
     (relativePath: string) => {
-      if (saveMutation.isPending) return;
+      if (saveMutation.isPending || deleteMutation.isPending) return;
       setSelectedPath(relativePath);
     },
-    [saveMutation.isPending]
+    [saveMutation.isPending, deleteMutation.isPending]
   );
 
   const currentSummary = useMemo(() => {
@@ -244,6 +278,7 @@ export default function CMS() {
 
   const isSaving = saveMutation.isPending;
   const isCreating = createMutation.isPending;
+  const isDeleting = deleteMutation.isPending;
 
   return (
     <div className="space-y-6">
@@ -258,7 +293,7 @@ export default function CMS() {
       </div>
 
       <div className="grid gap-6 xl:grid-cols-[360px,1fr]">
-        <Card className="h-[70vh] flex flex-col">
+        <Card className="h-screen flex flex-col">
           <CardHeader className="space-y-4">
             <div className="flex items-center justify-between">
               <CardTitle className="flex items-center gap-2">
@@ -298,7 +333,7 @@ export default function CMS() {
             <ScrollArea className="h-full">
               <div className="space-y-2 pr-2">
                 {pagesQuery.isLoading && (
-                  <div className="flex h-32 items-center justify-center text-muted-foreground">
+                  <div className="flex h-32 items-center justify-center text-muted-foreground ">
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     Loading SEO pages...
                   </div>
@@ -315,49 +350,25 @@ export default function CMS() {
                       key={page.id}
                       onClick={() => handleSelectPage(page.relativePath)}
                       className={cn(
-                        "w-full rounded-lg border px-4 py-3 text-left transition hover:border-blue-300 hover:bg-blue-50",
+                        "w-full rounded-lg border px-4 py-3 text-left transition hover:border-blue-300 hover:bg-blue-200 ",
                         isSelected
-                          ? "border-blue-500 bg-blue-50 shadow-sm"
-                          : "border-muted bg-card"
+                          ? "border-blue-700 bg-blue-200 shadow-lg text-blue-700"
+                          : "border-gray-300 bg-blue-50 text-gray-700"
                       )}
                     >
                       <div className="flex flex-wrap items-center justify-between gap-2">
-                        <p className="font-medium text-sm text-foreground">{page.title}</p>
-                        <Badge variant="secondary" className="text-xs">
-                          {page.slug || "index"}
-                        </Badge>
+                        <p className="font-medium text-sm text-foreground">{page.relativePath}</p>
+     
                       </div>
                       <div className="mt-2 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
-                        <span>{page.relativePath}</span>
-                        <span>•</span>
-                        <span>{formatBytes(page.size)}</span>
-                        <span>•</span>
                         <span>{new Date(page.lastModified).toLocaleString()}</span>
                       </div>
-                      {page.routePath && (
+                     
                         <div className="mt-2 flex items-center gap-2">
-                          <a
-                            href={page.routePath}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="text-xs text-blue-600 hover:underline"
-                          >
-                            {page.routePath}
-                          </a>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-6 w-6 text-muted-foreground"
-                            onClick={(event) => {
-                              event.stopPropagation();
-                              handleCopy(page.routePath, "Route");
-                            }}
-                          >
-                            <Copy className="h-3.5 w-3.5" />
-                            <span className="sr-only">Copy route</span>
-                          </Button>
-                        </div>
-                      )}
+                          
+    
+                      </div>
+
                     </button>
                   );
                 })}
@@ -561,6 +572,28 @@ export default function CMS() {
                               <Save className="h-4 w-4" />
                             )}
                             Save changes
+                          </Button>
+                          <Button
+                            type="button"
+                            variant="destructive"
+                            size="sm"
+                            disabled={isDeleting}
+                            onClick={() => {
+                              if (!currentDetail) return;
+                              const confirmed = window.confirm(
+                                `Are you sure you want to delete "${currentDetail.relativePath}"? This action cannot be undone.`
+                              );
+                              if (!confirmed) return;
+                              deleteMutation.mutate(currentDetail.relativePath);
+                            }}
+                            className="gap-2"
+                          >
+                            {isDeleting ? (
+                              <Loader2 className="h-4 w-4 animate-spin" />
+                            ) : (
+                              <Trash2 className="h-4 w-4" />
+                            )}
+                            Delete page
                           </Button>
                         </div>
                       </div>

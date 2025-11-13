@@ -4,6 +4,7 @@ const {
   listSeoPages,
   readSeoPage,
   writeSeoPage,
+  deleteSeoPage,
   createSeoPage,
   getSeoPageSummary,
   getSlugFromRelativePath,
@@ -161,8 +162,22 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.delete("/", async (req, res) => {
+  try {
+    const relativePath = ensureString(req.body?.path, "path");
+    await deleteSeoPage(relativePath);
+    res.json({ ok: true, path: relativePath });
+  } catch (error) {
+    console.error("[cms-seo] DELETE error:", error);
+    const statusCode = error.statusCode || 500;
+    res
+      .status(statusCode)
+      .json({ ok: false, error: error.message || "Failed to delete SEO page" });
+  }
+});
+
 router.all("/", (req, res) => {
-  res.set("Allow", "GET,POST,PUT");
+  res.set("Allow", "GET,POST,PUT,DELETE");
   res.status(405).json({ ok: false, error: "Method not allowed" });
 });
 
