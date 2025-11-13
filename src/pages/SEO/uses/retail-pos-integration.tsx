@@ -11,7 +11,8 @@ import {
   ArrowRight,
   Shield,
   Users,
-  ClipboardCheck
+  ClipboardCheck,
+  Star
 } from 'lucide-react';
 
 export default function RetailPosIntegration() {

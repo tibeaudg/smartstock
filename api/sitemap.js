@@ -1,5 +1,6 @@
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
+import { createClient } from '@supabase/supabase-js';
 
 const BASE_URL = (process.env.SITE_URL || 'https://www.stockflow.be').replace(/\/$/, '');
 
@@ -150,7 +151,6 @@ async function getPublishedBlogPosts() {
   if (!supabaseUrl || !supabaseAnonKey) return [];
 
   try {
-    const { createClient } = require('@supabase/supabase-js');
     const supabase = createClient(supabaseUrl, supabaseAnonKey);
     const { data, error } = await supabase
       .from('blogposts')
@@ -165,7 +165,7 @@ async function getPublishedBlogPosts() {
   }
 }
 
-module.exports = async (req, res) => {
+export default async function sitemapHandler(req, res) {
   try {
     const today = new Date().toISOString();
     const staticRoutes = ['/', '/nl', '/blog']; // Added /nl for Dutch homepage
@@ -208,6 +208,6 @@ module.exports = async (req, res) => {
     console.error('[sitemap] Unexpected error:', err);
     res.status(500).send('');
   }
-};
+}
 
 

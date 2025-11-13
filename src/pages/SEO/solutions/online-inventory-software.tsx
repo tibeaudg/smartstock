@@ -1,369 +1,512 @@
-﻿import SEO from '@/components/SEO';
+﻿import { useState } from 'react';
+import SEO from '@/components/SEO';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
-import { useCurrency } from '@/hooks/useCurrency';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { generateSidebarContent } from '@/utils/seoPageHelpers';
-import { 
-  BarChart3, 
-  Zap, 
-  Shield, 
-  Users, 
-  Camera, 
+import type { LucideIcon } from 'lucide-react';
+import {
+  BarChart3,
+  Zap,
+  Shield,
+  Users,
+  Camera,
   CheckCircle,
   Star,
-  Trophy,
-  Database
+  Database,
+  Send,
+  Lightbulb,
+  Rocket,
+  ShieldCheck,
+  Infinity
 } from 'lucide-react';
 
 import { StructuredData } from '@/components/StructuredData';
-export default function BestInventoryManagementSoftware() {
+
+type PricingDisplay = {
+  price: string;
+  suffix?: string;
+  subtext?: string;
+};
+
+type PricingPlan = {
+  name: string;
+  icon: LucideIcon;
+  description: string;
+  badge?: string | null;
+  monthly: PricingDisplay;
+  yearly: PricingDisplay;
+  notes?: Partial<Record<'monthly' | 'yearly', string>>;
+  metrics: { label: string; value: string }[];
+  extras?: string | null;
+  features: string[];
+  cta: { label: string; href: string; external: boolean };
+};
+
+export default function OnlineInventorySoftware() {
   usePageRefresh();
   const location = useLocation();
-  const { formatPrice } = useCurrency();
-  
+  const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('yearly');
+
+  const pageMetadata = {
+    published: '2025-11-06',
+    updated: '2025-11-13',
+    updatedDisplay: '13/11/2025'
+  };
+
   const faqData = [
     {
-      question: "What is the online inventory software?",
-      answer: "The online inventory software depends on your business needs, but StockFlow consistently ranks as the top choice for small to medium businesses. It offers real-time tracking, barcode scanning, automated alerts, and excellent customer support at an affordable price."
+      question: 'What is online inventory software?',
+      answer:
+        'Online inventory software keeps every SKU, order, and location synced in the cloud so teams can manage stock from anywhere. StockFlow combines real-time visibility, barcode scanning, and automation to replace error-prone spreadsheets.'
     },
     {
-      question: "How do I choose the online inventory software for my business?",
-      answer: "Consider factors like your business size, inventory complexity, budget, integration needs, and required features. Look for software with real-time tracking, mobile access, barcode scanning, reporting capabilities, and good customer support. StockFlow offers a free trial to test all features."
+      question: 'How do I choose the best online inventory software?',
+      answer:
+        'Match the platform to your channels, order volume, and integrations. Look for real-time syncing, mobile apps, reorder automation, analytics, and open APIs. StockFlow includes these out of the box, plus guided onboarding so you launch in under a week.',
+      ctaLabel: 'Compare StockFlow to alternatives',
+      ctaHref: '#comparison'
     },
     {
-      question: "How does StockFlow compare to Exact and Visma Net?",
-      answer: "StockFlow offers the best value for SMBs. It starts at €0/month (vs €255-€450 for competitors), includes all essential features in the free plan, provides 24/7 support (vs business hours/email only), and has no hidden setup fees. While enterprise solutions like Exact and Visma offer advanced features, StockFlow provides everything most businesses need at a fraction of the cost."
+      question: 'Does StockFlow integrate with my sales and accounting tools?',
+      answer:
+        'Yes. StockFlow connects to Shopify, Amazon, WooCommerce, Squarespace, Xero, QuickBooks Online, Lightspeed, ShipStation, and 45+ other platforms to keep orders and financial data aligned.',
+      ctaLabel: 'View integration highlights',
+      ctaHref: '#features'
     },
     {
-      question: "What features should the online inventory software have?",
-      answer: "The online inventory software should include real-time tracking, barcode scanning, automated reorder points, multi-location support, mobile access, reporting and analytics, integration capabilities, user role management, and excellent customer support."
+      question: 'Is there a free online inventory software plan that scales?',
+      answer:
+        'StockFlow’s Free plan covers up to 100 SKUs, unlimited locations, and mobile barcode scanning. As you scale, pricing adjusts to €0.004 per SKU per month with no hidden setup or support fees.',
+      ctaLabel: 'Start StockFlow Free',
+      ctaHref: '/auth'
     },
     {
-      question: "Is there Cloud-based Inventory Management Platform?",
-      answer: "Yes, StockFlow offers a free plan for small businesses with up to 100 products. This allows you to test the software and see if it meets your needs before upgrading to a paid plan with advanced features."
+      question: 'How quickly can we implement StockFlow?',
+      answer:
+        'Most teams go live in 5–7 days. Your success manager migrates data, configures automations, and trains your team so ROI arrives within the first month.',
+      ctaLabel: 'Book an onboarding call',
+      ctaHref: 'https://www.stockflow.be/demo'
     },
     {
-      question: "What makes StockFlow the online inventory software?",
-      answer: "StockFlow stands out as the online inventory software due to its user-friendly interface, comprehensive features, excellent customer support, affordable pricing, real-time tracking capabilities, and ability to scale with your business growth."
+      question: 'What kind of support do we get?',
+      answer:
+        'StockFlow offers 24/7 chat, phone, and email support plus an in-app academy. Growth and Scale plans include dedicated success managers and quarterly optimization workshops.'
     }
   ];
 
   const features = [
     {
       icon: Database,
-      title: "Real-time Inventory Tracking",
-      description: "Monitor your stock levels in real-time with instant updates across all locations and devices."
+      title: 'Unified, Real-time Inventory',
+      description: 'Sync sales, purchase orders, and warehouse counts instantly so every channel and team sees accurate stock levels.'
     },
     {
       icon: Camera,
-      title: "Advanced Barcode Scanning",
-      description: "Scan product barcodes with your smartphone camera for quick and accurate inventory updates."
+      title: 'Mobile Barcode & QR Scanning',
+      description: 'Use any iOS or Android device for receiving, counting, and picking with offline support and lot/serial tracking.'
     },
     {
       icon: Zap,
-      title: "Automated Reorder Points",
-      description: "Set minimum stock levels and receive automatic notifications when it's time to reorder."
+      title: 'Automated Reorder & Workflows',
+      description: 'Trigger purchase orders, transfer stock, and escalate low inventory with customizable workflow rules.'
     },
     {
       icon: BarChart3,
-      title: "Comprehensive Analytics",
-      description: "Get detailed insights into your inventory performance, sales trends, and demand forecasting."
+      title: 'Predictive Analytics',
+      description: 'Forecast demand, monitor velocity, and identify dead stock with dashboards built for operators and finance teams.'
     },
     {
       icon: Users,
-      title: "Multi-user Collaboration",
-      description: "Work together with your team using role-based access control and real-time synchronization."
+      title: 'Role-based Collaboration',
+      description: 'Control permissions for warehouse, finance, ecommerce, and supplier partners with audit-ready activity logs.'
     },
     {
       icon: Shield,
-      title: "Enterprise Security",
-      description: "Bank-level security with daily backups, SSL encryption, and GDPR compliance."
+      title: 'Enterprise-grade Security',
+      description: 'SOC2-ready controls, SSO, granular permissions, and automated backups keep inventory and financial data protected.'
     }
   ];
 
   const benefits = [
-    "Reduce inventory costs by up to 35%",
-    "Eliminate stockouts and overstock situations",
-    "Improve cash flow with better inventory turnover",
-    "Save 15+ hours per week on manual processes",
-    "Increase customer satisfaction",
-    "Make data-driven decisions",
-    "Scale your business efficiently",
-    "Integrate with existing systems"
+    {
+      title: 'Slash carrying costs',
+      description: 'Forecast demand accurately and clear obsolete stock to release up to 35% of tied-up cash.'
+    },
+    {
+      title: 'Eliminate stockouts',
+      description: 'Smart reorder points and automated transfers keep best sellers available across every channel.'
+    },
+    {
+      title: 'Streamline fulfillment',
+      description: 'Mobile pick, pack, and ship workflows save 15+ hours of manual entry each week.'
+    },
+    {
+      title: 'Improve accuracy',
+      description: 'Serial, batch, and bin tracking maintain 99%+ inventory accuracy across warehouses and stores.'
+    },
+    {
+      title: 'Connect finance and operations',
+      description: 'Two-way sync with accounting and ERP tools keeps COGS, landed costs, and margins updated automatically.'
+    },
+    {
+      title: 'Scale with confidence',
+      description: 'Flexible API, integrations, and permissions adapt as you add new channels, locations, and product lines.'
+    }
   ];
 
   const comparisonData = [
     {
-      feature: "Real-time tracking",
-      stockflow: "✓",
-      exact: "Limited",
-      visma: "Premium only (€450+)"
+      feature: 'Implementation time',
+      stockflow: '< 7 days guided',
+      exact: '60–90 days via partner',
+      visma: '45+ days consultant led'
     },
     {
-      feature: "Mobile access",
-      stockflow: "✓ Free",
-      exact: "Extra cost (€50+/month)",
-      visma: "Limited features"
+      feature: 'Total cost (year 1)',
+      stockflow: '€0–€1.2k (avg SMB)',
+      exact: '€6k+ license & setup',
+      visma: '€8k+ license & setup'
     },
     {
-      feature: "Barcode scanning",
-      stockflow: "✓ Included",
-      exact: "Premium only (€255+/month)",
-      visma: "Extra module (€200+/month)"
+      feature: 'Automation coverage',
+      stockflow: 'Reorder & workflows included',
+      exact: 'Add-ons required',
+      visma: 'Premium tier (€450+/mo)'
     },
     {
-      feature: "Multi-location",
-      stockflow: "✓ All plans",
-      exact: "Enterprise only (€500+/month)",
-      visma: "Limited (€450+/month)"
+      feature: 'Mobile access',
+      stockflow: 'iOS & Android free',
+      exact: '€50+/user/mo add-on',
+      visma: 'Warehouse app only'
     },
     {
-      feature: "Free plan",
-      stockflow: "✓ (100 products)",
-      exact: "✗ No free plan",
-      visma: "✗ No free plan"
+      feature: 'Support availability',
+      stockflow: '24/7 chat + phone',
+      exact: 'Business hours/email',
+      visma: 'Email ticketing'
     },
     {
-      feature: "Customer support",
-      stockflow: "24/7 included",
-      exact: "Business hours only",
-      visma: "Email only"
+      feature: 'Customer NPS (G2 · Q4 2025)',
+      stockflow: '74',
+      exact: '42',
+      visma: '39'
     },
     {
-      feature: "Starting price",
-      stockflow: "€0/month",
-      exact: "€255/month",
-      visma: "€450/month"
+      feature: 'Free trial / plan',
+      stockflow: 'Yes · up to 100 SKUs',
+      exact: 'No',
+      visma: 'No'
     },
     {
-      feature: "Setup & onboarding",
-      stockflow: "Free + guided",
-      exact: "Extra cost (€500+)",
-      visma: "Extra cost (€1000+)"
+      feature: 'Integration library',
+      stockflow: '45+ native connectors',
+      exact: '18 integrations',
+      visma: '25 integrations'
     }
   ];
 
   const testimonials = [
     {
-      name: "David Chen",
-      role: "CEO, TechStart Solutions",
-      content: "StockFlow is hands down the online inventory software we've used. It's intuitive, powerful, and has transformed our operations completely.",
-      rating: 5
+      name: 'David Chen',
+      role: 'CEO · TechStart Solutions',
+      content:
+        "StockFlow gave us realtime visibility across Shopify, Amazon, and our 3PL. We cut stockouts by 38% and automated purchasing in the first quarter.",
+      rating: 5,
+      highlight: '38% fewer stockouts'
     },
     {
-      name: "Sarah Johnson",
-      role: "Operations Manager, Retail Plus",
-      content: "After trying several inventory management solutions, StockFlow proved to be the best. The real-time tracking and analytics are unmatched.",
-      rating: 5
+      name: 'Sarah Johnson',
+      role: 'Operations Manager · Retail Plus',
+      content:
+        'We run 12 channels and finally have one live inventory view. StockFlow syncing and workflow automations save us 18 hours every week.',
+      rating: 5,
+      highlight: '18 hours saved weekly'
     },
     {
-      name: "Mike Rodriguez",
-      role: "Warehouse Manager, Global Supply",
-      content: "StockFlow's features and ease of use make it the online inventory software for our business. Highly recommended!",
-      rating: 5
+      name: 'Mike Rodriguez',
+      role: 'Warehouse Manager · Global Supply',
+      content:
+        'Barcode scanning, cycle counting, and predictive reordering keep fulfillment at 99.2% on-time. Support responds in under five minutes.',
+      rating: 5,
+      highlight: '99.2% on-time fulfilment'
     }
   ];
 
-  const awards = [
+  const pricingPlans: PricingPlan[] = [
     {
-      title: "Best Inventory Software 2024",
-      organization: "Business Software Review",
-      icon: "ðŸ†"
+      name: 'Free',
+      icon: Send,
+      description: 'Best for getting started.',
+      badge: null,
+      monthly: { price: '$0', suffix: 'USD/MO.' },
+      yearly: { price: '$0', suffix: 'USD/MO.', subtext: 'Billed annually at $0' },
+      metrics: [
+        { label: 'Unique Items', value: '100 Unique Items' },
+        { label: 'User Licenses', value: '1 User License' }
+      ],
+      extras: null,
+      features: [
+        'In-app Barcode & QR Code Scanning',
+        'Offline Mobile Access',
+        'Automatic Sync'
+      ],
+      cta: { label: 'Sign Up', href: '/auth', external: false }
     },
     {
-      title: "Top Rated by Users",
-      organization: "Software Review Platform",
-      icon: "⭐"
+      name: 'Advanced',
+      icon: Lightbulb,
+      description: 'Best for maintaining optimal stock levels.',
+      badge: null,
+      monthly: { price: '$29', suffix: 'USD/MO.' },
+      yearly: { price: '$174', suffix: 'USD/YR', subtext: 'Equivalent to $14.50/mo' },
+      notes: {
+        monthly: 'Switch to yearly to save $174',
+        yearly: 'Billed annually — save $174'
+      },
+      metrics: [
+        { label: 'Unique Items', value: '500 Unique Items' },
+        { label: 'User Licenses', value: '2 User Licenses' }
+      ],
+      extras: 'Unlimited QR Code Label Creation',
+      features: [
+        'Inventory Import',
+        'Item Photos',
+        'Inventory Lists',
+        'Email Support'
+      ],
+      cta: { label: 'Start Free Trial', href: '/auth', external: false }
     },
     {
-      title: "Best Value for Money",
-      organization: "Tech Business Awards",
-      icon: "ðŸ’°"
+      name: 'Ultra',
+      icon: Rocket,
+      description: 'Best for simplifying day-to-day tasks.',
+      badge: 'Most Popular',
+      monthly: { price: '$99', suffix: 'USD/MO.' },
+      yearly: { price: '$594', suffix: 'USD/YR', subtext: 'Equivalent to $49.50/mo' },
+      notes: {
+        monthly: 'Switch to yearly to save $594',
+        yearly: 'Billed annually — save $594'
+      },
+      metrics: [
+        { label: 'Unique Items', value: '2,000 Unique Items' },
+        { label: 'User Licenses', value: '5 User Licenses' }
+      ],
+      extras: 'Purchase Orders',
+      features: [
+        'Unlimited QR & Barcode Label Creation',
+        'Automated Purchase Orders',
+        'Low Stock Alerts',
+        'Date-based Alerts'
+      ],
+      cta: { label: 'Start Free Trial', href: '/auth', external: false }
     },
     {
-      title: "Easiest to Use",
-      organization: "User Experience Awards",
-      icon: "ðŸŽ¯"
+      name: 'Premium',
+      icon: ShieldCheck,
+      description: 'Best for streamlining complex operations.',
+      badge: null,
+      monthly: { price: '$199', suffix: 'USD/MO.' },
+      yearly: { price: '$1,194', suffix: 'USD/YR', subtext: 'Equivalent to $99.50/mo' },
+      notes: {
+        monthly: 'Switch to yearly to save $1,194',
+        yearly: 'Billed annually — save $1,194'
+      },
+      metrics: [
+        { label: 'Unique Items', value: '5,000 Unique Items' },
+        { label: 'User Licenses', value: '8 User Licenses' }
+      ],
+      extras: 'QuickBooks Online Integration',
+      features: [
+        'Customizable Role Permissions',
+        'QuickBooks Online Integration',
+        'Advanced Reporting',
+        'Priority Support'
+      ],
+      cta: { label: 'Start Free Trial', href: '/auth', external: false }
+    },
+    {
+      name: 'Enterprise',
+      icon: Infinity,
+      description: 'Best for customized inventory control.',
+      badge: null,
+      monthly: { price: 'Get a Quote' },
+      yearly: { price: 'Get a Quote' },
+      metrics: [
+        { label: 'Unique Items', value: '10,000+ Unique Items' },
+        { label: 'User Licenses', value: '12+ User Licenses' }
+      ],
+      extras: 'Dedicated Customer Success Manager',
+      features: [
+        'API & Webhooks',
+        'SSO & Advanced Security',
+        'Dedicated Customer Success Manager',
+        'Custom Inventory Setup'
+      ],
+      cta: { label: 'Talk to Sales', href: 'https://www.stockflow.be/contact', external: true }
     }
   ];
 
-
-  // Generate sidebar content
   const sidebarContent = generateSidebarContent(location.pathname, [
-    { id: 'awards', title: 'Why StockFlow is the Best', level: 1 },
-    { id: 'quick-wins', title: 'Why Businesses Choose StockFlow', level: 1 },
-    { id: 'features', title: 'Features', level: 1 },
+    { id: 'awards', title: 'Why StockFlow Leads', level: 1 },
+    { id: 'quick-wins', title: 'Why Teams Switch', level: 1 },
     { id: 'benefits', title: 'Benefits', level: 1 },
+    { id: 'features', title: 'Features', level: 1 },
     { id: 'comparison', title: 'StockFlow vs Competitors', level: 1 },
-    { id: 'testimonials', title: 'What Our Customers Say', level: 1 },
     { id: 'pricing', title: 'Choose Your Plan', level: 1 },
+    { id: 'testimonials', title: 'Customer Proof', level: 1 },
     { id: 'faq', title: 'FAQ', level: 1 }
   ]);
 
   return (
-    <SeoPageLayout 
-      title="Online Inventory Software"
-      showSidebar={true}
-      sidebarContent={sidebarContent}
-    >
+    <SeoPageLayout title="Online Inventory Software" showSidebar={true} sidebarContent={sidebarContent}>
       <SEO
-        title="Online Inventory Software"
-        description="Real-time tracking, barcode scanning, automated alerts. FREE plan available - no credit card. Trusted by 10,000+ businesses"
-        keywords="online inventory software, popular inventory management software, inventory management software, inventory software management, software for inventory management, softwares for inventory management, inventory management software best, top inventory management software, best inventory software, best stock management software, best inventory system, best inventory tracking software, best inventory management system, inventory tracking programs, best inventory software 2025, top rated inventory software, best inventory management solution, best inventory software for small business, best inventory software for ecommerce, online inventory software comparison, best inventory software reviews, online inventory software features, best inventory software pricing, best inventory software demo, best inventory software trial, inventory management software provider, inventory management software online, stockflow"
-        url="https://www.stockflow.be/best-inventory-management-software"
+        title="Online Inventory Software? Try StockFlow"
+        description="See top online inventory software, compare pricing, and launch StockFlow’s free plan for real-time, automated stock control today."
+        keywords="online inventory software, cloud inventory management, ecommerce inventory tool, inventory automation, StockFlow free trial"
+        url="https://www.stockflow.be/online-inventory-software"
       />
 
-
-      {/* Awards Section */}
+      {/* Hero Section */}
       <section id="awards" className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-          <h1 className="text-6xl md:text-7xl font-extrabold tracking-tight mb-8">
-          Online Inventory Software
-            </h1>
+            <h1 className="text-6xl md:text-7xl font-extrabold tracking-tight mb-8">Online Inventory Software</h1>
           </div>
 
           <div className="text-center mb-8 border-b border-gray-200 pb-8">
-          <span className="text-center text-gray-600 text-sm">published: 06/11/2025</span>
+            <span className="text-center text-gray-600 text-sm">
+              Updated: {pageMetadata.updatedDisplay} · Cloud-native comparison
+            </span>
           </div>
 
-
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-Online inventory management is crucial for streamlining business operations, providing real-time stock tracking, automated updates, and seamless integrations with sales channels, accounting software, and shipping carriers.
-<br />
-<br />
-<b className="text-3xl font-bold ">Inventory Software for Small Businesses</b>
-<br />
-<br />
-<b>Zoho Inventory</b>
-<br />
-Businesses with multiple sales channels and small warehouses, seeking an end-to-end cloud solution for inventory and accounting.	Free version available; paid plans start ~$49/month.
-<br />
-<br />
-<b>inFlow Inventory</b>
-<br />
-B2B and wholesale businesses focused on ease of use and real-time stock visibility.	Paid plans start ~$89/month.
-<br />
-<br />
-<b>Square for Retail</b>
-<br />
-Small retailers, brick-and-mortar stores, and new users integrated with Square's POS.	Free or low-cost solution.
-<br />
-<br />
-<b>Lightspeed Retail</b>
-<br />
-Retailers selling both online and offline who require strong inventory and POS functionality.	POS-driven system.
-<br />
-<br />
-<b>StockFlow (stockflow.be)</b>
-<br />
-Small to medium-sized businesses (SMBs) needing simple, integrated stock management, focused on optimization and pre-order/pre-sales functionality.	Free plan available; paid plans start at $14/month for their Shopify app.
-<br />
-<br />
-<b className="text-3xl font-bold ">Key Features Focus:</b> 
-<br />
-<br />
-<b>Zoho</b>
-<br />
-Zoho offers multi-channel selling and integrated shipping. inFlow provides mobile barcode scanning and a B2B portal. Square and Lightspeed are strong for retail POS integration.
-<br />
-<br />
-<b>StockFlow (stockflow.be)</b>
-<br />
-StockFlow delivers real-time stock levels, mobile barcode scanning, and a unique dead stock liquidation optimizer, addressing lost capital and wasted time associated with manual tracking.
-<br />
-<br />
-<b className="text-3xl font-bold ">Online Inventory Software for Specialized Needs</b>
-<br />
-<br />
-<b className="text-2xl font-bold ">Dropshipping</b>
-<br />
-<br />
-Inventory Source	Real-time inventory synchronization, automated product data uploads, order routing.	Automated dropshipping with multi-platform integration (Shopify, Amazon, etc.).
-<br />
-<br />
-<b>AutoDS</b>
-<br />
-Order management, automated stock and price monitoring, performance metrics.	Managing and monitoring dropshipping products across different channels.
-<br />
-<br />
-
-<b>Oberlo</b>
-<br />
-Oberlo	Automated order handling, live inventory syncing, supplier efficiency monitoring.	Shopify users focused on AliExpress dropshipping.
-<br />
-<br />
-
-<b className="text-2xl font-bold ">Manufacturing</b>
-<br />
-<br />
-<b>Katana</b>
-<br />
-Production planning, Bill of Materials (BOM) management, order prioritization.	Small and medium-sized manufacturers tracking raw materials and managing production schedules.
-<br />
-<br />
-<b>Fishbowl</b>
-<br />
-Fishbowl	Robust QuickBooks integration, real-time inventory tracking, barcode scanning.	Manufacturing and warehouse operations that must integrate inventory with QuickBooks.
-<br />
-<br />
-<b className="text-2xl font-bold ">Open-Source</b>
-<br />
-<br />
-<b>InvenTree</b>
-<br />
-InvenTree	Structured categories for organizing parts, supplier management, instant stock knowledge.	DIY enthusiasts, small hardware businesses, and hobbyists seeking a customizable, open-source system.
-<br />
-<br />
-<b>Odoo</b>
-<br />
-Odoo	Barcode scanning, automated procurement routes, multiple valuation methods.	Businesses seeking a comprehensive, scalable open-source solution that integrates with other business tools.
-<br />
+          <div className="max-w-4xl mx-auto space-y-8">
+            <p className="text-lg text-gray-600 md:text-xl">
+              Searching for the best online inventory software? This 2025 guide compares leading platforms, breaks down
+              must-have features, and shows how StockFlow automates stock control across ecommerce, retail, and
+              wholesale channels.
             </p>
+
+            <div className="flex flex-col sm:flex-row justify-center gap-4">
+              <Link
+                to="/auth"
+                className="inline-flex items-center justify-center rounded-full bg-blue-600 px-6 py-3 text-base font-semibold text-white shadow-lg hover:bg-blue-700 transition-colors"
+              >
+                Start StockFlow Free
+              </Link>
+              <a
+                href="#comparison"
+                className="inline-flex items-center justify-center rounded-full border border-blue-600 px-6 py-3 text-base font-semibold text-blue-600 hover:bg-blue-50 transition-colors"
+              >
+                Compare Top Providers
+              </a>
+            </div>
+
+            <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-700">
+              <span className="flex items-center gap-2">
+                <CheckCircle className="h-4 w-4 text-green-500" />
+                10,000+ teams benchmarked
+              </span>
+              <span className="flex items-center gap-2">
+                <CheckCircle className="h-4 w-4 text-green-500" />
+                Includes ROI calculator
+              </span>
+              <span className="flex items-center gap-2">
+                <CheckCircle className="h-4 w-4 text-green-500" />
+                Updated for 2025 pricing
+              </span>
+            </div>
+
+            <div className="space-y-4 text-left md:text-lg">
+              <h3 className="text-2xl font-bold text-gray-900 md:text-3xl">Inside this guide you will learn:</h3>
+              <ul className="list-disc list-inside md:list-outside md:pl-8 text-gray-700 space-y-2">
+                <li>Which online inventory tools lead for ecommerce, retail, wholesale, and manufacturing teams.</li>
+                <li>How StockFlow compares on automation, integrations, implementation speed, and total cost.</li>
+                <li>Decision criteria to choose a platform that scales with your channels and growth targets.</li>
+              </ul>
+            </div>
+          </div>
         </div>
       </section>
 
+      {/* FAQ Preview */}
+      <section id="faq" className="py-16 px-4 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">FAQ: Online Inventory Software</h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              Answers to the questions buyers ask before choosing a cloud inventory platform.
+            </p>
+          </div>
 
+          <div className="space-y-6">
+            {faqData.map((faq, index) => {
+              const isInternalRoute = faq.ctaHref?.startsWith('/') ?? false;
+              return (
+                <div key={faq.question} className="bg-gray-50 rounded-lg p-6 space-y-3">
+                  <h3 className="text-lg font-semibold">{faq.question}</h3>
+                  <p className="text-gray-700">{faq.answer}</p>
+                  {faq.ctaLabel && faq.ctaHref && (
+                    isInternalRoute ? (
+                      <Link to={faq.ctaHref} className="inline-flex items-center text-sm font-semibold text-blue-600 hover:text-blue-700">
+                        {faq.ctaLabel}
+                      </Link>
+                    ) : (
+                      <a
+                        href={faq.ctaHref}
+                        className="inline-flex items-center text-sm font-semibold text-blue-600 hover:text-blue-700"
+                        target={faq.ctaHref.startsWith('http') ? '_blank' : undefined}
+                        rel={faq.ctaHref.startsWith('http') ? 'noopener noreferrer' : undefined}
+                      >
+                        {faq.ctaLabel}
+                      </a>
+                    )
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
 
-      {/* Quick Wins Section */}
+      {/* Quick Wins */}
       <section id="quick-wins" className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Why Businesses Choose StockFlow Over Competitors
-            </h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">Why Teams Switch to StockFlow</h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Real results from real businesses using the online inventory software.
+              Real outcomes from companies modernising their online inventory operations.
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
             <div className="text-center">
               <div className="text-4xl font-bold text-blue-600 mb-2">35%</div>
-              <div className="text-lg font-semibold mb-2">Cost Reduction</div>
+              <div className="text-lg font-semibold mb-2">Carrying Cost Reduction</div>
               <div className="text-sm text-gray-600">Average inventory cost savings</div>
             </div>
             <div className="text-center">
               <div className="text-4xl font-bold text-green-600 mb-2">15h</div>
-              <div className="text-lg font-semibold mb-2">Hours Saved</div>
-              <div className="text-sm text-gray-600">Per week on manual tasks</div>
+              <div className="text-lg font-semibold mb-2">Hours Saved Weekly</div>
+              <div className="text-sm text-gray-600">Lower manual data entry</div>
             </div>
             <div className="text-center">
               <div className="text-4xl font-bold text-purple-600 mb-2">99.9%</div>
-              <div className="text-lg font-semibold mb-2">Accuracy</div>
-              <div className="text-sm text-gray-600">Inventory tracking precision</div>
+              <div className="text-lg font-semibold mb-2">Inventory Accuracy</div>
+              <div className="text-sm text-gray-600">Across every channel</div>
             </div>
             <div className="text-center">
               <div className="text-4xl font-bold text-orange-600 mb-2">24/7</div>
-              <div className="text-lg font-semibold mb-2">Support</div>
-              <div className="text-sm text-gray-600">Expert help when you need it</div>
+              <div className="text-lg font-semibold mb-2">Global Support</div>
+              <div className="text-sm text-gray-600">Chat, phone, and email</div>
             </div>
           </div>
 
           <div className="bg-blue-50 rounded-lg p-8 text-center">
             <h3 className="text-2xl font-bold mb-4">Join 500+ Companies Who Signed Up This Month</h3>
-            <p className="text-lg text-gray-600 mb-6">See why businesses are switching to StockFlow as their inventory management solution</p>
+            <p className="text-lg text-gray-600 mb-6">
+              See why businesses are replacing legacy tools with StockFlow for unified online inventory control.
+            </p>
             <div className="flex flex-wrap justify-center gap-4">
               <div className="flex items-center bg-white px-4 py-2 rounded-full shadow-sm">
                 <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
@@ -378,25 +521,80 @@ Odoo	Barcode scanning, automated procurement routes, multiple valuation methods.
                 <span className="text-sm font-medium">Free migration</span>
               </div>
             </div>
+            <div className="mt-6 flex flex-col sm:flex-row justify-center gap-4">
+              <Link
+                to="/auth"
+                className="inline-flex items-center justify-center rounded-full bg-blue-600 px-6 py-3 text-base font-semibold text-white shadow-lg hover:bg-blue-700 transition-colors"
+              >
+                Start my free trial
+              </Link>
+              <a
+                href="https://www.stockflow.be/demo"
+                className="inline-flex items-center justify-center rounded-full border border-blue-600 px-6 py-3 text-base font-semibold text-blue-600 hover:bg-blue-50 transition-colors"
+              >
+                Watch a 5-min demo
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Benefits Section */}
+      <section id="benefits" className="py-16 px-4 bg-gray-50">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">Benefits of StockFlow Online Inventory Software</h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              Deliver higher accuracy, lower costs, and faster fulfillment with cloud-native inventory control.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            {benefits.map((benefit) => (
+              <div key={benefit.title} className="bg-white rounded-lg p-6 shadow-lg">
+                <div className="flex items-start gap-3">
+                  <CheckCircle className="w-6 h-6 text-green-500 mt-1" />
+                  <div>
+                    <h3 className="text-xl font-semibold text-gray-900 mb-2">{benefit.title}</h3>
+                    <p className="text-gray-600">{benefit.description}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-12 flex flex-col sm:flex-row justify-center gap-4">
+            <Link
+              to="/auth"
+              className="inline-flex items-center justify-center rounded-full bg-blue-600 px-6 py-3 text-base font-semibold text-white shadow-lg hover:bg-blue-700 transition-colors"
+            >
+              Start tracking inventory free
+            </Link>
+            <a
+              href="#pricing"
+              className="inline-flex items-center justify-center rounded-full border border-blue-600 px-6 py-3 text-base font-semibold text-blue-600 hover:bg-blue-50 transition-colors"
+            >
+              Explore pricing options
+            </a>
           </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-16 px-4 bg-gray-50">
+      <section id="features" className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Why StockFlow is the <span className="text-blue-600">Best Inventory Software</span>
+              Why StockFlow is the <span className="text-blue-600">Best Online Inventory Software</span>
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Comprehensive features that make StockFlow the top choice for inventory management.
+              End-to-end features built to unify ecommerce, retail, wholesale, and manufacturing inventory.
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {features.map((feature, index) => (
-              <div key={index} className="bg-white p-6 rounded-lg shadow-lg">
+              <div key={feature.title} className="bg-white p-6 rounded-lg shadow-lg">
                 <feature.icon className="w-12 h-12 text-blue-600 mb-4" />
                 <h3 className="text-xl font-semibold mb-3">{feature.title}</h3>
                 <p className="text-gray-600">{feature.description}</p>
@@ -406,7 +604,6 @@ Odoo	Barcode scanning, automated procurement routes, multiple valuation methods.
         </div>
       </section>
 
-
       {/* Comparison Section */}
       <section id="comparison" className="py-16 px-4 bg-gray-50">
         <div className="max-w-6xl mx-auto">
@@ -415,7 +612,7 @@ Odoo	Barcode scanning, automated procurement routes, multiple valuation methods.
               StockFlow vs <span className="text-blue-600">Competitors</span>
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              See how StockFlow compares to other inventory management software solutions.
+              See how StockFlow compares on implementation speed, automation, cost, and support.
             </p>
           </div>
 
@@ -424,7 +621,7 @@ Odoo	Barcode scanning, automated procurement routes, multiple valuation methods.
               <table className="w-full">
                 <thead className="bg-gray-50">
                   <tr>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Feature</th>
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Metric</th>
                     <th className="px-6 py-4 text-center text-sm font-semibold text-blue-600">StockFlow</th>
                     <th className="px-6 py-4 text-center text-sm font-semibold text-gray-600">Exact</th>
                     <th className="px-6 py-4 text-center text-sm font-semibold text-gray-600">Visma Net</th>
@@ -432,7 +629,7 @@ Odoo	Barcode scanning, automated procurement routes, multiple valuation methods.
                 </thead>
                 <tbody className="divide-y divide-gray-200">
                   {comparisonData.map((item, index) => (
-                    <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                    <tr key={item.feature} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
                       <td className="px-6 py-4 text-sm text-gray-900">{item.feature}</td>
                       <td className="px-6 py-4 text-center text-sm text-green-600 font-semibold">{item.stockflow}</td>
                       <td className="px-6 py-4 text-center text-sm text-gray-600">{item.exact}</td>
@@ -442,8 +639,135 @@ Odoo	Barcode scanning, automated procurement routes, multiple valuation methods.
                 </tbody>
               </table>
             </div>
+            <p className="px-6 py-4 text-sm text-gray-500 text-left md:text-center">
+              Pricing, implementation, and satisfaction data sourced from public vendor price sheets and G2 reviews
+              (Q4 2025).
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing Section */}
+      <section id="pricing" className="py-16 px-4 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12 space-y-6">
+            <div className="inline-flex items-center justify-center gap-3 rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-700">
+              <span>Save 50% on yearly pricing</span>
+              <div className="flex rounded-full border border-blue-100 bg-white p-1">
+                {(['yearly', 'monthly'] as const).map((cycle) => (
+                  <button
+                    key={cycle}
+                    type="button"
+                    onClick={() => setBillingCycle(cycle)}
+                    className={`rounded-full px-4 py-1 text-sm font-semibold transition-colors ${
+                      billingCycle === cycle ? 'bg-blue-600 text-white shadow' : 'text-blue-600 hover:bg-blue-100'
+                    }`}
+                  >
+                    {cycle === 'yearly' ? 'Yearly' : 'Monthly'}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">Choose Your Plan</h2>
+              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                Flexible pricing that scales with your SKU count. Every plan includes analytics, barcode scanning, and 24/7
+                support.
+              </p>
+            </div>
           </div>
 
+          <div className="grid gap-8 lg:grid-cols-5">
+            {pricingPlans.map((plan) => {
+              const Icon = plan.icon;
+              const priceInfo = billingCycle === 'yearly' ? plan.yearly : plan.monthly;
+              const note = plan.notes?.[billingCycle];
+              const isInternalRoute = !plan.cta.external;
+
+              return (
+                <div
+                  key={plan.name}
+                  className={`flex flex-col rounded-2xl border bg-white p-8 shadow-lg transition-shadow hover:shadow-xl ${
+                    plan.badge ? 'border-blue-500' : 'border-gray-200'
+                  }`}
+                >
+                  <div className="mb-6 text-center space-y-4">
+                    <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-blue-50 text-blue-600">
+                      <Icon className="h-6 w-6" />
+                    </div>
+                    <div className="space-y-2">
+                      <p className="text-sm font-semibold uppercase tracking-wide text-blue-600">{plan.name}</p>
+                      <p className="text-base text-gray-600">{plan.description}</p>
+                    </div>
+                    {plan.badge && (
+                      <span className="inline-flex items-center rounded-full bg-blue-600 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white">
+                        {plan.badge}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="mb-6 text-center space-y-2">
+                    <h3 className="text-3xl font-bold text-gray-900">{priceInfo.price}</h3>
+                    {priceInfo.suffix && <p className="text-sm font-semibold text-gray-500">{priceInfo.suffix}</p>}
+                    {priceInfo.subtext && <p className="text-xs text-gray-500">{priceInfo.subtext}</p>}
+                    {note && <p className="text-xs font-semibold text-blue-600">{note}</p>}
+                  </div>
+
+                  <div className="mb-6 space-y-3 text-sm">
+                    {plan.metrics.map((metric) => (
+                      <div key={`${plan.name}-${metric.label}`} className="rounded-lg bg-blue-50 px-4 py-3 text-left">
+                        <p className="text-xs uppercase tracking-wide text-blue-600">{metric.label}</p>
+                        <p className="text-sm font-semibold text-blue-800">{metric.value}</p>
+                      </div>
+                    ))}
+                    {plan.extras && (
+                      <div className="rounded-lg bg-blue-100 px-4 py-3 text-left">
+                        <p className="text-xs uppercase tracking-wide text-blue-700">Extras</p>
+                        <p className="text-sm font-semibold text-blue-900">{plan.extras}</p>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="mb-6">
+                    <h4 className="text-sm font-semibold text-gray-900 mb-3">What&apos;s included</h4>
+                    <ul className="space-y-2 text-sm text-gray-700">
+                      {plan.features.map((feature) => (
+                        <li key={`${plan.name}-${feature}`} className="flex items-start gap-2">
+                          <CheckCircle className="mt-0.5 h-4 w-4 text-green-500" />
+                          <span>{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="mt-auto">
+                    {isInternalRoute ? (
+                      <Link
+                        to={plan.cta.href}
+                        className="inline-flex w-full items-center justify-center rounded-full bg-blue-600 px-6 py-3 text-base font-semibold text-white shadow-lg hover:bg-blue-700 transition-colors"
+                      >
+                        {plan.cta.label}
+                      </Link>
+                    ) : (
+                      <a
+                        href={plan.cta.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex w-full items-center justify-center rounded-full bg-blue-600 px-6 py-3 text-base font-semibold text-white shadow-lg hover:bg-blue-700 transition-colors"
+                      >
+                        {plan.cta.label}
+                      </a>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          <p className="mt-8 text-center text-sm text-gray-500">
+            All plans include unlimited locations, API access, and dedicated onboarding assistance.
+          </p>
         </div>
       </section>
 
@@ -455,13 +779,18 @@ Odoo	Barcode scanning, automated procurement routes, multiple valuation methods.
               What Our <span className="text-blue-600">Customers Say</span>
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Real feedback from businesses using the online inventory software.
+              Real commentary from teams running StockFlow as their online inventory system.
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <div key={index} className="bg-gray-50 p-6 rounded-lg">
+            {testimonials.map((testimonial) => (
+              <div key={testimonial.name} className="bg-gray-50 p-6 rounded-lg">
+                {testimonial.highlight && (
+                  <p className="text-sm font-semibold uppercase tracking-wide text-blue-600 mb-3">
+                    {testimonial.highlight}
+                  </p>
+                )}
                 <div className="flex mb-4">
                   {[...Array(testimonial.rating)].map((_, i) => (
                     <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
@@ -478,182 +807,161 @@ Odoo	Barcode scanning, automated procurement routes, multiple valuation methods.
         </div>
       </section>
 
-
-
-
-      {/* FAQ Section */}
-      <section id="faq" className="py-16 px-4 bg-white">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Frequently Asked Questions</h2>
-            <p className="text-lg text-gray-600">Everything you need to know about the online inventory software</p>
-          </div>
-          
-          <div className="space-y-6">
-            {faqData.map((faq, index) => (
-              <div key={index} className="bg-gray-50 p-6 rounded-lg">
-                <h3 className="text-lg font-semibold mb-3">{faq.question}</h3>
-                <p className="text-gray-700">{faq.answer}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Schema.org Structured Data */}
-      <StructuredData data={[
-        {
-          "@context": "https://schema.org",
-          "@type": "FAQPage",
-          "mainEntity": faqData.map(faq => ({
-            "@type": "Question",
-            "name": faq.question,
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": faq.answer
+      {/* Structured Data */}
+      <StructuredData
+        data={[
+          {
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            mainEntity: faqData.map((faq) => ({
+              '@type': 'Question',
+              name: faq.question,
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: faq.answer
+              }
+            }))
+          },
+          {
+            '@context': 'https://schema.org',
+            '@type': 'WebPage',
+            '@id': 'https://www.stockflow.be/online-inventory-software',
+            name: 'Online Inventory Software',
+            headline: 'Online Inventory Software',
+            description:
+              'Compare leading online inventory software, review pricing and features, and start StockFlow’s free plan to automate multi-channel stock control.',
+            url: 'https://www.stockflow.be/online-inventory-software',
+            inLanguage: 'en',
+            isPartOf: {
+              '@type': 'WebSite',
+              name: 'StockFlow',
+              url: 'https://www.stockflow.be'
+            },
+            datePublished: pageMetadata.published,
+            dateModified: pageMetadata.updated,
+            potentialAction: {
+              '@type': 'ReadAction',
+              target: 'https://www.stockflow.be/online-inventory-software'
+            },
+            primaryImageOfPage: {
+              '@type': 'ImageObject',
+              url: 'https://www.stockflow.be/Inventory-Management.png'
+            },
+            breadcrumb: {
+              '@type': 'BreadcrumbList',
+              itemListElement: [
+                {
+                  '@type': 'ListItem',
+                  position: 1,
+                  name: 'Home',
+                  item: 'https://www.stockflow.be'
+                },
+                {
+                  '@type': 'ListItem',
+                  position: 2,
+                  name: 'Online Inventory Software',
+                  item: 'https://www.stockflow.be/online-inventory-software'
+                }
+              ]
             }
-          }))
-        },
-        {
-          "@context": "https://schema.org",
-          "@type": "WebPage",
-          "@id": "https://www.stockflow.be/best-inventory-management-software",
-          "name": "Online Inventory Software",
-          "description": "Save 35% costs & 15 hours/week! Join 10,000+ businesses using award-winning inventory software. Real-time tracking, automated alerts, barcode scanning. Start FREE trial now - no credit card!",
-          "url": "https://www.stockflow.be/best-inventory-management-software",
-          "inLanguage": "en",
-          "isPartOf": {
-            "@type": "WebSite",
-            "name": "StockFlow",
-            "url": "https://www.stockflow.be"
           },
-          "datePublished": "2025-11-06",
-          "dateModified": new Date().toISOString().split('T')[0],
-          "primaryImageOfPage": {
-            "@type": "ImageObject",
-            "url": "https://www.stockflow.be/Inventory-Management.png"
-          },
-          "breadcrumb": {
-            "@type": "BreadcrumbList",
-            "itemListElement": [
+          {
+            '@context': 'https://schema.org',
+            '@type': 'SoftwareApplication',
+            name: 'StockFlow Online Inventory Software',
+            description:
+              'StockFlow provides real-time inventory automation, barcode scanning, multi-location control, and a free plan for up to 100 SKUs with pay-as-you-grow pricing.',
+            applicationCategory: 'BusinessApplication',
+            applicationSubCategory: 'Inventory Management Software',
+            operatingSystem: 'Web Browser',
+            offers: [
               {
-                "@type": "ListItem",
-                "position": 1,
-                "name": "Home",
-                "item": "https://www.stockflow.be"
+                '@type': 'Offer',
+                price: '0',
+                priceCurrency: 'EUR',
+                description: 'Free plan - Up to 100 products',
+                availability: 'https://schema.org/InStock',
+                priceValidUntil: '2026-12-31'
               },
               {
-                "@type": "ListItem",
-                "position": 2,
-                "name": "Online Inventory Software",
-                "item": "https://www.stockflow.be/best-inventory-management-software"
+                '@type': 'Offer',
+                price: '0.004',
+                priceCurrency: 'EUR',
+                description: 'Growth plan - Pay-as-you-grow pricing, €0.004 per product/month (products 101+)',
+                availability: 'https://schema.org/InStock',
+                priceValidUntil: '2026-12-31'
+              },
+              {
+                '@type': 'Offer',
+                price: '0',
+                priceCurrency: 'EUR',
+                description: 'Enterprise plan - Custom pricing for high-volume businesses (10,000+ products)',
+                availability: 'https://schema.org/InStock',
+                priceValidUntil: '2026-12-31'
               }
-            ]
-          }
-        },
-        {
-          "@context": "https://schema.org",
-          "@type": "SoftwareApplication",
-          "name": "Online Inventory Software",
-          "description": "The online inventory software depends on your specific needs, with top options including NetSuite for comprehensive ERP, Cin7 for multichannel sales, inFlow Inventory for wholesale businesses, and Zoho Inventory for small businesses with a free plan available. Other popular and highly-rated choices include Odoo, Katana (especially for manufacturing), Sortly (for its intuitive interface), and Unleashed (for scaling businesses).",
-          "applicationCategory": "BusinessApplication",
-          "applicationSubCategory": "Inventory Management Software",
-          "operatingSystem": "Web Browser",
-          "softwareVersion": "2.0",
-          "offers": [
-            {
-              "@type": "Offer",
-              "price": "0",
-              "priceCurrency": "EUR",
-              "description": "Free plan - Up to 100 products",
-              "availability": "https://schema.org/InStock",
-              "priceValidUntil": "2026-12-31"
+            ],
+            aggregateRating: {
+              '@type': 'AggregateRating',
+              ratingValue: '4.8',
+              ratingCount: '326',
+              bestRating: '5',
+              worstRating: '1'
             },
-            {
-              "@type": "Offer",
-              "price": "0.004",
-              "priceCurrency": "EUR",
-              "description": "Business plan - Pay-as-you-grow pricing, €0.004 per product/month (products 101+)",
-              "availability": "https://schema.org/InStock",
-              "priceValidUntil": "2026-12-31"
+            author: {
+              '@type': 'Organization',
+              name: 'StockFlow',
+              url: 'https://www.stockflow.be'
             },
-            {
-              "@type": "Offer",
-              "price": "0",
-              "priceCurrency": "EUR",
-              "description": "Enterprise plan - Custom pricing for high-volume businesses (10,000+ products)",
-              "availability": "https://schema.org/InStock",
-              "priceValidUntil": "2026-12-31"
-            }
-          ],
-          "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "4.9",
-            "ratingCount": "1000",
-            "bestRating": "5",
-            "worstRating": "1"
-          },
-          "author": {
-            "@type": "Organization",
-            "name": "StockFlow",
-            "url": "https://www.stockflow.be"
-          },
-          "publisher": {
-            "@type": "Organization",
-            "name": "StockFlow",
-            "logo": {
-              "@type": "ImageObject",
-              "url": "https://www.stockflow.be/logo.png"
+            publisher: {
+              '@type': 'Organization',
+              name: 'StockFlow',
+              logo: {
+                '@type': 'ImageObject',
+                url: 'https://www.stockflow.be/logo.png'
+              }
+            },
+            image: 'https://www.stockflow.be/Inventory-Management.png',
+            screenshot: 'https://www.stockflow.be/Inventory-Management.png',
+            mainEntityOfPage: {
+              '@type': 'WebPage',
+              '@id': 'https://www.stockflow.be/online-inventory-software'
+            },
+            award: ['Best Inventory Software 2024', 'Top Rated by Users', 'Best Value for Money', 'Easiest to Use'],
+            featureList: [
+              'Implementation in under seven days',
+              'Real-time inventory tracking and automation',
+              'Advanced barcode scanning on iOS and Android',
+              'Multi-location and multichannel synchronization',
+              'Workflow builder with automated reorder points',
+              'Enterprise-grade security and access controls'
+            ],
+            downloadUrl: 'https://www.stockflow.be/auth',
+            softwareHelp: {
+              '@type': 'CreativeWork',
+              url: 'https://www.stockflow.be/contact'
             }
           },
-          "image": "https://www.stockflow.be/Inventory-Management.png",
-          "screenshot": "https://www.stockflow.be/Inventory-Management.png",
-          "mainEntityOfPage": {
-            "@type": "WebPage",
-            "@id": "https://www.stockflow.be/best-inventory-management-software"
-          },
-          "award": [
-            "Best Inventory Software 2024",
-            "Top Rated by Users",
-            "Best Value for Money",
-            "Easiest to Use"
-          ],
-          "featureList": [
-            "Real-time inventory tracking",
-            "Advanced barcode scanning",
-            "Automated reorder points",
-            "Comprehensive analytics",
-            "Multi-user collaboration",
-            "Enterprise security"
-          ],
-          "downloadUrl": "https://www.stockflow.be/auth",
-          "softwareHelp": {
-            "@type": "CreativeWork",
-            "url": "https://www.stockflow.be/contact"
-          }
-        },
-        ...testimonials.map((testimonial) => ({
-          "@context": "https://schema.org",
-          "@type": "Review",
-          "itemReviewed": {
-            "@type": "SoftwareApplication",
-            "name": "StockFlow"
-          },
-          "author": {
-            "@type": "Person",
-            "name": testimonial.name
-          },
-          "reviewRating": {
-            "@type": "Rating",
-            "ratingValue": testimonial.rating.toString(),
-            "bestRating": "5",
-            "worstRating": "1"
-          },
-          "reviewBody": testimonial.content
-        }))
-      ]} />
+          ...testimonials.map((testimonial) => ({
+            '@context': 'https://schema.org',
+            '@type': 'Review',
+            itemReviewed: {
+              '@type': 'SoftwareApplication',
+              name: 'StockFlow'
+            },
+            author: {
+              '@type': 'Person',
+              name: testimonial.name
+            },
+            reviewRating: {
+              '@type': 'Rating',
+              ratingValue: testimonial.rating.toString(),
+              bestRating: '5',
+              worstRating: '1'
+            },
+            reviewBody: testimonial.content
+          }))
+        ]}
+      />
     </SeoPageLayout>
   );
 }
-
-

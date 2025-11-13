@@ -38,7 +38,7 @@ const ensureDir = (dir) => {
 };
 
 const toTitleCase = (slug) => {
-  if (!slug) return "Sortly Blog";
+  if (!slug) return "Stockflow";
   return slug
     .split("-")
     .filter(Boolean)
@@ -54,7 +54,7 @@ const toTitleCase = (slug) => {
 };
 
 const toSentenceFragment = (slug) => {
-  if (!slug) return "sortly blog";
+  if (!slug) return "Stockflow";
   return slug.replace(/-/g, " ").toLowerCase();
 };
 
@@ -105,11 +105,11 @@ const buildPageSource = ({
   const canonicalPath = slug === "index" ? "/blog" : `/blog/${slug}`;
   const heroBadge =
     slug === "index"
-      ? `Sortly Blog • Updated ${displayMonthYear}`
+      ? `Stockflow • Updated ${displayMonthYear}`
       : `Topic Guide • Updated ${displayMonthYear}`;
   const metaDescription =
     slug === "index"
-      ? "Explore StockFlow resources inspired by Sortly blog topics. Discover actionable guides, feature breakdowns, and industry insights tailored for modern inventory teams."
+      ? "Explore StockFlow resources inspired by Stockflow topics. Discover actionable guides, feature breakdowns, and industry insights tailored for modern inventory teams."
       : `Deep dive into ${friendlyTitle}. Learn practical ideas, implementation steps, and metrics so your team can apply ${friendlyTitle} with StockFlow.`;
   const keywords = [
     friendlyTitle,
@@ -159,7 +159,7 @@ const buildPageSource = ({
   const faqs = [
     {
       question: `What is ${friendlyTitle}?`,
-      answer: `${friendlyTitle} refers to the practices, insights, or stories captured in the original Sortly blog article. This guide reframes the topic for StockFlow users who want to move faster, stay organized, and build resilient inventory operations.`,
+      answer: `${friendlyTitle} refers to the practices, insights, or stories captured in the original Stockflow article. This guide reframes the topic for StockFlow users who want to move faster, stay organized, and build resilient inventory operations.`,
     },
     {
       question: `How can I get started with ${friendlyTitle.toLowerCase()}?`,
@@ -291,7 +291,7 @@ export default function ${safeComponentName}() {
           <div>
             <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              {topicTitle} has become a recurring talking point for fast-moving inventory teams. The original Sortly blog
+              {topicTitle} has become a recurring talking point for fast-moving inventory teams. The original Stockflow
               article sparked interest because it addresses real-world frictions that leaders face every day. This updated guide
               distills those takeaways for StockFlow customers—showing you how to adapt the narrative, build alignment across
               departments, and secure measurable results without adding administrative overhead.

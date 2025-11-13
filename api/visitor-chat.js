@@ -1,6 +1,6 @@
-const nodemailer = require('nodemailer');
+import nodemailer from 'nodemailer';
 
-module.exports = async (req, res) => {
+export default async function visitorChatHandler(req, res) {
   try {
     if (req.method !== 'POST') {
       res.status(405).json({ ok: false, error: 'Method not allowed' });
@@ -76,5 +76,5 @@ module.exports = async (req, res) => {
     console.error('[visitor-chat] error:', err);
     res.status(500).json({ ok: false, error: 'Failed to send message. Please try again.' });
   }
-};
+}
 

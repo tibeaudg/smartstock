@@ -8,13 +8,14 @@ import { BranchProvider } from '@/hooks/useBranches';
 import { useAuth } from '@/hooks/useAuth';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { useMobile } from '@/hooks/use-mobile';
-import SEO from '../components/SEO';
 import { AdminNotificationManager } from '@/components/AdminNotificationManager';
 import { AdminChatList } from '@/components/AdminChatList';
-import { AdminSubscriptionManagement } from '@/components/admin/SubscriptionManagement';
+import { AdminSubscriptionManagement } from '@/components/admin/SubscriptionManagement';  
+import CMS from '@/components/CMS';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { SEO } from '@/components/SEO';
 
 // User management types
 interface UserProfile {
@@ -346,7 +347,7 @@ export default function AdminPage() {
   const { user, userProfile } = useAuth();
   const { isMobile } = useMobile();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<'users' | 'features' | 'chats' | 'notifications' | 'seo'>('users');
+  const [activeTab, setActiveTab] = useState<'users' | 'features' | 'chats' | 'notifications' | 'cms' | 'subscription-management'>('users');
   const [selectedUser, setSelectedUser] = useState<UserProfile | null>(null);
   const [companyTypes, setCompanyTypes] = useState<Record<string, { type: string; custom_type: string | null }>>({});
   const [userStats, setUserStats] = useState<UserStats[]>([]);
@@ -436,10 +437,12 @@ export default function AdminPage() {
     };
   }, [user?.id, queryClient]);
 
-  const sidebarNavItems: { id: 'users' | 'features' | 'chats' | 'notifications' | 'seo'; label: string }[] = [
+  const sidebarNavItems: { id: 'users' | 'features' | 'chats' | 'notifications' | 'cms' | 'subscription-management'; label: string }[] = [
     { id: 'users', label: 'User Management' },
     { id: 'chats', label: 'Chats' },
     { id: 'notifications', label: 'Notifications' },
+    { id: 'cms', label: 'CMS' },
+    { id: 'subscription-management', label: 'Subscription Management' },
   ];
   
   // Access control - only owners can view the admin page
@@ -468,10 +471,10 @@ export default function AdminPage() {
         userProfile={userProfile}
         variant="admin"
       >
-        <div className="lg:ml-64 flex flex-col flex-1 min-h-[calc(100vh-80px)]">
+        <div className="flex-grow ml-6 mr-6 min-h-screen overflow-y-auto">
           {/* Top navigation bar - responsive design */}
           <div className="w-full">
-            <div className="mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 p-4">
+            <div className="mt-16 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 p-4">
               {/* Mobile: Vertical tab navigation */}
               {isMobile ? (
                 <div className="space-y-2">
@@ -521,7 +524,7 @@ export default function AdminPage() {
           </div>
 
           {/* Main content area */}
-          <div className="w-full flex-1 space-y-2 mt-6 mb-24">
+          <div className="w-full flex-grow space-y-2 mt-6 mb-24">
 
             {activeTab === 'notifications' && (
               <AdminNotificationManager />
@@ -765,6 +768,15 @@ export default function AdminPage() {
             {activeTab === 'chats' && (
               <AdminChatList />
             )}
+            {activeTab === 'subscription-management' && (
+              <AdminSubscriptionManagement />
+            )}
+            {activeTab === 'cms' && (
+              <CMS />
+            )}
+
+
+
 
           </div>
         </div>

@@ -729,7 +729,6 @@ export default function BestInventoryManagementSoftware() {
                     </div>
                     <div className="space-y-2">
                       <p className="text-sm font-semibold uppercase tracking-wide text-blue-600">{plan.name}</p>
-                      <p className="text-base text-gray-600">{plan.description}</p>
                     </div>
                     {plan.badge && (
                       <span className="inline-flex items-center rounded-full bg-blue-600 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white">

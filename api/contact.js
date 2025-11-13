@@ -1,6 +1,6 @@
-const nodemailer = require('nodemailer');
+import nodemailer from 'nodemailer';
 
-module.exports = async (req, res) => {
+export default async function contactHandler(req, res) {
   try {
     if (req.method !== 'POST') {
       res.status(405).json({ ok: false, error: 'Method not allowed' });
@@ -29,7 +29,10 @@ module.exports = async (req, res) => {
 
     // Additional validation
     if (safeName.length < 2 || safeMessage.length < 10) {
-      res.status(400).json({ ok: false, error: 'Name must be at least 2 characters and message at least 10 characters' });
+      res.status(400).json({
+        ok: false,
+        error: 'Name must be at least 2 characters and message at least 10 characters'
+      });
       return;
     }
 
@@ -90,6 +93,4 @@ module.exports = async (req, res) => {
     console.error('[contact] error', err);
     res.status(500).json({ ok: false, error: 'Unexpected error' });
   }
-};
-
-
+}

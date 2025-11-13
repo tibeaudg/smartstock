@@ -39,17 +39,24 @@ const rateLimiter = (req, res, next) => {
 app.use(cors({
   origin: ['http://localhost:8080', 'http://localhost:8081', 'http://localhost:8082'],
   credentials: true,
-  methods: ['GET', 'POST'],
+  methods: ['GET', 'POST', 'PUT', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
-app.use(express.json({ limit: '1mb' })); // Limit payload size
+app.use(express.json({ limit: '5mb' })); // Larger limit for CMS content
 app.use(rateLimiter);
 
 // Import API handlers
-const visitorChatHandler = require('./api/visitor-chat.js');
-const contactHandler = require('./api/contact.js');
-const adsHandler = require('./api/ads.js');
-const sitemapHandler = require('./api/sitemap.js');
+const loadHandler = (relativePath) => {
+  const mod = require(relativePath);
+  return mod && typeof mod === 'object' && 'default' in mod ? mod.default : mod;
+};
+
+const visitorChatHandler = loadHandler('./api/visitor-chat.js');
+const contactHandler = loadHandler('./api/contact.js');
+const adsHandler = loadHandler('./api/ads.js');
+const sitemapHandler = loadHandler('./api/sitemap.js');
+const cmsSeoRouterModule = require('./api/cms-seo.cjs');
+const cmsSeoRouter = cmsSeoRouterModule.default || cmsSeoRouterModule;
 
 // API routes
 app.post('/api/visitor-chat', (req, res) => {
@@ -67,6 +74,8 @@ app.get('/api/ads', (req, res) => {
 app.get('/api/sitemap', (req, res) => {
   sitemapHandler(req, res);
 });
+
+app.use('/api/cms/seo', cmsSeoRouter);
 
 // Health check
 app.get('/api/health', (req, res) => {

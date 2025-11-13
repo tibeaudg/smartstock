@@ -11,7 +11,7 @@ const canonicalPath = "/blog/3-best-inventory-new-years-resolutions";
 const metaDescription = "Deep dive into 3 Best Inventory New Years Resolutions. Learn practical ideas, implementation steps, and metrics so your team can apply 3 Best Inventory New Years Resolutions with StockFlow.";
 const keywords = "3 Best Inventory New Years Resolutions, 3 Best Inventory New Years Resolutions guide, 3 Best Inventory New Years Resolutions best practices, 3 Best Inventory New Years Resolutions StockFlow, inventory management, operations playbook";
 const heroBadge = "Topic Guide • Updated January 2025";
-const summaryCopy = "Explore 3 Best Inventory New Years Resolutions through the lens of modern inventory and operations leadership. This StockFlow-exclusive guide synthesizes the best lessons from the original Sortly article and translates them into actionable steps for teams that need structure, visibility, and measurable wins.";
+const summaryCopy = "Explore 3 Best Inventory New Years Resolutions through the lens of modern inventory and operations leadership. This StockFlow-exclusive guide synthesizes the best lessons from the original Stockflow article and translates them into actionable steps for teams that need structure, visibility, and measurable wins.";
 const takeaways = [
   "Understand the core themes behind 3 Best Inventory New Years Resolutions and why they matter for modern operations teams.",
   "Follow a structured framework to translate 3 Best Inventory New Years Resolutions into day-to-day improvements.",
@@ -48,7 +48,7 @@ const metrics = [
 const faqData = [
   {
     "question": "What is 3 Best Inventory New Years Resolutions?",
-    "answer": "3 Best Inventory New Years Resolutions refers to the practices, insights, or stories captured in the original Sortly blog article. This guide reframes the topic for StockFlow users who want to move faster, stay organized, and build resilient inventory operations."
+    "answer": "3 Best Inventory New Years Resolutions refers to the practices, insights, or stories captured in the original Stockflow blog article. This guide reframes the topic for StockFlow users who want to move faster, stay organized, and build resilient inventory operations."
   },
   {
     "question": "How can I get started with 3 best inventory new years resolutions?",
@@ -148,7 +148,7 @@ export default function Seo3BestInventoryNewYearsResolutionsPage() {
           <div>
             <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              {topicTitle} has become a recurring talking point for fast-moving inventory teams. The original Sortly blog
+              {topicTitle} has become a recurring talking point for fast-moving inventory teams. The original Stockflow blog
               article sparked interest because it addresses real-world frictions that leaders face every day. This updated guide
               distills those takeaways for StockFlow customers—showing you how to adapt the narrative, build alignment across
               departments, and secure measurable results without adding administrative overhead.

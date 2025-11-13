@@ -48,7 +48,7 @@ const metrics = [
 const faqData = [
   {
     "question": "What is Cycle Counting In The Construction Industry?",
-    "answer": "Cycle Counting In The Construction Industry refers to the practices, insights, or stories captured in the original Sortly blog article. This guide reframes the topic for StockFlow users who want to move faster, stay organized, and build resilient inventory operations."
+    "answer": "Cycle Counting In The Construction Industry refers to the practices, insights, or stories captured in the original Stockflow article. This guide reframes the topic for StockFlow users who want to move faster, stay organized, and build resilient inventory operations."
   },
   {
     "question": "How can I get started with cycle counting in the construction industry?",
@@ -148,7 +148,7 @@ export default function SeoCycleCountingInTheConstructionIndustryPage() {
           <div>
             <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              {topicTitle} has become a recurring talking point for fast-moving inventory teams. The original Sortly blog
+              {topicTitle} has become a recurring talking point for fast-moving inventory teams. The original Stockflow
               article sparked interest because it addresses real-world frictions that leaders face every day. This updated guide
               distills those takeaways for StockFlow customers—showing you how to adapt the narrative, build alignment across
               departments, and secure measurable results without adding administrative overhead.

@@ -6,65 +6,65 @@ import { StructuredData } from "@/components/StructuredData";
 import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
-const topicTitle = "Sortly Blog";
+const topicTitle = "Stockflow Blog";
 const canonicalPath = "/blog";
-const metaDescription = "Explore StockFlow resources inspired by Sortly blog topics. Discover actionable guides, feature breakdowns, and industry insights tailored for modern inventory teams.";
-const keywords = "Sortly Blog, Sortly Blog guide, Sortly Blog best practices, Sortly Blog StockFlow, inventory management, operations playbook";
-const heroBadge = "Sortly Blog • Updated November 2025";
-const summaryCopy = "Explore Sortly Blog through the lens of modern inventory and operations leadership. This StockFlow-exclusive guide synthesizes the best lessons from the original Sortly article and translates them into actionable steps for teams that need structure, visibility, and measurable wins.";
+const metaDescription = "Explore StockFlow resources inspired by Stockflow blog topics. Discover actionable guides, feature breakdowns, and industry insights tailored for modern inventory teams.";
+const keywords = "Stockflow Blog, Stockflow Blog guide, Stockflow Blog best practices, Stockflow Blog StockFlow, inventory management, operations playbook";
+const heroBadge = "Stockflow Blog • Updated November 2025";
+const summaryCopy = "Explore Stockflow Blog through the lens of modern inventory and operations leadership. This StockFlow-exclusive guide synthesizes the best lessons from the original Stockflow article and translates them into actionable steps for teams that need structure, visibility, and measurable wins.";
 const takeaways = [
-  "Understand the core themes behind Sortly Blog and why they matter for modern operations teams.",
-  "Follow a structured framework to translate Sortly Blog into day-to-day improvements.",
-  "Highlight StockFlow capabilities that make sortly blog sustainable at scale."
+  "Understand the core themes behind Stockflow Blog and why they matter for modern operations teams.",
+  "Follow a structured framework to translate Stockflow Blog into day-to-day improvements.",
+  "Highlight StockFlow capabilities that make Stockflow blog sustainable at scale."
 ];
 const actionSteps = [
   {
     "title": "Align on the outcome",
-    "description": "Confirm what sortly blog should deliver for customers, finance, and frontline teams."
+    "description": "Confirm what Stockflow blog should deliver for customers, finance, and frontline teams."
   },
   {
     "title": "Audit current workflows",
-    "description": "Document how sortly blog happens today, where gaps exist, and which systems hold the data."
+    "description": "Document how Stockflow blog happens today, where gaps exist, and which systems hold the data."
   },
   {
     "title": "Launch targeted improvements",
-    "description": "Prototype a lean version of sortly blog inside StockFlow, measure the impact, and expand in sprints."
+    "description": "Prototype a lean version of Stockflow blog inside StockFlow, measure the impact, and expand in sprints."
   }
 ];
 const metrics = [
   {
     "label": "Execution velocity",
-    "detail": "Track how quickly sortly blog initiatives move from idea to rollout."
+    "detail": "Track how quickly Stockflow blog initiatives move from idea to rollout."
   },
   {
     "label": "Team adoption",
-    "detail": "Measure participation rates in the new sortly blog process across locations or departments."
+    "detail": "Measure participation rates in the new Stockflow blog process across locations or departments."
   },
   {
     "label": "Quality & accuracy",
-    "detail": "Monitor error rates, rework, or data accuracy tied to sortly blog workflows."
+    "detail": "Monitor error rates, rework, or data accuracy tied to Stockflow blog workflows."
   }
 ];
 const faqData = [
   {
-    "question": "What is Sortly Blog?",
-    "answer": "Sortly Blog refers to the practices, insights, or stories captured in the original Sortly blog article. This guide reframes the topic for StockFlow users who want to move faster, stay organized, and build resilient inventory operations."
+    "question": "What is Stockflow Blog?",
+    "answer": "Stockflow Blog refers to the practices, insights, or stories captured in the original Stockflow blog article. This guide reframes the topic for StockFlow users who want to move faster, stay organized, and build resilient inventory operations."
   },
   {
-    "question": "How can I get started with sortly blog?",
-    "answer": "Start by clarifying the objective, mapping the stakeholders, and collecting baseline metrics. Use the action playbook in this article to pilot sortly blog within one team, then expand once you capture early wins."
+    "question": "How can I get started with Stockflow blog?",
+    "answer": "Start by clarifying the objective, mapping the stakeholders, and collecting baseline metrics. Use the action playbook in this article to pilot Stockflow blog within one team, then expand once you capture early wins."
   },
   {
-    "question": "Where does StockFlow add value for sortly blog?",
-    "answer": "StockFlow centralizes data, automates alerts, and connects cross-functional teams. That means fewer spreadsheets, faster decisions, and the ability to prove the value of sortly blog with real-time dashboards."
+    "question": "Where does StockFlow add value for Stockflow blog?",
+    "answer": "StockFlow centralizes data, automates alerts, and connects cross-functional teams. That means fewer spreadsheets, faster decisions, and the ability to prove the value of Stockflow blog with real-time dashboards."
   }
 ];
 const structuredData = [
   {
     "@context": "https://schema.org",
     "@type": "Article",
-    "headline": "Sortly Blog",
-    "description": "Explore StockFlow resources inspired by Sortly blog topics. Discover actionable guides, feature breakdowns, and industry insights tailored for modern inventory teams.",
+    "headline": "Stockflow Blog",
+    "description": "Explore StockFlow resources inspired by Stockflow blog topics. Discover actionable guides, feature breakdowns, and industry insights tailored for modern inventory teams.",
     "author": {
       "@type": "Organization",
       "name": "StockFlow"
@@ -148,7 +148,7 @@ export default function SeoSortlyBlogPage() {
           <div>
             <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              {topicTitle} has become a recurring talking point for fast-moving inventory teams. The original Sortly blog
+              {topicTitle} has become a recurring talking point for fast-moving inventory teams. The original Stockflow blog
               article sparked interest because it addresses real-world frictions that leaders face every day. This updated guide
               distills those takeaways for StockFlow customers—showing you how to adapt the narrative, build alignment across
               departments, and secure measurable results without adding administrative overhead.
@@ -253,19 +253,19 @@ export default function SeoSortlyBlogPage() {
               <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
                 <h3 className="text-lg font-semibold">Unified data foundation</h3>
                 <p className="mt-3 text-sm text-white/85">
-                  Centralize item masters, stock movements, suppliers, and documents so sortly blog decisions never rely on outdated spreadsheets.
+                  Centralize item masters, stock movements, suppliers, and documents so Stockflow blog decisions never rely on outdated spreadsheets.
                 </p>
               </div>
               <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
                 <h3 className="text-lg font-semibold">Automation & alerts</h3>
                 <p className="mt-3 text-sm text-white/85">
-                  Trigger workflows, approvals, and reorder points when sortly blog KPIs drift from plan.
+                  Trigger workflows, approvals, and reorder points when Stockflow blog KPIs drift from plan.
                 </p>
               </div>
               <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
                 <h3 className="text-lg font-semibold">Collaboration built in</h3>
                 <p className="mt-3 text-sm text-white/85">
-                  Give finance, operations, and frontline teams a shared system of record for sortly blog progress.
+                  Give finance, operations, and frontline teams a shared system of record for Stockflow blog progress.
                 </p>
               </div>
             </div>
