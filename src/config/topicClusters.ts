@@ -474,7 +474,7 @@ export const englishMainCluster: TopicCluster = {
       title: 'Best Inventory Management Software',
       language: 'en',
       category: 'Inventory Management',
-      description: 'Top-rated inventory management solutions',
+      description: 'Compare the best inventory management software with detailed feature analysis, pricing comparison, and implementation guides',
       image: '/dashboard.png'
     },
     {

@@ -289,6 +289,17 @@ export default function InventoryForEcommerce() {
                 <div className="text-blue-600 text-sm font-semibold">Read more →</div>
               </div>
             </Link>
+            <Link to="/best-inventory-management-software" className="group">
+              <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition">
+                <h3 className="font-semibold text-lg mb-2 group-hover:text-blue-600 transition">
+                  Best Inventory Management Software
+                </h3>
+                <p className="text-gray-600 text-sm mb-3">
+                  Compare top inventory management software options with detailed feature comparisons and pricing.
+                </p>
+                <div className="text-blue-600 text-sm font-semibold">Read more →</div>
+              </div>
+            </Link>
           </div>
         </div>
       </section>

@@ -351,7 +351,7 @@ export default function SoftwareForInventoryManagement() {
               StockFlow vs <span className="text-blue-600">Competitors</span>
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              See how StockFlow compares to other software for inventory management.
+              See how StockFlow compares to other software for inventory management. For a comprehensive comparison of the best inventory management software platforms, see our detailed <Link to="/best-inventory-management-software" className="text-blue-600 hover:underline font-semibold">best inventory management software</Link> guide.
             </p>
           </div>
 

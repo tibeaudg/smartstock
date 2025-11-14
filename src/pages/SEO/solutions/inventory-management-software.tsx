@@ -945,6 +945,27 @@ export default function InventoryManagementSoftware() {
         </div>
       </section>
 
+      {/* Comparison Section */}
+      <section className="py-16 px-4 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="bg-blue-50 rounded-lg p-8 text-center">
+            <h2 className="text-3xl font-bold mb-4 text-gray-900">
+              Compare Top Inventory Management Software
+            </h2>
+            <p className="text-lg text-gray-700 mb-6 max-w-3xl mx-auto">
+              Looking for a detailed comparison of the best inventory management software? Our comprehensive guide compares leading platforms including StockFlow, NetSuite, Cin7, and more with side-by-side feature analysis, pricing, and implementation timelines.
+            </p>
+            <Link 
+              to="/best-inventory-management-software" 
+              className="inline-flex items-center justify-center bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-blue-700 transition"
+            >
+              View Best Inventory Management Software Comparison
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Related Articles Section */}
       <RelatedArticles 
         articles={relatedPages}
