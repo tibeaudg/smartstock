@@ -13,10 +13,6 @@ const SEO_PAGES_DIRS = [
 ];
 const BLOG_JSON_FALLBACK = path.join(repoRoot, 'src', 'lib', 'blogposts.json');
 const OUTPUT_SITEMAP = path.join(repoRoot, 'public', 'sitemap.xml');
-const OUTPUT_SITEMAP_INDEX = path.join(repoRoot, 'public', 'sitemap-index.xml');
-const OUTPUT_SITEMAP_CORE = path.join(repoRoot, 'public', 'sitemap-core.xml');
-const OUTPUT_SITEMAP_SEO = path.join(repoRoot, 'public', 'sitemap-seo.xml');
-const OUTPUT_SITEMAP_BLOG = path.join(repoRoot, 'public', 'sitemap-blog.xml');
 
 // Read actual SEO page routes
 function collectRoutesFromDir(dirPath, baseDir = dirPath) {
@@ -123,8 +119,8 @@ function xmlEscape(str) {
     .replace(/'/g, '&apos;');
 }
 
-// Build URL tag with proper SEO attributes
-function buildUrlTag(loc, lastmod, changefreq = 'weekly', priority = '0.8') {
+// Build URL tag with minimal data (just loc and lastmod for indexing)
+function buildUrlTag(loc, lastmod) {
   const parts = [
     '  <url>',
     `    <loc>${xmlEscape(loc)}</loc>`,
@@ -132,8 +128,6 @@ function buildUrlTag(loc, lastmod, changefreq = 'weekly', priority = '0.8') {
   if (lastmod) {
     parts.push(`    <lastmod>${new Date(lastmod).toISOString()}</lastmod>`);
   }
-  parts.push(`    <changefreq>${changefreq}</changefreq>`);
-  parts.push(`    <priority>${priority}</priority>`);
   parts.push('  </url>');
   return parts.join('\n');
 }
@@ -141,144 +135,81 @@ function buildUrlTag(loc, lastmod, changefreq = 'weekly', priority = '0.8') {
 async function generateOptimizedSitemap() {
   const today = new Date().toISOString();
   
-  // Define all public static routes with their priorities and change frequencies
+  // Define all public static routes
   const staticRoutes = [
-    { path: '/', priority: '1.0', changefreq: 'daily' },              // Homepage
-    { path: '/nl', priority: '0.9', changefreq: 'weekly' },           // Dutch homepage
-    { path: '/features', priority: '0.9', changefreq: 'weekly' },     // Features page
-    { path: '/pricing', priority: '0.9', changefreq: 'weekly' },      // Pricing page
-    { path: '/nl/pricing', priority: '0.8', changefreq: 'weekly' },   // Dutch pricing page
-    { path: '/auth', priority: '0.6', changefreq: 'monthly' },        // Auth landing
-    { path: '/integrations', priority: '0.6', changefreq: 'monthly' },
-    { path: '/mobile-app', priority: '0.6', changefreq: 'monthly' },
-    { path: '/seo', priority: '0.5', changefreq: 'monthly' },
-    { path: '/contact', priority: '0.7', changefreq: 'monthly' },
-    { path: '/privacy-policy', priority: '0.3', changefreq: 'yearly' },
-    { path: '/terms-conditions', priority: '0.3', changefreq: 'yearly' },
-    { path: '/checkout', priority: '0.4', changefreq: 'monthly' },
+    '/',              // Homepage
+    '/nl',            // Dutch homepage
+    '/features',      // Features page
+    '/pricing',       // Pricing page
+    '/nl/pricing',    // Dutch pricing page
+    '/auth',          // Auth landing
+    '/integrations',
+    '/mobile-app',
+    '/seo',
+    '/contact',
+    '/privacy-policy',
+    '/terms-conditions',
+    '/checkout',
+    '/blog',          // Blog index
   ];
 
   const urls = [];
-  const coreUrls = [];
-  const seoUrls = [];
-  const blogUrls = [];
 
   // Add static routes
   for (const route of staticRoutes) {
-    const entry = {
-      loc: `${BASE_URL}${route.path}`,
+    urls.push({
+      loc: `${BASE_URL}${route}`,
       lastmod: today,
-      changefreq: route.changefreq,
-      priority: route.priority,
-    };
-    urls.push(entry);
-    coreUrls.push(entry);
+    });
   }
 
   // Add SEO pages (all the keyword-focused landing pages)
   const seoRoutes = readSeoRoutes();
   for (const route of seoRoutes) {
     // Skip pages already included in static routes
-    if (staticRoutes.some(sr => sr.path === route)) {
+    if (staticRoutes.includes(route)) {
       continue;
     }
     
-    // Determine priority based on page type
-    let priority = '0.7';
-    let changefreq = 'monthly';
-    
-    // High priority for main Dutch keywords
-    if (route.match(/^\/voorraadbeheer-software$|^\/stockbeheer$|^\/stockbeheer-software$|^\/software-stockbeheer$|^\/stockbeheer-programma$|^\/programma-stockbeheer$|^\/magazijnbeheer-software$/)) {
-      priority = '0.9';
-      changefreq = 'weekly';
-    }
-    // Medium-high priority for English main keywords
-    else if (route.match(/^\/inventory-management-software$|^\/inventory-management$|^\/inventory-management-online$|^\/online-inventory-management$|^\/best-inventory-management-software$/)) {
-      priority = '0.8';
-      changefreq = 'weekly';
-    }
-    // Standard priority for long-tail keywords
-    else {
-      priority = '0.7';
-      changefreq = 'monthly';
-    }
-
-    const entry = {
+    urls.push({
       loc: `${BASE_URL}${route}`,
       lastmod: today,
-      changefreq,
-      priority,
-    };
-    urls.push(entry);
-    seoUrls.push(entry);
+    });
   }
 
   // Add blog posts
   const blogPosts = await readBlogPosts();
   for (const post of blogPosts) {
-    const entry = {
+    urls.push({
       loc: `${BASE_URL}/blog/${post.slug}`,
       lastmod: post.date_published || today,
-      changefreq: 'monthly',
-      priority: '0.6',
-    };
-    urls.push(entry);
-    blogUrls.push(entry);
+    });
   }
 
-  // Sort by priority (highest first) for better crawling
-  urls.sort((a, b) => parseFloat(b.priority) - parseFloat(a.priority));
+  // Deduplicate by URL
+  const uniqueUrls = Array.from(
+    new Map(urls.map((entry) => [entry.loc, entry])).values()
+  );
 
-  // Helper to build minimal sitemap xml
-  const buildSitemap = (entries) => [
+  // Sort alphabetically by URL for consistent output
+  uniqueUrls.sort((a, b) => a.loc.localeCompare(b.loc));
+
+  // Build sitemap XML
+  const sitemapXml = [
     '<?xml version="1.0" encoding="UTF-8"?>',
     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-    ...entries.map((u) => buildUrlTag(u.loc, u.lastmod, u.changefreq, u.priority)),
+    ...uniqueUrls.map((u) => buildUrlTag(u.loc, u.lastmod)),
     '</urlset>',
   ].join('\n');
 
-  // Write a small combined sitemap.xml for backwards compatibility (core only)
-  const combinedUrls = Array.from(
-    new Map(
-      [...coreUrls, ...seoUrls, ...blogUrls].map((entry) => [entry.loc, entry])
-    ).values()
-  ).sort((a, b) => parseFloat(b.priority) - parseFloat(a.priority));
+  // Write single sitemap.xml file
+  fs.writeFileSync(OUTPUT_SITEMAP, sitemapXml + '\n', 'utf8');
 
-  fs.writeFileSync(OUTPUT_SITEMAP, buildSitemap(combinedUrls) + '\n', 'utf8');
-  // Write split sitemaps
-  fs.writeFileSync(OUTPUT_SITEMAP_CORE, buildSitemap(coreUrls) + '\n', 'utf8');
-  fs.writeFileSync(OUTPUT_SITEMAP_SEO, buildSitemap(seoUrls) + '\n', 'utf8');
-  fs.writeFileSync(OUTPUT_SITEMAP_BLOG, buildSitemap(blogUrls) + '\n', 'utf8');
-
-  // Generate sitemap index
-  const sitemapIndex = [
-    '<?xml version="1.0" encoding="UTF-8"?>',
-    '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-    '  <sitemap>',
-    `    <loc>${BASE_URL}/sitemap-core.xml</loc>`,
-    `    <lastmod>${today}</lastmod>`,
-    '  </sitemap>',
-    '  <sitemap>',
-    `    <loc>${BASE_URL}/sitemap-seo.xml</loc>`,
-    `    <lastmod>${today}</lastmod>`,
-    '  </sitemap>',
-    '  <sitemap>',
-    `    <loc>${BASE_URL}/sitemap-blog.xml</loc>`,
-    `    <lastmod>${today}</lastmod>`,
-    '  </sitemap>',
-    '</sitemapindex>',
-  ].join('\n');
-
-  fs.writeFileSync(OUTPUT_SITEMAP_INDEX, sitemapIndex + '\n', 'utf8');
-
-  console.log(`✅ Optimized sitemaps generated`);
-  console.log(`   - Total URLs: ${urls.length}`);
-  console.log(`   - Core URLs: ${coreUrls.length} -> ${OUTPUT_SITEMAP_CORE}`);
-  console.log(`   - SEO URLs: ${seoUrls.length} -> ${OUTPUT_SITEMAP_SEO}`);
-  console.log(`   - Blog URLs: ${blogUrls.length} -> ${OUTPUT_SITEMAP_BLOG}`);
-  console.log(`   - Index: ${OUTPUT_SITEMAP_INDEX}`);
+  console.log(`✅ Sitemap generated`);
+  console.log(`   - Total URLs: ${uniqueUrls.length}`);
+  console.log(`   - Output: ${OUTPUT_SITEMAP}`);
   
-  return urls;
+  return uniqueUrls;
 }
 
 // Generate robots.txt
@@ -298,7 +229,6 @@ function generateRobotsTxt() {
     '',
     '# Sitemaps',
     `Sitemap: ${BASE_URL}/sitemap.xml`,
-    `Sitemap: ${BASE_URL}/sitemap-index.xml`,
     '',
   ].join('\n');
 

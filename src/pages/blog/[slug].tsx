@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Navigate } from 'react-router-dom';
 import { fetchBlogPostBySlug } from '../../integrations/supabase/client';
 import SEO from '../../components/SEO';
 import type { BlogPost } from '../../integrations/supabase/types';
@@ -44,7 +44,8 @@ export default function BlogPostPage() {
   }
 
   if (error || !post) {
-    return <div>{error || 'Blogpost niet gevonden.'}</div>;
+    // Redirect to 404 page which has proper noindex and 404 status
+    return <Navigate to="/404" replace />;
   }
 
   const canonicalUrl = `https://www.stockflow.be/blog/${post.slug}`;

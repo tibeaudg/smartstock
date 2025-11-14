@@ -99,7 +99,7 @@ export default function GratisStockbeheer() {
               </h2>
               <p className="text-lg text-gray-700 leading-relaxed">
                 Veel kleine bedrijven en starters denken dat professioneel <strong>voorraadbeheer</strong> 
-                duur is. Met stockflow kun je gratis beginnen en ervaren hoe eenvoudig en efficiÃ«nt 
+                duur is. Met stockflow kun je gratis beginnen en ervaren hoe eenvoudig en efficiënt 
                 modern <strong>voorraadbeheer</strong> kan zijn. Perfect voor KMO's die willen groeien 
                 zonder grote investeringen.
               </p>
@@ -357,7 +357,7 @@ export default function GratisStockbeheer() {
                 Voorraadbeheer tips
               </h3>
               <p className="text-gray-600 text-sm">
-                Praktische tips voor efficiÃ«nt voorraadbeheer en kostenbesparing.
+                Praktische tips voor efficiënt voorraadbeheer en kostenbesparing.
               </p>
             </div>
           </Link>

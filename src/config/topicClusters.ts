@@ -941,7 +941,9 @@ export const industryVerticalCluster: TopicCluster = {
     { path: '/inventory-management-hvac', title: 'HVAC Inventory Management', language: 'en', category: 'Industries', description: 'HVAC parts and equipment inventory', image: '/dashboard.png' },
     { path: '/inventory-management-furniture', title: 'Furniture Inventory Management', language: 'en', category: 'Industries', description: 'Furniture and home goods inventory', image: '/dashboard.png' },
     { path: '/inventory-management-toys', title: 'Toy Store Inventory Management', language: 'en', category: 'Industries', description: 'Toys and games inventory tracking', image: '/dashboard.png' },
-    { path: '/inventory-management-office', title: 'Office Supply Inventory Management', language: 'en', category: 'Industries', description: 'Office supplies and stationery inventory', image: '/dashboard.png' }
+    { path: '/inventory-management-office', title: 'Office Supply Inventory Management', language: 'en', category: 'Industries', description: 'Office supplies and stationery inventory', image: '/dashboard.png' },
+    { path: '/contractor-inventory-management', title: 'Contractor Inventory Management', language: 'en', category: 'Industries', description: 'Inventory management for contractors and construction professionals', image: '/dashboard.png' },
+    { path: '/wholesaler-inventory-management', title: 'Wholesaler Inventory Management', language: 'en', category: 'Industries', description: 'Inventory management solutions for wholesalers and distributors', image: '/dashboard.png' }
   ]
 };
 
@@ -970,7 +972,10 @@ export const featureCluster: TopicCluster = {
     { path: '/inventory-valuation', title: 'Inventory Valuation Methods', language: 'en', category: 'Features', description: 'FIFO, LIFO, and weighted average costing', image: '/dashboard.png' },
     { path: '/supplier-management', title: 'Supplier Management System', language: 'en', category: 'Features', description: 'Supplier database and relationship management', image: '/dashboard.png' },
     { path: '/inventory-returns', title: 'Inventory Returns Management', language: 'en', category: 'Features', description: 'Handle returns and reverse logistics', image: '/dashboard.png' },
-    { path: '/inventory-kitting', title: 'Inventory Kitting & Assembly', language: 'en', category: 'Features', description: 'Bundle products and manage assembly', image: '/dashboard.png' }
+    { path: '/inventory-kitting', title: 'Inventory Kitting & Assembly', language: 'en', category: 'Features', description: 'Bundle products and manage assembly', image: '/dashboard.png' },
+    { path: '/inventory-scanning-system', title: 'Inventory Scanning System', language: 'en', category: 'Features', description: 'Barcode and QR code scanning system for inventory tracking', image: '/dashboard.png' },
+    { path: '/inventory-turnover-ratio', title: 'Inventory Turnover Ratio', language: 'en', category: 'Features', description: 'Calculate and optimize inventory turnover ratio for better cash flow', image: '/dashboard.png' },
+    { path: '/purchase-order-form', title: 'Purchase Order Form', language: 'en', category: 'Features', description: 'Create and manage purchase orders with professional forms', image: '/dashboard.png' }
   ]
 };
 
@@ -999,7 +1004,8 @@ export const buyerIntentCluster: TopicCluster = {
     { path: '/inventory-management-migration', title: 'Inventory Management Migration Guide', language: 'en', category: 'Guides', description: 'How to migrate from one system to another', image: '/dashboard.png' },
     { path: '/inventory-management-training', title: 'Inventory Management Training Resources', language: 'en', category: 'Guides', description: 'Training materials and best practices', image: '/dashboard.png' },
     { path: '/inventory-management-security', title: 'Inventory Management Security Best Practices', language: 'en', category: 'Guides', description: 'Data security and compliance for inventory systems', image: '/dashboard.png' },
-    { path: '/inventory-management-pitfalls', title: 'Common Inventory Management Mistakes', language: 'en', category: 'Guides', description: 'Avoid common pitfalls when implementing inventory software', image: '/dashboard.png' }
+    { path: '/inventory-management-pitfalls', title: 'Common Inventory Management Mistakes', language: 'en', category: 'Guides', description: 'Avoid common pitfalls when implementing inventory software', image: '/dashboard.png' },
+    { path: '/how-to-generate-barcode', title: 'How to Generate Barcode', language: 'en', category: 'Guides', description: 'Step-by-step guide to generating barcodes for inventory products', image: '/dashboard.png' }
   ]
 };
 

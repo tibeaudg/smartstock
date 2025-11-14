@@ -13,11 +13,11 @@ export default function VoorraadbeheerSoftware() {
      const faqData = [
      {
        question: "Wat is Stockbeheer?",
-       answer: "Stockbeheer is een digitaal systeem dat je helpt bij het beheren van je voorraad. Het vervangt handmatige processen door geautomatiseerde oplossingen die real-time inzicht geven in je voorraad, automatische bestellingen plaatsen en je magazijn efficiï¿½nt beheren."
+       answer: "Stockbeheer is een digitaal systeem dat je helpt bij het beheren van je voorraad. Het vervangt handmatige processen door geautomatiseerde oplossingen die real-time inzicht geven in je voorraad, automatische bestellingen plaatsen en je magazijn efficiënt beheren."
      },
      {
        question: "Hoe werkt Stockbeheer?",
-       answer: "Stockbeheer werkt door je voorraad digitaal bij te houden, automatische bestellingen te plaatsen wanneer voorraad onder het minimum niveau komt, en real-time rapportages te genereren. Het systeem integreert met je andere bedrijfssystemen voor optimale efficiï¿½ntie."
+       answer: "Stockbeheer werkt door je voorraad digitaal bij te houden, automatische bestellingen te plaatsen wanneer voorraad onder het minimum niveau komt, en real-time rapportages te genereren. Het systeem integreert met je andere bedrijfssystemen voor optimale efficiëntie."
      },
      {
        question: "Welke voordelen biedt Stockbeheer?",
@@ -50,7 +50,7 @@ export default function VoorraadbeheerSoftware() {
                  <span className="text-blue-600">Stockbeheer</span> voor optimale controle
                </h1>
                <p className="text-lg text-gray-700 mb-8 leading-relaxed">
-                 Moderne Stockbeheer is essentieel voor elke onderneming die producten verkoopt. Met de juiste Stockbeheer kun je real-time inzicht krijgen in je voorraad, automatische bestellingen plaatsen en je magazijn efficiï¿½nt beheren. Stockbeheer helpt je om kosten te besparen, klanttevredenheid te verhogen en je bedrijfsprocessen te optimaliseren. Ontdek hoe Stockbeheer jouw bedrijf kan transformeren.
+                 Moderne Stockbeheer is essentieel voor elke onderneming die producten verkoopt. Met de juiste Stockbeheer kun je real-time inzicht krijgen in je voorraad, automatische bestellingen plaatsen en je magazijn efficiënt beheren. Stockbeheer helpt je om kosten te besparen, klanttevredenheid te verhogen en je bedrijfsprocessen te optimaliseren. Ontdek hoe Stockbeheer jouw bedrijf kan transformeren.
                </p>
             </div>
             {/* Right Side - Image */}
@@ -87,7 +87,7 @@ export default function VoorraadbeheerSoftware() {
                  Wat is Stockbeheer en <span className="text-blue-600">waarom heb je het nodig?</span>
                </h2>
                <p className="text-lg text-gray-700 mb-6 leading-relaxed">
-                 Stockbeheer is een digitaal systeem dat je helpt bij het beheren van je voorraad. Het vervangt handmatige processen en Excel-sheets door geautomatiseerde oplossingen. Met Stockbeheer kun je real-time bijhouden welke producten je hebt, wanneer je moet bestellen en hoe je magazijn het beste georganiseerd kan worden. Stockbeheer is onmisbaar voor moderne bedrijven die efficiï¿½nt willen werken.
+                 Stockbeheer is een digitaal systeem dat je helpt bij het beheren van je voorraad. Het vervangt handmatige processen en Excel-sheets door geautomatiseerde oplossingen. Met Stockbeheer kun je real-time bijhouden welke producten je hebt, wanneer je moet bestellen en hoe je magazijn het beste georganiseerd kan worden. Stockbeheer is onmisbaar voor moderne bedrijven die efficiënt willen werken.
                </p>
               <div className="space-y-4">
                                  <div className="bg-blue-50 p-4 rounded-lg">
@@ -115,10 +115,10 @@ export default function VoorraadbeheerSoftware() {
             {/* Left Side - Text Content */}
             <div className="lg:col-span-2">
                              <h2 className="text-3xl font-bold mb-6 text-blue-600">
-                 Stockbeheer methodes en strategieï¿½n
+                 Stockbeheer methodes en strategieën
                </h2>
                <p className="text-lg text-gray-700 mb-8">
-                 Moderne Stockbeheer ondersteunt verschillende methodes. Hier zijn de meest gebruikte voorraadbeheer strategieï¿½n:
+                 Moderne Stockbeheer ondersteunt verschillende methodes. Hier zijn de meest gebruikte voorraadbeheer strategieën:
                </p>
               
               <div className="space-y-6">
@@ -171,7 +171,7 @@ export default function VoorraadbeheerSoftware() {
                  Starten met <span className="text-blue-600">Stockbeheer</span>
                </h2>
                <p className="text-lg text-gray-700 leading-relaxed">
-                 De tijd van handmatige voorraadadministratie en Excel-sheets is voorbij. Moderne Stockbeheer biedt geavanceerde functionaliteiten die je bedrijf naar een hoger niveau tillen. Met Stockbeheer integreer je eenvoudig je CRM, orderbeheer, facturatie en boekhouding in ï¿½ï¿½n systeem. Stockbeheer is geschikt voor zowel kleine bedrijven als grote organisaties met uitgebreide magazijnbehoeften.
+                 De tijd van handmatige voorraadadministratie en Excel-sheets is voorbij. Moderne Stockbeheer biedt geavanceerde functionaliteiten die je bedrijf naar een hoger niveau tillen. Met Stockbeheer integreer je eenvoudig je CRM, orderbeheer, facturatie en boekhouding in één systeem. Stockbeheer is geschikt voor zowel kleine bedrijven als grote organisaties met uitgebreide magazijnbehoeften.
                </p>
             </div>
           </div>
@@ -223,7 +223,7 @@ export default function VoorraadbeheerSoftware() {
               Start Gratis Nu
             </Link>
           </div>
-          <p className="text-sm mt-4 opacity-75">Geen creditcard vereist ï¿½ Direct toegang ï¿½ Nederlandse support</p>
+          <p className="text-sm mt-4 opacity-75">Geen creditcard vereist • Direct toegang • Nederlandse support</p>
         </div>
       </section>
 
