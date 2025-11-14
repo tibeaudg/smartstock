@@ -119,22 +119,16 @@ function xmlEscape(str) {
     .replace(/'/g, '&apos;');
 }
 
-// Build URL tag with minimal data (just loc and lastmod for indexing)
-function buildUrlTag(loc, lastmod) {
-  const parts = [
+// Build URL tag with just loc (no lastmod)
+function buildUrlTag(loc) {
+  return [
     '  <url>',
     `    <loc>${xmlEscape(loc)}</loc>`,
-  ];
-  if (lastmod) {
-    parts.push(`    <lastmod>${new Date(lastmod).toISOString()}</lastmod>`);
-  }
-  parts.push('  </url>');
-  return parts.join('\n');
+    '  </url>',
+  ].join('\n');
 }
 
 async function generateOptimizedSitemap() {
-  const today = new Date().toISOString();
-  
   // Define all public static routes
   const staticRoutes = [
     '/',              // Homepage
@@ -157,10 +151,7 @@ async function generateOptimizedSitemap() {
 
   // Add static routes
   for (const route of staticRoutes) {
-    urls.push({
-      loc: `${BASE_URL}${route}`,
-      lastmod: today,
-    });
+    urls.push(`${BASE_URL}${route}`);
   }
 
   // Add SEO pages (all the keyword-focused landing pages)
@@ -171,34 +162,26 @@ async function generateOptimizedSitemap() {
       continue;
     }
     
-    urls.push({
-      loc: `${BASE_URL}${route}`,
-      lastmod: today,
-    });
+    urls.push(`${BASE_URL}${route}`);
   }
 
   // Add blog posts
   const blogPosts = await readBlogPosts();
   for (const post of blogPosts) {
-    urls.push({
-      loc: `${BASE_URL}/blog/${post.slug}`,
-      lastmod: post.date_published || today,
-    });
+    urls.push(`${BASE_URL}/blog/${post.slug}`);
   }
 
   // Deduplicate by URL
-  const uniqueUrls = Array.from(
-    new Map(urls.map((entry) => [entry.loc, entry])).values()
-  );
+  const uniqueUrls = Array.from(new Set(urls));
 
   // Sort alphabetically by URL for consistent output
-  uniqueUrls.sort((a, b) => a.loc.localeCompare(b.loc));
+  uniqueUrls.sort((a, b) => a.localeCompare(b));
 
   // Build sitemap XML
   const sitemapXml = [
     '<?xml version="1.0" encoding="UTF-8"?>',
     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-    ...uniqueUrls.map((u) => buildUrlTag(u.loc, u.lastmod)),
+    ...uniqueUrls.map((url) => buildUrlTag(url)),
     '</urlset>',
   ].join('\n');
 
@@ -242,7 +225,7 @@ generateOptimizedSitemap()
     generateRobotsTxt();
     console.log('\n🎉 Sitemap generation complete!');
     console.log(`📊 Total URLs: ${urls.length}`);
-    console.log(`🔗 View at: ${BASE_URL}/sitemap.xml`);
+    console.log(`🔗 View sitemap at: ${BASE_URL}/sitemap.xml`);
   })
   .catch((err) => {
     console.error('❌ Failed to generate sitemap:', err);

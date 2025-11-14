@@ -17,7 +17,7 @@
   "rewrites": [
     { "source": "/api/:path*", "destination": "/api/:path*" },
     { "source": "/ads.txt", "destination": "/api/ads" },
-    { "source": "/((?!api|sw.js).*)", "destination": "/index.html" }
+    { "source": "/((?!api|sw.js|.*\\.xml|.*\\.txt|.*\\.json|.*\\.ico|.*\\.png|.*\\.jpg|.*\\.jpeg|.*\\.gif|.*\\.svg|.*\\.webp|.*\\.css|.*\\.js|.*\\.woff|.*\\.woff2|.*\\.ttf|.*\\.eot).*)", "destination": "/index.html" }
   ],
   "headers": [
     {
