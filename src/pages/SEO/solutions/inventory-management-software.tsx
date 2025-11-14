@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { useCurrency } from '@/hooks/useCurrency';
+import { useState } from 'react';
 import { 
   BarChart3, 
   Zap, 
@@ -14,7 +15,11 @@ import {
   TrendingUp,
   ArrowRight,
   Clock,
-  Target
+  Target,
+  Package,
+  AlertCircle,
+  DollarSign,
+  ChevronDown
 } from 'lucide-react';
 import { RelatedArticles } from '@/components/seo/RelatedArticles';
 import { TopicClusterNav } from '@/components/seo/TopicClusterNav';
@@ -29,26 +34,53 @@ export default function InventoryManagementSoftware() {
   // Get related pages from topic cluster
   const relatedPages = getRelatedPages('/inventory-management-software', 6);
   
+  // FAQ Accordion state
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
+  
+  const toggleFaq = (index: number) => {
+    setOpenFaqIndex(openFaqIndex === index ? null : index);
+  };
+  
   const faqData = [
     {
       question: "What is inventory management software?",
-      answer: "Inventory management software is a digital solution that helps businesses track, manage, and optimize their stock levels, orders, and warehouse operations. It provides real-time visibility into inventory levels, automates reordering processes, and helps prevent stockouts or overstock situations."
+      answer: "Inventory management software is a digital solution that helps businesses track, manage, and optimize their stock levels, orders, and warehouse operations. It provides real-time visibility into inventory levels, automates reordering processes, and helps prevent stockouts or overstock situations. Modern solutions like StockFlow combine real-time tracking, automated alerts, and comprehensive analytics to give businesses complete control over their inventory."
     },
     {
       question: "What features should inventory management software have?",
-      answer: "The best inventory management software includes real-time tracking, barcode scanning, automated reorder points, multi-location support, reporting and analytics, integration capabilities, mobile access, and user role management. These features ensure efficient inventory control and business growth."
+      answer: "The best inventory management software includes real-time tracking, barcode scanning, automated reorder points, multi-location support, reporting and analytics, integration capabilities, mobile access, and user role management. These features ensure efficient inventory control and business growth. For e-commerce businesses, look for e-commerce specific features like multi-channel sync and order management."
     },
     {
       question: "How much does inventory management software cost?",
-      answer: `Inventory management software pricing varies, but StockFlow offers a free plan for small businesses with up to 30 products. Premium plans start at ${formatPrice(29)}/month for advanced features. Most solutions offer free trials to test the software before committing.`
+      answer: `Inventory management software pricing varies, but StockFlow offers a free plan for small businesses with up to 30 products. Premium plans start at ${formatPrice(29)}/month for advanced features. Most solutions offer free trials to test the software before committing. Compare options with our best inventory management software guide to find the right fit for your budget.`
     },
     {
       question: "Can inventory management software integrate with other systems?",
-      answer: "Yes, modern inventory management software like StockFlow integrates with accounting systems, e-commerce platforms, POS systems, and ERP software. This ensures seamless data flow across your entire business ecosystem."
+      answer: "Yes, modern inventory management software like StockFlow integrates with accounting systems, e-commerce platforms, POS systems, and ERP software. This ensures seamless data flow across your entire business ecosystem. Integration capabilities are essential for businesses using warehouse management systems or needing to sync with multiple sales channels."
     },
     {
       question: "Is inventory management software suitable for small businesses?",
-      answer: "Absolutely! Inventory management software is especially beneficial for small businesses as it helps automate processes, reduce errors, and provides insights that were previously only available to large enterprises. StockFlow is specifically designed for SMEs and growing businesses."
+      answer: "Absolutely! Inventory management software is especially beneficial for small businesses as it helps automate processes, reduce errors, and provides insights that were previously only available to large enterprises. StockFlow is specifically designed for SMEs and growing businesses. Check out our small business inventory software guide for more information."
+    },
+    {
+      question: "What's the difference between inventory management and warehouse management?",
+      answer: "Inventory management focuses on tracking what you have and where it is, while warehouse management includes the physical handling, storage, and movement of goods within a warehouse. Many modern solutions combine both. Learn more about warehouse management software and how it differs from basic inventory tracking."
+    },
+    {
+      question: "Can I use inventory management software for multiple locations?",
+      answer: "Yes, most modern inventory management software supports multi-location tracking. This is essential for businesses with multiple warehouses, retail stores, or distribution centers. StockFlow allows you to manage inventory across all locations from a single dashboard, with location-specific reporting and automated transfers between locations."
+    },
+    {
+      question: "How does inventory management software help reduce costs?",
+      answer: "Inventory management software reduces costs by preventing overstocking (which ties up capital), avoiding stockouts (which lose sales), minimizing waste from expired or obsolete inventory, reducing manual labor hours, and optimizing purchasing decisions. Businesses typically see 20-30% reduction in inventory carrying costs within the first year."
+    },
+    {
+      question: "Do I need barcode scanning for inventory management?",
+      answer: "While not strictly necessary, barcode scanning dramatically improves accuracy and speed of inventory operations. It reduces human error, speeds up receiving and picking processes, and enables real-time updates. Most modern mobile inventory management solutions include barcode scanning capabilities."
+    },
+    {
+      question: "How long does it take to implement inventory management software?",
+      answer: "Implementation time varies, but cloud-based solutions like StockFlow can be set up in hours or days rather than weeks. Most businesses are fully operational within 1-2 weeks, including data migration, team training, and process optimization. The key is choosing user-friendly software that doesn't require extensive IT support."
     }
   ];
 
@@ -162,9 +194,9 @@ export default function InventoryManagementSoftware() {
   return (
     <SeoPageLayout title="Inventory Management Software">
       <SEO
-        title="Inventory Management Software 2025: Best Cloud Solution | Free Trial"
-        description="Discover the best inventory management software for your business. Real-time tracking, automated alerts, barcode scanning. Start FREE - no credit card. Join 500+ businesses. ✓"
-        keywords="inventory management software, inventory software management, software for inventory management, softwares for inventory management, inventory management software best, stock management software, inventory tracking, stock control, warehouse management, inventory system, inventory management software best, inventory management online, inventory tracking programs, inventory software, inventory management system, stockflow, stock flow"
+        title="Inventory Management Software 2025: Best Cloud Solution | Free Trial | StockFlow"
+        description="Discover the best inventory management software for your business. Real-time tracking, automated alerts, barcode scanning, multi-location support. Start FREE - no credit card. Join 500+ businesses. Complete guide to inventory management software features, pricing, and implementation."
+        keywords="inventory management software, inventory software management, software for inventory management, softwares for inventory management, inventory management software best, stock management software, inventory tracking, stock control, warehouse management, inventory system, inventory management software best, inventory management online, inventory tracking programs, inventory software, inventory management system, stockflow, stock flow, best inventory management software, inventory software for small business, cloud inventory management, inventory management solution"
         url="https://www.stockflow.be/inventory-management-software"
         locale="en"
         alternateLanguages={[
@@ -175,106 +207,54 @@ export default function InventoryManagementSoftware() {
 
       {/* Hero Section - Improved Above the Fold */}
       <section 
-        className="relative py-16 sm:py-20 md:py-24 px-4 bg-gradient-to-br from-blue-500 to-blue-900"
+        className="relative py-16 sm:py-20 md:py-24 px-4 bg-white"
       >
-        <div className="absolute inset-0 bg-black bg-opacity-20"></div>
+        <div className="absolute inset-0 "></div>
         
         <div className="relative max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="flex  gap-12 items-center">
             {/* Left Column - Text Content */}
-            <div className="text-white">
-              <div className="inline-flex items-center px-4 py-2 bg-blue-600/20 border border-blue-400/30 rounded-full text-blue-200 text-sm font-medium mb-6">
+            <div className="text-blue-900">
+              <div className="inline-flex items-center px-4 py-2 bg-blue-600/20 border border-blue-400/30 rounded-full text-blue-900 text-sm font-medium mb-6">
                 <span className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
                 Trusted by 500+ businesses
               </div>
               
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
               StockFlow Inventory Management<br />
-              <span className="text-blue-300">for growing businesses</span>
+              <span className="text-blue-900">for growing businesses</span>
               </h1>
               
-              <p className="text-xl md:text-2xl text-blue-100 mb-8 leading-relaxed">
+              <p className="text-xl md:text-2xl text-blue-900 mb-8 leading-relaxed">
                 The only inventory management software that makes <strong>100% automatic decisions</strong> for small businesses. Stop manual tracking, prevent stockouts, and grow your business.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 mb-8">
                 <Link
                   to="/auth"
-                  className="bg-white text-blue-600 px-10 py-5 rounded-xl font-bold text-xl transition-all duration-300 transform hover:scale-105 shadow-2xl text-center"
+                  className="bg-blue-600 text-white px-10 py-5 rounded-xl font-bold text-xl transition-all duration-300 transform hover:scale-105 shadow-2xl text-center"
                 >
                   Start Your Free Trial
                 </Link>
          
               </div>
               
-              <div className="flex flex-wrap items-center gap-6 text-blue-200">
+              <div className="flex flex-wrap items-center gap-6 text-blue-900">
                 <div className="flex items-center">
-                  <CheckCircle className="w-5 h-5 mr-2 text-green-400" />
+                  <CheckCircle className="w-5 h-5 mr-2 text-blue-900" />
                   No credit card required
                 </div>
                 <div className="flex items-center">
-                  <CheckCircle className="w-5 h-5 mr-2 text-green-400" />
+                  <CheckCircle className="w-5 h-5 mr-2 text-blue-900" />
                   14-day free trial
                 </div>
                 <div className="flex items-center">
-                  <CheckCircle className="w-5 h-5 mr-2 text-green-400" />
+                  <CheckCircle className="w-5 h-5 mr-2 text-blue-900" />
                   Setup in 5 minutes
                 </div>
               </div>
             </div>
             
-            {/* Right Column - Visual Demo */}
-            <div className="relative">
-              <div className="relative bg-white rounded-2xl shadow-2xl p-6">
-                {/* Demo Interface Mockup */}
-                <div className="bg-gray-50 rounded-lg p-4 mb-4">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="font-semibold text-gray-800">Live Inventory Dashboard</h3>
-                    <div className="flex space-x-2">
-                      <div className="w-3 h-3 bg-red-400 rounded-full"></div>
-                      <div className="w-3 h-3 bg-yellow-400 rounded-full"></div>
-                      <div className="w-3 h-3 bg-green-400 rounded-full"></div>
-                    </div>
-                  </div>
-                  
-                  {/* Mock Dashboard Content */}
-                  <div className="grid grid-cols-2 gap-4 mb-4">
-                    <div className="bg-green-100 p-3 rounded-lg">
-                      <div className="text-green-600 font-bold text-lg">1,247</div>
-                      <div className="text-green-600 text-sm">Products in Stock</div>
-                    </div>
-                    <div className="bg-orange-100 p-3 rounded-lg">
-                      <div className="text-orange-600 font-bold text-lg">23</div>
-                      <div className="text-orange-600 text-sm">Low Stock Alert</div>
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between p-2 bg-white rounded">
-                      <span className="text-sm">ðŸ“± Smartphone Case</span>
-                      <span className="text-xs bg-orange-100 text-orange-600 px-2 py-1 rounded">Reorder</span>
-                    </div>
-                    <div className="flex items-center justify-between p-2 bg-white rounded">
-                      <span className="text-sm">ðŸ’» Laptop Charger</span>
-                      <span className="text-xs bg-green-100 text-green-600 px-2 py-1 rounded">In Stock</span>
-                    </div>
-                    <div className="flex items-center justify-between p-2 bg-white rounded">
-                      <span className="text-sm">ðŸŽ§ Wireless Headphones</span>
-                      <span className="text-xs bg-red-100 text-red-600 px-2 py-1 rounded">Out of Stock</span>
-                    </div>
-                  </div>
-                </div>
-                
-                {/* Floating Success Badge */}
-                <div className="absolute -top-4 -right-4 bg-green-500 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg animate-bounce">
-                  ✓ Auto-Reorder Active
-                </div>
-              </div>
-              
-              {/* Background Decorative Elements */}
-              <div className="absolute -z-10 top-10 left-10 w-20 h-20 bg-blue-400/20 rounded-full blur-xl"></div>
-              <div className="absolute -z-10 bottom-10 right-10 w-32 h-32 bg-purple-400/20 rounded-full blur-xl"></div>
-            </div>
           </div>
         </div>
       </section>
@@ -477,38 +457,7 @@ export default function InventoryManagementSoftware() {
         </div>
       </section>
 
-      {/* Statistics Section */}
-      <section className="py-16 px-4 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Proven Results with StockFlow
-            </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Join hundreds of businesses that have transformed their inventory management with StockFlow.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-4 gap-8 mb-12">
-            <div className="text-center">
-              <div className="text-4xl font-bold text-blue-600 mb-2">95%</div>
-              <p className="text-gray-600">Inventory Accuracy</p>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl font-bold text-green-600 mb-2">80%</div>
-              <p className="text-gray-600">Time Saved</p>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl font-bold text-purple-600 mb-2">25%</div>
-              <p className="text-gray-600">Cost Reduction</p>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl font-bold text-orange-600 mb-2">99%</div>
-              <p className="text-gray-600">Uptime Guarantee</p>
-            </div>
-          </div>
-        </div>
-      </section>
+    
       {/* Features Section with Visual Demo */}
       <section className="py-16 px-4 bg-gray-50">
         <div className="max-w-6xl mx-auto">
@@ -521,9 +470,9 @@ export default function InventoryManagementSoftware() {
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
+          <div className="grid lg:grid-cols-2 gap-12 items-start mb-16">
             {/* Left Side - Features List */}
-            <div className="space-y-8">
+            <div className="space-y-24">
               {features.map((feature, index) => (
                 <div key={index} className="flex items-start space-x-4">
                   <div className="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
@@ -537,92 +486,35 @@ export default function InventoryManagementSoftware() {
               ))}
             </div>
 
-            {/* Right Side - Interactive Demo */}
-            <div className="relative">
-              <div className="bg-white rounded-2xl shadow-2xl p-8">
-                <div className="text-center mb-6">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2">Live Demo</h3>
-                  <p className="text-gray-600">See StockFlow in action</p>
+            {/* Right Side - Feature Benefits Cards */}
+            <div className="space-y-6">
+              <div className="bg-white p-8 rounded-xl shadow-lg text-center">
+                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <TrendingUp className="w-8 h-8 text-green-600" />
                 </div>
-                
-                {/* Mobile App Mockup */}
-                <div className="bg-gray-900 rounded-2xl p-4 mx-auto max-w-xs">
-                  <div className="bg-white rounded-xl p-4">
-                    <div className="flex items-center justify-between mb-4">
-                      <h4 className="font-semibold text-gray-800">StockFlow</h4>
-                      <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
-                        <CheckCircle className="w-5 h-5 text-white" />
-                      </div>
-                    </div>
-                    
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
-                        <div>
-                          <div className="font-medium text-gray-800">iPhone Case</div>
-                          <div className="text-sm text-gray-600">Stock: 45 units</div>
-                        </div>
-                        <div className="text-green-600 font-bold">✓</div>
-                      </div>
-                      
-                      <div className="flex items-center justify-between p-3 bg-orange-50 rounded-lg">
-                        <div>
-                          <div className="font-medium text-gray-800">Laptop Charger</div>
-                          <div className="text-sm text-gray-600">Stock: 3 units</div>
-                        </div>
-                        <div className="text-orange-600 font-bold">âš ï¸</div>
-                      </div>
-                      
-                      <div className="flex items-center justify-between p-3 bg-red-50 rounded-lg">
-                        <div>
-                          <div className="font-medium text-gray-800">Wireless Mouse</div>
-                          <div className="text-sm text-gray-600">Stock: 0 units</div>
-                        </div>
-                        <div className="text-red-600 font-bold">ðŸš¨</div>
-                      </div>
-                    </div>
-                    
-                    <div className="mt-4 p-3 bg-blue-50 rounded-lg">
-                      <div className="text-sm font-medium text-blue-800">Auto-Reorder Alert</div>
-                      <div className="text-xs text-blue-600">Order 50 Wireless Mice now</div>
-                    </div>
-                  </div>
-                </div>
+                <h3 className="text-xl font-semibold mb-3">Reduce Stockouts by 95%</h3>
+                <p className="text-gray-600">Never lose a sale due to out-of-stock products. Our smart algorithms predict demand and reorder automatically.</p>
               </div>
               
-              {/* Floating Elements */}
-              <div className="absolute -top-4 -right-4 bg-green-500 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg animate-pulse">
-                Live Updates
+              <div className="bg-white p-8 rounded-xl shadow-lg text-center">
+                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Clock className="w-8 h-8 text-blue-600" />
+                </div>
+                <h3 className="text-xl font-semibold mb-3">Save 10+ Hours Weekly</h3>
+                <p className="text-gray-600">Automate inventory tracking, reordering, and reporting. Focus on growing your business instead of managing spreadsheets.</p>
               </div>
-            </div>
-          </div>
-
-          {/* Feature Benefits Grid */}
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-white p-8 rounded-xl shadow-lg text-center">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <TrendingUp className="w-8 h-8 text-green-600" />
+              
+              <div className="bg-white p-8 rounded-xl shadow-lg text-center">
+                <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Target className="w-8 h-8 text-purple-600" />
+                </div>
+                <h3 className="text-xl font-semibold mb-3">Increase Profit Margins</h3>
+                <p className="text-gray-600">Optimize inventory levels to reduce carrying costs while maximizing sales opportunities. Turn inventory into profit.</p>
               </div>
-              <h3 className="text-xl font-semibold mb-3">Reduce Stockouts by 95%</h3>
-              <p className="text-gray-600">Never lose a sale due to out-of-stock products. Our smart algorithms predict demand and reorder automatically.</p>
-            </div>
-            
-            <div className="bg-white p-8 rounded-xl shadow-lg text-center">
-              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Clock className="w-8 h-8 text-blue-600" />
-              </div>
-              <h3 className="text-xl font-semibold mb-3">Save 10+ Hours Weekly</h3>
-              <p className="text-gray-600">Automate inventory tracking, reordering, and reporting. Focus on growing your business instead of managing spreadsheets.</p>
-            </div>
-            
-            <div className="bg-white p-8 rounded-xl shadow-lg text-center">
-              <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Target className="w-8 h-8 text-purple-600" />
-              </div>
-              <h3 className="text-xl font-semibold mb-3">Increase Profit Margins</h3>
-              <p className="text-gray-600">Optimize inventory levels to reduce carrying costs while maximizing sales opportunities. Turn inventory into profit.</p>
             </div>
           </div>
         </div>
+        
       </section>
 
 
@@ -644,7 +536,6 @@ export default function InventoryManagementSoftware() {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {useCases.map((useCase, index) => (
               <div key={index} className="bg-white p-6 rounded-lg shadow-lg text-center">
-                <div className="text-4xl mb-4">{useCase.icon}</div>
                 <h3 className="text-xl font-semibold mb-3">{useCase.title}</h3>
                 <p className="text-gray-600">{useCase.description}</p>
               </div>
@@ -655,173 +546,263 @@ export default function InventoryManagementSoftware() {
 
 
 
-      {/* Security & Trust Section */}
-      <section className="py-16 px-4 bg-gray-50">
+ 
+      {/* What is Inventory Management Software - Comprehensive Guide */}
+      <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Enterprise-Grade Security & Compliance
-            </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Your data is protected with bank-level security and industry-standard compliance.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="text-center">
-              <Shield className="w-12 h-12 text-green-600 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold mb-2">SSL Encryption</h3>
-              <p className="text-gray-600 text-sm">256-bit SSL encryption for all data transmission</p>
-            </div>
-            <div className="text-center">
-              <Shield className="w-12 h-12 text-blue-600 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold mb-2">GDPR Compliant</h3>
-              <p className="text-gray-600 text-sm">Full compliance with European data protection laws</p>
-            </div>
-            <div className="text-center">
-              <Shield className="w-12 h-12 text-purple-600 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold mb-2">Daily Backups</h3>
-              <p className="text-gray-600 text-sm">Automated daily backups with 99.9% uptime</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Demo Section */}
-      <section className="py-20 px-4 bg-gradient-to-br from-gray-50 to-blue-50">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            {/* Left Side - Demo Content */}
-            <div>
-              <div className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium mb-6">
-                <Camera className="w-4 h-4 mr-2" />
-                Interactive Demo Available
-              </div>
-              
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                See StockFlow in Action
-              </h2>
-              
-              <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-                Watch our 2-minute demo and discover how StockFlow can transform your inventory management. See real features, real results, and real savings.
-              </p>
-              
-              <div className="space-y-4 mb-8">
-                <div className="flex items-center space-x-3">
-                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-                  <span className="text-gray-700">Live inventory tracking demonstration</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-                  <span className="text-gray-700">Barcode scanning in real-time</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-                  <span className="text-gray-700">Automatic reorder point setup</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-                  <span className="text-gray-700">Mobile app walkthrough</span>
-                </div>
-              </div>
-            </div>
-            
-
-          </div>
-        </div>
-      </section>
-
-      {/* Enhanced Final CTA Section - Screenshot Style */}
-      <section className="bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 text-white py-20 px-4 relative overflow-hidden">
-        {/* Background Elements */}
-        <div className="absolute inset-0 bg-black bg-opacity-30"></div>
-        
-        <div className="relative max-w-6xl mx-auto text-center">
-          {/* Main Headline */}
-          <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-4 leading-tight">
-            Get Started Free
-          </h2>
-          <h3 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight text-yellow-400">
-            No credit card required
-          </h3>
-          
-          {/* Sub-headline */}
-          <p className="text-xl md:text-2xl mb-12 opacity-90 max-w-4xl mx-auto leading-relaxed">
-            Get Started Free and see how StockFlow can help your business.
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">What is Inventory Management Software?</h2>
+          <p className="text-lg text-gray-700 leading-relaxed mb-8">
+            Inventory management software is a digital solution that helps businesses track, manage, and optimize their stock levels, orders, and warehouse operations. Unlike manual methods like <Link to="/inventory-excel" className="text-blue-600 hover:underline font-semibold">Excel spreadsheets</Link>, modern inventory management software provides real-time visibility, automated processes, and comprehensive analytics.
           </p>
           
-          {/* Key Benefits Above CTA */}
-          <div className="flex flex-wrap justify-center items-center gap-8 mb-12">
-            <div className="flex items-center space-x-2">
-              <Zap className="w-5 h-5 text-yellow-400" />
-              <span className="text-lg">Start within 2 minutes.</span>
+          <div className="grid md:grid-cols-2 gap-6 mb-8">
+            <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
+              <h3 className="text-xl font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                <Package className="h-6 w-6 text-blue-600" />
+                Core Functions
+              </h3>
+              <ul className="space-y-2 text-gray-700">
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span>Real-time stock level tracking</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span>Automated reorder point alerts</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span>Multi-location inventory management</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span>Barcode and QR code scanning</span>
+                </li>
+              </ul>
             </div>
-            <div className="flex items-center space-x-2">
-              <Shield className="w-5 h-5 text-yellow-400" />
-              <span className="text-lg">100% safe and free.</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Users className="w-5 h-5 text-yellow-400" />
-              <span className="text-lg">Professional support.</span>
+            
+            <div className="bg-green-50 border border-green-200 rounded-xl p-6">
+              <h3 className="text-xl font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                <BarChart3 className="h-6 w-6 text-green-600" />
+                Advanced Features
+              </h3>
+              <ul className="space-y-2 text-gray-700">
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span>Demand forecasting and analytics</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span>Integration with POS and e-commerce</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span>Mobile access for on-the-go management</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span>Automated purchase order generation</span>
+                </li>
+              </ul>
             </div>
           </div>
           
-          {/* Primary CTA Button */}
-          <div className="mb-12">
-            <Link
-              to="/auth"
-              className="inline-flex items-center px-16 py-6 bg-blue-600 hover:bg-blue-700 border-2 border-white text-white rounded-2xl font-bold text-2xl transition-all duration-300 transform hover:scale-105 shadow-2xl"
-            >
-              <Zap className="w-6 h-6 mr-3" />
-              Get Started Free
-              <ArrowRight className="w-6 h-6 ml-3" />
-            </Link>
-          </div>
+          <p className="text-gray-700 leading-relaxed">
+            Whether you're running an <Link to="/inventory-for-ecommerce" className="text-blue-600 hover:underline font-semibold">e-commerce business</Link>, managing a <Link to="/retail-inventory-management" className="text-blue-600 hover:underline font-semibold">retail store</Link>, or operating a <Link to="/warehouse-software" className="text-blue-600 hover:underline font-semibold">warehouse</Link>, inventory management software is essential for modern business operations.
+          </p>
+        </div>
+      </section>
+
+      {/* Key Components Section */}
+      <section className="py-16 px-4 bg-gray-50">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8">Key Components of Inventory Management Software</h2>
           
-          {/* Trust Signals Below CTA */}
-          <div className="flex flex-wrap justify-center items-center gap-8 mb-12">
-            <div className="flex items-center space-x-2">
-              <CheckCircle className="w-5 h-5 text-green-400" />
-              <span className="text-lg">No credit card required.</span>
+          <div className="space-y-6">
+            <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+              <h3 className="text-xl font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                <span className="bg-blue-100 text-blue-700 rounded-full w-8 h-8 flex items-center justify-center font-bold">1</span>
+                Real-Time Inventory Tracking
+              </h3>
+              <p className="text-gray-700 leading-relaxed">
+                The foundation of any inventory management system is real-time tracking. This allows you to see exactly what you have, where it is, and how much it's worth at any moment. Modern solutions like StockFlow update inventory levels automatically as sales occur, purchases are received, or transfers happen between locations.
+              </p>
             </div>
-            <div className="flex items-center space-x-2">
-              <Clock className="w-5 h-5 text-green-400" />
-              <span className="text-lg">Instant access.</span>
+
+            <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+              <h3 className="text-xl font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                <span className="bg-blue-100 text-blue-700 rounded-full w-8 h-8 flex items-center justify-center font-bold">2</span>
+                Automated Reorder Points
+              </h3>
+              <p className="text-gray-700 leading-relaxed">
+                Setting minimum stock levels and automated reorder alerts prevents stockouts and ensures you never run out of popular items. The software calculates optimal reorder points based on historical sales data, lead times, and seasonal trends. This is especially valuable for <Link to="/inventory-software-for-small-business" className="text-blue-600 hover:underline font-semibold">small businesses</Link> that can't afford to tie up capital in excess inventory.
+              </p>
             </div>
-            <div className="flex items-center space-x-2">
-              <Shield className="w-5 h-5 text-green-400" />
-              <span className="text-lg">GDPR-compliant.</span>
+
+            <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+              <h3 className="text-xl font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                <span className="bg-blue-100 text-blue-700 rounded-full w-8 h-8 flex items-center justify-center font-bold">3</span>
+                Multi-Location Management
+              </h3>
+              <p className="text-gray-700 leading-relaxed">
+                For businesses with multiple warehouses, stores, or distribution centers, multi-location support is essential. You can track inventory across all locations from a single dashboard, transfer stock between locations, and generate location-specific reports. This is crucial for <Link to="/retail-multi-location" className="text-blue-600 hover:underline font-semibold">retail chains</Link> and growing businesses.
+              </p>
             </div>
-            <div className="flex items-center space-x-2">
-              <Shield className="w-5 h-5 text-green-400" />
-              <span className="text-lg">100% secure.</span>
+
+            <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+              <h3 className="text-xl font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                <span className="bg-blue-100 text-blue-700 rounded-full w-8 h-8 flex items-center justify-center font-bold">4</span>
+                Integration Capabilities
+              </h3>
+              <p className="text-gray-700 leading-relaxed">
+                Modern inventory management software integrates with accounting systems, e-commerce platforms, POS systems, and ERP software. This eliminates manual data entry and ensures all your systems stay synchronized. For e-commerce businesses, integration with platforms like Shopify, WooCommerce, or Amazon is essential for <Link to="/inventory-for-ecommerce" className="text-blue-600 hover:underline font-semibold">multi-channel inventory management</Link>.
+              </p>
+            </div>
+
+            <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+              <h3 className="text-xl font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                <span className="bg-blue-100 text-blue-700 rounded-full w-8 h-8 flex items-center justify-center font-bold">5</span>
+                Reporting and Analytics
+              </h3>
+              <p className="text-gray-700 leading-relaxed">
+                Comprehensive reporting helps you understand inventory turnover, identify slow-moving items, optimize stock levels, and make data-driven purchasing decisions. Analytics features show trends, predict demand, and highlight opportunities to improve cash flow and reduce waste.
+              </p>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Benefits and ROI Section */}
+      <section className="py-16 px-4 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8">Benefits and ROI of Inventory Management Software</h2>
           
-          {/* Highlighted Value Proposition */}
-          <div className="bg-yellow-400 bg-opacity-10 border-l-4 border-yellow-400 rounded-lg p-8 mb-16 max-w-4xl mx-auto">
-            <p className="text-2xl md:text-3xl font-bold text-yellow-400 mb-2">
-              Get started today and save hours every week with our inventory management system
+          <div className="grid md:grid-cols-2 gap-8 mb-8">
+            <div className="bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 rounded-xl p-6">
+              <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                <DollarSign className="h-6 w-6 text-blue-600" />
+                Cost Savings
+              </h3>
+              <ul className="space-y-3 text-gray-700">
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span><strong>20-30% reduction</strong> in inventory carrying costs</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span><strong>Eliminate dead stock</strong> and reduce waste</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span><strong>Optimize purchasing</strong> to reduce overstocking</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span><strong>Prevent stockouts</strong> that lose sales</span>
+                </li>
+              </ul>
+            </div>
+
+            <div className="bg-gradient-to-br from-green-50 to-green-100 border border-green-200 rounded-xl p-6">
+              <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                <Clock className="h-6 w-6 text-green-600" />
+                Time Savings
+              </h3>
+              <ul className="space-y-3 text-gray-700">
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span><strong>10+ hours per week</strong> saved on manual tracking</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span><strong>Automated processes</strong> eliminate repetitive tasks</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span><strong>Faster inventory counts</strong> with barcode scanning</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span><strong>Instant reporting</strong> replaces manual calculations</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="bg-orange-50 border border-orange-200 rounded-xl p-8">
+            <h3 className="text-2xl font-bold text-gray-900 mb-4">Typical ROI Timeline</h3>
+            <div className="grid md:grid-cols-3 gap-6">
+              <div className="text-center">
+                <div className="text-3xl font-bold text-orange-600 mb-2">1-3 Months</div>
+                <p className="text-gray-700">Initial setup and data migration. Team training and process optimization.</p>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-orange-600 mb-2">3-6 Months</div>
+                <p className="text-gray-700">Visible improvements in inventory accuracy. Reduction in manual errors and time spent.</p>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-orange-600 mb-2">6-12 Months</div>
+                <p className="text-gray-700">Significant cost savings from optimized inventory levels. Improved cash flow and reduced waste.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Common Mistakes Section */}
+      <section className="py-16 px-4 bg-red-50 border-t border-red-200">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8">Common Inventory Management Mistakes to Avoid</h2>
+          <p className="text-lg text-gray-700 mb-8">
+            Many businesses make these costly mistakes. Learn how inventory management software helps you avoid them:
+          </p>
+          
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="bg-white rounded-xl p-6 shadow-sm border border-red-200">
+              <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                <AlertCircle className="h-6 w-6 text-red-600" />
+                Manual Tracking with Spreadsheets
+              </h3>
+              <p className="text-gray-700 text-sm leading-relaxed">
+                Using Excel or paper-based systems leads to errors, delays, and lack of real-time visibility. <Link to="/inventory-excel-vs-software" className="text-blue-600 hover:underline font-semibold">Compare Excel vs inventory software</Link> to see why modern solutions are essential.
+              </p>
+            </div>
+
+            <div className="bg-white rounded-xl p-6 shadow-sm border border-red-200">
+              <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                <AlertCircle className="h-6 w-6 text-red-600" />
+                No Reorder Point System
+              </h3>
+              <p className="text-gray-700 text-sm leading-relaxed">
+                Without automated reorder alerts, you'll face stockouts during peak demand or overstock slow-moving items. Modern software calculates optimal reorder points automatically.
+              </p>
+            </div>
+
+            <div className="bg-white rounded-xl p-6 shadow-sm border border-red-200">
+              <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                <AlertCircle className="h-6 w-6 text-red-600" />
+                Ignoring Multi-Location Complexity
+              </h3>
+              <p className="text-gray-700 text-sm leading-relaxed">
+                Managing multiple locations manually is error-prone and time-consuming. <Link to="/mobile-inventory-management" className="text-blue-600 hover:underline font-semibold">Mobile inventory management</Link> solutions provide real-time visibility across all locations.
+              </p>
+            </div>
+
+            <div className="bg-white rounded-xl p-6 shadow-sm border border-red-200">
+              <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                <AlertCircle className="h-6 w-6 text-red-600" />
+                Lack of Integration
+              </h3>
+              <p className="text-gray-700 text-sm leading-relaxed">
+                Disconnected systems lead to data silos, manual entry errors, and delayed updates. Integrated inventory software syncs with your POS, e-commerce, and accounting systems automatically.
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-8 bg-white rounded-xl p-6 border border-blue-200">
+            <p className="text-gray-700 leading-relaxed font-semibold">
+              Avoid these mistakes with <Link to="/best-inventory-management-software" className="text-blue-600 hover:underline">professional inventory management software</Link> that automates processes and provides real-time insights.
             </p>
-            <p className="text-lg text-white opacity-90">
-              Get started today and save hours every week with our inventory management system
-            </p>
-          </div>
-          
-          {/* Social Proof Statistics */}
-          <div className="flex flex-wrap justify-center items-center gap-12">
-            <div className="text-center">
-              <div className="text-4xl font-bold text-white mb-2">500+</div>
-              <div className="text-lg text-yellow-400">Active SMEs</div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl font-bold text-white mb-2">10+</div>
-              <div className="text-lg text-yellow-400">Hours Time saved/week</div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl font-bold text-white mb-2">4.9/5</div>
-              <div className="text-lg text-yellow-400">Customer satisfaction</div>
-            </div>
           </div>
         </div>
       </section>
@@ -834,116 +815,68 @@ export default function InventoryManagementSoftware() {
             <p className="text-lg text-gray-600">Everything you need to know about inventory management software</p>
           </div>
           
-          <div className="space-y-6">
-            {faqData.map((faq, index) => (
-              <div key={index} className="bg-white p-6 rounded-lg shadow-lg">
-                <h3 className="text-lg font-semibold mb-3">{faq.question}</h3>
-                <p className="text-gray-700">{faq.answer}</p>
-              </div>
-            ))}
+          <div className="space-y-4">
+            {faqData.map((faq, index) => {
+              const isOpen = openFaqIndex === index;
+              return (
+                <div key={index} className="bg-white rounded-lg shadow-lg overflow-hidden">
+                  <button
+                    onClick={() => toggleFaq(index)}
+                    className="w-full px-6 py-5 text-left flex items-center justify-between hover:bg-gray-50 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset"
+                    aria-expanded={isOpen}
+                    aria-controls={`faq-answer-${index}`}
+                  >
+                    <h3 className="text-lg font-semibold text-gray-900 pr-4">{faq.question}</h3>
+                    <ChevronDown
+                      className={`w-5 h-5 text-gray-500 flex-shrink-0 transition-transform duration-300 ${
+                        isOpen ? 'transform rotate-180' : ''
+                      }`}
+                    />
+                  </button>
+                  <div
+                    id={`faq-answer-${index}`}
+                    className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                      isOpen ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'
+                    }`}
+                  >
+                    <div className="px-6 pb-5 text-gray-700 leading-relaxed">
+                      {faq.answer.includes('inventory-for-ecommerce') ? (
+                        <>
+                          The best inventory management software includes real-time tracking, barcode scanning, automated reorder points, multi-location support, reporting and analytics, integration capabilities, mobile access, and user role management. These features ensure efficient inventory control and business growth. For e-commerce businesses, look for <Link to="/inventory-for-ecommerce" className="text-blue-600 hover:underline font-semibold">e-commerce specific features</Link> like multi-channel sync and order management.
+                        </>
+                      ) : faq.answer.includes('best-inventory-management-software') ? (
+                        <>
+                          Inventory management software pricing varies, but StockFlow offers a free plan for small businesses with up to 30 products. Premium plans start at {formatPrice(29)}/month for advanced features. Most solutions offer free trials to test the software before committing. Compare options with our <Link to="/best-inventory-management-software" className="text-blue-600 hover:underline font-semibold">best inventory management software guide</Link> to find the right fit for your budget.
+                        </>
+                      ) : faq.answer.includes('warehouse-management-system') ? (
+                        <>
+                          Yes, modern inventory management software like StockFlow integrates with accounting systems, e-commerce platforms, POS systems, and ERP software. This ensures seamless data flow across your entire business ecosystem. Integration capabilities are essential for businesses using <Link to="/warehouse-management-system" className="text-blue-600 hover:underline font-semibold">warehouse management systems</Link> or needing to sync with multiple sales channels.
+                        </>
+                      ) : faq.answer.includes('inventory-software-for-small-business') ? (
+                        <>
+                          Absolutely! Inventory management software is especially beneficial for small businesses as it helps automate processes, reduce errors, and provides insights that were previously only available to large enterprises. StockFlow is specifically designed for SMEs and growing businesses. Check out our <Link to="/inventory-software-for-small-business" className="text-blue-600 hover:underline font-semibold">small business inventory software guide</Link> for more information.
+                        </>
+                      ) : faq.answer.includes('warehouse-software') ? (
+                        <>
+                          Inventory management focuses on tracking what you have and where it is, while warehouse management includes the physical handling, storage, and movement of goods within a warehouse. Many modern solutions combine both. Learn more about <Link to="/warehouse-software" className="text-blue-600 hover:underline font-semibold">warehouse management software</Link> and how it differs from basic inventory tracking.
+                        </>
+                      ) : faq.answer.includes('mobile-inventory-management') ? (
+                        <>
+                          While not strictly necessary, barcode scanning dramatically improves accuracy and speed of inventory operations. It reduces human error, speeds up receiving and picking processes, and enables real-time updates. Most modern <Link to="/mobile-inventory-management" className="text-blue-600 hover:underline font-semibold">mobile inventory management</Link> solutions include barcode scanning capabilities.
+                        </>
+                      ) : (
+                        faq.answer
+                      )}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
 
-      {/* Related Articles */}
-      <section className="py-16 px-4 bg-gray-50">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold mb-4 text-center">Related Articles</h2>
-          <p className="text-center text-gray-600 mb-8">Explore more about inventory management</p>
-          <div className="grid md:grid-cols-3 gap-6">
-            <Link to="/voorraadbeheer-software" className="group">
-              <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition">
-                <div className="text-sm text-blue-600 font-semibold mb-2">ðŸ‡³ðŸ‡± Dutch Version</div>
-                <h3 className="font-semibold text-lg mb-2 group-hover:text-blue-600 transition">
-                  Voorraadbeheer Software
-                </h3>
-                <p className="text-gray-600 text-sm mb-3">
-                  Nederlandse gids voor professionele voorraadbeheer software.
-                </p>
-                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
-              </div>
-            </Link>
 
-            <Link to="/magazijnbeheer" className="group">
-              <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition">
-                <div className="text-sm text-blue-600 font-semibold mb-2">ðŸ‡³ðŸ‡± Dutch Version</div>
-                <h3 className="font-semibold text-lg mb-2 group-hover:text-blue-600 transition">
-                  Magazijnbeheer Software
-                </h3>
-                <p className="text-gray-600 text-sm mb-3">
-                  Warehouse management voor Nederlandse en Belgische markt.
-                </p>
-                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
-              </div>
-            </Link>
-
-            <Link to="/voorraadbeheer-automatiseren" className="group">
-              <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition">
-                <div className="text-sm text-blue-600 font-semibold mb-2">ðŸ‡³ðŸ‡± Dutch Version</div>
-                <h3 className="font-semibold text-lg mb-2 group-hover:text-blue-600 transition">
-                  Inventory Automation Guide
-                </h3>
-                <p className="text-gray-600 text-sm mb-3">
-                  Complete gids voor het automatiseren van je voorraad.
-                </p>
-                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
-              </div>
-            </Link>
-
-            <Link to="/voorraadbeheer-kmo" className="group">
-              <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition">
-                <div className="text-sm text-blue-600 font-semibold mb-2">ðŸ‡³ðŸ‡± For SMEs</div>
-                <h3 className="font-semibold text-lg mb-2 group-hover:text-blue-600 transition">
-                  Inventory for Small Businesses
-                </h3>
-                <p className="text-gray-600 text-sm mb-3">
-                  Affordable inventory solutions voor KMO's.
-                </p>
-                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
-              </div>
-            </Link>
-
-            <Link to="/voorraadbeheer-webshop" className="group">
-              <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition">
-                <div className="text-sm text-blue-600 font-semibold mb-2">ðŸ‡³ðŸ‡± E-commerce</div>
-                <h3 className="font-semibold text-lg mb-2 group-hover:text-blue-600 transition">
-                  E-commerce Inventory Management
-                </h3>
-                <p className="text-gray-600 text-sm mb-3">
-                  Voorraadbeheer speciaal voor webshops en e-commerce.
-                </p>
-                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
-              </div>
-            </Link>
-
-            <Link to="/voorraadbeheer-excel" className="group">
-              <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition">
-                <div className="text-sm text-blue-600 font-semibold mb-2">ðŸ‡³ðŸ‡± Comparison</div>
-                <h3 className="font-semibold text-lg mb-2 group-hover:text-blue-600 transition">
-                  Excel vs Software
-                </h3>
-                <p className="text-gray-600 text-sm mb-3">
-                  Why switch from Excel to professional software.
-                </p>
-                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
-              </div>
-            </Link>
-
-            <Link to="/" className="group">
-              <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition">
-                <div className="text-sm text-blue-600 font-semibold mb-2">ðŸ  Homepage</div>
-                <h3 className="font-semibold text-lg mb-2 group-hover:text-blue-600 transition">
-                  StockFlow Homepage
-                </h3>
-                <p className="text-gray-600 text-sm mb-3">
-                  Discover StockFlow - free inventory management software for growing businesses.
-                </p>
-                <div className="text-blue-600 text-sm font-semibold">Visit homepage →</div>
-              </div>
-            </Link>
-          </div>
-        </div>
-      </section>
 
       {/* Comparison Section */}
       <section className="py-16 px-4 bg-white">
@@ -973,27 +906,7 @@ export default function InventoryManagementSoftware() {
         language="en"
       />
 
-      {/* Footer */}
-      <footer className="bg-gray-900 text-gray-200 py-12 md:py-16">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <img
-            src="/logo.png"
-            alt="StockFlow"
-            className="h-10 md:h-12 mx-auto mb-6"
-          />
-          <p className="text-gray-400 text-base md:text-lg mb-8 leading-relaxed max-w-2xl mx-auto">
-            Professional inventory management software for growing businesses.
-            Simple, powerful, and designed for success.
-          </p>
 
-          <div className="border-t border-gray-700 pt-6">
-            <p className="text-gray-500 text-xs md:text-sm">
-              &copy; {new Date().getFullYear()} StockFlow. All rights reserved.
-              Inventory management software for modern businesses.
-            </p>
-          </div>
-        </div>
-      </footer>
 
       {/* Schema.org Structured Data */}
       <StructuredData data={[
