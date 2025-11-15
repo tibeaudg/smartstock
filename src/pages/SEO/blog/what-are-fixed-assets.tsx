@@ -105,10 +105,13 @@ export default function SeoWhatAreFixedAssetsPage() {
   return (
     <SeoPageLayout title={topicTitle} showSidebar sidebarContent={sidebarContent}>
       <SEO
-        title={`${topicTitle} | StockFlow Guide`}
+        title={`${topicTitle} 2025 | Complete Guide | StockFlow`}
         description={metaDescription}
         keywords={keywords}
         url={`https://www.stockflow.be${canonicalPath}`}
+        publishedTime="2025-09-26T00:00:00Z"
+        modifiedTime={new Date().toISOString()}
+        category="Blog"
       />
 
       <StructuredData data={pageStructuredData} />

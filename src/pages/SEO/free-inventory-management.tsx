@@ -13,6 +13,7 @@ import {
   Users,
   Cloud
 } from 'lucide-react';
+import { StructuredData } from '@/components/StructuredData';
 
 export default function FreeInventoryManagement() {
   usePageRefresh();
@@ -82,10 +83,12 @@ export default function FreeInventoryManagement() {
   return (
     <SeoPageLayout title="Free Inventory Management">
       <SEO
-        title="Free Inventory Management Software | Start for €0 | StockFlow"
-        description="Launch StockFlow’s free inventory management plan. Track up to 30 products, scan barcodes, automate alerts and grow into advanced features when ready."
-        keywords="free inventory management, inventory software free plan, free stock management, free warehouse software"
+        title="Free Inventory Management Software 2025 | Start Free"
+        description="100% free inventory management for up to 30 products. Barcode scanning, alerts, multi-location. No credit card. Upgrade when ready. Trusted by 500+ businesses."
+        keywords="free inventory management, inventory software free plan, free stock management, free warehouse software, free inventory tracking, free inventory system, no cost inventory software, free inventory app, free stock control, free inventory management tool"
         url="https://www.stockflow.be/free-inventory-management"
+        publishedTime="2024-01-01T00:00:00Z"
+        modifiedTime={new Date().toISOString()}
       />
 
       <section className="bg-gradient-to-br from-blue-50 to-white py-12 md:py-20 px-4">
@@ -190,6 +193,53 @@ export default function FreeInventoryManagement() {
         </div>
       </section>
 
+      {/* Expanded Content Section */}
+      <section className="py-16 px-4 bg-white">
+        <div className="max-w-4xl mx-auto prose prose-lg max-w-none">
+          <h2 className="text-3xl font-bold text-gray-900 mb-6">Why Choose Free Inventory Management Software?</h2>
+          <p className="text-gray-700 leading-relaxed mb-6">
+            Starting a business or managing inventory for the first time shouldn't require a significant upfront investment. Free inventory management software like StockFlow's free plan allows you to digitize your inventory operations without financial risk, giving you time to validate your processes and understand your needs before committing to paid solutions.
+          </p>
+          <p className="text-gray-700 leading-relaxed mb-6">
+            Many businesses start with spreadsheets or manual tracking, which quickly becomes unsustainable as operations grow. Free inventory management software bridges the gap between basic tracking and expensive enterprise solutions, providing professional-grade features at no cost.
+          </p>
+          
+          <h3 className="text-2xl font-bold text-gray-900 mt-8 mb-4">What Makes StockFlow's Free Plan Different</h3>
+          <p className="text-gray-700 leading-relaxed mb-4">
+            Unlike many "free" software options that are limited trials or feature-restricted, StockFlow's free plan includes:
+          </p>
+          <ul className="list-disc pl-6 text-gray-700 space-y-2 mb-6">
+            <li>Full access to core inventory management features, not just a demo</li>
+            <li>Unlimited transactions, locations, and suppliers - no hidden limits</li>
+            <li>Mobile apps for iOS and Android with barcode scanning capabilities</li>
+            <li>Real-time alerts and notifications for low stock situations</li>
+            <li>Complete data portability - your data stays yours, always</li>
+            <li>No credit card required - truly free, no payment method needed</li>
+          </ul>
+
+          <h3 className="text-2xl font-bold text-gray-900 mt-8 mb-4">When to Upgrade from Free to Paid Plans</h3>
+          <p className="text-gray-700 leading-relaxed mb-4">
+            The free plan is perfect for businesses managing up to 30 products. As your business grows, you'll know it's time to upgrade when you:
+          </p>
+          <ul className="list-disc pl-6 text-gray-700 space-y-2 mb-6">
+            <li>Need to track more than 30 products across your inventory</li>
+            <li>Require advanced automation like automated purchase orders</li>
+            <li>Want integrations with accounting software, e-commerce platforms, or POS systems</li>
+            <li>Need advanced analytics, custom reports, or API access</li>
+            <li>Require multi-warehouse automation and complex transfer workflows</li>
+          </ul>
+          <p className="text-gray-700 leading-relaxed mb-6">
+            The best part? When you upgrade, all your data, settings, and workflows remain intact. There's no migration needed - you simply unlock additional features and capacity.
+          </p>
+
+          <div className="bg-blue-50 border-l-4 border-blue-600 p-6 rounded-r-lg mt-8">
+            <p className="text-gray-800 leading-relaxed font-medium">
+              Ready to replace spreadsheets with professional inventory management? <Link to="/auth" className="text-blue-600 hover:text-blue-800 font-semibold">Start your free account</Link> today - no credit card required, no time limits, no hidden fees.
+            </p>
+          </div>
+        </div>
+      </section>
+
       <section className="py-16 px-4 bg-white">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center">Frequently Asked Questions</h2>
@@ -219,6 +269,79 @@ export default function FreeInventoryManagement() {
           </Link>
         </div>
       </section>
+
+      {/* Structured Data */}
+      <StructuredData data={[
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": faq.map(item => ({
+            "@type": "Question",
+            "name": item.question,
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": item.answer
+            }
+          }))
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          "name": "StockFlow - Free Inventory Management Software",
+          "description": "100% free inventory management software for up to 30 products. Track stock, scan barcodes, automate alerts. No credit card required. Upgrade when ready.",
+          "applicationCategory": "BusinessApplication",
+          "operatingSystem": "Web Browser",
+          "offers": [
+            {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "EUR",
+              "description": "Free plan - Manage up to 30 products with full features",
+              "availability": "https://schema.org/InStock"
+            }
+          ],
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "5.0",
+            "ratingCount": "500",
+            "bestRating": "5",
+            "worstRating": "1"
+          },
+          "featureList": [
+            "Free inventory tracking for up to 30 products",
+            "Barcode and QR code scanning",
+            "Multi-location support",
+            "Real-time stock alerts",
+            "Mobile apps for iOS and Android",
+            "Unlimited transactions",
+            "Cloud-based with automatic backups"
+          ]
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "name": "Free Inventory Management Software | StockFlow",
+          "description": "100% free inventory management for up to 30 products. No credit card required. Start tracking inventory today.",
+          "url": "https://www.stockflow.be/free-inventory-management",
+          "breadcrumb": {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://www.stockflow.be"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Free Inventory Management",
+                "item": "https://www.stockflow.be/free-inventory-management"
+              }
+            ]
+          }
+        }
+      ]} />
     </SeoPageLayout>
   );
 }

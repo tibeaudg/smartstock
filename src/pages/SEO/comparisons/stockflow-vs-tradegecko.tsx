@@ -13,6 +13,8 @@ import {
   Star,
   Users
 } from 'lucide-react';
+import { StructuredData } from '@/components/StructuredData';
+import { Accordion, AccordionTrigger, AccordionContent, AccordionItem } from '@/components/ui/accordion';
 
 const comparisonData = [
   {
@@ -53,13 +55,38 @@ const comparisonData = [
 export default function StockflowVsTradegecko() {
   usePageRefresh();
 
+  const faqData = [
+    {
+      question: "What happened to TradeGecko and why do I need an alternative?",
+      answer: "TradeGecko was acquired by QuickBooks and rebranded as QuickBooks Commerce, which was then discontinued for new customers. Existing TradeGecko users need to migrate to a new platform. StockFlow is a modern alternative with better automation, EU hosting, and free migration assistance."
+    },
+    {
+      question: "How does StockFlow compare to TradeGecko?",
+      answer: "StockFlow offers modern automation, real-time analytics, EU data hosting, and a free plan for small businesses. TradeGecko was feature-rich but required manual setup and had limited automation. StockFlow provides a more streamlined experience with better support for European businesses."
+    },
+    {
+      question: "Can I migrate my TradeGecko data to StockFlow?",
+      answer: "Yes, StockFlow offers free data migration from TradeGecko. Our team helps import products, suppliers, customers, orders, and stock history. The migration typically takes 2-3 days with dedicated support to ensure a smooth transition."
+    },
+    {
+      question: "Is StockFlow more expensive than TradeGecko?",
+      answer: "StockFlow offers better value with a free plan for up to 30 products and paid plans starting at €29/month. TradeGecko pricing was tied to order volume and user seats, which could become expensive. StockFlow provides more predictable, affordable pricing for growing businesses."
+    },
+    {
+      question: "Does StockFlow have the same features as TradeGecko?",
+      answer: "StockFlow has all essential inventory management features plus modern automation and analytics. While TradeGecko had some advanced features, StockFlow focuses on what most businesses need with a cleaner interface and better automation capabilities."
+    }
+  ];
+
   return (
     <SeoPageLayout title="StockFlow vs TradeGecko">
       <SEO
-        title="StockFlow vs TradeGecko | The Inventory Upgrade"
-        description="TradeGecko was discontinued. Discover why fast-growing brands choose StockFlow as the modern alternative with automation, analytics and EU support."
-        keywords="stockflow vs tradegecko, tradegecko alternative, quickbooks commerce replacement, stockflow comparison"
+        title="StockFlow vs TradeGecko 2025 | Modern Alternative"
+        description="TradeGecko discontinued. StockFlow is the modern alternative: EU hosting, free plan, automation, analytics. Free migration help. Start free trial today."
+        keywords="stockflow vs tradegecko, tradegecko alternative, quickbooks commerce replacement, stockflow comparison, tradegecko migration, tradegecko alternative 2025, quickbooks commerce alternative, inventory software after tradegecko"
         url="https://www.stockflow.be/stockflow-vs-tradegecko"
+        publishedTime="2024-01-01T00:00:00Z"
+        modifiedTime={new Date().toISOString()}
       />
 
       <section className="bg-gradient-to-br from-blue-50 to-white py-12 md:py-20 px-4">
@@ -217,6 +244,31 @@ export default function StockflowVsTradegecko() {
         </div>
       </section>
 
+      {/* FAQ Section */}
+      <section className="py-16 px-4 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">Frequently Asked Questions: StockFlow vs TradeGecko</h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              Answers to common questions about migrating from TradeGecko to StockFlow.
+            </p>
+          </div>
+
+          <Accordion type="single" collapsible className="space-y-4">
+            {faqData.map((faq, index) => (
+              <AccordionItem key={faq.question} value={`faq-${index}`} className="border-b border-gray-200">
+                <AccordionTrigger className="flex items-center justify-between px-6 py-5 text-left text-xl font-semibold hover:text-primary transition-colors">
+                  <span>{faq.question}</span>
+                </AccordionTrigger>
+                <AccordionContent className="px-6 pb-5 text-gray-600 text-lg leading-relaxed">
+                  <p>{faq.answer}</p>
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </div>
+      </section>
+
       <section className="py-16 px-4 bg-blue-600 text-white">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Upgrade from TradeGecko Today</h2>
@@ -232,6 +284,39 @@ export default function StockflowVsTradegecko() {
           </Link>
         </div>
       </section>
+
+      {/* Structured Data */}
+      <StructuredData data={[
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": faqData.map(faq => ({
+            "@type": "Question",
+            "name": faq.question,
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": faq.answer
+            }
+          }))
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "@id": "https://www.stockflow.be/stockflow-vs-tradegecko",
+          "name": "StockFlow vs TradeGecko Comparison",
+          "headline": "StockFlow vs TradeGecko: The Modern Alternative",
+          "description": "TradeGecko discontinued. StockFlow is the modern alternative with EU hosting, free plan, automation, analytics.",
+          "url": "https://www.stockflow.be/stockflow-vs-tradegecko",
+          "inLanguage": "en",
+          "isPartOf": {
+            "@type": "WebSite",
+            "name": "StockFlow",
+            "url": "https://www.stockflow.be"
+          },
+          "datePublished": "2024-01-01",
+          "dateModified": new Date().toISOString().split("T")[0]
+        }
+      ]} />
     </SeoPageLayout>
   );
 }

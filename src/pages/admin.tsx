@@ -634,14 +634,9 @@ export default function AdminPage() {
                           <tr>
                             <th className="px-4 py-2">Email</th>
                             <th className="px-4 py-2">Name</th>
-                            <th className="px-4 py-2">Company Type</th>
-                            <th className="px-4 py-2">Role</th>
-                            <th className="px-4 py-2">Plan</th>
                             <th className="px-4 py-2">Products</th>
                             <th className="px-4 py-2">Branches</th>
                             <th className="px-4 py-2">Linked Users</th>
-                            <th className="px-4 py-2">License Cost</th>
-                            <th className="px-4 py-2">Blocked</th>
                             <th className="px-4 py-2">Created</th>
                             <th className="px-4 py-2">Last Login</th>
                             <th className="px-4 py-2">Actions</th>
@@ -656,9 +651,6 @@ export default function AdminPage() {
                               <tr key={user.id} className="bg-white border-b hover:bg-blue-50 cursor-pointer" onClick={() => setSelectedUser(user)}>
                                 <td className="px-4 py-2">{user.email}</td>
                                 <td className="px-4 py-2">{user.first_name} {user.last_name}</td>
-                                <td className="px-4 py-2">{companyTypes[user.id]?.type === 'Overig' ? companyTypes[user.id]?.custom_type : companyTypes[user.id]?.type || '-'}</td>
-                                <td className="px-4 py-2">{user.role}</td>
-                                <td className="px-4 py-2">{user.selected_plan || 'No plan'}</td>
                                 <td className="px-4 py-2 text-center">
                                   {loadingStats ? <Loader2 className="w-4 h-4 animate-spin mx-auto" /> : stats?.productCount || 0}
                                 </td>
@@ -668,10 +660,7 @@ export default function AdminPage() {
                                 <td className="px-4 py-2 text-center">
                                   {loadingStats ? <Loader2 className="w-4 h-4 animate-spin mx-auto" /> : stats?.linkedUserCount || 0}
                                 </td>
-                                <td className="px-4 py-2 text-center font-mono">
-                                  {loadingStats ? <Loader2 className="w-4 h-4 animate-spin mx-auto" /> : `€${(stats?.licenseCost || 0).toFixed(2)}`}
-                                </td>
-                                <td className="px-4 py-2">{user.blocked ? 'Yes' : 'No'}</td>
+            
                                 <td className="px-4 py-2">{new Date(user.created_at).toLocaleDateString('en-US')}</td>
                                 <td className="px-4 py-2">{getDaysSinceLastLogin(user.last_login)}</td>
                                 <td className="px-4 py-2">
@@ -690,76 +679,7 @@ export default function AdminPage() {
                       </table>
                     </div>
                   )}
-                  
-                  {/* User details */}
-                  {selectedUser && (
-                    <div className="mt-8">
-                      <Card>
-                        <CardHeader>
-                          <CardTitle>Details for {selectedUser.email}</CardTitle>
-                          <CardDescription>User information and settings.</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="space-y-4">
-                            <div>
-                              <h4 className="font-semibold mb-2">User Information</h4>
-                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-                                <div>
-                                  <span className="font-medium">Email:</span> {selectedUser.email}
-                                </div>
-                                <div>
-                                  <span className="font-medium">Name:</span> {selectedUser.first_name} {selectedUser.last_name}
-                                </div>
-                                <div>
-                                  <span className="font-medium">Role:</span> {selectedUser.role}
-                                </div>
-                                <div>
-                                  <span className="font-medium">Plan:</span> {selectedUser.selected_plan || 'No plan'}
-                                </div>
-                                <div>
-                                  <span className="font-medium">Status:</span> 
-                                  <span className={`ml-2 px-2 py-1 rounded text-xs ${selectedUser.blocked ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'}`}>
-                                    {selectedUser.blocked ? 'Blocked' : 'Active'}
-                                  </span>
-                                </div>
-                                <div>
-                                  <span className="font-medium">Created:</span> {new Date(selectedUser.created_at).toLocaleDateString('en-US')}
-                                </div>
-                                <div>
-                                  <span className="font-medium">Last Login:</span> {getDaysSinceLastLogin(selectedUser.last_login)}
-                                </div>
-                              </div>
-                            </div>
-                            {(() => {
-                              const stats = userStats.find(s => s.userId === selectedUser.id);
-                              if (!stats) return null;
-                              return (
-                                <div>
-                                  <h4 className="font-semibold mb-2">Usage Statistics</h4>
-                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-                                    <div>
-                                      <span className="font-medium">Number of products:</span> {stats.productCount}
-                                    </div>
-                                    <div>
-                                      <span className="font-medium">Number of branches:</span> {stats.branchCount}
-                                    </div>
-                                    <div>
-                                      <span className="font-medium">Linked users:</span> {stats.linkedUserCount}
-                                    </div>
-                                    <div>
-                                      <span className="font-medium">Monthly cost:</span> 
-                                      <span className="ml-2 font-mono text-blue-600">€{stats.licenseCost.toFixed(2)}</span>
-                                    </div>
-                                  </div>
-                                </div>
-                              );
-                            })()}
-                          </div>
-                          <button className="mt-4 px-4 py-2 bg-gray-200 rounded" onClick={() => setSelectedUser(null)}>Back to user list</button>
-                        </CardContent>
-                      </Card>
-                    </div>
-                  )}
+      
                 </CardContent>
               </Card>
             </div>

@@ -331,10 +331,12 @@ export default function InventoryManagementGuide() {
       sidebarContent={sidebarContent}
     >
       <SEO
-        title="Inventory Management: Complete Guide to Methods, KPIs & Best Practices"
-        description="Master inventory management: learn core methods (JIT, MRP, EOQ), essential KPIs, accounting principles, red flags to avoid, and step-by-step optimization strategies. Includes software selection guide and real-world examples."
+        title="Inventory Management Guide 2025 | Methods, KPIs & Best Practices"
+        description="Complete inventory management guide: JIT, MRP, EOQ methods, essential KPIs, accounting principles, optimization strategies. Reduce costs 20-35%. Free software guide included."
         keywords="inventory management, inventory management methods, inventory management system, JIT inventory, MRP, EOQ, DSI, inventory KPIs, inventory turnover, inventory optimization, inventory management software, ABC analysis, cycle counting, inventory best practices"
         url="https://www.stockflow.be/inventory-management"
+        publishedTime="2025-11-06T00:00:00Z"
+        modifiedTime={new Date().toISOString()}
       />
 
       {/* Hero Section */}
@@ -1000,6 +1002,16 @@ export default function InventoryManagementGuide() {
 
       {/* Schema.org Structured Data */}
       <StructuredData data={[
+        {
+          "@context": "https://schema.org",
+          "@type": "DefinedTerm",
+          "name": "Inventory Management",
+          "description": "Inventory management is the systematic discipline of ordering, storing, tracking, and controlling inventory—from raw materials to finished goods. It ensures businesses have the right products, in the right quantities, at the right time, while minimizing costs and maximizing efficiency.",
+          "inDefinedTermSet": {
+            "@type": "DefinedTermSet",
+            "name": "StockFlow Inventory Glossary"
+          }
+        },
         {
           "@context": "https://schema.org",
           "@type": "Article",

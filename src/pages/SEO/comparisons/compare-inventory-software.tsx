@@ -81,10 +81,12 @@ export default function CompareInventorySoftware() {
   return (
     <SeoPageLayout title="Compare Inventory Software">
       <SEO
-        title="Compare Inventory Software: Find the Best Solution | StockFlow"
-        description="See how leading inventory platforms stack up on pricing, capabilities, and fit—then evaluate StockFlow to decide faster."
-        keywords="compare inventory software, inventory software comparison, best inventory management software"
+        title="Compare Inventory Software 2025 | Best Solutions"
+        description="Compare top inventory software: pricing, features, setup time. Free plan vs paid. See detailed comparison. Find the best fit for your business. Free trial."
+        keywords="compare inventory software, inventory software comparison, best inventory management software, inventory software pricing, compare inventory systems, inventory software features, best inventory software 2025"
         url="https://www.stockflow.be/compare-inventory-software"
+        publishedTime="2024-01-01T00:00:00Z"
+        modifiedTime={new Date().toISOString()}
       />
 
       {/* Hero */}

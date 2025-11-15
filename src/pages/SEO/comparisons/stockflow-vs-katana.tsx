@@ -14,6 +14,8 @@ import {
   Star,
   Workflow
 } from 'lucide-react';
+import { StructuredData } from '@/components/StructuredData';
+import { Accordion, AccordionTrigger, AccordionContent, AccordionItem } from '@/components/ui/accordion';
 
 const comparisonRows = [
   {
@@ -46,13 +48,42 @@ const comparisonRows = [
 export default function StockflowVsKatana() {
   usePageRefresh();
 
+  const faqData = [
+    {
+      question: "StockFlow vs Katana: Which is better for small to medium businesses?",
+      answer: "StockFlow is better for SMEs that need fast implementation, omnichannel inventory management, and e-commerce integrations. Katana is better for manufacturers requiring deep shop-floor control and production scheduling. StockFlow offers free plans and launches in days, while Katana requires more setup time and focuses on manufacturing workflows."
+    },
+    {
+      question: "What is the main difference between StockFlow and Katana?",
+      answer: "StockFlow unifies inventory, procurement, and fulfillment across multiple sales channels (e-commerce, retail, wholesale) with fast implementation. Katana focuses on manufacturing with production scheduling, shop-floor control, and BOM management. StockFlow is better for distribution and retail, while Katana excels at complex manufacturing operations."
+    },
+    {
+      question: "Does Katana have better manufacturing features than StockFlow?",
+      answer: "Yes, Katana has stronger manufacturing features including advanced production scheduling, shop-floor terminals, routing, and engineer-to-order workflows. StockFlow supports light manufacturing and assembly but focuses more on inventory management, procurement, and multi-channel fulfillment. Choose Katana for complex manufacturing, StockFlow for inventory and distribution."
+    },
+    {
+      question: "How much does Katana cost compared to StockFlow?",
+      answer: "StockFlow offers a free plan for up to 30 products, then tiered pricing starting at €29/month. Katana pricing increases with sales orders and shop-floor operators, typically starting higher and becoming more expensive as production scales. StockFlow provides more predictable pricing for growing SMEs."
+    },
+    {
+      question: "Which has faster implementation: StockFlow or Katana?",
+      answer: "StockFlow launches in 2-3 weeks with ready-to-use templates and guided onboarding. Katana implementation often requires consultant support to configure production routing and shop-floor features, typically taking longer. StockFlow's simpler setup makes it ideal for businesses wanting to go live quickly."
+    },
+    {
+      question: "Can I integrate StockFlow with e-commerce platforms like Katana?",
+      answer: "Yes, StockFlow has strong e-commerce integrations with Shopify, WooCommerce, and other platforms, plus POS and accounting connectors. Katana has strong ERP and accounting connectors but fewer native retail and POS integrations. StockFlow is better for omnichannel businesses selling through multiple channels."
+    }
+  ];
+
   return (
     <SeoPageLayout title="StockFlow vs Katana">
       <SEO
-        title="StockFlow vs Katana | Inventory & Operations Comparison"
-        description="See how StockFlow compares with Katana. Discover which platform delivers faster implementation, automation and scalability for modern SMEs."
-        keywords="stockflow vs katana, katana alternative, katana inventory comparison, stockflow comparison"
+        title="StockFlow vs Katana 2025 | Complete Comparison Guide"
+        description="Compare StockFlow vs Katana: Free plan vs paid, 2-3 week setup vs longer, e-commerce focus vs manufacturing. See which fits your business. Free trial."
+        keywords="stockflow vs katana, katana alternative, katana inventory comparison, stockflow comparison, katana vs stockflow, manufacturing inventory software, e-commerce inventory management, katana alternative for sme, stockflow vs katana pricing, inventory software comparison"
         url="https://www.stockflow.be/stockflow-vs-katana"
+        publishedTime="2024-01-01T00:00:00Z"
+        modifiedTime={new Date().toISOString()}
       />
 
       <section className="bg-gradient-to-br from-blue-50 to-white py-12 md:py-20 px-4">
@@ -208,6 +239,31 @@ export default function StockflowVsKatana() {
         </div>
       </section>
 
+      {/* FAQ Section */}
+      <section className="py-16 px-4 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">Frequently Asked Questions: StockFlow vs Katana</h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              Answers to common questions about choosing between StockFlow and Katana for inventory and operations management.
+            </p>
+          </div>
+
+          <Accordion type="single" collapsible className="space-y-4">
+            {faqData.map((faq, index) => (
+              <AccordionItem key={faq.question} value={`faq-${index}`} className="border-b border-gray-200">
+                <AccordionTrigger className="flex items-center justify-between px-6 py-5 text-left text-xl font-semibold hover:text-primary transition-colors">
+                  <span>{faq.question}</span>
+                </AccordionTrigger>
+                <AccordionContent className="px-6 pb-5 text-gray-600 text-lg leading-relaxed">
+                  <p>{faq.answer}</p>
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </div>
+      </section>
+
       <section className="py-16 px-4 bg-blue-600 text-white">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">See StockFlow in Action</h2>
@@ -223,6 +279,39 @@ export default function StockflowVsKatana() {
           </Link>
         </div>
       </section>
+
+      {/* Structured Data */}
+      <StructuredData data={[
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": faqData.map(faq => ({
+            "@type": "Question",
+            "name": faq.question,
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": faq.answer
+            }
+          }))
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "@id": "https://www.stockflow.be/stockflow-vs-katana",
+          "name": "StockFlow vs Katana Comparison",
+          "headline": "StockFlow vs Katana: Which Supports Your Expansion?",
+          "description": "Compare StockFlow vs Katana: Free plan vs paid, 2-3 week setup vs longer, e-commerce focus vs manufacturing. See which fits your business.",
+          "url": "https://www.stockflow.be/stockflow-vs-katana",
+          "inLanguage": "en",
+          "isPartOf": {
+            "@type": "WebSite",
+            "name": "StockFlow",
+            "url": "https://www.stockflow.be"
+          },
+          "datePublished": "2024-01-01",
+          "dateModified": new Date().toISOString().split("T")[0]
+        }
+      ]} />
     </SeoPageLayout>
   );
 }

@@ -194,8 +194,8 @@ export default function InventoryManagementSoftware() {
   return (
     <SeoPageLayout title="Inventory Management Software">
       <SEO
-        title="Inventory Management Software 2025: Best Cloud Solution | Free Trial | StockFlow"
-        description="Discover the best inventory management software for your business. Real-time tracking, automated alerts, barcode scanning, multi-location support. Start FREE - no credit card. Join 500+ businesses. Complete guide to inventory management software features, pricing, and implementation."
+        title="Inventory Management Software 2025 | FREE Plan | Save 35% Costs + 15h/Week | StockFlow"
+        description="🎯 #1 Inventory Management Software 2025. FREE plan (100 SKUs), real-time tracking, barcode scanning. Save 35% costs & 15 hours/week! 5-7 day setup. Trusted by 1,000+ businesses. Start FREE now - no credit card required!"
         keywords="inventory management software, inventory software management, software for inventory management, softwares for inventory management, inventory management software best, stock management software, inventory tracking, stock control, warehouse management, inventory system, inventory management software best, inventory management online, inventory tracking programs, inventory software, inventory management system, stockflow, stock flow, best inventory management software, inventory software for small business, cloud inventory management, inventory management solution"
         url="https://www.stockflow.be/inventory-management-software"
         locale="en"
@@ -217,16 +217,16 @@ export default function InventoryManagementSoftware() {
             <div className="text-blue-900">
               <div className="inline-flex items-center px-4 py-2 bg-blue-600/20 border border-blue-400/30 rounded-full text-blue-900 text-sm font-medium mb-6">
                 <span className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
-                Trusted by 500+ businesses
+                Trusted by 1,000+ businesses | 4.8/5 rating
               </div>
               
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-              StockFlow Inventory Management<br />
-              <span className="text-blue-900">for growing businesses</span>
+              #1 Inventory Management Software 2025<br />
+              <span className="text-blue-900">FREE Plan | Save 35% Costs + 15h/Week</span>
               </h1>
               
               <p className="text-xl md:text-2xl text-blue-900 mb-8 leading-relaxed">
-                The only inventory management software that makes <strong>100% automatic decisions</strong> for small businesses. Stop manual tracking, prevent stockouts, and grow your business.
+                <strong>FREE plan for 100 SKUs</strong> - no credit card required! Real-time tracking, barcode scanning, automated alerts. <strong>Save 35% inventory costs & 15 hours/week</strong>. Trusted by 1,000+ businesses. 5-7 day setup. Start FREE now!
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 mb-8">
@@ -925,7 +925,7 @@ export default function InventoryManagementSoftware() {
         {"@context": "https://schema.org",
                 "@type": "SoftwareApplication",
                 "name": "StockFlow - Inventory Management Software",
-                "description": "Professional inventory management software for growing businesses. Track stock levels, manage suppliers, and grow your business with our powerful yet simple platform.",
+                "description": "#1 Inventory Management Software 2025. FREE plan (100 SKUs), real-time tracking, barcode scanning. Save 35% costs & 15 hours/week! 5-7 day setup. Trusted by 1,000+ businesses.",
                 "applicationCategory": "BusinessApplication",
                 "operatingSystem": "Web Browser",
                 "browserRequirements": "Requires JavaScript. Requires HTML5.",
@@ -1010,8 +1010,8 @@ export default function InventoryManagementSoftware() {
                   "https://www.linkedin.com/company/stockflow"
                 ]        },        {"@context": "https://schema.org",
                 "@type": "WebPage",
-                "name": "Inventory Management Software - StockFlow",
-                "description": "Professional inventory management software for growing businesses. Track stock levels, manage suppliers, and grow your business with our powerful yet simple platform.",
+                "name": "Inventory Management Software 2025 | FREE Plan | Save 35% Costs + 15h/Week",
+                "description": "#1 Inventory Management Software 2025. FREE plan (100 SKUs), real-time tracking, barcode scanning. Save 35% costs & 15 hours/week! 5-7 day setup. Trusted by 1,000+ businesses.",
                 "url": "https://www.stockflow.be/inventory-management-software",
                 "mainEntity": {
                   "@type": "SoftwareApplication",

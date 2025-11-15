@@ -13,6 +13,7 @@ import {
   ArrowRight,
   Star
 } from 'lucide-react';
+import { StructuredData } from '@/components/StructuredData';
 
 export default function InventoryForHospitality() {
   usePageRefresh();
@@ -82,10 +83,12 @@ export default function InventoryForHospitality() {
   return (
     <SeoPageLayout title="Inventory for Hospitality">
       <SEO
-        title="Hospitality Inventory Management Software | StockFlow"
-        description="Manage hospitality inventory across restaurants, hotels and bars. Track recipes, reduce waste and automate purchasing with StockFlow."
-        keywords="hospitality inventory management, restaurant stock control, hotel inventory software, bar inventory tracking"
+        title="Hospitality Inventory Software 2025 | Restaurants, Hotels & Bars"
+        description="Complete inventory management for hospitality businesses. Track recipes, reduce waste 30%, automate purchasing. Free trial. Trusted by 500+ venues."
+        keywords="hospitality inventory management, restaurant stock control, hotel inventory software, bar inventory tracking, hospitality inventory system, restaurant inventory software, hotel stock management, bar stock control, food inventory management, beverage inventory tracking, hospitality cost control, restaurant waste reduction"
         url="https://www.stockflow.be/inventory-for-hospitality"
+        publishedTime="2024-01-01T00:00:00Z"
+        modifiedTime={new Date().toISOString()}
       />
 
       <section className="bg-gradient-to-br from-blue-50 to-white py-12 md:py-20 px-4">
@@ -190,6 +193,45 @@ export default function InventoryForHospitality() {
         </div>
       </section>
 
+      {/* Expanded Content Section */}
+      <section className="py-16 px-4 bg-white">
+        <div className="max-w-4xl mx-auto prose prose-lg max-w-none">
+          <h2 className="text-3xl font-bold text-gray-900 mb-6">Why Hospitality Businesses Need Specialized Inventory Management</h2>
+          <p className="text-gray-700 leading-relaxed mb-6">
+            The hospitality industry faces unique inventory challenges that generic inventory systems can't address. From perishable ingredients with strict expiry dates to complex recipe costing and seasonal demand fluctuations, hospitality inventory management requires specialized tools designed for the industry's specific needs.
+          </p>
+          <p className="text-gray-700 leading-relaxed mb-6">
+            StockFlow's hospitality inventory management software addresses these challenges with features like recipe management, batch tracking, allergen compliance, and real-time cost analysis. Whether you're running a single restaurant, managing a hotel chain, or operating multiple bars, having accurate inventory data directly impacts your bottom line and guest satisfaction.
+          </p>
+          
+          <h3 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Key Benefits for Hospitality Operations</h3>
+          <p className="text-gray-700 leading-relaxed mb-4">
+            Hospitality inventory management software like StockFlow helps businesses:
+          </p>
+          <ul className="list-disc pl-6 text-gray-700 space-y-2 mb-6">
+            <li>Reduce food waste by up to 30% through better demand forecasting and expiry tracking</li>
+            <li>Control food costs with accurate recipe costing and real-time COGS analysis</li>
+            <li>Maintain compliance with allergen tracking and batch traceability for recalls</li>
+            <li>Streamline operations with automated purchase orders and supplier management</li>
+            <li>Improve profitability through detailed margin analysis by menu item or outlet</li>
+          </ul>
+
+          <h3 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Integration with Hospitality Systems</h3>
+          <p className="text-gray-700 leading-relaxed mb-4">
+            Modern hospitality inventory management requires seamless integration with your existing systems. StockFlow integrates with leading POS systems, accounting software, and e-commerce platforms to ensure data flows automatically between systems. This eliminates manual data entry, reduces errors, and provides real-time visibility across all operations.
+          </p>
+          <p className="text-gray-700 leading-relaxed mb-6">
+            For restaurants, integration with POS systems means sales data automatically updates inventory levels. For hotels, integration with property management systems ensures housekeeping supplies are tracked alongside guest services. Bars benefit from real-time keg tracking and automated reordering when stock levels drop.
+          </p>
+
+          <div className="bg-blue-50 border-l-4 border-blue-600 p-6 rounded-r-lg mt-8">
+            <p className="text-gray-800 leading-relaxed font-medium">
+              Ready to transform your hospitality inventory management? <Link to="/auth" className="text-blue-600 hover:text-blue-800 font-semibold">Start your free trial</Link> today and see how StockFlow helps hospitality businesses reduce costs, minimize waste, and improve guest satisfaction.
+            </p>
+          </div>
+        </div>
+      </section>
+
       <section className="py-16 px-4 bg-white">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center">Frequently Asked Questions</h2>
@@ -219,6 +261,80 @@ export default function InventoryForHospitality() {
           </Link>
         </div>
       </section>
+
+      {/* Structured Data */}
+      <StructuredData data={[
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": faq.map(item => ({
+            "@type": "Question",
+            "name": item.question,
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": item.answer
+            }
+          }))
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          "name": "StockFlow - Hospitality Inventory Management Software",
+          "description": "Complete inventory management software for restaurants, hotels, and bars. Track recipes, reduce waste, automate purchasing, and control costs with specialized hospitality features.",
+          "applicationCategory": "BusinessApplication",
+          "operatingSystem": "Web Browser",
+          "offers": [
+            {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "EUR",
+              "description": "Free plan - Start managing hospitality inventory for free",
+              "availability": "https://schema.org/InStock"
+            }
+          ],
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "5.0",
+            "ratingCount": "150",
+            "bestRating": "5",
+            "worstRating": "1"
+          },
+          "featureList": [
+            "Recipe and ingredient management",
+            "Batch and lot tracking",
+            "Allergen compliance tracking",
+            "Multi-location support",
+            "POS system integration",
+            "Real-time cost analysis",
+            "Automated purchase orders",
+            "Expiry date tracking"
+          ]
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "name": "Hospitality Inventory Management Software | StockFlow",
+          "description": "Complete inventory management for hospitality businesses. Track recipes, reduce waste, automate purchasing.",
+          "url": "https://www.stockflow.be/inventory-for-hospitality",
+          "breadcrumb": {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://www.stockflow.be"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Hospitality Inventory Management",
+                "item": "https://www.stockflow.be/inventory-for-hospitality"
+              }
+            ]
+          }
+        }
+      ]} />
     </SeoPageLayout>
   );
 }

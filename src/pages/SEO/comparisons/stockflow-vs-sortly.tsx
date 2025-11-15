@@ -208,10 +208,10 @@ export default function BestInventoryManagementSoftware() {
       sidebarContent={sidebarContent}
     >
       <SEO
-        title="StockFlow vs Sortly"
-        description="Real-time tracking, barcode scanning, automated alerts. FREE plan available - no credit card. Trusted by 10,000+ businesses"
+        title="StockFlow vs Sortly 2025 | FREE Plan vs $25/mo | Save 90% + Better Features"
+        description="⚡ StockFlow vs Sortly: FREE plan (100 SKUs) vs $25/month. 5-7 day setup vs 30+ days. European hosting, 24/7 support. Save 90% costs! Real-time tracking, barcode scanning. Start FREE - no credit card!"
         keywords="StockFlow vs Sortly, popular inventory management software, inventory management software, inventory software management, software for inventory management, softwares for inventory management, inventory management software best, top inventory management software, best inventory software, best stock management software, best inventory system, best inventory tracking software, best inventory management system, inventory tracking programs, best inventory software 2025, top rated inventory software, best inventory management solution, best inventory software for small business, best inventory software for ecommerce, StockFlow vs Sortly comparison, best inventory software reviews, StockFlow vs Sortly features, best inventory software pricing, best inventory software demo, best inventory software trial, inventory management software provider, inventory management software online, stockflow"
-        url="https://www.stockflow.be/best-inventory-management-software"
+        url="https://www.stockflow.be/stockflow-vs-sortly"
       />
 
 
@@ -220,7 +220,8 @@ export default function BestInventoryManagementSoftware() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
           <h1 className="text-6xl md:text-7xl font-extrabold tracking-tight mb-8">
-          StockFlow vs Sortly
+          StockFlow vs Sortly 2025<br />
+          <span className="text-blue-600 text-4xl md:text-5xl">FREE Plan vs $25/mo | Save 90% + Better Features</span>
             </h1>
           </div>
 
@@ -228,6 +229,19 @@ export default function BestInventoryManagementSoftware() {
           <span className="text-center text-gray-600 text-sm">published: 06/11/2025</span>
           </div>
 
+          <div className="max-w-4xl mx-auto mb-8 p-6 bg-blue-50 rounded-lg border-l-4 border-blue-600">
+            <p className="text-xl font-bold text-gray-900 mb-4">
+              ⚡ Quick Winner: StockFlow offers FREE plan (100 SKUs) vs Sortly's $25/month. 5-7 day setup vs 30+ days. European hosting, 24/7 support. Save 90% costs!
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link
+                to="/auth"
+                className="inline-flex items-center justify-center bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-blue-700 transition"
+              >
+                Start FREE Trial - No Credit Card
+              </Link>
+            </div>
+          </div>
 
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
               <b className="text-3xl font-bold">StockFlow vs Sortly (2025): which inventory app fits your team?</b>

@@ -68,8 +68,8 @@ export default function MagazijnbeheerSoftware() {
   return (
     <SeoPageLayout title="Magazijnbeheer Software voor Kleine Bedrijven">
       <SEO
-        title="Magazijnbeheer Software 2025 | Gratis Plan + Bespaar 35% | StockFlow #1"
-        description="ðŸ† #1 Magazijnbeheer software voor KMO's 2025. Real-time tracking, barcode scanning, automatische workflows. Bespaar 35% kosten & 15 uur/week! GRATIS plan - geen creditcard. Vertrouwd door 1.000+ bedrijven. Start nu gratis!"
+        title="Magazijnbeheer Software 2025 | GRATIS Plan (100 SKU's) | Bespaar 35% + 15u/week | StockFlow"
+        description="🎯 #1 Magazijnbeheer Software 2025 voor KMO's. GRATIS plan (100 SKU's), real-time tracking, barcode scanning. Bespaar 35% kosten & 15 uur/week! 5-7 dagen setup. Vertrouwd door 1.000+ bedrijven. Start NU gratis - geen creditcard!"
         keywords="magazijnbeheer software, voorraadbeheer software, warehouse management, stockbeheer software, gratis magazijnbeheer, KMO software, magazijnbeheer software gratis, beste magazijnbeheer software, magazijnbeheer software voor kleine bedrijven, online magazijnbeheer"
         url="https://www.stockflow.be/magazijnbeheer-software"
         structuredData={structuredData}

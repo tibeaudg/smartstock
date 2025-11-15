@@ -106,29 +106,51 @@ function getSeoRoutes() {
     '/voorraadbeheer-webshop',
   ];
 
+  // Recursive function to collect routes from all subdirectories
+  function collectRoutesFromDir(dirPath, baseDir = dirPath) {
+    const routes = [];
+    if (!fs.existsSync(dirPath)) {
+      return routes;
+    }
+
+    const entries = fs.readdirSync(dirPath, { withFileTypes: true });
+    for (const entry of entries) {
+      if (entry.isDirectory()) {
+        // Recursively scan subdirectories (dutch/, blog/, glossary/, etc.)
+        const childRoutes = collectRoutesFromDir(
+          path.join(dirPath, entry.name),
+          baseDir
+        );
+        routes.push(...childRoutes);
+        continue;
+      }
+
+      if (!entry.isFile() || !entry.name.endsWith('.tsx')) {
+        continue;
+      }
+
+      const fullPath = path.join(dirPath, entry.name);
+      const relative = path
+        .relative(baseDir, fullPath)
+        .replace(/\\/g, '/')
+        .replace(/index\.tsx$/i, '')
+        .replace(/\.tsx$/, '')
+        .replace(/\/+$/, '');
+
+      if (!relative || relative === '.') {
+        continue;
+      }
+
+      routes.push(`/${relative}`);
+    }
+
+    return routes;
+  }
+
   try {
     const seoDir = path.join(process.cwd(), 'src', 'pages', 'SEO');
-    const entries = fs.readdirSync(seoDir, { withFileTypes: true });
-    const routes = entries
-      .filter((e) => e.isFile() && e.name.endsWith('.tsx'))
-      .map((e) => {
-        const filename = e.name.replace(/\.tsx$/, '');
-        return `/${filename}`;
-      })
-      .sort();
-    
-    // Also scan the regions subdirectory
-    const regionsDir = path.join(seoDir, 'regions');
-    if (fs.existsSync(regionsDir)) {
-      const regionEntries = fs.readdirSync(regionsDir, { withFileTypes: true });
-      const regionRoutes = regionEntries
-        .filter((e) => e.isFile() && e.name.endsWith('.tsx'))
-        .map((e) => {
-          const filename = e.name.replace(/\.tsx$/, '');
-          return `/${filename}`;
-        });
-      routes.push(...regionRoutes);
-    }
+    // Recursively collect all routes from all subdirectories
+    const routes = collectRoutesFromDir(seoDir);
     
     // Add /nl/ versions for Dutch pages
     const allRoutes = [...routes];
@@ -152,11 +174,14 @@ async function getPublishedBlogPosts() {
 
   try {
     const supabase = createClient(supabaseUrl, supabaseAnonKey);
+    // Use a high limit to ensure all published blog posts are included
+    // Supabase default limit is 1000, but we'll be explicit
     const { data, error } = await supabase
       .from('blogposts')
       .select('slug,date_published,published')
       .eq('published', true)
-      .order('date_published', { ascending: false });
+      .order('date_published', { ascending: false })
+      .limit(10000); // High limit to include all blog posts
     if (error) throw error;
     return (data || []).map((p) => ({ slug: p.slug, date_published: p.date_published }));
   } catch (e) {

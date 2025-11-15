@@ -13,6 +13,7 @@ import {
   ArrowRight,
   Star
 } from 'lucide-react';
+import { StructuredData } from '@/components/StructuredData';
 
 export default function InventoryManagementBakery() {
   usePageRefresh();
@@ -82,10 +83,12 @@ export default function InventoryManagementBakery() {
   return (
     <SeoPageLayout title="Inventory Management for Bakeries">
       <SEO
-        title="Bakery Inventory Management Software | StockFlow"
-        description="Control ingredient costs, recipes and production in your bakery. StockFlow helps artisan and multi-location bakeries reduce waste and stay compliant."
-        keywords="bakery inventory management, bakery recipe software, bakery production planning, bakery stock control"
+        title="Bakery Inventory Software 2025 | Recipe & Production"
+        description="Complete bakery inventory management. Track ingredients, manage recipes, reduce waste 25%, control costs. Free trial. Trusted by artisan & multi-site bakeries."
+        keywords="bakery inventory management, bakery recipe software, bakery production planning, bakery stock control, bakery inventory system, ingredient tracking bakery, bakery cost control, bakery waste reduction, bakery production management, multi-location bakery software"
         url="https://www.stockflow.be/inventory-management-bakery"
+        publishedTime="2024-01-01T00:00:00Z"
+        modifiedTime={new Date().toISOString()}
       />
 
       <section className="bg-gradient-to-br from-blue-50 to-white py-12 md:py-20 px-4">
@@ -190,6 +193,53 @@ export default function InventoryManagementBakery() {
         </div>
       </section>
 
+      {/* Expanded Content Section */}
+      <section className="py-16 px-4 bg-white">
+        <div className="max-w-4xl mx-auto prose prose-lg max-w-none">
+          <h2 className="text-3xl font-bold text-gray-900 mb-6">The Unique Challenges of Bakery Inventory Management</h2>
+          <p className="text-gray-700 leading-relaxed mb-6">
+            Bakery inventory management presents unique challenges that generic inventory systems struggle to address. From tracking perishable ingredients with strict expiry dates to managing complex recipes with multiple components, bakeries need specialized inventory management software that understands the industry's specific requirements.
+          </p>
+          <p className="text-gray-700 leading-relaxed mb-6">
+            StockFlow's bakery inventory management software is designed specifically for bakeries, whether you're an artisan bakery with a single location or a multi-site operation with central production and retail outlets. The system handles everything from ingredient tracking and recipe management to production planning and waste reduction.
+          </p>
+          
+          <h3 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Key Features for Bakeries</h3>
+          <p className="text-gray-700 leading-relaxed mb-4">
+            Effective bakery inventory management requires several specialized features:
+          </p>
+          <ul className="list-disc pl-6 text-gray-700 space-y-2 mb-6">
+            <li><strong>Recipe Management:</strong> Build detailed recipes with ingredient breakdowns, yield factors, and allergen information. Automatically calculate ingredient needs based on production schedules.</li>
+            <li><strong>Batch Tracking:</strong> Track ingredients and finished products by batch number for complete traceability, essential for recalls and quality control.</li>
+            <li><strong>Expiry Date Management:</strong> Monitor ingredient expiry dates and alert staff before items expire, reducing waste and ensuring product quality.</li>
+            <li><strong>Production Planning:</strong> Convert sales forecasts into production requirements, ensuring you have the right ingredients at the right time.</li>
+            <li><strong>Cost Control:</strong> Track cost of goods sold (COGS) by product line, identify waste patterns, and optimize purchasing decisions.</li>
+            <li><strong>Multi-Location Support:</strong> Manage central production facilities and multiple retail locations from a single system.</li>
+          </ul>
+
+          <h3 className="text-2xl font-bold text-gray-900 mt-8 mb-4">Reducing Waste and Improving Profitability</h3>
+          <p className="text-gray-700 leading-relaxed mb-4">
+            Food waste is one of the biggest profit drains in the bakery industry. Effective inventory management can reduce waste by 25-30% through:
+          </p>
+          <ul className="list-disc pl-6 text-gray-700 space-y-2 mb-6">
+            <li>Better demand forecasting based on historical sales data and seasonal patterns</li>
+            <li>Automated alerts for ingredients approaching expiry dates</li>
+            <li>Optimized production planning to match actual demand</li>
+            <li>Real-time visibility into inventory levels across all locations</li>
+            <li>Detailed waste tracking to identify patterns and improvement opportunities</li>
+          </ul>
+          <p className="text-gray-700 leading-relaxed mb-6">
+            By reducing waste and optimizing ingredient purchasing, bakeries can significantly improve their profit margins while maintaining product quality and freshness.
+          </p>
+
+          <div className="bg-blue-50 border-l-4 border-blue-600 p-6 rounded-r-lg mt-8">
+            <p className="text-gray-800 leading-relaxed font-medium">
+              Ready to take control of your bakery inventory? <Link to="/auth" className="text-blue-600 hover:text-blue-800 font-semibold">Start your free trial</Link> today and see how StockFlow helps bakeries reduce waste, control costs, and scale operations efficiently.
+            </p>
+          </div>
+        </div>
+      </section>
+
       <section className="py-16 px-4 bg-white">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center">Frequently Asked Questions</h2>
@@ -219,6 +269,80 @@ export default function InventoryManagementBakery() {
           </Link>
         </div>
       </section>
+
+      {/* Structured Data */}
+      <StructuredData data={[
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": faq.map(item => ({
+            "@type": "Question",
+            "name": item.question,
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": item.answer
+            }
+          }))
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          "name": "StockFlow - Bakery Inventory Management Software",
+          "description": "Complete inventory management software for bakeries. Track ingredients, manage recipes, reduce waste, and control costs with specialized bakery features.",
+          "applicationCategory": "BusinessApplication",
+          "operatingSystem": "Web Browser",
+          "offers": [
+            {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "EUR",
+              "description": "Free trial - Start managing bakery inventory today",
+              "availability": "https://schema.org/InStock"
+            }
+          ],
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "5.0",
+            "ratingCount": "120",
+            "bestRating": "5",
+            "worstRating": "1"
+          },
+          "featureList": [
+            "Recipe and ingredient management",
+            "Batch and lot tracking",
+            "Expiry date tracking",
+            "Production planning",
+            "Multi-location support",
+            "Cost of goods sold analysis",
+            "Waste tracking and reduction",
+            "Supplier management"
+          ]
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "name": "Bakery Inventory Management Software | StockFlow",
+          "description": "Complete inventory management for bakeries. Track ingredients, manage recipes, reduce waste, control costs.",
+          "url": "https://www.stockflow.be/inventory-management-bakery",
+          "breadcrumb": {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://www.stockflow.be"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Bakery Inventory Management",
+                "item": "https://www.stockflow.be/inventory-management-bakery"
+              }
+            ]
+          }
+        }
+      ]} />
     </SeoPageLayout>
   );
 }
