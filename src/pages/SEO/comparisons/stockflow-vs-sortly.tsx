@@ -2,7 +2,7 @@
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { useCurrency } from '@/hooks/useCurrency';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import { generateSidebarContent } from '@/utils/seoPageHelpers';
 import { 
   BarChart3, 
