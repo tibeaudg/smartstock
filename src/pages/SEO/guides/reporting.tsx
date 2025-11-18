@@ -204,8 +204,8 @@ export default function InventoryPhotosPage() {
     <div className="min-h-screen bg-gray-50 pt-16">
       <Header />
       <SEO
-        title="Reporting for Inventory | StockFlow Reporting"
-        description="Discover StockFlow Inventory Photos—the inventory photo solution that keeps omnichannel inventory accurate. Learn how teams add photos to every item for visual clarity and faster picking."
+        title="Reporting 2025 - Reporting 2025 -"
+        description="Learn how reporting to choose the best software. Read the guide reporting to save time and money. Discover. Start free today. StockFlow helps businesses mana..."
         keywords="inventory photos, inventory photo solution, inventory photo management, inventory photo system, inventory photo software, inventory photo app, inventory photo platform, inventory photo service, inventory photo tool, inventory photo technology, inventory photo innovation, inventory photo solution for inventory management, inventory photo solution for inventory tracking, inventory photo solution for inventory control, inventory photo solution for inventory optimization, inventory photo solution for inventory visibility, inventory photo solution for inventory accuracy, inventory photo solution for inventory efficiency, inventory photo solution for inventory compliance, inventory photo solution for inventory security, inventory photo solution for inventory cost reduction, inventory photo solution for inventory growth, inventory photo solution for inventory success, inventory photo solution for inventory future"
         url="https://www.stockflow.be/inventory-photos"
         structuredData={structuredData}

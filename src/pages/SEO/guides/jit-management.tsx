@@ -157,12 +157,14 @@ export default function JitManagement() {
       sidebarContent={sidebarContent}
     >
       <SEO
-        title="JIT Management 2025 | JIT Inventory | Just-In-Time Inventory Management | StockFlow"
-        description="Complete guide to JIT management and JIT inventory. Learn how just-in-time inventory management reduces costs, improves cash flow, and optimizes operations. Free tools included."
+        title="Jit Management 2025 - Jit Management 2025"
+        description="Read the guide jit management to save time and money. Read the guide jit management to optimize your inventory management.. Get started free. StockFlow helps..."
         keywords="jit management, jit inventory, just in time management, just in time inventory, jit inventory management, jit management system, jit inventory system, just in time inventory management, jit management software, jit inventory software, just in time management system, jit inventory strategy, jit management approach, just in time inventory system, jit inventory method, jit management technique, jit inventory planning, stockflow, stock flow"
         url="https://www.stockflow.be/jit-management"
       />
 
+
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Jit Management</h1>
       <SeoPageHero
         title="JIT Management: Complete Guide to JIT Inventory and Just-In-Time Management"
         description="Master JIT management and JIT inventory strategies. Learn how just-in-time inventory management reduces costs, improves cash flow, and optimizes operations. Free tools and best practices included."

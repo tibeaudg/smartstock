@@ -105,12 +105,14 @@ export default function SeoSmallBusinessHiringTipsPage() {
   return (
     <SeoPageLayout title={topicTitle} showSidebar sidebarContent={sidebarContent}>
       <SEO
-        title={`${topicTitle} | StockFlow Guide`}
+        title={`Small Business Hiring Tips 2025 - Small Business Hiring`}
         description={metaDescription}
         keywords={keywords}
         url={`https://www.stockflow.be${canonicalPath}`}
       />
 
+
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Small Business Hiring Tips</h1>
       <StructuredData data={pageStructuredData} />
 
       <section className="bg-gradient-to-br from-blue-50 via-white to-purple-50 px-4 py-12">
@@ -120,9 +122,9 @@ export default function SeoSmallBusinessHiringTipsPage() {
               <div className="mb-6 inline-block rounded-full bg-blue-100 px-5 py-2 text-sm font-semibold text-blue-700">
                 {heroBadge}
               </div>
-              <h1 className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-4xl font-extrabold tracking-tight text-transparent sm:text-5xl lg:text-6xl">
+              <h2 className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-4xl font-extrabold tracking-tight text-transparent sm:text-5xl lg:text-6xl">
                 {topicTitle}
-              </h1>
+              </h2>
               <p className="mx-auto mt-6 max-w-3xl text-lg text-gray-600 sm:text-xl">{summaryCopy}</p>
               <div className="mt-8 flex flex-wrap justify-center gap-4">
                 <Link

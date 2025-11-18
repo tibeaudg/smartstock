@@ -128,12 +128,14 @@ export default function ShopifyInventoryManagement() {
       sidebarContent={sidebarContent}
     >
       <SEO
-        title="Shopify Inventory Management 2025 | Best Inventory Software for Shopify | StockFlow vs Stocky"
-        description="Best inventory management software for Shopify. Integrate with Shopify, sync inventory in real-time, prevent overselling. Better than Shopify Stocky. Free trial available - no credit card required!"
+        title="Shopify Inventory Management 2025 - Shopify Inventory Man..."
+        description="Read the guide shopify inventory management to optimize your inventory management. Find out how shopify inventory management to automate your processes.. Try..."
         keywords="shopify inventory management, inventory management software shopify, shopify stocky, best inventory management software for shopify, shopify plus inventory management, best wms for shopify, shopify inventory software, shopify inventory app, shopify inventory sync, shopify inventory management system, shopify inventory tracking, shopify inventory integration, inventory management for shopify stores, shopify inventory solution, stockflow, stock flow"
         url="https://www.stockflow.be/shopify-inventory-management"
       />
 
+
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Shopify Inventory Management</h1>
       <SeoPageHero
         title="Shopify Inventory Management: Best Inventory Software for Shopify"
         description="The best inventory management software for Shopify. Integrate seamlessly, sync inventory in real-time, prevent overselling, and manage multi-channel inventory. Better alternative to Shopify Stocky. Free trial available!"

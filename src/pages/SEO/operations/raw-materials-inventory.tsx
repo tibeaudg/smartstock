@@ -168,12 +168,14 @@ export default function RawMaterialsInventory() {
       sidebarContent={sidebarContent}
     >
       <SEO
-        title="Raw Materials Inventory Management 2025 | Track & Manage Raw Materials | StockFlow"
-        description="Complete guide to raw materials inventory management. Track raw materials, optimize production planning, manage suppliers, and reduce costs. Free inventory management software for raw materials."
+        title="Raw Materials Inventory 2025 - Raw Materials Inventory"
+        description="Read the guide raw materials inventory to automate your processes. Learn how raw materials inventory to save time and money.. Get started free. StockFlow hel..."
         keywords="raw materials, raw materials inventory, raw materials management, raw materials tracking, raw materials inventory management, raw materials inventory system, raw materials inventory software, raw materials tracking software, raw materials management system, raw materials inventory control, raw materials warehouse, raw materials storage, raw materials planning, raw materials procurement, raw materials cost, stockflow, stock flow"
         url="https://www.stockflow.be/raw-materials-inventory"
       />
 
+
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Raw Materials Inventory</h1>
       <SeoPageHero
         title="Raw Materials Inventory Management: Track & Optimize Your Raw Materials"
         description="Complete guide to raw materials inventory management. Track raw materials in real-time, optimize production planning, manage suppliers efficiently, and reduce costs. Free inventory management software included."

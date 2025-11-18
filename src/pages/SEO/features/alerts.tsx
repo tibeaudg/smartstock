@@ -204,8 +204,8 @@ export default function AlertsPage() {
     <div className="min-h-screen bg-gray-50 pt-16">
       <Header />
       <SEO
-        title="Alerts for Inventory | StockFlow Alerts"
-        description="Discover StockFlow Alerts—the alert solution that keeps omnichannel inventory accurate. Learn how teams get alerts for low stock and date-based notifications."
+        title="Alerts 2025 - Alerts 2025 -"
+        description="Learn how alerts to optimize your inventory management. Learn how alerts to save time and money. Discover StockFlow. Get started free. StockFlow helps busine..."
         keywords="barcode scanning software, inventory barcode scanner, web barcode scanner, GS1 scanning, stockflow scan, omnichannel inventory accuracy"
         url="https://www.stockflow.be/alerts"
         structuredData={structuredData}

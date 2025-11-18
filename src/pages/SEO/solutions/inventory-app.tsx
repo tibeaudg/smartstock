@@ -116,8 +116,8 @@ export default function InventoryApp() {
   return (
     <SeoPageLayout title="Inventory App">
       <SEO
-        title="Inventory App: Best Mobile Inventory Solution 2025 | StockFlow"
-        description="The best inventory app for businesses. Track stock in real-time, scan barcodes with phone camera, manage orders from mobile. Works offline. iOS & Android. Free trial."
+        title="Inventory App 2025 - Inventory App 2025"
+        description="Discover how inventory app to automate your processes. Learn how inventory app to save time and money. The. Get started free. StockFlow helps businesses mana..."
         keywords="inventory app, mobile inventory, stock app, warehouse app, inventory management app, inventory mobile app, stock tracking app, mobile inventory software, inventory app iOS, inventory app Android, barcode scanner app"
         url="https://www.stockflow.be/inventory-app"
         locale="en"

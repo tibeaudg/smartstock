@@ -95,12 +95,14 @@ export default function CrmInventoryManagement() {
       sidebarContent={sidebarContent}
     >
       <SEO
-        title="CRM and Inventory Management Software 2025 | Integrated CRM Inventory | StockFlow"
-        description="Complete guide to CRM and inventory management software. Learn how to integrate CRM with inventory management, benefits, and best practices. Free trial available."
+        title="Crm Inventory Management 2025 - Crm Inventory Management"
+        description="Learn how crm inventory management to choose the best software. Learn how crm inventory management to choose the best software.. Get started free. StockFlow ..."
         keywords="crm and inventory management software, crm inventory management, crm inventory software, crm inventory integration, crm inventory management system, crm inventory management software, inventory management crm, crm with inventory management, crm inventory solution, crm inventory platform, integrated crm inventory, crm inventory software solutions, stockflow, stock flow"
         url="https://www.stockflow.be/crm-inventory-management"
       />
 
+
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Crm Inventory Management</h1>
       <SeoPageHero
         title="CRM and Inventory Management: Integrated CRM Inventory Solutions"
         description="Complete guide to CRM and inventory management software. Learn how to integrate CRM with inventory management, benefits, and how to connect customer data with inventory information. Free trial available."

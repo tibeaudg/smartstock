@@ -204,8 +204,8 @@ export default function BarcodingPage() {
     <div className="min-h-screen bg-gray-50 pt-16">
       <Header />
       <SEO
-        title="Barcode Scanner for Inventory | StockFlow Barcoding"
-        description="Discover StockFlow Scan—the barcode scanning workflow that keeps omnichannel inventory accurate. Learn how teams capture UPC, QR, and GS1 codes in seconds."
+        title="Barcoding 2025 - Barcoding 2025 -"
+        description="Learn how barcoding to automate your processes. Read the guide barcoding to automate your processes. Discover StockFlow. Start free today. StockFlow helps bu..."
         keywords="barcode scanning software, inventory barcode scanner, web barcode scanner, GS1 scanning, stockflow barcoding, omnichannel inventory accuracy"
         url="https://www.stockflow.be/barcoding"
         structuredData={structuredData}

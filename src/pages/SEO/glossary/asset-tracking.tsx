@@ -188,8 +188,8 @@ export default function InventoryPhotosPage() {
     <div className="min-h-screen bg-gray-50 pt-16">
       <Header />
       <SEO
-        title="Asset Tracking for Inventory | StockFlow Asset Tracking"
-        description="Discover StockFlow Asset Tracking—the asset tracking solution that keeps omnichannel inventory accurate. Learn how teams track assets and equipment for maintenance and compliance."
+        title="Asset Tracking 2025 - Asset Tracking 2025"
+        description="Read the guide asset tracking to choose the best software. Read the guide asset tracking to optimize your inventory management.. Get started free. StockFlow ..."
         keywords="asset tracking, asset tracking solution, asset tracking system, asset tracking software, asset tracking app, asset tracking platform, asset tracking service, asset tracking tool, asset tracking technology, asset tracking innovation, asset tracking solution for inventory management, asset tracking solution for inventory tracking, asset tracking solution for inventory control, asset tracking solution for inventory optimization, asset tracking solution for inventory visibility, asset tracking solution for inventory accuracy, asset tracking solution for inventory efficiency, asset tracking solution for inventory compliance, asset tracking solution for inventory security, asset tracking solution for inventory cost reduction, asset tracking solution for inventory growth, asset tracking solution for inventory success, asset tracking solution for inventory future"
         url="https://www.stockflow.be/asset-tracking"
         structuredData={structuredData}

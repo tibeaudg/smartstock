@@ -106,12 +106,14 @@ export default function EcommerceInventoryManagement() {
       sidebarContent={sidebarContent}
     >
       <SEO
-        title="Ecommerce Inventory Management 2025 | Multi Platform Inventory | Cross Platform | StockFlow"
-        description="Best ecommerce management software for multi platform and cross platform inventory management. Sync inventory across Shopify, Amazon, WooCommerce, and more. Free trial available!"
+        title="Ecommerce Inventory Management 2025 - Ecommerce Inventory..."
+        description="Discover how ecommerce inventory management to automate your processes. Find out how ecommerce inventory management to optimize your inventory. Get started f..."
         keywords="ecommerce management software, ecommerce inventory management, multi platform inventory management, cross platform inventory management, ecommerce inventory software, multi platform inventory, cross platform inventory, ecommerce inventory system, multi channel inventory management, ecommerce inventory solution, inventory management for ecommerce, multi platform inventory software, cross platform inventory software, stockflow, stock flow"
         url="https://www.stockflow.be/ecommerce-inventory-management"
       />
 
+
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Ecommerce Inventory Management</h1>
       <SeoPageHero
         title="Ecommerce Inventory Management: Multi Platform & Cross Platform Solutions"
         description="Best ecommerce management software for multi platform and cross platform inventory management. Sync inventory across Shopify, Amazon, WooCommerce, and all major e-commerce platforms. Free trial available!"

@@ -83,8 +83,8 @@ export default function FreeInventoryManagement() {
   return (
     <SeoPageLayout title="Free Inventory Management">
       <SEO
-        title="Free Inventory Management Software 2025 | Start Free"
-        description="100% free inventory management for up to 30 products. Barcode scanning, alerts, multi-location. No credit card. Upgrade when ready. Trusted by 500+ businesses."
+        title="Free Inventory Management 2025 - Free Inventory Management"
+        description="Learn how free inventory management to save time and money. Find out how free inventory management to save time and. Get started free. StockFlow helps busine..."
         keywords="free inventory management, inventory software free plan, free stock management, free warehouse software, free inventory tracking, free inventory system, no cost inventory software, free inventory app, free stock control, free inventory management tool"
         url="https://www.stockflow.be/free-inventory-management"
         publishedTime="2024-01-01T00:00:00Z"

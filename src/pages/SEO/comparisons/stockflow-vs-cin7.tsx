@@ -68,8 +68,8 @@ export default function StockFlowVsCin7() {
   return (
     <SeoPageLayout title="StockFlow vs Cin7">
       <SEO
-        title="StockFlow vs Cin7 | Comparison & Free Trial 2025"
-        description="Compare StockFlow vs Cin7 2025. Free plan vs $300/month, 5-7 day setup vs 45-90 days, European hosting, better pricing. See detailed comparison and start free trial."
+        title="Stockflow Vs Cin7 2025 - Stockflow Vs Cin7"
+        description="Find out how stockflow vs cin7 to optimize your inventory management. Find out how stockflow vs cin7 to save time and. Start free today. StockFlow helps busi..."
         keywords="stockflow vs cin7, cin7 alternative, cin7 vs stockflow, cin7 inventory management, stockflow vs cin7 comparison, cin7 pricing, best cin7 alternative, inventory management software comparison, omnichannel inventory software, cin7 competitor, stockflow inventory software, cin7 vs stockflow pricing, inventory management software for small business, best inventory software 2025"
         url="https://www.stockflow.be/stockflow-vs-cin7"
       />

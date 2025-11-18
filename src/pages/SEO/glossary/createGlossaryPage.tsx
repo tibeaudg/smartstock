@@ -87,12 +87,14 @@ export function createGlossaryPage(config: GlossaryPageConfig) {
     return (
       <SeoPageLayout title={title} showSidebar sidebarContent={sidebarContent}>
         <SEO
-          title={`${title} Definition | Inventory Glossary | StockFlow`}
+          title={`Createglossarypage 2025 - Createglossarypage 2025 -`}
           description={metaDescription}
           keywords={pageKeywords}
           url={`https://www.stockflow.be${path}`}
         />
 
+
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Createglossarypage</h1>
         <StructuredData data={jsonLd} />
 
         <header className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-indigo-600 via-blue-600 to-cyan-500 px-6 py-16 text-white shadow-xl">
@@ -101,7 +103,7 @@ export function createGlossaryPage(config: GlossaryPageConfig) {
             <span className="inline-flex w-fit items-center justify-center rounded-full bg-white/10 px-4 py-1 text-sm font-medium uppercase tracking-wide">
               Inventory Glossary
             </span>
-            <h1 className="text-3xl font-bold md:text-4xl lg:text-5xl">{title}</h1>
+            <h2 className="text-3xl font-bold md:text-4xl lg:text-5xl">{title}</h2>
             <p className="text-lg text-white/90 md:text-xl">{shortDescription}</p>
             <div className="flex flex-wrap justify-center gap-4">
               <Link

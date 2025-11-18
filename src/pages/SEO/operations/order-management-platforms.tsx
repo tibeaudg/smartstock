@@ -91,12 +91,14 @@ export default function OrderManagementPlatforms() {
       sidebarContent={sidebarContent}
     >
       <SEO
-        title="Order Management Platforms 2025 | Best Order Management Software | StockFlow"
-        description="Complete guide to order management platforms. Learn how order management platforms work, features, and how to choose the best platform. Free trial available."
+        title="Order Management Platforms 2025 - Order Management Platforms"
+        description="Learn how order management platforms to automate your processes. Read the guide order management platforms to save time and. Try free now. StockFlow helps bu..."
         keywords="order management platforms, order management platform, order management software, order management system, order management solutions, order management tools, best order management platforms, order management platform software, order management platform comparison, order management platform features, stockflow, stock flow"
         url="https://www.stockflow.be/order-management-platforms"
       />
 
+
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Order Management Platforms</h1>
       <SeoPageHero
         title="Order Management Platforms: Complete Guide to Order Management"
         description="Complete guide to order management platforms. Learn how order management platforms work, features, and how to streamline order processing and fulfillment. Free trial available."

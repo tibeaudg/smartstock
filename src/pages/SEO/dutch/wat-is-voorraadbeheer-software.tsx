@@ -111,8 +111,8 @@ export default function WatIsVoorraadbeheerSoftware() {
   return (
     <SeoPageLayout title="Wat is Voorraadbeheer Software?">
       <SEO
-        title="Wat is Voorraadbeheer Software en Hoe Werkt Het? | Uitleg & Gids | stockflow"
-        description="Ontdek wat voorraadbeheer software is, hoe het werkt en waarom elk bedrijf met voorraad het nodig heeft. Complete uitleg met voorbeelden en praktische tips."
+        title="Wat Is Voorraadbeheer Software 2025 - Wat Is Voorraadbeheer"
+        description="Lees de gids wat is voorraadbeheer software tijd en geld te besparen. Ontdek hoe wat is voorraadbeheer software uw processen te automatiseren.. Start vandaag..."
         keywords="wat is voorraadbeheer software, voorraadbeheer software uitleg, hoe werkt voorraadbeheer, inventory management software, voorraad software, stockbeheer software, voorraadbeheer systeem"
         url="https://www.stockflow.be/wat-is-voorraadbeheer-software"
       />

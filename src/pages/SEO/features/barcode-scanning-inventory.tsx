@@ -95,8 +95,8 @@ const BarcodeScanningInventory = () => {
   return (
     <div className="min-h-screen bg-white">
       <SEO
-        title="Barcode Scanning for Inventory Management | Generating a Barcode | How is Barcode Generated | StockFlow"
-        description="Mobile barcode scanning for inventory management. Learn how is barcode generated and start generating a barcode for your products. Use your smartphone to scan products and update stock levels instantly. Supports QR codes and all major barcode formats. Free trial available."
+        title="Barcode Scanning Inventory 2025 - Barcode Scanning Inventory"
+        description="Find out how barcode scanning inventory to automate your processes. Find out how barcode scanning inventory to automate your processes.. Start free today."
         keywords={expandedKeywords}
         url="https://www.stockflow.be/barcode-scanning-inventory"
         locale="en"

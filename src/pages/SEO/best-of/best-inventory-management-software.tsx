@@ -498,8 +498,8 @@ export default function BestInventoryManagementSoftware() {
       sidebarContent={sidebarContent}
     >
       <SEO
-        title="Inventory Management Software | Top 10 Comparison & Free Demo"
-        description="Compare the best inventory management software 2025. Free plan, 5-day setup, real-time tracking, barcode scanning. See pricing and start free trial. Find the best inventory management system, stock management software, and inventory solutions for your business."
+        title="Beste Best Inventory Management Software"
+        description="Discover how best inventory management software to automate your processes. Find out how best inventory management software to choose the. Try free now."
         keywords="best inventory management software, inventory management software, inventory management system, inventory management solutions, stock management software, inventory software, inventory system, inventory management tools, inventory control software, inventory tracking software, how to choose inventory management software, compare inventory management software, best inventory software for ecommerce, inventory management software price, inventory management software small business, best stock management software, online inventory management software"
         url="https://www.stockflow.be/best-inventory-management-software"
       />
@@ -2178,7 +2178,7 @@ export default function BestInventoryManagementSoftware() {
                   </div>
 
                   <div className="mb-6">
-                    <h4 className="text-sm font-semibold text-gray-900 mb-3">What&apos;s included</h4>
+                    <h3 className="text-3xl font-bold mb-4">What&apos;s included</h3>
                     <ul className="space-y-2 text-sm text-gray-700">
                       {plan.features.map((feature) => (
                         <li key={`${plan.name}-${feature}`} className="flex items-start gap-2">

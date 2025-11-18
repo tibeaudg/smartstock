@@ -13,8 +13,9 @@ const BLOG_JSON_FALLBACK = path.join(repoRoot, 'src', 'lib', 'blogposts.json');
 const OUTPUT_SITEMAP = path.join(repoRoot, 'public', 'sitemap.xml');
 const OUTPUT_SITEMAP_INDEX = path.join(repoRoot, 'public', 'sitemap-index.xml');
 
-// Supported languages - English is default, nl is primary for Belgium
-const SUPPORTED_LANGUAGES = ['en', 'nl', 'de', 'fr', 'es', 'it', 'pl', 'hu', 'sv', 'th', 'si', 'ro'];
+// Supported languages - Only English and Dutch (for Belgium market)
+// Removed language-prefixed routing for other languages
+const SUPPORTED_LANGUAGES = ['en', 'nl'];
 
 function readSeoRoutes() {
   try {

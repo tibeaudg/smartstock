@@ -58,8 +58,8 @@ export default function GratisStockbeheer() {
       title="Voorraadbeheer: Gratis Stockbeheer App voor KMO's"
     >
       <SEO
-        title="Voorraadbeheer Gratis: 100% Gratis Software | Start Direct | stockflow"
-        description="Zoek je voorraadbeheer gratis? Start direct met 100% gratis voorraadbeheer software voor KMO's. Beheer tot 30 producten gratis, geen creditcard nodig! Perfect voor winkels, horeca en zelfstandigen. 500+ tevreden gebruikers. Start nu gratis!"
+        title="Gratis Voorraadbeheer 2025 - Gratis Voorraadbeheer 2025"
+        description="Lees de gids gratis voorraadbeheer de beste software te kiezen. Ontdek hoe gratis voorraadbeheer de beste software te kiezen. Zoek. Start vandaag gratis.'s. Beheer tot 30 producten gratis, geen creditcard nodig! Perfect voor winkels, horeca en zelfstandigen. 500+ tevreden gebruikers. Start nu gratis!"
         keywords="voorraadbeheer gratis, gratis voorraadbeheer, voorraadbeheer app gratis, gratis voorraadbeheer software, gratis voorraadbeheer app, voorraadbeheer zonder kosten, voorraadbeheer KMO, voorraadbeheer starters, voorraadbeheer kleine bedrijven, stockflow gratis, gratis voorraadbeheer programma, gratis stockbeheer, voorraadbeheer gratis download"
         url="https://www.stockflow.be/gratis-voorraadbeheer"
       />

@@ -69,12 +69,14 @@ export default function PurchaseOrderForm() {
       sidebarContent={sidebarContent}
     >
       <SEO
-        title="Purchase Order Form 2025 | Free Purchase Order Template | StockFlow"
-        description="Create professional purchase order forms with StockFlow inventory management software. Auto-generate purchase orders, download PDFs, and streamline purchasing. Free templates included."
+        title="Purchase Order Form 2025 - Purchase Order Form"
+        description="Discover how purchase order form to optimize your inventory management. Read the guide purchase order form to save time and. Get started free. StockFlow help..."
         keywords="purchase order form, purchase order template, purchase order, purchase order form template, purchase order form pdf, purchase order form free, purchase order form template free, purchase order form download, purchase order form example, purchase order form format, purchase order form generator, purchase order form software, stockflow, stock flow"
         url="https://www.stockflow.be/purchase-order-form"
       />
 
+
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Purchase Order Form</h1>
       <SeoPageHero
         title="Purchase Order Form: Create Professional Purchase Orders"
         description="Create professional purchase order forms with StockFlow. Auto-generate purchase orders when inventory runs low, download PDFs, and streamline your purchasing process. Free templates included."

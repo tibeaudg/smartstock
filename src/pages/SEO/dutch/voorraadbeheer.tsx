@@ -34,8 +34,8 @@ export default function VoorraadbeheerSoftware() {
          <SeoPageLayout
        title="Voorraadbeheer">
       <SEO
-        title="Gratis Voorraadbeheer voor KMO's | stockflow"
-        description="Beheer je voorraad eenvoudig online. Gratis voorraadbeheer voor winkels, horeca en zelfstandigen. Start direct met stockflow – geen kosten."
+        title="Voorraadbeheer 2025 - Voorraadbeheer 2025 -'s | stockflow"
+        description="Lees de gids voorraadbeheer uw voorraadbeheer te optimaliseren. Lees de gids voorraadbeheer tijd en geld te besparen. Beheer. Krijg direct toegang. StockFlow..."
         keywords="voorraadbeheer, gratis voorraadbeheer, stockbeheer software, voorraadbeheer programma, magazijnbeheer software, inventarisatie software, voorraadbeheer app, stockbeheer app, stockflow, gratis stockbeheer, KMO software, kleine onderneming software"
         url="https://www.stockflow.be/voorraadbeheer"
       />

@@ -125,8 +125,8 @@ export default function ProgrammaStockbeheer() {
   return (
     <SeoPageLayout title="Programma Stockbeheer">
       <SEO
-        title="Programma Stockbeheer: Complete Gids voor het Kiezen van de Juiste Oplossing | StockFlow"
-        description="Vergelijk verschillende soorten stockbeheer programma's: cloud-based, on-premise, branchespecifieke en gratis oplossingen. Ontdek welk programma stockbeheer het beste bij jouw bedrijf past. Start met StockFlow's gratis plan."
+        title="Programma Stockbeheer 2025 - Programma Stockbeheer 2025"
+        description="Ontdek hoe programma stockbeheer uw voorraadbeheer te optimaliseren. Lees de gids programma stockbeheer tijd en geld te besparen.. Krijg direct toegang.'s: cloud-based, on-premise, branchespecifieke en gratis oplossingen. Ontdek welk programma stockbeheer het beste bij jouw bedrijf past. Start met StockFlow's gratis plan."
         keywords="programma stockbeheer, stockbeheer programma, stockbeheer software, software stockbeheer, magazijnbeheer software, voorraadbeheer software, voorraadbeheer programma, digitaal magazijnbeheer, stock beheer, beste stockbeheer programma's, voorraadbeheer gratis, magazijnbeheer programma, programma voorraadbeheer, software voor magazijnbeheer, beter stockbeheer"
         url="https://www.stockflow.be/programma-stockbeheer"
         locale="nl-BE"

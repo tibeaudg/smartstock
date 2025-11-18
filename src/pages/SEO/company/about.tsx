@@ -38,8 +38,8 @@ export default function About() {
   return (
     <SeoPageLayout title="About Us">
       <SEO
-        title="About StockFlow - Cloud-based Inventory Management Platform for SMEs"
-        description="Learn about StockFlow, the leading provider of Cloud-based Inventory Management Platform for small and medium businesses. Discover our mission, team, and commitment to helping businesses grow."
+        title="About 2025 - About 2025 -"
+        description="Read the guide about to save time and money. Find out how about to optimize your inventory management. Learn. Try free now. StockFlow helps businesses manage..."
         keywords="about stockflow, inventory management company, stock management company, warehouse management company, inventory software company, stock software company, warehouse software company, business software company, inventory management team, stock management team, warehouse management team, inventory software team, stock software team, warehouse software team, business software team, inventory management mission, stock management mission, warehouse management mission, inventory software mission, stock software mission, warehouse software mission, business software mission, inventory management company story, stock management company story, warehouse management company story, inventory software company story, stock software company story, warehouse software company story, business software company story"
         url="https://www.stockflow.be/about"
         structuredData={structuredData}

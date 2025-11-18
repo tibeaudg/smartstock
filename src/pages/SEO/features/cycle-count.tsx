@@ -100,12 +100,14 @@ export default function CycleCount() {
       sidebarContent={sidebarContent}
     >
       <SEO
-        title="Cycle Count 2025 | Inventory Cycle Counting Guide | StockFlow"
-        description="Complete guide to cycle count and inventory cycle counting. Learn how cycle counting works, best practices, and how to maintain inventory accuracy. Free cycle count tools included."
+        title="Cycle Count 2025 - Cycle Count 2025"
+        description="Discover how cycle count to save time and money. Find out how cycle count to optimize your inventory management.. Start free today. StockFlow helps businesse..."
         keywords="cycle count, cycle counting, inventory cycle count, cycle count inventory, cycle count method, cycle count process, cycle count schedule, cycle count software, cycle count system, inventory cycle counting, cycle count best practices, cycle count vs physical inventory, cycle count accuracy, cycle count frequency, stockflow, stock flow"
         url="https://www.stockflow.be/cycle-count"
       />
 
+
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Cycle Count</h1>
       <SeoPageHero
         title="Cycle Count: Complete Guide to Inventory Cycle Counting"
         description="Master cycle count and inventory cycle counting. Learn how cycle counting works, best practices, and how to maintain inventory accuracy year-round. Free cycle count tools included."

@@ -48,8 +48,8 @@ export default function StockflowVsUnleashed() {
   return (
     <SeoPageLayout title="StockFlow vs Unleashed">
       <SEO
-        title="StockFlow vs Unleashed | Modern Inventory Alternative"
-        description="Compare StockFlow vs Unleashed. See how StockFlow helps SMEs launch faster with affordable pricing, automation and local support."
+        title="Stockflow Vs Unleashed 2025 - Stockflow Vs Unleashed"
+        description="Read the guide stockflow vs unleashed to optimize your inventory management. Discover how stockflow vs unleashed to choose the best software.. Get started free."
         keywords="stockflow vs unleashed, unleashed alternative, unleashed inventory comparison, stockflow comparison"
         url="https://www.stockflow.be/stockflow-vs-unleashed"
       />

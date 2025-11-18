@@ -292,8 +292,8 @@ export default function EducationInventoryManagement() {
       sidebarContent={sidebarContent}
     >
       <SEO
-        title="School Inventory Management Software for K-12, Colleges & Universities"
-        description="Complete inventory management for educational institutions. Track textbooks, technology, lab equipment, supplies, and assets. Reduce loss, optimize budgets, streamline audits, and improve accountability with barcode scanning and check-out systems."
+        title="Education Inventory Management 2025 - Education Inventory..."
+        description="Discover how education inventory management to automate your processes. Learn how education inventory management to automate your processes. Complete. Start ..."
         keywords="school inventory management, education inventory software, textbook tracking, school asset management, technology checkout system, K-12 inventory, college inventory management, school supplies tracking, educational institution inventory"
         url="https://www.stockflow.be/education-inventory-management"
       />

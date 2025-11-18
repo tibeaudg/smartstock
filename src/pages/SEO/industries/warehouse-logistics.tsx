@@ -96,12 +96,14 @@ export default function WarehouseLogistics() {
       sidebarContent={sidebarContent}
     >
       <SEO
-        title="Warehouse Logistics 2025 | Warehouse in Logistics | Complete Guide | StockFlow"
-        description="Complete guide to warehouse logistics and warehouse in logistics. Learn how to optimize warehouse operations, improve logistics efficiency, and streamline supply chain management. Free tools included."
+        title="Warehouse Logistics 2025 - Warehouse Logistics 2025"
+        description="Read the guide warehouse logistics to choose the best software. Learn how warehouse logistics to choose the best software. Complete. Try free now. StockFlow ..."
         keywords="warehouse logistics, warehouse in logistics, warehouse logistics management, warehouse logistics system, warehouse logistics software, warehouse logistics operations, warehouse logistics solutions, warehouse logistics optimization, logistics warehouse, warehouse logistics management system, warehouse logistics platform, stockflow, stock flow"
         url="https://www.stockflow.be/warehouse-logistics"
       />
 
+
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Warehouse Logistics</h1>
       <SeoPageHero
         title="Warehouse Logistics: Complete Guide to Warehouse in Logistics"
         description="Master warehouse logistics and understand the role of warehouse in logistics. Learn how to optimize warehouse operations, improve logistics efficiency, and streamline supply chain management. Free tools included."

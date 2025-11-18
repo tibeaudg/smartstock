@@ -294,8 +294,8 @@ export default function InteriorDesignInventoryManagement() {
       sidebarContent={sidebarContent}
     >
       <SEO
-        title="Interior Design Inventory Management Software for Designers & Decorators"
-        description="Visual inventory management for interior designers. Track furniture, fabrics, and accessories across client projects. Manage supplier orders, pricing, deliveries, and installations. Photo catalogs, project-based tracking, and client reports."
+        title="Interior Design Inventory Management 2025"
+        description="Find out how interior design inventory management to optimize your inventory management. Discover how interior design inventory management to optimize your i..."
         keywords="interior design inventory management, interior designer software, furniture tracking, project-based inventory, design inventory system, supplier management, client project tracking, interior design business software"
         url="https://www.stockflow.be/interior-design-inventory-management"
       />

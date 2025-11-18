@@ -21,8 +21,8 @@ export default function TermsConditions() {
   return (
     <SeoPageLayout title="Terms & Conditions">
       <SEO
-        title="Terms & Conditions - StockFlow | User Agreement & Service Terms"
-        description="Terms and Conditions for StockFlow inventory management software. Read our terms of service, user agreement, and service conditions for using our platform."
+        title="Terms Conditions 2025 - Terms Conditions 2025"
+        description="Find out how terms conditions to optimize your inventory management. Read the guide terms conditions to optimize your inventory management.. Start free today."
         keywords="terms and conditions, terms of service, user agreement, service terms, legal terms, terms of use, user conditions, service agreement, terms of service inventory management, stock management terms, warehouse management terms, inventory software terms, stock software terms, warehouse software terms, business software terms, inventory management agreement, stock management agreement, warehouse management agreement, inventory software agreement, stock software agreement, warehouse software agreement, business software agreement, terms of service business software, user agreement business software, service terms business software, legal terms business software, terms of use business software, user conditions business software, service agreement business software"
         url="https://www.stockflow.be/terms-conditions"
         structuredData={structuredData}

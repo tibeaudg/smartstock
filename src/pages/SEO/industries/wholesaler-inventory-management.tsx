@@ -177,12 +177,14 @@ export default function WholesalerInventoryManagement() {
       sidebarContent={sidebarContent}
     >
       <SEO
-        title="Wholesaler Inventory Management Software 2025 | Distributors & Wholesalers | StockFlow"
-        description="Best wholesaler inventory management software for distributors and wholesalers. Manage inventory across multiple warehouses, optimize turnover, process bulk orders. Free trial available - no credit card required!"
+        title="Wholesaler Inventory Management 2025 - Wholesaler Invento..."
+        description="Read the guide wholesaler inventory management to save time and money. Read the guide wholesaler inventory management to optimize your inventory. Try free now."
         keywords="wholesaler inventory management, wholesaler inventory software, distributor inventory management, wholesaler inventory system, distributor inventory software, wholesaler and distributor, distributors and wholesalers, wholesale inventory management, distributor inventory system, wholesaler inventory app, distributor inventory app, wholesale inventory software, distributor inventory solution, wholesaler inventory platform, wholesale inventory tracking, distributor inventory tracking, wholesaler stock management, distributor stock management, wholesale inventory control, distributor inventory control, stockflow, stock flow"
         url="https://www.stockflow.be/wholesaler-inventory-management"
       />
 
+
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Wholesaler Inventory Management</h1>
       <SeoPageHero
         title="Wholesaler Inventory Management: For Distributors and Wholesalers"
         description="The best wholesaler inventory management software for distributors and wholesalers. Manage inventory across multiple warehouses, optimize inventory turnover, process bulk orders, and streamline operations. Start free today!"

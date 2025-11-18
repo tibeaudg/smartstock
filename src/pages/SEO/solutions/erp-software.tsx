@@ -173,12 +173,14 @@ export default function ErpSoftware() {
       sidebarContent={sidebarContent}
     >
       <SEO
-        title="ERP Software 2025 | Enterprise Resource Planning | ERP vs Inventory Management | StockFlow"
-        description="Complete guide to ERP software and enterprise resource planning systems. Learn about ERP features, costs, and when to choose ERP vs specialized inventory management software like StockFlow."
+        title="Erp Software 2025 - Erp Software 2025"
+        description="Find out how erp software to save time and money. Learn how erp software to automate your processes. Complete guide. Get started free. StockFlow helps busine..."
         keywords="erp software, enterprise resource planning, erp system, erp software solutions, erp software companies, erp software for small business, erp software meaning, erp software definition, erp management software, erp business software, cloud erp software, erp software comparison, erp software list, best erp software, erp software features, erp software cost, inventory management vs erp, erp inventory management, stockflow, stock flow"
         url="https://www.stockflow.be/erp-software"
       />
 
+
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Erp Software</h1>
       <SeoPageHero
         title="ERP Software Guide: Enterprise Resource Planning vs Inventory Management"
         description="Complete guide to ERP software and enterprise resource planning systems. Learn when ERP makes sense and when specialized inventory management software like StockFlow is a better choice for your business."

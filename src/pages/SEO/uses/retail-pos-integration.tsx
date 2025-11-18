@@ -83,8 +83,8 @@ export default function RetailPosIntegration() {
   return (
     <SeoPageLayout title="Retail POS Integration">
       <SEO
-        title="Retail POS Integration | Sync Stores & Stock | StockFlow"
-        description="Connect your retail POS with StockFlow inventory management. Sync sales, automate replenishment, and keep every store stocked with the right products."
+        title="Retail Pos Integration 2025 - Retail Pos Integration"
+        description="Discover how retail pos integration to automate your processes. Read the guide retail pos integration to automate your processes.. Start free today. StockFlo..."
         keywords="retail POS integration, inventory POS sync, multi store inventory, Shopify POS stockflow integration"
         url="https://www.stockflow.be/retail-pos-integration"
       />

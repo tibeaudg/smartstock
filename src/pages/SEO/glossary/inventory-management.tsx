@@ -331,8 +331,8 @@ export default function InventoryManagementGuide() {
       sidebarContent={sidebarContent}
     >
       <SEO
-        title="Inventory Management Guide 2025 | Methods, KPIs & Best Practices"
-        description="Complete inventory management guide: JIT, MRP, EOQ methods, essential KPIs, accounting principles, optimization strategies. Reduce costs 20-35%. Free software guide included."
+        title="Inventory Management 2025 - Inventory Management 2025"
+        description="Read the guide inventory management to automate your processes. Learn how inventory management to automate your processes. Complete inventory. Try free now."
         keywords="inventory management, inventory management methods, inventory management system, JIT inventory, MRP, EOQ, DSI, inventory KPIs, inventory turnover, inventory optimization, inventory management software, ABC analysis, cycle counting, inventory best practices"
         url="https://www.stockflow.be/inventory-management"
         publishedTime="2025-11-06T00:00:00Z"
@@ -529,7 +529,7 @@ export default function InventoryManagementGuide() {
             </h3>
             <div className="space-y-6">
               <div className="border-l-4 border-blue-500 pl-6">
-                <h4 className="text-lg font-semibold text-gray-900 mb-2">Just-in-Time Example</h4>
+                <h3 className="text-3xl font-bold mb-4">Just-in-Time Example</h3>
                 <p className="text-gray-700">
                   An electronics assembler schedules incoming PCB assemblies to arrive 2 hours before they hit the production line, minimizing storage space and handling costs—but relies heavily on reliable carriers and stable supply chains.
                 </p>

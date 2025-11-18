@@ -68,8 +68,8 @@ export default function InventoryManagementSoftwareSolutionsPage() {
   return (
     <SeoPageLayout title="Inventory Management Software Solutions">
       <SEO
-        title="Inventory Management Software Solutions | StockFlow"
-        description="StockFlow delivers end-to-end inventory management software solutions with purchasing automation, barcode scanning, and deep analytics. Launch in weeks, start free today."
+        title="Inventory Management Software Solutions 2025"
+        description="Learn how inventory management software solutions to choose the best software. Learn how inventory management software solutions to optimize your inventory. ..."
         keywords="inventory management software solutions, inventory solution, stock management solution, inventory system software, cloud inventory solution, stockflow"
         url="https://www.stockflow.be/inventory-management-software-solutions"
         structuredData={structuredData}

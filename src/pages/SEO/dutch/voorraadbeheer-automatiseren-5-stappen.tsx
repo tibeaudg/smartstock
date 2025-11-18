@@ -75,8 +75,8 @@ export default function VoorraadbeheerAutomatiseren5Stappen() {
   return (
     <SeoPageLayout title="Voorraadbeheer Automatiseren in 5 Stappen">
       <SEO
-        title="Voorraadbeheer Automatiseren in 5 Stappen | StockFlow"
-        description="Leer hoe je voorraadbeheer automatiseert in vijf praktische stappen. Van analyse tot realtime dashboards – ontdek hoe StockFlow KMO’s helpt groeien."
+        title="Voorraadbeheer Automatiseren 5 Stappen 2025"
+        description="Bekijk hoe voorraadbeheer automatiseren 5 stappen uw voorraadbeheer te optimaliseren. Ontdek hoe voorraadbeheer automatiseren 5 stappen uw voorraadbeheer te ..."
         keywords="voorraadbeheer automatiseren, voorraad automatiseren stappen, voorraad software workflow, stockflow automatisering"
         url="https://www.stockflow.be/voorraadbeheer-automatiseren-5-stappen"
         locale="nl"

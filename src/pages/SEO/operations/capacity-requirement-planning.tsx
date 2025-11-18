@@ -204,12 +204,14 @@ export default function CapacityRequirementPlanning() {
       sidebarContent={sidebarContent}
     >
       <SEO
-        title="Capacity Requirement Planning 2025 | What is Capacity Requirement Planning | Complete Guide | StockFlow"
-        description="Complete guide to capacity requirement planning. Learn what is capacity requirement planning, how it works, and how to implement it for your business. Optimize inventory levels, prevent stockouts, and reduce costs. Free tools included."
+        title="Capacity Requirement Planning 2025 - Capacity Requirement..."
+        description="Find out how capacity requirement planning to save time and money. Discover how capacity requirement planning to optimize your inventory management.. Get sta..."
         keywords="capacity requirement planning, what is capacity requirement planning, capacity planning, capacity requirement, capacity requirements planning, capacity requirement planning definition, capacity requirement planning meaning, capacity requirement planning process, capacity requirement planning software, capacity requirement planning tools, capacity requirement planning in manufacturing, capacity requirement planning inventory, capacity planning inventory, capacity requirement analysis, stockflow, stock flow"
         url="https://www.stockflow.be/capacity-requirement-planning"
       />
 
+
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Capacity Requirement Planning</h1>
       <SeoPageHero
         title="Capacity Requirement Planning: Complete Guide to What is Capacity Requirement Planning"
         description="Master capacity requirement planning for your business. Learn what is capacity requirement planning, how it works, and how to implement it to optimize inventory, prevent stockouts, and reduce costs. Free planning tools included."

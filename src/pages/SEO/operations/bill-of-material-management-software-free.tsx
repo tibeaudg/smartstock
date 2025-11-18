@@ -67,8 +67,8 @@ export default function BillOfMaterialManagementSoftwareFreePage() {
   return (
     <SeoPageLayout title="Free Bill of Material Management Software">
       <SEO
-        title="Bill of Material Management Software Free | StockFlow"
-        description="Create unlimited bills of material, automate component consumption, and sync production with purchasing. StockFlow offers BOM management software with a free plan."
+        title="Bill Of Material Management Software Free 2025"
+        description="Discover how bill of material management software free to optimize your inventory management. Find out how bill of material management software free to. Try ..."
         keywords="bill of material management software free, free bom software, free manufacturing inventory, bom management tool, production inventory software, stockflow"
         url="https://www.stockflow.be/bill-of-material-management-software-free"
         structuredData={structuredData}

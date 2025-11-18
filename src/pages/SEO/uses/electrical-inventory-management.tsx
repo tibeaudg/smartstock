@@ -295,8 +295,8 @@ export default function ElectricalInventoryManagement() {
       sidebarContent={sidebarContent}
     >
       <SEO
-        title="Electrical Inventory Management Software for Contractors & Electricians"
-        description="Complete inventory management solution for electrical contractors. Track materials across job sites, service vehicles, and warehouses. Reduce theft, eliminate stockouts, and improve job costing. Mobile scanning, real-time tracking, and automated reorder alerts."
+        title="Electrical Inventory Management 2025 - Electrical Invento..."
+        description="Discover how electrical inventory management to automate your processes. Find out how electrical inventory management to optimize your inventory. Start free ..."
         keywords="electrical inventory management, electrician inventory software, electrical contractor inventory, electrical supplies tracking, electrical materials management, job site inventory, service vehicle inventory, electrical job costing, contractor inventory software"
         url="https://www.stockflow.be/electrical-inventory-management"
       />
@@ -598,7 +598,7 @@ export default function ElectricalInventoryManagement() {
             </h3>
             <div className="grid md:grid-cols-3 gap-6">
               <div>
-                <h4 className="font-bold text-blue-600 mb-2">Week 1-2: Setup</h4>
+                <h3 className="text-3xl font-bold mb-4">Week 1-2: Setup</h3>
                 <ul className="text-sm text-gray-700 space-y-1">
                   <li>• Create inventory catalog</li>
                   <li>• Set up locations</li>

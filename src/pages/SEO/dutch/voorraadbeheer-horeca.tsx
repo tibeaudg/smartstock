@@ -86,8 +86,8 @@ export default function VoorraadbeheerHorecaPage() {
   return (
     <SeoPageLayout title="Voorraadbeheer voor Horeca">
       <SEO
-        title="Voorraadbeheer Horeca – Complete Gids voor Efficiënt en Duurzaam Voorraadbeheer | Stockflow"
-        description="Ontdek hoe je voorraadbeheer in de horeca optimaliseert. Minder verspilling, betere marges en realtime inzicht met moderne voorraadsoftware. Tips, termen en strategieën."
+        title="Complete Guide Voorraadbeheer Horeca - Beste Voorraadbehe..."
+        description="Lees de gids voorraadbeheer horeca de beste software te kiezen. Vind uit hoe voorraadbeheer horeca uw voorraadbeheer te optimaliseren. Ontdek. Start vandaag ..."
         keywords="voorraadbeheer horeca, horeca voorraad, horeca voorraadbeheer software, horeca inventaris, foodcost, keukenvoorraad, restaurant voorraadbeheer, derving horeca, voorraadbeheersysteem horeca, voedselverspilling horeca, horeca marge, kostprijs horeca"
         url="https://www.stockflow.be/voorraadbeheer-horeca"
         structuredData={structuredData}

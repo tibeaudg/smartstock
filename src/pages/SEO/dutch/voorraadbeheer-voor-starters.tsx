@@ -72,8 +72,8 @@ export default function VoorraadbeheerVoorStarters() {
   return (
     <SeoPageLayout title="Voorraadbeheer voor Starters">
       <SEO
-        title="Voorraadbeheer voor Starters | Complete Gids voor KMO's | stockflow"
-        description="Voorraadbeheer voor starters: complete gids met tips en stappenplan voor kleine bedrijven en zelfstandigen. Leer hoe je eenvoudig begint met professioneel voorraadbeheer."
+        title="Voorraadbeheer Voor Starters 2025 - Voorraadbeheer Voor S...'s | stockflow"
+        description="Vind uit hoe voorraadbeheer voor starters de beste software te kiezen. Vind uit hoe voorraadbeheer voor starters tijd en geld te. Begin nu met gratis proefpe..."
         keywords="voorraadbeheer starters, voorraadbeheer kleine bedrijven, voorraadbeheer beginnen, voorraadbeheer tips, voorraadbeheer stappenplan, voorraadbeheer KMO, voorraadbeheer zelfstandigen, voorraadbeheer beginners, voorraadbeheer opzetten, voorraadbeheer implementeren, stockbeheer starters, stockbeheer kleine bedrijven, voorraadbeheer gids, voorraadbeheer handleiding"
         url="https://www.stockflow.be/voorraadbeheer-voor-starters"
       />

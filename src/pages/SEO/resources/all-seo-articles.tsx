@@ -66,8 +66,8 @@ export default function AllSeoArticles() {
   return (
     <SeoPageLayout title="All SEO Articles">
       <SEO
-        title="All SEO Articles - Complete Inventory Management Resource Library | StockFlow"
-        description="Browse our complete collection of SEO articles covering inventory management, stock control, warehouse management, and more. Find expert guides, tips, and solutions."
+        title="All Seo Articles 2025 - All Seo Articles"
+        description="Find out how all seo articles to choose the best software. Discover how all seo articles to choose the best software.. Get started free. StockFlow helps busi..."
         keywords="all articles, SEO articles, inventory management articles, stock management articles, warehouse management articles, resource library"
         url="https://www.stockflow.be/all-seo-articles"
       />

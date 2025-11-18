@@ -96,8 +96,8 @@ export default function Magazijnbeheer() {
   return (
     <SeoPageLayout title="Magazijnbeheer Software">
       <SEO
-        title="Magazijnbeheer Software | Optimaliseer je Warehouse Operaties | stockflow"
-        description="Professionele magazijnbeheer software met multi-locatie support, barcode scanning en shipping integratie. Verhoog efficiency en elimineer fouten in je warehouse."
+        title="Magazijnbeheer 2025 - Magazijnbeheer 2025 -"
+        description="Vind uit hoe magazijnbeheer uw processen te automatiseren. Lees de gids magazijnbeheer uw voorraadbeheer te optimaliseren. Professionele magazijnbeheer. Star..."
         keywords="magazijnbeheer, magazijnbeheer software, warehouse management, magazijn software, warehouse management system, magazijnbeheer systeem, magazijn optimalisatie, warehouse software, stockflow magazijnbeheer"
         url="https://www.stockflow.be/magazijnbeheer"
         hreflang={[

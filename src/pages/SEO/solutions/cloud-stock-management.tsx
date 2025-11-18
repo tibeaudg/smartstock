@@ -76,12 +76,14 @@ export default function CloudStockManagement() {
       sidebarContent={sidebarContent}
     >
       <SEO
-        title="Cloud Based Stock Management System 2025 | Cloud Stock Management | StockFlow"
-        description="Best cloud based stock management system. Access inventory from anywhere, secure cloud storage, automatic backups. Free trial available."
+        title="Cloud Stock Management 2025 - Cloud Stock Management"
+        description="Read the guide cloud stock management to optimize your inventory management. Discover how cloud stock management to automate your processes. Best. Try free now."
         keywords="cloud based stock management system, cloud stock management, cloud stock management system, cloud based stock management, cloud stock management software, cloud stock management solution, cloud inventory management, cloud stock system, stockflow, stock flow"
         url="https://www.stockflow.be/cloud-stock-management"
       />
 
+
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Cloud Stock Management</h1>
       <SeoPageHero
         title="Cloud Based Stock Management System: Access Inventory Anywhere"
         description="Best cloud based stock management system. Access inventory from anywhere, secure cloud storage, automatic backups. Free trial available."

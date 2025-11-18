@@ -96,8 +96,8 @@ export default function WarehouseManagement() {
   return (
     <SeoPageLayout title="Warehouse Management Software">
       <SEO
-        title="Warehouse Management Software | Optimize Your Warehouse Operations | StockFlow"
-        description="Professional warehouse management software with multi-location support, barcode scanning and shipping integration. Increase efficiency and eliminate errors in your warehouse."
+        title="Warehouse Management 2025 - Warehouse Management 2025"
+        description="Learn how warehouse management to automate your processes. Read the guide warehouse management to optimize your inventory management.. Start free today."
         keywords="warehouse management, warehouse management software, warehouse software, warehouse management system, warehouse optimization, WMS, stockflow warehouse management"
         url="https://www.stockflow.be/warehouse-management"
         hreflang={[

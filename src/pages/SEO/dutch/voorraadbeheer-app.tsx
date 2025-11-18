@@ -34,8 +34,8 @@ export default function VoorraadbeheerApp() {
   return (
     <SeoPageLayout title="Voorraadbeheer App - Mobiel Voorraadbeheer">
       <SEO
-        title="Voorraadbeheer App Gratis | Mobiel Voorraadbeheer | stockflow"
-        description="Ontdek de beste voorraadbeheer app voor je bedrijf. Mobiel voorraadbeheer met barcode scanning, real-time synchronisatie en gratis starten. Download nu!"
+        title="Voorraadbeheer App 2025 - Voorraadbeheer App 2025"
+        description="Ontdek hoe voorraadbeheer app uw processen te automatiseren. Ontdek hoe voorraadbeheer app de beste software te kiezen. Ontdek. Start vandaag gratis. StockFl..."
         keywords="voorraadbeheer app, voorraadbeheer app gratis, app voorraadbeheer thuis, mobiel voorraadbeheer, voorraadbeheer app download, voorraadbeheer app android, voorraadbeheer app iphone, voorraadbeheer app tablet, voorraadbeheer app barcode, voorraadbeheer app offline, stockflow app, voorraadbeheer software app, voorraadbeheer app KMO, voorraadbeheer app horeca, voorraadbeheer app webshop"
         url="https://www.stockflow.be/voorraadbeheer-app"
       />

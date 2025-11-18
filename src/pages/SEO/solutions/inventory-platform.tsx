@@ -80,12 +80,14 @@ export default function InventoryPlatform() {
       sidebarContent={sidebarContent}
     >
       <SEO
-        title="Inventory Platform 2025 | Inventory Platform Software | Automated Control | StockFlow"
-        description="Best inventory platform and inventory platform software. Automated inventory control platforms for comprehensive inventory management. Free trial available."
+        title="Inventory Platform 2025 - Inventory Platform 2025"
+        description="Learn how inventory platform to save time and money. Discover how inventory platform to optimize your inventory management. Best. Start free today. StockFlow..."
         keywords="inventory platform, inventory platform software, automated inventory control platforms, inventory platform solution, inventory platform system, inventory management platform, inventory control platform, inventory platform services, stockflow, stock flow"
         url="https://www.stockflow.be/inventory-platform"
       />
 
+
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Inventory Platform</h1>
       <SeoPageHero
         title="Inventory Platform: Complete Inventory Management Platform"
         description="Best inventory platform and inventory platform software. Automated inventory control platforms for comprehensive inventory management. Free trial available."

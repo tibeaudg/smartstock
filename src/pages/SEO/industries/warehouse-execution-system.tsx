@@ -92,12 +92,14 @@ export default function WarehouseExecutionSystem() {
       sidebarContent={sidebarContent}
     >
       <SEO
-        title="Execution System 2025 | Warehouse Execution System | StockFlow"
-        description="Complete guide to execution system and warehouse execution systems. Learn how execution systems work, benefits, and how to optimize operations. Free tools included."
+        title="Warehouse Execution System 2025 - Warehouse Execution System"
+        description="Discover how warehouse execution system to automate your processes. Learn how warehouse execution system to automate your processes. Complete. Start free today."
         keywords="execution system, warehouse execution system, execution systems, warehouse execution systems, execution system software, execution system management, order execution system, warehouse execution system software, execution system platform, execution system solution, stockflow, stock flow"
         url="https://www.stockflow.be/warehouse-execution-system"
       />
 
+
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Warehouse Execution System</h1>
       <SeoPageHero
         title="Execution System: Complete Guide to Warehouse Execution Systems"
         description="Master execution system and warehouse execution systems. Learn how execution systems work, benefits, and how to optimize operational execution. Free tools included."

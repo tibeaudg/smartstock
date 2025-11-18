@@ -150,8 +150,8 @@ export default function MobileInventoryManagement() {
   return (
     <SeoPageLayout title="Mobile Inventory Management">
       <SEO
-        title="Mobile Inventory Management: Stock Control On-The-Go 2025 | StockFlow"
-        description="Manage inventory from anywhere with mobile inventory management. Real-time updates, phone camera barcode scanning, offline mode. iOS & Android apps. Free trial available."
+        title="Mobile Inventory Management 2025 - Mobile Inventory Manag..."
+        description="Find out how mobile inventory management to optimize your inventory management. Find out how mobile inventory management to optimize your inventory. Get star..."
         keywords="mobile inventory management, mobile stock control, inventory mobile app, on-the-go inventory, mobile inventory tracking, inventory app, mobile warehouse management, barcode scanner app"
         url="https://www.stockflow.be/mobile-inventory-management"
         locale="en"

@@ -347,8 +347,8 @@ export default function MedicalInventoryManagement() {
       sidebarContent={sidebarContent}
     >
       <SEO
-        title="Medical Inventory Management Software for Healthcare Facilities & Pharmacies"
-        description="Complete medical inventory management solution with expiration tracking, lot/serial traceability, regulatory compliance (FDA, ISO 13485), barcode scanning, and automated alerts. Reduce waste, prevent stockouts, and ensure patient safety."
+        title="Medical Inventory Management 2025 - Medical Inventory Man..."
+        description="Discover how medical inventory management to save time and money. Read the guide medical inventory management to optimize your inventory. Get started free."
         keywords="medical inventory management, healthcare inventory software, hospital inventory system, pharmacy inventory management, medical supply tracking, expiration date tracking, lot number tracking, medical device traceability, FDA compliance, ISO 13485, healthcare supply chain"
         url="https://www.stockflow.be/medical-inventory-management"
       />

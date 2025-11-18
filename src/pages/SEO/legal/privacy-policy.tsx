@@ -21,8 +21,8 @@ export default function PrivacyPolicy() {
   return (
     <SeoPageLayout title="Privacy Policy">
       <SEO
-        title="Privacy Policy - StockFlow | Data Protection & Privacy"
-        description="Privacy Policy for StockFlow inventory management software. Learn how we protect your data, handle personal information, and ensure GDPR compliance."
+        title="Privacy Policy 2025 - Privacy Policy 2025"
+        description="Learn how privacy policy to choose the best software. Find out how privacy policy to save time and money.. Get started free. StockFlow helps businesses manag..."
         keywords="privacy policy, data protection, GDPR compliance, personal data, privacy rights, data security, inventory management privacy, stock management privacy, warehouse management privacy, data handling, privacy protection, user privacy, data privacy policy, information security, privacy rights, data collection, privacy compliance, privacy statement, data protection policy, privacy notice, user data protection, privacy regulations, data privacy rights, privacy protection measures, data security policy, privacy compliance, data handling policy, privacy information, data protection rights, privacy policy inventory management, stock management privacy policy, warehouse management privacy policy, inventory software privacy, stock software privacy, warehouse software privacy, business software privacy, inventory management data protection, stock management data protection, warehouse management data protection, inventory software data protection, stock software data protection, warehouse software data protection, business software data protection"
         url="https://www.stockflow.be/privacy-policy"
         structuredData={structuredData}

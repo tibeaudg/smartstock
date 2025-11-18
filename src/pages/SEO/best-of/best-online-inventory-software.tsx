@@ -58,8 +58,8 @@ export default function BestOnlineInventorySoftware() {
   return (
     <SeoPageLayout title="Best Online Inventory Software">
       <SEO
-        title="Best Online Inventory Software 2024 | Top Rated Solutions | stockflow"
-        description="Discover the best online inventory software, online inventory system, and cloud based inventory software for 2024. Compare features, pricing, and reviews. Find inventory web based software and online stock management software for your business."
+        title="Best Online Inventory Software 2025 - Best Online Inventory"
+        description="Discover how best online inventory software to optimize your inventory management. Discover how best online inventory software to save time and. Get started ..."
         keywords="best online inventory software, online inventory software, online inventory system, cloud based inventory software, inventory web based software, online stock management software, inventory management software cloud based, online inventory system, inventory software online, web based inventory software, cloud inventory software, online inventory management software, best online inventory software, top online inventory software, inventory software cloud, online inventory tracking software, cloud inventory management software, web inventory software, online inventory control software, best cloud inventory software"
         url="https://www.stockflow.be/best-online-inventory-software"
       />

@@ -96,12 +96,14 @@ export default function EnterpriseInventoryManagement() {
       sidebarContent={sidebarContent}
     >
       <SEO
-        title="Enterprise Inventory Management Software 2025 | Enterprise Inventory System | StockFlow"
-        description="Best enterprise inventory management software for large organizations. Multi-warehouse support, advanced analytics, enterprise security, and scalability. Affordable enterprise solution."
+        title="Enterprise Inventory Management 2025 - Enterprise Invento..."
+        description="Find out how enterprise inventory management to optimize your inventory management. Find out how enterprise inventory management to choose the best. Try free..."
         keywords="enterprise inventory management software, enterprise inventory management, enterprise inventory software, enterprise inventory system, enterprise inventory management system, enterprise inventory solution, enterprise inventory platform, enterprise inventory software solutions, enterprise inventory management platform, enterprise inventory software features, enterprise inventory management features, stockflow, stock flow"
         url="https://www.stockflow.be/enterprise-inventory-management"
       />
 
+
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Enterprise Inventory Management</h1>
       <SeoPageHero
         title="Enterprise Inventory Management Software: Complete Enterprise Solution"
         description="Best enterprise inventory management software for large organizations. Multi-warehouse support, advanced analytics, enterprise security, and scalability. Affordable enterprise solution starting at €0.004/product/month."

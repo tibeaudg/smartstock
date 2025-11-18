@@ -100,12 +100,14 @@ export default function OrderingManagementSystem() {
       sidebarContent={sidebarContent}
     >
       <SEO
-        title="Ordering Management System 2025 | Inventory Ordering System | Stock Ordering System | StockFlow"
-        description="Complete guide to ordering management system, inventory ordering system, and stock ordering system. Automate ordering, prevent stockouts, and optimize inventory levels. Free tools included."
+        title="Ordering Management System 2025 - Ordering Management System"
+        description="Find out how ordering management system to save time and money. Discover how ordering management system to choose the best software.. Start free today."
         keywords="ordering management system, inventory ordering system, stock ordering system, ordering system, inventory ordering, stock ordering, order management system inventory, automated ordering system, inventory ordering software, stock ordering software, ordering system software, inventory ordering management, stock ordering management, ordering management software, stockflow, stock flow"
         url="https://www.stockflow.be/ordering-management-system"
       />
 
+
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Ordering Management System</h1>
       <SeoPageHero
         title="Ordering Management System: Complete Guide to Inventory & Stock Ordering"
         description="Master ordering management system, inventory ordering system, and stock ordering system. Automate ordering processes, prevent stockouts, and optimize inventory levels. Free tools included."

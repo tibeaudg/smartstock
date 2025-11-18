@@ -83,8 +83,8 @@ export default function InventoryManagementBakery() {
   return (
     <SeoPageLayout title="Inventory Management for Bakeries">
       <SEO
-        title="Bakery Inventory Software 2025 | Recipe & Production"
-        description="Complete bakery inventory management. Track ingredients, manage recipes, reduce waste 25%, control costs. Free trial. Trusted by artisan & multi-site bakeries."
+        title="Inventory Management Bakery 2025 - Inventory Management B..."
+        description="Learn how inventory management bakery to optimize your inventory management. Discover how inventory management bakery to optimize your inventory management....."
         keywords="bakery inventory management, bakery recipe software, bakery production planning, bakery stock control, bakery inventory system, ingredient tracking bakery, bakery cost control, bakery waste reduction, bakery production management, multi-location bakery software"
         url="https://www.stockflow.be/inventory-management-bakery"
         publishedTime="2024-01-01T00:00:00Z"

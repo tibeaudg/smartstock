@@ -19,8 +19,8 @@ export default function StockManagementApp() {
   return (
     <SeoPageLayout title="Stock Management App">
       <SEO
-        title="Stock Management App: Mobile Inventory Control | StockFlow"
-        description="Manage your stock on-the-go with our mobile app. Real-time tracking, barcode scanning, and instant updates from anywhere."
+        title="Stock Management App 2025 - Stock Management App"
+        description="Discover how stock management app to optimize your inventory management. Read the guide stock management app to save time and. Get started free. StockFlow he..."
         keywords="stock management app, mobile inventory, inventory app, stock control app, mobile stock management"
         url="https://www.stockflow.be/stock-management-app"
       />

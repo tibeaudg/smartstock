@@ -1,0 +1,1097 @@
+{
+  "summary": {
+    "optimized": 445,
+    "highPriority": 8,
+    "skipped": 0,
+    "errors": 0,
+    "total": 445
+  },
+  "highPriorityPages": [
+    {
+      "file": "src\\pages\\SEO\\best-of\\best-inventory-management-software.tsx",
+      "url": "/best-inventory-management-software",
+      "impressions": 2680,
+      "ctr": 0
+    },
+    {
+      "file": "src\\pages\\SEO\\comparisons\\stockflow-vs-sortly.tsx",
+      "url": "/stockflow-vs-sortly",
+      "impressions": 541,
+      "ctr": 0.0018
+    },
+    {
+      "file": "src\\pages\\SEO\\dutch\\voorraadbeheer-horeca.tsx",
+      "url": "/voorraadbeheer-horeca",
+      "impressions": 941,
+      "ctr": 0.0032
+    },
+    {
+      "file": "src\\pages\\SEO\\dutch\\voorraadbeheer-software-vergelijken.tsx",
+      "url": "/voorraadbeheer-software-vergelijken",
+      "impressions": 505,
+      "ctr": 0.0079
+    },
+    {
+      "file": "src\\pages\\SEO\\dutch\\voorraadbeheer-tips.tsx",
+      "url": "/voorraadbeheer-tips",
+      "impressions": 591,
+      "ctr": 0.0085
+    },
+    {
+      "file": "src\\pages\\SEO\\industries\\what-is-retail-price.tsx",
+      "url": "/what-is-retail-price",
+      "impressions": 612,
+      "ctr": 0
+    },
+    {
+      "file": "src\\pages\\SEO\\solutions\\inventory-management-software.tsx",
+      "url": "/inventory-management-software",
+      "impressions": 749,
+      "ctr": 0.0013
+    },
+    {
+      "file": "src\\pages\\SEO\\solutions\\online-inventory-software.tsx",
+      "url": "/online-inventory-software",
+      "impressions": 1158,
+      "ctr": 0.0009
+    }
+  ],
+  "optimized": [
+    {
+      "file": "src\\pages\\SEO\\best-of\\best-inventory-management-software.tsx",
+      "url": "/best-inventory-management-software",
+      "titleChange": {
+        "from": "Complete Guide Best Inventory Management Software",
+        "to": "Beste Best Inventory Management Software"
+      },
+      "descriptionChange": {
+        "from": "Find out how best inventory management software to choose the best software. Compare the best inventory management software 2025. Free plan, 5-day. Start fre...",
+        "to": "Discover how best inventory management software to automate your processes. Find out how best inventory management software to choose the. Try free now."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\best-of\\best-online-inventory-software.tsx",
+      "url": "/best-online-inventory-software",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": "Discover how best online inventory software to save time and money. Discover the best online inventory software, online inventory system, and. Get started free.",
+        "to": "Discover how best online inventory software to optimize your inventory management. Discover how best online inventory software to save time and. Get started ..."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\best-of\\best-online-inventory-system.tsx",
+      "url": "/best-online-inventory-system",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": "Discover how best online inventory system to optimize your inventory management. Discover the best online inventory system for your business. Real-time. Try ...",
+        "to": "Find out how best online inventory system to save time and money. Discover how best online inventory system to optimize your inventory. Get started free."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\best-of\\best-voorraadbeheer-software-kmo.tsx",
+      "url": "/best-voorraadbeheer-software-kmo",
+      "titleChange": {
+        "from": "Best Voorraadbeheer Software Kmo 2025 - Beste Voorraadbeh...",
+        "to": "Best Voorraadbeheer Software Kmo 2025 - Best Voorraadbehe..."
+      },
+      "descriptionChange": {
+        "from": "Ontdek hoe best voorraadbeheer software kmo de beste software te kiezen. Ontdek de beste voorraadbeheer software voor KMO. Begin nu met gratis proefperiode.",
+        "to": "Ontdek hoe best voorraadbeheer software kmo tijd en geld te besparen. Ontdek hoe best voorraadbeheer software kmo de beste software te. Krijg direct toegang."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\best-of\\simple-stock-management.tsx",
+      "url": "/simple-stock-management",
+      "titleChange": {
+        "from": "Simple Stock Management 2025 - Simple Stock Management:",
+        "to": "Simple Stock Management 2025 - Simple Stock Management"
+      },
+      "descriptionChange": {
+        "from": "Read the guide simple stock management to save time and money. Simple stock management that just works. No complexity, just results.. Start free today.",
+        "to": "Find out how simple stock management to save time and money. Read the guide simple stock management to save time and. Try free now. StockFlow helps businesse..."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\10-business-success-apps.tsx",
+      "url": "/10-business-success-apps",
+      "titleChange": {
+        "from": "10 Business Success Apps 2025 - ${topicTitle} | StockFlow",
+        "to": "10 Business Success Apps 2025 - 10 Business Success"
+      },
+      "descriptionChange": {
+        "from": null,
+        "to": "Read the guide 10 business success apps to automate your processes. Start free today. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\10-easy-ways-to-make-your-medical-practice-more-efficient-today.tsx",
+      "url": "/10-easy-ways-to-make-your-medical-practice-more-efficient-today",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Discover how 10 easy ways to make your medical practice more efficient today to save time and money. Start free today. StockFlow helps businesses manage inve..."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\10-most-common-inventory-management-mistakes-small-businesses.tsx",
+      "url": "/10-most-common-inventory-management-mistakes-small-businesses",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Discover how 10 most common inventory management mistakes small businesses to save time and money. Start free today. StockFlow helps businesses manage invent..."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\10-queer-eye-quotes-thatll-inspire-you-at-work.tsx",
+      "url": "/10-queer-eye-quotes-thatll-inspire-you-at-work",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Find out how 10 queer eye quotes thatll inspire you at work to optimize your inventory management. Start free today. StockFlow helps businesses manage invent..."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\10-reasons-to-consider-cloud-based-inventory-management.tsx",
+      "url": "/10-reasons-to-consider-cloud-based-inventory-management",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Read the guide 10 reasons to consider cloud based inventory management to optimize your inventory management. Get started free. StockFlow helps businesses ma..."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\10-reasons-to-upgrade-your-it-asset-management-strategy.tsx",
+      "url": "/10-reasons-to-upgrade-your-it-asset-management-strategy",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Learn how 10 reasons to upgrade your it asset management strategy to automate your processes. Get started free. StockFlow helps businesses manage inventory e..."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\12-money-making-garage-sale-tips.tsx",
+      "url": "/12-money-making-garage-sale-tips",
+      "titleChange": {
+        "from": "12 Money Making Garage Sale Tips 2025 - ${topicTitle} | S...",
+        "to": "12 Money Making Garage Sale Tips 2025 - 12 Money Making"
+      },
+      "descriptionChange": {
+        "from": null,
+        "to": "Learn how 12 money making garage sale tips to choose the best software. Start free today. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\2023-sortly-wrapped.tsx",
+      "url": "/2023-sortly-wrapped",
+      "titleChange": {
+        "from": "2023 Sortly Wrapped 2025 - ${topicTitle} | StockFlow",
+        "to": "2023 Sortly Wrapped 2025 - 2023 Sortly Wrapped"
+      },
+      "descriptionChange": {
+        "from": null,
+        "to": "Learn how 2023 sortly wrapped to save time and money. Try free now. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\2025-state-of-construction-industry-report.tsx",
+      "url": "/2025-state-of-construction-industry-report",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Discover how 2025 state of construction industry report to choose the best software. Start free today. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\3-best-inventory-new-years-resolutions.tsx",
+      "url": "/3-best-inventory-new-years-resolutions",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Find out how 3 best inventory new years resolutions to save time and money. Get started free. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\3-ways-barcodes-and-qr-codes-reduce-human-error.tsx",
+      "url": "/3-ways-barcodes-and-qr-codes-reduce-human-error",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Discover how 3 ways barcodes and qr codes reduce human error to save time and money. Get started free. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\4-small-resources-to-simplify-small-business.tsx",
+      "url": "/4-small-resources-to-simplify-small-business",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Read the guide 4 small resources to simplify small business to choose the best software. Get started free. StockFlow helps businesses manage inventory effici..."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\4-ways-interior-designers-use-sortly.tsx",
+      "url": "/4-ways-interior-designers-use-sortly",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Find out how 4 ways interior designers use sortly to save time and money. Get started free. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\4-ways-it-professionals-use-sortly-for-it-asset-tracking.tsx",
+      "url": "/4-ways-it-professionals-use-sortly-for-it-asset-tracking",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Learn how 4 ways it professionals use sortly for it asset tracking to save time and money. Start free today. StockFlow helps businesses manage inventory effi..."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\5-inventory-hacks-for-very-small-businesses.tsx",
+      "url": "/5-inventory-hacks-for-very-small-businesses",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Learn how 5 inventory hacks for very small businesses to save time and money. Get started free. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\5-signs-your-inventory-management-needs-an-overhaul.tsx",
+      "url": "/5-signs-your-inventory-management-needs-an-overhaul",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Learn how 5 signs your inventory management needs an overhaul to choose the best software. Start free today. StockFlow helps businesses manage inventory effi..."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\5-trends-to-look-out-for-in-education-inventory-management.tsx",
+      "url": "/5-trends-to-look-out-for-in-education-inventory-management",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Read the guide 5 trends to look out for in education inventory management to optimize your inventory management. Get started free. StockFlow helps businesses..."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\6-best-moving-tips-period.tsx",
+      "url": "/6-best-moving-tips-period",
+      "titleChange": {
+        "from": "6 Best Moving Tips Period 2025 - ${topicTitle} | StockFlow",
+        "to": "6 Best Moving Tips Period 2025 - 6 Best Moving"
+      },
+      "descriptionChange": {
+        "from": null,
+        "to": "Read the guide 6 best moving tips period to optimize your inventory management. Get started free. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\6-inspiring-quotes-for-getting-organized-manage-and-maintain-business-better.tsx",
+      "url": "/6-inspiring-quotes-for-getting-organized-manage-and-maintain-business-better",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Find out how 6 inspiring quotes for getting organized manage and maintain business better to optimize your inventory management. Start free today. StockFlow ..."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\6-inventory-management-tips-when-times-are-tight.tsx",
+      "url": "/6-inventory-management-tips-when-times-are-tight",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Discover how 6 inventory management tips when times are tight to optimize your inventory management. Start free today. StockFlow helps businesses manage inve..."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\6-inventory-tracking-methods-for-construction-professionals.tsx",
+      "url": "/6-inventory-tracking-methods-for-construction-professionals",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Find out how 6 inventory tracking methods for construction professionals to choose the best software. Start free today. StockFlow helps businesses manage inv..."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\6-ways-qr-codes-will-boost-inventory-management.tsx",
+      "url": "/6-ways-qr-codes-will-boost-inventory-management",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Learn how 6 ways qr codes will boost inventory management to automate your processes. Get started free. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\6-ways-sortly-can-save-your-business-money.tsx",
+      "url": "/6-ways-sortly-can-save-your-business-money",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Read the guide 6 ways sortly can save your business money to choose the best software. Start free today. StockFlow helps businesses manage inventory efficien..."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\6-ways-sortly-can-save-your-business-time.tsx",
+      "url": "/6-ways-sortly-can-save-your-business-time",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Find out how 6 ways sortly can save your business time to optimize your inventory management. Try free now. StockFlow helps businesses manage inventory effic..."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\6-ways-to-give-your-business-the-home-edit-treatment.tsx",
+      "url": "/6-ways-to-give-your-business-the-home-edit-treatment",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Read the guide 6 ways to give your business the home edit treatment to optimize your inventory management. Try free now. StockFlow helps businesses manage in..."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\9-must-have-inventory-control-software-features.tsx",
+      "url": "/9-must-have-inventory-control-software-features",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Learn how 9 must have inventory control software features to automate your processes. Get started free. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\a-guide-to-managing-perishable-inventory.tsx",
+      "url": "/a-guide-to-managing-perishable-inventory",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Find out how a guide to managing perishable inventory to choose the best software. Get started free. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\a-guide-to-rfis-request-for-information-in-construction.tsx",
+      "url": "/a-guide-to-rfis-request-for-information-in-construction",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Learn how a guide to rfis request for information in construction to choose the best software. Try free now. StockFlow helps businesses manage inventory effi..."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\a-guide-to-rfps-request-for-proposal-in-construction.tsx",
+      "url": "/a-guide-to-rfps-request-for-proposal-in-construction",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Learn how a guide to rfps request for proposal in construction to automate your processes. Get started free. StockFlow helps businesses manage inventory effi..."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\a-guide-to-tracking-expiration-dates-with-template.tsx",
+      "url": "/a-guide-to-tracking-expiration-dates-with-template",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Learn how a guide to tracking expiration dates with template to save time and money. Start free today. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\a-guide-to-visual-inventory-control.tsx",
+      "url": "/a-guide-to-visual-inventory-control",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Find out how a guide to visual inventory control to save time and money. Start free today. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\aardvark-mobile-tours.tsx",
+      "url": "/aardvark-mobile-tours",
+      "titleChange": {
+        "from": "Aardvark Mobile Tours 2025 - ${topicTitle} | StockFlow",
+        "to": "Aardvark Mobile Tours 2025 - Aardvark Mobile Tours"
+      },
+      "descriptionChange": {
+        "from": null,
+        "to": "Read the guide aardvark mobile tours to choose the best software. Get started free. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\abc-analysis.tsx",
+      "url": "/abc-analysis",
+      "titleChange": {
+        "from": "Abc Analysis 2025 - ${topicTitle} | StockFlow",
+        "to": "Abc Analysis 2025 - Abc Analysis 2025"
+      },
+      "descriptionChange": {
+        "from": null,
+        "to": "Discover how abc analysis to save time and money. Get started free. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\anticipation-inventory.tsx",
+      "url": "/anticipation-inventory",
+      "titleChange": {
+        "from": "Anticipation Inventory 2025 - ${topicTitle} | StockFlow",
+        "to": "Anticipation Inventory 2025 - Anticipation Inventory 2025"
+      },
+      "descriptionChange": {
+        "from": null,
+        "to": "Learn how anticipation inventory to automate your processes. Try free now. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\apps-for-contractors-construction.tsx",
+      "url": "/apps-for-contractors-construction",
+      "titleChange": {
+        "from": "Apps For Contractors Construction 2025 - ${topicTitle} | ...",
+        "to": "Apps For Contractors Construction 2025 - Apps For Contrac..."
+      },
+      "descriptionChange": {
+        "from": null,
+        "to": "Find out how apps for contractors construction to save time and money. Get started free. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\apps-for-restaurant-owners.tsx",
+      "url": "/apps-for-restaurant-owners",
+      "titleChange": {
+        "from": "Apps For Restaurant Owners 2025 - ${topicTitle} | StockFlow",
+        "to": "Apps For Restaurant Owners 2025 - Apps For Restaurant"
+      },
+      "descriptionChange": {
+        "from": null,
+        "to": "Learn how apps for restaurant owners to optimize your inventory management. Get started free. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\asset-management-qr-code.tsx",
+      "url": "/asset-management-qr-code",
+      "titleChange": {
+        "from": "Asset Management Qr Code 2025 - ${topicTitle} | StockFlow",
+        "to": "Asset Management Qr Code 2025 - Asset Management Qr"
+      },
+      "descriptionChange": {
+        "from": null,
+        "to": "Read the guide asset management qr code to choose the best software. Start free today. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\asset-management-systems.tsx",
+      "url": "/asset-management-systems",
+      "titleChange": {
+        "from": "Asset Management Systems 2025 - ${topicTitle} | StockFlow",
+        "to": "Asset Management Systems 2025 - Asset Management Systems"
+      },
+      "descriptionChange": {
+        "from": null,
+        "to": "Discover how asset management systems to save time and money. Get started free. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\asset-tagging-guide.tsx",
+      "url": "/asset-tagging-guide",
+      "titleChange": {
+        "from": "Asset Tagging Guide 2025 - ${topicTitle} | StockFlow",
+        "to": "Asset Tagging Guide 2025 - Asset Tagging Guide"
+      },
+      "descriptionChange": {
+        "from": null,
+        "to": "Find out how asset tagging guide to save time and money. Start free today. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\asset-tracking-101.tsx",
+      "url": "/asset-tracking-101",
+      "titleChange": {
+        "from": "Asset Tracking 101 2025 - ${topicTitle} | StockFlow",
+        "to": "Asset Tracking 101 2025 - Asset Tracking 101"
+      },
+      "descriptionChange": {
+        "from": null,
+        "to": "Discover how asset tracking 101 to optimize your inventory management. Get started free. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\asset-tracking-benefits.tsx",
+      "url": "/asset-tracking-benefits",
+      "titleChange": {
+        "from": "Asset Tracking Benefits 2025 - ${topicTitle} | StockFlow",
+        "to": "Asset Tracking Benefits 2025 - Asset Tracking Benefits"
+      },
+      "descriptionChange": {
+        "from": null,
+        "to": "Discover how asset tracking benefits to choose the best software. Get started free. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\asset-tracking-importance.tsx",
+      "url": "/asset-tracking-importance",
+      "titleChange": {
+        "from": "Asset Tracking Importance 2025 - ${topicTitle} | StockFlow",
+        "to": "Asset Tracking Importance 2025 - Asset Tracking Importance"
+      },
+      "descriptionChange": {
+        "from": null,
+        "to": "Read the guide asset tracking importance to save time and money. Get started free. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\assets-vs-inventory.tsx",
+      "url": "/assets-vs-inventory",
+      "titleChange": {
+        "from": "Assets Vs Inventory 2025 - ${topicTitle} | StockFlow",
+        "to": "Assets Vs Inventory 2025 - Assets Vs Inventory"
+      },
+      "descriptionChange": {
+        "from": null,
+        "to": "Find out how assets vs inventory to automate your processes. Start free today. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\auto-parts-inventory-management-system-drives-down-costs.tsx",
+      "url": "/auto-parts-inventory-management-system-drives-down-costs",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Find out how auto parts inventory management system drives down costs to save time and money. Get started free. StockFlow helps businesses manage inventory e..."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\auto-parts-inventory-spreadsheet.tsx",
+      "url": "/auto-parts-inventory-spreadsheet",
+      "titleChange": {
+        "from": "Auto Parts Inventory Spreadsheet 2025 - ${topicTitle} | S...",
+        "to": "Auto Parts Inventory Spreadsheet 2025 - Auto Parts Inventory"
+      },
+      "descriptionChange": {
+        "from": null,
+        "to": "Learn how auto parts inventory spreadsheet to automate your processes. Get started free. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\bar-inventory-management.tsx",
+      "url": "/bar-inventory-management",
+      "titleChange": {
+        "from": "Bar Inventory Management 2025 - ${topicTitle} | StockFlow",
+        "to": "Bar Inventory Management 2025 - Bar Inventory Management"
+      },
+      "descriptionChange": {
+        "from": null,
+        "to": "Learn how bar inventory management to save time and money. Try free now. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\barcodes-vs-qr-codes-for-inventory-management.tsx",
+      "url": "/barcodes-vs-qr-codes-for-inventory-management",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Discover how barcodes vs qr codes for inventory management to optimize your inventory management. Get started free. StockFlow helps businesses manage invento..."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\benefits-of-construction-inventory-management.tsx",
+      "url": "/benefits-of-construction-inventory-management",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Learn how benefits of construction inventory management to choose the best software. Start free today. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\best-barcode-generator.tsx",
+      "url": "/best-barcode-generator",
+      "titleChange": {
+        "from": "Best Barcode Generator 2025 - ${topicTitle} | StockFlow",
+        "to": "Best Barcode Generator 2025 - Best Barcode Generator"
+      },
+      "descriptionChange": {
+        "from": null,
+        "to": "Discover how best barcode generator to automate your processes. Get started free. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\best-event-planning-apps.tsx",
+      "url": "/best-event-planning-apps",
+      "titleChange": {
+        "from": "Best Event Planning Apps 2025 - ${topicTitle} | StockFlow",
+        "to": "Best Event Planning Apps 2025 - Best Event Planning"
+      },
+      "descriptionChange": {
+        "from": null,
+        "to": "Read the guide best event planning apps to optimize your inventory management. Get started free. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\best-manufacturing-apps.tsx",
+      "url": "/best-manufacturing-apps",
+      "titleChange": {
+        "from": "Best Manufacturing Apps 2025 - ${topicTitle} | StockFlow",
+        "to": "Best Manufacturing Apps 2025 - Best Manufacturing Apps"
+      },
+      "descriptionChange": {
+        "from": null,
+        "to": "Read the guide best manufacturing apps to save time and money. Start free today. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\bilo-heating-plumbing.tsx",
+      "url": "/bilo-heating-plumbing",
+      "titleChange": {
+        "from": "Bilo Heating Plumbing 2025 - ${topicTitle} | StockFlow",
+        "to": "Bilo Heating Plumbing 2025 - Bilo Heating Plumbing"
+      },
+      "descriptionChange": {
+        "from": null,
+        "to": "Discover how bilo heating plumbing to choose the best software. Get started free. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\buffer-stock.tsx",
+      "url": "/buffer-stock",
+      "titleChange": {
+        "from": "Buffer Stock 2025 - ${topicTitle} | StockFlow",
+        "to": "Buffer Stock 2025 - Buffer Stock 2025"
+      },
+      "descriptionChange": {
+        "from": null,
+        "to": "Find out how buffer stock to choose the best software. Start free today. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\calculating-beginning-inventory.tsx",
+      "url": "/calculating-beginning-inventory",
+      "titleChange": {
+        "from": "Calculating Beginning Inventory 2025 - ${topicTitle} | St...",
+        "to": "Calculating Beginning Inventory 2025 - Calculating Beginn..."
+      },
+      "descriptionChange": {
+        "from": null,
+        "to": "Discover how calculating beginning inventory to optimize your inventory management. Start free today. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\calculating-raw-materials-inventory.tsx",
+      "url": "/calculating-raw-materials-inventory",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Discover how calculating raw materials inventory to save time and money. Try free now. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\can-i-create-a-barcode-system-in-excel.tsx",
+      "url": "/can-i-create-a-barcode-system-in-excel",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Read the guide can i create a barcode system in excel to choose the best software. Get started free. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\can-i-use-qr-codes-for-inventory.tsx",
+      "url": "/can-i-use-qr-codes-for-inventory",
+      "titleChange": {
+        "from": "Can I Use Qr Codes For Inventory 2025 - ${topicTitle} | S...",
+        "to": "Can I Use Qr Codes For Inventory 2025 - Can I Use"
+      },
+      "descriptionChange": {
+        "from": null,
+        "to": "Find out how can i use qr codes for inventory to choose the best software. Get started free. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\common-inventory-mistakes-and-how-to-avoid-them.tsx",
+      "url": "/common-inventory-mistakes-and-how-to-avoid-them",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Learn how common inventory mistakes and how to avoid them to optimize your inventory management. Try free now. StockFlow helps businesses manage inventory ef..."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\construction-industry-digital-transformation.tsx",
+      "url": "/construction-industry-digital-transformation",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Find out how construction industry digital transformation to optimize your inventory management. Start free today. StockFlow helps businesses manage inventor..."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\construction-invoice-processing.tsx",
+      "url": "/construction-invoice-processing",
+      "titleChange": {
+        "from": "Construction Invoice Processing 2025 - ${topicTitle} | St...",
+        "to": "Construction Invoice Processing 2025 - Construction Invoi..."
+      },
+      "descriptionChange": {
+        "from": null,
+        "to": "Learn how construction invoice processing to optimize your inventory management. Get started free. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\construction-risk-management.tsx",
+      "url": "/construction-risk-management",
+      "titleChange": {
+        "from": "Construction Risk Management 2025 - ${topicTitle} | Stock...",
+        "to": "Construction Risk Management 2025 - Construction Risk Man..."
+      },
+      "descriptionChange": {
+        "from": null,
+        "to": "Discover how construction risk management to optimize your inventory management. Get started free. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\cost-of-goods-sold-formula.tsx",
+      "url": "/cost-of-goods-sold-formula",
+      "titleChange": {
+        "from": "Cost Of Goods Sold Formula 2025 - ${topicTitle} | StockFlow",
+        "to": "Cost Of Goods Sold Formula 2025 - Cost Of Goods"
+      },
+      "descriptionChange": {
+        "from": null,
+        "to": "Discover how cost of goods sold formula to choose the best software. Get started free. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\could-a-landscaping-inventory-management-system-keep-your-biz-pristine.tsx",
+      "url": "/could-a-landscaping-inventory-management-system-keep-your-biz-pristine",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Find out how could a landscaping inventory management system keep your biz pristine to choose the best software. Start free today. StockFlow helps businesses..."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\covid-19-response.tsx",
+      "url": "/covid-19-response",
+      "titleChange": {
+        "from": "Covid 19 Response 2025 - ${topicTitle} | StockFlow",
+        "to": "Covid 19 Response 2025 - Covid 19 Response"
+      },
+      "descriptionChange": {
+        "from": null,
+        "to": "Read the guide covid 19 response to save time and money. Get started free. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\creative-inventory-hacks-for-small-businesses.tsx",
+      "url": "/creative-inventory-hacks-for-small-businesses",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Discover how creative inventory hacks for small businesses to automate your processes. Get started free. StockFlow helps businesses manage inventory efficien..."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\cycle-counting-in-the-construction-industry.tsx",
+      "url": "/cycle-counting-in-the-construction-industry",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Find out how cycle counting in the construction industry to save time and money. Get started free. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\dealer-vs-distributor.tsx",
+      "url": "/dealer-vs-distributor",
+      "titleChange": {
+        "from": "Dealer Vs Distributor 2025 - ${topicTitle} | StockFlow",
+        "to": "Dealer Vs Distributor 2025 - Dealer Vs Distributor"
+      },
+      "descriptionChange": {
+        "from": null,
+        "to": "Find out how dealer vs distributor to optimize your inventory management. Start free today. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\dental-inventory-spreadsheet.tsx",
+      "url": "/dental-inventory-spreadsheet",
+      "titleChange": {
+        "from": "Dental Inventory Spreadsheet 2025 - ${topicTitle} | Stock...",
+        "to": "Dental Inventory Spreadsheet 2025 - Dental Inventory Spre..."
+      },
+      "descriptionChange": {
+        "from": null,
+        "to": "Learn how dental inventory spreadsheet to choose the best software. Try free now. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\download-is-your-construction-inventory-costing-you-projects.tsx",
+      "url": "/download-is-your-construction-inventory-costing-you-projects",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Read the guide download is your construction inventory costing you projects to save time and money. Get started free. StockFlow helps businesses manage inven..."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\employee-spotlight-ben-flynn.tsx",
+      "url": "/employee-spotlight-ben-flynn",
+      "titleChange": {
+        "from": "Employee Spotlight Ben Flynn 2025 - ${topicTitle} | Stock...",
+        "to": "Employee Spotlight Ben Flynn 2025 - Employee Spotlight Ben"
+      },
+      "descriptionChange": {
+        "from": null,
+        "to": "Read the guide employee spotlight ben flynn to save time and money. Start free today. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\employee-spotlight-fernando-mondragon.tsx",
+      "url": "/employee-spotlight-fernando-mondragon",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Learn how employee spotlight fernando mondragon to choose the best software. Get started free. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\employee-spotlight-monica-mccleary.tsx",
+      "url": "/employee-spotlight-monica-mccleary",
+      "titleChange": {
+        "from": "Employee Spotlight Monica Mccleary 2025 - ${topicTitle} |...",
+        "to": "Employee Spotlight Monica Mccleary 2025 - Employee Spotli..."
+      },
+      "descriptionChange": {
+        "from": null,
+        "to": "Find out how employee spotlight monica mccleary to optimize your inventory management. Start free today. StockFlow helps businesses manage inventory efficien..."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\employee-spotlight-patrick-grimes.tsx",
+      "url": "/employee-spotlight-patrick-grimes",
+      "titleChange": {
+        "from": "Employee Spotlight Patrick Grimes 2025 - ${topicTitle} | ...",
+        "to": "Employee Spotlight Patrick Grimes 2025 - Employee Spotlig..."
+      },
+      "descriptionChange": {
+        "from": null,
+        "to": "Find out how employee spotlight patrick grimes to optimize your inventory management. Start free today. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\environmental-inventory-management-software.tsx",
+      "url": "/environmental-inventory-management-software",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Read the guide environmental inventory management software to save time and money. Get started free. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\equipment-inventory-management-best-practices.tsx",
+      "url": "/equipment-inventory-management-best-practices",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Learn how equipment inventory management best practices to save time and money. Start free today. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\equipment-maintenance-log.tsx",
+      "url": "/equipment-maintenance-log",
+      "titleChange": {
+        "from": "Equipment Maintenance Log 2025 - ${topicTitle} | StockFlow",
+        "to": "Equipment Maintenance Log 2025 - Equipment Maintenance Log"
+      },
+      "descriptionChange": {
+        "from": null,
+        "to": "Discover how equipment maintenance log to choose the best software. Get started free. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\excel-manufacturing-inventory-template.tsx",
+      "url": "/excel-manufacturing-inventory-template",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Read the guide excel manufacturing inventory template to save time and money. Get started free. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\expert-tips-for-organizing-holiday-decorations.tsx",
+      "url": "/expert-tips-for-organizing-holiday-decorations",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Discover how expert tips for organizing holiday decorations to optimize your inventory management. Start free today. StockFlow helps businesses manage invent..."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\free-asset-tracking-spreadsheet.tsx",
+      "url": "/free-asset-tracking-spreadsheet",
+      "titleChange": {
+        "from": "Free Asset Tracking Spreadsheet 2025 - ${topicTitle} | St...",
+        "to": "Free Asset Tracking Spreadsheet 2025 - Free Asset Tracking"
+      },
+      "descriptionChange": {
+        "from": null,
+        "to": "Find out how free asset tracking spreadsheet to automate your processes. Get started free. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\get-rid-of-obsolete-parts.tsx",
+      "url": "/get-rid-of-obsolete-parts",
+      "titleChange": {
+        "from": "Get Rid Of Obsolete Parts 2025 - ${topicTitle} | StockFlow",
+        "to": "Get Rid Of Obsolete Parts 2025 - Get Rid Of"
+      },
+      "descriptionChange": {
+        "from": null,
+        "to": "Find out how get rid of obsolete parts to automate your processes. Get started free. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\getting-organized-is-it-worth-it.tsx",
+      "url": "/getting-organized-is-it-worth-it",
+      "titleChange": {
+        "from": "Getting Organized Is It Worth It 2025 - ${topicTitle} | S...",
+        "to": "Getting Organized Is It Worth It 2025 - Getting Organized Is"
+      },
+      "descriptionChange": {
+        "from": null,
+        "to": "Learn how getting organized is it worth it to automate your processes. Try free now. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\guaranteed-maximum-price-in-construction.tsx",
+      "url": "/guaranteed-maximum-price-in-construction",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Find out how guaranteed maximum price in construction to save time and money. Get started free. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\handheld-inventory-scanners.tsx",
+      "url": "/handheld-inventory-scanners",
+      "titleChange": {
+        "from": "Handheld Inventory Scanners 2025 - ${topicTitle} | StockFlow",
+        "to": "Handheld Inventory Scanners 2025 - Handheld Inventory Sca..."
+      },
+      "descriptionChange": {
+        "from": null,
+        "to": "Find out how handheld inventory scanners to choose the best software. Get started free. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\healthcare-clinics-stopped-over-ordering-wrong-supplies.tsx",
+      "url": "/healthcare-clinics-stopped-over-ordering-wrong-supplies",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Read the guide healthcare clinics stopped over ordering wrong supplies to automate your processes. Get started free. StockFlow helps businesses manage invent..."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\home-staging-inventory-list.tsx",
+      "url": "/home-staging-inventory-list",
+      "titleChange": {
+        "from": "Home Staging Inventory List 2025 - ${topicTitle} | StockFlow",
+        "to": "Home Staging Inventory List 2025 - Home Staging Inventory"
+      },
+      "descriptionChange": {
+        "from": null,
+        "to": "Discover how home staging inventory list to optimize your inventory management. Get started free. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\home-staging-inventory-management-software.tsx",
+      "url": "/home-staging-inventory-management-software",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Read the guide home staging inventory management software to save time and money. Get started free. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\hospital-supply-chain-management-best-practices.tsx",
+      "url": "/hospital-supply-chain-management-best-practices",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Read the guide hospital supply chain management best practices to choose the best software. Try free now. StockFlow helps businesses manage inventory efficie..."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\how-auto-professionals-use-sortly.tsx",
+      "url": "/how-auto-professionals-use-sortly",
+      "titleChange": {
+        "from": "How Auto Professionals Use Sortly 2025 - ${topicTitle} | ...",
+        "to": "How Auto Professionals Use Sortly 2025 - How Auto Profess..."
+      },
+      "descriptionChange": {
+        "from": null,
+        "to": "Read the guide how auto professionals use sortly to automate your processes. Get started free. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\how-businesses-track-ppe-using-sortlys-inventory-app.tsx",
+      "url": "/how-businesses-track-ppe-using-sortlys-inventory-app",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Read the guide how businesses track ppe using sortlys inventory app to save time and money. Start free today. StockFlow helps businesses manage inventory eff..."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\how-can-you-make-inventory-more-efficient.tsx",
+      "url": "/how-can-you-make-inventory-more-efficient",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Discover how how can you make inventory more efficient to save time and money. Start free today. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\how-construction-companies-and-contractors-use-sortlys-construction-inventory-management-system.tsx",
+      "url": "/how-construction-companies-and-contractors-use-sortlys-construction-inventory-management-system",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Read the guide how construction companies and contractors use sortlys construction inventory management system to save time and money. Start free today."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\how-do-i-barcode-my-inventory.tsx",
+      "url": "/how-do-i-barcode-my-inventory",
+      "titleChange": {
+        "from": "How Do I Barcode My Inventory 2025 - ${topicTitle} | Stoc...",
+        "to": "How Do I Barcode My Inventory 2025 - How Do I"
+      },
+      "descriptionChange": {
+        "from": null,
+        "to": "Find out how how do i barcode my inventory to automate your processes. Get started free. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\how-do-small-businesses-keep-inventory.tsx",
+      "url": "/how-do-small-businesses-keep-inventory",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Discover how how do small businesses keep inventory to save time and money. Try free now. StockFlow helps businesses manage inventory efficiently."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\how-do-small-businesses-organize-their-inventory.tsx",
+      "url": "/how-do-small-businesses-organize-their-inventory",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Read the guide how do small businesses organize their inventory to save time and money. Start free today. StockFlow helps businesses manage inventory efficie..."
+      }
+    },
+    {
+      "file": "src\\pages\\SEO\\blog\\how-do-upcs-barcodes-help-with-inventory-control.tsx",
+      "url": "/how-do-upcs-barcodes-help-with-inventory-control",
+      "titleChange": null,
+      "descriptionChange": {
+        "from": null,
+        "to": "Find out how how do upcs barcodes help with inventory control to save time and money. Get started free. StockFlow helps businesses manage inventory efficiently."
+      }
+    }
+  ],
+  "errors": []
+}

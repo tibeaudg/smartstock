@@ -167,12 +167,14 @@ export default function HowToGenerateBarcode() {
       sidebarContent={sidebarContent}
     >
       <SEO
-        title="How to Generate Barcode 2025 | Generating a Barcode Guide | Free Barcode Generator | StockFlow"
-        description="Learn how is barcode generated and how to generate barcodes for your products. Complete guide to generating a barcode, barcode formats, and printing. Free barcode generator included in StockFlow inventory management software."
+        title="How To Generate Barcode 2025 - How To Generate"
+        description="Learn how how to generate barcode to automate your processes. Discover how how to generate barcode to save time and. Try free now. StockFlow helps businesses..."
         keywords="how is barcode generated, generating a barcode, how to generate barcode, generate barcode, barcode generator, how to create barcode, barcode generation, generate barcode online, free barcode generator, barcode generator software, how to make barcode, create barcode, barcode creation, generate qr code, barcode generator free, online barcode generator, barcode maker, generate barcode labels, barcode printing software, stockflow, stock flow"
         url="https://www.stockflow.be/how-to-generate-barcode"
       />
 
+
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">How To Generate Barcode</h1>
       <SeoPageHero
         title="How to Generate Barcode: Complete Guide to Generating a Barcode for Your Products"
         description="Learn how is barcode generated and master the process of generating a barcode for inventory management. Free barcode generator included with StockFlow. Generate UPC, EAN, QR codes, and more. Start generating barcodes today!"

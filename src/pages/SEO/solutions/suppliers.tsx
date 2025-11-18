@@ -130,8 +130,8 @@ export default function SuppliersSolutionPage() {
     <div className="min-h-screen bg-gray-50 pt-16">
       <Header />
       <SEO
-        title="Supplier Management Software | StockFlow"
-        description="Simplify vendor management with StockFlow. Centralize supplier records, automate reordering, and monitor performance with real-time analytics."
+        title="Suppliers 2025 - Suppliers 2025 -"
+        description="Discover how suppliers to optimize your inventory management. Read the guide suppliers to automate your processes. Simplify vendor. Start free today. StockFl..."
         keywords="supplier management software, vendor management, purchase order automation, supplier portal, procurement workflow"
         url="https://www.stockflow.be/suppliers"
         structuredData={structuredData}

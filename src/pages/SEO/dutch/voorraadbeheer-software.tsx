@@ -147,8 +147,8 @@ export default function VoorraadbeheerSoftware() {
   return (
     <SeoPageLayout title="Voorraadbeheer Software voor KMO's">
       <SEO
-        title="Voorraadbeheer Software: Stockbeheer Programma | Gratis Starten | stockflow"
-        description="Zoek je een stockbeheer programma? StockFlow is het beste voorraadbeheer programma voor KMO's. Gratis starten, professioneel & gebruiksvriendelijk. Beheer voorraad online, real-time tracking, barcode scanning. 500+ tevreden gebruikers. Start gratis nu!"
+        title="Voorraadbeheer Software 2025 - Voorraadbeheer Software 2025"
+        description="Lees de gids voorraadbeheer software uw processen te automatiseren. Lees de gids voorraadbeheer software uw processen te automatiseren. Zoek. Krijg direct to...'s. Gratis starten, professioneel & gebruiksvriendelijk. Beheer voorraad online, real-time tracking, barcode scanning. 500+ tevreden gebruikers. Start gratis nu!"
         keywords="stockbeheer programma, voorraadbeheer programma, voorraadbeheer software, gratis voorraadbeheer, stockbeheer software, magazijnbeheer software, inventarisatie software, voorraadbeheer app, stockbeheer app, stockflow, gratis stockbeheer, KMO software, kleine onderneming software, voorraad software, inventory software, programma voor voorraadbeheer, stockbeheer programma gratis"
         url="https://www.stockflow.be/voorraadbeheer-software"
         locale="nl"

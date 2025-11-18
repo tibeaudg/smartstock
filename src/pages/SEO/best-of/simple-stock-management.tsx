@@ -19,8 +19,8 @@ export default function SimpleStockManagement() {
   return (
     <SeoPageLayout title="Simple Stock Management">
       <SEO
-        title="Simple Stock Management: Easy Inventory Control | StockFlow"
-        description="Simple stock management that just works. No complexity, just results. Perfect for small businesses."
+        title="Simple Stock Management 2025 - Simple Stock Management"
+        description="Find out how simple stock management to save time and money. Read the guide simple stock management to save time and. Try free now. StockFlow helps businesse..."
         keywords="simple stock management, easy inventory, simple inventory software, straightforward stock control"
         url="https://www.stockflow.be/simple-stock-management"
       />

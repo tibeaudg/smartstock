@@ -69,12 +69,14 @@ export default function BigcommerceInventoryManagement() {
       sidebarContent={sidebarContent}
     >
       <SEO
-        title="BigCommerce Inventory Management 2025 | Inventory for BigCommerce | StockFlow"
-        description="Best BigCommerce inventory management. Integrate with BigCommerce stores, sync inventory in real-time, prevent overselling. Free trial available."
+        title="Bigcommerce Inventory Management 2025 - Bigcommerce Inven..."
+        description="Discover how bigcommerce inventory management to choose the best software. Read the guide bigcommerce inventory management to save time and. Try free now."
         keywords="bigcommerce inventory management, bigcommerce inventory, bigcommerce inventory software, bigcommerce inventory app, bigcommerce inventory sync, bigcommerce inventory management system, bigcommerce inventory tracking, bigcommerce inventory integration, inventory management for bigcommerce, bigcommerce inventory solution, stockflow, stock flow"
         url="https://www.stockflow.be/bigcommerce-inventory-management"
       />
 
+
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Bigcommerce Inventory Management</h1>
       <SeoPageHero
         title="BigCommerce Inventory Management: Best Inventory Solution for BigCommerce"
         description="Best BigCommerce inventory management. Integrate with BigCommerce stores, sync inventory in real-time, prevent overselling. Free trial available."

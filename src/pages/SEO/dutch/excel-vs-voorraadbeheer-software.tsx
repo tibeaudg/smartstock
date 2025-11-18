@@ -69,8 +69,8 @@ export default function ExcelVsVoorraadbeheerSoftware() {
   return (
     <SeoPageLayout title="Excel vs Voorraadbeheer Software">
       <SEO
-        title="Excel vs Voorraadbeheer Software | StockFlow"
-        description="Vergelijk Excel met moderne voorraadbeheer software. Ontdek wanneer spreadsheets tekortschieten en hoe StockFlow processen automatiseert."
+        title="Excel Vs Voorraadbeheer Software 2025 - Excel Vs Voorraad..."
+        description="Bekijk hoe excel vs voorraadbeheer software uw voorraadbeheer te optimaliseren. Ontdek hoe excel vs voorraadbeheer software uw voorraadbeheer te optimalisere..."
         keywords="excel voorraadbeheer, excel vs software, voorraadbeheer software vergelijken, stockflow excel import"
         url="https://www.stockflow.be/excel-vs-voorraadbeheer-software"
         locale="nl"

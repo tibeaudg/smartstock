@@ -91,12 +91,14 @@ export default function WhatIsLeadTime() {
       sidebarContent={sidebarContent}
     >
       <SEO
-        title="What is Lead Time 2025 | Lead Time Definition & Guide | StockFlow"
-        description="Complete guide to what is lead time. Learn lead time definition, how to calculate lead time, and how to use lead time for inventory planning. Free tools included."
+        title="What Is Lead Time 2025 - What Is Lead"
+        description="Discover how what is lead time to choose the best software. Find out how what is lead time to save time. Try free now. StockFlow helps businesses manage inve..."
         keywords="what is lead time, lead time, lead time definition, lead time meaning, lead time calculation, lead time formula, lead time inventory, lead time management, lead time planning, lead time optimization, supplier lead time, production lead time, order lead time, lead time tracking, stockflow, stock flow"
         url="https://www.stockflow.be/what-is-lead-time"
       />
 
+
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">What Is Lead Time</h1>
       <SeoPageHero
         title="What is Lead Time: Complete Guide to Lead Time Definition"
         description="Learn what is lead time and how to use lead time for inventory planning. Complete guide to lead time definition, calculation, and optimization. Free tools included."

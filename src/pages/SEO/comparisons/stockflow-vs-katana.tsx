@@ -78,8 +78,8 @@ export default function StockflowVsKatana() {
   return (
     <SeoPageLayout title="StockFlow vs Katana">
       <SEO
-        title="StockFlow vs Katana 2025 | Complete Comparison Guide"
-        description="Compare StockFlow vs Katana: Free plan vs paid, 2-3 week setup vs longer, e-commerce focus vs manufacturing. See which fits your business. Free trial."
+        title="Stockflow Vs Katana 2025 - Stockflow Vs Katana"
+        description="Discover how stockflow vs katana to save time and money. Find out how stockflow vs katana to automate your processes.. Try free now. StockFlow helps business..."
         keywords="stockflow vs katana, katana alternative, katana inventory comparison, stockflow comparison, katana vs stockflow, manufacturing inventory software, e-commerce inventory management, katana alternative for sme, stockflow vs katana pricing, inventory software comparison"
         url="https://www.stockflow.be/stockflow-vs-katana"
         publishedTime="2024-01-01T00:00:00Z"

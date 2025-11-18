@@ -310,8 +310,8 @@ export default function GlossaryHomePage() {
   return (
     <SeoPageLayout title="Inventory Management Glossary" showSidebar sidebarContent={sidebarContent}>
       <SEO
-        title="Inventory Management Glossary | Key Terms & Definitions | StockFlow"
-        description="Explore the StockFlow glossary to learn essential inventory management definitions, concepts, and strategies—organized alphabetically for quick reference."
+        title="Index 2025 - Index 2025 -"
+        description="Find out how index to save time and money. Discover how index to choose the best software. Explore the. Try free now. StockFlow helps businesses manage inven..."
         keywords="inventory glossary, warehouse glossary, supply chain glossary, inventory definitions, stockflow glossary"
         url="https://www.stockflow.be/glossary"
       />

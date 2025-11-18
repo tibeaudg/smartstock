@@ -178,8 +178,8 @@ export default function Contact() {
   return (
     <SeoPageLayout title="Contact Us">
       <SEO
-        title="Contact StockFlow - Get Support & Sales Information"
-        description="Contact StockFlow for support, sales inquiries, or questions about our Cloud-based Inventory Management Platform. Get help from our expert team and learn how we can help your business grow."
+        title="Contact 2025 - Contact 2025 -"
+        description="Discover how contact to choose the best software. Read the guide contact to choose the best software. Contact. Get started free. StockFlow helps businesses m..."
         keywords="contact stockflow, stockflow support, stockflow sales, inventory management support, stock management support, warehouse management support, inventory software support, stock software support, warehouse software support, business software support, inventory management contact, stock management contact, warehouse management contact, inventory software contact, stock software contact, warehouse software contact, business software contact, inventory management help, stock management help, warehouse management help, inventory software help, stock software help, warehouse software help, business software help, inventory management assistance, stock management assistance, warehouse management assistance, inventory software assistance, stock software assistance, warehouse software assistance, business software assistance"
         url="https://www.stockflow.be/contact"
         structuredData={structuredData}
@@ -188,6 +188,8 @@ export default function Contact() {
 
 
 
+
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Contact</h1>
       {/* Contact Form Section */}
       <section className="py-16 bg-gray-50 pt-36">
         <div className="max-w-4xl mx-auto px-4">

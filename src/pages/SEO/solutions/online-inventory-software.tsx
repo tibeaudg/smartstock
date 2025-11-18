@@ -420,8 +420,8 @@ export default function OnlineInventorySoftware() {
   return (
     <SeoPageLayout title="Online Inventory Software" showSidebar={true} sidebarContent={sidebarContent}>
       <SEO
-        title="Online Inventory Software | Cloud-Based System & Free Trial"
-        description="Compare the best online inventory software 2025. Free plan, 5-day setup, real-time cloud sync, barcode scanning. See pricing and start free trial."
+        title="Handleiding Online Inventory Software - Handleiding Onlin..."
+        description="Learn how online inventory software to optimize your inventory management. Read the guide online inventory software to automate your processes.. Start free t..."
         keywords="online inventory software, cloud inventory management, inventory management system, online inventory management, ecommerce inventory tool, inventory automation, StockFlow free trial"
         url="https://www.stockflow.be/online-inventory-software"
       />
@@ -488,7 +488,7 @@ export default function OnlineInventorySoftware() {
             </div>
 
             <div className="space-y-4 text-left md:text-lg">
-              <h3 className="text-2xl font-bold text-gray-900 md:text-3xl">Inside this guide you will learn:</h3>
+              <h2 className="text-3xl font-bold mb-4">Inside this guide you will learn:</h2>
               <ul className="list-disc list-inside md:list-outside md:pl-8 text-gray-700 space-y-2">
                 <li>Which online inventory tools lead for ecommerce, retail, wholesale, and manufacturing teams.</li>
                 <li>How StockFlow compares on automation, integrations, implementation speed, and total cost.</li>
@@ -964,7 +964,7 @@ export default function OnlineInventorySoftware() {
                   </div>
 
                   <div className="mb-6">
-                    <h4 className="text-sm font-semibold text-gray-900 mb-3">What&apos;s included</h4>
+                    <h3 className="text-3xl font-bold mb-4">What&apos;s included</h3>
                     <ul className="space-y-2 text-sm text-gray-700">
                       {plan.features.map((feature) => (
                         <li key={`${plan.name}-${feature}`} className="flex items-start gap-2">

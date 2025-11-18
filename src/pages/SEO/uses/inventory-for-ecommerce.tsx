@@ -127,8 +127,8 @@ export default function InventoryForEcommerce() {
   return (
     <SeoPageLayout title="Inventory for Ecommerce">
       <SEO
-        title="Inventory Management for Ecommerce | Prevent Overselling & Sync Webshop | StockFlow"
-        description="Perfect inventory solution for online stores. Sync with webshops in real-time, prevent overselling, automate fulfillment, and manage multi-channel inventory. Free trial available."
+        title="Inventory For Ecommerce 2025 - Inventory For Ecommerce"
+        description="Discover how inventory for ecommerce to optimize your inventory management. Find out how inventory for ecommerce to optimize your inventory. Try free now."
         keywords="ecommerce inventory, webshop inventory, online store stock management, ecommerce fulfillment, ecommerce inventory software, webshop inventory management, online inventory sync, prevent overselling, multi-channel inventory"
         url="https://www.stockflow.be/inventory-for-ecommerce"
         locale="en"

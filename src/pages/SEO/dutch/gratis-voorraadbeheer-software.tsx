@@ -122,8 +122,8 @@ export default function GratisVoorraadbeheerSoftware() {
   return (
     <SeoPageLayout title="Gratis Voorraadbeheer Software - Professioneel Voorraadbeheer">
       <SEO
-        title="Gratis Voorraadbeheer Software | Professioneel Voorraadbeheer | stockflow"
-        description="Ontdek de beste gratis voorraadbeheer software voor KMO's. Professioneel voorraadbeheer met real-time rapportages, automatische bestellingen en 100% gratis. Start vandaag!"
+        title="Gratis Voorraadbeheer Software 2025 - Gratis Voorraadbehe..."
+        description="Bekijk hoe gratis voorraadbeheer software tijd en geld te besparen. Ontdek hoe gratis voorraadbeheer software de beste software te kiezen.. Krijg direct toeg...'s. Professioneel voorraadbeheer met real-time rapportages, automatische bestellingen en 100% gratis. Start vandaag!"
         keywords="gratis voorraadbeheer software, voorraadbeheer software gratis, gratis voorraadbeheer software download, gratis voorraadbeheer software KMO, gratis voorraadbeheer software belgiÃ«, gratis voorraadbeheer software vlaanderen, gratis voorraadbeheer software horeca, gratis voorraadbeheer software webshop, gratis voorraadbeheer software detailhandel, gratis voorraadbeheer software starters, gratis voorraadbeheer software kleine bedrijven, gratis voorraadbeheer software stockflow"
         url="https://www.stockflow.be/gratis-voorraadbeheer-software"
       />

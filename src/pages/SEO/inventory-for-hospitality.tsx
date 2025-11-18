@@ -83,8 +83,8 @@ export default function InventoryForHospitality() {
   return (
     <SeoPageLayout title="Inventory for Hospitality">
       <SEO
-        title="Hospitality Inventory Software 2025 | Restaurants, Hotels & Bars"
-        description="Complete inventory management for hospitality businesses. Track recipes, reduce waste 30%, automate purchasing. Free trial. Trusted by 500+ venues."
+        title="Inventory For Hospitality 2025 - Inventory For Hospitality"
+        description="Read the guide inventory for hospitality to choose the best software. Read the guide inventory for hospitality to save time and. Get started free. StockFlow ..."
         keywords="hospitality inventory management, restaurant stock control, hotel inventory software, bar inventory tracking, hospitality inventory system, restaurant inventory software, hotel stock management, bar stock control, food inventory management, beverage inventory tracking, hospitality cost control, restaurant waste reduction"
         url="https://www.stockflow.be/inventory-for-hospitality"
         publishedTime="2024-01-01T00:00:00Z"

@@ -64,35 +64,6 @@ function buildUrlTag(loc, lastmod, priority, changefreq, imageUrl) {
 }
 
 function getSeoRoutes() {
-  // Dutch pages that should also be available under /nl/
-  const dutchPages = [
-    'gratis-stockbeheer',
-    'mobiel-voorraadbeheer',
-    'voorraadbeheer-automatiseren',
-    'voorraadbeheer-excel-vs-software',
-    'voorraadbeheer-fouten-voorkomen',
-    'voorraadbeheer-horeca',
-    'voorraadbeheer-software-vergelijken',
-    'voorraadbeheer-tips',
-    'voorraadbeheer-voor-starters',
-    'voorraadbeheer-webshop',
-    'voorraadbeheer-software',
-    'voorraadbeheer-bakkerij',
-    'voorraadbeheer',
-    'stockbeheer',
-    'stockbeheer-software',
-    'simpelstockbeheer',
-    'gratis-voorraadbeheer',
-    'voorraadbeheer-voor-horeca',
-    'gratis-voorraadbeheer-app',
-    'gratis-voorraadbeheer-software',
-    'programma-stockbeheer-gratis',
-    'stockbeheer-app',
-    'magazijnbeheer-software-gratis',
-    'voorraad-software-gratis',
-    'voorraadbeheer-app',
-  ];
-
   const staticFallback = [
     '/gratis-stockbeheer',
     '/mobiel-voorraadbeheer',
@@ -152,16 +123,9 @@ function getSeoRoutes() {
     // Recursively collect all routes from all subdirectories
     const routes = collectRoutesFromDir(seoDir);
     
-    // Add /nl/ versions for Dutch pages
-    const allRoutes = [...routes];
-    routes.forEach(route => {
-      const routeName = route.substring(1); // remove leading slash
-      if (dutchPages.includes(routeName)) {
-        allRoutes.push(`/nl${route}`);
-      }
-    });
-    
-    return allRoutes.length ? allRoutes : staticFallback;
+    // Return routes without language-prefixed versions
+    // Note: /nl/ routes are handled separately in App.tsx for Belgian market
+    return routes.length ? routes : staticFallback;
   } catch {
     return staticFallback;
   }
