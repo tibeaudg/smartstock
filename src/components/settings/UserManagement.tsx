@@ -8,9 +8,11 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
-import { Loader2, Euro, Users, Building2 } from 'lucide-react';
+import { Loader2, Euro, Users, Building2, AlertCircle } from 'lucide-react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import { checkUserChurnStatus, hasChurnFeedback } from '@/services/churnDetectionService';
+import { Badge } from '@/components/ui/badge';
 
 // TYPE-SAFETY: Interfaces voor duidelijkere datastructuren
 interface Profile {
@@ -31,6 +33,7 @@ interface DisplayUser {
   userId: string;
   email: string;
   role: string;
+  churnStatus?: 'qualified' | 'not_qualified' | 'has_feedback' | 'loading';
 }
 
 interface PricingInfo {
@@ -70,12 +73,38 @@ export const UserManagement = () => {
       .select('id, user_id, role, profiles:profiles!branch_users_user_id_fkey(email)')
       .eq('branch_id', selectedBranchId);
     if (error) throw new Error(error.message);
-    return (data || []).map((u: any) => ({
+    
+    // Map users and check churn status for each
+    const users = (data || []).map((u: any) => ({
       id: u.id,
       userId: u.user_id,
       email: u.profiles?.email || '',
       role: u.role,
+      churnStatus: 'loading' as const,
     }));
+
+    // Check churn status for each user in parallel
+    const churnChecks = await Promise.all(
+      users.map(async (user) => {
+        try {
+          const churnStatus = await checkUserChurnStatus(user.userId);
+          const hasFeedback = await hasChurnFeedback(user.userId);
+          
+          if (hasFeedback) {
+            return { ...user, churnStatus: 'has_feedback' as const };
+          } else if (churnStatus.isChurned) {
+            return { ...user, churnStatus: 'qualified' as const };
+          } else {
+            return { ...user, churnStatus: 'not_qualified' as const };
+          }
+        } catch (error) {
+          console.error(`Error checking churn for user ${user.userId}:`, error);
+          return { ...user, churnStatus: 'not_qualified' as const };
+        }
+      })
+    );
+
+    return churnChecks;
   };
 
   const {
@@ -396,6 +425,23 @@ export const UserManagement = () => {
                           <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded-full capitalize">
                             {u.role}
                           </span>
+                          {u.churnStatus === 'qualified' && (
+                            <Badge variant="destructive" className="flex items-center gap-1">
+                              <AlertCircle className="w-3 h-3" />
+                              Churn Risk
+                            </Badge>
+                          )}
+                          {u.churnStatus === 'has_feedback' && (
+                            <Badge variant="secondary" className="flex items-center gap-1">
+                              Feedback Given
+                            </Badge>
+                          )}
+                          {u.churnStatus === 'loading' && (
+                            <Badge variant="outline" className="flex items-center gap-1">
+                              <Loader2 className="w-3 h-3 animate-spin" />
+                              Checking...
+                            </Badge>
+                          )}
                         </div>
                       </div>
                       <div className="flex gap-2">

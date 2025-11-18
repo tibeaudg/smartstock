@@ -36,6 +36,7 @@ import { Logos3 } from "./logos3";
 import { AuroraBackground } from "@/components/ui/aurora-background";
 
 import { HeroSection } from "@/components/ui/hero-section-1"
+import { PlatformPreviewSection } from "./PlatformPreviewSection";
 
 
 
@@ -1090,7 +1091,7 @@ export const HomePage = () => {
   
 
   return (
-    <div className="bg-white text-gray-900 font-sans" style={{position: 'relative', overflow: 'hidden'}}>
+    <div className="bg-white text-gray-900 font-sans" style={{position: 'relative'}}>
       <Helmet>
         {/* Non-render-blocking resource optimization */}
         
@@ -1428,7 +1429,8 @@ export const HomePage = () => {
         </div>
       </section>
 
-
+      {/* Platform Preview Section */}
+      <PlatformPreviewSection />
 
       <section className="py-16 sm:py-20 md:py-24 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1526,7 +1528,7 @@ export const HomePage = () => {
       </section>
 
 
-      <section>
+      <section className="py-16 sm:py-20 md:py-24 lg:py-28 bg-white ">
         <h2 className="max-w-3xl mx-auto text-balance text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-none font-bold text-center">
           Case Studies
         </h2>

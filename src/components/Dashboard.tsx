@@ -322,14 +322,20 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
           <CardContent className="pt-0">
             <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-yellow-600">
               {safeMetrics.lowStockCount}
-            </div>
+            </div>          
           </CardContent>
         </Card>
       </div>
       
-      {/* Stock Movement Chart */}
-      <div className="bg-white rounded-lg shadow p-4 sm:p-6 mt-4 sm:mt-6">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-2">
+
+
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mt-4 sm:mt-6">
+
+
+              {/* Stock Movement Chart */}
+              <div className="bg-white rounded-lg shadow p-4 sm:p-6">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-2">
           <div className="flex items-center gap-2">
             <h2 className="text-lg sm:text-xl font-semibold text-gray-800">History</h2>
             {chartFetching && <RefreshCw className="h-4 w-4 animate-spin text-blue-600" />}
@@ -373,10 +379,6 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
       </div>
 
 
-      {/* Top Moving Products and Low Stock Alerts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mt-4 sm:mt-6">
-
-
         {/* Low Stock Products */}
         <div className="bg-white rounded-lg shadow p-4 sm:p-6">
           <h2 className="text-lg sm:text-xl font-semibold text-gray-800 mb-4">Low Stock Alerts</h2>
@@ -401,6 +403,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
           </div>
         </div>
       </div>
+      
     </div>
   );
 };

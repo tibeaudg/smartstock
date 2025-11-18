@@ -3173,7 +3173,7 @@ export const StockList = () => {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="h-8 w-8 p-0"
+                  className="h-8 w-8 p-0 bg-transparent border-none"
                   disabled={page === 1}
                   onClick={() => setPage(p => Math.max(1, p - 1))}
                   title="Previous page"
@@ -3200,17 +3200,15 @@ export const StockList = () => {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="h-8 w-8 p-0"
+                  className="h-8 w-8 p-0 bg-transparent border-none"
                   disabled={page === totalPages}
                   onClick={() => setPage(p => Math.min(totalPages, p + 1))}
                   title="Next page"
                 >
-                  <ChevronRight className="w-4 h-4" />
+                  <ChevronRight className="w-4 h-4 " />
                 </Button>
-                <span className="ml-2 text-xs text-gray-500">
-                  Page {page} of {totalPages}
-                </span>
-              </div>
+         
+              </div>  
 
             {/* Mobile Product Views */}
             {viewMode === 'card' ? (
@@ -4284,9 +4282,7 @@ export const StockList = () => {
         >
           <ChevronRight className="w-4 h-4" />
         </Button>
-        <span className="ml-2 text-xs text-gray-500">
-          Page {page} of {totalPages}
-        </span>
+
       </div>
       <ImagePreviewModal
         isOpen={isImagePreviewOpen}

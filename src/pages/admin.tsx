@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Layout } from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Loader2 } from 'lucide-react';
+import { Loader2, ArrowUp, ArrowDown, ChevronUp, ChevronDown } from 'lucide-react';
 import { BranchProvider } from '@/hooks/useBranches';
 import { useAuth } from '@/hooks/useAuth';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
@@ -15,9 +15,15 @@ import CMS from '@/components/CMS';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Badge } from '@/components/ui/badge';
 import { SEO } from '@/components/SEO';
+import { toast } from 'sonner';
 
 // User management types
+type FeedbackStatus = 'pending-survey' | 'survey-sent' | 'response-received' | 'exempt';
+type SortColumn = 'email' | 'name' | 'inactivity' | 'products' | 'branches' | 'linkedUsers' | 'cus' | 'feedback' | 'created';
+type SortDirection = 'asc' | 'desc';
+
 interface UserProfile {
   id: string;
   email: string;
@@ -29,6 +35,7 @@ interface UserProfile {
   selected_plan: string | null;
   blocked: boolean | null;
   last_login?: string | null;
+  feedbackStatus?: FeedbackStatus;
 }
 
 interface UserStats {
@@ -37,6 +44,7 @@ interface UserStats {
   branchCount: number;
   linkedUserCount: number;
   licenseCost: number;
+  coreUsageScore: number;
   statsLastUpdated?: string;
 }
 
@@ -48,6 +56,21 @@ interface AdminBranch {
   created_at: string;
 }
 
+interface ChurnSurveyRecord {
+  id: string;
+  user_id: string;
+  user_email: string;
+  user_name: string;
+  churn_trigger_date: string;
+  feedback_delivered_via: string;
+  created_at: string;
+  has_response: boolean;
+  churn_reason: string | null;
+  missing_features: string | null;
+  expectation_gap: string | null;
+  priority_feature: string | null;
+}
+
 // Plan information for usage-based pricing
 const plans = {
   'free': { price: 0, limit: 100, displayName: 'Free', pricePerProduct: 0, includedProducts: 100 },
@@ -57,10 +80,22 @@ const plans = {
   'premium': { price: 0, limit: null, displayName: 'Enterprise', pricePerProduct: 0, includedProducts: 10000 }
 };
 
+/**
+ * Calculate Core Usage Score (CUS)
+ * Formula: CUS = (3 × Products) + (2 × Branches) + (1 × Linked Users)
+ */
+function calculateCoreUsageScore(
+  productCount: number,
+  branchCount: number,
+  linkedUserCount: number
+): number {
+  return (3 * productCount) + (2 * branchCount) + (1 * linkedUserCount);
+}
+
 // Calculate user license cost based on usage-based pricing
 function calculateUserLicenseCost(
   planId: string | null, 
-  stats: Omit<UserStats, 'userId' | 'licenseCost' | 'statsLastUpdated'>
+  stats: Omit<UserStats, 'userId' | 'licenseCost' | 'statsLastUpdated' | 'coreUsageScore'>
 ): number {
   const plan = plans[planId as keyof typeof plans] || plans.basic;
   
@@ -99,20 +134,44 @@ function calculateUserStats(users: UserProfile[]) {
   };
 }
 
-// Function to calculate days since last login
-function getDaysSinceLastLogin(lastLogin: string | null): string {
-  if (!lastLogin) return 'Never';
+/**
+ * Calculate inactivity days
+ * Returns days since last login, or days since account creation if never logged in
+ */
+function calculateInactivityDays(
+  lastLogin: string | null,
+  createdAt: string
+): { days: number; display: string } {
+  const now = new Date();
+  const accountCreated = new Date(createdAt);
+  
+  if (!lastLogin) {
+    // Never logged in - use account creation date
+    const diffTime = now.getTime() - accountCreated.getTime();
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    return {
+      days: diffDays,
+      display: diffDays === 0 ? 'Today' : `${diffDays}d ago`
+    };
+  }
   
   const lastLoginDate = new Date(lastLogin);
-  const now = new Date();
   const diffTime = now.getTime() - lastLoginDate.getTime();
   const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
   
-  if (diffDays === 0) return 'Today';
-  if (diffDays === 1) return '1d ago';
-  if (diffDays < 0) return `${Math.abs(diffDays)}d future`;
+  if (diffDays === 0) return { days: 0, display: 'Today' };
+  if (diffDays === 1) return { days: 1, display: '1d ago' };
+  if (diffDays < 0) return { days: 0, display: `${Math.abs(diffDays)}d future` };
   
-  return `${diffDays}d ago`;
+  return { days: diffDays, display: `${diffDays}d ago` };
+}
+
+/**
+ * Determine if inactivity should be highlighted (red)
+ * Highlight when inactivity ≥ 7 days AND CUS = 0
+ */
+function shouldHighlightInactivity(inactivityDays: number, cus: number): boolean {
+  return inactivityDays >= 7 && cus === 0;
 }
 
 // Chart component for user registrations
@@ -127,9 +186,11 @@ function RegistrationChart({ users, timeRange, onTimeRangeChange }: {
   onTimeRangeChange: (range: 'day' | 'week' | 'month' | 'year') => void;
 }) {
   const [chartData, setChartData] = useState<ChartData[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const generateChartData = () => {
+      setIsLoading(true);
       const now = new Date();
       const data: ChartData[] = [];
       
@@ -138,11 +199,13 @@ function RegistrationChart({ users, timeRange, onTimeRangeChange }: {
         for (let i = 29; i >= 0; i--) {
           const date = new Date(now);
           date.setDate(date.getDate() - i);
+          date.setHours(0, 0, 0, 0);
           const dateStr = date.toISOString().split('T')[0];
           
           const count = users.filter(user => {
-            const userDate = new Date(user.created_at).toISOString().split('T')[0];
-            return userDate === dateStr;
+            const userDate = new Date(user.created_at);
+            userDate.setHours(0, 0, 0, 0);
+            return userDate.toISOString().split('T')[0] === dateStr;
           }).length;
           
           data.push({ date: dateStr, count });
@@ -152,8 +215,10 @@ function RegistrationChart({ users, timeRange, onTimeRangeChange }: {
         for (let i = 11; i >= 0; i--) {
           const weekStart = new Date(now);
           weekStart.setDate(weekStart.getDate() - (weekStart.getDay() + (i * 7)));
+          weekStart.setHours(0, 0, 0, 0);
           const weekEnd = new Date(weekStart);
           weekEnd.setDate(weekEnd.getDate() + 6);
+          weekEnd.setHours(23, 59, 59, 999);
           
           const count = users.filter(user => {
             const userDate = new Date(user.created_at);
@@ -161,7 +226,7 @@ function RegistrationChart({ users, timeRange, onTimeRangeChange }: {
           }).length;
           
           data.push({ 
-            date: `Week ${weekStart.getDate()}/${weekStart.getMonth() + 1}`, 
+            date: `W${i + 1}`, 
             count 
           });
         }
@@ -193,12 +258,21 @@ function RegistrationChart({ users, timeRange, onTimeRangeChange }: {
       }
       
       setChartData(data);
+      setIsLoading(false);
     };
 
     generateChartData();
   }, [users, timeRange]);
 
   const maxCount = Math.max(...chartData.map(d => d.count), 1);
+
+  if (isLoading) {
+    return (
+      <div className="w-full h-64 bg-white p-4 rounded-lg border flex items-center justify-center">
+        <Loader2 className="w-6 h-6 animate-spin text-gray-400" />
+      </div>
+    );
+  }
 
   return (
     <div className="w-full h-64 bg-white p-4 rounded-lg border">
@@ -221,20 +295,24 @@ function RegistrationChart({ users, timeRange, onTimeRangeChange }: {
       
       <div className="flex items-end justify-between h-48 gap-1">
         {chartData.map((item, index) => (
-          <div key={index} className="flex flex-col items-center flex-1">
+          <div key={index} className="flex flex-col items-center flex-1 group relative">
             <div 
-              className="w-full bg-blue-500 rounded-t transition-all duration-300 hover:bg-blue-600"
+              className="w-full bg-blue-500 rounded-t transition-all duration-300 hover:bg-blue-600 cursor-pointer"
               style={{ 
                 height: `${(item.count / maxCount) * 100}%`,
                 minHeight: item.count > 0 ? '4px' : '0px'
               }}
-              title={`${item.date}: ${item.count} users`}
+              title={`${item.date}: ${item.count} user${item.count !== 1 ? 's' : ''}`}
             />
-            <div className="text-xs text-gray-600 mt-2 transform -rotate-45 origin-left">
+            <div className="text-xs text-gray-600 mt-2 transform -rotate-45 origin-left whitespace-nowrap">
               {timeRange === 'day' ? new Date(item.date).getDate() : 
-               timeRange === 'week' ? `W${index + 1}` :
-               timeRange === 'month' ? new Date(item.date).getMonth() + 1 :
+               timeRange === 'week' ? item.date :
+               timeRange === 'month' ? item.date.split(' ')[0] :
                item.date}
+            </div>
+            {/* Tooltip on hover */}
+            <div className="absolute bottom-full mb-2 hidden group-hover:block bg-gray-900 text-white text-xs rounded px-2 py-1 z-10 whitespace-nowrap">
+              {item.date}: {item.count} user{item.count !== 1 ? 's' : ''}
             </div>
           </div>
         ))}
@@ -248,6 +326,9 @@ function RegistrationChart({ users, timeRange, onTimeRangeChange }: {
   );
 }
 
+/**
+ * Fetch user statistics including Core Usage Score
+ */
 async function fetchUserStats(userId: string): Promise<UserStats> {
   try {
     // Gebruik de database functie get_admin_branches om alle filialen en gebruikers op te halen
@@ -267,6 +348,7 @@ async function fetchUserStats(userId: string): Promise<UserStats> {
         branchCount: 0,
         linkedUserCount: 0,
         licenseCost: 0,
+        coreUsageScore: 0,
         statsLastUpdated: new Date().toISOString()
       };
     }
@@ -297,12 +379,24 @@ async function fetchUserStats(userId: string): Promise<UserStats> {
         .filter(id => id !== userId && id !== null)
     );
 
+    const productCountValue = productCount || 0;
+    const branchCountValue = adminBranches.length;
+    const linkedUserCountValue = uniqueLinkedUsers.size;
+
+    // Calculate Core Usage Score
+    const coreUsageScore = calculateCoreUsageScore(
+      productCountValue,
+      branchCountValue,
+      linkedUserCountValue
+    );
+
     const stats = {
       userId,
-      productCount: productCount || 0,
-      branchCount: adminBranches.length,
-      linkedUserCount: uniqueLinkedUsers.size,
+      productCount: productCountValue,
+      branchCount: branchCountValue,
+      linkedUserCount: linkedUserCountValue,
       licenseCost: 0,
+      coreUsageScore,
       statsLastUpdated: new Date().toISOString()
     };
 
@@ -331,9 +425,97 @@ async function fetchUserStats(userId: string): Promise<UserStats> {
       branchCount: 0,
       linkedUserCount: 0,
       licenseCost: 0,
+      coreUsageScore: 0,
       statsLastUpdated: new Date().toISOString()
     };
   }
+}
+
+/**
+ * Fetch feedback status for a user
+ * Determines status based on user_feedback table records
+ */
+async function fetchUserFeedbackStatus(
+  userId: string,
+  inactivityDays: number,
+  cus: number
+): Promise<FeedbackStatus> {
+  try {
+    // Exempt if user doesn't qualify (CUS > 0 OR account age < 7 days)
+    if (cus > 0 || inactivityDays < 7) {
+      return 'exempt';
+    }
+
+    // Check for existing churn feedback record
+    const { data: feedbackRecords, error } = await supabase
+      .from('user_feedback')
+      .select('churn_reason, missing_features, expectation_gap, priority_feature, churn_trigger_date, trigger_context')
+      .eq('user_id', userId)
+      .eq('trigger_context', 'churn')
+      .order('created_at', { ascending: false })
+      .limit(1);
+
+    if (error) {
+      console.error('Error fetching feedback status:', error);
+      return 'exempt';
+    }
+
+    if (!feedbackRecords || feedbackRecords.length === 0) {
+      // No feedback record - pending survey
+      return 'pending-survey';
+    }
+
+    const latestFeedback = feedbackRecords[0];
+
+    // Check if user has responded (at least one churn field filled)
+    const hasResponse = !!(
+      latestFeedback.churn_reason ||
+      latestFeedback.missing_features ||
+      latestFeedback.expectation_gap ||
+      latestFeedback.priority_feature
+    );
+
+    if (hasResponse) {
+      return 'response-received';
+    }
+
+    // Survey sent but no response yet
+    if (latestFeedback.churn_trigger_date) {
+      return 'survey-sent';
+    }
+
+    return 'pending-survey';
+  } catch (error) {
+    console.error('Error determining feedback status:', error);
+    return 'exempt';
+  }
+}
+
+/**
+ * Fetch feedback statuses for all users in batch
+ */
+async function fetchAllUserFeedbackStatuses(
+  users: UserProfile[],
+  userStats: UserStats[]
+): Promise<Record<string, FeedbackStatus>> {
+  const statusMap: Record<string, FeedbackStatus> = {};
+
+  // Calculate inactivity for each user and fetch status
+  const statusPromises = users.map(async (user) => {
+    const stats = userStats.find(s => s.userId === user.id);
+    const cus = stats?.coreUsageScore || 0;
+    const inactivity = calculateInactivityDays(user.last_login || null, user.created_at);
+    
+    const status = await fetchUserFeedbackStatus(user.id, inactivity.days, cus);
+    return { userId: user.id, status };
+  });
+
+  const results = await Promise.all(statusPromises);
+  results.forEach(({ userId, status }) => {
+    statusMap[userId] = status;
+  });
+
+  return statusMap;
 }
 
 async function blockUser(id: string, blocked: boolean) {
@@ -343,16 +525,106 @@ async function blockUser(id: string, blocked: boolean) {
   if (error) throw new Error(error.message);
 }
 
+/**
+ * Fetch all churn survey records with user information
+ */
+async function fetchChurnSurveyRecords(): Promise<ChurnSurveyRecord[]> {
+  try {
+    const { data: feedbackRecords, error } = await supabase
+      .from('user_feedback')
+      .select('id, user_id, churn_trigger_date, feedback_delivered_via, created_at, churn_reason, missing_features, expectation_gap, priority_feature')
+      .eq('trigger_context', 'churn')
+      .not('churn_trigger_date', 'is', null)
+      .order('churn_trigger_date', { ascending: false });
+
+    if (error) throw error;
+    if (!feedbackRecords || feedbackRecords.length === 0) return [];
+
+    // Get user information for each record
+    const userIds = [...new Set(feedbackRecords.map(r => r.user_id))];
+    const { data: userProfiles, error: usersError } = await supabase
+      .from('profiles')
+      .select('id, email, first_name, last_name')
+      .in('id', userIds);
+
+    if (usersError) throw usersError;
+
+    const userMap = new Map(
+      (userProfiles || []).map(u => [
+        u.id,
+        {
+          email: u.email,
+          name: `${u.first_name || ''} ${u.last_name || ''}`.trim() || u.email
+        }
+      ])
+    );
+
+    return feedbackRecords.map(record => {
+      const user = userMap.get(record.user_id);
+      const hasResponse = !!(
+        record.churn_reason ||
+        record.missing_features ||
+        record.expectation_gap ||
+        record.priority_feature
+      );
+
+      return {
+        id: record.id,
+        user_id: record.user_id,
+        user_email: user?.email || 'Unknown',
+        user_name: user?.name || 'Unknown',
+        churn_trigger_date: record.churn_trigger_date,
+        feedback_delivered_via: record.feedback_delivered_via || 'unknown',
+        created_at: record.created_at,
+        has_response: hasResponse,
+        churn_reason: record.churn_reason,
+        missing_features: record.missing_features,
+        expectation_gap: record.expectation_gap,
+        priority_feature: record.priority_feature
+      };
+    });
+  } catch (error) {
+    console.error('Error fetching churn survey records:', error);
+    return [];
+  }
+}
+
+/**
+ * Get feedback status badge component
+ */
+function FeedbackStatusBadge({ status }: { status: FeedbackStatus }) {
+  const statusConfig = {
+    'pending-survey': { label: 'Pending Survey', className: 'bg-orange-100 text-orange-800' },
+    'survey-sent': { label: 'Survey Sent', className: 'bg-blue-100 text-blue-800' },
+    'response-received': { label: 'Response Received', className: 'bg-green-100 text-green-800' },
+    'exempt': { label: 'Exempt', className: 'bg-gray-100 text-gray-800' }
+  };
+
+  const config = statusConfig[status];
+  return (
+    <Badge className={config.className}>
+      {config.label}
+    </Badge>
+  );
+}
+
 export default function AdminPage() {
   const { user, userProfile } = useAuth();
   const { isMobile } = useMobile();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<'users' | 'features' | 'chats' | 'notifications' | 'cms' | 'subscription-management'>('users');
+  const [activeTab, setActiveTab] = useState<'users' | 'features' | 'chats' | 'notifications' | 'cms' | 'subscription-management' | 'churn-surveys'>('users');
   const [selectedUser, setSelectedUser] = useState<UserProfile | null>(null);
   const [companyTypes, setCompanyTypes] = useState<Record<string, { type: string; custom_type: string | null }>>({});
   const [userStats, setUserStats] = useState<UserStats[]>([]);
   const [loadingStats, setLoadingStats] = useState(false);
+  const [feedbackStatuses, setFeedbackStatuses] = useState<Record<string, FeedbackStatus>>({});
+  const [loadingFeedback, setLoadingFeedback] = useState(false);
+  const [feedbackReceivedCount, setFeedbackReceivedCount] = useState(0);
   const [chartTimeRange, setChartTimeRange] = useState<'day' | 'week' | 'month' | 'year'>('month');
+  const [sortColumn, setSortColumn] = useState<SortColumn>('created');
+  const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
+  const [churnSurveys, setChurnSurveys] = useState<ChurnSurveyRecord[]>([]);
+  const [loadingChurnSurveys, setLoadingChurnSurveys] = useState(false);
   
   // Gebruik de page refresh hook
   usePageRefresh();
@@ -370,10 +642,124 @@ export default function AdminPage() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['userProfiles'] }),
   });
 
+  /**
+   * Trigger survey for a user
+   * Creates feedback record and sends email
+   */
+  const triggerSurveyMutation = useMutation({
+    mutationFn: async ({ userId, email, name }: { userId: string; email: string; name: string }) => {
+      // Create feedback record
+      const { error: feedbackError } = await supabase
+        .from('user_feedback')
+        .insert({
+          user_id: userId,
+          recommendation_score: 1,
+          feedback_text: null,
+          trigger_context: 'churn',
+          churn_trigger_date: new Date().toISOString(),
+          feedback_delivered_via: 'admin_manual'
+        });
+
+      if (feedbackError) throw feedbackError;
+
+      // Send email
+      const response = await fetch('/api/send-churn-survey-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, name })
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to send email');
+      }
+
+      return { success: true };
+    },
+    onSuccess: () => {
+      toast.success('Survey triggered successfully');
+      // Refresh feedback statuses
+      if (users.length > 0 && userStats.length > 0) {
+        fetchAllUserFeedbackStatuses(users, userStats).then(setFeedbackStatuses);
+      }
+    },
+    onError: (error: Error) => {
+      toast.error(error.message || 'Failed to trigger survey');
+    }
+  });
+
+  /**
+   * Handle table sorting
+   */
+  const handleSort = useCallback((column: SortColumn) => {
+    if (sortColumn === column) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortColumn(column);
+      setSortDirection('asc');
+    }
+  }, [sortColumn, sortDirection]);
+
+  /**
+   * Sort users based on current sort settings
+   */
+  const sortedUsers = useMemo(() => {
+    const sorted = [...users];
+    
+    sorted.sort((a, b) => {
+      const statsA = userStats.find(s => s.userId === a.id);
+      const statsB = userStats.find(s => s.userId === b.id);
+      const inactivityA = calculateInactivityDays(a.last_login || null, a.created_at);
+      const inactivityB = calculateInactivityDays(b.last_login || null, b.created_at);
+      const statusA = feedbackStatuses[a.id] || 'exempt';
+      const statusB = feedbackStatuses[b.id] || 'exempt';
+
+      let comparison = 0;
+
+      switch (sortColumn) {
+        case 'email':
+          comparison = a.email.localeCompare(b.email);
+          break;
+        case 'name':
+          const nameA = `${a.first_name || ''} ${a.last_name || ''}`.trim();
+          const nameB = `${b.first_name || ''} ${b.last_name || ''}`.trim();
+          comparison = nameA.localeCompare(nameB);
+          break;
+        case 'inactivity':
+          comparison = inactivityA.days - inactivityB.days;
+          break;
+        case 'products':
+          comparison = (statsA?.productCount || 0) - (statsB?.productCount || 0);
+          break;
+        case 'branches':
+          comparison = (statsA?.branchCount || 0) - (statsB?.branchCount || 0);
+          break;
+        case 'linkedUsers':
+          comparison = (statsA?.linkedUserCount || 0) - (statsB?.linkedUserCount || 0);
+          break;
+        case 'cus':
+          comparison = (statsA?.coreUsageScore || 0) - (statsB?.coreUsageScore || 0);
+          break;
+        case 'feedback':
+          const statusOrder = { 'pending-survey': 0, 'survey-sent': 1, 'response-received': 2, 'exempt': 3 };
+          comparison = (statusOrder[statusA] || 3) - (statusOrder[statusB] || 3);
+          break;
+        case 'created':
+          comparison = new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
+          break;
+      }
+
+      return sortDirection === 'asc' ? comparison : -comparison;
+    });
+
+    return sorted;
+  }, [users, userStats, feedbackStatuses, sortColumn, sortDirection]);
+
   // Bereken statistieken voor gebruikers
   useEffect(() => {
     if (users.length === 0) {
       setUserStats([]);
+      setFeedbackStatuses({});
       return;
     }
 
@@ -384,9 +770,39 @@ export default function AdminPage() {
           users.map(user => fetchUserStats(user.id))
         );
         setUserStats(stats);
+
+        // Fetch feedback statuses after stats are loaded
+        setLoadingFeedback(true);
+        try {
+          const statusMap = await fetchAllUserFeedbackStatuses(users, stats);
+          setFeedbackStatuses(statusMap);
+
+          // Count feedback received in last 30 days
+          const thirtyDaysAgo = new Date();
+          thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+          const { data: recentFeedback, error: feedbackError } = await supabase
+            .from('user_feedback')
+            .select('user_id, created_at, churn_reason, missing_features, expectation_gap, priority_feature')
+            .eq('trigger_context', 'churn')
+            .gte('created_at', thirtyDaysAgo.toISOString());
+
+          if (!feedbackError && recentFeedback) {
+            const usersWithResponse = new Set(
+              recentFeedback
+                .filter(f => f.churn_reason || f.missing_features || f.expectation_gap || f.priority_feature)
+                .map(f => f.user_id)
+            );
+            setFeedbackReceivedCount(usersWithResponse.size);
+          }
+        } catch (error) {
+          console.error('Error loading feedback statuses:', error);
+        } finally {
+          setLoadingFeedback(false);
+        }
       } catch (error) {
         console.error('Error loading user stats:', error);
         setUserStats([]);
+        setFeedbackStatuses({});
       } finally {
         setLoadingStats(false);
       }
@@ -394,6 +810,32 @@ export default function AdminPage() {
 
     loadUserStats();
   }, [users]);
+
+  // Calculate metric values
+  const metricValues = useMemo(() => {
+    const now = new Date();
+    const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+    const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+
+    // Users created in last 30 days
+    const usersLast30Days = users.filter(u => new Date(u.created_at) >= thirtyDaysAgo);
+    const activatedLast30Days = usersLast30Days.filter(u => {
+      const stats = userStats.find(s => s.userId === u.id);
+      return (stats?.coreUsageScore || 0) > 0;
+    });
+    const activationRate = usersLast30Days.length > 0
+      ? ((activatedLast30Days.length / usersLast30Days.length) * 100).toFixed(1)
+      : 'N/A';
+
+    // Churn targets (registered ≥ 7 days ago AND CUS = 0)
+    const churnTargets = users.filter(u => {
+      const created = new Date(u.created_at);
+      const stats = userStats.find(s => s.userId === u.id);
+      return created <= sevenDaysAgo && (stats?.coreUsageScore || 0) === 0;
+    }).length;
+
+    return { activationRate, churnTargets };
+  }, [users, userStats]);
 
   // Haal company_types op voor alle users
   useEffect(() => {
@@ -413,6 +855,24 @@ export default function AdminPage() {
     fetchCompanyTypes();
   }, [users]);
 
+  // Fetch churn survey records when tab is active
+  useEffect(() => {
+    if (activeTab === 'churn-surveys') {
+      const loadChurnSurveys = async () => {
+        setLoadingChurnSurveys(true);
+        try {
+          const records = await fetchChurnSurveyRecords();
+          setChurnSurveys(records);
+        } catch (error) {
+          console.error('Error loading churn surveys:', error);
+        } finally {
+          setLoadingChurnSurveys(false);
+        }
+      };
+      loadChurnSurveys();
+    }
+  }, [activeTab]);
+
   // Real-time updates voor admin data
   useEffect(() => {
     if (!user?.id) return;
@@ -430,15 +890,29 @@ export default function AdminPage() {
           queryClient.invalidateQueries({ queryKey: ['userProfiles'] });
         }
       )
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'user_feedback',
+        },
+        () => {
+          if (activeTab === 'churn-surveys') {
+            fetchChurnSurveyRecords().then(setChurnSurveys);
+          }
+        }
+      )
       .subscribe();
 
     return () => {
       supabase.removeChannel(adminChannel);
     };
-  }, [user?.id, queryClient]);
+  }, [user?.id, queryClient, activeTab]);
 
-  const sidebarNavItems: { id: 'users' | 'features' | 'chats' | 'notifications' | 'cms' | 'subscription-management'; label: string }[] = [
+  const sidebarNavItems: { id: 'users' | 'features' | 'chats' | 'notifications' | 'cms' | 'subscription-management' | 'churn-surveys'; label: string }[] = [
     { id: 'users', label: 'User Management' },
+    { id: 'churn-surveys', label: 'Churn Surveys' },
     { id: 'chats', label: 'Chats' },
     { id: 'notifications', label: 'Notifications' },
     { id: 'cms', label: 'CMS' },
@@ -549,7 +1023,7 @@ export default function AdminPage() {
                   </CardHeader>
                   <CardContent>
                     {/* Stats Cards - responsive grid */}
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-4 mb-6">
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-4 mb-6">
                       <Card className="bg-blue-50 border-blue-200">
                         <CardContent className="p-2 sm:p-4">
                           <div className="text-lg sm:text-2xl font-bold text-blue-700">{users.length}</div>
@@ -568,16 +1042,28 @@ export default function AdminPage() {
                           <div className="text-xs sm:text-sm text-yellow-600">New this week</div>
                         </CardContent>
                       </Card>
-                      <Card className="bg-purple-50 border-purple-200">
+                      <Card className="bg-indigo-50 border-indigo-200">
                         <CardContent className="p-2 sm:p-4">
-                          <div className="text-lg sm:text-2xl font-bold text-purple-700">{calculateUserStats(users).newUsersThisMonth}</div>
-                          <div className="text-xs sm:text-sm text-purple-600">New this month</div>
+                          <div className="text-lg sm:text-2xl font-bold text-indigo-700">
+                            {loadingStats ? <Loader2 className="w-5 h-5 animate-spin inline" /> : `${metricValues.activationRate}%`}
+                          </div>
+                          <div className="text-xs sm:text-sm text-indigo-600">Activation Rate (30D)</div>
                         </CardContent>
                       </Card>
-                      <Card className="bg-orange-50 border-orange-200">
+                      <Card className="bg-red-50 border-red-200">
                         <CardContent className="p-2 sm:p-4">
-                          <div className="text-lg sm:text-2xl font-bold text-orange-700">{calculateUserStats(users).newUsersThisYear}</div>
-                          <div className="text-xs sm:text-sm text-orange-600">New this year</div>
+                          <div className="text-lg sm:text-2xl font-bold text-red-700">
+                            {loadingStats ? <Loader2 className="w-5 h-5 animate-spin inline" /> : metricValues.churnTargets}
+                          </div>
+                          <div className="text-xs sm:text-sm text-red-600">Churn Targets (7D)</div>
+                        </CardContent>
+                      </Card>
+                      <Card className="bg-teal-50 border-teal-200">
+                        <CardContent className="p-2 sm:p-4">
+                          <div className="text-lg sm:text-2xl font-bold text-teal-700">
+                            {loadingFeedback ? <Loader2 className="w-5 h-5 animate-spin inline" /> : feedbackReceivedCount}
+                          </div>
+                          <div className="text-xs sm:text-sm text-teal-600">Feedback Received (30D)</div>
                         </CardContent>
                       </Card>
                     </div>
@@ -585,10 +1071,14 @@ export default function AdminPage() {
                   {/* Mobile: Card-based user list */}
                   {isMobile ? (
                     <div className="space-y-4">
-                      {users.length === 0 ? (
+                      {sortedUsers.length === 0 ? (
                         <div className="text-center py-8 text-gray-500">No users found.</div>
-                      ) : users.map((user) => {
+                      ) : sortedUsers.map((user) => {
                         const stats = userStats.find(s => s.userId === user.id);
+                        const inactivity = calculateInactivityDays(user.last_login || null, user.created_at);
+                        const feedbackStatus = feedbackStatuses[user.id] || 'exempt';
+                        const shouldHighlight = shouldHighlightInactivity(inactivity.days, stats?.coreUsageScore || 0);
+                        
                         return (
                           <Card key={user.id} className="cursor-pointer hover:bg-gray-50" onClick={() => setSelectedUser(user)}>
                             <CardContent className="p-4">
@@ -602,23 +1092,61 @@ export default function AdminPage() {
                                     {user.blocked ? 'Blocked' : 'Active'}
                                   </span>
                                 </div>
-                                <div className="grid grid-cols-2 gap-2 text-xs text-gray-600">
-                                  <div>Plan: {user.selected_plan || 'None'}</div>
-                                  <div>Role: {user.role}</div>
-                                  <div>Products: {loadingStats ? <Loader2 className="w-3 h-3 animate-spin inline" /> : stats?.productCount || 0}</div>
-                                  <div>Branches: {loadingStats ? <Loader2 className="w-3 h-3 animate-spin inline" /> : stats?.branchCount || 0}</div>
+                                <div className="grid grid-cols-2 gap-2 text-xs">
+                                  <div className="text-gray-600">
+                                    <span className="font-medium">Inactivity:</span>{' '}
+                                    <span className={shouldHighlight ? 'text-red-600 font-semibold' : ''}>
+                                      {loadingStats ? <Loader2 className="w-3 h-3 animate-spin inline" /> : inactivity.display}
+                                    </span>
+                                  </div>
+                                  <div className="text-gray-600">
+                                    <span className="font-medium">Products:</span>{' '}
+                                    {loadingStats ? <Loader2 className="w-3 h-3 animate-spin inline" /> : stats?.productCount || 0}
+                                  </div>
+                                  <div className="text-gray-600">
+                                    <span className="font-medium">Branches:</span>{' '}
+                                    {loadingStats ? <Loader2 className="w-3 h-3 animate-spin inline" /> : stats?.branchCount || 0}
+                                  </div>
+                                  <div className="text-gray-600">
+                                    <span className="font-medium">Linked Users:</span>{' '}
+                                    {loadingStats ? <Loader2 className="w-3 h-3 animate-spin inline" /> : stats?.linkedUserCount || 0}
+                                  </div>
+                                  <div className="text-gray-600">
+                                    <span className="font-medium">CUS:</span>{' '}
+                                    {loadingStats ? <Loader2 className="w-3 h-3 animate-spin inline" /> : stats?.coreUsageScore || 0}
+                                  </div>
+                                  <div className="text-gray-600">
+                                    <span className="font-medium">Status:</span>{' '}
+                                    {loadingFeedback ? <Loader2 className="w-3 h-3 animate-spin inline" /> : <FeedbackStatusBadge status={feedbackStatus} />}
+                                  </div>
                                 </div>
-                                <div className="flex justify-between items-center pt-2">
-                                  <span className="text-xs text-gray-500">
-                                    {new Date(user.created_at).toLocaleDateString('en-US')}
-                                  </span>
-                                  <button
-                                    className={`px-2 py-1 rounded text-xs ${user.blocked ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}
-                                    onClick={e => { e.stopPropagation(); blockMutation.mutate({ id: user.id, blocked: !!user.blocked }); }}
-                                    disabled={blockMutation.isPending}
-                                  >
-                                    {user.blocked ? 'Unblock' : 'Block'}
-                                  </button>
+                                <div className="flex justify-between items-center pt-2 gap-2">
+                                  <div className="flex gap-1 flex-wrap">
+                                    <button
+                                      className={`px-2 py-1 rounded text-xs ${user.blocked ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}
+                                      onClick={e => { e.stopPropagation(); blockMutation.mutate({ id: user.id, blocked: !!user.blocked }); }}
+                                      disabled={blockMutation.isPending}
+                                    >
+                                      {user.blocked ? 'Unblock' : 'Block'}
+                                    </button>
+                                    {feedbackStatus === 'pending-survey' && (
+                                      <button
+                                        className="px-2 py-1 rounded text-xs bg-blue-100 text-blue-800 hover:bg-blue-200"
+                                        onClick={e => {
+                                          e.stopPropagation();
+                                          const userName = `${user.first_name || ''} ${user.last_name || ''}`.trim() || user.email;
+                                          triggerSurveyMutation.mutate({ 
+                                            userId: user.id, 
+                                            email: user.email, 
+                                            name: userName 
+                                          });
+                                        }}
+                                        disabled={triggerSurveyMutation.isPending}
+                                      >
+                                        {triggerSurveyMutation.isPending ? 'Sending...' : 'Survey'}
+                                      </button>
+                                    )}
+                                  </div>
                                 </div>
                               </div>
                             </CardContent>
@@ -632,25 +1160,124 @@ export default function AdminPage() {
                       <table className="w-full text-sm text-left">
                         <thead className="text-xs uppercase bg-gray-50">
                           <tr>
-                            <th className="px-4 py-2">Email</th>
-                            <th className="px-4 py-2">Name</th>
-                            <th className="px-4 py-2">Products</th>
-                            <th className="px-4 py-2">Branches</th>
-                            <th className="px-4 py-2">Linked Users</th>
-                            <th className="px-4 py-2">Created</th>
-                            <th className="px-4 py-2">Last Login</th>
+                            <th 
+                              className="px-4 py-2 cursor-pointer hover:bg-gray-100 select-none"
+                              onClick={() => handleSort('email')}
+                            >
+                              <div className="flex items-center gap-1">
+                                Email
+                                {sortColumn === 'email' && (
+                                  sortDirection === 'asc' ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />
+                                )}
+                              </div>
+                            </th>
+                            <th 
+                              className="px-4 py-2 cursor-pointer hover:bg-gray-100 select-none"
+                              onClick={() => handleSort('name')}
+                            >
+                              <div className="flex items-center gap-1">
+                                Name
+                                {sortColumn === 'name' && (
+                                  sortDirection === 'asc' ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />
+                                )}
+                              </div>
+                            </th>
+                            <th 
+                              className="px-4 py-2 cursor-pointer hover:bg-gray-100 select-none text-center"
+                              onClick={() => handleSort('inactivity')}
+                            >
+                              <div className="flex items-center justify-center gap-1">
+                                Inactivity Days
+                                {sortColumn === 'inactivity' && (
+                                  sortDirection === 'asc' ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />
+                                )}
+                              </div>
+                            </th>
+                            <th 
+                              className="px-4 py-2 cursor-pointer hover:bg-gray-100 select-none text-center"
+                              onClick={() => handleSort('products')}
+                            >
+                              <div className="flex items-center justify-center gap-1">
+                                Products
+                                {sortColumn === 'products' && (
+                                  sortDirection === 'asc' ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />
+                                )}
+                              </div>
+                            </th>
+                            <th 
+                              className="px-4 py-2 cursor-pointer hover:bg-gray-100 select-none text-center"
+                              onClick={() => handleSort('branches')}
+                            >
+                              <div className="flex items-center justify-center gap-1">
+                                Branches
+                                {sortColumn === 'branches' && (
+                                  sortDirection === 'asc' ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />
+                                )}
+                              </div>
+                            </th>
+                            <th 
+                              className="px-4 py-2 cursor-pointer hover:bg-gray-100 select-none text-center"
+                              onClick={() => handleSort('linkedUsers')}
+                            >
+                              <div className="flex items-center justify-center gap-1">
+                                Linked Users
+                                {sortColumn === 'linkedUsers' && (
+                                  sortDirection === 'asc' ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />
+                                )}
+                              </div>
+                            </th>
+                            <th 
+                              className="px-4 py-2 cursor-pointer hover:bg-gray-100 select-none text-center"
+                              onClick={() => handleSort('cus')}
+                            >
+                              <div className="flex items-center justify-center gap-1">
+                                CUS
+                                {sortColumn === 'cus' && (
+                                  sortDirection === 'asc' ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />
+                                )}
+                              </div>
+                            </th>
+                            <th 
+                              className="px-4 py-2 cursor-pointer hover:bg-gray-100 select-none"
+                              onClick={() => handleSort('feedback')}
+                            >
+                              <div className="flex items-center gap-1">
+                                Feedback Status
+                                {sortColumn === 'feedback' && (
+                                  sortDirection === 'asc' ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />
+                                )}
+                              </div>
+                            </th>
+                            <th 
+                              className="px-4 py-2 cursor-pointer hover:bg-gray-100 select-none"
+                              onClick={() => handleSort('created')}
+                            >
+                              <div className="flex items-center gap-1">
+                                Created
+                                {sortColumn === 'created' && (
+                                  sortDirection === 'asc' ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />
+                                )}
+                              </div>
+                            </th>
                             <th className="px-4 py-2">Actions</th>
                           </tr>
                         </thead>
                         <tbody>
-                          {users.length === 0 ? (
-                            <tr><td colSpan={13} className="text-center py-4">No users found.</td></tr>
-                          ) : users.map((user) => {
+                          {sortedUsers.length === 0 ? (
+                            <tr><td colSpan={10} className="text-center py-4">No users found.</td></tr>
+                          ) : sortedUsers.map((user) => {
                             const stats = userStats.find(s => s.userId === user.id);
+                            const inactivity = calculateInactivityDays(user.last_login || null, user.created_at);
+                            const feedbackStatus = feedbackStatuses[user.id] || 'exempt';
+                            const shouldHighlight = shouldHighlightInactivity(inactivity.days, stats?.coreUsageScore || 0);
+                            
                             return (
                               <tr key={user.id} className="bg-white border-b hover:bg-blue-50 cursor-pointer" onClick={() => setSelectedUser(user)}>
                                 <td className="px-4 py-2">{user.email}</td>
                                 <td className="px-4 py-2">{user.first_name} {user.last_name}</td>
+                                <td className={`px-4 py-2 text-center ${shouldHighlight ? 'text-red-600 font-semibold bg-red-50' : ''}`}>
+                                  {loadingStats ? <Loader2 className="w-4 h-4 animate-spin mx-auto" /> : inactivity.display}
+                                </td>
                                 <td className="px-4 py-2 text-center">
                                   {loadingStats ? <Loader2 className="w-4 h-4 animate-spin mx-auto" /> : stats?.productCount || 0}
                                 </td>
@@ -660,17 +1287,40 @@ export default function AdminPage() {
                                 <td className="px-4 py-2 text-center">
                                   {loadingStats ? <Loader2 className="w-4 h-4 animate-spin mx-auto" /> : stats?.linkedUserCount || 0}
                                 </td>
-            
-                                <td className="px-4 py-2">{new Date(user.created_at).toLocaleDateString('en-US')}</td>
-                                <td className="px-4 py-2">{getDaysSinceLastLogin(user.last_login)}</td>
+                                <td className="px-4 py-2 text-center">
+                                  {loadingStats ? <Loader2 className="w-4 h-4 animate-spin mx-auto" /> : stats?.coreUsageScore || 0}
+                                </td>
                                 <td className="px-4 py-2">
-                                  <button
-                                    className={`px-2 py-1 rounded text-xs ${user.blocked ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}
-                                    onClick={e => { e.stopPropagation(); blockMutation.mutate({ id: user.id, blocked: !!user.blocked }); }}
-                                    disabled={blockMutation.isPending}
-                                  >
-                                    {user.blocked ? 'Unblock' : 'Block'}
-                                  </button>
+                                  {loadingFeedback ? <Loader2 className="w-4 h-4 animate-spin" /> : <FeedbackStatusBadge status={feedbackStatus} />}
+                                </td>
+                                <td className="px-4 py-2">{new Date(user.created_at).toLocaleDateString('en-US')}</td>
+                                <td className="px-4 py-2" onClick={e => e.stopPropagation()}>
+                                  <div className="flex gap-1">
+                                    <button
+                                      className={`px-2 py-1 rounded text-xs ${user.blocked ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}
+                                      onClick={e => { e.stopPropagation(); blockMutation.mutate({ id: user.id, blocked: !!user.blocked }); }}
+                                      disabled={blockMutation.isPending}
+                                    >
+                                      {user.blocked ? 'Unblock' : 'Block'}
+                                    </button>
+                                    {feedbackStatus === 'pending-survey' && (
+                                      <button
+                                        className="px-2 py-1 rounded text-xs bg-blue-100 text-blue-800 hover:bg-blue-200"
+                                        onClick={e => {
+                                          e.stopPropagation();
+                                          const userName = `${user.first_name || ''} ${user.last_name || ''}`.trim() || user.email;
+                                          triggerSurveyMutation.mutate({ 
+                                            userId: user.id, 
+                                            email: user.email, 
+                                            name: userName 
+                                          });
+                                        }}
+                                        disabled={triggerSurveyMutation.isPending}
+                                      >
+                                        {triggerSurveyMutation.isPending ? 'Sending...' : 'Trigger Survey'}
+                                      </button>
+                                    )}
+                                  </div>
                                 </td>
                               </tr>
                             );
@@ -685,6 +1335,108 @@ export default function AdminPage() {
             </div>
             )}
 
+            {activeTab === 'churn-surveys' && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Churn Survey Emails</CardTitle>
+                  <CardDescription>View all churn survey emails that have been sent to users.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {loadingChurnSurveys ? (
+                    <div className="flex justify-center py-8">
+                      <Loader2 className="w-6 h-6 animate-spin text-gray-400" />
+                    </div>
+                  ) : churnSurveys.length === 0 ? (
+                    <div className="text-center py-8 text-gray-500">No churn survey emails sent yet.</div>
+                  ) : (
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-sm text-left">
+                        <thead className="text-xs uppercase bg-gray-50">
+                          <tr>
+                            <th className="px-4 py-2">User</th>
+                            <th className="px-4 py-2">Email</th>
+                            <th className="px-4 py-2">Sent Date</th>
+                            <th className="px-4 py-2">Delivery Method</th>
+                            <th className="px-4 py-2">Status</th>
+                            <th className="px-4 py-2">Response</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {churnSurveys.map((survey) => (
+                            <tr key={survey.id} className="bg-white border-b hover:bg-blue-50">
+                              <td className="px-4 py-2">{survey.user_name}</td>
+                              <td className="px-4 py-2">{survey.user_email}</td>
+                              <td className="px-4 py-2">
+                                {new Date(survey.churn_trigger_date).toLocaleString('en-US', {
+                                  year: 'numeric',
+                                  month: 'short',
+                                  day: 'numeric',
+                                  hour: '2-digit',
+                                  minute: '2-digit'
+                                })}
+                              </td>
+                              <td className="px-4 py-2">
+                                <Badge className={
+                                  survey.feedback_delivered_via === 'admin_manual' 
+                                    ? 'bg-blue-100 text-blue-800' 
+                                    : 'bg-purple-100 text-purple-800'
+                                }>
+                                  {survey.feedback_delivered_via === 'admin_manual' ? 'Admin Manual' : 
+                                   survey.feedback_delivered_via === 'login_modal' ? 'Login Modal' :
+                                   survey.feedback_delivered_via}
+                                </Badge>
+                              </td>
+                              <td className="px-4 py-2">
+                                <Badge className={survey.has_response ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}>
+                                  {survey.has_response ? 'Responded' : 'No Response'}
+                                </Badge>
+                              </td>
+                              <td className="px-4 py-2">
+                                {survey.has_response ? (
+                                  <details className="cursor-pointer">
+                                    <summary className="text-blue-600 hover:text-blue-800 text-xs">
+                                      View Response
+                                    </summary>
+                                    <div className="mt-2 p-3 bg-gray-50 rounded text-xs space-y-2">
+                                      {survey.churn_reason && (
+                                        <div>
+                                          <strong>Churn Reason:</strong>
+                                          <p className="text-gray-700 mt-1">{survey.churn_reason}</p>
+                                        </div>
+                                      )}
+                                      {survey.missing_features && (
+                                        <div>
+                                          <strong>Missing Features:</strong>
+                                          <p className="text-gray-700 mt-1">{survey.missing_features}</p>
+                                        </div>
+                                      )}
+                                      {survey.expectation_gap && (
+                                        <div>
+                                          <strong>Expectation Gap:</strong>
+                                          <p className="text-gray-700 mt-1">{survey.expectation_gap}</p>
+                                        </div>
+                                      )}
+                                      {survey.priority_feature && (
+                                        <div>
+                                          <strong>Priority Feature:</strong>
+                                          <p className="text-gray-700 mt-1">{survey.priority_feature}</p>
+                                        </div>
+                                      )}
+                                    </div>
+                                  </details>
+                                ) : (
+                                  <span className="text-gray-400 text-xs">-</span>
+                                )}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            )}
             {activeTab === 'chats' && (
               <AdminChatList />
             )}
