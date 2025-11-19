@@ -5,7 +5,6 @@ import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import ComparisonTable, { ComparisonFeature } from '@/components/ComparisonTable';
 import { ArrowRight, CheckCircle, DollarSign, Smartphone, Zap, Shield, Star, Clock } from 'lucide-react';
-import { StructuredData } from '@/components/StructuredData';
 import { Accordion, AccordionTrigger, AccordionContent, AccordionItem } from '@/components/ui/accordion';
 
 export default function StockFlowVsCin7() {
@@ -65,6 +64,38 @@ export default function StockFlowVsCin7() {
     }
   ];
 
+  const structuredData = [
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": faqData.map(faq => ({
+        "@type": "Question",
+        "name": faq.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": faq.answer
+        }
+      }))
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "@id": "https://www.stockflow.be/stockflow-vs-cin7",
+      "name": "StockFlow vs Cin7 Comparison",
+      "headline": "StockFlow vs Cin7: The Better Choice for Growing Businesses",
+      "description": "Compare StockFlow vs Cin7 2025. Free plan vs $300/month, 5-7 day setup vs 45-90 days, European hosting, better pricing. See detailed comparison and start free trial.",
+      "url": "https://www.stockflow.be/stockflow-vs-cin7",
+      "inLanguage": "en",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "StockFlow",
+        "url": "https://www.stockflow.be"
+      },
+      "datePublished": "2025-01-01",
+      "dateModified": new Date().toISOString().split("T")[0]
+    }
+  ];
+
   return (
     <SeoPageLayout title="StockFlow vs Cin7">
       <SEO
@@ -72,6 +103,7 @@ export default function StockFlowVsCin7() {
         description="Find out how stockflow vs cin7 to optimize your inventory management. Find out how stockflow vs cin7 to save time and. Start free today. StockFlow helps busi..."
         keywords="stockflow vs cin7, cin7 alternative, cin7 vs stockflow, cin7 inventory management, stockflow vs cin7 comparison, cin7 pricing, best cin7 alternative, inventory management software comparison, omnichannel inventory software, cin7 competitor, stockflow inventory software, cin7 vs stockflow pricing, inventory management software for small business, best inventory software 2025"
         url="https://www.stockflow.be/stockflow-vs-cin7"
+        structuredData={structuredData}
       />
 
       <section className="bg-gradient-to-br from-blue-50 to-white py-12 md:py-20 px-4">
@@ -80,7 +112,7 @@ export default function StockFlowVsCin7() {
             StockFlow vs Cin7: <span className="text-blue-600">The Better Choice for Growing Businesses</span>
           </h1>
           <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-            While Cin7 is powerful for large enterprises, StockFlow offers better value with free plans, 
+            While Cin7 is powerful for large enterprises, StockFlow offers better value with free plans,
             5-7 day implementation, European data hosting, and transparent pricing that scales with your business.
           </p>
           <Link to="/auth" className="inline-flex items-center justify-center bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-blue-700 transition">
@@ -210,7 +242,7 @@ export default function StockFlowVsCin7() {
                   <input
                     type="number"
                     value={roiInputs.inventoryValue}
-                    onChange={(e) => setRoiInputs({...roiInputs, inventoryValue: e.target.value})}
+                    onChange={(e) => setRoiInputs({ ...roiInputs, inventoryValue: e.target.value })}
                     placeholder="100000"
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   />
@@ -220,7 +252,7 @@ export default function StockFlowVsCin7() {
                   <input
                     type="number"
                     value={roiInputs.hoursPerWeek}
-                    onChange={(e) => setRoiInputs({...roiInputs, hoursPerWeek: e.target.value})}
+                    onChange={(e) => setRoiInputs({ ...roiInputs, hoursPerWeek: e.target.value })}
                     placeholder="15"
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   />
@@ -230,7 +262,7 @@ export default function StockFlowVsCin7() {
                   <input
                     type="number"
                     value={roiInputs.hourlyRate}
-                    onChange={(e) => setRoiInputs({...roiInputs, hourlyRate: e.target.value})}
+                    onChange={(e) => setRoiInputs({ ...roiInputs, hourlyRate: e.target.value })}
                     placeholder="25"
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   />
@@ -240,7 +272,7 @@ export default function StockFlowVsCin7() {
                   <input
                     type="number"
                     value={roiInputs.stockoutLosses}
-                    onChange={(e) => setRoiInputs({...roiInputs, stockoutLosses: e.target.value})}
+                    onChange={(e) => setRoiInputs({ ...roiInputs, stockoutLosses: e.target.value })}
                     placeholder="12000"
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   />
@@ -253,7 +285,7 @@ export default function StockFlowVsCin7() {
                     const hoursPerWeek = parseFloat(roiInputs.hoursPerWeek || '0');
                     const hourlyRate = parseFloat(roiInputs.hourlyRate || '0');
                     const stockoutLosses = parseFloat(roiInputs.stockoutLosses || '0');
-                    
+
                     const carryingCostSavings = inventoryValue * 0.35;
                     const timeSavings = hoursPerWeek * hourlyRate * 52;
                     const stockoutSavings = stockoutLosses * 0.8;
@@ -263,7 +295,7 @@ export default function StockFlowVsCin7() {
                     const costSavings = (cin7Cost + cin7Setup) - stockflowCost;
                     const netSavings = carryingCostSavings + timeSavings + stockoutSavings + costSavings - stockflowCost;
                     const roi = stockflowCost > 0 ? ((netSavings / stockflowCost) * 100) : 0;
-                    
+
                     setRoiResult({
                       carryingCostSavings,
                       timeSavings,
@@ -349,39 +381,6 @@ export default function StockFlowVsCin7() {
           </Link>
         </div>
       </section>
-
-      {/* Structured Data */}
-      <StructuredData data={[
-        {
-          "@context": "https://schema.org",
-          "@type": "FAQPage",
-          "mainEntity": faqData.map(faq => ({
-            "@type": "Question",
-            "name": faq.question,
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": faq.answer
-            }
-          }))
-        },
-        {
-          "@context": "https://schema.org",
-          "@type": "WebPage",
-          "@id": "https://www.stockflow.be/stockflow-vs-cin7",
-          "name": "StockFlow vs Cin7 Comparison",
-          "headline": "StockFlow vs Cin7: The Better Choice for Growing Businesses",
-          "description": "Compare StockFlow vs Cin7 2025. Free plan vs $300/month, 5-7 day setup vs 45-90 days, European hosting, better pricing. See detailed comparison and start free trial.",
-          "url": "https://www.stockflow.be/stockflow-vs-cin7",
-          "inLanguage": "en",
-          "isPartOf": {
-            "@type": "WebSite",
-            "name": "StockFlow",
-            "url": "https://www.stockflow.be"
-          },
-          "datePublished": "2025-01-01",
-          "dateModified": new Date().toISOString().split("T")[0]
-        }
-      ]} />
     </SeoPageLayout>
   );
 }

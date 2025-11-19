@@ -4,12 +4,12 @@ import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { useCurrency } from '@/hooks/useCurrency';
 import { useState } from 'react';
-import { 
-  BarChart3, 
-  Zap, 
-  Shield, 
-  Users, 
-  Camera, 
+import {
+  BarChart3,
+  Zap,
+  Shield,
+  Users,
+  Camera,
   CheckCircle,
   Star,
   TrendingUp,
@@ -21,8 +21,6 @@ import {
   DollarSign,
   ChevronDown
 } from 'lucide-react';
-import { RelatedArticles } from '@/components/seo/RelatedArticles';
-import { TopicClusterNav } from '@/components/seo/TopicClusterNav';
 import { englishMainCluster, getRelatedPages } from '@/config/topicClusters';
 
 import { StructuredData } from '@/components/StructuredData';
@@ -30,17 +28,17 @@ export default function InventoryManagementSoftware() {
   // Gebruik de page refresh hook
   usePageRefresh();
   const { formatPrice } = useCurrency();
-  
+
   // Get related pages from topic cluster
   const relatedPages = getRelatedPages('/inventory-management-software', 6);
-  
+
   // FAQ Accordion state
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
-  
+
   const toggleFaq = (index: number) => {
     setOpenFaqIndex(openFaqIndex === index ? null : index);
   };
-  
+
   const faqData = [
     {
       question: "What is inventory management software?",
@@ -106,7 +104,7 @@ export default function InventoryManagementSoftware() {
       description: "Your data is safe in the cloud. Always and everywhere accessible, with daily backups.",
     },
   ];
-  
+
   // Potential future use
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const benefits = [
@@ -175,7 +173,7 @@ export default function InventoryManagementSoftware() {
       description: "Import your existing inventory data or start fresh. Our inventory management software works with any business size."
     },
     {
-      step: "2", 
+      step: "2",
       title: "Set Up Automation",
       description: "Configure automatic reorder points and notifications. Let the software handle routine inventory decisions."
     },
@@ -206,11 +204,11 @@ export default function InventoryManagementSoftware() {
       />
 
       {/* Hero Section - Improved Above the Fold */}
-      <section 
+      <section
         className="relative py-16 sm:py-20 md:py-24 px-4 bg-white"
       >
         <div className="absolute inset-0 "></div>
-        
+
         <div className="relative max-w-7xl mx-auto">
           <div className="flex  gap-12 items-center">
             {/* Left Column - Text Content */}
@@ -219,16 +217,16 @@ export default function InventoryManagementSoftware() {
                 <span className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
                 Trusted by 1,000+ businesses | 4.8/5 rating
               </div>
-              
+
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-              #1 Inventory Management Software 2025<br />
-              <span className="text-blue-900">FREE Plan | Save 35% Costs + 15h/Week</span>
+                #1 Inventory Management Software 2025<br />
+                <span className="text-blue-900">FREE Plan | Save 35% Costs + 15h/Week</span>
               </h1>
-              
+
               <p className="text-xl md:text-2xl text-blue-900 mb-8 leading-relaxed">
                 <strong>FREE plan for 100 SKUs</strong> - no credit card required! Real-time tracking, barcode scanning, automated alerts. <strong>Save 35% inventory costs & 15 hours/week</strong>. Trusted by 1,000+ businesses. 5-7 day setup. Start FREE now!
               </p>
-              
+
               <div className="flex flex-col sm:flex-row gap-4 mb-8">
                 <Link
                   to="/auth"
@@ -236,9 +234,9 @@ export default function InventoryManagementSoftware() {
                 >
                   Start Your Free Trial
                 </Link>
-         
+
               </div>
-              
+
               <div className="flex flex-wrap items-center gap-6 text-blue-900">
                 <div className="flex items-center">
                   <CheckCircle className="w-5 h-5 mr-2 text-blue-900" />
@@ -254,7 +252,7 @@ export default function InventoryManagementSoftware() {
                 </div>
               </div>
             </div>
-            
+
           </div>
         </div>
       </section>
@@ -457,7 +455,7 @@ export default function InventoryManagementSoftware() {
         </div>
       </section>
 
-    
+
       {/* Features Section with Visual Demo */}
       <section className="py-16 px-4 bg-gray-50">
         <div className="max-w-6xl mx-auto">
@@ -495,7 +493,7 @@ export default function InventoryManagementSoftware() {
                 <h3 className="text-xl font-semibold mb-3">Reduce Stockouts by 95%</h3>
                 <p className="text-gray-600">Never lose a sale due to out-of-stock products. Our smart algorithms predict demand and reorder automatically.</p>
               </div>
-              
+
               <div className="bg-white p-8 rounded-xl shadow-lg text-center">
                 <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Clock className="w-8 h-8 text-blue-600" />
@@ -503,7 +501,7 @@ export default function InventoryManagementSoftware() {
                 <h3 className="text-xl font-semibold mb-3">Save 10+ Hours Weekly</h3>
                 <p className="text-gray-600">Automate inventory tracking, reordering, and reporting. Focus on growing your business instead of managing spreadsheets.</p>
               </div>
-              
+
               <div className="bg-white p-8 rounded-xl shadow-lg text-center">
                 <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Target className="w-8 h-8 text-purple-600" />
@@ -514,7 +512,7 @@ export default function InventoryManagementSoftware() {
             </div>
           </div>
         </div>
-        
+
       </section>
 
 
@@ -546,7 +544,7 @@ export default function InventoryManagementSoftware() {
 
 
 
- 
+
       {/* What is Inventory Management Software - Comprehensive Guide */}
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
@@ -554,7 +552,7 @@ export default function InventoryManagementSoftware() {
           <p className="text-lg text-gray-700 leading-relaxed mb-8">
             Inventory management software is a digital solution that helps businesses track, manage, and optimize their stock levels, orders, and warehouse operations. Unlike manual methods like <Link to="/inventory-excel" className="text-blue-600 hover:underline font-semibold">Excel spreadsheets</Link>, modern inventory management software provides real-time visibility, automated processes, and comprehensive analytics.
           </p>
-          
+
           <div className="grid md:grid-cols-2 gap-6 mb-8">
             <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
               <h3 className="text-xl font-semibold text-gray-900 mb-3 flex items-center gap-2">
@@ -580,7 +578,7 @@ export default function InventoryManagementSoftware() {
                 </li>
               </ul>
             </div>
-            
+
             <div className="bg-green-50 border border-green-200 rounded-xl p-6">
               <h3 className="text-xl font-semibold text-gray-900 mb-3 flex items-center gap-2">
                 <BarChart3 className="h-6 w-6 text-green-600" />
@@ -606,7 +604,7 @@ export default function InventoryManagementSoftware() {
               </ul>
             </div>
           </div>
-          
+
           <p className="text-gray-700 leading-relaxed">
             Whether you're running an <Link to="/inventory-for-ecommerce" className="text-blue-600 hover:underline font-semibold">e-commerce business</Link>, managing a <Link to="/retail-inventory-management" className="text-blue-600 hover:underline font-semibold">retail store</Link>, or operating a <Link to="/warehouse-software" className="text-blue-600 hover:underline font-semibold">warehouse</Link>, inventory management software is essential for modern business operations.
           </p>
@@ -617,7 +615,7 @@ export default function InventoryManagementSoftware() {
       <section className="py-16 px-4 bg-gray-50">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8">Key Components of Inventory Management Software</h2>
-          
+
           <div className="space-y-6">
             <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
               <h3 className="text-xl font-semibold text-gray-900 mb-3 flex items-center gap-2">
@@ -676,7 +674,7 @@ export default function InventoryManagementSoftware() {
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8">Benefits and ROI of Inventory Management Software</h2>
-          
+
           <div className="grid md:grid-cols-2 gap-8 mb-8">
             <div className="bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 rounded-xl p-6">
               <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
@@ -756,7 +754,7 @@ export default function InventoryManagementSoftware() {
           <p className="text-lg text-gray-700 mb-8">
             Many businesses make these costly mistakes. Learn how inventory management software helps you avoid them:
           </p>
-          
+
           <div className="grid md:grid-cols-2 gap-6">
             <div className="bg-white rounded-xl p-6 shadow-sm border border-red-200">
               <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
@@ -814,7 +812,7 @@ export default function InventoryManagementSoftware() {
             <h2 className="text-3xl font-bold mb-4">Frequently Asked Questions</h2>
             <p className="text-lg text-gray-600">Everything you need to know about inventory management software</p>
           </div>
-          
+
           <div className="space-y-4">
             {faqData.map((faq, index) => {
               const isOpen = openFaqIndex === index;
@@ -828,16 +826,14 @@ export default function InventoryManagementSoftware() {
                   >
                     <h3 className="text-lg font-semibold text-gray-900 pr-4">{faq.question}</h3>
                     <ChevronDown
-                      className={`w-5 h-5 text-gray-500 flex-shrink-0 transition-transform duration-300 ${
-                        isOpen ? 'transform rotate-180' : ''
-                      }`}
+                      className={`w-5 h-5 text-gray-500 flex-shrink-0 transition-transform duration-300 ${isOpen ? 'transform rotate-180' : ''
+                        }`}
                     />
                   </button>
                   <div
                     id={`faq-answer-${index}`}
-                    className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                      isOpen ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'
-                    }`}
+                    className={`overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'
+                      }`}
                   >
                     <div className="px-6 pb-5 text-gray-700 leading-relaxed">
                       {faq.answer.includes('inventory-for-ecommerce') ? (
@@ -888,8 +884,8 @@ export default function InventoryManagementSoftware() {
             <p className="text-lg text-gray-700 mb-6 max-w-3xl mx-auto">
               Looking for a detailed comparison of the best inventory management software? Our comprehensive guide compares leading platforms including StockFlow, NetSuite, Cin7, and more with side-by-side feature analysis, pricing, and implementation timelines.
             </p>
-            <Link 
-              to="/best-inventory-management-software" 
+            <Link
+              to="/best-inventory-management-software"
               className="inline-flex items-center justify-center bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-blue-700 transition"
             >
               View Best Inventory Management Software Comparison
@@ -899,12 +895,7 @@ export default function InventoryManagementSoftware() {
         </div>
       </section>
 
-      {/* Related Articles Section */}
-      <RelatedArticles 
-        articles={relatedPages}
-        title="Explore More About Inventory Management"
-        language="en"
-      />
+
 
 
 
@@ -922,121 +913,124 @@ export default function InventoryManagementSoftware() {
             }
           }))
         },
-        {"@context": "https://schema.org",
-                "@type": "SoftwareApplication",
-                "name": "StockFlow - Inventory Management Software",
-                "description": "#1 Inventory Management Software 2025. FREE plan (100 SKUs), real-time tracking, barcode scanning. Save 35% costs & 15 hours/week! 5-7 day setup. Trusted by 1,000+ businesses.",
-                "applicationCategory": "BusinessApplication",
-                "operatingSystem": "Web Browser",
-                "browserRequirements": "Requires JavaScript. Requires HTML5.",
-                "softwareVersion": "1.0",
-                "datePublished": "2024-01-01",
-                "dateModified": "new Date().toISOString().split('T')[0]",
-                "offers": [
-                  {
-                    "@type": "Offer",
-                    "price": "0",
-                    "priceCurrency": "EUR",
-                    "description": "Free plan - 100% free inventory management for SMEs",
-                    "availability": "https://schema.org/InStock",
-                    "validFrom": "2024-01-01"
-                  },
-                  {
-                    "@type": "Offer",
-                    "price": "29",
-                    "priceCurrency": "EUR",
-                    "description": "Growth plan - Advanced features for growing businesses",
-                    "availability": "https://schema.org/InStock",
-                    "validFrom": "2024-01-01"
-                  }
-                ],
-                "aggregateRating": {
-                  "@type": "AggregateRating",
-                  "ratingValue": "4.8",
-                  "ratingCount": "150",
-                  "bestRating": "5",
-                  "worstRating": "1"
-                },
-                "author": {
-                  "@type": "Organization",
-                  "name": "StockFlow"
-                },
-                "publisher": {
-                  "@type": "Organization",
-                  "name": "StockFlow",
-                  "logo": {
-                    "@type": "ImageObject",
-                    "url": "https://www.stockflow.be/logo.png"
-                  }
-                },
-                "image": [
-                  "https://www.stockflow.be/Inventory-Management.png",
-                  "https://www.stockflow.be/optimized/desktop.png"
-                ],
-                "screenshot": "https://www.stockflow.be/optimized/desktop.png",
-                "mainEntityOfPage": {
-                  "@type": "WebPage",
-                  "@id": "https://www.stockflow.be/inventory-management-software"
-                },
-                "featureList": [
-                  "Real-time inventory tracking",
-                  "Barcode scanning",
-                  "Automated reorder points",
-                  "Multi-location support",
-                  "Advanced analytics",
-                  "Mobile access",
-                  "Team collaboration",
-                  "Integration capabilities"
-                  ],
-                  "keywords": "inventory management software, stock management, inventory control, warehouse management, inventory tracking, stock management software, inventory system, warehouse software, inventory optimization, stock control software, inventory management system, warehouse management system, inventory tracking software, stock management system, inventory software, warehouse tracking, inventory control system, stock tracking software, inventory management solution, warehouse inventory software, inventory management platform, inventory tracking programs, softwares for inventory management, inventory and stock management software, manage inventory, inventory planning software"
+        {
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          "name": "StockFlow - Inventory Management Software",
+          "description": "#1 Inventory Management Software 2025. FREE plan (100 SKUs), real-time tracking, barcode scanning. Save 35% costs & 15 hours/week! 5-7 day setup. Trusted by 1,000+ businesses.",
+          "applicationCategory": "BusinessApplication",
+          "operatingSystem": "Web Browser",
+          "browserRequirements": "Requires JavaScript. Requires HTML5.",
+          "softwareVersion": "1.0",
+          "datePublished": "2024-01-01",
+          "dateModified": "new Date().toISOString().split('T')[0]",
+          "offers": [
+            {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "EUR",
+              "description": "Free plan - 100% free inventory management for SMEs",
+              "availability": "https://schema.org/InStock",
+              "validFrom": "2024-01-01"
+            },
+            {
+              "@type": "Offer",
+              "price": "29",
+              "priceCurrency": "EUR",
+              "description": "Growth plan - Advanced features for growing businesses",
+              "availability": "https://schema.org/InStock",
+              "validFrom": "2024-01-01"
+            }
+          ],
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "ratingCount": "150",
+            "bestRating": "5",
+            "worstRating": "1"
+          },
+          "author": {
+            "@type": "Organization",
+            "name": "StockFlow"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "StockFlow",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://www.stockflow.be/logo.png"
+            }
+          },
+          "image": [
+            "https://www.stockflow.be/Inventory-Management.png",
+            "https://www.stockflow.be/optimized/desktop.png"
+          ],
+          "screenshot": "https://www.stockflow.be/optimized/desktop.png",
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://www.stockflow.be/inventory-management-software"
+          },
+          "featureList": [
+            "Real-time inventory tracking",
+            "Barcode scanning",
+            "Automated reorder points",
+            "Multi-location support",
+            "Advanced analytics",
+            "Mobile access",
+            "Team collaboration",
+            "Integration capabilities"
+          ],
+          "keywords": "inventory management software, stock management, inventory control, warehouse management, inventory tracking, stock management software, inventory system, warehouse software, inventory optimization, stock control software, inventory management system, warehouse management system, inventory tracking software, stock management system, inventory software, warehouse tracking, inventory control system, stock tracking software, inventory management solution, warehouse inventory software, inventory management platform, inventory tracking programs, softwares for inventory management, inventory and stock management software, manage inventory, inventory planning software"
         },
         {
           "@context": "https://schema.org",
-                "@type": "Organization",
-                "name": "StockFlow",
-                "url": "https://www.stockflow.be",
-                "logo": "https://www.stockflow.be/logo.png",
-                "description": "Professional inventory management software for growing businesses",
-                "address": {
-                  "@type": "PostalAddress",
-                  "addressCountry": "BE"
-                },
-                "contactPoint": {
-                  "@type": "ContactPoint",
-                  "contactType": "customer service",
-                  "email": "info@stockflow.be"
-                },
-                "sameAs": [
-                  "https://www.linkedin.com/company/stockflow"
-                ]        },        {"@context": "https://schema.org",
-                "@type": "WebPage",
-                "name": "Inventory Management Software 2025 | FREE Plan | Save 35% Costs + 15h/Week",
-                "description": "#1 Inventory Management Software 2025. FREE plan (100 SKUs), real-time tracking, barcode scanning. Save 35% costs & 15 hours/week! 5-7 day setup. Trusted by 1,000+ businesses.",
-                "url": "https://www.stockflow.be/inventory-management-software",
-                "mainEntity": {
-                  "@type": "SoftwareApplication",
-                  "name": "StockFlow - Inventory Management Software"
-                },
-                "breadcrumb": {
-                  "@type": "BreadcrumbList",
-                  "itemListElement": [
-                    {
-                      "@type": "ListItem",
-                      "position": 1,
-                      "name": "Home",
-                      "item": "https://www.stockflow.be"
-                    },
-                    {
-                      "@type": "ListItem",
-                      "position": 2,
-                      "name": "Inventory Management Software",
-                      "item": "https://www.stockflow.be/inventory-management-software"
-                    }
-                    ]
-                  }
+          "@type": "Organization",
+          "name": "StockFlow",
+          "url": "https://www.stockflow.be",
+          "logo": "https://www.stockflow.be/logo.png",
+          "description": "Professional inventory management software for growing businesses",
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "BE"
+          },
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "contactType": "customer service",
+            "email": "info@stockflow.be"
+          },
+          "sameAs": [
+            "https://www.linkedin.com/company/stockflow"
+          ]
+        }, {
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "name": "Inventory Management Software 2025 | FREE Plan | Save 35% Costs + 15h/Week",
+          "description": "#1 Inventory Management Software 2025. FREE plan (100 SKUs), real-time tracking, barcode scanning. Save 35% costs & 15 hours/week! 5-7 day setup. Trusted by 1,000+ businesses.",
+          "url": "https://www.stockflow.be/inventory-management-software",
+          "mainEntity": {
+            "@type": "SoftwareApplication",
+            "name": "StockFlow - Inventory Management Software"
+          },
+          "breadcrumb": {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://www.stockflow.be"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Inventory Management Software",
+                "item": "https://www.stockflow.be/inventory-management-software"
+              }
+            ]
+          }
         }
       ]} />
-      </SeoPageLayout>
+    </SeoPageLayout>
   );
 }
 

@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { generateComprehensiveStructuredData } from '@/lib/structuredData';
-import { 
-  BarChart3, 
+import {
+  BarChart3,
   CheckCircle,
   Star,
   ShoppingCart,
@@ -21,7 +21,7 @@ import {
 export default function RetailInventoryManagement() {
   // Use the page refresh hook
   usePageRefresh();
-  
+
   const faqData = [
     {
       question: "Why do small retail shops need inventory management software?",
@@ -205,7 +205,7 @@ export default function RetailInventoryManagement() {
       />
 
       {/* Hero Section with Background */}
-      <section 
+      <section
         className="relative py-16 sm:py-20 md:py-24 px-4 bg-cover bg-center bg-no-repeat"
         style={{
           backgroundImage: 'url(/image.png)',
@@ -215,7 +215,7 @@ export default function RetailInventoryManagement() {
         }}
       >
         <div className="absolute inset-0 bg-black bg-opacity-40"></div>
-        
+
         <div className="relative max-w-6xl mx-auto">
           <div className="text-center mb-8">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-white">
@@ -413,7 +413,7 @@ export default function RetailInventoryManagement() {
             <h2 className="text-3xl font-bold mb-4">Frequently Asked Questions</h2>
             <p className="text-lg text-gray-600">Everything you need to know about retail inventory management</p>
           </div>
-          
+
           <div className="space-y-6">
             {faqData.map((faq, index) => (
               <div key={index} className="bg-white p-6 rounded-lg shadow-lg">
@@ -425,26 +425,7 @@ export default function RetailInventoryManagement() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-gray-900 text-gray-200 py-12 md:py-16">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <img
-            src="/logo.png"
-            alt="StockFlow"
-            className="h-10 md:h-12 mx-auto mb-6"
-          />
-          <p className="text-gray-400 text-base md:text-lg mb-8 leading-relaxed max-w-2xl mx-auto">
-            The best retail inventory management software for small shops. Simple, powerful, and designed for success.
-          </p>
 
-          <div className="border-t border-gray-700 pt-6">
-            <p className="text-gray-500 text-xs md:text-sm">
-              &copy; {new Date().getFullYear()} StockFlow. All rights reserved.
-              Retail inventory management solutions for modern shops.
-            </p>
-          </div>
-        </div>
-      </footer>
 
     </SeoPageLayout>
   );

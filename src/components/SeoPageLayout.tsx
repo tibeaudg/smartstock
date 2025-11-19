@@ -5,6 +5,7 @@ import { BreadcrumbNav } from './seo/BreadcrumbNav';
 import { getBreadcrumbPath } from '@/config/topicClusters';
 import Footer from './Footer';
 import InternalLinkingWidget from './seo/InternalLinkingWidget';
+import RelatedArticles from './seo/RelatedArticles';
 import type { SidebarContent } from '@/utils/seoPageHelpers';
 
 interface SeoPageLayoutProps {
@@ -15,8 +16,8 @@ interface SeoPageLayoutProps {
   sidebarContent?: SidebarContent;
 }
 
-const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({ 
-  children, 
+const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({
+  children,
   showBreadcrumbs = true,
   showSidebar = false,
   sidebarContent
@@ -28,19 +29,19 @@ const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({
     navigate('/auth');
   };
 
-  // Get breadcrumb path for current page
-  const breadcrumbItems = getBreadcrumbPath(location.pathname);
+  // Get related pages from topic cluster
+  const relatedPages = getRelatedPages(location.pathname, 6);
   const hasSidebar = showSidebar && Boolean(sidebarContent);
   const hasTableOfContents = Boolean(sidebarContent?.tableOfContents?.length);
-  const hasRelatedArticles = Boolean(sidebarContent?.relatedArticles?.length);
+  const hasSidebarRelatedArticles = Boolean(sidebarContent?.relatedArticles?.length);
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
-      <Header 
-        onLoginClick={handleLoginClick} 
-        onNavigate={() => {}} 
-        hideAuthButtons={false} 
-        hideNotifications 
+      <Header
+        onLoginClick={handleLoginClick}
+        onNavigate={() => { }}
+        hideAuthButtons={false}
+        hideNotifications
       />
       <main className="w-full flex-grow">
         {/* Breadcrumbs */}
@@ -49,7 +50,7 @@ const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({
             <BreadcrumbNav items={breadcrumbItems} />
           </div>
         )}
-        
+
         {/* Main Content with Optional Sidebar */}
         {hasSidebar ? (
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -64,7 +65,7 @@ const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({
                   className="my-12"
                 />
               </div>
-              {(hasTableOfContents || hasRelatedArticles) && sidebarContent && (
+              {(hasTableOfContents || hasSidebarRelatedArticles) && sidebarContent && (
                 <aside className="w-full lg:w-80 xl:w-96 flex-shrink-0 space-y-10 pt-16 lg:mt-0">
                   {hasTableOfContents && sidebarContent.tableOfContents && (
                     <div className="rounded-xl border border-gray-200 bg-gray-50 p-6 shadow-sm ">
@@ -89,7 +90,7 @@ const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({
                     </div>
                   )}
 
-                  {hasRelatedArticles && sidebarContent.relatedArticles && (
+                  {hasSidebarRelatedArticles && sidebarContent.relatedArticles && (
                     <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
                       <h2 className="text-lg font-semibold text-gray-900">
                         Related articles
@@ -113,16 +114,13 @@ const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({
             </div>
           </div>
         ) : (
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            {children}
-            {/* Internal Linking Widget */}
-            <InternalLinkingWidget
-              currentPath={location.pathname}
-              variant="inline"
-              limit={6}
-              className="my-12"
-            />
-          </div>
+          <>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+              {children}
+            </div>
+            {/* Related Articles Section */}
+            <RelatedArticles articles={relatedPages} />
+          </>
         )}
       </main>
       <Footer />
