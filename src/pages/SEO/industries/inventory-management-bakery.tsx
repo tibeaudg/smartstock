@@ -250,19 +250,6 @@ export default function InventoryManagementBakery() {
         </div>
       </section>
 
-      <section className="py-16 px-4 bg-white">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center">Frequently Asked Questions</h2>
-          <div className="space-y-6">
-            {faq.map((item, index) => (
-              <div key={index} className="border border-gray-200 rounded-lg p-6 shadow-sm hover:shadow-md transition">
-                <h3 className="text-xl font-semibold mb-3">{item.question}</h3>
-                <p className="text-gray-600">{item.answer}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       <section className="py-16 px-4 bg-blue-600 text-white">
         <div className="max-w-4xl mx-auto text-center">
@@ -285,7 +272,7 @@ export default function InventoryManagementBakery() {
         {
           "@context": "https://schema.org",
           "@type": "FAQPage",
-          "mainEntity": faq.map(item => ({
+          "mainEntity": faqData.map(item => ({
             "@type": "Question",
             "name": item.question,
             "acceptedAnswer": {

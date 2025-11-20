@@ -313,15 +313,8 @@ export default function SeoBlogIndexPage() {
     <SeoPageLayout 
       title="Articles Overview"
       heroTitle="Articles Overview"
-      heroBadges={[
-        { text: `${totalPages} articles available` },
-        { text: "Comprehensive guides" },
-        { text: "Industry insights" }
-      ]}
-      heroCTAs={[
-        { label: "Start Free", href: "/auth", variant: "primary" },
-        { label: "Browse Articles", href: "#articles", variant: "secondary" }
-      ]}
+       
+      
     >
       <section id="articles" className="bg-gradient-to-br from-blue-50 via-white to-purple-50 px-4 py-12">
         <div className="mx-auto max-w-7xl">

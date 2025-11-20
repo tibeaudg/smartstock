@@ -97,15 +97,8 @@ export default function SeoTeamInventoryManagementPage() {
   return (
     <SeoPageLayout 
       title={topicTitle}
-      heroTitle={topicTitle}
-      updatedDate="September 2025"
-      heroBadges={[
-        { text: heroBadge }
-      ]}
-      heroCTAs={[
-        { label: "Start Free", href: "/auth", variant: "primary" },
-        { label: "Jump to Overview", href: "#overview", variant: "secondary" }
-      ]}
+      heroTitle={topicTitle}  
+      
       faqData={faqData}
     >
       <SEO

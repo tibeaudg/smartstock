@@ -98,15 +98,7 @@ export default function Seo5InventoryHacksForVerySmallBusinessesPage() {
   return (
     <SeoPageLayout 
       title={topicTitle}
-      heroTitle={topicTitle}
-      updatedDate="March 2025"
-      heroBadges={[
-        { text: heroBadge }
-      ]}
-      heroCTAs={[
-        { label: "Start Free", href: "/auth", variant: "primary" },
-        { label: "Jump to Overview", href: "#overview", variant: "secondary" }
-      ]}
+      heroTitle={topicTitle}     
       faqData={faqData}
     >
       <SEO

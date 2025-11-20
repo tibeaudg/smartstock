@@ -35,16 +35,7 @@ export default function VoorraadbeheerTips() {
   ];
 
   // Get related articles for sidebar
-  const relatedArticles = getRelatedPages(location.pathname, 5);
 
-  // Table of contents based on section IDs
-  const tableOfContents = [
-    { id: 'waarom-tips', title: 'Waarom zijn voorraadbeheer tips essentieel?', level: 1 },
-    { id: 'praktische-tips', title: 'Praktische voorraadbeheer tips', level: 1 },
-    { id: 'implementatie', title: 'Implementatie', level: 1 },
-    { id: 'resultaten', title: 'Resultaten', level: 1 },
-    { id: 'faq', title: 'FAQ', level: 1 }
-  ];
 
   return (
     <SeoPageLayout 
@@ -53,11 +44,7 @@ export default function VoorraadbeheerTips() {
       updatedDate="20/11/2025"
       faqData={faqData}
       
-      sidebarContent={{
-        relatedArticles,
-        tableOfContents,
-        language: 'nl'
-      }}
+     
     >
       <SEO
         title="Beste Voorraadbeheer Tips - Beste Voorraadbeheer Tips"

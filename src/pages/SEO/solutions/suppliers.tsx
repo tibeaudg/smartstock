@@ -252,25 +252,6 @@ export default function SuppliersSolutionPage() {
         </div>
       </section>
 
-      <section className="bg-white py-20">
-        <div className="mx-auto max-w-5xl px-4">
-          <h2 className="text-3xl font-semibold text-gray-900 md:text-4xl">Supplier management FAQs</h2>
-          <div className="mt-10 space-y-6">
-            {faqItems.map(item => (
-              <details
-                key={item.question}
-                className="group rounded-2xl border border-gray-200 bg-white p-6 shadow-sm"
-              >
-                <summary className="flex cursor-pointer items-center justify-between text-lg font-semibold text-gray-900">
-                  {item.question}
-                  <ChevronRight className="h-5 w-5 transition group-open:rotate-90" />
-                </summary>
-                <p className="mt-4 text-gray-600">{item.answer}</p>
-              </details>
-            ))}
-          </div>
-        </div>
-      </section>
 
       <section className="bg-gradient-to-r from-blue-600 to-indigo-600 py-16 text-white">
         <div className="mx-auto flex max-w-4xl flex-col items-center gap-6 px-4 text-center">

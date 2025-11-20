@@ -306,15 +306,6 @@ export default function GlossaryHomePage() {
     <SeoPageLayout 
       title="Inventory Management Glossary"
       heroTitle="Your Guide to Inventory Management Terms"
-      heroBadges={[
-        { text: "Comprehensive definitions" },
-        { text: "Industry terminology" },
-        { text: "Updated 2025" }
-      ]}
-      heroCTAs={[
-        { label: "Browse Terms", href: "#glossary", variant: "primary" },
-        { label: "Start Free", href: "/auth", variant: "secondary" }
-      ]}
     >
       <SEO
         title="Index 2025 - Index 2025 -"

@@ -459,24 +459,6 @@ export default function InventoryPhotosPage() {
         </div>
       </div>
 
-      {/* FAQ */}
-      <div className="py-20">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-center mb-12">Frequently Asked Questions</h2>
-          <div className="space-y-6">
-            {faqs.map((faq, index) => (
-              <Card key={index} className="border-gray-200">
-                <CardHeader>
-                  <CardTitle className="text-xl font-semibold">{faq.question}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600">{faq.answer}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </div>
     </SeoPageLayout>
   );
 }

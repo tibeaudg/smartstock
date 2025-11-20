@@ -43,17 +43,9 @@ export default function SimpleStockManagement() {
     <SeoPageLayout 
       title="Simple Stock Management"
       heroTitle="Simple Stock Management: Inventory Control Made Simple"
-      updatedDate="20/11/2025"
       faqData={faqData}
-      heroBadges={[
-        { text: "5.0/5 rating" },
-        { text: "500+ Businesses" },
-        { text: "Free for up to 30 products" }
-      ]}
-      heroCTAs={[
-        { label: "Start Free Trial", href: "/auth", variant: "primary" },
-        { label: "View Pricing", href: "/pricing", variant: "secondary" }
-      ]}
+      
+      
     >
       <SEO
         title="Simple Stock Management 2025 - Simple Stock Management"
