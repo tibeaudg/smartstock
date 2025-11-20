@@ -599,7 +599,7 @@ const Header: React.FC<HeaderProps> = ({
                     size="sm"
                     className="rounded-xl px-5 text-sm bg-blue-700 text-white border border-white">
                     <Link to="/auth?mode=register">
-                        <span className="text-nowrap">Start Free Trial</span>
+                        <span className="text-nowrap">Start Free</span>
                     </Link>
                 </Button>
               </div>

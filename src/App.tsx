@@ -58,7 +58,7 @@ import PricingPage from './pages/pricing';
 import CheckoutPage from './pages/checkout';
 import { SubscriptionManagement } from './components/settings/SubscriptionManagement';
 import { AdminSubscriptionManagement } from './components/admin/SubscriptionManagement';
-
+import DemoPage from './pages/demo';  
 import { AuthContext } from './hooks/useAuth';
 import { ChurnFeedbackModal } from './components/ChurnFeedbackModal';
 import { checkUserChurnStatus, hasChurnFeedback } from './services/churnDetectionService';
@@ -374,6 +374,7 @@ const AuthRoute = () => {
         <Route path="/pricing" element={<PricingPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/seo" element={<SEOOverviewPage />} />
+        <Route path="/demo" element={<DemoPage />} />
 
         {/* SEO routes (auto-generated from src/pages/SEO) */}
         {getSeoRoutes().map(r => (

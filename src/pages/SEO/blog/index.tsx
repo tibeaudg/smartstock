@@ -4,8 +4,7 @@ import { usePageRefresh } from "@/hooks/usePageRefresh";
 import { getAllSeoPages, type PageMetadata } from "@/config/topicClusters";
 import { getSeoRoutes } from "@/routes/seoRoutes";
 import { Search } from "lucide-react";
-import HeaderPublic from "@/components/HeaderPublic";
-import Footer from "@/components/Footer";
+import SeoPageLayout from "@/components/SeoPageLayout";
 
 // Get original file paths to determine folder structure
 // From src/pages/SEO/blog/, ../ goes to src/pages/SEO/
@@ -311,23 +310,25 @@ export default function SeoBlogIndexPage() {
   const filteredCount = filteredPages.length;
 
   return (
-    <>
-      {/* Header Section */}
-
-      <HeaderPublic />
-
-      <section className="pt-36 bg-gradient-to-br from-blue-50 via-white to-purple-50 px-4 py-12">
+    <SeoPageLayout 
+      title="Articles Overview"
+      heroTitle="Articles Overview"
+      heroBadges={[
+        { text: `${totalPages} articles available` },
+        { text: "Comprehensive guides" },
+        { text: "Industry insights" }
+      ]}
+      heroCTAs={[
+        { label: "Start Free", href: "/auth", variant: "primary" },
+        { label: "Browse Articles", href: "#articles", variant: "secondary" }
+      ]}
+    >
+      <section id="articles" className="bg-gradient-to-br from-blue-50 via-white to-purple-50 px-4 py-12">
         <div className="mx-auto max-w-7xl">
           <div className="text-center mb-8">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4">
-              Articles Overview
-            </h1>
             <p className="text-sm md:text-base text-gray-600 max-w-3xl mx-auto">
               Explore our complete library of articles, guides, and resources. Find everything you need about inventory management, software comparisons, and industry insights.
             </p>
-            <div className="mt-6 text-sm text-gray-500">
-              {totalPages} articles available
-            </div>
           </div>
 
           {/* Search and Filters */}
@@ -383,7 +384,7 @@ export default function SeoBlogIndexPage() {
                     </div>
 
                     {/* Articles Grid for this Category */}
-                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                       {pagesInCategory.map((page) => (
                         <Link
                           key={page.path}
@@ -405,8 +406,6 @@ export default function SeoBlogIndexPage() {
           </div>
         </div>
       </section>
-
-      <Footer />
-    </>
+    </SeoPageLayout>
   );
 }

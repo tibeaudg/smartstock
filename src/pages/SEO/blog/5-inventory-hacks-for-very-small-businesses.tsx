@@ -94,16 +94,21 @@ export default function Seo5InventoryHacksForVerySmallBusinessesPage() {
     dateModified: new Date().toISOString().split("T")[0],
   }));
 
-  const sidebarContent = generateSidebarContent(location.pathname, [
-    { id: "overview", title: `${topicTitle} Overview`, level: 1 },
-    { id: "playbook", title: "Action Playbook", level: 1 },
-    { id: "metrics", title: "Metrics that Matter", level: 1 },
-    { id: "stockflow-advantage", title: "Why StockFlow", level: 1 },
-    { id: "faq", title: "FAQ", level: 1 },
-  ]);
 
   return (
-    <SeoPageLayout title={topicTitle} showSidebar sidebarContent={sidebarContent}>
+    <SeoPageLayout 
+      title={topicTitle}
+      heroTitle={topicTitle}
+      updatedDate="March 2025"
+      heroBadges={[
+        { text: heroBadge }
+      ]}
+      heroCTAs={[
+        { label: "Start Free", href: "/auth", variant: "primary" },
+        { label: "Jump to Overview", href: "#overview", variant: "secondary" }
+      ]}
+      faqData={faqData}
+    >
       <SEO
         title={`5 Inventory Hacks For Very Small Businesses 2025`}
         description={metaDescription}
@@ -111,8 +116,6 @@ export default function Seo5InventoryHacksForVerySmallBusinessesPage() {
         url={`https://www.stockflow.be${canonicalPath}`}
       />
 
-
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">5 Inventory Hacks For Very Small Businesses</h1>
       <StructuredData data={pageStructuredData} />
 
 
@@ -247,29 +250,6 @@ export default function Seo5InventoryHacksForVerySmallBusinessesPage() {
         </div>
       </section>
 
-      <section id="faq" className="bg-gray-50 px-4 py-16">
-        <div className="mx-auto max-w-4xl">
-          <div className="text-center">
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Frequently Asked Questions</h2>
-            <p className="mt-4 text-base text-gray-600">
-              Still exploring {topicTitle.toLowerCase()}? These answers help you take the next confident step.
-            </p>
-          </div>
-          <div className="mt-10 space-y-4">
-            {faqData.map((faq) => (
-              <details
-                key={faq.question}
-                className="group rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition hover:border-blue-200"
-              >
-                <summary className="cursor-pointer text-lg font-semibold text-gray-900">
-                  {faq.question}
-                </summary>
-                <p className="mt-3 text-base leading-relaxed text-gray-600">{faq.answer}</p>
-              </details>
-            ))}
-          </div>
-        </div>
-      </section>
 
       <section className="bg-white px-4 pb-20 pt-10">
         <div className="mx-auto max-w-5xl rounded-3xl border border-gray-200 bg-gradient-to-r from-blue-50 via-white to-purple-50 p-10 shadow-xl text-center">

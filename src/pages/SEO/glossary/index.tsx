@@ -281,11 +281,6 @@ export default function GlossaryHomePage() {
   usePageRefresh();
   const location = useLocation();
 
-  const sidebarContent = generateSidebarContent(location.pathname, [
-    { id: 'overview', title: 'Overview', level: 1 },
-    { id: 'letters', title: 'Browse by Letter', level: 1 },
-    { id: 'glossary', title: 'Glossary Terms', level: 1 },
-  ]);
 
   const letterLinks = glossarySections.map((section) => section.letter);
   const itemListStructuredData = useMemo(() => {
@@ -308,7 +303,19 @@ export default function GlossaryHomePage() {
   }, []);
 
   return (
-    <SeoPageLayout title="Inventory Management Glossary" showSidebar sidebarContent={sidebarContent}>
+    <SeoPageLayout 
+      title="Inventory Management Glossary"
+      heroTitle="Your Guide to Inventory Management Terms"
+      heroBadges={[
+        { text: "Comprehensive definitions" },
+        { text: "Industry terminology" },
+        { text: "Updated 2025" }
+      ]}
+      heroCTAs={[
+        { label: "Browse Terms", href: "#glossary", variant: "primary" },
+        { label: "Start Free", href: "/auth", variant: "secondary" }
+      ]}
+    >
       <SEO
         title="Index 2025 - Index 2025 -"
         description="Find out how index to save time and money. Discover how index to choose the best software. Explore the. Try free now. StockFlow helps businesses manage inven..."
@@ -318,33 +325,11 @@ export default function GlossaryHomePage() {
 
       <StructuredData data={itemListStructuredData} />
 
-      <section id="overview" className="relative overflow-hidden rounded-3xl bg-slate-900 px-8 py-20 text-white">
-        <div className="absolute inset-0 opacity-40">
-          <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 via-sky-500 to-cyan-500 mix-blend-multiply" />
-          <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-50" />
-        </div>
-        <div className="relative mx-auto max-w-4xl text-center">
-          <span className="inline-flex items-center justify-center rounded-full bg-white/10 px-4 py-1 text-sm font-medium uppercase tracking-wide">
-            Inventory Management Glossary
-          </span>
-          <h1 className="mt-6 text-4xl font-bold md:text-5xl">Your Guide to Inventory Management Terms</h1>
-          <p className="mt-4 text-lg text-white/90 md:text-xl">
+      <section id="overview" className="bg-white px-4 py-16">
+        <div className="mx-auto max-w-4xl text-center">
+          <p className="text-lg text-gray-700 leading-relaxed">
             These key terms and concepts help you make educated decisions about how to manage your inventory. Browse the glossary to learn how each concept connects to better control, accuracy, and collaboration.
           </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <Link
-              to="/auth"
-              className="rounded-full bg-white px-6 py-3 text-base font-semibold text-slate-900 shadow-lg transition hover:-translate-y-0.5 hover:bg-slate-100"
-            >
-              Start Free Trial
-            </Link>
-            <a
-              href="#letters"
-              className="rounded-full border border-white/60 px-6 py-3 text-base font-semibold text-white transition hover:bg-white/10"
-            >
-              Jump to Terms
-            </a>
-          </div>
         </div>
       </section>
 

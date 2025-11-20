@@ -1109,19 +1109,72 @@ export function getAllSeoPages(): PageMetadata[] {
 
 // Helper function to get breadcrumb path
 export function getBreadcrumbPath(pagePath: string): Array<{ name: string; path: string }> {
-  // For SEO pages, always show: Home -> Blog -> {current page}
-  // Note: URLs remain unchanged (still /{page} not /blog/{page})
-  const cluster = findClusterForPage(pagePath);
-  if (!cluster) {
-    return [{ name: 'Home', path: '/' }];
+  // Always start with Home
+  const breadcrumbs: Array<{ name: string; path: string }> = [
+    { name: 'Home', path: '/' }
+  ];
+
+  // Normalize path
+  const normalizedPath = pagePath || '/';
+  const pathSegments = normalizedPath.split('/').filter(Boolean);
+
+  // If it's just the home page, return early
+  if (pathSegments.length === 0 || normalizedPath === '/') {
+    return breadcrumbs;
   }
 
-  const currentPage = cluster.clusters.find(p => p.path === pagePath) || cluster.pillar;
+  // Map path segments to category names
+  const categoryMap: Record<string, string> = {
+    'blog': 'Blog',
+    'glossary': 'Glossary',
+    'best-of': 'Best Of',
+    'dutch': 'Dutch',
+    'solutions': 'Solutions',
+    'voorraadbeheer': 'Voorraadbeheer'
+  };
+
+  const firstSegment = pathSegments[0];
+  const isCategoryPage = pathSegments.length === 1 && categoryMap[firstSegment];
   
-  return [
-    { name: 'Home', path: '/' },
-    { name: 'Blog', path: '/blog' }, // Display as "Blog" but path remains as pagePath for SEO pages
-    { name: currentPage.title, path: currentPage.path }
-  ];
+  // Find the current page title from cluster or use path
+  const cluster = findClusterForPage(normalizedPath);
+  let pageTitle = pathSegments[pathSegments.length - 1]
+    .split('-')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+
+  if (cluster) {
+    const currentPage = cluster.clusters.find(p => p.path === normalizedPath) || cluster.pillar;
+    if (currentPage) {
+      pageTitle = currentPage.title;
+    }
+  }
+
+  // If it's a category index page (e.g., /blog, /glossary), don't add duplicate
+  if (isCategoryPage) {
+    breadcrumbs.push({ 
+      name: categoryMap[firstSegment] || firstSegment, 
+      path: normalizedPath 
+    });
+  } else {
+    // Add category breadcrumb if it exists and is not the current page
+    if (categoryMap[firstSegment]) {
+      breadcrumbs.push({ 
+        name: categoryMap[firstSegment], 
+        path: `/${firstSegment}` 
+      });
+    }
+    
+    // Add current page (only if it's different from the category)
+    if (!categoryMap[firstSegment] || pathSegments.length > 1) {
+      breadcrumbs.push({ 
+        name: pageTitle, 
+        path: normalizedPath 
+      });
+    }
+  }
+
+  // Ensure we always return at least Home
+  return breadcrumbs.length > 0 ? breadcrumbs : [{ name: 'Home', path: '/' }];
 }
 

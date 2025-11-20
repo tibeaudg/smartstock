@@ -6,7 +6,7 @@ import { StructuredData } from "@/components/StructuredData";
 import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
-const topicTitle = "Construction Invoice Processing";
+const topicTitle = "Construction Invoice Processing for 2025";
 const canonicalPath = "/blog/construction-invoice-processing";
 const metaDescription = "Deep dive into Construction Invoice Processing. Learn practical ideas, implementation steps, and metrics so your team can apply Construction Invoice Processing with StockFlow.";
 const keywords = "Construction Invoice Processing, Construction Invoice Processing guide, Construction Invoice Processing best practices, Construction Invoice Processing StockFlow, inventory management, operations playbook";
@@ -94,25 +94,24 @@ export default function SeoConstructionInvoiceProcessingPage() {
     dateModified: new Date().toISOString().split("T")[0],
   }));
 
-  const sidebarContent = generateSidebarContent(location.pathname, [
-    { id: "overview", title: `${topicTitle} Overview`, level: 1 },
-    { id: "playbook", title: "Action Playbook", level: 1 },
-    { id: "metrics", title: "Metrics that Matter", level: 1 },
-    { id: "stockflow-advantage", title: "Why StockFlow", level: 1 },
-    { id: "faq", title: "FAQ", level: 1 },
-  ]);
+
 
   return (
-    <SeoPageLayout title={topicTitle} showSidebar sidebarContent={sidebarContent}>
+    <SeoPageLayout title={topicTitle} heroTitle={topicTitle} updatedDate="September 2025" heroBadges={[
+      { text: heroBadge }
+    ]} heroCTAs={[
+      { label: "Start Free", href: "/auth", variant: "primary" },
+      { label: "Jump to Overview", href: "#overview", variant: "secondary" }
+    ]}>
+      
       <SEO
-        title={`Construction Invoice Processing 2025 - Construction Invoi...`}
+        title={`Construction Invoice Processing - 2025`}
         description={metaDescription}
         keywords={keywords}
         url={`https://www.stockflow.be${canonicalPath}`}
       />
 
 
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Construction Invoice Processing</h1>
       <StructuredData data={pageStructuredData} />
 
 
@@ -120,7 +119,7 @@ export default function SeoConstructionInvoiceProcessingPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h2>
+            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">An Overview:</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
               {topicTitle} has become a recurring talking point for fast-moving inventory teams. The original Stockflow
               article sparked interest because it addresses real-world frictions that leaders face every day. This updated guide

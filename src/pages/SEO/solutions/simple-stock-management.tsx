@@ -17,56 +17,25 @@ export default function SimpleStockManagement() {
   usePageRefresh();
   
   return (
-    <SeoPageLayout title="Simple Stock Management">
+    <SeoPageLayout 
+      title="Simple Stock Management"
+      heroTitle="Simple Stock Management: Inventory Control Made Simple"
+      heroBadges={[
+        { text: "5.0/5 rating" },
+        { text: "500+ Businesses" },
+        { text: "Free for up to 30 products" }
+      ]}
+      heroCTAs={[
+        { label: "Start Free Trial", href: "/auth", variant: "primary" },
+        { label: "View Pricing", href: "/pricing", variant: "secondary" }
+      ]}
+    >
       <SEO
         title="Simple Stock Management 2025 - Simple Stock Management"
         description="Find out how simple stock management to save time and money. Read the guide simple stock management to save time and. Try free now. StockFlow helps businesse..."
         keywords="simple stock management, easy inventory, simple inventory software, straightforward stock control"
         url="https://www.stockflow.be/simple-stock-management"
       />
-
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-50 to-white py-12 md:py-20 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-8 items-center">
-            <div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-                Simple Stock Management: <span className="text-blue-600">Inventory Control Made Simple</span>
-              </h1>
-              <p className="text-xl text-gray-600 mb-8">
-                Simple stock management that just works. No complexity, just results. Perfect for small businesses.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link to="/auth" className="inline-flex items-center justify-center bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-blue-700 transition">
-                  Start Free Trial
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
-                <Link to="/pricing" className="inline-flex items-center justify-center border-2 border-blue-600 text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-blue-50 transition">
-                  View Pricing
-                </Link>
-              </div>
-              <div className="mt-6 flex items-center gap-4">
-                <div className="flex items-center">
-                  <Star className="h-5 w-5 text-yellow-400 fill-current" />
-                  <Star className="h-5 w-5 text-yellow-400 fill-current" />
-                  <Star className="h-5 w-5 text-yellow-400 fill-current" />
-                  <Star className="h-5 w-5 text-yellow-400 fill-current" />
-                  <Star className="h-5 w-5 text-yellow-400 fill-current" />
-                  <span className="ml-2 text-sm text-gray-600">5.0/5</span>
-                </div>
-                <span className="text-sm text-gray-600">500+ Businesses</span>
-              </div>
-            </div>
-            <div>
-              <img 
-                src="/Inventory-Management.png" 
-                alt="Simple Stock Management" 
-                className="rounded-lg shadow-2xl"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Features Section */}
       <section className="py-16 px-4 bg-white">
@@ -93,21 +62,6 @@ export default function SimpleStockManagement() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-16 px-4 bg-blue-600 text-white">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Get Started Today
-          </h2>
-          <p className="text-xl mb-8 opacity-90">
-            Free for up to 30 products. No credit card required.
-          </p>
-          <Link to="/auth" className="inline-flex items-center justify-center bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition">
-            Start Free Trial
-            <ArrowRight className="ml-2 h-5 w-5" />
-          </Link>
-        </div>
-      </section>
     </SeoPageLayout>
   );
 }
