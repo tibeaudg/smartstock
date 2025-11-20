@@ -342,47 +342,22 @@ export default function InventoryManagementGuide() {
         modifiedTime={new Date().toISOString()}
       />
 
-      {/* Hero Section */}
-      <section className="py-12 px-4 bg-gradient-to-br from-blue-50 via-white to-purple-50">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-8">
-            <div className="inline-block bg-blue-100 text-blue-800 text-sm font-semibold px-4 py-2 rounded-full mb-6">
-              Complete Guide • Updated November 2025
-            </div>
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Inventory Management: Definition, Methods & Best Practices
-            </h1>
-            <p className="text-xl md:text-2xl text-gray-600 max-w-4xl mx-auto mb-8">
-              Complete guide to optimizing inventory operations: proven methods, essential KPIs, accounting principles, and actionable strategies to reduce costs and improve efficiency.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4 mb-8">
-              <div className="flex items-center bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-200">
-                <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
-                <span className="text-sm font-medium">15 min read</span>
-          </div>
-              <div className="flex items-center bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-200">
-                <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
-                <span className="text-sm font-medium">Practical examples</span>
-              </div>
-              <div className="flex items-center bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-200">
-                <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
-                <span className="text-sm font-medium">Actionable strategies</span>
-              </div>
-            </div>
-          </div>
+      {/* Introduction */}
+      <div className="mb-12">
+        <p className="text-lg black leading-relaxed mb-6">
+          Complete guide to optimizing inventory operations: proven methods, essential KPIs, accounting principles, and actionable strategies to reduce costs and improve efficiency.
+        </p>
+        <p className="text-lg text-slate-600 leading-relaxed">
+          Inventory management is the systematic discipline of ordering, storing, tracking, and controlling inventory—from raw materials to finished goods. When executed properly, it reduces costs by 20-35%, prevents stockouts, improves cash flow, and increases profitability.
+        </p>
+      </div>
 
-          {/* Quick Summary */}
-          <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
-            <h2 className="text-2xl font-bold mb-4 flex items-center">
-              <FileText className="w-6 h-6 mr-2 text-blue-600" />
-              Quick Summary
-            </h2>
-            <p className="text-lg text-gray-700 leading-relaxed">
-              <strong>Inventory management</strong> is the systematic discipline of ordering, storing, tracking, and controlling inventory—from raw materials to finished goods. When executed properly, it reduces costs by 20-35%, prevents stockouts, improves cash flow, and increases profitability. This comprehensive guide covers definitions, proven methods (JIT, MRP, EOQ, DSI), accounting principles, essential KPIs, warning signs, real-world examples, and a step-by-step optimization playbook.
-            </p>
-          </div>
-        </div>
-      </section>
+      {/* Key Takeaway Box */}
+      <div className="my-12 p-6 bg-blue-50 border-l-4 border-blue-600 rounded-r-lg">
+        <p className="text-base text-slate-800 leading-relaxed m-0">
+          <strong className="text-blue-900">Key Insight:</strong> This comprehensive guide covers definitions, proven methods (JIT, MRP, EOQ, DSI), accounting principles, essential KPIs, warning signs, real-world examples, and a step-by-step optimization playbook.
+        </p>
+      </div>
 
       {/* What is Section */}
       <section id="what-is" className="py-16 px-4 bg-white">

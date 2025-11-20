@@ -111,25 +111,15 @@ export default function StockFlowVsCin7() {
         structuredData={structuredData}
       />
 
-      <section className="bg-gradient-to-br from-blue-50 to-white py-12 md:py-20 px-4">
-        <div className="max-w-6xl mx-auto text-center">          <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-            While Cin7 is powerful for large enterprises, StockFlow offers better value with free plans,
-            5-7 day implementation, European data hosting, and transparent pricing that scales with your business.
-          </p>
-          <Link to="/auth" className="inline-flex items-center justify-center bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-blue-700 transition">
-            Try StockFlow Free <ArrowRight className="ml-2 h-5 w-5" />
-          </Link>
-          <div className="mt-6 flex items-center justify-center gap-4">
-            <div className="flex items-center gap-2">
-              {[...Array(5)].map((_, i) => (<Star key={i} className="w-6 h-6 text-yellow-400 fill-current" />))}
-            </div>
-            <div className="text-left">
-              <div className="text-2xl font-bold text-gray-900">4.8/5</div>
-              <div className="text-sm text-gray-600">Based on 326 reviews</div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Introduction */}
+      <div className="mb-12">
+        <p className="text-lg black leading-relaxed mb-6">
+          While Cin7 is powerful for large enterprises, StockFlow offers better value with free plans, 5-7 day implementation, European data hosting, and transparent pricing that scales with your business.
+        </p>
+        <p className="text-lg text-slate-600 leading-relaxed">
+          This comparison helps you understand the key differences between StockFlow and Cin7, so you can make an informed decision for your inventory management needs.
+        </p>
+      </div>
 
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">

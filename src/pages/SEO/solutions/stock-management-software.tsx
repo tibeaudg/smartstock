@@ -30,7 +30,7 @@ export default function StockManagementSoftware() {
     },
     {
       question: "How much does stock management software cost?",
-      answer: "StockFlow offers free stock management software for up to 100 products. Premium plans start at €0.004 per additional product per month. Most businesses see ROI within the first month through time savings and error reduction alone. Many solutions offer free trials to test before committing."
+      answer: "StockFlow offers free stock management software for up to 100 products. Premium plans start at ï¿½0.004 per additional product per month. Most businesses see ROI within the first month through time savings and error reduction alone. Many solutions offer free trials to test before committing."
     },
     {
       question: "Can stock management software integrate with other business systems?",
@@ -162,44 +162,15 @@ export default function StockManagementSoftware() {
         structuredData={structuredData}
       />
 
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-50 to-white py-12 md:py-20 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-8 items-center">
-            <div>              <p className="text-xl text-gray-600 mb-8">
-                Professional stock management software designed for SMEs. Track inventory, optimize stock levels, and streamline operations.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link to="/auth" className="inline-flex items-center justify-center bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-blue-700 transition">
-                  Start Free Trial
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
-                <Link to="/pricing" className="inline-flex items-center justify-center border-2 border-blue-600 text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-blue-50 transition">
-                  View Pricing
-                </Link>
-              </div>
-              <div className="mt-6 flex items-center gap-4">
-                <div className="flex items-center">
-                  <Star className="h-5 w-5 text-yellow-400 fill-current" />
-                  <Star className="h-5 w-5 text-yellow-400 fill-current" />
-                  <Star className="h-5 w-5 text-yellow-400 fill-current" />
-                  <Star className="h-5 w-5 text-yellow-400 fill-current" />
-                  <Star className="h-5 w-5 text-yellow-400 fill-current" />
-                  <span className="ml-2 text-sm text-gray-600">5.0/5</span>
-                </div>
-                <span className="text-sm text-gray-600">500+ Businesses</span>
-              </div>
-            </div>
-            <div>
-              <img 
-                src="/Inventory-Management.png" 
-                alt="Stock management software dashboard showing real-time inventory tracking, automated alerts, and warehouse management features"
-                className="rounded-lg shadow-2xl"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Introduction */}
+      <div className="mb-12">
+        <p className="text-lg black leading-relaxed mb-6">
+          Professional stock management software designed for SMEs. Track inventory, optimize stock levels, and streamline operations.
+        </p>
+        <p className="text-lg text-slate-600 leading-relaxed">
+          Stock management software is a digital tool that helps businesses track, monitor, and optimize inventory levels in real-time. It automates stock counting, reordering, and reporting processes, enabling businesses to maintain optimal inventory levels, reduce costs, and prevent stockouts or overstock situations.
+        </p>
+      </div>
 
       {/* Key Features Section */}
       <section className="py-16 px-4 bg-white">
@@ -272,12 +243,12 @@ export default function StockManagementSoftware() {
               <div className="text-lg">Error Reduction</div>
             </div>
             <div className="bg-white/10 backdrop-blur p-6 rounded-xl">
-              <div className="text-4xl font-bold mb-2">€2,000+</div>
+              <div className="text-4xl font-bold mb-2">ï¿½2,000+</div>
               <div className="text-lg">Monthly Savings</div>
             </div>
           </div>
           <p className="text-xl opacity-90">
-            Most small businesses see ROI within the first month. At €50/hour, saving 10 hours weekly = €2,000/month in time savings alone.
+            Most small businesses see ROI within the first month. At ï¿½50/hour, saving 10 hours weekly = ï¿½2,000/month in time savings alone.
           </p>
         </div>
       </section>

@@ -100,54 +100,15 @@ export default function VoorraadbeheerHorecaPage() {
         alternateLanguages={[{ lang: 'nl-BE', url: 'https://www.stockflow.be/voorraadbeheer-horeca' }, { lang: 'en-US', url: 'https://www.stockflow.be/inventory-for-hospitality' }]}
       />
 
-      {/* Hero Section */}
-      <section className="bg-orange-50 border border-orange-100 rounded-3xl px-6 sm:px-10 py-12 max-w-6xl mx-auto">
-        <div className="grid lg:grid-cols-[1.4fr_1fr] gap-10 items-center">
-          <div>
-            <span className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold uppercase tracking-wide text-orange-700 bg-white/70 px-3 py-1 rounded-full">
-              🍽️ Horeca Voorraadbeheer
-            </span>
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mt-4">
-              Voorraadbeheer in de Horeca: Complete Gids voor Efficiëntie, Minder Verspilling & Betere Marges
-            </h1>
-            <p className="text-base sm:text-lg text-gray-700 mt-5 leading-relaxed">
-              Voorraadbeheer in de horeca is één van de meest bepalende factoren voor je winstgevendheid — en toch blijft het voor veel restaurants, cafés en hotelkeukens een blinde vlek. Met moderne tools en slimme processen kun je dit volledig omdraaien.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 mt-8">
-              <Link to="/auth" className="bg-orange-600 hover:bg-orange-700 text-white font-semibold px-6 py-3 rounded-lg text-center transition-colors">
-                Start Gratis
-              </Link>
--
-            </div>
-            <p className="text-xs text-gray-500 mt-4">Voor restaurants, cafés, catering & dark kitchens • Beschikbaar in het Nederlands en Frans</p>
-          </div>
-          <div className="bg-white rounded-2xl shadow-lg p-6 border border-orange-100">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Belangrijkste functies</h2>
-            <ul className="space-y-3 text-sm text-gray-700">
-              <li className="flex items-start gap-2">
-                <Check className="h-5 w-5 text-orange-600 flex-shrink-0 mt-0.5" />
-                <span>Receptuur en kostprijs per gerecht</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <Check className="h-5 w-5 text-orange-600 flex-shrink-0 mt-0.5" />
-                <span>Houdbaarheid- en allergenenbeheer</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <Check className="h-5 w-5 text-orange-600 flex-shrink-0 mt-0.5" />
-                <span>Team-app voor telrondes & barcodes</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <Check className="h-5 w-5 text-orange-600 flex-shrink-0 mt-0.5" />
-                <span>Automatische besteladviezen per leverancier</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <Check className="h-5 w-5 text-orange-600 flex-shrink-0 mt-0.5" />
-                <span>Realtime voorraadniveaus en dashboards</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </section>
+      {/* Introduction */}
+      <div className="mb-12">
+        <p className="text-lg black leading-relaxed mb-6">
+          Voorraadbeheer in de horeca is één van de meest bepalende factoren voor je winstgevendheid—en toch blijft het voor veel restaurants, cafés en hotelkeukens een blinde vlek. Met moderne tools en slimme processen kun je dit volledig omdraaien.
+        </p>
+        <p className="text-lg text-slate-600 leading-relaxed">
+          Horeca voorraadbeheer vereist speciale aandacht voor houdbaarheidsdata, recepturen, kostprijzen per gerecht, en het voorkomen van verspilling. Een goed systeem helpt restaurants en cafés om hun marges te verbeteren en efficiënter te werken.
+        </p>
+      </div>
 
       {/* What is Voorraadbeheer Section */}
       <section className="max-w-6xl mx-auto px-4 mt-16">
@@ -651,7 +612,7 @@ export default function VoorraadbeheerHorecaPage() {
             language="nl"
           />
         </section>
-      )}
+        )}
     </SeoPageLayout>
   );
 }

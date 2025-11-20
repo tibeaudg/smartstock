@@ -1,15 +1,11 @@
 import SEO from '@/components/SEO';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
-import { SeoPageHero } from '@/components/seo/SeoPageHero';
 import { StructuredData } from '@/components/StructuredData';
-import { getRelatedPages } from '@/config/topicClusters';
-import { useLocation } from 'react-router-dom';
 import VoorraadbeheerTipsContent from '@/content/SEO/voorraadbeheer-tips-content';
 
 export default function VoorraadbeheerTips() {
   usePageRefresh();
-  const location = useLocation();
   
   const faqData = [
     {
@@ -52,11 +48,6 @@ export default function VoorraadbeheerTips() {
         keywords="voorraadbeheer tips, stockbeheer tips, voorraadbeheer best practices, voorraadbeheer strategieën, voorraad optimaliseren, KMO voorraadbeheer, voorraadbeheer automatiseren, voorraadbeheer 2025, voorraadbeheer tips KMO, voorraadbeheer software, voorraadbeheer app, stockflow, gratis voorraadbeheer, magazijnbeheer tips, inventarisatie tips, voorraadbeheer optimalisatie, efficiënt voorraadbeheer, voorraadbeheer kosten besparen, stockbeheer software, tips voor stockbeheer, voorraadbeheer best practices 2025"
         url="https://www.stockflow.be/voorraadbeheer-tips"
         modifiedTime={new Date().toISOString()}
-      />      <SeoPageHero
-        title="Voorraadbeheer Tips voor optimale controle"
-        description="Ontdek praktische voorraadbeheer tips die je direct kunt toepassen. Van het organiseren van je magazijn tot het optimaliseren van je bestelprocessen - deze voorraadbeheer tips helpen je om slimmer te werken, kosten te besparen en fouten te voorkomen."
-        ctaText="Start Gratis Nu"
-        ctaLink="/auth"
       />
 
       <VoorraadbeheerTipsContent faqData={faqData} />

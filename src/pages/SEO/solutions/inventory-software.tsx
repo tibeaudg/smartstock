@@ -177,39 +177,15 @@ export default function InventorySoftware() {
         url="https://www.stockflow.be/inventory-software"
       />
 
-      {/* Hero Section with Background */}
-      <section 
-        className="relative py-16 sm:py-20 md:py-24 px-4 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: 'url(/image.png)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
-        }}
-      >
-        <div className="absolute inset-0 bg-black bg-opacity-40"></div>
-        
-        <div className="relative max-w-6xl mx-auto">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-white">
-              The Best <span className="text-blue-400">Inventory Software</span> for Your Business
-            </h1>
-            <p className="text-lg md:text-xl text-gray-100 mb-8 max-w-4xl mx-auto">
-              Streamline your inventory management with powerful software that tracks stock levels, automates reordering, and provides real-time insights. Join 500+ businesses using StockFlow to optimize their inventory.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-              <Link
-                to="/auth"
-                className="bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-blue-700 transition shadow-lg"
-              >
-                Start Free Trial
-              </Link>
-
-            </div>
-            <p className="text-sm text-gray-200">Trusted by 500+ businesses worldwide</p>
-          </div>
-        </div>
-      </section>
+      {/* Introduction */}
+      <div className="mb-12">
+        <p className="text-lg black leading-relaxed mb-6">
+          Streamline your inventory management with powerful software that tracks stock levels, automates reordering, and provides real-time insights. Join 500+ businesses using StockFlow to optimize their inventory.
+        </p>
+        <p className="text-lg text-slate-600 leading-relaxed">
+          Inventory software is a digital solution that helps businesses track, manage, and optimize their stock levels, orders, and warehouse operations. It provides real-time visibility into inventory levels, automates reordering processes, and helps prevent stockouts or overstock situations.
+        </p>
+      </div>
 
       {/* Why Choose StockFlow Section */}
       <section className="py-16 px-4 bg-white">

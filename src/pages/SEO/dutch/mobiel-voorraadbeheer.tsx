@@ -129,27 +129,15 @@ export default function MobielVoorraadbeheer() {
         url="https://www.stockflow.be/mobiel-voorraadbeheer"
       />
 
-      {/* Hero Section */}
-      <section className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-16 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">
-            Mobiel Voorraadbeheer
-          </h1>
-          <p className="text-xl mb-8 max-w-3xl mx-auto">
-            Met <strong>mobiel voorraadbeheer</strong> heb je altijd en overal inzicht in je voorraad. 
-            Ontdek de voordelen van een voorraadbeheer app op je smartphone of tablet.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link 
-              to="/register" 
-              className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
-            >
-              Gratis Proberen
-            </Link>
-    
-          </div>
-        </div>
-      </section>
+      {/* Introduction */}
+      <div className="mb-12">
+        <p className="text-lg black leading-relaxed mb-6">
+          Met mobiel voorraadbeheer heb je altijd en overal inzicht in je voorraad. Ontdek de voordelen van een voorraadbeheer app op je smartphone of tablet.
+        </p>
+        <p className="text-lg text-slate-600 leading-relaxed">
+          In de moderne zakenwereld is flexibiliteit cruciaal. Mobiel voorraadbeheer geeft je de vrijheid om je voorraad te beheren waar en wanneer je maar wilt.
+        </p>
+      </div>
 
       {/* Intro Section */}
       <section className="py-16 px-4 bg-gray-50">

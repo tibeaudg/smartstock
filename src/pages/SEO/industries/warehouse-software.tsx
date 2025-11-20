@@ -220,49 +220,15 @@ export default function WarehouseSoftware() {
         structuredData={structuredData}
       />
 
-      {/* Hero Section with Background */}
-      <section 
-        className="relative py-16 sm:py-20 md:py-24 px-4 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: 'url(/image.png)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
-        }}
-      >
-        <div className="absolute inset-0 bg-black bg-opacity-40"></div>
-        
-        <div className="relative max-w-6xl mx-auto">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-white">
-              Optimize Your <span className="text-blue-400">Warehouse Operations</span> with Smart Software
-            </h1>
-            <p className="text-lg md:text-xl text-gray-100 mb-8 max-w-4xl mx-auto">
-              Transform your warehouse with powerful software that streamlines operations, reduces costs, and improves efficiency. From receiving to shipping, StockFlow handles it all.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-              <Link
-                to="/auth"
-                className="bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-blue-700 transition shadow-lg"
-              >
-                Start Free Trial
-              </Link>
-            </div>
-            <div className="flex items-center justify-center gap-4 mb-4">
-              <div className="flex items-center gap-2">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-6 h-6 text-yellow-400 fill-current" />
-                ))}
-              </div>
-              <div className="text-left">
-                <div className="text-2xl font-bold text-white">4.8/5</div>
-                <div className="text-sm text-gray-200">Based on 326 reviews</div>
-              </div>
-            </div>
-            <p className="text-sm text-gray-200">Trusted by 500+ warehouses worldwide</p>
-          </div>
-        </div>
-      </section>
+      {/* Introduction */}
+      <div className="mb-12">
+        <p className="text-lg black leading-relaxed mb-6">
+          Transform your warehouse with powerful software that streamlines operations, reduces costs, and improves efficiency. From receiving to shipping, StockFlow handles it all.
+        </p>
+        <p className="text-lg text-slate-600 leading-relaxed">
+          Warehouse software is essential for modern distribution centers and fulfillment operations. It optimizes receiving, put-away, picking, packing, and shipping processes while maintaining accurate inventory records and providing real-time visibility.
+        </p>
+      </div>
 
       {/* What is Warehouse Software Section */}
       <section className="py-16 px-4 bg-white">

@@ -1,8 +1,7 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import SEO from '@/components/SEO';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
-import { generateSidebarContent } from '@/utils/seoPageHelpers';
 import { StructuredData } from '@/components/StructuredData';
 
 type FAQ = {
@@ -59,13 +58,6 @@ export function createGlossaryPage(config: GlossaryPageConfig) {
 
   return function GlossaryPage() {
     usePageRefresh();
-    const location = useLocation();
-
-    const sidebarContent = generateSidebarContent(location.pathname, [
-      { id: 'overview', title: `What is ${title}?`, level: 1 },
-      { id: 'takeaways', title: 'Key Takeaways', level: 1 },
-      { id: 'faq', title: 'FAQ', level: 1 },
-    ]);
 
     const takeaways = keyTakeaways ?? [
       `Understand how ${title.toLowerCase()} fits into your inventory workflows.`,
@@ -100,95 +92,65 @@ export function createGlossaryPage(config: GlossaryPageConfig) {
           url={`https://www.stockflow.be${path}`}
         />
 
-      <StructuredData data={jsonLd} />
+      <StructuredData data={[jsonLd]} />
 
-        <header className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-indigo-600 via-blue-600 to-cyan-500 px-6 py-16 text-white shadow-xl">
-          <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20" aria-hidden="true" />
-          <div className="relative mx-auto flex max-w-4xl flex-col gap-6 text-center">
-            <span className="inline-flex w-fit items-center justify-center rounded-full bg-white/10 px-4 py-1 text-sm font-medium uppercase tracking-wide">
-              Inventory Glossary
-            </span>
-            <h2 className="text-3xl font-bold md:text-4xl lg:text-5xl">{title}</h2>
-            <p className="text-lg text-white/90 md:text-xl">{shortDescription}</p>
-            <div className="flex flex-wrap justify-center gap-4">
+      {/* Introduction */}
+      <div className="mb-12">
+        <p className="text-lg black leading-relaxed mb-6">
+          {definition}
+        </p>
+      </div>
+
+      {/* Key Takeaway Box */}
+      {takeaways.length > 0 && (
+        <div className="my-12 p-6 bg-blue-50 border-l-4 border-blue-600 rounded-r-lg">
+          <p className="text-base text-slate-800 leading-relaxed m-0">
+            <strong className="text-blue-900">Key Insight:</strong> {takeaways[0]}
+          </p>
+        </div>
+      )}
+
+      {/* Main Content Section */}
+      <h2 className="text-5xl font-bold text-black mt-16 mb-6 pb-3 border-b-2 border-slate-200">
+        What is {title}?
+      </h2>
+      <p className="text-lg text-black font-medium leading-relaxed mb-8">
+        {shortDescription}
+      </p>
+
+      {takeaways.length > 1 && (
+        <div className="space-y-10 mb-12">
+          {takeaways.slice(1).map((item, index) => (
+            <div key={index}>
+              <h3 className="text-2xl font-semibold text-black mb-4 mt-8">
+                {index + 2}. Key Takeaway
+              </h3>
+              <p className="text-base black leading-relaxed mb-4">
+                {item}
+              </p>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {relatedLinks.length > 0 && (
+        <div className="my-12 p-8 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl border border-blue-100">
+          <h2 className="text-2xl font-bold text-black mb-4">
+            Related Glossary Terms
+          </h2>
+          <div className="flex flex-wrap gap-3">
+            {relatedLinks.map((link) => (
               <Link
-                to="/auth"
-                className="rounded-full bg-white px-6 py-3 text-base font-semibold text-indigo-700 shadow-lg transition hover:-translate-y-0.5 hover:bg-indigo-50 hover:shadow-xl"
+                key={link.href}
+                to={link.href}
+                className="inline-flex items-center rounded-full border border-blue-200 px-4 py-2 text-sm font-medium text-blue-700 transition hover:border-blue-400 hover:text-blue-600"
               >
-                Try StockFlow Free
+                {link.label}
               </Link>
-              <a
-                href="#overview"
-                className="rounded-full border border-white/40 px-6 py-3 text-base font-semibold text-white transition hover:bg-white/10"
-              >
-                Explore Definition
-              </a>
-            </div>
-          </div>
-        </header>
-
-        <section id="overview" className="mt-16 rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
-          <h2 className="text-2xl font-bold text-slate-900">What is {title}?</h2>
-          <p className="mt-4 text-lg leading-relaxed text-slate-700">{definition}</p>
-        </section>
-
-        <section id="takeaways" className="mt-16">
-          <div className="mb-6 flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-slate-900">Key Takeaways</h2>
-            <span className="rounded-full bg-blue-50 px-4 py-1 text-sm font-semibold text-blue-600">
-              StockFlow Insights
-            </span>
-          </div>
-          <div className="grid gap-6 md:grid-cols-2">
-            {takeaways.map((item) => (
-              <div
-                key={item}
-                className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-blue-200 hover:shadow-md"
-              >
-                <div className="flex items-start gap-3">
-                  <span className="mt-1 inline-flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-white">
-                    ?
-                  </span>
-                  <p className="text-base text-slate-700">{item}</p>
-                </div>
-              </div>
             ))}
           </div>
-        </section>
-
-        <section id="faq" className="mt-16 rounded-2xl border border-slate-200 bg-slate-50 p-8 shadow-inner">
-          <h2 className="text-2xl font-bold text-slate-900">Frequently Asked Questions</h2>
-          <div className="mt-6 space-y-6">
-            {faqData.map((faqItem) => (
-              <details
-                key={faqItem.question}
-                className="group rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition hover:border-blue-200"
-              >
-                <summary className="cursor-pointer text-lg font-semibold text-slate-900">
-                  {faqItem.question}
-                </summary>
-                <p className="mt-4 text-base leading-relaxed text-slate-700">{faqItem.answer}</p>
-              </details>
-            ))}
-          </div>
-        </section>
-
-        {relatedLinks.length > 0 && (
-          <section className="mt-16">
-            <h2 className="text-2xl font-bold text-slate-900">Explore Related Glossary Terms</h2>
-            <div className="mt-6 flex flex-wrap gap-3">
-              {relatedLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  to={link.href}
-                  className="inline-flex items-center rounded-full border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 transition hover:border-blue-400 hover:text-blue-600"
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-          </section>
-        )}
+        </div>
+      )}
       </SeoPageLayout>
     );
   };

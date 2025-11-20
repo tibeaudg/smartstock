@@ -433,74 +433,15 @@ export default function OnlineInventorySoftware() {
         url="https://www.stockflow.be/online-inventory-software"
       />
 
-      {/* Hero Section */}
-      <section id="awards" className="py-16 px-4 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h1 className="text-6xl md:text-7xl font-extrabold tracking-tight mb-8">Online Inventory Software</h1>
-          </div>
-
-          <div className="text-center mb-8 border-b border-gray-200 pb-8">
-            <div className="flex items-center justify-center gap-4 mb-4">
-              <div className="flex items-center gap-2">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-6 h-6 text-yellow-400 fill-current" />
-                ))}
-              </div>
-              <div className="text-left">
-                <div className="text-2xl font-bold text-gray-900">4.8/5</div>
-                <div className="text-sm text-gray-600">Based on 326 reviews</div>
-              </div>
-            </div>
-            <span className="text-center text-gray-600 text-sm">
-              Updated: {pageMetadata.updatedDisplay} · Cloud-native comparison
-            </span>
-          </div>
-
-          <div className="max-w-4xl mx-auto space-y-8">
-            <p className="text-lg text-gray-600 md:text-xl">
-              Searching for the best online inventory software or cloud-based inventory management system? This 2025 guide compares leading platforms, breaks down
-              must-have features, and shows how StockFlow automates stock control across ecommerce, retail, and
-              wholesale channels.
-            </p>
-
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Link
-                to="/auth"
-                className="inline-flex items-center justify-center rounded-full bg-blue-600 px-6 py-3 text-base font-semibold text-white shadow-lg hover:bg-blue-700 transition-colors"
-              >
-                Start StockFlow Free
-              </Link>
-              <a
-                href="#comparison"
-                className="inline-flex items-center justify-center rounded-full border border-blue-600 px-6 py-3 text-base font-semibold text-blue-600 hover:bg-blue-50 transition-colors"
-              >
-                Compare Top Providers
-              </a>
-            </div>
-
-            <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-700">
-              <span className="flex items-center gap-2">
-                <CheckCircle className="h-4 w-4 text-green-500" />
-                10,000+ teams benchmarked
-              </span>
-              <span className="flex items-center gap-2">
-                <CheckCircle className="h-4 w-4 text-green-500" />
-                Includes ROI calculator
-              </span>
-              <span className="flex items-center gap-2">
-                <CheckCircle className="h-4 w-4 text-green-500" />
-                Updated for 2025 pricing
-              </span>
-            </div>
-
-            <div className="space-y-4 text-left md:text-lg">
-              <h2 className="text-3xl font-bold mb-4">Inside this guide you will learn:</h2>
-              <ul className="list-disc list-inside md:list-outside md:pl-8 text-gray-700 space-y-2">
-                <li>Which online inventory tools lead for ecommerce, retail, wholesale, and manufacturing teams.</li>
-                <li>How StockFlow compares on automation, integrations, implementation speed, and total cost.</li>
-                <li>Decision criteria to choose a platform that scales with your channels and growth targets.</li>
-              </ul>
+      {/* Introduction */}
+      <div className="mb-12">
+        <p className="text-lg black leading-relaxed mb-6">
+          Searching for the best online inventory software or cloud-based inventory management system? This 2025 guide compares leading platforms, breaks down must-have features, and shows how StockFlow automates stock control across ecommerce, retail, and wholesale channels.
+        </p>
+        <p className="text-lg text-slate-600 leading-relaxed">
+          Online inventory software keeps every SKU, order, and location synced in the cloud so teams can manage stock from anywhere. StockFlow combines real-time visibility, barcode scanning, and automation to replace error-prone spreadsheets.
+        </p>
+      </div>
               
               <div className="mt-6 p-6 bg-blue-50 rounded-lg border-l-4 border-blue-600">
                 <p className="text-gray-700 leading-relaxed mb-4">
@@ -513,10 +454,7 @@ export default function OnlineInventorySoftware() {
                   Our analysis covers free online inventory software options, pay-as-you-grow pricing models, enterprise cloud solutions, and everything in between. Each platform has been evaluated for its strengths in cloud-based inventory tracking accuracy, barcode scanning capabilities, automated reorder points, multi-location support, reporting and analytics, and API integration options. By the end of this guide, you'll know exactly which online inventory software features matter most for your business and how to compare cloud inventory management platforms effectively.
                 </p>
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
+
 
       {/* FAQ Preview */}
       <section id="faq" className="py-16 px-4 bg-white">

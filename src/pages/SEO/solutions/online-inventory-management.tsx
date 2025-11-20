@@ -79,32 +79,15 @@ export default function OnlineInventoryManagement() {
         structuredData={structuredData}
       />
 
-      {/* Hero Section - Split Layout */}
-      <section className="bg-white py-8 sm:py-12 md:py-16 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-3 gap-6 sm:gap-8 items-center">
-            {/* Left Side - Text Content */}
-            <div className="lg:col-span-2">
-              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6">
-                <span className="text-blue-600">Inventory Management Online</span> for Small Businesses
-              </h1>
-              <p className="text-sm sm:text-base md:text-lg text-gray-700 mb-6 sm:mb-8 leading-relaxed">
-                Transform your business with powerful online inventory management solutions. Track stock levels in real-time, automate reorder points, and eliminate stockouts with our comprehensive inventory management platform. Perfect for businesses of all sizes looking to optimize their operations and reduce costs.
-              </p>
-            </div>
-            {/* Right Side - Image */}
-            <div className="lg:col-span-1">
-              <div className="rounded-lg text-center">
-                <img 
-                  src="https://rompslomp.nl/hs-fs/hubfs/voorraadbeheer.jpg?width=1200&height=800&name=voorraadbeheer.jpg" 
-                  alt="Online Inventory Management" 
-                  className="w-full max-w-sm sm:max-w-md lg:w-96 h-64 sm:h-80 lg:h-96 mx-auto object-cover rounded-lg mb-4"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Introduction */}
+      <div className="mb-12">
+        <p className="text-lg black leading-relaxed mb-6">
+          Transform your business with powerful online inventory management solutions. Track stock levels in real-time, automate reorder points, and eliminate stockouts with our comprehensive inventory management platform.
+        </p>
+        <p className="text-lg text-slate-600 leading-relaxed">
+          Online inventory management is a digital system that allows businesses to track, monitor, and control their stock levels in real-time through web-based software. It provides instant access to inventory data from anywhere, enabling better decision-making and operational efficiency.
+        </p>
+      </div>
 
       {/* What is Online Inventory Management Section */}
       <section className="py-8 sm:py-12 md:py-16 px-4 bg-gray-50">

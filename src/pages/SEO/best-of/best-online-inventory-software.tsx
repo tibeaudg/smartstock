@@ -72,68 +72,33 @@ export default function BestOnlineInventorySoftware() {
       />
 
   
-    <div className="w-full bg-white font-sans text-slate-900 selection:bg-blue-100 selection:text-blue-900">
-      
-      {/* --- HERO SECTION: Trust & Authority --- */}
-      <section className="relative pt-16 pb-20 lg:pt-24 lg:pb-32 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
-            
-            {/* Content Side */}
-            <div className="max-w-2xl">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-bold uppercase tracking-wide border border-blue-100 mb-6">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
-                </span>
-                Updated for 2024
-              </div>
-              
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 mb-6 leading-[1.1]">
-                <span className="text-blue-600">Best Online Inventory Software</span> for Modern Teams
-              </h1>
-              
-              <p className="text-lg text-slate-600 mb-8 leading-relaxed max-w-lg">
-                Discover the top-rated online inventory system solutions transforming businesses worldwide. From real-time tracking to automated reorder management, scale with confidence.
-              </p>
+      {/* Introduction */}
+      <div className="mb-12">
+        <p className="text-lg black leading-relaxed mb-6">
+          Discover the top-rated online inventory system solutions transforming businesses worldwide. From real-time tracking to automated reorder management, scale with confidence.
+        </p>
+        <p className="text-lg text-slate-600 leading-relaxed">
+          The best online inventory software combines cutting-edge technology with user-friendly design to deliver exceptional results. It provides comprehensive inventory management capabilities that address every aspect of modern business operations.
+        </p>
+      </div>
 
-            </div>
+      {/* Key Takeaway Box */}
+      <div className="my-12 p-6 bg-blue-50 border-l-4 border-blue-600 rounded-r-lg">
+        <p className="text-base text-slate-800 leading-relaxed m-0">
+          <strong className="text-blue-900">Key Insight:</strong> The best online inventory software isn't the one with the most features—it's the one that keeps your operations moving smoothly when things go wrong.
+        </p>
+      </div>
 
-            {/* Visual Side - Abstracted Software UI */}
-            <div className="relative lg:ml-auto">
-              {/* Decorative background blob */}
-              <div className="absolute -inset-4 bg-gradient-to-r from-blue-100 to-purple-100 rounded-[2rem] blur-2xl opacity-50 -z-10"></div>
-              
-              <div className="relative rounded-2xl bg-white shadow-2xl border border-slate-100 overflow-hidden transform rotate-1 hover:rotate-0 transition-transform duration-500">
-                {/* Fake Browser Header */}
-                <div className="bg-slate-50 border-b border-slate-100 px-4 py-3 flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-red-400"></div>
-                  <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
-                  <div className="w-3 h-3 rounded-full bg-green-400"></div>
-                  <div className="ml-4 px-3 py-1 bg-white rounded-md shadow-sm text-[10px] text-slate-400 w-48">stockflow.be/dashboard</div>
-                </div>
-                {/* Image Content */}
-                <img 
-                  src="/dashboard.png" 
-                  alt="Best Online Inventory Software Dashboard Interface" 
-                  className="w-full h-auto object-cover"
-                />
-                {/* Floating Badge */}
-                <div className="absolute bottom-6 left-6 bg-white/90 backdrop-blur-sm p-4 rounded-xl shadow-lg border border-slate-100 max-w-[200px]">
-                  <div className="flex items-center gap-2 mb-1">
-                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                    <span className="text-xs font-bold text-slate-700">System Status</span>
-                  </div>
-                  <div className="text-sm font-medium text-slate-900">99.99% Uptime</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Main Content Section */}
+      <h2 className="text-5xl font-bold  text-black mt-16 mb-6 pb-3 border-b-2 border-slate-200">
+        What Makes the Best Software Stand Out
+      </h2>
+      <p className="text-lg text-black font-medium leading-relaxed mb-8">
+        Top-tier cloud based inventory software combines power with simplicity.
+      </p>
 
       {/* --- "WHY IT STANDS OUT": Feature Cards --- */}
-      <section className="py-20 bg-slate-50 border-y border-slate-200">
+      <div className="mb-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="text-3xl font-bold mb-4 text-slate-900">
@@ -179,10 +144,16 @@ export default function BestOnlineInventorySoftware() {
             </div>
           </div>
         </div>
-      </section>
+      </div>
 
       {/* --- "ESSENTIAL FEATURES": Split with Styled List --- */}
-      <section className="py-24 bg-white">
+      <h2 className="text-5xl font-bold  text-black mt-16 mb-6 pb-3 border-b-2 border-slate-200">
+        Essential Features for Growth
+      </h2>
+      <p className="text-lg text-black font-medium leading-relaxed mb-8">
+        The best online inventory software solutions offer comprehensive features that address every aspect of modern management.
+      </p>
+      <div className="mb-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             
@@ -240,10 +211,26 @@ export default function BestOnlineInventorySoftware() {
 
           </div>
         </div>
-      </section>
+      </div>
+
+      {/* StockFlow Section */}
+      <div className="my-12 p-8 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl border border-blue-100">
+        <h2 className="text-2xl font-bold  text-black mb-4">
+          Where StockFlow Fits
+        </h2>
+        <p className="text-base black leading-relaxed mb-0">
+          StockFlow is built for operational speed first. Real-time tracking, mobile scanning that works offline, and one-click corrections keep operations moving while maintaining accurate records.
+        </p>
+      </div>
 
       {/* --- "RESULTS": Dark Mode Section for Contrast --- */}
-      <section className="py-24  text-white relative overflow-hidden">
+      <h2 className="text-5xl font-bold  text-black mt-16 mb-6 pb-3 border-b-2 border-slate-200">
+        Proven Results from the Best Inventory Software
+      </h2>
+      <p className="text-lg text-black font-medium leading-relaxed mb-8">
+        Leading businesses rely on these solutions to optimize operations. Here is the measurable impact.
+      </p>
+      <div className="mb-12">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'radial-gradient(#4b5563 1px, transparent 1px)', backgroundSize: '32px 32px' }}></div>
         
@@ -275,10 +262,20 @@ export default function BestOnlineInventorySoftware() {
             ))}
           </div>
         </div>
-      </section>
+      </div>
+
+      {/* Conclusion */}
+      <div className="mt-16 pt-8 bg-blue-50 rounded-lg p-8 border border-blue-300">
+        <h2 className="text-3xl font-bold  text-black mb-6">
+          Conclusion
+        </h2>
+        <p className="text-lg black leading-relaxed mb-4">
+          The best online inventory software is not just a data layer—it's the operating system of physical movement. Choose tools that optimize real workflows, not just dashboards.
+        </p>
+      </div>
 
       {/* --- CTA Bottom Strip --- */}
-      <section className="bg-blue-600 py-12">
+      <div className="my-12">
         <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="text-white">
             <h3 className="text-2xl font-bold">Ready to optimize your inventory?</h3>
@@ -290,9 +287,7 @@ export default function BestOnlineInventorySoftware() {
             </button>
           </div>
         </div>
-      </section>
-
-    </div>
+      </div>
   
 
 

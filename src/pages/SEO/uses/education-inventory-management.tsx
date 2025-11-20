@@ -288,8 +288,9 @@ export default function EducationInventoryManagement() {
   return (
     <SeoPageLayout 
       title="Education Inventory Management"
-      
-      
+      heroTitle="Education Inventory Management"
+      updatedDate="20/11/2025"
+      faqData={faqData}
     >
       <SEO
         title="Education Inventory Management 2025 - Education Inventory..."
@@ -298,52 +299,15 @@ export default function EducationInventoryManagement() {
         url="https://www.stockflow.be/education-inventory-management"
       />
 
-      {/* Hero Section */}
-      <section className="py-12 px-4 bg-gradient-to-br from-indigo-50 via-white to-purple-50">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-8">
-            <div className="inline-block bg-indigo-100 text-indigo-800 text-sm font-semibold px-4 py-2 rounded-full mb-6 flex items-center">
-              <GraduationCap className="w-4 h-4 mr-2" />
-              For Schools, Colleges & Universities
-            </div>
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-              School Inventory Management Software
-            </h1>
-            <p className="text-xl md:text-2xl text-gray-600 max-w-4xl mx-auto mb-8">
-              Track textbooks, technology, equipment, and supplies across your educational institution. Reduce loss by 85%, streamline audits, optimize budgets, and ensure accountability for every taxpayer dollar.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4 mb-8">
-              <div className="flex items-center bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-200">
-                <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
-                <span className="text-sm font-medium">Check-out/Check-in tracking</span>
-              </div>
-              <div className="flex items-center bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-200">
-                <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
-                <span className="text-sm font-medium">Asset barcode scanning</span>
-              </div>
-              <div className="flex items-center bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-200">
-                <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
-                <span className="text-sm font-medium">Budget management</span>
-              </div>
-            </div>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link 
-                to="/auth" 
-                className="inline-flex items-center bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold px-8 py-4 rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all shadow-lg hover:shadow-xl text-lg"
-              >
-                <GraduationCap className="w-5 h-5 mr-2" />
-                Start Free Trial
-              </Link>
-              <Link 
-                to="/pricing" 
-                className="inline-flex items-center bg-white text-gray-800 font-semibold px-8 py-4 rounded-xl border-2 border-gray-300 hover:border-gray-400 transition-all text-lg"
-              >
-                View Pricing
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Introduction */}
+      <div className="mb-12">
+        <p className="text-lg black leading-relaxed mb-6">
+          Track textbooks, technology, equipment, and supplies across your educational institution. Reduce loss by 85%, streamline audits, optimize budgets, and ensure accountability for every taxpayer dollar.
+        </p>
+        <p className="text-lg text-slate-600 leading-relaxed">
+          Educational institutions manage thousands of valuable assets—from technology devices and textbooks to science equipment and athletic gear—across multiple buildings, classrooms, and departments. With limited budgets and accountability requirements, schools can't afford the 15-20% loss rates common with manual tracking systems.
+        </p>
+      </div>
 
       {/* Overview Section */}
       <section id="overview" className="py-16 px-4 bg-white">

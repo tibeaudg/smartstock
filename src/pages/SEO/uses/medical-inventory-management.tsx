@@ -343,8 +343,9 @@ export default function MedicalInventoryManagement() {
   return (
     <SeoPageLayout 
       title="Medical Inventory Management"
-      
-      
+      heroTitle="Medical Inventory Management"
+      updatedDate="20/11/2025"
+      faqData={faqData}
     >
       <SEO
         title="Medical Inventory Management 2025 - Medical Inventory Man..."
@@ -353,52 +354,15 @@ export default function MedicalInventoryManagement() {
         url="https://www.stockflow.be/medical-inventory-management"
       />
 
-      {/* Hero Section */}
-      <section className="py-12 px-4 bg-gradient-to-br from-blue-50 via-white to-green-50">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-8">
-            <div className="inline-block bg-blue-100 text-blue-800 text-sm font-semibold px-4 py-2 rounded-full mb-6 flex items-center">
-              <Stethoscope className="w-4 h-4 mr-2" />
-              For Healthcare Facilities, Clinics & Pharmacies
-            </div>
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
-              Medical Inventory Management Software
-            </h1>
-            <p className="text-xl md:text-2xl text-gray-600 max-w-4xl mx-auto mb-8">
-              Track medical supplies, pharmaceuticals, and devices with full expiration management, lot/serial traceability, and regulatory compliance. Reduce waste, prevent stockouts, and ensure patient safety.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4 mb-8">
-              <div className="flex items-center bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-200">
-                <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
-                <span className="text-sm font-medium">Expiration tracking</span>
-              </div>
-              <div className="flex items-center bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-200">
-                <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
-                <span className="text-sm font-medium">Lot/Serial traceability</span>
-              </div>
-              <div className="flex items-center bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-200">
-                <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
-                <span className="text-sm font-medium">FDA compliant</span>
-              </div>
-            </div>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link 
-                to="/auth" 
-                className="inline-flex items-center bg-gradient-to-r from-blue-600 to-green-600 text-white font-bold px-8 py-4 rounded-xl hover:from-blue-700 hover:to-green-700 transition-all shadow-lg hover:shadow-xl text-lg"
-              >
-                <Stethoscope className="w-5 h-5 mr-2" />
-                Start Free Trial
-              </Link>
-              <Link 
-                to="/pricing" 
-                className="inline-flex items-center bg-white text-gray-800 font-semibold px-8 py-4 rounded-xl border-2 border-gray-300 hover:border-gray-400 transition-all text-lg"
-              >
-                View Pricing
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Introduction */}
+      <div className="mb-12">
+        <p className="text-lg black leading-relaxed mb-6">
+          Track medical supplies, pharmaceuticals, and devices with full expiration management, lot/serial traceability, and regulatory compliance. Reduce waste, prevent stockouts, and ensure patient safety.
+        </p>
+        <p className="text-lg text-slate-600 leading-relaxed">
+          Medical inventory management is fundamentally different from general inventory control. Healthcare facilities must track expiration dates, maintain complete lot and serial number traceability, ensure regulatory compliance, prevent use of expired or recalled products, and manage thousands of SKUs with varying storage requirements.
+        </p>
+      </div>
 
       {/* Overview Section */}
       <section id="overview" className="py-16 px-4 bg-white">

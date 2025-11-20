@@ -3,29 +3,10 @@ import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { useCurrency } from '@/hooks/useCurrency';
-import { SeoPageHero } from '@/components/seo/SeoPageHero';
-import { useLocation } from 'react-router-dom';
-import { generateSidebarContent } from '@/utils/seoPageHelpers';
-import { 
-  BarChart3, 
-  Zap, 
-  Shield, 
-  Users, 
-  Camera, 
-  CheckCircle,
-  Star,
-  Trophy,
-  Database,
-  Package,
-  Truck,
-  TrendingUp
-} from 'lucide-react';
-
 import { StructuredData } from '@/components/StructuredData';
 
 export default function WholesalerInventoryManagement() {
   usePageRefresh();
-  const location = useLocation();
   const { formatPrice } = useCurrency();
   
   const faqData = [
@@ -161,37 +142,18 @@ export default function WholesalerInventoryManagement() {
     }
   ];
 
-  // Generate sidebar content
-  const sidebarContent = generateSidebarContent(location.pathname, [
-    { id: 'features', title: 'Features', level: 1 },
-    { id: 'benefits', title: 'Benefits', level: 1 },
-    { id: 'use-cases', title: 'Use Cases', level: 1 },
-    { id: 'testimonials', title: 'What Wholesalers Say', level: 1 },
-    { id: 'faq', title: 'FAQ', level: 1 }
-  ]);
-
   return (
     <SeoPageLayout 
       title="Wholesaler Inventory Management"
-      
-      
+      heroTitle="Wholesaler Inventory Management"
+      updatedDate="20/11/2025"
+      faqData={faqData}
     >
       <SEO
         title="Wholesaler Inventory Management 2025 - Wholesaler Invento..."
         description="Read the guide wholesaler inventory management to save time and money. Read the guide wholesaler inventory management to optimize your inventory. Try free now."
         keywords="wholesaler inventory management, wholesaler inventory software, distributor inventory management, wholesaler inventory system, distributor inventory software, wholesaler and distributor, distributors and wholesalers, wholesale inventory management, distributor inventory system, wholesaler inventory app, distributor inventory app, wholesale inventory software, distributor inventory solution, wholesaler inventory platform, wholesale inventory tracking, distributor inventory tracking, wholesaler stock management, distributor stock management, wholesale inventory control, distributor inventory control, stockflow, stock flow"
         url="https://www.stockflow.be/wholesaler-inventory-management"
-      />      <SeoPageHero
-        title="Wholesaler Inventory Management: For Distributors and Wholesalers"
-        description="The best wholesaler inventory management software for distributors and wholesalers. Manage inventory across multiple warehouses, optimize inventory turnover, process bulk orders, and streamline operations. Start free today!"
-        badges={[
-          { icon: <Trophy className="w-6 h-6" />, text: "#1 for Wholesalers", variant: 'warning' },
-          { icon: <Star className="w-6 h-6" />, text: "4.9/5 Rating", variant: 'success' },
-          { icon: <Users className="w-6 h-6" />, text: "500+ Wholesalers", variant: 'info' }
-        ]}
-        ctaText="Start Free Trial - No Credit Card"
-        ctaLink="/auth"
-        backgroundImage="/image.png"
       />
 
       {/* Features Section */}

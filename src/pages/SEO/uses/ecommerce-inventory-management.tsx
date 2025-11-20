@@ -2,24 +2,10 @@ import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
-import { SeoPageHero } from '@/components/seo/SeoPageHero';
-import { useLocation } from 'react-router-dom';
-import { generateSidebarContent } from '@/utils/seoPageHelpers';
-import { 
-  CheckCircle,
-  Star,
-  Trophy,
-  Users,
-  ShoppingBag,
-  Globe,
-  Zap,
-  TrendingUp
-} from 'lucide-react';
 import { StructuredData } from '@/components/StructuredData';
 
 export default function EcommerceInventoryManagement() {
   usePageRefresh();
-  const location = useLocation();
   
   const faqData = [
     {
@@ -91,36 +77,18 @@ export default function EcommerceInventoryManagement() {
     { name: "Etsy", description: "Manage Etsy inventory" }
   ];
 
-  const sidebarContent = generateSidebarContent(location.pathname, [
-    { id: 'what-is', title: 'What is Ecommerce Management Software?', level: 1 },
-    { id: 'features', title: 'Features', level: 1 },
-    { id: 'benefits', title: 'Benefits', level: 1 },
-    { id: 'platforms', title: 'Supported Platforms', level: 1 },
-    { id: 'faq', title: 'FAQ', level: 1 }
-  ]);
-
   return (
     <SeoPageLayout 
       title="Ecommerce Inventory Management"
-      
-      
+      heroTitle="Ecommerce Inventory Management"
+      updatedDate="20/11/2025"
+      faqData={faqData}
     >
       <SEO
         title="Ecommerce Inventory Management 2025 - Ecommerce Inventory..."
         description="Discover how ecommerce inventory management to automate your processes. Find out how ecommerce inventory management to optimize your inventory. Get started f..."
         keywords="ecommerce management software, ecommerce inventory management, multi platform inventory management, cross platform inventory management, ecommerce inventory software, multi platform inventory, cross platform inventory, ecommerce inventory system, multi channel inventory management, ecommerce inventory solution, inventory management for ecommerce, multi platform inventory software, cross platform inventory software, stockflow, stock flow"
         url="https://www.stockflow.be/ecommerce-inventory-management"
-      />      <SeoPageHero
-        title="Ecommerce Inventory Management: Multi Platform & Cross Platform Solutions"
-        description="Best ecommerce management software for multi platform and cross platform inventory management. Sync inventory across Shopify, Amazon, WooCommerce, and all major e-commerce platforms. Free trial available!"
-        badges={[
-          { icon: <Trophy className="w-6 h-6" />, text: "#1 E-commerce Solution", variant: 'warning' },
-          { icon: <Star className="w-6 h-6" />, text: "Multi-Platform", variant: 'success' },
-          { icon: <Users className="w-6 h-6" />, text: "10,000+ Stores", variant: 'info' }
-        ]}
-        ctaText="Start Multi-Platform Management Free"
-        ctaLink="/auth"
-        backgroundImage="/image.png"
       />
 
       <section id="what-is" className="py-16 px-4 bg-white">

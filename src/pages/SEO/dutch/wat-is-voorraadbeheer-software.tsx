@@ -122,61 +122,15 @@ export default function WatIsVoorraadbeheerSoftware() {
         url="https://www.stockflow.be/wat-is-voorraadbeheer-software"
       />
 
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-600 to-indigo-700 text-white py-16 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <div className="inline-block bg-blue-400/30 px-4 py-2 rounded-full text-sm font-semibold mb-6">
-                Complete Uitleg & Gids
-              </div>              <p className="text-xl mb-8 leading-relaxed">
-                Voorraadbeheer software automatiseert het bijhouden van je producten, voorraad en bestellingen. 
-                In deze gids leggen we uit wat het is, hoe het werkt en waarom je het nodig hebt.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                <Link
-                  to="/auth"
-                  className="bg-white text-blue-600 px-8 py-4 rounded-lg font-bold text-lg hover:bg-blue-50 transition text-center"
-                >
-                  Start Gratis Trial
-                </Link>
- 
-              </div>
-              <div className="flex flex-wrap gap-4 text-sm">
-                <div className="flex items-center">
-                  <Check className="w-5 h-5 mr-2 text-green-300" />
-                  Geen creditcard nodig
-                </div>
-                <div className="flex items-center">
-                  <Check className="w-5 h-5 mr-2 text-green-300" />
-                  Setup in 1 dag
-                </div>
-                <div className="flex items-center">
-                  <Check className="w-5 h-5 mr-2 text-green-300" />
-                  14 dagen gratis
-                </div>
-              </div>
-            </div>
-            <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl">
-              <h3 className="text-2xl font-bold mb-6">In het kort</h3>
-              <div className="space-y-4">
-                <div className="bg-white/10 p-4 rounded-lg">
-                  <div className="font-semibold mb-2">üéØ Wat het is</div>
-                  <p className="text-blue-100 text-sm">Software die automatisch je voorraad bijhoudt en beheert</p>
-                </div>
-                <div className="bg-white/10 p-4 rounded-lg">
-                  <div className="font-semibold mb-2">‚öôÔ∏è Hoe het werkt</div>
-                  <p className="text-blue-100 text-sm">Registreert elke beweging en update je voorraad real-time</p>
-                </div>
-                <div className="bg-white/10 p-4 rounded-lg">
-                  <div className="font-semibold mb-2">üí∞ Wat het oplevert</div>
-                  <p className="text-blue-100 text-sm">70% tijdsbesparing en 25% lagere voorraadkosten</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Introduction */}
+      <div className="mb-12">
+        <p className="text-lg black leading-relaxed mb-6">
+          Voorraadbeheer software automatiseert het bijhouden van je producten, voorraad en bestellingen. In deze gids leggen we uit wat het is, hoe het werkt en waarom je het nodig hebt.
+        </p>
+        <p className="text-lg text-slate-600 leading-relaxed">
+          Software die automatisch je voorraad bijhoudt en beheert. Het registreert elke beweging en update je voorraad real-time, wat leidt tot 70% tijdsbesparing en 25% lagere voorraadkosten.
+        </p>
+      </div>
 
       {/* Definition Section */}
       <section className="py-16 px-4 bg-white">
@@ -211,23 +165,23 @@ export default function WatIsVoorraadbeheerSoftware() {
               </h3>
               <ul className="space-y-3 text-gray-700">
                 <li className="flex items-start">
-                  <span className="mr-2">ï</span>
+                  <span className="mr-2">ÔøΩ</span>
                   <span>Handmatig tellen en invoeren in Excel</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="mr-2">ï</span>
+                  <span className="mr-2">ÔøΩ</span>
                   <span>Veel tijd kwijt aan administratie</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="mr-2">ï</span>
+                  <span className="mr-2">ÔøΩ</span>
                   <span>Regelmatig fouten en discrepanties</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="mr-2">ï</span>
+                  <span className="mr-2">ÔøΩ</span>
                   <span>Geen real-time inzicht</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="mr-2">ï</span>
+                  <span className="mr-2">ÔøΩ</span>
                   <span>Moeilijk te schalen bij groei</span>
                 </li>
               </ul>

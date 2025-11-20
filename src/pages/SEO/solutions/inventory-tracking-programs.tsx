@@ -3,29 +3,10 @@ import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { useCurrency } from '@/hooks/useCurrency';
-import { SeoPageHero } from '@/components/seo/SeoPageHero';
-import { useLocation } from 'react-router-dom';
-import { generateSidebarContent } from '@/utils/seoPageHelpers';
-import { 
-  BarChart3, 
-  Zap, 
-  Shield, 
-  Users, 
-  Camera, 
-  CheckCircle,
-  Star,
-  Trophy,
-  Database,
-  Package,
-  TrendingUp,
-  Monitor
-} from 'lucide-react';
-
 import { StructuredData } from '@/components/StructuredData';
 
 export default function InventoryTrackingPrograms() {
   usePageRefresh();
-  const location = useLocation();
   const { formatPrice } = useCurrency();
   
   const faqData = [
@@ -51,7 +32,7 @@ export default function InventoryTrackingPrograms() {
     },
     {
       question: "How much do inventory tracking programs cost?",
-      answer: "Inventory tracking program costs vary widely. Enterprise solutions can cost thousands per month, while StockFlow offers a free plan for small businesses and affordable pay-as-you-grow pricing starting at €0.004 per product per month. Most programs offer free trials to test before committing."
+      answer: "Inventory tracking program costs vary widely. Enterprise solutions can cost thousands per month, while StockFlow offers a free plan for small businesses and affordable pay-as-you-grow pricing starting at ï¿½0.004 per product per month. Most programs offer free trials to test before committing."
     },
     {
       question: "What is the best inventory tracking program for small businesses?",
@@ -161,37 +142,18 @@ export default function InventoryTrackingPrograms() {
     }
   ];
 
-  // Generate sidebar content
-  const sidebarContent = generateSidebarContent(location.pathname, [
-    { id: 'features', title: 'Features', level: 1 },
-    { id: 'benefits', title: 'Benefits', level: 1 },
-    { id: 'use-cases', title: 'Use Cases', level: 1 },
-    { id: 'testimonials', title: 'What Users Say', level: 1 },
-    { id: 'faq', title: 'FAQ', level: 1 }
-  ]);
-
   return (
     <SeoPageLayout 
       title="Inventory Tracking Programs"
-      
-      
+      heroTitle="Inventory Tracking Programs"
+      updatedDate="20/11/2025"
+      faqData={faqData}
     >
       <SEO
         title="Inventory Tracking Programs 2025 - Inventory Tracking Pro..."
         description="Learn how inventory tracking programs to save time and money. Read the guide inventory tracking programs to choose the best. Start free today. StockFlow help..."
         keywords="inventory tracking programs, inventory tracking software, inventory tracking program, inventory tracking system, inventory tracking app, inventory tracking solution, inventory tracking platform, inventory tracking tool, inventory tracking software free, inventory tracking program free, best inventory tracking program, inventory tracking software for small business, inventory tracking software online, cloud inventory tracking, inventory tracking software comparison, inventory tracking software reviews, inventory tracking software features, inventory tracking software cost, stockflow, stock flow"
         url="https://www.stockflow.be/inventory-tracking-programs"
-      />      <SeoPageHero
-        title="Inventory Tracking Programs: Best Inventory Tracking Software 2025"
-        description="Find the best inventory tracking programs for your business. Real-time tracking, barcode scanning, automated alerts, and multi-location support. Free plan available. Start tracking inventory today!"
-        badges={[
-          { icon: <Trophy className="w-6 h-6" />, text: "#1 Inventory Tracking", variant: 'warning' },
-          { icon: <Star className="w-6 h-6" />, text: "4.9/5 Rating", variant: 'success' },
-          { icon: <Users className="w-6 h-6" />, text: "10,000+ Users", variant: 'info' }
-        ]}
-        ctaText="Start Tracking Inventory Free"
-        ctaLink="/auth"
-        backgroundImage="/image.png"
       />
 
       {/* Features Section */}

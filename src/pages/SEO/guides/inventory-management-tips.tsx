@@ -174,44 +174,15 @@ export default function InventoryManagementTips() {
         structuredData={structuredData}
       />
 
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-50 to-white py-12 md:py-20 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-8 items-center">
-            <div>              <p className="text-xl text-gray-600 mb-8">
-                Discover 10 proven inventory management tips to reduce costs, prevent stockouts, and optimize your operations.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link to="/auth" className="inline-flex items-center justify-center bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-blue-700 transition">
-                  Start Free Trial
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
-                <Link to="/pricing" className="inline-flex items-center justify-center border-2 border-blue-600 text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-blue-50 transition">
-                  View Pricing
-                </Link>
-              </div>
-              <div className="mt-6 flex items-center gap-4">
-                <div className="flex items-center">
-                  <Star className="h-5 w-5 text-yellow-400 fill-current" />
-                  <Star className="h-5 w-5 text-yellow-400 fill-current" />
-                  <Star className="h-5 w-5 text-yellow-400 fill-current" />
-                  <Star className="h-5 w-5 text-yellow-400 fill-current" />
-                  <Star className="h-5 w-5 text-yellow-400 fill-current" />
-                  <span className="ml-2 text-sm text-gray-600">5.0/5</span>
-                </div>
-                <span className="text-sm text-gray-600">500+ Businesses</span>
-              </div>
-            </div>
-            <div>
-              <img 
-                src="/Inventory-Management.png" 
-                alt="Expert inventory management tips and strategies dashboard showing optimization techniques and best practices"
-                className="rounded-lg shadow-2xl"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Introduction */}
+      <div className="mb-12">
+        <p className="text-lg black leading-relaxed mb-6">
+          Discover 10 proven inventory management tips to reduce costs, prevent stockouts, and optimize your operations.
+        </p>
+        <p className="text-lg text-slate-600 leading-relaxed">
+          Effective inventory management is crucial for business success. These practical tips help you maintain optimal stock levels, reduce waste, improve cash flow, and enhance customer satisfaction.
+        </p>
+      </div>
 
       {/* Tips Section */}
       <section className="py-16 px-4 bg-white">

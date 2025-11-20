@@ -3,29 +3,10 @@ import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { useCurrency } from '@/hooks/useCurrency';
-import { SeoPageHero } from '@/components/seo/SeoPageHero';
-import { useLocation } from 'react-router-dom';
-import { generateSidebarContent } from '@/utils/seoPageHelpers';
-import { 
-  BarChart3, 
-  Zap, 
-  Shield, 
-  Users, 
-  Camera, 
-  CheckCircle,
-  Star,
-  Trophy,
-  Database,
-  Hammer,
-  Wrench,
-  Building
-} from 'lucide-react';
-
 import { StructuredData } from '@/components/StructuredData';
 
 export default function ContractorInventoryManagement() {
   usePageRefresh();
-  const location = useLocation();
   const { formatPrice } = useCurrency();
   
   const faqData = [
@@ -161,37 +142,18 @@ export default function ContractorInventoryManagement() {
     }
   ];
 
-  // Generate sidebar content
-  const sidebarContent = generateSidebarContent(location.pathname, [
-    { id: 'features', title: 'Features', level: 1 },
-    { id: 'benefits', title: 'Benefits', level: 1 },
-    { id: 'use-cases', title: 'Use Cases', level: 1 },
-    { id: 'testimonials', title: 'What Contractors Say', level: 1 },
-    { id: 'faq', title: 'FAQ', level: 1 }
-  ]);
-
   return (
     <SeoPageLayout 
       title="Contractor Inventory Management"
-      
-      
+      heroTitle="Contractor Inventory Management"
+      updatedDate="20/11/2025"
+      faqData={faqData}
     >
       <SEO
         title="Contractor Inventory Management 2025 - Contractor Invento..."
         description="Read the guide contractor inventory management to optimize your inventory management. Read the guide contractor inventory management to automate your process..."
         keywords="contractor inventory management, contractor inventory software, construction inventory management, tool tracking software, equipment inventory management, contractor inventory system, construction inventory software, tool management software, contractor equipment tracking, construction inventory tracking, contractor inventory app, construction tool tracking, contractor material management, contractor inventory solution, contractor inventory platform, construction equipment management, contractor inventory control, construction inventory app, contractor tool management, construction material tracking, stockflow, stock flow"
         url="https://www.stockflow.be/contractor-inventory-management"
-      />      <SeoPageHero
-        title="Contractor Inventory Management: Track Tools, Equipment & Materials Across Job Sites"
-        description="The best contractor inventory management software for construction, renovation, and maintenance contractors. Track tools, equipment, and materials across unlimited job sites. Prevent tool loss, optimize costs, and streamline project billing. Start free today!"
-        badges={[
-          { icon: <Trophy className="w-6 h-6" />, text: "#1 Choice for Contractors", variant: 'warning' },
-          { icon: <Star className="w-6 h-6" />, text: "4.9/5 Rating", variant: 'success' },
-          { icon: <Users className="w-6 h-6" />, text: "500+ Contractors", variant: 'info' }
-        ]}
-        ctaText="Start Free Trial - No Credit Card"
-        ctaLink="/auth"
-        backgroundImage="/image.png"
       />
 
       {/* Features Section */}

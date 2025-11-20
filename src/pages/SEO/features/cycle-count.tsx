@@ -2,24 +2,10 @@ import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
-import { SeoPageHero } from '@/components/seo/SeoPageHero';
-import { useLocation } from 'react-router-dom';
-import { generateSidebarContent } from '@/utils/seoPageHelpers';
-import { 
-  CheckCircle,
-  Star,
-  Trophy,
-  Users,
-  ClipboardCheck,
-  Calculator,
-  TrendingUp,
-  Target
-} from 'lucide-react';
 import { StructuredData } from '@/components/StructuredData';
 
 export default function CycleCount() {
   usePageRefresh();
-  const location = useLocation();
   
   const faqData = [
     {
@@ -107,17 +93,6 @@ export default function CycleCount() {
         description="Discover how cycle count to save time and money. Find out how cycle count to optimize your inventory management.. Start free today. StockFlow helps businesse..."
         keywords="cycle count, cycle counting, inventory cycle count, cycle count inventory, cycle count method, cycle count process, cycle count schedule, cycle count software, cycle count system, inventory cycle counting, cycle count best practices, cycle count vs physical inventory, cycle count accuracy, cycle count frequency, stockflow, stock flow"
         url="https://www.stockflow.be/cycle-count"
-      />      <SeoPageHero
-        title="Cycle Count: Complete Guide to Inventory Cycle Counting"
-        description="Master cycle count and inventory cycle counting. Learn how cycle counting works, best practices, and how to maintain inventory accuracy year-round. Free cycle count tools included."
-        badges={[
-          { icon: <Trophy className="w-6 h-6" />, text: "Complete Guide", variant: 'warning' },
-          { icon: <Star className="w-6 h-6" />, text: "Free Tools", variant: 'success' },
-          { icon: <Users className="w-6 h-6" />, text: "10,000+ Users", variant: 'info' }
-        ]}
-        ctaText="Start Cycle Counting Free"
-        ctaLink="/auth"
-        backgroundImage="/image.png"
       />
 
       <section id="what-is" className="py-16 px-4 bg-white">

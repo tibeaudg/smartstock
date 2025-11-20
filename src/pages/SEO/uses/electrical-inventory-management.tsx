@@ -291,8 +291,9 @@ export default function ElectricalInventoryManagement() {
   return (
     <SeoPageLayout 
       title="Electrical Inventory Management"
-      
-      
+      heroTitle="Electrical Inventory Management"
+      updatedDate="20/11/2025"
+      faqData={faqData}
     >
       <SEO
         title="Electrical Inventory Management 2025 - Electrical Invento..."
@@ -301,52 +302,15 @@ export default function ElectricalInventoryManagement() {
         url="https://www.stockflow.be/electrical-inventory-management"
       />
 
-      {/* Hero Section */}
-      <section className="py-12 px-4 bg-gradient-to-br from-yellow-50 via-white to-blue-50">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-8">
-            <div className="inline-block bg-yellow-100 text-yellow-800 text-sm font-semibold px-4 py-2 rounded-full mb-6 flex items-center">
-              <Zap className="w-4 h-4 mr-2" />
-              For Electrical Contractors & Electricians
-            </div>
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 bg-gradient-to-r from-yellow-600 to-blue-600 bg-clip-text text-transparent">
-              Electrical Inventory Management Software
-            </h1>
-            <p className="text-xl md:text-2xl text-gray-600 max-w-4xl mx-auto mb-8">
-              Stop losing materials to theft, eliminate job site stockouts, and track electrical supplies across warehouses, vehicles, and projects with real-time mobile inventory management.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4 mb-8">
-              <div className="flex items-center bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-200">
-                <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
-                <span className="text-sm font-medium">Track multiple locations</span>
-              </div>
-              <div className="flex items-center bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-200">
-                <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
-                <span className="text-sm font-medium">Mobile scanning</span>
-              </div>
-              <div className="flex items-center bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-200">
-                <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
-                <span className="text-sm font-medium">Job costing integration</span>
-              </div>
-            </div>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link 
-                to="/auth" 
-                className="inline-flex items-center bg-gradient-to-r from-yellow-600 to-blue-600 text-white font-bold px-8 py-4 rounded-xl hover:from-yellow-700 hover:to-blue-700 transition-all shadow-lg hover:shadow-xl text-lg"
-              >
-                <Zap className="w-5 h-5 mr-2" />
-                Start Free Trial
-              </Link>
-              <Link 
-                to="/pricing" 
-                className="inline-flex items-center bg-white text-gray-800 font-semibold px-8 py-4 rounded-xl border-2 border-gray-300 hover:border-gray-400 transition-all text-lg"
-              >
-                View Pricing
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Introduction */}
+      <div className="mb-12">
+        <p className="text-lg black leading-relaxed mb-6">
+          Stop losing materials to theft, eliminate job site stockouts, and track electrical supplies across warehouses, vehicles, and projects with real-time mobile inventory management.
+        </p>
+        <p className="text-lg text-slate-600 leading-relaxed">
+          Electrical contractors face unique inventory challenges that general inventory systems can't handle. You're managing hundreds of SKUs with specific voltage, gauge, and amperage requirements across multiple job sites and service vehicles, dealing with high-value materials like copper wire that are prone to theft, and need to track materials per job for accurate costing and bidding.
+        </p>
+      </div>
 
       {/* Overview Section */}
       <section id="overview" className="py-16 px-4 bg-white">

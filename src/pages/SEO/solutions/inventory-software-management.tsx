@@ -199,39 +199,15 @@ export default function InventorySoftwareManagement() {
         url="https://www.stockflow.be/inventory-software-management"
       />
 
-      {/* Hero Section with Background */}
-      <section 
-        className="relative py-16 sm:py-20 md:py-24 px-4 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: 'url(/image.png)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
-        }}
-      >
-        <div className="absolute inset-0 bg-black bg-opacity-40"></div>
-        
-        <div className="relative max-w-6xl mx-auto">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-white">
-              Complete <span className="text-blue-400">Inventory Software Management</span> Solution
-            </h1>
-            <p className="text-lg md:text-xl text-gray-100 mb-8 max-w-4xl mx-auto">
-              Take control of your inventory with comprehensive inventory software management, inventory system software, and inventory control software. Automate processes, gain insights, and optimize your operations with StockFlow's complete stock system software solution.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-              <Link
-                to="/auth"
-                className="bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-blue-700 transition shadow-lg"
-              >
-                Start Free Trial
-              </Link>
-
-            </div>
-            <p className="text-sm text-gray-200">Trusted by 500+ businesses for inventory software management</p>
-          </div>
-        </div>
-      </section>
+      {/* Introduction */}
+      <div className="mb-12">
+        <p className="text-lg black leading-relaxed mb-6">
+          Take control of your inventory with comprehensive inventory software management, inventory system software, and inventory control software. Automate processes, gain insights, and optimize your operations with StockFlow's complete stock system software solution.
+        </p>
+        <p className="text-lg text-slate-600 leading-relaxed">
+          Inventory software management encompasses the complete set of tools and processes needed to track, control, and optimize inventory levels. Modern systems provide real-time visibility, automated workflows, and comprehensive reporting to help businesses maintain optimal stock levels.
+        </p>
+      </div>
 
       {/* What is Inventory Software Management Section */}
       <section className="py-16 px-4 bg-white">

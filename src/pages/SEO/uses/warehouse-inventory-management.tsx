@@ -301,8 +301,9 @@ export default function WarehouseInventoryManagement() {
   return (
     <SeoPageLayout 
       title="Warehouse Inventory Management"
-      
-      
+      heroTitle="Warehouse Inventory Management"
+      updatedDate="20/11/2025"
+      faqData={faqData}
     >
       <SEO
         title="Warehouse Inventory Management 2025 - Warehouse Inventory..."
@@ -311,52 +312,15 @@ export default function WarehouseInventoryManagement() {
         url="https://www.stockflow.be/warehouse-inventory-management"
       />
 
-      {/* Hero Section */}
-      <section className="py-12 px-4 bg-gradient-to-br from-slate-50 via-white to-blue-50">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-8">
-            <div className="inline-block bg-slate-100 text-slate-800 text-sm font-semibold px-4 py-2 rounded-full mb-6 flex items-center">
-              <Warehouse className="w-4 h-4 mr-2" />
-              For Warehouse Operations & Fulfillment Centers
-            </div>
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 bg-gradient-to-r from-slate-600 to-blue-600 bg-clip-text text-transparent">
-              Warehouse Inventory Management Software
-            </h1>
-            <p className="text-xl md:text-2xl text-gray-600 max-w-4xl mx-auto mb-8">
-              Optimize warehouse operations with bin location tracking, mobile barcode scanning, optimized pick paths, and real-time inventory visibility. Increase accuracy, reduce labor costs, and ship faster.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4 mb-8">
-              <div className="flex items-center bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-200">
-                <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
-                <span className="text-sm font-medium">Bin location tracking</span>
-              </div>
-              <div className="flex items-center bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-200">
-                <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
-                <span className="text-sm font-medium">Mobile scanning</span>
-              </div>
-              <div className="flex items-center bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-200">
-                <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
-                <span className="text-sm font-medium">Pick optimization</span>
-              </div>
-            </div>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link 
-                to="/auth" 
-                className="inline-flex items-center bg-gradient-to-r from-slate-600 to-blue-600 text-white font-bold px-8 py-4 rounded-xl hover:from-slate-700 hover:to-blue-700 transition-all shadow-lg hover:shadow-xl text-lg"
-              >
-                <Warehouse className="w-5 h-5 mr-2" />
-                Start Free Trial
-              </Link>
-              <Link 
-                to="/pricing" 
-                className="inline-flex items-center bg-white text-gray-800 font-semibold px-8 py-4 rounded-xl border-2 border-gray-300 hover:border-gray-400 transition-all text-lg"
-              >
-                View Pricing
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Introduction */}
+      <div className="mb-12">
+        <p className="text-lg black leading-relaxed mb-6">
+          Optimize warehouse operations with bin location tracking, mobile barcode scanning, optimized pick paths, and real-time inventory visibility. Increase accuracy, reduce labor costs, and ship faster.
+        </p>
+        <p className="text-lg text-slate-600 leading-relaxed">
+          Modern warehouse operations demand precision, speed, and efficiency. Manual processes, paper pick lists, and spreadsheet-based inventory tracking create errors, slow fulfillment, and increase labor costs.
+        </p>
+      </div>
 
       {/* Overview Section */}
       <section id="overview" className="py-16 px-4 bg-white">

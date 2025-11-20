@@ -214,53 +214,14 @@ export default function AlertsPage() {
         structuredData={structuredData}
       />
 
-      {/* Hero */}
-      <div className="bg-gradient-to-br from-indigo-700 via-purple-700 to-blue-600 text-white py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-24 items-center">
-            <div>
-              <Badge className="bg-white/15 text-white uppercase tracking-wider mb-6">
-                PWA Barcode Scanner
-              </Badge>
-              <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6">
-                StockFlow Scan for Real-Time Inventory Accuracy
-              </h1>
-              <p className="text-lg md:text-xl text-indigo-100 mb-8 max-w-xl">
-                Give every team member a lightning-fast barcode scanner that runs in the browser. Capture codes, validate data, and sync stock levels across every channel without installing native apps.
-              </p>
-              <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
-                {metrics.map((metric, index) => (
-                  <div key={index} className="rounded-xl border border-white/20 bg-white/10 p-4">
-                    <div className="flex items-center gap-2 text-sm uppercase tracking-wide text-indigo-100">
-                      {metric.icon}
-                      {metric.title}
-                    </div>
-                    <div className="mt-2 text-3xl font-semibold">{metric.label}</div>
-                    <p className="mt-2 text-sm text-indigo-100/80">{metric.description}</p>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-6 flex flex-wrap gap-3 text-sm text-indigo-100/80">
-                <span className="inline-flex items-center">
-                  <CheckCircle className="mr-2 h-4 w-4" />
-                  GS1 & QR compatible
-                </span>
-                <span className="inline-flex items-center">
-                  <CheckCircle className="mr-2 h-4 w-4" />
-                  Works online & offline
-                </span>
-              </div>
-            </div>
-            <div className="relative ">
-              <div className="absolute -inset-4 rounded-3xl bg-white/10 blur-3xl" />
-                  <img
-                    src="/scanner2.png"
-                    alt="StockFlow barcode scanner interface"
-                    className="h-[96] w-64 object-cover rounded-3xl"
-                  />
-            </div>
-          </div>
-        </div>
+      {/* Introduction */}
+      <div className="mb-12">
+        <p className="text-lg black leading-relaxed mb-6">
+          Give every team member a lightning-fast barcode scanner that runs in the browser. Capture codes, validate data, and sync stock levels across every channel without installing native apps.
+        </p>
+        <p className="text-lg text-slate-600 leading-relaxed">
+          Inventory alerts are automated notifications that warn you when stock levels are low, when items need reordering, when there are discrepancies, or when important inventory events occur.
+        </p>
       </div>
 
       {/* Feature Highlights */}

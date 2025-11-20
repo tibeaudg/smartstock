@@ -2,24 +2,10 @@ import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
-import { SeoPageHero } from '@/components/seo/SeoPageHero';
-import { useLocation } from 'react-router-dom';
-import { generateSidebarContent } from '@/utils/seoPageHelpers';
-import { 
-  CheckCircle,
-  Star,
-  Trophy,
-  Users,
-  Zap,
-  Shield,
-  Package,
-  TrendingUp
-} from 'lucide-react';
 import { StructuredData } from '@/components/StructuredData';
 
 export default function InventorySystemForSmallBusiness() {
   usePageRefresh();
-  const location = useLocation();
   
   const faqData = [
     {
@@ -32,7 +18,7 @@ export default function InventorySystemForSmallBusiness() {
     },
     {
       question: "How much does an inventory system for small business cost?",
-      answer: "Inventory systems for small businesses vary in cost. StockFlow offers a free plan for small businesses with up to 100 products, making it accessible for startups and small operations. Premium plans start at affordable pay-as-you-grow pricing (€0.004 per product/month), much cheaper than enterprise solutions."
+      answer: "Inventory systems for small businesses vary in cost. StockFlow offers a free plan for small businesses with up to 100 products, making it accessible for startups and small operations. Premium plans start at affordable pay-as-you-grow pricing (ï¿½0.004 per product/month), much cheaper than enterprise solutions."
     },
     {
       question: "What features should an inventory system for small business have?",
@@ -97,35 +83,18 @@ export default function InventorySystemForSmallBusiness() {
     }
   ];
 
-  const sidebarContent = generateSidebarContent(location.pathname, [
-    { id: 'features', title: 'Features', level: 1 },
-    { id: 'benefits', title: 'Benefits', level: 1 },
-    { id: 'testimonials', title: 'What Small Businesses Say', level: 1 },
-    { id: 'faq', title: 'FAQ', level: 1 }
-  ]);
-
   return (
     <SeoPageLayout 
       title="Inventory System for Small Business"
-      
-      
+      heroTitle="Inventory System for Small Business"
+      updatedDate="20/11/2025"
+      faqData={faqData}
     >
       <SEO
         title="Inventory System For Small Business 2025"
         description="Read the guide inventory system for small business to automate your processes. Read the guide inventory system for small business to save. Get started free."
         keywords="inventory system for small business, inventory management software small business, inventory management software for small business, inventory management software for small businesses, inventory management system small business, inventory tracking software for small business, stock management software for small business, inventory programs for small business, small business inventory system, inventory system small business, inventory management for small business, inventory software for small business, small business inventory software, inventory system for small companies, small business inventory management, inventory tracking for small business, small business inventory app, stockflow, stock flow"
         url="https://www.stockflow.be/inventory-system-for-small-business"
-      />      <SeoPageHero
-        title="Inventory System for Small Business: Free & Easy to Use"
-        description="The best inventory system for small business. Free plan available for up to 100 products. Real-time tracking, automated alerts, mobile access. Perfect for small businesses. Start free today!"
-        badges={[
-          { icon: <Trophy className="w-6 h-6" />, text: "Free Plan Available", variant: 'warning' },
-          { icon: <Star className="w-6 h-6" />, text: "4.9/5 Rating", variant: 'success' },
-          { icon: <Users className="w-6 h-6" />, text: "10,000+ Small Businesses", variant: 'info' }
-        ]}
-        ctaText="Start Free - No Credit Card"
-        ctaLink="/auth"
-        backgroundImage="/image.png"
       />
 
       <section id="features" className="py-16 px-4 bg-white">

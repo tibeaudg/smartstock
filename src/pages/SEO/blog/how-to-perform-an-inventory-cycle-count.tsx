@@ -1,11 +1,8 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
 import { usePageRefresh } from "@/hooks/usePageRefresh";
 import { StructuredData } from "@/components/StructuredData";
-import { generateSidebarContent } from "@/utils/seoPageHelpers";
-import InternalLinkingWidget from "@/components/seo/InternalLinkingWidget";
-import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "How To Perform An Inventory Cycle Count";
 const canonicalPath = "/blog/how-to-perform-an-inventory-cycle-count";
@@ -100,20 +97,11 @@ const structuredData = [
 
 export default function SeoHowToPerformAnInventoryCycleCountPage() {
   usePageRefresh();
-  const location = useLocation();
 
   const pageStructuredData = structuredData.map((item) => ({
     ...item,
     dateModified: new Date().toISOString().split("T")[0],
   }));
-
-  const sidebarContent = generateSidebarContent(location.pathname, [
-    { id: "overview", title: `${topicTitle} Overview`, level: 1 },
-    { id: "playbook", title: "Action Playbook", level: 1 },
-    { id: "metrics", title: "Metrics that Matter", level: 1 },
-    { id: "stockflow-advantage", title: "Why StockFlow", level: 1 },
-    { id: "faq", title: "FAQ", level: 1 },
-  ]);
 
   return (
     <SeoPageLayout 
@@ -312,16 +300,6 @@ export default function SeoHowToPerformAnInventoryCycleCountPage() {
         </div>
       </section>
 
-      <section className="bg-gray-50 px-4 py-16">
-        <div className="mx-auto max-w-6xl">
-          <InternalLinkingWidget
-            currentPath={location.pathname}
-            variant="inline"
-            limit={5}
-            title="Related Articles"
-          />
-        </div>
-      </section>
     </SeoPageLayout>
   );
 }

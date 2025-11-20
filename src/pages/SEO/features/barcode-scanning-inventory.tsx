@@ -1,16 +1,12 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
 import SEO from '@/components/SEO';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { StructuredData } from '@/components/StructuredData';
-import ConversionCTA from '@/components/seo/ConversionCTA';
-import InternalLinkingWidget from '@/components/seo/InternalLinkingWidget';
-import TrustSignals from '@/components/seo/TrustSignals';
+import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { generateFAQSchema, generateSoftwareApplicationSchema } from '@/lib/structuredData';
 
 const BarcodeScanningInventory = () => {
-  const location = useLocation();
-  const currentPath = location.pathname;
+  usePageRefresh();
   
   const publishedTime = '2024-01-15T00:00:00Z';
   const modifiedTime = new Date().toISOString();
@@ -125,8 +121,6 @@ const BarcodeScanningInventory = () => {
             Eliminate manual data entry, reduce errors, and speed up inventory operations with mobile barcode scanning.
           </p>
 
-          <TrustSignals variant="compact" className="mb-8" />
-
           <section className="mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
               Benefits of Barcode Scanning for Inventory
@@ -175,22 +169,6 @@ const BarcodeScanningInventory = () => {
               ))}
             </div>
           </section>
-
-          <ConversionCTA
-            variant="default"
-            title="Start Scanning Your Inventory Today"
-            description="Try StockFlow's mobile barcode scanning - no hardware required, works with any smartphone."
-            primaryText="Start Free Trial"
-            primaryLink="/auth"
-            className="my-12"
-          />
-
-          <InternalLinkingWidget
-            currentPath={currentPath}
-            variant="inline"
-            limit={5}
-            className="my-12"
-          />
         </article>
       </div>
     </SeoPageLayout>

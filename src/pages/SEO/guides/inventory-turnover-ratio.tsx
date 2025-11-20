@@ -159,41 +159,15 @@ export default function InventoryTurnoverRatio() {
         modifiedTime={new Date().toISOString()}
       />
 
-      {/* Hero Section */}
-      <section className="relative py-16 sm:py-20 md:py-24 px-4 bg-gradient-to-br from-blue-500 to-blue-900">
-        <div className="absolute inset-0 bg-black bg-opacity-20"></div>
-        
-        <div className="relative max-w-6xl mx-auto text-center text-white">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-            Master Your <span className="text-blue-300">Inventory Turnover Ratio</span>
-          </h1>
-          <p className="text-xl md:text-2xl text-blue-100 mb-8 leading-relaxed max-w-4xl mx-auto">
-            Understand, calculate, and optimize your inventory turnover ratio to improve cash flow, reduce costs, and boost profitability. Complete guide with formulas and best practices.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-            <Link
-              to="/auth"
-              className="bg-white text-blue-600 px-10 py-5 rounded-xl font-bold text-xl transition-all duration-300 transform hover:scale-105 shadow-2xl"
-            >
-              Start Free Trial
-            </Link>
-          </div>
-          <div className="flex flex-wrap justify-center items-center gap-6 text-blue-200">
-            <div className="flex items-center">
-              <CheckCircle className="w-5 h-5 mr-2 text-green-400" />
-              Free calculation tools
-            </div>
-            <div className="flex items-center">
-              <CheckCircle className="w-5 h-5 mr-2 text-green-400" />
-              Industry benchmarks
-            </div>
-            <div className="flex items-center">
-              <CheckCircle className="w-5 h-5 mr-2 text-green-400" />
-              Expert guidance
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Introduction */}
+      <div className="mb-12">
+        <p className="text-lg black leading-relaxed mb-6">
+          Understand, calculate, and optimize your inventory turnover ratio to improve cash flow, reduce costs, and boost profitability. Complete guide with formulas and best practices.
+        </p>
+        <p className="text-lg text-slate-600 leading-relaxed">
+          The inventory turnover ratio is a key metric that measures how many times a company sells and replaces its inventory during a specific period. It's crucial for understanding how efficiently you're managing your stock and converting inventory into sales.
+        </p>
+      </div>
 
       {/* What is Inventory Turnover Ratio Section */}
       <section className="py-16 px-4 bg-white">

@@ -37,7 +37,7 @@ export default function VoorraadbeheerSoftware() {
     },
     {
       question: "Wat kost goede voorraadbeheer software?",
-      answer: "De kosten variÃ«ren. Stockflow biedt een volledig gratis versie voor tot 30 producten. Premium plannen starten vanaf €29 per maand voor meer geavanceerde functies en onbeperkt producten. Veel goedkoper en effectiever dan blijven werken met Excel."
+      answer: "De kosten variÃ«ren. Stockflow biedt een volledig gratis versie voor tot 30 producten. Premium plannen starten vanaf ï¿½29 per maand voor meer geavanceerde functies en onbeperkt producten. Veel goedkoper en effectiever dan blijven werken met Excel."
     },
     {
       question: "Is voorraadbeheer software geschikt voor mijn bedrijfstype?",
@@ -163,76 +163,15 @@ export default function VoorraadbeheerSoftware() {
         ]}
       />
 
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-500 to-blue-700 text-white py-16 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <div className="inline-block bg-blue-400/30 px-4 py-2 rounded-full text-sm font-semibold mb-6">
-                #1 Voorraadbeheer Software in BelgiÃ« & Nederland
-              </div>              <p className="text-xl mb-8 leading-relaxed">
-                Van kleine ondernemer tot groeiende webshop - beheer je voorraad professioneel met software 
-                die is ontworpen voor <strong>jouw</strong> succes. Start gratis en ervaar het verschil.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                <Link
-                  to="/auth"
-                  className="bg-white text-blue-600 px-8 py-4 rounded-lg font-bold text-lg hover:bg-blue-50 transition text-center"
-                >
-                  Start Gratis Nu
-                </Link>
-      
-              </div>
-              <div className="flex flex-wrap gap-4 text-sm">
-                <div className="flex items-center">
-                  <Check className="w-5 h-5 mr-2 text-green-300" />
-                  Geen creditcard nodig
-                </div>
-                <div className="flex items-center">
-                  <Check className="w-5 h-5 mr-2 text-green-300" />
-                  Setup in 5 minuten
-                </div>
-                <div className="flex items-center">
-                  <Check className="w-5 h-5 mr-2 text-green-300" />
-                  500+ tevreden gebruikers
-                </div>
-              </div>
-            </div>
-            <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl">
-              <h3 className="text-2xl font-bold mb-6">Waarom Stockflow?</h3>
-              <div className="space-y-4">
-                <div className="flex items-start space-x-3">
-                  <div className="bg-green-400 rounded-full p-1 mt-1">
-                    <Check className="w-4 h-4 text-white" />
-                  </div>
-                  <div>
-                    <div className="font-semibold">Gratis Starten</div>
-                    <div className="text-blue-100 text-sm">Tot 30 producten, geen verborgen kosten</div>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <div className="bg-green-400 rounded-full p-1 mt-1">
-                    <Check className="w-4 h-4 text-white" />
-                  </div>
-                  <div>
-                    <div className="font-semibold">Super Gebruiksvriendelijk</div>
-                    <div className="text-blue-100 text-sm">Je bent binnen 1 dag operationeel</div>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <div className="bg-green-400 rounded-full p-1 mt-1">
-                    <Check className="w-4 h-4 text-white" />
-                  </div>
-                  <div>
-                    <div className="font-semibold">Groeit Mee</div>
-                    <div className="text-blue-100 text-sm">Van 30 tot 10.000 producten zonder te switchen</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Introduction */}
+      <div className="mb-12">
+        <p className="text-lg black leading-relaxed mb-6">
+          Van kleine ondernemer tot groeiende webshop - beheer je voorraad professioneel met software die is ontworpen voor jouw succes. Start gratis en ervaar het verschil.
+        </p>
+        <p className="text-lg text-slate-600 leading-relaxed">
+          Voorraadbeheer software helpt kleine bedrijven om hun voorraad efficiÃ«nt te beheren. Het automatiseert het bijhouden van producten, bestellingen en leveringen, waardoor je tijd bespaart en fouten voorkomt.
+        </p>
+      </div>
 
       {/* What is Voorraadbeheer Software Section */}
       <section className="py-16 px-4 bg-white">
@@ -498,14 +437,14 @@ export default function VoorraadbeheerSoftware() {
             <h3 className="text-2xl font-bold mb-4 text-center">Rekenvoorbeeld</h3>
             <p className="text-lg mb-4">
               Een gemiddeld bedrijf bespaart <strong>10-15 uur per week</strong> op voorraadtaken. 
-              Bij een uurtarief van €50 is dat <strong>€2.000-3.000 per maand</strong>.
+              Bij een uurtarief van ï¿½50 is dat <strong>ï¿½2.000-3.000 per maand</strong>.
             </p>
             <p className="text-lg">
-              Daarnaast bespaar je <strong>€1.000-2.000 per maand</strong> door betere voorraad optimalisatie 
+              Daarnaast bespaar je <strong>ï¿½1.000-2.000 per maand</strong> door betere voorraad optimalisatie 
               (minder overstock, minder stockouts).
             </p>
             <div className="mt-6 p-4 bg-yellow-400/20 rounded-lg text-center">
-              <div className="text-3xl font-bold mb-2">€3.000 - €5.000</div>
+              <div className="text-3xl font-bold mb-2">ï¿½3.000 - ï¿½5.000</div>
               <div>Gemiddelde maandelijkse besparing</div>
             </div>
           </div>

@@ -55,6 +55,9 @@
     <loc>https://www.stockflow.be/blog/asset-tracking-101</loc>
   </url>
   <url>
+    <loc>https://www.stockflow.be/blog/barcode-inventory-system</loc>
+  </url>
+  <url>
     <loc>https://www.stockflow.be/blog/barcodes-vs-qr-codes-for-inventory-management</loc>
   </url>
   <url>
@@ -340,12 +343,6 @@
     <loc>https://www.stockflow.be/dutch/programma-stockbeheer</loc>
   </url>
   <url>
-    <loc>https://www.stockflow.be/dutch/programma-stockbeheer-gratis</loc>
-  </url>
-  <url>
-    <loc>https://www.stockflow.be/dutch/simpelstockbeheer</loc>
-  </url>
-  <url>
     <loc>https://www.stockflow.be/dutch/stockbeheer-programma</loc>
   </url>
   <url>
@@ -394,43 +391,10 @@
     <loc>https://www.stockflow.be/glossary</loc>
   </url>
   <url>
-    <loc>https://www.stockflow.be/glossary/80-20-inventory-rule</loc>
-  </url>
-  <url>
-    <loc>https://www.stockflow.be/glossary/asset-control</loc>
-  </url>
-  <url>
-    <loc>https://www.stockflow.be/glossary/asset-tracking</loc>
-  </url>
-  <url>
-    <loc>https://www.stockflow.be/glossary/bill-of-materials</loc>
-  </url>
-  <url>
-    <loc>https://www.stockflow.be/glossary/consignment-inventory</loc>
-  </url>
-  <url>
     <loc>https://www.stockflow.be/glossary/createGlossaryPage</loc>
   </url>
   <url>
-    <loc>https://www.stockflow.be/glossary/economic-order-quantity</loc>
-  </url>
-  <url>
-    <loc>https://www.stockflow.be/glossary/hedging-inventory</loc>
-  </url>
-  <url>
-    <loc>https://www.stockflow.be/glossary/inventory</loc>
-  </url>
-  <url>
-    <loc>https://www.stockflow.be/glossary/inventory-asset</loc>
-  </url>
-  <url>
     <loc>https://www.stockflow.be/glossary/inventory-automation</loc>
-  </url>
-  <url>
-    <loc>https://www.stockflow.be/glossary/inventory-cycle-counting</loc>
-  </url>
-  <url>
-    <loc>https://www.stockflow.be/glossary/inventory-list</loc>
   </url>
   <url>
     <loc>https://www.stockflow.be/glossary/inventory-management</loc>
@@ -445,37 +409,7 @@
     <loc>https://www.stockflow.be/glossary/just-in-time-inventory</loc>
   </url>
   <url>
-    <loc>https://www.stockflow.be/glossary/kitting</loc>
-  </url>
-  <url>
-    <loc>https://www.stockflow.be/glossary/landed-cost</loc>
-  </url>
-  <url>
     <loc>https://www.stockflow.be/glossary/minimum-order-quantity</loc>
-  </url>
-  <url>
-    <loc>https://www.stockflow.be/glossary/moving-average-cost</loc>
-  </url>
-  <url>
-    <loc>https://www.stockflow.be/glossary/mro-inventory</loc>
-  </url>
-  <url>
-    <loc>https://www.stockflow.be/glossary/pick-list</loc>
-  </url>
-  <url>
-    <loc>https://www.stockflow.be/glossary/purchase-requisition</loc>
-  </url>
-  <url>
-    <loc>https://www.stockflow.be/glossary/safety-stock</loc>
-  </url>
-  <url>
-    <loc>https://www.stockflow.be/glossary/supplier-relationship-management</loc>
-  </url>
-  <url>
-    <loc>https://www.stockflow.be/glossary/uom-inventory</loc>
-  </url>
-  <url>
-    <loc>https://www.stockflow.be/glossary/vendor-managed-inventory</loc>
   </url>
   <url>
     <loc>https://www.stockflow.be/glossary/warehouse-management</loc>
@@ -490,9 +424,6 @@
     <loc>https://www.stockflow.be/guides/avoid-inventory-mistakes</loc>
   </url>
   <url>
-    <loc>https://www.stockflow.be/guides/how-to-calculate-safety-stock</loc>
-  </url>
-  <url>
     <loc>https://www.stockflow.be/guides/how-to-choose-inventory-management-software</loc>
   </url>
   <url>
@@ -502,19 +433,7 @@
     <loc>https://www.stockflow.be/guides/inventory-turnover-ratio</loc>
   </url>
   <url>
-    <loc>https://www.stockflow.be/guides/jit-management</loc>
-  </url>
-  <url>
-    <loc>https://www.stockflow.be/industries/inventory-management-bakery</loc>
-  </url>
-  <url>
     <loc>https://www.stockflow.be/industries/retail-inventory-management</loc>
-  </url>
-  <url>
-    <loc>https://www.stockflow.be/industries/warehouse-execution-system</loc>
-  </url>
-  <url>
-    <loc>https://www.stockflow.be/industries/warehouse-logistics</loc>
   </url>
   <url>
     <loc>https://www.stockflow.be/industries/warehouse-software</loc>
@@ -538,18 +457,6 @@
     <loc>https://www.stockflow.be/nl/pricing</loc>
   </url>
   <url>
-    <loc>https://www.stockflow.be/operations/capacity-requirement-planning</loc>
-  </url>
-  <url>
-    <loc>https://www.stockflow.be/operations/order-management-platforms</loc>
-  </url>
-  <url>
-    <loc>https://www.stockflow.be/operations/ordering-management-system</loc>
-  </url>
-  <url>
-    <loc>https://www.stockflow.be/operations/purchasing-inventory-software</loc>
-  </url>
-  <url>
     <loc>https://www.stockflow.be/pricing</loc>
   </url>
   <url>
@@ -566,9 +473,6 @@
   </url>
   <url>
     <loc>https://www.stockflow.be/seo</loc>
-  </url>
-  <url>
-    <loc>https://www.stockflow.be/solutions/cloud-stock-management</loc>
   </url>
   <url>
     <loc>https://www.stockflow.be/solutions/inventory-management-online</loc>

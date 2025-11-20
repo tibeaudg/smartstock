@@ -209,38 +209,15 @@ export default function RetailInventoryManagement() {
         structuredData={structuredData}
       />
 
-      {/* Hero Section with Background */}
-      <section
-        className="relative py-16 sm:py-20 md:py-24 px-4 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: 'url(/image.png)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
-        }}
-      >
-        <div className="absolute inset-0 bg-black bg-opacity-40"></div>
-
-        <div className="relative max-w-6xl mx-auto">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-white">
-              Retail <span className="text-blue-400">Inventory Management</span> Made Simple
-            </h1>
-            <p className="text-lg md:text-xl text-gray-100 mb-8 max-w-4xl mx-auto">
-              Stop losing sales to stockouts. Manage your retail inventory like a pro with real-time tracking, smart alerts, and powerful analytics designed for small shops.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-              <Link
-                to="/auth"
-                className="bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-blue-700 transition shadow-lg"
-              >
-                Start Free Trial
-              </Link>
-            </div>
-            <p className="text-sm text-gray-200">Trusted by 500+ retail shops for inventory management</p>
-          </div>
-        </div>
-      </section>
+      {/* Introduction */}
+      <div className="mb-12">
+        <p className="text-lg black leading-relaxed mb-6">
+          Stop losing sales to stockouts. Manage your retail inventory like a pro with real-time tracking, smart alerts, and powerful analytics designed for small shops.
+        </p>
+        <p className="text-lg text-slate-600 leading-relaxed">
+          Retail inventory management is the process of tracking and controlling stock levels in retail stores to ensure products are available when customers need them, while minimizing carrying costs and preventing overstock situations.
+        </p>
+      </div>
 
       {/* Retail Challenges Section */}
       <section className="py-16 px-4 bg-white">

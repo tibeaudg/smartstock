@@ -111,85 +111,15 @@ export default function WarehouseManagement() {
         ]}
       />
 
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-purple-600 to-indigo-800 text-white py-16 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <div className="inline-block bg-purple-400/30 px-4 py-2 rounded-full text-sm font-semibold mb-6">
-                Warehouse Management System
-              </div>              <p className="text-xl mb-8 leading-relaxed">
-                Transform your warehouse operations with professional warehouse management software. 
-                From receiving to shipping - optimize every process with <Link to="/inventory-management-software" className="underline hover:text-yellow-300">modern inventory management software</Link>.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                <Link
-                  to="/auth"
-                  className="bg-white text-purple-600 px-8 py-4 rounded-lg font-bold text-lg hover:bg-purple-50 transition text-center"
-                >
-                  Start Free Trial
-                </Link>
-        
-              </div>
-              <div className="flex flex-wrap gap-4 text-sm">
-                <div className="flex items-center">
-                  <Check className="w-5 h-5 mr-2 text-green-300" />
-                  Multi-location support
-                </div>
-                <div className="flex items-center">
-                  <Check className="w-5 h-5 mr-2 text-green-300" />
-                  Barcode scanning
-                </div>
-                <div className="flex items-center">
-                  <Check className="w-5 h-5 mr-2 text-green-300" />
-                  Mobile app
-                </div>
-              </div>
-            </div>
-            <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl">
-              <h3 className="text-2xl font-bold mb-6">Warehouse KPIs After Implementation</h3>
-              <div className="space-y-4">
-                <div>
-                  <div className="flex justify-between mb-2">
-                    <span className="text-green-300">Order Accuracy</span>
-                    <span className="font-bold">99.8%</span>
-                  </div>
-                  <div className="bg-white/20 h-3 rounded-full overflow-hidden">
-                    <div className="bg-green-400 h-full" style={{width: '99.8%'}}></div>
-                  </div>
-                </div>
-                <div>
-                  <div className="flex justify-between mb-2">
-                    <span className="text-blue-300">Time Savings</span>
-                    <span className="font-bold">65%</span>
-                  </div>
-                  <div className="bg-white/20 h-3 rounded-full overflow-hidden">
-                    <div className="bg-blue-400 h-full" style={{width: '65%'}}></div>
-                  </div>
-                </div>
-                <div>
-                  <div className="flex justify-between mb-2">
-                    <span className="text-yellow-300">Cost Reduction</span>
-                    <span className="font-bold">40%</span>
-                  </div>
-                  <div className="bg-white/20 h-3 rounded-full overflow-hidden">
-                    <div className="bg-yellow-400 h-full" style={{width: '40%'}}></div>
-                  </div>
-                </div>
-                <div>
-                  <div className="flex justify-between mb-2">
-                    <span className="text-purple-300">Productivity Increase</span>
-                    <span className="font-bold">75%</span>
-                  </div>
-                  <div className="bg-white/20 h-3 rounded-full overflow-hidden">
-                    <div className="bg-purple-400 h-full" style={{width: '75%'}}></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Introduction */}
+      <div className="mb-12">
+        <p className="text-lg black leading-relaxed mb-6">
+          Transform your warehouse operations with professional warehouse management software. From receiving to shipping - optimize every process with modern inventory management software.
+        </p>
+        <p className="text-lg text-slate-600 leading-relaxed">
+          Warehouse management software helps businesses control and optimize warehouse operations, from receiving and storing goods to picking, packing, and shipping. It provides real-time visibility, intelligent task assignment, and seamless integrations with ERP, e-commerce, and supply chain systems.
+        </p>
+      </div>
 
       {/* Features Section */}
       <section className="py-20 px-4 bg-white">
@@ -351,7 +281,7 @@ export default function WarehouseManagement() {
               Contact Sales
             </Link>
           </div>
-          <p className="mt-6 text-indigo-200">No credit card required • Free 14-day trial • Cancel anytime</p>
+          <p className="mt-6 text-indigo-200">No credit card required ï¿½ Free 14-day trial ï¿½ Cancel anytime</p>
         </div>
       </section>
 

@@ -143,54 +143,6 @@ export default function ProgrammaStockbeheer() {
 
 
 
-      {/* Hero Section */}
-      <section 
-        className="relative py-16 sm:py-20 md:py-24 px-4 bg-white"
-      >
-        <div className="relative max-w-7xl mx-auto">
-          <div className="flex gap-12 items-center">
-            <div className="text-blue-900">
-              <div className="inline-flex items-center px-4 py-2 bg-blue-600/20 border border-blue-400/30 rounded-full text-blue-900 text-sm font-medium mb-6">
-                <span className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
-                Vertrouwd door 500+ bedrijven
-              </div>
-              
-              <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-              StockFlow: Modern Stockbeheer Programma<br />
-              <span className="text-blue-900">voor groeiende bedrijven</span>
-              </h2>
-              
-              <p className="text-xl md:text-2xl text-blue-900 mb-8 leading-relaxed">
-                Het stockbeheer programma dat <strong>100% automatische beslissingen</strong> maakt voor kleine bedrijven. Stop met handmatig bijhouden, voorkom voorraadtekorten en laat je bedrijf groeien.
-              </p>
-              
-              <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                <Link
-                  to="/auth"
-                  className="bg-blue-600 text-white px-10 py-5 rounded-xl font-bold text-xl transition-all duration-300 transform hover:scale-105 shadow-2xl text-center"
-                >
-                  Start Je Gratis Proefperiode
-                </Link>
-              </div>
-              
-              <div className="flex flex-wrap items-center gap-6 text-blue-900">
-                <div className="flex items-center">
-                  <CheckCircle className="w-5 h-5 mr-2 text-blue-900" />
-                  Geen creditcard vereist
-                </div>
-                <div className="flex items-center">
-                  <CheckCircle className="w-5 h-5 mr-2 text-blue-900" />
-                  14 dagen gratis proberen
-                </div>
-                <div className="flex items-center">
-                  <CheckCircle className="w-5 h-5 mr-2 text-blue-900" />
-                  Setup in 5 minuten
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
 
       

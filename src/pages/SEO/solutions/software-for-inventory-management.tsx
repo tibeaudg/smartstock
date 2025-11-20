@@ -179,39 +179,15 @@ export default function SoftwareForInventoryManagement() {
         url="https://www.stockflow.be/software-for-inventory-management"
       />
 
-      {/* Hero Section with Background */}
-      <section 
-        className="relative py-16 sm:py-20 md:py-24 px-4 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: 'url(/image.png)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
-        }}
-      >
-        <div className="absolute inset-0 bg-black bg-opacity-40"></div>
-        
-        <div className="relative max-w-6xl mx-auto">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-white">
-              The Best <span className="text-blue-400">Software for Inventory Management</span>
-            </h1>
-            <p className="text-lg md:text-xl text-gray-100 mb-8 max-w-4xl mx-auto">
-              Discover powerful software designed specifically for inventory management. Real-time tracking, automated alerts, and comprehensive tools to optimize your inventory operations.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-              <Link
-                to="/auth"
-                className="bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-blue-700 transition shadow-lg"
-              >
-                Start Free Trial
-              </Link>
-    
-            </div>
-            <p className="text-sm text-gray-200">Trusted by 500+ businesses for inventory management</p>
-          </div>
-        </div>
-      </section>
+      {/* Introduction */}
+      <div className="mb-12">
+        <p className="text-lg black leading-relaxed mb-6">
+          Discover powerful software designed specifically for inventory management. Real-time tracking, automated alerts, and comprehensive tools to optimize your inventory operations.
+        </p>
+        <p className="text-lg text-slate-600 leading-relaxed">
+          Software for inventory management includes specialized tools like StockFlow, which provide real-time tracking, automated reordering, barcode scanning, reporting, and integration capabilities. These tools help businesses maintain optimal stock levels and streamline operations.
+        </p>
+      </div>
 
       {/* What is Software for Inventory Management Section */}
       <section className="py-16 px-4 bg-white">

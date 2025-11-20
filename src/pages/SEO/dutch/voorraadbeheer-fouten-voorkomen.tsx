@@ -137,28 +137,14 @@ export default function VoorraadbeheerFoutenVoorkomen() {
         ]}
       />
 
-      {/* Hero Section */}
-      <div className="bg-gradient-to-br from-red-300 to-pink-500 text-white py-16 px-6 rounded-lg mb-8">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-5xl font-bold mb-6">
-            Fouten in Voorraadbeheer Voorkomen
-          </h1>
-          <p className="text-xl mb-8 leading-relaxed">
-            Fouten in <strong>voorraadbeheer</strong> kunnen leiden tot tekorten, overstock en ontevreden klanten. 
-            Met deze complete gids voorkom je de meest voorkomende problemen.
-          </p>
-          <div className="flex justify-center space-x-4">
-            <div className="bg-white bg-opacity-20 px-4 py-2 rounded-full">
-              <span className="text-sm text-black font-bold">✓ Best practices</span>
-            </div>
-            <div className="bg-white bg-opacity-20 px-4 py-2 rounded-full">
-              <span className="text-sm text-black font-bold">✓ Praktische tips</span>
-            </div>
-            <div className="bg-white bg-opacity-20 px-4 py-2 rounded-full">
-              <span className="text-sm text-black font-bold">✓ Foutpreventie</span>
-            </div>
-          </div>
-        </div>
+      {/* Introduction */}
+      <div className="mb-12">
+        <p className="text-lg black leading-relaxed mb-6">
+          Fouten in voorraadbeheer kunnen leiden tot tekorten, overstock en ontevreden klanten. Met deze complete gids voorkom je de meest voorkomende problemen.
+        </p>
+        <p className="text-lg text-slate-600 leading-relaxed">
+          Inventory mistakes can cost businesses thousands of euros in lost revenue, wasted stock, and operational inefficiencies. Understanding common pitfalls and implementing preventive measures is essential for maintaining accurate inventory and profitable operations.
+        </p>
       </div>
 
       {/* Intro Section */}

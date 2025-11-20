@@ -79,47 +79,15 @@ export default function SoftwareStockbeheer() {
         structuredData={structuredData}
       />
 
-      {/* Hero Section */}
-      <section className="bg-white py-8 sm:py-12 md:py-16 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-3 gap-6 sm:gap-8 items-center">
-            <div className="lg:col-span-2">
-              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6">
-                <span className="text-blue-600">Software Stockbeheer</span> voor Kleine Bedrijven
-              </h1>
-              <p className="text-sm sm:text-base md:text-lg text-gray-700 mb-6 sm:mb-8 leading-relaxed">
-                Eenvoudig software stockbeheer voor kleine bedrijven. Beheer voorraad, leveringen en producten in Ã©Ã©n online dashboard. Real-time inzicht, barcode scanning en automatische meldingen. Gratis te proberen voor KMO's!
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link
-                  to="/auth"
-                  className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold shadow-lg hover:bg-blue-700 transition text-center"
-                >
-                  Start Gratis Nu
-                </Link>
-                <Link
-                  to="/stockbeheer-software"
-                  className="border border-blue-600 text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition text-center"
-                >
-                  Meer Informatie
-                </Link>
-              </div>
-              <p className="text-xs sm:text-sm text-gray-600 mt-4">
-                Zie ook: <Link to="/stockbeheer-programma" className="text-blue-600 hover:underline">Stockbeheer Programma</Link> • <Link to="/magazijnbeheer-software" className="text-blue-600 hover:underline">Magazijnbeheer Software</Link> • <Link to="/voorraadbeheer-software" className="text-blue-600 hover:underline">Voorraadbeheer Software</Link>
-              </p>
-            </div>
-            <div className="lg:col-span-1">
-              <div className="rounded-lg text-center">
-                <img 
-                  src="https://www.warehousingandfulfillment.com/wp-content/uploads/2020/04/Barcode-Scanning-Technologies.jpg" 
-                  alt="Software Stockbeheer" 
-                  className="w-full max-w-sm sm:max-w-md lg:w-96 h-64 sm:h-80 lg:h-96 mx-auto object-cover rounded-lg mb-4"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Introduction */}
+      <div className="mb-12">
+        <p className="text-lg black leading-relaxed mb-6">
+          Eenvoudig software stockbeheer voor kleine bedrijven. Beheer voorraad, leveringen en producten in één online dashboard. Real-time inzicht, barcode scanning en automatische meldingen.
+        </p>
+        <p className="text-lg text-slate-600 leading-relaxed">
+          Software stockbeheer is een digitaal systeem dat helpt bij het beheren van je voorraad. Het houdt bij hoeveel producten je hebt, wanneer je moet bestellen en helpt bij het optimaliseren van je magazijnoperaties.
+        </p>
+      </div>
 
       {/* What is Software Stockbeheer Section */}
       <section className="py-8 sm:py-12 md:py-16 px-4 bg-gray-50">

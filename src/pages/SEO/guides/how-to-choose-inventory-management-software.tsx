@@ -1,17 +1,14 @@
 import React from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import SEO from '@/components/SEO';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { StructuredData } from '@/components/StructuredData';
-import ConversionCTA from '@/components/seo/ConversionCTA';
-import InternalLinkingWidget from '@/components/seo/InternalLinkingWidget';
-import TrustSignals from '@/components/seo/TrustSignals';
+import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { generateFAQSchema } from '@/lib/structuredData';
 import { generateHowToSchema } from '@/utils/enhancedStructuredData';
 
 const HowToChooseInventoryManagementSoftware = () => {
-  const location = useLocation();
-  const currentPath = location.pathname;
+  usePageRefresh();
   
   const publishedTime = '2024-01-15T00:00:00Z';
   const modifiedTime = new Date().toISOString();
@@ -135,8 +132,6 @@ const HowToChooseInventoryManagementSoftware = () => {
             This comprehensive guide walks you through every step of the evaluation and selection process.
           </p>
 
-          <TrustSignals variant="compact" className="mb-8" />
-
           <section className="mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-6">
               Step-by-Step Guide to Choosing Inventory Software
@@ -184,22 +179,6 @@ const HowToChooseInventoryManagementSoftware = () => {
               ))}
             </div>
           </section>
-
-          <ConversionCTA
-            variant="hero"
-            title="Try StockFlow Free for 14 Days"
-            description="Experience powerful inventory management with no credit card required. Start your free trial today."
-            primaryText="Start Free Trial"
-            primaryLink="/auth"
-            className="my-12"
-          />
-
-          <InternalLinkingWidget
-            currentPath={currentPath}
-            variant="inline"
-            limit={5}
-            className="my-12"
-          />
         </article>
       </div>
     </SeoPageLayout>

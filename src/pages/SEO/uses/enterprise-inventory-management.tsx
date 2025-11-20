@@ -2,24 +2,11 @@ import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
-import { SeoPageHero } from '@/components/seo/SeoPageHero';
-import { useLocation } from 'react-router-dom';
-import { generateSidebarContent } from '@/utils/seoPageHelpers';
-import { 
-  CheckCircle,
-  Star,
-  Trophy,
-  Users,
-  Building,
-  Shield,
-  Zap,
-  TrendingUp
-} from 'lucide-react';
 import { StructuredData } from '@/components/StructuredData';
+import { Building, Shield, Zap, TrendingUp, CheckCircle } from 'lucide-react';
 
 export default function EnterpriseInventoryManagement() {
   usePageRefresh();
-  const location = useLocation();
   
   const faqData = [
     {
@@ -32,7 +19,7 @@ export default function EnterpriseInventoryManagement() {
     },
     {
       question: "How much does enterprise inventory management software cost?",
-      answer: "Enterprise inventory management software typically costs $10,000+ per month for large deployments. However, StockFlow offers enterprise-level features starting at affordable pay-as-you-grow pricing (€0.004 per product/month), making enterprise capabilities accessible to growing businesses without massive upfront costs."
+      answer: "Enterprise inventory management software typically costs $10,000+ per month for large deployments. However, StockFlow offers enterprise-level features starting at affordable pay-as-you-grow pricing (ï¿½0.004 per product/month), making enterprise capabilities accessible to growing businesses without massive upfront costs."
     },
     {
       question: "Is StockFlow suitable for enterprise inventory management?",
@@ -82,36 +69,19 @@ export default function EnterpriseInventoryManagement() {
     "Cost-effective enterprise solution"
   ];
 
-  const sidebarContent = generateSidebarContent(location.pathname, [
-    { id: 'what-is', title: 'What is Enterprise Inventory Management?', level: 1 },
-    { id: 'features', title: 'Features', level: 1 },
-    { id: 'benefits', title: 'Benefits', level: 1 },
-    { id: 'faq', title: 'FAQ', level: 1 }
-  ]);
-
   return (
     <SeoPageLayout 
       title="Enterprise Inventory Management"
-      
-      
+      heroTitle="Enterprise Inventory Management"
+      updatedDate="20/11/2025"
+      faqData={faqData}
     >
       <SEO
         title="Enterprise Inventory Management Software 2025 | Multi-Location Solutions"
-        description="Enterprise inventory management software for large organizations. Multi-warehouse support, advanced analytics, API access, and scalability. Affordable enterprise solution starting at €0.004/product/month."
+        description="Enterprise inventory management software for large organizations. Multi-warehouse support, advanced analytics, API access, and scalability. Affordable enterprise solution starting at ï¿½0.004/product/month."
         keywords="enterprise inventory management software, enterprise inventory management, enterprise inventory software, enterprise inventory system, enterprise inventory management system, enterprise inventory solution, enterprise inventory platform, multi-location inventory, enterprise inventory features, stockflow, stock flow"
         url="https://www.stockflow.be/enterprise-inventory-management"
-      />      <SeoPageHero
-        title="Enterprise Inventory Management Software: Complete Enterprise Solution"
-        description="Best enterprise inventory management software for large organizations. Multi-warehouse support, advanced analytics, enterprise security, and scalability. Affordable enterprise solution starting at €0.004/product/month."
-        badges={[
-          { icon: <Trophy className="w-6 h-6" />, text: "#1 Enterprise Solution", variant: 'warning' },
-          { icon: <Star className="w-6 h-6" />, text: "Enterprise Features", variant: 'success' },
-          { icon: <Users className="w-6 h-6" />, text: "500+ Enterprises", variant: 'info' }
-        ]}
-        ctaText="Start Enterprise Trial Free"
-        ctaLink="/auth"
-        backgroundImage="/image.png"
-      />
+      /> for large organizations. Multi-warehouse support, advanced analytics, enterprise security, and scalability. Affordable enterprise solution starting at ï¿½0.004/product/month."
 
       <section id="what-is" className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">

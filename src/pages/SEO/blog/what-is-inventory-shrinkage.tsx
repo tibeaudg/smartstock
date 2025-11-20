@@ -1,11 +1,8 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
 import { usePageRefresh } from "@/hooks/usePageRefresh";
 import { StructuredData } from "@/components/StructuredData";
-import { generateSidebarContent } from "@/utils/seoPageHelpers";
-import InternalLinkingWidget from "@/components/seo/InternalLinkingWidget";
-import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "What Is Inventory Shrinkage";
 const canonicalPath = "/blog/what-is-inventory-shrinkage";
@@ -96,20 +93,11 @@ const structuredData = [
 
 export default function SeoWhatIsInventoryShrinkagePage() {
   usePageRefresh();
-  const location = useLocation();
 
   const pageStructuredData = structuredData.map((item) => ({
     ...item,
     dateModified: new Date().toISOString().split("T")[0],
   }));
-
-  const sidebarContent = generateSidebarContent(location.pathname, [
-    { id: "overview", title: `${topicTitle} Overview`, level: 1 },
-    { id: "playbook", title: "Action Playbook", level: 1 },
-    { id: "metrics", title: "Metrics that Matter", level: 1 },
-    { id: "stockflow-advantage", title: "Why StockFlow", level: 1 },
-    { id: "faq", title: "FAQ", level: 1 },
-  ]);
 
   return (
     <SeoPageLayout 
@@ -279,16 +267,6 @@ export default function SeoWhatIsInventoryShrinkagePage() {
         </div>
       </section>
 
-      <section className="bg-gray-50 px-4 py-16">
-        <div className="mx-auto max-w-6xl">
-          <InternalLinkingWidget
-            currentPath={location.pathname}
-            variant="inline"
-            limit={5}
-            title="Related Articles"
-          />
-        </div>
-      </section>
     </SeoPageLayout>
   );
 }
