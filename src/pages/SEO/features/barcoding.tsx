@@ -2,8 +2,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import Header from '@/components/HeaderPublic';
-import Footer from '@/components/Footer';
+import SeoPageLayout from '@/components/SeoPageLayout';
 import {
   Smartphone,
   QrCode,
@@ -201,8 +200,7 @@ export default function BarcodingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-16">
-      <Header />
+    <SeoPageLayout title="Barcoding">
       <SEO
         title="Barcoding 2025 - Barcoding 2025 -"
         description="Learn how barcoding to automate your processes. Read the guide barcoding to automate your processes. Discover StockFlow. Start free today. StockFlow helps bu..."
@@ -474,8 +472,7 @@ export default function BarcodingPage() {
           </div>
         </div>
       </div>
-      <Footer />
-    </div>
+    </SeoPageLayout>
   );
 }
 

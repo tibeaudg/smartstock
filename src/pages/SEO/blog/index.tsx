@@ -1,327 +1,412 @@
-import { Link, useLocation } from "react-router-dom";
-import SEO from "@/components/SEO";
-import SeoPageLayout from "@/components/SeoPageLayout";
+import { Link } from "react-router-dom";
+import { useMemo, useState } from "react";
 import { usePageRefresh } from "@/hooks/usePageRefresh";
-import { StructuredData } from "@/components/StructuredData";
-import { generateSidebarContent } from "@/utils/seoPageHelpers";
-import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
+import { getAllSeoPages, type PageMetadata } from "@/config/topicClusters";
+import { getSeoRoutes } from "@/routes/seoRoutes";
+import { Search } from "lucide-react";
+import HeaderPublic from "@/components/HeaderPublic";
+import Footer from "@/components/Footer";
 
-const topicTitle = "Stockflow Blog";
-const canonicalPath = "/blog";
-const metaDescription = "Explore StockFlow resources inspired by Stockflow blog topics. Discover actionable guides, feature breakdowns, and industry insights tailored for modern inventory teams.";
-const keywords = "Stockflow Blog, Stockflow Blog guide, Stockflow Blog best practices, Stockflow Blog StockFlow, inventory management, operations playbook";
-const heroBadge = "Stockflow Blog • Updated November 2025";
-const summaryCopy = "Explore Stockflow Blog through the lens of modern inventory and operations leadership. This StockFlow-exclusive guide synthesizes the best lessons from the original Stockflow article and translates them into actionable steps for teams that need structure, visibility, and measurable wins.";
-const takeaways = [
-  "Understand the core themes behind Stockflow Blog and why they matter for modern operations teams.",
-  "Follow a structured framework to translate Stockflow Blog into day-to-day improvements.",
-  "Highlight StockFlow capabilities that make Stockflow blog sustainable at scale."
-];
-const actionSteps = [
-  {
-    "title": "Align on the outcome",
-    "description": "Confirm what Stockflow blog should deliver for customers, finance, and frontline teams."
-  },
-  {
-    "title": "Audit current workflows",
-    "description": "Document how Stockflow blog happens today, where gaps exist, and which systems hold the data."
-  },
-  {
-    "title": "Launch targeted improvements",
-    "description": "Prototype a lean version of Stockflow blog inside StockFlow, measure the impact, and expand in sprints."
-  }
-];
-const metrics = [
-  {
-    "label": "Execution velocity",
-    "detail": "Track how quickly Stockflow blog initiatives move from idea to rollout."
-  },
-  {
-    "label": "Team adoption",
-    "detail": "Measure participation rates in the new Stockflow blog process across locations or departments."
-  },
-  {
-    "label": "Quality & accuracy",
-    "detail": "Monitor error rates, rework, or data accuracy tied to Stockflow blog workflows."
-  }
-];
-const faqData = [
-  {
-    "question": "What is Stockflow Blog?",
-    "answer": "Stockflow Blog refers to the practices, insights, or stories captured in the original Stockflow blog article. This guide reframes the topic for StockFlow users who want to move faster, stay organized, and build resilient inventory operations."
-  },
-  {
-    "question": "How can I get started with Stockflow blog?",
-    "answer": "Start by clarifying the objective, mapping the stakeholders, and collecting baseline metrics. Use the action playbook in this article to pilot Stockflow blog within one team, then expand once you capture early wins."
-  },
-  {
-    "question": "Where does StockFlow add value for Stockflow blog?",
-    "answer": "StockFlow centralizes data, automates alerts, and connects cross-functional teams. That means fewer spreadsheets, faster decisions, and the ability to prove the value of Stockflow blog with real-time dashboards."
-  }
-];
-const structuredData = [
-  {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    "headline": "Stockflow Blog",
-    "description": "Explore StockFlow resources inspired by Stockflow blog topics. Discover actionable guides, feature breakdowns, and industry insights tailored for modern inventory teams.",
-    "author": {
-      "@type": "Organization",
-      "name": "StockFlow"
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "StockFlow",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://www.stockflow.be/logo.png"
-      }
-    },
-    "datePublished": "2025-11-12",
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog"
-    }
-  }
-];
+// Get original file paths to determine folder structure
+// From src/pages/SEO/blog/, ../ goes to src/pages/SEO/
+// So ../**/*.tsx matches all .tsx files in src/pages/SEO/**/*
+const seoFileModules = {
+  ...import.meta.glob("../**/*.tsx", { eager: false }),
+};
 
-export default function SeoSortlyBlogPage() {
+
+
+
+
+export default function SeoBlogIndexPage() {
   usePageRefresh();
-  const location = useLocation();
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const pageStructuredData = structuredData.map((item) => ({
-    ...item,
-    dateModified: new Date().toISOString().split("T")[0],
-  }));
+  // Get all SEO pages - combine routes with metadata
+  const allPages = useMemo(() => {
+    const routes = getSeoRoutes();
+    const metadataMap = new Map<string, PageMetadata>();
+    
+    // Create a map of metadata by path (normalize paths for matching)
+    getAllSeoPages().forEach(page => {
+      const normalizedPath = page.path.startsWith('/') ? page.path : `/${page.path}`;
+      metadataMap.set(normalizedPath, page);
+      // Also store without leading slash for flexible matching
+      if (normalizedPath !== page.path) {
+        metadataMap.set(page.path, page);
+      }
+    });
 
-  const sidebarContent = generateSidebarContent(location.pathname, [
-    { id: "overview", title: `${topicTitle} Overview`, level: 1 },
-    { id: "playbook", title: "Action Playbook", level: 1 },
-    { id: "metrics", title: "Metrics that Matter", level: 1 },
-    { id: "stockflow-advantage", title: "Why StockFlow", level: 1 },
-    { id: "faq", title: "FAQ", level: 1 },
-  ]);
+    // Helper to extract slug from file path (matching seoRoutes.tsx logic exactly)
+    const getSlugFromFilePath = (filePath: string): string => {
+      const withoutPrefix = filePath
+        .replace(/^(\.\.\/)+/, "")
+        .replace(/^pages\/(SEO|seo)\//, "");
+      const withoutExtension = withoutPrefix.replace(/\.tsx$/, "");
+      const segments = withoutExtension.split("/").filter(Boolean);
+
+      if (segments.length === 0) return "";
+
+      const lastSegment = segments[segments.length - 1];
+      if (lastSegment === "index") {
+        segments.pop();
+      }
+
+      if (segments.length === 0) return "";
+
+      const legacyTopLevelSlugs = new Set([
+        "asset-tracking",
+        "inventory-management",
+        "what-is-lead-time",
+        "warehouse-management",
+        "warehouse-management-system",
+      ]);
+
+      if (segments[0] === "glossary") {
+        if (segments.length === 1) {
+          return "glossary";
+        }
+        if (segments.length === 2 && legacyTopLevelSlugs.has(segments[1])) {
+          return segments[1];
+        }
+        return segments.join("/");
+      }
+
+      return segments[segments.length - 1];
+    };
+
+    // Create a map from route path to category based on file folder structure
+    // Key: route path (e.g., "/article"), Value: category (e.g., "blog")
+    const routePathToCategoryMap = new Map<string, string>();
+    
+    // Build route path to category map from all file paths
+    Object.keys(seoFileModules).forEach(filePath => {
+      // Skip index files (they're category overview pages, not articles)
+      const checkExt = filePath.replace(/\.tsx$/, "");
+      const checkSegments = checkExt.split("/").filter(Boolean);
+      const lastSegment = checkSegments[checkSegments.length - 1];
+      if (lastSegment === "index") return;
+      
+      // Extract folder structure from original file path FIRST (before slug extraction)
+      // Use the same normalization logic as getSlugFromFilePath to ensure consistency
+      // This processes paths the same way as seoRoutes.tsx does
+      const withoutPrefix = filePath
+        .replace(/^(\.\.\/)+/, "")
+        .replace(/^pages\/(SEO|seo)\//, "");
+      
+      const withoutExtension = withoutPrefix.replace(/\.tsx$/, "");
+      const segments = withoutExtension.split("/").filter(Boolean);
+      
+      // Determine category from folder structure
+      let category: string;
+      if (segments.length === 0) {
+        // Empty segments - shouldn't happen, but default to other
+        category = 'other';
+      } else if (segments.length === 1) {
+        // File is directly in pages/SEO root - put in "other" category
+        category = 'other';
+      } else {
+        // File is in a subfolder - first segment is the category
+        category = segments[0];
+      }
+      
+      // Filter out invalid category names (empty, ".", etc.)
+      if (!category || category === '.' || category.trim() === '') {
+        category = 'other';
+      }
+      
+      // Extract slug using same logic as getSeoRoutes
+      const slug = getSlugFromFilePath(filePath);
+      if (!slug) return;
+      
+      // Map route path to category
+      const routePath = `/${slug}`;
+      routePathToCategoryMap.set(routePath, category);
+      // Also store without leading slash for flexible matching
+      const routePathNoSlash = routePath.replace(/^\//, '');
+      if (routePathNoSlash !== routePath) {
+        routePathToCategoryMap.set(routePathNoSlash, category);
+      }
+      
+      // Debug logging (development only)
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`File: ${filePath} -> Route: ${routePath} -> Category: ${category}`);
+      }
+    });
+    
+    // Debug: Log mapping statistics (development only)
+    if (process.env.NODE_ENV === 'development') {
+      const categoryCounts: Record<string, number> = {};
+      routePathToCategoryMap.forEach((cat) => {
+        categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
+      });
+      console.log('Route to Category Map:', {
+        totalMappings: routePathToCategoryMap.size,
+        categoryDistribution: categoryCounts,
+        sampleMappings: Array.from(routePathToCategoryMap.entries()).slice(0, 10)
+      });
+    }
+
+    // Helper to get category from route path using the map
+    const getCategoryFromRoutePath = (routePath: string): string => {
+      const normalizedPath = routePath.startsWith('/') ? routePath : `/${routePath}`;
+      const pathNoSlash = normalizedPath.replace(/^\//, '');
+      
+      // Try to find category in map (with and without leading slash)
+      let category = routePathToCategoryMap.get(normalizedPath) || 
+                     routePathToCategoryMap.get(pathNoSlash) ||
+                     routePathToCategoryMap.get(routePath) ||
+                     'other';
+      
+      // Ensure category is valid (filter out ".", empty, etc.)
+      if (!category || category === '.' || category.trim() === '') {
+        category = 'other';
+      }
+      
+      return category;
+    };
+
+    // Helper to generate title from slug
+    const generateTitleFromSlug = (slug: string): string => {
+      return slug
+        .split('-')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+    };
+
+    // Combine routes with metadata, creating basic metadata for pages without it
+    const processedPages = routes
+      .filter(route => route.path !== '/blog') // Exclude this overview page itself
+      .map(route => {
+        const existingMetadata = metadataMap.get(route.path);
+        
+        // Get category from folder structure - this is the source of truth
+        const folderCategory = getCategoryFromRoutePath(route.path);
+        
+        // Debug logging (development only)
+        if (process.env.NODE_ENV === 'development' && folderCategory === 'other' && route.path !== '/blog') {
+          console.warn(`Route ${route.path} mapped to category "other". Available in map: ${routePathToCategoryMap.has(route.path)}`);
+        }
+        
+        if (existingMetadata) {
+          // Override category with folder-based category
+          return {
+            ...existingMetadata,
+            category: folderCategory,
+          };
+        }
+
+        // Derive metadata from path for pages not in topic clusters
+        const pathSegments = route.path.split('/').filter(Boolean);
+        const slug = pathSegments[pathSegments.length - 1] || '';
+        
+        // Generate title from slug
+        const title = generateTitleFromSlug(slug);
+
+        // Detect language from category
+        const language: 'nl' | 'en' = folderCategory === 'dutch' ? 'nl' : 'en';
+
+        return {
+          path: route.path,
+          title,
+          language,
+          category: folderCategory,
+          description: `Learn more about ${title.toLowerCase()}`,
+        } as PageMetadata;
+      });
+
+    return processedPages;
+  }, []);
+
+  // Group pages by category
+  const pagesByCategory = useMemo(() => {
+    const grouped: Record<string, PageMetadata[]> = {};
+    allPages.forEach(page => {
+      let category = page.category || 'other';
+      // Filter out invalid category names
+      if (!category || category === '.' || category.trim() === '') {
+        category = 'other';
+      }
+      if (!grouped[category]) {
+        grouped[category] = [];
+      }
+      grouped[category].push(page);
+    });
+    return grouped;
+  }, [allPages]);
+
+  // Get unique categories (filter out invalid ones)
+  const categories = useMemo(() => {
+    return Object.keys(pagesByCategory)
+      .filter(cat => cat && cat !== '.' && cat.trim() !== '')
+      .sort();
+  }, [pagesByCategory]);
+
+  // Filter pages based on search, category, and language
+  const filteredPages = useMemo(() => {
+    let filtered = allPages;
+
+    // Filter by search query
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(page => 
+        page.title.toLowerCase().includes(query) ||
+        page.description?.toLowerCase().includes(query) ||
+        page.path.toLowerCase().includes(query)
+      );
+    }
+
+    return filtered.sort((a, b) => a.title.localeCompare(b.title));
+  }, [allPages, searchQuery]);
+
+  // Group filtered pages by category
+  const filteredPagesByCategory = useMemo(() => {
+    const grouped: Record<string, PageMetadata[]> = {};
+    filteredPages.forEach(page => {
+      let category = page.category || 'other';
+      // Filter out invalid category names
+      if (!category || category === '.' || category.trim() === '') {
+        category = 'other';
+      }
+      if (!grouped[category]) {
+        grouped[category] = [];
+      }
+      grouped[category].push(page);
+    });
+    return grouped;
+  }, [filteredPages]);
+
+  // Helper function to format category name for display
+  const formatCategoryName = (category: string): string => {
+    // Filter out invalid categories
+    if (!category || category === '.' || category.trim() === '') {
+      return 'Other';
+    }
+    
+    // Handle special cases
+    const specialCases: Record<string, string> = {
+      'best-of': 'Best Of',
+      'dutch': 'Dutch',
+    };
+
+    if (specialCases[category]) {
+      return specialCases[category];
+    }
+
+    // Format regular category names (e.g., "industries" -> "Industries")
+    return category
+      .split('-')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  };
+
+  // Get sorted categories for filtered pages (filter out invalid ones)
+  const filteredCategories = useMemo(() => {
+    return Object.keys(filteredPagesByCategory)
+      .filter(cat => cat && cat !== '.' && cat.trim() !== '')
+      .sort();
+  }, [filteredPagesByCategory]);
+
+  const totalPages = allPages.length;
+  const filteredCount = filteredPages.length;
 
   return (
-    <SeoPageLayout title={topicTitle} showSidebar sidebarContent={sidebarContent}>
-      <SEO
-        title={`Index 2025 - Index 2025 -`}
-        description={metaDescription}
-        keywords={keywords}
-        url={`https://www.stockflow.be${canonicalPath}`}
-      />
+    <>
+      {/* Header Section */}
 
+      <HeaderPublic />
 
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Blog</h1>
-      <StructuredData data={pageStructuredData} />
-
-      <section className="bg-gradient-to-br from-blue-50 via-white to-purple-50 px-4 py-12">
-        <div className="mx-auto max-w-6xl">
-          <div className="rounded-3xl bg-white px-6 py-12 shadow-xl sm:px-12">
-            <div className="text-center">
-              <div className="mb-6 inline-block rounded-full bg-blue-100 px-5 py-2 text-sm font-semibold text-blue-700">
-                {heroBadge}
-              </div>
-              <h2 className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-4xl font-extrabold tracking-tight text-transparent sm:text-5xl lg:text-6xl">
-                {topicTitle}
-              </h2>
-              <p className="mx-auto mt-6 max-w-3xl text-lg text-gray-600 sm:text-xl">{summaryCopy}</p>
-              <div className="mt-8 flex flex-wrap justify-center gap-4">
-                <Link
-                  to="/auth"
-                  className="inline-flex items-center rounded-xl bg-blue-600 px-6 py-3 text-base font-semibold text-white shadow-lg transition hover:bg-blue-700 hover:shadow-xl"
-                >
-                  Start Free Trial
-                </Link>
-                <a
-                  href="#overview"
-                  className="inline-flex items-center rounded-xl border border-blue-200 px-6 py-3 text-base font-semibold text-blue-700 transition hover:bg-blue-50"
-                >
-                  Jump to Overview
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="overview" className="bg-white px-4 py-16">
-        <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
-          <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h2>
-            <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              {topicTitle} has become a recurring talking point for fast-moving inventory teams. The original Stockflow blog
-              article sparked interest because it addresses real-world frictions that leaders face every day. This updated guide
-              distills those takeaways for StockFlow customers—showing you how to adapt the narrative, build alignment across
-              departments, and secure measurable results without adding administrative overhead.
+      <section className="pt-36 bg-gradient-to-br from-blue-50 via-white to-purple-50 px-4 py-12">
+        <div className="mx-auto max-w-7xl">
+          <div className="text-center mb-8">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4">
+              Articles Overview
+            </h1>
+            <p className="text-sm md:text-base text-gray-600 max-w-3xl mx-auto">
+              Explore our complete library of articles, guides, and resources. Find everything you need about inventory management, software comparisons, and industry insights.
             </p>
-            <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
-              <h3 className="text-xl font-semibold">Why it matters now</h3>
-              <p className="mt-3 text-base text-blue-900/90">
-                Every economic cycle pressures teams to do more with less. {topicTitle} gives you language, tactics, or inspiration
-                to modernize inventory, supply chain, and asset management workflows so they scale with confidence.
-              </p>
+            <div className="mt-6 text-sm text-gray-500">
+              {totalPages} articles available
             </div>
           </div>
-          <div className="space-y-4">
-            {takeaways.map((item) => (
-              <div
-                key={item}
-                className="flex items-start gap-4 rounded-2xl border border-gray-200 bg-gray-50 p-5 shadow-sm transition hover:-translate-y-1 hover:border-blue-200"
-              >
-                <span className="mt-1 inline-flex h-9 w-9 items-center justify-center rounded-full bg-blue-600 text-white">
-                  <CheckCircle className="h-5 w-5" />
-                </span>
-                <p className="text-sm text-gray-700">{item}</p>
+
+          {/* Search and Filters */}
+          <div className="max-w-4xl mx-auto space-y-4">
+            {/* Search Bar */}
+            <div className="relative">
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <input
+                type="text"
+                placeholder="Search articles by title, description, or path..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-12 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+              />
+            </div>
+
+            {/* Results Count */}
+            {filteredCount !== totalPages && (
+              <div className="text-sm text-gray-600">
+                Showing {filteredCount} of {totalPages} articles
               </div>
-            ))}
+            )}
           </div>
         </div>
       </section>
 
-      <section id="playbook" className="bg-gray-50 px-4 py-16">
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-            <div>
-              <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Action Playbook</h2>
-              <p className="mt-3 text-base text-gray-600">
-                Turn the big ideas behind {topicTitle.toLowerCase()} into structured workstreams. Align leaders, give teams the tools
-                they need, and track momentum every step of the way.
-              </p>
-            </div>
-            <div className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2 text-sm font-medium text-blue-700 shadow">
-              <Target className="h-4 w-4" />
-              Proven by StockFlow teams
-            </div>
-          </div>
-          <div className="grid gap-6 md:grid-cols-3">
-            {actionSteps.map((step, index) => (
-              <div key={step.title} className="flex h-full flex-col rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-semibold text-blue-600">Step {index + 1}</span>
-                  <Target className="h-5 w-5 text-blue-500" />
-                </div>
-                <h3 className="mt-4 text-xl font-semibold text-gray-900">{step.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-gray-600">{step.description}</p>
+      {/* Articles Grid by Category */}
+      <section className="bg-white px-4 py-16">
+        <div className="mx-auto max-w-7xl">
+
+          
+          <div className="space-y-12">
+            {filteredCategories.length === 0 ? (
+              <div className="text-center py-12">
+                <p className="text-gray-500">No articles found. Check console for debugging info.</p>
               </div>
-            ))}
+            ) : (
+              filteredCategories.map((category) => {
+                const pagesInCategory = filteredPagesByCategory[category];
+                if (!pagesInCategory || pagesInCategory.length === 0) {
+                  return null;
+                }
+                return (
+                  <div key={category} className="space-y-6">
+                    {/* Category Title */}
+                    <div className="border-b border-gray-200 pb-4">
+                      <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
+                        {formatCategoryName(category)}
+                      </h2>
+                      <p className="text-sm text-gray-500 mt-1">
+                        {pagesInCategory.length} {pagesInCategory.length === 1 ? 'article' : 'articles'}
+                      </p>
+                    </div>
+
+                    {/* Articles Grid for this Category */}
+                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                      {pagesInCategory.map((page) => (
+                        <Link
+                          key={page.path}
+                          to={page.path}
+                          className="group flex flex-col h-full bg-white rounded-xl border border-gray-200 p-6 hover:border-blue-300 hover:shadow-lg transition-all duration-200"
+                        >
+                          {/* Title */}
+                          <h3 className="text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors mb-2 line-clamp-2">
+                            {page.title}
+                          </h3>
+
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })
+            )}
           </div>
         </div>
       </section>
 
-      <section id="metrics" className="bg-white px-4 py-16">
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-8 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-            <div>
-              <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Metrics that Matter</h2>
-              <p className="mt-3 max-w-2xl text-base text-gray-600">
-                Use these scorecards to prove the ROI of {topicTitle.toLowerCase()}. Set a baseline, monitor progress weekly, and
-                communicate wins with clarity.
-              </p>
-            </div>
-            <div className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-5 py-2 text-sm font-semibold text-blue-700">
-              <BarChart3 className="h-4 w-4" />
-              Build dashboards in StockFlow
-            </div>
-          </div>
-          <div className="grid gap-6 md:grid-cols-3">
-            {metrics.map((metric) => (
-              <div key={metric.label} className="rounded-2xl border border-gray-200 bg-gray-50 p-6 shadow-sm">
-                <h3 className="text-lg font-semibold text-gray-900">{metric.label}</h3>
-                <p className="mt-3 text-sm text-gray-600">{metric.detail}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="stockflow-advantage" className="bg-gradient-to-br from-blue-600 to-purple-600 px-4 py-16 text-white">
-        <div className="mx-auto max-w-6xl">
-          <div className="rounded-3xl bg-white/10 p-8 shadow-xl backdrop-blur">
-            <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-              <div>
-                <h2 className="text-3xl font-bold">Why StockFlow Makes {topicTitle} Stick</h2>
-                <p className="mt-4 max-w-2xl text-base text-white/85">
-                  Transform ideas into measurable outcomes. StockFlow connects inventory data, automates notifications,
-                  and keeps every stakeholder aligned—even across warehouses, regions, or partner networks.
-                </p>
-              </div>
-              <div className="inline-flex items-center gap-2 rounded-full bg-white/20 px-5 py-2 text-sm font-semibold text-white">
-                <Lightbulb className="h-4 w-4" />
-                Built for continuous improvement
-              </div>
-            </div>
-            <div className="mt-8 grid gap-6 md:grid-cols-3">
-              <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">Unified data foundation</h3>
-                <p className="mt-3 text-sm text-white/85">
-                  Centralize item masters, stock movements, suppliers, and documents so Stockflow blog decisions never rely on outdated spreadsheets.
-                </p>
-              </div>
-              <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">Automation & alerts</h3>
-                <p className="mt-3 text-sm text-white/85">
-                  Trigger workflows, approvals, and reorder points when Stockflow blog KPIs drift from plan.
-                </p>
-              </div>
-              <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">Collaboration built in</h3>
-                <p className="mt-3 text-sm text-white/85">
-                  Give finance, operations, and frontline teams a shared system of record for Stockflow blog progress.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="faq" className="bg-gray-50 px-4 py-16">
-        <div className="mx-auto max-w-4xl">
-          <div className="text-center">
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Frequently Asked Questions</h2>
-            <p className="mt-4 text-base text-gray-600">
-              Still exploring {topicTitle.toLowerCase()}? These answers help you take the next confident step.
-            </p>
-          </div>
-          <div className="mt-10 space-y-4">
-            {faqData.map((faq) => (
-              <details
-                key={faq.question}
-                className="group rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition hover:border-blue-200"
-              >
-                <summary className="cursor-pointer text-lg font-semibold text-gray-900">
-                  {faq.question}
-                </summary>
-                <p className="mt-3 text-base leading-relaxed text-gray-600">{faq.answer}</p>
-              </details>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-white px-4 pb-20 pt-10">
-        <div className="mx-auto max-w-5xl rounded-3xl border border-gray-200 bg-gradient-to-r from-blue-50 via-white to-purple-50 p-10 shadow-xl text-center">
-          <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Put {topicTitle} into action with StockFlow</h2>
-          <p className="mx-auto mt-4 max-w-2xl text-base text-gray-600">
-            Launch faster experiments, share instant dashboards, and keep every stakeholder aligned. Your first workspace
-            is live in minutes, and you can invite teammates for free.
-          </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <Link
-              to="/auth"
-              className="inline-flex items-center rounded-xl bg-purple-600 px-6 py-3 text-base font-semibold text-white shadow-lg transition hover:bg-purple-700"
-            >
-              Create Your Account
-            </Link>
-            <a
-              href="/pricing"
-              className="inline-flex items-center rounded-xl border border-purple-200 px-6 py-3 text-base font-semibold text-purple-700 transition hover:bg-purple-50"
-            >
-              See Plans & Pricing
-            </a>
-          </div>
-        </div>
-      </section>
-    </SeoPageLayout>
+      <Footer />
+    </>
   );
 }

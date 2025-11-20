@@ -261,41 +261,10 @@ const Header: React.FC<HeaderProps> = ({
         label: 'Pricing',
         to: '/pricing'
       },
-      {
-        id: 'learn',
-        label: 'Learn',
-        megaMenu: {
-          intro: {
-            title: 'Learn',
-            description: 'Stay ahead of the curve with guides, case studies, and resources from StockFlow.',
-            ctaLabel: 'Visit the Knowledge Center',
-            ctaTo: '/help-center'
-          },
-          sections: [
             {
-              title: 'Insights',
-              items: [
-                {
-                  label: 'Case Studies',
-                  description: 'See how growing teams succeed with StockFlow.',
-                  to: '/case-studies',
-                  icon: Users
-                }
-              ]
-            },
-            {
-              title: 'Resources',
-              items: [
-                {
-                  label: 'Blog',
-                  description: 'Fresh tips and inventory best practices.',
-                  to: '/blog',
-                  icon: FileText
-                }
-              ]
-            }
-          ]
-        }
+        id: 'blog',
+        label: 'Blog',
+        to: '/blog'
       }
     ],
     []
@@ -526,7 +495,7 @@ const Header: React.FC<HeaderProps> = ({
         </div>
       )}
 
-      <div className="border-b border-gray-200/60" style={{ backgroundColor: baseColor }}>
+      <div className="border-b border-gray-400" style={{ backgroundColor: baseColor }}>
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 lg:py-4">
           <div className="flex items-center gap-8">
             <Link to="/" onClick={handleNavigate} className="flex items-center gap-3">

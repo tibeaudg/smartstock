@@ -1,7 +1,6 @@
 import React from 'react';
-import Header from '@/components/HeaderPublic';
-import Footer from '@/components/Footer';
 import SEO from '@/components/SEO';
+import SeoPageLayout from '@/components/SeoPageLayout';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -127,8 +126,7 @@ export default function SuppliersSolutionPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-16">
-      <Header />
+    <SeoPageLayout title="Suppliers">
       <SEO
         title="Suppliers 2025 - Suppliers 2025 -"
         description="Discover how suppliers to optimize your inventory management. Read the guide suppliers to automate your processes. Simplify vendor. Start free today. StockFl..."
@@ -290,8 +288,7 @@ export default function SuppliersSolutionPage() {
           </div>
         </div>
       </section>
-      <Footer />
-    </div>
+    </SeoPageLayout>
   );
 }
 

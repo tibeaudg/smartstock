@@ -1,6 +1,7 @@
 ﻿import React from 'react';
 import { useLocation } from 'react-router-dom';
 import SEO from '@/components/SEO';
+import SeoPageLayout from '@/components/SeoPageLayout';
 import { StructuredData } from '@/components/StructuredData';
 import ConversionCTA from '@/components/seo/ConversionCTA';
 import InternalLinkingWidget from '@/components/seo/InternalLinkingWidget';
@@ -93,7 +94,7 @@ const BarcodeScanningInventory = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-white">
+    <SeoPageLayout title="Barcode Scanning Inventory">
       <SEO
         title="Barcode Scanning Inventory 2025 - Barcode Scanning Inventory"
         description="Find out how barcode scanning inventory to automate your processes. Find out how barcode scanning inventory to automate your processes.. Start free today."
@@ -106,7 +107,7 @@ const BarcodeScanningInventory = () => {
       />
       <StructuredData data={structuredData} />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <article className="prose prose-lg max-w-none">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
             Barcode Scanning for Inventory Management
@@ -185,8 +186,8 @@ const BarcodeScanningInventory = () => {
             className="my-12"
           />
         </article>
-      </main>
-    </div>
+      </div>
+    </SeoPageLayout>
   );
 };
 

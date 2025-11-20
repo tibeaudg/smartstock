@@ -1109,6 +1109,8 @@ export function getAllSeoPages(): PageMetadata[] {
 
 // Helper function to get breadcrumb path
 export function getBreadcrumbPath(pagePath: string): Array<{ name: string; path: string }> {
+  // For SEO pages, always show: Home -> Blog -> {current page}
+  // Note: URLs remain unchanged (still /{page} not /blog/{page})
   const cluster = findClusterForPage(pagePath);
   if (!cluster) {
     return [{ name: 'Home', path: '/' }];
@@ -1118,8 +1120,8 @@ export function getBreadcrumbPath(pagePath: string): Array<{ name: string; path:
   
   return [
     { name: 'Home', path: '/' },
-    { name: cluster.pillar.title, path: cluster.pillar.path },
-    ...(currentPage.path !== cluster.pillar.path ? [{ name: currentPage.title, path: currentPage.path }] : [])
+    { name: 'Blog', path: '/blog' }, // Display as "Blog" but path remains as pagePath for SEO pages
+    { name: currentPage.title, path: currentPage.path }
   ];
 }
 

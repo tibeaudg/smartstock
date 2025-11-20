@@ -1,10 +1,8 @@
 ﻿import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
-import Footer from '@/components/Footer';
 import { Check, Star, Smartphone, Bell, Zap, Shield, Users, TrendingUp } from 'lucide-react';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
-import Header from '@/components/HeaderPublic';
 
 import { StructuredData } from '@/components/StructuredData';
 export default function VoorraadbeheerSoftwareVergelijken() {
@@ -74,10 +72,6 @@ export default function VoorraadbeheerSoftwareVergelijken() {
         modifiedTime={new Date().toISOString()}
       />
 
-      <Header 
-        simplifiedNav={false}
-        hideNotifications={true}
-      />
       {/* Hero Section */}
       <div className="bg-gradient-to-br from-blue-300 to-indigo-500 rounded-2xl p-8 mb-8">
         <div className="max-w-7xl mx-auto text-center">
@@ -449,8 +443,8 @@ export default function VoorraadbeheerSoftwareVergelijken() {
           "keywords": "voorraadbeheer software vergelijken, software stockbeheer vergelijken, beste voorraadbeheer software, stockbeheer software vergelijken, voorraadbeheer software kiezen, voorraadbeheer software 2025"
         }
       ]} />
-      </SeoPageLayout><Footer /></>
-
+    </SeoPageLayout>
+  </>
   );
 } 
 

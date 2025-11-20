@@ -50,7 +50,6 @@ import { ThemeProvider } from './hooks/useTheme';
 
 // Import remaining synchronous pages
 import SubscriptionTestPage from './pages/subscription-test';
-import NlPricingPage from "./pages/nl-pricing";
 import HelpCenterPage from "./pages/help-center";
 import CategorysPage from './pages/categories';
 import SuppliersPage from './pages/suppliers';
@@ -373,7 +372,6 @@ const AuthRoute = () => {
         <Route path="/error-test" element={<ErrorTestComponent />} />
         <Route path="/auth" element={<AuthRoute />} />
         <Route path="/pricing" element={<PricingPage />} />
-        <Route path="/nl/pricing" element={<NlPricingPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/seo" element={<SEOOverviewPage />} />
 

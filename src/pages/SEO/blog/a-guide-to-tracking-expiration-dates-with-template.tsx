@@ -115,35 +115,7 @@ export default function SeoAGuideToTrackingExpirationDatesWithTemplatePage() {
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">A Guide To Tracking Expiration Dates With Template</h1>
       <StructuredData data={pageStructuredData} />
 
-      <section className="bg-gradient-to-br from-blue-50 via-white to-purple-50 px-4 py-12">
-        <div className="mx-auto max-w-6xl">
-          <div className="rounded-3xl bg-white px-6 py-12 shadow-xl sm:px-12">
-            <div className="text-center">
-              <div className="mb-6 inline-block rounded-full bg-blue-100 px-5 py-2 text-sm font-semibold text-blue-700">
-                {heroBadge}
-              </div>
-              <h2 className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-4xl font-extrabold tracking-tight text-transparent sm:text-5xl lg:text-6xl">
-                {topicTitle}
-              </h2>
-              <p className="mx-auto mt-6 max-w-3xl text-lg text-gray-600 sm:text-xl">{summaryCopy}</p>
-              <div className="mt-8 flex flex-wrap justify-center gap-4">
-                <Link
-                  to="/auth"
-                  className="inline-flex items-center rounded-xl bg-blue-600 px-6 py-3 text-base font-semibold text-white shadow-lg transition hover:bg-blue-700 hover:shadow-xl"
-                >
-                  Start Free Trial
-                </Link>
-                <a
-                  href="#overview"
-                  className="inline-flex items-center rounded-xl border border-blue-200 px-6 py-3 text-base font-semibold text-blue-700 transition hover:bg-blue-50"
-                >
-                  Jump to Overview
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+
 
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">

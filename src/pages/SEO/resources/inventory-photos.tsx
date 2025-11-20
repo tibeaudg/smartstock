@@ -2,8 +2,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import Header from '@/components/HeaderPublic';
-import Footer from '@/components/Footer';
+import SeoPageLayout from '@/components/SeoPageLayout';
 import {
   Smartphone,
   QrCode,
@@ -201,8 +200,7 @@ export default function InventoryPhotosPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-16">
-      <Header />
+    <SeoPageLayout title="Inventory Photos">
       <SEO
         title="Inventory Photos 2025 - Inventory Photos 2025"
         description="Find out how inventory photos to automate your processes. Find out how inventory photos to save time and money.. Try free now. StockFlow helps businesses man..."
@@ -474,8 +472,7 @@ export default function InventoryPhotosPage() {
           </div>
         </div>
       </div>
-      <Footer />
-    </div>
+    </SeoPageLayout>
   );
 }
 

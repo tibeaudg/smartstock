@@ -2,8 +2,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import Header from '@/components/HeaderPublic';
-import Footer from '@/components/Footer';
+import SeoPageLayout from '@/components/SeoPageLayout';
 import {
   Smartphone,
   QrCode,
@@ -185,8 +184,7 @@ export default function InventoryPhotosPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-16">
-      <Header />
+    <SeoPageLayout title="Asset Tracking">
       <SEO
         title="Asset Tracking 2025 - Asset Tracking 2025"
         description="Read the guide asset tracking to choose the best software. Read the guide asset tracking to optimize your inventory management.. Get started free. StockFlow ..."
@@ -458,8 +456,7 @@ export default function InventoryPhotosPage() {
           </div>
         </div>
       </div>
-      <Footer />    
-    </div>
+    </SeoPageLayout>
   );
 }
 

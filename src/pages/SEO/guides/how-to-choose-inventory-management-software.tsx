@@ -1,6 +1,7 @@
 ﻿import React from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import SEO from '@/components/SEO';
+import SeoPageLayout from '@/components/SeoPageLayout';
 import { StructuredData } from '@/components/StructuredData';
 import ConversionCTA from '@/components/seo/ConversionCTA';
 import InternalLinkingWidget from '@/components/seo/InternalLinkingWidget';
@@ -104,7 +105,7 @@ const HowToChooseInventoryManagementSoftware = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-white">
+    <SeoPageLayout title="How To Choose Inventory Management Software">
       <SEO
         title="How To Choose Inventory Management Software 2025"
         description="Learn how how to choose inventory management software to save time and money. Learn how how to choose inventory management software to automate. Get started ..."
@@ -117,7 +118,7 @@ const HowToChooseInventoryManagementSoftware = () => {
       />
       <StructuredData data={structuredData} />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <article className="prose prose-lg max-w-none">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
             How to Choose Inventory Management Software: Complete Buyer Guide
@@ -194,8 +195,8 @@ const HowToChooseInventoryManagementSoftware = () => {
             className="my-12"
           />
         </article>
-      </main>
-    </div>
+      </div>
+    </SeoPageLayout>
   );
 };
 
