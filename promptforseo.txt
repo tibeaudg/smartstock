@@ -1,4 +1,8 @@
-"Act as a veteran warehouse manager. Read these three articles on [Topic]. List 3 specific things they fail to mention. What practical, messy, real-world problems are they ignoring? Where is their advice too theoretical?"
+"Act as a veteran warehouse manager. Read the above article. 
+
+List 3 specific things they fail to mention. What practical, messy, real-world problems are they ignoring? Where is their advice too theoretical?"
+
+
 
 Step 2: The "V" Structure Your "Retail Price" page worked because it was simple and definitional. Replicate that structure but add your unique value (the "Bridge").
 
@@ -12,10 +16,10 @@ Bottom (The Bridge): Connect it to your software.
 
 Example: "You can calculate this manually, but if a supplier is late, your math breaks. Our tool auto-adjusts EOQ based on real delivery times."
 
-How to use AI correctly for this
-Use AI to build the skeleton, but you must provide the organs.
 
-Prompt for Structure: "Create an outline for 'Safety Stock' that targets 'Inventory Managers'. It must include a section on why standard formulas fail during seasonality."
+
+
+Prompt for Structure: "Rewrite the above data into a new better optimized seo article"
 
 Inject Proprietary Data: Do not let AI write the examples.
 

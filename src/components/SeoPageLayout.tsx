@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, memo, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Header from './HeaderPublic';
@@ -6,25 +6,20 @@ import Footer from './Footer';
 import { getBreadcrumbPath, getAllSeoPages, getRelatedPages } from '@/config/topicClusters';
 import { detectPageLanguage } from '@/utils/seoPageHelpers';
 import { getStableRelatedArticles } from '@/utils/linkAlgo';
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion';
 import { 
   Star, 
   CheckCircle2, 
   TrendingUp, 
-  BarChart3, 
-  Package, 
   ArrowRight, 
   ShieldCheck,
   Clock,
-  Zap
+  Zap,
+  ChevronLeft,
+  ChevronRight,
+  ChevronDown
 } from 'lucide-react';
 
-// --- Interfaces (Preserved) ---
+// --- Interfaces ---
 export interface FAQItem {
   question: string;
   answer: string;
@@ -44,91 +39,524 @@ interface SeoPageLayoutProps {
   title: string;
   description?: string;
   publishDate?: string;
-  authorName?: string;
   children: React.ReactNode;
   hideVisualBreadcrumbs?: boolean;
   faqData?: FAQItem[];
   heroTitle?: string;
   updatedDate?: string;
+  maxRelatedArticles?: number;
 }
 
-// --- Static Data (Preserved) ---
-const features = [
-  {
-    icon: TrendingUp,
-    title: "Real-time Tracking",
-    description: "Live inventory visibility across all warehouses.",
-  },
-  {
-    icon: BarChart3,
-    title: "Smart Scanning",
-    description: "QR & Barcode integration for instant accuracy.",
-  },
-  {
-    icon: Package,
-    title: "Auto-Reordering",
-    description: "Never stock out with predictive replenishment.",
-  },
-];
-
+// --- Static Data ---
 const testimonials = [
   {
     name: "David Chen",
     role: "CEO · TechStart Solutions",
-    content: "We retired spreadsheets and cut out-of-stock incidents by 38% in the first quarter.",
-    rating: 5,
-    highlight: "38% fewer stockouts"
+    content: "We retired spreadsheets and cut out-of-stock incidents by 38% in the first quarter. StockFlow's real-time tracking transformed our operations.",
+    avatarColor: "bg-blue-400"
   },
   {
     name: "Sarah Johnson",
-    role: "Ops Manager · Retail Plus",
-    content: "We handle 12 sales channels. StockFlow synced Shopify and Amazon instantly.",
-    rating: 5,
-    highlight: "18 hours saved weekly"
+    role: "Operations Manager · Retail Plus",
+    content: "We handle 12 sales channels. StockFlow synced Shopify and Amazon instantly, saving us 18 hours weekly on inventory management.",
+    avatarColor: "bg-orange-400"
   },
   {
     name: "Mike Rodriguez",
     role: "Warehouse Lead · Global Supply",
-    content: "Barcode scanning on mobile and predictive reordering kept our fulfillment at 99.2%.",
-    rating: 5,
-    highlight: "99.2% on-time fulfilment"
+    content: "Barcode scanning on mobile and predictive reordering kept our fulfillment at 99.2%. StockFlow is the backbone of our warehouse operations.",
+    avatarColor: "bg-pink-400"
+  },
+  {
+    name: "Emma Thompson",
+    role: "Inventory Director · Fashion Forward",
+    content: "Multi-location sync across our 8 stores eliminated overselling completely. StockFlow's accuracy is unmatched in the industry.",
+    avatarColor: "bg-cyan-400"
+  },
+  {
+    name: "James Wilson",
+    role: "Supply Chain Manager · Manufacturing Co",
+    content: "Raw material tracking and BOM management streamlined our production. StockFlow's traceability features are essential for quality control.",
+    avatarColor: "bg-green-400"
+  },
+  {
+    name: "Lisa Anderson",
+    role: "E-commerce Director · Online Retailer",
+    content: "Marketplace integration with Amazon, Shopify, and eBay prevents shipping errors. StockFlow protects our seller ratings perfectly.",
+    avatarColor: "bg-purple-400"
+  },
+  {
+    name: "Robert Kim",
+    role: "Field Service Manager · Tech Services",
+    content: "Offline mobile scanning for van stock transformed our field operations. Technicians can work anywhere, and billing is now 100% accurate.",
+    avatarColor: "bg-amber-600"
+  },
+  {
+    name: "Maria Garcia",
+    role: "Pharmacy Operations · HealthCare Plus",
+    content: "Expiration date tracking and lot number management ensure compliance. StockFlow reduced medication waste by 25% in our facility.",
+    avatarColor: "bg-indigo-600"
   }
-];
+] as const;
 
-// Default images for article cards
 const defaultArticleImages = [
-  '/aza.png', // First default image
-  '/bzb.png', // Second default image  
-  '/czc.png', // Third default image
-];
+  '/aza.png',
+  '/bzb.png',
+  '/czc.png',
+] as const;
 
-// Hardcoded hero badges and CTAs
 const defaultHeroBadges: HeroBadge[] = [
-  { text: "10,000+ teams benchmarked" },
-  { text: "Updated for 2025 pricing" }
+  { text: "1,000+ happy teams" },
 ];
 
 const defaultHeroCTAs: HeroCTA[] = [
-  { label: "Start Free", href: "/auth", variant: "primary" },
-  { label: "Watch Demo", href: "/demo", variant: "secondary" }
+  { label: "Watch Demo", href: "/demo", variant: "primary" }
 ];
 
+
+
+
+
+// --- Memoized Sub-Components ---
+const BreadcrumbNav = memo<{ items: Array<{ name: string; path: string }> }>(({ items }) => {
+  if (items.length === 0) return null;
+
+  return (
+    <nav aria-label="Breadcrumb" className="flex items-center space-x-2 text-sm text-slate-500 flex-wrap">
+      {items.map((item, i) => (
+        <React.Fragment key={`${item.path}-${i}`}>
+          {i > 0 && <span className="text-slate-300 mx-1" aria-hidden="true">/</span>}
+          {i === items.length - 1 ? (
+            <span className="text-slate-900 font-medium px-2 py-1 rounded-md bg-white shadow-sm border border-slate-100" aria-current="page">
+              {item.name}
+            </span>
+          ) : (
+            <Link 
+              to={item.path} 
+              className="hover:text-blue-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 rounded"
+            >
+              {item.name}
+            </Link>
+          )}
+        </React.Fragment>
+      ))}
+    </nav>
+  );
+});
+BreadcrumbNav.displayName = 'BreadcrumbNav';
+
+const HeroSection = memo<{
+  heroTitle?: string;
+  title: string;
+  updatedDate?: string;
+}>(({ heroTitle, title, updatedDate }) => {
+  if (!heroTitle && !updatedDate) return null;
+
+  return (
+    <section className="max-w-full mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-16 text-center space-y-8" aria-labelledby="hero-title">
+      {defaultHeroBadges.length > 0 && (
+        <div className="flex flex-wrap justify-center gap-3 mb-8" role="list" aria-label="Feature highlights">
+          {defaultHeroBadges.map((badge, index) => (
+            <span 
+              key={index} 
+              role="listitem"
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold tracking-wide uppercase border border-blue-100"
+            >
+              <CheckCircle2 className="h-3.5 w-3.5" aria-hidden="true" />
+              {badge.text}
+            </span>
+          ))}
+        </div>
+      )}
+      
+      <h1 id="hero-title" className="text-4xl md:text-6xl font-extrabold tracking-tight text-slate-900 mb-6 max-w-4xl mx-auto leading-[1.1]">
+        {heroTitle || title}
+      </h1>
+
+      <div className="flex items-center justify-center gap-6 text-sm text-slate-500 mb-8 flex-wrap">
+        {updatedDate && (
+          <time dateTime={updatedDate}>
+            <strong>Updated on:</strong> {updatedDate}
+          </time>
+        )}
+        {updatedDate && <span className="w-1 h-1 bg-slate-300 rounded-full" aria-hidden="true"></span>}
+      </div>
+
+      {defaultHeroCTAs.length > 0 && (
+        <div className="flex justify-center gap-4 flex-wrap" role="group" aria-label="Call to action buttons">
+          {defaultHeroCTAs.map((cta, i) => (
+            <a 
+              key={i} 
+              href={cta.href}
+              className={`px-6 py-3 rounded-lg font-semibold transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+                cta.variant === 'secondary' 
+                  ? 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 focus:ring-slate-500' 
+                  : 'bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-blue-600/20 focus:ring-blue-500'
+              }`}
+            >
+              {cta.label}
+            </a>
+          ))}
+        </div>
+      )}
+    </section>
+  );
+});
+HeroSection.displayName = 'HeroSection';
+
+
+
+
+
+
+
+
+const SingleFAQItem = memo<{ 
+  faq: FAQItem; 
+  id: string;
+}>(({ faq, id }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  return (
+    <div className="border border-slate-200 rounded-lg overflow-hidden bg-white hover:shadow-md transition-shadow">
+      <button
+        onClick={() => setIsExpanded(!isExpanded)}
+        className="w-full px-6 py-4 flex items-center justify-between text-left focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset transition-colors hover:bg-slate-50"
+        aria-expanded={isExpanded}
+        aria-controls={`faq-answer-${id}`}
+      >
+        <h3 className="text-lg font-bold text-slate-900 pr-4 flex-1">
+          {faq.question}
+        </h3>
+        <ChevronDown 
+          className={`w-5 h-5 text-slate-600 flex-shrink-0 transition-transform duration-200 ${
+            isExpanded ? 'transform rotate-180' : ''
+          }`}
+          aria-hidden="true"
+        />
+      </button>
+      <div
+        id={`faq-answer-${id}`}
+        ref={contentRef}
+        className={`overflow-hidden transition-all duration-300 ease-in-out ${
+          isExpanded ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'
+        }`}
+      >
+        <div className="px-6 py-4 pt-0">
+          <p className="text-base text-slate-800 leading-relaxed">
+            {faq.answer}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+});
+SingleFAQItem.displayName = 'SingleFAQItem';
+
+const FAQSection = memo<{ faqData: FAQItem[]; pageLanguage: 'nl' | 'en' }>(({ faqData, pageLanguage }) => {
+  if (!faqData || faqData.length === 0) return null;
+
+  const heading = pageLanguage === 'nl' ? 'Veelgestelde Vragen' : 'Frequently Asked Questions';
+  
+  // Split FAQs into two columns
+  const midPoint = Math.ceil(faqData.length / 2);
+  const leftColumn = faqData.slice(0, midPoint);
+  const rightColumn = faqData.slice(midPoint);
+
+  return (
+    <section className="py-24 bg-white border-t border-slate-300" aria-labelledby="faq-heading">
+      <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 id="faq-heading" className="text-3xl md:text-4xl font-bold mb-16 text-center text-black">
+          {heading}
+        </h2>
+        <div className="grid md:grid-cols-2 gap-4 lg:gap-6">
+          {/* Left Column */}
+          <div className="space-y-4">
+            {leftColumn.map((faq, index) => (
+              <SingleFAQItem 
+                key={`faq-left-${index}`} 
+                faq={faq} 
+                id={`left-${index}`}
+              />
+            ))}
+          </div>
+
+          {/* Right Column */}
+          <div className="space-y-4">
+            {rightColumn.map((faq, index) => (
+              <SingleFAQItem 
+                key={`faq-right-${index}`} 
+                faq={faq} 
+                id={`right-${index}`}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+});
+FAQSection.displayName = 'FAQSection';
+
+
+
+
+
+
+
+
+const TestimonialsSection = memo(() => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const sectionRef = useRef<HTMLElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+            observer.disconnect();
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  const currentTestimonial = testimonials[currentIndex];
+
+  const goToPrevious = () => {
+    setCurrentIndex((prev) => (prev === 0 ? testimonials.length - 1 : prev - 1));
+  };
+
+  const goToNext = () => {
+    setCurrentIndex((prev) => (prev === testimonials.length - 1 ? 0 : prev + 1));
+  };
+
+  return (
+    <section 
+      ref={sectionRef}
+      className="py-24 bg-slate-50 relative overflow-hidden" 
+      aria-labelledby="testimonials-heading"
+      style={{
+        backgroundImage: `linear-gradient(rgba(241, 245, 249, 0.5), rgba(241, 245, 249, 0.5)), 
+          repeating-linear-gradient(0deg, transparent, transparent 20px, rgba(59, 130, 246, 0.05) 20px, rgba(59, 130, 246, 0.05) 21px)`
+      }}
+    >
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Title */}
+        <h2 id="testimonials-heading" className="text-4xl md:text-5xl font-bold text-center mb-16 text-slate-900">
+          What Our Customers Say
+        </h2>
+
+        {/* Testimonial Carousel */}
+        <div className="relative flex items-center justify-center">
+          {/* Left Arrow */}
+          <button
+            onClick={goToPrevious}
+            className="absolute left-0 z-10 p-3 rounded-full bg-white border-2 border-blue-500 text-blue-600 hover:bg-blue-50 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 shadow-lg"
+            aria-label="Previous testimonial"
+          >
+            <ChevronLeft className="w-6 h-6" />
+          </button>
+
+          {/* Testimonial Card */}
+          <article 
+            className={`flex flex-col items-center text-center px-8 md:px-16 py-12 transition-opacity duration-500 ${isVisible ? 'opacity-100' : 'opacity-0'}`}
+            role="article"
+            aria-live="polite"
+            aria-atomic="true"
+          >
+            {/* Quote */}
+            <blockquote className="text-xl md:text-2xl font-medium text-slate-900 mb-8 leading-relaxed max-w-2xl">
+              "{currentTestimonial.content}"
+            </blockquote>
+
+            {/* Avatar */}
+            <div className={`w-20 h-20 rounded-full ${currentTestimonial.avatarColor} flex items-center justify-center font-bold text-white text-2xl mb-4 border-4 border-blue-600`} aria-hidden="true">
+              {currentTestimonial.name.charAt(0)}
+            </div>
+
+            {/* Name */}
+            <p className="text-lg font-semibold text-slate-900 mb-1">
+              {currentTestimonial.name}
+            </p>
+
+            {/* Role */}
+            <p className="text-sm text-slate-600">
+              {currentTestimonial.role}
+            </p>
+          </article>
+
+          {/* Right Arrow */}
+          <button
+            onClick={goToNext}
+            className="absolute right-0 z-10 p-3 rounded-full bg-white border-2 border-blue-500 text-blue-600 hover:bg-blue-50 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 shadow-lg"
+            aria-label="Next testimonial"
+          >
+            <ChevronRight className="w-6 h-6" />
+          </button>
+        </div>
+
+        {/* Dots Indicator */}
+        <div className="flex justify-center gap-2 mt-8" role="tablist" aria-label="Testimonial navigation">
+          {testimonials.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentIndex(index)}
+              className={`w-2 h-2 rounded-full transition-all ${
+                index === currentIndex 
+                  ? 'bg-blue-600 w-8' 
+                  : 'bg-blue-300 hover:bg-blue-400'
+              }`}
+              aria-label={`Go to testimonial ${index + 1}`}
+              aria-selected={index === currentIndex}
+              role="tab"
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+});
+TestimonialsSection.displayName = 'TestimonialsSection';
+
+
+
+const RecentArticlesSection = memo<{
+  articles: Array<{ path: string; title: string; description?: string; image?: string }>;
+  pageLanguage: 'nl' | 'en';
+  maxArticles?: number;
+}>(({ articles, pageLanguage, maxArticles }) => {
+  if (!articles || articles.length === 0) return null;
+
+  const heading = pageLanguage === 'nl' ? 'Verder lezen' : 'Continue Reading';
+  const displayedArticles = articles.slice(0, 3);
+
+  return (
+    <section className="py-20 bg-slate-50" aria-labelledby="articles-heading">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-end mb-10 flex-wrap gap-4">
+          <h2 id="articles-heading" className="text-2xl font-bold text-slate-900">
+            {heading}
+          </h2>
+          <Link 
+            to="/blog" 
+            className="text-blue-600 font-medium flex items-center hover:gap-2 transition-all text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded"
+          >
+            View all <ArrowRight className="w-4 h-4 ml-1" aria-hidden="true" />
+          </Link>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8" role="list" aria-label="Related articles">
+          {displayedArticles.map((article, index) => {
+            const imageUrl = defaultArticleImages[index % defaultArticleImages.length] || article.image;
+            
+            return (
+              <Link 
+                key={article.path} 
+                to={article.path}
+                className="group flex flex-col bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                role="listitem"
+              >
+                <div className="h-48 bg-slate-100 relative overflow-hidden">
+                  {imageUrl ? (
+                    <img 
+                      src={imageUrl} 
+                      alt={article.title}
+                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  ) : (
+                    <div className="absolute inset-0 bg-gradient-to-tr from-slate-200 to-slate-100 group-hover:scale-105 transition-transform duration-500" aria-hidden="true" />
+                  )}
+                </div>
+                <div className="p-6 flex-1 flex flex-col">
+                  <p className="text-xs font-semibold text-blue-600 mb-2 uppercase tracking-wider">Article</p>
+                  <h3 className="text-lg font-bold text-slate-900 mb-3 line-clamp-2 group-hover:text-blue-600 transition-colors">
+                    {article.title}
+                  </h3>
+                  {article.description && (
+                    <p className="text-sm text-slate-600 line-clamp-3 mb-4 flex-grow">
+                      {article.description}
+                    </p>
+                  )}
+                  <span className="text-sm font-medium text-slate-900 flex items-center">
+                    Read now <ArrowRight className="w-3 h-3 ml-1 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" aria-hidden="true" />
+                  </span>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+});
+RecentArticlesSection.displayName = 'RecentArticlesSection';
+
+
+const CTASection = memo<{ pageLanguage: 'nl' | 'en' }>(({ pageLanguage }) => {
+  const heading = pageLanguage === 'nl' ? 'Klaar voor de volgende stap?' : 'Ready to Simplify Your Stock Management?';
+  const ctaText = pageLanguage === 'nl' ? 'Start Gratis' : 'Start Free Trial';
+
+  return (
+    <section className="py-24 bg-blue-700 relative overflow-hidden" aria-labelledby="cta-heading">
+      <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]" aria-hidden="true"></div>
+      <div className="max-w-4xl mx-auto px-4 text-center relative z-10">
+        <h2 id="cta-heading" className="text-3xl md:text-5xl font-bold text-white mb-6 tracking-tight">
+          {heading}
+        </h2>
+        <p className="text-blue-100 text-lg mb-10 max-w-2xl mx-auto">
+          Join the inventory revolution with the platform engineered for accuracy and speed.
+        </p>
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4" role="group" aria-label="Call to action buttons">
+          <button 
+            className="w-full sm:w-auto px-8 py-4 bg-white text-blue-600 font-bold rounded-lg hover:bg-blue-50 transition-colors shadow-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-500"
+            onClick={() => window.location.href = '/auth'}
+          >
+            {ctaText}
+          </button>
+          <a 
+            href="/demo" 
+            className="w-full sm:w-auto px-8 py-4 bg-transparent border-2 border-blue-400 text-white font-bold rounded-lg hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-blue-500"
+          >
+            Watch Demo
+          </a>
+        </div>
+        <p className="mt-6 text-sm text-blue-200 opacity-80">No credit card required • 14-day free trial</p>
+      </div>
+    </section>
+  );
+});
+CTASection.displayName = 'CTASection';
+
+// --- Main Component ---
 const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({
   title,
   description,
   publishDate,
-  authorName = "StockFlow Team",
   children,
   hideVisualBreadcrumbs = false,
   faqData = [],
   heroTitle,
   updatedDate,
+  maxRelatedArticles,
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const pageLanguage = detectPageLanguage(location.pathname);
 
-  // --- Logic & Data Fetching (Preserved) ---
+  // --- Memoized Data ---
   const breadcrumbItems = useMemo(() => getBreadcrumbPath(location.pathname), [location.pathname]);
   const clusterArticles = useMemo(() => getRelatedPages(location.pathname), [location.pathname]);
   
@@ -139,11 +567,11 @@ const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({
   }, [clusterArticles, location.pathname]);
   
   const recentArticles = useMemo(() => 
-    getStableRelatedArticles(allAvailableArticles, location.pathname, 3), 
+    getStableRelatedArticles(allAvailableArticles, location.pathname, 30), 
   [allAvailableArticles, location.pathname]);
 
-  // --- JSON-LD (Preserved) ---
-  const jsonLd = {
+  // --- Memoized JSON-LD ---
+  const jsonLd = useMemo(() => ({
     "@context": "https://schema.org",
     "@graph": [
       {
@@ -159,8 +587,8 @@ const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({
         "@type": "Article",
         "headline": title,
         "description": description,
-        "author": { "@type": "Person", "name": authorName },
         "datePublished": publishDate,
+        "dateModified": updatedDate || publishDate,
         "mainEntityOfPage": {
           "@type": "WebPage",
           "@id": `https://www.stockflow.be${location.pathname}`
@@ -175,108 +603,50 @@ const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({
         }))
       }] : [])
     ]
-  };
+  }), [breadcrumbItems, title, description, publishDate, updatedDate, location.pathname, faqData]);
+
+  const handleLoginClick = useMemo(() => () => navigate('/auth'), [navigate]);
+
+
+
+
+
+
+
+
 
   return (
     <div className="min-h-screen bg-white font-sans text-slate-900 selection:bg-blue-100 selection:text-blue-900" lang={pageLanguage}>
       <Helmet>
         <title>{title}</title>
-        <meta name="description" content={description} />
+        {description && <meta name="description" content={description} />}
         <link rel="canonical" href={`https://www.stockflow.be${location.pathname}`} />
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
       </Helmet>
 
       <Header
-        onLoginClick={() => navigate('/auth')}
+        onLoginClick={handleLoginClick}
         onNavigate={() => {}}
         hideAuthButtons={false}
         hideNotifications
       />
 
-      {/* --- UX IMPROVEMENT: Subtle Background for Header/Breadcrumb integration --- */}
       <div className="bg-slate-50/80 border-b border-slate-100">
         {!hideVisualBreadcrumbs && breadcrumbItems.length > 0 && (
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-4">
-            <nav aria-label="Breadcrumb" className="flex items-center space-x-2 text-sm text-slate-500">
-              {breadcrumbItems.map((item, i) => (
-                <React.Fragment key={`${item.path}-${i}`}>
-                  {i > 0 && <span className="text-slate-300 mx-1">/</span>}
-                  {i === breadcrumbItems.length - 1 ? (
-                    <span className="text-slate-900 font-medium px-2 py-1 rounded-md bg-white shadow-sm border border-slate-100">
-                      {item.name}
-                    </span>
-                  ) : (
-                    <Link to={item.path} className="hover:text-blue-600 transition-colors">
-                      {item.name}
-                    </Link>
-                  )}
-                </React.Fragment>
-              ))}
-            </nav>
+          <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-4">
+            <BreadcrumbNav items={breadcrumbItems} />
           </div>
         )}
 
-        {/* --- UX IMPROVEMENT: Modern Hero with Constrained Width for Readability --- */}
-        {(heroTitle || updatedDate) && (
-          <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-16 text-center space-y-8">
-            {defaultHeroBadges.length > 0 && (
-              <div className="flex flex-wrap justify-center gap-3 mb-8">
-                {defaultHeroBadges.map((badge, index) => (
-                  <span key={index} className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold tracking-wide uppercase border border-blue-100">
-                    <CheckCircle2 className="h-3.5 w-3.5" />
-                    {badge.text}
-                  </span>
-                ))}
-              </div>
-            )}
-            
-            <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-slate-900 mb-6 max-w-4xl mx-auto leading-[1.1]">
-              {heroTitle || title}
-            </h1>
-
-            <div className="flex items-center justify-center gap-6 text-sm text-slate-500 mb-8">
-               {updatedDate && (
-                <span><strong>Updated on:</strong> {updatedDate}</span>
-               )}
-               <span className="w-1 h-1 bg-slate-300 rounded-full"></span>
-               <span><strong>Author:</strong> {authorName}</span>
-            </div>
-
-            {defaultHeroCTAs.length > 0 && (
-              <div className="flex justify-center gap-4">
-                {defaultHeroCTAs.map((cta, i) => (
-                   <a key={i} href={cta.href} className={`px-6 py-3 rounded-lg font-semibold transition-all ${cta.variant === 'secondary' ? 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50' : 'bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-blue-600/20'}`}>
-                     {cta.label}
-                   </a>
-                ))}
-              </div>
-            )}
-          </section>
-        )}
+        <HeroSection 
+          heroTitle={heroTitle}
+          title={title}
+          updatedDate={updatedDate}
+        />
       </div>
 
-      {/* --- UX IMPROVEMENT: Trust Strip (Moved Up) --- */}
-      <div className="bg-white border-b border-slate-200 py-8">
-        <div className="max-w-6xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8 divide-x divide-slate-200">
-          {[
-            { val: "35%", label: "Cost Reduction", icon: TrendingUp, color: "text-blue-600" },
-            { val: "15h", label: "Weekly Saved", icon: Clock, color: "text-green-600" },
-            { val: "99.9%", label: "Accuracy", icon: ShieldCheck, color: "text-purple-600" },
-            { val: "24/7", label: "Expert Support", icon: Zap, color: "text-orange-600" }
-          ].map((stat, i) => (
-            <div key={i} className={`text-center ${i % 2 !== 0 ? 'hidden md:block' : ''}`}>
-              <div className={`text-2xl md:text-3xl font-bold ${stat.color} flex items-center justify-center gap-2 mb-1`}>
-                {stat.val}
-              </div>
-              <div className="text-xs md:text-sm font-medium text-slate-500 uppercase tracking-wide">{stat.label}</div>
-            </div>
-          ))}
-          {/* Mobile view adjustment: show only 2 stats or use a slider if needed. Here we hide 2 on mobile to save space */}
-        </div>
-      </div>
 
       <main>
-        {/* --- Article Content: Tighter Width for Cognitive Ease --- */}
         <article className="relative pt-16 pb-24">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="prose prose-lg prose-slate max-w-none 
@@ -290,146 +660,13 @@ const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({
           </div>
         </article>
 
-        {/* --- FAQ: Narrow Width for Readability --- */}
-        {faqData && faqData.length > 0 && (
-          <section className="py-24 bg-white border-t border-slate-100">
-            <div className="max-w-3xl mx-auto px-4">
-              <h2 className="text-3xl font-bold mb-12 text-center">
-                {pageLanguage === 'nl' ? 'Veelgestelde Vragen' : 'Frequently Asked Questions'}
-              </h2>
-              <Accordion type="single" collapsible className="space-y-4">
-                {faqData.map((faq, index) => (
-                  <AccordionItem 
-                    key={`faq-${index}`}
-                    value={`item-${index}`} 
-                    className="bg-white rounded-lg border border-slate-200 px-2"
-                  >
-                    <AccordionTrigger className="px-4 py-4 text-lg font-medium text-slate-900 hover:text-blue-600 hover:no-underline">
-                      {faq.question}
-                    </AccordionTrigger>
-                    <AccordionContent className="px-4 pb-4 text-slate-600 leading-relaxed">
-                      {faq.answer}
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
-            </div>
-          </section>
-        )}
+        <FAQSection faqData={faqData} pageLanguage={pageLanguage} />
 
+        <TestimonialsSection />
 
+        <RecentArticlesSection articles={recentArticles} pageLanguage={pageLanguage} maxArticles={maxRelatedArticles} />
 
-
-        {/* --- Testimonials: Clean Grid --- */}
-        <section className="py-24 bg-slate-50">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl font-bold text-center mb-12 text-slate-900">Trusted by Growth Teams</h2>
-            <div className="grid md:grid-cols-3 gap-8">
-              {testimonials.map((t, i) => (
-                <div key={i} className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 flex flex-col relative overflow-hidden">
-                  {t.highlight && (
-                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-indigo-500" />
-                  )}
-                  <div className="flex mb-6">
-                    {[...Array(t.rating)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 text-orange-400 fill-current" />
-                    ))}
-                  </div>
-                  <p className="text-slate-700 mb-6 flex-grow italic leading-relaxed">"{t.content}"</p>
-                  <div className="flex items-center gap-4 mt-auto pt-6 border-t border-slate-50">
-                    <div className="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center font-bold text-slate-500 text-sm">
-                      {t.name.charAt(0)}
-                    </div>
-                    <div>
-                      <p className="font-semibold text-sm text-slate-900">{t.name}</p>
-                      <p className="text-xs text-slate-500">{t.role}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-
-
-        {/* --- Recent Articles: Horizontal Scroll on Mobile, Grid on Desktop --- */}
-        {recentArticles && recentArticles.length > 0 && (
-          <section className="py-20 bg-slate-50">
-            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="flex justify-between items-end mb-10">
-                <h2 className="text-2xl font-bold text-slate-900">
-                  {pageLanguage === 'nl' ? 'Verder lezen' : 'Continue Reading'}
-                </h2>
-                <Link to="/blog" className="text-blue-600 font-medium flex items-center hover:gap-2 transition-all text-sm">
-                  View all <ArrowRight className="w-4 h-4 ml-1" />
-                </Link>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {recentArticles.map((article, index) => {
-                  // Priority: defaultArticleImages > article.image > gradient fallback
-                  const imageUrl = defaultArticleImages[index] || article.image;
-                  
-                  return (
-                  <Link 
-                    key={article.path} 
-                    to={article.path}
-                    className="group flex flex-col bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100"
-                  >
-                    <div className="h-48 bg-slate-100 relative overflow-hidden">
-                       {imageUrl ? (
-                         <img 
-                           src={imageUrl} 
-                           alt={article.title}
-                           className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                           loading="lazy"
-                         />
-                       ) : (
-                         <div className="absolute inset-0 bg-gradient-to-tr from-slate-200 to-slate-100 group-hover:scale-105 transition-transform duration-500" />
-                       )}
-                    </div>
-                    <div className="p-6 flex-1 flex flex-col">
-                      <p className="text-xs font-semibold text-blue-600 mb-2 uppercase tracking-wider">Article</p>
-                      <h3 className="text-lg font-bold text-slate-900 mb-3 line-clamp-2 group-hover:text-blue-600 transition-colors">
-                        {article.title}
-                      </h3>
-                      <p className="text-sm text-slate-600 line-clamp-3 mb-4 flex-grow">
-                        {article.description}
-                      </p>
-                      <span className="text-sm font-medium text-slate-900 flex items-center">
-                        Read now <ArrowRight className="w-3 h-3 ml-1 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
-                      </span>
-                    </div>
-                  </Link>
-                  );
-                })}
-              </div>
-            </div>
-          </section>
-        )}
-
-        {/* --- CTA: High Contrast, Clean --- */}
-        <section className="py-24 bg-blue-600 relative overflow-hidden">
-          <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
-          <div className="max-w-4xl mx-auto px-4 text-center relative z-10">
-            <h2 className="text-3xl md:text-5xl font-bold text-white mb-6 tracking-tight">
-              {pageLanguage === 'nl' ? 'Klaar voor de volgende stap?' : 'Stop Managing, Start Growing.'}
-            </h2>
-            <p className="text-blue-100 text-lg mb-10 max-w-2xl mx-auto">
-              Join the inventory revolution with the platform engineered for accuracy and speed.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <button className="w-full sm:w-auto px-8 py-4 bg-white text-blue-600 font-bold rounded-lg hover:bg-blue-50 transition-colors shadow-lg">
-                {pageLanguage === 'nl' ? 'Start Gratis' : 'Start Free Trial'}
-              </button>
-              <a href="/demo" className="w-full sm:w-auto px-8 py-4 bg-transparent border-2 border-blue-400 text-white font-bold rounded-lg hover:bg-blue-700 transition-colors">
-                 Watch Demo 
-              </a>
-            </div>
-            <p className="mt-6 text-sm text-blue-200 opacity-80">No credit card required • 14-day free trial</p>
-          </div>
-        </section>
+        <CTASection pageLanguage={pageLanguage} />
       </main>
 
       <Footer />
@@ -437,4 +674,4 @@ const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({
   );
 };
 
-export default SeoPageLayout;
+export default memo(SeoPageLayout);
