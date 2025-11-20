@@ -4,67 +4,76 @@ import SeoPageLayout from "@/components/SeoPageLayout";
 import { usePageRefresh } from "@/hooks/usePageRefresh";
 import { StructuredData } from "@/components/StructuredData";
 import { generateSidebarContent } from "@/utils/seoPageHelpers";
+import InternalLinkingWidget from "@/components/seo/InternalLinkingWidget";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "What Is Inventory Shrinkage";
 const canonicalPath = "/blog/what-is-inventory-shrinkage";
-const metaDescription = "Deep dive into What Is Inventory Shrinkage. Learn practical ideas, implementation steps, and metrics so your team can apply What Is Inventory Shrinkage with StockFlow.";
-const keywords = "What Is Inventory Shrinkage, What Is Inventory Shrinkage guide, What Is Inventory Shrinkage best practices, What Is Inventory Shrinkage StockFlow, inventory management, operations playbook";
-const heroBadge = "Topic Guide • Updated October 2025";
-const summaryCopy = "Explore What Is Inventory Shrinkage through the lens of modern inventory and operations leadership. This StockFlow-exclusive guide synthesizes the best lessons from the original Sortly article and translates them into actionable steps for teams that need structure, visibility, and measurable wins.";
+const metaDescription = "Learn what inventory shrinkage is, its main causes (theft, damage, errors), and proven strategies to reduce shrinkage. Complete guide with prevention tips and best practices.";
+const keywords = "inventory shrinkage, stock shrinkage, inventory loss, inventory theft, reduce shrinkage, inventory accuracy, inventory control, shrinkage prevention, inventory management";
+const heroBadge = "Inventory Management Guide • Updated October 2025";
+const summaryCopy = "Inventory shrinkage is the difference between recorded inventory and actual physical inventory. This comprehensive guide explains the main causes of shrinkage—theft, damage, administrative errors, and supplier fraud—and provides actionable strategies to reduce losses and improve inventory accuracy.";
 const takeaways = [
-  "Understand the core themes behind What Is Inventory Shrinkage and why they matter for modern operations teams.",
-  "Follow a structured framework to translate What Is Inventory Shrinkage into day-to-day improvements.",
-  "Highlight StockFlow capabilities that make what is inventory shrinkage sustainable at scale."
+  "Inventory shrinkage costs businesses billions annually and typically ranges from 1-2% of total inventory value.",
+  "The main causes are employee theft, shoplifting, administrative errors, supplier fraud, and damage.",
+  "Implementing barcode scanning, regular cycle counts, and inventory management software can significantly reduce shrinkage."
 ];
 const actionSteps = [
   {
-    "title": "Align on the outcome",
-    "description": "Confirm what what is inventory shrinkage should deliver for customers, finance, and frontline teams."
+    "title": "Conduct regular inventory audits",
+    "description": "Perform cycle counts and physical inventory counts regularly to identify discrepancies early. Use <Link to=\"/cycle-count\" className=\"text-blue-600 hover:underline\">cycle counting</Link> to maintain accuracy without disrupting operations."
   },
   {
-    "title": "Audit current workflows",
-    "description": "Document how what is inventory shrinkage happens today, where gaps exist, and which systems hold the data."
+    "title": "Implement barcode scanning",
+    "description": "Use <Link to=\"/barcode-scanning-inventory\" className=\"text-blue-600 hover:underline\">barcode scanning technology</Link> to eliminate manual entry errors and improve tracking accuracy. Barcode systems reduce human error by up to 99%."
   },
   {
-    "title": "Launch targeted improvements",
-    "description": "Prototype a lean version of what is inventory shrinkage inside StockFlow, measure the impact, and expand in sprints."
+    "title": "Use inventory management software",
+    "description": "Deploy <Link to=\"/inventory-management-software\" className=\"text-blue-600 hover:underline\">inventory management software</Link> with real-time tracking, automated alerts, and audit trails to prevent and detect shrinkage."
   }
 ];
 const metrics = [
   {
-    "label": "Execution velocity",
-    "detail": "Track how quickly what is inventory shrinkage initiatives move from idea to rollout."
+    "label": "Shrinkage rate",
+    "detail": "Track shrinkage as a percentage of total inventory value. Industry average is 1-2%, but best-in-class companies achieve under 0.5%."
   },
   {
-    "label": "Team adoption",
-    "detail": "Measure participation rates in the new what is inventory shrinkage process across locations or departments."
+    "label": "Inventory accuracy",
+    "detail": "Measure the percentage of inventory records that match physical counts. Target 98%+ accuracy through regular audits and automated tracking."
   },
   {
-    "label": "Quality & accuracy",
-    "detail": "Monitor error rates, rework, or data accuracy tied to what is inventory shrinkage workflows."
+    "label": "Shrinkage by category",
+    "detail": "Break down shrinkage by cause (theft, damage, errors) to identify problem areas and focus prevention efforts where they'll have the most impact."
   }
 ];
 const faqData = [
   {
-    "question": "What is What Is Inventory Shrinkage?",
-    "answer": "What Is Inventory Shrinkage refers to the practices, insights, or stories captured in the original Stockflow article. This guide reframes the topic for StockFlow users who want to move faster, stay organized, and build resilient inventory operations."
+    "question": "What is inventory shrinkage?",
+    "answer": "Inventory shrinkage is the loss of inventory between the time it's recorded in your system and when it's physically counted. It's calculated as: Shrinkage = (Recorded Inventory - Physical Inventory) / Recorded Inventory × 100. Shrinkage includes losses from theft, damage, administrative errors, supplier fraud, and obsolescence."
   },
   {
-    "question": "How can I get started with what is inventory shrinkage?",
-    "answer": "Start by clarifying the objective, mapping the stakeholders, and collecting baseline metrics. Use the action playbook in this article to pilot what is inventory shrinkage within one team, then expand once you capture early wins."
+    "question": "What are the main causes of inventory shrinkage?",
+    "answer": "The main causes are: (1) Employee theft - internal theft accounts for about 30% of shrinkage, (2) Shoplifting - external theft from retail locations, (3) Administrative errors - data entry mistakes, miscounting, or paperwork errors, (4) Supplier fraud - receiving fewer items than invoiced, and (5) Damage - products damaged during handling, storage, or transit."
   },
   {
-    "question": "Where does StockFlow add value for what is inventory shrinkage?",
-    "answer": "StockFlow centralizes data, automates alerts, and connects cross-functional teams. That means fewer spreadsheets, faster decisions, and the ability to prove the value of what is inventory shrinkage with real-time dashboards."
+    "question": "What is an acceptable inventory shrinkage rate?",
+    "answer": "Industry averages vary: retail typically sees 1-2% shrinkage, while best-in-class companies achieve under 0.5%. For most businesses, keeping shrinkage below 1% is a good target. Higher-value items or industries with strict compliance requirements may need even lower rates."
+  },
+  {
+    "question": "How can I reduce inventory shrinkage?",
+    "answer": "Reduce shrinkage by implementing barcode scanning for accuracy, conducting regular cycle counts, using inventory management software with real-time tracking, training staff on proper procedures, implementing security measures, and establishing clear accountability. Learn more about <Link to=\"/avoid-inventory-mistakes\" className=\"text-blue-600 hover:underline\">avoiding inventory mistakes</Link>."
+  },
+  {
+    "question": "How does inventory management software help prevent shrinkage?",
+    "answer": "Inventory management software prevents shrinkage by providing real-time tracking, automated data entry through barcode scanning, audit trails for all transactions, automated alerts for discrepancies, and detailed reporting to identify patterns. Software like StockFlow helps maintain accurate records and quickly identify when shrinkage occurs."
   }
 ];
 const structuredData = [
   {
     "@context": "https://schema.org",
     "@type": "Article",
-    "headline": "What Is Inventory Shrinkage",
-    "description": "Deep dive into What Is Inventory Shrinkage. Learn practical ideas, implementation steps, and metrics so your team can apply What Is Inventory Shrinkage with StockFlow.",
+    "headline": "What Is Inventory Shrinkage? Complete Guide to Understanding and Preventing Inventory Loss",
+    "description": "Learn what inventory shrinkage is, its main causes (theft, damage, errors), and proven strategies to reduce shrinkage. Complete guide with prevention tips and best practices.",
     "author": {
       "@type": "Organization",
       "name": "StockFlow"
@@ -112,14 +121,12 @@ export default function SeoWhatIsInventoryShrinkagePage() {
       
     >
       <SEO
-        title={`What Is Inventory Shrinkage 2025 - What Is Inventory`}
+        title={`What Is Inventory Shrinkage? Complete Guide 2025 | StockFlow`}
         description={metaDescription}
         keywords={keywords}
         url={`https://www.stockflow.be${canonicalPath}`}
       />
 
-
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">What Is Inventory Shrinkage</h1>
       <StructuredData data={pageStructuredData} />
 
 
@@ -127,18 +134,17 @@ export default function SeoWhatIsInventoryShrinkagePage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h2>
+            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Understanding Inventory Shrinkage</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              {topicTitle} has become a recurring talking point for fast-moving inventory teams. The original Stockflow
-              article sparked interest because it addresses real-world frictions that leaders face every day. This updated guide
-              distills those takeaways for StockFlow customers—showing you how to adapt the narrative, build alignment across
-              departments, and secure measurable results without adding administrative overhead.
+              Inventory shrinkage represents the difference between the inventory recorded in your system and the actual physical inventory on hand. This discrepancy costs businesses billions of dollars annually and is a critical metric for inventory management effectiveness. Understanding shrinkage causes and implementing prevention strategies is essential for maintaining profitability and operational efficiency.
+            </p>
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              Shrinkage typically accounts for 1-2% of total inventory value in most industries, but can be much higher in businesses with poor <Link to="/inventory-control-101" className="text-blue-600 hover:underline font-semibold">inventory control</Link> systems. The impact goes beyond just lost products—it affects cash flow, profitability, customer satisfaction, and can indicate deeper operational issues.
             </p>
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
               <h3 className="text-xl font-semibold">Why it matters now</h3>
               <p className="mt-3 text-base text-blue-900/90">
-                Every economic cycle pressures teams to do more with less. {topicTitle} gives you language, tactics, or inspiration
-                to modernize inventory, supply chain, and asset management workflows so they scale with confidence.
+                With rising costs and economic pressures, every dollar lost to shrinkage directly impacts your bottom line. Modern <Link to="/inventory-management-software" className="text-blue-700 hover:underline font-semibold">inventory management systems</Link> provide the tools and visibility needed to detect, prevent, and reduce shrinkage before it becomes a significant problem.
               </p>
             </div>
           </div>
@@ -162,15 +168,14 @@ export default function SeoWhatIsInventoryShrinkagePage() {
         <div className="mx-auto max-w-6xl">
           <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
-              <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Action Playbook</h2>
+              <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">How to Reduce Inventory Shrinkage</h2>
               <p className="mt-3 text-base text-gray-600">
-                Turn the big ideas behind {topicTitle.toLowerCase()} into structured workstreams. Align leaders, give teams the tools
-                they need, and track momentum every step of the way.
+                Implement these proven strategies to minimize shrinkage and protect your inventory investment. These actionable steps have helped businesses reduce shrinkage by 50-80%.
               </p>
             </div>
             <div className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2 text-sm font-medium text-blue-700 shadow">
               <Target className="h-4 w-4" />
-              Proven by StockFlow teams
+              Proven Strategies
             </div>
           </div>
           <div className="grid gap-6 md:grid-cols-3">
@@ -181,9 +186,30 @@ export default function SeoWhatIsInventoryShrinkagePage() {
                   <Target className="h-5 w-5 text-blue-500" />
                 </div>
                 <h3 className="mt-4 text-xl font-semibold text-gray-900">{step.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-gray-600">{step.description}</p>
+                <p className="mt-3 text-sm leading-relaxed text-gray-600" dangerouslySetInnerHTML={{ __html: step.description }} />
               </div>
             ))}
+          </div>
+          <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6">
+            <h3 className="text-xl font-semibold text-gray-900 mb-3">Additional Prevention Strategies</h3>
+            <ul className="space-y-2 text-gray-700">
+              <li className="flex items-start">
+                <CheckCircle className="h-5 w-5 text-green-600 mr-2 mt-0.5 flex-shrink-0" />
+                <span>Implement security measures like cameras, access controls, and employee training on theft prevention</span>
+              </li>
+              <li className="flex items-start">
+                <CheckCircle className="h-5 w-5 text-green-600 mr-2 mt-0.5 flex-shrink-0" />
+                <span>Establish clear accountability and authorization processes for inventory movements</span>
+              </li>
+              <li className="flex items-start">
+                <CheckCircle className="h-5 w-5 text-green-600 mr-2 mt-0.5 flex-shrink-0" />
+                <span>Train staff on proper <Link to="/how-to-improve-inventory-control" className="text-blue-600 hover:underline">inventory control</Link> procedures and the importance of accuracy</span>
+              </li>
+              <li className="flex items-start">
+                <CheckCircle className="h-5 w-5 text-green-600 mr-2 mt-0.5 flex-shrink-0" />
+                <span>Review and reconcile supplier invoices against received goods to catch supplier fraud</span>
+              </li>
+            </ul>
           </div>
         </div>
       </section>
@@ -219,34 +245,33 @@ export default function SeoWhatIsInventoryShrinkagePage() {
           <div className="rounded-3xl bg-white/10 p-8 shadow-xl backdrop-blur">
             <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
               <div>
-                <h2 className="text-3xl font-bold">Why StockFlow Makes {topicTitle} Stick</h2>
+                <h2 className="text-3xl font-bold">How StockFlow Helps Prevent Inventory Shrinkage</h2>
                 <p className="mt-4 max-w-2xl text-base text-white/85">
-                  Transform ideas into measurable outcomes. StockFlow connects inventory data, automates notifications,
-                  and keeps every stakeholder aligned—even across warehouses, regions, or partner networks.
+                  StockFlow's inventory management software provides the tools and visibility you need to detect, prevent, and reduce shrinkage. Real-time tracking, automated audits, and comprehensive reporting help you maintain accurate inventory records and quickly identify discrepancies.
                 </p>
               </div>
               <div className="inline-flex items-center gap-2 rounded-full bg-white/20 px-5 py-2 text-sm font-semibold text-white">
                 <Lightbulb className="h-4 w-4" />
-                Built for continuous improvement
+                Shrinkage Prevention
               </div>
             </div>
             <div className="mt-8 grid gap-6 md:grid-cols-3">
               <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">Unified data foundation</h3>
+                <h3 className="text-lg font-semibold">Real-time tracking</h3>
                 <p className="mt-3 text-sm text-white/85">
-                  Centralize item masters, stock movements, suppliers, and documents so what is inventory shrinkage decisions never rely on outdated spreadsheets.
+                  Track every inventory movement in real-time with <Link to="/barcode-scanning-inventory" className="text-blue-200 hover:text-white underline">barcode scanning</Link> and automated updates. Eliminate manual entry errors that cause shrinkage.
                 </p>
               </div>
               <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">Automation & alerts</h3>
+                <h3 className="text-lg font-semibold">Automated cycle counts</h3>
                 <p className="mt-3 text-sm text-white/85">
-                  Trigger workflows, approvals, and reorder points when what is inventory shrinkage KPIs drift from plan.
+                  Schedule and track <Link to="/cycle-count" className="text-blue-200 hover:text-white underline">cycle counts</Link> automatically. Get alerts when discrepancies are detected so you can investigate immediately.
                 </p>
               </div>
               <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">Collaboration built in</h3>
+                <h3 className="text-lg font-semibold">Complete audit trails</h3>
                 <p className="mt-3 text-sm text-white/85">
-                  Give finance, operations, and frontline teams a shared system of record for what is inventory shrinkage progress.
+                  Every inventory transaction is logged with user, timestamp, and details. Track who accessed what inventory and when, making it easy to identify and prevent theft or errors.
                 </p>
               </div>
             </div>
@@ -254,51 +279,14 @@ export default function SeoWhatIsInventoryShrinkagePage() {
         </div>
       </section>
 
-      <section id="faq" className="bg-gray-50 px-4 py-16">
-        <div className="mx-auto max-w-4xl">
-          <div className="text-center">
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Frequently Asked Questions</h2>
-            <p className="mt-4 text-base text-gray-600">
-              Still exploring {topicTitle.toLowerCase()}? These answers help you take the next confident step.
-            </p>
-          </div>
-          <div className="mt-10 space-y-4">
-            {faqData.map((faq) => (
-              <details
-                key={faq.question}
-                className="group rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition hover:border-blue-200"
-              >
-                <summary className="cursor-pointer text-lg font-semibold text-gray-900">
-                  {faq.question}
-                </summary>
-                <p className="mt-3 text-base leading-relaxed text-gray-600">{faq.answer}</p>
-              </details>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-white px-4 pb-20 pt-10">
-        <div className="mx-auto max-w-5xl rounded-3xl border border-gray-200 bg-gradient-to-r from-blue-50 via-white to-purple-50 p-10 shadow-xl text-center">
-          <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Put {topicTitle} into action with StockFlow</h2>
-          <p className="mx-auto mt-4 max-w-2xl text-base text-gray-600">
-            Launch faster experiments, share instant dashboards, and keep every stakeholder aligned. Your first workspace
-            is live in minutes, and you can invite teammates for free.
-          </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <Link
-              to="/auth"
-              className="inline-flex items-center rounded-xl bg-purple-600 px-6 py-3 text-base font-semibold text-white shadow-lg transition hover:bg-purple-700"
-            >
-              Create Your Account
-            </Link>
-            <a
-              href="/pricing"
-              className="inline-flex items-center rounded-xl border border-purple-200 px-6 py-3 text-base font-semibold text-purple-700 transition hover:bg-purple-50"
-            >
-              See Plans & Pricing
-            </a>
-          </div>
+      <section className="bg-gray-50 px-4 py-16">
+        <div className="mx-auto max-w-6xl">
+          <InternalLinkingWidget
+            currentPath={location.pathname}
+            variant="inline"
+            limit={5}
+            title="Related Articles"
+          />
         </div>
       </section>
     </SeoPageLayout>

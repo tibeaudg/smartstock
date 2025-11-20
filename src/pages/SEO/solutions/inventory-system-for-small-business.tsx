@@ -1,4 +1,4 @@
-﻿import SEO from '@/components/SEO';
+import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
@@ -32,7 +32,7 @@ export default function InventorySystemForSmallBusiness() {
     },
     {
       question: "How much does an inventory system for small business cost?",
-      answer: "Inventory systems for small businesses vary in cost. StockFlow offers a free plan for small businesses with up to 100 products, making it accessible for startups and small operations. Premium plans start at affordable pay-as-you-grow pricing (€0.004 per product/month), much cheaper than enterprise solutions."
+      answer: "Inventory systems for small businesses vary in cost. StockFlow offers a free plan for small businesses with up to 100 products, making it accessible for startups and small operations. Premium plans start at affordable pay-as-you-grow pricing (�0.004 per product/month), much cheaper than enterprise solutions."
     },
     {
       question: "What features should an inventory system for small business have?",
@@ -115,11 +115,7 @@ export default function InventorySystemForSmallBusiness() {
         description="Read the guide inventory system for small business to automate your processes. Read the guide inventory system for small business to save. Get started free."
         keywords="inventory system for small business, inventory management software small business, inventory management software for small business, inventory management software for small businesses, inventory management system small business, inventory tracking software for small business, stock management software for small business, inventory programs for small business, small business inventory system, inventory system small business, inventory management for small business, inventory software for small business, small business inventory software, inventory system for small companies, small business inventory management, inventory tracking for small business, small business inventory app, stockflow, stock flow"
         url="https://www.stockflow.be/inventory-system-for-small-business"
-      />
-
-
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Inventory System For Small Business</h1>
-      <SeoPageHero
+      />      <SeoPageHero
         title="Inventory System for Small Business: Free & Easy to Use"
         description="The best inventory system for small business. Free plan available for up to 100 products. Real-time tracking, automated alerts, mobile access. Perfect for small businesses. Start free today!"
         badges={[

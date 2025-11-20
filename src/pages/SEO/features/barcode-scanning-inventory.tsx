@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { useLocation } from 'react-router-dom';
 import SEO from '@/components/SEO';
 import SeoPageLayout from '@/components/SeoPageLayout';
@@ -110,6 +110,7 @@ const BarcodeScanningInventory = () => {
         publishedTime={publishedTime}
         modifiedTime={modifiedTime}
       />
+
       <StructuredData data={structuredData} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -132,28 +133,28 @@ const BarcodeScanningInventory = () => {
             </h2>
             <div className="grid md:grid-cols-2 gap-6 mb-6">
               <div className="border border-gray-200 rounded-lg p-6">
-                <h3 className="text-xl font-semibold mb-2">⚡ Speed & Efficiency</h3>
+                <h3 className="text-xl font-semibold mb-2">? Speed & Efficiency</h3>
                 <p className="text-gray-600">
                   Scan products in seconds instead of manually entering data. Increase inventory counting speed by 10x.
                 </p>
               </div>
               
               <div className="border border-gray-200 rounded-lg p-6">
-                <h3 className="text-xl font-semibold mb-2">✓ Accuracy</h3>
+                <h3 className="text-xl font-semibold mb-2">? Accuracy</h3>
                 <p className="text-gray-600">
                   Eliminate human error with automated barcode recognition. 99.9% accuracy compared to manual entry.
                 </p>
               </div>
               
               <div className="border border-gray-200 rounded-lg p-6">
-                <h3 className="text-xl font-semibold mb-2">ðŸ“± Mobile Convenience</h3>
+                <h3 className="text-xl font-semibold mb-2">📱 Mobile Convenience</h3>
                 <p className="text-gray-600">
                   Use any smartphone - no additional hardware required. Scan products anywhere in your warehouse or store.
                 </p>
               </div>
               
               <div className="border border-gray-200 rounded-lg p-6">
-                <h3 className="text-xl font-semibold mb-2">ðŸ”„ Real-time Updates</h3>
+                <h3 className="text-xl font-semibold mb-2">🔄 Real-time Updates</h3>
                 <p className="text-gray-600">
                   Inventory levels update instantly when you scan. See current stock levels immediately across all locations.
                 </p>

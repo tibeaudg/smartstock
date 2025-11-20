@@ -1,4 +1,4 @@
-﻿import SEO from '@/components/SEO';
+import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
@@ -110,11 +110,7 @@ export default function EcommerceInventoryManagement() {
         description="Discover how ecommerce inventory management to automate your processes. Find out how ecommerce inventory management to optimize your inventory. Get started f..."
         keywords="ecommerce management software, ecommerce inventory management, multi platform inventory management, cross platform inventory management, ecommerce inventory software, multi platform inventory, cross platform inventory, ecommerce inventory system, multi channel inventory management, ecommerce inventory solution, inventory management for ecommerce, multi platform inventory software, cross platform inventory software, stockflow, stock flow"
         url="https://www.stockflow.be/ecommerce-inventory-management"
-      />
-
-
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Ecommerce Inventory Management</h1>
-      <SeoPageHero
+      />      <SeoPageHero
         title="Ecommerce Inventory Management: Multi Platform & Cross Platform Solutions"
         description="Best ecommerce management software for multi platform and cross platform inventory management. Sync inventory across Shopify, Amazon, WooCommerce, and all major e-commerce platforms. Free trial available!"
         badges={[

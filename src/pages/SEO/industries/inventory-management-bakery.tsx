@@ -104,12 +104,7 @@ export default function InventoryManagementBakery() {
       <section className="bg-gradient-to-br from-blue-50 to-white py-12 md:py-20 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-8 items-center">
-            <div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-                Inventory Management for Bakeries{' '}
-                <span className="text-blue-600">Made Simple</span>
-              </h1>
-              <p className="text-xl text-gray-600 mb-8">
+            <div>              <p className="text-xl text-gray-600 mb-8">
                 Keep ingredient costs under control, forecast production and ensure every baguette, pastry and cake is delivered on time. StockFlow keeps artisan and industrial bakeries aligned.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">

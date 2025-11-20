@@ -1,4 +1,4 @@
-ï»¿import { useState } from 'react';
+import { useState } from 'react';
 import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
@@ -51,7 +51,7 @@ export default function StockFlowVsZohoInventory() {
     },
     {
       question: "How much does Zoho Inventory cost compared to StockFlow?",
-      answer: "Zoho Inventory costs $59/month minimum (approximately â‚¬54/month), totaling â‚¬648/year. StockFlow offers a free plan for up to 30 products, then tiered pricing starting at â‚¬29/month. For small businesses, StockFlow can save over â‚¬600/year compared to Zoho's minimum pricing."
+      answer: "Zoho Inventory costs $59/month minimum (approximately €54/month), totaling €648/year. StockFlow offers a free plan for up to 30 products, then tiered pricing starting at €29/month. For small businesses, StockFlow can save over €600/year compared to Zoho's minimum pricing."
     },
     {
       question: "Which has better data privacy: StockFlow or Zoho Inventory?",
@@ -80,11 +80,7 @@ export default function StockFlowVsZohoInventory() {
       />
 
       <section className="bg-gradient-to-br from-blue-50 to-white py-12 md:py-20 px-4">
-        <div className="max-w-6xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-            StockFlow vs Zoho Inventory: <span className="text-blue-600">The Better Choice for European SMEs</span>
-          </h1>
-          <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+        <div className="max-w-6xl mx-auto text-center">          <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
             While Zoho Inventory is feature-rich, StockFlow offers better value with European data hosting, 
             simpler interface, and free plan for small businesses.
           </p>
@@ -151,7 +147,7 @@ export default function StockFlowVsZohoInventory() {
             <div className="max-w-2xl mx-auto">
               <div className="grid md:grid-cols-2 gap-6 mb-6">
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">Current Inventory Value (â‚¬)</label>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">Current Inventory Value (€)</label>
                   <input
                     type="number"
                     value={roiInputs.inventoryValue}
@@ -171,7 +167,7 @@ export default function StockFlowVsZohoInventory() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">Hourly Rate (â‚¬)</label>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">Hourly Rate (€)</label>
                   <input
                     type="number"
                     value={roiInputs.hourlyRate}
@@ -181,7 +177,7 @@ export default function StockFlowVsZohoInventory() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">Annual Stockout Losses (â‚¬)</label>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">Annual Stockout Losses (€)</label>
                   <input
                     type="number"
                     value={roiInputs.stockoutLosses}
@@ -202,7 +198,7 @@ export default function StockFlowVsZohoInventory() {
                     const carryingCostSavings = inventoryValue * 0.35;
                     const timeSavings = hoursPerWeek * hourlyRate * 52;
                     const stockoutSavings = stockoutLosses * 0.8;
-                    const zohoCost = 708; // â‚¬59/month * 12
+                    const zohoCost = 708; // €59/month * 12
                     const stockflowCost = 174; // Annual cost
                     const costSavings = zohoCost - stockflowCost;
                     const netSavings = carryingCostSavings + timeSavings + stockoutSavings + costSavings - stockflowCost;
@@ -226,25 +222,25 @@ export default function StockFlowVsZohoInventory() {
                     <div className="grid grid-cols-2 gap-4 text-sm mb-4">
                       <div>
                         <span className="text-gray-600">Carrying cost savings:</span>
-                        <span className="font-bold text-green-600 ml-2">â‚¬{roiResult.carryingCostSavings.toLocaleString()}</span>
+                        <span className="font-bold text-green-600 ml-2">€{roiResult.carryingCostSavings.toLocaleString()}</span>
                       </div>
                       <div>
                         <span className="text-gray-600">Time savings:</span>
-                        <span className="font-bold text-green-600 ml-2">â‚¬{roiResult.timeSavings.toLocaleString()}</span>
+                        <span className="font-bold text-green-600 ml-2">€{roiResult.timeSavings.toLocaleString()}</span>
                       </div>
                       <div>
                         <span className="text-gray-600">Stockout reduction:</span>
-                        <span className="font-bold text-green-600 ml-2">â‚¬{roiResult.stockoutSavings.toLocaleString()}</span>
+                        <span className="font-bold text-green-600 ml-2">€{roiResult.stockoutSavings.toLocaleString()}</span>
                       </div>
                       <div>
                         <span className="text-gray-600">Cost savings vs Zoho:</span>
-                        <span className="font-bold text-green-600 ml-2">â‚¬534/year</span>
+                        <span className="font-bold text-green-600 ml-2">€534/year</span>
                       </div>
                     </div>
                     <div className="border-t pt-4">
                       <div className="flex justify-between items-center mb-2">
                         <span className="text-lg font-semibold">Net Annual Savings:</span>
-                        <span className="text-2xl font-bold text-green-600">â‚¬{roiResult.netSavings.toLocaleString()}</span>
+                        <span className="text-2xl font-bold text-green-600">€{roiResult.netSavings.toLocaleString()}</span>
                       </div>
                       <div className="flex justify-between items-center">
                         <span className="text-lg font-semibold">ROI:</span>
@@ -286,7 +282,7 @@ export default function StockFlowVsZohoInventory() {
             </div>
             <p className="text-center text-sm text-gray-600 mt-4">
               <Link to="/demo" className="text-blue-600 hover:underline font-semibold">
-                Schedule a personalized demo â†’
+                Schedule a personalized demo ?
               </Link>
             </p>
           </div>
@@ -305,19 +301,19 @@ export default function StockFlowVsZohoInventory() {
               <div className="bg-white/10 rounded-lg p-4">
                 <h3 className="font-semibold mb-2">What's Inside:</h3>
                 <ul className="text-sm space-y-1 opacity-90">
-                  <li>âœ“ Feature-by-feature comparison</li>
-                  <li>âœ“ Pricing breakdown</li>
-                  <li>âœ“ Implementation timeline</li>
-                  <li>âœ“ ROI calculation worksheet</li>
+                  <li>? Feature-by-feature comparison</li>
+                  <li>? Pricing breakdown</li>
+                  <li>? Implementation timeline</li>
+                  <li>? ROI calculation worksheet</li>
                 </ul>
               </div>
               <div className="bg-white/10 rounded-lg p-4">
                 <h3 className="font-semibold mb-2">You'll Learn:</h3>
                 <ul className="text-sm space-y-1 opacity-90">
-                  <li>âœ“ Which platform fits your needs</li>
-                  <li>âœ“ Hidden costs to watch for</li>
-                  <li>âœ“ Migration considerations</li>
-                  <li>âœ“ Best practices for switching</li>
+                  <li>? Which platform fits your needs</li>
+                  <li>? Hidden costs to watch for</li>
+                  <li>? Migration considerations</li>
+                  <li>? Best practices for switching</li>
                 </ul>
               </div>
             </div>

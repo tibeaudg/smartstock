@@ -112,11 +112,7 @@ export default function StockFlowVsCin7() {
       />
 
       <section className="bg-gradient-to-br from-blue-50 to-white py-12 md:py-20 px-4">
-        <div className="max-w-6xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-            StockFlow vs Cin7: <span className="text-blue-600">The Better Choice for Growing Businesses</span>
-          </h1>
-          <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+        <div className="max-w-6xl mx-auto text-center">          <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
             While Cin7 is powerful for large enterprises, StockFlow offers better value with free plans,
             5-7 day implementation, European data hosting, and transparent pricing that scales with your business.
           </p>

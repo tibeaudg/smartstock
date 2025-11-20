@@ -1,4 +1,4 @@
-﻿import SEO from '@/components/SEO';
+import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
@@ -111,32 +111,32 @@ export default function ContractorInventoryManagement() {
     {
       title: "General Contractors",
       description: "Manage materials, tools, and equipment across multiple construction projects simultaneously.",
-      icon: "ðŸ—ï¸"
+      icon: "🏗️"
     },
     {
       title: "Electrical Contractors",
       description: "Track electrical supplies, tools, and equipment across residential and commercial job sites.",
-      icon: "⚡"
+      icon: "?"
     },
     {
       title: "Plumbing Contractors",
       description: "Manage plumbing supplies, parts, and specialized tools for service and installation projects.",
-      icon: "ðŸ”§"
+      icon: "🔧"
     },
     {
       title: "HVAC Contractors",
       description: "Track HVAC equipment, parts, and tools for installation and maintenance services.",
-      icon: "❄️"
+      icon: "??"
     },
     {
       title: "Landscaping Contractors",
       description: "Manage equipment, supplies, and materials for landscaping and outdoor construction projects.",
-      icon: "ðŸŒ³"
+      icon: "🌳"
     },
     {
       title: "Renovation Contractors",
       description: "Track materials, tools, and equipment for home renovation and remodeling projects.",
-      icon: "ðŸ "
+      icon: "🏠"
     }
   ];
 
@@ -181,11 +181,7 @@ export default function ContractorInventoryManagement() {
         description="Read the guide contractor inventory management to optimize your inventory management. Read the guide contractor inventory management to automate your process..."
         keywords="contractor inventory management, contractor inventory software, construction inventory management, tool tracking software, equipment inventory management, contractor inventory system, construction inventory software, tool management software, contractor equipment tracking, construction inventory tracking, contractor inventory app, construction tool tracking, contractor material management, contractor inventory solution, contractor inventory platform, construction equipment management, contractor inventory control, construction inventory app, contractor tool management, construction material tracking, stockflow, stock flow"
         url="https://www.stockflow.be/contractor-inventory-management"
-      />
-
-
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Contractor Inventory Management</h1>
-      <SeoPageHero
+      />      <SeoPageHero
         title="Contractor Inventory Management: Track Tools, Equipment & Materials Across Job Sites"
         description="The best contractor inventory management software for construction, renovation, and maintenance contractors. Track tools, equipment, and materials across unlimited job sites. Prevent tool loss, optimize costs, and streamline project billing. Start free today!"
         badges={[

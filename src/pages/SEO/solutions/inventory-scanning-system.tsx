@@ -1,4 +1,4 @@
-﻿import SEO from '@/components/SEO';
+import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
@@ -100,11 +100,7 @@ export default function InventoryScanningSystem() {
         description="Read the guide inventory scanning system to optimize your inventory management. Learn how inventory scanning system to choose the best software.. Try free now."
         keywords="inventory scanning system, inventory scanning, inventory scanning software, inventory scanning app, barcode scanning inventory, inventory barcode scanning, inventory scanning solution, inventory scanning technology, inventory scanning system software, inventory scanning system app, inventory scanning tools, stockflow, stock flow"
         url="https://www.stockflow.be/inventory-scanning-system"
-      />
-
-
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Inventory Scanning System</h1>
-      <SeoPageHero
+      />      <SeoPageHero
         title="Inventory Scanning System: Complete Guide to Barcode Scanning"
         description="Master inventory scanning system and barcode scanning for inventory. Learn how scanning systems work, benefits, and how to implement them. Free inventory scanning tools included."
         badges={[

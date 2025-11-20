@@ -1,4 +1,4 @@
-﻿import SEO from '@/components/SEO';
+import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
@@ -171,11 +171,7 @@ export default function MobileInventoryManagement() {
       <section className="bg-gradient-to-br from-blue-50 to-white py-12 md:py-20 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-8 items-center">
-            <div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-                Mobile Inventory Management: <span className="text-blue-600">Your Warehouse in Your Pocket</span>
-              </h1>
-              <p className="text-xl text-gray-600 mb-8">
+            <div>              <p className="text-xl text-gray-600 mb-8">
                 Manage inventory from anywhere with mobile inventory management. Real-time updates, barcode scanning, and offline mode.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
@@ -373,7 +369,7 @@ export default function MobileInventoryManagement() {
                 <p className="text-gray-600 text-sm mb-3">
                   Nederlandse versie - voorraadbeheer op je mobiel.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
+                <div className="text-blue-600 text-sm font-semibold">Lees meer ?</div>
               </div>
             </Link>
             <Link to="/inventory-management-software" className="group">
@@ -384,7 +380,7 @@ export default function MobileInventoryManagement() {
                 <p className="text-gray-600 text-sm mb-3">
                   Complete inventory management with mobile access.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">Read more →</div>
+                <div className="text-blue-600 text-sm font-semibold">Read more ?</div>
               </div>
             </Link>
             <Link to="/mobile-app" className="group">
@@ -395,7 +391,7 @@ export default function MobileInventoryManagement() {
                 <p className="text-gray-600 text-sm mb-3">
                   Learn more about our mobile inventory app features.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">View app →</div>
+                <div className="text-blue-600 text-sm font-semibold">View app ?</div>
               </div>
             </Link>
           </div>

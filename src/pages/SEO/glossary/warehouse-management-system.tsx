@@ -1,4 +1,4 @@
-﻿import { useState } from 'react';
+import { useState } from 'react';
 import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
@@ -185,12 +185,8 @@ export default function WarehouseManagementSystem() {
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-blue-50 to-white py-16 px-4">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-              What Is a Warehouse Management System (WMS)? Complete Guide 2025
-            </h1>
-            <p className="text-xl text-gray-600 mb-8 max-w-4xl mx-auto leading-relaxed">
-              A <strong>Warehouse Management System (WMS)</strong> is software that controls, optimizes, and automates warehouse operations — from receiving and storing goods to picking, packing, and shipping. Modern WMS platforms offer <strong>real-time visibility</strong>, intelligent task assignment, and seamless integrations with ERP, e-commerce, and supply chain systems.
+          <div className="text-center mb-12">            <p className="text-xl text-gray-600 mb-8 max-w-4xl mx-auto leading-relaxed">
+              A <strong>Warehouse Management System (WMS)</strong> is software that controls, optimizes, and automates warehouse operations � from receiving and storing goods to picking, packing, and shipping. Modern WMS platforms offer <strong>real-time visibility</strong>, intelligent task assignment, and seamless integrations with ERP, e-commerce, and supply chain systems.
             </p>
             <p className="text-lg text-gray-700 mb-8 max-w-4xl mx-auto leading-relaxed">
               In an era where speed and accuracy define logistics, a well-implemented WMS becomes the brain of the warehouse: orchestrating people, inventory, automation, and data to deliver consistent performance.
@@ -465,7 +461,7 @@ export default function WarehouseManagementSystem() {
             <div className="max-w-2xl mx-auto">
               <div className="grid md:grid-cols-2 gap-6 mb-6">
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">Current Inventory Value (€)</label>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">Current Inventory Value (�)</label>
                   <input
                     type="number"
                     value={roiInputs.inventoryValue}
@@ -485,7 +481,7 @@ export default function WarehouseManagementSystem() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">Hourly Rate (€)</label>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">Hourly Rate (�)</label>
                   <input
                     type="number"
                     value={roiInputs.hourlyRate}
@@ -495,7 +491,7 @@ export default function WarehouseManagementSystem() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">Annual Shipping Errors Cost (€)</label>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">Annual Shipping Errors Cost (�)</label>
                   <input
                     type="number"
                     value={roiInputs.stockoutLosses}
@@ -538,25 +534,25 @@ export default function WarehouseManagementSystem() {
                     <div className="grid grid-cols-2 gap-4 text-sm mb-4">
                       <div>
                         <span className="text-gray-600">Carrying cost savings:</span>
-                        <span className="font-bold text-green-600 ml-2">€{roiResult.carryingCostSavings.toLocaleString()}</span>
+                        <span className="font-bold text-green-600 ml-2">�{roiResult.carryingCostSavings.toLocaleString()}</span>
                       </div>
                       <div>
                         <span className="text-gray-600">Time savings:</span>
-                        <span className="font-bold text-green-600 ml-2">€{roiResult.timeSavings.toLocaleString()}</span>
+                        <span className="font-bold text-green-600 ml-2">�{roiResult.timeSavings.toLocaleString()}</span>
                       </div>
                       <div>
                         <span className="text-gray-600">Error reduction:</span>
-                        <span className="font-bold text-green-600 ml-2">€{roiResult.stockoutSavings.toLocaleString()}</span>
+                        <span className="font-bold text-green-600 ml-2">�{roiResult.stockoutSavings.toLocaleString()}</span>
                       </div>
                       <div>
                         <span className="text-gray-600">Software cost:</span>
-                        <span className="font-bold text-gray-600 ml-2">€174</span>
+                        <span className="font-bold text-gray-600 ml-2">�174</span>
                       </div>
                     </div>
                     <div className="border-t pt-4">
                       <div className="flex justify-between items-center mb-2">
                         <span className="text-lg font-semibold">Net Annual Savings:</span>
-                        <span className="text-2xl font-bold text-green-600">€{roiResult.netSavings.toLocaleString()}</span>
+                        <span className="text-2xl font-bold text-green-600">�{roiResult.netSavings.toLocaleString()}</span>
                       </div>
                       <div className="flex justify-between items-center">
                         <span className="text-lg font-semibold">ROI:</span>
@@ -598,7 +594,7 @@ export default function WarehouseManagementSystem() {
             </div>
             <p className="text-center text-sm text-gray-600 mt-4">
               <Link to="/demo" className="text-blue-600 hover:underline font-semibold">
-                Schedule a personalized demo →
+                Schedule a personalized demo ?
               </Link>
             </p>
           </div>
@@ -617,19 +613,19 @@ export default function WarehouseManagementSystem() {
               <div className="bg-white/10 rounded-lg p-4">
                 <h3 className="font-semibold mb-2">What's Inside:</h3>
                 <ul className="text-sm space-y-1 opacity-90">
-                  <li>✓ Feature comparison checklist</li>
-                  <li>✓ Pricing comparison guide</li>
-                  <li>✓ Implementation timeline template</li>
-                  <li>✓ ROI calculation worksheet</li>
+                  <li>? Feature comparison checklist</li>
+                  <li>? Pricing comparison guide</li>
+                  <li>? Implementation timeline template</li>
+                  <li>? ROI calculation worksheet</li>
                 </ul>
               </div>
               <div className="bg-white/10 rounded-lg p-4">
                 <h3 className="font-semibold mb-2">You'll Learn:</h3>
                 <ul className="text-sm space-y-1 opacity-90">
-                  <li>✓ How to evaluate WMS software</li>
-                  <li>✓ Questions to ask vendors</li>
-                  <li>✓ Red flags to avoid</li>
-                  <li>✓ Implementation best practices</li>
+                  <li>? How to evaluate WMS software</li>
+                  <li>? Questions to ask vendors</li>
+                  <li>? Red flags to avoid</li>
+                  <li>? Implementation best practices</li>
                 </ul>
               </div>
             </div>

@@ -1,4 +1,4 @@
-﻿import SEO from '@/components/SEO';
+import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
@@ -53,7 +53,7 @@ export default function WatIsVoorraadbeheerSoftware() {
     {
       icon: BarChart3,
       title: "Rapportages & Inzichten",
-      description: "Zie welke producten goed verkopen en waar je voorraad inefficiÃ«nt is.",
+      description: "Zie welke producten goed verkopen en waar je voorraad inefficiënt is.",
       color: "purple"
     },
     {
@@ -78,7 +78,7 @@ export default function WatIsVoorraadbeheerSoftware() {
       icon: Cloud
     },
     {
-      type: "ERP GeÃ¯ntegreerd",
+      type: "ERP Geïntegreerd",
       description: "Voorraadbeheer als onderdeel van een groter bedrijfssysteem",
       bestFor: "Grote bedrijven met complexe processen",
       icon: Package
@@ -129,11 +129,7 @@ export default function WatIsVoorraadbeheerSoftware() {
             <div>
               <div className="inline-block bg-blue-400/30 px-4 py-2 rounded-full text-sm font-semibold mb-6">
                 Complete Uitleg & Gids
-              </div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-                Wat is <span className="text-yellow-300">Voorraadbeheer Software</span> en Hoe Werkt Het?
-              </h1>
-              <p className="text-xl mb-8 leading-relaxed">
+              </div>              <p className="text-xl mb-8 leading-relaxed">
                 Voorraadbeheer software automatiseert het bijhouden van je producten, voorraad en bestellingen. 
                 In deze gids leggen we uit wat het is, hoe het werkt en waarom je het nodig hebt.
               </p>
@@ -165,15 +161,15 @@ export default function WatIsVoorraadbeheerSoftware() {
               <h3 className="text-2xl font-bold mb-6">In het kort</h3>
               <div className="space-y-4">
                 <div className="bg-white/10 p-4 rounded-lg">
-                  <div className="font-semibold mb-2">ðŸŽ¯ Wat het is</div>
+                  <div className="font-semibold mb-2">🎯 Wat het is</div>
                   <p className="text-blue-100 text-sm">Software die automatisch je voorraad bijhoudt en beheert</p>
                 </div>
                 <div className="bg-white/10 p-4 rounded-lg">
-                  <div className="font-semibold mb-2">âš™ï¸ Hoe het werkt</div>
+                  <div className="font-semibold mb-2">⚙️ Hoe het werkt</div>
                   <p className="text-blue-100 text-sm">Registreert elke beweging en update je voorraad real-time</p>
                 </div>
                 <div className="bg-white/10 p-4 rounded-lg">
-                  <div className="font-semibold mb-2">ðŸ’° Wat het oplevert</div>
+                  <div className="font-semibold mb-2">💰 Wat het oplevert</div>
                   <p className="text-blue-100 text-sm">70% tijdsbesparing en 25% lagere voorraadkosten</p>
                 </div>
               </div>
@@ -210,28 +206,28 @@ export default function WatIsVoorraadbeheerSoftware() {
           <div className="grid md:grid-cols-2 gap-8">
             <div className="bg-white p-6 rounded-xl border-2 border-gray-200">
               <h3 className="text-xl font-bold mb-4 flex items-center">
-                <span className="text-3xl mr-3">âŒ</span>
+                <span className="text-3xl mr-3">❌</span>
                 Zonder Software
               </h3>
               <ul className="space-y-3 text-gray-700">
                 <li className="flex items-start">
-                  <span className="mr-2">•</span>
+                  <span className="mr-2">�</span>
                   <span>Handmatig tellen en invoeren in Excel</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="mr-2">•</span>
+                  <span className="mr-2">�</span>
                   <span>Veel tijd kwijt aan administratie</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="mr-2">•</span>
+                  <span className="mr-2">�</span>
                   <span>Regelmatig fouten en discrepanties</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="mr-2">•</span>
+                  <span className="mr-2">�</span>
                   <span>Geen real-time inzicht</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="mr-2">•</span>
+                  <span className="mr-2">�</span>
                   <span>Moeilijk te schalen bij groei</span>
                 </li>
               </ul>
@@ -239,7 +235,7 @@ export default function WatIsVoorraadbeheerSoftware() {
 
             <div className="bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-xl border-2 border-green-600">
               <h3 className="text-xl font-bold mb-4 flex items-center">
-                <span className="text-3xl mr-3">âœ…</span>
+                <span className="text-3xl mr-3">✅</span>
                 Met Software
               </h3>
               <ul className="space-y-3 text-gray-700">
@@ -290,7 +286,7 @@ export default function WatIsVoorraadbeheerSoftware() {
                 <div className="flex-1">
                   <h3 className="text-xl font-bold mb-2">Producten Registreren</h3>
                   <p className="text-gray-700 mb-3">
-                    Je voert je producten Ã©Ã©n keer in het systeem in met alle belangrijke informatie: 
+                    Je voert je producten één keer in het systeem in met alle belangrijke informatie: 
                     naam, SKU, prijs, leverancier, minimum voorraad, etc. Je kunt dit doen via Excel import, 
                     handmatig invoeren of barcode scanning.
                   </p>
@@ -483,7 +479,7 @@ export default function WatIsVoorraadbeheerSoftware() {
               Wie Heeft <span className="text-blue-600">Voorraadbeheer Software</span> Nodig?
             </h2>
             <p className="text-lg text-gray-600">
-              Herken je jezelf in Ã©Ã©n van deze situaties?
+              Herken je jezelf in één van deze situaties?
             </p>
           </div>
 
@@ -494,7 +490,7 @@ export default function WatIsVoorraadbeheerSoftware() {
                 Als je online verkoopt via een webshop, is real-time voorraad cruciaal om stockouts te voorkomen.
               </p>
               <Link to="/voorraadbeheer-webshop" className="text-blue-600 font-semibold hover:underline">
-                Lees meer →
+                Lees meer ?
               </Link>
             </div>
 
@@ -504,7 +500,7 @@ export default function WatIsVoorraadbeheerSoftware() {
                 Voor winkels met meerdere vestigingen of een centrale voorraad is overzicht essentieel.
               </p>
               <Link to="/voorraadbeheer-software" className="text-green-600 font-semibold hover:underline">
-                Lees meer →
+                Lees meer ?
               </Link>
             </div>
 
@@ -514,17 +510,17 @@ export default function WatIsVoorraadbeheerSoftware() {
                 Als je producten opslaat en distribueert, heb je professioneel magazijnbeheer nodig.
               </p>
               <Link to="/magazijnbeheer" className="text-purple-600 font-semibold hover:underline">
-                Lees meer →
+                Lees meer ?
               </Link>
             </div>
 
             <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-6 rounded-xl">
               <h3 className="text-xl font-bold mb-3">Horeca & Catering</h3>
               <p className="text-gray-700 mb-4">
-                Verse producten en ingrediÃ«nten vereisen nauwkeurig voorraadbeheer om verspilling te voorkomen.
+                Verse producten en ingrediënten vereisen nauwkeurig voorraadbeheer om verspilling te voorkomen.
               </p>
               <Link to="/voorraadbeheer-horeca" className="text-orange-600 font-semibold hover:underline">
-                Lees meer →
+                Lees meer ?
               </Link>
             </div>
 
@@ -534,7 +530,7 @@ export default function WatIsVoorraadbeheerSoftware() {
                 Bij productie moet je grondstoffen, work-in-progress en eindproducten bijhouden.
               </p>
               <Link to="/voorraadbeheer-software" className="text-red-600 font-semibold hover:underline">
-                Lees meer →
+                Lees meer ?
               </Link>
             </div>
 
@@ -544,7 +540,7 @@ export default function WatIsVoorraadbeheerSoftware() {
                 Groei je van Excel naar professioneel? Voorraadbeheer software schaalt mee met je ambities.
               </p>
               <Link to="/voorraadbeheer-kmo" className="text-indigo-600 font-semibold hover:underline">
-                Lees meer →
+                Lees meer ?
               </Link>
             </div>
           </div>
@@ -620,7 +616,7 @@ export default function WatIsVoorraadbeheerSoftware() {
                 <p className="text-gray-600 text-sm mb-3">
                   Diepgaande uitleg over alle functies en mogelijkheden.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
+                <div className="text-blue-600 text-sm font-semibold">Lees meer ?</div>
               </div>
             </Link>
 
@@ -632,7 +628,7 @@ export default function WatIsVoorraadbeheerSoftware() {
                 <p className="text-gray-600 text-sm mb-3">
                   Praktische gids om te starten met automatisering.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
+                <div className="text-blue-600 text-sm font-semibold">Lees meer ?</div>
               </div>
             </Link>
 
@@ -644,7 +640,7 @@ export default function WatIsVoorraadbeheerSoftware() {
                 <p className="text-gray-600 text-sm mb-3">
                   Specifieke oplossingen voor kleine en middelgrote bedrijven.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
+                <div className="text-blue-600 text-sm font-semibold">Lees meer ?</div>
               </div>
             </Link>
           </div>

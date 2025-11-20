@@ -1,4 +1,4 @@
-﻿import SEO from '@/components/SEO';
+import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
@@ -111,32 +111,32 @@ export default function WholesalerInventoryManagement() {
     {
       title: "Wholesale Distributors",
       description: "Manage large volumes of products across multiple warehouses, track inventory turnover, and optimize stock levels.",
-      icon: "ðŸ“¦"
+      icon: "📦"
     },
     {
       title: "B2B Wholesalers",
       description: "Handle bulk orders from retailers and businesses, manage supplier relationships, and track order fulfillment.",
-      icon: "ðŸ¢"
+      icon: "🏢"
     },
     {
       title: "Wholesaler and Distributor Networks",
       description: "Manage inventory across distributor networks, track transfers between locations, and maintain centralized control.",
-      icon: "ðŸŒ"
+      icon: "🌐"
     },
     {
       title: "Import/Export Wholesalers",
       description: "Track inventory from suppliers through warehouses to customers, manage customs documentation, and optimize logistics.",
-      icon: "ðŸš¢"
+      icon: "🚢"
     },
     {
       title: "Regional Distributors",
       description: "Manage inventory across regional warehouses, optimize stock allocation, and ensure products are available where needed.",
-      icon: "ðŸ—ºï¸"
+      icon: "🗺️"
     },
     {
       title: "Specialty Wholesalers",
       description: "Manage specialized product lines, track compliance requirements, and maintain detailed inventory records for regulatory purposes.",
-      icon: "⭐"
+      icon: "?"
     }
   ];
 
@@ -181,11 +181,7 @@ export default function WholesalerInventoryManagement() {
         description="Read the guide wholesaler inventory management to save time and money. Read the guide wholesaler inventory management to optimize your inventory. Try free now."
         keywords="wholesaler inventory management, wholesaler inventory software, distributor inventory management, wholesaler inventory system, distributor inventory software, wholesaler and distributor, distributors and wholesalers, wholesale inventory management, distributor inventory system, wholesaler inventory app, distributor inventory app, wholesale inventory software, distributor inventory solution, wholesaler inventory platform, wholesale inventory tracking, distributor inventory tracking, wholesaler stock management, distributor stock management, wholesale inventory control, distributor inventory control, stockflow, stock flow"
         url="https://www.stockflow.be/wholesaler-inventory-management"
-      />
-
-
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Wholesaler Inventory Management</h1>
-      <SeoPageHero
+      />      <SeoPageHero
         title="Wholesaler Inventory Management: For Distributors and Wholesalers"
         description="The best wholesaler inventory management software for distributors and wholesalers. Manage inventory across multiple warehouses, optimize inventory turnover, process bulk orders, and streamline operations. Start free today!"
         badges={[

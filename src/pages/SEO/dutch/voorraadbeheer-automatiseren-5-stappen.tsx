@@ -90,12 +90,7 @@ export default function VoorraadbeheerAutomatiseren5Stappen() {
       <section className="bg-gradient-to-br from-blue-50 to-white py-12 md:py-20 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-8 items-center">
-            <div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-                Voorraadbeheer automatiseren{' '}
-                <span className="text-blue-600">in 5 haalbare stappen</span>
-              </h1>
-              <p className="text-xl text-gray-600 mb-8">
+            <div>              <p className="text-xl text-gray-600 mb-8">
                 Minder manuele taken, minder fouten en altijd inzicht in je voorraad. Ontdek hoe je met StockFlow snel en gecontroleerd automatiseert.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">

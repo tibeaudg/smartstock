@@ -1,4 +1,4 @@
-﻿import SEO from '@/components/SEO';
+import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
@@ -33,11 +33,11 @@ export default function VoorraadbeheerSoftware() {
     },
     {
       question: "Kan ik voorraadbeheer software integreren met mijn bestaande systemen?",
-      answer: "Ja, moderne voorraadbeheer software zoals stockflow kan vaak geÃ¯ntegreerd worden met boekhoudsoftware, webshops en andere bedrijfssystemen voor een naadloze workflow. Dit bespaart tijd en voorkomt dubbele invoer."
+      answer: "Ja, moderne voorraadbeheer software zoals stockflow kan vaak geïntegreerd worden met boekhoudsoftware, webshops en andere bedrijfssystemen voor een naadloze workflow. Dit bespaart tijd en voorkomt dubbele invoer."
     },
     {
       question: "Wat kost goede voorraadbeheer software?",
-      answer: "De kosten variÃ«ren. Stockflow biedt een volledig gratis versie voor tot 30 producten. Premium plannen starten vanaf €29 per maand voor meer geavanceerde functies en onbeperkt producten. Veel goedkoper en effectiever dan blijven werken met Excel."
+      answer: "De kosten variëren. Stockflow biedt een volledig gratis versie voor tot 30 producten. Premium plannen starten vanaf �29 per maand voor meer geavanceerde functies en onbeperkt producten. Veel goedkoper en effectiever dan blijven werken met Excel."
     },
     {
       question: "Is voorraadbeheer software geschikt voor mijn bedrijfstype?",
@@ -81,7 +81,7 @@ export default function VoorraadbeheerSoftware() {
     {
       icon: Package,
       title: "Multi-Locatie Support",
-      description: "Beheer voorraad op meerdere locaties vanuit Ã©Ã©n centrale software."
+      description: "Beheer voorraad op meerdere locaties vanuit één centrale software."
     },
     {
       icon: Users,
@@ -140,7 +140,7 @@ export default function VoorraadbeheerSoftware() {
     },
     {
       pain: "Geen overzicht over meerdere locaties",
-      solution: "Centraal beheer van alle vestigingen in Ã©Ã©n systeem"
+      solution: "Centraal beheer van alle vestigingen in één systeem"
     }
   ];
 
@@ -169,12 +169,8 @@ export default function VoorraadbeheerSoftware() {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
               <div className="inline-block bg-blue-400/30 px-4 py-2 rounded-full text-sm font-semibold mb-6">
-                #1 Voorraadbeheer Software in BelgiÃ« & Nederland
-              </div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-                Voorraadbeheer Software die <span className="text-yellow-300">Echt Werkt</span>
-              </h1>
-              <p className="text-xl mb-8 leading-relaxed">
+                #1 Voorraadbeheer Software in België & Nederland
+              </div>              <p className="text-xl mb-8 leading-relaxed">
                 Van kleine ondernemer tot groeiende webshop - beheer je voorraad professioneel met software 
                 die is ontworpen voor <strong>jouw</strong> succes. Start gratis en ervaar het verschil.
               </p>
@@ -246,7 +242,7 @@ export default function VoorraadbeheerSoftware() {
               Wat is Voorraadbeheer Software?
             </h2>
             <p className="text-lg text-gray-700 mb-6 leading-relaxed">
-              Voorraadbeheer software is een digitaal systeem dat je helpt om je voorraad efficiÃ«nt te beheren. 
+              Voorraadbeheer software is een digitaal systeem dat je helpt om je voorraad efficiënt te beheren. 
               In plaats van handmatig bijhouden in Excel of op papier, krijg je met professionele software 
               real-time inzicht in je voorraadniveaus, automatische bestelmeldingen en geavanceerde analyses.
             </p>
@@ -282,11 +278,11 @@ export default function VoorraadbeheerSoftware() {
             {painPoints.map((item, index) => (
               <div key={index} className="bg-white p-6 rounded-xl shadow-sm">
                 <div className="mb-4">
-                  <div className="text-red-600 font-semibold mb-2 text-sm">âŒ Probleem</div>
+                  <div className="text-red-600 font-semibold mb-2 text-sm">❌ Probleem</div>
                   <p className="text-gray-800 font-medium">{item.pain}</p>
                 </div>
                 <div>
-                  <div className="text-green-600 font-semibold mb-2 text-sm">âœ… Oplossing</div>
+                  <div className="text-green-600 font-semibold mb-2 text-sm">✅ Oplossing</div>
                   <p className="text-gray-700 text-sm">{item.solution}</p>
                 </div>
               </div>
@@ -354,7 +350,7 @@ export default function VoorraadbeheerSoftware() {
                     ))}
                   </div>
                   <div className="mt-4 text-blue-600 font-semibold text-sm group-hover:underline">
-                    Lees meer →
+                    Lees meer ?
                   </div>
                 </Link>
               ))}
@@ -388,27 +384,27 @@ export default function VoorraadbeheerSoftware() {
               <h3 className="text-2xl font-bold mb-6 text-red-900">Voorraadbeheer in Excel</h3>
               <ul className="space-y-3">
                 <li className="flex items-start text-gray-700">
-                  <span className="text-red-600 mr-2">✗</span>
+                  <span className="text-red-600 mr-2">?</span>
                   <span>Handmatige updates, geen real-time data</span>
                 </li>
                 <li className="flex items-start text-gray-700">
-                  <span className="text-red-600 mr-2">✗</span>
+                  <span className="text-red-600 mr-2">?</span>
                   <span>Geen automatische meldingen</span>
                 </li>
                 <li className="flex items-start text-gray-700">
-                  <span className="text-red-600 mr-2">✗</span>
+                  <span className="text-red-600 mr-2">?</span>
                   <span>Foutgevoelig bij handmatige invoer</span>
                 </li>
                 <li className="flex items-start text-gray-700">
-                  <span className="text-red-600 mr-2">✗</span>
+                  <span className="text-red-600 mr-2">?</span>
                   <span>Moeilijk samenwerken met team</span>
                 </li>
                 <li className="flex items-start text-gray-700">
-                  <span className="text-red-600 mr-2">✗</span>
+                  <span className="text-red-600 mr-2">?</span>
                   <span>Geen barcode scanning</span>
                 </li>
                 <li className="flex items-start text-gray-700">
-                  <span className="text-red-600 mr-2">✗</span>
+                  <span className="text-red-600 mr-2">?</span>
                   <span>Beperkte rapportage mogelijkheden</span>
                 </li>
               </ul>
@@ -418,27 +414,27 @@ export default function VoorraadbeheerSoftware() {
               <h3 className="text-2xl font-bold mb-6 text-green-900">Voorraadbeheer Software</h3>
               <ul className="space-y-3">
                 <li className="flex items-start text-gray-700">
-                  <span className="text-green-600 mr-2">✓</span>
+                  <span className="text-green-600 mr-2">?</span>
                   <span><strong>Real-time updates</strong> automatisch</span>
                 </li>
                 <li className="flex items-start text-gray-700">
-                  <span className="text-green-600 mr-2">✓</span>
+                  <span className="text-green-600 mr-2">?</span>
                   <span><strong>Automatische bestelmeldingen</strong></span>
                 </li>
                 <li className="flex items-start text-gray-700">
-                  <span className="text-green-600 mr-2">✓</span>
+                  <span className="text-green-600 mr-2">?</span>
                   <span><strong>99.9% nauwkeurig</strong> met barcode scanning</span>
                 </li>
                 <li className="flex items-start text-gray-700">
-                  <span className="text-green-600 mr-2">✓</span>
+                  <span className="text-green-600 mr-2">?</span>
                   <span><strong>Team samenwerking</strong> ingebouwd</span>
                 </li>
                 <li className="flex items-start text-gray-700">
-                  <span className="text-green-600 mr-2">✓</span>
+                  <span className="text-green-600 mr-2">?</span>
                   <span><strong>Mobiele barcode scanner</strong> app</span>
                 </li>
                 <li className="flex items-start text-gray-700">
-                  <span className="text-green-600 mr-2">✓</span>
+                  <span className="text-green-600 mr-2">?</span>
                   <span><strong>Geavanceerde analytics</strong> en rapporten</span>
                 </li>
               </ul>
@@ -450,7 +446,7 @@ export default function VoorraadbeheerSoftware() {
               to="/voorraadbeheer-excel"
               className="inline-block bg-blue-600 text-white px-8 py-4 rounded-lg font-bold hover:bg-blue-700 transition"
             >
-              Lees Volledige Vergelijking →
+              Lees Volledige Vergelijking ?
             </Link>
           </div>
         </div>
@@ -502,14 +498,14 @@ export default function VoorraadbeheerSoftware() {
             <h3 className="text-2xl font-bold mb-4 text-center">Rekenvoorbeeld</h3>
             <p className="text-lg mb-4">
               Een gemiddeld bedrijf bespaart <strong>10-15 uur per week</strong> op voorraadtaken. 
-              Bij een uurtarief van €50 is dat <strong>€2.000-3.000 per maand</strong>.
+              Bij een uurtarief van �50 is dat <strong>�2.000-3.000 per maand</strong>.
             </p>
             <p className="text-lg">
-              Daarnaast bespaar je <strong>€1.000-2.000 per maand</strong> door betere voorraad optimalisatie 
+              Daarnaast bespaar je <strong>�1.000-2.000 per maand</strong> door betere voorraad optimalisatie 
               (minder overstock, minder stockouts).
             </p>
             <div className="mt-6 p-4 bg-yellow-400/20 rounded-lg text-center">
-              <div className="text-3xl font-bold mb-2">€3.000 - €5.000</div>
+              <div className="text-3xl font-bold mb-2">�3.000 - �5.000</div>
               <div>Gemiddelde maandelijkse besparing</div>
             </div>
           </div>
@@ -539,7 +535,7 @@ export default function VoorraadbeheerSoftware() {
                 Je data vanuit <Link to="/voorraadbeheer-excel" className="text-blue-600 hover:underline">Excel</Link> is 
                 eenvoudig te importeren.
               </p>
-              <div className="text-sm text-gray-500">â±ï¸ 1-2 uur</div>
+              <div className="text-sm text-gray-500">⏱️ 1-2 uur</div>
             </div>
 
             <div className="text-center">
@@ -551,7 +547,7 @@ export default function VoorraadbeheerSoftware() {
                 Train je team (super gebruiksvriendelijk!) en koppel eventuele integraties zoals webshop of boekhouding. 
                 Leer hoe je <Link to="/voorraadbeheer-automatiseren" className="text-blue-600 hover:underline">processen automatiseert</Link>.
               </p>
-              <div className="text-sm text-gray-500">â±ï¸ 2-4 uur</div>
+              <div className="text-sm text-gray-500">⏱️ 2-4 uur</div>
             </div>
 
             <div className="text-center">
@@ -563,7 +559,7 @@ export default function VoorraadbeheerSoftware() {
                 Start met live voorraadbeheer en ervaar direct de voordelen. Blijf optimaliseren en uitbreiden 
                 naar meer geavanceerde features naarmate je groeit.
               </p>
-              <div className="text-sm text-gray-500">â±ï¸ Vanaf dag 1 productief</div>
+              <div className="text-sm text-gray-500">⏱️ Vanaf dag 1 productief</div>
             </div>
           </div>
         </div>
@@ -684,7 +680,7 @@ export default function VoorraadbeheerSoftware() {
                 <p className="text-gray-600 text-sm mb-3">
                   Betaalbare en schaalbare oplossingen speciaal voor kleine bedrijven en KMO's.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
+                <div className="text-blue-600 text-sm font-semibold">Lees meer ?</div>
               </div>
             </Link>
 
@@ -696,7 +692,7 @@ export default function VoorraadbeheerSoftware() {
                 <p className="text-gray-600 text-sm mb-3">
                   Real-time synchronisatie en multi-channel voorraad voor e-commerce bedrijven.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
+                <div className="text-blue-600 text-sm font-semibold">Lees meer ?</div>
               </div>
             </Link>
 
@@ -708,7 +704,7 @@ export default function VoorraadbeheerSoftware() {
                 <p className="text-gray-600 text-sm mb-3">
                   Optimaliseer je warehouse operaties met picking, packing en shipping integratie.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
+                <div className="text-blue-600 text-sm font-semibold">Lees meer ?</div>
               </div>
             </Link>
 
@@ -720,7 +716,7 @@ export default function VoorraadbeheerSoftware() {
                 <p className="text-gray-600 text-sm mb-3">
                   Ontdek waarom Excel beperkt is en hoe je eenvoudig overschakelt naar software.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
+                <div className="text-blue-600 text-sm font-semibold">Lees meer ?</div>
               </div>
             </Link>
 
@@ -732,7 +728,7 @@ export default function VoorraadbeheerSoftware() {
                 <p className="text-gray-600 text-sm mb-3">
                   Complete gids om je voorraadbeheer te automatiseren en 70% tijd te besparen.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
+                <div className="text-blue-600 text-sm font-semibold">Lees meer ?</div>
               </div>
             </Link>
 
@@ -742,9 +738,9 @@ export default function VoorraadbeheerSoftware() {
                   Voorraadbeheer voor Horeca
                 </h3>
                 <p className="text-gray-600 text-sm mb-3">
-                  Speciaal voorraadbeheer software voor restaurants, cafÃ©s en hotels met houdbaarheidsdata tracking.
+                  Speciaal voorraadbeheer software voor restaurants, cafés en hotels met houdbaarheidsdata tracking.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
+                <div className="text-blue-600 text-sm font-semibold">Lees meer ?</div>
               </div>
             </Link>
 
@@ -756,7 +752,7 @@ export default function VoorraadbeheerSoftware() {
                 <p className="text-gray-600 text-sm mb-3">
                   Praktische voorraadbeheer tips die je direct kunt toepassen. Bespaar 70% tijd en verhoog winst.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
+                <div className="text-blue-600 text-sm font-semibold">Lees meer ?</div>
               </div>
             </Link>
 
@@ -768,7 +764,7 @@ export default function VoorraadbeheerSoftware() {
                 <p className="text-gray-600 text-sm mb-3">
                   English version - professional inventory management for growing businesses.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">Read more →</div>
+                <div className="text-blue-600 text-sm font-semibold">Read more ?</div>
               </div>
             </Link>
           </div>

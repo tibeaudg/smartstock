@@ -1,4 +1,4 @@
-ï»¿import { useMemo } from 'react';
+import { useMemo } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import SEO from '@/components/SEO';
 import SeoPageLayout from '@/components/SeoPageLayout';
@@ -41,7 +41,7 @@ const glossarySections: GlossarySection[] = [
       {
         term: 'Asset Tracking',
         summary:
-          'Asset tracking is the process of continually managing the assets your business ownsâ€”such as equipment, tools, and technologyâ€”as they change hands, locations, and value.',
+          'Asset tracking is the process of continually managing the assets your business owns—such as equipment, tools, and technology—as they change hands, locations, and value.',
         href: '/asset-tracking',
       },
     ],
@@ -101,7 +101,7 @@ const glossarySections: GlossarySection[] = [
       {
         term: 'Inventory Asset',
         summary:
-          'Inventory assets are reusable items a company ownsâ€”such as equipment or machineryâ€”that support the creation of products or services.',
+          'Inventory assets are reusable items a company owns—such as equipment or machinery—that support the creation of products or services.',
         href: '/glossary/inventory-asset',
       },
       {
@@ -131,7 +131,7 @@ const glossarySections: GlossarySection[] = [
       {
         term: 'Inventory Optimization',
         summary:
-          'Inventory optimization keeps inventory levels â€œjust rightâ€ so you can satisfy demand while avoiding stockouts, overstock, and obsolescence.',
+          'Inventory optimization keeps inventory levels “just right” so you can satisfy demand while avoiding stockouts, overstock, and obsolescence.',
         href: '/glossary/inventory-optimization',
       },
       {
@@ -372,7 +372,7 @@ export default function GlossaryHomePage() {
                         className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-blue-600 transition hover:text-blue-700 md:mt-0"
                       >
                         Read definition
-                        <span aria-hidden="true">â†’</span>
+                        <span aria-hidden="true">?</span>
                       </Link>
                     </div>
                   </div>

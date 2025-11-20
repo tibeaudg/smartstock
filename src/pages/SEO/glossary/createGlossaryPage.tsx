@@ -1,4 +1,4 @@
-﻿import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import SEO from '@/components/SEO';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
@@ -94,15 +94,13 @@ export function createGlossaryPage(config: GlossaryPageConfig) {
         
       >
         <SEO
-          title={`Createglossarypage 2025 - Createglossarypage 2025 -`}
+          title={`${title} 2025 - Inventory Management Glossary | StockFlow`}
           description={metaDescription}
           keywords={pageKeywords}
           url={`https://www.stockflow.be${path}`}
         />
 
-
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Createglossarypage</h1>
-        <StructuredData data={jsonLd} />
+      <StructuredData data={jsonLd} />
 
         <header className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-indigo-600 via-blue-600 to-cyan-500 px-6 py-16 text-white shadow-xl">
           <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20" aria-hidden="true" />
@@ -149,7 +147,7 @@ export function createGlossaryPage(config: GlossaryPageConfig) {
               >
                 <div className="flex items-start gap-3">
                   <span className="mt-1 inline-flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-white">
-                    ✓
+                    ?
                   </span>
                   <p className="text-base text-slate-700">{item}</p>
                 </div>

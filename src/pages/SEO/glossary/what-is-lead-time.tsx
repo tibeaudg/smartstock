@@ -1,4 +1,4 @@
-﻿import SEO from '@/components/SEO';
+import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
@@ -95,11 +95,7 @@ export default function WhatIsLeadTime() {
         description="Discover how what is lead time to choose the best software. Find out how what is lead time to save time. Try free now. StockFlow helps businesses manage inve..."
         keywords="what is lead time, lead time, lead time definition, lead time meaning, lead time calculation, lead time formula, lead time inventory, lead time management, lead time planning, lead time optimization, supplier lead time, production lead time, order lead time, lead time tracking, stockflow, stock flow"
         url="https://www.stockflow.be/what-is-lead-time"
-      />
-
-
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">What Is Lead Time</h1>
-      <SeoPageHero
+      />      <SeoPageHero
         title="What is Lead Time: Complete Guide to Lead Time Definition"
         description="Learn what is lead time and how to use lead time for inventory planning. Complete guide to lead time definition, calculation, and optimization. Free tools included."
         badges={[
@@ -126,7 +122,7 @@ export default function WhatIsLeadTime() {
           <div className="bg-blue-50 rounded-lg p-8 mb-8">
             <h3 className="text-2xl font-bold mb-4">Lead Time Formula</h3>
             <div className="text-xl font-semibold text-blue-600 mb-4">
-              Lead Time = Order Date → Receipt Date
+              Lead Time = Order Date ? Receipt Date
             </div>
             <p className="text-gray-700">
               Lead time includes order processing time, manufacturing (if applicable), shipping time, and receiving time. Inventory management software like StockFlow tracks lead times automatically to help optimize inventory planning.

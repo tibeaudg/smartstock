@@ -1,4 +1,4 @@
-ï»¿import SEO from '@/components/SEO';
+import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
@@ -118,11 +118,7 @@ export default function WarehouseManagement() {
             <div>
               <div className="inline-block bg-purple-400/30 px-4 py-2 rounded-full text-sm font-semibold mb-6">
                 Warehouse Management System
-              </div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-                Warehouse Management Software for <span className="text-yellow-300">Efficient</span> Warehouses
-              </h1>
-              <p className="text-xl mb-8 leading-relaxed">
+              </div>              <p className="text-xl mb-8 leading-relaxed">
                 Transform your warehouse operations with professional warehouse management software. 
                 From receiving to shipping - optimize every process with <Link to="/inventory-management-software" className="underline hover:text-yellow-300">modern inventory management software</Link>.
               </p>
@@ -355,7 +351,7 @@ export default function WarehouseManagement() {
               Contact Sales
             </Link>
           </div>
-          <p className="mt-6 text-indigo-200">No credit card required â€¢ Free 14-day trial â€¢ Cancel anytime</p>
+          <p className="mt-6 text-indigo-200">No credit card required • Free 14-day trial • Cancel anytime</p>
         </div>
       </section>
 

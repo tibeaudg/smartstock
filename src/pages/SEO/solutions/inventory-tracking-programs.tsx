@@ -1,4 +1,4 @@
-﻿import SEO from '@/components/SEO';
+import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
@@ -51,7 +51,7 @@ export default function InventoryTrackingPrograms() {
     },
     {
       question: "How much do inventory tracking programs cost?",
-      answer: "Inventory tracking program costs vary widely. Enterprise solutions can cost thousands per month, while StockFlow offers a free plan for small businesses and affordable pay-as-you-grow pricing starting at €0.004 per product per month. Most programs offer free trials to test before committing."
+      answer: "Inventory tracking program costs vary widely. Enterprise solutions can cost thousands per month, while StockFlow offers a free plan for small businesses and affordable pay-as-you-grow pricing starting at �0.004 per product per month. Most programs offer free trials to test before committing."
     },
     {
       question: "What is the best inventory tracking program for small businesses?",
@@ -111,32 +111,32 @@ export default function InventoryTrackingPrograms() {
     {
       title: "Retail Stores",
       description: "Track inventory across multiple store locations, manage stock levels, and prevent stockouts during peak seasons.",
-      icon: "ðŸª"
+      icon: "🏪"
     },
     {
       title: "E-commerce",
       description: "Sync inventory across online channels, manage fulfillment, and prevent overselling with real-time stock tracking.",
-      icon: "ðŸ›’"
+      icon: "🛒"
     },
     {
       title: "Warehouses",
       description: "Manage large inventories, track stock movements, optimize space utilization, and streamline picking and packing.",
-      icon: "ðŸ“¦"
+      icon: "📦"
     },
     {
       title: "Manufacturing",
       description: "Track raw materials, work-in-progress, and finished goods across production stages and multiple locations.",
-      icon: "ðŸ­"
+      icon: "🏭"
     },
     {
       title: "Wholesale & Distribution",
       description: "Handle bulk inventory, manage multiple warehouses, track supplier deliveries, and optimize inventory turnover.",
-      icon: "ðŸšš"
+      icon: "🚚"
     },
     {
       title: "Small Business",
       description: "Start tracking inventory affordably with a free plan, scale as you grow, and maintain accurate stock records.",
-      icon: "ðŸ’¼"
+      icon: "💼"
     }
   ];
 
@@ -181,11 +181,7 @@ export default function InventoryTrackingPrograms() {
         description="Learn how inventory tracking programs to save time and money. Read the guide inventory tracking programs to choose the best. Start free today. StockFlow help..."
         keywords="inventory tracking programs, inventory tracking software, inventory tracking program, inventory tracking system, inventory tracking app, inventory tracking solution, inventory tracking platform, inventory tracking tool, inventory tracking software free, inventory tracking program free, best inventory tracking program, inventory tracking software for small business, inventory tracking software online, cloud inventory tracking, inventory tracking software comparison, inventory tracking software reviews, inventory tracking software features, inventory tracking software cost, stockflow, stock flow"
         url="https://www.stockflow.be/inventory-tracking-programs"
-      />
-
-
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Inventory Tracking Programs</h1>
-      <SeoPageHero
+      />      <SeoPageHero
         title="Inventory Tracking Programs: Best Inventory Tracking Software 2025"
         description="Find the best inventory tracking programs for your business. Real-time tracking, barcode scanning, automated alerts, and multi-location support. Free plan available. Start tracking inventory today!"
         badges={[

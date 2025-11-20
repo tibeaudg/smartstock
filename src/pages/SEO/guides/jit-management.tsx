@@ -1,4 +1,4 @@
-ï»¿import SEO from '@/components/SEO';
+import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
@@ -161,11 +161,7 @@ export default function JitManagement() {
         description="Read the guide jit management to save time and money. Read the guide jit management to optimize your inventory management.. Get started free. StockFlow helps..."
         keywords="jit management, jit inventory, just in time management, just in time inventory, jit inventory management, jit management system, jit inventory system, just in time inventory management, jit management software, jit inventory software, just in time management system, jit inventory strategy, jit management approach, just in time inventory system, jit inventory method, jit management technique, jit inventory planning, stockflow, stock flow"
         url="https://www.stockflow.be/jit-management"
-      />
-
-
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Jit Management</h1>
-      <SeoPageHero
+      />      <SeoPageHero
         title="JIT Management: Complete Guide to JIT Inventory and Just-In-Time Management"
         description="Master JIT management and JIT inventory strategies. Learn how just-in-time inventory management reduces costs, improves cash flow, and optimizes operations. Free tools and best practices included."
         badges={[
@@ -218,19 +214,19 @@ export default function JitManagement() {
                 <div className="bg-white p-4 rounded-lg">
                   <h4 className="font-semibold text-blue-800 mb-2">JIT Inventory</h4>
                   <ul className="text-sm text-gray-700 space-y-1">
-                    <li>â€¢ Lower carrying costs</li>
-                    <li>â€¢ Minimal storage needs</li>
-                    <li>â€¢ Better cash flow</li>
-                    <li>â€¢ Requires reliable suppliers</li>
+                    <li>• Lower carrying costs</li>
+                    <li>• Minimal storage needs</li>
+                    <li>• Better cash flow</li>
+                    <li>• Requires reliable suppliers</li>
                   </ul>
                 </div>
                 <div className="bg-white p-4 rounded-lg">
                   <h4 className="font-semibold text-gray-800 mb-2">Traditional Inventory</h4>
                   <ul className="text-sm text-gray-700 space-y-1">
-                    <li>â€¢ Higher safety stock</li>
-                    <li>â€¢ More storage needed</li>
-                    <li>â€¢ Ties up capital</li>
-                    <li>â€¢ More protection from disruptions</li>
+                    <li>• Higher safety stock</li>
+                    <li>• More storage needed</li>
+                    <li>• Ties up capital</li>
+                    <li>• More protection from disruptions</li>
                   </ul>
                 </div>
               </div>

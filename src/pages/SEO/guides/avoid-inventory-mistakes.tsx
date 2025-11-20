@@ -1,4 +1,4 @@
-﻿import SEO from '@/components/SEO';
+import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
@@ -170,11 +170,7 @@ export default function AvoidInventoryMistakes() {
       <section className="bg-gradient-to-br from-blue-50 to-white py-12 md:py-20 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-8 items-center">
-            <div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-                Avoid Inventory Mistakes: <span className="text-blue-600">Prevent Costly Errors Before They Happen</span>
-              </h1>
-              <p className="text-xl text-gray-600 mb-8">
+            <div>              <p className="text-xl text-gray-600 mb-8">
                 Learn how to avoid costly inventory mistakes. Discover the 7 most common errors and how to prevent them.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
@@ -331,7 +327,7 @@ export default function AvoidInventoryMistakes() {
                 <p className="text-gray-600 text-sm mb-3">
                   Practical tips for efficient inventory management and cost savings.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">Read more →</div>
+                <div className="text-blue-600 text-sm font-semibold">Read more ?</div>
               </div>
             </Link>
             <Link to="/voorraadbeheer-fouten-voorkomen" className="group">
@@ -342,7 +338,7 @@ export default function AvoidInventoryMistakes() {
                 <p className="text-gray-600 text-sm mb-3">
                   Nederlandse versie - voorkom voorraadbeheer fouten met deze tips.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
+                <div className="text-blue-600 text-sm font-semibold">Lees meer ?</div>
               </div>
             </Link>
             <Link to="/inventory-management-software" className="group">
@@ -353,7 +349,7 @@ export default function AvoidInventoryMistakes() {
                 <p className="text-gray-600 text-sm mb-3">
                   Discover how professional software prevents inventory mistakes.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">Read more →</div>
+                <div className="text-blue-600 text-sm font-semibold">Read more ?</div>
               </div>
             </Link>
           </div>

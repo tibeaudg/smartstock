@@ -1,4 +1,4 @@
-﻿import SEO from '@/components/SEO';
+import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
@@ -146,22 +146,22 @@ export default function CapacityRequirementPlanning() {
     {
       title: "Manufacturing",
       description: "Plan production capacity to meet manufacturing schedules and ensure adequate raw materials and resources.",
-      icon: "ðŸ­"
+      icon: "🏭"
     },
     {
       title: "Retail",
       description: "Forecast inventory needs and plan purchasing capacity to meet customer demand without overstocking.",
-      icon: "ðŸª"
+      icon: "🏪"
     },
     {
       title: "E-commerce",
       description: "Plan inventory capacity to handle seasonal spikes, promotions, and growing demand across channels.",
-      icon: "ðŸ›’"
+      icon: "🛒"
     },
     {
       title: "Wholesale",
       description: "Optimize warehouse capacity and inventory levels to meet bulk order requirements efficiently.",
-      icon: "ðŸ“¦"
+      icon: "📦"
     }
   ];
 
@@ -208,11 +208,7 @@ export default function CapacityRequirementPlanning() {
         description="Find out how capacity requirement planning to save time and money. Discover how capacity requirement planning to optimize your inventory management.. Get sta..."
         keywords="capacity requirement planning, what is capacity requirement planning, capacity planning, capacity requirement, capacity requirements planning, capacity requirement planning definition, capacity requirement planning meaning, capacity requirement planning process, capacity requirement planning software, capacity requirement planning tools, capacity requirement planning in manufacturing, capacity requirement planning inventory, capacity planning inventory, capacity requirement analysis, stockflow, stock flow"
         url="https://www.stockflow.be/capacity-requirement-planning"
-      />
-
-
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Capacity Requirement Planning</h1>
-      <SeoPageHero
+      />      <SeoPageHero
         title="Capacity Requirement Planning: Complete Guide to What is Capacity Requirement Planning"
         description="Master capacity requirement planning for your business. Learn what is capacity requirement planning, how it works, and how to implement it to optimize inventory, prevent stockouts, and reduce costs. Free planning tools included."
         badges={[
@@ -265,12 +261,12 @@ export default function CapacityRequirementPlanning() {
                 Capacity requirement planning is essential for businesses that want to:
               </p>
               <ul className="space-y-2 text-gray-700">
-                <li>✓ Prevent stockouts and lost sales</li>
-                <li>✓ Avoid excess inventory and carrying costs</li>
-                <li>✓ Optimize resource utilization</li>
-                <li>✓ Improve customer satisfaction</li>
-                <li>✓ Make informed investment decisions</li>
-                <li>✓ Scale operations efficiently</li>
+                <li>? Prevent stockouts and lost sales</li>
+                <li>? Avoid excess inventory and carrying costs</li>
+                <li>? Optimize resource utilization</li>
+                <li>? Improve customer satisfaction</li>
+                <li>? Make informed investment decisions</li>
+                <li>? Scale operations efficiently</li>
               </ul>
             </div>
           </div>

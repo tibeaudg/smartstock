@@ -4,67 +4,76 @@ import SeoPageLayout from "@/components/SeoPageLayout";
 import { usePageRefresh } from "@/hooks/usePageRefresh";
 import { StructuredData } from "@/components/StructuredData";
 import { generateSidebarContent } from "@/utils/seoPageHelpers";
+import InternalLinkingWidget from "@/components/seo/InternalLinkingWidget";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Inventory Management 101";
 const canonicalPath = "/blog/inventory-management-101";
-const metaDescription = "Deep dive into Inventory Management 101. Learn practical ideas, implementation steps, and metrics so your team can apply Inventory Management 101 with StockFlow.";
-const keywords = "Inventory Management 101, Inventory Management 101 guide, Inventory Management 101 best practices, Inventory Management 101 StockFlow, inventory management, operations playbook";
-const heroBadge = "Topic Guide • Updated September 2025";
-const summaryCopy = "Explore Inventory Management 101 through the lens of modern inventory and operations leadership. This StockFlow-exclusive guide synthesizes the best lessons from the original Sortly article and translates them into actionable steps for teams that need structure, visibility, and measurable wins.";
+const metaDescription = "Complete beginner's guide to inventory management. Learn the fundamentals, key concepts, types of inventory, and essential strategies for effective stock control. Perfect for small businesses.";
+const keywords = "inventory management 101, inventory management basics, inventory management fundamentals, inventory management guide, inventory management for beginners, stock management basics, inventory control basics";
+const heroBadge = "Beginner's Guide • Updated September 2025";
+const summaryCopy = "Inventory Management 101 is your complete introduction to managing inventory effectively. Learn what inventory management is, why it matters, the different types of inventory, key concepts like reorder points and safety stock, and essential strategies that help businesses maintain optimal stock levels while minimizing costs.";
 const takeaways = [
-  "Understand the core themes behind Inventory Management 101 and why they matter for modern operations teams.",
-  "Follow a structured framework to translate Inventory Management 101 into day-to-day improvements.",
-  "Highlight StockFlow capabilities that make inventory management 101 sustainable at scale."
+  "Inventory management is the process of ordering, storing, tracking, and controlling inventory to meet customer demand while minimizing costs.",
+  "The four main types of inventory are raw materials, work-in-progress, finished goods, and MRO (maintenance, repair, operations) supplies.",
+  "Key concepts include reorder points, safety stock, economic order quantity (EOQ), and inventory turnover ratios."
 ];
 const actionSteps = [
   {
-    "title": "Align on the outcome",
-    "description": "Confirm what inventory management 101 should deliver for customers, finance, and frontline teams."
+    "title": "Understand inventory types",
+    "description": "Learn the four main types: raw materials, work-in-progress (WIP), finished goods, and MRO inventory. Each type requires different management approaches. Read more about <Link to=\"/glossary/inventory\" className=\"text-blue-600 hover:underline\">inventory types</Link> in our glossary."
   },
   {
-    "title": "Audit current workflows",
-    "description": "Document how inventory management 101 happens today, where gaps exist, and which systems hold the data."
+    "title": "Set up basic tracking",
+    "description": "Start with simple tracking using spreadsheets or free <Link to=\"/inventory-management-software\" className=\"text-blue-600 hover:underline\">inventory management software</Link>. Track item names, quantities, locations, and reorder points."
   },
   {
-    "title": "Launch targeted improvements",
-    "description": "Prototype a lean version of inventory management 101 inside StockFlow, measure the impact, and expand in sprints."
+    "title": "Implement reorder points",
+    "description": "Set minimum stock levels (reorder points) for each item to prevent stockouts. When inventory reaches the reorder point, place a new order. Learn about <Link to=\"/glossary/safety-stock\" className=\"text-blue-600 hover:underline\">safety stock</Link> to buffer against demand variability."
   }
 ];
 const metrics = [
   {
-    "label": "Execution velocity",
-    "detail": "Track how quickly inventory management 101 initiatives move from idea to rollout."
+    "label": "Inventory turnover",
+    "detail": "Measure how many times you sell and replace inventory per year. Higher turnover indicates efficient inventory management. Learn about <Link to=\"/glossary/inventory-turnover\" className=\"text-blue-600 hover:underline\">inventory turnover ratios</Link>."
   },
   {
-    "label": "Team adoption",
-    "detail": "Measure participation rates in the new inventory management 101 process across locations or departments."
+    "label": "Stockout frequency",
+    "detail": "Track how often items are out of stock. Aim for zero stockouts on critical items by maintaining appropriate safety stock levels."
   },
   {
-    "label": "Quality & accuracy",
-    "detail": "Monitor error rates, rework, or data accuracy tied to inventory management 101 workflows."
+    "label": "Inventory accuracy",
+    "detail": "Measure the percentage of inventory records that match physical counts. Target 95%+ accuracy through regular audits and automated tracking."
   }
 ];
 const faqData = [
   {
-    "question": "What is Inventory Management 101?",
-    "answer": "Inventory Management 101 refers to the practices, insights, or stories captured in the original Stockflow article. This guide reframes the topic for StockFlow users who want to move faster, stay organized, and build resilient inventory operations."
+    "question": "What is inventory management?",
+    "answer": "Inventory management is the process of ordering, storing, tracking, and controlling inventory to ensure you have the right products in the right quantities at the right time. It helps businesses meet customer demand while minimizing costs from overstocking, stockouts, and waste. Effective inventory management balances service levels with inventory investment."
   },
   {
-    "question": "How can I get started with inventory management 101?",
-    "answer": "Start by clarifying the objective, mapping the stakeholders, and collecting baseline metrics. Use the action playbook in this article to pilot inventory management 101 within one team, then expand once you capture early wins."
+    "question": "What are the main types of inventory?",
+    "answer": "The four main types are: (1) Raw materials - inputs used to create products, (2) Work-in-progress (WIP) - items being manufactured, (3) Finished goods - products ready for sale, and (4) MRO inventory - maintenance, repair, and operations supplies. Each type requires different management strategies. Learn more in our <Link to=\"/glossary/inventory-management\" className=\"text-blue-600 hover:underline\">inventory management glossary</Link>."
   },
   {
-    "question": "Where does StockFlow add value for inventory management 101?",
-    "answer": "StockFlow centralizes data, automates alerts, and connects cross-functional teams. That means fewer spreadsheets, faster decisions, and the ability to prove the value of inventory management 101 with real-time dashboards."
+    "question": "What is a reorder point?",
+    "answer": "A reorder point is the minimum inventory level at which you should place a new order to avoid stockouts. It's calculated based on average daily usage, lead time (time to receive new stock), and safety stock. When inventory reaches the reorder point, you place an order so new stock arrives before running out."
+  },
+  {
+    "question": "How do I get started with inventory management?",
+    "answer": "Start by cataloging all your inventory items, setting up basic tracking (spreadsheet or software), establishing reorder points for key items, and conducting regular counts to maintain accuracy. For businesses with 50+ items, consider <Link to=\"/inventory-management-software\" className=\"text-blue-600 hover:underline\">inventory management software</Link> to automate tracking and reordering."
+  },
+  {
+    "question": "What is safety stock?",
+    "answer": "Safety stock is extra inventory kept on hand as a buffer against unexpected demand spikes, supplier delays, or forecasting errors. It helps prevent stockouts when things don't go as planned. The amount of safety stock depends on demand variability and supplier reliability. Learn how to <Link to=\"/how-to-calculate-safety-stock\" className=\"text-blue-600 hover:underline\">calculate safety stock</Link>."
   }
 ];
 const structuredData = [
   {
     "@context": "https://schema.org",
     "@type": "Article",
-    "headline": "Inventory Management 101",
-    "description": "Deep dive into Inventory Management 101. Learn practical ideas, implementation steps, and metrics so your team can apply Inventory Management 101 with StockFlow.",
+    "headline": "Inventory Management 101: Complete Beginner's Guide",
+    "description": "Complete beginner's guide to inventory management. Learn the fundamentals, key concepts, types of inventory, and essential strategies for effective stock control. Perfect for small businesses.",
     "author": {
       "@type": "Organization",
       "name": "StockFlow"
@@ -112,14 +121,12 @@ export default function SeoInventoryManagement101Page() {
       
     >
       <SEO
-        title={`Inventory Management 101 2025 - Inventory Management 101`}
+        title={`Inventory Management 101: Complete Beginner's Guide 2025`}
         description={metaDescription}
         keywords={keywords}
         url={`https://www.stockflow.be${canonicalPath}`}
       />
 
-
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Inventory Management 101</h1>
       <StructuredData data={pageStructuredData} />
 
 
@@ -127,18 +134,17 @@ export default function SeoInventoryManagement101Page() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h2>
+            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">What is Inventory Management?</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              {topicTitle} has become a recurring talking point for fast-moving inventory teams. The original Stockflow
-              article sparked interest because it addresses real-world frictions that leaders face every day. This updated guide
-              distills those takeaways for StockFlow customers—showing you how to adapt the narrative, build alignment across
-              departments, and secure measurable results without adding administrative overhead.
+              Inventory management is the systematic process of ordering, storing, tracking, and controlling inventory to ensure businesses have the right products in the right quantities at the right time. It's a critical business function that balances customer demand satisfaction with cost minimization, helping businesses avoid both stockouts (lost sales) and overstocking (tied-up capital).
+            </p>
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              Effective inventory management involves understanding different <Link to="/glossary/inventory" className="text-blue-600 hover:underline font-semibold">inventory types</Link>, setting appropriate reorder points and safety stock levels, tracking inventory turnover, and using data to make informed purchasing decisions. Whether you're a small retailer or a large manufacturer, mastering inventory management fundamentals is essential for profitability and growth.
             </p>
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
-              <h3 className="text-xl font-semibold">Why it matters now</h3>
+              <h3 className="text-xl font-semibold">Why inventory management matters</h3>
               <p className="mt-3 text-base text-blue-900/90">
-                Every economic cycle pressures teams to do more with less. {topicTitle} gives you language, tactics, or inspiration
-                to modernize inventory, supply chain, and asset management workflows so they scale with confidence.
+                Poor inventory management leads to stockouts (lost sales), overstocking (tied-up capital), waste from obsolescence, and inefficient operations. Good inventory management improves cash flow, reduces costs, increases customer satisfaction, and provides better visibility into business operations. Modern <Link to="/inventory-management-software" className="text-blue-700 hover:underline font-semibold">inventory management software</Link> makes these practices accessible to businesses of all sizes.
               </p>
             </div>
           </div>
@@ -181,7 +187,7 @@ export default function SeoInventoryManagement101Page() {
                   <Target className="h-5 w-5 text-blue-500" />
                 </div>
                 <h3 className="mt-4 text-xl font-semibold text-gray-900">{step.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-gray-600">{step.description}</p>
+                <p className="mt-3 text-sm leading-relaxed text-gray-600" dangerouslySetInnerHTML={{ __html: step.description }} />
               </div>
             ))}
           </div>
@@ -207,7 +213,7 @@ export default function SeoInventoryManagement101Page() {
             {metrics.map((metric) => (
               <div key={metric.label} className="rounded-2xl border border-gray-200 bg-gray-50 p-6 shadow-sm">
                 <h3 className="text-lg font-semibold text-gray-900">{metric.label}</h3>
-                <p className="mt-3 text-sm text-gray-600">{metric.detail}</p>
+                <p className="mt-3 text-sm text-gray-600" dangerouslySetInnerHTML={{ __html: metric.detail }} />
               </div>
             ))}
           </div>
@@ -271,7 +277,7 @@ export default function SeoInventoryManagement101Page() {
                 <summary className="cursor-pointer text-lg font-semibold text-gray-900">
                   {faq.question}
                 </summary>
-                <p className="mt-3 text-base leading-relaxed text-gray-600">{faq.answer}</p>
+                <p className="mt-3 text-base leading-relaxed text-gray-600" dangerouslySetInnerHTML={{ __html: faq.answer }} />
               </details>
             ))}
           </div>
@@ -280,10 +286,9 @@ export default function SeoInventoryManagement101Page() {
 
       <section className="bg-white px-4 pb-20 pt-10">
         <div className="mx-auto max-w-5xl rounded-3xl border border-gray-200 bg-gradient-to-r from-blue-50 via-white to-purple-50 p-10 shadow-xl text-center">
-          <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Put {topicTitle} into action with StockFlow</h2>
+          <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Start Managing Inventory with StockFlow</h2>
           <p className="mx-auto mt-4 max-w-2xl text-base text-gray-600">
-            Launch faster experiments, share instant dashboards, and keep every stakeholder aligned. Your first workspace
-            is live in minutes, and you can invite teammates for free.
+            Put inventory management fundamentals into practice with StockFlow. Track inventory, set reorder points, and automate reordering—all from one easy-to-use platform. Start free with up to 100 products.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Link
@@ -299,6 +304,17 @@ export default function SeoInventoryManagement101Page() {
               See Plans & Pricing
             </a>
           </div>
+        </div>
+      </section>
+
+      <section className="bg-gray-50 px-4 py-16">
+        <div className="mx-auto max-w-6xl">
+          <InternalLinkingWidget
+            currentPath={location.pathname}
+            variant="inline"
+            limit={5}
+            title="Related Articles"
+          />
         </div>
       </section>
     </SeoPageLayout>

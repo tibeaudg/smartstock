@@ -1,4 +1,4 @@
-ï»¿import SEO from '@/components/SEO';
+import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
@@ -32,7 +32,7 @@ export default function EnterpriseInventoryManagement() {
     },
     {
       question: "How much does enterprise inventory management software cost?",
-      answer: "Enterprise inventory management software typically costs $10,000+ per month for large deployments. However, StockFlow offers enterprise-level features starting at affordable pay-as-you-grow pricing (â‚¬0.004 per product/month), making enterprise capabilities accessible to growing businesses without massive upfront costs."
+      answer: "Enterprise inventory management software typically costs $10,000+ per month for large deployments. However, StockFlow offers enterprise-level features starting at affordable pay-as-you-grow pricing (€0.004 per product/month), making enterprise capabilities accessible to growing businesses without massive upfront costs."
     },
     {
       question: "Is StockFlow suitable for enterprise inventory management?",
@@ -96,17 +96,13 @@ export default function EnterpriseInventoryManagement() {
       
     >
       <SEO
-        title="Enterprise Inventory Management 2025 - Enterprise Invento..."
-        description="Find out how enterprise inventory management to optimize your inventory management. Find out how enterprise inventory management to choose the best. Try free..."
-        keywords="enterprise inventory management software, enterprise inventory management, enterprise inventory software, enterprise inventory system, enterprise inventory management system, enterprise inventory solution, enterprise inventory platform, enterprise inventory software solutions, enterprise inventory management platform, enterprise inventory software features, enterprise inventory management features, stockflow, stock flow"
+        title="Enterprise Inventory Management Software 2025 | Multi-Location Solutions"
+        description="Enterprise inventory management software for large organizations. Multi-warehouse support, advanced analytics, API access, and scalability. Affordable enterprise solution starting at €0.004/product/month."
+        keywords="enterprise inventory management software, enterprise inventory management, enterprise inventory software, enterprise inventory system, enterprise inventory management system, enterprise inventory solution, enterprise inventory platform, multi-location inventory, enterprise inventory features, stockflow, stock flow"
         url="https://www.stockflow.be/enterprise-inventory-management"
-      />
-
-
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Enterprise Inventory Management</h1>
-      <SeoPageHero
+      />      <SeoPageHero
         title="Enterprise Inventory Management Software: Complete Enterprise Solution"
-        description="Best enterprise inventory management software for large organizations. Multi-warehouse support, advanced analytics, enterprise security, and scalability. Affordable enterprise solution starting at â‚¬0.004/product/month."
+        description="Best enterprise inventory management software for large organizations. Multi-warehouse support, advanced analytics, enterprise security, and scalability. Affordable enterprise solution starting at €0.004/product/month."
         badges={[
           { icon: <Trophy className="w-6 h-6" />, text: "#1 Enterprise Solution", variant: 'warning' },
           { icon: <Star className="w-6 h-6" />, text: "Enterprise Features", variant: 'success' },

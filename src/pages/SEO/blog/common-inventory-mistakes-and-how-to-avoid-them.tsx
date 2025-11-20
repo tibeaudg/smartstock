@@ -8,8 +8,8 @@ import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Common Inventory Mistakes And How To Avoid Them";
 const canonicalPath = "/blog/common-inventory-mistakes-and-how-to-avoid-them";
-const metaDescription = "Deep dive into Common Inventory Mistakes And How To Avoid Them. Learn practical ideas, implementation steps, and metrics so your team can apply Common Inventory Mistakes And How To Avoid Them with StockFlow.";
-const keywords = "Common Inventory Mistakes And How To Avoid Them, Common Inventory Mistakes And How To Avoid Them guide, Common Inventory Mistakes And How To Avoid Them best practices, Common Inventory Mistakes And How To Avoid Them StockFlow, inventory management, operations playbook";
+const metaDescription = "Learn the most common inventory management mistakes and how to avoid them. Prevent stockouts, overstocking, inaccurate counts, and other costly inventory errors.";
+const keywords = "common inventory mistakes, inventory management mistakes, inventory errors, how to avoid inventory mistakes, inventory problems, inventory mistakes to avoid";
 const heroBadge = "Topic Guide • Updated July 2024";
 const summaryCopy = "Explore Common Inventory Mistakes And How To Avoid Them through the lens of modern inventory and operations leadership. This StockFlow-exclusive guide synthesizes the best lessons from the original Sortly article and translates them into actionable steps for teams that need structure, visibility, and measurable wins.";
 const takeaways = [
@@ -118,8 +118,6 @@ export default function SeoCommonInventoryMistakesAndHowToAvoidThemPage() {
         url={`https://www.stockflow.be${canonicalPath}`}
       />
 
-
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Common Inventory Mistakes And How To Avoid Them</h1>
       <StructuredData data={pageStructuredData} />
 
 
@@ -250,54 +248,6 @@ export default function SeoCommonInventoryMistakesAndHowToAvoidThemPage() {
                 </p>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="faq" className="bg-gray-50 px-4 py-16">
-        <div className="mx-auto max-w-4xl">
-          <div className="text-center">
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Frequently Asked Questions</h2>
-            <p className="mt-4 text-base text-gray-600">
-              Still exploring {topicTitle.toLowerCase()}? These answers help you take the next confident step.
-            </p>
-          </div>
-          <div className="mt-10 space-y-4">
-            {faqData.map((faq) => (
-              <details
-                key={faq.question}
-                className="group rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition hover:border-blue-200"
-              >
-                <summary className="cursor-pointer text-lg font-semibold text-gray-900">
-                  {faq.question}
-                </summary>
-                <p className="mt-3 text-base leading-relaxed text-gray-600">{faq.answer}</p>
-              </details>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-white px-4 pb-20 pt-10">
-        <div className="mx-auto max-w-5xl rounded-3xl border border-gray-200 bg-gradient-to-r from-blue-50 via-white to-purple-50 p-10 shadow-xl text-center">
-          <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Put {topicTitle} into action with StockFlow</h2>
-          <p className="mx-auto mt-4 max-w-2xl text-base text-gray-600">
-            Launch faster experiments, share instant dashboards, and keep every stakeholder aligned. Your first workspace
-            is live in minutes, and you can invite teammates for free.
-          </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <Link
-              to="/auth"
-              className="inline-flex items-center rounded-xl bg-purple-600 px-6 py-3 text-base font-semibold text-white shadow-lg transition hover:bg-purple-700"
-            >
-              Create Your Account
-            </Link>
-            <a
-              href="/pricing"
-              className="inline-flex items-center rounded-xl border border-purple-200 px-6 py-3 text-base font-semibold text-purple-700 transition hover:bg-purple-50"
-            >
-              See Plans & Pricing
-            </a>
           </div>
         </div>
       </section>

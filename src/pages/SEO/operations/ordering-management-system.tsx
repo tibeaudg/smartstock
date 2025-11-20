@@ -1,4 +1,4 @@
-﻿import SEO from '@/components/SEO';
+import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
@@ -104,11 +104,7 @@ export default function OrderingManagementSystem() {
         description="Find out how ordering management system to save time and money. Discover how ordering management system to choose the best software.. Start free today."
         keywords="ordering management system, inventory ordering system, stock ordering system, ordering system, inventory ordering, stock ordering, order management system inventory, automated ordering system, inventory ordering software, stock ordering software, ordering system software, inventory ordering management, stock ordering management, ordering management software, stockflow, stock flow"
         url="https://www.stockflow.be/ordering-management-system"
-      />
-
-
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Ordering Management System</h1>
-      <SeoPageHero
+      />      <SeoPageHero
         title="Ordering Management System: Complete Guide to Inventory & Stock Ordering"
         description="Master ordering management system, inventory ordering system, and stock ordering system. Automate ordering processes, prevent stockouts, and optimize inventory levels. Free tools included."
         badges={[

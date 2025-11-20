@@ -1,4 +1,4 @@
-﻿import SEO from '@/components/SEO';
+import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
@@ -178,11 +178,7 @@ export default function InventoryManagementTips() {
       <section className="bg-gradient-to-br from-blue-50 to-white py-12 md:py-20 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-8 items-center">
-            <div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-                Inventory Management Tips: <span className="text-blue-600">10 Proven Strategies to Optimize Your Stock</span>
-              </h1>
-              <p className="text-xl text-gray-600 mb-8">
+            <div>              <p className="text-xl text-gray-600 mb-8">
                 Discover 10 proven inventory management tips to reduce costs, prevent stockouts, and optimize your operations.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
@@ -343,9 +339,9 @@ export default function InventoryManagementTips() {
                   Voorraadbeheer Tips (Dutch)
                 </h3>
                 <p className="text-gray-600 text-sm mb-3">
-                  Nederlandse versie - tips voor efficiÃ«nt voorraadbeheer.
+                  Nederlandse versie - tips voor efficiënt voorraadbeheer.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
+                <div className="text-blue-600 text-sm font-semibold">Lees meer ?</div>
               </div>
             </Link>
             <Link to="/avoid-inventory-mistakes" className="group">
@@ -356,7 +352,7 @@ export default function InventoryManagementTips() {
                 <p className="text-gray-600 text-sm mb-3">
                   Learn about common inventory mistakes and how to prevent them.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">Read more →</div>
+                <div className="text-blue-600 text-sm font-semibold">Read more ?</div>
               </div>
             </Link>
             <Link to="/inventory-management-software" className="group">
@@ -367,7 +363,7 @@ export default function InventoryManagementTips() {
                 <p className="text-gray-600 text-sm mb-3">
                   Software that automates these tips and best practices.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">Read more →</div>
+                <div className="text-blue-600 text-sm font-semibold">Read more ?</div>
               </div>
             </Link>
           </div>

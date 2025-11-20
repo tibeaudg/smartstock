@@ -83,10 +83,7 @@ export default function HowToCalculateSafetyStock() {
         description="Learn how to calculate safety stock with formulas, examples, and best practices. Complete guide to safety stock calculation for inventory management. Free tools included."
         keywords="how to calculate safety stock, safety stock formula, safety stock calculation, calculate safety stock, safety stock, safety stock meaning, safety stock definition, safety stock example, safety stock formula excel, safety stock calculator, inventory safety stock, safety stock level, safety stock calculation method, stockflow, stock flow"
         url="https://www.stockflow.be/how-to-calculate-safety-stock"
-      />
-
-      <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">How to Calculate Safety Stock</h1>
-      <SeoPageHero
+      />      <SeoPageHero
         title="How to Calculate Safety Stock: Complete Guide"
         description="Learn how to calculate safety stock with step-by-step formulas, examples, and best practices. Complete guide to safety stock calculation for effective inventory management. Free tools included."
         badges={[

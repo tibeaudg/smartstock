@@ -1,4 +1,4 @@
-﻿import SEO from '@/components/SEO';
+import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
@@ -95,11 +95,7 @@ export default function OrderManagementPlatforms() {
         description="Learn how order management platforms to automate your processes. Read the guide order management platforms to save time and. Try free now. StockFlow helps bu..."
         keywords="order management platforms, order management platform, order management software, order management system, order management solutions, order management tools, best order management platforms, order management platform software, order management platform comparison, order management platform features, stockflow, stock flow"
         url="https://www.stockflow.be/order-management-platforms"
-      />
-
-
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Order Management Platforms</h1>
-      <SeoPageHero
+      />      <SeoPageHero
         title="Order Management Platforms: Complete Guide to Order Management"
         description="Complete guide to order management platforms. Learn how order management platforms work, features, and how to streamline order processing and fulfillment. Free trial available."
         badges={[

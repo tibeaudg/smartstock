@@ -1,4 +1,4 @@
-﻿import SEO from '@/components/SEO';
+import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
@@ -99,11 +99,7 @@ export default function PurchasingInventorySoftware() {
         description="Discover how purchasing inventory software to choose the best software. Learn how purchasing inventory software to optimize your inventory management.. Get s..."
         keywords="purchasing and inventory software, purchasing inventory software, purchasing inventory management, purchasing inventory system, purchasing inventory solution, purchasing inventory platform, procurement and inventory software, purchasing inventory management software, purchasing inventory system software, stockflow, stock flow"
         url="https://www.stockflow.be/purchasing-inventory-software"
-      />
-
-
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Purchasing Inventory Software</h1>
-      <SeoPageHero
+      />      <SeoPageHero
         title="Purchasing and Inventory Software: Integrated Procurement & Inventory"
         description="Complete guide to purchasing and inventory software. Manage purchasing, suppliers, and inventory in one integrated system. Automate procurement and inventory management. Free trial available."
         badges={[

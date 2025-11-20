@@ -1,4 +1,4 @@
-﻿import SEO from '@/components/SEO';
+import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
@@ -63,11 +63,7 @@ export default function StockManagement() {
             <div>
               <div className="inline-block bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-semibold mb-4">
                 #1 Stock Management Solution
-              </div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-                Master <span className="text-blue-600">Stock Management</span> for Your Business
-              </h1>
-              <p className="text-xl text-gray-600 mb-8">
+              </div>              <p className="text-xl text-gray-600 mb-8">
                 Take control of your inventory with powerful stock management tools. Track products, optimize levels, and grow your business with confidence.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
@@ -244,7 +240,7 @@ export default function StockManagement() {
                 <p className="text-gray-600 text-sm mb-3">
                   Nederlandse versie - complete stockbeheer gids voor kleine bedrijven.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">Lees meer →</div>
+                <div className="text-blue-600 text-sm font-semibold">Lees meer ?</div>
               </div>
             </Link>
             <Link to="/stock-management-software" className="group">
@@ -255,7 +251,7 @@ export default function StockManagement() {
                 <p className="text-gray-600 text-sm mb-3">
                   Complete software solutions for effective stock control and management.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">Read more →</div>
+                <div className="text-blue-600 text-sm font-semibold">Read more ?</div>
               </div>
             </Link>
             <Link to="/inventory-management" className="group">
@@ -266,7 +262,7 @@ export default function StockManagement() {
                 <p className="text-gray-600 text-sm mb-3">
                   Comprehensive guide to inventory management systems and best practices.
                 </p>
-                <div className="text-blue-600 text-sm font-semibold">Read more →</div>
+                <div className="text-blue-600 text-sm font-semibold">Read more ?</div>
               </div>
             </Link>
           </div>

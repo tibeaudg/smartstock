@@ -1,4 +1,4 @@
-﻿import SEO from '@/components/SEO';
+import SEO from '@/components/SEO';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { SeoPageHero } from '@/components/seo/SeoPageHero';
@@ -14,7 +14,7 @@ export default function VoorraadbeheerTips() {
   const faqData = [
     {
       question: "Wat is het verschil tussen stockbeheer en voorraadbeheer?",
-      answer: "In BelgiÃ« worden deze termen vaak door elkaar gebruikt, maar ze betekenen hetzelfde: het beheren van je producten en materialen. Beide termen verwijzen naar het proces van het bijhouden, controleren en optimaliseren van je voorraad."
+      answer: "In België worden deze termen vaak door elkaar gebruikt, maar ze betekenen hetzelfde: het beheren van je producten en materialen. Beide termen verwijzen naar het proces van het bijhouden, controleren en optimaliseren van je voorraad."
     },
     {
       question: "Welke software is geschikt voor kleine bedrijven?",
@@ -49,14 +49,10 @@ export default function VoorraadbeheerTips() {
       <SEO
         title="Beste Voorraadbeheer Tips - Beste Voorraadbeheer Tips"
         description="Lees de gids voorraadbeheer tips tijd en geld te besparen. Bekijk hoe voorraadbeheer tips uw processen te automatiseren. Ontdek 5. Start vandaag gratis.'s - 10.000+ bedrijven volgen deze tips. Gratis tips van experts. Start nu!"
-        keywords="voorraadbeheer tips, stockbeheer tips, voorraadbeheer best practices, voorraadbeheer strategieÃ«n, voorraad optimaliseren, KMO voorraadbeheer, voorraadbeheer automatiseren, voorraadbeheer 2025, voorraadbeheer tips KMO, voorraadbeheer software, voorraadbeheer app, stockflow, gratis voorraadbeheer, magazijnbeheer tips, inventarisatie tips, voorraadbeheer optimalisatie, efficiÃ«nt voorraadbeheer, voorraadbeheer kosten besparen, stockbeheer software, tips voor stockbeheer, voorraadbeheer best practices 2025"
+        keywords="voorraadbeheer tips, stockbeheer tips, voorraadbeheer best practices, voorraadbeheer strategieën, voorraad optimaliseren, KMO voorraadbeheer, voorraadbeheer automatiseren, voorraadbeheer 2025, voorraadbeheer tips KMO, voorraadbeheer software, voorraadbeheer app, stockflow, gratis voorraadbeheer, magazijnbeheer tips, inventarisatie tips, voorraadbeheer optimalisatie, efficiënt voorraadbeheer, voorraadbeheer kosten besparen, stockbeheer software, tips voor stockbeheer, voorraadbeheer best practices 2025"
         url="https://www.stockflow.be/voorraadbeheer-tips"
         modifiedTime={new Date().toISOString()}
-      />
-
-
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Voorraadbeheer Tips</h1>
-      <SeoPageHero
+      />      <SeoPageHero
         title="Voorraadbeheer Tips voor optimale controle"
         description="Ontdek praktische voorraadbeheer tips die je direct kunt toepassen. Van het organiseren van je magazijn tot het optimaliseren van je bestelprocessen - deze voorraadbeheer tips helpen je om slimmer te werken, kosten te besparen en fouten te voorkomen."
         ctaText="Start Gratis Nu"
@@ -81,7 +77,7 @@ export default function VoorraadbeheerTips() {
         {
           "@context": "https://schema.org",
           "@type": "Article",
-          "headline": "Voorraadbeheer Tips: 5 Bewezen StrategieÃ«n voor KMO's",
+          "headline": "Voorraadbeheer Tips: 5 Bewezen Strategieën voor KMO's",
           "description": "Ontdek 5 bewezen voorraadbeheer tips die je vandaag nog kunt toepassen. Bespaar 70% tijd, voorkom tekorten en groei je KMO. Gratis tips van experts.",
           "image": "https://www.stockflow.be/optimized/Inventory-Management.png",
           "author": {

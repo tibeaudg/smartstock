@@ -4,67 +4,80 @@ import SeoPageLayout from "@/components/SeoPageLayout";
 import { usePageRefresh } from "@/hooks/usePageRefresh";
 import { StructuredData } from "@/components/StructuredData";
 import { generateSidebarContent } from "@/utils/seoPageHelpers";
+import InternalLinkingWidget from "@/components/seo/InternalLinkingWidget";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "How To Perform An Inventory Cycle Count";
 const canonicalPath = "/blog/how-to-perform-an-inventory-cycle-count";
-const metaDescription = "Deep dive into How To Perform An Inventory Cycle Count. Learn practical ideas, implementation steps, and metrics so your team can apply How To Perform An Inventory Cycle Count with StockFlow.";
-const keywords = "How To Perform An Inventory Cycle Count, How To Perform An Inventory Cycle Count guide, How To Perform An Inventory Cycle Count best practices, How To Perform An Inventory Cycle Count StockFlow, inventory management, operations playbook";
-const heroBadge = "Topic Guide • Updated September 2025";
-const summaryCopy = "Explore How To Perform An Inventory Cycle Count through the lens of modern inventory and operations leadership. This StockFlow-exclusive guide synthesizes the best lessons from the original Sortly article and translates them into actionable steps for teams that need structure, visibility, and measurable wins.";
+const metaDescription = "Step-by-step guide to performing inventory cycle counts. Learn how to count inventory accurately, schedule cycle counts, and use cycle counting to maintain inventory accuracy without disrupting operations.";
+const keywords = "how to perform cycle count, inventory cycle count, cycle counting, how to count inventory, inventory audit, cycle count procedure, inventory counting, stock counting";
+const heroBadge = "How-To Guide • Updated September 2025";
+const summaryCopy = "Cycle counting is an efficient inventory auditing method where you count specific items on a rotating schedule throughout the year. This step-by-step guide shows you how to perform cycle counts accurately, schedule them effectively, and use the results to maintain inventory accuracy without the disruption of full physical inventory counts.";
 const takeaways = [
-  "Understand the core themes behind How To Perform An Inventory Cycle Count and why they matter for modern operations teams.",
-  "Follow a structured framework to translate How To Perform An Inventory Cycle Count into day-to-day improvements.",
-  "Highlight StockFlow capabilities that make how to perform an inventory cycle count sustainable at scale."
+  "Cycle counting spreads inventory audits throughout the year, making it less disruptive than annual full counts.",
+  "Count high-value items (A-items) more frequently than low-value items (C-items) to optimize your time.",
+  "Use barcode scanning and inventory management software to speed up cycle counts and improve accuracy."
 ];
 const actionSteps = [
   {
-    "title": "Align on the outcome",
-    "description": "Confirm what how to perform an inventory cycle count should deliver for customers, finance, and frontline teams."
+    "title": "Plan your cycle count schedule",
+    "description": "Create a schedule that counts different items or locations each week/month. Prioritize high-value items (A-items) for monthly counts, medium-value (B-items) quarterly, and low-value (C-items) annually. Use <Link to=\"/glossary/inventory-cycle-counting\" className=\"text-blue-600 hover:underline\">cycle counting</Link> software to automate scheduling."
   },
   {
-    "title": "Audit current workflows",
-    "description": "Document how how to perform an inventory cycle count happens today, where gaps exist, and which systems hold the data."
+    "title": "Prepare for the count",
+    "description": "Print count sheets or use mobile devices with <Link to=\"/barcode-scanning-inventory\" className=\"text-blue-600 hover:underline\">barcode scanning</Link>. Ensure the area is organized and accessible. Freeze inventory movements in the area being counted if possible."
   },
   {
-    "title": "Launch targeted improvements",
-    "description": "Prototype a lean version of how to perform an inventory cycle count inside StockFlow, measure the impact, and expand in sprints."
+    "title": "Perform the physical count",
+    "description": "Count items carefully, using barcode scanners when available for accuracy. Record quantities, locations, and any discrepancies. Double-check high-value items. Use <Link to=\"/inventory-management-software\" className=\"text-blue-600 hover:underline\">inventory management software</Link> to record counts in real-time."
+  },
+  {
+    "title": "Reconcile discrepancies",
+    "description": "Compare physical counts to system records. Investigate and resolve any differences. Common causes include data entry errors, theft, damage, or misplaced items. Update inventory records and document the reasons for discrepancies."
   }
 ];
 const metrics = [
   {
-    "label": "Execution velocity",
-    "detail": "Track how quickly how to perform an inventory cycle count initiatives move from idea to rollout."
+    "label": "Count accuracy",
+    "detail": "Measure the percentage of items counted correctly. Target 98%+ accuracy. Use <Link to=\"/cycle-count\" className=\"text-blue-600 hover:underline\">cycle counting tools</Link> to track accuracy over time."
   },
   {
-    "label": "Team adoption",
-    "detail": "Measure participation rates in the new how to perform an inventory cycle count process across locations or departments."
+    "label": "Time per count",
+    "detail": "Track how long each cycle count takes. Aim to reduce time through better organization, barcode scanning, and efficient scheduling."
   },
   {
-    "label": "Quality & accuracy",
-    "detail": "Monitor error rates, rework, or data accuracy tied to how to perform an inventory cycle count workflows."
+    "label": "Discrepancy rate",
+    "detail": "Monitor the percentage of items with discrepancies. High rates indicate systemic issues that need addressing, such as poor tracking or theft."
   }
 ];
 const faqData = [
   {
-    "question": "What is How To Perform An Inventory Cycle Count?",
-    "answer": "How To Perform An Inventory Cycle Count refers to the practices, insights, or stories captured in the original Stockflow article. This guide reframes the topic for StockFlow users who want to move faster, stay organized, and build resilient inventory operations."
+    "question": "What is a cycle count in inventory management?",
+    "answer": "A cycle count is an inventory auditing method where you count specific items or locations on a rotating schedule throughout the year, rather than counting everything at once. This approach is more efficient and less disruptive than annual physical inventory counts. Learn more about <Link to=\"/glossary/inventory-cycle-counting\" className=\"text-blue-600 hover:underline\">inventory cycle counting</Link>."
   },
   {
-    "question": "How can I get started with how to perform an inventory cycle count?",
-    "answer": "Start by clarifying the objective, mapping the stakeholders, and collecting baseline metrics. Use the action playbook in this article to pilot how to perform an inventory cycle count within one team, then expand once you capture early wins."
+    "question": "How often should you perform cycle counts?",
+    "answer": "Frequency depends on item value and movement. High-value items (A-items) should be counted monthly or quarterly, medium-value items (B-items) quarterly or semi-annually, and low-value items (C-items) annually. Fast-moving items should be counted more frequently than slow-moving ones."
   },
   {
-    "question": "Where does StockFlow add value for how to perform an inventory cycle count?",
-    "answer": "StockFlow centralizes data, automates alerts, and connects cross-functional teams. That means fewer spreadsheets, faster decisions, and the ability to prove the value of how to perform an inventory cycle count with real-time dashboards."
+    "question": "What's the difference between cycle counting and physical inventory?",
+    "answer": "Cycle counting counts specific items on a rotating schedule throughout the year, while physical inventory counts everything at once, typically annually. Cycle counting is less disruptive, provides continuous monitoring, and is more efficient for most businesses. It allows you to maintain accuracy without shutting down operations."
+  },
+  {
+    "question": "How do you perform a cycle count?",
+    "answer": "To perform a cycle count: (1) Schedule specific items or locations, (2) Prepare count sheets or use mobile devices with barcode scanners, (3) Count items and record quantities, (4) Compare counts to system records, (5) Investigate and resolve discrepancies, (6) Update inventory records. Using <Link to=\"/inventory-management-software\" className=\"text-blue-600 hover:underline\">inventory management software</Link> streamlines this process."
+  },
+  {
+    "question": "What tools do you need for cycle counting?",
+    "answer": "Essential tools include count sheets or mobile devices, barcode scanners for accuracy, and inventory management software to record and reconcile counts. Modern <Link to=\"/barcode-scanning-inventory\" className=\"text-blue-600 hover:underline\">barcode scanning solutions</Link> make cycle counting faster and more accurate than manual methods."
   }
 ];
 const structuredData = [
   {
     "@context": "https://schema.org",
     "@type": "Article",
-    "headline": "How To Perform An Inventory Cycle Count",
-    "description": "Deep dive into How To Perform An Inventory Cycle Count. Learn practical ideas, implementation steps, and metrics so your team can apply How To Perform An Inventory Cycle Count with StockFlow.",
+    "headline": "How To Perform An Inventory Cycle Count: Complete Step-by-Step Guide",
+    "description": "Step-by-step guide to performing inventory cycle counts. Learn how to count inventory accurately, schedule cycle counts, and use cycle counting to maintain inventory accuracy without disrupting operations.",
     "author": {
       "@type": "Organization",
       "name": "StockFlow"
@@ -112,14 +125,12 @@ export default function SeoHowToPerformAnInventoryCycleCountPage() {
       
     >
       <SEO
-        title={`How To Perform An Inventory Cycle Count 2025`}
+        title={`How To Perform An Inventory Cycle Count: Step-by-Step Guide 2025`}
         description={metaDescription}
         keywords={keywords}
         url={`https://www.stockflow.be${canonicalPath}`}
       />
 
-
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">How To Perform An Inventory Cycle Count</h1>
       <StructuredData data={pageStructuredData} />
 
 
@@ -127,12 +138,12 @@ export default function SeoHowToPerformAnInventoryCycleCountPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h2>
+            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">What is Cycle Counting?</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              {topicTitle} has become a recurring talking point for fast-moving inventory teams. The original Stockflow
-              article sparked interest because it addresses real-world frictions that leaders face every day. This updated guide
-              distills those takeaways for StockFlow customers—showing you how to adapt the narrative, build alignment across
-              departments, and secure measurable results without adding administrative overhead.
+              Cycle counting is an inventory auditing method where you count specific items or locations on a rotating schedule throughout the year, rather than doing a full physical inventory count all at once. This approach is more efficient, less disruptive to operations, and provides continuous accuracy monitoring compared to annual full counts.
+            </p>
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              Unlike full physical inventory counts that require shutting down operations, <Link to="/glossary/inventory-cycle-counting" className="text-blue-600 hover:underline font-semibold">cycle counting</Link> allows you to maintain inventory accuracy year-round. By counting different sections each week or month, you spread the work throughout the year and catch discrepancies early, before they become major problems.
             </p>
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
               <h3 className="text-xl font-semibold">Why it matters now</h3>
@@ -173,7 +184,7 @@ export default function SeoHowToPerformAnInventoryCycleCountPage() {
               Proven by StockFlow teams
             </div>
           </div>
-          <div className="grid gap-6 md:grid-cols-3">
+          <div className="grid gap-6 md:grid-cols-2">
             {actionSteps.map((step, index) => (
               <div key={step.title} className="flex h-full flex-col rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
                 <div className="flex items-center justify-between">
@@ -181,7 +192,7 @@ export default function SeoHowToPerformAnInventoryCycleCountPage() {
                   <Target className="h-5 w-5 text-blue-500" />
                 </div>
                 <h3 className="mt-4 text-xl font-semibold text-gray-900">{step.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-gray-600">{step.description}</p>
+                <p className="mt-3 text-sm leading-relaxed text-gray-600" dangerouslySetInnerHTML={{ __html: step.description }} />
               </div>
             ))}
           </div>
@@ -207,7 +218,7 @@ export default function SeoHowToPerformAnInventoryCycleCountPage() {
             {metrics.map((metric) => (
               <div key={metric.label} className="rounded-2xl border border-gray-200 bg-gray-50 p-6 shadow-sm">
                 <h3 className="text-lg font-semibold text-gray-900">{metric.label}</h3>
-                <p className="mt-3 text-sm text-gray-600">{metric.detail}</p>
+                <p className="mt-3 text-sm text-gray-600" dangerouslySetInnerHTML={{ __html: metric.detail }} />
               </div>
             ))}
           </div>
@@ -271,7 +282,7 @@ export default function SeoHowToPerformAnInventoryCycleCountPage() {
                 <summary className="cursor-pointer text-lg font-semibold text-gray-900">
                   {faq.question}
                 </summary>
-                <p className="mt-3 text-base leading-relaxed text-gray-600">{faq.answer}</p>
+                <p className="mt-3 text-base leading-relaxed text-gray-600" dangerouslySetInnerHTML={{ __html: faq.answer }} />
               </details>
             ))}
           </div>
@@ -280,10 +291,9 @@ export default function SeoHowToPerformAnInventoryCycleCountPage() {
 
       <section className="bg-white px-4 pb-20 pt-10">
         <div className="mx-auto max-w-5xl rounded-3xl border border-gray-200 bg-gradient-to-r from-blue-50 via-white to-purple-50 p-10 shadow-xl text-center">
-          <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Put {topicTitle} into action with StockFlow</h2>
+          <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Streamline Cycle Counting with StockFlow</h2>
           <p className="mx-auto mt-4 max-w-2xl text-base text-gray-600">
-            Launch faster experiments, share instant dashboards, and keep every stakeholder aligned. Your first workspace
-            is live in minutes, and you can invite teammates for free.
+            Use StockFlow's cycle counting features to schedule counts, scan barcodes, and reconcile discrepancies automatically. Maintain inventory accuracy year-round without disrupting operations.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Link
@@ -299,6 +309,17 @@ export default function SeoHowToPerformAnInventoryCycleCountPage() {
               See Plans & Pricing
             </a>
           </div>
+        </div>
+      </section>
+
+      <section className="bg-gray-50 px-4 py-16">
+        <div className="mx-auto max-w-6xl">
+          <InternalLinkingWidget
+            currentPath={location.pathname}
+            variant="inline"
+            limit={5}
+            title="Related Articles"
+          />
         </div>
       </section>
     </SeoPageLayout>

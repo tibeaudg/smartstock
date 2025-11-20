@@ -8,8 +8,8 @@ import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Team Inventory Management";
 const canonicalPath = "/blog/team-inventory-management";
-const metaDescription = "Deep dive into Team Inventory Management. Learn practical ideas, implementation steps, and metrics so your team can apply Team Inventory Management with StockFlow.";
-const keywords = "Team Inventory Management, Team Inventory Management guide, Team Inventory Management best practices, Team Inventory Management StockFlow, inventory management, operations playbook";
+const metaDescription = "Best practices for team-based inventory management. Learn how to manage inventory with multiple users, role-based access, collaboration tools, and team workflows.";
+const keywords = "team inventory management, multi-user inventory, inventory collaboration, team inventory tracking, inventory team access, collaborative inventory management";
 const heroBadge = "Topic Guide • Updated September 2025";
 const summaryCopy = "Explore Team Inventory Management through the lens of modern inventory and operations leadership. This StockFlow-exclusive guide synthesizes the best lessons from the original Sortly article and translates them into actionable steps for teams that need structure, visibility, and measurable wins.";
 const takeaways = [
@@ -238,31 +238,6 @@ export default function SeoTeamInventoryManagementPage() {
                 </p>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-
-      <section className="bg-white px-4 pb-20 pt-10">
-        <div className="mx-auto max-w-5xl rounded-3xl border border-gray-200 bg-gradient-to-r from-blue-50 via-white to-purple-50 p-10 shadow-xl text-center">
-          <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Put {topicTitle} into action with StockFlow</h2>
-          <p className="mx-auto mt-4 max-w-2xl text-base text-gray-600">
-            Launch faster experiments, share instant dashboards, and keep every stakeholder aligned. Your first workspace
-            is live in minutes, and you can invite teammates for free.
-          </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <Link
-              to="/auth"
-              className="inline-flex items-center rounded-xl bg-purple-600 px-6 py-3 text-base font-semibold text-white shadow-lg transition hover:bg-purple-700"
-            >
-              Create Your Account
-            </Link>
-            <a
-              href="/pricing"
-              className="inline-flex items-center rounded-xl border border-purple-200 px-6 py-3 text-base font-semibold text-purple-700 transition hover:bg-purple-50"
-            >
-              See Plans & Pricing
-            </a>
           </div>
         </div>
       </section>

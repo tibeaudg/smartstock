@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import SEO from '@/components/SEO';
 import SeoPageLayout from '@/components/SeoPageLayout';
@@ -121,6 +121,7 @@ const HowToChooseInventoryManagementSoftware = () => {
         publishedTime={publishedTime}
         modifiedTime={modifiedTime}
       />
+
       <StructuredData data={structuredData} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -166,7 +167,7 @@ const HowToChooseInventoryManagementSoftware = () => {
               to="/best-inventory-management-software" 
               className="inline-flex items-center text-blue-600 hover:text-blue-800 font-semibold"
             >
-              View Best Inventory Management Software Comparison →
+              View Best Inventory Management Software Comparison ?
             </Link>
           </section>
 

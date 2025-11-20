@@ -94,12 +94,7 @@ export default function StockflowVsKatana() {
       <section className="bg-gradient-to-br from-blue-50 to-white py-12 md:py-20 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-8 items-center">
-            <div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-                StockFlow vs Katana{' '}
-                <span className="text-blue-600">Which Supports Your Expansion?</span>
-              </h1>
-              <p className="text-xl text-gray-600 mb-8">
+            <div>              <p className="text-xl text-gray-600 mb-8">
                 Katana focuses on shop-floor scheduling. StockFlow unifies inventory, procurement and fulfilment for teams managing multiple sales channels. Compare the strengths of each platform.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">

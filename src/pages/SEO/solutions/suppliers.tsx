@@ -138,9 +138,9 @@ export default function SuppliersSolutionPage() {
       faqData={faqData}
     >
       <SEO
-        title="Suppliers 2025 - Suppliers 2025 -"
-        description="Discover how suppliers to optimize your inventory management. Read the guide suppliers to automate your processes. Simplify vendor. Start free today. StockFl..."
-        keywords="supplier management software, vendor management, purchase order automation, supplier portal, procurement workflow"
+        title="Supplier Management Software 2025 | Vendor Management Platform"
+        description="Centralize supplier data, automate purchasing workflows, and track vendor performance. Unified supplier directory, automated reordering, and real-time analytics. Start free."
+        keywords="supplier management software, vendor management, purchase order automation, supplier portal, procurement workflow, supplier tracking, vendor relationship management, supplier performance"
         url="https://www.stockflow.be/suppliers"
         structuredData={structuredData}
       />
