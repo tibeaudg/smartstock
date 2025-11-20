@@ -108,8 +108,8 @@ export default function SeoHowToOrganizeAStockroomPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`How To Organize A Stockroom 2025 - How To Organize`}

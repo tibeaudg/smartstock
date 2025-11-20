@@ -330,8 +330,8 @@ export default function InventoryManagementGuide() {
       heroTitle="Inventory Management Guide"
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar={true}
-      sidebarContent={sidebarContent}
+      
+      
     >
       <SEO
         title="Inventory Management 2025 - Inventory Management 2025"

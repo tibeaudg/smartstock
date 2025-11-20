@@ -108,8 +108,8 @@ export default function SeoRemoteInventoryManagementPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`Remote Inventory Management 2025 - Remote Inventory Manag...`}

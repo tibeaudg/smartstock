@@ -65,8 +65,8 @@ export default function BigcommerceInventoryManagement() {
   return (
     <SeoPageLayout 
       title="BigCommerce Inventory Management"
-      showSidebar={true}
-      sidebarContent={sidebarContent}
+      
+      
     >
       <SEO
         title="Bigcommerce Inventory Management 2025 - Bigcommerce Inven..."

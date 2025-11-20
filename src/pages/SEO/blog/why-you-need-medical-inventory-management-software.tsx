@@ -108,8 +108,8 @@ export default function SeoWhyYouNeedMedicalInventoryManagementSoftwarePage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`Why You Need Medical Inventory Management Software 2025`}

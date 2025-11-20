@@ -108,8 +108,8 @@ export default function SeoHowDoIBarcodeMyInventoryPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`How Do I Barcode My Inventory 2025 - How Do I`}

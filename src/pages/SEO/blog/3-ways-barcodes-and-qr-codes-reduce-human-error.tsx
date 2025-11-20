@@ -108,8 +108,8 @@ export default function Seo3WaysBarcodesAndQRCodesReduceHumanErrorPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`3 Ways Barcodes And Qr Codes Reduce Human Error 2025`}

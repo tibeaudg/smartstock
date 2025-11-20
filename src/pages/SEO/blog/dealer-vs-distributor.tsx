@@ -108,8 +108,8 @@ export default function SeoDealerVsDistributorPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`Dealer Vs Distributor 2025 - Dealer Vs Distributor`}

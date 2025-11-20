@@ -108,8 +108,8 @@ export default function SeoWhatIsThePurposeOfAnInventoryAuditPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`What Is The Purpose Of An Inventory Audit 2025`}

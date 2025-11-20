@@ -179,15 +179,30 @@ export default function SeoIsThereAnAppToKeepTrackOfInventoryPage() {
               <span className="mt-1 inline-flex h-9 w-9 items-center justify-center rounded-full bg-blue-600 text-white">
                 <CheckCircle className="h-5 w-5" />
               </span>
-              <p className="text-sm text-gray-700">Short, actionable advice built for operations leaders.</p>
+              <p className="text-sm text-gray-700">Use real-time dashboards that show on-hand accuracy, days of supply, and upcoming stock risks at a glance.</p>
             </div>
 
             <div className="flex items-start gap-4 rounded-2xl border border-gray-200 bg-gray-50 p-5 shadow-sm">
               <span className="mt-1 inline-flex h-9 w-9 items-center justify-center rounded-full bg-blue-600 text-white">
                 <CheckCircle className="h-5 w-5" />
               </span>
-              <p className="text-sm text-gray-700">Real examples drawn from day-to-day warehouse failures (not hypotheticals).</p>
+              <p className="text-sm text-gray-700">Align purchasing with production cycles to sync inventory flow with actual throughput, not forecasts alone.</p>
             </div>
+
+            <div className="flex items-start gap-4 rounded-2xl border border-gray-200 bg-gray-50 p-5 shadow-sm">
+              <span className="mt-1 inline-flex h-9 w-9 items-center justify-center rounded-full bg-blue-600 text-white">
+                <CheckCircle className="h-5 w-5" />
+              </span>
+              <p className="text-sm text-gray-700">Flag slow movers early and trigger actions (discounts, bundles, supplier negotiation) before they become dead stock.</p>
+            </div>
+
+            <div className="flex items-start gap-4 rounded-2xl border border-gray-200 bg-gray-50 p-5 shadow-sm">
+              <span className="mt-1 inline-flex h-9 w-9 items-center justify-center rounded-full bg-blue-600 text-white">
+                <CheckCircle className="h-5 w-5" />
+              </span>
+              <p className="text-sm text-gray-700">Set clear min/max levels to prevent both stockouts and excess—review and adjust weekly.</p>
+            </div>
+
           </div>
         </div>
       </section>

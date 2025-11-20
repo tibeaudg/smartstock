@@ -108,8 +108,8 @@ export default function SeoWhatIsTheBestWayToKeepTrackOfInventoryPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`What Is The Best Way To Keep Track Of Inventory 2025`}

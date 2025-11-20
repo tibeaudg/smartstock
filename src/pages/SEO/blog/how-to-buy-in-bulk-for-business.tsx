@@ -108,8 +108,8 @@ export default function SeoHowToBuyInBulkForBusinessPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`How To Buy In Bulk For Business 2025 - How To Buy`}

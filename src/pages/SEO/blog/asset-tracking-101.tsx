@@ -108,8 +108,8 @@ export default function SeoAssetTracking101Page() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`Asset Tracking 101 2025 - Asset Tracking 101`}

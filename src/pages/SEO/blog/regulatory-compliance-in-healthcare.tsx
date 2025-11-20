@@ -108,8 +108,8 @@ export default function SeoRegulatoryComplianceInHealthcarePage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`Regulatory Compliance In Healthcare 2025`}

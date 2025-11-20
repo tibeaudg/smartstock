@@ -108,8 +108,8 @@ export default function SeoQRCodesForEquipmentMaintenancePage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`Qr Codes For Equipment Maintenance 2025 - Qr Codes For`}

@@ -108,8 +108,8 @@ export default function SeoWhatIsInventoryShrinkagePage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`What Is Inventory Shrinkage 2025 - What Is Inventory`}

@@ -108,8 +108,8 @@ export default function SeoTheFutureOfQRCodesWhatLiesAheadForInventoryManagement
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`The Future Of Qr Codes What Lies Ahead For Inventory Mana...`}

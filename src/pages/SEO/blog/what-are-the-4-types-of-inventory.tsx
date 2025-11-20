@@ -108,8 +108,8 @@ export default function SeoWhatAreThe4TypesOfInventoryPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`What Are The 4 Types Of Inventory 2025 - What Are The`}

@@ -108,8 +108,8 @@ export default function SeoHowToUseQRCodesForHealthcareInventoryPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`How To Use Qr Codes For Healthcare Inventory 2025`}

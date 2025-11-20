@@ -96,8 +96,8 @@ export default function OrderingManagementSystem() {
   return (
     <SeoPageLayout 
       title="Ordering Management System"
-      showSidebar={true}
-      sidebarContent={sidebarContent}
+      
+      
     >
       <SEO
         title="Ordering Management System 2025 - Ordering Management System"

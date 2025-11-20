@@ -108,8 +108,8 @@ export default function SeoUsfCollegeOfNursingPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`Usf College Of Nursing 2025 - Usf College Of`}

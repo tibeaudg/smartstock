@@ -108,8 +108,8 @@ export default function SeoWhatSoftwareIsBestForInventoryPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`What Software Is Best For Inventory 2025`}

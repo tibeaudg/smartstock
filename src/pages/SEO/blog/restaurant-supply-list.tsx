@@ -108,8 +108,8 @@ export default function SeoRestaurantSupplyListPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`Restaurant Supply List 2025 - Restaurant Supply List`}

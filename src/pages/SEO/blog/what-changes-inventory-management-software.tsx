@@ -108,8 +108,8 @@ export default function SeoWhatChangesInventoryManagementSoftwarePage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`What Changes Inventory Management Software 2025`}

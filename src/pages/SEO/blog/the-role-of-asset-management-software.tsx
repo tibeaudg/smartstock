@@ -108,8 +108,8 @@ export default function SeoTheRoleOfAssetManagementSoftwarePage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`The Role Of Asset Management Software 2025`}

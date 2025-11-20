@@ -108,8 +108,8 @@ export default function SeoBarcodesVsQRCodesForInventoryManagementPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`Barcodes Vs Qr Codes For Inventory Management 2025`}

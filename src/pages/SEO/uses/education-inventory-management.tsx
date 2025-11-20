@@ -288,8 +288,8 @@ export default function EducationInventoryManagement() {
   return (
     <SeoPageLayout 
       title="Education Inventory Management"
-      showSidebar={true}
-      sidebarContent={sidebarContent}
+      
+      
     >
       <SEO
         title="Education Inventory Management 2025 - Education Inventory..."

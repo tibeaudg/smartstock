@@ -291,8 +291,8 @@ export default function ElectricalInventoryManagement() {
   return (
     <SeoPageLayout 
       title="Electrical Inventory Management"
-      showSidebar={true}
-      sidebarContent={sidebarContent}
+      
+      
     >
       <SEO
         title="Electrical Inventory Management 2025 - Electrical Invento..."

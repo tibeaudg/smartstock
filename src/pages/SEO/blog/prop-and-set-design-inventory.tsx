@@ -108,8 +108,8 @@ export default function SeoPropAndSetDesignInventoryPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`Prop And Set Design Inventory 2025 - Prop And Set`}

@@ -207,8 +207,8 @@ export default function BestInventoryManagementSoftware() {
       heroTitle="StockFlow vs Sortly"
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar={true}
-      sidebarContent={sidebarContent}
+      
+      
     >
       <SEO
         title="Beste Stockflow Vs Sortly - Beste Stockflow Vs"

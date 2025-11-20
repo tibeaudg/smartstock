@@ -246,7 +246,7 @@ export default function ${safeComponentName}() {
   ]);
 
   return (
-    <SeoPageLayout title={topicTitle} showSidebar sidebarContent={sidebarContent}>
+    <SeoPageLayout title={topicTitle}  >
       <SEO
         title={\`\${topicTitle} | StockFlow Guide\`}
         description={metaDescription}

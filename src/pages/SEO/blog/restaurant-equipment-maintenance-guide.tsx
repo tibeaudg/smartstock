@@ -108,8 +108,8 @@ export default function SeoRestaurantEquipmentMaintenanceGuidePage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`Restaurant Equipment Maintenance Guide 2025`}

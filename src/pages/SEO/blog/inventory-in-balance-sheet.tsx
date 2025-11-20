@@ -108,8 +108,8 @@ export default function SeoInventoryInBalanceSheetPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`Inventory In Balance Sheet 2025 - Inventory In Balance`}

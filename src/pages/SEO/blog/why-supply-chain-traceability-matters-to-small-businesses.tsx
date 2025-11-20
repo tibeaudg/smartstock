@@ -108,8 +108,8 @@ export default function SeoWhySupplyChainTraceabilityMattersToSmallBusinessesPag
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`Why Supply Chain Traceability Matters To Small Businesses...`}

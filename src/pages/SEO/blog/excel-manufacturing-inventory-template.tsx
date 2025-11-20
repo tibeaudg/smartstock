@@ -108,8 +108,8 @@ export default function SeoExcelManufacturingInventoryTemplatePage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`Excel Manufacturing Inventory Template 2025`}

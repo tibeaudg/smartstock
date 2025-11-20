@@ -173,8 +173,8 @@ export default function InventoryTrackingPrograms() {
   return (
     <SeoPageLayout 
       title="Inventory Tracking Programs"
-      showSidebar={true}
-      sidebarContent={sidebarContent}
+      
+      
     >
       <SEO
         title="Inventory Tracking Programs 2025 - Inventory Tracking Pro..."

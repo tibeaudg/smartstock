@@ -108,8 +108,8 @@ export default function SeoOperationalEfficiencyInManufacturingPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`Operational Efficiency In Manufacturing 2025`}

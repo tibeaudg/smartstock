@@ -173,8 +173,8 @@ export default function WholesalerInventoryManagement() {
   return (
     <SeoPageLayout 
       title="Wholesaler Inventory Management"
-      showSidebar={true}
-      sidebarContent={sidebarContent}
+      
+      
     >
       <SEO
         title="Wholesaler Inventory Management 2025 - Wholesaler Invento..."

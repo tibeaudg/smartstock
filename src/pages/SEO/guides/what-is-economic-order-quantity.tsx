@@ -75,8 +75,8 @@ export default function WhatIsEconomicOrderQuantity() {
   return (
     <SeoPageLayout 
       title="What is Economic Order Quantity"
-      showSidebar={true}
-      sidebarContent={sidebarContent}
+      
+      
     >
       <SEO
         title="What is Economic Order Quantity (EOQ) - Complete Guide 2025"

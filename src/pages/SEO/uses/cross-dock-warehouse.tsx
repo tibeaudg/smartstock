@@ -204,8 +204,9 @@ export default function BestInventoryManagementSoftware() {
   return (
     <SeoPageLayout 
       title="Cross-dock Warehouse"
-      showSidebar={true}
-      sidebarContent={sidebarContent}
+      
+      
+      
     >
       <SEO
         title="Cross Dock Warehouse 2025 - Cross Dock Warehouse"

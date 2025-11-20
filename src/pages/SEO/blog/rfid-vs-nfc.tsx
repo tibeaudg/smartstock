@@ -108,8 +108,8 @@ export default function SeoRFIDVsNFCPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`Rfid Vs Nfc 2025 - Rfid Vs Nfc`}

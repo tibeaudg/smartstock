@@ -87,8 +87,8 @@ export default function WhatIsLeadTime() {
   return (
     <SeoPageLayout 
       title="What is Lead Time"
-      showSidebar={true}
-      sidebarContent={sidebarContent}
+      
+      
     >
       <SEO
         title="What Is Lead Time 2025 - What Is Lead"

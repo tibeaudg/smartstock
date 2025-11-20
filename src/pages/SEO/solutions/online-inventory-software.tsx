@@ -423,8 +423,8 @@ export default function OnlineInventorySoftware() {
       heroTitle="Online Inventory Software"
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar={true} 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title="Handleiding Online Inventory Software - Handleiding Onlin..."

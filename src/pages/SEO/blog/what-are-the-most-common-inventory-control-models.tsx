@@ -108,8 +108,8 @@ export default function SeoWhatAreTheMostCommonInventoryControlModelsPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`What Are The Most Common Inventory Control Models 2025`}

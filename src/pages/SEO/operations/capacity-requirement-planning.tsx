@@ -200,8 +200,8 @@ export default function CapacityRequirementPlanning() {
   return (
     <SeoPageLayout 
       title="Capacity Requirement Planning"
-      showSidebar={true}
-      sidebarContent={sidebarContent}
+      
+      
     >
       <SEO
         title="Capacity Requirement Planning 2025 - Capacity Requirement..."

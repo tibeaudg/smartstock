@@ -108,8 +108,8 @@ export default function SeoRFIDVsBarcodeForInventoryManagementPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`Rfid Vs Barcode For Inventory Management 2025`}

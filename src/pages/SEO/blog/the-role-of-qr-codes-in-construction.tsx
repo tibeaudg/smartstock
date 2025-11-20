@@ -108,8 +108,8 @@ export default function SeoTheRoleOfQRCodesInConstructionPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`The Role Of Qr Codes In Construction 2025`}

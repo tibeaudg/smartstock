@@ -108,8 +108,8 @@ export default function SeoSmallBusinessInventorySheetPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`Small Business Inventory Sheet 2025 - Small Business Inve...`}

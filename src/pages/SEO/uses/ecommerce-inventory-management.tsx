@@ -102,8 +102,8 @@ export default function EcommerceInventoryManagement() {
   return (
     <SeoPageLayout 
       title="Ecommerce Inventory Management"
-      showSidebar={true}
-      sidebarContent={sidebarContent}
+      
+      
     >
       <SEO
         title="Ecommerce Inventory Management 2025 - Ecommerce Inventory..."

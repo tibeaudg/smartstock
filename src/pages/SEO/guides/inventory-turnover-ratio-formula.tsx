@@ -75,8 +75,8 @@ export default function InventoryTurnoverRatioFormula() {
   return (
     <SeoPageLayout 
       title="Inventory Turnover Ratio Formula"
-      showSidebar={true}
-      sidebarContent={sidebarContent}
+      
+      
     >
       <SEO
         title="Inventory Turnover Ratio Formula - How to Calculate 2025"

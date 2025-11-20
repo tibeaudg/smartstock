@@ -72,8 +72,8 @@ export default function CloudStockManagement() {
   return (
     <SeoPageLayout 
       title="Cloud Stock Management"
-      showSidebar={true}
-      sidebarContent={sidebarContent}
+      
+      
     >
       <SEO
         title="Cloud Stock Management 2025 - Cloud Stock Management"

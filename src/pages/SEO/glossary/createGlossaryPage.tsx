@@ -90,8 +90,8 @@ export function createGlossaryPage(config: GlossaryPageConfig) {
         heroTitle={title}
         updatedDate="20/11/2025"
         faqData={faqData}
-        showSidebar 
-        sidebarContent={sidebarContent}
+         
+        
       >
         <SEO
           title={`Createglossarypage 2025 - Createglossarypage 2025 -`}

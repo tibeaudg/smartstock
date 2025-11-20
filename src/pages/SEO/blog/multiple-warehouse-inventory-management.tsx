@@ -108,8 +108,8 @@ export default function SeoMultipleWarehouseInventoryManagementPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`Multiple Warehouse Inventory Management 2025`}

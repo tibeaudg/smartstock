@@ -108,8 +108,8 @@ export default function SeoImportanceOfInventoryManagementManufacturingPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`Importance Of Inventory Management Manufacturing 2025`}

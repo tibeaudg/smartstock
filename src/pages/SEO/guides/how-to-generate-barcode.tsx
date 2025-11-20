@@ -163,8 +163,8 @@ export default function HowToGenerateBarcode() {
   return (
     <SeoPageLayout 
       title="How to Generate Barcode"
-      showSidebar={true}
-      sidebarContent={sidebarContent}
+      
+      
     >
       <SEO
         title="How To Generate Barcode 2025 - How To Generate"

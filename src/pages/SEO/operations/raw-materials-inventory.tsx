@@ -164,8 +164,8 @@ export default function RawMaterialsInventory() {
   return (
     <SeoPageLayout 
       title="Raw Materials Inventory"
-      showSidebar={true}
-      sidebarContent={sidebarContent}
+      
+      
     >
       <SEO
         title="Raw Materials Inventory 2025 - Raw Materials Inventory"

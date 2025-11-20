@@ -108,8 +108,8 @@ export default function Seo3BestInventoryNewYearsResolutionsPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`3 Best Inventory New Years Resolutions 2025`}

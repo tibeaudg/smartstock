@@ -52,7 +52,7 @@ export default function VoorraadbeheerTips() {
       heroTitle="Voorraadbeheer Tips voor KMO's"
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar={true}
+      
       sidebarContent={{
         relatedArticles,
         tableOfContents,

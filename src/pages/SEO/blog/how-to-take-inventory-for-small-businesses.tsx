@@ -108,8 +108,8 @@ export default function SeoHowToTakeInventoryForSmallBusinessesPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`How To Take Inventory For Small Businesses 2025`}

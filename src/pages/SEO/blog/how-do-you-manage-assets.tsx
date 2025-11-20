@@ -108,8 +108,8 @@ export default function SeoHowDoYouManageAssetsPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`How Do You Manage Assets 2025 - How Do You`}

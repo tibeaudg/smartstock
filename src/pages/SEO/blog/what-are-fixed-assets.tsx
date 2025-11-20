@@ -108,8 +108,8 @@ export default function SeoWhatAreFixedAssetsPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`What Are Fixed Assets 2025 - What Are Fixed`}

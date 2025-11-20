@@ -108,8 +108,8 @@ export default function SeoTypesOfConstructionBiddingPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`Types Of Construction Bidding 2025 - Types Of Construction`}

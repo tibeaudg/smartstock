@@ -108,8 +108,8 @@ export default function SeoHowToOptimizeMROInventoryPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`How To Optimize Mro Inventory 2025 - How To Optimize`}

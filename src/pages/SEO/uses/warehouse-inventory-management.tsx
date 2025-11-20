@@ -301,8 +301,8 @@ export default function WarehouseInventoryManagement() {
   return (
     <SeoPageLayout 
       title="Warehouse Inventory Management"
-      showSidebar={true}
-      sidebarContent={sidebarContent}
+      
+      
     >
       <SEO
         title="Warehouse Inventory Management 2025 - Warehouse Inventory..."

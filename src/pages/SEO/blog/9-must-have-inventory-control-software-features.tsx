@@ -108,8 +108,8 @@ export default function Seo9MustHaveInventoryControlSoftwareFeaturesPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`9 Must Have Inventory Control Software Features 2025`}

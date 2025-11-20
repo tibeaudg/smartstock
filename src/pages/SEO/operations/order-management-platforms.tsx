@@ -87,8 +87,8 @@ export default function OrderManagementPlatforms() {
   return (
     <SeoPageLayout 
       title="Order Management Platforms"
-      showSidebar={true}
-      sidebarContent={sidebarContent}
+      
+      
     >
       <SEO
         title="Order Management Platforms 2025 - Order Management Platforms"

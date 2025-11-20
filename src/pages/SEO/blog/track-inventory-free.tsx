@@ -108,8 +108,8 @@ export default function SeoTrackInventoryFreePage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`Track Inventory Free 2025 - Track Inventory Free`}

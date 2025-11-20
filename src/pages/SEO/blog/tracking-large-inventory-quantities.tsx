@@ -108,8 +108,8 @@ export default function SeoTrackingLargeInventoryQuantitiesPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`Tracking Large Inventory Quantities 2025`}

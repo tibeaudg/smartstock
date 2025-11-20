@@ -108,8 +108,8 @@ export default function SeoStateOfInteriorDesignAndHomeStagingReportPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`State Of Interior Design And Home Staging Report 2025`}

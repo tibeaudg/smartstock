@@ -88,8 +88,8 @@ export default function WarehouseExecutionSystem() {
   return (
     <SeoPageLayout 
       title="Warehouse Execution System"
-      showSidebar={true}
-      sidebarContent={sidebarContent}
+      
+      
     >
       <SEO
         title="Warehouse Execution System 2025 - Warehouse Execution System"

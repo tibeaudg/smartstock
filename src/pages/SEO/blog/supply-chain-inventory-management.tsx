@@ -108,8 +108,8 @@ export default function SeoSupplyChainInventoryManagementPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`Supply Chain Inventory Management 2025 - Supply Chain Inv...`}

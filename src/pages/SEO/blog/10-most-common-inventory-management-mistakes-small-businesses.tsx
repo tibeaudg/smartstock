@@ -108,8 +108,8 @@ export default function Seo10MostCommonInventoryManagementMistakesSmallBusinesse
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`10 Most Common Inventory Management Mistakes Small Busine...`}

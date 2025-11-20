@@ -290,8 +290,8 @@ export default function InteriorDesignInventoryManagement() {
   return (
     <SeoPageLayout 
       title="Interior Design Inventory Management"
-      showSidebar={true}
-      sidebarContent={sidebarContent}
+      
+      
     >
       <SEO
         title="Interior Design Inventory Management 2025"

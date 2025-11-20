@@ -108,8 +108,8 @@ export default function SeoReorderPointFormulaPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`Reorder Point Formula 2025 - Reorder Point Formula`}

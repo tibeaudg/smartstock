@@ -108,8 +108,8 @@ export default function SeoQRCodeSecurityRisksAndSolutionsPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`Qr Code Security Risks And Solutions 2025`}

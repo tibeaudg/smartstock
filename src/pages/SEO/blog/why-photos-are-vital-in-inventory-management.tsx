@@ -108,8 +108,8 @@ export default function SeoWhyPhotosAreVitalInInventoryManagementPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`Why Photos Are Vital In Inventory Management 2025`}

@@ -108,8 +108,8 @@ export default function SeoWhatIsLifoLastInFirstOutInventoryMethod101Page() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`What Is Lifo Last In First Out Inventory Method 101 2025`}

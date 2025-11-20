@@ -108,8 +108,8 @@ export default function SeoBenefitsOfConstructionInventoryManagementPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`Benefits Of Construction Inventory Management 2025`}

@@ -108,8 +108,8 @@ export default function SeoWhatIsAGoodInventoryTurnoverRatioPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`What Is A Good Inventory Turnover Ratio 2025`}

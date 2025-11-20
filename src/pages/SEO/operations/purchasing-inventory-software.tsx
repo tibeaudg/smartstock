@@ -91,8 +91,8 @@ export default function PurchasingInventorySoftware() {
   return (
     <SeoPageLayout 
       title="Purchasing and Inventory Software"
-      showSidebar={true}
-      sidebarContent={sidebarContent}
+      
+      
     >
       <SEO
         title="Purchasing Inventory Software 2025 - Purchasing Inventory..."

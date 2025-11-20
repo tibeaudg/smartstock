@@ -108,8 +108,8 @@ export default function SeoPerpetualInventoryAndPhysicalInventoryPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`Perpetual Inventory And Physical Inventory 2025`}

@@ -108,8 +108,8 @@ export default function SeoWhatAreThe3MajorInventoryManagementTechniquesPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`What Are The 3 Major Inventory Management Techniques 2025`}

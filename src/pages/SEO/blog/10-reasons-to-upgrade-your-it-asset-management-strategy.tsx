@@ -108,8 +108,8 @@ export default function Seo10ReasonsToUpgradeYourITAssetManagementStrategyPage()
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`10 Reasons To Upgrade Your It Asset Management Strategy 2025`}

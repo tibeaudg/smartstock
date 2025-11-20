@@ -108,8 +108,8 @@ export default function SeoSupplyChainTrendsPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`Supply Chain Trends 2025 - Supply Chain Trends`}

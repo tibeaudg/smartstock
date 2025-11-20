@@ -108,8 +108,8 @@ export default function SeoTop5ChallengesInInteriorDesignTodayPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`Top 5 Challenges In Interior Design Today 2025`}

@@ -108,8 +108,8 @@ export default function SeoInventoryManagementBestPracticesPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`Inventory Management Best Practices 2025`}

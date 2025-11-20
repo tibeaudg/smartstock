@@ -75,8 +75,8 @@ export default function HowToCalculateSafetyStock() {
   return (
     <SeoPageLayout 
       title="How to Calculate Safety Stock"
-      showSidebar={true}
-      sidebarContent={sidebarContent}
+      
+      
     >
       <SEO
         title="How to Calculate Safety Stock - Complete Guide 2025"

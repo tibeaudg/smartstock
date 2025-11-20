@@ -108,8 +108,8 @@ export default function SeoUrgentCareSupplyListPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`Urgent Care Supply List 2025 - Urgent Care Supply`}

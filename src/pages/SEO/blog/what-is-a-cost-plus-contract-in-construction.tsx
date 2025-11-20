@@ -108,8 +108,8 @@ export default function SeoWhatIsACostPlusContractInConstructionPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`What Is A Cost Plus Contract In Construction 2025`}

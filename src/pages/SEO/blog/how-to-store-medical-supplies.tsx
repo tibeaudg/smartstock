@@ -108,8 +108,8 @@ export default function SeoHowToStoreMedicalSuppliesPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`How To Store Medical Supplies 2025 - How To Store`}

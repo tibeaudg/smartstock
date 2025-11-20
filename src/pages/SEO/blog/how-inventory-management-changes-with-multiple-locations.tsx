@@ -108,8 +108,8 @@ export default function SeoHowInventoryManagementChangesWithMultipleLocationsPag
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`How Inventory Management Changes With Multiple Locations ...`}

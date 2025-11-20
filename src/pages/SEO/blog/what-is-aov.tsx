@@ -108,8 +108,8 @@ export default function SeoWhatIsAOVPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`What Is Aov 2025 - What Is Aov`}

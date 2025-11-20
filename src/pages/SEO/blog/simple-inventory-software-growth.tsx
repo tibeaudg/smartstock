@@ -108,8 +108,8 @@ export default function SeoSimpleInventorySoftwareGrowthPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`Simple Inventory Software Growth 2025 - Simple Inventory ...`}

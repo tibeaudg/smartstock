@@ -107,8 +107,8 @@ export default function InventorySystemForSmallBusiness() {
   return (
     <SeoPageLayout 
       title="Inventory System for Small Business"
-      showSidebar={true}
-      sidebarContent={sidebarContent}
+      
+      
     >
       <SEO
         title="Inventory System For Small Business 2025"

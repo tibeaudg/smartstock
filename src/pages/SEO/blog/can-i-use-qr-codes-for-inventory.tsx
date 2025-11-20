@@ -108,8 +108,8 @@ export default function SeoCanIUseQRCodesForInventoryPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`Can I Use Qr Codes For Inventory 2025 - Can I Use`}

@@ -108,8 +108,8 @@ export default function SeoUPCBarcodesPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`Upc Barcodes 2025 - Upc Barcodes 2025`}

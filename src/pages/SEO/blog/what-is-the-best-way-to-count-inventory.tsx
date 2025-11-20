@@ -108,8 +108,8 @@ export default function SeoWhatIsTheBestWayToCountInventoryPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`What Is The Best Way To Count Inventory 2025`}

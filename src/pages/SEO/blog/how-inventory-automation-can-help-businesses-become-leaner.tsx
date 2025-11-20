@@ -108,8 +108,8 @@ export default function SeoHowInventoryAutomationCanHelpBusinessesBecomeLeanerPa
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`How Inventory Automation Can Help Businesses Become Leane...`}

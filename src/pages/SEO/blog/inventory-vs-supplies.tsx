@@ -108,8 +108,8 @@ export default function SeoInventoryVsSuppliesPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`Inventory Vs Supplies 2025 - Inventory Vs Supplies`}

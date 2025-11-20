@@ -108,8 +108,8 @@ export default function SeoObsoleteInventoryPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`Obsolete Inventory 2025 - Obsolete Inventory 2025`}

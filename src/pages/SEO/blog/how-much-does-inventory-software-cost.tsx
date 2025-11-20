@@ -108,8 +108,8 @@ export default function SeoHowMuchDoesInventorySoftwareCostPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`How Much Does Inventory Software Cost 2025`}

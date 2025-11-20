@@ -108,8 +108,8 @@ export default function SeoSOPForInventoryPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`Sop For Inventory 2025 - Sop For Inventory`}

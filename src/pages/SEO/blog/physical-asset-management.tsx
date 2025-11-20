@@ -108,8 +108,8 @@ export default function SeoPhysicalAssetManagementPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`Physical Asset Management 2025 - Physical Asset Management`}

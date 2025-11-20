@@ -92,8 +92,8 @@ export default function StoringInventory() {
   return (
     <SeoPageLayout 
       title="Storing Inventory"
-      showSidebar={true}
-      sidebarContent={sidebarContent}
+      
+      
     >
       <SEO
         title="Storing Inventory 2025 - Storing Inventory 2025"

@@ -108,8 +108,8 @@ export default function SeoMechanicShopOrganizationIdeasPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`Mechanic Shop Organization Ideas 2025 - Mechanic Shop Org...`}

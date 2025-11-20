@@ -92,8 +92,8 @@ export default function EnterpriseInventoryManagement() {
   return (
     <SeoPageLayout 
       title="Enterprise Inventory Management"
-      showSidebar={true}
-      sidebarContent={sidebarContent}
+      
+      
     >
       <SEO
         title="Enterprise Inventory Management 2025 - Enterprise Invento..."

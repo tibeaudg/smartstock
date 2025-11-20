@@ -108,8 +108,8 @@ export default function SeoWhatIsDemandForecastingPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`What Is Demand Forecasting 2025 - What Is Demand`}

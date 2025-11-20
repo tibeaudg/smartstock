@@ -99,8 +99,8 @@ export default function CycleCount() {
       heroTitle="Cycle Count"
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar={true}
-      sidebarContent={sidebarContent}
+      
+      
     >
       <SEO
         title="Cycle Count 2025 - Cycle Count 2025"

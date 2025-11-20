@@ -204,8 +204,8 @@ export default function BestInventoryManagementSoftware() {
   return (
     <SeoPageLayout 
       title="Inventory Management Systems Solutions"
-      showSidebar={true}
-      sidebarContent={sidebarContent}
+      
+      
     >
       <SEO
         title="Inventory Management Systems Solutions 2025"

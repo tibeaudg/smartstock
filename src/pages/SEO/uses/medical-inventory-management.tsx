@@ -343,8 +343,8 @@ export default function MedicalInventoryManagement() {
   return (
     <SeoPageLayout 
       title="Medical Inventory Management"
-      showSidebar={true}
-      sidebarContent={sidebarContent}
+      
+      
     >
       <SEO
         title="Medical Inventory Management 2025 - Medical Inventory Man..."

@@ -108,8 +108,8 @@ export default function SeoHowToManageInventoryInRestaurantsPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`How To Manage Inventory In Restaurants 2025`}

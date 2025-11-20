@@ -108,8 +108,8 @@ export default function Seo6InventoryManagementTipsWhenTimesAreTightPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`6 Inventory Management Tips When Times Are Tight 2025`}

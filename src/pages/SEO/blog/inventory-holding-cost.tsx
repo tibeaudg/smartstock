@@ -108,8 +108,8 @@ export default function SeoInventoryHoldingCostPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`Inventory Holding Cost 2025 - Inventory Holding Cost`}

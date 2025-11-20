@@ -108,8 +108,8 @@ export default function SeoSKUManagementGuidePage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`Sku Management Guide 2025 - Sku Management Guide`}

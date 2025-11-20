@@ -91,8 +91,8 @@ export default function CrmInventoryManagement() {
   return (
     <SeoPageLayout 
       title="CRM and Inventory Management"
-      showSidebar={true}
-      sidebarContent={sidebarContent}
+      
+      
     >
       <SEO
         title="Crm Inventory Management 2025 - Crm Inventory Management"

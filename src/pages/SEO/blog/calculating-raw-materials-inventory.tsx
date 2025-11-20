@@ -108,8 +108,8 @@ export default function SeoCalculatingRawMaterialsInventoryPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`Calculating Raw Materials Inventory 2025`}

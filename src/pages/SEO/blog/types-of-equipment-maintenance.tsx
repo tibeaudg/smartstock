@@ -108,8 +108,8 @@ export default function SeoTypesOfEquipmentMaintenancePage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`Types Of Equipment Maintenance 2025 - Types Of Equipment`}

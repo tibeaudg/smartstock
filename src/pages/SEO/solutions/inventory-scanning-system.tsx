@@ -92,8 +92,8 @@ export default function InventoryScanningSystem() {
   return (
     <SeoPageLayout 
       title="Inventory Scanning System"
-      showSidebar={true}
-      sidebarContent={sidebarContent}
+      
+      
     >
       <SEO
         title="Inventory Scanning System 2025 - Inventory Scanning System"

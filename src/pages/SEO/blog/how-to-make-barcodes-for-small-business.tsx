@@ -108,8 +108,8 @@ export default function SeoHowToMakeBarcodesForSmallBusinessPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`How To Make Barcodes For Small Business 2025`}

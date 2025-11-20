@@ -108,8 +108,8 @@ export default function SeoCycleCountingInTheConstructionIndustryPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`Cycle Counting In The Construction Industry 2025`}

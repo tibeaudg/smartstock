@@ -108,8 +108,8 @@ export default function SeoHowToUseBarcodesForToolTrackingPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`How To Use Barcodes For Tool Tracking 2025`}

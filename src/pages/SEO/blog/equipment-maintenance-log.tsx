@@ -108,8 +108,8 @@ export default function SeoEquipmentMaintenanceLogPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`Equipment Maintenance Log 2025 - Equipment Maintenance Log`}

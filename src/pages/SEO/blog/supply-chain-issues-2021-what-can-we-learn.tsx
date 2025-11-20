@@ -108,8 +108,8 @@ export default function SeoSupplyChainIssues2021WhatCanWeLearnPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`Supply Chain Issues 2021 What Can We Learn 2025`}

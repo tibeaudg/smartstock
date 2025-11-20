@@ -76,8 +76,8 @@ export default function InventoryPlatform() {
   return (
     <SeoPageLayout 
       title="Inventory Platform"
-      showSidebar={true}
-      sidebarContent={sidebarContent}
+      
+      
     >
       <SEO
         title="Inventory Platform 2025 - Inventory Platform 2025"

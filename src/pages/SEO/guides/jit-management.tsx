@@ -153,8 +153,8 @@ export default function JitManagement() {
   return (
     <SeoPageLayout 
       title="JIT Management"
-      showSidebar={true}
-      sidebarContent={sidebarContent}
+      
+      
     >
       <SEO
         title="Jit Management 2025 - Jit Management 2025"

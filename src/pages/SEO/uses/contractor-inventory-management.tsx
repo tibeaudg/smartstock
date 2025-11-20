@@ -173,8 +173,8 @@ export default function ContractorInventoryManagement() {
   return (
     <SeoPageLayout 
       title="Contractor Inventory Management"
-      showSidebar={true}
-      sidebarContent={sidebarContent}
+      
+      
     >
       <SEO
         title="Contractor Inventory Management 2025 - Contractor Invento..."

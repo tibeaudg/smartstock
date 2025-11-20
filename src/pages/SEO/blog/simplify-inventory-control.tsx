@@ -108,8 +108,8 @@ export default function SeoSimplifyInventoryControlPage() {
       heroTitle={topicTitle} 
       updatedDate="20/11/2025"
       faqData={faqData}
-      showSidebar 
-      sidebarContent={sidebarContent}
+       
+      
     >
       <SEO
         title={`Simplify Inventory Control 2025 - Simplify Inventory Control`}

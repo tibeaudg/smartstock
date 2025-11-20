@@ -92,8 +92,8 @@ export default function WarehouseLogistics() {
   return (
     <SeoPageLayout 
       title="Warehouse Logistics"
-      showSidebar={true}
-      sidebarContent={sidebarContent}
+      
+      
     >
       <SEO
         title="Warehouse Logistics 2025 - Warehouse Logistics 2025"
