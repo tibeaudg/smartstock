@@ -103,7 +103,14 @@ export default function SeoRFIDVsNFCPage() {
   ]);
 
   return (
-    <SeoPageLayout title={topicTitle} showSidebar sidebarContent={sidebarContent}>
+    <SeoPageLayout 
+      title={topicTitle} 
+      heroTitle={topicTitle} 
+      updatedDate="20/11/2025"
+      faqData={faqData}
+      showSidebar 
+      sidebarContent={sidebarContent}
+    >
       <SEO
         title={`Rfid Vs Nfc 2025 - Rfid Vs Nfc`}
         description={metaDescription}

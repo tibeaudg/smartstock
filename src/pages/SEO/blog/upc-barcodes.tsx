@@ -103,7 +103,14 @@ export default function SeoUPCBarcodesPage() {
   ]);
 
   return (
-    <SeoPageLayout title={topicTitle} showSidebar sidebarContent={sidebarContent}>
+    <SeoPageLayout 
+      title={topicTitle} 
+      heroTitle={topicTitle} 
+      updatedDate="20/11/2025"
+      faqData={faqData}
+      showSidebar 
+      sidebarContent={sidebarContent}
+    >
       <SEO
         title={`Upc Barcodes 2025 - Upc Barcodes 2025`}
         description={metaDescription}

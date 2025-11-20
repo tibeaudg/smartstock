@@ -145,7 +145,7 @@ const useCases = [
   }
 ];
 
-const faqs = [
+const faqData = [
   {
     question: 'Do I need dedicated hardware to use StockFlow Scan?',
     answer:
@@ -200,7 +200,12 @@ export default function InventoryPhotosPage() {
   };
 
   return (
-    <SeoPageLayout title="Inventory Photos">
+    <SeoPageLayout 
+      title="Inventory Photos"
+      heroTitle="Inventory Photos"
+      updatedDate="20/11/2025"
+      faqData={faqData}
+    >
       <SEO
         title="Inventory Photos 2025 - Inventory Photos 2025"
         description="Find out how inventory photos to automate your processes. Find out how inventory photos to save time and money.. Try free now. StockFlow helps businesses man..."

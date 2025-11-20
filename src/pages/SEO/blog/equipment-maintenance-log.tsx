@@ -103,7 +103,14 @@ export default function SeoEquipmentMaintenanceLogPage() {
   ]);
 
   return (
-    <SeoPageLayout title={topicTitle} showSidebar sidebarContent={sidebarContent}>
+    <SeoPageLayout 
+      title={topicTitle} 
+      heroTitle={topicTitle} 
+      updatedDate="20/11/2025"
+      faqData={faqData}
+      showSidebar 
+      sidebarContent={sidebarContent}
+    >
       <SEO
         title={`Equipment Maintenance Log 2025 - Equipment Maintenance Log`}
         description={metaDescription}

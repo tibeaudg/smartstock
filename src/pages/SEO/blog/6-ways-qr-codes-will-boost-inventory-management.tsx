@@ -103,7 +103,14 @@ export default function Seo6WaysQRCodesWillBoostInventoryManagementPage() {
   ]);
 
   return (
-    <SeoPageLayout title={topicTitle} showSidebar sidebarContent={sidebarContent}>
+    <SeoPageLayout 
+      title={topicTitle} 
+      heroTitle={topicTitle} 
+      updatedDate="20/11/2025"
+      faqData={faqData}
+      showSidebar 
+      sidebarContent={sidebarContent}
+    >
       <SEO
         title={`6 Ways Qr Codes Will Boost Inventory Management 2025`}
         description={metaDescription}

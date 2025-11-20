@@ -103,7 +103,14 @@ export default function SeoHowToUseBarcodesForToolTrackingPage() {
   ]);
 
   return (
-    <SeoPageLayout title={topicTitle} showSidebar sidebarContent={sidebarContent}>
+    <SeoPageLayout 
+      title={topicTitle} 
+      heroTitle={topicTitle} 
+      updatedDate="20/11/2025"
+      faqData={faqData}
+      showSidebar 
+      sidebarContent={sidebarContent}
+    >
       <SEO
         title={`How To Use Barcodes For Tool Tracking 2025`}
         description={metaDescription}

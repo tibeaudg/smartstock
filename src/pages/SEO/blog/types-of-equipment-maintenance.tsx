@@ -103,7 +103,14 @@ export default function SeoTypesOfEquipmentMaintenancePage() {
   ]);
 
   return (
-    <SeoPageLayout title={topicTitle} showSidebar sidebarContent={sidebarContent}>
+    <SeoPageLayout 
+      title={topicTitle} 
+      heroTitle={topicTitle} 
+      updatedDate="20/11/2025"
+      faqData={faqData}
+      showSidebar 
+      sidebarContent={sidebarContent}
+    >
       <SEO
         title={`Types Of Equipment Maintenance 2025 - Types Of Equipment`}
         description={metaDescription}

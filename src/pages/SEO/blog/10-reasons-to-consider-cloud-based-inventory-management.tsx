@@ -103,7 +103,14 @@ export default function Seo10ReasonsToConsiderCloudBasedInventoryManagementPage(
   ]);
 
   return (
-    <SeoPageLayout title={topicTitle} showSidebar sidebarContent={sidebarContent}>
+    <SeoPageLayout 
+      title={topicTitle} 
+      heroTitle={topicTitle} 
+      updatedDate="20/11/2025"
+      faqData={faqData}
+      showSidebar 
+      sidebarContent={sidebarContent}
+    >
       <SEO
         title={`10 Reasons To Consider Cloud Based Inventory Management 2025`}
         description={metaDescription}

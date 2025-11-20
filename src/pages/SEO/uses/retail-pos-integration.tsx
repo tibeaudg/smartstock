@@ -57,7 +57,7 @@ export default function RetailPosIntegration() {
     }
   ];
 
-  const faq = [
+  const faqData = [
     {
       question: 'Which POS systems integrate with StockFlow?',
       answer:
@@ -77,11 +77,21 @@ export default function RetailPosIntegration() {
       question: 'Can I manage purchase orders inside StockFlow?',
       answer:
         'Absolutely. Use StockFlow to issue POs, receive goods, and push landed stock levels back to your POS so front-of-house teams always see accurate availability.'
+    },
+    {
+      question: 'What are the benefits of retail POS integration?',
+      answer:
+        'Retail POS integration provides real-time inventory synchronization, prevents overselling, automates stock updates, enables unified reporting across locations, and streamlines order fulfillment processes.'
     }
   ];
 
   return (
-    <SeoPageLayout title="Retail POS Integration">
+    <SeoPageLayout 
+      title="Retail POS Integration"
+      heroTitle="Retail POS Integration"
+      updatedDate="20/11/2025"
+      faqData={faqData}
+    >
       <SEO
         title="Retail Pos Integration 2025 - Retail Pos Integration"
         description="Discover how retail pos integration to automate your processes. Read the guide retail pos integration to automate your processes.. Start free today. StockFlo..."

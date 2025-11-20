@@ -103,7 +103,14 @@ export default function SeoDealerVsDistributorPage() {
   ]);
 
   return (
-    <SeoPageLayout title={topicTitle} showSidebar sidebarContent={sidebarContent}>
+    <SeoPageLayout 
+      title={topicTitle} 
+      heroTitle={topicTitle} 
+      updatedDate="20/11/2025"
+      faqData={faqData}
+      showSidebar 
+      sidebarContent={sidebarContent}
+    >
       <SEO
         title={`Dealer Vs Distributor 2025 - Dealer Vs Distributor`}
         description={metaDescription}

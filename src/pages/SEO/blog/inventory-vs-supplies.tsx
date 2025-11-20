@@ -103,7 +103,14 @@ export default function SeoInventoryVsSuppliesPage() {
   ]);
 
   return (
-    <SeoPageLayout title={topicTitle} showSidebar sidebarContent={sidebarContent}>
+    <SeoPageLayout 
+      title={topicTitle} 
+      heroTitle={topicTitle} 
+      updatedDate="20/11/2025"
+      faqData={faqData}
+      showSidebar 
+      sidebarContent={sidebarContent}
+    >
       <SEO
         title={`Inventory Vs Supplies 2025 - Inventory Vs Supplies`}
         description={metaDescription}

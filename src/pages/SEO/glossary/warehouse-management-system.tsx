@@ -169,7 +169,12 @@ export default function WarehouseManagementSystem() {
   ];
 
   return (
-    <SeoPageLayout title="Warehouse Management System">
+    <SeoPageLayout 
+      title="Warehouse Management System"
+      heroTitle="Warehouse Management System"
+      updatedDate="20/11/2025"
+      faqData={faqData}
+    >
       <SEO
         title="Warehouse Management System 2025 - Warehouse Management S..."
         description="Discover how warehouse management system to choose the best software. Learn how warehouse management system to save time and money.. Start free today."

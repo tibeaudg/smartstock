@@ -64,7 +64,12 @@ export default function StockFlowVsZohoInventory() {
   ];
 
   return (
-    <SeoPageLayout title="StockFlow vs Zoho Inventory">
+    <SeoPageLayout 
+      title="StockFlow vs Zoho Inventory"
+      heroTitle="StockFlow vs Zoho Inventory"
+      updatedDate="20/11/2025"
+      faqData={faqData}
+    >
       <SEO
         title="Stockflow Vs Zoho Inventory 2025 - Stockflow Vs Zoho"
         description="Discover how stockflow vs zoho inventory to optimize your inventory management. Read the guide stockflow vs zoho inventory to automate your. Start free today."

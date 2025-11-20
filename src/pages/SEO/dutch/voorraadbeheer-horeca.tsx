@@ -84,7 +84,12 @@ export default function VoorraadbeheerHorecaPage() {
   const relatedPages = getRelatedPages('/voorraadbeheer-horeca', 6);
 
   return (
-    <SeoPageLayout title="Voorraadbeheer voor Horeca">
+    <SeoPageLayout 
+      title="Voorraadbeheer voor Horeca"
+      heroTitle="Voorraadbeheer voor Horeca"
+      updatedDate="20/11/2025"
+      faqData={faqData}
+    >
       <SEO
         title="Complete Guide Voorraadbeheer Horeca - Beste Voorraadbehe..."
         description="Lees de gids voorraadbeheer horeca de beste software te kiezen. Vind uit hoe voorraadbeheer horeca uw voorraadbeheer te optimaliseren. Ontdek. Start vandaag ..."

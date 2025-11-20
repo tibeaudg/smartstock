@@ -79,7 +79,7 @@ const metrics = [
   },
 ];
 
-const faqItems = [
+const faqData = [
   {
     question: 'Can StockFlow import my existing supplier list?',
     answer:
@@ -100,6 +100,11 @@ const faqItems = [
     answer:
       'Absolutely. Assign suppliers to specific branches, restrict access with roles, and roll up purchasing insights across every location in real time.',
   },
+  {
+    question: 'What is supplier management software?',
+    answer:
+      'Supplier management software helps businesses centralize vendor information, automate purchasing workflows, track supplier performance, and streamline procurement processes. It enables better supplier relationships and reduces procurement costs.'
+  }
 ];
 
 export default function SuppliersSolutionPage() {
@@ -126,7 +131,12 @@ export default function SuppliersSolutionPage() {
   };
 
   return (
-    <SeoPageLayout title="Suppliers">
+    <SeoPageLayout 
+      title="Suppliers"
+      heroTitle="Suppliers"
+      updatedDate="20/11/2025"
+      faqData={faqData}
+    >
       <SEO
         title="Suppliers 2025 - Suppliers 2025 -"
         description="Discover how suppliers to optimize your inventory management. Read the guide suppliers to automate your processes. Simplify vendor. Start free today. StockFl..."

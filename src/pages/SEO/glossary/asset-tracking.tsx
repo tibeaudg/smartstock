@@ -145,31 +145,31 @@ const useCases = [
   }
 ];
 
-const faqs = [
+const faqData = [
   {
-    question: 'Do I need dedicated hardware to use StockFlow Scan?',
+    question: 'What is asset tracking?',
     answer:
-      'No special hardware is required. Any modern device with a camera—iOS, Android, Zebra, Windows, or macOS—can run the StockFlow scanner securely in the browser.'
+      'Asset tracking is the process of monitoring and managing physical assets throughout their lifecycle. It involves tracking location, condition, maintenance history, and usage of assets like equipment, vehicles, tools, and inventory items.'
   },
   {
-    question: 'Can the scanner work offline?',
+    question: 'How does asset tracking work?',
     answer:
-      'Yes. Teams can continue scanning without connectivity. StockFlow queues changes locally and syncs them automatically once a connection is restored.'
+      'Asset tracking uses technologies like barcodes, QR codes, RFID tags, or GPS to identify and monitor assets. Software systems record asset movements, maintenance schedules, and status updates in real-time, providing visibility into asset location and condition.'
   },
   {
-    question: 'How does StockFlow maintain scan accuracy?',
+    question: 'What are the benefits of asset tracking?',
     answer:
-      'We combine checksum validation, duplicate detection, and product-level rules to stop incorrect submissions before they reach inventory records.'
+      'Asset tracking helps reduce loss and theft, improves maintenance scheduling, optimizes asset utilization, ensures compliance, reduces costs, and provides better visibility into asset performance and location.'
   },
   {
-    question: 'Does StockFlow support GS1 barcodes and serialization?',
+    question: 'Can asset tracking integrate with inventory management?',
     answer:
-      'Absolutely. We parse GS1 application identifiers, serial numbers, lots, and expiration dates so you can meet compliance requirements without manual entry.'
+      'Yes, modern asset tracking systems integrate seamlessly with inventory management software. This provides unified visibility into both fixed assets and inventory items, enabling comprehensive asset management across your organization.'
   },
   {
-    question: 'How quickly can we roll out StockFlow Scan?',
+    question: 'What types of assets can be tracked?',
     answer:
-      'Most teams go live in days. Invite your users, configure workflows, and share a secure URL—no app store approvals or device imaging needed.'
+      'Asset tracking can monitor equipment, vehicles, tools, IT assets, furniture, machinery, and any other physical items that need to be tracked for location, maintenance, or compliance purposes.'
   }
 ];
 
@@ -184,7 +184,12 @@ export default function InventoryPhotosPage() {
   };
 
   return (
-    <SeoPageLayout title="Asset Tracking">
+    <SeoPageLayout 
+      title="Asset Tracking"
+      heroTitle="Asset Tracking"
+      updatedDate="20/11/2025"
+      faqData={faqData}
+    >
       <SEO
         title="Asset Tracking 2025 - Asset Tracking 2025"
         description="Read the guide asset tracking to choose the best software. Read the guide asset tracking to optimize your inventory management.. Get started free. StockFlow ..."

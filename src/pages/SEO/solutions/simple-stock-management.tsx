@@ -16,10 +16,35 @@ import {
 export default function SimpleStockManagement() {
   usePageRefresh();
   
+  const faqData = [
+    {
+      question: "What is simple stock management?",
+      answer: "Simple stock management is an easy-to-use inventory control system that helps businesses track products, monitor stock levels, and automate reordering without complexity. It's designed for businesses that want effective inventory management without the learning curve of complex systems."
+    },
+    {
+      question: "How does simple stock management work?",
+      answer: "Simple stock management software tracks your inventory in real-time, sends alerts when stock is low, and provides easy-to-understand reports. You can scan barcodes, update stock levels from your phone, and see everything you need at a glance."
+    },
+    {
+      question: "Is simple stock management suitable for small businesses?",
+      answer: "Yes, simple stock management is perfect for small businesses. It's designed to be intuitive and affordable, with free plans available for businesses with up to 30 products. You can start managing your inventory immediately without extensive training."
+    },
+    {
+      question: "What features does simple stock management include?",
+      answer: "Simple stock management includes real-time tracking, barcode scanning, automated alerts, basic reporting, mobile access, and multi-user support. It focuses on essential features that most businesses need without overwhelming complexity."
+    },
+    {
+      question: "Can I upgrade from simple stock management to more advanced features?",
+      answer: "Yes, most simple stock management systems offer upgrade paths. As your business grows, you can add more advanced features like detailed analytics, advanced reporting, and integrations with other business systems."
+    }
+  ];
+
   return (
     <SeoPageLayout 
       title="Simple Stock Management"
       heroTitle="Simple Stock Management: Inventory Control Made Simple"
+      updatedDate="20/11/2025"
+      faqData={faqData}
       heroBadges={[
         { text: "5.0/5 rating" },
         { text: "500+ Businesses" },

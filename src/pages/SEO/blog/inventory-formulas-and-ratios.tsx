@@ -103,7 +103,14 @@ export default function SeoInventoryFormulasAndRatiosPage() {
   ]);
 
   return (
-    <SeoPageLayout title={topicTitle} showSidebar sidebarContent={sidebarContent}>
+    <SeoPageLayout 
+      title={topicTitle} 
+      heroTitle={topicTitle} 
+      updatedDate="20/11/2025"
+      faqData={faqData}
+      showSidebar 
+      sidebarContent={sidebarContent}
+    >
       <SEO
         title={`Inventory Formulas And Ratios 2025 - Inventory Formulas And`}
         description={metaDescription}

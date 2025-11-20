@@ -115,7 +115,12 @@ export default function SoftwaresForInventoryManagement() {
   ];
 
   return (
-    <SeoPageLayout title="Softwares for Inventory Management">
+    <SeoPageLayout 
+      title="Softwares for Inventory Management"
+      heroTitle="Softwares for Inventory Management"
+      updatedDate="20/11/2025"
+      faqData={faqData}
+    >
       <SEO
         title="Softwares For Inventory Management 2025 - Softwares For I..."
         description="Find out how softwares for inventory management to save time and money. Find out how softwares for inventory management to automate your. Try free now.'s free plan."

@@ -125,7 +125,12 @@ export default function InventoryForEcommerce() {
   ];
   
   return (
-    <SeoPageLayout title="Inventory for Ecommerce">
+    <SeoPageLayout 
+      title="Inventory for Ecommerce"
+      heroTitle="Inventory for Ecommerce"
+      updatedDate="20/11/2025"
+      faqData={faqData}
+    >
       <SEO
         title="Inventory For Ecommerce 2025 - Inventory For Ecommerce"
         description="Discover how inventory for ecommerce to optimize your inventory management. Find out how inventory for ecommerce to optimize your inventory. Try free now."

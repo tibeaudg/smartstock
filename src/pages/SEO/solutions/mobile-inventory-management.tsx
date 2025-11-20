@@ -148,7 +148,12 @@ export default function MobileInventoryManagement() {
   ];
   
   return (
-    <SeoPageLayout title="Mobile Inventory Management">
+    <SeoPageLayout 
+      title="Mobile Inventory Management"
+      heroTitle="Mobile Inventory Management"
+      updatedDate="20/11/2025"
+      faqData={faqData}
+    >
       <SEO
         title="Mobile Inventory Management 2025 - Mobile Inventory Manag..."
         description="Find out how mobile inventory management to optimize your inventory management. Find out how mobile inventory management to optimize your inventory. Get star..."

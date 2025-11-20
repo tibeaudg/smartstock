@@ -103,7 +103,14 @@ export default function SeoQRCodesForEquipmentMaintenancePage() {
   ]);
 
   return (
-    <SeoPageLayout title={topicTitle} showSidebar sidebarContent={sidebarContent}>
+    <SeoPageLayout 
+      title={topicTitle} 
+      heroTitle={topicTitle} 
+      updatedDate="20/11/2025"
+      faqData={faqData}
+      showSidebar 
+      sidebarContent={sidebarContent}
+    >
       <SEO
         title={`Qr Codes For Equipment Maintenance 2025 - Qr Codes For`}
         description={metaDescription}

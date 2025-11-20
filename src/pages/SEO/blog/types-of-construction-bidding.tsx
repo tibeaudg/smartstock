@@ -103,7 +103,14 @@ export default function SeoTypesOfConstructionBiddingPage() {
   ]);
 
   return (
-    <SeoPageLayout title={topicTitle} showSidebar sidebarContent={sidebarContent}>
+    <SeoPageLayout 
+      title={topicTitle} 
+      heroTitle={topicTitle} 
+      updatedDate="20/11/2025"
+      faqData={faqData}
+      showSidebar 
+      sidebarContent={sidebarContent}
+    >
       <SEO
         title={`Types Of Construction Bidding 2025 - Types Of Construction`}
         description={metaDescription}

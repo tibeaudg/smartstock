@@ -97,7 +97,12 @@ export default function StockFlowVsCin7() {
   ];
 
   return (
-    <SeoPageLayout title="StockFlow vs Cin7">
+    <SeoPageLayout 
+      title="StockFlow vs Cin7"
+      heroTitle="StockFlow vs Cin7"
+      updatedDate="20/11/2025"
+      faqData={faqData}
+    >
       <SEO
         title="Stockflow Vs Cin7 2025 - Stockflow Vs Cin7"
         description="Find out how stockflow vs cin7 to optimize your inventory management. Find out how stockflow vs cin7 to save time and. Start free today. StockFlow helps busi..."

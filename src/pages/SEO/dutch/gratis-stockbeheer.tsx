@@ -9,6 +9,29 @@ export default function GratisStockbeheer() {
   // Gebruik de page refresh hook
   usePageRefresh();
   
+  const faqData = [
+    {
+      question: "Is gratis stockbeheer echt gratis?",
+      answer: "Ja, StockFlow biedt een volledig gratis plan voor tot 30 producten. Geen verborgen kosten, geen creditcard vereist, geen verplichtingen. Perfect voor starters en kleine bedrijven."
+    },
+    {
+      question: "Welke functies zijn beschikbaar in gratis stockbeheer?",
+      answer: "De gratis versie bevat alle essentiële functies: real-time voorraadoverzicht, automatische bestelmeldingen, barcode scanning, team samenwerking, basis rapportages, en mobiele app toegang."
+    },
+    {
+      question: "Kan ik upgraden van gratis naar betaald stockbeheer?",
+      answer: "Ja, je kunt op elk moment upgraden naar een betaald plan wanneer je bedrijf groeit. Je data blijft behouden en je krijgt toegang tot meer producten en geavanceerde functies."
+    },
+    {
+      question: "Is gratis stockbeheer veilig?",
+      answer: "Absoluut! StockFlow gebruikt enterprise-grade beveiliging met SSL-versleuteling, dagelijkse back-ups en GDPR-compliance. Je data is altijd veilig."
+    },
+    {
+      question: "Hoeveel gebruikers kan ik toevoegen in gratis stockbeheer?",
+      answer: "In de gratis versie kun je onbeperkt teamleden uitnodigen. Iedereen krijgt toegang tot de mobiele app en web interface met eigen inloggegevens."
+    }
+  ];
+  
   const features = [
     {
       icon: Gift,
@@ -56,6 +79,9 @@ export default function GratisStockbeheer() {
   return (
     <SeoPageLayout
       title="Voorraadbeheer: Gratis Stockbeheer App voor KMO's"
+      heroTitle="Voorraadbeheer: Gratis Stockbeheer App voor KMO's"
+      updatedDate="20/11/2025"
+      faqData={faqData}
     >
       <SEO
         title="Gratis Stockbeheer 2025 - Gratis Stockbeheer 2025"

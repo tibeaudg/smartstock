@@ -76,7 +76,12 @@ export default function StockflowVsKatana() {
   ];
 
   return (
-    <SeoPageLayout title="StockFlow vs Katana">
+    <SeoPageLayout 
+      title="StockFlow vs Katana"
+      heroTitle="StockFlow vs Katana"
+      updatedDate="20/11/2025"
+      faqData={faqData}
+    >
       <SEO
         title="Stockflow Vs Katana 2025 - Stockflow Vs Katana"
         description="Discover how stockflow vs katana to save time and money. Find out how stockflow vs katana to automate your processes.. Try free now. StockFlow helps business..."

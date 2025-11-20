@@ -109,7 +109,12 @@ export default function WatIsVoorraadbeheerSoftware() {
   ];
 
   return (
-    <SeoPageLayout title="Wat is Voorraadbeheer Software?">
+    <SeoPageLayout 
+      title="Wat is Voorraadbeheer Software?"
+      heroTitle="Wat is Voorraadbeheer Software?"
+      updatedDate="20/11/2025"
+      faqData={faqData}
+    >
       <SEO
         title="Wat Is Voorraadbeheer Software 2025 - Wat Is Voorraadbeheer"
         description="Lees de gids wat is voorraadbeheer software tijd en geld te besparen. Ontdek hoe wat is voorraadbeheer software uw processen te automatiseren.. Start vandaag..."

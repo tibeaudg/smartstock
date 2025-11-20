@@ -8,79 +8,114 @@ import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Is There An App To Keep Track Of Inventory";
 const canonicalPath = "/blog/is-there-an-app-to-keep-track-of-inventory";
-const metaDescription = "Deep dive into Is There An App To Keep Track Of Inventory. Learn practical ideas, implementation steps, and metrics so your team can apply Is There An App To Keep Track Of Inventory with StockFlow.";
-const keywords = "Is There An App To Keep Track Of Inventory, Is There An App To Keep Track Of Inventory guide, Is There An App To Keep Track Of Inventory best practices, Is There An App To Keep Track Of Inventory StockFlow, inventory management, operations playbook";
-const heroBadge = "Topic Guide • Updated September 2025";
-const summaryCopy = "Explore Is There An App To Keep Track Of Inventory through the lens of modern inventory and operations leadership. This StockFlow-exclusive guide synthesizes the best lessons from the original Sortly article and translates them into actionable steps for teams that need structure, visibility, and measurable wins.";
-const takeaways = [
-  "Understand the core themes behind Is There An App To Keep Track Of Inventory and why they matter for modern operations teams.",
-  "Follow a structured framework to translate Is There An App To Keep Track Of Inventory into day-to-day improvements.",
-  "Highlight StockFlow capabilities that make is there an app to keep track of inventory sustainable at scale."
+const metaDescription = "Straight answer and hands-on playbook: when off-the-shelf inventory apps work and the messy situations they don't. Practical fixes and how StockFlow helps you stop firefighting spreadsheets.";
+const keywords = "inventory app, inventory tracking app, inventory management app, StockFlow, inventory operations, warehouse manager guide";
+const heroBadge = "Topic Guide • Updated 20 November 2025";
+const summaryCopy = "A veteran warehouse manager's take on whether an app will actually tame your inventory headaches. Short, technical, and built to convert operations leaders into measurable pilots.";
+
+const topHook = {
+  title: "Short answer",
+  line: "Yes many apps track inventory movements, but most ship only two guarantees: counting and basic reordering. They don’t stop shrink, process chaos, or supplier volatility."
+};
+
+const threeMissing = [
+  {
+    title: "Real counting friction",
+    detail:
+      "Articles assume accurate counts. They ignore dirty realities: partial deliveries, mixed pallets, mislabeled cartons, and counting windows that clash with peak hours. An app that only shows a current stock number without count confidence will make managers overconfident and still rely on spreadsheets."
+  },
+   
+  {
+    title: "Process drift & human shortcuts",
+    detail:
+      "Most guides treat workflows as stable. They don’t account for ad-hoc shortcuts: staff skipping cycle counts under pressure, off-schedule returns being kept ‘on the floor’, or temporary locations that never get documented. These behaviors slowly poison data quality and default reorder rules."
+  },
+  {
+    title: "Supplier & lead-time mess",
+    detail:
+      "Standard apps assume consistent lead times or let you set static suppliers lead times. They miss: partial ship days, batch delays, customs hold-ups, and suppliers that alternate carriers. When lead time variability is ignored, reorder points and safety stock are meaningless."
+  }
 ];
+
+const messyExamples = [
+  "A site receiving 3 partial pallets labeled as one the app marks the purchase order 'received' and inventory spikes; staff only realize hours later during a pick failure.",
+  "A weekend promo causes shelving to overflow; pickers leave items near the packing bench. The system shows stock but it's not accessible leading to canceled orders despite 'in stock'.",
+  "Supplier A moves from weekly courier to partial LTL freight; lead time jumps from 3 days to 10 with no API to report the change. Automatic reorders fire at the wrong time."
+];
+
 const actionSteps = [
   {
-    "title": "Align on the outcome",
-    "description": "Confirm what is there an app to keep track of inventory should deliver for customers, finance, and frontline teams."
+    title: "Align on the outcome",
+    description:
+      "Decide whether you want counting accuracy, pick-availability, or cash-cycle improvement. An 'inventory app' is not a checkbox it's a set of prioritized outcomes to measure."
   },
   {
-    "title": "Audit current workflows",
-    "description": "Document how is there an app to keep track of inventory happens today, where gaps exist, and which systems hold the data."
+    title: "Audit current workflows",
+    description:
+      "Map how receiving, putaway, picking, returns, and adjustments actually run for a week. Capture exceptions, ad-hoc steps, and who bypasses systems. This becomes the acceptance criteria for any app."
   },
   {
-    "title": "Launch targeted improvements",
-    "description": "Prototype a lean version of is there an app to keep track of inventory inside StockFlow, measure the impact, and expand in sprints."
+    title: "Launch targeted experiments",
+    description:
+      "Pilot a single pain point (e.g., cycle counts for top 50 SKUs across one shift). Measure time, discrepancies, and pick-fill rate before rolling the feature wide."
   }
 ];
+
 const metrics = [
   {
-    "label": "Execution velocity",
-    "detail": "Track how quickly is there an app to keep track of inventory initiatives move from idea to rollout."
+    label: "Pick Fill Rate",
+    detail: "% of orders fulfilled without substitution or delay; the true test of whether the app matches reality."
   },
   {
-    "label": "Team adoption",
-    "detail": "Measure participation rates in the new is there an app to keep track of inventory process across locations or departments."
+    label: "Count Confidence",
+    detail: "Discrepancy rate between system stock and physical count over time, by SKU cohort."
   },
   {
-    "label": "Quality & accuracy",
-    "detail": "Monitor error rates, rework, or data accuracy tied to is there an app to keep track of inventory workflows."
+    label: "Lead Time Variability",
+    detail: "Standard deviation of supplier lead times measured over rolling 90-day windows; drives safety stock math."
   }
 ];
+
 const faqData = [
   {
-    "question": "What is Is There An App To Keep Track Of Inventory?",
-    "answer": "Is There An App To Keep Track Of Inventory refers to the practices, insights, or stories captured in the original Stockflow article. This guide reframes the topic for StockFlow users who want to move faster, stay organized, and build resilient inventory operations."
+    question: "Will any app fix our bad physical processes?",
+    answer:
+      "No. Software enforces and amplifies your processes; it won't fix a broken receiving dock or a culture of bypassing counts. Start with a small operational fix, then let the app enforce it."
   },
   {
-    "question": "How can I get started with is there an app to keep track of inventory?",
-    "answer": "Start by clarifying the objective, mapping the stakeholders, and collecting baseline metrics. Use the action playbook in this article to pilot is there an app to keep track of inventory within one team, then expand once you capture early wins."
+    question: "Can I calculate reorder points manually?",
+    answer:
+      "Yes for a small SKU set with stable lead times. But manual calculations break when lead times, suppliers, or your operations are variable. That's where a system that records and learns from real delivery events becomes essential."
   },
   {
-    "question": "Where does StockFlow add value for is there an app to keep track of inventory?",
-    "answer": "StockFlow centralizes data, automates alerts, and connects cross-functional teams. That means fewer spreadsheets, faster decisions, and the ability to prove the value of is there an app to keep track of inventory with real-time dashboards."
+    question: "How quickly can StockFlow run a pilot?",
+    answer:
+      "Workspaces are typically live in under an hour for data entry and basic setup; a measurable pilot (counts → reconciliation → pick-fill tracking) usually runs 2–4 weeks."
   }
 ];
+
 const structuredData = [
   {
     "@context": "https://schema.org",
     "@type": "Article",
-    "headline": "Is There An App To Keep Track Of Inventory",
-    "description": "Deep dive into Is There An App To Keep Track Of Inventory. Learn practical ideas, implementation steps, and metrics so your team can apply Is There An App To Keep Track Of Inventory with StockFlow.",
-    "author": {
+    headline: topicTitle,
+    description: metaDescription,
+    author: {
       "@type": "Organization",
-      "name": "StockFlow"
+      name: "StockFlow"
     },
-    "publisher": {
+    publisher: {
       "@type": "Organization",
-      "name": "StockFlow",
-      "logo": {
+      name: "StockFlow",
+      logo: {
         "@type": "ImageObject",
-        "url": "https://www.stockflow.be/logo.png"
+        url: "https://www.stockflow.be/logo.png"
       }
     },
-    "datePublished": "2025-09-08",
-    "mainEntityOfPage": {
+    datePublished: "2025-09-08",
+    mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/is-there-an-app-to-keep-track-of-inventory"
+      "@id": `https://www.stockflow.be${canonicalPath}`
     }
   }
 ];
@@ -91,81 +126,114 @@ export default function SeoIsThereAnAppToKeepTrackOfInventoryPage() {
 
   const pageStructuredData = structuredData.map((item) => ({
     ...item,
-    dateModified: new Date().toISOString().split("T")[0],
+    dateModified: new Date().toISOString().split("T")[0]
   }));
 
   const sidebarContent = generateSidebarContent(location.pathname, [
     { id: "overview", title: `${topicTitle} Overview`, level: 1 },
     { id: "playbook", title: "Action Playbook", level: 1 },
+    { id: "misses", title: "What Others Miss", level: 1 },
     { id: "metrics", title: "Metrics that Matter", level: 1 },
     { id: "stockflow-advantage", title: "Why StockFlow", level: 1 },
-    { id: "faq", title: "FAQ", level: 1 },
+    { id: "faq", title: "FAQ", level: 1 }
   ]);
 
   return (
-    <SeoPageLayout title={topicTitle} showSidebar sidebarContent={sidebarContent}>
+    <SeoPageLayout
+      title={topicTitle}
+      heroTitle={topicTitle}
+      updatedDate="20/11/2025"
+      faqData={faqData}
+    >
       <SEO
-        title={`Is There An App To Keep Track Of Inventory 2025`}
+        title={`${topicTitle} Practical Guide 2025`}
         description={metaDescription}
         keywords={keywords}
         url={`https://www.stockflow.be${canonicalPath}`}
       />
 
-
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Is There An App To Keep Track Of Inventory</h1>
       <StructuredData data={pageStructuredData} />
-
-
 
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h2>
+            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Quick Definition</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              {topicTitle} has become a recurring talking point for fast-moving inventory teams. The original Stockflow
-              article sparked interest because it addresses real-world frictions that leaders face every day. This updated guide
-              distills those takeaways for StockFlow customers—showing you how to adapt the narrative, build alignment across
-              departments, and secure measurable results without adding administrative overhead.
+              {topHook.line}
             </p>
+
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
-              <h3 className="text-xl font-semibold">Why it matters now</h3>
+              <h3 className="text-xl font-semibold">One-line formula</h3>
               <p className="mt-3 text-base text-blue-900/90">
-                Every economic cycle pressures teams to do more with less. {topicTitle} gives you language, tactics, or inspiration
-                to modernize inventory, supply chain, and asset management workflows so they scale with confidence.
+                Inventory app value = (Count Confidence × Pick Availability) − Operational Friction.
               </p>
             </div>
+
+            <p className="mt-6 text-sm text-gray-600">
+              This page is written from the perspective of a veteran warehouse manager not a vendor case study. Read it if you want a practical checklist for choosing, piloting, and proving an inventory app inside a real operation.
+            </p>
           </div>
+
           <div className="space-y-4">
-            {takeaways.map((item) => (
-              <div
-                key={item}
-                className="flex items-start gap-4 rounded-2xl border border-gray-200 bg-gray-50 p-5 shadow-sm transition hover:-translate-y-1 hover:border-blue-200"
-              >
-                <span className="mt-1 inline-flex h-9 w-9 items-center justify-center rounded-full bg-blue-600 text-white">
-                  <CheckCircle className="h-5 w-5" />
-                </span>
-                <p className="text-sm text-gray-700">{item}</p>
-              </div>
-            ))}
+            <div className="flex items-start gap-4 rounded-2xl border border-gray-200 bg-gray-50 p-5 shadow-sm">
+              <span className="mt-1 inline-flex h-9 w-9 items-center justify-center rounded-full bg-blue-600 text-white">
+                <CheckCircle className="h-5 w-5" />
+              </span>
+              <p className="text-sm text-gray-700">Short, actionable advice built for operations leaders.</p>
+            </div>
+
+            <div className="flex items-start gap-4 rounded-2xl border border-gray-200 bg-gray-50 p-5 shadow-sm">
+              <span className="mt-1 inline-flex h-9 w-9 items-center justify-center rounded-full bg-blue-600 text-white">
+                <CheckCircle className="h-5 w-5" />
+              </span>
+              <p className="text-sm text-gray-700">Real examples drawn from day-to-day warehouse failures (not hypotheticals).</p>
+            </div>
           </div>
         </div>
       </section>
 
-      <section id="playbook" className="bg-gray-50 px-4 py-16">
+      <section id="misses" className="bg-gray-50 px-4 py-16">
+        <div className="mx-auto max-w-6xl">
+          <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">What Sortly, Zoho, and Cin7 Often Don’t Say</h2>
+          <p className="mt-3 text-base text-gray-600 max-w-2xl">
+            These platforms do many things well clean UIs, straightforward item masters, and basic reorder automation. But when you’re running a real warehouse, three categories of problems keep coming back.
+          </p>
+
+          <div className="mt-8 grid gap-6 md:grid-cols-3">
+            {threeMissing.map((m) => (
+              <div key={m.title} className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+                <h3 className="text-lg font-semibold text-gray-900">{m.title}</h3>
+                <p className="mt-3 text-sm text-gray-600">{m.detail}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-10">
+            <h3 className="text-xl font-semibold text-gray-900">Concrete messy examples</h3>
+            <ul className="mt-4 list-inside list-disc space-y-2 text-sm text-gray-700">
+              {messyExamples.map((ex, i) => (
+                <li key={i}>{ex}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="playbook" className="bg-white px-4 py-16">
         <div className="mx-auto max-w-6xl">
           <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
               <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Action Playbook</h2>
-              <p className="mt-3 text-base text-gray-600">
-                Turn the big ideas behind {topicTitle.toLowerCase()} into structured workstreams. Align leaders, give teams the tools
-                they need, and track momentum every step of the way.
+              <p className="mt-3 text-base text-gray-600 max-w-2xl">
+                A short, no-fluff playbook you can run in 2–4 weeks to test whether an app actually solves your pain, not just your dashboards.
               </p>
             </div>
             <div className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2 text-sm font-medium text-blue-700 shadow">
               <Target className="h-4 w-4" />
-              Proven by StockFlow teams
+              Tactical, warehouse-first
             </div>
           </div>
+
           <div className="grid gap-6 md:grid-cols-3">
             {actionSteps.map((step, index) => (
               <div key={step.title} className="flex h-full flex-col rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
@@ -178,6 +246,13 @@ export default function SeoIsThereAnAppToKeepTrackOfInventoryPage() {
               </div>
             ))}
           </div>
+
+          <div className="mt-8 rounded-2xl border border-gray-200 bg-gray-50 p-6">
+            <h3 className="text-lg font-semibold text-gray-900">Why formulas fail in practice</h3>
+            <p className="mt-3 text-sm text-gray-600">
+              Classic formulas (EOQ, static safety stock) assume stable demand, accurate counts, and honest process execution. In practice, when any of those inputs drift, the math collapses: safety stock either bloats or starves the operation. Measure the inputs before trusting the outputs.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -187,8 +262,7 @@ export default function SeoIsThereAnAppToKeepTrackOfInventoryPage() {
             <div>
               <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Metrics that Matter</h2>
               <p className="mt-3 max-w-2xl text-base text-gray-600">
-                Use these scorecards to prove the ROI of {topicTitle.toLowerCase()}. Set a baseline, monitor progress weekly, and
-                communicate wins with clarity.
+                Use these metrics as the acceptance criteria for any pilot. If they don’t improve, the app didn’t fix the problem.
               </p>
             </div>
             <div className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-5 py-2 text-sm font-semibold text-blue-700">
@@ -196,6 +270,7 @@ export default function SeoIsThereAnAppToKeepTrackOfInventoryPage() {
               Build dashboards in StockFlow
             </div>
           </div>
+
           <div className="grid gap-6 md:grid-cols-3">
             {metrics.map((metric) => (
               <div key={metric.label} className="rounded-2xl border border-gray-200 bg-gray-50 p-6 shadow-sm">
@@ -207,15 +282,14 @@ export default function SeoIsThereAnAppToKeepTrackOfInventoryPage() {
         </div>
       </section>
 
-      <section id="stockflow-advantage" className="bg-gradient-to-br from-blue-600 to-purple-600 px-4 py-16 text-white">
+      <section id="stockflow-advantage" className=" px-4 py-16 text-white">
         <div className="mx-auto max-w-6xl">
-          <div className="rounded-3xl bg-white/10 p-8 shadow-xl backdrop-blur">
+          <div className="rounded-3xl bg-gradient-to-br from-blue-600 to-purple-600 p-8 shadow-xl backdrop-blur">
             <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
               <div>
-                <h2 className="text-3xl font-bold">Why StockFlow Makes {topicTitle} Stick</h2>
+                <h2 className="text-3xl font-bold">Why StockFlow fixes the real problems</h2>
                 <p className="mt-4 max-w-2xl text-base text-white/85">
-                  Transform ideas into measurable outcomes. StockFlow connects inventory data, automates notifications,
-                  and keeps every stakeholder aligned—even across warehouses, regions, or partner networks.
+                  StockFlow doesn’t just track counts it helps you measure count confidence, record real supplier events, and lock down workflows so the app reflects what’s actually on your floor.
                 </p>
               </div>
               <div className="inline-flex items-center gap-2 rounded-full bg-white/20 px-5 py-2 text-sm font-semibold text-white">
@@ -223,74 +297,34 @@ export default function SeoIsThereAnAppToKeepTrackOfInventoryPage() {
                 Built for continuous improvement
               </div>
             </div>
+
             <div className="mt-8 grid gap-6 md:grid-cols-3">
               <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">Unified data foundation</h3>
+                <h3 className="text-lg font-semibold">Count Confidence & Audit Trails</h3>
                 <p className="mt-3 text-sm text-white/85">
-                  Centralize item masters, stock movements, suppliers, and documents so is there an app to keep track of inventory decisions never rely on outdated spreadsheets.
+                  Capture who counted what, when, and where. Flag partial receipts and reconcile them to POs so inventory numbers carry a confidence score—not blind trust. This prevents the "received but not shelved" gaps that break pick-fill rates.
                 </p>
               </div>
               <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">Automation & alerts</h3>
+                <h3 className="text-lg font-semibold">Lead-Time Learning</h3>
                 <p className="mt-3 text-sm text-white/85">
-                  Trigger workflows, approvals, and reorder points when is there an app to keep track of inventory KPIs drift from plan.
+                  Record actual delivery events and use rolling windows to compute lead-time variability. That way reorder points adapt automatically when a supplier changes cadence or carrier.
                 </p>
               </div>
               <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">Collaboration built in</h3>
+                <h3 className="text-lg font-semibold">Workflow Guards & Exceptions</h3>
                 <p className="mt-3 text-sm text-white/85">
-                  Give finance, operations, and frontline teams a shared system of record for is there an app to keep track of inventory progress.
+                  Allow frontline teams to create controlled exceptions with required notes and photos. Exceptions are surfaced to managers as tasks—not buried in freeform comments—so root causes are visible and remediable.
                 </p>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
 
-      <section id="faq" className="bg-gray-50 px-4 py-16">
-        <div className="mx-auto max-w-4xl">
-          <div className="text-center">
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Frequently Asked Questions</h2>
-            <p className="mt-4 text-base text-gray-600">
-              Still exploring {topicTitle.toLowerCase()}? These answers help you take the next confident step.
-            </p>
-          </div>
-          <div className="mt-10 space-y-4">
-            {faqData.map((faq) => (
-              <details
-                key={faq.question}
-                className="group rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition hover:border-blue-200"
-              >
-                <summary className="cursor-pointer text-lg font-semibold text-gray-900">
-                  {faq.question}
-                </summary>
-                <p className="mt-3 text-base leading-relaxed text-gray-600">{faq.answer}</p>
-              </details>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-white px-4 pb-20 pt-10">
-        <div className="mx-auto max-w-5xl rounded-3xl border border-gray-200 bg-gradient-to-r from-blue-50 via-white to-purple-50 p-10 shadow-xl text-center">
-          <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Put {topicTitle} into action with StockFlow</h2>
-          <p className="mx-auto mt-4 max-w-2xl text-base text-gray-600">
-            Launch faster experiments, share instant dashboards, and keep every stakeholder aligned. Your first workspace
-            is live in minutes, and you can invite teammates for free.
-          </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <Link
-              to="/auth"
-              className="inline-flex items-center rounded-xl bg-purple-600 px-6 py-3 text-base font-semibold text-white shadow-lg transition hover:bg-purple-700"
-            >
-              Create Your Account
-            </Link>
-            <a
-              href="/pricing"
-              className="inline-flex items-center rounded-xl border border-purple-200 px-6 py-3 text-base font-semibold text-purple-700 transition hover:bg-purple-50"
-            >
-              See Plans & Pricing
-            </a>
+            <div className="mt-8 rounded-2xl border border-white/20 bg-white/6 p-6">
+              <h4 className="text-md font-semibold text-white/90">why this matters</h4>
+              <p className="mt-3 text-sm text-white/80">
+                You can run safety-stock math in a spreadsheet, but if your counts are noisy or your supplier lead times change, the math quickly becomes irrelevant. StockFlow ties the input data to real events and human workflows so the outputs (reorder points, alerts, dashboards) remain trustworthy.
+              </p>
+            </div>
           </div>
         </div>
       </section>

@@ -143,7 +143,12 @@ export default function StockManagementSoftware() {
   ];
   
   return (
-    <SeoPageLayout title="Stock Management Software">
+    <SeoPageLayout 
+      title="Stock Management Software"
+      heroTitle="Stock Management Software"
+      updatedDate="20/11/2025"
+      faqData={faqData}
+    >
       <SEO
         title="Stock Management Software 2025 - Stock Management Software"
         description="Learn how stock management software to automate your processes. Learn how stock management software to automate your processes. Professional. Try free now."

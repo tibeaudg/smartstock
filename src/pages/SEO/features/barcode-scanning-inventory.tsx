@@ -94,7 +94,12 @@ const BarcodeScanningInventory = () => {
   ];
 
   return (
-    <SeoPageLayout title="Barcode Scanning Inventory">
+    <SeoPageLayout 
+      title="Barcode Scanning Inventory"
+      heroTitle="Barcode Scanning Inventory"
+      updatedDate="20/11/2025"
+      faqData={faqData}
+    >
       <SEO
         title="Barcode Scanning Inventory 2025 - Barcode Scanning Inventory"
         description="Find out how barcode scanning inventory to automate your processes. Find out how barcode scanning inventory to automate your processes.. Start free today."

@@ -66,7 +66,12 @@ export default function MagazijnbeheerSoftware() {
   });
 
   return (
-    <SeoPageLayout title="Magazijnbeheer Software voor Kleine Bedrijven">
+    <SeoPageLayout 
+      title="Magazijnbeheer Software voor Kleine Bedrijven"
+      heroTitle="Magazijnbeheer Software voor Kleine Bedrijven"
+      updatedDate="20/11/2025"
+      faqData={faqData}
+    >
       <SEO
         title="Magazijnbeheer Software 2025 - Magazijnbeheer Software 2025's) | Bespaar 35% + 15u/week | StockFlow"
         description="Ontdek hoe magazijnbeheer software de beste software te kiezen. Vind uit hoe magazijnbeheer software tijd en geld te besparen.. Begin nu met gratis proefperi...'s. GRATIS plan (100 SKU's), real-time tracking, barcode scanning. Bespaar 35% kosten & 15 uur/week! 5-7 dagen setup. Vertrouwd door 1.000+ bedrijven. Start NU gratis - geen creditcard!"

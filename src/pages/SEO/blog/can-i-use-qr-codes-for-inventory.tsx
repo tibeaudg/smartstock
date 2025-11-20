@@ -103,7 +103,14 @@ export default function SeoCanIUseQRCodesForInventoryPage() {
   ]);
 
   return (
-    <SeoPageLayout title={topicTitle} showSidebar sidebarContent={sidebarContent}>
+    <SeoPageLayout 
+      title={topicTitle} 
+      heroTitle={topicTitle} 
+      updatedDate="20/11/2025"
+      faqData={faqData}
+      showSidebar 
+      sidebarContent={sidebarContent}
+    >
       <SEO
         title={`Can I Use Qr Codes For Inventory 2025 - Can I Use`}
         description={metaDescription}

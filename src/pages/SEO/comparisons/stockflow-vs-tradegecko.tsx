@@ -79,7 +79,12 @@ export default function StockflowVsTradegecko() {
   ];
 
   return (
-    <SeoPageLayout title="StockFlow vs TradeGecko">
+    <SeoPageLayout 
+      title="StockFlow vs TradeGecko"
+      heroTitle="StockFlow vs TradeGecko"
+      updatedDate="20/11/2025"
+      faqData={faqData}
+    >
       <SEO
         title="Stockflow Vs Tradegecko 2025 - Stockflow Vs Tradegecko"
         description="Discover how stockflow vs tradegecko to choose the best software. Learn how stockflow vs tradegecko to save time and money.. Get started free. StockFlow help..."

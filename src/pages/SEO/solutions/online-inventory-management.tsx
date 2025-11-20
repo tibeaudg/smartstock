@@ -65,7 +65,12 @@ export default function OnlineInventoryManagement() {
   });
 
   return (
-    <SeoPageLayout title="Online Inventory Management">
+    <SeoPageLayout 
+      title="Online Inventory Management"
+      heroTitle="Online Inventory Management"
+      updatedDate="20/11/2025"
+      faqData={faqData}
+    >
       <SEO
         title="Online Inventory Management 2025 - Online Inventory Manag..."
         description="Learn how online inventory management to save time and money. Read the guide online inventory management to choose the best. Start free today. StockFlow help..."

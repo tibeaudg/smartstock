@@ -103,7 +103,14 @@ export default function SeoHowCanYouMakeInventoryMoreEfficientPage() {
   ]);
 
   return (
-    <SeoPageLayout title={topicTitle} showSidebar sidebarContent={sidebarContent}>
+    <SeoPageLayout 
+      title={topicTitle} 
+      heroTitle={topicTitle} 
+      updatedDate="20/11/2025"
+      faqData={faqData}
+      showSidebar 
+      sidebarContent={sidebarContent}
+    >
       <SEO
         title={`How Can You Make Inventory More Efficient 2025`}
         description={metaDescription}

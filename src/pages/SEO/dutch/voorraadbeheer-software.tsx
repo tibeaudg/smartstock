@@ -145,7 +145,12 @@ export default function VoorraadbeheerSoftware() {
   ];
 
   return (
-    <SeoPageLayout title="Voorraadbeheer Software voor KMO's">
+    <SeoPageLayout 
+      title="Voorraadbeheer Software voor KMO's"
+      heroTitle="Voorraadbeheer Software voor KMO's"
+      updatedDate="20/11/2025"
+      faqData={faqData}
+    >
       <SEO
         title="Voorraadbeheer Software 2025 - Voorraadbeheer Software 2025"
         description="Lees de gids voorraadbeheer software uw processen te automatiseren. Lees de gids voorraadbeheer software uw processen te automatiseren. Zoek. Krijg direct to...'s. Gratis starten, professioneel & gebruiksvriendelijk. Beheer voorraad online, real-time tracking, barcode scanning. 500+ tevreden gebruikers. Start gratis nu!"

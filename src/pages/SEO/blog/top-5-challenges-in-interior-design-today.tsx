@@ -103,7 +103,14 @@ export default function SeoTop5ChallengesInInteriorDesignTodayPage() {
   ]);
 
   return (
-    <SeoPageLayout title={topicTitle} showSidebar sidebarContent={sidebarContent}>
+    <SeoPageLayout 
+      title={topicTitle} 
+      heroTitle={topicTitle} 
+      updatedDate="20/11/2025"
+      faqData={faqData}
+      showSidebar 
+      sidebarContent={sidebarContent}
+    >
       <SEO
         title={`Top 5 Challenges In Interior Design Today 2025`}
         description={metaDescription}

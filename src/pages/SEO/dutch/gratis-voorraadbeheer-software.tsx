@@ -120,7 +120,12 @@ export default function GratisVoorraadbeheerSoftware() {
   ];
 
   return (
-    <SeoPageLayout title="Gratis Voorraadbeheer Software - Professioneel Voorraadbeheer">
+    <SeoPageLayout 
+      title="Gratis Voorraadbeheer Software - Professioneel Voorraadbeheer"
+      heroTitle="Gratis Voorraadbeheer Software - Professioneel Voorraadbeheer"
+      updatedDate="20/11/2025"
+      faqData={faqData}
+    >
       <SEO
         title="Gratis Voorraadbeheer Software 2025 - Gratis Voorraadbehe..."
         description="Bekijk hoe gratis voorraadbeheer software tijd en geld te besparen. Ontdek hoe gratis voorraadbeheer software de beste software te kiezen.. Krijg direct toeg...'s. Professioneel voorraadbeheer met real-time rapportages, automatische bestellingen en 100% gratis. Start vandaag!"

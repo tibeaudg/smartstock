@@ -96,6 +96,9 @@ export default function CycleCount() {
   return (
     <SeoPageLayout 
       title="Cycle Count"
+      heroTitle="Cycle Count"
+      updatedDate="20/11/2025"
+      faqData={faqData}
       showSidebar={true}
       sidebarContent={sidebarContent}
     >

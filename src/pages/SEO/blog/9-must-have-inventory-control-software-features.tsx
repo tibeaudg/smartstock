@@ -103,7 +103,14 @@ export default function Seo9MustHaveInventoryControlSoftwareFeaturesPage() {
   ]);
 
   return (
-    <SeoPageLayout title={topicTitle} showSidebar sidebarContent={sidebarContent}>
+    <SeoPageLayout 
+      title={topicTitle} 
+      heroTitle={topicTitle} 
+      updatedDate="20/11/2025"
+      faqData={faqData}
+      showSidebar 
+      sidebarContent={sidebarContent}
+    >
       <SEO
         title={`9 Must Have Inventory Control Software Features 2025`}
         description={metaDescription}

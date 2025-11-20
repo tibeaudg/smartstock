@@ -103,7 +103,14 @@ export default function Seo6InventoryManagementTipsWhenTimesAreTightPage() {
   ]);
 
   return (
-    <SeoPageLayout title={topicTitle} showSidebar sidebarContent={sidebarContent}>
+    <SeoPageLayout 
+      title={topicTitle} 
+      heroTitle={topicTitle} 
+      updatedDate="20/11/2025"
+      faqData={faqData}
+      showSidebar 
+      sidebarContent={sidebarContent}
+    >
       <SEO
         title={`6 Inventory Management Tips When Times Are Tight 2025`}
         description={metaDescription}

@@ -103,7 +103,14 @@ export default function SeoSupplyChainIssues2021WhatCanWeLearnPage() {
   ]);
 
   return (
-    <SeoPageLayout title={topicTitle} showSidebar sidebarContent={sidebarContent}>
+    <SeoPageLayout 
+      title={topicTitle} 
+      heroTitle={topicTitle} 
+      updatedDate="20/11/2025"
+      faqData={faqData}
+      showSidebar 
+      sidebarContent={sidebarContent}
+    >
       <SEO
         title={`Supply Chain Issues 2021 What Can We Learn 2025`}
         description={metaDescription}

@@ -103,7 +103,14 @@ export default function SeoLosingMoneyCommonInventoryManagementMistakesPage() {
   ]);
 
   return (
-    <SeoPageLayout title={topicTitle} showSidebar sidebarContent={sidebarContent}>
+    <SeoPageLayout 
+      title={topicTitle} 
+      heroTitle={topicTitle} 
+      updatedDate="20/11/2025"
+      faqData={faqData}
+      showSidebar 
+      sidebarContent={sidebarContent}
+    >
       <SEO
         title={`Losing Money Common Inventory Management Mistakes 2025`}
         description={metaDescription}

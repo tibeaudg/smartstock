@@ -94,7 +94,12 @@ export default function Magazijnbeheer() {
   ];
 
   return (
-    <SeoPageLayout title="Magazijnbeheer Software">
+    <SeoPageLayout 
+      title="Magazijnbeheer Software"
+      heroTitle="Magazijnbeheer Software"
+      updatedDate="20/11/2025"
+      faqData={faqData}
+    >
       <SEO
         title="Magazijnbeheer 2025 - Magazijnbeheer 2025 -"
         description="Vind uit hoe magazijnbeheer uw processen te automatiseren. Lees de gids magazijnbeheer uw voorraadbeheer te optimaliseren. Professionele magazijnbeheer. Star..."

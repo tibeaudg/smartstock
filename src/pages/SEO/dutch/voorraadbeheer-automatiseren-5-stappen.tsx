@@ -46,25 +46,25 @@ const stappen = [
   }
 ];
 
-const faq = [
+const faqData = [
   {
-    vraag: 'Hoe lang duurt het om voorraadbeheer te automatiseren?',
-    antwoord:
-      'Veel KMO’s zetten de basis binnen twee weken. Start met één proces (bijvoorbeeld inkoop) en breid daarna uit naar productie, verkoop en service.'
+    question: 'Hoe lang duurt het om voorraadbeheer te automatiseren?',
+    answer:
+      'Veel KMOs zetten de basis binnen twee weken. Start met één proces (bijvoorbeeld inkoop) en breid daarna uit naar productie, verkoop en service.'
   },
   {
-    vraag: 'Kan ik StockFlow koppelen aan mijn webshop of boekhouding?',
-    antwoord:
+    question: 'Kan ik StockFlow koppelen aan mijn webshop of boekhouding?',
+    answer:
       'Ja. StockFlow integreert met onder meer Shopify, WooCommerce, Exact Online en Lightspeed POS. Hierdoor blijven bestellingen en voorraad synchroon.'
   },
   {
-    vraag: 'Heb ik speciale scanners nodig?',
-    antwoord:
+    question: 'Heb ik speciale scanners nodig?',
+    answer:
       'Nee. De mobiele apps van StockFlow werken met de camera van je smartphone. Voor intensief gebruik kun je optioneel Bluetooth scanners koppelen.'
   },
   {
-    vraag: 'Wat als mijn team liever stap voor stap automatiseert?',
-    antwoord:
+    question: 'Wat als mijn team liever stap voor stap automatiseert?',
+    answer:
       'Geen probleem. Je activeert functies wanneer je er klaar voor bent. Start bijvoorbeeld met automatische alerts en voeg later geavanceerde workflows toe.'
   }
 ];
@@ -73,7 +73,12 @@ export default function VoorraadbeheerAutomatiseren5Stappen() {
   usePageRefresh();
 
   return (
-    <SeoPageLayout title="Voorraadbeheer Automatiseren in 5 Stappen">
+    <SeoPageLayout 
+      title="Voorraadbeheer Automatiseren in 5 Stappen"
+      heroTitle="Voorraadbeheer Automatiseren in 5 Stappen"
+      updatedDate="20/11/2025"
+      faqData={faqData}
+    >
       <SEO
         title="Voorraadbeheer Automatiseren 5 Stappen 2025"
         description="Bekijk hoe voorraadbeheer automatiseren 5 stappen uw voorraadbeheer te optimaliseren. Ontdek hoe voorraadbeheer automatiseren 5 stappen uw voorraadbeheer te ..."
@@ -186,19 +191,6 @@ export default function VoorraadbeheerAutomatiseren5Stappen() {
         </div>
       </section>
 
-      <section className="py-16 px-4 bg-white">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center">Veelgestelde vragen</h2>
-          <div className="space-y-6">
-            {faq.map((item, index) => (
-              <div key={index} className="border border-gray-200 rounded-lg p-6 shadow-sm hover:shadow-md transition">
-                <h3 className="text-xl font-semibold mb-3">{item.vraag}</h3>
-                <p className="text-gray-600">{item.antwoord}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       <section className="py-16 px-4 bg-blue-600 text-white">
         <div className="max-w-4xl mx-auto text-center">

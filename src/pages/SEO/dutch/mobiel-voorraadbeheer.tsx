@@ -118,6 +118,9 @@ export default function MobielVoorraadbeheer() {
   return (
     <SeoPageLayout
       title="Mobiel Voorraadbeheer"
+      heroTitle="Mobiel Voorraadbeheer"
+      updatedDate="20/11/2025"
+      faqData={faqData}
     >
       <SEO
         title="Mobiel Voorraadbeheer 2025 - Mobiel Voorraadbeheer 2025"

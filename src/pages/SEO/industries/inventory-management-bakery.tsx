@@ -57,7 +57,7 @@ export default function InventoryManagementBakery() {
     }
   ];
 
-  const faq = [
+  const faqData = [
     {
       question: 'Can StockFlow handle bakery recipes?',
       answer:
@@ -77,11 +77,21 @@ export default function InventoryManagementBakery() {
       question: 'Can I track packaging and supplies?',
       answer:
         'Track every resource: packaging, cleaning supplies, uniforms and equipment parts. Keep purchasing aligned with actual consumption.'
+    },
+    {
+      question: 'What inventory management features are essential for bakeries?',
+      answer:
+        'Essential features for bakeries include recipe management, ingredient tracking with expiry dates, batch tracking, production planning, waste reduction tools, multi-location support, and compliance tracking for food safety regulations.'
     }
   ];
 
   return (
-    <SeoPageLayout title="Inventory Management for Bakeries">
+    <SeoPageLayout 
+      title="Inventory Management for Bakeries"
+      heroTitle="Inventory Management for Bakeries"
+      updatedDate="20/11/2025"
+      faqData={faqData}
+    >
       <SEO
         title="Inventory Management Bakery 2025 - Inventory Management B..."
         description="Learn how inventory management bakery to optimize your inventory management. Discover how inventory management bakery to optimize your inventory management....."

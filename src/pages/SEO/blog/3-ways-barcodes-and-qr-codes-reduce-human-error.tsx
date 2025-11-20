@@ -103,7 +103,14 @@ export default function Seo3WaysBarcodesAndQRCodesReduceHumanErrorPage() {
   ]);
 
   return (
-    <SeoPageLayout title={topicTitle} showSidebar sidebarContent={sidebarContent}>
+    <SeoPageLayout 
+      title={topicTitle} 
+      heroTitle={topicTitle} 
+      updatedDate="20/11/2025"
+      faqData={faqData}
+      showSidebar 
+      sidebarContent={sidebarContent}
+    >
       <SEO
         title={`3 Ways Barcodes And Qr Codes Reduce Human Error 2025`}
         description={metaDescription}

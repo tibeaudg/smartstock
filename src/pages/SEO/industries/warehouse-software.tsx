@@ -206,7 +206,12 @@ export default function WarehouseSoftware() {
   ];
 
   return (
-    <SeoPageLayout title="Warehouse Software">
+    <SeoPageLayout 
+      title="Warehouse Software"
+      heroTitle="Warehouse Software"
+      updatedDate="20/11/2025"
+      faqData={faqData}
+    >
       <SEO
         title="Warehouse Software 2025 - Warehouse Software 2025"
         description="Find out how warehouse software to optimize your inventory management. Find out how warehouse software to save time and money.. Get started free. StockFlow h..."

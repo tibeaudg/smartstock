@@ -147,7 +147,12 @@ export default function AvoidInventoryMistakes() {
   ];
   
   return (
-    <SeoPageLayout title="Avoid Inventory Mistakes">
+    <SeoPageLayout 
+      title="Avoid Inventory Mistakes"
+      heroTitle="Avoid Inventory Mistakes"
+      updatedDate="20/11/2025"
+      faqData={faqData}
+    >
       <SEO
         title="Avoid Inventory Mistakes 2025 - Avoid Inventory Mistakes"
         description="Discover how avoid inventory mistakes to save time and money. Learn how avoid inventory mistakes to choose the best software.. Try free now. StockFlow helps ..."

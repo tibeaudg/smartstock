@@ -195,7 +195,12 @@ export default function RetailInventoryManagement() {
   ];
 
   return (
-    <SeoPageLayout title="Retail Inventory Management">
+    <SeoPageLayout 
+      title="Retail Inventory Management"
+      heroTitle="Retail Inventory Management"
+      updatedDate="20/11/2025"
+      faqData={faqData}
+    >
       <SEO
         title="Retail Inventory Management 2025 - Retail Inventory Manag..."
         description="Learn how retail inventory management to choose the best software. Read the guide retail inventory management to automate your processes.. Try free now."

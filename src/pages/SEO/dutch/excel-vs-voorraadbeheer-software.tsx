@@ -43,31 +43,36 @@ export default function ExcelVsVoorraadbeheerSoftware() {
     }
   ];
 
-  const faq = [
+  const faqData = [
     {
-      vraag: 'Wanneer is Excel voldoende?',
-      antwoord:
+      question: 'Wanneer is Excel voldoende?',
+      answer:
         'Voor een eenvoudige stocklijst met een beperkt assortiment kan Excel tijdelijk volstaan. Zodra je meerdere locaties, medewerkers of bestelprocessen hebt, wordt software efficiënter en veiliger.'
     },
     {
-      vraag: 'Wat kost voorraadbeheer software?',
-      antwoord:
+      question: 'Wat kost voorraadbeheer software?',
+      answer:
         'StockFlow heeft een gratis plan tot 30 producten en groeiplannen vanaf €29 per maand. Je betaalt geen extra licenties per gebruiker.'
     },
     {
-      vraag: 'Kan ik mijn Excel-data importeren?',
-      antwoord:
+      question: 'Kan ik mijn Excel-data importeren?',
+      answer:
         'Ja. Upload je huidige Excel-bestanden en StockFlow zet producten, leveranciers en voorraadstanden automatisch over.'
     },
     {
-      vraag: 'Hoe snel kan ik starten?',
-      antwoord:
+      question: 'Hoe snel kan ik starten?',
+      answer:
         'De meeste bedrijven zijn binnen één dag live. Dankzij mobiele apps en barcode scanning voer je tellingen en ontvangsten digitaal uit.'
     }
   ];
 
   return (
-    <SeoPageLayout title="Excel vs Voorraadbeheer Software">
+    <SeoPageLayout 
+      title="Excel vs Voorraadbeheer Software"
+      heroTitle="Excel vs Voorraadbeheer Software"
+      updatedDate="20/11/2025"
+      faqData={faqData}
+    >
       <SEO
         title="Excel Vs Voorraadbeheer Software 2025 - Excel Vs Voorraad..."
         description="Bekijk hoe excel vs voorraadbeheer software uw voorraadbeheer te optimaliseren. Ontdek hoe excel vs voorraadbeheer software uw voorraadbeheer te optimalisere..."

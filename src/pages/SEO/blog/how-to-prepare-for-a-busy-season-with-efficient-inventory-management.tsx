@@ -103,7 +103,14 @@ export default function SeoHowToPrepareForABusySeasonWithEfficientInventoryManag
   ]);
 
   return (
-    <SeoPageLayout title={topicTitle} showSidebar sidebarContent={sidebarContent}>
+    <SeoPageLayout 
+      title={topicTitle} 
+      heroTitle={topicTitle} 
+      updatedDate="20/11/2025"
+      faqData={faqData}
+      showSidebar 
+      sidebarContent={sidebarContent}
+    >
       <SEO
         title={`How To Prepare For A Busy Season With Efficient Inventory...`}
         description={metaDescription}

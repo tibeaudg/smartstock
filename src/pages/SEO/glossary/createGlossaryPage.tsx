@@ -73,7 +73,7 @@ export function createGlossaryPage(config: GlossaryPageConfig) {
       `Automate updates and share ${title.toLowerCase()} insights with your team.`,
     ];
 
-    const normalizedFaqs: FAQ[] = faqs ?? [
+    const faqData: FAQ[] = faqs ?? [
       {
         question: `What does ${title} mean?`,
         answer: definition,
@@ -85,7 +85,14 @@ export function createGlossaryPage(config: GlossaryPageConfig) {
     ];
 
     return (
-      <SeoPageLayout title={title} showSidebar sidebarContent={sidebarContent}>
+      <SeoPageLayout 
+        title={title} 
+        heroTitle={title}
+        updatedDate="20/11/2025"
+        faqData={faqData}
+        showSidebar 
+        sidebarContent={sidebarContent}
+      >
         <SEO
           title={`Createglossarypage 2025 - Createglossarypage 2025 -`}
           description={metaDescription}
@@ -154,7 +161,7 @@ export function createGlossaryPage(config: GlossaryPageConfig) {
         <section id="faq" className="mt-16 rounded-2xl border border-slate-200 bg-slate-50 p-8 shadow-inner">
           <h2 className="text-2xl font-bold text-slate-900">Frequently Asked Questions</h2>
           <div className="mt-6 space-y-6">
-            {normalizedFaqs.map((faqItem) => (
+            {faqData.map((faqItem) => (
               <details
                 key={faqItem.question}
                 className="group rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition hover:border-blue-200"

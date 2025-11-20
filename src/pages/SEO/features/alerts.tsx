@@ -145,31 +145,31 @@ const useCases = [
   }
 ];
 
-const faqs = [
+const faqData = [
   {
-    question: 'Do I need dedicated hardware to use StockFlow Scan?',
+    question: 'What are inventory alerts?',
     answer:
-      'No special hardware is required. Any modern device with a camera—iOS, Android, Zebra, Windows, or macOS—can run the StockFlow scanner securely in the browser.'
+      'Inventory alerts are automated notifications that warn you when stock levels are low, when items need reordering, when there are discrepancies, or when important inventory events occur. They help you maintain optimal stock levels and prevent stockouts.'
   },
   {
-    question: 'Can the scanner work offline?',
+    question: 'How do inventory alerts work?',
     answer:
-      'Yes. Teams can continue scanning without connectivity. StockFlow queues changes locally and syncs them automatically once a connection is restored.'
+      'Inventory alerts work by monitoring your stock levels in real-time. When inventory drops below a set threshold, when items are about to expire, or when other predefined conditions are met, the system automatically sends notifications via email, SMS, or in-app alerts.'
   },
   {
-    question: 'How does StockFlow maintain scan accuracy?',
+    question: 'What types of alerts can I set up?',
     answer:
-      'We combine checksum validation, duplicate detection, and product-level rules to stop incorrect submissions before they reach inventory records.'
+      'You can set up alerts for low stock levels, reorder points, stockouts, expiration dates, price changes, unusual activity, and custom conditions. StockFlow allows you to configure alerts based on your specific business needs.'
   },
   {
-    question: 'Does StockFlow support GS1 barcodes and serialization?',
+    question: 'Can I customize alert thresholds?',
     answer:
-      'Absolutely. We parse GS1 application identifiers, serial numbers, lots, and expiration dates so you can meet compliance requirements without manual entry.'
+      'Yes, you can customize alert thresholds for each product or product category. Set different minimum stock levels, reorder points, and alert frequencies based on your inventory turnover rates and business requirements.'
   },
   {
-    question: 'How quickly can we roll out StockFlow Scan?',
+    question: 'How quickly will I receive alerts?',
     answer:
-      'Most teams go live in days. Invite your users, configure workflows, and share a secure URL—no app store approvals or device imaging needed.'
+      'Alerts are sent in real-time as soon as the conditions are met. You can receive notifications immediately via email, SMS, or push notifications, ensuring you can take action quickly to prevent stockouts or other issues.'
   }
 ];
 
@@ -200,7 +200,12 @@ export default function AlertsPage() {
   };
 
   return (
-    <SeoPageLayout title="Alerts">
+    <SeoPageLayout 
+      title="Alerts"
+      heroTitle="Alerts"
+      updatedDate="20/11/2025"
+      faqData={faqData}
+    >
       <SEO
         title="Alerts 2025 - Alerts 2025 -"
         description="Learn how alerts to optimize your inventory management. Learn how alerts to save time and money. Discover StockFlow. Get started free. StockFlow helps busine..."

@@ -94,7 +94,12 @@ export default function WarehouseManagement() {
   ];
 
   return (
-    <SeoPageLayout title="Warehouse Management Software">
+    <SeoPageLayout 
+      title="Warehouse Management Software"
+      heroTitle="Warehouse Management Software"
+      updatedDate="20/11/2025"
+      faqData={faqData}
+    >
       <SEO
         title="Warehouse Management 2025 - Warehouse Management 2025"
         description="Learn how warehouse management to automate your processes. Read the guide warehouse management to optimize your inventory management.. Start free today."

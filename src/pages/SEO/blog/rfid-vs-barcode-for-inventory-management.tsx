@@ -103,7 +103,14 @@ export default function SeoRFIDVsBarcodeForInventoryManagementPage() {
   ]);
 
   return (
-    <SeoPageLayout title={topicTitle} showSidebar sidebarContent={sidebarContent}>
+    <SeoPageLayout 
+      title={topicTitle} 
+      heroTitle={topicTitle} 
+      updatedDate="20/11/2025"
+      faqData={faqData}
+      showSidebar 
+      sidebarContent={sidebarContent}
+    >
       <SEO
         title={`Rfid Vs Barcode For Inventory Management 2025`}
         description={metaDescription}

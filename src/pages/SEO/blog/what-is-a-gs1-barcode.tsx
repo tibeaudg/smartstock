@@ -103,7 +103,14 @@ export default function SeoWhatIsAGS1BarcodePage() {
   ]);
 
   return (
-    <SeoPageLayout title={topicTitle} showSidebar sidebarContent={sidebarContent}>
+    <SeoPageLayout 
+      title={topicTitle} 
+      heroTitle={topicTitle} 
+      updatedDate="20/11/2025"
+      faqData={faqData}
+      showSidebar 
+      sidebarContent={sidebarContent}
+    >
       <SEO
         title={`What Is A Gs1 Barcode 2025 - What Is A`}
         description={metaDescription}

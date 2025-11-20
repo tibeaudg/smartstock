@@ -103,7 +103,14 @@ export default function SeoTheFutureOfQRCodesWhatLiesAheadForInventoryManagement
   ]);
 
   return (
-    <SeoPageLayout title={topicTitle} showSidebar sidebarContent={sidebarContent}>
+    <SeoPageLayout 
+      title={topicTitle} 
+      heroTitle={topicTitle} 
+      updatedDate="20/11/2025"
+      faqData={faqData}
+      showSidebar 
+      sidebarContent={sidebarContent}
+    >
       <SEO
         title={`The Future Of Qr Codes What Lies Ahead For Inventory Mana...`}
         description={metaDescription}

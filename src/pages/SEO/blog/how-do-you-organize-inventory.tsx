@@ -103,7 +103,14 @@ export default function SeoHowDoYouOrganizeInventoryPage() {
   ]);
 
   return (
-    <SeoPageLayout title={topicTitle} showSidebar sidebarContent={sidebarContent}>
+    <SeoPageLayout 
+      title={topicTitle} 
+      heroTitle={topicTitle} 
+      updatedDate="20/11/2025"
+      faqData={faqData}
+      showSidebar 
+      sidebarContent={sidebarContent}
+    >
       <SEO
         title={`How Do You Organize Inventory 2025 - How Do You`}
         description={metaDescription}

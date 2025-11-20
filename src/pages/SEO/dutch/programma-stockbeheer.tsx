@@ -123,7 +123,12 @@ export default function ProgrammaStockbeheer() {
   ];
 
   return (
-    <SeoPageLayout title="Programma Stockbeheer">
+    <SeoPageLayout 
+      title="Programma Stockbeheer"
+      heroTitle="Programma Stockbeheer"
+      updatedDate="20/11/2025"
+      faqData={faqData}
+    >
       <SEO
         title="Programma Stockbeheer 2025 - Programma Stockbeheer 2025"
         description="Ontdek hoe programma stockbeheer uw voorraadbeheer te optimaliseren. Lees de gids programma stockbeheer tijd en geld te besparen.. Krijg direct toegang.'s: cloud-based, on-premise, branchespecifieke en gratis oplossingen. Ontdek welk programma stockbeheer het beste bij jouw bedrijf past. Start met StockFlow's gratis plan."

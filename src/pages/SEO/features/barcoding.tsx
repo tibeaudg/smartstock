@@ -145,31 +145,31 @@ const useCases = [
   }
 ];
 
-const faqs = [
+const faqData = [
   {
-    question: 'Do I need dedicated hardware to use StockFlow Barcoding?',
+    question: 'What is barcoding in inventory management?',
     answer:
-      'No special hardware is required. Any modern device with a camera—iOS, Android, Zebra, Windows, or macOS—can run the StockFlow scanner securely in the browser.'
+      'Barcoding in inventory management is the process of using barcode labels and scanners to track and manage inventory. It allows you to quickly identify products, update stock levels, and automate inventory processes by scanning barcodes instead of manually entering data.'
   },
   {
-    question: 'Can the scanner work offline?',
+    question: 'Do I need dedicated hardware for barcoding?',
     answer:
-      'Yes. Teams can continue scanning without connectivity. StockFlow queues changes locally and syncs them automatically once a connection is restored.'
+      'No special hardware is required. Any modern device with a camera—iOS, Android, Zebra, Windows, or macOS—can run the StockFlow barcode scanner securely in the browser. You can use your smartphone or tablet as a barcode scanner.'
   },
   {
-    question: 'How does StockFlow maintain barcoding accuracy?',
+    question: 'Can barcoding work offline?',
     answer:
-      'We combine checksum validation, duplicate detection, and product-level rules to stop incorrect submissions before they reach inventory records.'
+      'Yes. Teams can continue scanning without connectivity. StockFlow queues changes locally and syncs them automatically once a connection is restored, ensuring you can work even in areas with poor internet connectivity.'
   },
   {
-    question: 'Does StockFlow support GS1 barcodes and serialization?',
+    question: 'How accurate is barcoding?',
     answer:
-      'Absolutely. We parse GS1 application identifiers, serial numbers, lots, and expiration dates so you can meet compliance requirements without manual entry.'
+      'Barcoding is highly accurate, typically achieving 99.7% accuracy. StockFlow combines checksum validation, duplicate detection, and product-level rules to stop incorrect submissions before they reach inventory records.'
   },
   {
-    question: 'How quickly can we roll out StockFlow Barcoding?',
+    question: 'Does StockFlow support GS1 barcodes?',
     answer:
-      'Most teams go live in days. Invite your users, configure workflows, and share a secure URL—no app store approvals or device imaging needed.'
+      'Absolutely. StockFlow parses GS1 application identifiers, serial numbers, lots, and expiration dates so you can meet compliance requirements without manual entry. It supports all major barcode formats including UPC, EAN, Code 128, QR codes, and more.'
   }
 ];
 
@@ -200,7 +200,12 @@ export default function BarcodingPage() {
   };
 
   return (
-    <SeoPageLayout title="Barcoding">
+    <SeoPageLayout 
+      title="Barcoding"
+      heroTitle="Barcoding"
+      updatedDate="20/11/2025"
+      faqData={faqData}
+    >
       <SEO
         title="Barcoding 2025 - Barcoding 2025 -"
         description="Learn how barcoding to automate your processes. Read the guide barcoding to automate your processes. Discover StockFlow. Start free today. StockFlow helps bu..."

@@ -103,7 +103,14 @@ export default function SeoHowToReduceManufacturingWastePage() {
   ]);
 
   return (
-    <SeoPageLayout title={topicTitle} showSidebar sidebarContent={sidebarContent}>
+    <SeoPageLayout 
+      title={topicTitle} 
+      heroTitle={topicTitle} 
+      updatedDate="20/11/2025"
+      faqData={faqData}
+      showSidebar 
+      sidebarContent={sidebarContent}
+    >
       <SEO
         title={`How To Reduce Manufacturing Waste 2025 - How To Reduce`}
         description={metaDescription}

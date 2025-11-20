@@ -103,7 +103,14 @@ export default function SeoSupplyInventoryManagementPage() {
   ]);
 
   return (
-    <SeoPageLayout title={topicTitle} showSidebar sidebarContent={sidebarContent}>
+    <SeoPageLayout 
+      title={topicTitle} 
+      heroTitle={topicTitle} 
+      updatedDate="20/11/2025"
+      faqData={faqData}
+      showSidebar 
+      sidebarContent={sidebarContent}
+    >
       <SEO
         title={`Supply Inventory Management 2025 - Supply Inventory Manag...`}
         description={metaDescription}

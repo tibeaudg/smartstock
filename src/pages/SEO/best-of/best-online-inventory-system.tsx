@@ -32,7 +32,14 @@ export default function BestOnlineInventorySystem() {
   ];
 
   return (
-    <SeoPageLayout title="Best Online Inventory System">
+    <SeoPageLayout title="Best Online Inventory System"
+    heroTitle="Best Online Inventory System"
+    updatedDate="20/11/2025"
+    faqData={faqData}
+    >
+
+
+      
       <SEO
         title="Best Online Inventory System 2025 - Best Online Inventory"
         description="Find out how best online inventory system to save time and money. Discover how best online inventory system to optimize your inventory. Get started free."
@@ -40,47 +47,11 @@ export default function BestOnlineInventorySystem() {
         url="https://www.stockflow.be/best-online-inventory-system"
       />
 
-      {/* Hero Section - Split Layout */}
-      <section className="bg-white py-8 sm:py-12 md:py-16 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-3 gap-6 sm:gap-8 items-center">
-            {/* Left Side - Text Content */}
-            <div className="lg:col-span-2">
-              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6">
-                <span className="text-blue-600">Best Online Inventory System</span> for Modern Businesses
-              </h1>
-              <p className="text-sm sm:text-base md:text-lg text-gray-700 mb-6 sm:mb-8 leading-relaxed">
-                Transform your business operations with the best online inventory system designed for today's competitive market. From real-time tracking to intelligent automation, discover a comprehensive solution that scales with your business and delivers measurable results.
-              </p>
-            </div>
-            {/* Right Side - Image */}
-            <div className="lg:col-span-1">
-              <div className="rounded-lg text-center">
-                <img 
-                  src="https://rompslomp.nl/hs-fs/hubfs/voorraadbeheer.jpg?width=1200&height=800&name=voorraadbeheer.jpg" 
-                  alt="Best Online Inventory System" 
-                  className="w-full max-w-sm sm:max-w-md lg:w-96 h-64 sm:h-80 lg:h-96 mx-auto object-cover rounded-lg mb-4"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* What Makes the Best System Section */}
-      <section className="py-8 sm:py-12 md:py-16 px-4 bg-gray-50">
+      <section className="py-8 sm:py-12 md:py-16 px-4 ">
         <div className="max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-3 gap-6 sm:gap-8 items-center">
-            {/* Left Side - Image */}
-            <div className="lg:col-span-1">
-              <div className="rounded-lg text-center">
-                <img 
-                  src="https://www.greatplacetowork.ca/images/Asset_3.webp" 
-                  alt="System Excellence" 
-                  className="w-full h-64 sm:h-80 lg:h-96 mx-auto object-cover rounded-lg"
-                />
-              </div>
-            </div>
+          <div className="flex gap-6 sm:gap-8 items-center">
+
             {/* Right Side - Text Content */}
             <div className="lg:col-span-2">
               <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 sm:mb-6">
@@ -169,9 +140,9 @@ export default function BestOnlineInventorySystem() {
             <div className="lg:col-span-1">
               <div className="rounded-lg text-center">
                 <img 
-                  src="https://www.warehousingandfulfillment.com/wp-content/uploads/2020/04/Barcode-Scanning-Technologies.jpg" 
+                  src="/mobile-app.png" 
                   alt="Advanced Inventory System" 
-                  className="w-full max-w-sm sm:max-w-md lg:w-96 h-64 sm:h-80 lg:h-96 mx-auto object-cover rounded-lg mb-4"
+                  className="w-full h-auto object-cover rounded-lg mb-4"
                 />
               </div>
             </div>
@@ -187,7 +158,7 @@ export default function BestOnlineInventorySystem() {
             <div className="lg:col-span-2">
               <div className=" rounded-lg">
                 <img 
-                  src="https://valuechain.be/media/images/20232316226515_shutterstock-1106078390.width-1292.webp" 
+                  src="/education.png" 
                   alt="Modern Business Operations" 
                   className="w-full h-96 object-cover rounded-lg mb-4"
                 />
@@ -268,46 +239,8 @@ export default function BestOnlineInventorySystem() {
         </div>
       </section>
 
-      {/* FAQ Section */}
-      <section className="py-16 px-4 bg-gray-50">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <div className="w-1 h-16 bg-blue-600 mx-auto mb-4"></div>
-            <h2 className="text-3xl font-bold mb-4">Frequently Asked Questions</h2>
-          </div>
-          
-          <div className="space-y-6">
-            {faqData.map((faq, index) => (
-              <div key={index} className="bg-white p-6 rounded-lg shadow-lg">
-                <h3 className="text-lg font-semibold mb-3">{faq.question}</h3>
-                <p className="text-gray-700">{faq.answer}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* Footer */}
-      <footer className="bg-gray-900 text-gray-200 py-12 md:py-16">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <img
-            src="/logo.png"
-            alt="stockflow"
-            className="h-10 md:h-12 mx-auto mb-6"
-          />
-          <p className="text-gray-400 text-base md:text-lg mb-8 leading-relaxed max-w-2xl mx-auto">
-            The best online inventory system for businesses of all sizes.
-            Real-time tracking, automated management, and seamless integration.
-          </p>
 
-          <div className="border-t border-gray-700 pt-6">
-            <p className="text-gray-500 text-xs md:text-sm">
-              &copy; {new Date().getFullYear()} stockflow. All rights reserved.
-              Best online inventory system made simple.
-            </p>
-          </div>
-        </div>
-      </footer>
 
       {/* Schema.org Structured Data */}
       <StructuredData data={[

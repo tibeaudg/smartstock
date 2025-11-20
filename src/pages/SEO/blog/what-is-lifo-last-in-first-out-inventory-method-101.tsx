@@ -103,7 +103,14 @@ export default function SeoWhatIsLifoLastInFirstOutInventoryMethod101Page() {
   ]);
 
   return (
-    <SeoPageLayout title={topicTitle} showSidebar sidebarContent={sidebarContent}>
+    <SeoPageLayout 
+      title={topicTitle} 
+      heroTitle={topicTitle} 
+      updatedDate="20/11/2025"
+      faqData={faqData}
+      showSidebar 
+      sidebarContent={sidebarContent}
+    >
       <SEO
         title={`What Is Lifo Last In First Out Inventory Method 101 2025`}
         description={metaDescription}

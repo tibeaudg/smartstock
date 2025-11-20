@@ -103,7 +103,14 @@ export default function SeoRFIDAssetTrackingPage() {
   ]);
 
   return (
-    <SeoPageLayout title={topicTitle} showSidebar sidebarContent={sidebarContent}>
+    <SeoPageLayout 
+      title={topicTitle} 
+      heroTitle={topicTitle} 
+      updatedDate="20/11/2025"
+      faqData={faqData}
+      showSidebar 
+      sidebarContent={sidebarContent}
+    >
       <SEO
         title={`Rfid Asset Tracking 2025 - Rfid Asset Tracking`}
         description={metaDescription}

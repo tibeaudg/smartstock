@@ -49,6 +49,9 @@ export default function VoorraadbeheerTips() {
   return (
     <SeoPageLayout 
       title="Voorraadbeheer Tips voor KMO's"
+      heroTitle="Voorraadbeheer Tips voor KMO's"
+      updatedDate="20/11/2025"
+      faqData={faqData}
       showSidebar={true}
       sidebarContent={{
         relatedArticles,

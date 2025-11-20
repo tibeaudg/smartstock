@@ -191,7 +191,12 @@ export default function InventoryTracker() {
   ];
 
   return (
-    <SeoPageLayout title="Inventory Tracker">
+    <SeoPageLayout 
+      title="Inventory Tracker"
+      heroTitle="Inventory Tracker"
+      updatedDate="20/11/2025"
+      faqData={faqData}
+    >
       <SEO
         title="Inventory Tracker 2025 - Inventory Tracker 2025"
         description="Learn how inventory tracker to automate your processes. Discover how inventory tracker to choose the best software. Track. Start free today. StockFlow helps ..."

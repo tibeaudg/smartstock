@@ -32,7 +32,10 @@ export default function VoorraadbeheerSoftware() {
 
   return (
          <SeoPageLayout
-       title="Voorraadbeheer">
+       title="Voorraadbeheer"
+       heroTitle="Voorraadbeheer"
+       updatedDate="20/11/2025"
+       faqData={faqData}>
       <SEO
         title="Voorraadbeheer 2025 - Voorraadbeheer 2025 -'s | stockflow"
         description="Lees de gids voorraadbeheer uw voorraadbeheer te optimaliseren. Lees de gids voorraadbeheer tijd en geld te besparen. Beheer. Krijg direct toegang. StockFlow..."

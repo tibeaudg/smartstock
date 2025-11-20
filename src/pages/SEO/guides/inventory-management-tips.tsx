@@ -155,7 +155,12 @@ export default function InventoryManagementTips() {
   ];
   
   return (
-    <SeoPageLayout title="Inventory Management Tips">
+    <SeoPageLayout 
+      title="Inventory Management Tips"
+      heroTitle="Inventory Management Tips"
+      updatedDate="20/11/2025"
+      faqData={faqData}
+    >
       <SEO
         title="Inventory Management Tips 2025 - Inventory Management Tips"
         description="Learn how inventory management tips to optimize your inventory management. Find out how inventory management tips to automate your processes.. Start free today."

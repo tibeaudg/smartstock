@@ -204,6 +204,9 @@ export default function BestInventoryManagementSoftware() {
   return (
     <SeoPageLayout 
       title="StockFlow vs Sortly"
+      heroTitle="StockFlow vs Sortly"
+      updatedDate="20/11/2025"
+      faqData={faqData}
       showSidebar={true}
       sidebarContent={sidebarContent}
     >

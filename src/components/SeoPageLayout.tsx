@@ -218,7 +218,7 @@ const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({
 
         {/* --- UX IMPROVEMENT: Modern Hero with Constrained Width for Readability --- */}
         {(heroTitle || updatedDate) && (
-          <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-16 text-center">
+          <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-16 text-center space-y-8">
             {defaultHeroBadges.length > 0 && (
               <div className="flex flex-wrap justify-center gap-3 mb-8">
                 {defaultHeroBadges.map((badge, index) => (
@@ -236,10 +236,10 @@ const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({
 
             <div className="flex items-center justify-center gap-6 text-sm text-slate-500 mb-8">
                {updatedDate && (
-                <span>{pageLanguage === 'nl' ? 'Bijgewerkt' : 'Updated'}: {updatedDate}</span>
+                <span><strong>Updated on:</strong> {updatedDate}</span>
                )}
                <span className="w-1 h-1 bg-slate-300 rounded-full"></span>
-               <span>{authorName}</span>
+               <span><strong>Author:</strong> {authorName}</span>
             </div>
 
             {defaultHeroCTAs.length > 0 && (
@@ -423,9 +423,9 @@ const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({
               <button className="w-full sm:w-auto px-8 py-4 bg-white text-blue-600 font-bold rounded-lg hover:bg-blue-50 transition-colors shadow-lg">
                 {pageLanguage === 'nl' ? 'Start Gratis' : 'Start Free Trial'}
               </button>
-              <button className="w-full sm:w-auto px-8 py-4 bg-transparent border-2 border-blue-400 text-white font-bold rounded-lg hover:bg-blue-700 transition-colors">
-                 Book Demo
-              </button>
+              <a href="/demo" className="w-full sm:w-auto px-8 py-4 bg-transparent border-2 border-blue-400 text-white font-bold rounded-lg hover:bg-blue-700 transition-colors">
+                 Watch Demo 
+              </a>
             </div>
             <p className="mt-6 text-sm text-blue-200 opacity-80">No credit card required • 14-day free trial</p>
           </div>

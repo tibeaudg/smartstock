@@ -66,7 +66,12 @@ export default function InventoryManagementSoftwareSolutionsPage() {
   usePageRefresh();
 
   return (
-    <SeoPageLayout title="Inventory Management Software Solutions">
+    <SeoPageLayout 
+      title="Inventory Management Software Solutions"
+      heroTitle="Inventory Management Software Solutions"
+      updatedDate="20/11/2025"
+      faqData={faqData}
+    >
       <SEO
         title="Inventory Management Software Solutions 2025"
         description="Learn how inventory management software solutions to choose the best software. Learn how inventory management software solutions to optimize your inventory. ..."

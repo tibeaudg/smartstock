@@ -105,7 +105,12 @@ const HowToChooseInventoryManagementSoftware = () => {
   ];
 
   return (
-    <SeoPageLayout title="How To Choose Inventory Management Software">
+    <SeoPageLayout 
+      title="How To Choose Inventory Management Software"
+      heroTitle="How To Choose Inventory Management Software"
+      updatedDate="20/11/2025"
+      faqData={faqData}
+    >
       <SEO
         title="How To Choose Inventory Management Software 2025"
         description="Learn how how to choose inventory management software to save time and money. Learn how how to choose inventory management software to automate. Get started ..."

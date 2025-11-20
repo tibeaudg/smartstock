@@ -4,6 +4,7 @@ import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 
 import { StructuredData } from '@/components/StructuredData';
+import { ArrowUpRight, Zap, Layers, Globe, CheckCircle2, BarChart2, Smartphone, TrendingUp, Clock, Smile, Scale } from 'lucide-react';
 export default function BestOnlineInventorySoftware() {
   // Gebruik de page refresh hook
   usePageRefresh();
@@ -56,7 +57,13 @@ export default function BestOnlineInventorySoftware() {
   ];
 
   return (
-    <SeoPageLayout title="Best Online Inventory Software">
+    <SeoPageLayout title="Best Online Inventory Software"
+    heroTitle="Best Online Inventory Software"
+    updatedDate="13/11/2025"
+    faqData={faqData}
+    >
+
+
       <SEO
         title="Best Online Inventory Software 2025 - Best Online Inventory"
         description="Discover how best online inventory software to optimize your inventory management. Discover how best online inventory software to save time and. Get started ..."
@@ -64,67 +71,60 @@ export default function BestOnlineInventorySoftware() {
         url="https://www.stockflow.be/best-online-inventory-software"
       />
 
-      {/* Hero Section - Split Layout */}
-      <section className="bg-white py-8 sm:py-12 md:py-16 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-3 gap-6 sm:gap-8 items-center">
-            {/* Left Side - Text Content */}
-            <div className="lg:col-span-2">
-              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6">
-                <span className="text-blue-600">Best Online Inventory Software</span> for 2024
+  
+    <div className="w-full bg-white font-sans text-slate-900 selection:bg-blue-100 selection:text-blue-900">
+      
+      {/* --- HERO SECTION: Trust & Authority --- */}
+      <section className="relative pt-16 pb-20 lg:pt-24 lg:pb-32 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+            
+            {/* Content Side */}
+            <div className="max-w-2xl">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-bold uppercase tracking-wide border border-blue-100 mb-6">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                </span>
+                Updated for 2024
+              </div>
+              
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 mb-6 leading-[1.1]">
+                <span className="text-blue-600">Best Online Inventory Software</span> for Modern Teams
               </h1>
-              <p className="text-sm sm:text-base md:text-lg text-gray-700 mb-6 sm:mb-8 leading-relaxed">
-                Discover the top-rated online inventory software, online inventory system, and cloud based inventory software solutions that are transforming businesses worldwide. From real-time tracking to automated reorder management, find the perfect inventory web based software and online stock management software that scales with your business and delivers measurable results.
+              
+              <p className="text-lg text-slate-600 mb-8 leading-relaxed max-w-lg">
+                Discover the top-rated online inventory system solutions transforming businesses worldwide. From real-time tracking to automated reorder management, scale with confidence.
               </p>
-            </div>
-            {/* Right Side - Image */}
-            <div className="lg:col-span-1">
-              <div className="rounded-lg text-center">
-                <img 
-                  src="https://rompslomp.nl/hs-fs/hubfs/voorraadbeheer.jpg?width=1200&height=800&name=voorraadbeheer.jpg" 
-                  alt="Best Online Inventory Software" 
-                  className="w-full max-w-sm sm:max-w-md lg:w-96 h-64 sm:h-80 lg:h-96 mx-auto object-cover rounded-lg mb-4"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
-      {/* What Makes the Best Software Section */}
-      <section className="py-8 sm:py-12 md:py-16 px-4 bg-gray-50">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-3 gap-6 sm:gap-8 items-center">
-            {/* Left Side - Image */}
-            <div className="lg:col-span-1">
-              <div className="rounded-lg text-center">
-                <img 
-                  src="https://www.greatplacetowork.ca/images/Asset_3.webp" 
-                  alt="Software Excellence" 
-                  className="w-full h-64 sm:h-80 lg:h-96 mx-auto object-cover rounded-lg"
-                />
-              </div>
             </div>
-            {/* Right Side - Text Content */}
-            <div className="lg:col-span-2">
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 sm:mb-6">
-                What Makes the Best Online Inventory Software Stand Out
-              </h2>
-              <p className="text-sm sm:text-base md:text-lg text-gray-700 mb-4 sm:mb-6 leading-relaxed">
-                The best online inventory software, online inventory system, and cloud based inventory software solutions combine powerful features with user-friendly design to deliver exceptional results. These inventory web based software platforms offer real-time visibility, automation capabilities, and seamless integration with your existing business systems. Online stock management software should provide reliable cloud infrastructure and scalable pricing.
-              </p>
-              <div className="space-y-3 sm:space-y-4">
-                <div className="bg-blue-50 p-3 sm:p-4 rounded-lg">
-                  <h3 className="text-sm sm:text-base font-semibold text-blue-800 mb-2">Real-time Performance</h3>
-                  <p className="text-xs sm:text-sm text-gray-700">The best software provides <span className="text-blue-600 font-semibold">instant updates</span> across all devices and locations, ensuring you always have accurate inventory information.</p>
+
+            {/* Visual Side - Abstracted Software UI */}
+            <div className="relative lg:ml-auto">
+              {/* Decorative background blob */}
+              <div className="absolute -inset-4 bg-gradient-to-r from-blue-100 to-purple-100 rounded-[2rem] blur-2xl opacity-50 -z-10"></div>
+              
+              <div className="relative rounded-2xl bg-white shadow-2xl border border-slate-100 overflow-hidden transform rotate-1 hover:rotate-0 transition-transform duration-500">
+                {/* Fake Browser Header */}
+                <div className="bg-slate-50 border-b border-slate-100 px-4 py-3 flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-red-400"></div>
+                  <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
+                  <div className="w-3 h-3 rounded-full bg-green-400"></div>
+                  <div className="ml-4 px-3 py-1 bg-white rounded-md shadow-sm text-[10px] text-slate-400 w-48">stockflow.be/dashboard</div>
                 </div>
-                <div className="bg-green-50 p-3 sm:p-4 rounded-lg">
-                  <h3 className="text-sm sm:text-base font-semibold text-green-800 mb-2">Intelligent Automation</h3>
-                  <p className="text-xs sm:text-sm text-gray-700">Advanced algorithms automatically manage reorder points, predict demand, and optimize stock levels to reduce costs and prevent stockouts.</p>
-                </div>
-                <div className="bg-purple-50 p-3 sm:p-4 rounded-lg">
-                  <h3 className="text-sm sm:text-base font-semibold text-purple-800 mb-2">Seamless Integration</h3>
-                  <p className="text-xs sm:text-sm text-gray-700">Connect effortlessly with your POS, e-commerce, accounting, and other business systems for unified operations and data consistency.</p>
+                {/* Image Content */}
+                <img 
+                  src="/dashboard.png" 
+                  alt="Best Online Inventory Software Dashboard Interface" 
+                  className="w-full h-auto object-cover"
+                />
+                {/* Floating Badge */}
+                <div className="absolute bottom-6 left-6 bg-white/90 backdrop-blur-sm p-4 rounded-xl shadow-lg border border-slate-100 max-w-[200px]">
+                  <div className="flex items-center gap-2 mb-1">
+                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                    <span className="text-xs font-bold text-slate-700">System Status</span>
+                  </div>
+                  <div className="text-sm font-medium text-slate-900">99.99% Uptime</div>
                 </div>
               </div>
             </div>
@@ -132,201 +132,173 @@ export default function BestOnlineInventorySoftware() {
         </div>
       </section>
 
-      {/* Key Features Section */}
-      <section className="py-8 sm:py-12 md:py-16 px-4 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-3 gap-6 sm:gap-8 items-start">
-            {/* Left Side - Text Content */}
-            <div className="lg:col-span-2">
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 sm:mb-6 text-blue-600">
-                Essential Features of the Best Online Inventory Software
+      {/* --- "WHY IT STANDS OUT": Feature Cards --- */}
+      <section className="py-20 bg-slate-50 border-y border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <h2 className="text-3xl font-bold mb-4 text-slate-900">
+              What Makes the Best Software Stand Out
+            </h2>
+            <p className="text-slate-600 text-lg">
+              Top-tier cloud based inventory software combines power with simplicity.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Card 1 */}
+            <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
+              <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-6">
+                <Zap className="w-6 h-6 text-blue-600" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 mb-3">Real-time Performance</h3>
+              <p className="text-slate-600 leading-relaxed">
+                The best software provides <span className="text-blue-600 font-semibold">instant updates</span> across all devices. No lag, no sync errors, just accurate data everywhere.
+              </p>
+            </div>
+
+            {/* Card 2 */}
+            <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
+              <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mb-6">
+                <Layers className="w-6 h-6 text-green-600" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 mb-3">Intelligent Automation</h3>
+              <p className="text-slate-600 leading-relaxed">
+                Algorithms automatically manage reorder points and predict demand. Reduce overhead costs and eliminate manual stock checks.
+              </p>
+            </div>
+
+            {/* Card 3 */}
+            <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
+              <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center mb-6">
+                <Globe className="w-6 h-6 text-purple-600" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 mb-3">Seamless Integration</h3>
+              <p className="text-slate-600 leading-relaxed">
+                Connect effortlessly with POS, e-commerce, and accounting. Create a unified ecosystem where data flows freely.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* --- "ESSENTIAL FEATURES": Split with Styled List --- */}
+      <section className="py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            
+            {/* Left: Content */}
+            <div>
+              <h2 className="text-3xl sm:text-4xl font-bold mb-6 text-slate-900">
+                Essential Features for <span className="text-blue-600">Growth</span>
               </h2>
-              <p className="text-sm sm:text-base md:text-lg text-gray-700 mb-6 sm:mb-8">
-                The best online inventory software solutions offer comprehensive features that address every aspect of inventory management:
+              <p className="text-lg text-slate-600 mb-10">
+                The best online inventory software solutions offer comprehensive features that address every aspect of modern management.
               </p>
               
-              <div className="space-y-4 sm:space-y-6">
-                <div className="border-l-4 border-blue-500 pl-4 sm:pl-6">
-                  <h3 className="text-lg sm:text-xl font-bold mb-2 sm:mb-3">1. Advanced Real-time Tracking:</h3>
-                  <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
-                    Monitor inventory levels across all locations with instant updates and synchronization. The best software provides accurate, real-time data that enables better decision-making and prevents costly errors.
-                  </p>
-                </div>
-                
-                <div className="border-l-4 border-green-500 pl-4 sm:pl-6">
-                  <h3 className="text-lg sm:text-xl font-bold mb-2 sm:mb-3">2. Intelligent Automation:</h3>
-                  <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
-                    Automate reorder processes, stock alerts, and demand forecasting based on historical data and sales patterns. This reduces manual work and ensures optimal stock levels at all times.
-                  </p>
-                </div>
-
-                <div className="border-l-4 border-purple-500 pl-4 sm:pl-6">
-                  <h3 className="text-lg sm:text-xl font-bold mb-2 sm:mb-3">3. Comprehensive Analytics:</h3>
-                  <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
-                    Generate detailed reports on stock movements, sales trends, and inventory performance. Make data-driven decisions with advanced analytics and forecasting capabilities.
-                  </p>
-                </div>
-
-                <div className="border-l-4 border-orange-500 pl-4 sm:pl-6">
-                  <h3 className="text-lg sm:text-xl font-bold mb-2 sm:mb-3">4. Multi-location Management:</h3>
-                  <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
-                    Manage inventory across multiple warehouses, stores, or locations from a single dashboard. Transfer stock between locations and maintain accurate records for each site.
-                  </p>
-                </div>
-
-                <div className="border-l-4 border-red-500 pl-4 sm:pl-6">
-                  <h3 className="text-lg sm:text-xl font-bold mb-2 sm:mb-3">5. Mobile Accessibility:</h3>
-                  <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
-                    Access your inventory data from anywhere with mobile apps and responsive web interfaces. Manage stock on-the-go with full functionality and real-time updates.
-                  </p>
-                </div>
+              <div className="space-y-6">
+                {[
+                  { title: "Advanced Real-time Tracking", desc: "Monitor inventory levels across all locations instantly.", icon: CheckCircle2, color: "text-blue-600" },
+                  { title: "Intelligent Automation", desc: "Automate reorder points and stock alerts based on history.", icon: Zap, color: "text-amber-600" },
+                  { title: "Comprehensive Analytics", desc: "Detailed reports on movements, trends, and performance.", icon: BarChart2, color: "text-purple-600" },
+                  { title: "Multi-location Management", desc: "Manage multiple warehouses from a single dashboard.", icon: Globe, color: "text-indigo-600" },
+                  { title: "Mobile Accessibility", desc: "Full functionality on-the-go with responsive interfaces.", icon: Smartphone, color: "text-green-600" }
+                ].map((feature, i) => (
+                  <div key={i} className="flex gap-4 group">
+                    <div className="flex-shrink-0 mt-1">
+                      <feature.icon className={`w-6 h-6 ${feature.color}`} />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-slate-900 group-hover:text-blue-600 transition-colors">
+                        {feature.title}
+                      </h3>
+                      <p className="text-slate-500 text-sm leading-relaxed mt-1">
+                        {feature.desc}
+                      </p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-            {/* Right Side - Image */}
-            <div className="lg:col-span-1">
-              <div className="rounded-lg text-center">
-                <img 
-                  src="https://www.warehousingandfulfillment.com/wp-content/uploads/2020/04/Barcode-Scanning-Technologies.jpg" 
-                  alt="Advanced Inventory Management" 
-                  className="w-full max-w-sm sm:max-w-md lg:w-96 h-64 sm:h-80 lg:h-96 mx-auto object-cover rounded-lg mb-4"
+
+            {/* Right: Image Treatment */}
+            <div className="relative">
+              <div className="absolute top-0 right-0 w-3/4 h-full bg-slate-50 rounded-3xl -z-10 transform translate-x-8 translate-y-8"></div>
+              <div className="rounded-2xl overflow-hidden shadow-2xl border border-slate-200">
+                 <img 
+                  src="/aza.png" 
+                  alt="Advanced Inventory Management Interface" 
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
                 />
+                {/* Overlay Content */}
+                <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-slate-900/90 to-transparent p-8 pt-24">
+                   <p className="text-white font-medium">
+                     "The scanning accuracy increased our fulfillment speed by 300%."
+                   </p>
+                </div>
               </div>
             </div>
+
           </div>
         </div>
       </section>
 
-      {/* Benefits Section */}
-      <section className="py-16 px-4 bg-gray-50">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-3 gap-8 items-center">
-            {/* Left Side - Large Image */}
-            <div className="lg:col-span-2">
-              <div className=" rounded-lg">
-                <img 
-                  src="https://valuechain.be/media/images/20232316226515_shutterstock-1106078390.width-1292.webp" 
-                  alt="Modern Business Operations" 
-                  className="w-full h-96 object-cover rounded-lg mb-4"
-                />
-              </div>
-            </div>
-            {/* Right Side - Text Content */}
-            <div className="lg:col-span-1">
-              <h2 className="text-3xl font-bold mb-6">
-                Why Businesses Choose the Best Online Inventory Software
-              </h2>
-              <p className="text-lg text-gray-700 leading-relaxed">
-                Leading businesses worldwide rely on the best online inventory software to optimize their operations, reduce costs, and improve customer satisfaction. These solutions deliver measurable results and provide a competitive advantage in today's fast-paced market.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Results Section */}
-      <section className="py-16 px-4 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">
-              <span className="text-blue-600">Proven Results</span> from the Best Online Inventory Software
+      {/* --- "RESULTS": Dark Mode Section for Contrast --- */}
+      <section className="py-24  text-white relative overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'radial-gradient(#4b5563 1px, transparent 1px)', backgroundSize: '32px 32px' }}></div>
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="text-center mb-16 max-w-3xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+              Proven Results from the Best Inventory Software
             </h2>
+            <p className="text-slate-400 text-lg">
+              Leading businesses rely on these solutions to optimize operations. Here is the measurable impact.
+            </p>
           </div>
-          
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="bg-gray-50 p-6 rounded-lg">
-              <h3 className="text-xl font-semibold mb-4">Dramatic Cost Reduction</h3>
-              <p className="text-gray-700">
-                Businesses using the best online inventory software typically see a 35-60% reduction in inventory costs through optimized stock levels, reduced overstock, and elimination of stockouts. This translates to significant savings and improved cash flow.
-              </p>
-            </div>
-            
-            <div className="bg-gray-50 p-6 rounded-lg">
-              <h3 className="text-xl font-semibold mb-4">Enhanced Operational Efficiency</h3>
-              <p className="text-gray-700">
-                Automate routine tasks and reduce manual errors by up to 98%. The best software streamlines operations, saving time and reducing the need for manual data entry and calculations.
-              </p>
-            </div>
 
-            <div className="bg-gray-50 p-6 rounded-lg">
-              <h3 className="text-xl font-semibold mb-4">Superior Customer Service</h3>
-              <p className="text-gray-700">
-                Real-time stock visibility ensures you can always fulfill customer orders. Reduce stockouts by 90% and improve customer satisfaction with accurate inventory information and faster order processing.
-              </p>
-            </div>
-
-            <div className="bg-gray-50 p-6 rounded-lg">
-              <h3 className="text-xl font-semibold mb-4">Scalable Growth</h3>
-              <p className="text-gray-700">
-                The best online inventory software grows with your business. Easily add new locations, products, and users without the need for expensive hardware upgrades or complex installations.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* FINAL CTA */}
-      <section className="bg-white text-black py-12 md:py-20">
-        <div className="max-w-4xl mx-auto text-center px-4">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 md:mb-6">
-            Experience the Best Online Inventory Software Today
-          </h2>
-          <p className="text-lg md:text-xl mb-6 md:mb-8 opacity-90">
-            Join thousands of businesses already using stockflow as their preferred online inventory software solution. Get Started Free and discover why we're considered among the best.
-          </p>
-          <div className="flex flex-col md:flex-row gap-4 justify-center">
-            <Link
-              to="/auth"
-              className="bg-blue-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold shadow-lg hover:bg-blue-700 transition text-sm sm:text-base min-h-[48px] w-full sm:w-auto max-w-xs sm:max-w-none"
-            >
-              Start Free Trial
-            </Link>
-          </div>
-          <p className="text-sm mt-4 opacity-75">No credit card required • Instant setup • 24/7 support</p>
-        </div>
-      </section>
-
-      {/* FAQ Section */}
-      <section className="py-16 px-4 bg-gray-50">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <div className="w-1 h-16 bg-blue-600 mx-auto mb-4"></div>
-            <h2 className="text-3xl font-bold mb-4">Frequently Asked Questions</h2>
-          </div>
-          
-          <div className="space-y-6">
-            {faqData.map((faq, index) => (
-              <div key={index} className="bg-white p-6 rounded-lg shadow-lg">
-                <h3 className="text-lg font-semibold mb-3">{faq.question}</h3>
-                <p className="text-gray-700">{faq.answer}</p>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              { title: "Cost Reduction", val: "60%", desc: "Reduction in carrying costs via optimized levels.", icon: TrendingUp, color: "bg-blue-500" },
+              { title: "Efficiency", val: "98%", desc: "Reduction in manual data entry errors.", icon: Clock, color: "bg-emerald-500" },
+              { title: "Service", val: "90%", desc: "Fewer stockouts, happier customers.", icon: Smile, color: "bg-purple-500" },
+              { title: "Scalability", val: "∞", desc: "Unlimited location growth without new hardware.", icon: Scale, color: "bg-orange-500" },
+            ].map((stat, i) => (
+              <div key={i} className="bg-blue-800/50 border border-blue-700 p-6 rounded-xl hover:bg-blue-800 transition-colors">
+                <div className={`w-10 h-10 ${stat.color} rounded-lg flex items-center justify-center mb-4 shadow-lg`}>
+                  <stat.icon className="w-5 h-5 text-white" />
+                </div>
+                <div className="text-4xl font-bold text-white mb-2">{stat.val}</div>
+                <h3 className="text-lg font-semibold text-slate-200 mb-2">{stat.title}</h3>
+                <p className="text-sm text-black leading-relaxed">{stat.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-gray-900 text-gray-200 py-12 md:py-16">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <img
-            src="/logo.png"
-            alt="stockflow"
-            className="h-10 md:h-12 mx-auto mb-6"
-          />
-          <p className="text-gray-400 text-base md:text-lg mb-8 leading-relaxed max-w-2xl mx-auto">
-            The best online inventory software for businesses of all sizes.
-            Real-time tracking, automated alerts, and seamless integration.
-          </p>
-
-          <div className="border-t border-gray-700 pt-6">
-            <p className="text-gray-500 text-xs md:text-sm">
-              &copy; {new Date().getFullYear()} stockflow. All rights reserved.
-              Best online inventory software made simple.
-            </p>
+      {/* --- CTA Bottom Strip --- */}
+      <section className="bg-blue-600 py-12">
+        <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="text-white">
+            <h3 className="text-2xl font-bold">Ready to optimize your inventory?</h3>
+            <p className="text-blue-100">Join 10,000+ companies streamlining their stock flow today.</p>
+          </div>
+          <div className="flex gap-4">
+            <button className="px-6 py-3 bg-white text-blue-600 font-bold rounded-lg hover:bg-blue-50 transition-colors shadow-lg">
+              Get Started Free
+            </button>
           </div>
         </div>
-      </footer>
+      </section>
 
-            
+    </div>
+  
+
+
+
+
+
 
       {/* Schema.org Structured Data */}
       <StructuredData data={[

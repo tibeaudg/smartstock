@@ -70,7 +70,12 @@ export default function VoorraadbeheerVoorStarters() {
 
 
   return (
-    <SeoPageLayout title="Voorraadbeheer voor Starters">
+    <SeoPageLayout 
+      title="Voorraadbeheer voor Starters"
+      heroTitle="Voorraadbeheer voor Starters"
+      updatedDate="20/11/2025"
+      faqData={faqData}
+    >
       <SEO
         title="Voorraadbeheer Voor Starters 2025 - Voorraadbeheer Voor S...'s | stockflow"
         description="Vind uit hoe voorraadbeheer voor starters de beste software te kiezen. Vind uit hoe voorraadbeheer voor starters tijd en geld te. Begin nu met gratis proefpe..."

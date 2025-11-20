@@ -145,31 +145,31 @@ const useCases = [
   }
 ];
 
-const faqs = [
+const faqData = [
   {
-    question: 'Do I need dedicated hardware to use StockFlow Scan?',
+    question: 'What is inventory reporting?',
     answer:
-      'No special hardware is required. Any modern device with a camera—iOS, Android, Zebra, Windows, or macOS—can run the StockFlow scanner securely in the browser.'
+      'Inventory reporting is the process of generating and analyzing reports about your inventory levels, movements, sales, and performance. It helps you make data-driven decisions about purchasing, pricing, and inventory optimization.'
   },
   {
-    question: 'Can the scanner work offline?',
+    question: 'What types of inventory reports should I generate?',
     answer:
-      'Yes. Teams can continue scanning without connectivity. StockFlow queues changes locally and syncs them automatically once a connection is restored.'
+      'Key inventory reports include: stock level reports, sales reports, turnover reports, reorder point reports, ABC analysis, slow-moving stock reports, and profit margin reports. These help you understand inventory performance and make informed decisions.'
   },
   {
-    question: 'How does StockFlow maintain scan accuracy?',
+    question: 'How often should I review inventory reports?',
     answer:
-      'We combine checksum validation, duplicate detection, and product-level rules to stop incorrect submissions before they reach inventory records.'
+      'Review critical reports like stock levels and sales daily or weekly. Monthly reviews are sufficient for turnover analysis and ABC analysis. The frequency depends on your business type and inventory turnover rate.'
   },
   {
-    question: 'Does StockFlow support GS1 barcodes and serialization?',
+    question: 'Can inventory software automate reporting?',
     answer:
-      'Absolutely. We parse GS1 application identifiers, serial numbers, lots, and expiration dates so you can meet compliance requirements without manual entry.'
+      'Yes, modern inventory management software like StockFlow automatically generates reports in real-time. You can schedule automated reports, set up alerts for key metrics, and access dashboards with visual analytics anytime.'
   },
   {
-    question: 'How quickly can we roll out StockFlow Scan?',
+    question: 'What metrics should I track in inventory reports?',
     answer:
-      'Most teams go live in days. Invite your users, configure workflows, and share a secure URL—no app store approvals or device imaging needed.'
+      'Key metrics include: inventory turnover ratio, days sales of inventory, stockout frequency, carrying costs, profit margins by product, reorder point accuracy, and slow-moving stock percentage. These metrics help optimize inventory management.'
   }
 ];
 
@@ -200,7 +200,12 @@ export default function InventoryPhotosPage() {
   };
 
   return (
-    <SeoPageLayout title="Reporting">
+    <SeoPageLayout 
+      title="Reporting"
+      heroTitle="Reporting"
+      updatedDate="20/11/2025"
+      faqData={faqData}
+    >
       <SEO
         title="Reporting 2025 - Reporting 2025 -"
         description="Learn how reporting to choose the best software. Read the guide reporting to save time and money. Discover. Start free today. StockFlow helps businesses mana..."

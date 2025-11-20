@@ -64,15 +64,6 @@ export default function VoorraadbeheerSoftwareVergelijken() {
     <SeoPageLayout
       title="Voorraadbeheer Software Vergelijken"
       heroTitle="Voorraadbeheer Software Vergelijken 2025"
-      heroBadges={[
-        { text: "Gratis vergelijking" },
-        { text: "Onafhankelijk advies" },
-        { text: "Veilige keuze" }
-      ]}
-      heroCTAs={[
-        { label: "Start Gratis", href: "/auth", variant: "primary" },
-        { label: "Meer Informatie", href: "#overview", variant: "secondary" }
-      ]}
       faqData={faqData}
     >
       <SEO

@@ -103,7 +103,14 @@ export default function SeoHowInventoryManagementChangesWithMultipleLocationsPag
   ]);
 
   return (
-    <SeoPageLayout title={topicTitle} showSidebar sidebarContent={sidebarContent}>
+    <SeoPageLayout 
+      title={topicTitle} 
+      heroTitle={topicTitle} 
+      updatedDate="20/11/2025"
+      faqData={faqData}
+      showSidebar 
+      sidebarContent={sidebarContent}
+    >
       <SEO
         title={`How Inventory Management Changes With Multiple Locations ...`}
         description={metaDescription}

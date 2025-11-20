@@ -418,7 +418,14 @@ export default function OnlineInventorySoftware() {
   ]);
 
   return (
-    <SeoPageLayout title="Online Inventory Software" showSidebar={true} sidebarContent={sidebarContent}>
+    <SeoPageLayout 
+      title="Online Inventory Software" 
+      heroTitle="Online Inventory Software"
+      updatedDate="20/11/2025"
+      faqData={faqData}
+      showSidebar={true} 
+      sidebarContent={sidebarContent}
+    >
       <SEO
         title="Handleiding Online Inventory Software - Handleiding Onlin..."
         description="Learn how online inventory software to optimize your inventory management. Read the guide online inventory software to automate your processes.. Start free t..."

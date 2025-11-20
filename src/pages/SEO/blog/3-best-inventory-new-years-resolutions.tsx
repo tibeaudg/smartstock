@@ -103,7 +103,14 @@ export default function Seo3BestInventoryNewYearsResolutionsPage() {
   ]);
 
   return (
-    <SeoPageLayout title={topicTitle} showSidebar sidebarContent={sidebarContent}>
+    <SeoPageLayout 
+      title={topicTitle} 
+      heroTitle={topicTitle} 
+      updatedDate="20/11/2025"
+      faqData={faqData}
+      showSidebar 
+      sidebarContent={sidebarContent}
+    >
       <SEO
         title={`3 Best Inventory New Years Resolutions 2025`}
         description={metaDescription}

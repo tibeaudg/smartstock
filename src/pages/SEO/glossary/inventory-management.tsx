@@ -327,6 +327,9 @@ export default function InventoryManagementGuide() {
   return (
     <SeoPageLayout 
       title="Inventory Management Guide"
+      heroTitle="Inventory Management Guide"
+      updatedDate="20/11/2025"
+      faqData={faqData}
       showSidebar={true}
       sidebarContent={sidebarContent}
     >

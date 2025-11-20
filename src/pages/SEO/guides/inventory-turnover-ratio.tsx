@@ -141,7 +141,12 @@ export default function InventoryTurnoverRatio() {
   ];
 
   return (
-    <SeoPageLayout title="Inventory Turnover Ratio">
+    <SeoPageLayout 
+      title="Inventory Turnover Ratio"
+      heroTitle="Inventory Turnover Ratio"
+      updatedDate="20/11/2025"
+      faqData={faqData}
+    >
       <SEO
         title="Inventory Turnover Ratio 2025 - Inventory Turnover Ratio"
         description="Discover how inventory turnover ratio to optimize your inventory management. Read the guide inventory turnover ratio to automate your processes.. Get started..."

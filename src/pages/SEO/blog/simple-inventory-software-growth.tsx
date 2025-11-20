@@ -103,7 +103,14 @@ export default function SeoSimpleInventorySoftwareGrowthPage() {
   ]);
 
   return (
-    <SeoPageLayout title={topicTitle} showSidebar sidebarContent={sidebarContent}>
+    <SeoPageLayout 
+      title={topicTitle} 
+      heroTitle={topicTitle} 
+      updatedDate="20/11/2025"
+      faqData={faqData}
+      showSidebar 
+      sidebarContent={sidebarContent}
+    >
       <SEO
         title={`Simple Inventory Software Growth 2025 - Simple Inventory ...`}
         description={metaDescription}

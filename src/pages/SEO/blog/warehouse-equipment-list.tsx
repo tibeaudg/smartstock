@@ -103,7 +103,14 @@ export default function SeoWarehouseEquipmentListPage() {
   ]);
 
   return (
-    <SeoPageLayout title={topicTitle} showSidebar sidebarContent={sidebarContent}>
+    <SeoPageLayout 
+      title={topicTitle} 
+      heroTitle={topicTitle} 
+      updatedDate="20/11/2025"
+      faqData={faqData}
+      showSidebar 
+      sidebarContent={sidebarContent}
+    >
       <SEO
         title={`Warehouse Equipment List 2025 - Warehouse Equipment List`}
         description={metaDescription}

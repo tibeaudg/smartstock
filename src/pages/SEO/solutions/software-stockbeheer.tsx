@@ -65,7 +65,12 @@ export default function SoftwareStockbeheer() {
   });
 
   return (
-    <SeoPageLayout title="Software Stockbeheer voor Kleine Bedrijven">
+    <SeoPageLayout 
+      title="Software Stockbeheer voor Kleine Bedrijven"
+      heroTitle="Software Stockbeheer voor Kleine Bedrijven"
+      updatedDate="20/11/2025"
+      faqData={faqData}
+    >
       <SEO
         title="Software Stockbeheer 2025 - Software Stockbeheer 2025's | StockFlow"
         description="Vind uit hoe software stockbeheer tijd en geld te besparen. Bekijk hoe software stockbeheer uw processen te automatiseren. Eenvoudig software. Begin nu met g..."

@@ -103,7 +103,14 @@ export default function SeoWhySupplyChainTraceabilityMattersToSmallBusinessesPag
   ]);
 
   return (
-    <SeoPageLayout title={topicTitle} showSidebar sidebarContent={sidebarContent}>
+    <SeoPageLayout 
+      title={topicTitle} 
+      heroTitle={topicTitle} 
+      updatedDate="20/11/2025"
+      faqData={faqData}
+      showSidebar 
+      sidebarContent={sidebarContent}
+    >
       <SEO
         title={`Why Supply Chain Traceability Matters To Small Businesses...`}
         description={metaDescription}

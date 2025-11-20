@@ -97,12 +97,19 @@ export default function SeoConstructionInvoiceProcessingPage() {
 
 
   return (
-    <SeoPageLayout title={topicTitle} heroTitle={topicTitle} updatedDate="September 2025" heroBadges={[
-      { text: heroBadge }
-    ]} heroCTAs={[
-      { label: "Start Free", href: "/auth", variant: "primary" },
-      { label: "Jump to Overview", href: "#overview", variant: "secondary" }
-    ]}>
+    <SeoPageLayout 
+      title={topicTitle} 
+      heroTitle={topicTitle} 
+      updatedDate="September 2025" 
+      faqData={faqData}
+      heroBadges={[
+        { text: heroBadge }
+      ]} 
+      heroCTAs={[
+        { label: "Start Free", href: "/auth", variant: "primary" },
+        { label: "Jump to Overview", href: "#overview", variant: "secondary" }
+      ]}
+    >
       
       <SEO
         title={`Construction Invoice Processing - 2025`}
