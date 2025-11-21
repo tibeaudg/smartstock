@@ -59,6 +59,8 @@ export default function CategorysPage() {
   const [showCustomizationModal, setShowCustomizationModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<CategoryTree | null>(null);
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null | 'all'>(null);
+  // Track when we explicitly set to 'all' to prevent useEffect interference
+  const isSettingToAllRef = React.useRef(false);
   // Default to table view on both mobile and desktop
   const [productViewMode, setProductViewMode] = useState<'grid' | 'list' | 'table'>(() => {
     if (typeof window !== 'undefined') {
@@ -557,10 +559,54 @@ export default function CategorysPage() {
   // State for mobile category pane visibility
   const [showCategoryPane, setShowCategoryPane] = useState(!isMobile || !selectedCategoryId);
 
-  // On mobile, hide category pane when category is selected
+  // Sync selectedCategory with selectedCategoryId to prevent stale state
+  // This ensures selectedCategory is always in sync with selectedCategoryId
+  React.useEffect(() => {
+    // Always clear selectedCategory when showing 'all' or when no category is selected
+    if (selectedCategoryId === 'all') {
+      // Only clear if we're not explicitly setting to 'all' (to avoid race conditions)
+      if (!isSettingToAllRef.current) {
+        setSelectedCategory(null);
+      }
+      return;
+    }
+    
+    if (!selectedCategoryId) {
+      setSelectedCategory(null);
+      return;
+    }
+    
+    // Skip if tree is not loaded yet
+    if (!tree || tree.length === 0) {
+      return;
+    }
+    
+    // Only update if the selected category doesn't match the selectedCategoryId
+    if (!selectedCategory || selectedCategory.id !== selectedCategoryId) {
+      // Find and set the category from the tree if it doesn't match
+      const findInTree = (nodes: CategoryTree[]): CategoryTree | undefined => {
+        for (const node of nodes) {
+          if (node.id === selectedCategoryId) return node;
+          if (node.children?.length) {
+            const found = findInTree(node.children);
+            if (found) return found;
+          }
+        }
+        return undefined;
+      };
+      const category = findInTree(tree);
+      if (category) {
+        setSelectedCategory(category);
+      } else {
+        setSelectedCategory(null);
+      }
+    }
+  }, [selectedCategoryId, tree]);
+
+  // On mobile, hide category pane when category is selected (but not for 'all')
   React.useEffect(() => {
     if (isMobile) {
-      setShowCategoryPane(!selectedCategoryId);
+      setShowCategoryPane(!selectedCategoryId || selectedCategoryId === 'all');
     } else {
       setShowCategoryPane(true);
     }
@@ -596,8 +642,15 @@ export default function CategorysPage() {
             <div className="px-3 py-2 border-b">
               <button
                 onClick={() => {
-                  setSelectedCategoryId('all');
+                  // Set flag to prevent useEffect from interfering
+                  isSettingToAllRef.current = true;
+                  // Explicitly clear both states to ensure clean reset
                   setSelectedCategory(null);
+                  setSelectedCategoryId('all');
+                  // Reset flag after state updates
+                  setTimeout(() => {
+                    isSettingToAllRef.current = false;
+                  }, 0);
                 }}
                 className={cn(
                   'w-full flex items-center gap-2 px-3 py-2 rounded transition-colors text-sm font-medium',
@@ -666,14 +719,20 @@ export default function CategorysPage() {
 
         {/* Right Pane - Category Details & Products */}
         <div className="flex-1 flex flex-col overflow-hidden bg-gray-50 min-w-0 min-h-0 relative">
-          {selectedCategoryId ? (
+          {selectedCategoryId && selectedCategoryId !== 'all' ? (
             <>
               {/* Right Pane Header - Sticky on Mobile Only */}
               <div className="flex-shrink-0 px-3 md:px-4 lg:px-6 py-3 md:py-4 bg-white border-b sticky top-0 z-20 md:static md:z-auto">
                 <div className="flex items-center gap-2 sm:gap-3 min-w-0">
                   {isMobile && selectedCategoryId && (
                     <button
-                      onClick={() => setShowCategoryPane(true)}
+                      onClick={() => {
+                        // Reset to overview when going back on mobile - clear selection to show category list
+                        isSettingToAllRef.current = false;
+                        setSelectedCategory(null);
+                        setSelectedCategoryId(null);
+                        setShowCategoryPane(true);
+                      }}
                       className="flex-shrink-0 p-1 rounded-md hover:bg-gray-100 transition-colors"
                       aria-label="Show categories"
                     >
@@ -682,13 +741,32 @@ export default function CategorysPage() {
                   )}
                   <div className="min-w-0 flex-1">
                     <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 truncate">
-                      {selectedCategoryId === 'all' 
-                        ? 'All Products' 
-                        : (selectedCategory?.name || categories.find(c => c.id === selectedCategoryId)?.name)}
+                      {(() => {
+                        // Always show 'All Products' when selectedCategoryId is 'all', regardless of selectedCategory state
+                        if (selectedCategoryId === 'all') {
+                          return 'All Products';
+                        }
+                        // For specific categories, show the category name
+                        return selectedCategory?.name || categories.find(c => c.id === selectedCategoryId)?.name || 'Category';
+                      })()}
                     </h2>
                   </div>
                   <div className="flex items-center gap-2 flex-shrink-0">
-                    {selectedCategoryId !== 'all' && (
+                    {selectedCategoryId === 'all' ? (
+                      <Button
+                        onClick={() => {
+                          setFormData({ name: '', description: '', parentCategoryId: null });
+                          setShowAddModal(true);
+                        }}
+                        variant="default"
+                        size="sm"
+                        className="hidden sm:flex bg-blue-600 hover:bg-blue-700 text-white h-10 px-6"
+                      >
+                        <Plus className="w-4 h-4 mr-2" />
+                        <span className="hidden md:inline">New Category</span>
+                        <span className="md:hidden">Category</span>
+                      </Button>
+                    ) : (
                       <Button
                         onClick={() => {
                           setFormData({ name: '', description: '', parentCategoryId: selectedCategoryId });
