@@ -3,7 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Layout } from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Loader2, ArrowUp, ArrowDown, ChevronUp, ChevronDown } from 'lucide-react';
+import { Loader2, ArrowUp, ArrowDown, ChevronUp, ChevronDown, Download } from 'lucide-react';
 import { BranchProvider } from '@/hooks/useBranches';
 import { useAuth } from '@/hooks/useAuth';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
@@ -18,6 +18,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@/components/ui/badge';
 import { SEO } from '@/components/SEO';
 import { toast } from 'sonner';
+import * as XLSX from 'xlsx';
 
 // User management types
 type FeedbackStatus = 'pending-survey' | 'survey-sent' | 'response-received' | 'exempt';
@@ -755,6 +756,56 @@ export default function AdminPage() {
     return sorted;
   }, [users, userStats, feedbackStatuses, sortColumn, sortDirection]);
 
+  /**
+   * Export user data to Excel
+   */
+  const handleExportToExcel = useCallback(() => {
+    try {
+      const exportData = sortedUsers.map(user => {
+        const stats = userStats.find(s => s.userId === user.id);
+        const inactivity = calculateInactivityDays(user.last_login || null, user.created_at);
+        const feedbackStatus = feedbackStatuses[user.id] || 'exempt';
+        const statusConfig = {
+          'pending-survey': 'Pending Survey',
+          'survey-sent': 'Survey Sent',
+          'response-received': 'Response Received',
+          'exempt': 'Exempt'
+        };
+
+        return {
+          'Email': user.email,
+          'First Name': user.first_name || '',
+          'Last Name': user.last_name || '',
+          'Full Name': `${user.first_name || ''} ${user.last_name || ''}`.trim() || '',
+          'Role': user.role,
+          'Inactivity Days': inactivity.days,
+          'Inactivity Display': inactivity.display,
+          'Products': stats?.productCount || 0,
+          'Branches': stats?.branchCount || 0,
+          'Linked Users': stats?.linkedUserCount || 0,
+          'CUS (Core Usage Score)': stats?.coreUsageScore || 0,
+          'License Cost': (stats?.licenseCost || 0).toFixed(2),
+          'Feedback Status': statusConfig[feedbackStatus] || 'Exempt',
+          'Blocked': user.blocked ? 'Yes' : 'No',
+          'Created At': new Date(user.created_at).toLocaleString('en-US'),
+          'Last Login': user.last_login ? new Date(user.last_login).toLocaleString('en-US') : 'Never',
+          'Plan': user.selected_plan || 'N/A'
+        };
+      });
+
+      const ws = XLSX.utils.json_to_sheet(exportData);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Users');
+      const fileName = `users_export_${new Date().toISOString().split('T')[0]}.xlsx`;
+      XLSX.writeFile(wb, fileName);
+      
+      toast.success(`Successfully exported ${sortedUsers.length} users to Excel`);
+    } catch (error) {
+      console.error('Error exporting to Excel:', error);
+      toast.error('Failed to export data to Excel');
+    }
+  }, [sortedUsers, userStats, feedbackStatuses]);
+
   // Bereken statistieken voor gebruikers
   useEffect(() => {
     if (users.length === 0) {
@@ -1018,8 +1069,22 @@ export default function AdminPage() {
 
                 <Card>
                   <CardHeader>
-                    <CardTitle>User Management</CardTitle>
-                    <CardDescription>Manage users, block/unblock and view user details.</CardDescription>
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex-1">
+                        <CardTitle>User Management</CardTitle>
+                        <CardDescription>Manage users, block/unblock and view user details.</CardDescription>
+                      </div>
+                      <Button
+                        onClick={handleExportToExcel}
+                        variant="outline"
+                        size="sm"
+                        className="flex items-center gap-2"
+                        disabled={sortedUsers.length === 0 || loadingStats}
+                      >
+                        <Download className="w-4 h-4" />
+                        Export to Excel
+                      </Button>
+                    </div>
                   </CardHeader>
                   <CardContent>
                     {/* Stats Cards - responsive grid */}
