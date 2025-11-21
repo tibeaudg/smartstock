@@ -13,6 +13,7 @@ import {
   moveCategory as moveCategoryService,
   getCategoryAnalytics as getCategoryAnalyticsService,
   getCategoryProducts as getCategoryProductsService,
+  getAllProducts as getAllProductsService,
 } from '@/lib/categories/categoryService';
 import { buildCategoryTree, getCategoryPath } from '@/lib/categories/categoryUtils';
 import type { 
@@ -95,22 +96,27 @@ export function useCategoryAnalytics(categoryId: string | null) {
 
 /**
  * Hook to get products in a category (including descendants)
+ * If categoryId is 'all', fetches all products
  */
-export function useCategoryProducts(categoryId: string | null) {
+export function useCategoryProducts(categoryId: string | null | 'all') {
   const { user } = useAuth();
   const { activeBranch } = useBranches();
   
   return useQuery({
     queryKey: ['categoryProducts', categoryId, user?.id, activeBranch?.branch_id],
     queryFn: () => {
-      if (!user || !categoryId) return [];
+      if (!user) return [];
+      if (categoryId === 'all') {
+        return getAllProductsService(user.id, activeBranch?.branch_id);
+      }
+      if (!categoryId) return [];
       return getCategoryProductsService(
         categoryId,
         user.id,
         activeBranch?.branch_id
       );
     },
-    enabled: !!user && !!categoryId,
+    enabled: !!user && (categoryId === 'all' || !!categoryId),
     staleTime: 1000 * 60 * 2, // 2 minutes
   });
 }

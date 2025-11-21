@@ -446,3 +446,58 @@ export async function getCategoryProducts(
   return productsWithNames;
 }
 
+/**
+ * Get all products for a user (optionally filtered by branch)
+ */
+export async function getAllProducts(
+  userId: string,
+  branchId?: string
+): Promise<any[]> {
+  // Build query
+  let productsQuery = supabase
+    .from('products')
+    .select('*');
+
+  if (branchId) {
+    productsQuery = productsQuery.eq('branch_id', branchId);
+  }
+
+  const { data: products, error } = await productsQuery
+    .order('name', { ascending: true });
+
+  if (error) {
+    console.error('Error fetching all products:', error);
+    return [];
+  }
+
+  if (!products || products.length === 0) {
+    return [];
+  }
+
+  // Get category names
+  const productCategoryIds = [...new Set(products.map(p => p.category_id).filter(Boolean))];
+
+  let categories: { [key: string]: string } = {};
+  if (productCategoryIds.length > 0) {
+    const { data: categoryData } = await supabase
+      .from('categories')
+      .select('id, name')
+      .in('id', productCategoryIds);
+    
+    if (categoryData) {
+      categories = categoryData.reduce((acc: { [key: string]: string }, cat: { id: string; name: string }) => {
+        acc[cat.id] = cat.name;
+        return acc;
+      }, {} as { [key: string]: string });
+    }
+  }
+
+  // Add category names to products
+  const productsWithNames = products.map(product => ({
+    ...product,
+    category_name: product.category_id ? categories[product.category_id] || null : null
+  }));
+
+  return productsWithNames;
+}
+

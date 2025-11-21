@@ -26,11 +26,23 @@ import { ProductCard } from '@/components/ProductCard';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { Grid3x3, List } from 'lucide-react';
+import { Grid3x3, List, Table2, Edit, Trash2, Copy, MapPin, MoreVertical, ChevronRight, ChevronDown, Palette, ArrowUpDown, ArrowUp, ArrowDown, Scan } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useQueryClient } from '@tanstack/react-query';
 import type { CategoryTree, CategoryCreateData } from '@/types/categoryTypes';
 import { getCategoryPath, getCategoryIdsIncludingDescendants } from '@/lib/categories/categoryUtils';
+import { cn } from '@/lib/utils';
+import { EditProductInfoModal } from '@/components/EditProductInfoModal';
+import { EditProductStockModal } from '@/components/EditProductStockModal';
+import { ManualStockAdjustModal } from '@/components/ManualStockAdjustModal';
+import { ImagePreviewModal } from '@/components/ImagePreviewModal';
+import { AddProductMethodModal } from '@/components/AddProductMethodModal';
+import { AddProductModal } from '@/components/AddProductModal';
+import { BarcodeScanner } from '@/components/BarcodeScanner';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { AllProductsAnalytics } from '@/components/categories/AllProductsAnalytics';
+import { useScannerSettings } from '@/hooks/useScannerSettings';
 
 export default function CategorysPage() {
   const { user } = useAuth();
@@ -46,9 +58,29 @@ export default function CategorysPage() {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [showCustomizationModal, setShowCustomizationModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<CategoryTree | null>(null);
-  const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
-  const [productViewMode, setProductViewMode] = useState<'grid' | 'list'>('list');
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string | null | 'all'>(null);
+  const [productViewMode, setProductViewMode] = useState<'grid' | 'list' | 'table'>('table');
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set());
+  
+  // Sorting state - default to date_added descending (newest first)
+  const [sortColumn, setSortColumn] = useState<string | null>('date_added');
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
+  
+  // Product modal states
+  const [selectedProduct, setSelectedProduct] = useState<any>(null);
+  const [isEditInfoModalOpen, setIsEditInfoModalOpen] = useState(false);
+  const [isStockAdjustModalOpen, setIsStockAdjustModalOpen] = useState(false);
+  const [previewImageUrl, setPreviewImageUrl] = useState<string | null>(null);
+  const [isImagePreviewOpen, setIsImagePreviewOpen] = useState(false);
+  
+  // Add product modal states
+  const [isAddProductMethodModalOpen, setIsAddProductMethodModalOpen] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isBarcodeScannerOpen, setIsBarcodeScannerOpen] = useState(false);
+  const [scannedSKU, setScannedSKU] = useState<string>('');
+  const [preFilledProductName, setPreFilledProductName] = useState<string>('');
+  
+  const { settings: scannerSettings, onScanSuccess } = useScannerSettings();
   
   // Form state
   const [formData, setFormData] = useState({
@@ -261,28 +293,246 @@ export default function CategorysPage() {
   };
 
   const handleStockAction = (product: any, action: 'in' | 'out') => {
-    // Navigate to stock page for stock operations
-    navigate('/dashboard/stock', {
-      state: {
-        productId: product.id,
-        action,
-      },
-    });
+    setSelectedProduct(product);
+    setIsStockAdjustModalOpen(true);
   };
 
   const handleProductEdit = (product: any) => {
-    // Navigate to stock page for editing
-    navigate('/dashboard/stock', {
-      state: {
-        productId: product.id,
-        edit: true,
-      },
-    });
+    setSelectedProduct(product);
+    setIsEditInfoModalOpen(true);
   };
 
   const handleImagePreview = (url: string) => {
-    // Could open a modal here, for now just log
-    console.log('Preview image:', url);
+    setPreviewImageUrl(url);
+    setIsImagePreviewOpen(true);
+  };
+
+  const handleDuplicateProduct = async (product: any) => {
+    if (!activeBranch) return;
+
+    try {
+      const { id, created_at, updated_at, ...productData } = product;
+      
+      const duplicatedProduct: any = {
+        ...productData,
+        name: `${product.name} (Copy)`,
+        branch_id: activeBranch.branch_id,
+      };
+
+      const { error } = await supabase
+        .from('products')
+        .insert(duplicatedProduct);
+
+      if (error) throw error;
+
+      toast.success('Product duplicated successfully');
+      
+      queryClient.invalidateQueries({ queryKey: ['categoryProducts', selectedCategoryId] });
+      queryClient.invalidateQueries({ queryKey: ['products'] });
+    } catch (error) {
+      console.error('Error duplicating product:', error);
+      toast.error('Failed to duplicate product');
+    }
+  };
+
+  const handleDeleteProduct = async (product: any) => {
+    if (!product) return;
+
+    const confirmed = window.confirm(
+      `Delete "${product.name}"? This action cannot be undone.`,
+    );
+
+    if (!confirmed) return;
+
+    try {
+      const { error } = await supabase
+        .from('products')
+        .delete()
+        .eq('id', product.id);
+
+      if (error) throw error;
+
+      toast.success('Product deleted successfully');
+      
+      queryClient.invalidateQueries({ queryKey: ['categoryProducts', selectedCategoryId] });
+      queryClient.invalidateQueries({ queryKey: ['products'] });
+    } catch (error) {
+      console.error('Error deleting product:', error);
+      toast.error('Failed to delete product');
+    }
+  };
+
+  const handleMoveToLocation = async (product: any) => {
+    const newLocation = prompt('Enter new location for this product:', product.location || '');
+    
+    if (newLocation === null) return;
+    
+    try {
+      const { error } = await supabase
+        .from('products')
+        .update({ location: newLocation })
+        .eq('id', product.id);
+
+      if (error) throw error;
+
+      toast.success('Product location updated successfully');
+      
+      queryClient.invalidateQueries({ queryKey: ['categoryProducts', selectedCategoryId] });
+      queryClient.invalidateQueries({ queryKey: ['products'] });
+    } catch (error) {
+      console.error('Error updating product location:', error);
+      toast.error('Failed to update product location');
+    }
+  };
+
+  // Helper functions for table view
+  const getStockStatus = (quantity: number, minLevel: number) => {
+    const qty = Number(quantity);
+    const min = Number(minLevel);
+    if (qty === 0) return 'Out of Stock';
+    if (qty > 0 && qty <= min) return 'Low Stock';
+    return 'In Stock';
+  };
+
+  const getStockStatusDotColor = (quantity: number, minLevel: number) => {
+    const qty = Number(quantity);
+    const min = Number(minLevel);
+    if (qty === 0) return 'bg-red-500';
+    if (qty > 0 && qty <= min) return 'bg-orange-500';
+    return 'bg-green-500';
+  };
+
+  const formatStockQuantity = (quantity: number) => {
+    return new Intl.NumberFormat('en-US').format(Number(quantity) || 0);
+  };
+
+  // Handler for add product method selection
+  const handleAddProductMethodSelect = (method: 'manual' | 'scan') => {
+    if (method === 'scan') {
+      setIsBarcodeScannerOpen(true);
+    } else {
+      // Manual - open add product modal directly
+      setScannedSKU('');
+      setPreFilledProductName('');
+      setIsAddModalOpen(true);
+    }
+  };
+
+  // Handler for barcode detection (when adding products)
+  const handleBarcodeDetected = async (barcode: string) => {
+    try {
+      if (!activeBranch) {
+        toast.error('No active branch selected');
+        return;
+      }
+
+      // Search for product by SKU
+      const { data: products, error } = await supabase
+        .from('products')
+        .select('*')
+        .eq('branch_id', activeBranch.branch_id)
+        .eq('sku', barcode)
+        .limit(1);
+
+      if (error) {
+        console.error('Error searching for product:', error);
+        toast.error('Error searching for product');
+        return;
+      }
+
+      if (products && products.length > 0) {
+        // Product found - open stock adjustment modal
+        const foundProduct: any = products[0];
+        setSelectedProduct(foundProduct);
+        setIsStockAdjustModalOpen(true);
+        setIsBarcodeScannerOpen(false);
+        toast.success(`Product found: ${foundProduct?.name || 'Product'}`);
+      } else {
+        // Product not found - open add product modal with pre-filled SKU
+        setScannedSKU(barcode);
+        setPreFilledProductName('');
+        setIsBarcodeScannerOpen(false);
+        setIsAddModalOpen(true);
+        toast.info('Product not found - will create new product');
+      }
+    } catch (error) {
+      console.error('Error processing scanned barcode:', error);
+      toast.error('Error processing scanned barcode');
+    }
+  };
+
+  // Sort products
+  const sortedProducts = React.useMemo(() => {
+    if (!sortColumn) return categoryProducts;
+
+    return [...categoryProducts].sort((a, b) => {
+      let aValue: any;
+      let bValue: any;
+
+      switch (sortColumn) {
+        case 'name':
+          aValue = a.name?.toLowerCase() || '';
+          bValue = b.name?.toLowerCase() || '';
+          break;
+        case 'location':
+          aValue = (a.location || '').toLowerCase();
+          bValue = (b.location || '').toLowerCase();
+          break;
+        case 'stock':
+          aValue = Number(a.quantity_in_stock) || 0;
+          bValue = Number(b.quantity_in_stock) || 0;
+          break;
+        case 'date_added':
+          aValue = a.created_at ? new Date(a.created_at).getTime() : 0;
+          bValue = b.created_at ? new Date(b.created_at).getTime() : 0;
+          break;
+        case 'purchase_price':
+          aValue = Number(a.purchase_price) || 0;
+          bValue = Number(b.purchase_price) || 0;
+          break;
+        case 'sale_price':
+          aValue = Number(a.sale_price) || 0;
+          bValue = Number(b.sale_price) || 0;
+          break;
+        default:
+          return 0;
+      }
+
+      if (typeof aValue === 'string' && typeof bValue === 'string') {
+        if (sortDirection === 'asc') {
+          return aValue.localeCompare(bValue);
+        } else {
+          return bValue.localeCompare(aValue);
+        }
+      } else {
+        if (sortDirection === 'asc') {
+          return aValue - bValue;
+        } else {
+          return bValue - aValue;
+        }
+      }
+    });
+  }, [categoryProducts, sortColumn, sortDirection]);
+
+  const handleSort = (column: string) => {
+    if (sortColumn === column) {
+      // Toggle direction if clicking the same column
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      // Set new column and default to ascending
+      setSortColumn(column);
+      setSortDirection('asc');
+    }
+  };
+
+  const getSortIcon = (column: string) => {
+    if (sortColumn !== column) {
+      return <ArrowUpDown className="w-3 h-3 ml-1 text-gray-400" />;
+    }
+    if (sortDirection === 'asc') {
+      return <ArrowUp className="w-3 h-3 ml-1 text-blue-600" />;
+    }
+    return <ArrowDown className="w-3 h-3 ml-1 text-blue-600" />;
   };
 
   const handleCustomizationSave = async (icon: string | null, color: string | null) => {
@@ -314,9 +564,9 @@ export default function CategorysPage() {
   }
 
   return (
-    <div className="h-full m-6 rounded-lg border border-gray-200 flex flex-col overflow-hidden">
+    <div className="h-[calc(100vh-8rem)] md:h-[calc(100vh-8rem)] m-6 rounded-lg border border-gray-200 flex flex-col overflow-hidden">
       {/* Split-Pane Layout */}
-      <div className="flex-1 flex overflow-hidden">
+      <div className="flex-1 flex overflow-hidden min-h-0">
         {/* Left Pane - Category Tree */}
         <div className={`${isMobile ? 'w-full' : 'w-[280px] md:w-[320px] lg:w-[360px]'} border-r bg-white flex flex-col flex-shrink-0`}>
           {/* Left Pane Header - Fixed */}
@@ -335,7 +585,26 @@ export default function CategorysPage() {
           </div>
           
           {/* Category Tree - Scrollable */}
-          <div className="flex-1 overflow-y-auto">
+          <div className="flex-1 overflow-y-auto min-h-0">
+            {/* Show All Products Button - Always at top */}
+            <div className="px-3 py-2 border-b">
+              <button
+                onClick={() => {
+                  setSelectedCategoryId('all');
+                  setSelectedCategory(null);
+                }}
+                className={cn(
+                  'w-full flex items-center gap-2 px-3 py-2 rounded transition-colors text-sm font-medium',
+                  selectedCategoryId === 'all'
+                    ? 'bg-blue-50 border-l-4 border-l-blue-600 text-blue-700'
+                    : 'hover:bg-gray-50 text-gray-900'
+                )}
+              >
+                <Package className="w-4 h-4" />
+                <span>Show All Products</span>
+              </button>
+            </div>
+
             {isLoading ? (
               <div className="flex items-center justify-center py-12">
                 <div className="text-center">
@@ -390,7 +659,7 @@ export default function CategorysPage() {
         </div>
 
         {/* Right Pane - Category Details & Products */}
-        <div className="flex-1 flex flex-col overflow-hidden bg-gray-50 min-w-0">
+        <div className="flex-1 flex flex-col overflow-hidden bg-gray-50 min-w-0 min-h-0">
           {selectedCategoryId ? (
             <>
               {/* Right Pane Header - Fixed */}
@@ -399,7 +668,9 @@ export default function CategorysPage() {
                   <div className="flex items-center gap-3 min-w-0">
                     <div className="min-w-0">
                       <h2 className="text-xl md:text-2xl font-bold text-gray-900 truncate">
-                        {selectedCategory?.name || categories.find(c => c.id === selectedCategoryId)?.name}
+                        {selectedCategoryId === 'all' 
+                          ? 'All Products' 
+                          : (selectedCategory?.name || categories.find(c => c.id === selectedCategoryId)?.name)}
                       </h2>
                       <Badge variant="secondary" className="mt-1">
                         {categoryProducts.length} products
@@ -409,17 +680,31 @@ export default function CategorysPage() {
                   <div className="flex items-center gap-2 flex-shrink-0">
                     <Button
                       onClick={() => {
-                        setFormData({ name: '', description: '', parentCategoryId: selectedCategoryId });
-                        setShowAddModal(true);
+                        setIsAddProductMethodModalOpen(true);
                       }}
-                      variant="outline"
+                      variant="default"
                       size="sm"
-                      className="hidden sm:flex"
+                      className="bg-blue-600 hover:bg-blue-700 text-white"
                     >
                       <Plus className="w-4 h-4 mr-2" />
-                      <span className="hidden md:inline">New Sub Category</span>
-                      <span className="md:hidden">Sub</span>
+                      <span className="hidden md:inline">Add Product</span>
+                      <span className="md:hidden">Add</span>
                     </Button>
+                    {selectedCategoryId !== 'all' && (
+                      <Button
+                        onClick={() => {
+                          setFormData({ name: '', description: '', parentCategoryId: selectedCategoryId });
+                          setShowAddModal(true);
+                        }}
+                        variant="outline"
+                        size="sm"
+                        className="hidden sm:flex"
+                      >
+                        <Plus className="w-4 h-4 mr-2" />
+                        <span className="hidden md:inline">New Sub Category</span>
+                        <span className="md:hidden">Sub</span>
+                      </Button>
+                    )}
                     <div className="flex items-center gap-1 bg-gray-100 rounded-lg p-1">
                       <Button
                         variant={productViewMode === 'grid' ? 'default' : 'ghost'}
@@ -437,15 +722,29 @@ export default function CategorysPage() {
                       >
                         <List className="w-4 h-4" />
                       </Button>
+                      <Button
+                        variant={productViewMode === 'table' ? 'default' : 'ghost'}
+                        size="sm"
+                        onClick={() => setProductViewMode('table')}
+                        className="h-8 w-8 p-0"
+                      >
+                        <Table2 className="w-4 h-4" />
+                      </Button>
                     </div>
                   </div>
                 </div>
               </div>
 
               {/* Stats Row - Fixed */}
-              <div className="flex-shrink-0 px-4 md:px-6 py-4 bg-white border-b">
-                <CategoryAnalytics categoryId={selectedCategoryId} />
-              </div>
+              {selectedCategoryId === 'all' ? (
+                <div className="flex-shrink-0 px-4 md:px-6 py-4 bg-white border-b">
+                  <AllProductsAnalytics products={categoryProducts} />
+                </div>
+              ) : selectedCategoryId && (
+                <div className="flex-shrink-0 px-4 md:px-6 py-4 bg-white border-b">
+                  <CategoryAnalytics categoryId={selectedCategoryId} />
+                </div>
+              )}
 
               {/* Products Section - Scrollable */}
               <div className="flex-1 overflow-y-auto px-4 md:px-6 py-4">
@@ -479,6 +778,235 @@ export default function CategorysPage() {
                         isVariant={product.is_variant}
                       />
                     ))}
+                  </div>
+                ) : productViewMode === 'table' ? (
+                  <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-visible">
+                    <div className="overflow-x-auto overflow-y-visible scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+                      <table className="w-full divide-y divide-gray-200">
+                        <thead className="bg-gray-50 sticky top-0 z-10">
+                          <tr>
+                            <th 
+                              className="px-4 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/3 cursor-pointer hover:bg-gray-100 transition-colors"
+                              onClick={() => handleSort('name')}
+                            >
+                              <div className="flex items-center">
+                                Product
+                                {getSortIcon('name')}
+                              </div>
+                            </th>
+                            <th 
+                              className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8 cursor-pointer hover:bg-gray-100 transition-colors"
+                              onClick={() => handleSort('location')}
+                            >
+                              <div className="flex items-center justify-center">
+                                Location
+                                {getSortIcon('location')}
+                              </div>
+                            </th>
+                            <th 
+                              className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8 cursor-pointer hover:bg-gray-100 transition-colors"
+                              onClick={() => handleSort('stock')}
+                            >
+                              <div className="flex items-center justify-center">
+                                Stock Level
+                                {getSortIcon('stock')}
+                              </div>
+                            </th>
+                            <th 
+                              className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8 cursor-pointer hover:bg-gray-100 transition-colors"
+                              onClick={() => handleSort('date_added')}
+                            >
+                              <div className="flex items-center justify-center">
+                                Date Added
+                                {getSortIcon('date_added')}
+                              </div>
+                            </th>
+                            <th 
+                              className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8 cursor-pointer hover:bg-gray-100 transition-colors"
+                              onClick={() => handleSort('purchase_price')}
+                            >
+                              <div className="flex items-center justify-center">
+                                Pricing
+                                {getSortIcon('purchase_price')}
+                              </div>
+                            </th>
+                            <th className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/12">
+                              Actions
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody className="bg-white">
+                          {sortedProducts.map((product: any, index: number) => {
+                            const stockStatus = getStockStatus(product.quantity_in_stock, product.minimum_stock_level);
+                            const stockDotColor = getStockStatusDotColor(product.quantity_in_stock, product.minimum_stock_level);
+                            
+                            return (
+                              <tr
+                                key={product.id}
+                                className={cn(
+                                  'hover:bg-gray-100 hover:shadow-sm transition-all duration-200 border-b-2 border-gray-100',
+                                  index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
+                                )}
+                              >
+                                {/* Product column */}
+                                <td className="px-4 py-3 w-1/3">
+                                  <div className="flex items-center gap-3">
+                                    <div className="flex-shrink-0" onClick={(e) => e.stopPropagation()}>
+                                      {product.image_url ? (
+                                        <div className="w-12 h-12 bg-gray-50 rounded-lg border flex items-center justify-center overflow-hidden">
+                                          <img
+                                            src={product.image_url}
+                                            alt={product.name}
+                                            className="max-w-full max-h-full object-contain cursor-pointer hover:opacity-80 transition-opacity"
+                                            onClick={() => handleImagePreview(product.image_url)}
+                                          />
+                                        </div>
+                                      ) : (
+                                        <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
+                                          <Package className="w-6 h-6 text-gray-400" />
+                                        </div>
+                                      )}
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                      <h3 className="text-sm font-medium text-gray-900 truncate">
+                                        {product.name}
+                                      </h3>
+                                      {product.description && (
+                                        <p className="text-xs text-gray-500 truncate max-w-xs mt-1">
+                                          {product.description}
+                                        </p>
+                                      )}
+                                    </div>
+                                  </div>
+                                </td>
+
+                                {/* Location column */}
+                                <td className="px-4 py-3 text-center w-1/8">
+                                  <div className="flex items-center justify-center gap-1">
+                                    <MapPin className="w-3 h-3 text-gray-400" />
+                                    <span className="text-sm text-gray-600">
+                                      {product.location || '-'}
+                                    </span>
+                                  </div>
+                                </td>
+
+                                {/* Stock column */}
+                                <td className="px-4 py-3 text-center w-1/8">
+                                  <TooltipProvider delayDuration={150}>
+                                    <Tooltip>
+                                      <TooltipTrigger asChild>
+                                        <div
+                                          className="space-y-1 cursor-pointer rounded-md p-2 transition-colors group hover:bg-blue-600"
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleStockAction(product, 'in');
+                                          }}
+                                        >
+                                          <div className="flex items-center justify-center gap-2">
+                                            <div
+                                              className={cn(
+                                                'w-2 h-2 rounded-full',
+                                                stockDotColor,
+                                                Number(product.quantity_in_stock) === 0 ? 'animate-pulse' : ''
+                                              )}
+                                            />
+                                            <span
+                                              className={cn(
+                                                'text-sm font-semibold transition-colors',
+                                                Number(product.quantity_in_stock) === 0
+                                                  ? 'animate-pulse text-red-600 group-hover:text-white'
+                                                  : 'text-gray-900 group-hover:text-white'
+                                              )}
+                                            >
+                                              {formatStockQuantity(product.quantity_in_stock)}
+                                            </span>
+                                          </div>
+                                          <div className="text-xs font-medium text-gray-600 transition-colors group-hover:text-white/90">
+                                            {stockStatus}
+                                          </div>
+                                        </div>
+                                      </TooltipTrigger>
+                                      <TooltipContent side="top" align="center" sideOffset={8} className="z-[200000] max-w-xs shadow-lg">
+                                        <p className="font-medium">
+                                          {formatStockQuantity(product.quantity_in_stock)} in stock. Minimum: {formatStockQuantity(product.minimum_stock_level)}
+                                        </p>
+                                        {Number(product.quantity_in_stock) === 0 && (
+                                          <p className="text-xs text-red-400 mt-1">⚠️ Out of stock!</p>
+                                        )}
+                                        {Number(product.quantity_in_stock) > 0 && Number(product.quantity_in_stock) <= Number(product.minimum_stock_level) && (
+                                          <p className="text-xs text-orange-400 mt-1">⚠️ Low stock alert</p>
+                                        )}
+                                        <p className="text-xs text-gray-400 mt-1">Click to adjust stock</p>
+                                      </TooltipContent>
+                                    </Tooltip>
+                                  </TooltipProvider>
+                                </td>
+
+                                {/* Date Added column */}
+                                <td className="px-4 py-3 text-center w-1/8">
+                                  <span className="text-sm text-gray-600">
+                                    {product.created_at 
+                                      ? new Date(product.created_at).toLocaleDateString('en-US', {
+                                          year: 'numeric',
+                                          month: 'short',
+                                          day: 'numeric'
+                                        })
+                                      : '-'}
+                                  </span>
+                                </td>
+
+                                {/* Pricing column */}
+                                <td className="px-4 py-3 text-center w-1/8">
+                                  <div className="space-y-1">
+                                    <div className="text-sm text-red-600 font-medium">
+                                      ${product.purchase_price ? Number(product.purchase_price).toFixed(2) : '-'}
+                                    </div>
+                                    <div className="text-sm text-green-600 font-medium">
+                                      ${product.sale_price ? Number(product.sale_price).toFixed(2) : '-'}
+                                    </div>
+                                  </div>
+                                </td>
+
+                                {/* Actions column */}
+                                <td className="px-4 py-3 text-center w-1/12" onClick={(e) => e.stopPropagation()}>
+                                  <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                      <Button variant="outline" size="sm" className="h-8 w-8 p-0">
+                                        <MoreVertical className="w-4 h-4" />
+                                      </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent align="end" className="w-56">
+                                      <DropdownMenuItem onClick={() => handleStockAction(product, 'in')}>
+                                        <Plus className="w-4 h-4 mr-2 text-green-600" />
+                                        <span className="flex-1">Adjust Stock</span>
+                                      </DropdownMenuItem>
+                                      <DropdownMenuSeparator />
+                                      <DropdownMenuItem onClick={() => handleProductEdit(product)}>
+                                        <Edit className="w-4 h-4 mr-2 text-blue-600" />
+                                        <span className="flex-1">Edit</span>
+                                      </DropdownMenuItem>
+                                      <DropdownMenuItem onClick={() => handleDuplicateProduct(product)}>
+                                        <Copy className="w-4 h-4 mr-2 text-purple-600" />
+                                        <span className="flex-1">Duplicate</span>
+                                      </DropdownMenuItem>
+                                      <DropdownMenuItem onClick={() => handleMoveToLocation(product)}>
+                                        <MapPin className="w-4 h-4 mr-2 text-orange-600" />
+                                        <span className="flex-1">Move to Location</span>
+                                      </DropdownMenuItem>
+                                      <DropdownMenuSeparator />
+                                      <DropdownMenuItem onClick={() => handleDeleteProduct(product)}>
+                                        <Trash2 className="w-4 h-4 mr-2 text-gray-600" />
+                                        <span className="flex-1">Delete</span>
+                                      </DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                  </DropdownMenu>
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 ) : (
                   <div className="space-y-2">
@@ -757,6 +1285,86 @@ export default function CategorysPage() {
           onClose={() => setShowCustomizationModal(false)}
           category={selectedCategory}
           onSave={handleCustomizationSave}
+        />
+      )}
+
+      {/* Product Modals */}
+      {selectedProduct && (
+        <>
+          <EditProductInfoModal
+            isOpen={isEditInfoModalOpen}
+            onClose={() => {
+              setIsEditInfoModalOpen(false);
+              setSelectedProduct(null);
+            }}
+            product={selectedProduct}
+            onProductUpdated={() => {
+              queryClient.invalidateQueries({ queryKey: ['categoryProducts', selectedCategoryId] });
+              queryClient.invalidateQueries({ queryKey: ['products'] });
+            }}
+          />
+        </>
+      )}
+
+      {selectedProduct && (
+        <EditProductStockModal
+          isOpen={isStockAdjustModalOpen}
+          onClose={() => {
+            setIsStockAdjustModalOpen(false);
+            setSelectedProduct(null);
+          }}
+          product={selectedProduct}
+          onProductUpdated={() => {
+            queryClient.invalidateQueries({ queryKey: ['categoryProducts', selectedCategoryId] });
+            queryClient.invalidateQueries({ queryKey: ['products'] });
+          }}
+        />
+      )}
+
+      {/* Image Preview Modal */}
+      {previewImageUrl && (
+        <ImagePreviewModal
+          isOpen={isImagePreviewOpen}
+          onClose={() => {
+            setIsImagePreviewOpen(false);
+            setPreviewImageUrl(null);
+          }}
+          imageUrl={previewImageUrl}
+          alt="Product preview"
+        />
+      )}
+
+      {/* Add Product Modals */}
+      <AddProductMethodModal
+        isOpen={isAddProductMethodModalOpen}
+        onClose={() => setIsAddProductMethodModalOpen(false)}
+        onSelectMethod={handleAddProductMethodSelect}
+      />
+      
+      <AddProductModal
+        isOpen={isAddModalOpen}
+        onClose={() => {
+          setIsAddModalOpen(false);
+          setPreFilledProductName('');
+          setScannedSKU('');
+        }}
+        onProductAdded={async () => {
+          queryClient.invalidateQueries({ queryKey: ['categoryProducts', selectedCategoryId] });
+          queryClient.invalidateQueries({ queryKey: ['products'] });
+          setIsAddModalOpen(false);
+          setPreFilledProductName('');
+          setScannedSKU('');
+        }}
+        preFilledSKU={scannedSKU}
+        preFilledName={preFilledProductName}
+      />
+
+      {isBarcodeScannerOpen && (
+        <BarcodeScanner
+          onBarcodeDetected={handleBarcodeDetected}
+          onClose={() => setIsBarcodeScannerOpen(false)}
+          onScanSuccess={onScanSuccess}
+          settings={scannerSettings}
         />
       )}
     </div>
