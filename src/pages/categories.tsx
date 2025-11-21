@@ -59,8 +59,6 @@ export default function CategorysPage() {
   const [showCustomizationModal, setShowCustomizationModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<CategoryTree | null>(null);
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null | 'all'>(null);
-  // Track when we explicitly set to 'all' to prevent useEffect interference
-  const isSettingToAllRef = React.useRef(false);
   // Default to table view on both mobile and desktop
   const [productViewMode, setProductViewMode] = useState<'grid' | 'list' | 'table'>(() => {
     if (typeof window !== 'undefined') {
@@ -566,10 +564,7 @@ export default function CategorysPage() {
   React.useEffect(() => {
     // Always clear selectedCategory when showing 'all' or when no category is selected
     if (selectedCategoryId === 'all') {
-      // Only clear if we're not explicitly setting to 'all' (to avoid race conditions)
-      if (!isSettingToAllRef.current) {
-        setSelectedCategory(null);
-      }
+      setSelectedCategory(null);
       return;
     }
     
@@ -605,7 +600,8 @@ export default function CategorysPage() {
     }
   }, [selectedCategoryId, tree]);
 
-  // On mobile, hide category pane when category is selected (but not for 'all')
+  // On mobile, hide category pane when a specific category is selected
+  // Show category pane when no category is selected (null) or when viewing 'all' products
   React.useEffect(() => {
     if (isMobile) {
       setShowCategoryPane(!selectedCategoryId || selectedCategoryId === 'all');
@@ -643,16 +639,11 @@ export default function CategorysPage() {
             {/* Show All Products Button - Always at top */}
             <div className="px-3 py-2 border-b">
               <button
+                type="button"
                 onClick={() => {
-                  // Set flag to prevent useEffect from interfering
-                  isSettingToAllRef.current = true;
                   // Explicitly clear both states to ensure clean reset
                   setSelectedCategory(null);
                   setSelectedCategoryId('all');
-                  // Reset flag after state updates
-                  setTimeout(() => {
-                    isSettingToAllRef.current = false;
-                  }, 0);
                 }}
                 className={cn(
                   'w-full flex items-center gap-2 px-3 py-2 rounded transition-colors text-sm font-medium',
@@ -730,7 +721,6 @@ export default function CategorysPage() {
                     <button
                       onClick={() => {
                         // Reset to overview when going back on mobile - clear selection to show category list
-                        isSettingToAllRef.current = false;
                         setSelectedCategory(null);
                         setSelectedCategoryId(null);
                         setShowCategoryPane(true);
@@ -1100,15 +1090,7 @@ export default function CategorysPage() {
                                         <Copy className="w-4 h-4 mr-2 text-purple-600" />
                                         <span className="flex-1">Duplicate</span>
                                       </DropdownMenuItem>
-                                      <DropdownMenuItem onClick={() => {
-                                        if (isMobile) {
-                                          setIsMobileProductDetailModalOpen(false);
-                                        }
-                                        handleMoveToLocation(product);
-                                      }}>
-                                        <MapPin className="w-4 h-4 mr-2 text-orange-600" />
-                                        <span className="flex-1">Move to Location</span>
-                                      </DropdownMenuItem>
+                                    
                                       <DropdownMenuSeparator />
                                       <DropdownMenuItem onClick={() => {
                                         if (isMobile) {
@@ -1589,17 +1571,7 @@ export default function CategorysPage() {
                   <Copy className="w-4 h-4 mr-2 text-purple-600" />
                   Duplicate
                 </Button>
-                <Button
-                  onClick={() => {
-                    setIsMobileProductDetailModalOpen(false);
-                    handleMoveToLocation(selectedProduct);
-                  }}
-                  className="w-full justify-start"
-                  variant="outline"
-                >
-                  <MapPin className="w-4 h-4 mr-2 text-orange-600" />
-                  Move to Location
-                </Button>
+       
                 <div className="pt-2 border-t">
                   <Button
                     onClick={() => {
