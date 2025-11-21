@@ -157,7 +157,7 @@ const CategoryTreeNode: React.FC<CategoryTreeNodeProps> = ({
             )}>
               {category.name}
             </span>
-            {category.product_count !== undefined && category.product_count > 0 && (
+            {category.product_count !== undefined && (
               <Badge variant="secondary" className="text-xs h-6 px-2">
                 {category.product_count}
               </Badge>

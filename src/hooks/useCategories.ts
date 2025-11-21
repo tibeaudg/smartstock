@@ -14,6 +14,7 @@ import {
   getCategoryAnalytics as getCategoryAnalyticsService,
   getCategoryProducts as getCategoryProductsService,
   getAllProducts as getAllProductsService,
+  getCategoryProductCounts as getCategoryProductCountsService,
 } from '@/lib/categories/categoryService';
 import { buildCategoryTree, getCategoryPath } from '@/lib/categories/categoryUtils';
 import type { 
@@ -49,23 +50,37 @@ export function useCategories() {
  * Hook to get categories as a tree structure
  */
 export function useCategoryTree() {
+  const { user } = useAuth();
+  const { activeBranch } = useBranches();
   const { data: categories = [], isLoading, error } = useCategories();
+  
+  // Fetch product counts for all categories
+  const { data: productCounts } = useQuery({
+    queryKey: ['categoryProductCounts', user?.id, activeBranch?.branch_id],
+    queryFn: () => {
+      if (!user) return new Map<string, number>();
+      return getCategoryProductCountsService(user.id, activeBranch?.branch_id);
+    },
+    enabled: !!user && categories.length > 0,
+    staleTime: 1000 * 60 * 2, // 2 minutes
+  });
   
   const tree = categories.length > 0 ? buildCategoryTree(categories) : [];
   
-  // Add paths to tree nodes
-  const addPathsToTree = (nodes: CategoryTree[]): CategoryTree[] => {
+  // Add paths and product counts to tree nodes
+  const addPathsAndCountsToTree = (nodes: CategoryTree[]): CategoryTree[] => {
     return nodes.map(node => ({
       ...node,
       path: getCategoryPath(node, categories),
-      children: addPathsToTree(node.children),
+      product_count: productCounts?.get(node.id) ?? 0,
+      children: addPathsAndCountsToTree(node.children),
     }));
   };
   
-  const treeWithPaths = tree.length > 0 ? addPathsToTree(tree) : [];
+  const treeWithPathsAndCounts = tree.length > 0 ? addPathsAndCountsToTree(tree) : [];
   
   return {
-    tree: treeWithPaths,
+    tree: treeWithPathsAndCounts,
     categories,
     isLoading,
     error,
@@ -155,6 +170,7 @@ export function useUpdateCategory() {
       queryClient.invalidateQueries({ queryKey: ['categories', user?.id] });
       queryClient.invalidateQueries({ queryKey: ['categoryAnalytics'] });
       queryClient.invalidateQueries({ queryKey: ['categoryProducts'] });
+      queryClient.invalidateQueries({ queryKey: ['categoryProductCounts'] });
     },
   });
 }
@@ -176,6 +192,7 @@ export function useDeleteCategory() {
       queryClient.invalidateQueries({ queryKey: ['products'] });
       queryClient.invalidateQueries({ queryKey: ['categoryAnalytics'] });
       queryClient.invalidateQueries({ queryKey: ['categoryProducts'] });
+      queryClient.invalidateQueries({ queryKey: ['categoryProductCounts'] });
     },
   });
 }

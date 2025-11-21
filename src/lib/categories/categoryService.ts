@@ -277,6 +277,61 @@ export async function getAllCategories(userId: string): Promise<Category[]> {
 }
 
 /**
+ * Calculate product counts for all categories (including descendants)
+ */
+export async function getCategoryProductCounts(
+  userId: string,
+  branchId?: string
+): Promise<Map<string, number>> {
+  const counts = new Map<string, number>();
+  
+  // Get all categories
+  const { data: allCategories } = await supabase
+    .from('categories')
+    .select('*')
+    .eq('user_id', userId);
+
+  if (!allCategories || allCategories.length === 0) {
+    return counts;
+  }
+
+  // Initialize all categories with 0
+  allCategories.forEach(cat => counts.set(cat.id, 0));
+
+  // Get all products (following the same pattern as getCategoryProducts)
+  let productsQuery = supabase
+    .from('products')
+    .select('category_id');
+
+  if (branchId) {
+    productsQuery = productsQuery.eq('branch_id', branchId);
+  }
+
+  const { data: products } = await productsQuery;
+
+  if (!products || products.length === 0) {
+    return counts;
+  }
+
+  // Import utility function
+  const { getCategoryDescendants } = await import('./categoryUtils');
+
+  // Calculate counts for each category (including descendants)
+  allCategories.forEach(category => {
+    const descendants = getCategoryDescendants(category.id, allCategories as Category[]);
+    const categoryIds = [category.id, ...descendants.map(d => d.id)];
+    
+    const count = products.filter(p => 
+      p.category_id && categoryIds.includes(p.category_id)
+    ).length;
+    
+    counts.set(category.id, count);
+  });
+
+  return counts;
+}
+
+/**
  * Get category analytics (product counts, stock values, etc.)
  */
 export async function getCategoryAnalytics(

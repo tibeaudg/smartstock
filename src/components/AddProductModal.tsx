@@ -34,6 +34,7 @@ interface AddProductModalProps {
   onFirstProductAdded?: () => void;
   preFilledSKU?: string;
   preFilledName?: string;
+  preFilledCategoryId?: string;
 }
 
 interface VariantData {
@@ -75,7 +76,7 @@ const productSchema = z.object({
 });
 
 
-export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProductAdded, preFilledSKU, preFilledName }: AddProductModalProps) => {
+export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProductAdded, preFilledSKU, preFilledName, preFilledCategoryId }: AddProductModalProps) => {
   console.log('[AddProductModal] Initialization: Component mounted with props.');
 
   // --- Hooks and State ---
@@ -163,6 +164,20 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
       form.setValue('name', preFilledName, { shouldDirty: true });
     }
   }, [preFilledName, isOpen, form]);
+
+  // Handle pre-filled category
+  useEffect(() => {
+    if (preFilledCategoryId && isOpen) {
+      console.log(`[AddProductModal] Setting pre-filled category ID: ${preFilledCategoryId}`);
+      form.setValue('categoryId', preFilledCategoryId);
+      // Try to find category name from the categories list
+      const category = categories.find(c => c.id === preFilledCategoryId);
+      if (category) {
+        form.setValue('categoryName', category.name);
+        console.log(`[AddProductModal] Found category name: ${category.name}`);
+      }
+    }
+  }, [preFilledCategoryId, isOpen, form, categories]);
 
   // Fallback: if name was persisted in localStorage by the opener, use it once
   useEffect(() => {
@@ -640,6 +655,24 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
         refetchType: 'active',
       });
 
+      // Invalidate all categoryProducts queries to refresh category views
+      queryClient.invalidateQueries({
+        queryKey: ['categoryProducts'],
+        refetchType: 'active',
+      });
+
+      // Invalidate all categoryAnalytics queries to refresh category stats
+      queryClient.invalidateQueries({
+        queryKey: ['categoryAnalytics'],
+        refetchType: 'active',
+      });
+
+      // Invalidate all products analytics queries
+      queryClient.invalidateQueries({
+        queryKey: ['allProductsAnalyticsWeekAgo'],
+        refetchType: 'active',
+      });
+
       queryClient.invalidateQueries({
         queryKey: ['productCount', branchId, userId],
       });
@@ -806,10 +839,10 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
                               <Input 
                                 type="number" 
                                 min="0"
-                                placeholder="0"
+                                placeholder=""
                                 disabled={loading}
                                 onChange={(e) => field.onChange(parseInt(e.target.value, 10) || 0)}
-                                value={field.value.toString()} 
+                                value={field.value === 0 ? '' : field.value.toString()} 
                                 className="py-3 px-3 text-base border-blue-200 focus:border-blue-500"
                               />
                             </FormControl>

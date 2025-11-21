@@ -322,6 +322,7 @@ export default function CategorysPage() {
       
       queryClient.invalidateQueries({ queryKey: ['categoryProducts', selectedCategoryId] });
       queryClient.invalidateQueries({ queryKey: ['products'] });
+      queryClient.invalidateQueries({ queryKey: ['categoryProductCounts'] });
     } catch (error) {
       console.error('Error duplicating product:', error);
       toast.error('Failed to duplicate product');
@@ -349,6 +350,7 @@ export default function CategorysPage() {
       
       queryClient.invalidateQueries({ queryKey: ['categoryProducts', selectedCategoryId] });
       queryClient.invalidateQueries({ queryKey: ['products'] });
+      queryClient.invalidateQueries({ queryKey: ['categoryProductCounts'] });
     } catch (error) {
       console.error('Error deleting product:', error);
       toast.error('Failed to delete product');
@@ -719,7 +721,7 @@ export default function CategorysPage() {
 
         {/* Right Pane - Category Details & Products */}
         <div className="flex-1 flex flex-col overflow-hidden bg-gray-50 min-w-0 min-h-0 relative">
-          {selectedCategoryId && selectedCategoryId !== 'all' ? (
+          {selectedCategoryId ? (
             <>
               {/* Right Pane Header - Sticky on Mobile Only */}
               <div className="flex-shrink-0 px-3 md:px-4 lg:px-6 py-3 md:py-4 bg-white border-b sticky top-0 z-20 md:static md:z-auto">
@@ -1422,6 +1424,7 @@ export default function CategorysPage() {
             onProductUpdated={() => {
               queryClient.invalidateQueries({ queryKey: ['categoryProducts', selectedCategoryId] });
               queryClient.invalidateQueries({ queryKey: ['products'] });
+              queryClient.invalidateQueries({ queryKey: ['categoryProductCounts'] });
             }}
           />
         </>
@@ -1438,6 +1441,7 @@ export default function CategorysPage() {
           onProductUpdated={() => {
             queryClient.invalidateQueries({ queryKey: ['categoryProducts', selectedCategoryId] });
             queryClient.invalidateQueries({ queryKey: ['products'] });
+            queryClient.invalidateQueries({ queryKey: ['categoryProductCounts'] });
           }}
         />
       )}
@@ -1470,14 +1474,45 @@ export default function CategorysPage() {
           setScannedSKU('');
         }}
         onProductAdded={async () => {
-          queryClient.invalidateQueries({ queryKey: ['categoryProducts', selectedCategoryId] });
-          queryClient.invalidateQueries({ queryKey: ['products'] });
+          // Invalidate all categoryProducts queries to ensure all category views refresh
+          await queryClient.invalidateQueries({ 
+            queryKey: ['categoryProducts'],
+            refetchType: 'active',
+          });
+          // Invalidate category analytics to refresh stats
+          await queryClient.invalidateQueries({ 
+            queryKey: ['categoryAnalytics'],
+            refetchType: 'active',
+          });
+          // Invalidate product counts
+          await queryClient.invalidateQueries({ 
+            queryKey: ['categoryProductCounts'],
+            refetchType: 'active',
+          });
+          // Invalidate all products analytics
+          await queryClient.invalidateQueries({ 
+            queryKey: ['allProductsAnalyticsWeekAgo'],
+            refetchType: 'active',
+          });
+          await queryClient.invalidateQueries({ queryKey: ['products'] });
+          // Also invalidate the specific current category view
+          if (selectedCategoryId && selectedCategoryId !== 'all') {
+            await queryClient.invalidateQueries({ 
+              queryKey: ['categoryProducts', selectedCategoryId],
+              refetchType: 'active',
+            });
+            await queryClient.invalidateQueries({ 
+              queryKey: ['categoryAnalytics', selectedCategoryId],
+              refetchType: 'active',
+            });
+          }
           setIsAddModalOpen(false);
           setPreFilledProductName('');
           setScannedSKU('');
         }}
         preFilledSKU={scannedSKU}
         preFilledName={preFilledProductName}
+        preFilledCategoryId={selectedCategoryId && selectedCategoryId !== 'all' ? selectedCategoryId : undefined}
       />
 
       {isBarcodeScannerOpen && (
