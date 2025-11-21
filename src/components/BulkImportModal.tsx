@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
 import { toast } from 'sonner';
-import { Upload, Download, FileSpreadsheet, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { Upload, Download, FileSpreadsheet, AlertCircle, CheckCircle2, Image as ImageIcon } from 'lucide-react';
 import * as XLSX from 'xlsx';
 
 interface BulkImportModalProps {
@@ -35,6 +35,8 @@ export const BulkImportModal: React.FC<BulkImportModalProps> = ({
   const { activeBranch } = useBranches();
   const [file, setFile] = useState<File | null>(null);
   const [isImporting, setIsImporting] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [importResults, setImportResults] = useState<{
     success: number;
     failed: number;
@@ -127,29 +129,61 @@ export const BulkImportModal: React.FC<BulkImportModalProps> = ({
     toast.success('Template downloaded successfully');
   };
 
+  const validateAndSetFile = (selectedFile: File) => {
+    // Check file type
+    const validTypes = [
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      'application/vnd.ms-excel',
+    ];
+    
+    if (!validTypes.includes(selectedFile.type) && !selectedFile.name.endsWith('.xlsx') && !selectedFile.name.endsWith('.xls')) {
+      toast.error('Please select a valid Excel file (.xlsx or .xls)');
+      return false;
+    }
+
+    // Validate file size (max 10MB for Excel files)
+    if (selectedFile.size > 10 * 1024 * 1024) {
+      toast.error('File size must be less than 10MB');
+      return false;
+    }
+
+    setFile(selectedFile);
+    setImportResults(null);
+    return true;
+  };
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {
-      // Check file type
-      const validTypes = [
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        'application/vnd.ms-excel',
-      ];
-      
-      if (!validTypes.includes(selectedFile.type) && !selectedFile.name.endsWith('.xlsx') && !selectedFile.name.endsWith('.xls')) {
-        toast.error('Please select a valid Excel file (.xlsx or .xls)');
-        return;
-      }
-
-      // Validate file size (max 10MB for Excel files)
-      if (selectedFile.size > 10 * 1024 * 1024) {
-        toast.error('File size must be less than 10MB');
-        return;
-      }
-
-      setFile(selectedFile);
-      setImportResults(null);
+      validateAndSetFile(selectedFile);
     }
+  };
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+
+    const droppedFile = e.dataTransfer.files?.[0];
+    if (droppedFile) {
+      validateAndSetFile(droppedFile);
+    }
+  };
+
+  const handleDragZoneClick = () => {
+    fileInputRef.current?.click();
   };
 
   const handleImport = async () => {
@@ -365,31 +399,59 @@ export const BulkImportModal: React.FC<BulkImportModalProps> = ({
             </Button>
           </div>
 
-          {/* File Upload */}
+          {/* File Upload with Drag and Drop */}
           <div className="space-y-2">
             <label className="block text-sm font-medium text-gray-700">
               Upload Excel File
             </label>
-            <div className="flex items-center gap-2">
+            
+            {/* Drag and Drop Zone */}
+            <div
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
+              onClick={handleDragZoneClick}
+              className={`
+                border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors
+                ${isDragging 
+                  ? 'border-blue-500 bg-blue-50' 
+                  : file 
+                    ? 'border-green-500 bg-green-50' 
+                    : 'border-gray-300 bg-gray-50 hover:border-blue-400 hover:bg-blue-50'
+                }
+              `}
+            >
               <input
+                ref={fileInputRef}
                 type="file"
                 accept=".xlsx,.xls"
                 onChange={handleFileChange}
-                className="flex-1 text-sm text-gray-500
-                  file:mr-4 file:py-2 file:px-4
-                  file:rounded-md file:border-0
-                  file:text-sm file:font-semibold
-                  file:bg-blue-50 file:text-blue-700
-                  hover:file:bg-blue-100
-                  cursor-pointer"
+                className="hidden"
               />
+              
+              {file ? (
+                <div className="flex flex-col items-center gap-2">
+                  <CheckCircle2 className="w-12 h-12 text-green-600" />
+                  <p className="text-sm font-medium text-green-800">{file.name}</p>
+                  <p className="text-xs text-green-600">Click to select a different file</p>
+                </div>
+              ) : (
+                <div className="flex flex-col items-center gap-2">
+                  <Upload className="w-12 h-12 text-gray-400" />
+                  <div>
+                    <p className="text-sm font-medium text-gray-700">
+                      Drag and drop your Excel file here
+                    </p>
+                    <p className="text-xs text-gray-500 mt-1">
+                      or click to browse
+                    </p>
+                  </div>
+                  <p className="text-xs text-gray-400 mt-2">
+                    Supports .xlsx and .xls files (max 10MB)
+                  </p>
+                </div>
+              )}
             </div>
-            {file && (
-              <p className="text-sm text-green-600 flex items-center gap-1">
-                <CheckCircle2 className="w-4 h-4" />
-                {file.name} selected
-              </p>
-            )}
           </div>
 
           {/* Required Fields Info */}

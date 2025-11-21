@@ -11,6 +11,8 @@ import { HomePageNL } from "./components/HomePageNL";
 import { AuthPage } from "./components/AuthPage";
 import NotFound from "./pages/NotFound";
 import SEOOverviewPage from './pages/seo';
+import OnboardingPage from './pages/OnboardingPage';
+import GuestSandbox from './pages/GuestSandbox';
 import { Dashboard } from './components/Dashboard';
 import { StockList } from './components/StockList';
 import { StockMovements } from './components/StockMovements';
@@ -24,6 +26,7 @@ import { InvoiceList } from './components/payments/InvoiceList';
 import IntegrationsSettings from './components/settings/Integrations';
 import { useAuth, AuthProvider } from "./hooks/useAuth";
 import { useBranches, BranchProvider } from "./hooks/useBranches";
+import { OnboardingCheck } from "./components/OnboardingCheck";
 import { CurrencyProvider } from "./hooks/useCurrency";
 import { FirstBranchSetup } from "./components/FirstBranchSetup";
 import React, { Suspense, useState, useEffect } from "react";
@@ -216,10 +219,19 @@ const AppRouter = () => {
       }
     }
 
+    // Don't check onboarding for the onboarding page itself
+    const isOnboardingPage = location.pathname === '/onboarding';
+    
     return (
       <ThemeProvider>
         <Suspense fallback={<LoadingScreen />}>
-          {children}
+          {isOnboardingPage ? (
+            children
+          ) : (
+            <OnboardingCheck>
+              {children}
+            </OnboardingCheck>
+          )}
           <ChurnFeedbackModal 
             isOpen={showChurnModal} 
             onClose={() => setShowChurnModal(false)} 
@@ -371,10 +383,17 @@ const AuthRoute = () => {
         <Route path="/features" element={<FeaturesPage />} />
         <Route path="/error-test" element={<ErrorTestComponent />} />
         <Route path="/auth" element={<AuthRoute />} />
+        <Route path="/onboarding" element={
+          <ProtectedRoute>
+            <BranchProvider>
+              <OnboardingPage />
+            </BranchProvider>
+          </ProtectedRoute>
+        } />
         <Route path="/pricing" element={<PricingPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/seo" element={<SEOOverviewPage />} />
-        <Route path="/demo" element={<DemoPage />} />
+        <Route path="/demo" element={<GuestSandbox />} />
 
         {/* SEO routes (auto-generated from src/pages/SEO) */}
         {getSeoRoutes().map(r => (

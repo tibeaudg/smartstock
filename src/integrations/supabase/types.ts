@@ -792,6 +792,7 @@ export type Database = {
           blocked: boolean | null
           last_login: string | null
           is_owner: boolean | null
+          onboarding: string | null
         }
         Insert: {
           created_at?: string | null
@@ -805,6 +806,7 @@ export type Database = {
           blocked?: boolean | null
           last_login?: string | null
           is_owner?: boolean | null
+          onboarding?: string | null
         }
         Update: {
           created_at?: string | null
@@ -818,6 +820,34 @@ export type Database = {
           blocked?: boolean | null
           last_login?: string | null
           is_owner?: boolean | null
+          onboarding?: string | null
+        }
+        Relationships: [        ]
+      }
+      guest_sessions: {
+        Row: {
+          id: string
+          session_token: string
+          expires_at: string
+          created_at: string | null
+          demo_data_created: boolean | null
+          last_accessed: string | null
+        }
+        Insert: {
+          id?: string
+          session_token: string
+          expires_at: string
+          created_at?: string | null
+          demo_data_created?: boolean | null
+          last_accessed?: string | null
+        }
+        Update: {
+          id?: string
+          session_token?: string
+          expires_at?: string
+          created_at?: string | null
+          demo_data_created?: boolean | null
+          last_accessed?: string | null
         }
         Relationships: []
       }

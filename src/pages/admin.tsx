@@ -3,7 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Layout } from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Loader2, ArrowUp, ArrowDown, ChevronUp, ChevronDown, Download } from 'lucide-react';
+import { Loader2, ArrowUp, ArrowDown, ChevronUp, ChevronDown, Download, RotateCcw } from 'lucide-react';
 import { BranchProvider } from '@/hooks/useBranches';
 import { useAuth } from '@/hooks/useAuth';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
@@ -16,6 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { SEO } from '@/components/SEO';
 import { toast } from 'sonner';
 import * as XLSX from 'xlsx';
@@ -690,6 +691,35 @@ export default function AdminPage() {
   });
 
   /**
+   * Reset onboarding status for testing
+   */
+  const resetOnboardingMutation = useMutation({
+    mutationFn: async () => {
+      if (!user) throw new Error('No user found');
+      
+      const { error } = await supabase
+        .from('profiles')
+        .update({ onboarding: null } as any)
+        .eq('id', user.id);
+
+      if (error) throw error;
+      return { success: true };
+    },
+    onSuccess: () => {
+      toast.success('Onboarding status reset. Redirecting to onboarding page...');
+      // Invalidate queries to refresh user profile
+      queryClient.invalidateQueries({ queryKey: ['userProfiles'] });
+      // Redirect to onboarding after a short delay
+      setTimeout(() => {
+        navigate('/onboarding');
+      }, 1000);
+    },
+    onError: (error: Error) => {
+      toast.error(error.message || 'Failed to reset onboarding status');
+    }
+  });
+
+  /**
    * Handle table sorting
    */
   const handleSort = useCallback((column: SortColumn) => {
@@ -1050,6 +1080,64 @@ export default function AdminPage() {
 
           {/* Main content area */}
           <div className="w-full flex-grow space-y-2 mt-6 mb-24">
+
+            {/* Onboarding Test Button - Always visible for admins */}
+            {userProfile?.is_owner && (
+              <Card className="mb-4 border-orange-200 bg-orange-50">
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between flex-wrap gap-4">
+                    <div>
+                      <h3 className="font-semibold text-orange-900 mb-1">Test Onboarding Flow</h3>
+                      <p className="text-sm text-orange-700">
+                        Reset your onboarding status to test and review the onboarding experience
+                      </p>
+                    </div>
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="border-orange-300 text-orange-700 hover:bg-orange-100"
+                          disabled={resetOnboardingMutation.isPending}
+                        >
+                          {resetOnboardingMutation.isPending ? (
+                            <>
+                              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                              Resetting...
+                            </>
+                          ) : (
+                            <>
+                              <RotateCcw className="w-4 h-4 mr-2" />
+                              Reset Onboarding
+                            </>
+                          )}
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Reset Onboarding Status?</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            This will reset your onboarding status to allow you to go through the onboarding flow again.
+                            This is useful for testing and reviewing the onboarding experience.
+                            <br /><br />
+                            You will be redirected to the onboarding page after resetting.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogAction
+                            onClick={() => resetOnboardingMutation.mutate()}
+                            className="bg-orange-600 hover:bg-orange-700"
+                          >
+                            Reset & Go to Onboarding
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
 
             {activeTab === 'notifications' && (
               <AdminNotificationManager />

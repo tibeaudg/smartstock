@@ -598,6 +598,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         role,
         is_owner: false, // Nieuwe gebruikers zijn standaard GEEN eigenaar
         updated_at: new Date().toISOString(),
+        onboarding: null, // New signups start with onboarding not completed
       };
       const { error: profileError } = await supabase.from('profiles').upsert(profileData, { 
         onConflict: 'id',
