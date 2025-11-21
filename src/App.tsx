@@ -35,6 +35,7 @@ import { useNavigationQueryReset } from "./hooks/useNavigationQueryReset";
 import { ContentWrapper } from "./ContentWrapper";
 import AdminUserDetailPage from './pages/AdminUserDetailPage';
 import AdminNotificationsPage from './pages/AdminNotificationsPage';
+import AdminOnboardingPage from './pages/admin/onboarding';
 import SEO from './components/SEO';
 import PreloadResources from './components/PreloadResources';
 import { Admin } from './components/Admin';
@@ -463,6 +464,7 @@ const AuthRoute = () => {
             <Route path="notifications" element={<AdminNotificationsPage />} />
             <Route path="chat" element={<AdminChatList />} />
             <Route path="subscriptions" element={<AdminSubscriptionManagement />} />
+            <Route path="onboarding" element={<AdminOnboardingPage />} />
 
             <Route path="user/:id" element={<AdminUserDetailPage />} />
           </Route>

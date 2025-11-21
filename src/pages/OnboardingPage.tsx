@@ -9,6 +9,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { OnboardingChecklist, ChecklistItem } from '@/components/onboarding/OnboardingChecklist';
 import { IndustrySelectorOnboarding } from '@/components/onboarding/IndustrySelectorOnboarding';
 import { ImportStep } from '@/components/onboarding/ImportStep';
+import { FirstBranchSetup } from '@/components/FirstBranchSetup';
 import { autoGenerateCategories } from '@/lib/onboarding/autoGenerateCategories';
 import { IndustryType, CategorySuggestion } from '@/lib/onboarding/industryCategories';
 import { CheckCircle2, ArrowRight, ArrowLeft, Loader2 } from 'lucide-react';
@@ -66,10 +67,28 @@ export default function OnboardingPage() {
     }
   }, [user, userProfile]);
 
-  const handleIndustrySelect = (industry: IndustryType) => {
+  const handleIndustrySelect = async (industry: IndustryType) => {
     setSelectedIndustry(industry);
     setIndustrySelected(true);
     updateChecklist('industry', true);
+    
+    // Save industry immediately when selected
+    if (user) {
+      try {
+        await supabase
+          .from('company_types')
+          .upsert({
+            user_id: user.id,
+            type: industry,
+            custom_type: null // Will be updated later if "other" is selected
+          } as any, {
+            onConflict: 'user_id'
+          });
+      } catch (error: any) {
+        console.error('Error saving industry:', error);
+        // Don't show error to user, just log it
+      }
+    }
   };
 
   const [industrySpecification, setIndustrySpecification] = useState('');
@@ -79,8 +98,25 @@ export default function OnboardingPage() {
     setCustomCategories(custom);
   };
 
-  const handleIndustrySpecificationChange = (specification: string) => {
+  const handleIndustrySpecificationChange = async (specification: string) => {
     setIndustrySpecification(specification);
+    
+    // Update company_types if "other" industry is selected
+    if (user && selectedIndustry === 'other') {
+      try {
+        await supabase
+          .from('company_types')
+          .upsert({
+            user_id: user.id,
+            type: 'other',
+            custom_type: specification || null
+          } as any, {
+            onConflict: 'user_id'
+          });
+      } catch (error: any) {
+        console.error('Error saving custom industry:', error);
+      }
+    }
   };
 
   const handleGenerateCategories = async () => {
@@ -244,7 +280,7 @@ export default function OnboardingPage() {
           }
 
           // Create new category
-          const { error: categoryError } = await supabase
+          const { data: newCustomCategory, error: categoryError } = await supabase
             .from('categories')
             .insert({
               name: trimmed,
@@ -256,6 +292,11 @@ export default function OnboardingPage() {
 
           if (categoryError) {
             errors.push(`Failed to create custom category ${trimmed}: ${categoryError.message}`);
+            continue;
+          }
+
+          if (!newCustomCategory) {
+            errors.push(`Failed to create custom category ${trimmed}: No data returned`);
             continue;
           }
 
@@ -288,12 +329,18 @@ export default function OnboardingPage() {
     updateChecklist('setup', true);
   };
 
+  const handleImportSkip = () => {
+    // Mark setup as complete when user skips import
+    // They can still generate categories or proceed without either
+    setImportCompleted(true);
+    updateChecklist('setup', true);
+    // Don't auto-advance - let user click Continue to proceed to branch step
+  };
+
   const handleBranchCreated = () => {
     updateChecklist('branch', true);
-    // Refresh branches to get the new one
-    refreshBranches().then(() => {
-      setCurrentStep('complete');
-    });
+    // Refresh branches to get the new one - the component will re-render and show success message
+    refreshBranches();
   };
 
   const updateChecklist = (itemId: string, completed: boolean) => {
@@ -396,7 +443,39 @@ export default function OnboardingPage() {
                     </p>
                   </div>
 
-                  <div className="flex flex-col items-center justify-center w-full max-w-md mx-auto gap-6 mb-6">
+                  <div className="flex flex-col items-center justify-center w-full max-w-2xl mx-auto gap-6 mb-6">
+                    {/* Generate Categories option */}
+                    {selectedIndustry && (
+                      <Card className="border-2 hover:border-blue-500 transition-colors flex flex-col items-center justify-center w-full">
+                        <CardContent className="p-6 flex flex-col items-center justify-center w-full">
+                          <h3 className="text-lg font-semibold mb-2">Generate Sample Categories</h3>
+                          <p className="text-sm text-gray-600 mb-4 text-center">
+                            Create sample categories and products based on your selected industry. 
+                            {selectedCategories.length > 0 || customCategories.filter(c => c.trim()).length > 0
+                              ? ` You've selected ${selectedCategories.length} categories and ${customCategories.filter(c => c.trim()).length} custom categories.`
+                              : ' Please go back and select categories first.'}
+                          </p>
+                          <Button
+                            onClick={handleGenerateCategories}
+                            disabled={loading || !activeBranch || (selectedCategories.length === 0 && customCategories.filter(c => c.trim()).length === 0)}
+                            className="w-full"
+                            size="lg"
+                          >
+                            {loading ? (
+                              <>
+                                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                                Generating...
+                              </>
+                            ) : (
+                              'Generate Categories & Products'
+                            )}
+                          </Button>
+                          {categoriesGenerated && (
+                            <p className="text-sm text-green-600 mt-2">✓ Categories and products created successfully!</p>
+                          )}
+                        </CardContent>
+                      </Card>
+                    )}
 
                     {/* Import option */}
                     <Card className="border-2 hover:border-blue-500 transition-colors flex flex-col items-center justify-center w-full">
@@ -407,7 +486,7 @@ export default function OnboardingPage() {
                         </p>
                         <ImportStep
                           onImportComplete={handleImportComplete}
-                          onSkip={() => {}}
+                          onSkip={handleImportSkip}
                         />
                       </CardContent>
                     </Card>
@@ -442,13 +521,6 @@ export default function OnboardingPage() {
 
               {currentStep === 'branch' && (
                 <div>
-                  <div className="mb-6">
-                    <h2 className="text-2xl font-bold mb-4">Create Your First Warehouse</h2>
-                    <p className="text-gray-600">
-                      Every business needs at least one location to manage inventory. Let's create your first warehouse.
-                    </p>
-                  </div>
-
                   {branches && branches.length > 0 ? (
                     <div className="text-center py-8">
                       <CheckCircle2 className="h-16 w-16 text-green-600 mx-auto mb-4" />
@@ -456,30 +528,37 @@ export default function OnboardingPage() {
                       <p className="text-gray-600 mb-6">
                         You have {branches.length} warehouse{branches.length > 1 ? 's' : ''} set up.
                       </p>
-                      <Button onClick={() => setCurrentStep('complete')} size="lg">
-                        Continue
-                      </Button>
+                      <div className="flex justify-center gap-4">
+                        <Button
+                          variant="outline"
+                          onClick={() => setCurrentStep('setup')}
+                        >
+                          <ArrowLeft className="mr-2 h-4 w-4" />
+                          Back
+                        </Button>
+                        <Button onClick={() => setCurrentStep('complete')} size="lg">
+                          Continue
+                          <ArrowRight className="ml-2 h-4 w-4" />
+                        </Button>
+                      </div>
                     </div>
                   ) : (
-                    <div className="text-center py-8">
-                      <p className="text-gray-600 mb-6">
-                        You'll need to create a branch first. This will be done automatically when you access the dashboard.
-                      </p>
-                      <Button onClick={() => setCurrentStep('complete')} size="lg">
-                        Continue to Dashboard
-                      </Button>
+                    <div>
+                      <FirstBranchSetup 
+                        inline={true}
+                        onBranchCreated={handleBranchCreated}
+                      />
+                      <div className="flex justify-start mt-6">
+                        <Button
+                          variant="outline"
+                          onClick={() => setCurrentStep('setup')}
+                        >
+                          <ArrowLeft className="mr-2 h-4 w-4" />
+                          Back
+                        </Button>
+                      </div>
                     </div>
                   )}
-
-                  <div className="flex justify-start mt-6">
-                    <Button
-                      variant="outline"
-                      onClick={() => setCurrentStep('setup')}
-                    >
-                      <ArrowLeft className="mr-2 h-4 w-4" />
-                      Back
-                    </Button>
-                  </div>
                 </div>
               )}
 

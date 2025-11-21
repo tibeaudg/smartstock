@@ -13,7 +13,12 @@ interface FormData {
   branchName: string;
 }
 
-export const FirstBranchSetup = () => {
+interface FirstBranchSetupProps {
+  onBranchCreated?: () => void;
+  inline?: boolean;
+}
+
+export const FirstBranchSetup: React.FC<FirstBranchSetupProps> = ({ onBranchCreated, inline = false }) => {
   const { user } = useAuth();
   const { setActiveBranch, refreshBranches } = useBranches();
   const [loading, setLoading] = useState(false);
@@ -70,6 +75,10 @@ export const FirstBranchSetup = () => {
 
       toast.success('Your first branch has been successfully created!');
       await refreshBranches();
+      // Call the callback if provided
+      if (onBranchCreated) {
+        onBranchCreated();
+      }
     } catch (err: any) {
       console.error('Error creating branch:', err);
       toast.error('An error occurred: ' + err.message);
@@ -77,6 +86,54 @@ export const FirstBranchSetup = () => {
       setLoading(false);
     }
   };
+
+  const formContent = (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="space-y-2">
+        <Label htmlFor="branchName" className="text-sm font-medium">
+          Company name *
+        </Label>
+        <Input
+          id="branchName"
+          type="text"
+          placeholder="For example: My Company"
+          value={formData.branchName}
+          onChange={(e) => handleInputChange('branchName', e.target.value)}
+          required
+          className="w-full"
+        />
+      </div>
+
+      <Button 
+        type="submit" 
+        className="w-full" 
+        disabled={loading || !formData.branchName.trim()}
+      >
+        {loading ? 'Creating...' : 'Create branch'}
+      </Button>
+    </form>
+  );
+
+  if (inline) {
+    return (
+      <div className="w-full max-w-md mx-auto">
+        <Card>
+          <CardHeader className="text-center">
+            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-blue-100">
+              <Building2 className="h-6 w-6 text-blue-600" />
+            </div>
+            <CardTitle className="text-2xl">Create Your First Warehouse</CardTitle> 
+            <CardDescription>
+              Every business needs at least one location to manage inventory. Let's create your first warehouse.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            {formContent}
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-100 flex items-center justify-center p-4">
@@ -91,32 +148,7 @@ export const FirstBranchSetup = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="branchName" className="text-sm font-medium">
-                Company name *
-              </Label>
-              <Input
-                id="branchName"
-                type="text"
-                placeholder="For example: My Company"
-                value={formData.branchName}
-                onChange={(e) => handleInputChange('branchName', e.target.value)}
-                required
-                className="w-full"
-              />
-            </div>
-
-
-
-            <Button 
-              type="submit" 
-              className="w-full" 
-              disabled={loading || !formData.branchName.trim()}
-            >
-              {loading ? 'Creating...' : 'Create branch'}
-            </Button>
-          </form>
+          {formContent}
         </CardContent>
       </Card>
     </div>

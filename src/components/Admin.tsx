@@ -12,7 +12,8 @@ import {
   Settings,
   Users,
   BarChart3,
-  Crown
+  Crown,
+  TrendingUp
 } from 'lucide-react';
 
 export const Admin = () => {
@@ -25,6 +26,7 @@ export const Admin = () => {
     { id: 'chat', label: 'Chat', icon: MessageSquare, path: '/admin/chat' },
     { id: 'seo', label: 'SEO', icon: Search, path: '/admin/seo' },
     { id: 'subscriptions', label: 'Abonnementen', icon: Crown, path: '/admin/subscriptions' },
+    { id: 'onboarding', label: 'Onboarding', icon: TrendingUp, path: '/admin/onboarding' },
     { id: 'payment-test', label: 'Payment Test', icon: TestTube, path: '/admin/payment-test' },
   ];
 

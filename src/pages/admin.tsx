@@ -12,6 +12,7 @@ import { AdminNotificationManager } from '@/components/AdminNotificationManager'
 import { AdminChatList } from '@/components/AdminChatList';
 import { AdminSubscriptionManagement } from '@/components/admin/SubscriptionManagement';  
 import CMS from '@/components/CMS';
+import AdminOnboardingPage from './admin/onboarding';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -614,7 +615,7 @@ export default function AdminPage() {
   const { user, userProfile } = useAuth();
   const { isMobile } = useMobile();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<'users' | 'features' | 'chats' | 'notifications' | 'cms' | 'subscription-management' | 'churn-surveys'>('users');
+  const [activeTab, setActiveTab] = useState<'users' | 'features' | 'chats' | 'notifications' | 'cms' | 'subscription-management' | 'churn-surveys' | 'onboarding'>('users');
   const [selectedUser, setSelectedUser] = useState<UserProfile | null>(null);
   const [companyTypes, setCompanyTypes] = useState<Record<string, { type: string; custom_type: string | null }>>({});
   const [userStats, setUserStats] = useState<UserStats[]>([]);
@@ -707,8 +708,9 @@ export default function AdminPage() {
     },
     onSuccess: () => {
       toast.success('Onboarding status reset. Redirecting to onboarding page...');
-      // Invalidate queries to refresh user profile
+      // Invalidate queries to refresh user profile and onboarding data
       queryClient.invalidateQueries({ queryKey: ['userProfiles'] });
+      queryClient.invalidateQueries({ queryKey: ['onboarding-users'] });
       // Redirect to onboarding after a short delay
       setTimeout(() => {
         navigate('/onboarding');
@@ -991,13 +993,14 @@ export default function AdminPage() {
     };
   }, [user?.id, queryClient, activeTab]);
 
-  const sidebarNavItems: { id: 'users' | 'features' | 'chats' | 'notifications' | 'cms' | 'subscription-management' | 'churn-surveys'; label: string }[] = [
+  const sidebarNavItems: { id: 'users' | 'features' | 'chats' | 'notifications' | 'cms' | 'subscription-management' | 'churn-surveys' | 'onboarding'; label: string }[] = [
     { id: 'users', label: 'User Management' },
     { id: 'churn-surveys', label: 'Churn Surveys' },
     { id: 'chats', label: 'Chats' },
     { id: 'notifications', label: 'Notifications' },
     { id: 'cms', label: 'CMS' },
     { id: 'subscription-management', label: 'Subscription Management' },
+    { id: 'onboarding', label: 'Onboarding' },
   ];
   
   // Access control - only owners can view the admin page
@@ -1598,6 +1601,9 @@ export default function AdminPage() {
             )}
             {activeTab === 'cms' && (
               <CMS />
+            )}
+            {activeTab === 'onboarding' && (
+              <AdminOnboardingPage embedded={true} />
             )}
 
 
