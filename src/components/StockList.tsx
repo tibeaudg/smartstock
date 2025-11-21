@@ -62,7 +62,6 @@ import { BulkImportModal } from './BulkImportModal';
 import { ManualStockAdjustModal } from './ManualStockAdjustModal';
 import { StockOperationModal } from './StockOperationModal';
 import { BarcodeScanner } from './BarcodeScanner';
-import { SupplierPreviewPopover } from './SupplierPreviewPopover';
 import { ProductCard } from './ProductCard';
 import { FirstProductFeedbackModal } from './FirstProductFeedbackModal';
 import { useMobile } from '@/hooks/use-mobile';
@@ -159,9 +158,7 @@ interface Product {
   sale_price: number;
   status: string | null;
   category_id: string | null;
-  supplier_id: string | null;
   category_name: string | null;
-  supplier_name: string | null;
   image_url?: string | null;
   location?: string | null;
   is_variant?: boolean;
@@ -459,22 +456,6 @@ const ProductDetailDrawer: React.FC<ProductDetailDrawerProps> = ({ product, isOp
                 </div>
               )}
 
-              {product.supplier_id && product.supplier_name && (
-                <div>
-                  <label className="text-sm font-medium text-gray-700">Supplier</label>
-                  <div className="mt-1">
-                    <SupplierPreviewPopover
-                      supplierId={product.supplier_id}
-                      supplierName={product.supplier_name}
-                    >
-                      <div className="flex items-center gap-2 text-sm text-gray-900 hover:text-blue-600 hover:underline cursor-pointer transition-colors">
-                        <Truck className="w-4 h-4 text-gray-400" />
-                        <span>{product.supplier_name}</span>
-                      </div>
-                    </SupplierPreviewPopover>
-                  </div>
-                </div>
-              )}
 
               <div className="grid grid-cols-3 gap-4">
                 <div>
@@ -813,27 +794,6 @@ const ProductRow: React.FC<ProductRowProps> = ({
         </td>
       )}
 
-      {/* Supplier column */}
-      {columnVisibility.supplier && (
-        <td className="px-4 py-3 text-center w-1/8">
-          {!hasChildren && (
-            product.supplier_id && product.supplier_name ? (
-              <SupplierPreviewPopover
-                supplierId={product.supplier_id}
-                supplierName={product.supplier_name}
-              >
-                <span className="text-sm text-gray-600 hover:text-blue-600 hover:underline cursor-pointer transition-colors">
-                  {product.supplier_name}
-                </span>
-              </SupplierPreviewPopover>
-            ) : (
-              <span className="text-sm text-gray-600">
-                -
-              </span>
-            )
-          )}
-        </td>
-      )}
 
       {/* Combined Pricing column */}
       {(columnVisibility.purchasePrice || columnVisibility.salePrice) && (
@@ -1006,22 +966,6 @@ const MobileProductDetailDrawer: React.FC<MobileProductDetailDrawerProps> = ({ p
             </div>
           )}
 
-          {product.supplier_id && product.supplier_name && (
-            <div>
-              <label className="text-xs font-medium text-gray-700">Supplier</label>
-              <div className="mt-1">
-                <SupplierPreviewPopover
-                  supplierId={product.supplier_id}
-                  supplierName={product.supplier_name}
-                >
-                  <div className="flex items-center gap-1 text-xs text-gray-900 hover:text-blue-600 hover:underline cursor-pointer transition-colors">
-                    <Truck className="w-3 h-3 text-gray-400" />
-                    <span>{product.supplier_name}</span>
-                  </div>
-                </SupplierPreviewPopover>
-              </div>
-            </div>
-          )}
 
           <div className="grid grid-cols-3 gap-3">
             <div>
@@ -1539,12 +1483,9 @@ const fetchProducts = async (
       [key: string]: unknown;
     }>;
 
-    // Haal de unieke Category en leverancier IDs op
+    // Haal de unieke Category IDs op
     const categoryIds = [
       ...new Set(typedProducts.map(p => p.category_id).filter((id): id is string => Boolean(id)))
-    ];
-    const supplierIds = [
-      ...new Set(typedProducts.map(p => p.supplier_id).filter((id): id is string => Boolean(id)))
     ];
 
     // Haal Category namen op
@@ -1564,27 +1505,10 @@ const fetchProducts = async (
       }
     }
     
-    // Haal leverancier namen op
-    let suppliers: { [key: string]: string } = {};
-    if (supplierIds.length > 0) {
-      const { data: supplierData, error: supplierError } = await supabase
-        .from('suppliers')
-        .select('id, name')
-        .in('id', supplierIds);
-      
-      if (!supplierError && supplierData) {
-        suppliers = supplierData.reduce((acc: { [key: string]: string }, sup: { id: string; name: string }) => {
-          acc[sup.id] = sup.name;
-          return acc;
-        }, {} as { [key: string]: string });
-      }
-    }
-    
     // Voeg de namen toe aan de producten
     const transformedData = typedProducts.map(product => ({
       ...product,
-      category_name: product.category_id ? categories[product.category_id] || null : null,
-      supplier_name: product.supplier_id ? suppliers[product.supplier_id] || null : null
+      category_name: product.category_id ? categories[product.category_id] || null : null
     }));
     
     return transformedData;
@@ -1660,7 +1584,6 @@ export const StockList = () => {
   const [filters, setFilters] = useState({
     searchTerm: '',
     categoryFilter: 'all',
-    supplierFilter: 'all',
     stockStatusFilter: 'all',
     locationFilter: 'all',
     minPriceFilter: '',
@@ -1680,11 +1603,9 @@ export const StockList = () => {
   
   // State voor filter namen (voor weergave)
   const [categoryFilterName, setCategoryFilterName] = useState('');
-  const [supplierFilterName, setSupplierFilterName] = useState('');
   
-  // State voor Categoryën en leveranciers (voor filter namen)
+  // State voor Categoryën (voor filter namen)
   const [categories, setCategorys] = useState<Array<{ id: string; name: string }>>([]);
-  const [suppliers, setSuppliers] = useState<Array<{ id: string; name: string }>>([]);
 
   // State voor modals
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -1728,14 +1649,13 @@ export const StockList = () => {
   const [isBulkImportModalOpen, setIsBulkImportModalOpen] = useState(false);
 
   // Mobile tab switcher state
-  const [activeTab, setActiveTab] = useState<'products' | 'categories' | 'suppliers'>('products');
+  const [activeTab, setActiveTab] = useState<'products' | 'categories'>('products');
 
   // Column visibility state
   const [columnVisibility, setColumnVisibility] = useState({
     product: true,
     current: true,
     category: true,
-    supplier: true,
     location: true,
     purchasePrice: true,
     salePrice: true,
@@ -1784,8 +1704,6 @@ export const StockList = () => {
   useEffect(() => {
     if (location.pathname.includes('/categories')) {
       setActiveTab('categories');
-    } else if (location.pathname.includes('/suppliers')) {
-      setActiveTab('suppliers');
     } else {
       setActiveTab('products');
     }
@@ -1798,14 +1716,11 @@ export const StockList = () => {
       
       // Use a callback approach to ensure state updates are applied correctly
       if (filterType === 'category' && filterValue) {
-        
-        
         // Batch all state updates together
         Promise.resolve().then(() => {
           setFilters(prev => ({
             ...prev,
             categoryFilter: filterValue,
-            supplierFilter: 'all',
             searchTerm: '',
             stockStatusFilter: 'all',
             locationFilter: 'all',
@@ -1817,57 +1732,28 @@ export const StockList = () => {
             selectedColors: [],
           }));
           setCategoryFilterName(filterName || '');
-          setSupplierFilterName('');
-        });
-        
-      } else if (filterType === 'supplier' && filterValue) {
-        
-        
-        // Batch all state updates together
-        Promise.resolve().then(() => {
-          setFilters(prev => ({
-            ...prev,
-            supplierFilter: filterValue,
-            categoryFilter: 'all',
-            searchTerm: '',
-            stockStatusFilter: 'all',
-            locationFilter: 'all',
-            minPriceFilter: '',
-            maxPriceFilter: '',
-            minStockFilter: '',
-            maxStockFilter: '',
-            selectedSizes: [],
-            selectedColors: [],
-          }));
-          setSupplierFilterName(filterName || '');
-          setCategoryFilterName('');
         });
       }
       
       // Clear navigation state after a longer delay to ensure filters are applied
       setTimeout(() => {
-        
         navigate(location.pathname, { replace: true, state: {} });
       }, 1000);
     }
-  }, [location.state, navigate]);
+  }, [location.state, navigate]); 
 
   // Debug logging voor filter wijzigingen
   useEffect(() => {
     console.log('🔄 Filters changed:', { 
       filters,
-      categoryFilterName, 
-      supplierFilterName,
+      categoryFilterName
     });
     
     // Log wanneer filters daadwerkelijk worden toegepast
     if (filters.categoryFilter !== 'all' && filters.categoryFilter !== '') {
       // Category filter applied
     }
-    if (filters.supplierFilter !== 'all' && filters.supplierFilter !== '') {
-      // Supplier filter applied
-    }
-  }, [filters, categoryFilterName, supplierFilterName]);
+  }, [filters, categoryFilterName]);
 
   // Extra effect om te controleren of filters correct zijn ingesteld
   useEffect(() => {
@@ -1878,19 +1764,16 @@ export const StockList = () => {
       setTimeout(() => {
         if (filterType === 'category' && filters.categoryFilter === filterValue) {
           // Category filter correctly applied
-        } else if (filterType === 'supplier' && filters.supplierFilter === filterValue) {
-          // Supplier filter correctly applied
         } else {
           console.log('❌ Filter not applied correctly:', {
             filterType,
             filterValue,
-            currentCategoryFilter: filters.categoryFilter,
-            currentSupplierFilter: filters.supplierFilter
+            currentCategoryFilter: filters.categoryFilter
           });
         }
       }, 200);
     }
-  }, [location.state, filters.categoryFilter, filters.supplierFilter]);
+  }, [location.state, filters.categoryFilter]);
 
   // Clear filters when component unmounts or branch changes
   useEffect(() => {
@@ -1915,11 +1798,10 @@ export const StockList = () => {
     setPage(1);
   }, [activeBranch?.branch_id]);
 
-  // Haal Categoryën en leveranciers op
+  // Haal Categoryën op
   useEffect(() => {
     if (user) {
       fetchCategorys();
-      fetchSuppliers();
     }
   }, [user]);
 
@@ -1944,36 +1826,13 @@ export const StockList = () => {
     }
   };
 
-  const fetchSuppliers = async () => {
-    if (!user) return;
-    
-    try {
-      const { data, error } = await supabase
-        .from('suppliers')
-        .select('id, name')
-        .eq('user_id', user.id)
-        .order('name');
-      
-      if (error) {
-        console.error('Error fetching suppliers:', error);
-        return;
-      }
-      
-      setSuppliers(data || []);
-    } catch (error) {
-      console.error('Error fetching suppliers:', error);
-    }
-  };
 
   // Handle tab change
-  const handleTabChange = (tab: 'products' | 'categories' | 'suppliers') => {
+  const handleTabChange = (tab: 'products' | 'categories') => {
     setActiveTab(tab);
     switch (tab) {
       case 'categories':
         navigate('/dashboard/categories');
-        break;
-      case 'suppliers':
-        navigate('/dashboard/suppliers');
         break;
       default:
         navigate('/dashboard/stock');
@@ -1986,7 +1845,6 @@ export const StockList = () => {
     setFilters({
       searchTerm: '',
       categoryFilter: 'all',
-      supplierFilter: 'all',
       stockStatusFilter: 'all',
       locationFilter: 'all',
       minPriceFilter: '',
@@ -1998,7 +1856,6 @@ export const StockList = () => {
       favoritesFilter: false,
     });
     setCategoryFilterName('');
-    setSupplierFilterName('');
   }, []);
 
   // Handle first product added callback - simplified
@@ -2017,7 +1874,6 @@ export const StockList = () => {
     let count = 0;
     if (filters.searchTerm !== '') count++;
     if (filters.categoryFilter !== 'all' && filters.categoryFilter !== '') count++;
-    if (filters.supplierFilter !== 'all' && filters.supplierFilter !== '') count++;
     if (filters.stockStatusFilter !== 'all') count++;
     if (filters.locationFilter !== 'all' && filters.locationFilter !== '') count++;
     if (filters.minPriceFilter !== '') count++;
@@ -2162,8 +2018,7 @@ export const StockList = () => {
     console.log('🔍 Filtering products with:', { 
       filters, 
       totalProducts: productsTyped.length,
-      categoryFilterName,
-      supplierFilterName
+      categoryFilterName
     });
     
     const filtered = productsTyped.filter((product) => {
@@ -2171,9 +2026,6 @@ export const StockList = () => {
       
       // Category filter
       const matchesCategory = filters.categoryFilter === 'all' || filters.categoryFilter === '' || product.category_id === filters.categoryFilter;
-      
-      // Supplier filter
-      const matchesSupplier = filters.supplierFilter === 'all' || filters.supplierFilter === '' || product.supplier_id === filters.supplierFilter;
       
       // Location filter
       const matchesLocation = filters.locationFilter === 'all' || filters.locationFilter === '' || product.location === filters.locationFilter;
@@ -2242,19 +2094,7 @@ export const StockList = () => {
         });
       }
 
-      // Enhanced logging for supplier filter
-      if (filters.supplierFilter !== 'all' && filters.supplierFilter !== '') {
-        console.log('📋 Product supplier check:', { 
-          productName: product.name, 
-          productSupplierId: product.supplier_id, 
-          supplierFilter: filters.supplierFilter, 
-          matchesSupplier,
-          productType: typeof product.supplier_id,
-          filterType: typeof filters.supplierFilter
-        });
-      }
-
-      return matchesCategory && matchesSupplier && matchesLocation && matchesSearch && matchesStockStatus && 
+      return matchesCategory && matchesLocation && matchesSearch && matchesStockStatus && 
              matchesFavorites && matchesMinPrice && matchesMaxPrice && matchesMinStock && matchesMaxStock && matchesAttributes;
     });
     
@@ -2263,11 +2103,6 @@ export const StockList = () => {
     // Log detailed filtering info
     if (filters.categoryFilter !== 'all' && filters.categoryFilter !== '') {
       const categoryProducts = productsTyped.filter(p => p.category_id === filters.categoryFilter);
-      
-    }
-    
-    if (filters.supplierFilter !== 'all' && filters.supplierFilter !== '') {
-      const supplierProducts = productsTyped.filter(p => p.supplier_id === filters.supplierFilter);
       
     }
     
@@ -2333,7 +2168,6 @@ export const StockList = () => {
         'Name',
         'Description',
         'Category',
-        'Supplier',
         'Location',
         'Stock Level',
         'Minimum Stock',
@@ -2346,7 +2180,6 @@ export const StockList = () => {
         product.name,
         product.description || '',
         product.category_name || '',
-        product.supplier_name || '',
         product.location || '',
         product.quantity_in_stock,
         product.minimum_stock_level,
@@ -2384,7 +2217,6 @@ export const StockList = () => {
         Name: product.name,
         Description: product.description || '',
         Category: product.category_name || '',
-        Supplier: product.supplier_name || '',
         Location: product.location || '',
         'Stock Level': product.quantity_in_stock,
         'Minimum Stock': product.minimum_stock_level,
@@ -2408,7 +2240,6 @@ export const StockList = () => {
         { wch: 25 }, // Name
         { wch: 30 }, // Description
         { wch: 15 }, // Category
-        { wch: 20 }, // Supplier
         { wch: 15 }, // Location
         { wch: 12 }, // Stock Level
         { wch: 15 }, // Minimum Stock
@@ -2438,7 +2269,6 @@ export const StockList = () => {
         'Name',
         'Description',
         'Category',
-        'Supplier',
         'Location',
         'Stock Level',
         'Minimum Stock',
@@ -2457,7 +2287,6 @@ export const StockList = () => {
         product.name,
         product.description || '',
         product.category_name || '',
-        product.supplier_name || '',
         product.location || '',
         product.quantity_in_stock,
         product.minimum_stock_level,
@@ -2843,8 +2672,7 @@ export const StockList = () => {
     
     console.log('Current filters:', {
       filters,
-      categoryFilterName,
-      supplierFilterName
+      categoryFilterName
     });
     
     
@@ -2852,9 +2680,7 @@ export const StockList = () => {
       id: p.id,
       name: p.name,
       category_id: p.category_id,
-      supplier_id: p.supplier_id,
-      category_name: p.category_name,
-      supplier_name: p.supplier_name
+      category_name: p.category_name
     })));
     
     // Test filtering logic
@@ -2871,13 +2697,6 @@ export const StockList = () => {
       
     }
     
-    if (filters.supplierFilter !== 'all' && filters.supplierFilter !== '') {
-      const matchingProducts = productsTyped.filter(p => p.supplier_id === filters.supplierFilter);
-      
-      matchingProducts.forEach(p => {
-        
-      });
-    }
   };
 
   // Debug effect voor filters
@@ -2886,7 +2705,7 @@ export const StockList = () => {
       
       testFilters();
     }
-  }, [location.pathname, filters.categoryFilter, filters.supplierFilter, filters.searchTerm, productsTyped]);
+  }, [location.pathname, filters.categoryFilter, filters.searchTerm, productsTyped]);
 
   // Treat branch loading as page loading to avoid flashing "No branch selected"
   if (branchesLoading || loading) {
@@ -2997,12 +2816,6 @@ export const StockList = () => {
                     Category
                   </DropdownMenuCheckboxItem>
                   <DropdownMenuCheckboxItem
-                    checked={columnVisibility.supplier}
-                    onCheckedChange={() => toggleColumnVisibility('supplier')}
-                  >
-                    Supplier
-                  </DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem
                     checked={columnVisibility.purchasePrice}
                     onCheckedChange={() => toggleColumnVisibility('purchasePrice')}
                   >
@@ -3081,7 +2894,6 @@ export const StockList = () => {
           <div className="">        
             {/* Filter Header */}
             {((filters.categoryFilter && filters.categoryFilter !== 'all' && filters.categoryFilter !== '') || 
-              (filters.supplierFilter && filters.supplierFilter !== 'all' && filters.supplierFilter !== '') ||
               (filters.searchTerm && filters.searchTerm !== '') ||
               (filters.locationFilter && filters.locationFilter !== 'all' && filters.locationFilter !== '') ||
               (filters.stockStatusFilter && filters.stockStatusFilter !== 'all') ||
@@ -3100,11 +2912,6 @@ export const StockList = () => {
                     {filters.categoryFilter && filters.categoryFilter !== 'all' && filters.categoryFilter !== '' && (
                       <Badge variant="secondary" className="bg-blue-100 text-blue-800">
                         Category: {categoryFilterName || 'Filtered'}
-                      </Badge>
-                    )}
-                    {filters.supplierFilter && filters.supplierFilter !== 'all' && filters.supplierFilter !== '' && (
-                      <Badge variant="secondary" className="bg-blue-100 text-blue-800">
-                        Supplier: {supplierFilterName || 'Filtered'}
                       </Badge>
                     )}
                     {filters.searchTerm && filters.searchTerm !== '' && (
@@ -3444,24 +3251,6 @@ export const StockList = () => {
           </div>
         )}
 
-        {/* Suppliers Tab Content */}
-        {activeTab === 'suppliers' && (
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
-            <div className="text-center">
-              <Truck className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">
-                  Manage Suppliers
-              </h3>
-              <p className="text-base text-gray-600 mb-4">
-                Manage your suppliers for better organization of your purchases and stock
-              </p>
-              <Button onClick={() => navigate('/dashboard/suppliers')}>
-                <Truck className="w-4 h-4 mr-2" />
-                To Suppliers
-              </Button>
-            </div>
-          </div>
-        )}
 
         {/* All modals for mobile view */}
         <ProductActionModal
@@ -3688,12 +3477,6 @@ export const StockList = () => {
                     Category
                   </DropdownMenuCheckboxItem>
                   <DropdownMenuCheckboxItem
-                    checked={columnVisibility.supplier}
-                    onCheckedChange={() => toggleColumnVisibility('supplier')}
-                  >
-                    Supplier
-                  </DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem
                     checked={columnVisibility.purchasePrice}
                     onCheckedChange={() => toggleColumnVisibility('purchasePrice')}
                   >
@@ -3769,7 +3552,6 @@ export const StockList = () => {
 
       {/* Filter Header - Active Filters Display */}
       {((filters.categoryFilter && filters.categoryFilter !== 'all' && filters.categoryFilter !== '') || 
-        (filters.supplierFilter && filters.supplierFilter !== 'all' && filters.supplierFilter !== '') ||
         (filters.searchTerm && filters.searchTerm !== '') ||
         (filters.locationFilter && filters.locationFilter !== 'all' && filters.locationFilter !== '') ||
         (filters.stockStatusFilter && filters.stockStatusFilter !== 'all') ||
@@ -3788,11 +3570,6 @@ export const StockList = () => {
               {filters.categoryFilter && filters.categoryFilter !== 'all' && filters.categoryFilter !== '' && (
                 <Badge variant="secondary" className="bg-blue-100 text-blue-800">
                   Category: {categoryFilterName || 'Filtered'}
-                </Badge>
-              )}
-              {filters.supplierFilter && filters.supplierFilter !== 'all' && filters.supplierFilter !== '' && (
-                <Badge variant="secondary" className="bg-blue-100 text-blue-800">
-                  Supplier: {supplierFilterName || 'Filtered'}
                 </Badge>
               )}
               {filters.searchTerm && filters.searchTerm !== '' && (
@@ -4040,11 +3817,6 @@ export const StockList = () => {
                 {columnVisibility.category && (
                   <th className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8">
                     Category
-                  </th>
-                )}
-                {columnVisibility.supplier && (
-                  <th className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8">
-                    Supplier
                   </th>
                 )}
                 {(columnVisibility.purchasePrice || columnVisibility.salePrice) && (

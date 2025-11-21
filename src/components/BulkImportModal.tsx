@@ -23,7 +23,6 @@ interface ProductRow {
   sale_price: number;
   location?: string;
   category?: string;
-  supplier?: string;
 }
 
 export const BulkImportModal: React.FC<BulkImportModalProps> = ({
@@ -104,7 +103,6 @@ export const BulkImportModal: React.FC<BulkImportModalProps> = ({
         sale_price: 15.99,
         location: 'Warehouse A',
         category: 'General',
-        supplier: 'Supplier X',
       },
     ];
 
@@ -122,7 +120,6 @@ export const BulkImportModal: React.FC<BulkImportModalProps> = ({
       { wch: 12 }, // sale_price
       { wch: 15 }, // location
       { wch: 15 }, // category
-      { wch: 20 }, // supplier
     ];
 
     XLSX.writeFile(wb, 'product_import_template.xlsx');
@@ -211,19 +208,13 @@ export const BulkImportModal: React.FC<BulkImportModalProps> = ({
         return;
       }
 
-      // Get existing categories and suppliers for matching
+      // Get existing categories for matching
       const { data: existingCategorys } = await supabase
         .from('categories')
         .select('id, name')
         .eq('user_id', user.id);
 
-      const { data: existingSuppliers } = await supabase
-        .from('suppliers')
-        .select('id, name')
-        .eq('user_id', user.id);
-
       const categoryMap = new Map(existingCategorys?.map(c => [c.name.toLowerCase(), c.id]) || []);
-      const supplierMap = new Map(existingSuppliers?.map(s => [s.name.toLowerCase(), s.id]) || []);
 
       // Import each product
       for (let i = 0; i < jsonData.length; i++) {
@@ -238,9 +229,8 @@ export const BulkImportModal: React.FC<BulkImportModalProps> = ({
             continue;
           }
 
-          // Find category and supplier IDs if provided
+          // Find category ID if provided
           let categoryId = null;
-          let supplierId = null;
 
           if (row.category && row.category.trim() !== '') {
             const catName = row.category.trim().toLowerCase();
@@ -264,27 +254,6 @@ export const BulkImportModal: React.FC<BulkImportModalProps> = ({
             }
           }
 
-          if (row.supplier && row.supplier.trim() !== '') {
-            const supName = row.supplier.trim().toLowerCase();
-            supplierId = supplierMap.get(supName) || null;
-            
-            // Create supplier if it doesn't exist
-            if (!supplierId) {
-              const { data: newSupplier, error: supError } = await supabase
-                .from('suppliers')
-                .insert({
-                  name: row.supplier.trim(),
-                  user_id: user.id,
-                })
-                .select()
-                .single();
-
-              if (!supError && newSupplier) {
-                supplierId = newSupplier.id;
-                supplierMap.set(supName, supplierId);
-              }
-            }
-          }
 
           const quantity = Number(row.stock) || 0;
           const purchasePrice = Number(row.purchase_price) || 0;
@@ -302,7 +271,6 @@ export const BulkImportModal: React.FC<BulkImportModalProps> = ({
               unit_price: Number(row.sale_price) || 0, // Use sale price as unit price
               location: row.location?.trim() || null,
               category_id: categoryId,
-              supplier_id: supplierId,
               branch_id: activeBranch.branch_id,
               user_id: user.id,
               status: 'active',
@@ -469,7 +437,6 @@ export const BulkImportModal: React.FC<BulkImportModalProps> = ({
               <li><strong>description</strong> - Product description</li>
               <li><strong>location</strong> - Storage location</li>
               <li><strong>category</strong> - Category (will be created if it doesn't exist)</li>
-              <li><strong>supplier</strong> - Supplier (will be created if it doesn't exist)</li>
             </ul>
           </div>
 

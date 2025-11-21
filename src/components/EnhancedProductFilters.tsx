@@ -15,7 +15,6 @@ import { useAuth } from '@/hooks/useAuth';
 interface FilterState {
   searchTerm: string;
   categoryFilter: string;
-  supplierFilter: string;
   stockStatusFilter: string;
   locationFilter: string;
   minPriceFilter: string;
@@ -43,7 +42,6 @@ export const EnhancedProductFilters: React.FC<EnhancedProductFiltersProps> = ({
   const { user } = useAuth();
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [categories, setCategories] = useState<Array<{ id: string; name: string }>>([]);
-  const [suppliers, setSuppliers] = useState<Array<{ id: string; name: string }>>([]);
   const [locations, setLocations] = useState<string[]>([]);
   const [availableSizes, setAvailableSizes] = useState<string[]>([]);
   const [availableColors, setAvailableColors] = useState<string[]>([]);
@@ -57,7 +55,6 @@ export const EnhancedProductFilters: React.FC<EnhancedProductFiltersProps> = ({
   useEffect(() => {
     if (user) {
       fetchCategories();
-      fetchSuppliers();
       fetchLocations();
       fetchAttributes();
     }
@@ -84,26 +81,6 @@ export const EnhancedProductFilters: React.FC<EnhancedProductFiltersProps> = ({
     }
   };
 
-  const fetchSuppliers = async () => {
-    if (!user) return;
-    
-    try {
-      const { data, error } = await supabase
-        .from('suppliers')
-        .select('id, name')
-        .eq('user_id', user.id)
-        .order('name');
-      
-      if (error) {
-        console.error('Error fetching suppliers:', error);
-        return;
-      }
-      
-      setSuppliers(data || []);
-    } catch (error) {
-      console.error('Error fetching suppliers:', error);
-    }
-  };
 
   const fetchLocations = async () => {
     if (!user) return;

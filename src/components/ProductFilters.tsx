@@ -8,6 +8,7 @@ import { Search, Filter, X } from 'lucide-react';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { HierarchicalCategorySelector } from '@/components/categories/HierarchicalCategorySelector';
 
 interface ProductFiltersProps {
   searchTerm: string;
@@ -24,8 +25,6 @@ interface ProductFiltersProps {
   onMaxStockFilterChange: (value: string) => void;
   onClearFilters: () => void;
   activeFiltersCount: number;
-  supplierFilter: string;
-  onSupplierFilterChange: (value: string) => void;
   categoryFilter: string;
   onCategoryFilterChange: (value: string) => void;
 }
@@ -45,21 +44,17 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
   onMaxStockFilterChange,
   onClearFilters,
   activeFiltersCount,
-  supplierFilter,
-  onSupplierFilterChange,
   categoryFilter,
   onCategoryFilterChange,
 }) => {
   const { user } = useAuth();
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [categories, setCategorys] = useState<Array<{ id: string; name: string }>>([]);
-  const [suppliers, setSuppliers] = useState<Array<{ id: string; name: string }>>([]);
 
   // Fetch categories and suppliers when component mounts and user is available
   useEffect(() => {
     if (user) {
       fetchCategorys();
-      fetchSuppliers();
     }
   }, [user]);
 
@@ -150,42 +145,26 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
                 {/* Category Filter */}
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-700">Category</label>
-                  <Select value={categoryFilter} onValueChange={onCategoryFilterChange}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select Category..." />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">All categories</SelectItem>
-                      {categories.map((category) => (
-                        <SelectItem key={category.id} value={category.id}>
-                          {category.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <div className="text-xs text-gray-500">
-                    Current value: {categoryFilter} (type: {typeof categoryFilter})
-                  </div>
-                </div>
-
-                {/* Supplier Filter */}
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700">Supplier</label>
-                  <Select value={supplierFilter} onValueChange={onSupplierFilterChange}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select supplier..." />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">All Suppliers</SelectItem>
-                      {suppliers.map((supplier) => (
-                        <SelectItem key={supplier.id} value={supplier.id}>
-                          {supplier.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <div className="text-xs text-gray-500">
-                    Current value: {supplierFilter} (type: {typeof supplierFilter})
+                  <div className="flex gap-2">
+                    <HierarchicalCategorySelector
+                      value={categoryFilter !== 'all' ? categoryFilter : null}
+                      onValueChange={(categoryId, categoryName) => {
+                        onCategoryFilterChange(categoryId || 'all');
+                      }}
+                      placeholder="All categories"
+                      allowCreate={false}
+                      showPath={true}
+                    />
+                    {categoryFilter !== 'all' && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => onCategoryFilterChange('all')}
+                        className="px-3"
+                      >
+                        Clear
+                      </Button>
+                    )}
                   </div>
                 </div>
 

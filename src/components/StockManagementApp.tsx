@@ -46,7 +46,7 @@ export const StockManagementApp: React.FC = () => {
 
   if (!isLocalStorageAvailable()) {
     return (
-      <div style={{ padding: 32, textAlign: 'center', color: '#b91c1c', background: '#fef2f2', minHeight: '100vh' }}>
+      <div style={{ padding: 32, textAlign: 'center', color: '#b91c1c', background: '#fef2f2', minHeight: 'screen' }}>
         <h1 style={{ fontSize: 28, marginBottom: 16 }}>Local Storage Unavailable</h1>
         <p style={{ marginBottom: 16 }}>
           This application requires local storage to function properly. This might be due to:
@@ -81,13 +81,11 @@ export const StockManagementApp: React.FC = () => {
           }}
           userRole={userProfile.role}
           userProfile={userProfile}
-          // Use an admin-friendly variant when browsing /admin routes so we can control spacing fully
-          variant={location.pathname.startsWith('/admin') ? 'admin' : 'default'}
+          // Use an admin-friendly variant when browsing /admin routes or categories so we can control spacing fully
+          variant={location.pathname.startsWith('/admin') || location.pathname.includes('/categories') ? 'admin' : 'default'}
         >
-          {/* Main scrollable content */}
-          <div className="flex-1 h-full overflow-y-auto transition-colors">
-            <Outlet />
-          </div>
+          {/* Main scrollable content - Layout already handles overflow */}
+          <Outlet />
         </Layout>
 
         <CreateBranchModal

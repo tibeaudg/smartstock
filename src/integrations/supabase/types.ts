@@ -962,6 +962,11 @@ export type Database = {
           name: string
           description: string | null
           user_id: string
+          parent_category_id: string | null
+          icon: string | null
+          color: string | null
+          display_order: number
+          is_active: boolean
           created_at: string
           updated_at: string
         }
@@ -970,6 +975,11 @@ export type Database = {
           name: string
           description?: string | null
           user_id: string
+          parent_category_id?: string | null
+          icon?: string | null
+          color?: string | null
+          display_order?: number
+          is_active?: boolean
           created_at?: string
           updated_at?: string
         }
@@ -978,10 +988,23 @@ export type Database = {
           name?: string
           description?: string | null
           user_id?: string
+          parent_category_id?: string | null
+          icon?: string | null
+          color?: string | null
+          display_order?: number
+          is_active?: boolean
           created_at?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "categories_parent_category_id_fkey"
+            columns: ["parent_category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       suppliers: {
         Row: {

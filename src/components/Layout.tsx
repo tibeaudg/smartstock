@@ -72,7 +72,7 @@ export const Layout = ({ children, currentTab, onTabChange, userRole, userProfil
         onProfileClick={handleProfileClick}
       />
       
-      <div className="flex flex-1 overflow-hidden pt-6">
+      <div className="flex flex-1 overflow-hidden">
         {/* Sidebar - hidden on mobile, shown on desktop */}
         {!isMobile && (
           <div className="fixed left-0 top-0 h-full z-20">
@@ -102,7 +102,7 @@ export const Layout = ({ children, currentTab, onTabChange, userRole, userProfil
         )}
 
         <main
-          className={`flex-1 main-content-surface ${variant === 'admin' ? 'pt-0 md:pt-0 md:pl-0 overflow-y-auto' : 'p-4 pt-8 md:pt-20 overflow-y-auto'} ${
+          className={`flex-1 main-content-surface ${variant === 'admin' ? 'pt-[70px] md:pt-[70px] md:pl-0 overflow-y-auto' : 'p-4 pt-8 md:pt-20 overflow-y-auto'} ${
             isMobile 
               ? 'ml-0 pb-20' // On mobile, add bottom padding for navbar
               : sidebarOpen 

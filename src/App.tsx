@@ -56,7 +56,6 @@ import { ThemeProvider } from './hooks/useTheme';
 import SubscriptionTestPage from './pages/subscription-test';
 import HelpCenterPage from "./pages/help-center";
 import CategorysPage from './pages/categories';
-import SuppliersPage from './pages/suppliers';
 import AdminPage from './pages/admin';
 import PricingPage from './pages/pricing';
 import CheckoutPage from './pages/checkout';
@@ -419,7 +418,6 @@ const AuthRoute = () => {
           <Route path="subscription-test" element={<SubscriptionTestPage />} />
           <Route path="stock" element={<StockList />} />
           <Route path="categories" element={<CategorysPage />} />
-          <Route path="suppliers" element={<SuppliersPage />} />
           <Route path="transactions" element={<StockMovements />} />
 
           <Route path="analytics/reports" element={<CustomReports />} />

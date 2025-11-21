@@ -17,6 +17,7 @@ import { useMobile } from '@/hooks/use-mobile';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { HierarchicalCategorySelector } from '@/components/categories/HierarchicalCategorySelector';
 import { Switch } from '@/components/ui/switch';
 import { cn } from '@/lib/utils';
 import { BarcodeScanner } from './BarcodeScanner';
@@ -50,9 +51,7 @@ interface FormData {
   name: string;
   description: string;
   categoryId: string;
-  supplierId: string;
   categoryName: string;
-  supplierName: string;
   quantityInStock: number;
   minimumStockLevel: number;
   purchasePrice: number;
@@ -66,9 +65,7 @@ const productSchema = z.object({
   name: z.string().min(1, 'Product name is mandatory.'),
   description: z.string().optional(),
   categoryId: z.string().optional(),
-  supplierId: z.string().optional(),
   categoryName: z.string().optional(),
-  supplierName: z.string().optional(),
   quantityInStock: z.number().min(0, 'Stock must be 0 or more.').default(0),
   minimumStockLevel: z.number().min(0, 'Minimum level must be 0 or more.').default(0),
   purchasePrice: z.number().min(0, 'Purchase price must be 0 or more.').default(0),
@@ -127,9 +124,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
   }, [loading]);
   
   const [categories, setCategorys] = useState<Array<{ id: string; name: string }>>([]);
-  const [suppliers, setSuppliers] = useState<Array<{ id: string; name: string }>>([]);
   const [categoryOpen, setCategoryOpen] = useState(false);
-  const [supplierOpen, setSupplierOpen] = useState(false);
   const [hasVariants, setHasVariants] = useState(false);
   const [variants, setVariants] = useState<VariantData[]>([]);
   
@@ -142,9 +137,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
       name: '',
       description: '',
       categoryId: '',
-      supplierId: '',
       categoryName: '',
-      supplierName: '',
       quantityInStock: 0,
       minimumStockLevel: 10,
       purchasePrice: 0,
@@ -232,12 +225,11 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
      
   }, [form, activeBranch, hasVariants]);
 
-  // Fetch Categories and Suppliers
+  // Fetch Categories
   useEffect(() => {
     if (user && isOpen) {
-      console.log('[AddProductModal] Fetching categories and suppliers.');
+      console.log('[AddProductModal] Fetching categories.');
       fetchCategorys();
-      fetchSuppliers();
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, isOpen]);
@@ -264,23 +256,6 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
     }
   }, [user]);
 
-  const fetchSuppliers = useCallback(async () => {
-    try {
-      const { data, error } = await supabase
-        .from('suppliers')
-        .select('id, name')
-        .order('name');
-      
-      if (error) {
-        console.error('Error fetching suppliers:', error);
-        return;
-      }
-      setSuppliers(data || []);
-      console.log(`[AddProductModal] Fetched ${data?.length || 0} suppliers.`);
-    } catch (error) {
-      console.error('Error fetching suppliers:', error);
-    }
-  }, []);
 
   // --- Utility Functions ---
 
@@ -309,11 +284,11 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
     }
   };
 
-  // Generic function to handle Category/Supplier creation or fetching
+  // Generic function to handle Category creation or fetching
   const handleAssociation = useCallback(async (
     nameKey: keyof FormData,
     idKey: keyof FormData,
-    tableName: 'categories' | 'suppliers',
+    tableName: 'categories',
     customFields: Record<string, any> = {}
   ): Promise<string | null> => {
     const name = form.getValues(nameKey)?.trim();
@@ -451,8 +426,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
         console.log(`[AddProductModal] Image uploaded. URL: ${imageUrl}`);
       }
 
-      // 3. Handle Category and Supplier Association
-      const supplierId = await handleAssociation('supplierName', 'supplierId', 'suppliers');
+      // 3. Handle Category Association
       const categoryId = await handleAssociation('categoryName', 'categoryId', 'categories', { user_id: user.id });
       
       let insertedProduct: any = null;
@@ -470,7 +444,6 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
           branch_id: activeBranch.branch_id,
           image_url: imageUrl,
           user_id: user.id,
-          supplier_id: supplierId,
           category_id: categoryId,
           location: validatedData.location.trim() || null,
           sku: validatedData.sku.trim() || null,
@@ -534,7 +507,6 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
           branch_id: activeBranch.branch_id,
           image_url: imageUrl,
           user_id: user.id,
-          supplier_id: supplierId,
           category_id: categoryId,
           location: validatedData.location.trim() || null,
           is_variant: false,
@@ -596,7 +568,6 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
           branch_id: activeBranch.branch_id,
           image_url: imageUrl,
           user_id: user.id,
-          supplier_id: supplierId,
           category_id: categoryId,
           location: v.location?.trim() || validatedData.location.trim() || null,
           is_variant: true,
@@ -948,216 +919,33 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
                       <div className="bg-white border border-gray-200 rounded-lg p-4">
                         <h4 className="text-md font-semibold text-gray-700 mb-3 flex items-center">
                           <div className="w-2 h-2 bg-gray-500 rounded-full mr-2"></div>
-                          Category & Supplier
+                          Category
                         </h4>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <FormField
                             control={form.control}
-                            name="categoryName"
+                            name="categoryId"
                             render={({ field }) => (
                               <FormItem>
                                 <FormLabel className="text-gray-700">Category</FormLabel>
                                 <FormControl>
-                                  <Popover open={categoryOpen} onOpenChange={setCategoryOpen}>
-                                    <PopoverTrigger asChild>
-                                      <Button
-                                        variant="outline"
-                                        role="combobox"
-                                        aria-expanded={categoryOpen}
-                                        className="w-full justify-between py-3 px-3 text-base border-gray-200 focus:border-gray-400"
-                                        disabled={loading}
-                                      >
-                                        {field.value ? field.value : "Select category..."}
-                                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                                      </Button>
-                                    </PopoverTrigger>
-                                    <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0">
-                                      <Command>
-                                        <CommandInput 
-                                          placeholder="Search category..." 
-                                          value={field.value}
-                                          onValueChange={field.onChange}
-                                        />
-                                        <CommandList>
-                                          <CommandEmpty>
-                                            <div className="p-2 text-center">
-                                              <p className="text-sm text-gray-500 mb-2">No category found</p>
-                                              <Button
-                                                variant="outline"
-                                                size="sm"
-                                                onClick={async () => {
-                                                  if (field.value.trim()) {
-                                                    try {
-                                                      const { data: newCategory, error } = await supabase
-                                                        .from('categories')
-                                                        .insert({ name: field.value.trim(), user_id: user.id })
-                                                        .select('id, name')
-                                                        .single();
-                                                      
-                                                      if (error) {
-                                                        toast.error('Error creating category');
-                                                        return;
-                                                      }
-                                                      
-                                                      setCategorys(prev => [...prev, newCategory]);
-                                                      form.setValue('categoryId', newCategory.id);
-                                                      setCategoryOpen(false);
-                                                      toast.success('New category added!');
-                                                      console.log(`[AddProductModal] New category created: ${newCategory.name}`);
-                                                    } catch (error) {
-                                                      console.error('Category creation error:', error);
-                                                      toast.error('Error creating category');
-                                                    }
-                                                  }
-                                                }}
-                                                className="w-full"
-                                              >
-                                                <Plus className="w-4 h-4 mr-2" />
-                                                Add "{field.value}"
-                                              </Button>
-                                            </div>
-                                          </CommandEmpty>
-                                          <CommandGroup>
-                                            {categories.map((category) => (
-                                              <CommandItem
-                                                key={category.id}
-                                                value={category.name}
-                                                onSelect={(currentValue) => {
-                                                  const selectedCategory = categories.find(c => c.name.toLowerCase() === currentValue.toLowerCase());
-                                                  if (selectedCategory) {
-                                                    field.onChange(selectedCategory.name);
-                                                    form.setValue('categoryId', selectedCategory.id);
-                                                    console.log(`[AddProductModal] Selected category: ${selectedCategory.name}, ID: ${selectedCategory.id}`);
-                                                  } else {
-                                                    field.onChange(currentValue);
-                                                    form.setValue('categoryId', '');
-                                                  }
-                                                  setCategoryOpen(false);
-                                                }}
-                                              >
-                                                <Check
-                                                  className={cn(
-                                                    "mr-2 h-4 w-4",
-                                                    field.value === category.name ? "opacity-100" : "opacity-0"
-                                                  )}
-                                                />
-                                                {category.name}
-                                              </CommandItem>
-                                            ))}
-                                          </CommandGroup>
-                                        </CommandList>
-                                      </Command>
-                                    </PopoverContent>
-                                  </Popover>
+                                  <HierarchicalCategorySelector
+                                    value={field.value || null}
+                                    onValueChange={(categoryId, categoryName) => {
+                                      field.onChange(categoryId || '');
+                                      form.setValue('categoryName', categoryName || '');
+                                      console.log(`[AddProductModal] Selected category: ${categoryName}, ID: ${categoryId}`);
+                                    }}
+                                    placeholder="Select category..."
+                                    allowCreate={true}
+                                    showPath={true}
+                                  />
                                 </FormControl>
                                 <FormMessage />
                               </FormItem>
                             )}
                           />
 
-                          <FormField
-                            control={form.control}
-                            name="supplierName"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel className="text-gray-700">Supplier</FormLabel>
-                                <FormControl>
-                                  <Popover open={supplierOpen} onOpenChange={setSupplierOpen}>
-                                    <PopoverTrigger asChild>
-                                      <Button
-                                        variant="outline"
-                                        role="combobox"
-                                        aria-expanded={supplierOpen}
-                                        className="w-full justify-between py-3 px-3 text-base border-gray-200 focus:border-gray-400"
-                                        disabled={loading}
-                                      >
-                                        {field.value ? field.value : "Select supplier..."}
-                                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                                      </Button>
-                                    </PopoverTrigger>
-                                    <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0">
-                                      <Command>
-                                        <CommandInput 
-                                          placeholder="Search supplier..." 
-                                          value={field.value}
-                                          onValueChange={field.onChange}
-                                        />
-                                        <CommandList>
-                                          <CommandEmpty>
-                                            <div className="p-2 text-center">
-                                              <p className="text-sm text-gray-500 mb-2">No supplier found</p>
-                                              <Button
-                                                variant="outline"
-                                                size="sm"
-                                                onClick={async () => {
-                                                  if (field.value.trim()) {
-                                                    try {
-                                                      const { data: newSupplier, error } = await supabase
-                                                        .from('suppliers')
-                                                        .insert({ name: field.value.trim() })
-                                                        .select('id, name')
-                                                        .single();
-                                                      
-                                                      if (error) {
-                                                        toast.error('Error creating supplier');
-                                                        return;
-                                                      }
-                                                      
-                                                      setSuppliers(prev => [...prev, newSupplier]);
-                                                      form.setValue('supplierId', newSupplier.id);
-                                                      setSupplierOpen(false);
-                                                      toast.success('New supplier added!');
-                                                      console.log(`[AddProductModal] New supplier created: ${newSupplier.name}`);
-                                                    } catch (error) {
-                                                      console.error('Supplier creation error:', error);
-                                                      toast.error('Error creating supplier');
-                                                    }
-                                                  }
-                                                }}
-                                                className="w-full"
-                                              >
-                                                <Plus className="w-4 h-4 mr-2" />
-                                                Add "{field.value}"
-                                              </Button>
-                                            </div>
-                                          </CommandEmpty>
-                                          <CommandGroup>
-                                            {suppliers.map((supplier) => (
-                                              <CommandItem
-                                                key={supplier.id}
-                                                value={supplier.name}
-                                                onSelect={(currentValue) => {
-                                                  const selectedSupplier = suppliers.find(s => s.name.toLowerCase() === currentValue.toLowerCase());
-                                                  if (selectedSupplier) {
-                                                    field.onChange(selectedSupplier.name);
-                                                    form.setValue('supplierId', selectedSupplier.id);
-                                                    console.log(`[AddProductModal] Selected supplier: ${selectedSupplier.name}, ID: ${selectedSupplier.id}`);
-                                                  } else {
-                                                    field.onChange(currentValue);
-                                                    form.setValue('supplierId', '');
-                                                  }
-                                                  setSupplierOpen(false);
-                                                }}
-                                              >
-                                                <Check
-                                                  className={cn(
-                                                    "mr-2 h-4 w-4",
-                                                    field.value === supplier.name ? "opacity-100" : "opacity-0"
-                                                  )}
-                                                />
-                                                {supplier.name}
-                                              </CommandItem>
-                                            ))}
-                                          </CommandGroup>
-                                        </CommandList>
-                                      </Command>
-                                    </PopoverContent>
-                                  </Popover>
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
                         </div>
                       </div>
 

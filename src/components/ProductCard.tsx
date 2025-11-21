@@ -21,9 +21,7 @@ interface Product {
   sale_price: number;
   status: string | null;
   category_id: string | null;
-  supplier_id: string | null;
   category_name: string | null;
-  supplier_name: string | null;
   image_url?: string | null;
   location?: string | null;
   is_variant?: boolean;

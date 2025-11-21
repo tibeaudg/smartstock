@@ -158,8 +158,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, profileDropdo
           path: '/dashboard/stock',
           subItems: [
             { id: 'products', label: 'Products', path: '/dashboard/stock' },
-            { id: 'categories', label: 'Categories', path: '/dashboard/categories' },
-            { id: 'suppliers', label: 'Suppliers', path: '/dashboard/suppliers' }
+            { id: 'categories', label: 'Categories', path: '/dashboard/categories' }
           ]
         },
         { id: 'transactions', label: 'History', icon: ShoppingCart, path: '/dashboard/transactions' },
