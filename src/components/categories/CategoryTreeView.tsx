@@ -106,16 +106,14 @@ const CategoryTreeNode: React.FC<CategoryTreeNodeProps> = ({
     <div className="select-none" ref={nodeRef} style={style}>
       <div
         className={cn(
-          'group flex items-center gap-2 px-3 rounded transition-colors',
+          'group flex items-center gap-3 px-4 py-2 border-b border-gray-200 transition-colors',
           'hover:bg-gray-50 cursor-pointer',
           isOver && 'bg-blue-50 border-2 border-blue-300 border-dashed',
-          isSelected && 'bg-blue-50 border-l-4 border-l-blue-600'
+          isSelected && 'bg-blue-50 border-l-4 border-l-blue-600 border-b border-gray-200'
         )}
         style={{ 
-          paddingLeft: `${level * 20 + 12}px`,
-          height: '32px',
-          minHeight: '32px',
-          maxHeight: '32px'
+          paddingLeft: `${level * 24 + 16}px`,
+          minHeight: '48px'
         }}
         onClick={() => onCategoryClick?.(category)}
       >
@@ -126,7 +124,7 @@ const CategoryTreeNode: React.FC<CategoryTreeNodeProps> = ({
           className="cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600"
           onClick={(e) => e.stopPropagation()}
         >
-          <GripVertical className="w-4 h-4" />
+          <GripVertical className="w-5 h-5" />
         </div>
 
         {/* Expand/collapse button */}
@@ -134,38 +132,38 @@ const CategoryTreeNode: React.FC<CategoryTreeNodeProps> = ({
           <Button
             variant="ghost"
             size="sm"
-            className="h-6 w-6 p-0"
+            className="h-7 w-7 p-0"
             onClick={(e) => {
               e.stopPropagation();
               onToggleExpand(category.id);
             }}
           >
             {isExpanded ? (
-              <ChevronDown className="w-4 h-4" />
+              <ChevronDown className="w-5 h-5" />
             ) : (
-              <ChevronRight className="w-4 h-4" />
+              <ChevronRight className="w-5 h-5" />
             )}
           </Button>
         ) : (
-          <div className="w-6" />
+          <div className="w-7" />
         )}
 
         {/* Category name and info */}
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
             <span className={cn(
-              "text-sm font-medium truncate",
+              "text-base font-medium truncate",
               isSelected ? "text-blue-700" : "text-gray-900"
             )}>
               {category.name}
             </span>
             {category.product_count !== undefined && category.product_count > 0 && (
-              <Badge variant="secondary" className="text-xs h-5 px-1.5">
+              <Badge variant="secondary" className="text-xs h-6 px-2">
                 {category.product_count}
               </Badge>
             )}
             {!category.is_active && (
-              <Badge variant="secondary" className="text-xs h-5 px-1.5">
+              <Badge variant="secondary" className="text-xs h-6 px-2">
                 Inactive
               </Badge>
             )}
@@ -176,8 +174,8 @@ const CategoryTreeNode: React.FC<CategoryTreeNodeProps> = ({
         <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
           <DropdownMenu>
             <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
-              <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                <MoreVertical className="w-4 h-4" />
+              <Button variant="ghost" size="sm" className="h-9 w-9 p-0">
+                <MoreVertical className="w-5 h-5" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
@@ -213,8 +211,8 @@ const CategoryTreeNode: React.FC<CategoryTreeNodeProps> = ({
 
       {/* Children */}
       {hasChildren && isExpanded && (
-        <div>
-          {category.children.map((child) => (
+        <div className="border-l-2 border-gray-200 ml-3">
+          {category.children.map((child, index) => (
             <CategoryTreeNode
               key={child.id}
               category={child}
@@ -300,11 +298,11 @@ export const CategoryTreeView: React.FC<CategoryTreeViewProps> = ({
       <div 
         ref={setRootDropRef}
         className={cn(
-          "p-4 min-h-full transition-colors",
+          "min-h-full transition-colors",
           isRootOver && activeId && "bg-blue-50 border-2 border-blue-300 border-dashed rounded"
         )}
       >
-        <div className="space-y-1">
+        <div>
           {tree.map((category) => (
             <CategoryTreeNode
               key={category.id}
@@ -324,8 +322,8 @@ export const CategoryTreeView: React.FC<CategoryTreeViewProps> = ({
       </div>
       <DragOverlay>
         {activeCategory ? (
-          <div className="px-3 py-2 bg-white border border-gray-200 rounded shadow-lg">
-            <span className="text-sm font-medium text-gray-900">{activeCategory.name}</span>
+          <div className="px-4 py-2 bg-white border border-gray-200 rounded shadow-lg">
+            <span className="text-base font-medium text-gray-900">{activeCategory.name}</span>
           </div>
         ) : null}
       </DragOverlay>

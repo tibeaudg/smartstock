@@ -14,7 +14,6 @@ import SEOOverviewPage from './pages/seo';
 import OnboardingPage from './pages/OnboardingPage';
 import GuestSandbox from './pages/GuestSandbox';
 import { Dashboard } from './components/Dashboard';
-import { StockList } from './components/StockList';
 import { StockMovements } from './components/StockMovements';
 import { Settings } from './components/Settings';
 import { ProfileSettings } from './components/settings/ProfileSettings';
@@ -416,7 +415,7 @@ const AuthRoute = () => {
           <Route index element={<Dashboard userRole="staff" />} />
           <Route path="barcoding" element={<Navigate to="/barcoding" replace />} />
           <Route path="subscription-test" element={<SubscriptionTestPage />} />
-          <Route path="stock" element={<StockList />} />
+          <Route path="stock" element={<Navigate to="/dashboard/categories" replace />} />
           <Route path="categories" element={<CategorysPage />} />
           <Route path="transactions" element={<StockMovements />} />
 

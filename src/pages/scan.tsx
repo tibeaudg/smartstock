@@ -498,8 +498,8 @@ export default function ScanPage() {
       });
       setShowProductForm(false);
       
-      // Navigate to stock page
-      navigate('/dashboard/stock');
+      // Navigate to categories page
+      navigate('/dashboard/categories');
       
     } catch (error) {
       console.error('Error adding product:', error);

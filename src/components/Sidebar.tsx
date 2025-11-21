@@ -152,14 +152,11 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, profileDropdo
         { id: 'dashboard', label: 'Dashboard', icon: BarChart3, path: '/dashboard', end: true },
 
         { 
-          id: 'stock', 
+          id: 'products', 
           label: 'Products', 
           icon: Package, 
-          path: '/dashboard/stock',
-          subItems: [
-            { id: 'products', label: 'Products', path: '/dashboard/stock' },
-            { id: 'categories', label: 'Categories', path: '/dashboard/categories' }
-          ]
+          path: '/dashboard/categories',
+          end: true
         },
         { id: 'transactions', label: 'History', icon: ShoppingCart, path: '/dashboard/transactions' },
 
@@ -411,7 +408,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, profileDropdo
             {menuItems.map((item, index) => {
               const Icon = item.icon;
               let label = item.label;
-              if (item.id === 'stock') {
+              if (item.id === 'products') {
                 label += ` `;
                 if (isLoading) {
                   label += '(...)';

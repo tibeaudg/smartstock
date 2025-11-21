@@ -59,7 +59,13 @@ export default function CategorysPage() {
   const [showCustomizationModal, setShowCustomizationModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<CategoryTree | null>(null);
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null | 'all'>(null);
-  const [productViewMode, setProductViewMode] = useState<'grid' | 'list' | 'table'>('table');
+  // Default to table view on both mobile and desktop
+  const [productViewMode, setProductViewMode] = useState<'grid' | 'list' | 'table'>(() => {
+    if (typeof window !== 'undefined') {
+      return 'table';
+    }
+    return 'table';
+  });
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set());
   
   // Sorting state - default to date_added descending (newest first)
@@ -72,6 +78,7 @@ export default function CategorysPage() {
   const [isStockAdjustModalOpen, setIsStockAdjustModalOpen] = useState(false);
   const [previewImageUrl, setPreviewImageUrl] = useState<string | null>(null);
   const [isImagePreviewOpen, setIsImagePreviewOpen] = useState(false);
+  const [isMobileProductDetailModalOpen, setIsMobileProductDetailModalOpen] = useState(false);
   
   // Add product modal states
   const [isAddProductMethodModalOpen, setIsAddProductMethodModalOpen] = useState(false);
@@ -105,29 +112,6 @@ export default function CategorysPage() {
   const { data: categoryProducts = [], isLoading: productsLoading } = useCategoryProducts(selectedCategoryId);
   const queryClient = useQueryClient();
   useCategoryRealtime();
-
-  // Mobile tab switcher state
-  const [activeTab, setActiveTab] = useState<'products' | 'categories'>('categories');
-
-  useEffect(() => {
-    if (location.pathname.includes('/categories')) {
-      setActiveTab('categories');
-    } else {
-      setActiveTab('products');
-    }
-  }, [location.pathname]);
-
-  const handleTabChange = (tab: 'products' | 'categories') => {
-    setActiveTab(tab);
-    switch (tab) {
-      case 'categories':
-        navigate('/dashboard/categories');
-        break;
-      default:
-        navigate('/dashboard/stock');
-        break;
-    }
-  };
 
   const handleAddCategory = async () => {
     if (!formData.name.trim()) {
@@ -305,6 +289,13 @@ export default function CategorysPage() {
   const handleImagePreview = (url: string) => {
     setPreviewImageUrl(url);
     setIsImagePreviewOpen(true);
+  };
+
+  const handleMobileRowClick = (product: any) => {
+    if (isMobile) {
+      setSelectedProduct(product);
+      setIsMobileProductDetailModalOpen(true);
+    }
   };
 
   const handleDuplicateProduct = async (product: any) => {
@@ -563,12 +554,27 @@ export default function CategorysPage() {
     );
   }
 
+  // State for mobile category pane visibility
+  const [showCategoryPane, setShowCategoryPane] = useState(!isMobile || !selectedCategoryId);
+
+  // On mobile, hide category pane when category is selected
+  React.useEffect(() => {
+    if (isMobile) {
+      setShowCategoryPane(!selectedCategoryId);
+    } else {
+      setShowCategoryPane(true);
+    }
+  }, [isMobile, selectedCategoryId]);
+
   return (
-    <div className="h-[calc(100vh-8rem)] md:h-[calc(100vh-8rem)] m-6 rounded-lg border border-gray-200 flex flex-col overflow-hidden">
+    <div className={`h-[calc(100vh-8rem)] md:h-[calc(100vh-8rem)] ${isMobile ? 'm-2' : 'm-6'} rounded-lg border border-gray-200 flex flex-col overflow-hidden overscroll-none touch-pan-y`} style={{ touchAction: 'pan-y' }}>
       {/* Split-Pane Layout */}
-      <div className="flex-1 flex overflow-hidden min-h-0">
+      <div className="flex-1 flex overflow-hidden min-h-0 relative overscroll-none">
         {/* Left Pane - Category Tree */}
-        <div className={`${isMobile ? 'w-full' : 'w-[280px] md:w-[320px] lg:w-[360px]'} border-r bg-white flex flex-col flex-shrink-0`}>
+        <div className={cn(
+          `${isMobile ? 'absolute inset-0 z-20' : 'w-[280px] md:w-[320px] lg:w-[360px]'} border-r bg-white flex flex-col flex-shrink-0 transition-transform duration-300`,
+          isMobile && !showCategoryPane && '-translate-x-full'
+        )}>
           {/* Left Pane Header - Fixed */}
           <div className="flex-shrink-0 px-4 py-3 border-b bg-gray-50">
             <Button
@@ -659,46 +665,38 @@ export default function CategorysPage() {
         </div>
 
         {/* Right Pane - Category Details & Products */}
-        <div className="flex-1 flex flex-col overflow-hidden bg-gray-50 min-w-0 min-h-0">
+        <div className="flex-1 flex flex-col overflow-hidden bg-gray-50 min-w-0 min-h-0 relative">
           {selectedCategoryId ? (
             <>
-              {/* Right Pane Header - Fixed */}
-              <div className="flex-shrink-0 px-4 md:px-6 py-4 bg-white border-b">
-                <div className="flex items-center justify-between gap-2 flex-wrap">
-                  <div className="flex items-center gap-3 min-w-0">
-                    <div className="min-w-0">
-                      <h2 className="text-xl md:text-2xl font-bold text-gray-900 truncate">
-                        {selectedCategoryId === 'all' 
-                          ? 'All Products' 
-                          : (selectedCategory?.name || categories.find(c => c.id === selectedCategoryId)?.name)}
-                      </h2>
-                      <Badge variant="secondary" className="mt-1">
-                        {categoryProducts.length} products
-                      </Badge>
-                    </div>
+              {/* Right Pane Header - Sticky on Mobile Only */}
+              <div className="flex-shrink-0 px-3 md:px-4 lg:px-6 py-3 md:py-4 bg-white border-b sticky top-0 z-20 md:static md:z-auto">
+                <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+                  {isMobile && selectedCategoryId && (
+                    <button
+                      onClick={() => setShowCategoryPane(true)}
+                      className="flex-shrink-0 p-1 rounded-md hover:bg-gray-100 transition-colors"
+                      aria-label="Show categories"
+                    >
+                      <ChevronRight className="w-5 h-5 text-gray-600 rotate-180" />
+                    </button>
+                  )}
+                  <div className="min-w-0 flex-1">
+                    <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 truncate">
+                      {selectedCategoryId === 'all' 
+                        ? 'All Products' 
+                        : (selectedCategory?.name || categories.find(c => c.id === selectedCategoryId)?.name)}
+                    </h2>
                   </div>
                   <div className="flex items-center gap-2 flex-shrink-0">
-                    <Button
-                      onClick={() => {
-                        setIsAddProductMethodModalOpen(true);
-                      }}
-                      variant="default"
-                      size="sm"
-                      className="bg-blue-600 hover:bg-blue-700 text-white"
-                    >
-                      <Plus className="w-4 h-4 mr-2" />
-                      <span className="hidden md:inline">Add Product</span>
-                      <span className="md:hidden">Add</span>
-                    </Button>
                     {selectedCategoryId !== 'all' && (
                       <Button
                         onClick={() => {
                           setFormData({ name: '', description: '', parentCategoryId: selectedCategoryId });
                           setShowAddModal(true);
                         }}
-                        variant="outline"
+                        variant="default"
                         size="sm"
-                        className="hidden sm:flex"
+                        className="hidden sm:flex bg-blue-600 hover:bg-blue-700 text-white h-10 px-6"
                       >
                         <Plus className="w-4 h-4 mr-2" />
                         <span className="hidden md:inline">New Sub Category</span>
@@ -714,43 +712,48 @@ export default function CategorysPage() {
                       >
                         <Grid3x3 className="w-4 h-4" />
                       </Button>
-                      <Button
-                        variant={productViewMode === 'list' ? 'default' : 'ghost'}
-                        size="sm"
-                        onClick={() => setProductViewMode('list')}
-                        className="h-8 w-8 p-0"
-                      >
-                        <List className="w-4 h-4" />
-                      </Button>
+             
                       <Button
                         variant={productViewMode === 'table' ? 'default' : 'ghost'}
                         size="sm"
                         onClick={() => setProductViewMode('table')}
                         className="h-8 w-8 p-0"
                       >
-                        <Table2 className="w-4 h-4" />
+                        <List className="w-4 h-4" />
                       </Button>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* Stats Row - Fixed */}
-              {selectedCategoryId === 'all' ? (
-                <div className="flex-shrink-0 px-4 md:px-6 py-4 bg-white border-b">
-                  <AllProductsAnalytics products={categoryProducts} />
-                </div>
-              ) : selectedCategoryId && (
-                <div className="flex-shrink-0 px-4 md:px-6 py-4 bg-white border-b">
-                  <CategoryAnalytics categoryId={selectedCategoryId} />
-                </div>
-              )}
-
-              {/* Products Section - Scrollable */}
-              <div className="flex-1 overflow-y-auto px-4 md:px-6 py-4">
-                <div className="mb-4">
-                  <h3 className="text-lg md:text-xl font-semibold text-gray-900">Products</h3>
-                </div>
+              {/* Products Section - Scrollable (includes stats) */}
+              <div className="flex-1 overflow-y-auto min-h-0 overscroll-contain" style={{ WebkitOverflowScrolling: 'touch' }}>
+                {/* Stats Row - Scrolls with content */}
+                {selectedCategoryId === 'all' ? (
+                  <div className="px-3 md:px-4 lg:px-6 py-3 md:py-4 bg-white border-b">
+                    <AllProductsAnalytics products={categoryProducts} />
+                  </div>
+                ) : selectedCategoryId && (
+                  <div className="px-3 md:px-4 lg:px-6 py-3 md:py-4 bg-white border-b">
+                    <CategoryAnalytics categoryId={selectedCategoryId} />
+                  </div>
+                )}
+                
+                <div className="px-3 md:px-4 lg:px-6 py-3 md:py-4">
+                  <div className="mb-4 flex items-center justify-between gap-4">
+                    <h3 className="text-lg md:text-xl font-semibold text-gray-900">Products</h3>
+                    <Button
+                      onClick={() => {
+                        setIsAddProductMethodModalOpen(true);
+                      }}
+                      variant="default"
+                      size="default"
+                      className="bg-blue-600 hover:bg-blue-700 text-white h-10 px-6"
+                    >
+                      <Plus className="w-4 h-4 mr-2" />
+                      <span>Add Product</span>
+                    </Button>
+                  </div>
                 {productsLoading ? (
                   <div className="flex items-center justify-center py-12">
                     <div className="text-center">
@@ -781,12 +784,12 @@ export default function CategorysPage() {
                   </div>
                 ) : productViewMode === 'table' ? (
                   <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-visible">
-                    <div className="overflow-x-auto overflow-y-visible scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
-                      <table className="w-full divide-y divide-gray-200">
+                    <div className="overflow-x-auto overflow-y-visible scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 -mx-3 md:mx-0">
+                      <table className={cn("w-full divide-y divide-gray-200", !isMobile && "min-w-[640px]")}>
                         <thead className="bg-gray-50 sticky top-0 z-10">
                           <tr>
                             <th 
-                              className="px-4 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/3 cursor-pointer hover:bg-gray-100 transition-colors"
+                              className="px-2 sm:px-4 py-3 sm:py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/3 cursor-pointer hover:bg-gray-100 transition-colors"
                               onClick={() => handleSort('name')}
                             >
                               <div className="flex items-center">
@@ -795,7 +798,7 @@ export default function CategorysPage() {
                               </div>
                             </th>
                             <th 
-                              className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8 cursor-pointer hover:bg-gray-100 transition-colors"
+                              className="px-2 sm:px-4 py-3 sm:py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8 cursor-pointer hover:bg-gray-100 transition-colors hidden md:table-cell"
                               onClick={() => handleSort('location')}
                             >
                               <div className="flex items-center justify-center">
@@ -804,16 +807,16 @@ export default function CategorysPage() {
                               </div>
                             </th>
                             <th 
-                              className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8 cursor-pointer hover:bg-gray-100 transition-colors"
+                              className="px-2 sm:px-4 py-3 sm:py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8 cursor-pointer hover:bg-gray-100 transition-colors"
                               onClick={() => handleSort('stock')}
                             >
                               <div className="flex items-center justify-center">
-                                Stock Level
+                                Stock
                                 {getSortIcon('stock')}
                               </div>
                             </th>
                             <th 
-                              className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8 cursor-pointer hover:bg-gray-100 transition-colors"
+                              className="px-2 sm:px-4 py-3 sm:py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8 cursor-pointer hover:bg-gray-100 transition-colors hidden lg:table-cell"
                               onClick={() => handleSort('date_added')}
                             >
                               <div className="flex items-center justify-center">
@@ -822,7 +825,7 @@ export default function CategorysPage() {
                               </div>
                             </th>
                             <th 
-                              className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8 cursor-pointer hover:bg-gray-100 transition-colors"
+                              className="px-2 sm:px-4 py-3 sm:py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8 cursor-pointer hover:bg-gray-100 transition-colors hidden sm:table-cell"
                               onClick={() => handleSort('purchase_price')}
                             >
                               <div className="flex items-center justify-center">
@@ -830,7 +833,7 @@ export default function CategorysPage() {
                                 {getSortIcon('purchase_price')}
                               </div>
                             </th>
-                            <th className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/12">
+                            <th className="px-2 sm:px-4 py-3 sm:py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/12 hidden md:table-cell">
                               Actions
                             </th>
                           </tr>
@@ -843,17 +846,19 @@ export default function CategorysPage() {
                             return (
                               <tr
                                 key={product.id}
+                                onClick={() => handleMobileRowClick(product)}
                                 className={cn(
                                   'hover:bg-gray-100 hover:shadow-sm transition-all duration-200 border-b-2 border-gray-100',
-                                  index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
+                                  index % 2 === 0 ? 'bg-white' : 'bg-gray-50',
+                                  isMobile && 'cursor-pointer'
                                 )}
                               >
                                 {/* Product column */}
-                                <td className="px-4 py-3 w-1/3">
-                                  <div className="flex items-center gap-3">
+                                <td className="px-2 sm:px-4 py-3 w-1/3">
+                                  <div className="flex items-center gap-2 sm:gap-3">
                                     <div className="flex-shrink-0" onClick={(e) => e.stopPropagation()}>
                                       {product.image_url ? (
-                                        <div className="w-12 h-12 bg-gray-50 rounded-lg border flex items-center justify-center overflow-hidden">
+                                        <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-50 rounded-lg border flex items-center justify-center overflow-hidden">
                                           <img
                                             src={product.image_url}
                                             alt={product.name}
@@ -862,8 +867,8 @@ export default function CategorysPage() {
                                           />
                                         </div>
                                       ) : (
-                                        <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
-                                          <Package className="w-6 h-6 text-gray-400" />
+                                        <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-100 rounded-lg flex items-center justify-center">
+                                          <Package className="w-5 h-5 sm:w-6 sm:h-6 text-gray-400" />
                                         </div>
                                       )}
                                     </div>
@@ -872,7 +877,7 @@ export default function CategorysPage() {
                                         {product.name}
                                       </h3>
                                       {product.description && (
-                                        <p className="text-xs text-gray-500 truncate max-w-xs mt-1">
+                                        <p className="text-xs text-gray-500 truncate max-w-xs mt-1 hidden sm:block">
                                           {product.description}
                                         </p>
                                       )}
@@ -881,7 +886,7 @@ export default function CategorysPage() {
                                 </td>
 
                                 {/* Location column */}
-                                <td className="px-4 py-3 text-center w-1/8">
+                                <td className="px-2 sm:px-4 py-3 text-center w-1/8 hidden md:table-cell">
                                   <div className="flex items-center justify-center gap-1">
                                     <MapPin className="w-3 h-3 text-gray-400" />
                                     <span className="text-sm text-gray-600">
@@ -891,15 +896,20 @@ export default function CategorysPage() {
                                 </td>
 
                                 {/* Stock column */}
-                                <td className="px-4 py-3 text-center w-1/8">
+                                <td className="px-2 sm:px-4 py-3 text-center w-1/8" onClick={(e) => isMobile && e.stopPropagation()}>
                                   <TooltipProvider delayDuration={150}>
                                     <Tooltip>
                                       <TooltipTrigger asChild>
                                         <div
-                                          className="space-y-1 cursor-pointer rounded-md p-2 transition-colors group hover:bg-blue-600"
+                                          className={cn(
+                                            "space-y-1 rounded-md p-2 transition-colors",
+                                            !isMobile && "cursor-pointer group hover:bg-blue-600"
+                                          )}
                                           onClick={(e) => {
-                                            e.stopPropagation();
-                                            handleStockAction(product, 'in');
+                                            if (!isMobile) {
+                                              e.stopPropagation();
+                                              handleStockAction(product, 'in');
+                                            }
                                           }}
                                         >
                                           <div className="flex items-center justify-center gap-2">
@@ -914,36 +924,42 @@ export default function CategorysPage() {
                                               className={cn(
                                                 'text-sm font-semibold transition-colors',
                                                 Number(product.quantity_in_stock) === 0
-                                                  ? 'animate-pulse text-red-600 group-hover:text-white'
-                                                  : 'text-gray-900 group-hover:text-white'
+                                                  ? 'animate-pulse text-red-600'
+                                                  : 'text-gray-900',
+                                                !isMobile && 'group-hover:text-white'
                                               )}
                                             >
                                               {formatStockQuantity(product.quantity_in_stock)}
                                             </span>
                                           </div>
-                                          <div className="text-xs font-medium text-gray-600 transition-colors group-hover:text-white/90">
+                                          <div className={cn(
+                                            "text-xs font-medium transition-colors",
+                                            isMobile ? "text-gray-600" : "text-gray-600 group-hover:text-white/90"
+                                          )}>
                                             {stockStatus}
                                           </div>
                                         </div>
                                       </TooltipTrigger>
-                                      <TooltipContent side="top" align="center" sideOffset={8} className="z-[200000] max-w-xs shadow-lg">
-                                        <p className="font-medium">
-                                          {formatStockQuantity(product.quantity_in_stock)} in stock. Minimum: {formatStockQuantity(product.minimum_stock_level)}
-                                        </p>
-                                        {Number(product.quantity_in_stock) === 0 && (
-                                          <p className="text-xs text-red-400 mt-1">⚠️ Out of stock!</p>
-                                        )}
-                                        {Number(product.quantity_in_stock) > 0 && Number(product.quantity_in_stock) <= Number(product.minimum_stock_level) && (
-                                          <p className="text-xs text-orange-400 mt-1">⚠️ Low stock alert</p>
-                                        )}
-                                        <p className="text-xs text-gray-400 mt-1">Click to adjust stock</p>
-                                      </TooltipContent>
+                                      {!isMobile && (
+                                        <TooltipContent side="top" align="center" sideOffset={8} className="z-[200000] max-w-xs shadow-lg">
+                                          <p className="font-medium">
+                                            {formatStockQuantity(product.quantity_in_stock)} in stock. Minimum: {formatStockQuantity(product.minimum_stock_level)}
+                                          </p>
+                                          {Number(product.quantity_in_stock) === 0 && (
+                                            <p className="text-xs text-red-400 mt-1">⚠️ Out of stock!</p>
+                                          )}
+                                          {Number(product.quantity_in_stock) > 0 && Number(product.quantity_in_stock) <= Number(product.minimum_stock_level) && (
+                                            <p className="text-xs text-orange-400 mt-1">⚠️ Low stock alert</p>
+                                          )}
+                                          <p className="text-xs text-gray-400 mt-1">Click to adjust stock</p>
+                                        </TooltipContent>
+                                      )}
                                     </Tooltip>
                                   </TooltipProvider>
                                 </td>
 
                                 {/* Date Added column */}
-                                <td className="px-4 py-3 text-center w-1/8">
+                                <td className="px-2 sm:px-4 py-3 text-center w-1/8 hidden lg:table-cell">
                                   <span className="text-sm text-gray-600">
                                     {product.created_at 
                                       ? new Date(product.created_at).toLocaleDateString('en-US', {
@@ -956,7 +972,7 @@ export default function CategorysPage() {
                                 </td>
 
                                 {/* Pricing column */}
-                                <td className="px-4 py-3 text-center w-1/8">
+                                <td className="px-2 sm:px-4 py-3 text-center w-1/8 hidden sm:table-cell">
                                   <div className="space-y-1">
                                     <div className="text-sm text-red-600 font-medium">
                                       ${product.purchase_price ? Number(product.purchase_price).toFixed(2) : '-'}
@@ -968,7 +984,7 @@ export default function CategorysPage() {
                                 </td>
 
                                 {/* Actions column */}
-                                <td className="px-4 py-3 text-center w-1/12" onClick={(e) => e.stopPropagation()}>
+                                <td className="px-2 sm:px-4 py-3 text-center w-1/12 hidden md:table-cell" onClick={(e) => e.stopPropagation()}>
                                   <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
                                       <Button variant="outline" size="sm" className="h-8 w-8 p-0">
@@ -976,25 +992,50 @@ export default function CategorysPage() {
                                       </Button>
                                     </DropdownMenuTrigger>
                                     <DropdownMenuContent align="end" className="w-56">
-                                      <DropdownMenuItem onClick={() => handleStockAction(product, 'in')}>
+                                      <DropdownMenuItem onClick={() => {
+                                        if (isMobile) {
+                                          setIsMobileProductDetailModalOpen(false);
+                                        }
+                                        handleStockAction(product, 'in');
+                                      }}>
                                         <Plus className="w-4 h-4 mr-2 text-green-600" />
                                         <span className="flex-1">Adjust Stock</span>
                                       </DropdownMenuItem>
                                       <DropdownMenuSeparator />
-                                      <DropdownMenuItem onClick={() => handleProductEdit(product)}>
+                                      <DropdownMenuItem onClick={() => {
+                                        if (isMobile) {
+                                          setIsMobileProductDetailModalOpen(false);
+                                        }
+                                        handleProductEdit(product);
+                                      }}>
                                         <Edit className="w-4 h-4 mr-2 text-blue-600" />
                                         <span className="flex-1">Edit</span>
                                       </DropdownMenuItem>
-                                      <DropdownMenuItem onClick={() => handleDuplicateProduct(product)}>
+                                      <DropdownMenuItem onClick={() => {
+                                        if (isMobile) {
+                                          setIsMobileProductDetailModalOpen(false);
+                                        }
+                                        handleDuplicateProduct(product);
+                                      }}>
                                         <Copy className="w-4 h-4 mr-2 text-purple-600" />
                                         <span className="flex-1">Duplicate</span>
                                       </DropdownMenuItem>
-                                      <DropdownMenuItem onClick={() => handleMoveToLocation(product)}>
+                                      <DropdownMenuItem onClick={() => {
+                                        if (isMobile) {
+                                          setIsMobileProductDetailModalOpen(false);
+                                        }
+                                        handleMoveToLocation(product);
+                                      }}>
                                         <MapPin className="w-4 h-4 mr-2 text-orange-600" />
                                         <span className="flex-1">Move to Location</span>
                                       </DropdownMenuItem>
                                       <DropdownMenuSeparator />
-                                      <DropdownMenuItem onClick={() => handleDeleteProduct(product)}>
+                                      <DropdownMenuItem onClick={() => {
+                                        if (isMobile) {
+                                          setIsMobileProductDetailModalOpen(false);
+                                        }
+                                        handleDeleteProduct(product);
+                                      }}>
                                         <Trash2 className="w-4 h-4 mr-2 text-gray-600" />
                                         <span className="flex-1">Delete</span>
                                       </DropdownMenuItem>
@@ -1060,6 +1101,7 @@ export default function CategorysPage() {
                     ))}
                   </div>
                 )}
+                </div>
               </div>
             </>
           ) : (
@@ -1078,7 +1120,7 @@ export default function CategorysPage() {
                       setFormData({ name: '', description: '', parentCategoryId: null });
                       setShowAddModal(true);
                     }}
-                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                    className="bg-blue-600 hover:bg-blue-700 text-white h-12 px-6"
                   >
                     <Plus className="w-4 h-4 mr-2" />
                     New Category
@@ -1088,7 +1130,8 @@ export default function CategorysPage() {
                       setSubCategoryFormData({ name: '', description: '', parentCategoryId: null });
                       setShowAddSubCategoryModal(true);
                     }}
-                    variant="outline"
+                    variant="default"
+                    className="h-12 px-6"
                   >
                     <Plus className="w-4 h-4 mr-2" />
                     New Sub Category
@@ -1366,6 +1409,101 @@ export default function CategorysPage() {
           onScanSuccess={onScanSuccess}
           settings={scannerSettings}
         />
+      )}
+
+      {/* Mobile Product Detail Modal */}
+      {selectedProduct && (
+        <Dialog open={isMobileProductDetailModalOpen} onOpenChange={setIsMobileProductDetailModalOpen}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle className="text-xl font-bold">{selectedProduct.name}</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4 py-4">
+              {/* Stock Information */}
+              <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                <div className="flex items-center gap-3">
+                  <div
+                    className={cn(
+                      'w-3 h-3 rounded-full',
+                      getStockStatusDotColor(selectedProduct.quantity_in_stock, selectedProduct.minimum_stock_level),
+                      Number(selectedProduct.quantity_in_stock) === 0 ? 'animate-pulse' : ''
+                    )}
+                  />
+                  <div>
+                    <div className="text-sm font-medium text-gray-600">Stock</div>
+                    <div className="text-2xl font-bold text-gray-900">
+                      {formatStockQuantity(selectedProduct.quantity_in_stock)}
+                    </div>
+                    <div className="text-xs text-gray-500 mt-1">
+                      {getStockStatus(selectedProduct.quantity_in_stock, selectedProduct.minimum_stock_level)}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="space-y-2">
+                <Button
+                  onClick={() => {
+                    setIsMobileProductDetailModalOpen(false);
+                    handleStockAction(selectedProduct, 'in');
+                  }}
+                  className="w-full justify-start"
+                  variant="outline"
+                >
+                  <Plus className="w-4 h-4 mr-2 text-green-600" />
+                  Adjust Stock
+                </Button>
+                <Button
+                  onClick={() => {
+                    setIsMobileProductDetailModalOpen(false);
+                    handleProductEdit(selectedProduct);
+                  }}
+                  className="w-full justify-start"
+                  variant="outline"
+                >
+                  <Edit className="w-4 h-4 mr-2 text-blue-600" />
+                  Edit
+                </Button>
+                <Button
+                  onClick={() => {
+                    setIsMobileProductDetailModalOpen(false);
+                    handleDuplicateProduct(selectedProduct);
+                  }}
+                  className="w-full justify-start"
+                  variant="outline"
+                >
+                  <Copy className="w-4 h-4 mr-2 text-purple-600" />
+                  Duplicate
+                </Button>
+                <Button
+                  onClick={() => {
+                    setIsMobileProductDetailModalOpen(false);
+                    handleMoveToLocation(selectedProduct);
+                  }}
+                  className="w-full justify-start"
+                  variant="outline"
+                >
+                  <MapPin className="w-4 h-4 mr-2 text-orange-600" />
+                  Move to Location
+                </Button>
+                <div className="pt-2 border-t">
+                  <Button
+                    onClick={() => {
+                      setIsMobileProductDetailModalOpen(false);
+                      handleDeleteProduct(selectedProduct);
+                    }}
+                    className="w-full justify-start text-red-600 hover:text-red-700 hover:bg-red-50"
+                    variant="outline"
+                  >
+                    <Trash2 className="w-4 h-4 mr-2" />
+                    Delete
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
       )}
     </div>
   );

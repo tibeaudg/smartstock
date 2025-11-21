@@ -25,16 +25,23 @@ export const OnboardingCheck: React.FC<OnboardingCheckProps> = ({ children }) =>
       return;
     }
 
-    // Check if user is a new signup (created within last 30 days OR onboarding is NULL)
-    const createdAt = userProfile.created_at ? new Date(userProfile.created_at) : new Date();
-    const thirtyDaysAgo = new Date();
-    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-    
-    const isNewSignup = (createdAt >= thirtyDaysAgo || userProfile.onboarding === null) && !isNaN(createdAt.getTime());
+    // If onboarding is in progress, allow access (user is working on it)
+    if (userProfile.onboarding === 'in_progress') {
+      return;
+    }
 
-    // Only redirect new signups to onboarding
-    if (isNewSignup && userProfile.onboarding !== 'done') {
-      navigate('/onboarding', { replace: true });
+    // Only redirect if onboarding is null AND user is a new signup (created within last 30 days)
+    if (userProfile.onboarding === null) {
+      const createdAt = userProfile.created_at ? new Date(userProfile.created_at) : new Date();
+      const thirtyDaysAgo = new Date();
+      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+      
+      const isNewSignup = createdAt >= thirtyDaysAgo && !isNaN(createdAt.getTime());
+
+      // Only redirect new signups to onboarding
+      if (isNewSignup) {
+        navigate('/onboarding', { replace: true });
+      }
     }
   }, [user, userProfile, loading, navigate]);
 
@@ -52,13 +59,15 @@ export const OnboardingCheck: React.FC<OnboardingCheckProps> = ({ children }) =>
 
   // If onboarding is not done and user is new signup, don't render children
   // (navigation will happen in useEffect)
-  const createdAt = userProfile.created_at ? new Date(userProfile.created_at) : new Date();
-  const thirtyDaysAgo = new Date();
-  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-  const isNewSignup = (createdAt >= thirtyDaysAgo || userProfile.onboarding === null) && !isNaN(createdAt.getTime());
+  if (userProfile.onboarding === null) {
+    const createdAt = userProfile.created_at ? new Date(userProfile.created_at) : new Date();
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    const isNewSignup = createdAt >= thirtyDaysAgo && !isNaN(createdAt.getTime());
 
-  if (isNewSignup && userProfile.onboarding !== 'done') {
-    return null; // Will redirect in useEffect
+    if (isNewSignup) {
+      return null; // Will redirect in useEffect
+    }
   }
 
   return <>{children}</>;

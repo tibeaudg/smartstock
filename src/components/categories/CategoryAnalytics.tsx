@@ -4,14 +4,11 @@
  */
 
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { 
   Package, 
-  TrendingUp, 
-  AlertTriangle, 
   DollarSign,
-  BarChart3,
+  AlertTriangle,
+  XCircle,
 } from 'lucide-react';
 import type { CategoryAnalytics as CategoryAnalyticsType } from '@/types/categoryTypes';
 import { useCategoryAnalytics } from '@/hooks/useCategories';
@@ -26,39 +23,29 @@ export const CategoryAnalytics: React.FC<CategoryAnalyticsProps> = ({
   const { data: analytics, isLoading } = useCategoryAnalytics(categoryId);
 
   if (!categoryId) {
-    return (
-      <Card>
-        <CardContent className="p-6 text-center text-gray-500">
-          Select a category to view analytics
-        </CardContent>
-      </Card>
-    );
+    return null;
   }
 
   if (isLoading) {
     return (
-      <Card>
-        <CardContent className="p-6 text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto" />
-        </CardContent>
-      </Card>
+      <div className="grid grid-cols-2 gap-4">
+        {[1, 2, 3, 4].map((i) => (
+          <div key={i} className="h-32 bg-gray-100 rounded-lg animate-pulse" />
+        ))}
+      </div>
     );
   }
 
   if (!analytics) {
-    return (
-      <Card>
-        <CardContent className="p-6 text-center text-gray-500">
-          No analytics data available
-        </CardContent>
-      </Card>
-    );
+    return null;
   }
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
     }).format(value);
   };
 
@@ -66,107 +53,115 @@ export const CategoryAnalytics: React.FC<CategoryAnalyticsProps> = ({
     return new Intl.NumberFormat('en-US').format(value);
   };
 
+  const calculatePercentageChange = (current: number, previous: number): number => {
+    if (previous === 0) return current > 0 ? 100 : 0;
+    return ((current - previous) / previous) * 100;
+  };
+
+  const formatPercentage = (value: number): string => {
+    const absValue = Math.abs(value);
+    const sign = value >= 0 ? '+' : '-';
+    return `${sign}${absValue.toFixed(0)}%`;
+  };
+
+  const weekAgoData = {
+    total_products: analytics.total_products_week_ago ?? 0,
+    total_stock_value: analytics.total_stock_value_week_ago ?? 0,
+    low_stock_count: analytics.low_stock_count_week_ago ?? 0,
+    out_of_stock_count: analytics.out_of_stock_count_week_ago ?? 0,
+  };
+
+  const totalProductsChange = calculatePercentageChange(
+    analytics.total_products,
+    weekAgoData.total_products
+  );
+  const stockValueChange = calculatePercentageChange(
+    analytics.total_stock_value,
+    weekAgoData.total_stock_value
+  );
+  const lowStockChange = calculatePercentageChange(
+    analytics.low_stock_count,
+    weekAgoData.low_stock_count
+  );
+  const outOfStockChange = calculatePercentageChange(
+    analytics.out_of_stock_count,
+    weekAgoData.out_of_stock_count
+  );
+
+  const statsCards = [
+    {
+      title: 'Total Products',
+      value: formatNumber(analytics.total_products),
+      change: totalProductsChange,
+      icon: Package,
+      gradient: 'from-blue-500 to-cyan-500',
+    },
+    {
+      title: 'Stock Value',
+      value: formatCurrency(analytics.total_stock_value),
+      change: stockValueChange,
+      icon: DollarSign,
+      gradient: 'from-purple-500 to-pink-500',
+    },
+    {
+      title: 'Low Stock',
+      value: formatNumber(analytics.low_stock_count),
+      change: lowStockChange,
+      icon: AlertTriangle,
+      gradient: 'from-orange-500 to-red-500',
+    },
+    {
+      title: 'Out of Stock',
+      value: formatNumber(analytics.out_of_stock_count),
+      change: outOfStockChange,
+      icon: XCircle,
+      gradient: 'from-red-500 to-rose-500',
+    },
+  ];
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-      {/* Total Products */}
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Total Products</CardTitle>
-          <Package className="h-4 w-4 text-muted-foreground" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">{formatNumber(analytics.total_products)}</div>
-          <p className="text-xs text-muted-foreground">
-            Products in this category
-          </p>
-        </CardContent>
-      </Card>
-
-      {/* Stock Value */}
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Stock Value</CardTitle>
-          <DollarSign className="h-4 w-4 text-muted-foreground" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">{formatCurrency(analytics.total_stock_value)}</div>
-          <p className="text-xs text-muted-foreground">
-            Total inventory value
-          </p>
-        </CardContent>
-      </Card>
-
-      {/* Low Stock */}
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Low Stock</CardTitle>
-          <AlertTriangle className="h-4 w-4 text-orange-500" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold text-orange-600">{formatNumber(analytics.low_stock_count)}</div>
-          <p className="text-xs text-muted-foreground">
-            Products below minimum
-          </p>
-        </CardContent>
-      </Card>
-
-      {/* Out of Stock */}
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Out of Stock</CardTitle>
-          <AlertTriangle className="h-4 w-4 text-red-500" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold text-red-600">{formatNumber(analytics.out_of_stock_count)}</div>
-          <p className="text-xs text-muted-foreground">
-            Products with zero stock
-          </p>
-        </CardContent>
-      </Card>
-
-      {/* Additional Stats */}
-      <Card className="md:col-span-2 lg:col-span-4">
-        <CardHeader>
-          <CardTitle className="text-sm font-medium flex items-center gap-2">
-            <BarChart3 className="h-4 w-4" />
-            Additional Statistics
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div>
-              <div className="text-sm text-muted-foreground">Total Stock Quantity</div>
-              <div className="text-lg font-semibold">{formatNumber(analytics.total_stock_quantity)}</div>
+    <div className="grid grid-cols-2 gap-4">
+      {statsCards.map((card, index) => {
+        const Icon = card.icon;
+        const isPositive = card.change >= 0;
+        
+        return (
+          <div
+            key={index}
+            className={`relative overflow-hidden rounded-lg bg-gradient-to-br ${card.gradient} p-6 shadow-lg`}
+          >
+            {/* Decorative wavy pattern background */}
+            <div className="absolute inset-0 opacity-10">
+              <svg className="absolute inset-0 w-full h-full" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0,50 Q50,0 100,50 T200,50 L200,200 L0,200 Z" fill="white" />
+              </svg>
             </div>
-            <div>
-              <div className="text-sm text-muted-foreground">Average Price</div>
-              <div className="text-lg font-semibold">{formatCurrency(analytics.average_price)}</div>
-            </div>
-            {analytics.products_added_last_30_days !== undefined && (
-              <div>
-                <div className="text-sm text-muted-foreground">Added (30 days)</div>
-                <div className="text-lg font-semibold flex items-center gap-1">
-                  <TrendingUp className="h-4 w-4 text-green-500" />
-                  {formatNumber(analytics.products_added_last_30_days)}
+            
+            <div className="relative z-10 flex flex-col h-full">
+              <div className="flex items-start justify-between mb-4">
+                <h3 className="text-sm font-medium text-white/90">{card.title}</h3>
+                <Icon className="w-8 h-8 text-white" />
+              </div>
+              
+              <div className="flex-1 flex flex-col justify-end">
+                <div className="text-3xl font-bold text-white mb-2">
+                  {card.value}
+                </div>
+                
+                <div className="text-xs text-white/80">
+                  {card.change !== 0 ? (
+                    <span className={isPositive ? 'text-white/90' : 'text-white/80'}>
+                      {formatPercentage(card.change)} This week
+                    </span>
+                  ) : (
+                    <span className="text-white/70">No change this week</span>
+                  )}
                 </div>
               </div>
-            )}
-            {analytics.stock_value_change_percentage !== undefined && (
-              <div>
-                <div className="text-sm text-muted-foreground">Value Change</div>
-                <div className={`text-lg font-semibold flex items-center gap-1 ${
-                  analytics.stock_value_change_percentage >= 0 ? 'text-green-500' : 'text-red-500'
-                }`}>
-                  <TrendingUp className="h-4 w-4" />
-                  {analytics.stock_value_change_percentage >= 0 ? '+' : ''}
-                  {analytics.stock_value_change_percentage.toFixed(1)}%
-                </div>
-              </div>
-            )}
+            </div>
           </div>
-        </CardContent>
-      </Card>
+        );
+      })}
     </div>
   );
 };
-

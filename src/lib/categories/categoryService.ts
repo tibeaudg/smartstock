@@ -310,10 +310,15 @@ export async function getCategoryAnalytics(
   const descendants = getCategoryDescendants(categoryId, allCategories as Category[]);
   const categoryIds = [categoryId, ...descendants.map(d => d.id)];
 
-  // Build query for products
+  // Calculate date one week ago
+  const oneWeekAgo = new Date();
+  oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+  const oneWeekAgoISO = oneWeekAgo.toISOString();
+
+  // Build query for current products
   let productsQuery = supabase
     .from('products')
-    .select('quantity_in_stock, purchase_price, minimum_stock_level')
+    .select('quantity_in_stock, purchase_price, minimum_stock_level, created_at')
     .in('category_id', categoryIds);
 
   if (branchId) {
@@ -327,6 +332,19 @@ export async function getCategoryAnalytics(
     return null;
   }
 
+  // Build query for products from one week ago
+  let productsWeekAgoQuery = supabase
+    .from('products')
+    .select('quantity_in_stock, purchase_price, minimum_stock_level')
+    .in('category_id', categoryIds)
+    .lte('created_at', oneWeekAgoISO);
+
+  if (branchId) {
+    productsWeekAgoQuery = productsWeekAgoQuery.eq('branch_id', branchId);
+  }
+
+  const { data: productsWeekAgo } = await productsWeekAgoQuery;
+
   if (!products || products.length === 0) {
     return {
       category_id: categoryId,
@@ -337,6 +355,10 @@ export async function getCategoryAnalytics(
       low_stock_count: 0,
       out_of_stock_count: 0,
       average_price: 0,
+      total_products_week_ago: 0,
+      total_stock_value_week_ago: 0,
+      low_stock_count_week_ago: 0,
+      out_of_stock_count_week_ago: 0,
     };
   }
 
@@ -363,6 +385,25 @@ export async function getCategoryAnalytics(
     ? products.reduce((sum, p) => sum + (Number(p.purchase_price) || 0), 0) / totalProducts
     : 0;
 
+  // Calculate week-ago values
+  const totalProductsWeekAgo = productsWeekAgo?.length || 0;
+  const totalStockValueWeekAgo = productsWeekAgo?.reduce((sum, p) => {
+    const qty = Number(p.quantity_in_stock) || 0;
+    const price = Number(p.purchase_price) || 0;
+    return sum + (qty * price);
+  }, 0) || 0;
+  
+  const lowStockCountWeekAgo = productsWeekAgo?.filter(p => {
+    const qty = Number(p.quantity_in_stock) || 0;
+    const min = Number(p.minimum_stock_level) || 0;
+    return qty > 0 && qty <= min;
+  }).length || 0;
+  
+  const outOfStockCountWeekAgo = productsWeekAgo?.filter(p => {
+    const qty = Number(p.quantity_in_stock) || 0;
+    return qty === 0;
+  }).length || 0;
+
   return {
     category_id: categoryId,
     category_name: category.name,
@@ -372,6 +413,10 @@ export async function getCategoryAnalytics(
     low_stock_count: lowStockCount,
     out_of_stock_count: outOfStockCount,
     average_price: averagePrice,
+    total_products_week_ago: totalProductsWeekAgo,
+    total_stock_value_week_ago: totalStockValueWeekAgo,
+    low_stock_count_week_ago: lowStockCountWeekAgo,
+    out_of_stock_count_week_ago: outOfStockCountWeekAgo,
   };
 }
 

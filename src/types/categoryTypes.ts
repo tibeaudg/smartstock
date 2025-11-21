@@ -38,6 +38,11 @@ export interface CategoryAnalytics {
   // Optional: growth metrics if historical data available
   products_added_last_30_days?: number;
   stock_value_change_percentage?: number;
+  // Week-ago values for comparison
+  total_products_week_ago?: number;
+  total_stock_value_week_ago?: number;
+  low_stock_count_week_ago?: number;
+  out_of_stock_count_week_ago?: number;
 }
 
 export interface CategoryCreateData {
