@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Layout } from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, Download, Building2, Package, ShoppingBag } from 'lucide-react';
+import { Loader2, Download, Building2, Package, ShoppingBag, RotateCcw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
@@ -16,6 +16,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
+import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogFooter, AlertDialogTitle, AlertDialogDescription, AlertDialogAction, AlertDialogCancel } from '@/components/ui/alert-dialog';
 
 interface OnboardingUser {
   id: string;
@@ -163,11 +164,44 @@ export default function AdminOnboardingPage({ embedded = false }: AdminOnboardin
     }
     
     return (
-      <Layout>
+      <Layout children={''} currentTab={''} onTabChange={function (tab: string): void {
+        throw new Error('Function not implemented.');
+      } } userRole={'admin'}>
         {content}
       </Layout>
     );
   }
+
+
+
+
+  const resetOnboardingMutation = useMutation({
+    mutationFn: async () => {
+      if (!user) throw new Error('No user found');
+      
+      const { error } = await supabase
+        .from('profiles')
+        .update({ onboarding: null } as any)
+        .eq('id', user.id);
+
+      if (error) throw error;
+      return { success: true };
+    },
+    onSuccess: () => {
+      toast.success('Onboarding status reset. Redirecting to onboarding page...');
+      // Invalidate queries to refresh user profile and onboarding data
+      queryClient.invalidateQueries({ queryKey: ['userProfiles'] });
+      queryClient.invalidateQueries({ queryKey: ['onboarding-users'] });
+      // Redirect to onboarding after a short delay
+      setTimeout(() => {
+        navigate('/onboarding');
+      }, 1000);
+    },
+    onError: (error: Error) => {
+      toast.error(error.message || 'Failed to reset onboarding status');
+    }
+  });
+
 
   const handleExport = () => {
     if (!users || users.length === 0) {
@@ -242,6 +276,63 @@ export default function AdminOnboardingPage({ embedded = false }: AdminOnboardin
         />
       )}
       <div className={embedded ? "p-6" : "container mx-auto p-6"}>
+                    {/* Onboarding Test Button - Always visible for admins */}
+            {userProfile?.is_owner && (
+              <Card className="mb-4 border-orange-200 bg-orange-50">
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between flex-wrap gap-4">
+                    <div>
+                      <h3 className="font-semibold text-orange-900 mb-1">Test Onboarding Flow</h3>
+                      <p className="text-sm text-orange-700">
+                        Reset your onboarding status to test and review the onboarding experience
+                      </p>
+                    </div>
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="border-orange-300 text-orange-700 hover:bg-orange-100"
+                          disabled={resetOnboardingMutation.isPending}
+                        >
+                          {resetOnboardingMutation.isPending ? (
+                            <>
+                              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                              Resetting...
+                            </>
+                          ) : (
+                            <>
+                              <RotateCcw className="w-4 h-4 mr-2" />
+                              Reset Onboarding
+                            </>
+                          )}
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Reset Onboarding Status?</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            This will reset your onboarding status to allow you to go through the onboarding flow again.
+                            This is useful for testing and reviewing the onboarding experience.
+                            <br /><br />
+                            You will be redirected to the onboarding page after resetting.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogAction
+                            onClick={() => resetOnboardingMutation.mutate()}
+                            className="bg-orange-600 hover:bg-orange-700"
+                          >
+                            Reset & Go to Onboarding
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
         <Card>
           <CardHeader>
             <div className="flex items-center justify-between">
@@ -407,7 +498,9 @@ export default function AdminOnboardingPage({ embedded = false }: AdminOnboardin
   }
 
   return (
-    <Layout>
+    <Layout children={''} currentTab={''} onTabChange={function (tab: string): void {
+      throw new Error('Function not implemented.');
+    } } userRole={'admin'}>
       {content}
     </Layout>
   );

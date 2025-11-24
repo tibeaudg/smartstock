@@ -336,7 +336,7 @@ const Footer = () => {
           <Link to="/inventory-for-starters" className="block text-gray-400 hover:text-white underline text-sm">
             For Starters
           </Link>
-          <Link to="/stock-management-software" className="block text-gray-400 hover:text-white underline text-sm">
+          <Link to="/solutions/stock-management-software" className="block text-gray-400 hover:text-white underline text-sm">
             Stock Software
           </Link>
         </div>

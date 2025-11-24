@@ -53,14 +53,34 @@ function getSlugFromPath(path: string): string {
     return segments.join("/");
   }
 
+  // Preserve full path for solutions directory to match sitemap
+  if (segments[0] === "solutions") {
+    return segments.join("/");
+  }
+
   return segments[segments.length - 1];
 }
 
 export function getSeoRoutes(): SeoRoute[] {
   if (cachedRoutes) return cachedRoutes;
 
+  // Files to exclude from routing (helper functions, not page components)
+  const excludedFiles = new Set([
+    'glossary/createGlossaryPage',
+  ]);
+
   cachedRoutes = Object.entries(modules)
     .map(([path, loader]) => {
+      // Check if this file should be excluded
+      const withoutPrefix = path
+        .replace(/^(\.\.\/)+/, "")
+        .replace(/^pages\/(SEO|seo)\//, "")
+        .replace(/\.tsx$/, "");
+      
+      if (excludedFiles.has(withoutPrefix)) {
+        return null;
+      }
+
       const slug = getSlugFromPath(path);
       if (!slug) {
         console.warn(`[seoRoutes] Skipping SEO page without slug for path: ${path}`);

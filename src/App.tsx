@@ -62,8 +62,6 @@ import { SubscriptionManagement } from './components/settings/SubscriptionManage
 import { AdminSubscriptionManagement } from './components/admin/SubscriptionManagement';
 import DemoPage from './pages/demo';  
 import { AuthContext } from './hooks/useAuth';
-import { ChurnFeedbackModal } from './components/ChurnFeedbackModal';
-import { checkUserChurnStatus, hasChurnFeedback } from './services/churnDetectionService';
 
 // Loading Screen Component
 const LoadingScreen = () => (
@@ -87,8 +85,6 @@ const AppRouter = () => {
     const { user, loading, userProfile } = useAuth();
     const location = useLocation();
     const [forceRender, setForceRender] = useState(false);
-    const [showChurnModal, setShowChurnModal] = useState(false);
-    const [churnCheckDone, setChurnCheckDone] = useState(false);
 
     // Safety timeout - force render after 10 seconds if still loading
     useEffect(() => {
@@ -105,27 +101,7 @@ const AppRouter = () => {
       }
     }, [loading]);
 
-    // Check for churn status on login
-    useEffect(() => {
-      const checkChurn = async () => {
-        if (!user || loading || churnCheckDone) return;
 
-        try {
-          const churnStatus = await checkUserChurnStatus(user.id);
-          const hasFeedback = await hasChurnFeedback(user.id);
-
-          if (churnStatus.isChurned && !hasFeedback) {
-            setShowChurnModal(true);
-          }
-          setChurnCheckDone(true);
-        } catch (error) {
-          console.error('Error checking churn status:', error);
-          setChurnCheckDone(true);
-        }
-      };
-
-      checkChurn();
-    }, [user, loading, churnCheckDone]);
 
     // Debug: log auth state and location
     console.debug('[ProtectedRoute] user:', user);
@@ -231,10 +207,7 @@ const AppRouter = () => {
               {children}
             </OnboardingCheck>
           )}
-          <ChurnFeedbackModal 
-            isOpen={showChurnModal} 
-            onClose={() => setShowChurnModal(false)} 
-          />
+        
         </Suspense>
       </ThemeProvider>
     );

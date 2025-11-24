@@ -209,7 +209,7 @@ export default function StockManagement() {
                 <div className="text-blue-600 text-sm font-semibold">Lees meer ?</div>
               </div>
             </Link>
-            <Link to="/stock-management-software" className="group">
+            <Link to="/solutions/stock-management-software" className="group">
               <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition">
                 <h3 className="font-semibold text-lg mb-2 group-hover:text-blue-600 transition">
                   Stock Management Software

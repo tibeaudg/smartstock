@@ -11,7 +11,6 @@ import { toast } from '@/hooks/use-toast';
 import { Loader2, Euro, Users, Building2, AlertCircle } from 'lucide-react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
-import { checkUserChurnStatus, hasChurnFeedback } from '@/services/churnDetectionService';
 import { Badge } from '@/components/ui/badge';
 
 // TYPE-SAFETY: Interfaces voor duidelijkere datastructuren
@@ -33,7 +32,6 @@ interface DisplayUser {
   userId: string;
   email: string;
   role: string;
-  churnStatus?: 'qualified' | 'not_qualified' | 'has_feedback' | 'loading';
 }
 
 interface PricingInfo {
@@ -46,7 +44,7 @@ interface PricingInfo {
   totalCost: number;
 }
 
-export const UserManagement = () => {
+const UserManagement = () => {
   const { user } = useAuth();
   const { branches, activeBranch } = useBranches();
   const queryClient = useQueryClient();
@@ -66,7 +64,7 @@ export const UserManagement = () => {
   }, [activeBranch, selectedBranchId]);
 
   // React Query: fetch users for branch
-  const fetchBranchUsers = async () => {
+  const fetchBranchUsers = async (): Promise<DisplayUser[]> => {
     if (!selectedBranchId) return [];
     const { data, error } = await supabase
       .from('branch_users')
@@ -74,44 +72,18 @@ export const UserManagement = () => {
       .eq('branch_id', selectedBranchId);
     if (error) throw new Error(error.message);
     
-    // Map users and check churn status for each
-    const users = (data || []).map((u: any) => ({
-      id: u.id,
-      userId: u.user_id,
-      email: u.profiles?.email || '',
-      role: u.role,
-      churnStatus: 'loading' as const,
+    return (data || []).map((bu: BranchUser) => ({
+      id: bu.id,
+      userId: bu.user_id,
+      email: bu.profiles?.email || 'Unknown',
+      role: bu.role,
     }));
-
-    // Check churn status for each user in parallel
-    const churnChecks = await Promise.all(
-      users.map(async (user) => {
-        try {
-          const churnStatus = await checkUserChurnStatus(user.userId);
-          const hasFeedback = await hasChurnFeedback(user.userId);
-          
-          if (hasFeedback) {
-            return { ...user, churnStatus: 'has_feedback' as const };
-          } else if (churnStatus.isChurned) {
-            return { ...user, churnStatus: 'qualified' as const };
-          } else {
-            return { ...user, churnStatus: 'not_qualified' as const };
-          }
-        } catch (error) {
-          console.error(`Error checking churn for user ${user.userId}:`, error);
-          return { ...user, churnStatus: 'not_qualified' as const };
-        }
-      })
-    );
-
-    return churnChecks;
   };
 
   const {
     data: users = [],
     isLoading: loading,
     isFetching,
-    error,
     refetch,
   } = useQuery<DisplayUser[]>({
     queryKey: ['branchUsers', selectedBranchId],
@@ -136,7 +108,7 @@ export const UserManagement = () => {
       return { totalUsers: 0, totalBranches: 0, extraUsers: 0, extraBranches: 0, userCost: 0, branchCost: 0, totalCost: 0 };
     }
     
-    const branchIds = branches?.map(b => b.id) || [];
+    const branchIds = (branches || []).map((b: { id: string }) => b.id);
     
     // Get all users across all branches for this user
     const { data: branchUsers, error: usersError } = await supabase
@@ -150,7 +122,7 @@ export const UserManagement = () => {
     }
     
     // Count unique users
-    const uniqueUsers = new Set(branchUsers?.map(u => u.user_id) || []);
+    const uniqueUsers = new Set((branchUsers || []).map((u: { user_id: string }) => u.user_id));
     const totalUsers = uniqueUsers.size;
     const totalBranches = branchIds.length;
     
@@ -306,7 +278,7 @@ export const UserManagement = () => {
       role: manageBranchesUser.role,
     }));
     if (inserts.length > 0) {
-      await supabase.from('branch_users').insert(inserts);
+      await supabase.from('branch_users').insert(inserts as any);
     }
     setSavingBranches(false);
     setManageBranchesUser(null);
@@ -425,23 +397,9 @@ export const UserManagement = () => {
                           <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded-full capitalize">
                             {u.role}
                           </span>
-                          {u.churnStatus === 'qualified' && (
-                            <Badge variant="destructive" className="flex items-center gap-1">
-                              <AlertCircle className="w-3 h-3" />
-                              Churn Risk
-                            </Badge>
-                          )}
-                          {u.churnStatus === 'has_feedback' && (
-                            <Badge variant="secondary" className="flex items-center gap-1">
-                              Feedback Given
-                            </Badge>
-                          )}
-                          {u.churnStatus === 'loading' && (
-                            <Badge variant="outline" className="flex items-center gap-1">
-                              <Loader2 className="w-3 h-3 animate-spin" />
-                              Checking...
-                            </Badge>
-                          )}
+                       
+                      
+                          
                         </div>
                       </div>
                       <div className="flex gap-2">
@@ -506,3 +464,5 @@ export const UserManagement = () => {
     </div>
   );
 };
+
+export { UserManagement };

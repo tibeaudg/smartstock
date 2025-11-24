@@ -593,17 +593,10 @@ const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({
           "@type": "WebPage",
           "@id": `https://www.stockflow.be${location.pathname}`
         }
-      },
-      ...(faqData.length > 0 ? [{
-        "@type": "FAQPage",
-        "mainEntity": faqData.map(faq => ({
-          "@type": "Question",
-          "name": faq.question,
-          "acceptedAnswer": { "@type": "Answer", "text": faq.answer }
-        }))
-      }] : [])
+      }
+      // FAQPage is handled by individual pages via StructuredData component to avoid duplication
     ]
-  }), [breadcrumbItems, title, description, publishDate, updatedDate, location.pathname, faqData]);
+  }), [breadcrumbItems, title, description, publishDate, updatedDate, location.pathname]);
 
   const handleLoginClick = useMemo(() => () => navigate('/auth'), [navigate]);
 

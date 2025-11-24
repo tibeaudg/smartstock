@@ -12,6 +12,16 @@
       "source": "/index.php",
       "destination": "/",
       "permanent": true
+    },
+    {
+      "source": "/de/softwares-for-inventory-management",
+      "destination": "/software-for-inventory-management",
+      "permanent": true
+    },
+    {
+      "source": "/it/best-inventory-management-software",
+      "destination": "/best-inventory-management-software",
+      "permanent": true
     }
   ],
   "rewrites": [

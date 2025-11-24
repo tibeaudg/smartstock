@@ -93,7 +93,7 @@ export default function SEOOverviewPage() {
       pages: [
         { name: "Stock Management", url: "/stock-management" },
         { name: "Stock Management App", url: "/stock-management-app" },
-        { name: "Stock Management Software", url: "/stock-management-software" },
+        { name: "Stock Management Software", url: "/solutions/stock-management-software" },
         { name: "Free Stock Management", url: "/free-stock-management" },
         { name: "Free Stock Program", url: "/free-stock-program" },
         { name: "Simple Stock Management", url: "/simple-stock-management" },

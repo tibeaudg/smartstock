@@ -15,18 +15,6 @@ export type BlogPost = {
   author?: string;
 };
 
-// User feedback types
-export type UserFeedback = {
-  id: string;
-  user_id: string;
-  recommendation_score: number;
-  feedback_text?: string;
-  trigger_context: string;
-  created_at: string;
-};
-
-
-
 export type Json =
   | string
   | number

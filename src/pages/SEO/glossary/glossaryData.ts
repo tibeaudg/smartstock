@@ -79,8 +79,57 @@ export const glossaryEntries: Record<string, GlossaryPageConfig> = {
   'inventory-asset': {
     path: '/glossary/inventory-asset',
     title: 'Inventory Asset',
+    shortDescription: 'Inventory assets are reusable items owned by a business that are used to create products or services but are not sold to customers or consumed by employees.',
     definition:
-      'An inventory asset is an item your business owns and uses on a continual basis, such as equipment, tools, machinery, vehicles, and more. Inventory assets are not sold to customers nor are they consumed by employees; they are the reusable items that your company uses to create its product or services.',
+      'An inventory asset is an item your business owns and uses on a continual basis, such as equipment, tools, machinery, vehicles, and more. Inventory assets are not sold to customers nor are they consumed by employees; they are the reusable items that your company uses to create its product or services. Unlike consumable inventory that gets used up, inventory assets retain their value and are tracked for depreciation, maintenance, and operational purposes. Effective inventory asset management ensures these valuable items are properly maintained, tracked, and utilized to maximize their value and lifespan.',
+    metaDescription: 'Learn what inventory assets are, how to track and manage inventory assets effectively, and best practices for inventory asset management. Complete guide to tracking inventory assets.',
+    keywords: ['inventory asset', 'asset inventory', 'inventory asset management', 'tracking inventory assets', 'business assets', 'equipment inventory', 'asset tracking'],
+    keyTakeaways: [
+      'Inventory assets are reusable items used to create products or services but not sold to customers.',
+      'Unlike consumable inventory, assets retain value and are tracked for depreciation and maintenance.',
+      'Effective asset management ensures proper maintenance, tracking, and utilization.',
+      'Modern inventory management software helps track assets, maintenance schedules, and depreciation.',
+    ],
+    faqs: [
+      {
+        question: 'What is an inventory asset?',
+        answer: 'An inventory asset is a reusable item owned by a business that is used to create products or services but is not sold to customers or consumed by employees. Examples include equipment, tools, machinery, vehicles, computers, and other long-term operational items that retain value over time.',
+      },
+      {
+        question: 'What is the difference between inventory assets and regular inventory?',
+        answer: 'Inventory assets are reusable items that retain value and are used repeatedly in operations, while regular inventory consists of consumable items that are sold to customers or used up in production. Assets are tracked for depreciation and maintenance, while inventory is tracked for sales and cost of goods sold.',
+      },
+      {
+        question: 'What are examples of inventory assets?',
+        answer: 'Examples of inventory assets include manufacturing equipment, vehicles, tools and machinery, computers and IT equipment, office furniture, specialized equipment, safety equipment, and any other reusable items that support business operations but are not part of the final product sold to customers.',
+      },
+      {
+        question: 'Why is tracking inventory assets important?',
+        answer: 'Tracking inventory assets is important for financial reporting (depreciation), maintenance scheduling, loss prevention, insurance purposes, tax compliance, and operational efficiency. Proper asset tracking ensures items are maintained, utilized effectively, and accounted for in financial records.',
+      },
+      {
+        question: 'How do you manage inventory assets?',
+        answer: 'Manage inventory assets by creating a comprehensive asset register, assigning unique identifiers (barcodes or serial numbers), tracking asset locations, scheduling preventive maintenance, monitoring asset utilization, recording depreciation, and using inventory management software for centralized tracking and reporting.',
+      },
+      {
+        question: 'What is asset inventory management?',
+        answer: 'Asset inventory management is the process of tracking, maintaining, and managing all business assets throughout their lifecycle. It includes asset registration, location tracking, maintenance scheduling, depreciation tracking, and disposal management. Modern asset management software automates these processes.',
+      },
+      {
+        question: 'How can inventory software help track inventory assets?',
+        answer: 'Inventory management software helps track assets by providing barcode scanning, location tracking, maintenance scheduling, depreciation calculations, utilization monitoring, and comprehensive reporting. Software like StockFlow enables real-time asset visibility, automated maintenance reminders, and detailed asset history tracking.',
+      },
+      {
+        question: 'What information should be tracked for inventory assets?',
+        answer: 'Track asset information including unique identifier, description, purchase date and cost, current location, assigned user or department, maintenance schedule and history, depreciation value, warranty information, serial numbers, and photos. This comprehensive data enables effective asset management and financial reporting.',
+      },
+    ],
+    relatedLinks: [
+      { label: 'Inventory Management', href: '/glossary/inventory-management' },
+      { label: 'MRO Inventory', href: '/glossary/mro-inventory' },
+      { label: 'Asset Control', href: '/glossary/asset-control' },
+      { label: 'Inventory Optimization', href: '/glossary/inventory-optimization' },
+    ],
   },
   'inventory-automation': {
     path: '/glossary/inventory-automation',
@@ -171,31 +220,52 @@ export const glossaryEntries: Record<string, GlossaryPageConfig> = {
     title: 'Inventory Optimization',
     shortDescription: 'The process of maintaining optimal inventory levels to balance customer demand satisfaction with cost minimization, avoiding both stockouts and overstock.',
     definition:
-      'Inventory optimization occurs when a business maintains a "just right" amount of inventory to satisfy customer demand. By optimizing inventory, a business reduces costs while avoiding stockouts, excess inventory, and inventory obsolescence. This involves analyzing demand patterns, setting appropriate reorder points and safety stock levels, implementing ABC analysis, and using data-driven decision-making to balance service levels with inventory investment.',
-    metaDescription: 'Learn what inventory optimization is and how to achieve optimal stock levels that balance customer service with cost efficiency. Strategies and best practices.',
-    keywords: ['inventory optimization', 'optimal inventory', 'stock optimization', 'inventory balance', 'inventory efficiency', 'stock level optimization'],
+      'Inventory optimization occurs when a business maintains a "just right" amount of inventory to satisfy customer demand. By optimizing inventory, a business reduces costs while avoiding stockouts, excess inventory, and inventory obsolescence. This involves analyzing demand patterns, setting appropriate reorder points and safety stock levels, implementing ABC analysis, and using data-driven decision-making to balance service levels with inventory investment. Effective inventory optimization requires continuous monitoring, regular analysis of demand trends, supplier performance evaluation, and adjustment of inventory policies based on changing market conditions and business objectives.',
+    metaDescription: 'Learn what inventory optimization is, strategies for optimal stock levels, tools and techniques for inventory balance, and how to achieve inventory efficiency. Complete guide to stock level optimization.',
+    keywords: ['inventory optimization', 'optimal inventory', 'stock optimization', 'inventory balance', 'inventory efficiency', 'stock level optimization', 'inventory management optimization', 'inventory cost optimization'],
     keyTakeaways: [
       'Inventory optimization balances customer service levels with inventory investment costs.',
       'Key strategies include ABC analysis, demand forecasting, and setting optimal reorder points.',
       'Modern inventory management software uses AI and analytics to automatically optimize stock levels.',
       'Regular review and adjustment of inventory policies is essential as demand patterns change.',
+      'Effective optimization requires analyzing multiple factors including demand variability, lead times, and carrying costs.',
     ],
     faqs: [
       {
         question: 'What is inventory optimization?',
-        answer: 'Inventory optimization is the process of maintaining the right amount of inventory to meet customer demand while minimizing costs. It involves balancing the risk of stockouts against the cost of carrying excess inventory, using data and analytics to make informed decisions.',
+        answer: 'Inventory optimization is the process of maintaining the right amount of inventory to meet customer demand while minimizing costs. It involves balancing the risk of stockouts against the cost of carrying excess inventory, using data and analytics to make informed decisions. The goal is to achieve optimal stock levels that maximize service levels while minimizing total inventory costs.',
       },
       {
         question: 'How do you optimize inventory levels?',
-        answer: 'Optimize inventory by analyzing demand patterns, setting appropriate reorder points and safety stock, implementing ABC analysis to prioritize high-value items, using accurate demand forecasting, and leveraging inventory management software that provides real-time insights and automated recommendations.',
+        answer: 'Optimize inventory by analyzing demand patterns, setting appropriate reorder points and safety stock, implementing ABC analysis to prioritize high-value items, using accurate demand forecasting, leveraging inventory management software that provides real-time insights and automated recommendations, reviewing supplier performance, and regularly adjusting policies based on changing conditions.',
       },
       {
         question: 'What are the benefits of inventory optimization?',
-        answer: 'Benefits include reduced carrying costs, improved cash flow, fewer stockouts, less waste from obsolescence, better customer service, and increased profitability. Optimized inventory also frees up warehouse space and capital for other business investments.',
+        answer: 'Benefits include reduced carrying costs, improved cash flow, fewer stockouts, less waste from obsolescence, better customer service, increased profitability, freed warehouse space, and better capital allocation. Optimized inventory also enables businesses to respond more quickly to market changes and customer demands.',
       },
       {
         question: 'What tools help with inventory optimization?',
-        answer: 'Modern inventory management software like StockFlow provides real-time analytics, demand forecasting, automated reorder point calculations, ABC analysis, and optimization recommendations. These tools use historical data and algorithms to suggest optimal stock levels for each item.',
+        answer: 'Modern inventory management software like StockFlow provides real-time analytics, demand forecasting, automated reorder point calculations, ABC analysis, optimization recommendations, and reporting. These tools use historical data, algorithms, and AI to suggest optimal stock levels for each item and identify optimization opportunities.',
+      },
+      {
+        question: 'What is ABC analysis in inventory optimization?',
+        answer: 'ABC analysis categorizes inventory items into three groups: A-items (high value, low quantity), B-items (moderate value and quantity), and C-items (low value, high quantity). This helps prioritize optimization efforts, with A-items receiving more attention and tighter controls, while C-items can use simpler management approaches.',
+      },
+      {
+        question: 'How does demand forecasting help with inventory optimization?',
+        answer: 'Demand forecasting predicts future customer demand based on historical data, trends, and external factors. Accurate forecasting helps set optimal inventory levels, plan purchasing, reduce stockouts, and minimize excess inventory. Modern inventory software uses machine learning to improve forecast accuracy over time.',
+      },
+      {
+        question: 'What factors affect optimal inventory levels?',
+        answer: 'Factors affecting optimal inventory levels include demand variability, supplier lead times, order costs, carrying costs, service level targets, storage capacity, cash flow constraints, and product characteristics (perishability, obsolescence risk). Effective optimization considers all these factors together.',
+      },
+      {
+        question: 'How often should you review and optimize inventory?',
+        answer: 'Review and optimize inventory regularly, with frequency depending on business characteristics. High-velocity items may need weekly reviews, while slower-moving items might be reviewed monthly or quarterly. Continuous monitoring through inventory management software enables real-time optimization adjustments as conditions change.',
+      },
+      {
+        question: 'What is the relationship between inventory optimization and cash flow?',
+        answer: 'Inventory optimization directly impacts cash flow by reducing the amount of capital tied up in inventory. Lower inventory levels free up cash for other business investments, while still maintaining service levels. Optimized inventory also reduces costs from obsolescence, storage, and financing, improving overall cash flow.',
       },
     ],
     relatedLinks: [
@@ -203,6 +273,7 @@ export const glossaryEntries: Record<string, GlossaryPageConfig> = {
       { label: 'Safety Stock', href: '/glossary/safety-stock' },
       { label: 'Economic Order Quantity', href: '/glossary/economic-order-quantity' },
       { label: '80/20 Inventory Rule', href: '/glossary/80-20-inventory-rule' },
+      { label: 'Reorder Point', href: '/glossary/reorder-point' },
     ],
   },
   'inventory-turnover': {
@@ -286,8 +357,57 @@ export const glossaryEntries: Record<string, GlossaryPageConfig> = {
   kitting: {
     path: '/glossary/kitting',
     title: 'Kitting',
+    shortDescription: 'Kitting is an inventory management strategy where individual items are bundled together into a single kit that is tracked, used, or sold as one unit.',
     definition:
-      'Kitting is an inventory management strategy in which individual pieces, parts, or items are bundled into a kit. This kit is tracked, used, and even sold as a single piece of inventory, even though it has several parts.',
+      'Kitting is an inventory management strategy in which individual pieces, parts, or items are bundled into a kit. This kit is tracked, used, and even sold as a single piece of inventory, even though it has several parts. Kitting simplifies inventory management by reducing the number of individual items to track, improves picking efficiency, ensures all required components are available together, and can reduce packaging and shipping costs. Common kitting applications include assembly kits, repair kits, starter kits, and product bundles.',
+    metaDescription: 'Learn what kitting is, how the kitting process works, benefits of inventory kitting, and best practices for implementing kitting in your inventory management. Complete guide to product kitting.',
+    keywords: ['kitting', 'inventory kitting', 'kitting process', 'product kitting', 'assembly kitting', 'kit inventory', 'inventory bundling'],
+    keyTakeaways: [
+      'Kitting bundles individual items into a single tracked unit, simplifying inventory management.',
+      'Kitting improves picking efficiency and ensures all required components are available together.',
+      'Common kitting applications include assembly kits, repair kits, and product bundles.',
+      'Modern inventory management software supports kitting with bill of materials and automated tracking.',
+    ],
+    faqs: [
+      {
+        question: 'What is kitting in inventory management?',
+        answer: 'Kitting in inventory management is the process of bundling individual items, parts, or components together into a single kit that is tracked, used, or sold as one unit. Instead of managing each component separately, the kit is managed as a single inventory item, simplifying tracking and improving efficiency.',
+      },
+      {
+        question: 'What are the benefits of kitting?',
+        answer: 'Benefits of kitting include simplified inventory tracking, improved picking efficiency, reduced errors by ensuring all components are available together, faster order fulfillment, reduced packaging costs, better inventory organization, and the ability to sell bundled products at a premium. Kitting also helps maintain consistent quality by ensuring all required parts are included.',
+      },
+      {
+        question: 'What are examples of kitting?',
+        answer: 'Examples of kitting include assembly kits (all parts needed to assemble a product), repair kits (components needed for a specific repair), starter kits (items for new customers or projects), product bundles (multiple products sold together), maintenance kits (parts for scheduled maintenance), and first aid kits (medical supplies bundled together).',
+      },
+      {
+        question: 'How does the kitting process work?',
+        answer: 'The kitting process involves identifying items to bundle, creating a bill of materials (BOM) for the kit, assembling components into kits, assigning a unique identifier to each kit, tracking kits as single inventory units, and updating component inventory when kits are created or used. Inventory management software automates much of this process.',
+      },
+      {
+        question: 'What is the difference between kitting and bundling?',
+        answer: 'Kitting typically refers to bundling items that are used together in operations or assembly, while bundling often refers to selling multiple products together. However, the terms are sometimes used interchangeably. Kitting is more commonly used in manufacturing and operations, while bundling is more common in sales and marketing.',
+      },
+      {
+        question: 'How can inventory software help with kitting?',
+        answer: 'Inventory management software helps with kitting by managing bill of materials (BOM), tracking component inventory levels, automating kit creation, updating component inventory when kits are assembled, providing kitting reports, and ensuring all required components are available before kit assembly. Software like StockFlow supports comprehensive kitting workflows.',
+      },
+      {
+        question: 'What are the challenges of kitting?',
+        answer: 'Challenges of kitting include managing component inventory levels, ensuring all components are available when needed, tracking kit assembly and disassembly, handling partial kits, managing kit variations, and coordinating kitting with production schedules. Inventory management software addresses these challenges with automation and real-time tracking.',
+      },
+      {
+        question: 'When should you use kitting?',
+        answer: 'Use kitting when you frequently use the same combination of items together, want to improve picking efficiency, need to ensure all required components are available, want to reduce packaging and shipping costs, or want to sell bundled products. Kitting is especially beneficial for assembly operations, repair services, and product bundling.',
+      },
+    ],
+    relatedLinks: [
+      { label: 'Bill of Materials', href: '/glossary/bill-of-materials' },
+      { label: 'Inventory Management', href: '/glossary/inventory-management' },
+      { label: 'Inventory Optimization', href: '/glossary/inventory-optimization' },
+      { label: 'Inventory Asset', href: '/glossary/inventory-asset' },
+    ],
   },
   'landed-cost': {
     path: '/glossary/landed-cost',
@@ -310,8 +430,57 @@ export const glossaryEntries: Record<string, GlossaryPageConfig> = {
   'mro-inventory': {
     path: '/glossary/mro-inventory',
     title: 'MRO Inventory',
+    shortDescription: 'Maintenance, repair, and operations inventory includes all items used to maintain equipment, repair assets, and keep business operations running smoothly, but are not sold to customers.',
     definition:
-      'MRO inventory stands for maintenance, repair, and operations inventory. While not sold to a customer, this inventory is utilized by a business to conduct preventive and corrective maintenance on an asset or keep day-to-day business activities running efficiently.',
+      'MRO inventory stands for maintenance, repair, and operations inventory. While not sold to a customer, this inventory is utilized by a business to conduct preventive and corrective maintenance on an asset or keep day-to-day business activities running efficiently. MRO inventory includes spare parts, tools, consumables, safety equipment, cleaning supplies, and other items necessary for maintaining production equipment, facilities, and operational infrastructure. Effective MRO inventory management ensures that maintenance teams have the right parts and supplies when needed, preventing equipment downtime and operational disruptions.',
+    metaDescription: 'Learn what MRO inventory is, how to manage maintenance repair and operations inventory effectively, and best practices for MRO inventory management. Complete guide to MRO inventory.',
+    keywords: ['mro inventory', 'maintenance repair operations inventory', 'mro inventory management', 'mro stock', 'maintenance inventory', 'repair inventory', 'operations inventory'],
+    keyTakeaways: [
+      'MRO inventory includes all items used for maintenance, repair, and operations but not sold to customers.',
+      'Effective MRO inventory management prevents equipment downtime and operational disruptions.',
+      'MRO inventory typically includes spare parts, tools, consumables, and safety equipment.',
+      'Modern inventory management software helps optimize MRO inventory levels and reduce carrying costs.',
+    ],
+    faqs: [
+      {
+        question: 'What is MRO inventory?',
+        answer: 'MRO inventory stands for maintenance, repair, and operations inventory. It includes all items used to maintain equipment, repair assets, and keep business operations running, but are not sold to customers. This includes spare parts, tools, consumables, safety equipment, cleaning supplies, and other operational necessities.',
+      },
+      {
+        question: 'What are examples of MRO inventory?',
+        answer: 'Examples of MRO inventory include spare parts (bearings, belts, filters), tools and equipment, lubricants and fluids, safety equipment (gloves, goggles, hard hats), cleaning supplies, office supplies, electrical components, plumbing supplies, and any items used to maintain facilities and equipment.',
+      },
+      {
+        question: 'Why is MRO inventory management important?',
+        answer: 'MRO inventory management is important because it ensures maintenance teams have the right parts and supplies when needed, preventing equipment downtime and operational disruptions. Poor MRO management can lead to production delays, increased maintenance costs, and reduced equipment reliability. Effective management optimizes stock levels, reduces carrying costs, and improves maintenance efficiency.',
+      },
+      {
+        question: 'How do you manage MRO inventory?',
+        answer: 'Manage MRO inventory by categorizing items by criticality and usage frequency, setting appropriate reorder points, using inventory management software for tracking, implementing barcode scanning for accuracy, analyzing usage patterns to optimize stock levels, and establishing relationships with reliable suppliers. Modern inventory management software like StockFlow automates many of these processes.',
+      },
+      {
+        question: 'What is the difference between MRO inventory and production inventory?',
+        answer: 'MRO inventory consists of items used to maintain and repair equipment and facilities but are not part of the finished product. Production inventory includes raw materials, components, and work-in-progress that become part of the final product sold to customers. MRO inventory supports operations, while production inventory is transformed into products.',
+      },
+      {
+        question: 'How can inventory software help with MRO inventory management?',
+        answer: 'Inventory management software helps with MRO inventory by providing real-time tracking, automated reorder points, usage analytics, multi-location support, barcode scanning, and reporting. Software like StockFlow helps optimize MRO stock levels, reduce carrying costs, prevent stockouts, and improve maintenance efficiency through data-driven decision-making.',
+      },
+      {
+        question: 'What are common challenges in MRO inventory management?',
+        answer: 'Common challenges include tracking inventory across multiple locations, preventing stockouts of critical parts, managing a wide variety of low-value items, controlling carrying costs, ensuring parts availability for maintenance schedules, and maintaining accurate inventory counts. Inventory management software addresses these challenges with automation and real-time visibility.',
+      },
+      {
+        question: 'How do you calculate optimal MRO inventory levels?',
+        answer: 'Calculate optimal MRO inventory levels by analyzing historical usage patterns, considering lead times from suppliers, assessing the criticality of items, factoring in maintenance schedules, and balancing the cost of carrying inventory against the cost of stockouts. Inventory management software automatically calculates optimal levels based on these factors.',
+      },
+    ],
+    relatedLinks: [
+      { label: 'Inventory Management', href: '/glossary/inventory-management' },
+      { label: 'Inventory Optimization', href: '/glossary/inventory-optimization' },
+      { label: 'Safety Stock', href: '/glossary/safety-stock' },
+      { label: 'Inventory Asset', href: '/glossary/inventory-asset' },
+    ],
   },
   'pick-list': {
     path: '/glossary/pick-list',

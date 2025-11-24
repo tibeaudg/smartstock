@@ -129,9 +129,9 @@ export default function FeaturesPage() {
   return (
     <div className="min-h-screen bg-white">
       <SEO
-        title="StockFlow Features - Complete Inventory Management Solution"
-        description="Discover all StockFlow features: mobile scanning, analytics, multi-location tracking, dead stock optimization, and more for Belgian businesses."
-        keywords="stockflow features, inventory management features, barcode scanning, stock tracking, analytics, Belgium"
+        title="Inventory Management Features - Complete Feature Guide 2025 | StockFlow"
+        description="Discover comprehensive inventory management features including mobile barcode scanning, real-time tracking, advanced analytics, multi-location support, dead stock optimization, and team collaboration. Complete guide to stock management features and inventory software features."
+        keywords="inventory management features, stock management features, inventory software features, barcode scanning features, inventory tracking features, inventory management tools, stock management tools, inventory features list, best inventory management features, inventory software capabilities, stock control features, warehouse management features, inventory system features, inventory tracking software features, inventory management system features"
         url="https://www.stockflow.be/features"
         structuredData={structuredData}
       />
@@ -235,6 +235,106 @@ export default function FeaturesPage() {
                 </p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Feature Use Cases Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-6">
+              Real-World Use Cases
+            </h2>
+            <p className="text-lg text-gray-700 max-w-3xl mx-auto">
+              See how businesses use StockFlow's inventory management features to solve real challenges and improve operations.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-8 rounded-xl">
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">E-commerce Retailer</h3>
+              <p className="text-gray-700 mb-4">
+                An online retailer uses multi-location tracking to manage inventory across warehouses and fulfillment centers. Mobile barcode scanning enables quick receiving and shipping, while analytics help identify best-selling products and optimize stock levels.
+              </p>
+              <ul className="space-y-2 text-gray-700">
+                <li className="flex items-start">
+                  <CheckCircle className="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                  <span>Multi-channel inventory synchronization</span>
+                </li>
+                <li className="flex items-start">
+                  <CheckCircle className="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                  <span>Real-time stock level updates across platforms</span>
+                </li>
+                <li className="flex items-start">
+                  <CheckCircle className="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                  <span>Automated low stock alerts prevent overselling</span>
+                </li>
+              </ul>
+            </div>
+
+            <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-8 rounded-xl">
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Field Service Contractor</h3>
+              <p className="text-gray-700 mb-4">
+                A contractor uses mobile barcode scanning to track parts and tools across service vehicles. Team collaboration features ensure technicians can check inventory availability before heading to job sites, reducing return trips.
+              </p>
+              <ul className="space-y-2 text-gray-700">
+                <li className="flex items-start">
+                  <CheckCircle className="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                  <span>Track inventory across multiple service vehicles</span>
+                </li>
+                <li className="flex items-start">
+                  <CheckCircle className="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                  <span>Mobile access for technicians in the field</span>
+                </li>
+                <li className="flex items-start">
+                  <CheckCircle className="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                  <span>Real-time visibility for dispatchers</span>
+                </li>
+              </ul>
+            </div>
+
+            <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-8 rounded-xl">
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Manufacturing Company</h3>
+              <p className="text-gray-700 mb-4">
+                A manufacturer uses advanced analytics to optimize raw material inventory, track work-in-progress, and manage finished goods. Dead stock optimizer helps identify slow-moving items and free up capital.
+              </p>
+              <ul className="space-y-2 text-gray-700">
+                <li className="flex items-start">
+                  <CheckCircle className="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                  <span>Track raw materials and components</span>
+                </li>
+                <li className="flex items-start">
+                  <CheckCircle className="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                  <span>Optimize inventory turnover with analytics</span>
+                </li>
+                <li className="flex items-start">
+                  <CheckCircle className="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                  <span>Identify and liquidate dead stock</span>
+                </li>
+              </ul>
+            </div>
+
+            <div className="bg-gradient-to-br from-orange-50 to-amber-50 p-8 rounded-xl">
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Multi-Location Retail Chain</h3>
+              <p className="text-gray-700 mb-4">
+                A retail chain uses multi-location management to track inventory across stores, transfer stock between locations, and maintain consistent product availability. Centralized dashboard provides real-time visibility across all locations.
+              </p>
+              <ul className="space-y-2 text-gray-700">
+                <li className="flex items-start">
+                  <CheckCircle className="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                  <span>Unified view of inventory across all stores</span>
+                </li>
+                <li className="flex items-start">
+                  <CheckCircle className="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                  <span>Transfer management between locations</span>
+                </li>
+                <li className="flex items-start">
+                  <CheckCircle className="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                  <span>Location-specific reporting and analytics</span>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </section>

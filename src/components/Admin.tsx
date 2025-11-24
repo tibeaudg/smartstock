@@ -21,7 +21,6 @@ export const Admin = () => {
   const location = useLocation();
 
   const menuItems = [
-    { id: 'cms', label: 'CMS', icon: FileText, path: '/admin/cms' },
     { id: 'notifications', label: 'Notificaties', icon: Bell, path: '/admin/notifications' },
     { id: 'chat', label: 'Chat', icon: MessageSquare, path: '/admin/chat' },
     { id: 'seo', label: 'SEO', icon: Search, path: '/admin/seo' },

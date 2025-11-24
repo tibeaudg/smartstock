@@ -112,7 +112,7 @@ export default function StockManagementSoftware() {
           "url": "https://www.stockflow.be/logo.png"
         }
       },
-      "url": "https://www.stockflow.be/stock-management-software",
+      "url": "https://www.stockflow.be/solutions/stock-management-software",
       "featureList": [
         "Real-time stock tracking",
         "Automated reorder alerts",
@@ -135,8 +135,14 @@ export default function StockManagementSoftware() {
         {
           "@type": "ListItem",
           "position": 2,
+          "name": "Solutions",
+          "item": "https://www.stockflow.be/solutions"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
           "name": "Stock Management Software",
-          "item": "https://www.stockflow.be/stock-management-software"
+          "item": "https://www.stockflow.be/solutions/stock-management-software"
         }
       ]
     }
@@ -153,10 +159,10 @@ export default function StockManagementSoftware() {
         title="Stock Management Software 2025 - Stock Management Software"
         description="Learn how stock management software to automate your processes. Learn how stock management software to automate your processes. Professional. Try free now."
         keywords="stock management software, inventory software, stock control, warehouse software, SMB stock, small business inventory, stock tracking software, inventory management for small business"
-        url="https://www.stockflow.be/stock-management-software"
+        url="https://www.stockflow.be/solutions/stock-management-software"
         locale="en"
         alternateLanguages={[
-          { lang: 'en-US', url: 'https://www.stockflow.be/stock-management-software' },
+          { lang: 'en-US', url: 'https://www.stockflow.be/solutions/stock-management-software' },
           { lang: 'nl-BE', url: 'https://www.stockflow.be/stockbeheer-software' }
         ]}
         structuredData={structuredData}
