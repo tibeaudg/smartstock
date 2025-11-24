@@ -31,6 +31,7 @@ import { FirstBranchSetup } from "./components/FirstBranchSetup";
 import React, { Suspense, useState, useEffect } from "react";
 import { useOptimizedTabSwitching } from "./hooks/useOptimizedTabSwitching";
 import { useNavigationQueryReset } from "./hooks/useNavigationQueryReset";
+import { useAuthRouteRefresh } from "./hooks/useAuthRouteRefresh";
 import { ContentWrapper } from "./ContentWrapper";
 import AdminUserDetailPage from './pages/AdminUserDetailPage';
 import AdminNotificationsPage from './pages/AdminNotificationsPage';
@@ -78,6 +79,10 @@ const AppRouter = () => {
   // Reset query state on navigation to prevent hanging loading states
   // This must be inside the Router context
   useNavigationQueryReset();
+  
+  // Force browser refresh on window focus for authenticated routes
+  // This ensures fresh data and prevents stale data issues
+  useAuthRouteRefresh();
 
   
   // Protected Route Component (without branch logic)
