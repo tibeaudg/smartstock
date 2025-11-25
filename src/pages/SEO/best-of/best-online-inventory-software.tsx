@@ -74,7 +74,7 @@ export default function BestOnlineInventorySoftware() {
   
       {/* Introduction */}
       <div className="mb-12">
-        <p className="text-lg black leading-relaxed mb-6">
+        <p className="text-lg text-black leading-relaxed mb-6">
           Discover the top-rated online inventory system solutions transforming businesses worldwide. From real-time tracking to automated reorder management, scale with confidence.
         </p>
         <p className="text-lg text-slate-600 leading-relaxed">
@@ -218,7 +218,7 @@ export default function BestOnlineInventorySoftware() {
         <h2 className="text-2xl font-bold  text-black mb-4">
           Where StockFlow Fits
         </h2>
-        <p className="text-base black leading-relaxed mb-0">
+        <p className="text-base text-black leading-relaxed mb-0">
           StockFlow is built for operational speed first. Real-time tracking, mobile scanning that works offline, and one-click corrections keep operations moving while maintaining accurate records.
         </p>
       </div>
@@ -269,7 +269,7 @@ export default function BestOnlineInventorySoftware() {
         <h2 className="text-3xl font-bold  text-black mb-6">
           Conclusion
         </h2>
-        <p className="text-lg black leading-relaxed mb-4">
+        <p className="text-lg text-black leading-relaxed mb-4">
           The best online inventory software is not just a data layer—it's the operating system of physical movement. Choose tools that optimize real workflows, not just dashboards.
         </p>
       </div>
