@@ -221,8 +221,8 @@ export const glossaryEntries: Record<string, GlossaryPageConfig> = {
     shortDescription: 'The process of maintaining optimal inventory levels to balance customer demand satisfaction with cost minimization, avoiding both stockouts and overstock.',
     definition:
       'Inventory optimization occurs when a business maintains a "just right" amount of inventory to satisfy customer demand. By optimizing inventory, a business reduces costs while avoiding stockouts, excess inventory, and inventory obsolescence. This involves analyzing demand patterns, setting appropriate reorder points and safety stock levels, implementing ABC analysis, and using data-driven decision-making to balance service levels with inventory investment. Effective inventory optimization requires continuous monitoring, regular analysis of demand trends, supplier performance evaluation, and adjustment of inventory policies based on changing market conditions and business objectives.',
-    metaDescription: 'Learn what inventory optimization is, strategies for optimal stock levels, tools and techniques for inventory balance, and how to achieve inventory efficiency. Complete guide to stock level optimization.',
-    keywords: ['inventory optimization', 'optimal inventory', 'stock optimization', 'inventory balance', 'inventory efficiency', 'stock level optimization', 'inventory management optimization', 'inventory cost optimization'],
+    metaDescription: 'Master inventory optimization in 2025: Reduce costs 30%, boost cash flow, eliminate stockouts. Proven strategies, AI tools & best practices for optimal stock levels.',
+    keywords: ['inventory optimization', 'optimal inventory', 'stock optimization', 'inventory balance', 'inventory efficiency', 'stock level optimization', 'inventory management optimization', 'inventory cost optimization', 'ABC analysis', 'demand forecasting', 'reorder points', 'safety stock', 'EOQ', 'inventory turnover', 'stock management', 'inventory control', 'inventory planning', 'inventory strategy', 'inventory analytics'],
     keyTakeaways: [
       'Inventory optimization balances customer service levels with inventory investment costs.',
       'Key strategies include ABC analysis, demand forecasting, and setting optimal reorder points.',
@@ -274,6 +274,9 @@ export const glossaryEntries: Record<string, GlossaryPageConfig> = {
       { label: 'Economic Order Quantity', href: '/glossary/economic-order-quantity' },
       { label: '80/20 Inventory Rule', href: '/glossary/80-20-inventory-rule' },
       { label: 'Reorder Point', href: '/glossary/reorder-point' },
+      { label: 'Inventory Turnover', href: '/glossary/inventory-turnover' },
+      { label: 'Inventory Automation', href: '/glossary/inventory-automation' },
+      { label: 'Just in Time Inventory', href: '/glossary/just-in-time-inventory' },
     ],
   },
   'inventory-turnover': {

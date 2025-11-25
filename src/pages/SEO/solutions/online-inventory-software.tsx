@@ -427,74 +427,79 @@ export default function OnlineInventorySoftware() {
       
     >
       <SEO
-        title="Handleiding Online Inventory Software - Handleiding Onlin..."
-        description="Learn how online inventory software to optimize your inventory management. Read the guide online inventory software to automate your processes.. Start free t..."
-        keywords="online inventory software, cloud inventory management, inventory management system, online inventory management, ecommerce inventory tool, inventory automation, StockFlow free trial"
+        title="Best Online Inventory Software 2025: Compare Cloud Solutions | StockFlow"
+        description="Compare top online inventory software 2025. Free plan available. Real-time tracking, barcode scanning, multi-channel sync. Start free trial. 500+ businesses trust StockFlow."
+        keywords="online inventory software, cloud inventory management, inventory management system, online inventory management, ecommerce inventory tool, inventory automation, cloud-based inventory, web-based inventory software, StockFlow free trial, best online inventory software"
         url="https://www.stockflow.be/online-inventory-software"
+        publishedTime={pageMetadata.published}
+        modifiedTime={pageMetadata.updated}
       />
 
-      {/* Introduction */}
-      <div className="mb-12">
-        <p className="text-lg black leading-relaxed mb-6">
-          Searching for the best online inventory software or cloud-based inventory management system? This 2025 guide compares leading platforms, breaks down must-have features, and shows how StockFlow automates stock control across ecommerce, retail, and wholesale channels.
-        </p>
-        <p className="text-lg text-slate-600 leading-relaxed">
-          Online inventory software keeps every SKU, order, and location synced in the cloud so teams can manage stock from anywhere. StockFlow combines real-time visibility, barcode scanning, and automation to replace error-prone spreadsheets.
-        </p>
-      </div>
-              
-              <div className="mt-6 p-6 bg-blue-50 rounded-lg border-l-4 border-blue-600">
-                <p className="text-gray-700 leading-relaxed mb-4">
-                  This comprehensive comparison of the best online inventory software and cloud-based inventory management systems is based on real customer data, implementation timelines from 500+ businesses, and detailed feature analysis of leading platforms including StockFlow, NetSuite, Zoho Inventory, Cin7, and Microsoft Dynamics 365. We've evaluated each solution across key criteria: cloud accessibility, ease of implementation, total cost of ownership, automation capabilities, mobile access, customer support quality, and integration flexibility.
-                </p>
-                <p className="text-gray-700 leading-relaxed mb-4">
-                  Whether you're a small business looking for online inventory software that scales, an ecommerce retailer managing multi-channel sales, or a manufacturing company needing cloud-based inventory tracking, this guide helps you identify the best online inventory management system for your specific industry and business size. We've included real ROI calculations, implementation timelines, and feature comparisons to make your decision process faster and more informed.
-                </p>
-                <p className="text-gray-700 leading-relaxed">
-                  Our analysis covers free online inventory software options, pay-as-you-grow pricing models, enterprise cloud solutions, and everything in between. Each platform has been evaluated for its strengths in cloud-based inventory tracking accuracy, barcode scanning capabilities, automated reorder points, multi-location support, reporting and analytics, and API integration options. By the end of this guide, you'll know exactly which online inventory software features matter most for your business and how to compare cloud inventory management platforms effectively.
-                </p>
-              </div>
+{/* Introduction Section */}
+<section className="max-w-7xl mx-auto mb-16">
+        
+        {/* H1/H2 Hook - Clear Value Prop */}
+        <div className="mb-10">
+          <h1 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+            Best Online Inventory Software & Cloud Management Systems (2025 Guide)
+          </h1>
+          <p className="text-xl text-slate-600 leading-relaxed">
+            Compare leading platforms, analyze automation features, and discover how StockFlow optimizes stock control across ecommerce, retail, and wholesale channels.
+          </p>
+        </div>
 
-
-      {/* FAQ Preview */}
-      <section id="faq" className="py-16 px-4 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">FAQ: Online Inventory Software</h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Answers to the questions buyers ask before choosing a cloud inventory platform.
+        {/* Key Definitions & Context - Split for Readability */}
+        <div className="grid md:grid-cols-2 gap-8 mb-12">
+          <div className="prose prose-lg text-slate-600">
+            <h3 className="text-lg font-semibold text-slate-900 mb-2">Why Cloud-Based?</h3>
+            <p>
+              <strong>Cloud-based inventory management</strong> syncs every SKU, order, and location in real-time. Unlike legacy systems, it allows teams to manage stock from anywhere, replacing error-prone spreadsheets with automated precision.
             </p>
           </div>
-
-          <div className="space-y-6">
-            {faqData.map((faq, index) => {
-              const isInternalRoute = faq.ctaHref?.startsWith('/') ?? false;
-              return (
-                <div key={faq.question} className="bg-gray-50 rounded-lg p-6 space-y-3">
-                  <h3 className="text-lg font-semibold">{faq.question}</h3>
-                  <p className="text-gray-700">{faq.answer}</p>
-                  {faq.ctaLabel && faq.ctaHref && (
-                    isInternalRoute ? (
-                      <Link to={faq.ctaHref} className="inline-flex items-center text-sm font-semibold text-blue-600 hover:text-blue-700">
-                        {faq.ctaLabel}
-                      </Link>
-                    ) : (
-                      <a
-                        href={faq.ctaHref}
-                        className="inline-flex items-center text-sm font-semibold text-blue-600 hover:text-blue-700"
-                        target={faq.ctaHref.startsWith('http') ? '_blank' : undefined}
-                        rel={faq.ctaHref.startsWith('http') ? 'noopener noreferrer' : undefined}
-                      >
-                        {faq.ctaLabel}
-                      </a>
-                    )
-                  )}
-                </div>
-              );
-            })}
+          <div className="prose prose-lg text-slate-600">
+             <h3 className="text-lg font-semibold text-slate-900 mb-2">Core Capabilities</h3>
+             <p>
+               Modern <Link to="/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> combines visibility, barcode scanning, and <Link to="/glossary/inventory-automation" className="text-blue-600 hover:underline font-semibold">inventory automation</Link> to scale operations without increasing headcount.
+             </p>
           </div>
         </div>
+              
+        {/* Methodology / Trust Signals - Redesigned as Feature List */}
+        <div className="bg-blue-50 rounded-xl p-8 border border-blue-100">
+          <h2 className="text-xl font-bold text-slate-900 mb-4">
+            How We Evaluated These Platforms
+          </h2>
+          <p className="text-slate-700 mb-6">
+            This analysis aggregates data from 500+ implementations and compares StockFlow against NetSuite, Zoho, Cin7, and Dynamics 365. We evaluated <Link to="/best-inventory-management-software" className="text-blue-600 hover:underline font-semibold">top solutions</Link> based on:
+          </p>
+          
+          <ul className="grid md:grid-cols-2 gap-x-4 gap-y-2 text-slate-700 mb-6">
+            <li className="flex items-start">
+              <span className="mr-2 text-blue-600 font-bold">•</span> 
+              <span><strong>Real ROI & TCO:</strong> Total cost of ownership calculations.</span>
+            </li>
+            <li className="flex items-start">
+              <span className="mr-2 text-blue-600 font-bold">•</span> 
+              <span><strong>Automation:</strong> <Link to="/glossary/reorder-point" className="text-blue-600 hover:underline">Reorder points</Link> and workflow triggers.</span>
+            </li>
+            <li className="flex items-start">
+              <span className="mr-2 text-blue-600 font-bold">•</span> 
+              <span><strong>Accessibility:</strong> Mobile app quality and cloud uptime.</span>
+            </li>
+            <li className="flex items-start">
+              <span className="mr-2 text-blue-600 font-bold">•</span> 
+              <span><strong>Integrations:</strong> API flexibility for multi-channel retail.</span>
+            </li>
+          </ul>
+
+          <p className="text-sm text-slate-500 border-t border-blue-200 pt-4 mt-4">
+            <em>Suitable for: Small businesses scaling up, Ecommerce retailers, and Wholesale/Manufacturing entities needing <Link to="/inventory-management-software-solutions" className="text-blue-600 hover:underline">enterprise-grade tracking</Link>.</em>
+          </p>
+        </div>
+
       </section>
+
+
 
       {/* Quick Wins */}
       <section id="quick-wins" className="py-16 px-4 bg-white">
@@ -572,7 +577,7 @@ export default function OnlineInventorySoftware() {
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">Benefits of StockFlow Online Inventory Software</h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Deliver higher accuracy, lower costs, and faster fulfillment with cloud-native inventory control.
+              Deliver higher accuracy, lower costs, and faster fulfillment with <strong>cloud-native inventory control</strong>. Our <Link to="/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> provides comprehensive tools for <Link to="/glossary/inventory-optimization" className="text-blue-600 hover:underline font-semibold">inventory optimization</Link> and real-time tracking.
             </p>
           </div>
 
@@ -615,7 +620,7 @@ export default function OnlineInventorySoftware() {
               Why StockFlow is the <span className="text-blue-600">Best Online Inventory Software</span>
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              End-to-end features built to unify ecommerce, retail, wholesale, and manufacturing inventory.
+              End-to-end features built to unify ecommerce, retail, wholesale, and manufacturing inventory. Our <strong>online inventory software</strong> integrates seamlessly with <Link to="/glossary/inventory-management" className="text-blue-600 hover:underline font-semibold">inventory management</Link> best practices and provides tools for <Link to="/glossary/safety-stock" className="text-blue-600 hover:underline font-semibold">safety stock</Link> management and automated reordering.
             </p>
           </div>
 
@@ -632,14 +637,14 @@ export default function OnlineInventorySoftware() {
       </section>
 
       {/* Comparison Section */}
-      <section id="comparison" className="py-16 px-4 bg-gray-50">
+      <section id="comparison" className="py-16 px-4 ">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
               StockFlow vs <span className="text-blue-600">Competitors</span>
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              See how StockFlow compares to other online inventory software and cloud-based inventory management system solutions. Compare features, pricing, implementation time, and customer satisfaction across leading platforms.
+              See how StockFlow compares to other <strong>online inventory software</strong> and <strong>cloud-based inventory management system</strong> solutions. Compare features, pricing, implementation time, and customer satisfaction across leading platforms. For more comparisons, see our <Link to="/best-inventory-management-software" className="text-blue-600 hover:underline font-semibold">best inventory management software</Link> guide.
             </p>
           </div>
 
@@ -857,7 +862,7 @@ export default function OnlineInventorySoftware() {
             </div>
           </div>
 
-          <div className="grid gap-8 lg:grid-cols-5">
+          <div className="grid gap-8 lg:grid-cols-3">
             {pricingPlans.map((plan) => {
               const Icon = plan.icon;
               const priceInfo = billingCycle === 'yearly' ? plan.yearly : plan.monthly;
@@ -950,239 +955,10 @@ export default function OnlineInventorySoftware() {
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section id="testimonials" className="py-16 px-4 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              What Our <span className="text-blue-600">Customers Say</span>
-            </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Real commentary from teams running StockFlow as their online inventory system.
-            </p>
-          </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial) => (
-              <div key={testimonial.name} className="bg-gray-50 p-6 rounded-lg">
-                {testimonial.highlight && (
-                  <p className="text-sm font-semibold uppercase tracking-wide text-blue-600 mb-3">
-                    {testimonial.highlight}
-                  </p>
-                )}
-                <div className="flex mb-4">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
-                  ))}
-                </div>
-                <p className="text-gray-700 mb-4">"{testimonial.content}"</p>
-                <div>
-                  <p className="font-semibold">{testimonial.name}</p>
-                  <p className="text-sm text-gray-600">{testimonial.role}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* ROI Calculator Section */}
-      <section id="roi" className="py-16 px-4 bg-gradient-to-br from-blue-50 to-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Proven ROI: Real Cost Savings & Time Efficiency
-            </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              The best online inventory software delivers measurable returns. Calculate your potential savings with our interactive ROI calculator.
-            </p>
-          </div>
 
-          <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
-            <h3 className="text-2xl font-bold mb-6 text-center">Interactive ROI Calculator</h3>
-            <p className="text-center text-gray-600 mb-8">Enter your numbers to see potential savings with StockFlow online inventory software</p>
-            <div className="max-w-2xl mx-auto">
-              <div className="grid md:grid-cols-2 gap-6 mb-6">
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">Current Inventory Value (€)</label>
-                  <input
-                    type="number"
-                    value={roiInputs.inventoryValue}
-                    onChange={(e) => setRoiInputs({...roiInputs, inventoryValue: e.target.value})}
-                    placeholder="100000"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">Hours Spent on Inventory/Week</label>
-                  <input
-                    type="number"
-                    value={roiInputs.hoursPerWeek}
-                    onChange={(e) => setRoiInputs({...roiInputs, hoursPerWeek: e.target.value})}
-                    placeholder="15"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">Hourly Rate (€)</label>
-                  <input
-                    type="number"
-                    value={roiInputs.hourlyRate}
-                    onChange={(e) => setRoiInputs({...roiInputs, hourlyRate: e.target.value})}
-                    placeholder="25"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">Annual Stockout Losses (€)</label>
-                  <input
-                    type="number"
-                    value={roiInputs.stockoutLosses}
-                    onChange={(e) => setRoiInputs({...roiInputs, stockoutLosses: e.target.value})}
-                    placeholder="12000"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  />
-                </div>
-              </div>
-              <div className="text-center">
-                <button
-                  onClick={() => {
-                    const inventoryValue = parseFloat(roiInputs.inventoryValue || '0');
-                    const hoursPerWeek = parseFloat(roiInputs.hoursPerWeek || '0');
-                    const hourlyRate = parseFloat(roiInputs.hourlyRate || '0');
-                    const stockoutLosses = parseFloat(roiInputs.stockoutLosses || '0');
-                    
-                    const carryingCostSavings = inventoryValue * 0.35;
-                    const timeSavings = hoursPerWeek * hourlyRate * 52;
-                    const stockoutSavings = stockoutLosses * 0.8;
-                    const softwareCost = 174;
-                    const netSavings = carryingCostSavings + timeSavings + stockoutSavings - softwareCost;
-                    const roi = softwareCost > 0 ? ((netSavings / softwareCost) * 100) : 0;
-                    
-                    setRoiResult({
-                      carryingCostSavings,
-                      timeSavings,
-                      stockoutSavings,
-                      netSavings,
-                      roi
-                    });
-                  }}
-                  className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
-                >
-                  Calculate My ROI
-                </button>
-                {roiResult && (
-                  <div className="mt-6 p-6 bg-green-50 rounded-lg">
-                    <h4 className="text-xl font-bold text-gray-900 mb-4">Your Potential Annual Savings</h4>
-                    <div className="grid grid-cols-2 gap-4 text-sm mb-4">
-                      <div>
-                        <span className="text-gray-600">Carrying cost savings:</span>
-                        <span className="font-bold text-green-600 ml-2">€{roiResult.carryingCostSavings.toLocaleString()}</span>
-                      </div>
-                      <div>
-                        <span className="text-gray-600">Time savings:</span>
-                        <span className="font-bold text-green-600 ml-2">€{roiResult.timeSavings.toLocaleString()}</span>
-                      </div>
-                      <div>
-                        <span className="text-gray-600">Stockout reduction:</span>
-                        <span className="font-bold text-green-600 ml-2">€{roiResult.stockoutSavings.toLocaleString()}</span>
-                      </div>
-                      <div>
-                        <span className="text-gray-600">Software cost:</span>
-                        <span className="font-bold text-gray-600 ml-2">€174</span>
-                      </div>
-                    </div>
-                    <div className="border-t pt-4">
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-lg font-semibold">Net Annual Savings:</span>
-                        <span className="text-2xl font-bold text-green-600">€{roiResult.netSavings.toLocaleString()}</span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-lg font-semibold">ROI:</span>
-                        <span className="text-2xl font-bold text-green-600">{roiResult.roi.toFixed(0)}%</span>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
-      {/* Video Demo Section */}
-      <section id="video-demo" className="py-16 px-4 bg-gray-50">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              See StockFlow Online Inventory Software in Action
-            </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Watch how the best online inventory software helps businesses automate stock control, prevent stockouts, and reduce costs with cloud-based access.
-            </p>
-          </div>
-          <div className="max-w-4xl mx-auto">
-            <div className="bg-gray-900 rounded-lg aspect-video flex items-center justify-center relative overflow-hidden">
-              <div className="text-center text-white z-10">
-                <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-blue-600 flex items-center justify-center cursor-pointer hover:bg-blue-700 transition">
-                  <svg className="w-10 h-10 ml-1" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M8 5v14l11-7z"/>
-                  </svg>
-                </div>
-                <p className="text-lg font-semibold mb-2">Product Demo Video</p>
-                <p className="text-sm text-gray-300">Click to watch 3-minute overview</p>
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-600 to-blue-800 opacity-20"></div>
-              <div className="absolute inset-0" style={{backgroundImage: 'url(/Inventory-Management.png)', backgroundSize: 'cover', backgroundPosition: 'center', opacity: 0.3}}></div>
-            </div>
-            <p className="text-center text-sm text-gray-600 mt-4">
-              <Link to="/demo" className="text-blue-600 hover:underline font-semibold">
-                Schedule a personalized demo →
-              </Link>
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Buyer's Guide Download Section */}
-      <section id="buyers-guide" className="py-16 px-4 bg-white">
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg p-8 text-white text-center">
-            <h2 className="text-3xl font-bold mb-4">Download Free Buyer's Guide</h2>
-            <p className="text-lg mb-6 opacity-90">
-              Get our comprehensive 25-page guide: "How to Choose the Best Online Inventory Software in 2025"
-            </p>
-            <div className="grid md:grid-cols-2 gap-4 mb-6 text-left">
-              <div className="bg-white/10 rounded-lg p-4">
-                <h3 className="font-semibold mb-2">What's Inside:</h3>
-                <ul className="text-sm space-y-1 opacity-90">
-                  <li>✓ Feature comparison checklist</li>
-                  <li>✓ Pricing comparison guide</li>
-                  <li>✓ Implementation timeline template</li>
-                  <li>✓ ROI calculation worksheet</li>
-                </ul>
-              </div>
-              <div className="bg-white/10 rounded-lg p-4">
-                <h3 className="font-semibold mb-2">You'll Learn:</h3>
-                <ul className="text-sm space-y-1 opacity-90">
-                  <li>✓ How to evaluate online inventory software</li>
-                  <li>✓ Questions to ask vendors</li>
-                  <li>✓ Red flags to avoid</li>
-                  <li>✓ Cloud implementation best practices</li>
-                </ul>
-              </div>
-            </div>
-            <Link
-              to="/contact"
-              className="inline-flex items-center justify-center bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition"
-            >
-              Download Free Guide
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
-            <p className="text-sm mt-4 opacity-75">No credit card required. Instant download.</p>
-          </div>
-        </div>
-      </section>
 
       {/* Structured Data */}
       <StructuredData
@@ -1203,10 +979,10 @@ export default function OnlineInventorySoftware() {
             '@context': 'https://schema.org',
             '@type': 'WebPage',
             '@id': 'https://www.stockflow.be/online-inventory-software',
-            name: 'Online Inventory Software',
-            headline: 'Online Inventory Software',
+            name: 'Best Online Inventory Software 2025: Compare Cloud Solutions',
+            headline: 'Best Online Inventory Software 2025: Compare Cloud Solutions',
             description:
-              'Compare leading online inventory software, review pricing and features, and start StockFlow’s free plan to automate multi-channel stock control.',
+              'Compare top online inventory software 2025. Free plan available. Real-time tracking, barcode scanning, multi-channel sync. Start free trial. 500+ businesses trust StockFlow.',
             url: 'https://www.stockflow.be/online-inventory-software',
             inLanguage: 'en',
             isPartOf: {
@@ -1240,6 +1016,31 @@ export default function OnlineInventorySoftware() {
                   item: 'https://www.stockflow.be/online-inventory-software'
                 }
               ]
+            }
+          },
+          {
+            '@context': 'https://schema.org',
+            '@type': 'Article',
+            headline: 'Best Online Inventory Software 2025: Complete Comparison Guide',
+            description: 'Compare top online inventory software 2025. Free plan available. Real-time tracking, barcode scanning, multi-channel sync. Start free trial. 500+ businesses trust StockFlow.',
+            author: {
+              '@type': 'Organization',
+              name: 'StockFlow'
+            },
+            datePublished: pageMetadata.published,
+            dateModified: pageMetadata.updated,
+            image: 'https://www.stockflow.be/Inventory-Management.png',
+            publisher: {
+              '@type': 'Organization',
+              name: 'StockFlow',
+              logo: {
+                '@type': 'ImageObject',
+                url: 'https://www.stockflow.be/logo.png'
+              }
+            },
+            mainEntityOfPage: {
+              '@type': 'WebPage',
+              '@id': 'https://www.stockflow.be/online-inventory-software'
             }
           },
           {
